@@ -10,12 +10,12 @@ describe('[CLI] Remote wizard', () => {
         const log = {
             write:       sinon.stub(),
             hideSpinner: sinon.stub(),
-            showSpinner: sinon.stub()
+            showSpinner: sinon.stub(),
         };
 
         const testCafe = {
             browserConnectionGateway: {
-                connectUrl: 'http://example.com'
+                connectUrl: 'http://example.com',
             },
 
             createBrowserConnection: () => {
@@ -26,12 +26,12 @@ describe('[CLI] Remote wizard', () => {
                 setTimeout(() => connection.emit('ready'), 200);
 
                 return Promise.resolve(connection);
-            }
+            },
         };
 
         const remoteWizard = proxyquire('../../lib/cli/remotes-wizard', {
             './log': log,
-            'chalk': new Chalk({ level: 0 })
+            'chalk': new Chalk({ level: 0 }),
         });
 
         await remoteWizard(testCafe, 1, false);
@@ -42,7 +42,7 @@ describe('[CLI] Remote wizard', () => {
             'Connecting 1 remote browser(s)...',
             'Navigate to the following URL from each remote browser.',
             'Connect URL: http://example.com',
-            'CONNECTED USER-AGENT'
+            'CONNECTED USER-AGENT',
         ].join('\n'));
     });
 });

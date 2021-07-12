@@ -90,7 +90,7 @@ export default {
             hasGetVideoFrameData:           !!marionetteClient,
             hasResizeWindow:                !!marionetteClient && config.headless,
             hasMaximizeWindow:              !!marionetteClient && config.headless,
-            hasCanResizeWindowToDimensions: false
+            hasCanResizeWindowToDimensions: false,
         };
-    }
+    },
 };

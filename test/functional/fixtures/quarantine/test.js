@@ -19,7 +19,7 @@ const getReporter = function (scope) {
         },
         reportTestStart: (name, meta, { testRunIds }) => {
             scope.testRunIds = testRunIds;
-        }
+        },
     });
 };
 
@@ -31,9 +31,9 @@ if (config.useLocalBrowsers) {
 
             return runTests('./testcafe-fixtures/test-quarantine-mode.js', 'Failing test, in quarantine mode', {
                 quarantineMode: {
-                    attemptLimit: 10
+                    attemptLimit: 10,
                 },
-                reporter: [reporter]
+                reporter: [reporter],
             })
                 .then(function () {
                     expect(result.unstable).eql(false);
@@ -47,9 +47,9 @@ if (config.useLocalBrowsers) {
 
             return runTests('./testcafe-fixtures/test-quarantine-mode.js', 'Check for unstable test', {
                 quarantineMode: {
-                    successThreshold: 2
+                    successThreshold: 2,
                 },
-                reporter: [reporter]
+                reporter: [reporter],
             })
                 .then(function () {
                     expect(result.unstable).eql(true);
@@ -63,9 +63,9 @@ if (config.useLocalBrowsers) {
 
             return runTests('./testcafe-fixtures/test-quarantine-mode.js', 'Another unstable test', {
                 quarantineMode: {
-                    attemptLimit: 10
+                    attemptLimit: 10,
                 },
-                reporter: [reporter]
+                reporter: [reporter],
             })
                 .then(function () {
                     expect(result.unstable).eql(true);

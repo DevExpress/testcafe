@@ -75,5 +75,5 @@ function assertThrow (fn, expectedErr) {
 module.exports = {
     assertError:    assertRuntimeError,
     assertAPIError: assertAPIError,
-    assertThrow:    assertThrow
+    assertThrow:    assertThrow,
 };

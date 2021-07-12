@@ -28,7 +28,7 @@ export default class DriverStatus extends Assignable {
             { name: 'result' },
             { name: 'consoleMessages' },
             { name: 'isPendingWindowSwitching' },
-            { name: 'isFirstRequestAfterWindowSwitching' }
+            { name: 'isFirstRequestAfterWindowSwitching' },
         ];
     }
 }

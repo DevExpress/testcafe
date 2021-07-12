@@ -124,7 +124,7 @@ $(document).ready(function () {
                         callback();
                     }, 300);
                 });
-            }
+            },
         ];
 
         const stepSetup = function () {
@@ -165,7 +165,7 @@ $(document).ready(function () {
             'step4_0_action',
             'step4_1_action',
             'step4_done',
-            COMMAND.done
+            COMMAND.done,
         ];
 
         expect(8);
@@ -213,7 +213,7 @@ $(document).ready(function () {
                         callback();
                     }, 500);
                 });
-            }
+            },
         ];
 
         const stepSetup = function () {
@@ -243,7 +243,7 @@ $(document).ready(function () {
             'step1',
             'step1_action',
             'step1_done',
-            COMMAND.done
+            COMMAND.done,
         ];
 
         expect(1);
@@ -273,7 +273,7 @@ $(document).ready(function () {
                         callback();
                     }, 500);
                 });
-            }
+            },
         ];
 
         const stepSetup = function () {
@@ -293,7 +293,7 @@ $(document).ready(function () {
             COMMAND.setNextStep,
             'step0_pre_setup',
             ERROR_TYPE.globalWaitForActionTimeoutExceeded,
-            COMMAND.done
+            COMMAND.done,
         ];
 
         expect(1);
@@ -343,7 +343,7 @@ $(document).ready(function () {
                         callback();
                     }, 500);
                 });
-            }
+            },
         ];
 
         const expectedStates = [
@@ -351,7 +351,7 @@ $(document).ready(function () {
             COMMAND.setNextStep,
             'step0',
             ERROR_TYPE.storeDomNodeOrJqueryObject,
-            COMMAND.done
+            COMMAND.done,
         ];
 
         expect(1);

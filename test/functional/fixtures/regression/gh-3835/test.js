@@ -18,14 +18,14 @@ const getReporter = function (delay) {
                 await timeout(delay);
 
                 finishedReportTaskCount++;
-            }
+            },
         }),
         output: {
             write: () => {
             },
             end: () => {
-            }
-        }
+            },
+        },
     };
 };
 

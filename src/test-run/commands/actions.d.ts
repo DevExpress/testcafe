@@ -7,7 +7,7 @@ import {
     DragToElementOptions,
     MouseOptions,
     PressOptions,
-    TypeOptions
+    TypeOptions,
 } from './options';
 
 import Role from '../../role/role';

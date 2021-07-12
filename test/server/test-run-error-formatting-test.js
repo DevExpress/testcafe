@@ -87,7 +87,7 @@ const {
     MultipleWindowsModeIsDisabledError,
     CannotCloseWindowWithoutParentError,
     MultipleWindowsModeIsNotAvailableInRemoteBrowserError,
-    CannotRestoreChildWindowError
+    CannotRestoreChildWindowError,
 } = require('../../lib/errors/test-run');
 
 const untestedErrorTypes = Object.keys(TEST_RUN_ERRORS).map(key => TEST_RUN_ERRORS[key]);
@@ -130,12 +130,12 @@ function equalAssertObject () {
                     fourth: {
                         fifth: {
                             hello: 'world',
-                            six:   '6'
-                        }
-                    }
-                }
-            }
-        }
+                            six:   '6',
+                        },
+                    },
+                },
+            },
+        },
     };
 
     const obj2 = {
@@ -144,12 +144,12 @@ function equalAssertObject () {
                 third: {
                     fourth: {
                         fifth: {
-                            hello: 'world'
-                        }
-                    }
-                }
-            }
-        }
+                            hello: 'world',
+                        },
+                    },
+                },
+            },
+        },
     };
 
     expect(obj1).eql(obj2);
@@ -244,7 +244,7 @@ const ASSERT_ERRORS = {
         number:        createAssertionError(equalAssertNumber),
         object:        createAssertionError(equalAssertObject),
         string:        createAssertionError(equalAssertString),
-        undefinedNull: createAssertionError(equalAssertUndefinedNull)
+        undefinedNull: createAssertionError(equalAssertUndefinedNull),
     },
     notEqual:    { string: createAssertionError(notEqualAssertString) },
     ok:          { boolean: createAssertionError(okAssertBoolean) },
@@ -260,7 +260,7 @@ const ASSERT_ERRORS = {
     lt:          { number: createAssertionError(ltAssertNumber) },
     lte:         { number: createAssertionError(lteAssertNumber) },
     gt:          { number: createAssertionError(gtAssertNumber) },
-    gte:         { number: createAssertionError(gteAssertNumber) }
+    gte:         { number: createAssertionError(gteAssertNumber) },
 };
 
 const longSelector = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua';
@@ -272,7 +272,7 @@ function getErrorAdapter (err) {
         userAgent:      userAgentMock,
         screenshotPath: screenshotPath,
         callsite:       testCallsite,
-        testRunPhase:   TEST_RUN_PHASE.initial
+        testRunPhase:   TEST_RUN_PHASE.initial,
     });
 }
 
@@ -296,7 +296,7 @@ describe('Error formatting', () => {
                 errScreenshotPath: 'screenshot-path',
                 phase:             'test-run-phase',
                 callsite:          'callsite',
-                errs:              []
+                errs:              [],
             });
 
             TestRun.prototype.addError.call(testRunMock, { callsite: 'callsite' });
@@ -310,7 +310,7 @@ describe('Error formatting', () => {
                 screenshotPath: 'screenshot-path',
                 testRunId:      'test-run-id',
                 testRunPhase:   'test-run-phase',
-                callsite:       'callsite'
+                callsite:       'callsite',
             });
         });
 
@@ -361,7 +361,7 @@ describe('Error formatting', () => {
                 'Test error:',
                 '    at method3 (http://example.com):1:3',
                 '    at method2 (http://example.com):1:2',
-                '    at method1 (http://example.com):1:1'
+                '    at method1 (http://example.com):1:1',
             ].join('\n');
 
             assertErrorMessage('uncaught-js-error-on-page', new UncaughtErrorOnPage(errStack, 'http://example.org'));
@@ -390,7 +390,7 @@ describe('Error formatting', () => {
         it('Should format "actionElementNotFoundError" message', () => {
             assertErrorMessage('action-element-not-found-error', new ActionElementNotFoundError({
                 apiFnChain: [longSelector, 'one', 'two', 'three'],
-                apiFnIndex: 1
+                apiFnIndex: 1,
             }));
         });
 
@@ -433,7 +433,7 @@ describe('Error formatting', () => {
         it('Should format "actionAdditionalElementNotFoundError" message', () => {
             assertErrorMessage('action-additional-element-not-found-error', new ActionAdditionalElementNotFoundError('startSelector', {
                 apiFnChain: [longSelector, 'one', 'two', 'three'],
-                apiFnIndex: 1
+                apiFnIndex: 1,
             }));
         });
 
@@ -615,7 +615,7 @@ describe('Error formatting', () => {
         it('Should format "cannotObtainInfoForElementSpecifiedBySelectorError"', () => {
             assertErrorMessage('cannot-obtain-info-for-element-specified-by-selector-error', new CannotObtainInfoForElementSpecifiedBySelectorError(testCallsite, {
                 apiFnChain: [longSelector, 'one', 'two', 'three'],
-                apiFnIndex: 1
+                apiFnIndex: 1,
             }));
         });
 
@@ -626,7 +626,7 @@ describe('Error formatting', () => {
         it('Should format "forbiddenCharactersInScreenshotPathError"', () => {
             assertErrorMessage('forbidden-characters-in-screenshot-path-error', new ForbiddenCharactersInScreenshotPathError('/root/bla:bla', [{
                 chars: ':',
-                index: 9
+                index: 9,
             }]));
         });
 

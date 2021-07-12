@@ -77,7 +77,7 @@ export default {
             left:   0,
             top:    0,
             right:  viewportWidth,
-            bottom: viewportHeight
+            bottom: viewportHeight,
         };
     },
 
@@ -120,5 +120,5 @@ export default {
         const browserClient = this._getBrowserProtocolClient(runtimeInfo);
 
         return browserClient.switchToMainWindow();
-    }
+    },
 };

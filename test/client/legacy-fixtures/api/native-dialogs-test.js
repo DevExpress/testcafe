@@ -23,7 +23,7 @@ function createDefaultDialogsInfo () {
         alerts:                     [],
         confirms:                   [],
         prompts:                    [],
-        beforeUnloadDialogAppeared: false
+        beforeUnloadDialogAppeared: false,
     };
 }
 

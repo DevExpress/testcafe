@@ -23,7 +23,7 @@ import {
     BROWSER_CLOSE_TIMEOUT,
     HEARTBEAT_TIMEOUT,
     LOCAL_BROWSER_INIT_TIMEOUT,
-    REMOTE_BROWSER_INIT_TIMEOUT
+    REMOTE_BROWSER_INIT_TIMEOUT,
 } from '../../utils/browser-connection-timeouts';
 
 const getBrowserConnectionDebugScope = (id: string): string => `testcafe:browser:connection:${id}`;
@@ -440,7 +440,7 @@ export default class BrowserConnection extends EventEmitter {
 
         return {
             code: this.status === BrowserConnectionStatus.closing ? HeartbeatStatus.closing : HeartbeatStatus.ok,
-            url:  this.status === BrowserConnectionStatus.closing ? this.idleUrl : ''
+            url:  this.status === BrowserConnectionStatus.closing ? this.idleUrl : '',
         };
     }
 
@@ -450,7 +450,7 @@ export default class BrowserConnection extends EventEmitter {
             statusUrl:      this.statusUrl,
             heartbeatUrl:   this.heartbeatUrl,
             initScriptUrl:  this.initScriptUrl,
-            retryTestPages: !!this.browserConnectionGateway.retryTestPages
+            retryTestPages: !!this.browserConnectionGateway.retryTestPages,
         });
     }
 

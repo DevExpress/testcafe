@@ -5,5 +5,5 @@
 '@test'['Native dialogs on page load'] = {
     '1.Assert': function () {
         eq($('#result').text(), '');
-    }
+    },
 };

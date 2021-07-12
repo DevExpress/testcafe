@@ -6,11 +6,11 @@ const pageUrl = 'http://localhost:3000/fixtures/api/es-next/request-hooks/pages/
 const logger = new RequestLogger(
     {
         url:    /get-browser-name/,
-        isAjax: true
+        isAjax: true,
     },
     {
         logResponseBody:       true,
-        stringifyResponseBody: true
+        stringifyResponseBody: true,
     });
 
 fixture `RequestLogger`

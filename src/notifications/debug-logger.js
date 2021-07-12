@@ -64,7 +64,7 @@ export default {
         const callsiteStr = renderCallsiteSync(callsite, {
             frameSize:   1,
             stackFilter: createStackFilter(Error.stackTraceLimit),
-            stack:       false
+            stack:       false,
         });
 
         const frame = `\n` +
@@ -94,5 +94,5 @@ export default {
             this.messages.splice(index, 1);
 
         this._showAllBreakpoints();
-    }
+    },
 };

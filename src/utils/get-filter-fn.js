@@ -6,7 +6,7 @@ const FILTERING_OPTIONS = {
     testMeta:    'testMeta',
     fixtureMeta: 'fixtureMeta',
     test:        'test',
-    fixture:     'fixture'
+    fixture:     'fixture',
 };
 
 function isAllFilteringOptionsAreUndefined (opts) {

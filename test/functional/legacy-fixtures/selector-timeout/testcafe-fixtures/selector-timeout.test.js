@@ -8,5 +8,5 @@
 
     '2.Click on button': function () {
         act.click('#button');
-    }
+    },
 };

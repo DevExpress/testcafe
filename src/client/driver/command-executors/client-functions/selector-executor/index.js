@@ -5,7 +5,7 @@ import { exists, visible } from '../../../utils/element-utils';
 import {
     createReplicator,
     FunctionTransform,
-    SelectorNodeTransform
+    SelectorNodeTransform,
 } from '../replicator';
 
 import './filter';
@@ -37,7 +37,7 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
 
     _createReplicator () {
         return createReplicator([
-            new FunctionTransform()
+            new FunctionTransform(),
         ]);
     }
 

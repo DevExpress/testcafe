@@ -8,7 +8,7 @@ import { isJSExpression } from './utils';
 import {
     stringArgument,
     actionOptions,
-    nonEmptyStringArgument
+    nonEmptyStringArgument,
 } from './validations/argument';
 
 // Initializers
@@ -43,7 +43,7 @@ export default class AssertionCommand extends CommandBase {
             { name: 'expected', init: initAssertionParameter, defaultValue: void 0 },
             { name: 'expected2', init: initAssertionParameter, defaultValue: void 0 },
             { name: 'message', type: stringArgument, defaultValue: null },
-            { name: 'options', type: actionOptions, init: initAssertionOptions, required: true }
+            { name: 'options', type: actionOptions, init: initAssertionOptions, required: true },
         ];
     }
 }

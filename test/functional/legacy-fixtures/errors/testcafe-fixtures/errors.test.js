@@ -6,5 +6,5 @@
         const element = $('#heyheyhey')[0];
 
         act.click(element);
-    }
+    },
 };

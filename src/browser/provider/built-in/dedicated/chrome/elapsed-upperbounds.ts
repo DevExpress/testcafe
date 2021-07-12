@@ -8,5 +8,5 @@ export enum CheckedCDPMethod {
 export const ELAPSED_TIME_UPPERBOUNDS = {
     [CheckedCDPMethod.PageEnable]:               30,
     [CheckedCDPMethod.SetDeviceMetricsOverride]: 30,
-    [CheckedCDPMethod.SetVisibleSize]:           30
+    [CheckedCDPMethod.SetVisibleSize]:           30,
 };

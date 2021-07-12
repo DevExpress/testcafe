@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GH-4232</title>
+</head>
+<body>
+<input id="submit-btn" type="submit" value="Submit">
+<script>
+    var submitBtn = document.getElementById('submit-btn');
+    
+    submitBtn.onclick = function () {
+        document.location = 'http://localhost:3001/fixtures/regression/gh-4232/pages/cross-domain-page.html';
+    };
+</script>
+</body>
+</html>

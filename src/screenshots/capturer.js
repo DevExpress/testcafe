@@ -1,7 +1,7 @@
 import {
     join as joinPath,
     dirname,
-    basename
+    basename,
 } from 'path';
 
 import { generateThumbnail } from 'testcafe-browser-tools';
@@ -13,7 +13,7 @@ import correctFilePath from '../utils/correct-file-path';
 import {
     readPngFile,
     stat,
-    writePng
+    writePng,
 } from '../utils/promisified-functions';
 
 import DEFAULT_SCREENSHOT_EXTENSION from './default-extension';
@@ -52,7 +52,7 @@ export default class Capturer {
             top:    Math.round(top * dpr),
             left:   Math.round(left * dpr),
             bottom: Math.round(bottom * dpr),
-            right:  Math.round(right * dpr)
+            right:  Math.round(right * dpr),
         };
     }
 
@@ -64,7 +64,7 @@ export default class Capturer {
 
         return {
             width:  Math.floor(Capturer._getDimensionWithoutScrollbar(innerWidth, documentWidth, bodyWidth) * dpr),
-            height: Math.floor(Capturer._getDimensionWithoutScrollbar(innerHeight, documentHeight, bodyHeight) * dpr)
+            height: Math.floor(Capturer._getDimensionWithoutScrollbar(innerHeight, documentHeight, bodyHeight) * dpr),
         };
     }
 
@@ -135,7 +135,7 @@ export default class Capturer {
                 filePath: screenshotPath,
                 pageWidth,
                 pageHeight,
-                fullPage
+                fullPage,
             };
 
             await this._takeScreenshot(takeScreenshotOptions);
@@ -149,7 +149,7 @@ export default class Capturer {
                 markSeed,
                 clientAreaDimensions,
                 path:           screenshotPath,
-                cropDimensions: Capturer._getCropDimensions(cropDimensions, pageDimensions)
+                cropDimensions: Capturer._getCropDimensions(cropDimensions, pageDimensions),
             });
 
             if (croppedImage)
@@ -169,7 +169,7 @@ export default class Capturer {
             thumbnailPath,
             userAgent,
             quarantineAttempt,
-            takenOnFail
+            takenOnFail,
         };
 
         this.testEntry.screenshots.push(screenshot);

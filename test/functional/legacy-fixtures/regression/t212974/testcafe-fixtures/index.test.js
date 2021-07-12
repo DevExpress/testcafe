@@ -9,5 +9,5 @@
 
     '2.Assert': function () {
         eq($('#elementFromPoint').text(), $('#targetElement').attr('id'));
-    }
+    },
 };

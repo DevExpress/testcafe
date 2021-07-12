@@ -59,7 +59,7 @@ describe('[API] Generic errors', function () {
         it('Should handle Node built-in assertion lib error', function () {
             const NODE_12_ASSERTION_MESSAGE_PARTS = [
                 'AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:',
-                '\'answer\' !== \'42\''
+                '\'answer\' !== \'42\'',
             ];
 
             return runTests('./testcafe-fixtures/external-assertion-lib-errors-test.js', 'Built-in assertion lib error',

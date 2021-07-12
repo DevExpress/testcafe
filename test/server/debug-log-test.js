@@ -21,7 +21,7 @@ describe('Debug Log', () => {
 
     it('Should not throw an error when data contains circular references', () => {
         const TestRunDebugLog = proxyquire('../../lib/test-run/debug-log', {
-            debug: debugMock
+            debug: debugMock,
         });
 
         const debugLog = new TestRunDebugLog('Chrome');
@@ -52,8 +52,8 @@ describe('Debug Log', () => {
             util: {
                 inspect () {
                     throw new Error('inspect error');
-                }
-            }
+                },
+            },
         });
 
         const debugLog = new TestRunDebugLog('Chrome');

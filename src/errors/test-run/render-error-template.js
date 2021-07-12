@@ -3,7 +3,7 @@ import { TEST_RUN_ERRORS } from '../types';
 import {
     markup,
     shouldSkipCallsite,
-    formatExpressionMessage
+    formatExpressionMessage,
 } from './utils';
 
 import TEMPLATES from './templates';
@@ -18,7 +18,7 @@ function getTestCafeErrorInCustomScriptError (err, viewportWidth) {
         // We use expression as a file content
         originCallsiteMarkup = err.errCallsite._renderRecord(err.expression, {
             renderer: renderers.html,
-            stack:    false
+            stack:    false,
         });
     }
 

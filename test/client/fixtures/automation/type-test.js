@@ -114,7 +114,7 @@ $(document).ready(function () {
         const $outerDiv = $('<div></div>')
             .css({
                 width:  '100px',
-                height: '50px'
+                height: '50px',
             })
             .addClass(TEST_ELEMENT_CLASS).appendTo('body');
 
@@ -527,7 +527,7 @@ $(document).ready(function () {
 
             const s = {
                 ' ': 'U+0020',
-                'a': 'U+0041'
+                'a': 'U+0041',
             };
 
             const expectedKeySequence = s['a'] + s['a'] + s[' '] + 'Enter';
@@ -566,7 +566,7 @@ $(document).ready(function () {
             { type: 'input', data: '2' },
             { type: 'textInput', data: '3' },
             { type: 'beforeinput', data: '3' },
-            { type: 'input', data: '3' }
+            { type: 'input', data: '3' },
         ];
 
         const expectedEventsWithoutInput = [
@@ -590,13 +590,13 @@ $(document).ready(function () {
         const expectedOnlyBeforeInput = [
             { type: 'beforeinput', data: '1' },
             { type: 'beforeinput', data: '2' },
-            { type: 'beforeinput', data: '3' }
+            { type: 'beforeinput', data: '3' },
         ];
 
         const expectedOnlyTextInput = [
             { type: 'textInput', data: '1' },
             { type: 'textInput', data: '2' },
-            { type: 'textInput', data: '3' }
+            { type: 'textInput', data: '3' },
         ];
 
         asyncTest('Should fire `beforeInput` event', function () {
@@ -805,7 +805,7 @@ $(document).ready(function () {
                     },
                     set: function () {
                         ok(false);
-                    }
+                    },
                 });
 
                 type

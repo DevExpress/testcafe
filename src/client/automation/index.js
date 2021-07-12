@@ -16,7 +16,7 @@ import UploadAutomation from './playback/upload';
 import {
     MouseOptions,
     ClickOptions,
-    TypeOptions
+    TypeOptions,
 } from '../../test-run/commands/options';
 import AutomationSettings from './settings';
 import { getOffsetOptions } from './utils/offsets';

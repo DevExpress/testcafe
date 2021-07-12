@@ -28,7 +28,7 @@ export default function (filePath) {
     const forbiddenCharsList = [];
 
     sanitizeFilename(filePath, {
-        replacement: (chars, index) => addForbiddenCharsToList(forbiddenCharsList, { chars, index })
+        replacement: (chars, index) => addForbiddenCharsToList(forbiddenCharsList, { chars, index }),
     });
 
     correctForbiddenCharsList(forbiddenCharsList, filePath);

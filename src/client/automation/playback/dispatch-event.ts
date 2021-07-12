@@ -14,7 +14,7 @@ const DEFAULT_MOUSE_EVENT_DETAIL_PROP_VALUE: Dictionary<number> = {
     click:     1,
     dblclick:  2,
     mousedown: 1,
-    mouseup:   1
+    mouseup:   1,
 };
 
 // NOTE: default e.buttons for left button pressed
@@ -25,7 +25,7 @@ const EVENT_CTORS = {
     PointerEvent:  'PointerEvent',
     KeyboardEvent: 'KeyboardEvent',
     InputEvent:    'InputEvent',
-    FocusEvent:    'FocusEvent'
+    FocusEvent:    'FocusEvent',
 };
 
 interface DispatchEventInit {
@@ -57,7 +57,7 @@ export default class DispatchEventAutomation {
             cancelable,
             detail,
             view,
-            buttons
+            buttons,
         } = this.options;
 
         bubbles    = bubbles !== false;

@@ -10,7 +10,7 @@ describe('Request Hooks', () => {
             return runTests('./testcafe-fixtures/request-mock/failed-cors-validation.js', 'Failed CORS validation', { only: 'chrome' })
                 .then(() => {
                     expect(testReport.warnings).eql([
-                        'RequestMock: CORS validation failed for a request specified as { url: "http://dummy-url.com/get" }'
+                        'RequestMock: CORS validation failed for a request specified as { url: "http://dummy-url.com/get" }',
                     ]);
                 });
         });

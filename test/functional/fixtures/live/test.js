@@ -49,7 +49,7 @@ function createLiveModeRunner (tc, src, browsers = DEFAULT_BROWSERS) {
     const runner = new RunnerMock({
         proxy,
         browserConnectionGateway,
-        configuration: configuration.clone()
+        configuration: configuration.clone(),
     });
 
     tc.runners.push(runner);
@@ -109,7 +109,7 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
                     });
 
                     return runner.run({
-                        quarantineMode: true
+                        quarantineMode: true,
                     });
                 })
                 .then(() => {

@@ -9,9 +9,9 @@ const path                    = require('path');
 const testRunMock = {
     test: {
         testFile: {
-            filename: path.join(__dirname, 'test.js')
-        }
-    }
+            filename: path.join(__dirname, 'test.js'),
+        },
+    },
 };
 
 testRunMock.controller = new TestController(testRunMock);
@@ -69,9 +69,9 @@ describe('Test run commands', () => {
                         shift: true,
                         dummy: 'yo',
                         alt:   true,
-                        meta:  true
-                    }
-                }
+                        meta:  true,
+                    },
+                },
             };
 
             let command = createCommand(commandObj);
@@ -90,14 +90,14 @@ describe('Test run commands', () => {
                         ctrl:  true,
                         alt:   true,
                         shift: true,
-                        meta:  true
-                    }
-                }
+                        meta:  true,
+                    },
+                },
             });
 
             commandObj = {
                 type:     TYPE.click,
-                selector: '#yo'
+                selector: '#yo',
             };
 
             command = createCommand(commandObj);
@@ -116,9 +116,9 @@ describe('Test run commands', () => {
                         ctrl:  false,
                         alt:   false,
                         shift: false,
-                        meta:  false
-                    }
-                }
+                        meta:  false,
+                    },
+                },
             });
         });
 
@@ -140,9 +140,9 @@ describe('Test run commands', () => {
                         shift: false,
                         dummy: 'yo',
                         alt:   true,
-                        meta:  false
-                    }
-                }
+                        meta:  false,
+                    },
+                },
             };
 
             let command = createCommand(commandObj);
@@ -161,14 +161,14 @@ describe('Test run commands', () => {
                         ctrl:  true,
                         alt:   true,
                         shift: false,
-                        meta:  false
-                    }
-                }
+                        meta:  false,
+                    },
+                },
             });
 
             commandObj = {
                 type:     TYPE.rightClick,
-                selector: '#yo'
+                selector: '#yo',
             };
 
             command = createCommand(commandObj);
@@ -187,9 +187,9 @@ describe('Test run commands', () => {
                         ctrl:  false,
                         alt:   false,
                         shift: false,
-                        meta:  false
-                    }
-                }
+                        meta:  false,
+                    },
+                },
             });
         });
 
@@ -211,9 +211,9 @@ describe('Test run commands', () => {
                         shift: false,
                         dummy: 'yo',
                         alt:   true,
-                        meta:  false
-                    }
-                }
+                        meta:  false,
+                    },
+                },
             };
 
             let command = createCommand(commandObj);
@@ -232,14 +232,14 @@ describe('Test run commands', () => {
                         ctrl:  true,
                         alt:   true,
                         shift: false,
-                        meta:  false
-                    }
-                }
+                        meta:  false,
+                    },
+                },
             });
 
             commandObj = {
                 type:     TYPE.doubleClick,
-                selector: '#yo'
+                selector: '#yo',
             };
 
             command = createCommand(commandObj);
@@ -258,9 +258,9 @@ describe('Test run commands', () => {
                         ctrl:  false,
                         alt:   false,
                         shift: false,
-                        meta:  false
-                    }
-                }
+                        meta:  false,
+                    },
+                },
             });
         });
 
@@ -282,9 +282,9 @@ describe('Test run commands', () => {
                         shift: false,
                         dummy: 'yo',
                         alt:   true,
-                        meta:  false
-                    }
-                }
+                        meta:  false,
+                    },
+                },
             };
 
             let command = createCommand(commandObj);
@@ -302,14 +302,14 @@ describe('Test run commands', () => {
                         ctrl:  true,
                         alt:   true,
                         shift: false,
-                        meta:  false
-                    }
-                }
+                        meta:  false,
+                    },
+                },
             });
 
             commandObj = {
                 type:     TYPE.hover,
-                selector: '#yo'
+                selector: '#yo',
             };
 
             command = createCommand(commandObj);
@@ -327,9 +327,9 @@ describe('Test run commands', () => {
                         ctrl:  false,
                         alt:   false,
                         shift: false,
-                        meta:  false
-                    }
-                }
+                        meta:  false,
+                    },
+                },
             });
         });
 
@@ -353,9 +353,9 @@ describe('Test run commands', () => {
                         shift: false,
                         dummy: 'yo',
                         alt:   true,
-                        meta:  false
-                    }
-                }
+                        meta:  false,
+                    },
+                },
             };
 
             let command = createCommand(commandObj);
@@ -375,16 +375,16 @@ describe('Test run commands', () => {
                         ctrl:  true,
                         alt:   true,
                         shift: false,
-                        meta:  false
-                    }
-                }
+                        meta:  false,
+                    },
+                },
             });
 
             commandObj = {
                 type:        TYPE.drag,
                 selector:    '#yo',
                 dragOffsetX: 10,
-                dragOffsetY: -15
+                dragOffsetY: -15,
             };
 
             command = createCommand(commandObj);
@@ -404,9 +404,9 @@ describe('Test run commands', () => {
                         ctrl:  false,
                         alt:   false,
                         shift: false,
-                        meta:  false
-                    }
-                }
+                        meta:  false,
+                    },
+                },
             });
         });
 
@@ -431,9 +431,9 @@ describe('Test run commands', () => {
                         shift: false,
                         dummy: 'yo',
                         alt:   true,
-                        meta:  false
-                    }
-                }
+                        meta:  false,
+                    },
+                },
             };
 
             let command = createCommand(commandObj);
@@ -455,15 +455,15 @@ describe('Test run commands', () => {
                         ctrl:  true,
                         alt:   true,
                         shift: false,
-                        meta:  false
-                    }
-                }
+                        meta:  false,
+                    },
+                },
             });
 
             commandObj = {
                 type:                TYPE.dragToElement,
                 selector:            '#yo',
-                destinationSelector: '#destination'
+                destinationSelector: '#destination',
             };
 
             command = createCommand(commandObj);
@@ -484,9 +484,9 @@ describe('Test run commands', () => {
                         ctrl:  false,
                         alt:   false,
                         shift: false,
-                        meta:  false
-                    }
-                }
+                        meta:  false,
+                    },
+                },
             });
         });
 
@@ -511,11 +511,11 @@ describe('Test run commands', () => {
                         shift: false,
                         dummy: 'yo',
                         alt:   false,
-                        meta:  false
+                        meta:  false,
                     },
 
-                    confidential: true
-                }
+                    confidential: true,
+                },
             };
 
             let command = createCommand(commandObj);
@@ -537,17 +537,17 @@ describe('Test run commands', () => {
                         ctrl:  true,
                         alt:   false,
                         shift: false,
-                        meta:  false
+                        meta:  false,
                     },
 
-                    confidential: true
-                }
+                    confidential: true,
+                },
             });
 
             commandObj = {
                 type:     TYPE.typeText,
                 selector: '#yo',
-                text:     'testText'
+                text:     'testText',
             };
 
             command = createCommand(commandObj);
@@ -569,9 +569,9 @@ describe('Test run commands', () => {
                         ctrl:  false,
                         alt:   false,
                         shift: false,
-                        meta:  false
-                    }
-                }
+                        meta:  false,
+                    },
+                },
             });
         });
 
@@ -586,8 +586,8 @@ describe('Test run commands', () => {
                 options: {
                     offsetX: 23,
                     dummy:   'yo',
-                    speed:   0.5
-                }
+                    speed:   0.5,
+                },
             };
 
             let command = createCommand(commandObj);
@@ -599,13 +599,13 @@ describe('Test run commands', () => {
                 endPos:   2,
 
                 options: {
-                    speed: 0.5
-                }
+                    speed: 0.5,
+                },
             });
 
             commandObj = {
                 type:     TYPE.selectText,
-                selector: '#yo'
+                selector: '#yo',
             };
 
             command = createCommand(commandObj);
@@ -617,8 +617,8 @@ describe('Test run commands', () => {
                 endPos:   null,
 
                 options: {
-                    speed: null
-                }
+                    speed: null,
+                },
             });
         });
 
@@ -635,8 +635,8 @@ describe('Test run commands', () => {
                 options: {
                     offsetX: 23,
                     dummy:   'yo',
-                    speed:   0.5
-                }
+                    speed:   0.5,
+                },
             };
 
             let command = createCommand(commandObj);
@@ -650,13 +650,13 @@ describe('Test run commands', () => {
                 endPos:    3,
 
                 options: {
-                    speed: 0.5
-                }
+                    speed: 0.5,
+                },
             });
 
             commandObj = {
                 type:     TYPE.selectTextAreaContent,
-                selector: '#yo'
+                selector: '#yo',
             };
 
             command = createCommand(commandObj);
@@ -670,8 +670,8 @@ describe('Test run commands', () => {
                 endPos:    null,
 
                 options: {
-                    speed: null
-                }
+                    speed: null,
+                },
             });
         });
 
@@ -686,8 +686,8 @@ describe('Test run commands', () => {
                 options: {
                     offsetX: 23,
                     dummy:   'yo',
-                    speed:   0.5
-                }
+                    speed:   0.5,
+                },
             };
 
             let command = createCommand(commandObj);
@@ -698,14 +698,14 @@ describe('Test run commands', () => {
                 endSelector:   makeSelector('#node2'),
 
                 options: {
-                    speed: 0.5
-                }
+                    speed: 0.5,
+                },
             });
 
             commandObj = {
                 type:          TYPE.selectEditableContent,
                 selector:      '#yo',
-                startSelector: '#node1'
+                startSelector: '#node1',
             };
 
             command = createCommand(commandObj);
@@ -716,8 +716,8 @@ describe('Test run commands', () => {
                 endSelector:   null,
 
                 options: {
-                    speed: null
-                }
+                    speed: null,
+                },
             });
         });
 
@@ -739,9 +739,9 @@ describe('Test run commands', () => {
                         shift: false,
                         dummy: 'yo',
                         alt:   false,
-                        meta:  false
-                    }
-                }
+                        meta:  false,
+                    },
+                },
             };
 
             const command = createCommand(commandObj);
@@ -751,21 +751,21 @@ describe('Test run commands', () => {
                 keys: 'a+b c',
 
                 options: {
-                    speed: 0.5
-                }
+                    speed: 0.5,
+                },
             });
         });
 
         it('Should create WaitCommand from object', () => {
             const commandObj = {
                 type:    TYPE.wait,
-                timeout: 1000
+                timeout: 1000,
             };
             const command    = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:    TYPE.wait,
-                timeout: 1000
+                timeout: 1000,
             });
         });
 
@@ -774,7 +774,7 @@ describe('Test run commands', () => {
                 type:          TYPE.navigateTo,
                 url:           'localhost',
                 stateSnapshot: 'stateSnapshot',
-                forceReload:   true
+                forceReload:   true,
             };
 
             const command = createCommand(commandObj);
@@ -783,7 +783,7 @@ describe('Test run commands', () => {
                 type:          TYPE.navigateTo,
                 url:           'localhost',
                 stateSnapshot: 'stateSnapshot',
-                forceReload:   true
+                forceReload:   true,
             });
         });
 
@@ -795,8 +795,8 @@ describe('Test run commands', () => {
                 dummy:    'test',
 
                 options: {
-                    dummy: 'yo'
-                }
+                    dummy: 'yo',
+                },
             };
 
             let command = createCommand(commandObj);
@@ -804,7 +804,7 @@ describe('Test run commands', () => {
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.setFilesToUpload,
                 selector: makeSelector('#yo', true),
-                filePath: '/test/path'
+                filePath: '/test/path',
             });
 
             commandObj = {
@@ -814,8 +814,8 @@ describe('Test run commands', () => {
                 dummy:    'test',
 
                 options: {
-                    dummy: 'yo'
-                }
+                    dummy: 'yo',
+                },
             };
 
             command = createCommand(commandObj);
@@ -823,7 +823,7 @@ describe('Test run commands', () => {
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.setFilesToUpload,
                 selector: makeSelector('#yo', true),
-                filePath: ['/test/path/1', '/test/path/2']
+                filePath: ['/test/path/1', '/test/path/2'],
             });
         });
 
@@ -834,15 +834,15 @@ describe('Test run commands', () => {
                 dummy:    'test',
 
                 options: {
-                    dummy: 'yo'
-                }
+                    dummy: 'yo',
+                },
             };
 
             const command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.clearUpload,
-                selector: makeSelector('#yo', true)
+                selector: makeSelector('#yo', true),
             });
         });
 
@@ -855,8 +855,8 @@ describe('Test run commands', () => {
                 fullPage: true,
 
                 options: {
-                    dummy: 'yo'
-                }
+                    dummy: 'yo',
+                },
             };
 
             let command = createCommand(commandObj);
@@ -866,7 +866,7 @@ describe('Test run commands', () => {
                 markData: '',
                 markSeed: null,
                 path:     'custom',
-                fullPage: true
+                fullPage: true,
             });
 
             commandObj = {
@@ -876,8 +876,8 @@ describe('Test run commands', () => {
                 fullPage: void 0,
 
                 options: {
-                    dummy: 'yo'
-                }
+                    dummy: 'yo',
+                },
             };
 
             command = createCommand(commandObj);
@@ -886,7 +886,7 @@ describe('Test run commands', () => {
                 type:     TYPE.takeScreenshot,
                 markData: '',
                 markSeed: null,
-                path:     ''
+                path:     '',
             });
         });
 
@@ -900,13 +900,13 @@ describe('Test run commands', () => {
                 options: {
                     crop: {
                         left: 50,
-                        top:  13
+                        top:  13,
                     },
 
                     modifiers: {
-                        alt: true
-                    }
-                }
+                        alt: true,
+                    },
+                },
             };
 
             const command = createCommand(commandObj);
@@ -927,13 +927,13 @@ describe('Test run commands', () => {
                         left:   50,
                         right:  null,
                         top:    13,
-                        bottom: null
+                        bottom: null,
                     },
 
                     includeMargins:  false,
                     includeBorders:  true,
-                    includePaddings: true
-                }
+                    includePaddings: true,
+                },
             });
         });
 
@@ -946,8 +946,8 @@ describe('Test run commands', () => {
                 height:   100,
 
                 options: {
-                    dummy: 'yo'
-                }
+                    dummy: 'yo',
+                },
             };
 
             const command = createCommand(commandObj);
@@ -955,7 +955,7 @@ describe('Test run commands', () => {
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:   TYPE.resizeWindow,
                 width:  100,
-                height: 100
+                height: 100,
             });
         });
 
@@ -968,8 +968,8 @@ describe('Test run commands', () => {
 
                 options: {
                     dummy:               'yo',
-                    portraitOrientation: true
-                }
+                    portraitOrientation: true,
+                },
             };
 
             let command = createCommand(commandObj);
@@ -977,12 +977,12 @@ describe('Test run commands', () => {
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:    TYPE.resizeWindowToFitDevice,
                 device:  'iPhone',
-                options: { portraitOrientation: true }
+                options: { portraitOrientation: true },
             });
 
             commandObj = {
                 type:   TYPE.resizeWindowToFitDevice,
-                device: 'iPhone'
+                device: 'iPhone',
             };
 
             command = createCommand(commandObj);
@@ -990,57 +990,57 @@ describe('Test run commands', () => {
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:    TYPE.resizeWindowToFitDevice,
                 device:  'iPhone',
-                options: { portraitOrientation: false }
+                options: { portraitOrientation: false },
             });
         });
 
         it('Should create SwitchToIframeCommand from object', function () {
             const commandObj = {
                 type:     TYPE.switchToIframe,
-                selector: '#iframe'
+                selector: '#iframe',
             };
             const command    = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.switchToIframe,
-                selector: makeSelector('#iframe')
+                selector: makeSelector('#iframe'),
             });
         });
 
         it('Should create SwitchToMainWindowCommand from object', function () {
             const commandObj = {
-                type: TYPE.switchToMainWindow
+                type: TYPE.switchToMainWindow,
             };
             const command    = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
-                type: TYPE.switchToMainWindow
+                type: TYPE.switchToMainWindow,
             });
         });
 
         it('Should create SetTestSpeedCommand from object', function () {
             const commandObj = {
                 type:  TYPE.setTestSpeed,
-                speed: 0.5
+                speed: 0.5,
             };
             const command    = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:  TYPE.setTestSpeed,
-                speed: 0.5
+                speed: 0.5,
             });
         });
 
         it('Should create SetPageLoadTimeoutCommand from object', function () {
             const commandObj = {
                 type:     TYPE.setPageLoadTimeout,
-                duration: 3
+                duration: 3,
             };
             const command    = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.setPageLoadTimeout,
-                duration: 3
+                duration: 3,
             });
         });
 
@@ -1056,8 +1056,8 @@ describe('Test run commands', () => {
 
                 options: {
                     offsetX: 23,
-                    timeout: 100
-                }
+                    timeout: 100,
+                },
             };
 
             let command = createCommand(commandObj);
@@ -1072,14 +1072,14 @@ describe('Test run commands', () => {
 
                 options: {
                     timeout:               100,
-                    allowUnawaitedPromise: false
-                }
+                    allowUnawaitedPromise: false,
+                },
             });
 
             commandObj = {
                 type:          TYPE.assertion,
                 assertionType: 'ok',
-                actual:        1
+                actual:        1,
             };
 
             command = createCommand(commandObj);
@@ -1091,8 +1091,8 @@ describe('Test run commands', () => {
                 message:       null,
 
                 options: {
-                    allowUnawaitedPromise: false
-                }
+                    allowUnawaitedPromise: false,
+                },
             });
         });
 
@@ -1101,7 +1101,7 @@ describe('Test run commands', () => {
                 type: TYPE.executeExpression,
 
                 expression:         'js-expression',
-                resultVariableName: 'variable'
+                resultVariableName: 'variable',
             };
 
             let command = createCommand(commandObj);
@@ -1110,12 +1110,12 @@ describe('Test run commands', () => {
                 type: TYPE.executeExpression,
 
                 expression:         'js-expression',
-                resultVariableName: 'variable'
+                resultVariableName: 'variable',
             });
 
             commandObj = {
                 type:       TYPE.executeExpression,
-                expression: 'js-expression'
+                expression: 'js-expression',
             };
 
             command = createCommand(commandObj);
@@ -1124,7 +1124,7 @@ describe('Test run commands', () => {
                 type: TYPE.executeExpression,
 
                 expression:         'js-expression',
-                resultVariableName: null
+                resultVariableName: null,
             });
         });
 
@@ -1133,8 +1133,8 @@ describe('Test run commands', () => {
                 type:     TYPE.click,
                 selector: {
                     type:  'js-expr',
-                    value: "Selector('#yo')"
-                }
+                    value: "Selector('#yo')",
+                },
             };
 
             const command = createCommand(commandObj);
@@ -1153,9 +1153,9 @@ describe('Test run commands', () => {
                         ctrl:  false,
                         alt:   false,
                         shift: false,
-                        meta:  false
-                    }
-                }
+                        meta:  false,
+                    },
+                },
             });
         });
 
@@ -1166,10 +1166,10 @@ describe('Test run commands', () => {
 
                 actual: {
                     type:  'js-expr',
-                    value: '1 + 2'
+                    value: '1 + 2',
                 },
 
-                expected: 1
+                expected: 1,
             };
 
             const command = createCommand(commandObj);
@@ -1182,8 +1182,8 @@ describe('Test run commands', () => {
                 message:       null,
 
                 options: {
-                    allowUnawaitedPromise: false
-                }
+                    allowUnawaitedPromise: false,
+                },
             });
         });
 
@@ -1193,8 +1193,8 @@ describe('Test run commands', () => {
                 subtype: 'test',
 
                 options: {
-                    dummy: 'yo'
-                }
+                    dummy: 'yo',
+                },
             };
 
             let command = createCommand(commandObj);
@@ -1203,7 +1203,7 @@ describe('Test run commands', () => {
                 type:    TYPE.recorder,
                 subtype: 'test',
 
-                forceExecutionInTopWindowOnly: false
+                forceExecutionInTopWindowOnly: false,
             });
 
             commandObj = {
@@ -1213,8 +1213,8 @@ describe('Test run commands', () => {
                 forceExecutionInTopWindowOnly: true,
 
                 options: {
-                    dummy: 'yo'
-                }
+                    dummy: 'yo',
+                },
             };
 
             command = createCommand(commandObj);
@@ -1223,7 +1223,7 @@ describe('Test run commands', () => {
                 type:    TYPE.recorder,
                 subtype: 'test',
 
-                forceExecutionInTopWindowOnly: true
+                forceExecutionInTopWindowOnly: true,
             });
         });
     });
@@ -1233,7 +1233,7 @@ describe('Test run commands', () => {
             assertThrow(
                 function () {
                     return createCommand({
-                        type: TYPE.click
+                        type: TYPE.click,
                     });
                 },
                 {
@@ -1244,7 +1244,7 @@ describe('Test run commands', () => {
                                      'a CSS selector string, a Selector object, a node snapshot, a function, or a Promise returned by a Selector.',
 
                     callsite:    null,
-                    originError: null
+                    originError: null,
                 }
             );
 
@@ -1252,7 +1252,7 @@ describe('Test run commands', () => {
                 function () {
                     return createCommand({
                         type:     TYPE.click,
-                        selector: 1
+                        selector: 1,
                     });
                 },
                 {
@@ -1263,7 +1263,7 @@ describe('Test run commands', () => {
                                      'a CSS selector string, a Selector object, a node snapshot, a function, or a Promise returned by a Selector.',
 
                     callsite:    null,
-                    originError: null
+                    originError: null,
                 }
             );
 
@@ -1272,14 +1272,14 @@ describe('Test run commands', () => {
                     return createCommand({
                         type:     TYPE.click,
                         selector: 'element',
-                        options:  1
+                        options:  1,
                     });
                 },
                 {
                     isTestCafeError: true,
                     code:            'E14',
                     actualType:      'number',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -1289,8 +1289,8 @@ describe('Test run commands', () => {
                         type:     TYPE.click,
                         selector: 'element',
                         options:  {
-                            offsetX: 'offsetX'
-                        }
+                            offsetX: 'offsetX',
+                        },
                     });
                 },
                 {
@@ -1298,7 +1298,7 @@ describe('Test run commands', () => {
                     code:            'E9',
                     optionName:      'offsetX',
                     actualValue:     'string',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -1308,8 +1308,8 @@ describe('Test run commands', () => {
                         type:     TYPE.click,
                         selector: 'element',
                         options:  {
-                            offsetX: 10.5
-                        }
+                            offsetX: 10.5,
+                        },
                     });
                 },
                 {
@@ -1317,7 +1317,7 @@ describe('Test run commands', () => {
                     code:            'E9',
                     optionName:      'offsetX',
                     actualValue:     10.5,
-                    callsite:        null
+                    callsite:        null,
                 }
             );
         });
@@ -1326,7 +1326,7 @@ describe('Test run commands', () => {
             assertThrow(
                 function () {
                     return createCommand({
-                        type: TYPE.rightClick
+                        type: TYPE.rightClick,
                     });
                 },
                 {
@@ -1337,7 +1337,7 @@ describe('Test run commands', () => {
                                      'a CSS selector string, a Selector object, a node snapshot, a function, or a Promise returned by a Selector.',
 
                     callsite:    null,
-                    originError: null
+                    originError: null,
                 }
             );
 
@@ -1345,7 +1345,7 @@ describe('Test run commands', () => {
                 function () {
                     return createCommand({
                         type:     TYPE.rightClick,
-                        selector: true
+                        selector: true,
                     });
                 },
                 {
@@ -1356,7 +1356,7 @@ describe('Test run commands', () => {
                                      'a CSS selector string, a Selector object, a node snapshot, a function, or a Promise returned by a Selector.',
 
                     callsite:    null,
-                    originError: null
+                    originError: null,
                 }
             );
 
@@ -1365,14 +1365,14 @@ describe('Test run commands', () => {
                     return createCommand({
                         type:     TYPE.rightClick,
                         selector: 'element',
-                        options:  'options'
+                        options:  'options',
                     });
                 },
                 {
                     isTestCafeError: true,
                     code:            'E14',
                     actualType:      'string',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -1382,8 +1382,8 @@ describe('Test run commands', () => {
                         type:     TYPE.rightClick,
                         selector: 'element',
                         options:  {
-                            offsetX: false
-                        }
+                            offsetX: false,
+                        },
                     });
                 },
                 {
@@ -1391,7 +1391,7 @@ describe('Test run commands', () => {
                     code:            'E9',
                     optionName:      'offsetX',
                     actualValue:     'boolean',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -1402,9 +1402,9 @@ describe('Test run commands', () => {
                         selector: 'element',
                         options:  {
                             modifiers: {
-                                shift: 'true'
-                            }
-                        }
+                                shift: 'true',
+                            },
+                        },
                     });
                 },
                 {
@@ -1412,7 +1412,7 @@ describe('Test run commands', () => {
                     code:            'E11',
                     optionName:      'modifiers.shift',
                     actualValue:     'string',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
         });
@@ -1421,7 +1421,7 @@ describe('Test run commands', () => {
             assertThrow(
                 function () {
                     return createCommand({
-                        type: TYPE.doubleClick
+                        type: TYPE.doubleClick,
                     });
                 },
                 {
@@ -1432,7 +1432,7 @@ describe('Test run commands', () => {
                                      'a CSS selector string, a Selector object, a node snapshot, a function, or a Promise returned by a Selector.',
 
                     callsite:    null,
-                    originError: null
+                    originError: null,
                 }
             );
 
@@ -1440,7 +1440,7 @@ describe('Test run commands', () => {
                 function () {
                     return createCommand({
                         type:     TYPE.doubleClick,
-                        selector: true
+                        selector: true,
                     });
                 },
                 {
@@ -1451,7 +1451,7 @@ describe('Test run commands', () => {
                                      'a CSS selector string, a Selector object, a node snapshot, a function, or a Promise returned by a Selector.',
 
                     callsite:    null,
-                    originError: null
+                    originError: null,
                 }
             );
 
@@ -1460,14 +1460,14 @@ describe('Test run commands', () => {
                     return createCommand({
                         type:     TYPE.doubleClick,
                         selector: 'element',
-                        options:  1
+                        options:  1,
                     });
                 },
                 {
                     isTestCafeError: true,
                     code:            'E14',
                     actualType:      'number',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -1477,8 +1477,8 @@ describe('Test run commands', () => {
                         type:     TYPE.doubleClick,
                         selector: 'element',
                         options:  {
-                            caretPos: '5'
-                        }
+                            caretPos: '5',
+                        },
                     });
                 },
                 {
@@ -1486,7 +1486,7 @@ describe('Test run commands', () => {
                     code:            'E10',
                     optionName:      'caretPos',
                     actualValue:     'string',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
         });
@@ -1495,7 +1495,7 @@ describe('Test run commands', () => {
             assertThrow(
                 function () {
                     return createCommand({
-                        type: TYPE.hover
+                        type: TYPE.hover,
                     });
                 },
                 {
@@ -1506,7 +1506,7 @@ describe('Test run commands', () => {
                                      'a CSS selector string, a Selector object, a node snapshot, a function, or a Promise returned by a Selector.',
 
                     callsite:    null,
-                    originError: null
+                    originError: null,
                 }
             );
 
@@ -1514,7 +1514,7 @@ describe('Test run commands', () => {
                 function () {
                     return createCommand({
                         type:     TYPE.hover,
-                        selector: 1
+                        selector: 1,
                     });
                 },
                 {
@@ -1525,7 +1525,7 @@ describe('Test run commands', () => {
                                      'a CSS selector string, a Selector object, a node snapshot, a function, or a Promise returned by a Selector.',
 
                     callsite:    null,
-                    originError: null
+                    originError: null,
                 }
             );
 
@@ -1534,14 +1534,14 @@ describe('Test run commands', () => {
                     return createCommand({
                         type:     TYPE.hover,
                         selector: 'element',
-                        options:  true
+                        options:  true,
                     });
                 },
                 {
                     isTestCafeError: true,
                     code:            'E14',
                     actualType:      'boolean',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -1551,8 +1551,8 @@ describe('Test run commands', () => {
                         type:     TYPE.hover,
                         selector: 'element',
                         options:  {
-                            offsetX: 'offsetX'
-                        }
+                            offsetX: 'offsetX',
+                        },
                     });
                 },
                 {
@@ -1560,7 +1560,7 @@ describe('Test run commands', () => {
                     code:            'E9',
                     optionName:      'offsetX',
                     actualValue:     'string',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -1570,8 +1570,8 @@ describe('Test run commands', () => {
                         type:     TYPE.hover,
                         selector: 'element',
                         options:  {
-                            offsetY: 1.01
-                        }
+                            offsetY: 1.01,
+                        },
                     });
                 },
                 {
@@ -1579,7 +1579,7 @@ describe('Test run commands', () => {
                     code:            'E9',
                     optionName:      'offsetY',
                     actualValue:     1.01,
-                    callsite:        null
+                    callsite:        null,
                 }
             );
         });
@@ -1588,7 +1588,7 @@ describe('Test run commands', () => {
             assertThrow(
                 function () {
                     return createCommand({
-                        type: TYPE.drag
+                        type: TYPE.drag,
                     });
                 },
                 {
@@ -1599,7 +1599,7 @@ describe('Test run commands', () => {
                                      'a CSS selector string, a Selector object, a node snapshot, a function, or a Promise returned by a Selector.',
 
                     callsite:    null,
-                    originError: null
+                    originError: null,
                 }
             );
 
@@ -1607,7 +1607,7 @@ describe('Test run commands', () => {
                 function () {
                     return createCommand({
                         type:     TYPE.drag,
-                        selector: 1
+                        selector: 1,
                     });
                 },
                 {
@@ -1618,7 +1618,7 @@ describe('Test run commands', () => {
                                      'a CSS selector string, a Selector object, a node snapshot, a function, or a Promise returned by a Selector.',
 
                     callsite:    null,
-                    originError: null
+                    originError: null,
                 }
             );
 
@@ -1626,7 +1626,7 @@ describe('Test run commands', () => {
                 function () {
                     return createCommand({
                         type:     TYPE.drag,
-                        selector: 'element'
+                        selector: 'element',
                     });
                 },
                 {
@@ -1634,24 +1634,7 @@ describe('Test run commands', () => {
                     code:            'E20',
                     argumentName:    'dragOffsetX',
                     actualValue:     'undefined',
-                    callsite:        null
-                }
-            );
-
-            assertThrow(
-                function () {
-                    return createCommand({
-                        type:        TYPE.drag,
-                        selector:    'element',
-                        dragOffsetX: 10
-                    });
-                },
-                {
-                    isTestCafeError: true,
-                    code:            'E20',
-                    argumentName:    'dragOffsetY',
-                    actualValue:     'undefined',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -1661,7 +1644,24 @@ describe('Test run commands', () => {
                         type:        TYPE.drag,
                         selector:    'element',
                         dragOffsetX: 10,
-                        dragOffsetY: 10.5
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    code:            'E20',
+                    argumentName:    'dragOffsetY',
+                    actualValue:     'undefined',
+                    callsite:        null,
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:        TYPE.drag,
+                        selector:    'element',
+                        dragOffsetX: 10,
+                        dragOffsetY: 10.5,
                     });
                 },
                 {
@@ -1669,7 +1669,7 @@ describe('Test run commands', () => {
                     code:            'E20',
                     argumentName:    'dragOffsetY',
                     actualValue:     10.5,
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -1680,14 +1680,14 @@ describe('Test run commands', () => {
                         selector:    'element',
                         dragOffsetX: 1,
                         dragOffsetY: -1,
-                        options:     1
+                        options:     1,
                     });
                 },
                 {
                     isTestCafeError: true,
                     code:            'E14',
                     actualType:      'number',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
         });
@@ -1696,7 +1696,7 @@ describe('Test run commands', () => {
             assertThrow(
                 function () {
                     return createCommand({
-                        type: TYPE.dragToElement
+                        type: TYPE.dragToElement,
                     });
                 },
                 {
@@ -1707,7 +1707,7 @@ describe('Test run commands', () => {
                                      'a CSS selector string, a Selector object, a node snapshot, a function, or a Promise returned by a Selector.',
 
                     callsite:    null,
-                    originError: null
+                    originError: null,
                 }
             );
 
@@ -1715,7 +1715,7 @@ describe('Test run commands', () => {
                 function () {
                     return createCommand({
                         type:     TYPE.dragToElement,
-                        selector: 1
+                        selector: 1,
                     });
                 },
                 {
@@ -1726,7 +1726,7 @@ describe('Test run commands', () => {
                                      'a CSS selector string, a Selector object, a node snapshot, a function, or a Promise returned by a Selector.',
 
                     callsite:    null,
-                    originError: null
+                    originError: null,
                 }
             );
 
@@ -1734,7 +1734,7 @@ describe('Test run commands', () => {
                 function () {
                     return createCommand({
                         type:     TYPE.dragToElement,
-                        selector: 'element'
+                        selector: 'element',
                     });
                 },
                 {
@@ -1745,7 +1745,7 @@ describe('Test run commands', () => {
                                      'a CSS selector string, a Selector object, a node snapshot, a function, or a Promise returned by a Selector.',
 
                     callsite:    null,
-                    originError: null
+                    originError: null,
                 }
             );
 
@@ -1754,7 +1754,7 @@ describe('Test run commands', () => {
                     return createCommand({
                         type:                TYPE.dragToElement,
                         selector:            'element',
-                        destinationSelector: 1
+                        destinationSelector: 1,
                     });
                 },
                 {
@@ -1765,7 +1765,7 @@ describe('Test run commands', () => {
                                      'a CSS selector string, a Selector object, a node snapshot, a function, or a Promise returned by a Selector.',
 
                     callsite:    null,
-                    originError: null
+                    originError: null,
                 }
             );
 
@@ -1775,14 +1775,14 @@ describe('Test run commands', () => {
                         type:                TYPE.dragToElement,
                         selector:            'element',
                         destinationSelector: 'destination',
-                        options:             1
+                        options:             1,
                     });
                 },
                 {
                     isTestCafeError: true,
                     code:            'E14',
                     actualType:      'number',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
         });
@@ -1791,7 +1791,7 @@ describe('Test run commands', () => {
             assertThrow(
                 function () {
                     return createCommand({
-                        type: TYPE.typeText
+                        type: TYPE.typeText,
                     });
                 },
                 {
@@ -1802,7 +1802,7 @@ describe('Test run commands', () => {
                                      'a CSS selector string, a Selector object, a node snapshot, a function, or a Promise returned by a Selector.',
 
                     callsite:    null,
-                    originError: null
+                    originError: null,
                 }
             );
 
@@ -1810,7 +1810,7 @@ describe('Test run commands', () => {
                 function () {
                     return createCommand({
                         type:     TYPE.typeText,
-                        selector: 1
+                        selector: 1,
                     });
                 },
                 {
@@ -1821,7 +1821,7 @@ describe('Test run commands', () => {
                                      'a CSS selector string, a Selector object, a node snapshot, a function, or a Promise returned by a Selector.',
 
                     callsite:    null,
-                    originError: null
+                    originError: null,
                 }
             );
 
@@ -1829,7 +1829,7 @@ describe('Test run commands', () => {
                 function () {
                     return createCommand({
                         type:     TYPE.typeText,
-                        selector: 'element'
+                        selector: 'element',
                     });
                 },
                 {
@@ -1837,7 +1837,7 @@ describe('Test run commands', () => {
                     code:            'E16',
                     argumentName:    'text',
                     actualValue:     'undefined',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -1846,7 +1846,7 @@ describe('Test run commands', () => {
                     return createCommand({
                         type:     TYPE.typeText,
                         selector: 'element',
-                        text:     2
+                        text:     2,
                     });
                 },
                 {
@@ -1854,7 +1854,7 @@ describe('Test run commands', () => {
                     code:            'E16',
                     argumentName:    'text',
                     actualValue:     'number',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -1863,7 +1863,7 @@ describe('Test run commands', () => {
                     return createCommand({
                         type:     TYPE.typeText,
                         selector: 'element',
-                        text:     ''
+                        text:     '',
                     });
                 },
                 {
@@ -1871,7 +1871,7 @@ describe('Test run commands', () => {
                     code:            'E16',
                     argumentName:    'text',
                     actualValue:     '""',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -1881,14 +1881,14 @@ describe('Test run commands', () => {
                         type:     TYPE.typeText,
                         selector: 'element',
                         text:     'testText',
-                        options:  true
+                        options:  true,
                     });
                 },
                 {
                     isTestCafeError: true,
                     code:            'E14',
                     actualType:      'boolean',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -1899,8 +1899,8 @@ describe('Test run commands', () => {
                         selector: 'element',
                         text:     'testText',
                         options:  {
-                            offsetX: 'offsetX'
-                        }
+                            offsetX: 'offsetX',
+                        },
                     });
                 },
                 {
@@ -1908,7 +1908,7 @@ describe('Test run commands', () => {
                     code:            'E9',
                     optionName:      'offsetX',
                     actualValue:     'string',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -1919,8 +1919,8 @@ describe('Test run commands', () => {
                         selector: 'element',
                         text:     'testText',
                         options:  {
-                            replace: 10
-                        }
+                            replace: 10,
+                        },
                     });
                 },
                 {
@@ -1928,7 +1928,7 @@ describe('Test run commands', () => {
                     code:            'E11',
                     optionName:      'replace',
                     actualValue:     'number',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
         });
@@ -1937,7 +1937,7 @@ describe('Test run commands', () => {
             assertThrow(
                 function () {
                     return createCommand({
-                        type: TYPE.selectText
+                        type: TYPE.selectText,
                     });
                 },
                 {
@@ -1948,7 +1948,7 @@ describe('Test run commands', () => {
                                      'a CSS selector string, a Selector object, a node snapshot, a function, or a Promise returned by a Selector.',
 
                     callsite:    null,
-                    originError: null
+                    originError: null,
                 }
             );
 
@@ -1956,7 +1956,7 @@ describe('Test run commands', () => {
                 function () {
                     return createCommand({
                         type:     TYPE.selectText,
-                        selector: {}
+                        selector: {},
                     });
                 },
                 {
@@ -1967,7 +1967,7 @@ describe('Test run commands', () => {
                                      'a CSS selector string, a Selector object, a node snapshot, a function, or a Promise returned by a Selector.',
 
                     callsite:    null,
-                    originError: null
+                    originError: null,
                 }
             );
 
@@ -1976,7 +1976,7 @@ describe('Test run commands', () => {
                     return createCommand({
                         type:     TYPE.selectText,
                         selector: 'element',
-                        startPos: ''
+                        startPos: '',
                     });
                 },
                 {
@@ -1984,7 +1984,7 @@ describe('Test run commands', () => {
                     code:            'E22',
                     argumentName:    'startPos',
                     actualValue:     'string',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -1993,7 +1993,7 @@ describe('Test run commands', () => {
                     return createCommand({
                         type:     TYPE.selectText,
                         selector: 'element',
-                        startPos: 5.5
+                        startPos: 5.5,
                     });
                 },
                 {
@@ -2001,7 +2001,7 @@ describe('Test run commands', () => {
                     code:            'E22',
                     argumentName:    'startPos',
                     actualValue:     5.5,
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -2010,7 +2010,7 @@ describe('Test run commands', () => {
                     return createCommand({
                         type:     TYPE.selectText,
                         selector: 'element',
-                        endPos:   NaN
+                        endPos:   NaN,
                     });
                 },
                 {
@@ -2018,7 +2018,7 @@ describe('Test run commands', () => {
                     code:            'E22',
                     argumentName:    'endPos',
                     actualValue:     NaN,
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -2027,7 +2027,7 @@ describe('Test run commands', () => {
                     return createCommand({
                         type:     TYPE.selectText,
                         selector: 'element',
-                        endPos:   -1
+                        endPos:   -1,
                     });
                 },
                 {
@@ -2035,7 +2035,7 @@ describe('Test run commands', () => {
                     code:            'E22',
                     argumentName:    'endPos',
                     actualValue:     -1,
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -2044,14 +2044,14 @@ describe('Test run commands', () => {
                     return createCommand({
                         type:     TYPE.selectText,
                         selector: 'element',
-                        options:  1
+                        options:  1,
                     });
                 },
                 {
                     isTestCafeError: true,
                     code:            'E14',
                     actualType:      'number',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
         });
@@ -2060,7 +2060,7 @@ describe('Test run commands', () => {
             assertThrow(
                 function () {
                     return createCommand({
-                        type: TYPE.selectTextAreaContent
+                        type: TYPE.selectTextAreaContent,
                     });
                 },
                 {
@@ -2071,7 +2071,7 @@ describe('Test run commands', () => {
                                      'a CSS selector string, a Selector object, a node snapshot, a function, or a Promise returned by a Selector.',
 
                     callsite:    null,
-                    originError: null
+                    originError: null,
                 }
             );
 
@@ -2079,7 +2079,7 @@ describe('Test run commands', () => {
                 function () {
                     return createCommand({
                         type:     TYPE.selectTextAreaContent,
-                        selector: {}
+                        selector: {},
                     });
                 },
                 {
@@ -2090,7 +2090,7 @@ describe('Test run commands', () => {
                                      'a CSS selector string, a Selector object, a node snapshot, a function, or a Promise returned by a Selector.',
 
                     callsite:    null,
-                    originError: null
+                    originError: null,
                 }
             );
 
@@ -2099,7 +2099,7 @@ describe('Test run commands', () => {
                     return createCommand({
                         type:      TYPE.selectTextAreaContent,
                         selector:  'element',
-                        startLine: ''
+                        startLine: '',
                     });
                 },
                 {
@@ -2107,7 +2107,7 @@ describe('Test run commands', () => {
                     code:            'E22',
                     argumentName:    'startLine',
                     actualValue:     'string',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -2116,7 +2116,7 @@ describe('Test run commands', () => {
                     return createCommand({
                         type:      TYPE.selectTextAreaContent,
                         selector:  'element',
-                        startLine: 5.5
+                        startLine: 5.5,
                     });
                 },
                 {
@@ -2124,7 +2124,7 @@ describe('Test run commands', () => {
                     code:            'E22',
                     argumentName:    'startLine',
                     actualValue:     5.5,
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -2133,7 +2133,7 @@ describe('Test run commands', () => {
                     return createCommand({
                         type:     TYPE.selectTextAreaContent,
                         selector: 'element',
-                        endLine:  NaN
+                        endLine:  NaN,
                     });
                 },
                 {
@@ -2141,7 +2141,7 @@ describe('Test run commands', () => {
                     code:            'E22',
                     argumentName:    'endLine',
                     actualValue:     NaN,
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -2150,7 +2150,7 @@ describe('Test run commands', () => {
                     return createCommand({
                         type:     TYPE.selectTextAreaContent,
                         selector: 'element',
-                        endLine:  -1
+                        endLine:  -1,
                     });
                 },
                 {
@@ -2158,7 +2158,7 @@ describe('Test run commands', () => {
                     code:            'E22',
                     argumentName:    'endLine',
                     actualValue:     -1,
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -2167,14 +2167,14 @@ describe('Test run commands', () => {
                     return createCommand({
                         type:     TYPE.selectTextAreaContent,
                         selector: 'element',
-                        options:  1
+                        options:  1,
                     });
                 },
                 {
                     isTestCafeError: true,
                     code:            'E14',
                     actualType:      'number',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
         });
@@ -2183,7 +2183,7 @@ describe('Test run commands', () => {
             assertThrow(
                 function () {
                     return createCommand({
-                        type: TYPE.selectEditableContent
+                        type: TYPE.selectEditableContent,
                     });
                 },
                 {
@@ -2194,7 +2194,7 @@ describe('Test run commands', () => {
                                      'a CSS selector string, a Selector object, a node snapshot, a function, or a Promise returned by a Selector.',
 
                     callsite:    null,
-                    originError: null
+                    originError: null,
                 }
             );
 
@@ -2202,7 +2202,7 @@ describe('Test run commands', () => {
                 function () {
                     return createCommand({
                         type:          TYPE.selectEditableContent,
-                        startSelector: 1
+                        startSelector: 1,
                     });
                 },
                 {
@@ -2213,7 +2213,7 @@ describe('Test run commands', () => {
                                      'a CSS selector string, a Selector object, a node snapshot, a function, or a Promise returned by a Selector.',
 
                     callsite:    null,
-                    originError: null
+                    originError: null,
                 }
             );
 
@@ -2222,7 +2222,7 @@ describe('Test run commands', () => {
                     return createCommand({
                         type:          TYPE.selectEditableContent,
                         startSelector: 'node1',
-                        endSelector:   true
+                        endSelector:   true,
                     });
                 },
                 {
@@ -2233,7 +2233,7 @@ describe('Test run commands', () => {
                                      'a CSS selector string, a Selector object, a node snapshot, a function, or a Promise returned by a Selector.',
 
                     callsite:    null,
-                    originError: null
+                    originError: null,
                 }
             );
 
@@ -2243,14 +2243,14 @@ describe('Test run commands', () => {
                         type:          TYPE.selectEditableContent,
                         startSelector: 'node1',
                         endSelector:   'node2',
-                        options:       1
+                        options:       1,
                     });
                 },
                 {
                     isTestCafeError: true,
                     code:            'E14',
                     actualType:      'number',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
         });
@@ -2259,7 +2259,7 @@ describe('Test run commands', () => {
             assertThrow(
                 function () {
                     return createCommand({
-                        type: TYPE.pressKey
+                        type: TYPE.pressKey,
                     });
                 },
                 {
@@ -2267,7 +2267,7 @@ describe('Test run commands', () => {
                     code:            'E16',
                     argumentName:    'keys',
                     actualValue:     'undefined',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -2275,7 +2275,7 @@ describe('Test run commands', () => {
                 function () {
                     return createCommand({
                         type: TYPE.pressKey,
-                        keys: true
+                        keys: true,
                     });
                 },
                 {
@@ -2283,7 +2283,7 @@ describe('Test run commands', () => {
                     code:            'E16',
                     argumentName:    'keys',
                     actualValue:     'boolean',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -2291,7 +2291,7 @@ describe('Test run commands', () => {
                 function () {
                     return createCommand({
                         type: TYPE.pressKey,
-                        keys: ''
+                        keys: '',
                     });
                 },
                 {
@@ -2299,7 +2299,7 @@ describe('Test run commands', () => {
                     code:            'E16',
                     argumentName:    'keys',
                     actualValue:     '""',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -2308,14 +2308,14 @@ describe('Test run commands', () => {
                     return createCommand({
                         type:    TYPE.pressKey,
                         keys:    'a',
-                        options: 1
+                        options: 1,
                     });
                 },
                 {
                     isTestCafeError: true,
                     code:            'E14',
                     actualType:      'number',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
         });
@@ -2324,7 +2324,7 @@ describe('Test run commands', () => {
             assertThrow(
                 function () {
                     return createCommand({
-                        type: TYPE.wait
+                        type: TYPE.wait,
                     });
                 },
                 {
@@ -2332,7 +2332,7 @@ describe('Test run commands', () => {
                     code:            'E22',
                     argumentName:    'timeout',
                     actualValue:     'undefined',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -2340,7 +2340,7 @@ describe('Test run commands', () => {
                 function () {
                     return createCommand({
                         type:    TYPE.wait,
-                        timeout: -5
+                        timeout: -5,
                     });
                 },
                 {
@@ -2348,7 +2348,7 @@ describe('Test run commands', () => {
                     code:            'E22',
                     argumentName:    'timeout',
                     actualValue:     -5,
-                    callsite:        null
+                    callsite:        null,
                 }
             );
         });
@@ -2357,7 +2357,7 @@ describe('Test run commands', () => {
             assertThrow(
                 function () {
                     return createCommand({
-                        type: TYPE.navigateTo
+                        type: TYPE.navigateTo,
                     });
                 },
                 {
@@ -2365,7 +2365,7 @@ describe('Test run commands', () => {
                     code:            'E16',
                     argumentName:    'url',
                     actualValue:     'undefined',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -2373,7 +2373,7 @@ describe('Test run commands', () => {
                 function () {
                     return createCommand({
                         type: TYPE.navigateTo,
-                        url:  true
+                        url:  true,
                     });
                 },
                 {
@@ -2381,7 +2381,7 @@ describe('Test run commands', () => {
                     code:            'E16',
                     argumentName:    'url',
                     actualValue:     'boolean',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -2389,7 +2389,7 @@ describe('Test run commands', () => {
                 function () {
                     return createCommand({
                         type: TYPE.navigateTo,
-                        url:  ''
+                        url:  '',
                     });
                 },
                 {
@@ -2397,7 +2397,7 @@ describe('Test run commands', () => {
                     code:            'E16',
                     argumentName:    'url',
                     actualValue:     '""',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -2405,7 +2405,7 @@ describe('Test run commands', () => {
                 function () {
                     return createCommand({
                         type: TYPE.navigateTo,
-                        url:  'mail://testcafe@devexpress.com'
+                        url:  'mail://testcafe@devexpress.com',
                     });
                 },
                 'Cannot prepare tests due to the following error:\n\nThe "mail://testcafe@devexpress.com" test page URL includes an unsupported mail:// protocol. TestCafe only supports http://, https:// and file:// protocols.'
@@ -2416,7 +2416,7 @@ describe('Test run commands', () => {
             assertThrow(
                 function () {
                     return createCommand({
-                        type: TYPE.setFilesToUpload
+                        type: TYPE.setFilesToUpload,
                     });
                 },
                 {
@@ -2427,7 +2427,7 @@ describe('Test run commands', () => {
                                      'a CSS selector string, a Selector object, a node snapshot, a function, or a Promise returned by a Selector.',
 
                     callsite:    null,
-                    originError: null
+                    originError: null,
                 }
             );
 
@@ -2435,7 +2435,7 @@ describe('Test run commands', () => {
                 function () {
                     return createCommand({
                         type:     TYPE.setFilesToUpload,
-                        selector: 1
+                        selector: 1,
                     });
                 },
                 {
@@ -2446,7 +2446,7 @@ describe('Test run commands', () => {
                                      'a CSS selector string, a Selector object, a node snapshot, a function, or a Promise returned by a Selector.',
 
                     callsite:    null,
-                    originError: null
+                    originError: null,
                 }
             );
 
@@ -2454,7 +2454,7 @@ describe('Test run commands', () => {
                 function () {
                     return createCommand({
                         type:     TYPE.setFilesToUpload,
-                        selector: 'element'
+                        selector: 'element',
                     });
                 },
                 {
@@ -2462,7 +2462,7 @@ describe('Test run commands', () => {
                     code:            'E18',
                     argumentName:    'filePath',
                     actualValue:     'undefined',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -2471,7 +2471,7 @@ describe('Test run commands', () => {
                     return createCommand({
                         type:     TYPE.setFilesToUpload,
                         selector: 'element',
-                        filePath: 2
+                        filePath: 2,
                     });
                 },
                 {
@@ -2479,7 +2479,7 @@ describe('Test run commands', () => {
                     code:            'E18',
                     argumentName:    'filePath',
                     actualValue:     'number',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -2488,7 +2488,7 @@ describe('Test run commands', () => {
                     return createCommand({
                         type:     TYPE.setFilesToUpload,
                         selector: 'element',
-                        filePath: ''
+                        filePath: '',
                     });
                 },
                 {
@@ -2496,7 +2496,7 @@ describe('Test run commands', () => {
                     code:            'E18',
                     argumentName:    'filePath',
                     actualValue:     '""',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -2505,7 +2505,7 @@ describe('Test run commands', () => {
                     return createCommand({
                         type:     TYPE.setFilesToUpload,
                         selector: 'element',
-                        filePath: {}
+                        filePath: {},
                     });
                 },
                 {
@@ -2513,7 +2513,7 @@ describe('Test run commands', () => {
                     code:            'E18',
                     argumentName:    'filePath',
                     actualValue:     'object',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -2522,7 +2522,7 @@ describe('Test run commands', () => {
                     return createCommand({
                         type:     TYPE.setFilesToUpload,
                         selector: 'element',
-                        filePath: []
+                        filePath: [],
                     });
                 },
                 {
@@ -2530,7 +2530,7 @@ describe('Test run commands', () => {
                     code:            'E18',
                     argumentName:    'filePath',
                     actualValue:     '[]',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -2539,7 +2539,7 @@ describe('Test run commands', () => {
                     return createCommand({
                         type:     TYPE.setFilesToUpload,
                         selector: 'element',
-                        filePath: ['123', 42]
+                        filePath: ['123', 42],
                     });
                 },
                 {
@@ -2548,7 +2548,7 @@ describe('Test run commands', () => {
                     argumentName:    'filePath',
                     actualValue:     'number',
                     elementIndex:    1,
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -2557,7 +2557,7 @@ describe('Test run commands', () => {
                     return createCommand({
                         type:     TYPE.setFilesToUpload,
                         selector: 'element',
-                        filePath: ['123', '']
+                        filePath: ['123', ''],
                     });
                 },
                 {
@@ -2566,7 +2566,7 @@ describe('Test run commands', () => {
                     argumentName:    'filePath',
                     actualValue:     '""',
                     elementIndex:    1,
-                    callsite:        null
+                    callsite:        null,
                 }
             );
         });
@@ -2575,7 +2575,7 @@ describe('Test run commands', () => {
             assertThrow(
                 function () {
                     return createCommand({
-                        type: TYPE.clearUpload
+                        type: TYPE.clearUpload,
                     });
                 },
                 {
@@ -2586,7 +2586,7 @@ describe('Test run commands', () => {
                                      'a CSS selector string, a Selector object, a node snapshot, a function, or a Promise returned by a Selector.',
 
                     callsite:    null,
-                    originError: null
+                    originError: null,
                 }
             );
 
@@ -2594,7 +2594,7 @@ describe('Test run commands', () => {
                 function () {
                     return createCommand({
                         type:     TYPE.clearUpload,
-                        selector: 1
+                        selector: 1,
                     });
                 },
                 {
@@ -2605,7 +2605,7 @@ describe('Test run commands', () => {
                                      'a CSS selector string, a Selector object, a node snapshot, a function, or a Promise returned by a Selector.',
 
                     callsite:    null,
-                    originError: null
+                    originError: null,
                 }
             );
         });
@@ -2615,7 +2615,7 @@ describe('Test run commands', () => {
                 function () {
                     return createCommand({
                         type: TYPE.takeScreenshot,
-                        path: 1
+                        path: 1,
                     });
                 },
                 {
@@ -2623,7 +2623,7 @@ describe('Test run commands', () => {
                     code:            'E16',
                     actualValue:     'number',
                     argumentName:    'path',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -2631,7 +2631,7 @@ describe('Test run commands', () => {
                 function () {
                     return createCommand({
                         type: TYPE.takeScreenshot,
-                        path: ''
+                        path: '',
                     });
                 },
                 {
@@ -2639,7 +2639,7 @@ describe('Test run commands', () => {
                     code:            'E16',
                     actualValue:     '""',
                     argumentName:    'path',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
         });
@@ -2648,7 +2648,7 @@ describe('Test run commands', () => {
             assertThrow(
                 function () {
                     return createCommand({
-                        type: TYPE.resizeWindow
+                        type: TYPE.resizeWindow,
                     });
                 },
                 {
@@ -2656,7 +2656,7 @@ describe('Test run commands', () => {
                     code:            'E22',
                     argumentName:    'width',
                     actualValue:     'undefined',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -2665,7 +2665,7 @@ describe('Test run commands', () => {
                     return createCommand({
                         type:   TYPE.resizeWindow,
                         width:  5,
-                        height: -5
+                        height: -5,
                     });
                 },
                 {
@@ -2673,7 +2673,7 @@ describe('Test run commands', () => {
                     code:            'E22',
                     argumentName:    'height',
                     actualValue:     -5,
-                    callsite:        null
+                    callsite:        null,
                 }
             );
         });
@@ -2682,7 +2682,7 @@ describe('Test run commands', () => {
             assertThrow(
                 function () {
                     return createCommand({
-                        type: TYPE.resizeWindowToFitDevice
+                        type: TYPE.resizeWindowToFitDevice,
                     });
                 },
                 {
@@ -2690,7 +2690,7 @@ describe('Test run commands', () => {
                     code:            'E16',
                     argumentName:    'device',
                     actualValue:     'undefined',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -2698,7 +2698,7 @@ describe('Test run commands', () => {
                 function () {
                     return createCommand({
                         type:   TYPE.resizeWindowToFitDevice,
-                        device: 5
+                        device: 5,
                     });
                 },
                 {
@@ -2706,7 +2706,7 @@ describe('Test run commands', () => {
                     code:            'E16',
                     argumentName:    'device',
                     actualValue:     'number',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -2714,7 +2714,7 @@ describe('Test run commands', () => {
                 function () {
                     return createCommand({
                         type:   TYPE.resizeWindowToFitDevice,
-                        device: ''
+                        device: '',
                     });
                 },
                 {
@@ -2722,7 +2722,7 @@ describe('Test run commands', () => {
                     code:            'E16',
                     argumentName:    'device',
                     actualValue:     '""',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -2730,7 +2730,7 @@ describe('Test run commands', () => {
                 function () {
                     return createCommand({
                         type:   TYPE.resizeWindowToFitDevice,
-                        device: 'iPhone 555'
+                        device: 'iPhone 555',
                     });
                 },
                 {
@@ -2738,7 +2738,7 @@ describe('Test run commands', () => {
                     code:            'E38',
                     argumentName:    'device',
                     actualValue:     'iPhone 555',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -2747,7 +2747,7 @@ describe('Test run commands', () => {
                     return createCommand({
                         type:    TYPE.resizeWindowToFitDevice,
                         device:  'iPhone',
-                        options: { portraitOrientation: {} }
+                        options: { portraitOrientation: {} },
                     });
                 },
                 {
@@ -2755,7 +2755,7 @@ describe('Test run commands', () => {
                     code:            'E11',
                     optionName:      'portraitOrientation',
                     actualValue:     'object',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
         });
@@ -2764,7 +2764,7 @@ describe('Test run commands', () => {
             assertThrow(
                 function () {
                     return createCommand({
-                        type: TYPE.setTestSpeed
+                        type: TYPE.setTestSpeed,
                     });
                 },
                 {
@@ -2772,7 +2772,7 @@ describe('Test run commands', () => {
                     code:            'E47',
                     argumentName:    'speed',
                     actualValue:     'undefined',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -2780,7 +2780,7 @@ describe('Test run commands', () => {
                 function () {
                     return createCommand({
                         type:  TYPE.setTestSpeed,
-                        speed: 2
+                        speed: 2,
                     });
                 },
                 {
@@ -2788,7 +2788,7 @@ describe('Test run commands', () => {
                     code:            'E47',
                     argumentName:    'speed',
                     actualValue:     2,
-                    callsite:        null
+                    callsite:        null,
                 }
             );
         });
@@ -2797,7 +2797,7 @@ describe('Test run commands', () => {
             assertThrow(
                 function () {
                     return createCommand({
-                        type: TYPE.setPageLoadTimeout
+                        type: TYPE.setPageLoadTimeout,
                     });
                 },
                 {
@@ -2805,7 +2805,7 @@ describe('Test run commands', () => {
                     code:            'E22',
                     argumentName:    'duration',
                     actualValue:     'undefined',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -2813,7 +2813,7 @@ describe('Test run commands', () => {
                 function () {
                     return createCommand({
                         type:     TYPE.setPageLoadTimeout,
-                        duration: -1
+                        duration: -1,
                     });
                 },
                 {
@@ -2821,7 +2821,7 @@ describe('Test run commands', () => {
                     code:            'E22',
                     argumentName:    'duration',
                     actualValue:     -1,
-                    callsite:        null
+                    callsite:        null,
                 }
             );
         });
@@ -2830,7 +2830,7 @@ describe('Test run commands', () => {
             assertThrow(
                 function () {
                     return createCommand({
-                        type: TYPE.assertion
+                        type: TYPE.assertion,
                     });
                 },
                 {
@@ -2838,7 +2838,7 @@ describe('Test run commands', () => {
                     code:            'E16',
                     argumentName:    'assertionType',
                     actualValue:     'undefined',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -2846,7 +2846,7 @@ describe('Test run commands', () => {
                 function () {
                     return createCommand({
                         type:          TYPE.assertion,
-                        assertionType: 123
+                        assertionType: 123,
                     });
                 },
                 {
@@ -2854,7 +2854,7 @@ describe('Test run commands', () => {
                     code:            'E16',
                     argumentName:    'assertionType',
                     actualValue:     'number',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -2863,14 +2863,14 @@ describe('Test run commands', () => {
                     return createCommand({
                         type:          TYPE.assertion,
                         assertionType: 'ok',
-                        options:       1
+                        options:       1,
                     });
                 },
                 {
                     isTestCafeError: true,
                     code:            'E14',
                     actualType:      'number',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -2880,8 +2880,8 @@ describe('Test run commands', () => {
                         type:          TYPE.assertion,
                         assertionType: 'ok',
                         options:       {
-                            timeout: 'timeout'
-                        }
+                            timeout: 'timeout',
+                        },
                     });
                 },
                 {
@@ -2889,7 +2889,7 @@ describe('Test run commands', () => {
                     code:            'E10',
                     optionName:      'timeout',
                     actualValue:     'string',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -2899,8 +2899,8 @@ describe('Test run commands', () => {
                         type:          TYPE.assertion,
                         assertionType: 'ok',
                         options:       {
-                            timeout: 10.5
-                        }
+                            timeout: 10.5,
+                        },
                     });
                 },
                 {
@@ -2908,7 +2908,7 @@ describe('Test run commands', () => {
                     code:            'E10',
                     optionName:      'timeout',
                     actualValue:     10.5,
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -2920,8 +2920,8 @@ describe('Test run commands', () => {
 
                         actual: {
                             type:  'js-expr',
-                            value: 'invalid js code'
-                        }
+                            value: 'invalid js code',
+                        },
                     });
                 },
                 {
@@ -2931,7 +2931,7 @@ describe('Test run commands', () => {
                     errMsg:          'Unexpected identifier',
                     code:            'E59',
                     callsite:        null,
-                    originError:     null
+                    originError:     null,
                 }
             );
         });
@@ -2940,7 +2940,7 @@ describe('Test run commands', () => {
             assertThrow(
                 function () {
                     return createCommand({
-                        type: TYPE.executeExpression
+                        type: TYPE.executeExpression,
                     });
                 },
                 {
@@ -2948,7 +2948,7 @@ describe('Test run commands', () => {
                     code:            'E16',
                     argumentName:    'expression',
                     actualValue:     'undefined',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -2956,7 +2956,7 @@ describe('Test run commands', () => {
                 function () {
                     return createCommand({
                         type:       TYPE.executeExpression,
-                        expression: 123
+                        expression: 123,
                     });
                 },
                 {
@@ -2964,7 +2964,7 @@ describe('Test run commands', () => {
                     code:            'E16',
                     argumentName:    'expression',
                     actualValue:     'number',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -2973,7 +2973,7 @@ describe('Test run commands', () => {
                     return createCommand({
                         type:               TYPE.executeExpression,
                         expression:         'js-expression',
-                        resultVariableName: 123
+                        resultVariableName: 123,
                     });
                 },
                 {
@@ -2981,7 +2981,7 @@ describe('Test run commands', () => {
                     code:            'E16',
                     argumentName:    'resultVariableName',
                     actualValue:     'number',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -2990,7 +2990,7 @@ describe('Test run commands', () => {
                     return createCommand({
                         type:               TYPE.executeExpression,
                         expression:         'js-expression',
-                        resultVariableName: ''
+                        resultVariableName: '',
                     });
                 },
                 {
@@ -2998,7 +2998,7 @@ describe('Test run commands', () => {
                     code:            'E16',
                     argumentName:    'resultVariableName',
                     actualValue:     '""',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
         });
@@ -3007,7 +3007,7 @@ describe('Test run commands', () => {
             assertThrow(
                 function () {
                     return createCommand({
-                        type: TYPE.executeAsyncExpression
+                        type: TYPE.executeAsyncExpression,
                     });
                 },
                 {
@@ -3015,7 +3015,7 @@ describe('Test run commands', () => {
                     code:            'E16',
                     argumentName:    'expression',
                     actualValue:     'undefined',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -3023,7 +3023,7 @@ describe('Test run commands', () => {
                 function () {
                     return createCommand({
                         type:       TYPE.executeAsyncExpression,
-                        expression: 123
+                        expression: 123,
                     });
                 },
                 {
@@ -3031,7 +3031,7 @@ describe('Test run commands', () => {
                     code:            'E16',
                     argumentName:    'expression',
                     actualValue:     'number',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
         });
@@ -3043,8 +3043,8 @@ describe('Test run commands', () => {
                         type:     TYPE.click,
                         selector: {
                             type:  'js-expr',
-                            value: 'Selector()'
-                        }
+                            value: 'Selector()',
+                        },
                     });
                 },
                 {
@@ -3055,7 +3055,7 @@ describe('Test run commands', () => {
                                      'a CSS selector string, a Selector object, a node snapshot, a function, or a Promise returned by a Selector.',
 
                     callsite:    null,
-                    originError: null
+                    originError: null,
                 }
             );
 
@@ -3065,8 +3065,8 @@ describe('Test run commands', () => {
                         type:     TYPE.click,
                         selector: {
                             type:  'js-expr',
-                            value: 'yo'
-                        }
+                            value: 'yo',
+                        },
                     });
                 },
                 {
@@ -3076,7 +3076,7 @@ describe('Test run commands', () => {
                     errMsg:          'yo is not defined',
 
                     callsite:    null,
-                    originError: null
+                    originError: null,
                 }
             );
         });
@@ -3085,7 +3085,7 @@ describe('Test run commands', () => {
             assertThrow(
                 function () {
                     return createCommand({
-                        type: TYPE.recorder
+                        type: TYPE.recorder,
                     });
                 },
                 {
@@ -3093,7 +3093,7 @@ describe('Test run commands', () => {
                     code:            'E16',
                     argumentName:    'subtype',
                     actualValue:     'undefined',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -3101,7 +3101,7 @@ describe('Test run commands', () => {
                 function () {
                     return createCommand({
                         type:    TYPE.recorder,
-                        subtype: ''
+                        subtype: '',
                     });
                 },
                 {
@@ -3109,7 +3109,7 @@ describe('Test run commands', () => {
                     code:            'E16',
                     argumentName:    'subtype',
                     actualValue:     '""',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -3117,7 +3117,7 @@ describe('Test run commands', () => {
                 function () {
                     return createCommand({
                         type:    TYPE.recorder,
-                        subtype: 2
+                        subtype: 2,
                     });
                 },
                 {
@@ -3125,7 +3125,7 @@ describe('Test run commands', () => {
                     code:            'E16',
                     argumentName:    'subtype',
                     actualValue:     'number',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
         });

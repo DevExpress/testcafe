@@ -13,5 +13,5 @@
 
     '3.Assert': inIFrame('#iframe', function () {
         eq($('#result').text(), 'div2 click');
-    })
+    }),
 };

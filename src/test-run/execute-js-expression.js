@@ -3,7 +3,7 @@ import {
     GeneralError,
     TestCompilationError,
     APIError,
-    CompositeError
+    CompositeError,
 } from '../errors/runtime';
 import { UncaughtErrorInCustomScript, UncaughtTestCafeErrorInCustomScript } from '../errors/test-run';
 import { setContextOptions } from '../api/test-controller/execution-context';
@@ -29,7 +29,7 @@ function getErrorLineColumn (err) {
 
         return stackFrame ? {
             line:   stackFrame.getLineNumber(),
-            column: stackFrame.getColumnNumber()
+            column: stackFrame.getColumnNumber(),
         } : {};
     }
 
@@ -47,7 +47,7 @@ function getErrorLineColumn (err) {
 function createErrorFormattingOptions () {
     return {
         filename:   '[JS code]',
-        lineOffset: ERROR_LINE_OFFSET
+        lineOffset: ERROR_LINE_OFFSET,
     };
 }
 

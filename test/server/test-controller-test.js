@@ -22,7 +22,7 @@ class TestRunMock extends TestRun {
             browserConnection:  {},
             screenshotCapturer: {},
             globalWarningLog:   {},
-            opts:               {}
+            opts:               {},
         });
 
         this.errors = [];

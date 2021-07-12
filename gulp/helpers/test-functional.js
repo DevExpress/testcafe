@@ -12,7 +12,7 @@ const SETUP_TESTS_GLOB     = 'test/functional/setup.js';
 
 const SCREENSHOT_TESTS_GLOB = [
     'test/functional/fixtures/api/es-next/take-screenshot/test.js',
-    'test/functional/fixtures/screenshots-on-fails/test.js'
+    'test/functional/fixtures/screenshots-on-fails/test.js',
 ];
 
 module.exports = function testFunctional (src, testingEnvironmentName, { experimentalCompilerService, isProxyless } = {}) {
@@ -38,7 +38,7 @@ module.exports = function testFunctional (src, testingEnvironmentName, { experim
 
     const opts = {
         reporter: 'mocha-reporter-spec-with-retries',
-        timeout:  getTimeout(3 * 60 * 1000)
+        timeout:  getTimeout(3 * 60 * 1000),
     };
 
     if (process.env.RETRY_FAILED_TESTS === 'true')

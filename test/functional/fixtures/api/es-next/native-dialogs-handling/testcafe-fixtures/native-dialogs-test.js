@@ -126,13 +126,13 @@ test('Expected alert and prompt after redirect', async t => {
         {
             type: 'prompt',
             text: 'Prompt:',
-            url:  promptPageUrl
+            url:  promptPageUrl,
         },
         {
             type: 'alert',
             text: 'Alert!',
-            url:  pageUrl
-        }
+            url:  pageUrl,
+        },
     ]);
 });
 

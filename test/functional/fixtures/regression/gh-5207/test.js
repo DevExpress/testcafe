@@ -8,8 +8,8 @@ describe('[Regression](GH-5207)', function () {
                     return new Promise(resolve => {
                         setTimeout(resolve, 5000);
                     });
-                }
-            })
+                },
+            }),
         });
     });
 });

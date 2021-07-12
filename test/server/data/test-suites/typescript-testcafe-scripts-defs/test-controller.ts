@@ -182,7 +182,7 @@ import { expect } from 'chai';
 (async () => {
     await t.drag('#draggable-div-1', 10, 20, {
         'offsetX': 10,
-        'offsetY': 10
+        'offsetY': 10,
     });
 })();
 
@@ -197,7 +197,7 @@ import { expect } from 'chai';
 (async () => {
     await t.dragToElement('#draggable-div-2', '#destination-div', {
         'offsetX': 10,
-        'offsetY': 10
+        'offsetY': 10,
     });
 })();
 
@@ -564,13 +564,13 @@ const promptPageUrl = 'http://localhost:3000/fixtures/api/es-next/native-dialogs
         {
             type: 'prompt',
             text: 'Prompt:',
-            url: promptPageUrl
+            url: promptPageUrl,
         },
         {
             type: 'alert',
             text: 'Alert!',
-            url: pageUrl
-        }
+            url: pageUrl,
+        },
     ]);
 })();
 

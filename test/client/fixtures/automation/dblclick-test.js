@@ -20,7 +20,7 @@ $(document).ready(function () {
             .css({
                 position:   'absolute',
                 marginLeft: x + 'px',
-                marginTop:  y + 'px'
+                marginTop:  y + 'px',
             })
             .addClass(type)
             .addClass(TEST_ELEMENT_CLASS)

@@ -39,7 +39,7 @@ export default class Role extends EventEmitter {
         await testRun?.compilerService?.updateRoleProperty({
             roleId: this.id,
             name:   'stateSnapshot',
-            value:  this.stateSnapshot
+            value:  this.stateSnapshot,
         });
     }
 
@@ -47,7 +47,7 @@ export default class Role extends EventEmitter {
         this._initFn = () => {
             return testRun.compilerService?.executeRoleInitFn({
                 testRunId: testRun.id,
-                roleId:    this.id
+                roleId:    this.id,
             });
         };
     }
@@ -70,7 +70,7 @@ export default class Role extends EventEmitter {
             await testRun?.compilerService?.updateRoleProperty({
                 roleId: this.id,
                 name:   'initErr',
-                value:  this.initErr
+                value:  this.initErr,
             });
         }
     }
@@ -91,7 +91,7 @@ export default class Role extends EventEmitter {
         await testRun.compilerService?.updateRoleProperty({
             roleId: this.id,
             name:   'phase',
-            value:  this.phase
+            value:  this.phase,
         });
 
         this.emit('initialized');
@@ -103,7 +103,7 @@ export default class Role extends EventEmitter {
         await testRun.compilerService?.updateRoleProperty({
             roleId: this.id,
             name:   'redirectUrl',
-            value:  this.redirectUrl
+            value:  this.redirectUrl,
         });
     }
 

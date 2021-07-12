@@ -22,7 +22,7 @@ describe('[Regression](GH-2568)', function () {
     });
 
     it('client function selector', function () {
-        return runTests('testcafe-fixtures/index.js', 'client function selector', { selectorTimeout: 100, shouldFail: true, })
+        return runTests('testcafe-fixtures/index.js', 'client function selector', { selectorTimeout: 100, shouldFail: true })
             .catch(function (errs) {
                 assertSelectorCallstack(errs[0], `
                     The specified selector does not match any element in the DOM tree.

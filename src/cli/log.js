@@ -44,6 +44,6 @@ export default {
 
         if (this.animation)
             this.showSpinner();
-    }
+    },
 };
 

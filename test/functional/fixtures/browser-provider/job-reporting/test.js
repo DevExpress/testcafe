@@ -62,7 +62,7 @@ if (config.useLocalBrowsers) {
                 const bc = BrowserConnection.getById(browserId);
 
                 bc.emit('error', new Error('Connection error'));
-            }
+            },
         });
 
 
@@ -72,7 +72,7 @@ if (config.useLocalBrowsers) {
                 .src(path.join(__dirname, file))
                 .reporter('json', {
                     write: noop,
-                    end:   noop
+                    end:   noop,
                 })
                 .browsers(browsers)
                 .run();

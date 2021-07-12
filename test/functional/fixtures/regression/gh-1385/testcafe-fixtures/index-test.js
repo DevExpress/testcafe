@@ -10,7 +10,7 @@ test('Check "...fromPoint" functions', async t => {
             caretRangeFromPointSupported:    !!document.caretRangeFromPoint,
             elementFromPointId:              window.elementFromPointId,
             caretPositionFromPointData:      window.caretPositionFromPointData,
-            caretRangeFromPointData:         window.caretRangeFromPointData
+            caretRangeFromPointData:         window.caretRangeFromPointData,
         };
     });
 
@@ -21,7 +21,7 @@ test('Check "...fromPoint" functions', async t => {
         caretRangeFromPointSupported,
         elementFromPointId,
         caretPositionFromPointData,
-        caretRangeFromPointData
+        caretRangeFromPointData,
     } = await getDataFromClient();
 
     await t.expect(elementFromPointId).eql('div');

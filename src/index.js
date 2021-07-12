@@ -59,7 +59,7 @@ async function getConfiguration (args) {
             ssl,
             developmentMode,
             retryTestPages,
-            cache
+            cache,
         });
     }
 
@@ -75,7 +75,7 @@ async function createTestCafe (...args) {
     const [hostname, port1, port2] = await Promise.all([
         getValidHostname(configuration.getOption(OPTION_NAMES.hostname)),
         getValidPort(configuration.getOption(OPTION_NAMES.port1)),
-        getValidPort(configuration.getOption(OPTION_NAMES.port2))
+        getValidPort(configuration.getOption(OPTION_NAMES.port2)),
     ]);
 
     configuration.mergeOptions({ hostname, port1, port2 });

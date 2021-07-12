@@ -5,13 +5,13 @@ const OS           = require('os-family');
 const DOCKER_DAEMON_DETECTION_OPTIONS = {
     windows: {
         detectCommand:    'wmic process get Name /format:list',
-        daemonNameRegExp: /Docker (for Windows|Desktop).exe/
+        daemonNameRegExp: /Docker (for Windows|Desktop).exe/,
     },
 
     linux: {
         detectCommand:    'ps -ejf | grep dockerd',
-        daemonNameRegExp: /dockerd/
-    }
+        daemonNameRegExp: /dockerd/,
+    },
 };
 
 const OS_NOT_SUPPORTED_ERROR = 'Cannot run docker tests with this OS';

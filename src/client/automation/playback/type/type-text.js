@@ -26,7 +26,7 @@ function _getSelectionInElement (element) {
     // element. So we calculate the necessary start and end nodes and offsets
     return {
         startPos: contentEditable.calculateNodeAndOffsetByPosition(element, 0),
-        endPos:   contentEditable.calculateNodeAndOffsetByPosition(element, 0)
+        endPos:   contentEditable.calculateNodeAndOffsetByPosition(element, 0),
     };
 }
 
@@ -43,7 +43,7 @@ function _updateSelectionAfterDeletionContent (element, selection) {
         if (textSelection.hasInverseSelectionContentEditable(element)) {
             selection = {
                 startPos: selection.endPos,
-                endPos:   selection.startPos
+                endPos:   selection.startPos,
             };
         }
     }

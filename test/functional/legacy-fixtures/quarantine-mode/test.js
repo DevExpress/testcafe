@@ -41,7 +41,7 @@ describe('Quarantine mode tests', function () {
     it('Should fail if an unstable test fails in most of runs', function () {
         return runTests('testcafe-fixtures/failing-quarantine.test.js', 'Wait 200ms', {
             shouldFail:     true,
-            quarantineMode: true
+            quarantineMode: true,
         })
             .catch(function (errs) {
                 var expectedError = 'Failed by request! on page';

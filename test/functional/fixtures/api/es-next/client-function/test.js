@@ -84,7 +84,7 @@ describe('[API] ClientFunction', function () {
         it('Should raise an error if ClientFunction argument is not a function', function () {
             return runTests('./testcafe-fixtures/client-fn-test.js', 'ClientFunction fn is not a function', {
                 shouldFail: true,
-                only:       'chrome'
+                only:       'chrome',
             }).catch(function (errs) {
                 expect(errs[0].indexOf(
                     'Cannot initialize a ClientFunction because ClientFunction is number, and not a function.'
@@ -97,7 +97,7 @@ describe('[API] ClientFunction', function () {
         it('Should raise an error if ClientFunction not able to resolve test run', function () {
             return runTests('./testcafe-fixtures/client-fn-test.js', 'ClientFunction fn test run is unresolvable', {
                 shouldFail: true,
-                only:       'chrome'
+                only:       'chrome',
             }).catch(function (errs) {
                 expect(errs[0].indexOf(
                     'ClientFunction cannot implicitly resolve the test run in context of which it should be executed.'
@@ -110,7 +110,7 @@ describe('[API] ClientFunction', function () {
         it('Should raise an error if ClientFunction contains async/await syntax', function () {
             return runTests('./testcafe-fixtures/client-fn-test.js', 'Async syntax in ClientFunction', {
                 shouldFail: true,
-                only:       'chrome'
+                only:       'chrome',
             }).catch(function (errs) {
                 expect(errs[0].indexOf(
                     'ClientFunction code, arguments or dependencies cannot contain generators or "async/await" syntax (use Promises instead).'
@@ -123,7 +123,7 @@ describe('[API] ClientFunction', function () {
         it('Should raise an error if ClientFunction contains generator', function () {
             return runTests('./testcafe-fixtures/client-fn-test.js', 'Generator in ClientFunction', {
                 shouldFail: true,
-                only:       'chrome'
+                only:       'chrome',
             }).catch(function (errs) {
                 expect(errs[0].indexOf(
                     'ClientFunction code, arguments or dependencies cannot contain generators or "async/await" syntax (use Promises instead).'
@@ -136,7 +136,7 @@ describe('[API] ClientFunction', function () {
         it('Should raise an error if ClientFunction bound to a non-TestController object', function () {
             return runTests('./testcafe-fixtures/client-fn-test.js', 'Invalid ClientFunction test run binding', {
                 shouldFail: true,
-                only:       'chrome'
+                only:       'chrome',
             }).catch(function (errs) {
                 expect(errs[0].indexOf(
                     'Cannot resolve the "boundTestRun" option because its value is not a test controller.'
@@ -157,7 +157,7 @@ describe('[API] ClientFunction', function () {
         it('Should raise an error if a function argument contains `async/await` syntax', function () {
             return runTests('./testcafe-fixtures/client-fn-test.js', 'Async/await in function argument of ClientFunction', {
                 shouldFail: true,
-                only:       'chrome'
+                only:       'chrome',
             })
                 .catch(function (errs) {
                     expect(errs[0]).contains(

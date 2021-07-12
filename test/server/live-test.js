@@ -22,7 +22,7 @@ const externalCommonJsModulePath = path.resolve('test/server/data/test-suites/li
 const DOCKER_TESTCAFE_FOLDER_REGEXP = /^\/usr\/lib\/node_modules\/testcafe/;
 
 const browserSetMock = {
-    browserConnectionGroups: []
+    browserConnectionGroups: [],
 };
 
 class FileWatcherMock extends FileWatcher {
@@ -57,7 +57,7 @@ class ControllerMock extends LiveModeController {
 
             err: err => {
                 errors.push(err);
-            }
+            },
         };
     }
 
@@ -81,7 +81,7 @@ class BootstrapperMock extends LiveModeBootstrapper {
             tests:               [],
             browserSet:          browserSetMock,
             testedApp:           {},
-            commonClientScripts: []
+            commonClientScripts: [],
         });
     }
 }
@@ -91,7 +91,7 @@ class RunnerMock extends LiveModeRunner {
         super({
             proxy,
             browserConnectionGateway,
-            configuration: configuration.clone()
+            configuration: configuration.clone(),
         });
 
         this.runCount        = 0;
@@ -345,7 +345,7 @@ describe('TestCafe Live', function () {
         return runTests(testFileWithExternalUnexistingModulePath, {
             onBootstrapDone: () => {
                 handled = true;
-            }
+            },
         })
             .then(() => {
                 expect(handled).eql(true);

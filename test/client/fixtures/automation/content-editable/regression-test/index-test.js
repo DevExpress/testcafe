@@ -63,7 +63,7 @@ $(document).ready(function () {
                 setInnerHTML($('#2'), secondElementInnerHTML);
                 setInnerHTML($('#3'), thirdElementInnerHTML);
             }
-        }
+        },
     };
 
     QUnit.testStart(function () {

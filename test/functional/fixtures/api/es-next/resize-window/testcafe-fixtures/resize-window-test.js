@@ -6,7 +6,7 @@ import {
     saveWindowState,
     restoreWindowState,
     getWindowHeight,
-    getWindowWidth
+    getWindowWidth,
 } from '../../../../../window-helpers';
 
 

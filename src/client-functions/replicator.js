@@ -10,7 +10,7 @@ export function createReplicator (transforms) {
     // so we use identity functions for serialization.
     const replicator = new Replicator({
         serialize:   identity,
-        deserialize: identity
+        deserialize: identity,
     });
 
     return replicator.addTransforms(transforms);
@@ -33,13 +33,13 @@ export class FunctionTransform {
         if (clientFnBuilder) {
             return {
                 fnCode:       clientFnBuilder.compiledFnCode,
-                dependencies: clientFnBuilder.getFunctionDependencies()
+                dependencies: clientFnBuilder.getFunctionDependencies(),
             };
         }
 
         return {
             fnCode:       compileClientFunction(fn.toString(), null, this.callsiteNames.instantiation, this.callsiteNames.execution),
-            dependencies: {}
+            dependencies: {},
         };
     }
 

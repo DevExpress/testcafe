@@ -11,7 +11,7 @@ fixture
         username: 'user',
         password: 'pass',
         domain: 'domain',
-        workstation: 'workstation'
+        workstation: 'workstation',
     })
     .before(async() => {
     })
@@ -27,7 +27,7 @@ fixture
     })
     .clientScripts({
         content: 'abracadabra',
-        page:    'some/page'
+        page:    'some/page',
     });
 
 test
@@ -54,15 +54,15 @@ test
         username: 'user',
         password: 'pass',
         domain: 'domain',
-        workstation: 'workstation'
+        workstation: 'workstation',
     })
     .clientScripts([
         {
             module: 'some-module',
-            page:   'some/page'
+            page:   'some/page',
         },
         {
             path: '/some/path',
-            page: 'some/page'
-        }
+            page: 'some/page',
+        },
     ]);

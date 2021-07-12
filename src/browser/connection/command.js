@@ -5,5 +5,5 @@
 
 export default {
     run:  'run',
-    idle: 'idle'
+    idle: 'idle',
 };

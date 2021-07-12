@@ -4,7 +4,7 @@ import CustomizableCompilers from './customizable-compilers';
 export const DEFAULT_TIMEOUT = {
     selector:  10000,
     assertion: 3000,
-    pageLoad:  3000
+    pageLoad:  3000,
 };
 
 export const DEFAULT_SPEED_VALUE = 1;
@@ -30,7 +30,7 @@ export const DEFAULT_TYPESCRIPT_COMPILER_OPTIONS: Dictionary<boolean | number> =
     target:                  3 /* ts.ScriptTarget.ES2016 */,
     jsx:                     2 /* ts.JsxEmit.React */,
     suppressOutputPathCheck: true,
-    skipLibCheck:            true
+    skipLibCheck:            true,
 };
 
 export const TYPESCRIPT_COMPILER_NON_OVERRIDABLE_OPTIONS = ['module', 'moduleResolution', 'target'];
@@ -43,11 +43,11 @@ export const TYPESCRIPT_BLACKLISTED_OPTIONS = [
     'declarationDir',
     'composite',
     'outFile',
-    'out'
+    'out',
 ];
 
 const DEFAULT_COMPILER_OPTIONS = {
-    [CustomizableCompilers.typescript]: {}
+    [CustomizableCompilers.typescript]: {},
 };
 
 export function getDefaultCompilerOptions (): object {

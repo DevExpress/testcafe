@@ -2,7 +2,7 @@ import {
     ClientFunction,
     Role,
     Selector,
-    t
+    t,
 } from 'testcafe';
 
 const getPageLocation = ClientFunction(() => window.location.toString());
@@ -23,6 +23,6 @@ const role = Role(url, async () => {
 export {
     role,
     url,
-    expectedRoleLastPageLocation
+    expectedRoleLastPageLocation,
 };
 

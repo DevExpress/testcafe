@@ -20,7 +20,7 @@ describe('Browser connection', function () {
 
         closeBrowser: function () {
             return Promise.resolve();
-        }
+        },
     };
 
     before(function () {
@@ -70,8 +70,8 @@ describe('Browser connection', function () {
             followRedirect: false,
             headers:        {
                 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
-                              '(KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36'
-            }
+                              '(KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36',
+            },
         };
 
         return promisedRequest(options)
@@ -109,8 +109,8 @@ describe('Browser connection', function () {
             followRedirect: false,
             headers:        {
                 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
-                              '(KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36'
-            }
+                              '(KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36',
+            },
         };
 
         request(options);
@@ -135,7 +135,7 @@ describe('Browser connection', function () {
 
                 on: function () {
                     // Do nothing
-                }
+                },
             };
         }
 
@@ -173,7 +173,7 @@ describe('Browser connection', function () {
         let testCases = [
             connection.heartbeatUrl,
             connection.idleUrl,
-            connection.statusUrl
+            connection.statusUrl,
         ];
 
         testCases = testCases.map(function (url) {
@@ -198,8 +198,8 @@ describe('Browser connection', function () {
             followRedirect: false,
             headers:        {
                 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
-                              '(KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36'
-            }
+                              '(KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36',
+            },
         };
 
         const prettyUserAgentWithMetaInfo = `Chrome 41.0.2227.1 / macOS 10.10.1 (meta-info)`;

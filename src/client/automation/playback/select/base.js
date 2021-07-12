@@ -36,12 +36,12 @@ export default class SelectBaseAutomation extends VisibleElementAutomation {
 
         this.eventArgs = {
             options: null,
-            element: null
+            element: null,
         };
 
         this.eventState = {
             mousedownPrevented:      false,
-            simulateDefaultBehavior: true
+            simulateDefaultBehavior: true,
         };
     }
 
@@ -57,8 +57,8 @@ export default class SelectBaseAutomation extends VisibleElementAutomation {
                     element: element,
                     options: {
                         clientX: clientPoint.x,
-                        clientY: clientPoint.y
-                    }
+                        clientY: clientPoint.y,
+                    },
                 };
             });
     }
@@ -99,7 +99,7 @@ export default class SelectBaseAutomation extends VisibleElementAutomation {
             element: document.documentElement,
             offsetX: this.clientPoint.x,
             offsetY: this.clientPoint.y,
-            speed:   this.speed
+            speed:   this.speed,
         };
 
         return this._move(moveArguments);

@@ -36,5 +36,5 @@ module.exports = {
 
     clearFailingBrowsers: function () {
         this.browsersFailingQuarantine = {};
-    }
+    },
 };

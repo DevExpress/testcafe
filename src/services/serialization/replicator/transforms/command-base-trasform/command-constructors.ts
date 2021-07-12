@@ -3,7 +3,7 @@ import CommandType from '../../../../../test-run/commands/type';
 import {
     ExecuteClientFunctionCommand,
     ExecuteSelectorCommand,
-    WaitCommand
+    WaitCommand,
 } from '../../../../../test-run/commands/observation';
 
 import {
@@ -18,7 +18,7 @@ import {
     SetTestSpeedCommand,
     SwitchToIframeCommand,
     TypeTextCommand,
-    UseRoleCommand
+    UseRoleCommand,
 } from '../../../../../test-run/commands/actions';
 
 import AssertionCommand from '../../../../../test-run/commands/assertion';
@@ -41,7 +41,7 @@ const COMMAND_CONSTRUCTORS = new Map<string, CommandConstructor>([
     [CommandType.selectEditableContent, SelectEditableContentCommand],
     [CommandType.hover, HoverCommand],
     [CommandType.assertion, AssertionCommand],
-    [CommandType.useRole, UseRoleCommand]
+    [CommandType.useRole, UseRoleCommand],
 ]);
 
 export default COMMAND_CONSTRUCTORS;

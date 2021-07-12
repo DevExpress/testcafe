@@ -26,16 +26,16 @@ fixture `GH-1940 - Should scroll to element when body has scroll`
 const testCases = [
     {
         name: 'document element has scroll',
-        page: 'http://localhost:3000/fixtures/regression/gh-1940/pages/document-scroll.html'
+        page: 'http://localhost:3000/fixtures/regression/gh-1940/pages/document-scroll.html',
     },
     {
         name: 'body has scroll',
-        page: 'http://localhost:3000/fixtures/regression/gh-1940/pages/body-scroll.html'
+        page: 'http://localhost:3000/fixtures/regression/gh-1940/pages/body-scroll.html',
     },
     {
         name: 'document and body have scroll',
-        page: 'http://localhost:3000/fixtures/regression/gh-1940/pages/document-and-body-have-scroll.html'
-    }
+        page: 'http://localhost:3000/fixtures/regression/gh-1940/pages/document-and-body-have-scroll.html',
+    },
 ];
 
 for (const testCase of testCases) {

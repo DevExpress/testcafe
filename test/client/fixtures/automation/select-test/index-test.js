@@ -99,7 +99,7 @@ $(document).ready(function () {
 
         $textarea.css({
             width:  '250px',
-            height: '150px'
+            height: '150px',
         });
 
         setSelection($input, 0, 0);
@@ -346,7 +346,7 @@ $(document).ready(function () {
 
         $(textarea).css({
             width:  '400px',
-            height: '100px'
+            height: '100px',
         });
 
         textarea[startSelectEvent] = function () {
@@ -390,7 +390,7 @@ $(document).ready(function () {
 
         $(textarea).css({
             width:  '400px',
-            height: '100px'
+            height: '100px',
         });
 
         textarea[startSelectEvent] = function () {
@@ -435,7 +435,7 @@ $(document).ready(function () {
 
         $(textarea).css({
             width:  '400px',
-            height: '100px'
+            height: '100px',
         });
 
         textarea[startSelectEvent] = function () {
@@ -483,7 +483,7 @@ $(document).ready(function () {
 
         $(textarea).css({
             width:  '400px',
-            height: '100px'
+            height: '100px',
         });
 
         document.body[startSelectEvent] = function () {

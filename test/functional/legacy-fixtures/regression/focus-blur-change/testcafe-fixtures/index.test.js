@@ -52,5 +52,5 @@ var iFrameSelector = '#iframe';
         eq($input.data('focusCount'), 1);
         eq($input.data('changeCount'), 1);
         eq($input.data('blurCount'), 1);
-    })
+    }),
 };

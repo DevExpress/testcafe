@@ -18,7 +18,7 @@ export default class ClientFunctionBuilder {
     constructor (fn, options, callsiteNames = {}) {
         this.callsiteNames = {
             instantiation: callsiteNames.instantiation,
-            execution:     callsiteNames.execution || DEFAULT_EXECUTION_CALLSITE_NAME
+            execution:     callsiteNames.execution || DEFAULT_EXECUTION_CALLSITE_NAME,
         };
 
         if (isNullOrUndefined(options))
@@ -50,7 +50,7 @@ export default class ClientFunctionBuilder {
 
         const builder = new this.constructor(this.fn, options, {
             instantiation: 'with',
-            execution:     this.callsiteNames.execution
+            execution:     this.callsiteNames.execution,
         });
 
         return builder.getFunction();
@@ -113,7 +113,7 @@ export default class ClientFunctionBuilder {
             instantiationCallsiteName: this.callsiteNames.instantiation,
             fnCode:                    this.compiledFnCode,
             args:                      encodedArgs,
-            dependencies:              encodedDependencies
+            dependencies:              encodedDependencies,
         }, this._getTestRun());
     }
 
@@ -191,7 +191,7 @@ export default class ClientFunctionBuilder {
 
     _getReplicatorTransforms () {
         return [
-            new FunctionTransform(this.callsiteNames)
+            new FunctionTransform(this.callsiteNames),
         ];
     }
 }

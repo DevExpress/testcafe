@@ -29,7 +29,7 @@ export default class RemotesQueue {
 
         this.pendingConnections[remoteConnection.id] = {
             connection:   remoteConnection,
-            readyPromise: connectionReadyPromise
+            readyPromise: connectionReadyPromise,
         };
 
         this.events.emit('connection-added', remoteConnection.id);

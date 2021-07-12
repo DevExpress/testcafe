@@ -6,7 +6,7 @@ describe('[Regression](GH-965)', function () {
         it('in navigateTo', function () {
             return runTests('testcafe-fixtures/navigate-to-test.js', 'navigateTo', {
                 only:       'chrome',
-                shouldFail: true
+                shouldFail: true,
             })
                 .catch(function (errs) {
                     expect(errs[0]).contains('httpss://example.com" test page URL includes an unsupported httpss:// protocol. TestCafe only supports http://, https:// and file:// protocols.');
@@ -17,7 +17,7 @@ describe('[Regression](GH-965)', function () {
         it('in test page', function () {
             return runTests('testcafe-fixtures/test-page.js', 'test.page', {
                 only:       'chrome',
-                shouldFail: true
+                shouldFail: true,
             })
                 .catch(function (err) {
                     expect(err.message).contains('httpss://example.com" test page URL includes an unsupported httpss:// protocol. TestCafe only supports http://, https:// and file:// protocols.');

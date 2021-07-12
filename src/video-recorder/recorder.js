@@ -9,7 +9,7 @@ import WARNING_MESSAGES from '../notifications/warning-message';
 import {
     getPluralSuffix,
     getConcatenatedValuesString,
-    getToBeInPastTense
+    getToBeInPastTense,
 } from '../utils/string';
 
 import TestRunVideoRecorder from './test-run-video-recorder';
@@ -126,7 +126,7 @@ export default class VideoRecorder extends EventEmitter {
         const recordingOptions = {
             path:            this.tempDirectory.path,
             ffmpegPath:      this.ffmpegPath,
-            encodingOptions: this.encodingOptions
+            encodingOptions: this.encodingOptions,
         };
 
         const testRunVideoRecorder = this._createTestRunVideoRecorder(testRunInfo, recordingOptions);

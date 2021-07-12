@@ -120,7 +120,7 @@ export default class BrowserProviderPluginHost {
             hasGetVideoFrameData:           this.hasOwnProperty('getVideoFrameData'),
             hasCanResizeWindowToDimensions: this.hasOwnProperty('canResizeWindowToDimensions'),
             hasMaximizeWindow:              this.hasOwnProperty('maximizeWindow'),
-            hasChromelessScreenshots:       false
+            hasChromelessScreenshots:       false,
         };
     }
 

@@ -14,7 +14,7 @@ export default class IframeNativeDialogTracker extends NativeDialogTracker {
         messageSandbox.sendServiceMsg({
             type:       MESSAGE_TYPE.unexpectedDialog,
             dialogType: type,
-            url:        NativeDialogTracker._getPageUrl()
+            url:        NativeDialogTracker._getPageUrl(),
         }, window.top);
     }
 
@@ -23,7 +23,7 @@ export default class IframeNativeDialogTracker extends NativeDialogTracker {
             type:       MESSAGE_TYPE.appearedDialog,
             dialogType: type,
             text:       text,
-            url:        NativeDialogTracker._getPageUrl()
+            url:        NativeDialogTracker._getPageUrl(),
         }, window.top);
     }
 
@@ -32,7 +32,7 @@ export default class IframeNativeDialogTracker extends NativeDialogTracker {
             type:       MESSAGE_TYPE.handlerError,
             dialogType: type,
             message:    message,
-            url:        NativeDialogTracker._getPageUrl()
+            url:        NativeDialogTracker._getPageUrl(),
         }, window.top);
     }
 }

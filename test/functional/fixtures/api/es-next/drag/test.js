@@ -14,7 +14,7 @@ describe('[API] Drag actions', function () {
         it('Should validate selector', function () {
             return runTests('./testcafe-fixtures/drag-test.js', 'Drag to offset with incorrect selector', {
                 shouldFail: true,
-                only:       'chrome'
+                only:       'chrome',
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contain(
@@ -29,7 +29,7 @@ describe('[API] Drag actions', function () {
         it('Should validate dragOffsetX', function () {
             return runTests('./testcafe-fixtures/drag-test.js', 'Drag to offset with incorrect dragOffsetX', {
                 shouldFail: true,
-                only:       'chrome'
+                only:       'chrome',
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contain('The "dragOffsetX" argument is expected to be an integer, but it was NaN.');
@@ -40,7 +40,7 @@ describe('[API] Drag actions', function () {
         it('Should validate dragOffsetY', function () {
             return runTests('./testcafe-fixtures/drag-test.js', 'Drag to offset with incorrect dragOffsetY', {
                 shouldFail: true,
-                only:       'chrome'
+                only:       'chrome',
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contain('The "dragOffsetY" argument is expected to be an integer, but it was 3.14.');
@@ -51,7 +51,7 @@ describe('[API] Drag actions', function () {
         it('Should validate action options', function () {
             return runTests('./testcafe-fixtures/drag-test.js', 'Drag to offset with incorrect action option', {
                 shouldFail: true,
-                only:       'chrome'
+                only:       'chrome',
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contain('The "offsetX" option is expected to be an integer, but it was string.');
@@ -72,7 +72,7 @@ describe('[API] Drag actions', function () {
         it('Should validate selector', function () {
             return runTests('./testcafe-fixtures/drag-test.js', 'Drag to element with incorrect selector', {
                 shouldFail: true,
-                only:       'chrome'
+                only:       'chrome',
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contain(
@@ -87,7 +87,7 @@ describe('[API] Drag actions', function () {
         it('Should validate destinationSelector', function () {
             return runTests('./testcafe-fixtures/drag-test.js', 'Drag to element with incorrect destinationSelector', {
                 shouldFail: true,
-                only:       'chrome'
+                only:       'chrome',
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contain(
@@ -102,7 +102,7 @@ describe('[API] Drag actions', function () {
         it('Should validate action options', function () {
             return runTests('./testcafe-fixtures/drag-test.js', 'Drag to element with incorrect action option', {
                 shouldFail: true,
-                only:       'chrome'
+                only:       'chrome',
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contain('The "modifiers.shift" option is expected to be a boolean value, but it was number.');

@@ -40,7 +40,7 @@ export default class TestRunController extends AsyncEventEmitter {
         warningLog,
         fixtureHookController,
         opts,
-        compilerService
+        compilerService,
     }: TestRunControllerInit) {
         super();
 
@@ -79,7 +79,7 @@ export default class TestRunController extends AsyncEventEmitter {
             globalWarningLog:  this._warningLog,
             opts:              this._opts,
             compilerService:   this.compilerService,
-            screenshotCapturer
+            screenshotCapturer,
         });
 
         await this.testRun.initialize();

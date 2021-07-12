@@ -107,7 +107,7 @@ describe('Global error handlers', () => {
             obj,
             _ => _,
             [1, 2],
-            /regex/
+            /regex/,
         ];
 
         const testRunMocks = reasons.map((reason, index) => new TestRunMock(index, reason));
@@ -122,7 +122,7 @@ describe('Global error handlers', () => {
             semver.gte(process.version, '13.0.0') ? '<ref *1> { a: 1, b: { c: \'d\', e: { f: [Object] } }, circular: [Circular *1] }' : '{ a: 1, b: { c: \'d\', e: { f: [Object] } }, circular: [Circular] }',
             semver.gte(process.version, '13.0.0') ? '[Function (anonymous)]' : '[Function]',
             '[ 1, 2 ]',
-            '/regex/'
+            '/regex/',
         ];
 
         testRunMocks.forEach(testRun => {
@@ -171,7 +171,7 @@ describe('Global error handlers', () => {
         const { completionPromise } = runner._runTask({
             reporterPlugins: [],
             browserSet:      new BrowserSetMock(),
-            testedApp:       null
+            testedApp:       null,
         });
 
         const testRunMock1 = new TestRunMock(1);

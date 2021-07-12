@@ -29,7 +29,7 @@ $(document).ready(function () {
             .css({
                 position: 'absolute',
                 left:     x + 'px',
-                top:      y + 'px'
+                top:      y + 'px',
             })
             .addClass(TEST_ELEMENT_CLASS)
             .appendTo('body');
@@ -41,7 +41,7 @@ $(document).ready(function () {
                 position: 'absolute',
                 left:     x,
                 top:      y,
-                border:   '1px solid black'
+                border:   '1px solid black',
             })
             .width(150)
             .height(150)
@@ -84,7 +84,7 @@ $(document).ready(function () {
             elementTwoSelectRaised:      false,
             elementTwoMousedownCount:    0,
             elementTwoMouseupCount:      0,
-            elementTwoClickCount:        0
+            elementTwoClickCount:        0,
         };
     };
 
@@ -96,7 +96,7 @@ $(document).ready(function () {
 
             elementsTwoKeydownRaised:  false,
             elementsTwoKeypressRaised: false,
-            elementsTwoKeyupRaised:    false
+            elementsTwoKeyupRaised:    false,
         };
     };
 
@@ -108,12 +108,12 @@ $(document).ready(function () {
 
         $el1.css({
             left: left2,
-            top:  top2
+            top:  top2,
         });
 
         $el2.css({
             left: left1,
-            top:  top1
+            top:  top1,
         });
     };
 
@@ -312,7 +312,7 @@ $(document).ready(function () {
             .attr('src', src)
             .css({
                 width:  '600px',
-                height: '600px'
+                height: '600px',
             })
             .addClass(TEST_ELEMENT_CLASS);
 
@@ -790,7 +790,7 @@ $(document).ready(function () {
 
                     elementsTwoKeydownRaised:  false,
                     elementsTwoKeypressRaised: true && !browserUtils.isAndroid,
-                    elementsTwoKeyupRaised:    true
+                    elementsTwoKeyupRaised:    true,
                 };
 
                 deepEqual(eventMonitorObject, expectedEventMonitorObject);
@@ -822,7 +822,7 @@ $(document).ready(function () {
 
                     elementsTwoKeydownRaised:  false,
                     elementsTwoKeypressRaised: false,
-                    elementsTwoKeyupRaised:    true && !browserUtils.isAndroid
+                    elementsTwoKeyupRaised:    true && !browserUtils.isAndroid,
                 };
 
                 deepEqual(eventMonitorObject, expectedEventMonitorObject);
@@ -854,7 +854,7 @@ $(document).ready(function () {
 
                     elementsTwoKeydownRaised:  false,
                     elementsTwoKeypressRaised: false,
-                    elementsTwoKeyupRaised:    false
+                    elementsTwoKeyupRaised:    false,
                 };
 
                 deepEqual(eventMonitorObject, expectedEventMonitorObject);

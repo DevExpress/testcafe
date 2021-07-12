@@ -37,7 +37,7 @@ asyncTest('run steps in iframe', function () {
                 /*eslint-enable no-undef*/
             },
 
-            stepNum: 0
+            stepNum: 0,
         },
         {
             stepName: '2.Assert',
@@ -45,8 +45,8 @@ asyncTest('run steps in iframe', function () {
                 ok(true);
             },
 
-            stepNum: 1
-        }
+            stepNum: 1,
+        },
     ];
 
     testRunner.stepIterator.runNext = function () {
@@ -117,8 +117,8 @@ asyncTest('element error', function () {
                 /*eslint-enable no-undef*/
             },
 
-            stepNum: 0
-        }
+            stepNum: 0,
+        },
     ];
 
     testRunner._onFatalError = function () {
@@ -158,8 +158,8 @@ asyncTest('failed assertion', function () {
                 /*eslint-enable no-undef*/
             },
 
-            stepNum: 0
-        }
+            stepNum: 0,
+        },
     ];
 
     testRunner._onAssertionFailed = function (e) {
@@ -208,7 +208,7 @@ asyncTest('shared data', function () {
                 this.testValue = true;
             },
 
-            stepNum: 0
+            stepNum: 0,
         },
         {
             stepName: '2.Check and change data',
@@ -217,7 +217,7 @@ asyncTest('shared data', function () {
                 this.testValue = false;
             },
 
-            stepNum: 1
+            stepNum: 1,
         },
         {
             stepName: '3.Check data',
@@ -225,8 +225,8 @@ asyncTest('shared data', function () {
                 ok(!this.testValue);
             },
 
-            stepNum: 2
-        }
+            stepNum: 2,
+        },
     ];
 
     testRunner._onAssertionFailed = function () {
@@ -313,7 +313,7 @@ asyncTest('xhrBarrier', function () {
                 /*eslint-enable no-undef*/
             },
 
-            stepNum: 0
+            stepNum: 0,
         },
         {
             stepName: '2.Check xhr is completed',
@@ -321,8 +321,8 @@ asyncTest('xhrBarrier', function () {
                 ok(window.xhrCompleted);
             },
 
-            stepNum: 1
-        }
+            stepNum: 1,
+        },
     ];
 
     testRunner._onAssertionFailed = function () {
@@ -378,7 +378,7 @@ asyncTest('waiting for postback', function () {
                 /*eslint-enable no-undef*/
             },
 
-            stepNum: 0
+            stepNum: 0,
         },
         {
             stepName: '2.Check the page is loaded for the second time',
@@ -389,8 +389,8 @@ asyncTest('waiting for postback', function () {
                 /*eslint-enable no-undef*/
             },
 
-            stepNum: 1
-        }
+            stepNum: 1,
+        },
     ];
 
     testRunner._onAssertionFailed = function () {

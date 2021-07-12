@@ -26,13 +26,13 @@ test('Expected dialogs after page load', async t => {
         {
             type: 'confirm',
             text: 'Confirm?',
-            url:  pageUrl
+            url:  pageUrl,
         },
         {
             type: 'alert',
             text: 'Alert!',
-            url:  pageUrl
-        }
+            url:  pageUrl,
+        },
     ]);
 });
 

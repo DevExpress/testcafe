@@ -7,7 +7,7 @@ describe('[API] Test Speed', function () {
         return runTests('./testcafe-fixtures/speed-test.js', 'Speed in iframe', {
             only:            'chrome',
             speed:           0.5,
-            selectorTimeout: 10000
+            selectorTimeout: 10000,
         });
     });
 });

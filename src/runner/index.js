@@ -5,7 +5,7 @@ import { EventEmitter } from 'events';
 import {
     flattenDeep as flatten,
     pull as remove,
-    isFunction
+    isFunction,
 } from 'lodash';
 
 import Bootstrapper from './bootstrapper';
@@ -22,7 +22,7 @@ import {
     addRunningTest,
     removeRunningTest,
     startHandlingTestErrors,
-    stopHandlingTestErrors
+    stopHandlingTestErrors,
 } from '../utils/handle-errors';
 
 import OPTION_NAMES from '../configuration/option-names';
@@ -63,7 +63,7 @@ export default class Runner extends EventEmitter {
             OPTION_NAMES.src,
             OPTION_NAMES.browsers,
             OPTION_NAMES.reporter,
-            OPTION_NAMES.clientScripts
+            OPTION_NAMES.clientScripts,
         ]);
     }
 
@@ -95,7 +95,7 @@ export default class Runner extends EventEmitter {
         return Promise.all([
             this._disposeBrowserSet(browserSet),
             this._disposeReporters(reporters),
-            this._disposeTestedApp(testedApp)
+            this._disposeTestedApp(testedApp),
         ]);
     }
 
@@ -155,7 +155,7 @@ export default class Runner extends EventEmitter {
         const promises = [
             taskDonePromise,
             browserSetErrorPromise,
-            taskErrorPromise
+            taskErrorPromise,
         ];
 
         if (testedApp)
@@ -185,7 +185,7 @@ export default class Runner extends EventEmitter {
             proxy,
             opts,
             runnerWarningLog: warningLog,
-            compilerService:  this.compilerService
+            compilerService:  this.compilerService,
         });
     }
 
@@ -236,7 +236,7 @@ export default class Runner extends EventEmitter {
 
         if (!debugLoggerDefinedCorrectly) {
             this.configuration.mergeOptions({
-                [OPTION_NAMES.debugLogger]: defaultDebugLogger
+                [OPTION_NAMES.debugLogger]: defaultDebugLogger,
             });
         }
     }
@@ -503,7 +503,7 @@ export default class Runner extends EventEmitter {
             () => findWindow(''),
             errors.UnableToAccessScreenRecordingAPIError,
             {
-                interactive: hasLocalBrowsers && !isCI
+                interactive: hasLocalBrowsers && !isCI,
             }
         );
 

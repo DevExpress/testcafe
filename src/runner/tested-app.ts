@@ -80,7 +80,7 @@ export default class TestedApp {
 
         await Promise.race([
             delay(initDelay),
-            this.errorPromise
+            this.errorPromise,
         ]);
     }
 

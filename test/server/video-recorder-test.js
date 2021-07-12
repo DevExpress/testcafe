@@ -58,7 +58,7 @@ class VideoRecorderMock extends VideoRecorder {
                 const msg = renderTemplate(message, ...args);
 
                 this.log.push(msg);
-            }
+            },
         };
     }
 
@@ -116,17 +116,17 @@ function createTestRunMock (warningLog) {
             provider: {
                 hasCustomActionForBrowser: () => {
                     return {
-                        hasGetVideoFrameData: true
+                        hasGetVideoFrameData: true,
                     };
-                }
+                },
             },
-        }
+        },
     });
 
     return {
         testRun,
         test:  { skip: false },
-        index: 0
+        index: 0,
     };
 }
 
@@ -140,7 +140,7 @@ describe('Video Recorder', () => {
             legacy:     true,
             index:      1,
             test:       {},
-            quarantine: null
+            quarantine: null,
         };
 
         return browserJobMock
@@ -160,7 +160,7 @@ describe('Video Recorder', () => {
         expect(warningLog.messages).eql([
             'The "${TEST_INDEX}" path pattern placeholder cannot be applied to the recorded video.' +
             '\n\n' +
-            'The placeholder was replaced with an empty string.'
+            'The placeholder was replaced with an empty string.',
         ]);
         warningLog.messages = [];
 
@@ -168,7 +168,7 @@ describe('Video Recorder', () => {
         expect(warningLog.messages).eql([
             'The "${TEST_INDEX}" and "${FIXTURE}" path pattern placeholders cannot be applied to the recorded video.' +
             '\n\n' +
-            'The placeholders were replaced with an empty string.'
+            'The placeholders were replaced with an empty string.',
         ]);
     });
 
@@ -188,7 +188,7 @@ describe('Video Recorder', () => {
                 'job-start',
                 'test-created',
                 'temp-dir-initialized',
-                'generate-names'
+                'generate-names',
             ]);
         });
     });
@@ -238,25 +238,25 @@ describe('Video Recorder', () => {
                     recordings: [{
                         testRunId:  'test-run-1',
                         videoPath:  'path-test-run-1',
-                        singleFile: true
+                        singleFile: true,
                     }, {
                         testRunId:  'test-run-2',
                         videoPath:  'path-test-run-2',
-                        singleFile: true
-                    }]
+                        singleFile: true,
+                    }],
                 },
                 'test-2': {
                     recordings: [{
                         testRunId:  'test-run-3',
                         videoPath:  'path-test-run-3',
-                        singleFile: true
+                        singleFile: true,
                     }, {
                         testRunId:  'test-run-4',
                         videoPath:  'path-test-run-4',
-                        singleFile: true
-                    }]
-                }
-            }
+                        singleFile: true,
+                    }],
+                },
+            },
         };
 
         const expectedLog2 = {
@@ -265,25 +265,25 @@ describe('Video Recorder', () => {
                     recordings: [{
                         testRunId:  'test-run-1',
                         videoPath:  'path-test-run-1',
-                        singleFile: false
+                        singleFile: false,
                     }, {
                         testRunId:  'test-run-2',
                         videoPath:  'path-test-run-2',
-                        singleFile: false
-                    }]
+                        singleFile: false,
+                    }],
                 },
                 'test-2': {
                     recordings: [{
                         testRunId:  'test-run-3',
                         videoPath:  'path-test-run-3',
-                        singleFile: false
+                        singleFile: false,
                     }, {
                         testRunId:  'test-run-4',
                         videoPath:  'path-test-run-4',
-                        singleFile: false
-                    }]
-                }
-            }
+                        singleFile: false,
+                    }],
+                },
+            },
         };
 
 

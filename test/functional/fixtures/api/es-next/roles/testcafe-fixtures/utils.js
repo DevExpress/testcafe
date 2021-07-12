@@ -7,5 +7,5 @@ const hasFlag = ClientFunction(() => !!window.flag);
 
 export {
     setFlag,
-    hasFlag
+    hasFlag,
 };

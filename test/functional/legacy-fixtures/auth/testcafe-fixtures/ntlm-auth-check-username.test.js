@@ -9,5 +9,5 @@
         var credentials = JSON.parse(text);
 
         eq(credentials.UserName, 'username');
-    }
+    },
 };

@@ -11,13 +11,13 @@ async function getBrowserInfo (browser) {
     try {
         return {
             error: null,
-            info:  await browserProviderPool.getBrowserInfo(browser)
+            info:  await browserProviderPool.getBrowserInfo(browser),
         };
     }
     catch (err) {
         return {
             error: err,
-            info:  null
+            info:  null,
         };
     }
 }

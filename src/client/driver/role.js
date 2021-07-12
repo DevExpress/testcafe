@@ -1,4 +1,4 @@
 export default {
     master:  'master',
-    replica: 'replica'
+    replica: 'replica',
 };

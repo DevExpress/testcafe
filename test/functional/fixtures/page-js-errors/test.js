@@ -42,7 +42,7 @@ describe('Test should fail after js-error on the page', () => {
         return runTests('./testcafe-fixtures/unhandled-promise-rejection-test.js', 'Click button',
             {
                 shouldFail: true,
-                only:       'chrome'
+                only:       'chrome',
             })
             .catch(errs => {
                 expect(errs[0]).contains('Rejection reason');
@@ -60,7 +60,7 @@ describe('Should ignore an js-error on the page if the skipJsErrors option is se
         return runTests('./testcafe-fixtures/unhandled-promise-rejection-test.js', 'Click button',
             {
                 skipJsErrors: true,
-                only:         'chrome'
+                only:         'chrome',
             });
     });
 });

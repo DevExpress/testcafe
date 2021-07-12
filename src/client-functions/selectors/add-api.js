@@ -185,7 +185,7 @@ function addSnapshotProperties (obj, getSelector, SelectorBuilder, properties, o
                 };
 
                 return propertyPromise;
-            }
+            },
         });
     });
 }
@@ -206,7 +206,7 @@ function addVisibleProperty ({ obj, getSelector, SelectorBuilder }) {
 
                 return !!snapshot && snapshot[VISIBLE_PROP_NAME];
             });
-        }
+        },
     });
 }
 
@@ -218,7 +218,7 @@ export function addCustomMethods (obj, getSelector, SelectorBuilder, customMetho
 
         const dependencies = {
             customMethod: method,
-            selector:     getSelector()
+            selector:     getSelector(),
         };
 
         const callsiteNames = { instantiation: prop };
@@ -238,7 +238,7 @@ export function addCustomMethods (obj, getSelector, SelectorBuilder, customMetho
 
                 const additionalDependencies = {
                     args,
-                    customMethod: method
+                    customMethod: method,
                 };
 
                 return createDerivativeSelectorWithFilter({ getSelector, SelectorBuilder, selectorFn, apiFn, filter, additionalDependencies });
@@ -398,7 +398,7 @@ function addCounterProperties ({ obj, getSelector, SelectorBuilder }) {
             const counter = createCounter(getSelector, SelectorBuilder);
 
             return ReExecutablePromise.fromFn(() => counter());
-        }
+        },
     });
 
     Object.defineProperty(obj, 'exists', {
@@ -409,7 +409,7 @@ function addCounterProperties ({ obj, getSelector, SelectorBuilder }) {
             const counter = createCounter(getSelector, SelectorBuilder);
 
             return ReExecutablePromise.fromFn(async () => await counter() > 0);
-        }
+        },
     });
 }
 
@@ -433,7 +433,7 @@ function createDerivativeSelectorWithFilter ({ getSelector, SelectorBuilder, sel
     let dependencies = {
         selector:    collectionModeSelectorBuilder.getFunction(),
         filter:      filter,
-        filterNodes: filterNodes
+        filterNodes: filterNodes,
     };
 
     const { boundTestRun, timeout, visibilityCheck, apiFnChain } = collectionModeSelectorBuilder.options;
@@ -448,7 +448,7 @@ function createDerivativeSelectorWithFilter ({ getSelector, SelectorBuilder, sel
         timeout,
         visibilityCheck,
         apiFnChain,
-        apiFn
+        apiFn,
     }, { instantiation: 'Selector' });
 
     return builder.getFunction();
@@ -546,7 +546,7 @@ function addFilterMethods (options) {
 
         const args = getDerivativeSelectorArgs(options, selectorFn, apiFn, filterByAttr, {
             attrName,
-            attrValue
+            attrValue,
         });
 
         return createDerivativeSelectorWithFilter(args);
@@ -610,7 +610,7 @@ function addCustomMethodsMethod ({ obj, getSelector, SelectorBuilder }) {
         Object.keys(methods).forEach(methodName => {
             customMethods[methodName] = {
                 method:         methods[methodName],
-                returnDOMNodes: opts && !!opts.returnDOMNodes
+                returnDOMNodes: opts && !!opts.returnDOMNodes,
             };
         });
 

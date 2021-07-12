@@ -15,7 +15,7 @@ describe('Native dialogs handling', function () {
             .catch(function (errs) {
                 var expectedError = [
                     'Error at step "1.Click alert button":',
-                    'Unexpected system alert dialog Alert dialog appeared.'
+                    'Unexpected system alert dialog Alert dialog appeared.',
                 ].join(' ');
 
                 expect(errs[0]).contains(expectedError);
@@ -27,7 +27,7 @@ describe('Native dialogs handling', function () {
             .catch(function (errs) {
                 var expectedError = [
                     'Error at step "1.Click submit button "Confirm"":',
-                    'Unexpected system confirm dialog Confirm dialog appeared.'
+                    'Unexpected system confirm dialog Confirm dialog appeared.',
                 ].join(' ');
 
                 expect(errs[0]).contains(expectedError);
@@ -39,7 +39,7 @@ describe('Native dialogs handling', function () {
             .catch(function (errs) {
                 var expectedError = [
                     'Error at step "1.Click submit button "Confirm"":',
-                    'Unexpected system confirm dialog Confirm dialog appeared.'
+                    'Unexpected system confirm dialog Confirm dialog appeared.',
                 ].join(' ');
 
                 expect(errs[0]).contains(expectedError);
@@ -51,7 +51,7 @@ describe('Native dialogs handling', function () {
             .catch(function (errs) {
                 var expectedError = [
                     'Error at step "1.Click prompt button":',
-                    'Unexpected system prompt dialog Prompt dialog appeared.'
+                    'Unexpected system prompt dialog Prompt dialog appeared.',
                 ].join(' ');
 
                 expect(errs[0]).contains(expectedError);
@@ -63,7 +63,7 @@ describe('Native dialogs handling', function () {
             .catch(function (errs) {
                 var expectedError = [
                     'Error at step "1.Click alert button":',
-                    'Unexpected system alert dialog Alert dialog appeared.'
+                    'Unexpected system alert dialog Alert dialog appeared.',
                 ].join(' ');
 
                 expect(errs[0]).contains(expectedError);
@@ -75,7 +75,7 @@ describe('Native dialogs handling', function () {
             .catch(function (errs) {
                 var expectedError = [
                     'Error at step "1.Click submit button "Button"":',
-                    'The expected system confirm dialog did not appear.'
+                    'The expected system confirm dialog did not appear.',
                 ].join(' ');
 
                 expect(errs[0]).contains(expectedError);
@@ -87,7 +87,7 @@ describe('Native dialogs handling', function () {
             .catch(function (errs) {
                 var expectedError = [
                     'Error at step "1.Click submit button "Button"":',
-                    'The expected system prompt dialog did not appear.'
+                    'The expected system prompt dialog did not appear.',
                 ].join(' ');
 
                 expect(errs[0]).contains(expectedError);
@@ -99,7 +99,7 @@ describe('Native dialogs handling', function () {
             .catch(function (errs) {
                 var expectedError = [
                     'Error at step "1.Click submit button "Button"":',
-                    'The expected system alert dialog did not appear.'
+                    'The expected system alert dialog did not appear.',
                 ].join(' ');
 
                 expect(errs[0]).contains(expectedError);
@@ -116,7 +116,7 @@ describe('Native dialogs handling', function () {
                 .catch(function (errs) {
                     var expectedError = [
                         'Error at step "1.Click link "Confirm page"":',
-                        'Unexpected system confirm dialog Confirm dialog appeared.'
+                        'Unexpected system confirm dialog Confirm dialog appeared.',
                     ].join(' ');
 
                     expect(errs[0]).contains(expectedError);
@@ -128,7 +128,7 @@ describe('Native dialogs handling', function () {
                 .catch(function (errs) {
                     var expectedError = [
                         'Error at step "1.Click link "This page"":',
-                        'The expected system confirm dialog did not appear.'
+                        'The expected system confirm dialog did not appear.',
                     ].join(' ');
 
                     expect(errs[0]).contains(expectedError);
@@ -146,7 +146,7 @@ describe('Native dialogs handling', function () {
                 .catch(function (errs) {
                     var expectedError = [
                         'Error at step "1.Click submit button "Confirm"":',
-                        'Unexpected system confirm dialog Confirm dialog appeared.'
+                        'Unexpected system confirm dialog Confirm dialog appeared.',
                     ].join(' ');
 
                     expect(errs[0]).contains(expectedError);
@@ -158,7 +158,7 @@ describe('Native dialogs handling', function () {
                 .catch(function (errs) {
                     var expectedError = [
                         'Error at step "1.Click submit button "Button"":',
-                        'The expected system confirm dialog did not appear.'
+                        'The expected system confirm dialog did not appear.',
                     ].join(' ');
 
                     expect(errs[0]).contains(expectedError);
@@ -174,7 +174,7 @@ describe('Native dialogs handling', function () {
                 .catch(function (errs) {
                     var expectedError = [
                         'Error at step "1.Click link "Confirm page"":',
-                        'Unexpected system confirm dialog Confirm dialog appeared.'
+                        'Unexpected system confirm dialog Confirm dialog appeared.',
                     ].join(' ');
 
                     expect(errs[0]).contains(expectedError);
@@ -186,7 +186,7 @@ describe('Native dialogs handling', function () {
                 .catch(function (errs) {
                     var expectedError = [
                         'Error at step "1.Click link "This page"":',
-                        'The expected system confirm dialog did not appear.'
+                        'The expected system confirm dialog did not appear.',
                     ].join(' ');
 
                     expect(errs[0]).contains(expectedError);

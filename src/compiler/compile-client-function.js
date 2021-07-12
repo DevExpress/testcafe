@@ -23,7 +23,7 @@ function getBabelOptions () {
     const { presetEnvForClientFunction, transformForOfAsArray } = loadBabelLibs();
 
     return Object.assign({}, BASE_BABEL_OPTIONS, {
-        presets: [{ plugins: [transformForOfAsArray] }, presetEnvForClientFunction]
+        presets: [{ plugins: [transformForOfAsArray] }, presetEnvForClientFunction],
     });
 }
 

@@ -35,6 +35,6 @@ export default function (): Replicator {
             new RequestFilterRuleTransform(),
             new ResponseMockTransform(),
             new RequestHookEventDataTransform(),
-            new RoleTransform()
+            new RoleTransform(),
         ]);
 }

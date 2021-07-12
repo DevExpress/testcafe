@@ -31,7 +31,7 @@ export function register (proxy: Proxy, tests: Test[]): string[] {
 
             proxy.GET(route, {
                 content:     getCustomClientScriptCode(script as ClientScript),
-                contentType: CONTENT_TYPES.javascript
+                contentType: CONTENT_TYPES.javascript,
             });
 
             routes.push(route);

@@ -6,7 +6,7 @@ import {
     VideoOptions,
     TestVideoInfo,
     TestRunVideoInfo,
-    TestRunVideoSavedEventArgs
+    TestRunVideoSavedEventArgs,
 } from './interfaces';
 
 import moment from 'moment';
@@ -50,7 +50,7 @@ export default class Videos {
         testVideo.recordings.push({
             testRunId: testRun.id,
             videoPath,
-            singleFile
+            singleFile,
         });
     }
 }

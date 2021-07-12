@@ -79,8 +79,8 @@ describe('IPC IO', () => {
         const { SyncReader, SyncWriter } = proxyquire('../../lib/services/utils/ipc/io', {
             'fs': {
                 readSync:  readSyncStub,
-                writeSync: writeSyncStub
-            }
+                writeSync: writeSyncStub,
+            },
         });
 
         const fd = 42;

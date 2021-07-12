@@ -1,7 +1,7 @@
 import { emulatedDevices } from 'device-specs';
 import { pickBy as filterProperties, camelCase } from 'lodash';
 import {
-    hasMatch, findMatch, isMatchTrue, getModes, splitEscaped, getPathFromParsedModes, parseConfig
+    hasMatch, findMatch, isMatchTrue, getModes, splitEscaped, getPathFromParsedModes, parseConfig,
 } from '../../../utils/argument-parsing';
 
 
@@ -16,7 +16,7 @@ function parseUserArgs (userArgs) {
     const parsedArgs = {
         headless:    false,
         userDataDir: false,
-        windowSize:  false
+        windowSize:  false,
     };
 
     const splittedArgs = userArgs.split(' ').filter(arg => !!arg);
@@ -51,7 +51,7 @@ function parseModes (modesStr, userArgs) {
         path,
         userProfile,
         headless,
-        emulation
+        emulation,
     };
 
     return { modes, optionsString };
@@ -101,7 +101,7 @@ function parseOptions (str, useDefaultDimensions) {
         height:      useDefaultDimensions ? HEADLESS_DEFAULT_HEIGHT : 0,
         scaleFactor: 0,
         mobile:      false,
-        cdpPort:     findMatch(parsed, /^cdpPort=(.*)/)
+        cdpPort:     findMatch(parsed, /^cdpPort=(.*)/),
     };
 
     const deviceName         = findMatch(parsed, /^device=(.*)/);
@@ -115,7 +115,7 @@ function parseOptions (str, useDefaultDimensions) {
         width:       Number(findMatch(parsed, /^width=(.*)/) || NaN),
         height:      Number(findMatch(parsed, /^height=(.*)/) || NaN),
         scaleFactor: Number(findMatch(parsed, /^scaleFactor=(.*)/) || NaN),
-        userAgent:   findMatch(parsed, /^userAgent=(.*)/)
+        userAgent:   findMatch(parsed, /^userAgent=(.*)/),
     };
 
     specifiedDeviceOptions = filterProperties(specifiedDeviceOptions, optionValue => {

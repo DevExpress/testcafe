@@ -8,7 +8,7 @@ describe('[Regression](GH-1907)', function () {
     it('Base selector should pass timeout and visibilityCheck options to derivative selectors', function () {
         return runTests('testcafe-fixtures/index-test.js', 'Check timeout and visibilityCheck', {
             selectorTimeout: 0,
-            shouldFail:      true
+            shouldFail:      true,
         })
             .catch(function (errs) {
                 expect(errs[0]).contains(

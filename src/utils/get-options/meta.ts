@@ -12,7 +12,7 @@ export default async function (optionName: string, options: string): Promise<Dic
                 throw new GeneralError(RUNTIME_ERRORS.optionValueIsNotValidKeyValue, optionName);
 
             return String(value);
-        }
+        },
     });
 
     if (Object.keys(metaOptions).length === 0)

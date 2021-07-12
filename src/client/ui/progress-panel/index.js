@@ -71,7 +71,7 @@ export default class ProgressPanel {
 
         styleUtils.set(element, {
             left: left + 'px',
-            top:  top + 'px'
+            top:  top + 'px',
         });
     }
 

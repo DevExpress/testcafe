@@ -9,5 +9,5 @@
 
     '2.Click div2': function () {
         act.click('#div2');
-    }
+    },
 };

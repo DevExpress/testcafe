@@ -14,5 +14,5 @@ module.exports = new Transform({
         }
 
         cb(null, file);
-    }
+    },
 });

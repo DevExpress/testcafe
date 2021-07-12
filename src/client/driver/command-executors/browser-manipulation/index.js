@@ -1,14 +1,14 @@
 import {
     transport,
     eventSandbox,
-    Promise
+    Promise,
 } from '../../deps/hammerhead';
 
 import {
     domUtils,
     scrollController,
     sendRequestToFrame,
-    delay
+    delay,
 } from '../../deps/testcafe-core';
 
 import { Scroll as ScrollAutomation } from '../../deps/testcafe-automation';
@@ -16,7 +16,7 @@ import {
     hide as hideUI,
     show as showUI,
     showScreenshotMark,
-    hideScreenshotMark
+    hideScreenshotMark,
 } from '../../deps/testcafe-ui';
 
 import DriverStatus from '../../status';
@@ -93,10 +93,10 @@ class ManipulationExecutor {
                 documentWidth:  document.documentElement.clientWidth,
                 documentHeight: document.documentElement.clientHeight,
                 bodyWidth:      document.body.clientWidth,
-                bodyHeight:     document.body.clientHeight
+                bodyHeight:     document.body.clientHeight,
             },
 
-            disableResending: true
+            disableResending: true,
         };
 
         if (this.command.type === COMMAND_TYPE.takeElementScreenshot)
@@ -139,7 +139,7 @@ class ManipulationExecutor {
                     offsetX:          scrollTargetX,
                     offsetY:          scrollTargetY,
                     scrollToCenter:   scrollToCenter,
-                    skipParentFrames: true
+                    skipParentFrames: true,
                 }));
 
                 return scrollAutomation.run();
@@ -171,7 +171,7 @@ class ManipulationExecutor {
         const iframeRequestPromise = sendRequestToFrame({
             cmd:            MANIPULATION_REQUEST_CMD,
             command:        this.command,
-            cropDimensions: cropDimensions
+            cropDimensions: cropDimensions,
         }, MANIPULATION_RESPONSE_CMD, window.parent);
 
         return iframeRequestPromise

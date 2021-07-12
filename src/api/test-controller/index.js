@@ -4,7 +4,7 @@ import {
     identity,
     assign,
     isNil as isNullOrUndefined,
-    flattenDeep as flatten
+    flattenDeep as flatten,
 } from 'lodash';
 
 import { getCallsiteForMethod } from '../../errors/get-callsite';
@@ -50,7 +50,7 @@ import {
     ScrollByCommand,
     ScrollIntoViewCommand,
     UseRoleCommand,
-    DispatchEventCommand
+    DispatchEventCommand,
 } from '../../test-run/commands/actions';
 
 import {
@@ -58,7 +58,7 @@ import {
     TakeElementScreenshotCommand,
     ResizeWindowCommand,
     ResizeWindowToFitDeviceCommand,
-    MaximizeWindowCommand
+    MaximizeWindowCommand,
 } from '../../test-run/commands/browser-manipulation';
 
 import { WaitCommand, DebugCommand } from '../../test-run/commands/observation';
@@ -69,7 +69,7 @@ import TestRunProxy from '../../services/compiler/test-run-proxy';
 
 import {
     MultipleWindowsModeIsDisabledError,
-    MultipleWindowsModeIsNotAvailableInRemoteBrowserError
+    MultipleWindowsModeIsNotAvailableInRemoteBrowserError,
 } from '../../errors/test-run';
 
 const originalThen = Promise.resolve().then;
@@ -110,7 +110,7 @@ export default class TestController {
 
         delegateAPI(extendedPromise, TestController.API_LIST, {
             handler:     this,
-            proxyMethod: markCallsiteAwaited
+            proxyMethod: markCallsiteAwaited,
         });
 
         return extendedPromise;
@@ -288,7 +288,7 @@ export default class TestController {
             startPos,
             endLine,
             endPos,
-            options
+            options,
         });
     }
 
@@ -296,7 +296,7 @@ export default class TestController {
         return this._enqueueCommand('selectEditableContent', SelectEditableContentCommand, {
             startSelector,
             endSelector,
-            options
+            options,
         });
     }
 
@@ -437,7 +437,7 @@ export default class TestController {
 
     _setNativeDialogHandler$ (fn, options) {
         return this._enqueueCommand('setNativeDialogHandler', SetNativeDialogHandlerCommand, {
-            dialogHandler: { fn, options }
+            dialogHandler: { fn, options },
         });
     }
 

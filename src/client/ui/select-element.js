@@ -175,7 +175,7 @@ export function expandOptionList (select) {
         minWidth:   styleUtils.getWidth(curSelectEl) + 'px',
         left:       positionUtils.getOffsetPosition(curSelectEl).left + 'px',
         height:     domUtils.getSelectVisibleChildren(select).length > MAX_OPTION_LIST_LENGTH ?
-            styleUtils.getOptionHeight(select) * MAX_OPTION_LIST_LENGTH : ''
+            styleUtils.getOptionHeight(select) * MAX_OPTION_LIST_LENGTH : '',
     });
 
     const selectTopPosition     = positionUtils.getOffsetPosition(curSelectEl).top;
@@ -248,7 +248,7 @@ export function getSelectChildCenter (child) {
     if (!select) {
         return {
             x: 0,
-            y: 0
+            y: 0,
         };
     }
 
@@ -257,7 +257,7 @@ export function getSelectChildCenter (child) {
 
     return {
         x: Math.round(childRectangle.left + childRectangle.width / 2),
-        y: Math.round(childRectangle.top + optionHeight / 2)
+        y: Math.round(childRectangle.top + optionHeight / 2),
     };
 }
 

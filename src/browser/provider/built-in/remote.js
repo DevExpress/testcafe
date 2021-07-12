@@ -51,7 +51,7 @@ export default {
             hasResizeWindow:                !isLocalBrowser,
             hasMaximizeWindow:              !isLocalBrowser,
             hasTakeScreenshot:              !isLocalBrowser,
-            hasCanResizeWindowToDimensions: !isLocalBrowser
+            hasCanResizeWindowToDimensions: !isLocalBrowser,
         };
     },
 
@@ -65,5 +65,5 @@ export default {
 
     async maximizeWindow (browserId) {
         this.reportWarning(browserId, WARNING_MESSAGE.browserManipulationsOnRemoteBrowser);
-    }
+    },
 };

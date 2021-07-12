@@ -103,7 +103,7 @@ const CursorUI = {
 
         styleUtils.set(this.cursorElement, {
             left: this.x - this.pointerOffsetX + 'px',
-            top:  this.y - this.pointerOffsetY + 'px'
+            top:  this.y - this.pointerOffsetY + 'px',
         });
 
         return Promise.resolve();
@@ -136,7 +136,7 @@ const CursorUI = {
         shadowUI.removeClass(this.cursorElement, STATE_CLASSES);
 
         return Promise.resolve();
-    }
+    },
 };
 
 export default CursorUI;

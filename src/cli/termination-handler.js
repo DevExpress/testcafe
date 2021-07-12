@@ -4,7 +4,7 @@ import EventEmitter from 'events';
 const TERMINATION_TYPES = {
     sigint:   'sigint',
     sigbreak: 'sigbreak',
-    shutdown: 'shutdown'
+    shutdown: 'shutdown',
 };
 
 const TERMINATION_LEVEL_INCREASED_EVENT = 'termination-level-increased';
@@ -16,7 +16,7 @@ export default class TerminationHandler extends EventEmitter {
         this.handledSignalsCount = {
             [TERMINATION_TYPES.sigint]:   0,
             [TERMINATION_TYPES.sigbreak]: 0,
-            [TERMINATION_TYPES.shutdown]: 0
+            [TERMINATION_TYPES.shutdown]: 0,
         };
 
         this.terminationLevel = 0;

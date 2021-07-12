@@ -13,7 +13,7 @@ var MAX_UNLOADING_TIMEOUT = 15 * 1000;
         var delay = Date.now() - this.startTime;
 
         ok(delay < MAX_UNLOADING_TIMEOUT);
-    }
+    },
 };
 
 '@test'['Click on a download link in iframe'] = {
@@ -26,6 +26,6 @@ var MAX_UNLOADING_TIMEOUT = 15 * 1000;
         var delay = Date.now() - this.startTime;
 
         ok(delay < MAX_UNLOADING_TIMEOUT);
-    }
+    },
 };
 

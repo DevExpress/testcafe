@@ -5,7 +5,7 @@ const getScrollPosition = selector => ClientFunction(() => {
 
     return {
         top:  el.scrollTop,
-        left: el.scrollLeft
+        left: el.scrollLeft,
     };
 }, { dependencies: { selector } });
 
@@ -14,7 +14,7 @@ const getMaxScrollPosition = ClientFunction(() => {
 
     return {
         maxY: el.scrollHeight - el.clientHeight,
-        maxX: el.scrollWidth - el.clientWidth
+        maxX: el.scrollWidth - el.clientWidth,
     };
 });
 

@@ -26,7 +26,7 @@ const diff                             = require('../../lib/utils/diff');
 
 const {
     buildChromeArgs,
-    IN_DOCKER_FLAGS
+    IN_DOCKER_FLAGS,
 } = require('../../lib/browser/provider/built-in/dedicated/chrome/build-chrome-args');
 
 describe('Utils', () => {
@@ -72,13 +72,13 @@ describe('Utils', () => {
             os:              { name: 'Other', version: '0.0' },
             engine:          { name: 'Other', version: '0.0' },
             prettyUserAgent: 'Other 0.0 / Other 0.0',
-            userAgent:       ''
+            userAgent:       '',
         };
 
         const testCases = [
             {
                 sourceUA: '',
-                expected: expectedEmptyParsedUA
+                expected: expectedEmptyParsedUA,
             },
             {
                 sourceUA: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36',
@@ -89,8 +89,8 @@ describe('Utils', () => {
                     os:              { name: 'Windows', version: '10' },
                     engine:          { name: 'Blink', version: '0.0' },
                     prettyUserAgent: 'Chrome 78.0.3904.70 / Windows 10',
-                    userAgent:       'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36'
-                }
+                    userAgent:       'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36',
+                },
             },
             {
                 sourceUA: 'Mozilla/5.0 (iPad; CPU OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1 Mobile/15E148 Safari/604.1',
@@ -101,8 +101,8 @@ describe('Utils', () => {
                     os:              { name: 'iOS', version: '12.2' },
                     engine:          { name: 'WebKit', version: '605.1.15' },
                     prettyUserAgent: 'Safari 12.1 / iOS 12.2',
-                    userAgent:       'Mozilla/5.0 (iPad; CPU OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1 Mobile/15E148 Safari/604.1'
-                }
+                    userAgent:       'Mozilla/5.0 (iPad; CPU OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1 Mobile/15E148 Safari/604.1',
+                },
             },
             {
                 sourceUA: 'Mozilla/5.0 (Linux; Android 8.1.0; Android SDK built for x86 Build/OSM1.180201.026) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.87 Mobile Safari/537.36',
@@ -113,8 +113,8 @@ describe('Utils', () => {
                     os:              { name: 'Android', version: '8.1.0' },
                     engine:          { name: 'Blink', version: '0.0' },
                     prettyUserAgent: 'Chrome 67.0.3396.87 / Android 8.1.0',
-                    userAgent:       'Mozilla/5.0 (Linux; Android 8.1.0; Android SDK built for x86 Build/OSM1.180201.026) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.87 Mobile Safari/537.36'
-                }
+                    userAgent:       'Mozilla/5.0 (Linux; Android 8.1.0; Android SDK built for x86 Build/OSM1.180201.026) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.87 Mobile Safari/537.36',
+                },
             },
             {
                 sourceUA: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.130 Electron/7.1.7 Safari/537.36',
@@ -125,9 +125,9 @@ describe('Utils', () => {
                     os:              { name: 'Windows', version: '10' },
                     engine:          { name: 'Blink', version: '0.0' },
                     prettyUserAgent: 'Electron 7.1.7 / Windows 10',
-                    userAgent:       'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.130 Electron/7.1.7 Safari/537.36'
-                }
-            }
+                    userAgent:       'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.130 Electron/7.1.7 Safari/537.36',
+                },
+            },
         ];
 
         testCases.forEach(testCase => {
@@ -143,7 +143,7 @@ describe('Utils', () => {
 
             const expectedFiles = [
                 'test/test-dir-file.js',
-                'tests/tests-dir-file.js'
+                'tests/tests-dir-file.js',
             ].map(file => {
                 return path.resolve(workingDir, file);
             });
@@ -172,7 +172,7 @@ describe('Utils', () => {
                 'test/server/data/file-list/dir4/dir4-1/file-4-1-3.testcafe',
                 'test/server/data/file-list/dir4/dir4-2/file-4-2-1.js',
                 'test/server/data/file-list/dir4/dir4-2/file-4-2-2.ts',
-                'test/server/data/file-list/dir4/dir4-2/file-4-2-3.testcafe'
+                'test/server/data/file-list/dir4/dir4-2/file-4-2-3.testcafe',
             ];
 
             if (OS.win) {
@@ -193,7 +193,7 @@ describe('Utils', () => {
                 'test/server/data/file-list/dir2/*.js',
                 '!test/server/data/file-list/dir2/file-2-1.js',
                 'test/server/data/file-list/dir3/',
-                'test/server/data/file-list/dir4/**/*/'
+                'test/server/data/file-list/dir4/**/*/',
             ];
 
             if (OS.win) {
@@ -311,8 +311,8 @@ describe('Utils', () => {
 
                 const cleanupProcess = proxyquire('../../lib/utils/temp-directory/cleanup-process', {
                     'child_process': {
-                        spawn: fakeSpawn
-                    }
+                        spawn: fakeSpawn,
+                    },
                 });
 
                 await cleanupProcess.init();
@@ -438,7 +438,7 @@ describe('Utils', () => {
                 configurable: true,
 
                 get: () => Object.create(null),
-                set: v => v
+                set: v => v,
             });
 
             const moment = require('../../lib/utils/moment-loader');
@@ -490,12 +490,12 @@ describe('Utils', () => {
             const data = [
                 {
                     name:      'minimal',
-                    outStream: 'path/to/file/1'
+                    outStream: 'path/to/file/1',
                 },
                 {
                     name:      'json',
-                    outStream: 'path/to/file/2'
-                }
+                    outStream: 'path/to/file/2',
+                },
             ];
 
             const result = prepareReporters(data);
@@ -509,7 +509,7 @@ describe('Utils', () => {
                 null,
                 9,
                 function () {
-                }
+                },
             ];
 
             shouldThrowCases.forEach(output => {
@@ -523,9 +523,9 @@ describe('Utils', () => {
                 'path/to/file',
                 {
                     write: noop,
-                    end:   noop
+                    end:   noop,
                 },
-                new PassThrough()
+                new PassThrough(),
             ];
 
             shouldNotThrowCases.forEach(output => {
@@ -540,14 +540,14 @@ describe('Utils', () => {
         const config = {
             userProfile: false,
             headless:    false,
-            userArgs:    ''
+            userArgs:    '',
         };
 
         const cdpPort      = '';
         const platformArgs = '--no-first-run';
 
         const tempProfileDir = {
-            path: '/temp/testcafe/chrome-profile-34904xxzNmO5Vkbtz'
+            path: '/temp/testcafe/chrome-profile-34904xxzNmO5Vkbtz',
         };
 
         let chromeArgs = '';

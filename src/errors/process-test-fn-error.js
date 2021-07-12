@@ -8,7 +8,7 @@ import NODE_MODULES from '../shared/node-modules-folder-name';
 import {
     UncaughtErrorInTestCode,
     UncaughtNonErrorObjectInTestCode,
-    ExternalAssertionLibraryError
+    ExternalAssertionLibraryError,
 } from './test-run';
 
 function isAssertionErrorCallsiteFrame (frame) {

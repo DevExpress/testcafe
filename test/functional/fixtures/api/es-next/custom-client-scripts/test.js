@@ -4,13 +4,13 @@ const { expect } = require('chai');
 describe('Custom client scripts', () => {
     it('Runner', () => {
         return runTests('./testcafe-fixtures/runner.js', null, {
-            clientScripts: 'test/functional/fixtures/api/es-next/custom-client-scripts/data/set-flag1.js'
+            clientScripts: 'test/functional/fixtures/api/es-next/custom-client-scripts/data/set-flag1.js',
         });
     });
 
     it('Custom client script should be proxied', () => {
         return runTests('./testcafe-fixtures/check-proxing.js', null, {
-            clientScripts: 'test/functional/fixtures/api/es-next/custom-client-scripts/data/page-url.js'
+            clientScripts: 'test/functional/fixtures/api/es-next/custom-client-scripts/data/page-url.js',
         });
     });
 
@@ -20,7 +20,7 @@ describe('Custom client scripts', () => {
 
     it('Mixed', () => {
         return runTests('./testcafe-fixtures/mixed.js', null, {
-            clientScripts: 'test/functional/fixtures/api/es-next/custom-client-scripts/data/set-flag1.js'
+            clientScripts: 'test/functional/fixtures/api/es-next/custom-client-scripts/data/set-flag1.js',
         });
     });
 
@@ -28,8 +28,8 @@ describe('Custom client scripts', () => {
         return runTests('./testcafe-fixtures/specified-page.js', null, {
             clientScripts: {
                 path: 'test/functional/fixtures/api/es-next/custom-client-scripts/data/set-flag1.js',
-                page: 'http://localhost:3000/fixtures/api/es-next/custom-client-scripts/pages/index.html'
-            }
+                page: 'http://localhost:3000/fixtures/api/es-next/custom-client-scripts/pages/index.html',
+            },
         });
     });
 
@@ -40,7 +40,7 @@ describe('Custom client scripts', () => {
                     'The client script you tried to inject is empty.',
                     'You injected the following client scripts several times:\n' +
                     '"{ content: \'1\' }"\n' +
-                    `"{ path: '${path.resolve('test/functional/fixtures/api/es-next/custom-client-scripts/data/set-flag1.js')}' }"`
+                    `"{ path: '${path.resolve('test/functional/fixtures/api/es-next/custom-client-scripts/data/set-flag1.js')}' }"`,
                 ]);
             });
     });
@@ -51,7 +51,7 @@ describe('Custom client scripts', () => {
 
     it('Execution order', () => {
         return runTests('./testcafe-fixtures/execution-order.js', null, {
-            clientScripts: 'test/functional/fixtures/api/es-next/custom-client-scripts/data/console_log_1.js'
+            clientScripts: 'test/functional/fixtures/api/es-next/custom-client-scripts/data/console_log_1.js',
         });
     });
 

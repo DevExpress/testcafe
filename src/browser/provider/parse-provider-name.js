@@ -13,6 +13,6 @@ export default function (providerName) {
 
     return {
         providerName: scope + name,
-        moduleName:   scope + BROWSER_PROVIDER_MODULE_NAME_PREFIX + name
+        moduleName:   scope + BROWSER_PROVIDER_MODULE_NAME_PREFIX + name,
     };
 }

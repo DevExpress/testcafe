@@ -24,7 +24,7 @@ $(document).ready(function () {
             .css({
                 position:   'absolute',
                 marginLeft: x + 'px',
-                marginTop:  y + 'px'
+                marginTop:  y + 'px',
             })
             .addClass(type)
             .addClass(TEST_ELEMENT_CLASS)
@@ -181,7 +181,7 @@ $(document).ready(function () {
             const hover = new HoverAutomation($el[0], new MouseOptions({
                 modifiers: { shift: true },
                 offsetX:   actionOffset,
-                offsetY:   actionOffset
+                offsetY:   actionOffset,
             }));
 
             hover

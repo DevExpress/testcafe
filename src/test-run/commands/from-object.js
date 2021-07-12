@@ -22,7 +22,7 @@ import {
     SetPageLoadTimeoutCommand,
     ExecuteExpressionCommand,
     ExecuteAsyncExpressionCommand,
-    RecorderCommand
+    RecorderCommand,
 } from './actions';
 
 import AssertionCommand from './assertion';
@@ -32,7 +32,7 @@ import {
     TakeElementScreenshotCommand,
     ResizeWindowCommand,
     ResizeWindowToFitDeviceCommand,
-    MaximizeWindowCommand
+    MaximizeWindowCommand,
 } from './browser-manipulation';
 
 import { WaitCommand, DebugCommand } from './observation';

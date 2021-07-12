@@ -63,7 +63,7 @@ describe('Native dialogs handling', function () {
         it('Should pass if the expected beforeUnload dialog appears after an action', function () {
             return runTests('./testcafe-fixtures/native-dialogs-test.js', 'Expected beforeUnload after an action', {
                 // https://github.com/DevExpress/testcafe-hammerhead/issues/698
-                skip: 'safari,iphone,ipad'
+                skip: 'safari,iphone,ipad',
             });
         });
     });

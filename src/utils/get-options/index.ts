@@ -13,5 +13,5 @@ export {
     getVideoOptions,
     getMetaOptions,
     getGrepOptions,
-    getCompilerOptions
+    getCompilerOptions,
 };

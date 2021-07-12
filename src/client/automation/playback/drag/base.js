@@ -3,7 +3,7 @@ import {
     contentEditable,
     positionUtils,
     domUtils,
-    delay
+    delay,
 } from '../../deps/testcafe-core';
 import { fromPoint as getElementFromPoint } from '../../get-element';
 import VisibleElementAutomation from '../visible-element-automation';
@@ -78,7 +78,7 @@ export default class DragAutomationBase extends VisibleElementAutomation {
             speed:                   this.speed,
             minMovingTime:           MIN_MOVING_TIME,
             holdLeftButton:          true,
-            skipDefaultDragBehavior: this.simulateDefaultBehavior === false
+            skipDefaultDragBehavior: this.simulateDefaultBehavior === false,
         }, false);
 
         const moveAutomation = new MoveAutomation(element, dragOptions);
@@ -100,7 +100,7 @@ export default class DragAutomationBase extends VisibleElementAutomation {
                 let topElement = null;
                 const options    = extend({
                     clientX: point.x,
-                    clientY: point.y
+                    clientY: point.y,
                 }, this.modifiers);
 
                 return getElementFromPoint(point.x, point.y)
@@ -143,8 +143,8 @@ export default class DragAutomationBase extends VisibleElementAutomation {
                     element: element,
                     options: extend({
                         clientX: clientPoint.x,
-                        clientY: clientPoint.y
-                    }, this.modifiers)
+                        clientY: clientPoint.y,
+                    }, this.modifiers),
                 };
 
                 // NOTE: we should raise start drag with 'mouseActionStepDelay' after we trigger

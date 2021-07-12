@@ -71,15 +71,15 @@ $(document).ready(function () {
                 backgroundColor: 'grey',
                 left:            left ? left + 'px' : '100px',
                 top:             top ? top + 'px' : '850px',
-                zIndex:          5
+                zIndex:          5,
             })
             .bind(featureDetection.isTouchDevice ? 'touchstart' : 'mousedown', function (e) {
                 lastCursorPosition = featureDetection.isTouchDevice ? {
                     x: e.originalEvent.targetTouches[0].pageX || e.originalEvent.touches[0].pageX,
-                    y: e.originalEvent.targetTouches[0].pageY || e.originalEvent.touches[0].pageY
+                    y: e.originalEvent.targetTouches[0].pageY || e.originalEvent.touches[0].pageY,
                 } : {
                     x: e.clientX,
-                    y: e.clientY
+                    y: e.clientY,
                 };
                 $(this).data('dragStarted', true);
             })
@@ -92,10 +92,10 @@ $(document).ready(function () {
         $(curDocument).bind(featureDetection.isTouchDevice ? 'touchmove' : 'mousemove', function (e) {
             const curMousePos = featureDetection.isTouchDevice ? {
                 x: e.originalEvent.targetTouches[0].pageX || e.originalEvent.touches[0].pageX,
-                y: e.originalEvent.targetTouches[0].pageY || e.originalEvent.touches[0].pageY
+                y: e.originalEvent.targetTouches[0].pageY || e.originalEvent.touches[0].pageY,
             } : {
                 x: e.clientX,
-                y: e.clientY
+                y: e.clientY,
             };
 
             $.each($draggable, function () {
@@ -105,7 +105,7 @@ $(document).ready(function () {
 
                     $this.css({
                         left: Math.round($this.position().left) + curMousePos.x - lastCursorPosition.x,
-                        top:  Math.round($this.position().top) + curMousePos.y - lastCursorPosition.y
+                        top:  Math.round($this.position().top) + curMousePos.y - lastCursorPosition.y,
                     });
                     return false;
                 }
@@ -132,7 +132,7 @@ $(document).ready(function () {
             if ($draggable.data('dragStarted')) {
                 $draggable.css({
                     left: $draggable.position().left + x,
-                    top:  $draggable.position().top + y
+                    top:  $draggable.position().top + y,
                 });
             }
         });
@@ -157,7 +157,7 @@ $(document).ready(function () {
         const offsets      = getOffsetOptions(element);
         const hoverOptions = new MouseOptions({
             offsetX: offsets.offsetX,
-            offsetY: offsets.offsetY
+            offsetY: offsets.offsetY,
         });
 
         const hoverAutomation = new HoverAutomation(element, hoverOptions);
@@ -178,8 +178,8 @@ $(document).ready(function () {
                 ctrl:  options.ctrl,
                 alt:   options.ctrl,
                 shift: options.shift,
-                meta:  options.meta
-            }
+                meta:  options.meta,
+            },
         });
 
         const clickAutomation = new ClickAutomation(el, clickOptions);
@@ -200,8 +200,8 @@ $(document).ready(function () {
                 ctrl:  options.ctrl,
                 alt:   options.ctrl,
                 shift: options.shift,
-                meta:  options.meta
-            }
+                meta:  options.meta,
+            },
         });
 
         const dblClickAutomation = new DblClickAutomation(el, clickOptions);
@@ -218,7 +218,7 @@ $(document).ready(function () {
             replace:  options.replace,
             paste:    options.paste,
             offsetX:  offsets.offsetX,
-            offsetY:  offsets.offsetY
+            offsetY:  offsets.offsetY,
         });
 
         const typeAutomation = new TypeAutomation(element, text, typeOptions);
@@ -268,7 +268,7 @@ $(document).ready(function () {
 
                 runClickAutomation($button[0], {
                     offsetX: Math.round($button[0].offsetWidth / 2),
-                    offsetY: Math.round($button[0].offsetHeight / 2)
+                    offsetY: Math.round($button[0].offsetHeight / 2),
                 }, function () {
                     ok(formSubmitted, 'form submit received');
                     ok(buttonClicked, 'button click received');
@@ -384,7 +384,7 @@ $(document).ready(function () {
         input.focus();
 
         runTypeAutomation(input, newText, {
-            caretPos: input.value.length
+            caretPos: input.value.length,
         })
             .then(function () {
                 equal(input.value, resultString.substring(0, maxLength));
@@ -405,7 +405,7 @@ $(document).ready(function () {
                     left:     '200px',
                     top:      '250px',
                     border:   '1px solid black',
-                    overflow: 'scroll'
+                    overflow: 'scroll',
                 })
                 .width(250)
                 .height(200)
@@ -417,7 +417,7 @@ $(document).ready(function () {
                     height:          '20px',
                     width:           '20px',
                     marginTop:       2350 + 'px',
-                    backgroundColor: '#ffff00'
+                    backgroundColor: '#ffff00',
                 })
                 .appendTo($scrollableContainer);
 
@@ -426,7 +426,7 @@ $(document).ready(function () {
                     position: 'absolute',
                     height:   '20px',
                     width:    '20px',
-                    left:     '600px'
+                    left:     '600px',
                 })
                 .appendTo(body);
 
@@ -453,7 +453,7 @@ $(document).ready(function () {
                     position:        'absolute',
                     backgroundColor: 'red',
                     left:            '50px',
-                    top:             '350px'
+                    top:             '350px',
                 })
                 .appendTo($scrollableContainer)
                 .bind('mousedown', function () {
@@ -570,7 +570,7 @@ $(document).ready(function () {
         });
 
         runDblClickAutomation($input[0], {
-            caretPos: 3
+            caretPos: 3,
         }, function () {
             equal($input[0].selectionStart, 3, 'start selection correct');
             equal($input[0].selectionEnd, 3, 'end selection correct');
@@ -612,7 +612,7 @@ $(document).ready(function () {
         const resultString = initText.substring(0, caretPos) + newText + initText.substring(caretPos);
 
         runTypeAutomation($input[0], newText, {
-            caretPos: caretPos
+            caretPos: caretPos,
         })
             .then(function () {
                 equal($input[0].value, resultString);
@@ -747,7 +747,7 @@ $(document).ready(function () {
             const $input   = createInput('button').attr('value', initText).css({
                 position: 'absolute',
                 left:     '200px',
-                top:      '200px'
+                top:      '200px',
             });
 
             let log = '';
@@ -756,7 +756,7 @@ $(document).ready(function () {
                 mouse:    ['mouseover', 'mouseout', 'mousedown', 'mouseup', 'click'],
                 touch:    ['touchstart', 'touchend'],
                 pointer:  ['pointerover', 'pointerout', 'pointerdown', 'pointerup'],
-                MSevents: ['MSPointerOver', 'MSPointerOut', 'MSPointerDown', 'MSPointerUp']
+                MSevents: ['MSPointerOver', 'MSPointerOut', 'MSPointerDown', 'MSPointerUp'],
             };
 
             const addListeners = function (el, events) {
@@ -792,7 +792,7 @@ $(document).ready(function () {
             '<style>',
             'input {border-bottom-width: 0;}',
             'input:hover {border-bottom-width: 10px;}',
-            '</style>'
+            '</style>',
         ].join('\n');
 
         // NOTE: we need to use a sandboxed jQuery to process the 'style' element content.
@@ -853,7 +853,7 @@ $(document).ready(function () {
             });
 
             runClickAutomation($input[0], {
-                caretPos: caretPos
+                caretPos: caretPos,
             }, function () {
                 equal(textSelection.getSelectionStart($input[0]), caretPos, 'start selection correct');
                 equal(textSelection.getSelectionEnd($input[0]), caretPos, 'end selection correct');
@@ -909,7 +909,7 @@ $(document).ready(function () {
             const caretPos = 2;
 
             runTypeAutomation($input[0], text, {
-                caretPos: caretPos
+                caretPos: caretPos,
             })
                 .then(function () {
                     equal($input[0].value, initText.substring(0, caretPos) + text + initText.substring(caretPos));
@@ -928,7 +928,7 @@ $(document).ready(function () {
             const $input   = createInput('number').attr('value', initText);
 
             runTypeAutomation($input[0], text, {
-                replace: true
+                replace: true,
             })
                 .then(function () {
                     equal($input[0].value, text);
@@ -1160,18 +1160,18 @@ $(document).ready(function () {
                 top:    0,
                 right:  0,
                 bottom: 0,
-                left:   0
+                left:   0,
             },
 
             scroll: {
                 left: 0,
-                top:  255
+                top:  255,
             },
 
             scrollbar: {
                 bottom: 0,
-                right:  0
-            }
+                right:  0,
+            },
         };
 
         const mockChildDimension = {
@@ -1186,25 +1186,25 @@ $(document).ready(function () {
                 top:    2,
                 right:  2,
                 bottom: 2,
-                left:   2
+                left:   2,
             },
 
             scroll: {
                 left: 0,
-                top:  0
+                top:  0,
             },
 
             scrollbar: {
                 bottom: 0,
-                right:  0
-            }
+                right:  0,
+            },
         };
 
         deepEqual(positionUtils.calcRelativePosition(mockChildDimension, mockParentDimension), {
             top:    4,
             right:  431,
             bottom: 4,
-            left:   572
+            left:   572,
         });
     });
 });

@@ -9,7 +9,7 @@ const colors = {
     0: 'red',
     1: 'yellow',
     2: 'blue',
-    3: 'green'
+    3: 'green',
 };
 
 const changeBackground = ClientFunction(i => {

@@ -36,7 +36,7 @@ export default class ClickAutomation extends VisibleElementAutomation {
             simulateDefaultBehavior: true,
             clickElement:            null,
             touchStartCancelled:     false,
-            touchEndCancelled:       false
+            touchEndCancelled:       false,
         };
     }
 
@@ -229,8 +229,8 @@ export default class ClickAutomation extends VisibleElementAutomation {
                         clientX: clientPoint.x,
                         clientY: clientPoint.y,
                         screenX: devicePoint.x,
-                        screenY: devicePoint.y
-                    }, this.modifiers)
+                        screenY: devicePoint.y,
+                    }, this.modifiers),
                 };
 
                 // NOTE: we should raise mouseup event with 'mouseActionStepDelay' after we trigger

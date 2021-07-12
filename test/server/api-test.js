@@ -43,7 +43,7 @@ describe('API', function () {
                                   "    9 |test('Test', () => {\n" +
                                   "   10 |    return 'yo';\n" +
                                   '   11 |});\n' +
-                                  '   12 |'
+                                  '   12 |',
                     });
                 });
         });
@@ -68,7 +68,7 @@ describe('API', function () {
                                   "   4 |test('Test', () => {\n" +
                                   "   5 |    return 'yo';\n" +
                                   '   6 |});\n' +
-                                  '   7 |'
+                                  '   7 |',
                     });
                 });
         });
@@ -93,7 +93,7 @@ describe('API', function () {
                                   "   4 |test('Some test', () => {\n" +
                                   '   5 |\n' +
                                   '   6 |});\n' +
-                                  '   7 |'
+                                  '   7 |',
                     });
                 });
         });
@@ -118,7 +118,7 @@ describe('API', function () {
                                   "   4 |test('Some test', () => {\n" +
                                   '   5 |\n' +
                                   '   6 |});\n' +
-                                  '   7 |'
+                                  '   7 |',
                     });
                 });
         });
@@ -143,7 +143,7 @@ describe('API', function () {
                                   "   4 |test('Some test', () => {\n" +
                                   '   5 |\n' +
                                   '   6 |});\n' +
-                                  '   7 |'
+                                  '   7 |',
                     });
                 });
         });
@@ -168,7 +168,7 @@ describe('API', function () {
                                   "   4 |test('Some test', () => {\n" +
                                   '   5 |\n' +
                                   '   6 |});\n' +
-                                  '   7 |'
+                                  '   7 |',
                     });
                 });
         });
@@ -195,7 +195,7 @@ describe('API', function () {
                                   "   4 |test('Some test', () => {\n" +
                                   '   5 |\n' +
                                   '   6 |});\n' +
-                                  '   7 |'
+                                  '   7 |',
                     });
 
                     return compile(passIsNotString);
@@ -216,7 +216,7 @@ describe('API', function () {
                                   "   4 |test('Some test', () => {\n" +
                                   '   5 |\n' +
                                   '   6 |});\n' +
-                                  '   7 |'
+                                  '   7 |',
                     });
 
                     return compile(usernameIsNotDefined);
@@ -237,7 +237,7 @@ describe('API', function () {
                                   "   4 |test('Some test', () => {\n" +
                                   '   5 |\n' +
                                   '   6 |});\n' +
-                                  '   7 |'
+                                  '   7 |',
                     });
                 });
         });
@@ -261,7 +261,7 @@ describe('API', function () {
                                   '   3 |\n' +
                                   '   4 |test(\'test\', async t => {\n' +
                                   '   5 |});\n' +
-                                  '   6 |'
+                                  '   6 |',
 
                     });
                 });
@@ -289,7 +289,7 @@ describe('API', function () {
                                   ' >  8 |    .requestHooks(logger2);\n' +
                                   '    9 |\n' +
                                   '   10 |test(\'test\', async t => {});\n' +
-                                  '   11 |'
+                                  '   11 |',
                     });
                 });
         });
@@ -325,7 +325,7 @@ describe('API', function () {
                                   '   5 |test\n' +
                                   '   6 |    (\'Fixture1Test1\', async () => {\n' +
                                   '   7 |        // do nothing\n' +
-                                  '   8 |    });'
+                                  '   8 |    });',
                     });
                 });
         });
@@ -347,7 +347,7 @@ describe('API', function () {
                         callsite: ' > 1 |fixture.clientScripts(8);\n' +
                                   '   2 |\n' +
                                   '   3 |test(\'test\', async t => {});\n' +
-                                  '   4 |'
+                                  '   4 |',
                     });
                 });
         });
@@ -371,7 +371,7 @@ describe('API', function () {
                                   ' > 3 |    .clientScripts(\'script2.js\');\n' +
                                   '   4 |\n' +
                                   '   5 |test(\'test\', async t => {});\n' +
-                                  '   6 |'
+                                  '   6 |',
                     });
                 });
         });
@@ -398,7 +398,7 @@ describe('API', function () {
                                   '    8 |\n' +
                                   ' >  9 |test(42, () => {\n' +
                                   '   10 |});\n' +
-                                  '   11 |'
+                                  '   11 |',
                     });
                 });
         });
@@ -420,7 +420,7 @@ describe('API', function () {
                         callsite: '   1 |fixture `Test body is not a function`;\n' +
                                   '   2 |\n' +
                                   " > 3 |test('Test', 'Yo');\n" +
-                                  '   4 |'
+                                  '   4 |',
                     });
                 });
         });
@@ -444,7 +444,7 @@ describe('API', function () {
                                   " > 3 |test.before(123)('Some test', () => {\n" +
                                   '   4 |\n' +
                                   '   5 |});\n' +
-                                  '   6 |'
+                                  '   6 |',
                     });
                 });
         });
@@ -468,7 +468,7 @@ describe('API', function () {
                                   " > 3 |test.after(123)('Some test', () => {\n" +
                                   '   4 |\n' +
                                   '   5 |});\n' +
-                                  '   6 |'
+                                  '   6 |',
                     });
                 });
         });
@@ -493,7 +493,7 @@ describe('API', function () {
                                   '   4 |\n' +
                                   " > 5 |test.requestHooks([RequestMock(), 1])('test', async t => {\n" +
                                   '   6 |});\n' +
-                                  '   7 |\n'
+                                  '   7 |\n',
                     });
                 });
         });
@@ -545,7 +545,7 @@ describe('API', function () {
                                   '    9 |    .requestHooks(logger1)\n' +
                                   ' > 10 |    .requestHooks(logger2)\n' +
                                   '   11 |    (\'test\', async t => {});\n' +
-                                  '   12 |'
+                                  '   12 |',
                     });
                 });
         });
@@ -581,7 +581,7 @@ describe('API', function () {
                                   ' > 5 |    .meta(null)\n' +
                                   '   6 |    (\'Fixture1Test1\', async () => {\n' +
                                   '   7 |        // do nothing\n' +
-                                  '   8 |    });'
+                                  '   8 |    });',
                     });
                 });
         });
@@ -604,7 +604,7 @@ describe('API', function () {
                                   '   2 |\n' +
                                   ' > 3 |test(\'Test\', () => {\n' +
                                   '   4 |    return \'yo\';\n' +
-                                  '   5 |});'
+                                  '   5 |});',
                     });
                 });
         });
@@ -627,7 +627,7 @@ describe('API', function () {
                                   '   2 |\n' +
                                   '   3 |test\n' +
                                   ' > 4 |    .clientScripts(8)\n' +
-                                  '   5 |    (\'test\', async t => {});'
+                                  '   5 |    (\'test\', async t => {});',
                     });
                 });
         });
@@ -652,7 +652,7 @@ describe('API', function () {
                                   '   4 |    .clientScripts(\'script1.js\')\n' +
                                   ' > 5 |    .clientScripts(\'script2.js\')\n' +
                                   '   6 |    (\'test\', async t => {});\n' +
-                                  '   7 |'
+                                  '   7 |',
                     });
                 });
         });
@@ -676,7 +676,7 @@ describe('API', function () {
                             '   3 |test\n' +
                             ' > 4 |    .timeouts(20000)\n' +
                             '   5 |    (\'test\', async () => {});\n' +
-                            '   6 |'
+                            '   6 |',
                     });
                 });
         });
@@ -700,7 +700,7 @@ describe('API', function () {
                             '   3 |test\n' +
                             ' > 4 |    .timeouts({ pageLoadTimeout: -1 })\n' +
                             '   5 |    (\'test\', async () => {});\n' +
-                            '   6 |'
+                            '   6 |',
                     });
                 });
         });
@@ -730,7 +730,7 @@ describe('API', function () {
                                   '   6 |\n' +
                                   "   7 |test('yo', () => {\n" +
                                   '   8 |});\n' +
-                                  '   9 |'
+                                  '   9 |',
                     });
                 });
         });
@@ -756,7 +756,7 @@ describe('API', function () {
                                   ' > 5 |Selector(() => {}).with({ visibilityCheck: 42 });\n' +
                                   '   6 |\n' +
                                   "   7 |test('yo', () => {\n" +
-                                  '   8 |});'
+                                  '   8 |});',
                     });
                 });
         });
@@ -782,7 +782,7 @@ describe('API', function () {
                                   ' > 5 |Selector(() => {}).with({ timeout: -5 });\n' +
                                   '   6 |\n' +
                                   "   7 |test('yo', () => {\n" +
-                                  '   8 |});'
+                                  '   8 |});',
                     });
                 });
         });
@@ -808,7 +808,7 @@ describe('API', function () {
                                   ' > 5 |Selector(() => {}).nth(NaN);\n' +
                                   '   6 |\n' +
                                   "   7 |test('yo', () => {\n" +
-                                  '   8 |});'
+                                  '   8 |});',
                     });
                 });
         });
@@ -834,7 +834,7 @@ describe('API', function () {
                                   ' > 5 |Selector(() => {}).nth(Infinity);\n' +
                                   '   6 |\n' +
                                   "   7 |test('yo', () => {\n" +
-                                  '   8 |});'
+                                  '   8 |});',
                     });
                 });
         });
@@ -860,7 +860,7 @@ describe('API', function () {
                                   ' > 5 |Selector(() => {}).nth(\'hey\');\n' +
                                   '   6 |\n' +
                                   "   7 |test('yo', () => {\n" +
-                                  '   8 |});'
+                                  '   8 |});',
                     });
                 });
         });
@@ -886,7 +886,7 @@ describe('API', function () {
                                   ' > 5 |Selector(() => {}).withText({});\n' +
                                   '   6 |\n' +
                                   "   7 |test('yo', () => {\n" +
-                                  '   8 |});'
+                                  '   8 |});',
                     });
                 });
         });
@@ -912,7 +912,7 @@ describe('API', function () {
                                   ' > 5 |Selector(() => {}).withAttribute(null);\n' +
                                   '   6 |\n' +
                                   "   7 |test('yo', () => {\n" +
-                                  '   8 |});'
+                                  '   8 |});',
                     });
                 });
         });
@@ -938,7 +938,7 @@ describe('API', function () {
                                   ' > 5 |Selector(() => {}).withAttribute(/class/, -100);\n' +
                                   '   6 |\n' +
                                   "   7 |test('yo', () => {\n" +
-                                  '   8 |});'
+                                  '   8 |});',
                     });
                 });
         });
@@ -964,7 +964,7 @@ describe('API', function () {
                                   " > 5 |Selector('span').filter({});\n" +
                                   '   6 |\n' +
                                   "   7 |test('yo', () => {\n" +
-                                  '   8 |});'
+                                  '   8 |});',
                     });
                 });
         });
@@ -990,7 +990,7 @@ describe('API', function () {
                                   ' > 5 |Selector(\'span\').find({});\n' +
                                   '   6 |\n' +
                                   "   7 |test('yo', () => {\n" +
-                                  '   8 |});'
+                                  '   8 |});',
                     });
                 });
         });
@@ -1016,7 +1016,7 @@ describe('API', function () {
                                   ' > 5 |Selector(\'span\').parent({});\n' +
                                   '   6 |\n' +
                                   "   7 |test('yo', () => {\n" +
-                                  '   8 |});'
+                                  '   8 |});',
                     });
                 });
         });
@@ -1042,7 +1042,7 @@ describe('API', function () {
                                   ' > 5 |Selector(\'span\').child({});\n' +
                                   '   6 |\n' +
                                   "   7 |test('yo', () => {\n" +
-                                  '   8 |});'
+                                  '   8 |});',
                     });
                 });
         });
@@ -1068,7 +1068,7 @@ describe('API', function () {
                                   ' > 5 |Selector(\'span\').sibling({});\n' +
                                   '   6 |\n' +
                                   "   7 |test('yo', () => {\n" +
-                                  '   8 |});'
+                                  '   8 |});',
                     });
                 });
         });
@@ -1094,7 +1094,7 @@ describe('API', function () {
                                   ' > 5 |Selector(\'span\').nextSibling({});\n' +
                                   '   6 |\n' +
                                   "   7 |test('yo', () => {\n" +
-                                  '   8 |});'
+                                  '   8 |});',
                     });
                 });
         });
@@ -1121,7 +1121,7 @@ describe('API', function () {
                                   ' > 5 |Selector(\'span\').prevSibling({});\n' +
                                   '   6 |\n' +
                                   "   7 |test('yo', () => {\n" +
-                                  '   8 |});'
+                                  '   8 |});',
                     });
                 });
         });
@@ -1148,7 +1148,7 @@ describe('API', function () {
                                   '   6 |\n' +
                                   "   7 |test('yo', () => {\n" +
                                   '   8 |});\n' +
-                                  '   9 |'
+                                  '   9 |',
                     });
                 });
         });
@@ -1174,7 +1174,7 @@ describe('API', function () {
                                   '   5 |\n' +
                                   "   6 |test('yo', () => {\n" +
                                   '   7 |});\n' +
-                                  '   8 |'
+                                  '   8 |',
                     });
                 });
         });
@@ -1201,7 +1201,7 @@ describe('API', function () {
                                   '   6 |\n' +
                                   "   7 |test('yo', () => {\n" +
                                   '   8 |});\n' +
-                                  '   9 |'
+                                  '   9 |',
                     });
                 });
         });
@@ -1227,7 +1227,7 @@ describe('API', function () {
                                   '   5 |\n' +
                                   "   6 |test('yo', () => {\n" +
                                   '   7 |});\n' +
-                                  '   8 |'
+                                  '   8 |',
                     });
                 });
         });
@@ -1256,7 +1256,7 @@ describe('API', function () {
                                   '   6 |\n' +
                                   "   7 |test('yo', () => {\n" +
                                   '   8 |});\n' +
-                                  '   9 |'
+                                  '   9 |',
                     });
                 });
         });
@@ -1283,7 +1283,7 @@ describe('API', function () {
                                   '   6 |\n' +
                                   "   7 |test('yo', () => {\n" +
                                   '   8 |});\n' +
-                                  '   9 |'
+                                  '   9 |',
                     });
                 });
         });
@@ -1310,7 +1310,7 @@ describe('API', function () {
                                   '    6 |});\n' +
                                   '    7 |\n' +
                                   "    8 |test('yo', () => {\n" +
-                                  '    9 |});\n'
+                                  '    9 |});\n',
                     });
                 });
         });
@@ -1338,7 +1338,7 @@ describe('API', function () {
                                   '    7 |});\n' +
                                   '    8 |\n' +
                                   "    9 |test('yo', () => {\n" +
-                                  '   10 |});'
+                                  '   10 |});',
                     });
                 });
         });
@@ -1364,7 +1364,7 @@ describe('API', function () {
                                   ' > 5 |ClientFunction(() => {}).with(123);\n' +
                                   '   6 |\n' +
                                   "   7 |test('yo', () => {\n" +
-                                  '   8 |});\n'
+                                  '   8 |});\n',
                     });
                 });
         });
@@ -1387,7 +1387,7 @@ describe('API', function () {
                                   '   2 |\n' +
                                   '   3 |fixture `Test`;\n' +
                                   '   4 |\n' +
-                                  " > 5 |var selectYo = ClientFunction(() => document.querySelector('#yo'), { dependencies: '42' });\n"
+                                  " > 5 |var selectYo = ClientFunction(() => document.querySelector('#yo'), { dependencies: '42' });\n",
                     });
                 });
         });
@@ -1413,7 +1413,7 @@ describe('API', function () {
                                   " > 5 |ClientFunction(() => {}).with({ boundTestRun: 'yo' });\n" +
                                   '   6 |\n' +
                                   "   7 |test('yo', () => {\n" +
-                                  '   8 |});'
+                                  '   8 |});',
                     });
                 });
         });
@@ -1443,7 +1443,7 @@ describe('API', function () {
                                   '   6 |\n' +
                                   "   7 |test('yo', () => {\n" +
                                   '   8 |});\n' +
-                                  '   9 |'
+                                  '   9 |',
                     });
                 });
         });
@@ -1470,7 +1470,7 @@ describe('API', function () {
                                   '   6 |\n' +
                                   "   7 |test('yo', () => {\n" +
                                   '   8 |});\n' +
-                                  '   9 |'
+                                  '   9 |',
                     });
                 });
         });
@@ -1497,7 +1497,7 @@ describe('API', function () {
                                   '   6 |\n' +
                                   "   7 |test('yo', () => {\n" +
                                   '   8 |});\n' +
-                                  '   9 |'
+                                  '   9 |',
                     });
                 });
         });
@@ -1524,7 +1524,7 @@ describe('API', function () {
                                   '   6 |\n' +
                                   "   7 |test('yo', () => {\n" +
                                   '   8 |});\n' +
-                                  '   9 |'
+                                  '   9 |',
                     });
                 });
         });
@@ -1553,7 +1553,7 @@ describe('API', function () {
                                   '    6 |\n' +
                                   '    7 |test(\'Some test\', async () => {\n' +
                                   '    8 |\n' +
-                                  '    9 |});'
+                                  '    9 |});',
                     });
                 });
         });
@@ -1583,7 +1583,7 @@ describe('API', function () {
                                       " >  5 |const logger = new RequestLogger('', {\n" +
                                       '    6 |    logRequestBody:       false,\n' +
                                       '    7 |    stringifyRequestBody: true\n' +
-                                      '    8 |});'
+                                      '    8 |});',
                         });
                     });
             });
@@ -1610,7 +1610,7 @@ describe('API', function () {
                                       " >  5 |const logger = new RequestLogger('', {\n" +
                                       '    6 |    logResponseBody:       false,\n' +
                                       '    7 |    stringifyResponseBody: true\n' +
-                                      '    8 |});'
+                                      '    8 |});',
                         });
                     });
             });
@@ -1639,7 +1639,7 @@ describe('API', function () {
                                       ' > 5 |const mock = RequestMock().onRequestTo({}).onRequestTo({});\n' +
                                       '   6 |\n' +
                                       '   7 |test(\'test\', async t => {});\n' +
-                                      '   8 |\n'
+                                      '   8 |\n',
                         });
                     });
             });
@@ -1666,7 +1666,7 @@ describe('API', function () {
                                       ' > 5 |const mock = RequestMock().respond(() => {}).onRequestTo({});\n' +
                                       '   6 |\n' +
                                       '   7 |test(\'test\', async t => {});\n' +
-                                      '   8 |'
+                                      '   8 |',
                         });
                     });
             });
@@ -1683,8 +1683,8 @@ describe('API', function () {
 
                 'endpoint-utils': {
                     isMyHostname: sinon.stub().resolves(true),
-                    isFreePort:   sinon.stub().resolves(true)
-                }
+                    isFreePort:   sinon.stub().resolves(true),
+                },
             });
 
             await createTestCafe('my-host', 1337, 1338, { test: 42 }, true, true);
@@ -1709,8 +1709,8 @@ describe('API', function () {
 
                 'endpoint-utils': {
                     isMyHostname: sinon.stub().resolves(true),
-                    isFreePort:   sinon.stub().resolves(true)
-                }
+                    isFreePort:   sinon.stub().resolves(true),
+                },
             });
 
             await createTestCafe({
@@ -1719,11 +1719,11 @@ describe('API', function () {
                 port2:    1338,
 
                 ssl: {
-                    test: 42
+                    test: 42,
                 },
 
                 developmentMode: true,
-                retryTestPages:  true
+                retryTestPages:  true,
             });
 
             const configuration = TestCafe.firstCall.args[0];

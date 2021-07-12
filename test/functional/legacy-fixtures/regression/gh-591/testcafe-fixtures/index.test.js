@@ -9,5 +9,5 @@
 
     '2.Check result': function () {
         ok(window.combinationPerformed);
-    }
+    },
 };

@@ -121,7 +121,7 @@ test('snapshot', async () => {
 
 test('custom DOM properties', async t => {
     const selector = Selector('ul li').addCustomDOMProperties({
-        innerHTML: el => el.innerHTML
+        innerHTML: el => el.innerHTML,
     });
 
     await t.expect(selector.innerHTML).eql('test');
@@ -129,7 +129,7 @@ test('custom DOM properties', async t => {
 
 test('custom methods', async t => {
     let selector = Selector('div').addCustomMethods({
-        customFilter: nodes => nodes.filter(node => !!node.id)
+        customFilter: nodes => nodes.filter(node => !!node.id),
     }, { returnDOMNodes: true });
 
     selector = selector

@@ -6,7 +6,7 @@ import {
     promiseUtils,
     contentEditable,
     parseKeySequence,
-    delay
+    delay,
 } from '../deps/testcafe-core';
 
 import {
@@ -25,7 +25,7 @@ import {
     Press as PressAutomation,
     Upload as UploadAutomation,
     ERROR_TYPES as AUTOMATION_ERROR_TYPES,
-    getOffsetOptions
+    getOffsetOptions,
 } from '../deps/testcafe-automation';
 
 import DriverStatus from '../status';
@@ -34,7 +34,7 @@ import runWithBarriers from '../utils/run-with-barriers';
 import {
     ensureElements,
     createElementDescriptor,
-    createAdditionalElementDescriptor
+    createAdditionalElementDescriptor,
 } from '../utils/ensure-elements';
 
 import {
@@ -45,7 +45,7 @@ import {
     ActionElementNonContentEditableError,
     ActionRootContainerNotFoundError,
     ActionElementNotTextAreaError,
-    ActionElementIsNotFileInputError
+    ActionElementIsNotFileInputError,
 } from '../../../shared/errors';
 
 import COMMAND_TYPE from '../../../test-run/commands/type';
@@ -337,7 +337,7 @@ class ActionExecutor {
             actionPromise
                 .then(() => Promise.all([
                     this._delayAfterExecution(),
-                    barriersPromise
+                    barriersPromise,
                 ]))
                 .then(() => {
                     const status   = { isCommandResult: true };

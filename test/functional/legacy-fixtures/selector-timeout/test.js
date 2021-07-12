@@ -9,7 +9,7 @@ describe('Selector timeout', function () {
                     'Error at step "2.Click on button":',
                     'A target element <button id="button"> of the click action is not visible.',
                     'If this element should appear when you are hovering over another',
-                    'element, make sure that you properly recorded the hover action.'
+                    'element, make sure that you properly recorded the hover action.',
                 ].join(' ');
 
                 expect(errs[0]).contains(expectedError);

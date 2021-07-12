@@ -7,5 +7,5 @@
 '@test'['Authenticate with correct credintials'] = {
     'Step 1': function () {
         eq($('#result')[0].innerText, 'authorized');
-    }
+    },
 };

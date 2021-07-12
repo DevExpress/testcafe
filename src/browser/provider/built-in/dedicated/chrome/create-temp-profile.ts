@@ -15,32 +15,32 @@ export default async function (proxyHostName: string, disableMultipleWindows: bo
         'devtools': {
             'preferences': {
                 'currentDockState': '"undocked"',
-                'lastDockState':    '"bottom"'
-            }
+                'lastDockState':    '"bottom"',
+            },
         },
         'plugins': {
-            'always_open_pdf_externally': true
+            'always_open_pdf_externally': true,
         },
         'profile': {
             'content_settings': {
                 'exceptions': {
                     'automatic_downloads': {
-                        [proxyHostName]: { setting: 1 }
+                        [proxyHostName]: { setting: 1 },
                     },
                     ...!disableMultipleWindows && {
                         'popups': {
-                            [proxyHostName]: { setting: 1 }
-                        }
+                            [proxyHostName]: { setting: 1 },
+                        },
                     },
-                }
+                },
             },
 
-            'password_manager_enabled': false
+            'password_manager_enabled': false,
         },
 
         'translate': {
-            'enabled': false
-        }
+            'enabled': false,
+        },
     };
 
     await writeFile(path.join(profileDirName, 'Preferences'), JSON.stringify(preferences));

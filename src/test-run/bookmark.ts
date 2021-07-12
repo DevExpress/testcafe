@@ -7,7 +7,7 @@ import {
     SwitchToIframeCommand,
     SetNativeDialogHandlerCommand,
     SetTestSpeedCommand,
-    SetPageLoadTimeoutCommand
+    SetPageLoadTimeoutCommand,
 } from './commands/actions';
 
 import { CurrentIframeNotFoundError, CurrentIframeIsNotLoadedError } from '../errors/test-run';
@@ -64,11 +64,11 @@ export default class TestRunBookmark {
         if (this.testRun.compilerService) {
             await this.testRun.compilerService.setCtx({
                 testRunId: this.testRun.id,
-                value:     this.ctx as object
+                value:     this.ctx as object,
             });
             await this.testRun.compilerService.setFixtureCtx({
                 testRunId: this.testRun.id,
-                value:     this.fixtureCtx as object
+                value:     this.fixtureCtx as object,
             });
         }
         else {

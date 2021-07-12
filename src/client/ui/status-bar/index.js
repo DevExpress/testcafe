@@ -93,7 +93,7 @@ export default class StatusBar extends serviceUtils.EventEmitter {
             debugging:        false,
             waiting:          false,
             assertionRetries: false,
-            hidden:           false
+            hidden:           false,
         };
 
         this.currentView       = null;

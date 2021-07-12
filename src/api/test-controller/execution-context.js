@@ -80,7 +80,7 @@ export function createExecutionContext (testRun) {
         Role:           exportableLib.Role,
         RequestLogger:  exportableLib.RequestLogger,
         RequestMock:    exportableLib.RequestMock,
-        RequestHook:    exportableLib.RequestHook
+        RequestHook:    exportableLib.RequestHook,
     };
 
     return createContext(new Proxy(replacers, {
@@ -92,6 +92,6 @@ export function createExecutionContext (testRun) {
                 return global[property];
 
             throw new Error(`${property} is not defined`);
-        }
+        },
     }));
 }

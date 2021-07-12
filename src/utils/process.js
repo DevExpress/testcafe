@@ -126,7 +126,7 @@ async function runWMIC (args) {
     try {
         await Promise.race([
             promisifyEvent(wmicProcess.stdout, 'end'),
-            promisifyEvent(wmicProcess, 'error')
+            promisifyEvent(wmicProcess, 'error'),
         ]);
 
         return wmicOutput;

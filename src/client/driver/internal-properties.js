@@ -3,5 +3,5 @@ export default {
     testCafeIframeDriver:   '%testCafeIframeDriver%',
     scriptExecutionBarrier: '%ScriptExecutionBarrier%',
     testCafeEmbeddingUtils: '%testCafeEmbeddingUtils%',
-    testCafeDriverInstance: '%testCafeDriverInstance%'
+    testCafeDriverInstance: '%testCafeDriverInstance%',
 };

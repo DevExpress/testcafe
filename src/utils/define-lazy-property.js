@@ -7,6 +7,6 @@ export default function defineLazyProperty (obj, propName, initializer) {
                 this.propValue = initializer();
 
             return this.propValue;
-        }
+        },
     });
 }

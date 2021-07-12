@@ -31,6 +31,6 @@ export default function (developmentMode) {
         automationScript: loadAsset(`./client/automation/index.${scriptNameSuffix}`),
 
         // NOTE: Load the legacy client script lazily to reduce startup time
-        legacyRunnerScript: require('testcafe-legacy-api').CLIENT_RUNNER_SCRIPT
+        legacyRunnerScript: require('testcafe-legacy-api').CLIENT_RUNNER_SCRIPT,
     };
 }

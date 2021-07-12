@@ -7,5 +7,5 @@
         act.wait(function () {
             return false;
         }, 500);
-    }
+    },
 };

@@ -12,7 +12,7 @@ const {
     getClipInfoByCropDimensions,
     calculateMarkPosition,
     getClipInfoByMarkPosition,
-    calculateClipInfo
+    calculateClipInfo,
 } = require('../../lib/screenshots/crop');
 
 const markSeed = [
@@ -21,7 +21,7 @@ const markSeed = [
     0, 0, 0, 255,
     255, 255, 255, 255,
     0, 0, 0, 255,
-    255, 255, 255, 255
+    255, 255, 255, 255,
 ];
 
 function getPngMock (mark = markSeed) {
@@ -42,7 +42,7 @@ describe('Crop images', () => {
             clipRight:  400,
             clipLeft:   10,
             clipBottom: 500,
-            clipTop:    10
+            clipTop:    10,
         };
 
         // left top
@@ -50,7 +50,7 @@ describe('Crop images', () => {
             clipLeft:   10,
             clipRight:  390,
             clipTop:    10,
-            clipBottom: 490
+            clipBottom: 490,
         });
 
         // right top
@@ -58,7 +58,7 @@ describe('Crop images', () => {
             clipLeft:   30,
             clipRight:  400,
             clipTop:    10,
-            clipBottom: 490
+            clipBottom: 490,
         });
 
         // right bottom
@@ -66,7 +66,7 @@ describe('Crop images', () => {
             clipLeft:   30,
             clipRight:  400,
             clipTop:    30,
-            clipBottom: 500
+            clipBottom: 500,
         });
 
         // left bottom
@@ -74,7 +74,7 @@ describe('Crop images', () => {
             clipLeft:   10,
             clipRight:  390,
             clipTop:    30,
-            clipBottom: 500
+            clipBottom: 500,
         });
 
         // middle
@@ -82,14 +82,14 @@ describe('Crop images', () => {
             clipLeft:   30,
             clipRight:  370,
             clipTop:    30,
-            clipBottom: 470
+            clipBottom: 470,
         });
     });
 
     it('Calculate mark position', () => {
         expect(calculateMarkPosition(getPngMock(), markSeed)).eql({
             x: 1820,
-            y: 954
+            y: 954,
         });
 
         expect(calculateMarkPosition(getPngMock(), '+')).eql(null);
@@ -114,42 +114,42 @@ describe('Crop images', () => {
             clipLeft:   0,
             clipRight:  1820,
             clipTop:    0,
-            clipBottom: 954
+            clipBottom: 954,
         });
 
         expect(getClipInfoByMarkPosition(markPosition, { width: 1620, height: 854 })).eql({
             clipLeft:   200,
             clipRight:  1820,
             clipTop:    100,
-            clipBottom: 954
+            clipBottom: 954,
         });
     });
 
     it('Calculate clipInfo', () => {
         const clientAreaDimensions = {
             width:  1820,
-            height: 954
+            height: 954,
         };
 
         const cropDimensions = {
             left:   20,
             right:  1800,
             top:    20,
-            bottom: 850
+            bottom: 850,
         };
 
         expect(calculateClipInfo(getPngMock(), 'path', markSeed, clientAreaDimensions)).eql({
             clipLeft:   0,
             clipTop:    0,
             clipRight:  1820,
-            clipBottom: 953
+            clipBottom: 953,
         });
 
         expect(calculateClipInfo(getPngMock(), 'path', markSeed, clientAreaDimensions, cropDimensions)).eql({
             clipLeft:   20,
             clipTop:    20,
             clipRight:  1800,
-            clipBottom: 850
+            clipBottom: 850,
         });
     });
 

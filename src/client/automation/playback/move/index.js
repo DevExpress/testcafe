@@ -111,14 +111,14 @@ export default class MoveAutomation {
         return {
             element: relateToDocument ? document.documentElement : el,
             offsetX: relatedPoint.x,
-            offsetY: relatedPoint.y
+            offsetY: relatedPoint.y,
         };
     }
 
     static onMoveToIframeRequest (e) {
         const iframePoint = {
             x: e.message.endX,
-            y: e.message.endY
+            y: e.message.endY,
         };
 
         const iframeWin                   = e.source;
@@ -134,7 +134,7 @@ export default class MoveAutomation {
 
         const intersectionRelatedToIframe = {
             x: intersectionPoint.x - iframeRectangle.left,
-            y: intersectionPoint.y - iframeRectangle.top
+            y: intersectionPoint.y - iframeRectangle.top,
         };
 
         const moveOptions = new MoveOptions({
@@ -145,7 +145,7 @@ export default class MoveAutomation {
 
             // NOTE: we should not perform scrolling because the active window was
             // already scrolled to the target element before the request (GH-847)
-            skipScrolling: true
+            skipScrolling: true,
         }, false);
 
         const moveAutomation = new MoveAutomation(iframe, moveOptions);
@@ -153,7 +153,7 @@ export default class MoveAutomation {
         const responseMsg = {
             cmd: MOVE_RESPONSE_CMD,
             x:   intersectionRelatedToIframe.x,
-            y:   intersectionRelatedToIframe.y
+            y:   intersectionRelatedToIframe.y,
         };
 
         if (cursor.activeWindow !== iframeWin) {
@@ -176,7 +176,7 @@ export default class MoveAutomation {
             left:   e.message.left,
             right:  e.message.right,
             top:    e.message.top,
-            bottom: e.message.bottom
+            bottom: e.message.bottom,
         };
 
         if (!e.message.iframeUnderCursor) {
@@ -202,7 +202,7 @@ export default class MoveAutomation {
 
         const startPoint = {
             x: iframeRectangle.left + cursorPosition.x,
-            y: iframeRectangle.top + cursorPosition.y
+            y: iframeRectangle.top + cursorPosition.y,
         };
 
         const endPoint          = { x: e.message.endX, y: e.message.endY };
@@ -214,7 +214,7 @@ export default class MoveAutomation {
             messageSandbox.sendServiceMsg({
                 cmd: MOVE_RESPONSE_CMD,
                 x:   iframeRectangle.left,
-                y:   iframeRectangle.top
+                y:   iframeRectangle.top,
             }, parentWin);
 
             return;
@@ -228,7 +228,7 @@ export default class MoveAutomation {
 
             // NOTE: we should not perform scrolling because the active window was
             // already scrolled to the target element before the request (GH-847)
-            skipScrolling: true
+            skipScrolling: true,
         }, false);
 
         const moveAutomation = new MoveAutomation(document.documentElement, moveOptions);
@@ -239,7 +239,7 @@ export default class MoveAutomation {
                 const responseMsg = {
                     cmd: MOVE_RESPONSE_CMD,
                     x:   intersectionPoint.x,
-                    y:   intersectionPoint.y
+                    y:   intersectionPoint.y,
                 };
 
                 cursor.activeWindow = parentWin;
@@ -253,7 +253,7 @@ export default class MoveAutomation {
         if (domUtils.isHtmlElement(this.element)) {
             return {
                 x: Math.floor(this.offsetX - scroll.left),
-                y: Math.floor(this.offsetY - scroll.top)
+                y: Math.floor(this.offsetY - scroll.top),
             };
         }
 
@@ -264,7 +264,7 @@ export default class MoveAutomation {
             x: Math.floor(isDocumentBody ? clientPosition.x + this.offsetX : clientPosition.x + this.offsetX -
                                                                              scroll.left),
             y: Math.floor(isDocumentBody ? clientPosition.y + this.offsetY : clientPosition.y + this.offsetY -
-                                                                             scroll.top)
+                                                                             scroll.top),
         };
     }
 
@@ -282,7 +282,7 @@ export default class MoveAutomation {
             alt:          this.modifiers.alt,
             shift:        this.modifiers.shift,
             meta:         this.modifiers.meta,
-            dataTransfer: this.dragAndDropState.dataTransfer
+            dataTransfer: this.dragAndDropState.dataTransfer,
         };
 
         const eventSequenceOptions = { moveEvent: this.moveEvent, holdLeftButton: this.holdLeftButton };
@@ -388,7 +388,7 @@ export default class MoveAutomation {
             endX:      this.endPoint.x,
             endY:      this.endPoint.y,
             modifiers: this.modifiers,
-            speed:     this.speed
+            speed:     this.speed,
         };
 
         if (activeWindow.parent === window) {

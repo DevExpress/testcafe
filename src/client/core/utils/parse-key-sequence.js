@@ -39,6 +39,6 @@ export default function (keyString) {
     return {
         combinations: combinations,
         error:        error,
-        keys:         keyString
+        keys:         keyString,
     };
 }

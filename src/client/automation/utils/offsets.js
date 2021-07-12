@@ -31,6 +31,6 @@ export function getOffsetOptions (element, offsetX, offsetY) {
 
     return {
         offsetX: offsetX < 0 ? maxX + offsetX : offsetX,
-        offsetY: offsetY < 0 ? maxY + offsetY : offsetY
+        offsetY: offsetY < 0 ? maxY + offsetY : offsetY,
     };
 }

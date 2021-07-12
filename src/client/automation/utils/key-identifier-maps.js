@@ -14,7 +14,7 @@ export default {
         alt:      'Alt',
         ctrl:     'Control',
         meta:     'Meta',
-        shift:    'Shift'
+        shift:    'Shift',
     },
 
     LETTERS: {
@@ -43,7 +43,7 @@ export default {
         w: 'U+0057',
         x: 'U+0058',
         y: 'U+0059',
-        z: 'U+005A'
+        z: 'U+005A',
     },
 
     SYMBOLS: {
@@ -87,6 +87,6 @@ export default {
         ':':  'U+003A',
         ';':  'U+003B',
         '`':  'U+0060',
-        '~':  'U+007E'
-    }
+        '~':  'U+007E',
+    },
 };

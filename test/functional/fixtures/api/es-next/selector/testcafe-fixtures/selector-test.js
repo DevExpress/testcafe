@@ -840,7 +840,7 @@ test('Selector `addCustomDOMProperties` method', async t => {
     let el = Selector('rect')
         .addCustomDOMProperties({
             prop1: () => 42,
-            prop2: node => 'tagName: ' + node.tagName
+            prop2: node => 'tagName: ' + node.tagName,
         });
 
     await t
@@ -851,7 +851,7 @@ test('Selector `addCustomDOMProperties` method', async t => {
 
     el = el.addCustomDOMProperties({
         prop2: () => 'other value',
-        prop3: () => 'test'
+        prop3: () => 'test',
     });
 
     await t
@@ -862,7 +862,7 @@ test('Selector `addCustomDOMProperties` method', async t => {
     const elSnapshot = await Selector('rect')
         .addCustomDOMProperties({
             prop1: () => 1,
-            prop2: () => 2
+            prop2: () => 2,
         })();
 
     await t
@@ -870,19 +870,19 @@ test('Selector `addCustomDOMProperties` method', async t => {
         .expect(elSnapshot.prop2).eql(2);
 
     const nonExistingElement = await Selector('nonExistingElement').addCustomDOMProperties({
-        prop: () => 'value'
+        prop: () => 'value',
     })();
 
     await t.expect(nonExistingElement).eql(null);
 
     const getSecondEl = Selector('div').addCustomDOMProperties({
-        prop: () => 'second'
+        prop: () => 'second',
     }).nth(1);
 
     await t.expect(await getSecondEl.prop).eql('second');
 
     const doc = await Selector(() => document).addCustomDOMProperties({
-        prop: () => 'documentProp'
+        prop: () => 'documentProp',
     });
 
     await t.expect(await doc.prop).eql('documentProp');
@@ -892,7 +892,7 @@ test('Add custom DOM properties method - property throws an error', async () => 
     const el = Selector('rect').addCustomDOMProperties({
         prop: () => {
             throw new Error('test');
-        }
+        },
     });
 
     await el();
@@ -951,7 +951,7 @@ test('Selector "prevSibling" method', async t => {
 test('Selector `addCustomMethods` method', async t => {
     let el = Selector('rect').addCustomMethods({
         prop1: (node, str) => str + '42',
-        prop2: (node, str, separator) => [str, node.tagName].join(separator)
+        prop2: (node, str, separator) => [str, node.tagName].join(separator),
     });
 
     await t
@@ -970,7 +970,7 @@ test('Selector `addCustomMethods` method', async t => {
         .expect(await snapshot.prop1('value: ')).eql('value: 42');
 
     el = el.addCustomMethods({
-        prop1: (node, str) => str + '!!!'
+        prop1: (node, str) => str + '!!!',
     });
 
     await t
@@ -978,7 +978,7 @@ test('Selector `addCustomMethods` method', async t => {
         .expect(el.prop2('tagName', ': ')).eql('tagName: rect');
 
     const nonExistingElement = await Selector('nonExistingElement').addCustomMethods({
-        prop: () => 'value'
+        prop: () => 'value',
     })();
 
     await t.expect(nonExistingElement).eql(null);
@@ -988,7 +988,7 @@ test('Add custom method - method throws an error', async () => {
     const el = Selector('rect').addCustomMethods({
         customMethod: () => {
             throw new Error('test');
-        }
+        },
     });
 
     await el.customMethod();
@@ -1038,12 +1038,12 @@ test('hasAttribute method', async t => {
 test('Selector `addCustomMethods` method - Selector mode', async t => {
     const sectionDiv = Selector('section div').addCustomMethods({
         customFilter:        nodes => nodes.filter(node => node.id === 'el2' || node.id === 'el3'),
-        customFilterByParam: (nodes, id) => nodes.filter(node => node.id === id)
+        customFilterByParam: (nodes, id) => nodes.filter(node => node.id === id),
     }, { returnDOMNodes: true });
 
     const form = Selector('form').addCustomMethods({
         customFind:       (nodes) => nodes[0].querySelectorAll('input'),
-        customFindByType: (nodes, type) => nodes[0].querySelectorAll(`input[type=${type}]`)
+        customFindByType: (nodes, type) => nodes[0].querySelectorAll(`input[type=${type}]`),
     }, { returnDOMNodes: true });
 
     let filteredDivs = sectionDiv.customFilter();
@@ -1079,7 +1079,7 @@ test('Selector `addCustomMethods` method - Selector mode', async t => {
         .expect(divsById.id).eql('el4');
 
     const nonExistingElement = Selector('nonExistingElement').addCustomMethods({
-        prop: () => 'value'
+        prop: () => 'value',
     }, { returnDOMNodes: true });
 
     await t.expect(await nonExistingElement()).eql(null);

@@ -11,5 +11,5 @@
 
     '2.Check data': function () {
         eq(this.data, 200);
-    }
+    },
 };

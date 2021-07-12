@@ -10,7 +10,7 @@ export function getDelegatedAPIList (src) {
                 return {
                     srcProp:  prop,
                     apiProp:  match[1],
-                    accessor: match[2]
+                    accessor: match[2],
                 };
             }
 
@@ -64,7 +64,7 @@ export function delegateAPI (dest, apiList, opts) {
 
                     return fn;
                 },
-                configurable: true
+                configurable: true,
             });
         }
     });

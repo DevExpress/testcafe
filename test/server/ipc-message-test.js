@@ -28,7 +28,7 @@ describe('IPC Message', () => {
         smallPacket.MAX_PACKET_SIZE  = smallPacket.HEADER_SIZE + smallPacket.MAX_PAYLOAD_SIZE;
 
         const smallMessage = proxyquire('../../lib/services/utils/ipc/message', {
-            './packet': smallPacket
+            './packet': smallPacket,
         });
 
         const serializer = new smallMessage.MessageSerializer();
@@ -76,7 +76,7 @@ describe('IPC Message', () => {
         smallPacket.MAX_PACKET_SIZE  = smallPacket.HEADER_SIZE + smallPacket.MAX_PAYLOAD_SIZE;
 
         const smallMessage = proxyquire('../../lib/services/utils/ipc/message', {
-            './packet': smallPacket
+            './packet': smallPacket,
         });
 
         const serializer = new smallMessage.MessageSerializer();
@@ -104,7 +104,7 @@ describe('IPC Message', () => {
         const originMessage = {
             id:   1,
             type: 'text',
-            url:  new RegExp('.*', 'i')
+            url:  new RegExp('.*', 'i'),
         };
 
         const data          = serializer.serialize(originMessage);

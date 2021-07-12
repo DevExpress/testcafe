@@ -564,5 +564,5 @@ export default {
     [SHORTCUT_TYPE.enter]:      enter,
     [SHORTCUT_TYPE.tab]:        element => focusNextElementOnNavigationButton(element, false),
     [SHORTCUT_TYPE.shiftTab]:   element => focusNextElementOnNavigationButton(element, true),
-    [SHORTCUT_TYPE.esc]:        esc
+    [SHORTCUT_TYPE.esc]:        esc,
 };

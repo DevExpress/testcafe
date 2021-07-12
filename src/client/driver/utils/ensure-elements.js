@@ -10,7 +10,7 @@ import {
     ActionSelectorMatchesWrongNodeTypeError,
     ActionAdditionalElementNotFoundError,
     ActionAdditionalElementIsInvisibleError,
-    ActionAdditionalSelectorMatchesWrongNodeTypeError
+    ActionAdditionalSelectorMatchesWrongNodeTypeError,
 } from '../../../shared/errors';
 
 const DateCtor = nativeMethods.date;
@@ -58,7 +58,7 @@ export function createElementDescriptor (selector) {
         selector:                    selector,
         createNotFoundError:         fn => new ActionElementNotFoundError(fn),
         createIsInvisibleError:      () => new ActionElementIsInvisibleError(),
-        createHasWrongNodeTypeError: nodeDescription => new ActionSelectorMatchesWrongNodeTypeError(nodeDescription)
+        createHasWrongNodeTypeError: nodeDescription => new ActionSelectorMatchesWrongNodeTypeError(nodeDescription),
     };
 }
 
@@ -67,6 +67,6 @@ export function createAdditionalElementDescriptor (selector, elementName) {
         selector:                    selector,
         createNotFoundError:         fn => new ActionAdditionalElementNotFoundError(elementName, fn),
         createIsInvisibleError:      () => new ActionAdditionalElementIsInvisibleError(elementName),
-        createHasWrongNodeTypeError: nodeDescription => new ActionAdditionalSelectorMatchesWrongNodeTypeError(elementName, nodeDescription)
+        createHasWrongNodeTypeError: nodeDescription => new ActionAdditionalSelectorMatchesWrongNodeTypeError(elementName, nodeDescription),
     };
 }

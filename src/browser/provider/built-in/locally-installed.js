@@ -32,5 +32,5 @@ export default {
         browserName = browserName.toLowerCase().split(' ')[0];
 
         return browserNames.indexOf(browserName) > -1;
-    }
+    },
 };

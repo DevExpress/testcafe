@@ -22,5 +22,5 @@ function enterDomains (domains) {
 
 module.exports = {
     exitDomains:  exitDomains,
-    enterDomains: enterDomains
+    enterDomains: enterDomains,
 };

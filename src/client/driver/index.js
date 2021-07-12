@@ -12,7 +12,7 @@ nativeMethods.objectDefineProperty(window, INTERNAL_PROPERTIES.testCafeDriver, {
 nativeMethods.objectDefineProperty(window, INTERNAL_PROPERTIES.testCafeIframeDriver, { configurable: true, value: IframeDriver });
 nativeMethods.objectDefineProperty(window, INTERNAL_PROPERTIES.scriptExecutionBarrier, {
     configurable: true,
-    value:        ScriptExecutionBarrier
+    value:        ScriptExecutionBarrier,
 });
 nativeMethods.objectDefineProperty(window, INTERNAL_PROPERTIES.testCafeEmbeddingUtils, { configurable: true, value: embeddingUtils });
 

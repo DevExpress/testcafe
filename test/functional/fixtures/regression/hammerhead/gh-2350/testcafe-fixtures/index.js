@@ -8,32 +8,32 @@ const INITIAL_VALUE = {
     SCRIPT_BEFORE_AND_AFTER_TITLE_EXPECTED_LOG: [
         'head:before-first-title: ',
         'head:after-first-title: Test page title',
-        'body: Test page title'
+        'body: Test page title',
     ],
     SCRIPT_ONLY_IN_BODY_EXPECTED_LOG: [
-        'body: Test page title'
+        'body: Test page title',
     ],
     SCRIPT_ONLY_IN_BODY_AND_TITLE_IS_NOT_LAST_EXPECTED_LOG: [
-        'body: Test page title'
-    ]
+        'body: Test page title',
+    ],
 };
 
 const EMPTY_VALUE_EXPECTED_LOG = [
     'head: ',
-    'body: '
+    'body: ',
 ];
 
 const CHANGE_VALUE_EXPECTED_LOG = [
     'head:after-first-title: Test page title 1',
     'head:after-title-update: Test page title 2',
     'body: Test page title 2',
-    'body:after-title-update: Test page title 3'
+    'body:after-title-update: Test page title 3',
 ];
 
 const TEXT_PROPERTY_GETTERS_OF_TITLE_ELEMENT_EXPECTED_LOG = [
     'text: Test title',
     'innerHTML: Test title',
-    'innerText: Test title'
+    'innerText: Test title',
 ];
 
 const SET_DOCUMENT_TITLE_IN_BODY_EXPECTED_LOG = [

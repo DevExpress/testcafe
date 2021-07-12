@@ -56,7 +56,7 @@ $(document).ready(function () {
         const $iframe = $('<iframe/>')
             .css({
                 width:  '600px',
-                height: '600px'
+                height: '600px',
             })
             .addClass(TEST_ELEMENT_CLASS);
 

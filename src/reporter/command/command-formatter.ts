@@ -5,7 +5,7 @@ import {
     PressKeyCommand,
     SetNativeDialogHandlerCommand,
     TypeTextCommand,
-    UseRoleCommand
+    UseRoleCommand,
 } from '../../test-run/commands/actions';
 
 import { createReplicator, SelectorNodeTransform } from '../../client-functions/replicator';
@@ -17,7 +17,7 @@ import diff from '../../utils/diff';
 import {
     ActionOptions,
     ResizeToFitDeviceOptions,
-    AssertionOptions
+    AssertionOptions,
 } from '../../test-run/commands/options';
 
 import CommandBase from '../../test-run/commands/base';
@@ -108,7 +108,7 @@ export class CommandFormatter {
     private _prepareClientFunction (command: ExecuteClientFunctionCommand): object {
         return {
             code: command.fnCode,
-            args: command.args[0]
+            args: command.args[0],
         };
     }
 

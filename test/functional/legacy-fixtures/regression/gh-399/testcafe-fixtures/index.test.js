@@ -8,7 +8,7 @@
 
     '2.Assert': function () {
         notOk($('#iframe').length > 0);
-    }
+    },
 };
 
 '@test'['Remove container iframe after an action (gh-433)'] = {
@@ -18,5 +18,5 @@
 
     '2.Assert': function () {
         notOk($('#iframe').length > 0);
-    }
+    },
 };

@@ -4,7 +4,7 @@ import OptionNames from '../../configuration/option-names';
 const NECESSARY_OPTIONS = [
     OptionNames.assertionTimeout,
     OptionNames.speed,
-    OptionNames.pageLoadTimeout
+    OptionNames.pageLoadTimeout,
 ];
 
 export default function (value: Dictionary<OptionValue>): Dictionary<OptionValue> {

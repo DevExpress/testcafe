@@ -124,7 +124,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
             customDOMProperties,
             customMethods,
             apiFnChain,
-            boundArgs
+            boundArgs,
         } = this.options;
 
         return merge({}, dependencies, {
@@ -134,15 +134,15 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
                 counterMode,
                 collectionMode,
                 index: isNullOrUndefined(index) ? null : index,
-                getVisibleValueMode
+                getVisibleValueMode,
             },
             apiInfo: {
                 apiFnChain,
-                apiFnID: this._getSourceSelectorBuilderApiFnID()
+                apiFnID: this._getSourceSelectorBuilderApiFnID(),
             },
             boundArgs,
             customDOMProperties,
-            customMethods
+            customMethods,
         });
     }
 
@@ -155,7 +155,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
             needError:                 this.options.needError,
             apiFnChain:                this.options.apiFnChain,
             visibilityCheck:           !!this.options.visibilityCheck,
-            timeout:                   this.options.timeout
+            timeout:                   this.options.timeout,
         });
     }
 

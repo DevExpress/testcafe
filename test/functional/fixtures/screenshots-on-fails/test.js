@@ -17,7 +17,7 @@ describe('Screenshots on fails', function () {
                     shouldFail:         true,
                     screenshotsOnFails: true,
                     selectorTimeout:    0,
-                    setScreenshotPath:  true
+                    setScreenshotPath:  true,
                 })
                 .catch(function (errs) {
                     // Report should contain screenshot path (GH-1269)
@@ -80,7 +80,7 @@ describe('Screenshots on fails', function () {
                     screenshotsOnFails: true,
                     selectorTimeout:    0,
                     setScreenshotPath:  true,
-                    quarantineMode:     true
+                    quarantineMode:     true,
                 })
                 .catch(function (errs) {
                     assertionHelper.errorInEachBrowserContainsRegExp(errs, QUARANTINE_MODE_SCREENSHOT_PATH_RE, 0);
@@ -115,7 +115,7 @@ describe('Screenshots on fails', function () {
                 shouldFail:         true,
                 selectorTimeout:    0,
                 screenshotsOnFails: true,
-                disableScreenshots: true
+                disableScreenshots: true,
             };
 
             return runTests('./testcafe-fixtures/screenshots-on-fails.js', 'Screenshot on the ensureElement method fail', opts)
@@ -124,7 +124,7 @@ describe('Screenshots on fails', function () {
                     assertionHelper.errorInEachBrowserNotContains(errs, SCREENSHOT_PATH_MESSAGE_TEXT, 0);
                     expect(testReport.warnings).eql([
                         'Screenshots are disabled. To take screenshots, remove the "--disable-screenshots" command line flag ' +
-                        'or set the "disableScreenshots" option to "false" in the API or configuration file.'
+                        'or set the "disableScreenshots" option to "false" in the API or configuration file.',
                     ]);
                 });
         });
@@ -149,13 +149,13 @@ describe('Screenshots on fails', function () {
                     shouldFail:         true,
                     screenshotsOnFails: true,
                     selectorTimeout:    0,
-                    setScreenshotPath:  true
+                    setScreenshotPath:  true,
                 })
                 .catch(() => {
                     expect(testReport.warnings).eql([
                         'The screenshot and window resize functionalities are not supported in a remote browser. ' +
                         'They can function only if the browser is running on the same machine and ' +
-                        'in the same environment as the TestCafe server.'
+                        'in the same environment as the TestCafe server.',
                     ]);
                 });
         });

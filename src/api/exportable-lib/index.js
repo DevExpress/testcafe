@@ -36,7 +36,7 @@ function Selector (fn, options) {
 }
 
 Object.defineProperty(Role, 'anonymous', {
-    get: () => role.createAnonymousRole
+    get: () => role.createAnonymousRole,
 });
 
 export default {
@@ -62,5 +62,5 @@ export default {
             testControllerProxy = require('../test-controller/proxy');
 
         return testControllerProxy;
-    }
+    },
 };

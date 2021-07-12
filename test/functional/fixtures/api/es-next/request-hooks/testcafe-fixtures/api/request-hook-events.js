@@ -46,6 +46,6 @@ test('test', async t => {
         .expect(requestHookEventClasses.eventClasses).eql([
             'RequestEvent',
             'ConfigureResponseEvent',
-            'ResponseEvent'
+            'ResponseEvent',
         ]);
 });

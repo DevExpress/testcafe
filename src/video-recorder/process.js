@@ -31,7 +31,7 @@ const DEFAULT_OPTIONS = {
     'vf': 'scale=trunc(iw/2)*2:trunc(ih/2)*2',
 
     // NOTE: set the frame rate to 30 in the output video (the most widely supported)
-    'r': 30
+    'r': 30,
 };
 
 const FFMPEG_START_DELAY = 500;

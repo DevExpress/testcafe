@@ -10,7 +10,7 @@ const getWindowDimensionsInfo = ClientFunction(() => {
         outerWidth:      window.outerWidth,
         outerHeight:     window.outerHeight,
         availableHeight: screen.availHeight,
-        availableWidth:  screen.availWidth
+        availableWidth:  screen.availWidth,
     };
 });
 

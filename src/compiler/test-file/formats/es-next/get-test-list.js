@@ -17,7 +17,7 @@ const TOKEN_TYPE = {
     FunctionDeclaration:      'FunctionDeclaration',
     VariableStatement:        'VariableStatement',
     VariableDeclaration:      'VariableDeclaration',
-    ObjectLiteralExpression:  'ObjectExpression'
+    ObjectLiteralExpression:  'ObjectExpression',
 };
 
 export class EsNextTestFileParser extends TestFileParserBase {
@@ -70,7 +70,7 @@ export class EsNextTestFileParser extends TestFileParserBase {
             loc:    token.loc,
             start:  token.start,
             end:    token.end,
-            meta:   merge({}, ...meta)
+            meta:   merge({}, ...meta),
         };
     }
 
@@ -79,7 +79,7 @@ export class EsNextTestFileParser extends TestFileParserBase {
 
         return {
             key:   key.name || this.formatFnArg(key),
-            value: this.getStringValue(value)
+            value: this.getStringValue(value),
         };
     }
 

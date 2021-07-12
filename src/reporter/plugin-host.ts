@@ -4,7 +4,7 @@ import indentString from 'indent-string';
 import {
     identity,
     escape as escapeHtml,
-    assignIn
+    assignIn,
 } from 'lodash';
 
 import moment from '../utils/moment-loader';
@@ -103,7 +103,7 @@ export default class ReporterPluginHost {
             'div stack-line-location': (str: string) => ` (${this.chalk.grey.underline(str)})`,
 
             'strong': (str: string) => this.chalk.bold(str),
-            'a':      (str: string) => `"${this.chalk.underline(str)}"`
+            'a':      (str: string) => `"${this.chalk.underline(str)}"`,
         };
     }
 

@@ -9,14 +9,14 @@ const reporter = createReporter({
     },
     reportTestDone (name) {
         log.push(`done: ${name}`);
-    }
+    },
 });
 
 const expectedLog = [
     `start: test 0`,
     `done: test 0`,
     `start: test 1`,
-    `done: test 1`
+    `done: test 1`,
 ];
 
 describe('[Regression](GH-4725)', function () {

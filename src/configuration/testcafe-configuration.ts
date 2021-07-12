@@ -17,7 +17,7 @@ import {
     DEFAULT_SOURCE_DIRECTORIES,
     DEFAULT_DEVELOPMENT_MODE,
     DEFAULT_RETRY_TEST_PAGES,
-    getDefaultCompilerOptions
+    getDefaultCompilerOptions,
 } from './default-values';
 
 import OptionSource from './option-source';
@@ -25,7 +25,7 @@ import {
     Dictionary,
     FilterOption,
     ReporterOption,
-    TypeScriptCompilerOptions
+    TypeScriptCompilerOptions,
 } from './interfaces';
 
 import CustomizableCompilers from './customizable-compilers';
@@ -48,13 +48,13 @@ const OPTION_FLAG_NAMES = [
     OPTION_NAMES.disablePageCaching,
     OPTION_NAMES.disablePageReloads,
     OPTION_NAMES.disableScreenshots,
-    OPTION_NAMES.disableMultipleWindows
+    OPTION_NAMES.disableMultipleWindows,
 ];
 
 const OPTION_INIT_FLAG_NAMES = [
     OPTION_NAMES.developmentMode,
     OPTION_NAMES.retryTestPages,
-    OPTION_NAMES.cache
+    OPTION_NAMES.cache,
 ];
 
 interface TestCafeAdditionalStartOptions {
@@ -132,8 +132,8 @@ export default class TestCafeConfiguration extends Configuration {
                 ssl:             this.getOption(OPTION_NAMES.ssl) as string,
                 developmentMode: this.getOption(OPTION_NAMES.developmentMode) as boolean,
                 retryTestPages:  this.getOption(OPTION_NAMES.retryTestPages) as boolean,
-                cache:           this.getOption(OPTION_NAMES.cache) as boolean
-            }
+                cache:           this.getOption(OPTION_NAMES.cache) as boolean,
+            },
         };
 
         return result;
@@ -234,7 +234,7 @@ export default class TestCafeConfiguration extends Configuration {
             let typeScriptCompilerOptions = compilerOptionValue[CustomizableCompilers.typescript] as TypeScriptCompilerOptions;
 
             typeScriptCompilerOptions = Object.assign({
-                configPath: tsConfigPath
+                configPath: tsConfigPath,
             }, typeScriptCompilerOptions);
 
             (compilerOptions.value as CompilerOptions)[CustomizableCompilers.typescript] = typeScriptCompilerOptions;

@@ -20,7 +20,7 @@ export default class BrowserConsoleMessages {
             arrayForEach:         Array.prototype.forEach,
             arrayConcat:          Array.prototype.concat,
             arraySlice:           Array.prototype.slice,
-            objectDefineProperty: Object.defineProperty
+            objectDefineProperty: Object.defineProperty,
         };
     }
 
@@ -44,7 +44,7 @@ export default class BrowserConsoleMessages {
             log:   [],
             info:  [],
             warn:  [],
-            error: []
+            error: [],
         };
     }
 
@@ -82,7 +82,7 @@ export default class BrowserConsoleMessages {
                 log:   this._copyArray(this[windowId].log),
                 info:  this._copyArray(this[windowId].info),
                 warn:  this._copyArray(this[windowId].warn),
-                error: this._copyArray(this[windowId].error)
+                error: this._copyArray(this[windowId].error),
             };
         });
 

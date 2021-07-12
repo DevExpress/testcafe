@@ -9,7 +9,7 @@ import BrowserConnectionErrorHint from '../../browser/connection/error-hints';
 const DOCUMENTATION_LINKS = {
     TEST_SOURCE_PARAMETER: 'https://testcafe.io/documentation/402639/reference/command-line-interface#file-pathglob-pattern',
     FILTER_SETTINGS:       'https://testcafe.io/documentation/402638/reference/configuration-file#filter',
-    HEADLESS_MODE:         'https://testcafe.io/documentation/402828/guides/concepts/browsers#test-in-headless-mode'
+    HEADLESS_MODE:         'https://testcafe.io/documentation/402828/guides/concepts/browsers#test-in-headless-mode',
 };
 
 export default {
@@ -127,5 +127,5 @@ export default {
     [BrowserConnectionErrorHint.TooHighConcurrencyFactor]: 'The host machine may not be powerful enough to handle the specified concurrency factor ({concurrencyFactor}). ' +
                                                            'Try to decrease the concurrency factor or allocate more computing resources to the host machine.',
     [BrowserConnectionErrorHint.UseBrowserInitOption]: 'Increase the value of the "browserInitTimeout" option if it is too low (currently: {browserInitTimeoutMsg}). This option determines how long TestCafe waits for browsers to be ready.',
-    [BrowserConnectionErrorHint.RestErrorCauses]:      'The error can also be caused by network issues or remote device failure. Make sure that your network connection is stable and you can reach the remote device.'
+    [BrowserConnectionErrorHint.RestErrorCauses]:      'The error can also be caused by network issues or remote device failure. Make sure that your network connection is stable and you can reach the remote device.',
 };

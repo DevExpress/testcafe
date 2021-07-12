@@ -70,7 +70,7 @@ asyncTest('T204773 - TestCafe - The assertion in last step with inIFrame wrapper
     testRunner._onTestComplete({
         callback: function () {
             start();
-        }
+        },
     });
 });
 

@@ -5,5 +5,5 @@ export default {
 
     startWaitingAssertionRetries:       'start-waiting-assertion-retries',
     endWaitingAssertionRetriesRequest:  'end-waiting-assertion-retries-request',
-    endWaitingAssertionRetriesResponse: 'end-waiting-assertion-retries-response'
+    endWaitingAssertionRetriesResponse: 'end-waiting-assertion-retries-response',
 };

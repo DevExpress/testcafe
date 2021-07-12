@@ -10,7 +10,7 @@ describe('[API] Upload', function () {
         it('Should validate the selector argument', function () {
             return runTests('./testcafe-fixtures/upload-test.js', 'Invalid selector argument (setFilesToUpload)', {
                 shouldFail: true,
-                only:       'chrome'
+                only:       'chrome',
             })
                 .catch(function (errs) {
                     expect(errs[0]).contains(
@@ -25,7 +25,7 @@ describe('[API] Upload', function () {
         it('Should validate the filePath argument', function () {
             return runTests('./testcafe-fixtures/upload-test.js', 'Invalid filePath argument', {
                 shouldFail: true,
-                only:       'chrome'
+                only:       'chrome',
             })
                 .catch(function (errs) {
                     expect(errs[0]).contains('The "filePath" argument is expected to be a non-empty string or a string array, but it was "".');
@@ -36,7 +36,7 @@ describe('[API] Upload', function () {
         it('Should raise an error if the specified file is not exist', () => {
             return runTests('./testcafe-fixtures/upload-test.js', 'Error on upload non-existing file', {
                 shouldFail: true,
-                only:       'chrome'
+                only:       'chrome',
             })
                 .catch(errs => {
                     expect(errs[0]).contains('Cannot find the following file(s) to upload');
@@ -62,7 +62,7 @@ describe('[API] Upload', function () {
         it('Should validate the selector argument', function () {
             return runTests('./testcafe-fixtures/upload-test.js', 'Invalid selector argument (clearUpload)', {
                 shouldFail: true,
-                only:       'chrome'
+                only:       'chrome',
             })
                 .catch(function (errs) {
                     expect(errs[0]).contains(

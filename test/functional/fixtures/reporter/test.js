@@ -6,7 +6,7 @@ const ReporterPluginMethod = require('../../../../lib/reporter/plugin-methods');
 const {
     createSimpleTestStream,
     createAsyncTestStream,
-    createSyncTestStream
+    createSyncTestStream,
 } = require('../../utils/stream');
 
 describe('Reporter', () => {
@@ -27,13 +27,13 @@ describe('Reporter', () => {
             reporter: [
                 {
                     name:   'json',
-                    output: stream1
+                    output: stream1,
                 },
                 {
                     name:   'list',
-                    output: stream2
-                }
-            ]
+                    output: stream2,
+                },
+            ],
         })
             .then(() => {
                 expect(stream1.data).to.contains('Chrome');
@@ -53,9 +53,9 @@ describe('Reporter', () => {
             reporter: [
                 {
                     name:   'json',
-                    output: stream
-                }
-            ]
+                    output: stream,
+                },
+            ],
         };
 
         return runTests('testcafe-fixtures/index-test.js', 'Simple test', runOpts)
@@ -72,9 +72,9 @@ describe('Reporter', () => {
             reporter: [
                 {
                     name:   'json',
-                    output: stream
-                }
-            ]
+                    output: stream,
+                },
+            ],
         };
 
         return runTests('testcafe-fixtures/index-test.js', 'Simple test', runOpts)
@@ -99,9 +99,9 @@ describe('Reporter', () => {
             reporter: [
                 {
                     name:   'json',
-                    output: process.stdout
-                }
-            ]
+                    output: process.stdout,
+                },
+            ],
         };
 
         return runTests('testcafe-fixtures/index-test.js', 'Simple test', runOpts)
@@ -128,9 +128,9 @@ describe('Reporter', () => {
             reporter: [
                 {
                     name:   'json',
-                    output: process.stderr
-                }
-            ]
+                    output: process.stderr,
+                },
+            ],
         };
 
         return runTests('testcafe-fixtures/index-test.js', 'Simple test', runOpts)
@@ -157,9 +157,9 @@ describe('Reporter', () => {
             reporter: [
                 {
                     name:   'json',
-                    output: void 0
-                }
-            ]
+                    output: void 0,
+                },
+            ],
         };
 
         return runTests('testcafe-fixtures/index-test.js', 'Simple test', runOpts)
@@ -178,9 +178,9 @@ describe('Reporter', () => {
             reporter: [
                 {
                     name:   'json',
-                    output: stream
-                }
-            ]
+                    output: stream,
+                },
+            ],
         };
 
         return runTests('testcafe-fixtures/index-test.js', 'Simple test', runOpts)
@@ -198,13 +198,13 @@ describe('Reporter', () => {
             reporter: [
                 {
                     name:   'list',
-                    output: testStream
+                    output: testStream,
                 },
                 {
                     name:   'list',
-                    output: reportFileName
-                }
-            ]
+                    output: reportFileName,
+                },
+            ],
         })
             .then(() => {
                 const reportDataFromFile = fs.readFileSync(reportFileName).toString();
@@ -224,9 +224,9 @@ describe('Reporter', () => {
             reporter: [
                 {
                     name:   'json',
-                    output: stream
-                }
-            ]
+                    output: stream,
+                },
+            ],
         };
 
         return runTests('testcafe-fixtures/index-test.js', 'Simple test', runOpts)
@@ -240,7 +240,7 @@ describe('Reporter', () => {
             return {
                 only:               ['chrome'],
                 disableScreenshots: true,
-                reporter:           generateReporter(log, options)
+                reporter:           generateReporter(log, options),
             };
         }
 
@@ -253,7 +253,7 @@ describe('Reporter', () => {
         it('Simple command', function () {
             return runTests('testcafe-fixtures/index-test.js', 'Simple command test', generateRunOptions(log, {
                 includeBrowserInfo: true,
-                includeTestInfo:    true
+                includeTestInfo:    true,
             }))
                 .then(() => {
                     expect(log).eql([
@@ -264,12 +264,12 @@ describe('Reporter', () => {
                             test:    {
                                 id:    'test-id',
                                 name:  'Simple command test',
-                                phase: 'inTest'
+                                phase: 'inTest',
                             },
                             fixture: {
                                 id:   'fixture-id',
-                                name: 'Reporter'
-                            }
+                                name: 'Reporter',
+                            },
                         },
                         {
                             name:    'click',
@@ -278,19 +278,19 @@ describe('Reporter', () => {
                                 type:     'click',
                                 selector: 'Selector(\'#target\')',
                                 options:  {
-                                    offsetX: 10
-                                }
+                                    offsetX: 10,
+                                },
                             },
                             test: {
                                 id:    'test-id',
                                 name:  'Simple command test',
-                                phase: 'inTest'
+                                phase: 'inTest',
                             },
                             fixture: {
                                 id:   'fixture-id',
-                                name: 'Reporter'
-                            }
-                        }
+                                name: 'Reporter',
+                            },
+                        },
                     ]);
                 });
         });
@@ -301,17 +301,17 @@ describe('Reporter', () => {
                     expect(log).eql([
                         {
                             name:   'click',
-                            action: 'start'
+                            action: 'start',
                         },
                         {
                             name:    'click',
                             action:  'done',
                             command: {
                                 type:     'click',
-                                selector: 'Selector(\'#non-existing-target\')'
+                                selector: 'Selector(\'#non-existing-target\')',
                             },
-                            err: 'E24'
-                        }
+                            err: 'E24',
+                        },
                     ]);
                 });
         });
@@ -322,7 +322,7 @@ describe('Reporter', () => {
                     expect(log).eql([
                         {
                             name:   'eql',
-                            action: 'start'
+                            action: 'start',
                         },
                         {
                             name:    'eql',
@@ -335,9 +335,9 @@ describe('Reporter', () => {
                                 expected2:     void 0,
                                 message:       'assertion message',
                                 options:       {
-                                    timeout: 100
-                                }
-                            }
+                                    timeout: 100,
+                                },
+                            },
                         },
                     ]);
                 });
@@ -349,7 +349,7 @@ describe('Reporter', () => {
                     expect(log).eql([
                         {
                             name:   'eql',
-                            action: 'start'
+                            action: 'start',
                         },
                         {
                             name:    'eql',
@@ -360,8 +360,8 @@ describe('Reporter', () => {
                                 assertionType: 'eql',
                                 expected:      'target',
                                 expected2:     void 0,
-                                message:       null
-                            }
+                                message:       null,
+                            },
                         },
                     ]);
                 });
@@ -373,28 +373,28 @@ describe('Reporter', () => {
                     expect(log).eql([
                         {
                             name:   'execute-selector',
-                            action: 'start'
+                            action: 'start',
                         },
                         {
                             name:    'execute-selector',
                             action:  'done',
                             command: {
                                 selector: 'Selector(\'#target\')',
-                                type:     'execute-selector'
-                            }
+                                type:     'execute-selector',
+                            },
                         },
                         {
                             name:   'execute-selector',
-                            action: 'start'
+                            action: 'start',
                         },
                         {
                             name:    'execute-selector',
                             action:  'done',
                             command: {
                                 selector: 'Selector(\'body\').find(\'#target\')',
-                                type:     'execute-selector'
-                            }
-                        }
+                                type:     'execute-selector',
+                            },
+                        },
                     ]);
                 });
         });
@@ -411,12 +411,12 @@ describe('Reporter', () => {
                                 clientFn: {
                                     args: [
                                         1,
-                                        true
+                                        true,
                                     ],
-                                    code: '(function(){ var func = function func(bool) {return function () {return bool;};}; return func;})();'
+                                    code: '(function(){ var func = function func(bool) {return function () {return bool;};}; return func;})();',
                                 },
-                                type: 'execute-client-function'
-                            }
+                                type: 'execute-client-function',
+                            },
                         }]
                     );
                 });
@@ -434,11 +434,11 @@ describe('Reporter', () => {
                                 role: {
                                     loginUrl: 'http://localhost:3000/fixtures/reporter/pages/index.html',
                                     options:  { preserveUrl: true },
-                                    phase:    'initialized'
+                                    phase:    'initialized',
                                 },
-                                type: 'useRole'
-                            }
-                        }
+                                type: 'useRole',
+                            },
+                        },
                     ]);
                 });
         });
@@ -453,12 +453,12 @@ describe('Reporter', () => {
                             test:   {
                                 id:    'test-id',
                                 name:  'Complex nested command test',
-                                phase: 'inTest'
+                                phase: 'inTest',
                             },
                             fixture: {
                                 id:   'fixture-id',
-                                name: 'Reporter'
-                            }
+                                name: 'Reporter',
+                            },
                         },
                         {
                             name:   'click',
@@ -466,29 +466,29 @@ describe('Reporter', () => {
                             test:   {
                                 id:    'test-id',
                                 name:  'Complex nested command test',
-                                phase: 'inRoleInitializer'
+                                phase: 'inRoleInitializer',
                             },
                             fixture: {
                                 id:   'fixture-id',
-                                name: 'Reporter'
-                            }
+                                name: 'Reporter',
+                            },
                         },
                         {
                             name:    'click',
                             action:  'done',
                             command: {
                                 selector: 'Selector(\'#target\')',
-                                type:     'click'
+                                type:     'click',
                             },
                             test: {
                                 id:    'test-id',
                                 name:  'Complex nested command test',
-                                phase: 'inRoleInitializer'
+                                phase: 'inRoleInitializer',
                             },
                             fixture: {
                                 id:   'fixture-id',
-                                name: 'Reporter'
-                            }
+                                name: 'Reporter',
+                            },
                         },
                         {
                             name:    'useRole',
@@ -497,20 +497,20 @@ describe('Reporter', () => {
                                 role: {
                                     loginUrl: 'http://localhost:3000/fixtures/reporter/pages/index.html',
                                     options:  { 'preserveUrl': false },
-                                    phase:    'initialized'
+                                    phase:    'initialized',
                                 },
-                                type: 'useRole'
+                                type: 'useRole',
                             },
                             test: {
                                 id:    'test-id',
                                 name:  'Complex nested command test',
-                                phase: 'inTest'
+                                phase: 'inTest',
                             },
                             fixture: {
                                 id:   'fixture-id',
-                                name: 'Reporter'
-                            }
-                        }
+                                name: 'Reporter',
+                            },
+                        },
                     ]);
                 });
         });
@@ -526,9 +526,9 @@ describe('Reporter', () => {
                             action:  'done',
                             command: {
                                 selector: 'Selector(\'#non-existing-element\')',
-                                type:     'click'
+                                type:     'click',
                             },
-                            err: 'E24'
+                            err: 'E24',
                         },
                         {
                             name:    'useRole',
@@ -537,11 +537,11 @@ describe('Reporter', () => {
                                 role: {
                                     loginUrl: 'http://localhost:3000/fixtures/reporter/pages/index.html',
                                     options:  { 'preserveUrl': false },
-                                    phase:    'initialized'
+                                    phase:    'initialized',
                                 },
-                                type: 'useRole'
-                            }
-                        }
+                                type: 'useRole',
+                            },
+                        },
                     ]);
                 });
         });
@@ -557,11 +557,11 @@ describe('Reporter', () => {
                             command: {
                                 clientFn: {
                                     args: [],
-                                    code: '(function(){ var func = function func() {return document.getElementById(\'#target\');}; return func;})();'
+                                    code: '(function(){ var func = function func() {return document.getElementById(\'#target\');}; return func;})();',
                                 },
-                                type: 'execute-client-function'
-                            }
-                        }
+                                type: 'execute-client-function',
+                            },
+                        },
                     ]);
                 });
         });
@@ -579,10 +579,10 @@ describe('Reporter', () => {
                                 type:     'execute-client-function',
                                 clientFn: {
                                     code: '(function(){ var func = function func() {return  __get$Loc(location) .reload(true);}; return func;})();',
-                                    args: []
-                                }
-                            }
-                        }
+                                    args: [],
+                                },
+                            },
+                        },
                     ]);
                 });
         });
@@ -600,13 +600,13 @@ describe('Reporter', () => {
                         command: {
                             type:     'type-text',
                             selector: {
-                                expression: "Selector('#password-input')"
+                                expression: "Selector('#password-input')",
                             },
                             options: {
-                                confidential: true
+                                confidential: true,
                             },
-                            text: '********'
-                        }
+                            text: '********',
+                        },
                     },
                     {
                         name:    'typeText',
@@ -615,11 +615,11 @@ describe('Reporter', () => {
                             type:     'type-text',
                             selector: "Selector('#password-input')",
                             options:  {
-                                confidential: true
+                                confidential: true,
                             },
-                            text: '********'
-                        }
-                    }
+                            text: '********',
+                        },
+                    },
                 ]);
             });
         });
@@ -637,13 +637,13 @@ describe('Reporter', () => {
                         command: {
                             type:     'type-text',
                             selector: {
-                                expression: "Selector('#input')"
+                                expression: "Selector('#input')",
                             },
                             options: {
-                                confidential: true
+                                confidential: true,
                             },
-                            text: '********'
-                        }
+                            text: '********',
+                        },
                     },
                     {
                         name:    'typeText',
@@ -652,11 +652,11 @@ describe('Reporter', () => {
                             type:     'type-text',
                             selector: "Selector('#input')",
                             options:  {
-                                confidential: true
+                                confidential: true,
                             },
-                            text: '********'
-                        }
-                    }
+                            text: '********',
+                        },
+                    },
                 ]);
             });
         });
@@ -674,13 +674,13 @@ describe('Reporter', () => {
                         command: {
                             type:     'type-text',
                             selector: {
-                                expression: "Selector('#password-input')"
+                                expression: "Selector('#password-input')",
                             },
                             options: {
-                                confidential: false
+                                confidential: false,
                             },
-                            text: 'pa$$w0rd'
-                        }
+                            text: 'pa$$w0rd',
+                        },
                     },
                     {
                         name:    'typeText',
@@ -689,11 +689,11 @@ describe('Reporter', () => {
                             type:     'type-text',
                             selector: "Selector('#password-input')",
                             options:  {
-                                confidential: false
+                                confidential: false,
                             },
-                            text: 'pa$$w0rd'
-                        }
-                    }
+                            text: 'pa$$w0rd',
+                        },
+                    },
                 ]);
             });
         });
@@ -711,10 +711,10 @@ describe('Reporter', () => {
                         command: {
                             type:    'press-key',
                             options: {
-                                confidential: true
+                                confidential: true,
                             },
-                            keys: '********'
-                        }
+                            keys: '********',
+                        },
                     },
                     {
                         name:    'pressKey',
@@ -722,11 +722,11 @@ describe('Reporter', () => {
                         command: {
                             type:    'press-key',
                             options: {
-                                confidential: true
+                                confidential: true,
                             },
-                            keys: '********'
-                        }
-                    }
+                            keys: '********',
+                        },
+                    },
                 ]);
             });
         });
@@ -746,8 +746,8 @@ describe('Reporter', () => {
                             options: {
                                 confidential: true,
                             },
-                            keys: '********'
-                        }
+                            keys: '********',
+                        },
                     },
                     {
                         name:    'pressKey',
@@ -757,9 +757,9 @@ describe('Reporter', () => {
                             options: {
                                 confidential: true,
                             },
-                            keys: '********'
-                        }
-                    }
+                            keys: '********',
+                        },
+                    },
                 ]);
             });
         });
@@ -777,10 +777,10 @@ describe('Reporter', () => {
                         command: {
                             type:    'press-key',
                             options: {
-                                confidential: false
+                                confidential: false,
                             },
-                            keys: 'p a $ $ w 0 r d enter'
-                        }
+                            keys: 'p a $ $ w 0 r d enter',
+                        },
                     },
                     {
                         name:    'pressKey',
@@ -788,11 +788,11 @@ describe('Reporter', () => {
                         command: {
                             type:    'press-key',
                             options: {
-                                confidential: false
+                                confidential: false,
                             },
-                            keys: 'p a $ $ w 0 r d enter'
-                        }
-                    }
+                            keys: 'p a $ $ w 0 r d enter',
+                        },
+                    },
                 ]);
             });
         });
@@ -806,7 +806,7 @@ describe('Reporter', () => {
                 { expression: 'Selector(\'#obscuredInput\')', element: { tagName: 'div', attributes: { id: 'fixed' } } },
                 { expression: 'Selector(\'#obscuredDiv\')', element: { tagName: 'div', attributes: { id: 'obscuredDiv' } } },
                 { expression: 'Selector(\'#p1\')', element: { attributes: { id: 'p1' }, tagName: 'p' } },
-                { expression: 'Selector(\'#p2\')', element: { attributes: { id: 'p2' }, tagName: 'p' } }
+                { expression: 'Selector(\'#p2\')', element: { attributes: { id: 'p2' }, tagName: 'p' } },
             ];
 
             function customReporter (log) {
@@ -834,7 +834,7 @@ describe('Reporter', () => {
                         async reportTestDone () {
                         },
                         async reportTaskDone () {
-                        }
+                        },
                     };
                 };
             }
@@ -868,7 +868,7 @@ describe('Reporter', () => {
                         async reportTestDone () {
                         },
                         async reportTaskDone () {
-                        }
+                        },
                     };
                 };
             }
@@ -908,14 +908,14 @@ describe('Reporter', () => {
                         testDoneErrors = testRunInfo.errs;
                     },
                     async reportTaskDone () {
-                    }
+                    },
                 };
             }
 
             return runTests('testcafe-fixtures/index-test.js', 'Screenshot on action error', {
                 only:               'chrome',
                 reporter:           screenshotReporter,
-                screenshotsOnFails: true
+                screenshotsOnFails: true,
             })
                 .then(() => {
                     expect(actionDoneErrors[0]).is.undefined;
@@ -933,7 +933,7 @@ describe('Reporter', () => {
                 async reportTaskStart () {},
                 async reportFixtureStart () {},
                 async reportTestDone () {},
-                async reportTaskDone () {}
+                async reportTaskDone () {},
             };
 
             base[method] = () => {
@@ -950,7 +950,7 @@ describe('Reporter', () => {
                     'Simple test',
                     {
                         reporter:   createReporterWithBrokenMethod(method),
-                        shouldFail: true
+                        shouldFail: true,
                     }
                 );
 

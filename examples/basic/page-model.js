@@ -22,12 +22,12 @@ class Page {
         this.featureList = [
             new Feature('Support for testing on remote devices'),
             new Feature('Re-using existing JavaScript code for testing'),
-            new Feature('Easy embedding into a Continuous integration system')
+            new Feature('Easy embedding into a Continuous integration system'),
         ];
 
         this.slider = {
             handle: Selector('.ui-slider-handle'),
-            tick:   Selector('.slider-value')
+            tick:   Selector('.slider-value'),
         };
 
         this.interfaceSelect       = Selector('#preferred-interface');

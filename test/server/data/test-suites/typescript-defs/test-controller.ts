@@ -187,7 +187,7 @@ test('Double click on a button', async t => {
 test('Drag to offset', async t => {
     await t.drag('#draggable-div-1', 10, 20, {
         'offsetX': 10,
-        'offsetY': 10
+        'offsetY': 10,
     });
 });
 
@@ -202,7 +202,7 @@ test('Drag to offset with incorrect dragOffsetY', async t => {
 test('Drag to element', async t => {
     await t.dragToElement('#draggable-div-2', '#destination-div', {
         'offsetX': 10,
-        'offsetY': 10
+        'offsetY': 10,
     });
 });
 
@@ -569,13 +569,13 @@ test('Expected alert and prompt after redirect', async t => {
         {
             type: 'prompt',
             text: 'Prompt:',
-            url: promptPageUrl
+            url: promptPageUrl,
         },
         {
             type: 'alert',
             text: 'Alert!',
-            url: pageUrl
-        }
+            url: pageUrl,
+        },
     ]);
 });
 

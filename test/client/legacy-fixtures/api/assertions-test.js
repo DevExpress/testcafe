@@ -238,14 +238,14 @@ test('jQuery objects', function () {
         specificClassElementDescription,
         ', ',
         commonClassElementDescription,
-        ']'
+        ']',
     ].join('');
 
     const specificClassElementsDescription = ['[',
         specificClassElementDescription,
         ', ',
         specificClassElementDescription,
-        ']'
+        ']',
     ].join('');
 
     assertionsAPI.eq($('div.' + commonClass), $('.' + commonClass));
@@ -278,14 +278,14 @@ test('NodeLists', function () {
         specificClassElementDescription,
         ', ',
         commonClassElementDescription,
-        ']'
+        ']',
     ].join('');
 
     const specificClassElementsDescription = ['[',
         specificClassElementDescription,
         ', ',
         specificClassElementDescription,
-        ']'
+        ']',
     ].join('');
 
     assertionsAPI.eq(document.getElementsByClassName(commonClass), document.getElementsByClassName(specificClass));

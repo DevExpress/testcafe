@@ -1,4 +1,4 @@
 export default {
     created: 'created',
-    done:    'done'
+    done:    'done',
 };

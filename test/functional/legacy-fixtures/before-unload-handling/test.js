@@ -11,7 +11,7 @@ describe('Before unload handling', function () {
             .catch(function (errs) {
                 var expectedError = [
                     'Error at step "2.Wait for a dialog":',
-                    ' The expected system beforeUnload dialog did not appear.'
+                    ' The expected system beforeUnload dialog did not appear.',
                 ].join('');
 
                 expect(errs[0]).contains(expectedError);
@@ -23,7 +23,7 @@ describe('Before unload handling', function () {
             .catch(function (errs) {
                 var expectedError = [
                     'Error at step "3.Wait for a dialog":',
-                    ' Unexpected system beforeUnload dialog message appeared.'
+                    ' Unexpected system beforeUnload dialog message appeared.',
                 ].join('');
 
                 expect(errs[0]).contains(expectedError);
@@ -39,7 +39,7 @@ describe('Before unload handling', function () {
             .catch(function (errs) {
                 var expectedError = [
                     'Error at step "2.Wait for a dialog":',
-                    ' The expected system beforeUnload dialog did not appear.'
+                    ' The expected system beforeUnload dialog did not appear.',
                 ].join('');
 
                 expect(errs[0]).contains(expectedError);
@@ -51,7 +51,7 @@ describe('Before unload handling', function () {
             .catch(function (errs) {
                 var expectedError = [
                     'Error at step "3.Wait for a dialog":',
-                    ' Unexpected system beforeUnload dialog message appeared.'
+                    ' Unexpected system beforeUnload dialog message appeared.',
                 ].join('');
 
                 expect(errs[0]).contains(expectedError);

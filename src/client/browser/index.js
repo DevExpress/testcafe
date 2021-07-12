@@ -169,6 +169,6 @@ export function getActiveWindowId (activeWindowIdUrl, createXHR) {
 export function setActiveWindowId (activeWindowIdUrl, createXHR, windowId) {
     return sendXHR(activeWindowIdUrl, createXHR, {
         method: 'POST',
-        data:   JSON.stringify({ windowId }) //eslint-disable-line no-restricted-globals
+        data:   JSON.stringify({ windowId }), //eslint-disable-line no-restricted-globals
     });
 }

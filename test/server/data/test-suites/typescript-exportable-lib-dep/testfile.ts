@@ -6,6 +6,6 @@ fixture `Fixture`;
 test('Get common runtime funcs', async() => {
     return {
         exportableLibInDep,
-        exportableLib
+        exportableLib,
     };
 });

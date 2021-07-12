@@ -12,38 +12,38 @@ test
             {
                 name:          'click',
                 perform:       async () => await t.click(target),
-                expectedEvent: 'click'
+                expectedEvent: 'click',
             },
 
             {
                 name:          'doubleClick',
                 perform:       async () => await t.doubleClick(target),
-                expectedEvent: 'dblclick'
+                expectedEvent: 'dblclick',
             },
 
             {
                 name:          'hover',
                 perform:       async () => await t.hover(target),
-                expectedEvent: 'mouseover'
+                expectedEvent: 'mouseover',
             },
 
             {
                 name:          'rightClick',
                 perform:       async () => await t.rightClick(target),
-                expectedEvent: 'contextmenu'
+                expectedEvent: 'contextmenu',
             },
 
             {
                 name:          'drag',
                 perform:       async () => await t.drag(target, 100, 100),
-                expectedEvent: 'mousedown'
+                expectedEvent: 'mousedown',
             },
 
             {
                 name:          'selectText',
                 perform:       async () => await t.selectText(target),
-                expectedEvent: 'mousedown'
-            }
+                expectedEvent: 'mousedown',
+            },
         ];
 
         for (let i = 0; i < actions.length; i++) {

@@ -2,7 +2,7 @@ import { shadowUI, nativeMethods } from './deps/hammerhead';
 import {
     MARK_LENGTH,
     MARK_HEIGHT,
-    MARK_RIGHT_MARGIN
+    MARK_RIGHT_MARGIN,
 } from '../../screenshots/constants';
 
 
@@ -38,5 +38,5 @@ export default {
         nativeMethods.imageSrcSetter.call(this.screenshotMark, url);
 
         this.screenshotMark.style.visibility = '';
-    }
+    },
 };

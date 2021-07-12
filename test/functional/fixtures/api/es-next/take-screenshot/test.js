@@ -37,7 +37,7 @@ const getReporter = function (scope) {
         },
         reportTestStart: (name, meta, { testRunIds }) => {
             scope.testRunIds = testRunIds;
-        }
+        },
     });
 };
 
@@ -102,7 +102,7 @@ describe('[API] t.takeScreenshot()', function () {
                     expect(assertionHelper.isScreenshotDirExists()).eql(false);
                     expect(testReport.warnings).eql([
                         'Screenshots are disabled. To take screenshots, remove the "--disable-screenshots" command line flag ' +
-                        'or set the "disableScreenshots" option to "false" in the API or configuration file.'
+                        'or set the "disableScreenshots" option to "false" in the API or configuration file.',
                     ]);
                 });
         });
@@ -113,7 +113,7 @@ describe('[API] t.takeScreenshot()', function () {
                     expect(assertionHelper.isScreenshotDirExists()).eql(false);
                     expect(testReport.warnings).eql([
                         'Screenshots are disabled. To take screenshots, remove the "--disable-screenshots" command line flag ' +
-                        'or set the "disableScreenshots" option to "false" in the API or configuration file.'
+                        'or set the "disableScreenshots" option to "false" in the API or configuration file.',
                     ]);
                 });
         });
@@ -121,7 +121,7 @@ describe('[API] t.takeScreenshot()', function () {
         it('Should validate path argument', function () {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Incorrect action path argument', {
                 shouldFail: true,
-                only:       'chrome'
+                only:       'chrome',
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('The "path" argument is expected to be a non-empty string, but it was number.');
@@ -136,7 +136,7 @@ describe('[API] t.takeScreenshot()', function () {
         it('Should check the path argument for forbidden characters', function () {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Forbidden characters in the path argument', {
                 shouldFail: true,
-                only:       'chrome'
+                only:       'chrome',
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('There are forbidden characters in the "path:with*forbidden|chars" screenshot path: ":" at index 4 "*" at index 9 "|" at index 19');
@@ -151,7 +151,7 @@ describe('[API] t.takeScreenshot()', function () {
         it('Should take a screenshot in quarantine mode', function () {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot in quarantine mode', {
                 setScreenshotPath: true,
-                quarantineMode:    true
+                quarantineMode:    true,
             })
                 .catch(function () {
                     expect(SCREENSHOT_PATH_MESSAGE_RE.test(testReport.screenshotPath)).eql(true);
@@ -165,7 +165,7 @@ describe('[API] t.takeScreenshot()', function () {
 
         it('Should throw warning when taking screenshots with same path', function () {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Take screenshots with same path', {
-                setScreenshotPath: true
+                setScreenshotPath: true,
             }).then(function () {
                 const screenshotFileName = path.join(SCREENSHOTS_PATH, '1.png');
 
@@ -173,7 +173,7 @@ describe('[API] t.takeScreenshot()', function () {
                     `The file at "${screenshotFileName}" already exists. It has just been rewritten ` +
                     'with a recent screenshot. This situation can possibly cause issues. To avoid them, make sure ' +
                     'that each screenshot has a unique path. If a test runs in multiple browsers, consider ' +
-                    'including the user agent in the screenshot path or generate a unique identifier in another way.'
+                    'including the user agent in the screenshot path or generate a unique identifier in another way.',
                 ]);
             });
         });
@@ -202,7 +202,7 @@ describe('[API] t.takeScreenshot()', function () {
                 setScreenshotPath:  true,
                 quarantineMode:     true,
                 screenshotsOnFails: true,
-                reporter:           [ reporter ]
+                reporter:           [ reporter ],
             })
                 .then(function () {
                     const getScreenshotsInfo = (screenshotPath, thumbnailPath, attempt, userAgent, takenOnFail) => {
@@ -218,7 +218,7 @@ describe('[API] t.takeScreenshot()', function () {
                             takenOnFail,
                             quarantineAttempt: attempt,
                             isPassedAttempt:   attempt > 1,
-                            userAgent
+                            userAgent,
                         };
                     };
 
@@ -246,7 +246,7 @@ describe('[API] t.takeScreenshot()', function () {
                 {
                     setScreenshotPath:     true,
                     screenshotPathPattern: '${TEST}-${FILE_INDEX}',
-                    only:                  'chrome'
+                    only:                  'chrome',
                 })
                 .then(() => {
                     expect(testReport.screenshotPath).eql(SCREENSHOTS_PATH);
@@ -280,7 +280,7 @@ describe('[API] t.takeScreenshot()', function () {
                     expect(testReport.warnings).eql([
                         'The screenshot and window resize functionalities are not supported in a remote browser. ' +
                         'They can function only if the browser is running on the same machine and ' +
-                        'in the same environment as the TestCafe server.'
+                        'in the same environment as the TestCafe server.',
                     ]);
                 });
         });
@@ -317,7 +317,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                     expect(assertionHelper.isScreenshotDirExists()).eql(false);
                     expect(testReport.warnings).eql([
                         'Screenshots are disabled. To take screenshots, remove the "--disable-screenshots" command line flag ' +
-                        'or set the "disableScreenshots" option to "false" in the API or configuration file.'
+                        'or set the "disableScreenshots" option to "false" in the API or configuration file.',
                     ]);
                 });
         });
@@ -325,7 +325,7 @@ describe('[API] t.takeElementScreenshot()', function () {
         it('Should validate selector argument', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Incorrect action selector argument', {
                 shouldFail: true,
-                only:       'chrome'
+                only:       'chrome',
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains(
@@ -345,7 +345,7 @@ describe('[API] t.takeElementScreenshot()', function () {
         it('Should validate path argument', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Incorrect action path argument', {
                 shouldFail: true,
-                only:       'chrome'
+                only:       'chrome',
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('The "path" argument is expected to be a non-empty string, but it was number.');
@@ -360,7 +360,7 @@ describe('[API] t.takeElementScreenshot()', function () {
         it('Should check the path argument for forbidden characters', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Forbidden characters in the path argument', {
                 shouldFail: true,
-                only:       'chrome'
+                only:       'chrome',
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('There are forbidden characters in the "path:with*forbidden|chars" screenshot path: ":" at index 4 "*" at index 9 "|" at index 19');
@@ -442,7 +442,7 @@ describe('[API] t.takeElementScreenshot()', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Invalid dimensions', {
                 setScreenshotPath: true,
                 shouldFail:        true,
-                only:              'chrome'
+                only:              'chrome',
             })
                 .catch(function (errs) {
                     const screenshotsCheckingOptions = { forError: false, screenshotsCount: 2, customPath: 'custom' };
@@ -461,7 +461,7 @@ describe('[API] t.takeElementScreenshot()', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Invisible element', {
                 setScreenshotPath: true,
                 shouldFail:        true,
-                only:              'chrome'
+                only:              'chrome',
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('The element that matches the specified selector is not visible.');
@@ -477,7 +477,7 @@ describe('[API] t.takeElementScreenshot()', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Non-existent element', {
                 setScreenshotPath: true,
                 shouldFail:        true,
-                only:              'chrome'
+                only:              'chrome',
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains(
@@ -496,7 +496,7 @@ describe('[API] t.takeElementScreenshot()', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Invalid scroll target', {
                 setScreenshotPath: true,
                 shouldFail:        true,
-                only:              'chrome'
+                only:              'chrome',
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('Unable to scroll to the specified point because a point ' +
@@ -601,7 +601,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                     expect(testReport.warnings).eql([
                         'The screenshot and window resize functionalities are not supported in a remote browser. ' +
                         'They can function only if the browser is running on the same machine and ' +
-                        'in the same environment as the TestCafe server.'
+                        'in the same environment as the TestCafe server.',
                     ]);
                 });
         });
@@ -625,7 +625,7 @@ describe('[API] Take full page screenshots', function () {
         it('Should take a full page screenshot via Runner', function () {
             return runTests('./testcafe-fixtures/take-full-page-screenshot.js', 'Runner', {
                 setScreenshotPath:   true,
-                screenshotsFullPage: true
+                screenshotsFullPage: true,
             })
                 .then(function () {
                     return assertionHelper.checkScreenshotFileFullPage(false, 'custom');
@@ -640,7 +640,7 @@ describe('[API] Take full page screenshots', function () {
                 shouldFail:          true,
                 setScreenshotPath:   true,
                 screenshotsFullPage: true,
-                screenshotsOnFails:  true
+                screenshotsOnFails:  true,
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('screenshot on fail');

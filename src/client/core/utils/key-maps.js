@@ -7,7 +7,7 @@ const MODIFIERS = {
     alt:   18,
     ctrl:  17,
     meta:  91,
-    shift: 16
+    shift: 16,
 };
 
 const SHIFT_MAP = {
@@ -32,7 +32,7 @@ const SHIFT_MAP = {
     '<': ',',
     '>': '.',
     '?': '/',
-    '±': '§'
+    '±': '§',
 };
 
 const SPECIAL_KEYS = {
@@ -51,7 +51,7 @@ const SPECIAL_KEYS = {
     right:     39,
     space:     32,
     tab:       9,
-    up:        38
+    up:        38,
 };
 
 const KEY_PROPERTY = {
@@ -74,7 +74,7 @@ const KEY_PROPERTY = {
     alt:       'Alt',
     ctrl:      'Control',
     meta:      'Meta',
-    shift:     'Shift'
+    shift:     'Shift',
 };
 
 function reverseMap (map) {
@@ -98,7 +98,7 @@ export default {
     keyProperty: KEY_PROPERTY,
 
     modifiersMap: {
-        option: 'alt'
+        option: 'alt',
     },
 
     symbolCharCodeToKeyCode: {
@@ -111,7 +111,7 @@ export default {
         44: 188, // ,
         45: browserUtils.isFirefox ? 173 : 189, // -
         46: 190, // .
-        47: 191 // /
+        47: 191, // /
     },
 
     symbolKeysCharCodes: {
@@ -142,7 +142,7 @@ export default {
         105: 57,
         107: 43,
         106: 42,
-        111: 47
+        111: 47,
     },
 
     reversedModifiers: reverseMap(MODIFIERS),
@@ -151,5 +151,5 @@ export default {
 
     reversedSpecialKeys: reverseMap(SPECIAL_KEYS),
 
-    reversedKeyProperty: reverseMap(KEY_PROPERTY)
+    reversedKeyProperty: reverseMap(KEY_PROPERTY),
 };

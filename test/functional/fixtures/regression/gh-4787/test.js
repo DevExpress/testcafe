@@ -37,7 +37,7 @@ const reporter = createReporter({
         log.push(name);
 
         await sleep();
-    }
+    },
 });
 
 if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {

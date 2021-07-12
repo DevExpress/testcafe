@@ -158,5 +158,5 @@ export default {
 
     dispose () {
         return Promise.all(Object.values(this.providersCache).map(item => item.dispose()));
-    }
+    },
 };

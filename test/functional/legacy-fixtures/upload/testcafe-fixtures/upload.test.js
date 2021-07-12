@@ -14,7 +14,7 @@
         act.click('#submitBtn');
     },
 
-    '3. Check text1 upload': '@mixin Check text1.txt upload'
+    '3. Check text1 upload': '@mixin Check text1.txt upload',
 };
 
 '@test'['Upload multiple files'] = {
@@ -30,7 +30,7 @@
 
     '3. Check text1 upload': '@mixin Check text1.txt upload',
 
-    '3. Check text2 upload': '@mixin Check text2.txt upload'
+    '3. Check text2 upload': '@mixin Check text2.txt upload',
 };
 
 '@test'['Clear upload'] = {
@@ -48,7 +48,7 @@
         act.click('#submitBtn');
     },
 
-    '4. Check that text1 is not uploaded': '@mixin Check empty upload'
+    '4. Check that text1 is not uploaded': '@mixin Check empty upload',
 };
 
 '@test'['Upload a non-existent file - should fail'] = {
@@ -58,7 +58,7 @@
         act.upload('#fileInput', file);
     },
 
-    '2. Check empty upload': '@mixin Check empty upload'
+    '2. Check empty upload': '@mixin Check empty upload',
 };
 
 '@test'['Upload multiple files inc. non-existent - should fail'] = {
@@ -68,5 +68,5 @@
         act.upload('#fileInput', files);
     },
 
-    '2. Check empty upload': '@mixin Check empty upload'
+    '2. Check empty upload': '@mixin Check empty upload',
 };

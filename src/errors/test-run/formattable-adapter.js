@@ -55,7 +55,7 @@ export default class TestRunErrorFormattableAdapter {
     getCallsiteMarkup () {
         return renderCallsiteSync(this.callsite, {
             renderer:    renderers.html,
-            stackFilter: createStackFilter(Error.stackTraceLimit)
+            stackFilter: createStackFilter(Error.stackTraceLimit),
         });
     }
 

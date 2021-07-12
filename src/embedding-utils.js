@@ -99,5 +99,5 @@ export default {
         const plugin = pluginFactory();
 
         return new ReporterPluginHost(plugin, outStream);
-    }
+    },
 };

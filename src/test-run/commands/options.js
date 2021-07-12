@@ -8,13 +8,13 @@ import {
     createBooleanValidator,
     createIntegerValidator,
     createPositiveIntegerValidator,
-    createSpeedValidator
+    createSpeedValidator,
 } from './validations/factories';
 import {
     ActionIntegerOptionError,
     ActionPositiveIntegerOptionError,
     ActionBooleanOptionError,
-    ActionSpeedOptionError
+    ActionSpeedOptionError,
 } from '../../shared/errors';
 
 export const integerOption         = createIntegerValidator(ActionIntegerOptionError);
@@ -35,7 +35,7 @@ export class ActionOptions extends Assignable {
 
     _getAssignableProperties () {
         return [
-            { name: 'speed', type: speedOption }
+            { name: 'speed', type: speedOption },
         ];
     }
 }
@@ -54,7 +54,7 @@ export class OffsetOptions extends ActionOptions {
     _getAssignableProperties () {
         return super._getAssignableProperties().concat([
             { name: 'offsetX', type: integerOption },
-            { name: 'offsetY', type: integerOption }
+            { name: 'offsetY', type: integerOption },
         ]);
     }
 }
@@ -72,7 +72,7 @@ export class ScrollOptions extends OffsetOptions {
     _getAssignableProperties () {
         return super._getAssignableProperties().concat([
             { name: 'scrollToCenter', type: booleanOption },
-            { name: 'skipParentFrames', type: booleanOption }
+            { name: 'skipParentFrames', type: booleanOption },
         ]);
     }
 }
@@ -92,7 +92,7 @@ export class ElementScreenshotOptions extends ActionOptions {
             left:   null,
             right:  null,
             top:    null,
-            bottom: null
+            bottom: null,
         };
 
         this._assignFrom(obj, validate);
@@ -108,7 +108,7 @@ export class ElementScreenshotOptions extends ActionOptions {
             { name: 'crop.bottom', type: integerOption },
             { name: 'includeMargins', type: booleanOption },
             { name: 'includeBorders', type: booleanOption },
-            { name: 'includePaddings', type: booleanOption }
+            { name: 'includePaddings', type: booleanOption },
         ]);
     }
 }
@@ -122,7 +122,7 @@ export class MouseOptions extends OffsetOptions {
             ctrl:  false,
             alt:   false,
             shift: false,
-            meta:  false
+            meta:  false,
         };
 
         this._assignFrom(obj, validate);
@@ -133,7 +133,7 @@ export class MouseOptions extends OffsetOptions {
             { name: 'modifiers.ctrl', type: booleanOption },
             { name: 'modifiers.alt', type: booleanOption },
             { name: 'modifiers.shift', type: booleanOption },
-            { name: 'modifiers.meta', type: booleanOption }
+            { name: 'modifiers.meta', type: booleanOption },
         ]);
     }
 }
@@ -151,7 +151,7 @@ export class ClickOptions extends MouseOptions {
 
     _getAssignableProperties () {
         return super._getAssignableProperties().concat([
-            { name: 'caretPos', type: positiveIntegerOption }
+            { name: 'caretPos', type: positiveIntegerOption },
         ]);
     }
 }
@@ -176,7 +176,7 @@ export class MoveOptions extends MouseOptions {
             { name: 'minMovingTime' },
             { name: 'holdLeftButton' },
             { name: 'skipScrolling', type: booleanOption },
-            { name: 'skipDefaultDragBehavior', type: booleanOption }
+            { name: 'skipDefaultDragBehavior', type: booleanOption },
         ]);
     }
 }
@@ -197,7 +197,7 @@ export class TypeOptions extends ClickOptions {
         return super._getAssignableProperties().concat([
             { name: 'replace', type: booleanOption },
             { name: 'paste', type: booleanOption },
-            { name: 'confidential', type: booleanOption }
+            { name: 'confidential', type: booleanOption },
         ]);
     }
 }
@@ -216,7 +216,7 @@ export class DragToElementOptions extends MouseOptions {
     _getAssignableProperties () {
         return super._getAssignableProperties().concat([
             { name: 'destinationOffsetX', type: integerOption },
-            { name: 'destinationOffsetY', type: integerOption }
+            { name: 'destinationOffsetY', type: integerOption },
         ]);
     }
 }
@@ -233,7 +233,7 @@ export class ResizeToFitDeviceOptions extends Assignable {
 
     _getAssignableProperties () {
         return [
-            { name: 'portraitOrientation', type: booleanOption }
+            { name: 'portraitOrientation', type: booleanOption },
         ];
     }
 }
@@ -252,7 +252,7 @@ export class AssertionOptions extends Assignable {
     _getAssignableProperties () {
         return [
             { name: 'timeout', type: positiveIntegerOption },
-            { name: 'allowUnawaitedPromise', type: booleanOption }
+            { name: 'allowUnawaitedPromise', type: booleanOption },
         ];
     }
 }
@@ -269,7 +269,7 @@ export class PressOptions extends ActionOptions {
 
     _getAssignableProperties () {
         return super._getAssignableProperties().concat([
-            { name: 'confidential', type: booleanOption }
+            { name: 'confidential', type: booleanOption },
         ]);
     }
 }

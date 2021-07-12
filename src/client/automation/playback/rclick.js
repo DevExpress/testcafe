@@ -22,7 +22,7 @@ export default class RClickAutomation extends VisibleElementAutomation {
 
         this.eventState = {
             simulateDefaultBehavior:      true,
-            activeElementBeforeMouseDown: null
+            activeElementBeforeMouseDown: null,
         };
     }
 
@@ -84,8 +84,8 @@ export default class RClickAutomation extends VisibleElementAutomation {
                         clientY: clientPoint.y,
                         screenX: devicePoint.x,
                         screenY: devicePoint.y,
-                        button:  eventUtils.BUTTON.right
-                    }, this.modifiers)
+                        button:  eventUtils.BUTTON.right,
+                    }, this.modifiers),
                 };
 
                 // NOTE: we should raise mouseup event with 'mouseActionStepDelay' after we trigger

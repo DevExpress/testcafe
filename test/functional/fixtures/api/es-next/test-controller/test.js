@@ -13,7 +13,7 @@ describe('[API] TestController', () => {
     it('Should produce correct callsites for chained calls', () => {
         return runTests('./testcafe-fixtures/test-controller-test.js', 'Chaining callsites', {
             shouldFail: true,
-            only:       'chrome'
+            only:       'chrome',
         })
             .catch(errs => {
                 expect(errs[0]).to.contains(
@@ -42,7 +42,7 @@ describe('[API] TestController', () => {
         it('Should track missing `await`', () => {
             return runTests('./testcafe-fixtures/test-controller-test.js', 'Missing await', {
                 shouldFail: true,
-                only:       'chrome'
+                only:       'chrome',
             })
                 .catch(errs => {
                     expect(errs[1]).to.contains(missingAwaitErrMsg);

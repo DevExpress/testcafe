@@ -14,7 +14,7 @@ import {
     getVideoOptions,
     getMetaOptions,
     getGrepOptions,
-    getCompilerOptions
+    getCompilerOptions,
 } from '../utils/get-options';
 
 import getFilterFn from '../utils/get-filter-fn';
@@ -23,7 +23,7 @@ import RUN_OPTION_NAMES from '../configuration/run-option-names';
 import {
     Dictionary,
     ReporterOption,
-    RunnerRunOptions
+    RunnerRunOptions,
 } from '../configuration/interfaces';
 import QUARANTINE_OPTION_NAMES from '../configuration/quarantine-option-names';
 

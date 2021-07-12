@@ -105,7 +105,7 @@ $(document).ready(function () {
                 selection.removeAllRanges();
                 document.body.focus();
             }
-        }
+        },
     };
 
     $('<div></div>').css({ width: 1, height: 1500, position: 'absolute' }).appendTo('body');

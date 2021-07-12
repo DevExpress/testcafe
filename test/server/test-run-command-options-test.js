@@ -30,20 +30,20 @@ describe('Test run command options', function () {
         it('Should create OffsetOptions from object', function () {
             const options = new OffsetOptions({
                 offsetY: 15,
-                dummy:   false
+                dummy:   false,
             }, false);
 
             expect(JSON.parse(JSON.stringify(options))).eql({
                 offsetX: null,
                 offsetY: 15,
-                speed:   null
+                speed:   null,
             });
         });
 
         it('Should create ScrollOptions from object', function () {
             const options = new ScrollOptions({
                 offsetX: 15,
-                dummy:   false
+                dummy:   false,
             }, false);
 
             expect(JSON.parse(JSON.stringify(options))).eql({
@@ -51,7 +51,7 @@ describe('Test run command options', function () {
                 offsetY:          null,
                 scrollToCenter:   false,
                 speed:            null,
-                skipParentFrames: false
+                skipParentFrames: false,
             });
         });
 
@@ -63,8 +63,8 @@ describe('Test run command options', function () {
                 modifiers: {
                     ctrl:  true,
                     shift: true,
-                    dummy: 'yo'
-                }
+                    dummy: 'yo',
+                },
             }, false);
 
             expect(JSON.parse(JSON.stringify(options))).eql({
@@ -76,8 +76,8 @@ describe('Test run command options', function () {
                     ctrl:  true,
                     alt:   false,
                     shift: true,
-                    meta:  false
-                }
+                    meta:  false,
+                },
             });
         });
 
@@ -90,8 +90,8 @@ describe('Test run command options', function () {
                 modifiers: {
                     ctrl:  true,
                     shift: true,
-                    dummy: 'yo'
-                }
+                    dummy: 'yo',
+                },
             }, false);
 
             expect(JSON.parse(JSON.stringify(options))).eql({
@@ -104,8 +104,8 @@ describe('Test run command options', function () {
                     ctrl:  true,
                     alt:   false,
                     shift: true,
-                    meta:  false
-                }
+                    meta:  false,
+                },
             });
         });
 
@@ -120,8 +120,8 @@ describe('Test run command options', function () {
                 modifiers: {
                     ctrl:  true,
                     shift: true,
-                    dummy: 'yo'
-                }
+                    dummy: 'yo',
+                },
             }, false);
 
             expect(JSON.parse(JSON.stringify(options))).eql({
@@ -137,8 +137,8 @@ describe('Test run command options', function () {
                     ctrl:  true,
                     alt:   false,
                     shift: true,
-                    meta:  false
-                }
+                    meta:  false,
+                },
             });
         });
 
@@ -153,8 +153,8 @@ describe('Test run command options', function () {
                 modifiers: {
                     ctrl:  true,
                     shift: true,
-                    dummy: 'yo'
-                }
+                    dummy: 'yo',
+                },
             }, false);
 
             expect(JSON.parse(JSON.stringify(options))).eql({
@@ -169,8 +169,8 @@ describe('Test run command options', function () {
                     ctrl:  true,
                     alt:   false,
                     shift: true,
-                    meta:  false
-                }
+                    meta:  false,
+                },
             });
         });
 
@@ -183,8 +183,8 @@ describe('Test run command options', function () {
                 modifiers: {
                     ctrl:  true,
                     shift: true,
-                    dummy: 'yo'
-                }
+                    dummy: 'yo',
+                },
             }, false);
 
             expect(JSON.parse(JSON.stringify(options))).eql({
@@ -198,8 +198,8 @@ describe('Test run command options', function () {
                     ctrl:  true,
                     alt:   false,
                     shift: true,
-                    meta:  false
-                }
+                    meta:  false,
+                },
             });
         });
 
@@ -209,14 +209,14 @@ describe('Test run command options', function () {
 
                 crop: {
                     left:   146,
-                    bottom: 50
+                    bottom: 50,
                 },
 
                 includeMargins: true,
 
                 modifiers: {
-                    alt: true
-                }
+                    alt: true,
+                },
             });
 
             expect(JSON.parse(JSON.stringify(options))).eql({
@@ -228,35 +228,35 @@ describe('Test run command options', function () {
                     left:   146,
                     right:  null,
                     top:    null,
-                    bottom: 50
+                    bottom: 50,
                 },
 
                 includeMargins:  true,
                 includeBorders:  true,
-                includePaddings: true
+                includePaddings: true,
             });
         });
 
         it('Should create ResizeToFitDeviceOptions from object', function () {
             const options = new ResizeToFitDeviceOptions({
                 portraitOrientation: true,
-                dummy:               false
+                dummy:               false,
             }, false);
 
             expect(JSON.parse(JSON.stringify(options))).eql({
-                portraitOrientation: true
+                portraitOrientation: true,
             });
         });
 
         it('Should create AssertionOptions from object', function () {
             const options = new AssertionOptions({
                 timeout: 100,
-                dummy:   false
+                dummy:   false,
             }, false);
 
             expect(JSON.parse(JSON.stringify(options))).eql({
                 timeout:               100,
-                allowUnawaitedPromise: false
+                allowUnawaitedPromise: false,
             });
         });
     });
@@ -272,7 +272,7 @@ describe('Test run command options', function () {
                     code:            'E12',
                     actualValue:     'string',
                     optionName:      'speed',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -285,7 +285,7 @@ describe('Test run command options', function () {
                     code:            'E12',
                     actualValue:     5,
                     optionName:      'speed',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -298,7 +298,7 @@ describe('Test run command options', function () {
                     code:            'E12',
                     actualValue:     0,
                     optionName:      'speed',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
         });
@@ -313,7 +313,7 @@ describe('Test run command options', function () {
                     code:            'E9',
                     actualValue:     'object',
                     optionName:      'offsetX',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -326,7 +326,7 @@ describe('Test run command options', function () {
                     code:            'E9',
                     actualValue:     NaN,
                     optionName:      'offsetX',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -339,7 +339,7 @@ describe('Test run command options', function () {
                     code:            'E9',
                     actualValue:     3.14,
                     optionName:      'offsetX',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
         });
@@ -354,7 +354,7 @@ describe('Test run command options', function () {
                     code:            'E11',
                     actualValue:     'number',
                     optionName:      'modifiers.ctrl',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -367,7 +367,7 @@ describe('Test run command options', function () {
                     code:            'E11',
                     actualValue:     'number',
                     optionName:      'modifiers.alt',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -380,7 +380,7 @@ describe('Test run command options', function () {
                     code:            'E11',
                     actualValue:     'number',
                     optionName:      'modifiers.shift',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -393,7 +393,7 @@ describe('Test run command options', function () {
                     code:            'E11',
                     actualValue:     'number',
                     optionName:      'modifiers.meta',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
         });
@@ -408,7 +408,7 @@ describe('Test run command options', function () {
                     code:            'E10',
                     actualValue:     -1,
                     optionName:      'caretPos',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -421,7 +421,7 @@ describe('Test run command options', function () {
                     code:            'E10',
                     actualValue:     3.14,
                     optionName:      'caretPos',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
         });
@@ -436,7 +436,7 @@ describe('Test run command options', function () {
                     code:            'E11',
                     actualValue:     'number',
                     optionName:      'replace',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
         });
@@ -451,7 +451,7 @@ describe('Test run command options', function () {
                     code:            'E9',
                     actualValue:     'object',
                     optionName:      'destinationOffsetX',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -464,7 +464,7 @@ describe('Test run command options', function () {
                     code:            'E9',
                     actualValue:     NaN,
                     optionName:      'destinationOffsetY',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
         });
@@ -479,7 +479,7 @@ describe('Test run command options', function () {
                     code:            'E11',
                     actualValue:     'number',
                     optionName:      'portraitOrientation',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
         });
@@ -494,7 +494,7 @@ describe('Test run command options', function () {
                     code:            'E10',
                     actualValue:     -1,
                     optionName:      'timeout',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
 
@@ -507,7 +507,7 @@ describe('Test run command options', function () {
                     code:            'E10',
                     actualValue:     'string',
                     optionName:      'timeout',
-                    callsite:        null
+                    callsite:        null,
                 }
             );
         });

@@ -6,6 +6,6 @@ export default {
     assets: {
         index:  '/browser/assets/index.js',
         styles: '/browser/assets/styles.css',
-        logo:   '/browser/assets/logo.svg'
-    }
+        logo:   '/browser/assets/logo.svg',
+    },
 };

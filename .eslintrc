@@ -92,6 +92,7 @@
     "handle-callback-err": 0,
     "linebreak-style": [2, "unix"],
     "no-duplicate-imports": 2,
+    "comma-dangle": ["error", "always-multiline"],
     "@typescript-eslint/no-extra-parens": 2,
     "@typescript-eslint/no-use-before-define": [2, "nofunc"],
     "@typescript-eslint/no-var-requires": [0],

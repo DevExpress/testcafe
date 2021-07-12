@@ -754,7 +754,7 @@ const getElementById = Selector(id => document.getElementById(id));
     const el = Selector('rect').addCustomDOMProperties({
         prop: () => {
             throw new Error('test');
-        }
+        },
     });
 
     await el();
@@ -827,7 +827,7 @@ const getElementById = Selector(id => document.getElementById(id));
 
     let el = <CustomSelector1>Selector('rect').addCustomMethods({
         prop1: (node, str) => str + '42',
-        prop2: (node, str, separator) => [str, (<Element>node).tagName].join(separator)
+        prop2: (node, str, separator) => [str, (<Element>node).tagName].join(separator),
     });
 
     await t
@@ -850,7 +850,7 @@ const getElementById = Selector(id => document.getElementById(id));
         .expect(el.prop2('tagName', ': ')).eql('tagName: rect');
 
     const nonExistingElement = await Selector('nonExistingElement').addCustomMethods({
-        prop: () => 'value'
+        prop: () => 'value',
     })();
 
     await t.expect(nonExistingElement).eql(null);
@@ -869,7 +869,7 @@ const getElementById = Selector(id => document.getElementById(id));
     const el = <CustomSelector>Selector('rect').addCustomMethods({
         customMethod: () => {
             throw new Error('test');
-        }
+        },
     });
 
     await el.customMethod();

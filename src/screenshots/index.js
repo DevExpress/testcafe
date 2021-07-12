@@ -19,7 +19,7 @@ export default class Screenshots {
         const testEntry = {
             test:        test,
             testRuns:    {},
-            screenshots: []
+            screenshots: [],
         };
 
         this.testEntries.push(testEntry);

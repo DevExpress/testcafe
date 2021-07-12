@@ -2,5 +2,5 @@
 define({
     foo: function () {
         return 42;
-    }
+    },
 });

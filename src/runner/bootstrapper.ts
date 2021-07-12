@@ -2,7 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import {
     chunk,
-    times
+    times,
 } from 'lodash';
 
 import makeDir from 'make-dir';
@@ -154,7 +154,7 @@ export default class Bootstrapper {
         return {
             concurrency:        this.concurrency,
             browserInitTimeout: this.browserInitTimeout,
-            warningLog:         this.warningLog
+            warningLog:         this.warningLog,
         };
     }
 
@@ -247,7 +247,7 @@ export default class Bootstrapper {
     private static _addDefaultReporter (reporters: ReporterSource[]): void {
         reporters.push({
             name:   'spec',
-            output: process.stdout
+            output: process.stdout,
         });
     }
 
@@ -263,7 +263,7 @@ export default class Bootstrapper {
             return {
                 plugin: pluginFactory(),
                 name:   processedName,
-                outStream
+                outStream,
             };
         }));
     }
@@ -332,7 +332,7 @@ export default class Bootstrapper {
         const bootstrappingPromises = {
             browserSet: this._getBrowserConnections(browserInfo),
             tests:      this._getTests(),
-            app:        this._startTestedApp()
+            app:        this._startTestedApp(),
         };
 
         const bootstrappingResultPromises = this._getBootstrappingPromises(bootstrappingPromises);
@@ -340,7 +340,7 @@ export default class Bootstrapper {
         const bootstrappingResults = await Promise.all([
             bootstrappingResultPromises.browserSet,
             bootstrappingResultPromises.tests,
-            bootstrappingResultPromises.app
+            bootstrappingResultPromises.app,
         ]);
 
         const [browserSetResults, testResults, appResults] = bootstrappingResults;
@@ -351,7 +351,7 @@ export default class Bootstrapper {
         return {
             browserSet: browserSetResults.result,
             tests:      testResults.result,
-            testedApp:  appResults.result
+            testedApp:  appResults.result,
         };
     }
 

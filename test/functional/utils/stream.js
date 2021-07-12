@@ -24,7 +24,7 @@ module.exports.createSimpleTestStream = () => {
                 return;
 
             this._write(val);
-        }
+        },
     };
 };
 
@@ -40,7 +40,7 @@ module.exports.createAsyncTestStream = ({ shouldFail } = {}) => {
 
                 cb(shouldFail ? new Error('Stream failed') : null);
             }, ASYNC_REPORTER_FINALIZING_TIMEOUT);
-        }
+        },
     });
 };
 
@@ -71,6 +71,6 @@ module.exports.createSyncTestStream = () => {
 module.exports.createNullStream = () => {
     return {
         write: () => {},
-        end:   () => {}
+        end:   () => {},
     };
 };

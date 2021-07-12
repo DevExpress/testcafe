@@ -7,5 +7,5 @@ export default {
     moveResponse:            'ui|cursor|move|response',
     leftButtonDownResponse:  'ui|cursor|leftbuttondown|response',
     rightButtonDownResponse: 'ui|cursor|rightbuttondown|response',
-    buttonUpResponse:        'ui|cursor|buttonup|response'
+    buttonUpResponse:        'ui|cursor|buttonup|response',
 };

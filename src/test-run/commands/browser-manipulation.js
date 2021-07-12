@@ -8,7 +8,7 @@ import {
     positiveIntegerArgument,
     screenshotPathArgument,
     resizeWindowDeviceArgument,
-    actionOptions
+    actionOptions,
 } from './validations/argument';
 
 import { generateScreenshotMark } from '../../screenshots/utils';
@@ -43,7 +43,7 @@ export class TakeScreenshotCommand extends TakeScreenshotBaseCommand {
     _getAssignableProperties () {
         return [
             { name: 'path', type: screenshotPathArgument, defaultValue: '' },
-            { name: 'fullPage', type: booleanArgument, defaultValue: void 0 }
+            { name: 'fullPage', type: booleanArgument, defaultValue: void 0 },
         ];
     }
 }
@@ -57,7 +57,7 @@ export class TakeElementScreenshotCommand extends TakeScreenshotBaseCommand {
         return [
             { name: 'selector', init: initSelector, required: true },
             { name: 'options', init: initElementScreenshotOptions, required: true },
-            { name: 'path', type: screenshotPathArgument, defaultValue: '' }
+            { name: 'path', type: screenshotPathArgument, defaultValue: '' },
         ];
     }
 }
@@ -69,7 +69,7 @@ export class TakeScreenshotOnFailCommand extends TakeScreenshotBaseCommand {
 
     _getAssignableProperties () {
         return [
-            { name: 'fullPage', type: booleanArgument, defaultValue: false }
+            { name: 'fullPage', type: booleanArgument, defaultValue: false },
         ];
     }
 }
@@ -82,7 +82,7 @@ export class ResizeWindowCommand extends CommandBase {
     _getAssignableProperties () {
         return [
             { name: 'width', type: positiveIntegerArgument, required: true },
-            { name: 'height', type: positiveIntegerArgument, required: true }
+            { name: 'height', type: positiveIntegerArgument, required: true },
         ];
     }
 }
@@ -95,7 +95,7 @@ export class ResizeWindowToFitDeviceCommand extends CommandBase {
     _getAssignableProperties () {
         return [
             { name: 'device', type: resizeWindowDeviceArgument, required: true },
-            { name: 'options', type: actionOptions, init: initResizeToFitDeviceOptions, required: true }
+            { name: 'options', type: actionOptions, init: initResizeToFitDeviceOptions, required: true },
         ];
     }
 }

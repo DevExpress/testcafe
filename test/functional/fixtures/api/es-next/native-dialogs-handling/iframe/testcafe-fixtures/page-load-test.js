@@ -20,7 +20,7 @@ test('Expected dialogs after page load', async t => {
     expect(info).to.deep.equal([
         { type: 'confirm', text: 'Confirm?', url: iframeUrl },
         { type: 'alert', text: 'Alert!', url: iframeUrl },
-        { type: 'alert', text: 'Alert!', url: pageUrl }
+        { type: 'alert', text: 'Alert!', url: pageUrl },
     ]);
 });
 

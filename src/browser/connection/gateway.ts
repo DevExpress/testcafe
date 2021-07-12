@@ -4,7 +4,7 @@ import {
     respond500,
     respondWithJSON,
     redirect,
-    preventCaching
+    preventCaching,
 } from '../../utils/http';
 
 import RemotesQueue from './remotes-queue';
@@ -51,7 +51,7 @@ export default class BrowserConnectionGateway {
             idlePageScript,
             idlePageStyle,
             idlePageLogo,
-            serviceWorkerScript
+            serviceWorkerScript,
         } = loadAssets();
 
         this._dispatch('/browser/connect/{id}', proxy, BrowserConnectionGateway._onConnection);
@@ -167,7 +167,7 @@ export default class BrowserConnectionGateway {
     private static _onGetActiveWindowIdRequest (req: IncomingMessage, res: ServerResponse, connection: BrowserConnection): void {
         if (BrowserConnectionGateway._ensureConnectionReady(res, connection)) {
             respondWithJSON(res, {
-                activeWindowId: connection.activeWindowId
+                activeWindowId: connection.activeWindowId,
             });
         }
     }

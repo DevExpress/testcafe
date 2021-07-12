@@ -1,7 +1,7 @@
 import {
     CloseAllChildWindowsMessage,
     StartToRestoreChildLinkMessage,
-    SetAsMasterMessage
+    SetAsMasterMessage,
 } from '../messages';
 
 import sendMessageToDriver from '../send-message-to-driver';

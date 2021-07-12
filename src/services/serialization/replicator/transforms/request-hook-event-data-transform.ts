@@ -1,14 +1,14 @@
 import {
     ConfigureResponseEvent,
     RequestEvent,
-    ResponseEvent
+    ResponseEvent,
 } from 'testcafe-hammerhead';
 
 
 const EVENT_CONSTRUCTORS = [
     RequestEvent,
     ConfigureResponseEvent,
-    ResponseEvent
+    ResponseEvent,
 ];
 
 type EventConstructor = typeof RequestEvent | typeof ConfigureResponseEvent | typeof ResponseEvent;
@@ -46,7 +46,7 @@ export default class RequestHookEventDataTransform {
 
         return {
             constructorName: value.constructor.name,
-            data:            clonedEventData
+            data:            clonedEventData,
         };
     }
 

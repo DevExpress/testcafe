@@ -134,7 +134,7 @@ $(document).ready(function () {
 
         $textarea.css({
             width:  '250px',
-            height: '150px'
+            height: '150px',
         });
 
         setSelection($input, 0, 0);

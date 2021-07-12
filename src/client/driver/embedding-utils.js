@@ -4,5 +4,5 @@ import SelectorExecutor from './command-executors/client-functions/selector-exec
 export default {
     NodeSnapshot,
     ElementSnapshot,
-    SelectorExecutor
+    SelectorExecutor,
 };

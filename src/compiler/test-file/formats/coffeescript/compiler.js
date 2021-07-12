@@ -19,7 +19,7 @@ export default class CoffeeScriptTestFileCompiler extends ESNextTestFileCompiler
             bare:      true,
             sourceMap: true,
             inlineMap: true,
-            header:    false
+            header:    false,
         });
 
         const { babel }    = loadBabelLibs();

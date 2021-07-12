@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>gh-4472</title>
+</head>
+<body>
+    <div id="targetInputWrapper">
+        <input type="text" id="targetInput" tabindex="0"></input>
+    </div>
+    <script>
+        var input = document.getElementById('targetInput');
+        var div   = document.getElementById('targetInputWrapper');
+
+        input.onclick = function () {
+            div.focus();
+        };
+    </script>
+</body>
+</html>

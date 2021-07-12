@@ -51,7 +51,7 @@ class TestRunMock extends TestRun {
             browserConnection:  {},
             screenshotCapturer: {},
             globalWarningLog:   {},
-            opts:               {}
+            opts:               {},
         });
 
         this.expectedError = expectedError;
@@ -73,7 +73,7 @@ describe('Compiler', function () {
         const sources = [
             'test/server/data/test-suites/mixed-content/testfile.js',
             'test/server/data/test-suites/mixed-content/legacy.test.js',
-            'test/server/data/test-suites/mixed-content/non-testfile.js'
+            'test/server/data/test-suites/mixed-content/non-testfile.js',
         ];
 
         return compile(sources)
@@ -92,7 +92,7 @@ describe('Compiler', function () {
     describe('ES-next', function () {
         it('Should compile test defined in separate module if option is enabled', function () {
             const sources = [
-                'test/server/data/test-suites/test-as-module/with-tests/testfile.js'
+                'test/server/data/test-suites/test-as-module/with-tests/testfile.js',
             ];
 
             return compile(sources, true)
@@ -111,7 +111,7 @@ describe('Compiler', function () {
         it('Should compile test files and their dependencies', function () {
             const sources = [
                 'test/server/data/test-suites/basic/testfile1.js',
-                'test/server/data/test-suites/basic/testfile2.js'
+                'test/server/data/test-suites/basic/testfile2.js',
             ];
 
             return compile(sources)
@@ -157,14 +157,14 @@ describe('Compiler', function () {
                         'F1T1: Hey from dep1',
                         'F1T2',
                         'F2T1',
-                        'F3T1: Hey from dep1 and dep2'
+                        'F3T1: Hey from dep1 and dep2',
                     ]);
                 });
         });
 
         it('Should compile basic JSX', async function () {
             const sources = [
-                'test/server/data/test-suites/compile-react/testfile.jsx'
+                'test/server/data/test-suites/compile-react/testfile.jsx',
             ];
 
             const compiled = await compile(sources);
@@ -230,7 +230,7 @@ describe('Compiler', function () {
     describe('TypeScript', function () {
         it('Should compile test defined in separate module if option is enabled', function () {
             const sources = [
-                'test/server/data/test-suites/test-as-module/with-tests/testfile.ts'
+                'test/server/data/test-suites/test-as-module/with-tests/testfile.ts',
             ];
 
             return compile(sources, true)
@@ -249,7 +249,7 @@ describe('Compiler', function () {
         it('Should compile test files and their dependencies', function () {
             const sources = [
                 'test/server/data/test-suites/typescript-basic/testfile1.ts',
-                'test/server/data/test-suites/typescript-basic/testfile2.ts'
+                'test/server/data/test-suites/typescript-basic/testfile2.ts',
             ];
 
             return compile(sources)
@@ -295,14 +295,14 @@ describe('Compiler', function () {
                         'F1T1: Hey from dep1',
                         'F1T2',
                         'F2T1',
-                        'F3T1: Hey from dep1 and dep2'
+                        'F3T1: Hey from dep1 and dep2',
                     ]);
                 });
         });
 
         it('Should compile basic TSX', async function () {
             const sources = [
-                'test/server/data/test-suites/compile-react/testfile.tsx'
+                'test/server/data/test-suites/compile-react/testfile.tsx',
             ];
 
             const compiled = await compile(sources);
@@ -442,7 +442,7 @@ describe('Compiler', function () {
             const createProgram = sinon.stub().callsFake(ts.createProgram);
 
             const TSCompiler = proxyquire('../../lib/compiler/test-file/formats/typescript/compiler', {
-                'typescript': { createProgram }
+                'typescript': { createProgram },
             });
 
             const testData   = [{ filename: 'test/server/data/test-suites/typescript-basic/testfile1.ts', code: 'console.log(42)' }];
@@ -529,13 +529,13 @@ describe('Compiler', function () {
 
         it('Should raise an error on wrong path to the custom compiler module', () => {
             const sources = [
-                'test/server/data/test-suites/typescript-basic/testfile1.ts'
+                'test/server/data/test-suites/typescript-basic/testfile1.ts',
             ];
 
             const options = {
                 'typescript': {
-                    'customCompilerModulePath': 'wrong-path-to-typescript-module'
-                }
+                    'customCompilerModulePath': 'wrong-path-to-typescript-module',
+                },
             };
 
             return compile(sources, options)
@@ -546,7 +546,7 @@ describe('Compiler', function () {
                     assertError(err, {
                         message: 'Cannot prepare tests due to the following error:\n\n' +
                             'Error: Cannot load the TypeScript compiler.\n' +
-                            "Cannot find module 'wrong-path-to-typescript-module'"
+                            "Cannot find module 'wrong-path-to-typescript-module'",
                     }, true);
                 });
         });
@@ -554,11 +554,11 @@ describe('Compiler', function () {
         describe('Should transform path to the custom compiler module', () => {
             function checkPathTransformation (specifiedPath, expectedPath) {
                 const sources = [
-                    'test/server/data/test-suites/typescript-basic/testfile1.ts'
+                    'test/server/data/test-suites/typescript-basic/testfile1.ts',
                 ];
 
                 const options = {
-                    'typescript': { }
+                    'typescript': { },
                 };
 
                 if (specifiedPath !== null)
@@ -618,7 +618,7 @@ describe('Compiler', function () {
     describe('CoffeeScript', function () {
         it('Should compile test defined in separate module if option is enabled', function () {
             const sources = [
-                'test/server/data/test-suites/test-as-module/with-tests/testfile.coffee'
+                'test/server/data/test-suites/test-as-module/with-tests/testfile.coffee',
             ];
 
             return compile(sources, true)
@@ -637,7 +637,7 @@ describe('Compiler', function () {
         it('Should compile test files and their dependencies', function () {
             const sources = [
                 'test/server/data/test-suites/coffeescript-basic/testfile1.coffee',
-                'test/server/data/test-suites/coffeescript-basic/testfile2.coffee'
+                'test/server/data/test-suites/coffeescript-basic/testfile2.coffee',
             ];
 
             return compile(sources)
@@ -684,7 +684,7 @@ describe('Compiler', function () {
                         'F1T1: Hey from dep1',
                         'F1T2',
                         'F2T1',
-                        'F3T1: Hey from dep1 and dep2'
+                        'F3T1: Hey from dep1 and dep2',
                     ]);
                 });
         });
@@ -851,7 +851,7 @@ describe('Compiler', function () {
             const dep      = path.resolve('test/server/data/test-suites/syntax-error-in-dep/dep.js');
 
             const stack = [
-                testfile
+                testfile,
             ];
 
             return compile(testfile)
@@ -863,7 +863,7 @@ describe('Compiler', function () {
                         stackTop: stack,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'SyntaxError: ' + dep + ': Unexpected token, expected "{" (1:7)'
+                                 'SyntaxError: ' + dep + ': Unexpected token, expected "{" (1:7)',
                     }, true);
                 });
         });
@@ -874,7 +874,7 @@ describe('Compiler', function () {
 
             const stack = [
                 dep,
-                testfile
+                testfile,
             ];
 
             return compile(testfile)
@@ -886,7 +886,7 @@ describe('Compiler', function () {
                         stackTop: stack,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 "Error: Cannot find module './yo'"
+                                 "Error: Cannot find module './yo'",
 
                     }, true);
                 });
@@ -904,11 +904,11 @@ describe('Compiler', function () {
                     assertError(err, {
                         stackTop: [
                             dep,
-                            testfile
+                            testfile,
                         ],
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Error: Hey ya!'
+                                 'Error: Hey ya!',
                     });
                 });
         });
@@ -942,7 +942,7 @@ describe('Compiler', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Error: Hey ya!'
+                                 'Error: Hey ya!',
                     });
                 });
         });
@@ -959,7 +959,7 @@ describe('Compiler', function () {
                         stackTop: null,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'SyntaxError: ' + testfile + ': Unexpected token, expected "{" (1:7)'
+                                 'SyntaxError: ' + testfile + ': Unexpected token, expected "{" (1:7)',
                     }, true);
                 });
         });
@@ -967,7 +967,7 @@ describe('Compiler', function () {
         it('Should raise an error if test file has Flow syntax without a marker comment', function () {
             const testfiles = [
                 path.resolve('test/server/data/test-suites/flow-type-declarations/no-flow-marker.js'),
-                path.resolve('test/server/data/test-suites/flow-type-declarations/flower-marker.js')
+                path.resolve('test/server/data/test-suites/flow-type-declarations/flower-marker.js'),
             ];
 
             return compile(testfiles[0])
@@ -980,7 +980,7 @@ describe('Compiler', function () {
 
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'SyntaxError: ' + testfiles[0] + ': Missing semicolon. (1:7)'
+                                 'SyntaxError: ' + testfiles[0] + ': Missing semicolon. (1:7)',
                     }, true);
 
                     return compile(testfiles[1]);
@@ -993,7 +993,7 @@ describe('Compiler', function () {
                         stackTop: null,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'SyntaxError: ' + testfiles[1] + ': Missing semicolon. (2:7)'
+                                 'SyntaxError: ' + testfiles[1] + ': Missing semicolon. (2:7)',
                     }, true);
                 });
         });
@@ -1013,7 +1013,7 @@ describe('Compiler', function () {
                                  'Error: TypeScript compilation failed.\n' +
                                  testfile + ' (6, 13): Property \'doSmthg\' does not exist on type \'TestController\'.\n' +
                                  testfile + ' (9, 6): Argument of type \'123\' is not assignable to parameter of type \'string\'.\n' +
-                                 testfile + ' (18, 5): Unable to resolve signature of property decorator when called as an expression.\n'
+                                 testfile + ' (18, 5): Unable to resolve signature of property decorator when called as an expression.\n',
                     });
                 });
         });

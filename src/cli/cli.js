@@ -83,7 +83,7 @@ async function runTests (argParser) {
         experimentalCompilerService,
         retryTestPages,
         cache,
-        configFile
+        configFile,
     });
 
     const correctedBrowsersAndSources = await correctBrowsersAndSources(argParser, testCafe.configuration);

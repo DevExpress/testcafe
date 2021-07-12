@@ -32,7 +32,7 @@ class TestRunMock extends TestRun {
             browserConnection:  {},
             screenshotCapturer: {},
             globalWarningLog:   {},
-            opts:               {}
+            opts:               {},
         });
 
         this.debugLog        = { command: noop };
@@ -55,8 +55,8 @@ class TestRunMock extends TestRun {
             userAgent:         'Chrome',
             provider:          {
                 hasCustomActionForBrowser () {
-                }
-            }
+                },
+            },
         };
     }
 }
@@ -66,7 +66,7 @@ async function executeAsyncExpression (expression, testRun = new TestRunMock()) 
 
     return await testRun.executeCommand({
         type: COMMAND_TYPE.executeAsyncExpression,
-        expression
+        expression,
     }, callsite.toString());
 }
 
@@ -74,7 +74,7 @@ async function executeExpression (expression, customVarName, testRun = new TestR
     return testRun.executeCommand({
         type:               COMMAND_TYPE.executeExpression,
         resultVariableName: customVarName,
-        expression
+        expression,
     });
 }
 

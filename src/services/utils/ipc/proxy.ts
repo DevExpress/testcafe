@@ -76,7 +76,7 @@ export class IPCProxy extends EventEmitter {
             type: IPCPacketType.response,
             sync: requestPacket.sync,
 
-            data: resultData
+            data: resultData,
         };
 
         await this._transport.write(responsePacket);
@@ -87,7 +87,7 @@ export class IPCProxy extends EventEmitter {
             id:   this._requestCounter++,
             type: IPCPacketType.request,
             sync: opts.sync,
-            data: opts.data
+            data: opts.data,
         };
     }
 

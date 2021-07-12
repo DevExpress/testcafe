@@ -12,7 +12,7 @@ function getWindowDimensionsInfo (): WindowDimentionsInfo {
         outerWidth:      window.outerWidth,
         outerHeight:     window.outerHeight,
         availableWidth:  screen.availWidth,
-        availableHeight: screen.availHeight
+        availableHeight: screen.availHeight,
     };
 }
 

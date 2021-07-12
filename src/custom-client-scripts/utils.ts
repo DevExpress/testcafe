@@ -61,6 +61,6 @@ export function findProblematicScripts (collection: ClientScript[]): Problematic
 
     return {
         duplicatedContent,
-        empty
+        empty,
     };
 }

@@ -4,7 +4,7 @@ import {
     splitEscaped,
     parseConfig,
     getModes,
-    getPathFromParsedModes
+    getPathFromParsedModes,
 } from '../../../utils/argument-parsing';
 
 
@@ -28,7 +28,7 @@ function parseModes (modesStr, userArgs) {
         userProfile:            detectedModes.userProfile || hasCustomProfile(userArgs),
         headless:               detectedModes.headless,
         marionettePort:         findMatch(options, /^marionettePort=(.*)/),
-        disableMultiprocessing: isMatchTrue(options, /^disableMultiprocessing=(.*)/)
+        disableMultiprocessing: isMatchTrue(options, /^disableMultiprocessing=(.*)/),
     };
 }
 

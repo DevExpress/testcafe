@@ -28,7 +28,7 @@ describe('CLI', () => {
             const authenticationHelper = proxyquire('../../lib/cli/authentication-helper', {
                 './log':                log,
                 '../utils/timer':       TimerConstructor,
-                '../utils/get-any-key': getAnyKey
+                '../utils/get-any-key': getAnyKey,
             });
 
             const { result, error } = await authenticationHelper(authFunction, Error);
@@ -70,7 +70,7 @@ describe('CLI', () => {
             const authenticationHelper = proxyquire('../../lib/cli/authentication-helper', {
                 './log':                log,
                 '../utils/timer':       TimerConstructor,
-                '../utils/get-any-key': getAnyKey
+                '../utils/get-any-key': getAnyKey,
             });
 
             const { result, error } = await authenticationHelper(authFunction, Error);
@@ -86,7 +86,7 @@ describe('CLI', () => {
                 'Open \'System Preferences > Security & Privacy > Privacy > Screen Recording\' and check ' +
                 '\'TestCafe Browser Tools\' in the application list.\n' +
                 '\n' +
-                'Press any key to retry.'
+                'Press any key to retry.',
             ]);
         });
 
@@ -108,7 +108,7 @@ describe('CLI', () => {
             const authenticationHelper = proxyquire('../../lib/cli/authentication-helper', {
                 './log':                log,
                 '../utils/timer':       TimerConstructor,
-                '../utils/get-any-key': getAnyKey
+                '../utils/get-any-key': getAnyKey,
             });
 
             const { result, error } = await authenticationHelper(authFunction, Error);
@@ -126,7 +126,7 @@ describe('CLI', () => {
                 'Open \'System Preferences > Security & Privacy > Privacy > Screen Recording\' and check ' +
                 '\'TestCafe Browser Tools\' in the application list.\n' +
                 '\n' +
-                'Press any key to retry.'
+                'Press any key to retry.',
             ]);
         });
 
@@ -152,7 +152,7 @@ describe('CLI', () => {
             const authenticationHelper = proxyquire('../../lib/cli/authentication-helper', {
                 './log':                log,
                 '../utils/timer':       TimerConstructor,
-                '../utils/get-any-key': getAnyKey
+                '../utils/get-any-key': getAnyKey,
             });
 
             let unexpectedError = null;

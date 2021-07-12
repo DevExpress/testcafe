@@ -34,7 +34,7 @@ test
     .before(async t => {
         t.ctx.val = {
             browsers: [],
-            steps:    []
+            steps:    [],
         };
 
         t.ctx.val.browsers.push(await t.eval(()=>navigator.userAgent));

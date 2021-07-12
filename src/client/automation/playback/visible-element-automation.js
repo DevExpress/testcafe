@@ -6,7 +6,7 @@ import {
     domUtils,
     arrayUtils,
     serviceUtils,
-    eventUtils
+    eventUtils,
 } from '../deps/testcafe-core';
 
 import getAutomationPoint from '../utils/get-automation-point';
@@ -94,7 +94,7 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
                     alt:     false,
                     shift:   false,
                     meta:    false,
-                    buttons: eventUtils.BUTTONS_PARAMETER.leftButton
+                    buttons: eventUtils.BUTTONS_PARAMETER.leftButton,
                 };
 
                 MoveBehaviour.leaveElement(currentElement, prevElement, commonAncestor, options);
@@ -160,7 +160,7 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
                             clientPoint,
                             screenPoint: screenPointAfterAction,
                             isTarget,
-                            inMoving:    targetElementIsMoving
+                            inMoving:    targetElementIsMoving,
                         });
                     });
             });
@@ -196,7 +196,7 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
                     element:     state.element,
                     clientPoint: state.clientPoint,
                     screenPoint: state.screenPoint,
-                    devicePoint: state.devicePoint
+                    devicePoint: state.devicePoint,
                 };
             });
     }

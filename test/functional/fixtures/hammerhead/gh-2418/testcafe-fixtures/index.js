@@ -5,7 +5,7 @@ fixture `Fixture`
 
 test('the "gh2418" should be the last child', async t => {
     const body = Selector('body').addCustomDOMProperties({
-        lastChildId: el => el.lastChild.id
+        lastChildId: el => el.lastChild.id,
     });
 
     await t

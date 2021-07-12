@@ -25,7 +25,7 @@ class ArgsMock {
         this.args     = args;
         this.opts = {
             browsers: args[0] && args[0].split(','),
-            src:      args.slice(1)
+            src:      args.slice(1),
         };
     }
 }
@@ -50,7 +50,7 @@ describe('CLI Correct browsers and sources', () => {
 
         const args = new ArgsMock([
             'test1.js',
-            'test2.js'
+            'test2.js',
         ]);
 
         return correctBrowsersAndSources(args, configuration)
@@ -62,12 +62,12 @@ describe('CLI Correct browsers and sources', () => {
 
     it('Should override browsers in the config with valid browsers from CLI', () => {
         const configuration = new ConfigurationMock({
-            browsers: ['browser1']
+            browsers: ['browser1'],
         });
 
         const args = new ArgsMock([
             'browser2,browser3',
-            'test1.js'
+            'test1.js',
         ]);
 
         return correctBrowsersAndSources(args, configuration)
@@ -79,12 +79,12 @@ describe('CLI Correct browsers and sources', () => {
 
     it('Should not correct browsers and sources from CLI if browsers are not specified in the config', () => {
         const configuration = new ConfigurationMock({
-            browsers: []
+            browsers: [],
         });
 
         const args = new ArgsMock([
             'foo-test.js',
-            'bar-test.js'
+            'bar-test.js',
         ]);
 
         return correctBrowsersAndSources(args, configuration)
@@ -96,12 +96,12 @@ describe('CLI Correct browsers and sources', () => {
 
     it('Should not override test files from the config with a valid CLI contains commas', () => {
         const configuration = new ConfigurationMock({
-            browsers: ['browser']
+            browsers: ['browser'],
         });
 
         const args = new ArgsMock([
             '[e2e,admin]user-manager-test.js',
-            '[e2e,store]basket-page-test.js'
+            '[e2e,store]basket-page-test.js',
         ]);
 
         return correctBrowsersAndSources(args, configuration)
@@ -113,7 +113,7 @@ describe('CLI Correct browsers and sources', () => {
 
     it('Should handle empty CLI arguments', () => {
         const configuration = new ConfigurationMock({
-            browsers: ['browser']
+            browsers: ['browser'],
         });
 
         const args = new ArgsMock([]);
@@ -127,12 +127,12 @@ describe('CLI Correct browsers and sources', () => {
 
     it('Should throw an error if browsers from the config are overridden with valid & invalid browsers from CLI', () => {
         const configuration = new ConfigurationMock({
-            browsers: ['browser1']
+            browsers: ['browser1'],
         });
 
         const args = new ArgsMock([
             'browser2,foo,bar',
-            'test1.js'
+            'test1.js',
         ]);
 
         return correctBrowsersAndSources(args, configuration)

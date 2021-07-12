@@ -24,7 +24,7 @@ class TestRunMock extends TestRun {
             browserConnection:  {},
             screenshotCapturer: {},
             globalWarningLog:   {},
-            opts:               {}
+            opts:               {},
         });
     }
 }
@@ -45,7 +45,7 @@ describe('Test run tracker', function () {
                 return Promise.all([
                     test.fixture.beforeEachFn ? test.fixture.beforeEachFn(testRunMock) : testRunMock.id,
                     test.fn(testRunMock),
-                    test.fixture.afterEachFn ? test.fixture.afterEachFn(testRunMock) : testRunMock.id
+                    test.fixture.afterEachFn ? test.fixture.afterEachFn(testRunMock) : testRunMock.id,
                 ]);
             })
             .then(function (res) {

@@ -46,6 +46,6 @@ export default {
     retryTestPagesIsNotSupported:       'Cannot enable the \'retryTestPages\' option in "{browserAlias}". Please ensure that your version of "{browserAlias}" supports the Service Worker API (https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API).\n',
     browserProviderDropOfPerformance:   'We detected \'{browserName}\' runs slowly. Try to free up or allocate more system resources on its host machine.',
     testsCompilationTakesTooLong:       'Tests took too long to compile ({compileTime}). Ensure the test code has no excessive imports.',
-    deprecatedAPI:                      '{API} is deprecated and will be removed in the next major release. Use {replacement} instead.'
+    deprecatedAPI:                      '{API} is deprecated and will be removed in the next major release. Use {replacement} instead.',
 };
 

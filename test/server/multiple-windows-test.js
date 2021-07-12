@@ -10,7 +10,7 @@ class TestRunMock extends TestRun {
             browserConnection:  { activeWindowId: activeWindowId },
             screenshotCapturer: {},
             globalWarningLog:   {},
-            opts:               { disableMultipleWindows: disableMultipleWindows }
+            opts:               { disableMultipleWindows: disableMultipleWindows },
         });
     }
 

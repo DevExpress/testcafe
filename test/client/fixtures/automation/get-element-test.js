@@ -16,7 +16,7 @@ function createRoot () {
         .height(100)
         .css({
             zIndex:   2,
-            position: 'absolute'
+            position: 'absolute',
         })
         .appendTo(testCafeUIRoot.element());
 }
@@ -30,7 +30,7 @@ function createElementUnderRoot (parent, left, top) {
             zIndex:   1,
             position: 'absolute',
             left:     left,
-            top:      top
+            top:      top,
         })
         .appendTo(parent);
 }
@@ -42,7 +42,7 @@ function createIFrame (onLoadHandler) {
         .attr('src', iframeSrc)
         .css({
             width:  '600px',
-            height: '600px'
+            height: '600px',
         });
 
     $iframe.bind('load', onLoadHandler);
@@ -85,7 +85,7 @@ $(document).ready(function () {
         $rootDiv.css({
             top:    0,
             width:  '500px',
-            height: '500px'
+            height: '500px',
         });
 
         const onLoadHandler = function () {

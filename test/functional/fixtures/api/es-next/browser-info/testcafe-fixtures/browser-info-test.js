@@ -12,7 +12,7 @@ test
     const currentBrowser  = config.currentEnvironment.browsers.find(browser => browser.userAgent === 'headlesschrome');
     const expected        = Object.assign({}, parsedUserAgent, {
         alias:    currentBrowser.browserName,
-        headless: true
+        headless: true,
     });
     const browserInfo     = t.browser;
 

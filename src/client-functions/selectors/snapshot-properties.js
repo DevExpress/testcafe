@@ -9,12 +9,12 @@ export const NODE_SNAPSHOT_PROPERTIES = [
     'childNodeCount',
     'hasChildNodes',
     'childElementCount',
-    'hasChildElements'
+    'hasChildElements',
 ];
 
 export const ELEMENT_ACTION_SNAPSHOT_PROPERTIES = [
     'tagName',
-    'attributes'
+    'attributes',
 ];
 
 export const ELEMENT_SNAPSHOT_PROPERTIES = [
@@ -43,7 +43,7 @@ export const ELEMENT_SNAPSHOT_PROPERTIES = [
     'clientWidth',
     'clientHeight',
     'clientLeft',
-    'clientTop'
+    'clientTop',
 ];
 
 export const SNAPSHOT_PROPERTIES = NODE_SNAPSHOT_PROPERTIES.concat(ELEMENT_SNAPSHOT_PROPERTIES);

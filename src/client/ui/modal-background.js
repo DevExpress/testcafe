@@ -51,7 +51,7 @@ function adjustLoadingTextPos () {
 
     styleUtils.set(loadingTextDiv, {
         left: Math.max((wWidth - styleUtils.getWidth(loadingTextDiv)) / 2, 0) + 'px',
-        top:  Math.max((wHeight - styleUtils.getHeight(loadingTextDiv)) / 2, 0) + 'px'
+        top:  Math.max((wHeight - styleUtils.getHeight(loadingTextDiv)) / 2, 0) + 'px',
     });
 
     if (loadingTextHidden) {
@@ -70,7 +70,7 @@ function initSizeAdjustments () {
 
         styleUtils.set(loadingIconDiv, {
             left: Math.round((wWidth - styleUtils.getWidth(loadingIconDiv)) / 2) + 'px',
-            top:  Math.round((wHeight - styleUtils.getHeight(loadingIconDiv)) / 2) + 'px'
+            top:  Math.round((wHeight - styleUtils.getHeight(loadingIconDiv)) / 2) + 'px',
         });
     };
 

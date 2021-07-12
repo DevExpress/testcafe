@@ -14,8 +14,8 @@ const FIRST_VALUE_ANIMATION_OPTIONS = {
     positionByCompletePercent: {
         0:   { left: -35, right: 100 },
         0.6: { left: 100, right: -90 },
-        1:   { left: 100, right: -90 }
-    }
+        1:   { left: 100, right: -90 },
+    },
 };
 
 const SECOND_VALUE_ANIMATION_OPTIONS = {
@@ -24,8 +24,8 @@ const SECOND_VALUE_ANIMATION_OPTIONS = {
     positionByCompletePercent: {
         0:   { left: -200, right: 100 },
         0.6: { left: 107, right: -8 },
-        1:   { left: 107, right: -8 }
-    }
+        1:   { left: 107, right: -8 },
+    },
 };
 
 const SECOND_VALUE_ELEMENT_ANIMATION_DELAY = 1000;
@@ -34,7 +34,7 @@ const ANIMATION_RESTART_INTERVAL           = 1950;
 const ANIMATION_PERCENTS                   = {
     start:  0,
     middle: 0.6,
-    end:    1
+    end:    1,
 };
 
 const INDETERMINATE_STYLE_CLASS = 'indeterminate';

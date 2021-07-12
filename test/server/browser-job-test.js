@@ -13,7 +13,7 @@ describe('Browser Job', function () {
             screenshots:           null,
             warningLog:            null,
             fixtureHookController: null,
-            opts:                  { TestRunCtor: noop }
+            opts:                  { TestRunCtor: noop },
         });
 
         const testRunController = job._testRunControllerQueue[0];
