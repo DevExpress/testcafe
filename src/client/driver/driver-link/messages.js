@@ -16,7 +16,8 @@ export const TYPE = {
     startToRestoreChildLink:     'driver|start-to-restore-child-link',
     restoreChildLink:            'driver|restore-child-link',
     childWindowIsLoadedInIFrame: 'driver|child-window-is-loaded-in-iframe',
-    childWindowIsOpenedInIFrame: 'driver|child-window-is-opened-in-iframe'
+    childWindowIsOpenedInIFrame: 'driver|child-window-is-opened-in-iframe',
+    hasPendingActionFlags:       'driver|has-pending-action-flags'
 };
 
 class InterDriverMessage {
@@ -146,5 +147,11 @@ export class ChildWindowIsLoadedInFrameMessage extends InterDriverMessage {
 export class ChildWindowIsOpenedInFrameMessage extends InterDriverMessage {
     constructor () {
         super(TYPE.childWindowIsOpenedInIFrame);
+    }
+}
+
+export class HasPendingActionFlagsMessage extends InterDriverMessage {
+    constructor () {
+        super(TYPE.hasPendingActionFlags);
     }
 }
