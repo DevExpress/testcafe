@@ -6,11 +6,12 @@ import getCommonPath from '../utils/get-common-path';
 import DEFAULT_SCREENSHOT_EXTENSION from './default-extension';
 
 export default class Screenshots {
-    constructor ({ enabled, path, pathPattern, fullPage }) {
+    constructor ({ enabled, path, pathPattern, fullPage, thumbnails }) {
         this.enabled            = enabled;
         this.screenshotsPath    = path;
         this.screenshotsPattern = pathPattern;
         this.fullPage           = fullPage;
+        this.thumbnails         = thumbnails;
         this.testEntries        = [];
         this.now                = moment();
     }
@@ -66,7 +67,7 @@ export default class Screenshots {
             parsedUserAgent:   connection.browserInfo.parsedUserAgent,
         });
 
-        return new Capturer(this.screenshotsPath, testEntry, connection, pathPattern, this.fullPage, warningLog);
+        return new Capturer(this.screenshotsPath, testEntry, connection, pathPattern, this.fullPage, this.thumbnails, warningLog);
     }
 
     addTestRun (test, testRun) {

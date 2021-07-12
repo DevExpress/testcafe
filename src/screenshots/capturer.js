@@ -20,7 +20,8 @@ import DEFAULT_SCREENSHOT_EXTENSION from './default-extension';
 
 
 export default class Capturer {
-    constructor (baseScreenshotsPath, testEntry, connection, pathPattern, fullPage, warningLog) {
+    // TODO: refactor to use dictionary
+    constructor (baseScreenshotsPath, testEntry, connection, pathPattern, fullPage, thumbnails, warningLog) {
         this.enabled             = !!baseScreenshotsPath;
         this.baseScreenshotsPath = baseScreenshotsPath;
         this.testEntry           = testEntry;
@@ -29,6 +30,7 @@ export default class Capturer {
         this.warningLog          = warningLog;
         this.pathPattern         = pathPattern;
         this.fullPage            = fullPage;
+        this.thumbnails          = thumbnails;
     }
 
     static _getDimensionWithoutScrollbar (fullDimension, documentDimension, bodyDimension) {
@@ -116,9 +118,11 @@ export default class Capturer {
         await this.provider.takeScreenshot(this.browserId, filePath, pageWidth, pageHeight, fullPage);
     }
 
-    async _capture (forError, { pageDimensions, cropDimensions, markSeed, customPath, fullPage } = {}) {
+    async _capture (forError, { pageDimensions, cropDimensions, markSeed, customPath, fullPage, thumbnails } = {}) {
         if (!this.enabled)
             return null;
+
+        thumbnails = thumbnails === void 0 ? this.thumbnails : thumbnails;
 
         const screenshotPath = customPath ? this._getCustomScreenshotPath(customPath) : this._getScreenshotPath(forError);
         const thumbnailPath  = this._getThumbnailPath(screenshotPath);
@@ -155,7 +159,8 @@ export default class Capturer {
             if (croppedImage)
                 await writePng(screenshotPath, croppedImage);
 
-            await generateThumbnail(screenshotPath, thumbnailPath);
+            if (thumbnails)
+                await generateThumbnail(screenshotPath, thumbnailPath);
         });
 
         const testRunId         = this.testEntry.testRuns[this.browserId].id;
