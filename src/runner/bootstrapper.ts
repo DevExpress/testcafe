@@ -173,7 +173,7 @@ export default class Bootstrapper {
     private static async asyncFilter<T> (arr: T[], predicate: (item: T) => Promise<boolean>): Promise<T[]> {
         const results = await Promise.all(arr.map(predicate));
 
-        return arr.filter((_v, index) => results[index]);
+        return arr.filter((_, index) => results[index]);
     }
 
     private async _filterTests (tests: Test[], predicate: Filter): Promise<Test[]> {
