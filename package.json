@@ -127,7 +127,7 @@
     "semver": "^5.6.0",
     "source-map-support": "^0.5.16",
     "strip-bom": "^2.0.0",
-    "testcafe-browser-tools": "2.0.15",
+    "testcafe-browser-tools": "2.0.16",
     "testcafe-hammerhead": "24.3.1",
     "testcafe-legacy-api": "5.0.2",
     "testcafe-reporter-json": "^2.1.0",

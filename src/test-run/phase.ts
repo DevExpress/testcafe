@@ -8,7 +8,8 @@ enum TestRunPhase {
     inFixtureAfterEachHook = 'inFixtureAfterEachHook',
     inFixtureAfterHook = 'inFixtureAfterHook',
     inRoleInitializer = 'inRoleInitializer',
-    inBookmarkRestore = 'inBookmarkRestore'
+    inBookmarkRestore = 'inBookmarkRestore',
+    pendingFinalization = 'pendingFinalization'
 }
 
 export default TestRunPhase;
