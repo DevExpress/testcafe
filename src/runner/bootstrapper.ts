@@ -176,7 +176,7 @@ export default class Bootstrapper {
         return arr.filter((_v, index) => results[index]);
     }
 
-    private _filterTests (tests: Test[], predicate: Filter): Promise<Test[]> {
+    private async _filterTests (tests: Test[], predicate: Filter): Promise<Test[]> {
         return Bootstrapper.asyncFilter(
             tests, async (test: Test): Promise<boolean> => predicate(
                 test.name as string, test.fixture.name as string, test.fixture.path, test.meta, test.fixture.meta
