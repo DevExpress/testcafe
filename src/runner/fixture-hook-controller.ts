@@ -60,9 +60,9 @@ export default class FixtureHookController {
     }
 
     private async _runFixtureBeforeHook (item: FixtureState, fn: Function): Promise<boolean> {
-        const shouldRunGlobalBeforeHook = !item.started && fn;
+        const shouldRunBeforeHook = !item.started && fn;
 
-        if (!shouldRunGlobalBeforeHook)
+        if (!shouldRunBeforeHook)
             return !item.fixtureBeforeHookErr;
 
         item.runningFixtureBeforeHook = true;
