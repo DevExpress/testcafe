@@ -622,7 +622,7 @@ describe('Runner', () => {
 
             const expectedTestNames = [
                 'Fixture5Test1',
-                'Fixture5Test2'
+                'Fixture5Test2',
             ];
 
             return testFilter(filter, expectedTestNames);
