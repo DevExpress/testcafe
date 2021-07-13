@@ -1,25 +1,18 @@
-import { renderers } from 'callsite-record';
-import { TEST_RUN_ERRORS } from '../types';
-import {
-    markup,
-    shouldSkipCallsite,
-    formatExpressionMessage,
-} from './utils';
+import { TEST_RUN_ERRORS } from '../../types';
+import { markup, formatExpressionMessage } from '../utils';
+import TEMPLATES from '../templates';
+import { renderHtmlWithoutStack, shouldRenderHtmlWithoutStack } from './utils';
 
-import TEMPLATES from './templates';
 
 function getTestCafeErrorInCustomScriptError (err, viewportWidth) {
     const originErrTemplate  = TEMPLATES[err.originError.code];
     const originErrMessage   = '\n' + err.originError.message;
     let originCallsiteMarkup = '';
 
-    if (err.errCallsite && originErrTemplate && !shouldSkipCallsite(err.originError)) {
+    if (shouldRenderHtmlWithoutStack(err)) {
         // HACK: we need to get callsite for custom TestCafe script without real file for it.
         // We use expression as a file content
-        originCallsiteMarkup = err.errCallsite._renderRecord(err.expression, {
-            renderer: renderers.html,
-            stack:    false,
-        });
+        originCallsiteMarkup = typeof err.errCallsite === 'string' ? err.errCallsite : renderHtmlWithoutStack(err);
     }
 
     const originErrorText = originErrTemplate ? originErrTemplate(err.originError, viewportWidth) : originErrMessage +
@@ -37,4 +30,3 @@ export default function renderErrorTemplate (err, viewportWidth) {
 
     return markup(err, TEMPLATES[err.code](err, viewportWidth));
 }
-

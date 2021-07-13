@@ -35,7 +35,6 @@ const {
     LEGACY_TESTS_GLOB,
     MULTIPLE_WINDOWS_TESTS_GLOB,
     MIGRATE_ALL_TESTS_TO_COMPILER_SERVICE_GLOB,
-    COMPILER_SERVICE_TESTS_GLOB,
 } = require('./gulp/constants/functional-test-globs');
 
 const {
@@ -263,6 +262,10 @@ gulp.task('build', process.env.DEV_MODE === 'true' ? gulp.registry().get('fast-b
 gulp.step('prepare-tests', gulp.registry().get(SKIP_BUILD ? 'lint' : 'build'));
 
 gulp.step('test-server-run', () => {
+    const chai = require('chai');
+
+    chai.use(require('chai-string'));
+
     // HACK: We have to exit from all Gulp's error domains to avoid conflicts with error handling inside mocha tests
     const domains = exitDomains();
 
@@ -407,7 +410,7 @@ gulp.step('test-functional-local-multiple-windows-run', () => {
 gulp.task('test-functional-local-multiple-windows', gulp.series('prepare-tests', 'test-functional-local-multiple-windows-run'));
 
 gulp.step('test-functional-local-compiler-service-run', () => {
-    return testFunctional(MIGRATE_ALL_TESTS_TO_COMPILER_SERVICE_GLOB.concat(COMPILER_SERVICE_TESTS_GLOB), functionalTestConfig.testingEnvironmentNames.localHeadlessChrome, { experimentalCompilerService: true });
+    return testFunctional(MIGRATE_ALL_TESTS_TO_COMPILER_SERVICE_GLOB, functionalTestConfig.testingEnvironmentNames.localHeadlessChrome, { experimentalCompilerService: true });
 });
 
 gulp.task('test-functional-local-compiler-service', gulp.series('prepare-tests', 'test-functional-local-compiler-service-run'));

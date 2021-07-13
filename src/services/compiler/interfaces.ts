@@ -29,6 +29,7 @@ export interface ExecuteActionArguments {
 export interface ExecuteCommandArguments {
     id: string;
     command: CommandBase;
+    callsite?: string;
 }
 
 export interface RemoveRequestEventListenersArguments {
@@ -93,10 +94,7 @@ export interface ExecuteMockPredicate extends RequestFilterRuleLocator {
 
 export interface InitializeTestRunDataArguments extends TestRunLocator {
     testId: string;
-}
-
-export interface GetAssertionActualValueArguments extends TestRunLocator {
-    commandId: string;
+    browser: Browser;
 }
 
 export interface RoleLocator {
@@ -115,3 +113,22 @@ export interface UpdateRolePropertyArguments extends RoleLocator {
     name: keyof Role;
     value: unknown;
 }
+
+export interface ExecuteJsExpressionOptions {
+    skipVisibilityCheck: boolean;
+}
+
+export interface ExecuteJsExpressionArguments extends TestRunLocator {
+    expression: string;
+    options: ExecuteJsExpressionOptions;
+}
+
+export interface ExecuteAsyncJsExpressionArguments extends TestRunLocator {
+    expression: string;
+    callsite?: string;
+}
+
+export interface CommandLocator extends TestRunLocator {
+    commandId: string;
+}
+

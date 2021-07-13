@@ -81,11 +81,39 @@ export class ClickCommand extends CommandBase {
     public options: ClickOptions;
 }
 
+export class RightClickCommand extends CommandBase {
+    public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
+    public selector: ExecuteClientFunctionCommand;
+    public options: ClickOptions;
+}
+
+export class DoubleClickCommand extends CommandBase {
+    public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
+    public selector: ExecuteClientFunctionCommand;
+    public options: ClickOptions;
+}
+
+export class DragCommand extends CommandBase {
+    public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
+    public selector: ExecuteClientFunctionCommand;
+    public dragOffsetX: number;
+    public dragOffsetY: number;
+    public options: DragToElementOptions;
+}
+
 export class DragToElementCommand extends CommandBase {
     public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
     public selector: ExecuteClientFunctionCommand;
     public destinationSelector: ExecuteClientFunctionCommand;
     public options: DragToElementOptions;
+}
+
+export class SelectTextCommand extends CommandBase {
+    public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
+    public selector: ExecuteClientFunctionCommand;
+    public startPos: number;
+    public endPos: number;
+    public options: ActionOptions;
 }
 
 export class SelectEditableContentCommand extends CommandBase {
@@ -95,8 +123,71 @@ export class SelectEditableContentCommand extends CommandBase {
     public options: ActionOptions;
 }
 
+export class SelectTextAreaContentCommand extends CommandBase {
+    public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
+    public selector: ExecuteClientFunctionCommand;
+    public startLine: number;
+    public startPos: number;
+    public endLine: number;
+    public endPos: number;
+    public options: ActionOptions;
+}
+
 export class HoverCommand extends CommandBase {
     public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
     public selector: ExecuteClientFunctionCommand;
     public options: MouseOptions;
+}
+
+export class ExecuteExpressionCommand extends CommandBase {
+    public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
+    public expression: string;
+    public resultVariableName: string;
+}
+
+export class ExecuteAsyncExpressionCommand extends CommandBase {
+    public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
+    public expression: string;
+}
+
+export class SetFilesToUploadCommand extends CommandBase {
+    public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
+    public selector: ExecuteClientFunctionCommand;
+    public filePath: string | string[];
+}
+
+export class ClearUploadCommand extends CommandBase {
+    public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
+    public selector: ExecuteClientFunctionCommand;
+}
+
+export class DispatchEventCommand extends CommandBase {
+    public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
+    public selector: ExecuteClientFunctionCommand;
+    public eventName: string;
+    public options: ActionOptions;
+    public relatedTarget: ExecuteClientFunctionCommand;
+}
+
+export class ScrollCommand extends CommandBase {
+    public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
+    public selector: ExecuteClientFunctionCommand;
+    public position: string;
+    public x: number;
+    public y: number;
+    public options: ActionOptions;
+}
+
+export class ScrollByCommand extends CommandBase {
+    public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
+    public selector: ExecuteClientFunctionCommand;
+    public byX: number;
+    public byY: number;
+    public options: ActionOptions;
+}
+
+export class ScrollIntoViewCommand extends CommandBase {
+    public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
+    public selector: ExecuteClientFunctionCommand;
+    public options: ActionOptions;
 }

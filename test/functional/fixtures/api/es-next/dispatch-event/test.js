@@ -23,8 +23,8 @@ describe('[API] t.dispatchEvent()', function () {
         return runTests('testcafe-fixtures/index.js', 'defaults', { skip: ['ie', 'iphone'] });
     });
 
-    it('predifined ctor', function () {
-        return runTests('testcafe-fixtures/index.js', 'predifined ctor', { skip: 'ie' });
+    it('predefined ctor', function () {
+        return runTests('testcafe-fixtures/index.js', 'predefined ctor', { skip: 'ie' });
     });
 
     it('custom event', function () {

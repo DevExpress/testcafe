@@ -5,11 +5,13 @@ import { APIError } from '../../errors/runtime';
 import { AssertionExecutableArgumentError } from '../../errors/test-run';
 import { executeJsExpression } from '../execute-js-expression';
 import { isJSExpression } from './utils';
+
 import {
     stringArgument,
     actionOptions,
     nonEmptyStringArgument,
 } from './validations/argument';
+
 
 // Initializers
 function initAssertionOptions (name, val) {
@@ -29,6 +31,8 @@ function initAssertionParameter (name, val, { skipVisibilityCheck, testRun }) {
     }
 }
 
+const NOT_REPORTED_PROPERTIES = ['id', 'originActual'];
+
 // Commands
 export default class AssertionCommand extends CommandBase {
     constructor (obj, testRun, validateProperties) {
@@ -39,11 +43,16 @@ export default class AssertionCommand extends CommandBase {
         return [
             { name: 'id', type: nonEmptyStringArgument, required: false },
             { name: 'assertionType', type: nonEmptyStringArgument, required: true },
+            { name: 'originActual', defaultValue: void 0 },
             { name: 'actual', init: initAssertionParameter, defaultValue: void 0 },
             { name: 'expected', init: initAssertionParameter, defaultValue: void 0 },
             { name: 'expected2', init: initAssertionParameter, defaultValue: void 0 },
             { name: 'message', type: stringArgument, defaultValue: null },
             { name: 'options', type: actionOptions, init: initAssertionOptions, required: true },
         ];
+    }
+
+    static get NOT_REPORTED_PROPERTIES () {
+        return NOT_REPORTED_PROPERTIES;
     }
 }

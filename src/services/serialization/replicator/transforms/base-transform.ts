@@ -8,4 +8,8 @@ export default abstract class BaseTransform {
     public toSerializable (value: unknown): unknown {
         return Object.assign({}, value);
     }
+
+    public fromSerializable (val: unknown): unknown {
+        return val;
+    }
 }

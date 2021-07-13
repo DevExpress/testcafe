@@ -9,28 +9,26 @@ const delay                           = require('../../lib/utils/delay');
 const { ReporterPluginError }         = require('../../lib/errors/runtime');
 const WarningLog                      = require('../../lib/notifications/warning-log');
 
-chai.use(require('chai-string'));
 
 describe('Reporter', () => {
     const screenshotDir = '/screenshots/1445437598847';
 
+    const browserMocks = [
+        {
+            alias:     'Chrome',
+            userAgent: 'Chrome',
+            headless:  false,
+        },
+        {
+            alias:     'Firefox',
+            userAgent: 'Firefox',
+            headless:  false,
+        },
+    ];
+
     const browserConnectionMocks = [
-        {
-            userAgent:   'Chrome',
-            browserInfo: {
-                alias:           'Chrome',
-                parsedUserAgent: { userAgent: 'Chrome' },
-            },
-            isHeadlessBrowser: () => false,
-        },
-        {
-            userAgent:   'Firefox',
-            browserInfo: {
-                alias:           'Firefox',
-                parsedUserAgent: { userAgent: 'Firefox' },
-            },
-            isHeadlessBrowser: () => false,
-        },
+        { userAgent: 'Chrome' },
+        { userAgent: 'Firefox' },
     ];
 
     const fixtureMocks = [
@@ -185,6 +183,7 @@ describe('Reporter', () => {
             quarantine:        {
                 attempts: [['1', '2'], []],
             },
+            browser: browserMocks[0],
         },
 
         //fixture1test2
@@ -194,6 +193,7 @@ describe('Reporter', () => {
             unstable:          false,
             browserConnection: browserConnectionMocks[0],
             warningLog:        { messages: [] },
+            browser:           browserMocks[0],
 
             errs: [
                 { text: 'err1' },
@@ -209,6 +209,7 @@ describe('Reporter', () => {
             browserConnection: browserConnectionMocks[0],
             errs:              [],
             warningLog:        { messages: [] },
+            browser:           browserMocks[0],
         },
 
         //fixture2test1
@@ -219,6 +220,7 @@ describe('Reporter', () => {
             browserConnection: browserConnectionMocks[0],
             errs:              [],
             warningLog:        { messages: [] },
+            browser:           browserMocks[0],
         },
 
         //fixture2test2
@@ -229,6 +231,7 @@ describe('Reporter', () => {
             browserConnection: browserConnectionMocks[0],
             errs:              [],
             warningLog:        { messages: [] },
+            browser:           browserMocks[0],
         },
 
         //fixture3test1
@@ -239,6 +242,7 @@ describe('Reporter', () => {
             browserConnection: browserConnectionMocks[0],
             errs:              [],
             warningLog:        { messages: [] },
+            browser:           browserMocks[0],
         },
 
         //fixture3test2
@@ -249,6 +253,7 @@ describe('Reporter', () => {
             browserConnection: browserConnectionMocks[0],
             errs:              [],
             warningLog:        { messages: [] },
+            browser:           browserMocks[0],
         },
 
         //fixture3test3
@@ -259,6 +264,7 @@ describe('Reporter', () => {
             browserConnection: browserConnectionMocks[0],
             errs:              [],
             warningLog:        { messages: ['warning2'] },
+            browser:           browserMocks[0],
         },
     ];
 
@@ -274,6 +280,7 @@ describe('Reporter', () => {
             quarantine:        {
                 attempts: [['1', '2'], []],
             },
+            browser: browserMocks[1],
         },
 
         // 'fixture1test2
@@ -284,6 +291,7 @@ describe('Reporter', () => {
             browserConnection: browserConnectionMocks[1],
             errs:              [{ text: 'err1' }],
             warningLog:        { messages: [] },
+            browser:           browserMocks[1],
         },
 
         //fixture1test3
@@ -294,6 +302,7 @@ describe('Reporter', () => {
             browserConnection: browserConnectionMocks[1],
             errs:              [],
             warningLog:        { messages: [] },
+            browser:           browserMocks[1],
         },
 
         //fixture2test1
@@ -304,6 +313,7 @@ describe('Reporter', () => {
             browserConnection: browserConnectionMocks[1],
             errs:              [],
             warningLog:        { messages: [] },
+            browser:           browserMocks[1],
         },
 
         //fixture2test2
@@ -314,6 +324,7 @@ describe('Reporter', () => {
             browserConnection: browserConnectionMocks[1],
             errs:              [],
             warningLog:        { messages: [] },
+            browser:           browserMocks[1],
         },
 
         //fixture3test1
@@ -324,6 +335,7 @@ describe('Reporter', () => {
             browserConnection: browserConnectionMocks[1],
             errs:              [{ text: 'err1' }],
             warningLog:        { messages: ['warning1'] },
+            browser:           browserMocks[1],
         },
 
         //fixture3test2
@@ -334,6 +346,7 @@ describe('Reporter', () => {
             browserConnection: browserConnectionMocks[1],
             errs:              [],
             warningLog:        { messages: [] },
+            browser:           browserMocks[1],
         },
 
         //fixture3test3
@@ -344,6 +357,7 @@ describe('Reporter', () => {
             browserConnection: browserConnectionMocks[1],
             errs:              [],
             warningLog:        { messages: ['warning2', 'warning3'] },
+            browser:           browserMocks[1],
         },
     ];
 

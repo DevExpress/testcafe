@@ -46,7 +46,6 @@ import {
     ExecuteMockPredicate,
     ExecuteRequestFilterRulePredicateArguments,
     ExecuteRoleInitFnArguments,
-    GetAssertionActualValueArguments,
     InitializeTestRunDataArguments,
     RemoveHeaderOnConfigureResponseEventArguments,
     RemoveRequestEventListenersArguments,
@@ -59,6 +58,9 @@ import {
     SetOptionsArguments,
     TestRunLocator,
     UpdateRolePropertyArguments,
+    ExecuteJsExpressionArguments,
+    ExecuteAsyncJsExpressionArguments,
+    CommandLocator,
 } from './interfaces';
 
 const SERVICE_PATH       = require.resolve('./service');
@@ -86,11 +88,13 @@ const INITIAL_DEBUGGER_BREAK_ON_START = 'Break on start';
 export default class CompilerHost extends AsyncEventEmitter implements CompilerProtocol {
     private runtime: Promise<RuntimeResources|undefined>;
     private cdp: cdp.ProtocolApi & EventEmitter | undefined;
+    private developmentMode: boolean;
 
-    public constructor () {
+    public constructor ({ developmentMode }: any) {
         super();
 
-        this.runtime = Promise.resolve(void 0);
+        this.runtime         = Promise.resolve(void 0);
+        this.developmentMode = developmentMode;
     }
 
     private _setupRoutes (proxy: IPCProxy): void {
@@ -116,6 +120,9 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
             this.setCtx,
             this.setFixtureCtx,
             this.updateRoleProperty,
+            this.executeJsExpression,
+            this.executeAsyncJsExpression,
+            this.executeAssertionFn,
         ], this);
     }
 
@@ -189,7 +196,6 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
         });
     }
 
-
     private async _init (runtime: Promise<RuntimeResources|undefined>): Promise<RuntimeResources|undefined> {
         const resolvedRuntime = await runtime;
 
@@ -212,7 +218,8 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
             if (!this.cdp)
                 return void 0;
 
-            this._setupDebuggerHandlers();
+            if (!this.developmentMode)
+                this._setupDebuggerHandlers();
 
             await this.cdp.Debugger.enable({});
             await this.cdp.Runtime.enable();
@@ -299,10 +306,10 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
         throw new MethodShouldNotBeCalledError();
     }
 
-    public async executeCommand ({ command, id }: ExecuteCommandArguments): Promise<unknown> {
+    public async executeCommand ({ command, id, callsite }: ExecuteCommandArguments): Promise<unknown> {
         return this
             ._getTargetTestRun(id)
-            .executeCommand(command);
+            .executeCommand(command, callsite);
     }
 
     public async getTests ({ sourceList, compilerOptions }: CompilerArguments): Promise<Test[]> {
@@ -393,13 +400,13 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
         await this.emit('removeRequestEventListeners', { rules });
     }
 
-    public async initializeTestRunData ({ testRunId, testId }: InitializeTestRunDataArguments): Promise<void> {
+    public async initializeTestRunData ({ testRunId, testId, browser }: InitializeTestRunDataArguments): Promise<void> {
         const { proxy } = await this._getRuntime();
 
-        return proxy.call(this.initializeTestRunData, { testRunId, testId });
+        return proxy.call(this.initializeTestRunData, { testRunId, testId, browser });
     }
 
-    public async getAssertionActualValue ({ testRunId, commandId }: GetAssertionActualValueArguments): Promise<unknown> {
+    public async getAssertionActualValue ({ testRunId, commandId }: CommandLocator): Promise<unknown> {
         const { proxy } = await this._getRuntime();
 
         return proxy.call(this.getAssertionActualValue, { testRunId, commandId: commandId });
@@ -443,5 +450,23 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
         const { proxy } = await this._getRuntime();
 
         return proxy.call(this.updateRoleProperty, { roleId, name, value });
+    }
+
+    public async executeJsExpression ({ expression, testRunId, options }: ExecuteJsExpressionArguments): Promise<unknown> {
+        const { proxy } = await this._getRuntime();
+
+        return proxy.call(this.executeJsExpression, { expression, testRunId, options });
+    }
+
+    public async executeAsyncJsExpression ({ expression, testRunId, callsite }: ExecuteAsyncJsExpressionArguments): Promise<unknown> {
+        const { proxy } = await this._getRuntime();
+
+        return proxy.call(this.executeAsyncJsExpression, { expression, testRunId, callsite });
+    }
+
+    public async executeAssertionFn ({ testRunId, commandId }: CommandLocator): Promise<unknown> {
+        const { proxy } = await this._getRuntime();
+
+        return proxy.call(this.executeAssertionFn, { testRunId, commandId });
     }
 }

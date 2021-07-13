@@ -1,23 +1,16 @@
-import TestCafeErrorList from '../../../errors/error-list';
 import EventEmitter from '../../../utils/async-event-emitter';
 import { castArray } from 'lodash';
 
 import {
-    ExternalError,
-    isTestCafeErrorList,
-
     IPCPacket,
     IPCPacketType,
     IPCRequestPacket,
     IPCResponsePacket,
     IPCRequestData,
     isIPCErrorResponse,
-
     IPCTransportEvents,
     IPCTransport,
 } from './interfaces';
-
-import prerenderCallsite from '../../../utils/prerender-callsite';
 
 
 interface RequestOptions {
@@ -42,18 +35,6 @@ export class IPCProxy extends EventEmitter {
         this.on('request', data => this._onRequest(data));
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _saveError (error: ExternalError): any {
-        if (isTestCafeErrorList(error)) {
-            for (const item of error.items) {
-                if (item.callsite)
-                    item.callsite = prerenderCallsite(item.callsite);
-            }
-        }
-
-        return error;
-    }
-
     private async _onRead (packet: IPCPacket): Promise<void> {
         if (packet.type === IPCPacketType.response)
             this.emit(`response-${packet.id}`, packet);
@@ -68,7 +49,7 @@ export class IPCProxy extends EventEmitter {
             resultData = { result: await this._handlers[requestPacket.data.name](...requestPacket.data.args) };
         }
         catch (error) {
-            resultData = { error: this._saveError(error) };
+            resultData = { error };
         }
 
         const responsePacket: IPCResponsePacket = {
@@ -99,18 +80,6 @@ export class IPCProxy extends EventEmitter {
         return error;
     }
 
-    private _createError (errorData: ExternalError): ExternalError {
-        if (isTestCafeErrorList(errorData)) {
-            const errorList = new TestCafeErrorList();
-
-            errorList.items = errorData.items;
-
-            return errorList;
-        }
-
-        return this._createPlainError(errorData);
-    }
-
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public register (func: Function | Function[], context: any = null): void {
         func = castArray(func);
@@ -134,7 +103,7 @@ export class IPCProxy extends EventEmitter {
         const { data } = await responsePromise;
 
         if (isIPCErrorResponse(data))
-            throw this._createError(data.error);
+            throw data.error;
 
         return data.result;
     }
@@ -154,7 +123,7 @@ export class IPCProxy extends EventEmitter {
         const response = responsePacket.data;
 
         if (isIPCErrorResponse(response))
-            throw this._createError(response.error);
+            throw response.error;
 
         return response.result;
     }

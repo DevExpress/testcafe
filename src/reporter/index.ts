@@ -8,7 +8,6 @@ import { writable as isWritableStream } from 'is-stream';
 import ReporterPluginHost from './plugin-host';
 import ReporterPluginMethod from './plugin-methods';
 import formatCommand from './command/format-command';
-import getBrowser from '../utils/get-browser';
 import { ReporterPluginError } from '../errors/runtime';
 import Task from '../runner/task';
 import { Writable } from 'stream';
@@ -268,7 +267,7 @@ export default class Reporter {
                 id:   testRun.test.fixture.id,
             },
             command: formatCommand(command, result),
-            browser: getBrowser(testRun.browserConnection),
+            browser: testRun.browser,
         });
     }
 
@@ -358,7 +357,7 @@ export default class Reporter {
         reportItem.errs        = reportItem.errs.concat(testRun.errs);
         reportItem.warnings    = testRun.warningLog ? union(reportItem.warnings, testRun.warningLog.messages) : [];
 
-        reportItem.browsers.push(Object.assign({ testRunId: testRun.id }, getBrowser(testRun.browserConnection)));
+        reportItem.browsers.push(Object.assign({ testRunId: testRun.id }, testRun.browser));
 
         if (!reportItem.pendingRuns)
             await this._resolveReportItem(reportItem, testRun);

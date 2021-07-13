@@ -2,47 +2,36 @@ const { expect }                     = require('chai');
 const { noop }                       = require('lodash');
 const AsyncEventEmitter              = require('../../lib/utils/async-event-emitter');
 const delay                          = require('../../lib/utils/delay');
-const TestRun                        = require('../../lib/test-run');
 const TestController                 = require('../../lib/api/test-controller');
 const Task                           = require('../../lib/runner/task');
 const BrowserJob                     = require('../../lib/runner/browser-job');
 const Reporter                       = require('../../lib/reporter');
 const { Role }                       = require('../../lib/api/exportable-lib');
 const TestRunErrorFormattableAdapter = require('../../lib/errors/test-run/formattable-adapter');
+const BaseTestRunMock                = require('./helpers/base-test-run-mock');
 
-class TestRunMock extends TestRun {
+class TestRunMock extends BaseTestRunMock {
     constructor () {
         super({
-            test:               { id: 'test-id', name: 'test-name', fixture: { path: 'dummy', id: 'fixture-id', name: 'fixture-name' } },
-            browserConnection:  {},
-            screenshotCapturer: {},
-            globalWarningLog:   { addPlainMessage: noop },
-            opts:               {},
+            test:              { id: 'test-id', name: 'test-name', fixture: { path: 'dummy', id: 'fixture-id', name: 'fixture-name' } },
+            globalWarningLog:  { addPlainMessage: noop },
+            browserConnection: { activeWindowId: 'activeWindowId' },
         });
 
-        this.disableMultipleWindows = false;
-
-        this.browserConnection = {
-            browserInfo: {
-                alias: 'test-browser',
-            },
-            isHeadlessBrowser: () => false,
-            activeWindowId:    'id',
+        this.browser = {
+            alias:    'test-browser',
+            headless: false,
         };
-    }
 
-    _addInjectables () {
-    }
-
-    _initRequestHooks () {
-    }
-
-    get id () {
-        return 'test-run-id';
+        this.disableMultipleWindows = false;
     }
 
     executeCommand () {
         return delay(10);
+    }
+
+    get id () {
+        return 'test-run-id';
     }
 }
 

@@ -1,29 +1,13 @@
-const proxyquire        = require('proxyquire');
-const expect            = require('chai').expect;
+const { expect }        = require('chai');
 const TestController    = require('../../lib/api/test-controller');
 const AssertionExecutor = require('../../lib/assertions/executor');
-
-const SessionControllerStub = { getSession: () => {
-    return { id: 'session-id' };
-} };
-
-const TestRun = proxyquire('../../lib/test-run/index', { './session-controller': SessionControllerStub });
+const BaseTestRunMock   = require('./helpers/base-test-run-mock');
 
 const errorMessage = 'some error in click command';
 
-class TestRunMock extends TestRun {
-    _addInjectables () {}
-
-    _initRequestHooks () {}
-
+class TestRunMock extends BaseTestRunMock {
     constructor (reason) {
-        super({
-            test:               {},
-            browserConnection:  {},
-            screenshotCapturer: {},
-            globalWarningLog:   {},
-            opts:               {},
-        });
+        super();
 
         this.errors = [];
         this.reason = reason;

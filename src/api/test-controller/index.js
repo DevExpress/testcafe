@@ -12,7 +12,6 @@ import ClientFunctionBuilder from '../../client-functions/client-function-builde
 import Assertion from './assertion';
 import { getDelegatedAPIList, delegateAPI } from '../../utils/delegated-api';
 import WARNING_MESSAGE from '../../notifications/warning-message';
-import getBrowser from '../../utils/get-browser';
 import addWarning from '../../notifications/add-rendered-warning';
 import { getCallsiteId, getCallsiteStackFrameString } from '../../utils/callsite';
 import { getDeprecationMessage, DEPRECATED } from '../../notifications/deprecated';
@@ -189,7 +188,7 @@ export default class TestController {
     }
 
     _browser$getter () {
-        return getBrowser(this.testRun.browserConnection);
+        return this.testRun.browser;
     }
 
     _dispatchEvent$ (selector, eventName, options = {}) {

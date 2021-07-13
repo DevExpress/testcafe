@@ -2,10 +2,10 @@ const express               = require('express');
 const http                  = require('http');
 const path                  = require('path');
 const bodyParser            = require('body-parser');
-const readSync              = require('read-file-relative').readSync;
+const { readSync }          = require('read-file-relative');
 const multer                = require('multer');
 const Mustache              = require('mustache');
-const readFile              = require('../../../lib/utils/promisified-functions').readFile;
+const { readFile }          = require('../../../lib/utils/promisified-functions');
 const quarantineModeTracker = require('../quarantine-mode-tracker');
 const parseUserAgent        = require('../../../lib/utils/parse-user-agent');
 

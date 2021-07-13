@@ -1,5 +1,4 @@
 const CLIENT_MESSAGES = require('../../lib/test-run/client-messages');
-const proxyquire      = require('proxyquire');
 const { expect }      = require('chai');
 
 const {
@@ -9,40 +8,16 @@ const {
 } = require('../../lib/test-run/commands/actions');
 
 const { WaitCommand } = require('../../lib/test-run/commands/observation');
+const BaseTestRunMock = require('./helpers/base-test-run-mock');
 
-const SessionControllerStub = {
-    getSession: () => {
-        return { id: 'sessionId' };
-    },
-};
 
-const ExecuteJSExpressionStub = {
-    executeAsyncJsExpression: () => 'async expression result',
-    executeJsExpression:      () => 'expression result',
-};
-
-const TestRun = proxyquire('../../lib/test-run/index', {
-    './session-controller':    SessionControllerStub,
-    './execute-js-expression': ExecuteJSExpressionStub,
-});
-
-class TestRunMock extends TestRun {
-    constructor () {
-        super({
-            test:               {},
-            browserConnection:  {},
-            screenshotCapturer: {},
-            globalWarningLog:   {},
-            opts:               {},
-        });
+class TestRunMock extends BaseTestRunMock {
+    _executeJsExpression () {
+        return 'expression result';
     }
 
-    _addInjectables () {}
-
-    _initRequestHooks () {}
-
-    get id () {
-        return 'id';
+    _executeAsyncJsExpression () {
+        return 'async expression result';
     }
 }
 

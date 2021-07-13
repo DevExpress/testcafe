@@ -2,8 +2,12 @@ const gulp           = require('gulp');
 const mocha          = require('gulp-mocha-simple');
 const { castArray }  = require('lodash');
 const getTimeout     = require('./get-timeout');
-const { TESTS_GLOB } = require('../constants/functional-test-globs');
 const chai           = require('chai');
+
+const {
+    TESTS_GLOB,
+    MIGRATE_ALL_TESTS_TO_COMPILER_SERVICE_GLOB,
+} = require('../constants/functional-test-globs');
 
 chai.use(require('chai-string'));
 
@@ -14,6 +18,10 @@ const SCREENSHOT_TESTS_GLOB = [
     'test/functional/fixtures/api/es-next/take-screenshot/test.js',
     'test/functional/fixtures/screenshots-on-fails/test.js',
 ];
+
+function shouldAddTakeScreenshotTestGlob (glob) {
+    return [TESTS_GLOB, MIGRATE_ALL_TESTS_TO_COMPILER_SERVICE_GLOB].includes(glob);
+}
 
 module.exports = function testFunctional (src, testingEnvironmentName, { experimentalCompilerService, isProxyless } = {}) {
     process.env.TESTING_ENVIRONMENT       = testingEnvironmentName;
@@ -31,7 +39,7 @@ module.exports = function testFunctional (src, testingEnvironmentName, { experim
     let tests = castArray(src);
 
     // TODO: Run takeScreenshot tests first because other tests heavily impact them
-    if (src === TESTS_GLOB)
+    if (shouldAddTakeScreenshotTestGlob(src))
         tests = SCREENSHOT_TESTS_GLOB.concat(tests);
 
     tests.unshift(SETUP_TESTS_GLOB);

@@ -9,7 +9,6 @@ import {
     ExecuteMockPredicate,
     ExecuteRequestFilterRulePredicateArguments,
     ExecuteRoleInitFnArguments,
-    GetAssertionActualValueArguments,
     InitializeTestRunDataArguments,
     RemoveHeaderOnConfigureResponseEventArguments,
     RemoveRequestEventListenersArguments,
@@ -21,6 +20,9 @@ import {
     SetOptionsArguments,
     TestRunLocator,
     UpdateRolePropertyArguments,
+    ExecuteJsExpressionArguments,
+    ExecuteAsyncJsExpressionArguments,
+    CommandLocator,
 } from './interfaces';
 
 export const BEFORE_AFTER_PROPERTIES      = ['beforeFn', 'afterFn'] as const;
@@ -50,10 +52,10 @@ export interface RunTestArguments extends TestRunLocator {
 export interface TestRunDispatcherProtocol {
     executeActionSync ({ id, apiMethodName, command, callsite }: ExecuteActionArguments): unknown;
     executeAction ({ id, apiMethodName, command, callsite }: ExecuteActionArguments): Promise<unknown>;
-    executeCommand ({ command }: ExecuteCommandArguments): Promise<unknown>;
+    executeCommand ({ command, callsite }: ExecuteCommandArguments): Promise<unknown>;
     addRequestEventListeners ( { hookId, hookClassName, rules }: AddRequestEventListenersArguments): Promise<void>;
     removeRequestEventListeners ({ rules }: RemoveRequestEventListenersArguments): Promise<void>;
-    getAssertionActualValue ({ testRunId, commandId }: GetAssertionActualValueArguments): Promise<unknown>;
+    getAssertionActualValue ({ testRunId, commandId }: CommandLocator): Promise<unknown>;
     executeRoleInitFn ({ testRunId, roleId }: ExecuteRoleInitFnArguments): Promise<unknown>;
     onRoleAppeared (role: Role): void;
 }
@@ -78,4 +80,7 @@ export interface CompilerProtocol extends TestRunDispatcherProtocol {
     setCtx ({ testRunId, value }: SetCtxArguments): Promise<void>;
     setFixtureCtx ({ testRunId, value }: SetCtxArguments): Promise<void>;
     updateRoleProperty ({ roleId, name, value }: UpdateRolePropertyArguments): Promise<void>;
+    executeJsExpression ({ expression, testRunId, options }: ExecuteJsExpressionArguments): Promise<unknown>;
+    executeAsyncJsExpression ({ expression, testRunId, callsite }: ExecuteAsyncJsExpressionArguments): Promise<unknown>;
+    executeAssertionFn ({ testRunId, commandId }: CommandLocator): Promise<unknown>;
 }
