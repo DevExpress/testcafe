@@ -218,7 +218,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         });
 
         this.replicator = createReplicator([
-            new SelectorNodeTransform({}, void 0, this.commandExecutorsAdapter)
+            new SelectorNodeTransform({}, void 0, this.commandExecutorsAdapter),
         ]);
     }
 

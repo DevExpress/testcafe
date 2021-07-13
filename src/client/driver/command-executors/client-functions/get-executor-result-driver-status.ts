@@ -6,10 +6,10 @@ export default function getExecutorResultDriverStatus (executor: ClientFunctionE
         .getResult()
         .then(result => new DriverStatus({
             isCommandResult: true,
-            result:          executor.encodeResult(result)
+            result:          executor.encodeResult(result),
         }))
         .catch(err => new DriverStatus({
             isCommandResult: true,
-            executionError:  err
+            executionError:  err,
         }));
 }

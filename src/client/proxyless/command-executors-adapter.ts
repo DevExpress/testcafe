@@ -4,8 +4,10 @@ import { CommandExecutorsAdapterBase, NativeMethods } from './command-executors-
 
 export default class CommandExecutorsAdapter extends CommandExecutorsAdapterBase {
     private readonly _nativeMethods = {
-        Function, Node, Promise,
-        objectKeys: Object.keys
+        Function,
+        Node,
+        Promise,
+        objectKeys: Object.keys,
     };
 
     public isProxyless (): boolean {

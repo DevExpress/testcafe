@@ -33,7 +33,7 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
         const customDOMProperties = this.dependencies && this.dependencies.customDOMProperties;
 
         this.replicator.addTransforms([
-            new SelectorNodeTransform(customDOMProperties, command.instantiationCallsiteName, commandExecutorsAdapter)
+            new SelectorNodeTransform(customDOMProperties, command.instantiationCallsiteName, commandExecutorsAdapter),
         ]);
     }
 
