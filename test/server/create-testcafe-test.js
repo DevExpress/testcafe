@@ -9,7 +9,7 @@ const selfSignedCertificate = require('openssl-self-signed-certificate');
 const {
     CONFIGURATION_EXTENSIONS,
     JS_CONFIGURATION_EXTENSION,
-    JSON_CONFIGURATION_EXTENSION
+    JSON_CONFIGURATION_EXTENSION,
 } = require('../../lib/configuration/formats');
 
 const jsConfigIndex   = CONFIGURATION_EXTENSIONS.indexOf(JS_CONFIGURATION_EXTENSION);
