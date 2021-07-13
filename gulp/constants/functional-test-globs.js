@@ -13,15 +13,9 @@ const MIGRATE_ALL_TESTS_TO_COMPILER_SERVICE_GLOB = [
     BASIC_TESTS_GLOB,
     COMPILER_SERVICE_TESTS_GLOB,
     '!test/functional/fixtures/multiple-windows/test.js',
-    '!test/functional/fixtures/browser-provider/browser-reconnect/test.js',
     '!test/functional/fixtures/api/es-next/assertions/test.js',
     '!test/functional/fixtures/regression/gh-2546/test.js',
     '!test/functional/fixtures/regression/gh-2846/test.js',
-    '!test/functional/fixtures/regression/gh-2861/test.js',
-    '!test/functional/fixtures/regression/gh-2968/test.js',
-    '!test/functional/fixtures/regression/gh-3021/test.js',
-    '!test/functional/fixtures/regression/gh-3298/test.js',
-    '!test/functional/fixtures/regression/gh-4516/test.js',
 ];
 
 module.exports = {

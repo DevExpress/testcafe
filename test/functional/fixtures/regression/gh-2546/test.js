@@ -1,11 +1,16 @@
-const path     = require('path');
-const expect   = require('chai').expect;
-const { exec } = require('child_process');
-const config   = require('../../../config');
+const path               = require('path');
+const { expect }         = require('chai');
+const { exec }           = require('child_process');
+const config             = require('../../../config');
+const unhandledRejection = require('./unhandled-rejection');
 
 if (config.useLocalBrowsers) {
     describe('[Regression](GH-2546)', function () {
         this.timeout(60000);
+
+        afterEach(() => {
+            unhandledRejection.delete();
+        });
 
         it('Should fail on uncaught promise rejection when skipUncaughtErrors is false', function () {
             return runTests('./testcafe-fixtures/index.js', 'Unhandled promise rejection', { shouldFail: true })
@@ -27,25 +32,15 @@ if (config.useLocalBrowsers) {
                     allErrors.forEach(function (err) {
                         expect(err).contains('Unhandled promise rejection');
                     });
+
+                    expect(unhandledRejection.getData()).contains('reject');
                 });
         });
 
         it('Should not fail on uncaught exception when skipUncaughtErrors is true', function () {
-            let unhandledRejectionRaiseCount = 0;
-
-            const listener = err => {
-                unhandledRejectionRaiseCount++;
-
-                expect(err.message).eql('reject');
-            };
-
-            process.on('unhandledRejection', listener);
-
             return runTests('./testcafe-fixtures/index.js', 'Unhandled promise rejection', { skipUncaughtErrors: true })
                 .then(() => {
-                    process.removeListener('unhandledRejection', listener);
-
-                    expect(unhandledRejectionRaiseCount).gte(1);
+                    expect(unhandledRejection.getData()).contains('reject');
                 });
         });
 
