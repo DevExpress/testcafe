@@ -67,5 +67,5 @@ export default {
 
     get userVariables () {
         return userVariables.value;
-    }
+    },
 };
