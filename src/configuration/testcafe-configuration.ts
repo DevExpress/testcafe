@@ -33,6 +33,8 @@ import { DEPRECATED, getDeprecationMessage } from '../notifications/deprecated';
 import WarningLog from '../notifications/warning-log';
 import browserProviderPool from '../browser/provider/pool';
 import BrowserConnection, { BrowserInfo } from '../browser/connection';
+import { GeneralError } from '../errors/runtime';
+import { RUNTIME_ERRORS } from '../errors/types';
 
 const CONFIGURATION_FILENAME = '.testcaferc.json';
 
@@ -74,8 +76,12 @@ interface TestCafeStartOptions {
 type BrowserInfoSource = BrowserInfo | BrowserConnection;
 
 export default class TestCafeConfiguration extends Configuration {
-    public constructor (configFile = CONFIGURATION_FILENAME) {
-        super(configFile);
+    protected readonly _isExplicitConfig: boolean;
+
+    public constructor (configFile = '') {
+        super(configFile || CONFIGURATION_FILENAME);
+
+        this._isExplicitConfig = !!configFile;
     }
 
     public async init (options?: object): Promise<void> {
@@ -250,6 +256,15 @@ export default class TestCafeConfiguration extends Configuration {
         const browserInfo = await Promise.all(browsers.map(browser => browserProviderPool.getBrowserInfo(browser)));
 
         return flatten(browserInfo);
+    }
+
+    protected async _isConfigurationFileExists (): Promise<boolean> {
+        const fileExists = await super._isConfigurationFileExists();
+
+        if (!fileExists && this._isExplicitConfig)
+            throw new GeneralError(RUNTIME_ERRORS.cannotFindTestcafeConfigurationFile, this.filePath);
+
+        return fileExists;
     }
 
     public static get FILENAME (): string {
