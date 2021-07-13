@@ -222,6 +222,7 @@ export default class TestCafeConfiguration extends Configuration {
         this._ensureScreenshotPath();
     }
 
+    // NOTE
     private _prepareCompilerOptions (): void {
         const compilerOptions = this._ensureOption(OPTION_NAMES.compilerOptions, getDefaultCompilerOptions(), OptionSource.Configuration);
 
