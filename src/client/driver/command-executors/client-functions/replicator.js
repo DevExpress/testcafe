@@ -1,19 +1,21 @@
-import Replicator from 'replicator';
+import Replicator, { Transform } from 'replicator';
 import evalFunction from './eval-function';
 import {
     NodeSnapshot,
     ElementSnapshot,
     ElementActionSnapshot,
 } from './selector-executor/node-snapshots';
-
 import { DomNodeClientFunctionResultError, UncaughtErrorInCustomDOMPropertyCode } from '../../../../shared/errors';
-import hammerhead from '../../deps/hammerhead';
+import { ExecuteClientFunctionCommandBase } from '../../../../test-run/commands/observation';
+import { Dictionary } from '../../../../configuration/interfaces';
+import { CommandExecutorsAdapterBase } from '../../../proxyless/command-executors-adapter-base';
 
-// NOTE: save original ctors because they may be overwritten by page code
-const Node     = window.Node;
-const identity = val => val;
 
-export function createReplicator (transforms) {
+type CustomDOMProperties = Dictionary<(n: Node) => unknown>;
+const identity = (val: unknown): unknown => val;
+
+
+export function createReplicator (transforms: Transform[]): Replicator {
     // NOTE: we will serialize replicator results
     // to JSON with a command or command result.
     // Therefore there is no need to do additional job here,
@@ -27,64 +29,83 @@ export function createReplicator (transforms) {
 }
 
 export class FunctionTransform {
-    constructor () {
-        this.type = 'Function';
+    public readonly type = 'Function';
+    private readonly _adapter: CommandExecutorsAdapterBase;
+
+    public constructor (adapter: CommandExecutorsAdapterBase) {
+        this._adapter = adapter;
     }
 
-    shouldTransform (type) {
+    public shouldTransform (type: string): boolean {
         return type === 'function';
     }
 
-    toSerializable () {
+    public toSerializable (): string {
         return '';
     }
 
     // HACK: UglifyJS + TypeScript + argument destructuring can generate incorrect code.
     // So we have to use plain assignments here.
-    fromSerializable (opts) {
+    public fromSerializable (opts: ExecuteClientFunctionCommandBase): Function {
         const fnCode       = opts.fnCode;
         const dependencies = opts.dependencies;
 
-        return evalFunction(fnCode, dependencies);
+        return evalFunction(fnCode, dependencies, this._adapter);
     }
 }
 
 export class SelectorElementActionTransform {
-    constructor () {
-        this.type = 'Node';
+    public readonly type = 'Node';
+    private readonly _adapter: CommandExecutorsAdapterBase;
+
+    public constructor (adapter: CommandExecutorsAdapterBase) {
+        this._adapter = adapter;
     }
 
-    shouldTransform (type, val) {
-        return val instanceof Node;
+    public shouldTransform (type: string, val: unknown): boolean {
+        return val instanceof this._adapter.getNativeMethods().Node;
     }
 
-    toSerializable (node) {
+    public toSerializable (node: Node): ElementActionSnapshot {
         return new ElementActionSnapshot(node);
     }
 }
 
 export class SelectorNodeTransform {
-    constructor (customDOMProperties) {
-        this.type                = 'Node';
-        this.customDOMProperties = customDOMProperties || {};
+    public readonly type = 'Node';
+    private readonly _customDOMProperties: CustomDOMProperties;
+    private readonly _instantiationCallsiteName: string;
+    private readonly _adapter: CommandExecutorsAdapterBase;
+
+    public constructor (customDOMProperties: CustomDOMProperties = {}, instantiationCallsiteName: string,
+        adapter: CommandExecutorsAdapterBase) {
+        this._customDOMProperties       = customDOMProperties;
+        this._instantiationCallsiteName = instantiationCallsiteName;
+        this._adapter                   = adapter;
     }
 
-    _extend (snapshot, node) {
-        hammerhead.nativeMethods.objectKeys.call(window.Object, this.customDOMProperties).forEach(prop => {
+    private _extend (snapshot: NodeSnapshot | ElementSnapshot, node: Node): void {
+        const props = this._adapter.getNativeMethods().objectKeys(this._customDOMProperties);
+
+        for (const prop of props) {
             try {
-                snapshot[prop] = this.customDOMProperties[prop](node);
+                // TODO: remove ts-ignore
+                // @ts-ignore
+                snapshot[prop] = this._customDOMProperties[prop](node);
             }
             catch (err) {
-                throw new UncaughtErrorInCustomDOMPropertyCode(this.instantiationCallsiteName, err, prop);
+                throw this._adapter.isProxyless()
+                    ? UncaughtErrorInCustomDOMPropertyCode.name
+                    : new UncaughtErrorInCustomDOMPropertyCode(this._instantiationCallsiteName, err, prop);
             }
-        });
+        }
     }
 
-    shouldTransform (type, val) {
-        return val instanceof Node;
+    public shouldTransform (type: string, val: unknown): boolean {
+        return val instanceof this._adapter.getNativeMethods().Node;
     }
 
-    toSerializable (node) {
+    public toSerializable (node: Node): NodeSnapshot | ElementSnapshot {
         const snapshot = node.nodeType === 1 ? new ElementSnapshot(node) : new NodeSnapshot(node);
 
         this._extend(snapshot, node);
@@ -94,13 +115,28 @@ export class SelectorNodeTransform {
 }
 
 export class ClientFunctionNodeTransform {
-    constructor (instantiationCallsiteName) {
-        this.type                      = 'Node';
-        this.instantiationCallsiteName = instantiationCallsiteName;
+    public readonly type = 'Node';
+    private readonly _instantiationCallsiteName: string;
+    private readonly _adapter: CommandExecutorsAdapterBase;
+
+    public constructor (instantiationCallsiteName: string, adapter: CommandExecutorsAdapterBase) {
+        this._instantiationCallsiteName = instantiationCallsiteName;
+        this._adapter                   = adapter;
     }
 
-    shouldTransform (type, val) {
-        if (val instanceof Node)
-            throw new DomNodeClientFunctionResultError(this.instantiationCallsiteName);
+    public shouldTransform (type: string, val: unknown): boolean {
+        if (val instanceof Node) {
+            throw this._adapter.isProxyless()
+                ? DomNodeClientFunctionResultError.name
+                : new DomNodeClientFunctionResultError(this._instantiationCallsiteName);
+        }
+
+        return false;
+    }
+
+    public toSerializable (): void {
+    }
+
+    public fromSerializable (): void {
     }
 }

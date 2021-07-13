@@ -1,60 +1,57 @@
-import { Promise } from '../../deps/hammerhead';
-import DriverStatus from '../../status';
 import {
     createReplicator,
     FunctionTransform,
     ClientFunctionNodeTransform,
 } from './replicator';
-
 import evalFunction from './eval-function';
 import { UncaughtErrorInClientFunctionCode } from '../../../../shared/errors';
+import Replicator from 'replicator';
+import { ExecuteClientFunctionCommandBase } from '../../../../test-run/commands/observation';
+import { CommandExecutorsAdapterBase } from '../../../proxyless/command-executors-adapter-base';
 
 export default class ClientFunctionExecutor {
-    constructor (command) {
-        this.command      = command;
-        this.replicator   = this._createReplicator();
-        this.dependencies = this.replicator.decode(this.command.dependencies);
+    protected readonly fn: Function;
+    protected readonly replicator: Replicator;
+    protected readonly dependencies: unknown;
+    protected readonly command: ExecuteClientFunctionCommandBase;
+    private readonly _adapter: CommandExecutorsAdapterBase;
 
-        this.fn = evalFunction(this.command.fnCode, this.dependencies);
+    public constructor (command: ExecuteClientFunctionCommandBase, adapter: CommandExecutorsAdapterBase) {
+        this.command      = command;
+        this._adapter     = adapter;
+        this.replicator   = this._createReplicator();
+        this.dependencies = this.replicator.decode(command.dependencies);
+
+        this.fn = evalFunction(command.fnCode, this.dependencies, adapter);
     }
 
-    getResult () {
-        return Promise.resolve()
+    public getResult (): Promise<unknown> {
+        return this._adapter.getPromiseCtor().resolve()
             .then(() => {
-                const args = this.replicator.decode(this.command.args);
+                const args = this.replicator.decode(this.command.args) as unknown[];
 
                 return this._executeFn(args);
             })
             .catch(err => {
-                if (!err.isTestCafeError)
+                if (!err.isTestCafeError && !this._adapter.isProxyless())
                     err = new UncaughtErrorInClientFunctionCode(this.command.instantiationCallsiteName, err);
 
                 throw err;
             });
     }
 
-    getResultDriverStatus () {
-        return this
-            .getResult()
-            .then(result => new DriverStatus({
-                isCommandResult: true,
-                result:          this.replicator.encode(result),
-            }))
-            .catch(err => new DriverStatus({
-                isCommandResult: true,
-                executionError:  err,
-            }));
+    public encodeResult (result: unknown): unknown {
+        return this.replicator.encode(result);
     }
 
-    //Overridable methods
-    _createReplicator () {
+    protected _createReplicator (): Replicator {
         return createReplicator([
-            new ClientFunctionNodeTransform(this.command.instantiationCallsiteName),
-            new FunctionTransform(),
+            new ClientFunctionNodeTransform(this.command.instantiationCallsiteName, this._adapter),
+            new FunctionTransform(this._adapter),
         ]);
     }
 
-    _executeFn (args) {
+    protected _executeFn (args: unknown[]): unknown {
         return this.fn.apply(window, args);
     }
 }

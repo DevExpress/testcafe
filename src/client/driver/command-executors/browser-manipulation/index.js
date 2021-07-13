@@ -37,32 +37,35 @@ const POSSIBLE_RESIZE_ERROR_DELAY = 200;
 const MANIPULATION_REQUEST_CMD  = 'driver|browser-manipulation|request';
 const MANIPULATION_RESPONSE_CMD = 'driver|browser-manipulation|response';
 
-// Setup cross-iframe interaction
-messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
-    if (e.message.cmd === MANIPULATION_REQUEST_CMD) {
-        const element = domUtils.findIframeByWindow(e.source);
 
-        const { command, cropDimensions } = e.message;
+export function setupCrossIframeInteraction (commandExecutorsAdapter) {
+    messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
+        if (e.message.cmd === MANIPULATION_REQUEST_CMD) {
+            const element = domUtils.findIframeByWindow(e.source);
 
-        if (cropDimensions)
-            command.options = new ElementScreenshotOptions({ crop: cropDimensions, includePaddings: false });
+            const { command, cropDimensions } = e.message;
 
-        const manipulation = new ManipulationExecutor(command);
+            if (cropDimensions)
+                command.options = new ElementScreenshotOptions({ crop: cropDimensions, includePaddings: false });
 
-        manipulation.element = element;
+            const manipulation = new ManipulationExecutor(command, commandExecutorsAdapter);
 
-        manipulation
-            .execute()
-            .then(result => messageSandbox.sendServiceMsg({ cmd: MANIPULATION_RESPONSE_CMD, result }, e.source));
-    }
-});
+            manipulation.element = element;
+
+            manipulation
+                .execute()
+                .then(result => messageSandbox.sendServiceMsg({ cmd: MANIPULATION_RESPONSE_CMD, result }, e.source));
+        }
+    });
+}
 
 class ManipulationExecutor {
-    constructor (command, globalSelectorTimeout, statusBar) {
-        this.command  = command;
-        this.globalSelectorTimeout = globalSelectorTimeout;
-        this.statusBar = statusBar;
-        this.element = null;
+    constructor (command, commandExecutorsAdapter, globalSelectorTimeout, statusBar) {
+        this.command                 = command;
+        this.commandExecutorsAdapter = commandExecutorsAdapter;
+        this.globalSelectorTimeout   = globalSelectorTimeout;
+        this.statusBar               = statusBar;
+        this.element                 = null;
     }
 
     _getAbsoluteCropValues () {
@@ -118,7 +121,8 @@ class ManipulationExecutor {
 
                 this.statusBar.showWaitingElementStatus(specificSelectorTimeout);
 
-                return ensureElements([createElementDescriptor(this.command.selector)], this.globalSelectorTimeout)
+                return ensureElements([createElementDescriptor(this.command.selector)],
+                    this.globalSelectorTimeout, this.commandExecutorsAdapter)
                     .then(elements => {
                         this.statusBar.hideWaitingElementStatus();
 
@@ -236,8 +240,8 @@ class ManipulationExecutor {
     }
 }
 
-export default function (command, globalSelectorTimeout, statusBar) {
-    const manipulationExecutor = new ManipulationExecutor(command, globalSelectorTimeout, statusBar);
+export function executeManipulationCommand (command, commandExecutorsAdapter, globalSelectorTimeout, statusBar) {
+    const manipulationExecutor = new ManipulationExecutor(command, commandExecutorsAdapter, globalSelectorTimeout, statusBar);
 
     return manipulationExecutor.execute();
 }

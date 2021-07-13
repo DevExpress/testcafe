@@ -86,7 +86,7 @@ import ChildIframeDriverLink from './driver-link/iframe/child';
 import { createReplicator, SelectorNodeTransform } from './command-executors/client-functions/replicator';
 
 import executeActionCommand from './command-executors/execute-action';
-import executeManipulationCommand from './command-executors/browser-manipulation';
+import { executeManipulationCommand, setupCrossIframeInteraction } from './command-executors/browser-manipulation';
 import executeNavigateToCommand from './command-executors/execute-navigate-to';
 import {
     getResult as getExecuteSelectorResult,
@@ -101,6 +101,8 @@ import sendConfirmationMessage from './driver-link/send-confirmation-message';
 import DriverRole from './role';
 import { CHECK_CHILD_WINDOW_CLOSED_INTERVAL, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT } from './driver-link/timeouts';
 import sendMessageToDriver from './driver-link/send-message-to-driver';
+import CommandExecutorsAdapter from './command-executors/command-executors-adapter';
+import getExecutorResultDriverStatus from './command-executors/client-functions/get-executor-result-driver-status';
 
 const settings = hammerhead.settings;
 
@@ -170,6 +172,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         this.dialogHandler              = options.dialogHandler;
         this.canUseDefaultWindowActions = options.canUseDefaultWindowActions;
         this.isFirstPageLoad            = settings.get().isFirstPageLoad;
+        this.commandExecutorsAdapter    = new CommandExecutorsAdapter();
 
         this.customCommandHandlers = {};
 
@@ -193,6 +196,8 @@ export default class Driver extends serviceUtils.EventEmitter {
 
         this.readyPromise = this._getReadyPromise();
 
+        setupCrossIframeInteraction(this.commandExecutorsAdapter);
+
         this._initChildDriverListening();
 
         pageUnloadBarrier.init();
@@ -212,7 +217,9 @@ export default class Driver extends serviceUtils.EventEmitter {
             this._sendStartToRestoreCommand();
         });
 
-        this.replicator = createReplicator([ new SelectorNodeTransform() ]);
+        this.replicator = createReplicator([
+            new SelectorNodeTransform({}, void 0, this.commandExecutorsAdapter)
+        ]);
     }
 
     _isOpenedInIframe () {
@@ -923,7 +930,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         const hasSpecificTimeout     = typeof selector.timeout === 'number';
         const commandSelectorTimeout = hasSpecificTimeout ? selector.timeout : this.selectorTimeout;
 
-        return getExecuteSelectorResult(selector, commandSelectorTimeout, null,
+        return getExecuteSelectorResult(selector, this.commandExecutorsAdapter, commandSelectorTimeout, null,
             fn => new iframeErrorCtors.NotFoundError(fn), () => new iframeErrorCtors.IsInvisibleError(), this.statusBar)
             .then(iframe => {
                 if (!domUtils.isIframeElement(iframe))
@@ -1084,7 +1091,8 @@ export default class Driver extends serviceUtils.EventEmitter {
 
     // Commands handling
     _onActionCommand (command) {
-        const { startPromise, completionPromise } = executeActionCommand(command, this.selectorTimeout, this.statusBar, this.speed);
+        const { startPromise, completionPromise } = executeActionCommand(command, this.commandExecutorsAdapter,
+            this.selectorTimeout, this.statusBar, this.speed);
 
         startPromise.then(() => this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, true));
 
@@ -1128,9 +1136,9 @@ export default class Driver extends serviceUtils.EventEmitter {
     _onExecuteClientFunctionCommand (command) {
         this.contextStorage.setItem(EXECUTING_CLIENT_FUNCTION_DESCRIPTOR, { instantiationCallsiteName: command.instantiationCallsiteName });
 
-        const executor = new ClientFunctionExecutor(command);
+        const executor = new ClientFunctionExecutor(command, this.commandExecutorsAdapter);
 
-        executor.getResultDriverStatus()
+        getExecutorResultDriverStatus(executor)
             .then(driverStatus => {
                 this.contextStorage.setItem(EXECUTING_CLIENT_FUNCTION_DESCRIPTOR, null);
                 this._onReady(driverStatus);
@@ -1143,6 +1151,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         const createError                 = command.needError ? elementNotFoundOrNotVisible : null;
 
         getExecuteSelectorResultDriverStatus(command,
+            this.commandExecutorsAdapter,
             this.selectorTimeout,
             startTime,
             createError,
@@ -1300,7 +1309,7 @@ export default class Driver extends serviceUtils.EventEmitter {
     _onBrowserManipulationCommand (command) {
         this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, true);
 
-        executeManipulationCommand(command, this.selectorTimeout, this.statusBar)
+        executeManipulationCommand(command, this.commandExecutorsAdapter, this.selectorTimeout, this.statusBar)
             .then(driverStatus => {
                 this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, false);
                 return this._onReady(driverStatus);

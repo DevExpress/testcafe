@@ -1,16 +1,30 @@
 import { InvalidSelectorResultError } from '../../../../../shared/errors';
 import {
-    exists,
     visible,
-    IsNodeCollection,
+    isNodeCollection,
+    isArrayOfNodes,
+    castToArray,
 } from '../../../utils/element-utils';
 
-import testCafeCore from '../../../deps/testcafe-core';
+
+// trash
 import hammerhead from '../../../deps/hammerhead';
 
-const arrayUtils     = testCafeCore.arrayUtils;
-const typeUtils      = hammerhead.utils.types;
 const nativeMethods  = hammerhead.nativeMethods;
+
+interface FilterOptions {
+    filterVisible: boolean;
+    filterHidden: boolean;
+    counterMode: boolean;
+    collectionMode: boolean;
+    index: number | null;
+    getVisibleValueMode: boolean;
+}
+
+interface APIInfo {
+    apiFnChain: (string | number)[];
+    apiFnID: number;
+}
 
 const SELECTOR_FILTER_ERROR = {
     filterVisible: 1,
@@ -25,98 +39,96 @@ const FILTER_ERROR_TO_API_RE = {
 };
 
 class SelectorFilter {
-    constructor () {
-        this.err = null;
+    private _err: number | null = null;
+
+    public get error (): number | null {
+        return this._err;
     }
 
-    get error () {
-        return this.err;
+    public set error (message: number | null) {
+        if (this._err === null)
+            this._err = message;
     }
 
-    set error (message) {
-        if (this.err === null)
-            this.err = message;
-    }
-
-    filter (node, options, apiInfo) {
-        let filtered = arrayUtils.filter(node, exists);
-
+    public filter (nodes: Node[], options: FilterOptions, apiInfo: APIInfo): number | Node | Node[] | undefined {
         if (options.filterVisible) {
-            filtered = filtered.filter(visible);
+            nodes = nodes.filter(visible);
 
-            this.assertFilterError(filtered, apiInfo, SELECTOR_FILTER_ERROR.filterVisible);
+            this._assertFilterError(nodes, apiInfo, SELECTOR_FILTER_ERROR.filterVisible);
         }
 
         if (options.filterHidden) {
-            filtered = filtered.filter(n => !visible(n));
+            nodes = nodes.filter(n => !visible(n));
 
-            this.assertFilterError(filtered, apiInfo, SELECTOR_FILTER_ERROR.filterHidden);
+            this._assertFilterError(nodes, apiInfo, SELECTOR_FILTER_ERROR.filterHidden);
         }
 
         if (options.counterMode) {
-            if (options.index !== null)
-                filtered = this.getNodeByIndex(filtered, options.index) ? 1 : 0;
-            else
-                filtered = filtered.length;
-        }
-        else {
-            if (options.collectionMode) {
-                if (options.index !== null) {
-                    const nodeOnIndex = this.getNodeByIndex(filtered, options.index);
+            if (options.index === null)
+                return nodes.length;
 
-                    filtered = nodeOnIndex ? [nodeOnIndex] : [];
-                }
+            return SelectorFilter._getNodeByIndex(nodes, options.index) ? 1 : 0;
+        }
+
+        if (options.collectionMode) {
+            if (options.index !== null) {
+                const nodeOnIndex = SelectorFilter._getNodeByIndex(nodes, options.index);
+
+                nodes = nodeOnIndex ? [nodeOnIndex] : [];
+
+                this._assertFilterError(nodes, apiInfo, SELECTOR_FILTER_ERROR.nth);
             }
-            else
-                filtered = this.getNodeByIndex(filtered, options.index || 0);
 
-            if (typeof options.index === 'number')
-                this.assertFilterError(filtered, apiInfo, SELECTOR_FILTER_ERROR.nth);
+            return nodes;
         }
 
-        return filtered;
+        const nodeOnIndex = SelectorFilter._getNodeByIndex(nodes, options.index || 0);
+
+        if (!nodeOnIndex)
+            this.error = SelectorFilter._getErrorItem(apiInfo, SELECTOR_FILTER_ERROR.nth);
+
+        return nodeOnIndex;
     }
 
-    cast (node) {
-        let result = null;
+    public cast (searchResult: unknown): Node[] {
+        if (searchResult === null || searchResult === void 0)
+            return [];
 
-        if (typeUtils.isNullOrUndefined(node))
-            result = [];
+        else if (searchResult instanceof Node) // TODO: may be need to use class from adapter
+            return [searchResult];
 
-        else if (node instanceof Node)
-            result = [node];
+        else if (isArrayOfNodes(searchResult))
+            return searchResult;
 
-        else if (IsNodeCollection(node))
-            result = node;
+        else if (isNodeCollection(searchResult))
+            return castToArray(searchResult);
 
-        else
-            throw new InvalidSelectorResultError();
-
-        return result;
+        throw new InvalidSelectorResultError();
     }
 
-    assertFilterError (filtered, apiInfo, filterError) {
-        if (!filtered || filtered.length === 0)
-            this.error = this.getErrorItem(apiInfo, filterError);
+    private _assertFilterError (filtered: Node[], apiInfo: APIInfo, filterError: number): void {
+        if (filtered.length === 0)
+            this.error = SelectorFilter._getErrorItem(apiInfo, filterError);
     }
 
-    getErrorItem ({ apiFnChain, apiFnID }, err) {
+    private static _getErrorItem ({ apiFnChain, apiFnID }: APIInfo, err: number): number | null {
         if (err) {
             for (let i = apiFnID; i < apiFnChain.length; i++) {
-                if (FILTER_ERROR_TO_API_RE[err].test(apiFnChain[i]))
+                if (FILTER_ERROR_TO_API_RE[err].test(apiFnChain[i] as string))
                     return i;
             }
         }
+
         return null;
     }
 
-    getNodeByIndex (collection, index) {
-        return index < 0 ? collection[collection.length + index] : collection[index];
+    private static _getNodeByIndex (nodes: Node[], index: number): Node | undefined {
+        return index < 0 ? nodes[nodes.length + index] : nodes[index];
     }
 }
 
 // Selector filter
-nativeMethods.objectDefineProperty.call(window, window, '%testCafeSelectorFilter%', {
+nativeMethods.objectDefineProperty(window, '%testCafeSelectorFilter%', {
     value:        new SelectorFilter(),
     configurable: true,
 });

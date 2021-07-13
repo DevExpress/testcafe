@@ -1,7 +1,7 @@
 import { Promise, nativeMethods } from '../../../deps/hammerhead';
 import { delay, domUtils } from '../../../deps/testcafe-core';
 import ClientFunctionExecutor from '../client-function-executor';
-import { exists, visible } from '../../../utils/element-utils';
+import { visible } from '../../../utils/element-utils';
 import {
     createReplicator,
     FunctionTransform,
@@ -15,8 +15,8 @@ const DateCtor = nativeMethods.date;
 const CHECK_ELEMENT_DELAY = 200;
 
 export default class SelectorExecutor extends ClientFunctionExecutor {
-    constructor (command, globalTimeout, startTime, createNotFoundError, createIsInvisibleError) {
-        super(command);
+    constructor (command, commandExecutorsAdapter, globalTimeout, startTime, createNotFoundError, createIsInvisibleError) {
+        super(command, commandExecutorsAdapter);
 
         this.createNotFoundError    = createNotFoundError;
         this.createIsInvisibleError = createIsInvisibleError;
@@ -32,7 +32,9 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
 
         const customDOMProperties = this.dependencies && this.dependencies.customDOMProperties;
 
-        this.replicator.addTransforms([new SelectorNodeTransform(customDOMProperties)]);
+        this.replicator.addTransforms([
+            new SelectorNodeTransform(customDOMProperties, command.instantiationCallsiteName, commandExecutorsAdapter)
+        ]);
     }
 
     _createReplicator () {
@@ -57,9 +59,9 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
 
     _validateElement (args, startTime) {
         return Promise.resolve()
-            .then(() => this.fn.apply(window, args))
+            .then(() => super._executeFn(args))
             .then(el => {
-                const isElementExists    = exists(el);
+                const isElementExists    = !!el;
                 const isElementVisible   = !this.command.visibilityCheck || visible(el);
                 const isTimeout          = new DateCtor() - startTime >= this.timeout;
 
