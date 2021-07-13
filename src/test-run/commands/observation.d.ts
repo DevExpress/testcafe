@@ -16,7 +16,7 @@ export class ExecuteClientFunctionCommand extends ExecuteClientFunctionCommandBa
 export class ExecuteSelectorCommand extends ExecuteClientFunctionCommandBase {
     public constructor(obj: object, testRun: TestRun);
     public visibilityCheck: boolean;
-    public timeout: number;
+    public timeout?: number;
     public apiFnChain: string[];
     public needError: boolean;
     public index: number;

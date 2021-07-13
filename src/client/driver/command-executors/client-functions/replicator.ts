@@ -7,11 +7,10 @@ import {
 } from './selector-executor/node-snapshots';
 import { DomNodeClientFunctionResultError, UncaughtErrorInCustomDOMPropertyCode } from '../../../../shared/errors';
 import { ExecuteClientFunctionCommandBase } from '../../../../test-run/commands/observation';
-import { Dictionary } from '../../../../configuration/interfaces';
 import { CommandExecutorsAdapterBase } from '../../../proxyless/command-executors-adapter-base';
+import { CustomDOMProperties } from './selector-executor/types';
 
 
-type CustomDOMProperties = Dictionary<(n: Node) => unknown>;
 const identity = (val: unknown): unknown => val;
 
 
@@ -28,7 +27,7 @@ export function createReplicator (transforms: Transform[]): Replicator {
     return replicator.addTransforms(transforms);
 }
 
-export class FunctionTransform {
+export class FunctionTransform implements Transform {
     public readonly type = 'Function';
     private readonly _adapter: CommandExecutorsAdapterBase;
 
@@ -54,7 +53,7 @@ export class FunctionTransform {
     }
 }
 
-export class SelectorElementActionTransform {
+export class SelectorElementActionTransform implements Transform {
     public readonly type = 'Node';
     private readonly _adapter: CommandExecutorsAdapterBase;
 
@@ -69,9 +68,12 @@ export class SelectorElementActionTransform {
     public toSerializable (node: Node): ElementActionSnapshot {
         return new ElementActionSnapshot(node);
     }
+
+    public fromSerializable (): void {
+    }
 }
 
-export class SelectorNodeTransform {
+export class SelectorNodeTransform implements Transform {
     public readonly type = 'Node';
     private readonly _customDOMProperties: CustomDOMProperties;
     private readonly _instantiationCallsiteName: string;
@@ -112,9 +114,12 @@ export class SelectorNodeTransform {
 
         return snapshot;
     }
+
+    public fromSerializable (): void {
+    }
 }
 
-export class ClientFunctionNodeTransform {
+export class ClientFunctionNodeTransform implements Transform {
     public readonly type = 'Node';
     private readonly _instantiationCallsiteName: string;
     private readonly _adapter: CommandExecutorsAdapterBase;

@@ -45,7 +45,7 @@ export class DomNodeClientFunctionResultError extends TestRunErrorBase {
 
 // Selector errors
 //--------------------------------------------------------------------
-class SelectorErrorBase extends TestRunErrorBase {
+export class SelectorErrorBase extends TestRunErrorBase {
     constructor (code, { apiFnChain, apiFnIndex }) {
         super(code);
 

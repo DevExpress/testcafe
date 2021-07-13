@@ -5,6 +5,7 @@ import {
     isArrayOfNodes,
     castToArray,
 } from '../../../utils/element-utils';
+import { APIInfo, FilterOptions } from './types';
 
 
 // trash
@@ -12,19 +13,6 @@ import hammerhead from '../../../deps/hammerhead';
 
 const nativeMethods  = hammerhead.nativeMethods;
 
-interface FilterOptions {
-    filterVisible: boolean;
-    filterHidden: boolean;
-    counterMode: boolean;
-    collectionMode: boolean;
-    index: number | null;
-    getVisibleValueMode: boolean;
-}
-
-interface APIInfo {
-    apiFnChain: (string | number)[];
-    apiFnID: number;
-}
 
 const SELECTOR_FILTER_ERROR = {
     filterVisible: 1,
@@ -38,7 +26,7 @@ const FILTER_ERROR_TO_API_RE = {
     [SELECTOR_FILTER_ERROR.nth]:           /^\.nth\(\d+\)$/,
 };
 
-class SelectorFilter {
+export default class SelectorFilter {
     private _err: number | null = null;
 
     public get error (): number | null {

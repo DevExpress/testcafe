@@ -1,5 +1,6 @@
 import SelectorExecutor from './client-functions/selector-executor';
 import getExecutorResultDriverStatus from './client-functions/get-executor-result-driver-status';
+import './client-functions/selector-executor/filter';
 
 export function getResult (command, commandExecutorsAdapter, globalTimeout, startTime, createNotFoundError, createIsInvisibleError, statusBar) {
     const selectorExecutor = new SelectorExecutor(command, commandExecutorsAdapter, globalTimeout, startTime, createNotFoundError, createIsInvisibleError);
