@@ -7,5 +7,5 @@ export default {
 
     set value (value) {
         this._variables = value;
-    }
+    },
 };
