@@ -13,6 +13,7 @@ import Test from '../../api/structure/test';
 import { TestCompilationError, APIError } from '../../errors/runtime';
 import stackCleaningHook from '../../errors/stack-cleaning-hook';
 import NODE_MODULES from '../../shared/node-modules-folder-name';
+import exportableLib from '../../api/exportable-lib';
 
 const CWD = process.cwd();
 
@@ -77,12 +78,15 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
             this.origRequireExtensions[ext] = origExt;
 
             require.extensions[ext] = (mod, filename) => {
+                const hadGlobalAPI     = this._hasGlobalAPI();
+                const isNodeModulesDep = APIBasedTestFileCompilerBase._isNodeModulesDep(filename);
+
                 // NOTE: remove global API so that it will be unavailable for the dependencies
-                this._removeGlobalAPI();
+                if (isNodeModulesDep && hadGlobalAPI)
+                    this._removeGlobalAPI();
 
-                if (APIBasedTestFileCompilerBase._isNodeModulesDep(filename) && origExt)
+                if (isNodeModulesDep && origExt)
                     origExt(mod, filename);
-
                 else {
                     const code         = readFileSync(filename).toString();
                     const compiledCode = requireCompilers[ext](stripBom(code), filename);
@@ -92,7 +96,8 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
                     mod._compile(compiledCode, filename);
                 }
 
-                this._addGlobalAPI(testFile);
+                if (hadGlobalAPI && !this._hasGlobalAPI())
+                    this._addGlobalAPI(testFile);
             };
         });
     }
@@ -132,15 +137,32 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         });
     }
 
+    _addExportAPI (testFile) {
+        Object.defineProperty(exportableLib, 'fixture', {
+            get:          () => new Fixture(testFile),
+            configurable: true
+        });
+
+        Object.defineProperty(exportableLib, 'test', {
+            get:          () => new Test(testFile),
+            configurable: true
+        });
+    }
+
     _removeGlobalAPI () {
         delete global.fixture;
         delete global.test;
+    }
+
+    _hasGlobalAPI () {
+        return global.fixture && global.test;
     }
 
     _runCompiledCode (compiledCode, filename) {
         const testFile = new TestFile(filename);
 
         this._addGlobalAPI(testFile);
+        this._addExportAPI(testFile);
 
         stackCleaningHook.enabled = true;
 
