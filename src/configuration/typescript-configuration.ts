@@ -23,10 +23,14 @@ interface TypescriptConfigurationOptions {
 export default class TypescriptConfiguration extends Configuration {
     private readonly basePath: string;
 
-    public constructor (tsConfigPath: string | null) {
+    public constructor (tsConfigPath: string | null, useEsmModules?: boolean) {
         super(tsConfigPath);
 
         this.basePath = process.cwd();
+
+        if (useEsmModules)
+            // NOTE: ts.ModuleKind.NextJS
+            this._ensureOptionWithValue('module', 99, OptionSource.Configuration);
 
         this._ensureDefaultOptions();
     }
