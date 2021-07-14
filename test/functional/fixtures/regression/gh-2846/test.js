@@ -1,5 +1,5 @@
-const config = require('../../../config');
-const expect = require('chai').expect;
+const config     = require('../../../config');
+const { expect } = require('chai');
 
 if (config.useHeadlessBrowsers) {
     describe('[Regression](GH-2846)', function () {

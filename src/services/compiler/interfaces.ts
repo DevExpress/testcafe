@@ -132,3 +132,8 @@ export interface CommandLocator extends TestRunLocator {
     commandId: string;
 }
 
+export interface AddUnexpectedErrorArguments {
+    type: string;
+    message: string;
+}
+

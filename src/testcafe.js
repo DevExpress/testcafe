@@ -3,9 +3,9 @@ import { RUNTIME_ERRORS } from './errors/types';
 import CONTENT_TYPES from './assets/content-types';
 import OPTION_NAMES from './configuration/option-names';
 import * as INJECTABLES from './assets/injectables';
+import setupSourceMapSupport from './utils/setup-sourcemap-support';
 
 const lazyRequire              = require('import-lazy')(require);
-const sourceMapSupport         = lazyRequire('source-map-support');
 const hammerhead               = lazyRequire('testcafe-hammerhead');
 const loadAssets               = lazyRequire('./load-assets');
 const errorHandlers            = lazyRequire('./utils/handle-errors');
@@ -21,7 +21,7 @@ require('coffeescript');
 
 export default class TestCafe {
     constructor (configuration) {
-        this._setupSourceMapsSupport();
+        setupSourceMapSupport();
         errorHandlers.registerErrorHandlers();
 
         const { hostname, port1, port2, options } = configuration.startOptions;
@@ -59,14 +59,6 @@ export default class TestCafe {
             content:              uiStyle,
             contentType:          CONTENT_TYPES.css,
             isShadowUIStylesheet: true,
-        });
-    }
-
-    _setupSourceMapsSupport () {
-        sourceMapSupport.install({
-            hookRequire:              true,
-            handleUncaughtExceptions: false,
-            environment:              'node',
         });
     }
 

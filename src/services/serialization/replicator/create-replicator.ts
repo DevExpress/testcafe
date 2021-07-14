@@ -11,6 +11,7 @@ import CallsiteRecordTransform from './transforms/callsite-record-transform';
 import TestCafeErrorListTransform from './transforms/testcafe-error-list-transform';
 import FunctionMarkerTransform from './transforms/function-marker-transform';
 import PromiseMarkerTransform from './transforms/promise-marker-transform';
+import ConfigureResponseEventOptionTransform from './transforms/configure-response-event-option-transform';
 
 const DEFAULT_ERROR_TRANSFORM_TYPE = '[[Error]]';
 
@@ -40,6 +41,7 @@ export default function (): Replicator {
             new PromiseMarkerTransform(),
             new CommandBaseTransform(),
             new RequestFilterRuleTransform(),
+            new ConfigureResponseEventOptionTransform(),
             new ResponseMockTransform(),
             new RequestHookEventDataTransform(),
             new RoleTransform(),

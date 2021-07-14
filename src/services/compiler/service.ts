@@ -20,7 +20,6 @@ import {
 
 import { IPCProxy } from '../utils/ipc/proxy';
 import { ServiceTransport } from '../utils/ipc/transport';
-import sourceMapSupport from 'source-map-support';
 
 import {
     CompilerProtocol,
@@ -52,6 +51,7 @@ import {
     ExecuteJsExpressionArguments,
     ExecuteAsyncJsExpressionArguments,
     CommandLocator,
+    AddUnexpectedErrorArguments,
 } from './interfaces';
 
 import { CompilerArguments } from '../../compiler/interfaces';
@@ -74,14 +74,19 @@ import RequestHook from '../../api/request-hooks/hook';
 import RequestMock from '../../api/request-hooks/request-mock';
 import Role from '../../role/role';
 import { executeJsExpression, executeAsyncJsExpression } from '../../test-run/execute-js-expression';
-import { UncaughtErrorInCustomScript, UncaughtTestCafeErrorInCustomScript } from '../../errors/test-run';
-import { renderHtmlWithoutStack, shouldRenderHtmlWithoutStack } from '../../errors/test-run/render-error-template/utils';
 
-sourceMapSupport.install({
-    hookRequire:              true,
-    handleUncaughtExceptions: false,
-    environment:              'node',
-});
+import {
+    UncaughtErrorInCustomScript,
+    UncaughtExceptionError,
+    UncaughtTestCafeErrorInCustomScript,
+    UnhandledPromiseRejectionError,
+} from '../../errors/test-run';
+
+import { renderHtmlWithoutStack, shouldRenderHtmlWithoutStack } from '../../errors/test-run/render-error-template/utils';
+import setupSourceMapSupport from '../../utils/setup-sourcemap-support';
+import { formatError } from '../../utils/handle-errors';
+
+setupSourceMapSupport();
 
 interface ServiceState {
     testRuns: { [id: string]: TestRunProxy };
@@ -110,6 +115,7 @@ class CompilerService implements CompilerProtocol {
 
         this._setupRoutes();
         this.ready();
+        this._registerErrorHandlers();
     }
 
     private _initState (): ServiceState {
@@ -120,6 +126,18 @@ class CompilerService implements CompilerProtocol {
             options:     {},
             roles:       new Map<string, Role>(),
         };
+    }
+
+    private async _handleUnexpectedError (ErrorCtor: Function, error: Error): Promise<void> {
+        const message = formatError(ErrorCtor, error);
+        const type    = ErrorCtor.name;
+
+        await this.addUnexpectedError({ type, message });
+    }
+
+    private _registerErrorHandlers (): void {
+        process.on('unhandledRejection', async e => this._handleUnexpectedError(UnhandledPromiseRejectionError, e as Error));
+        process.on('uncaughtException', async e => this._handleUnexpectedError(UncaughtExceptionError, e as Error));
     }
 
     private _getFixtureCtx (unit: Unit): object {
@@ -171,6 +189,7 @@ class CompilerService implements CompilerProtocol {
             this.updateRoleProperty,
             this.executeJsExpression,
             this.executeAsyncJsExpression,
+            this.addUnexpectedError,
         ], this);
     }
 
@@ -449,6 +468,10 @@ class CompilerService implements CompilerProtocol {
         return this
             ._getTargetTestRun(testRunId)
             .executeAssertionFn(commandId);
+    }
+
+    public async addUnexpectedError ({ type, message }: AddUnexpectedErrorArguments): Promise<void> {
+        return this.proxy.call(this.addUnexpectedError, { type, message });
     }
 }
 

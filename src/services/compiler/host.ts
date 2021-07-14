@@ -39,6 +39,7 @@ import {
 import { CallsiteRecord } from 'callsite-record';
 import { DebugCommand, DisableDebugCommand } from '../../test-run/commands/observation';
 import MethodShouldNotBeCalledError from '../utils/method-should-not-be-called-error';
+
 import {
     AddRequestEventListenersArguments,
     ExecuteActionArguments,
@@ -61,7 +62,11 @@ import {
     ExecuteJsExpressionArguments,
     ExecuteAsyncJsExpressionArguments,
     CommandLocator,
+    AddUnexpectedErrorArguments,
 } from './interfaces';
+
+import { UncaughtExceptionError, UnhandledPromiseRejectionError } from '../../errors/test-run';
+import { handleUnexpectedError } from '../../utils/handle-errors';
 
 const SERVICE_PATH       = require.resolve('./service');
 const INTERNAL_FILES_URL = url.pathToFileURL(path.join(__dirname, '../../'));
@@ -84,6 +89,11 @@ interface WrapMockPredicateArguments extends RequestFilterRuleLocator {
 }
 
 const INITIAL_DEBUGGER_BREAK_ON_START = 'Break on start';
+
+const errorTypeConstructors = new Map<string, Function>([
+    [UnhandledPromiseRejectionError.name, UnhandledPromiseRejectionError],
+    [UncaughtExceptionError.name, UncaughtExceptionError],
+]);
 
 export default class CompilerHost extends AsyncEventEmitter implements CompilerProtocol {
     private runtime: Promise<RuntimeResources|undefined>;
@@ -123,6 +133,7 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
             this.executeJsExpression,
             this.executeAsyncJsExpression,
             this.executeAssertionFn,
+            this.addUnexpectedError,
         ], this);
     }
 
@@ -290,6 +301,10 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
         mock.body = async (requestInfo: RequestInfo, res: IncomingMessageLikeInitOptions) => {
             return await this.executeMockPredicate({ testId, hookId, ruleId, requestInfo, res });
         };
+    }
+
+    private _getErrorTypeConstructor (type: string): Function {
+        return errorTypeConstructors.get(type) as Function;
     }
 
     public async ready (): Promise<void> {
@@ -468,5 +483,11 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
         const { proxy } = await this._getRuntime();
 
         return proxy.call(this.executeAssertionFn, { testRunId, commandId });
+    }
+
+    public async addUnexpectedError ({ type, message }: AddUnexpectedErrorArguments): Promise<void> {
+        const ErrorTypeConstructor = this._getErrorTypeConstructor(type);
+
+        handleUnexpectedError(ErrorTypeConstructor, message);
     }
 }

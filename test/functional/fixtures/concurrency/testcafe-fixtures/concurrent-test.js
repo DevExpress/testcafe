@@ -1,25 +1,24 @@
-import { saveTimeline } from '../common/timeline';
-
-const timeline = [];
+import timeline from '../timeline';
 
 fixture `Concurrent`
     .page`../pages/index.html`
     .after(() => {
-        saveTimeline(timeline);
+        timeline.save();
+        timeline.clear();
     });
 
 test('Long test', async t => {
-    timeline.push('test started');
+    timeline.add('test started');
 
     await t.wait(10000);
 
-    timeline.push('long finished');
+    timeline.add('long finished');
 });
 
 test('Short test', async t => {
-    timeline.push('test started');
+    timeline.add('test started');
 
     await t.wait(1000);
 
-    timeline.push('short finished');
+    timeline.add('short finished');
 });

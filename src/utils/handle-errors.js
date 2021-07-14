@@ -40,7 +40,7 @@ function formatUnhandledRejectionReason (reason) {
     return util.inspect(reason, { depth: 2, breakLength: Infinity });
 }
 
-function formatError (ErrorCtor, error) {
+export function formatError (ErrorCtor, error) {
     if (ErrorCtor === UncaughtExceptionError)
         return error.stack;
 
@@ -50,9 +50,11 @@ function formatError (ErrorCtor, error) {
     return error;
 }
 
-function handleUnexpectedError (ErrorCtor, error) {
+export function handleUnexpectedError (ErrorCtor, error) {
     try {
-        handleError(ErrorCtor, formatError(ErrorCtor, error));
+        const formattedError = typeof error === 'string' ? error : formatError(ErrorCtor, error);
+
+        handleError(ErrorCtor, formattedError);
     }
     catch (e) {
         printErrorMessagesAndTerminate(error, e);

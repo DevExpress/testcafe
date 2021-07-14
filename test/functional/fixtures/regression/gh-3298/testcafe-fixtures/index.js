@@ -1,37 +1,41 @@
-import { actual } from '../actual';
+import actual from '../actual';
 
 fixture `Define hooks of the first fixture`
     .page `http://localhost:3000/fixtures/regression/gh-3298/pages/index.html`
     .before(async () => {
-        actual.push('1 begin before');
+        actual.add('1 begin before');
         await new Promise(resolve => setTimeout(resolve, 100));
-        actual.push('1 end before');
+        actual.add('1 end before');
     })
     .after(async () => {
-        actual.push('1 begin after');
+        actual.add('1 begin after');
         await new Promise(resolve => setTimeout(resolve, 100));
-        actual.push('1 end after');
+        actual.add('1 end after');
+
+        actual.save();
     });
 
 
 test('Execute test 1', async () => {
-    actual.push('1');
+    actual.add('1');
 });
 
 fixture `Define hooks of the second fixture`
     .page `http://localhost:3000/fixtures/regression/gh-3298/pages/index.html`
     .before(async () => {
-        actual.push('2 begin before');
+        actual.add('2 begin before');
         await new Promise(resolve => setTimeout(resolve, 100));
-        actual.push('2 end before');
+        actual.add('2 end before');
     })
     .after(async () => {
-        actual.push('2 begin after');
+        actual.add('2 begin after');
         await new Promise(resolve => setTimeout(resolve, 100));
-        actual.push('2 end after');
+        actual.add('2 end after');
+
+        actual.save();
     });
 
 
 test('Execute test 2', async () => {
-    actual.push('2');
+    actual.add('2');
 });
