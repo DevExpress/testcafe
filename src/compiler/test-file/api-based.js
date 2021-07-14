@@ -22,9 +22,10 @@ const TEST_RE    = /(^|;|\s+)test\s*(\.|\()/;
 const Module = module.constructor;
 
 export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
-    constructor () {
+    constructor (isExternalServiceMode) {
         super();
 
+        this.isExternalServiceMode = isExternalServiceMode;
         this.cache                 = Object.create(null);
         this.origRequireExtensions = Object.create(null);
     }
@@ -66,6 +67,40 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         throw new Error('Not implemented');
     }
 
+    _compileExternalModule (mod, filename, requireCompiler, origExt) {
+        if (APIBasedTestFileCompilerBase._isNodeModulesDep(filename) && origExt)
+            origExt(mod, filename);
+        else
+            this._compileModule(mod, filename, requireCompiler, origExt);
+    }
+
+    _compileExternalModuleInEsmMode (mod, filename, requireCompiler, origExt) {
+        if (!origExt)
+            origExt = this.origRequireExtensions['.js'];
+
+        if (!APIBasedTestFileCompilerBase._isNodeModulesDep(filename)) {
+            global.customExtensionHook = () => {
+                global.customExtensionHook = null;
+
+                this._compileModule(mod, filename, requireCompiler);
+
+                global.customExtensionHook = null;
+            };
+        }
+
+        return origExt(mod, filename);
+    }
+
+
+    _compileModule (mod, filename, requireCompiler) {
+        const code         = readFileSync(filename).toString();
+        const compiledCode = requireCompiler(stripBom(code), filename);
+
+        mod.paths = APIBasedTestFileCompilerBase._getNodeModulesLookupPath(filename);
+
+        mod._compile(compiledCode, filename);
+    }
+
     _setupRequireHook (testFile) {
         const requireCompilers = this._getRequireCompilers();
 
@@ -80,17 +115,10 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
                 // NOTE: remove global API so that it will be unavailable for the dependencies
                 this._removeGlobalAPI();
 
-                if (APIBasedTestFileCompilerBase._isNodeModulesDep(filename) && origExt)
-                    origExt(mod, filename);
-
-                else {
-                    const code         = readFileSync(filename).toString();
-                    const compiledCode = requireCompilers[ext](stripBom(code), filename);
-
-                    mod.paths = APIBasedTestFileCompilerBase._getNodeModulesLookupPath(filename);
-
-                    mod._compile(compiledCode, filename);
-                }
+                if (this.isExternalServiceMode)
+                    this._compileExternalModuleInEsmMode(mod, filename, requireCompilers[ext], origExt);
+                else
+                    this._compileExternalModule(mod, filename, requireCompilers[ext], origExt);
 
                 this._addGlobalAPI(testFile);
             };
