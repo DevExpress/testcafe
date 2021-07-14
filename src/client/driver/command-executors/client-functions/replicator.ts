@@ -65,7 +65,7 @@ export class SelectorElementActionTransform implements Transform {
         return val instanceof this._adapter.getNativeMethods().Node;
     }
 
-    public toSerializable (node: Node): ElementActionSnapshot {
+    public toSerializable (node: Element): ElementActionSnapshot {
         return new ElementActionSnapshot(node);
     }
 
@@ -107,7 +107,7 @@ export class SelectorNodeTransform implements Transform {
         return val instanceof this._adapter.getNativeMethods().Node;
     }
 
-    public toSerializable (node: Node): NodeSnapshot | ElementSnapshot {
+    public toSerializable (node: Element): NodeSnapshot | ElementSnapshot {
         const snapshot = node.nodeType === 1 ? new ElementSnapshot(node) : new NodeSnapshot(node);
 
         this._extend(snapshot, node);
