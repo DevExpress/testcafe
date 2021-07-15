@@ -33,8 +33,10 @@ import { DEPRECATED, getDeprecationMessage } from '../notifications/deprecated';
 import WarningLog from '../notifications/warning-log';
 import browserProviderPool from '../browser/provider/pool';
 import BrowserConnection, { BrowserInfo } from '../browser/connection';
+import { CONFIGURATION_EXTENSIONS } from './formats';
 
-const CONFIGURATION_FILENAME = '.testcaferc.json';
+const BASE_CONFIGURATION_FILENAME = '.testcaferc';
+const CONFIGURATION_FILENAMES     = CONFIGURATION_EXTENSIONS.map(ext => `${BASE_CONFIGURATION_FILENAME}${ext}`);
 
 const DEFAULT_SCREENSHOTS_DIRECTORY = 'screenshots';
 
@@ -74,8 +76,8 @@ interface TestCafeStartOptions {
 type BrowserInfoSource = BrowserInfo | BrowserConnection;
 
 export default class TestCafeConfiguration extends Configuration {
-    public constructor (configFile = CONFIGURATION_FILENAME) {
-        super(configFile);
+    public constructor (configFiles: string | string[] = CONFIGURATION_FILENAMES) {
+        super(configFiles);
     }
 
     public async init (options?: object): Promise<void> {
@@ -252,7 +254,7 @@ export default class TestCafeConfiguration extends Configuration {
         return flatten(browserInfo);
     }
 
-    public static get FILENAME (): string {
-        return CONFIGURATION_FILENAME;
+    public static get FILENAMES (): string[] {
+        return CONFIGURATION_FILENAMES;
     }
 }

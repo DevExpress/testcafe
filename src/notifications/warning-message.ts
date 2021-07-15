@@ -14,7 +14,7 @@ export default {
     maximizeError:                           'Was unable to maximize the window due to an error.\n\n{errMessage}',
     requestMockCORSValidationFailed:         '{RequestHook}: CORS validation failed for a request specified as {requestFilterRule}',
     debugInHeadlessError:                    'You cannot debug in headless mode.',
-    cannotReadConfigFile:                    'An error has occurred while reading the configuration file.',
+    cannotReadConfigFile:                    'An error has occurred while reading the "{path}" configuration file.',
     cannotParseConfigFile:                   "Failed to parse the '{path}' file.\n\nThis file is not a well-formed JSON file.",
     configOptionsWereOverridden:             'The {optionsString} option{suffix} from the configuration file will be ignored.',
     cannotOverrideTypeScriptConfigOptions:   'You cannot override the "{optionName}" compiler option in the TypeScript configuration file.\n',
@@ -48,5 +48,6 @@ export default {
     testsCompilationTakesTooLong:       'Tests took too long to compile ({compileTime}). Ensure the test code has no excessive imports.',
     deprecatedAPI:                      '{API} is deprecated and will be removed in the next major release. Use {replacement} instead.',
     unawaitedMethodWithAssertion:       "An asynchronous method that you do not await includes an assertion. Inspect that method's execution chain and add the 'await' keyword where necessary.",
+    multipleConfigurationFilesFound:    'There are multiple configuration files found, TestCafe will only use one. The file "{path}" will be used.\nThe priority order is as follows:\n{priorityList}',
 };
 

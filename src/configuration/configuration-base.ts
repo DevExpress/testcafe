@@ -1,4 +1,4 @@
-import { isAbsolute } from 'path';
+import { isAbsolute, extname } from 'path';
 import debug from 'debug';
 import JSON5 from 'json5';
 import {
@@ -16,18 +16,19 @@ import renderTemplate from '../utils/render-template';
 import WARNING_MESSAGES from '../notifications/warning-message';
 import log from '../cli/log';
 import { Dictionary } from './interfaces';
+import { JS_CONFIGURATION_EXTENSION } from './formats';
 
 const DEBUG_LOGGER = debug('testcafe:configuration');
 
 export default class Configuration {
     protected _options: Dictionary<Option>;
-    protected readonly _filePath: string | null;
+    protected _filePath?: string;
+    protected readonly _defaultPaths?: string[];
     protected _overriddenOptions: string[];
 
-    public constructor (configurationFileName: string | null) {
-        this._options  = {};
-        this._filePath = Configuration._resolveFilePath(configurationFileName);
-
+    public constructor (configurationFilesNames: string | null | string[]) {
+        this._options           = {};
+        this._defaultPaths      = this._resolveFilePaths(configurationFilesNames);
         this._overriddenOptions = [];
     }
 
@@ -61,6 +62,20 @@ export default class Configuration {
             return null;
 
         return isAbsolute(path) ? path : resolvePathRelativelyCwd(path);
+    }
+
+    private _resolveFilePaths (filesNames: string | null | string[]): string[] | undefined {
+        if (!filesNames)
+            return void 0;
+
+        return castArray(filesNames).reduce((result, name) => {
+            const resolveFilePath = Configuration._resolveFilePath(name);
+
+            if (resolveFilePath)
+                result.push(resolveFilePath);
+
+            return result;
+        }, [] as string[]);
     }
 
     public async init (): Promise<void> {
@@ -116,44 +131,90 @@ export default class Configuration {
         return cloneDeep(this);
     }
 
-    public get filePath (): string | null {
+    public get filePath (): string | undefined {
         return this._filePath;
     }
 
-    public async _load (): Promise<null | object> {
-        if (!this.filePath)
-            return null;
-
-        if (!await this._isConfigurationFileExists())
-            return null;
-
-        const configurationFileContent = await this._readConfigurationFileContent();
-
-        if (!configurationFileContent)
-            return null;
-
-        return this._parseConfigurationFileContent(configurationFileContent);
+    public get defaultPaths (): string[] | undefined {
+        return this._defaultPaths;
     }
 
-    protected async _isConfigurationFileExists (): Promise<boolean> {
+    public async _load (): Promise<null | object> {
+        if (!this.defaultPaths?.length)
+            return null;
+
+        const configs = await Promise.all(this.defaultPaths.map(async filePath => {
+            if (!await this._isConfigurationFileExists(filePath))
+                return { filePath, options: null };
+
+            let options = null as object | null;
+
+            if (this._isJSConfiguration(filePath))
+                options = this._readJsConfigurationFileContent(filePath);
+            else {
+                const configurationFileContent = await this._readConfigurationFileContent(filePath);
+
+                if (configurationFileContent)
+                    options = this._parseConfigurationFileContent(configurationFileContent);
+            }
+
+            return { filePath, options };
+        }));
+
+        const existedConfigs = configs.filter(config => !!config.options);
+
+        if (!existedConfigs.length)
+            return null;
+
+        this._filePath = existedConfigs[0].filePath;
+
+        if (existedConfigs.length > 1) {
+            const configPriorityListStr = this._getConfigPriorityListString();
+
+            Configuration._showConsoleWarning(renderTemplate(WARNING_MESSAGES.multipleConfigurationFilesFound, this._filePath, configPriorityListStr));
+        }
+
+        return existedConfigs[0].options;
+    }
+
+    protected async _isConfigurationFileExists (filePath = this.filePath): Promise<boolean> {
         try {
-            await stat(this.filePath);
+            await stat(filePath);
 
             return true;
         }
         catch (error) {
-            DEBUG_LOGGER(renderTemplate(WARNING_MESSAGES.cannotFindConfigurationFile, this.filePath, error.stack));
+            DEBUG_LOGGER(renderTemplate(WARNING_MESSAGES.cannotFindConfigurationFile, filePath, error.stack));
 
             return false;
         }
     }
 
-    public async _readConfigurationFileContent (): Promise<Buffer | null> {
+    protected _isJSConfiguration (filePath: string): boolean {
+        return extname(filePath) === JS_CONFIGURATION_EXTENSION;
+    }
+
+    public _readJsConfigurationFileContent (filePath = this.filePath): object | null {
+        if (filePath) {
+            try {
+                delete require.cache[filePath];
+
+                return require(filePath);
+            }
+            catch (error) {
+                Configuration._showWarningForError(error, WARNING_MESSAGES.cannotReadConfigFile, filePath);
+            }
+        }
+
+        return null;
+    }
+
+    public async _readConfigurationFileContent (filePath = this.filePath): Promise<Buffer | null> {
         try {
-            return await readFile(this.filePath);
+            return await readFile(filePath);
         }
         catch (error) {
-            Configuration._showWarningForError(error, WARNING_MESSAGES.cannotReadConfigFile);
+            Configuration._showWarningForError(error, WARNING_MESSAGES.cannotReadConfigFile, filePath);
         }
 
         return null;
@@ -222,5 +283,9 @@ export default class Configuration {
         }
 
         option.source = OptionSource.Input;
+    }
+
+    protected _getConfigPriorityListString (filesPaths = this.defaultPaths): string {
+        return filesPaths?.map((path, index) => `${index + 1}. ${path}`).join('\n') || '';
     }
 }
