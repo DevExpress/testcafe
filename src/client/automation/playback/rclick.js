@@ -14,8 +14,8 @@ const eventSimulator = hammerhead.eventSandbox.eventSimulator;
 const { domUtils, eventUtils, delay } = testCafeCore;
 
 export default class RClickAutomation extends VisibleElementAutomation {
-    constructor (element, clickOptions) {
-        super(element, clickOptions);
+    constructor (element, clickOptions, hasPseudo) {
+        super(element, clickOptions, hasPseudo);
 
         this.modifiers = clickOptions.modifiers;
         this.caretPos  = clickOptions.caretPos;

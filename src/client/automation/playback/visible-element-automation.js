@@ -36,13 +36,15 @@ class ElementState {
 }
 
 export default class VisibleElementAutomation extends serviceUtils.EventEmitter {
-    constructor (element, offsetOptions) {
+    constructor (element, offsetOptions, hasPseudo) {
         super();
 
         this.TARGET_ELEMENT_FOUND_EVENT = 'automation|target-element-found-event';
 
         this.element            = element;
         this.options            = offsetOptions;
+        this.hasPseudo          = hasPseudo;
+
         this.automationSettings = new AutomationSettings(offsetOptions.speed);
     }
 
@@ -143,6 +145,10 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
                             // NOTE: perform an operation with searching in dom only if necessary
                             isTarget = arrayUtils.indexOf(domUtils.getParents(foundElement), this.element) > -1;
                         }
+
+                        if (!isTarget && this.hasPseudo)
+                            isTarget = arrayUtils.indexOf(domUtils.getParents(this.element), foundElement) > -1;
+
 
                         const offsetPositionChanged = screenPointBeforeAction.x !== screenPointAfterAction.x ||
                                                     screenPointBeforeAction.y !== screenPointAfterAction.y;

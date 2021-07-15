@@ -179,8 +179,26 @@ class ActionExecutor {
             ensureOffsetOptions(this.elements[0], this.command.options);
     }
 
+    _hasPseudo (command) {
+        if (!command.selector) return false;
+
+        const pseudoelementKeywords = ['::after', '::before', '::cue', '::first-letter', '::first-line', '::selection', '::slotted'];
+        const selectorText = command.selector.apiFnChain[0];
+
+        let hasPseudo = false;
+
+        // NOTE: IE doesn't support "foreach" syntax and Array.includes() method
+        for (let i = 0; i < pseudoelementKeywords.length; i++) {
+            if (selectorText.indexOf(pseudoelementKeywords[i]) > -1)
+                hasPseudo = true;
+        }
+
+        return hasPseudo;
+    }
+
     _createAutomation () {
         let selectArgs = null;
+        const hasPseudo = this._hasPseudo(this.command);
 
         switch (this.command.type) {
             case COMMAND_TYPE.dispatchEvent:
@@ -192,37 +210,37 @@ class ActionExecutor {
                 if (/option|optgroup/.test(domUtils.getTagName(this.elements[0])))
                     return new SelectChildClickAutomation(this.elements[0], this.command.options);
 
-                return new ClickAutomation(this.elements[0], this.command.options);
+                return new ClickAutomation(this.elements[0], this.command.options, hasPseudo);
 
             case COMMAND_TYPE.rightClick :
-                return new RClickAutomation(this.elements[0], this.command.options);
+                return new RClickAutomation(this.elements[0], this.command.options, hasPseudo);
 
             case COMMAND_TYPE.doubleClick :
-                return new DblClickAutomation(this.elements[0], this.command.options);
+                return new DblClickAutomation(this.elements[0], this.command.options, hasPseudo);
 
             case COMMAND_TYPE.hover :
-                return new HoverAutomation(this.elements[0], this.command.options);
+                return new HoverAutomation(this.elements[0], this.command.options, hasPseudo);
 
             case COMMAND_TYPE.drag :
-                return new DragToOffsetAutomation(this.elements[0], this.command.dragOffsetX, this.command.dragOffsetY, this.command.options);
+                return new DragToOffsetAutomation(this.elements[0], this.command.dragOffsetX, this.command.dragOffsetY, this.command.options, hasPseudo);
 
             case COMMAND_TYPE.dragToElement :
-                return new DragToElementAutomation(this.elements[0], this.elements[1], this.command.options);
+                return new DragToElementAutomation(this.elements[0], this.elements[1], this.command.options, hasPseudo);
 
             case COMMAND_TYPE.scroll: {
                 const { x, y, position, options } = this.command;
 
-                return new SetScrollAutomation(this.elements[0], { x, y, position }, options);
+                return new SetScrollAutomation(this.elements[0], { x, y, position }, options, hasPseudo);
             }
 
             case COMMAND_TYPE.scrollBy: {
                 const { byX, byY, options } = this.command;
 
-                return new SetScrollAutomation(this.elements[0], { byX, byY }, options);
+                return new SetScrollAutomation(this.elements[0], { byX, byY }, options, hasPseudo);
             }
 
             case COMMAND_TYPE.scrollIntoView: {
-                return new ScrollIntoViewAutomation(this.elements[0], this.command.options);
+                return new ScrollIntoViewAutomation(this.elements[0], this.command.options, hasPseudo);
             }
 
             case COMMAND_TYPE.typeText:

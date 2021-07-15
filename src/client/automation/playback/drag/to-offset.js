@@ -6,8 +6,8 @@ const styleUtils = testCafeCore.styleUtils;
 
 
 export default class DragToOffsetAutomation extends DragAutomationBase {
-    constructor (element, offsetX, offsetY, mouseOptions) {
-        super(element, mouseOptions);
+    constructor (element, offsetX, offsetY, mouseOptions, hasPseudo) {
+        super(element, mouseOptions, hasPseudo);
 
         this.dragOffsetX = offsetX;
         this.dragOffsetY = offsetY;

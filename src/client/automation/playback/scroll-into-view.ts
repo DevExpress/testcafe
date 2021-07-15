@@ -3,8 +3,8 @@ import { OffsetOptions } from '../../../test-run/commands/options';
 
 
 export default class ScrollIntoViewAutomation extends VisibleElementAutomation {
-    public constructor (element: HTMLElement, offsetOptions: OffsetOptions) {
-        super(element, offsetOptions);
+    public constructor (element: HTMLElement, offsetOptions: OffsetOptions, hasPseudo: boolean) {
+        super(element, offsetOptions, hasPseudo);
     }
 
     public run (useStrictElementCheck: boolean): Promise<unknown> {

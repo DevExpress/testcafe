@@ -20,8 +20,8 @@ const arrayUtils = testCafeCore.arrayUtils;
 const delay      = testCafeCore.delay;
 
 export default class ClickAutomation extends VisibleElementAutomation {
-    constructor (element, clickOptions) {
-        super(element, clickOptions);
+    constructor (element, clickOptions, hasPseudo) {
+        super(element, clickOptions, hasPseudo);
 
         this.modifiers = clickOptions.modifiers;
         this.caretPos  = clickOptions.caretPos;

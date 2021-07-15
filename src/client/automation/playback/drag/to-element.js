@@ -6,8 +6,8 @@ const positionUtils = testCafeCore.positionUtils;
 
 
 export default class DragToElementAutomation extends DragAutomationBase {
-    constructor (element, destinationElement, dragToElementOptions) {
-        super(element, dragToElementOptions);
+    constructor (element, destinationElement, dragToElementOptions, hasPseudo) {
+        super(element, dragToElementOptions, hasPseudo);
 
         this.destinationElement = destinationElement;
         this.destinationOffsetX = dragToElementOptions.destinationOffsetX;
