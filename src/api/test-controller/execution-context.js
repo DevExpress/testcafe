@@ -81,6 +81,7 @@ export function createExecutionContext (testRun) {
         RequestLogger:  exportableLib.RequestLogger,
         RequestMock:    exportableLib.RequestMock,
         RequestHook:    exportableLib.RequestHook,
+        userVariables:  exportableLib.userVariables,
     };
 
     return createContext(new Proxy(replacers, {

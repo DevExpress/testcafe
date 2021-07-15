@@ -1,6 +1,7 @@
 
 // {{#allowReferences}}
 /// <reference path="../test-api/request-hook.d.ts" />
+/// <reference path="../test-api/user-variables.d.ts" />
 /// <reference path="../test-api/role.d.ts" />
 /// <reference path="../test-api/test-controller.d.ts" />
 // {{/allowReferences}}
@@ -34,3 +35,8 @@ export const Role: RoleFactory;
  * The test controller used to access test run API.
  */
 export const t: TestController;
+
+/**
+ * Object which contains userVariables data
+ */
+export const userVariables: UserVariables;

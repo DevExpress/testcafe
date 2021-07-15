@@ -4,6 +4,7 @@ const SelectorBuilder       = lazyRequire('../../client-functions/selectors/sele
 const role                  = lazyRequire('../../role');
 const createRequestLogger   = lazyRequire('../request-hooks/request-logger');
 const createRequestMock     = lazyRequire('../request-hooks/request-mock/create-request-mock');
+const userVariables         = lazyRequire('../user-variables');
 
 // NOTE: We can't use lazy require for RequestHook, because it will break base class detection for inherited classes
 let RequestHook = null;
@@ -62,5 +63,9 @@ export default {
             testControllerProxy = require('../test-controller/proxy');
 
         return testControllerProxy;
+    },
+
+    get userVariables () {
+        return userVariables.value;
     },
 };
