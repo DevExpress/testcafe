@@ -126,6 +126,7 @@ export default {
     [RUNTIME_ERRORS.browserConnectionError]:               '{originErrorMessage}\n{numOfNotOpenedConnection} of {numOfAllConnections} browser connections have not been established:\n{listOfNotOpenedConnections}\n\nHints:\n{listOfHints}',
     [BrowserConnectionErrorHint.TooHighConcurrencyFactor]: 'The host machine may not be powerful enough to handle the specified concurrency factor ({concurrencyFactor}). ' +
                                                            'Try to decrease the concurrency factor or allocate more computing resources to the host machine.',
-    [BrowserConnectionErrorHint.UseBrowserInitOption]: 'Increase the value of the "browserInitTimeout" option if it is too low (currently: {browserInitTimeoutMsg}). This option determines how long TestCafe waits for browsers to be ready.',
-    [BrowserConnectionErrorHint.RestErrorCauses]:      'The error can also be caused by network issues or remote device failure. Make sure that your network connection is stable and you can reach the remote device.',
+    [BrowserConnectionErrorHint.UseBrowserInitOption]:    'Increase the value of the "browserInitTimeout" option if it is too low (currently: {browserInitTimeoutMsg}). This option determines how long TestCafe waits for browsers to be ready.',
+    [BrowserConnectionErrorHint.RestErrorCauses]:         'The error can also be caused by network issues or remote device failure. Make sure that your network connection is stable and you can reach the remote device.',
+    [RUNTIME_ERRORS.cannotFindTestcafeConfigurationFile]: '"{filePath}" is not a valid TestCafe configuration file.',
 };

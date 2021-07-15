@@ -286,6 +286,21 @@ describe('TestCafeConfiguration', function () {
                     expect(testCafeConfiguration._options).to.deep.equal(defaultOptions);
                 });
         });
+
+        it('Explicitly specified configuration file doesn\'t exist', async () => {
+            let message = null;
+
+            const nonExistingConfiguration = new TestCafeConfiguration('non-existing-path');
+
+            try {
+                await nonExistingConfiguration.init();
+            }
+            catch (err) {
+                message = err.message;
+            }
+
+            expect(message).eql(`"${nonExistingConfiguration.filePath}" is not a valid TestCafe configuration file.`);
+        });
     });
 
     describe('Merge options', () => {
