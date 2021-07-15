@@ -1,58 +1,56 @@
-import { positionUtils, domUtils } from '../../../deps/testcafe-core';
-
 import {
     NODE_SNAPSHOT_PROPERTIES,
     ELEMENT_SNAPSHOT_PROPERTIES,
     ELEMENT_ACTION_SNAPSHOT_PROPERTIES,
 } from '../../../../../client-functions/selectors/snapshot-properties';
+import { Dictionary } from '../../../../../configuration/interfaces';
+import adapter from '../adapter/index';
 
 
-// Node
 const nodeSnapshotPropertyInitializers = {
-    /*eslint-disable no-restricted-properties*/
-    textContent:    node => node.textContent,
-    childNodeCount: node => node.childNodes.length,
-    /*eslint-enable no-restricted-properties*/
-    hasChildNodes:  node => !!nodeSnapshotPropertyInitializers.childNodeCount(node),
+    // eslint-disable-next-line no-restricted-properties
+    childNodeCount: (node: Node) => node.childNodes.length,
+    hasChildNodes:  (node: Node) => !!nodeSnapshotPropertyInitializers.childNodeCount(node),
 
-    childElementCount: node => {
-        /*eslint-disable no-restricted-properties*/
+    childElementCount: (node: Element) => {
         const children = node.children;
 
         if (children)
+            // eslint-disable-next-line no-restricted-properties
             return children.length;
 
         // NOTE: IE doesn't have `children` for non-element nodes =/
         let childElementCount = 0;
+        // eslint-disable-next-line no-restricted-properties
         const childNodeCount  = node.childNodes.length;
 
         for (let i = 0; i < childNodeCount; i++) {
+            // eslint-disable-next-line no-restricted-properties
             if (node.childNodes[i].nodeType === 1)
                 childElementCount++;
         }
-        /*eslint-enable no-restricted-properties*/
 
         return childElementCount;
     },
 
-    /*eslint-disable no-restricted-properties*/
-    hasChildElements: node => !!nodeSnapshotPropertyInitializers.childElementCount(node),
-    /*eslint-enable no-restricted-properties*/
+    // eslint-disable-next-line no-restricted-properties
+    hasChildElements: (node: Element) => !!nodeSnapshotPropertyInitializers.childElementCount(node),
 };
 
 class BaseSnapshot {
-    _initializeProperties (node, properties, initializers) {
-        for (let i = 0; i < properties.length; i++) {
-            const property    = properties[i];
+    [prop: string]: any;
+
+    protected _initializeProperties (node: Element, properties: string[], initializers: Dictionary<(n: Element) => any>): void {
+        for (const property of properties) {
             const initializer = initializers[property];
 
-            this[property] = initializer ? initializer(node) : node[property];
+            this[property] = initializer ? initializer(node) : node[property as keyof Element];
         }
     }
 }
 
 export class NodeSnapshot extends BaseSnapshot {
-    constructor (node) {
+    public constructor (node: Element) {
         super();
 
         this._initializeProperties(node, NODE_SNAPSHOT_PROPERTIES, nodeSnapshotPropertyInitializers);
@@ -62,14 +60,14 @@ export class NodeSnapshot extends BaseSnapshot {
 
 // Element
 const elementSnapshotPropertyInitializers = {
-    tagName: element => element.tagName.toLowerCase(),
-    visible: positionUtils.isElementVisible,
-    focused: element => domUtils.getActiveElement() === element,
+    tagName: (element: Element) => element.tagName.toLowerCase(),
+    visible: (element: Element) => adapter.isElementVisible(element),
+    focused: (element: Element) => adapter.getActiveElement() === element,
 
-    attributes: element => {
+    attributes: (element: Element) => {
         // eslint-disable-next-line no-restricted-properties
-        const attrs  = element.attributes;
-        const result = {};
+        const attrs                      = element.attributes;
+        const result: Dictionary<string> = {};
 
         for (let i = attrs.length - 1; i >= 0; i--)
             // eslint-disable-next-line no-restricted-properties
@@ -78,7 +76,7 @@ const elementSnapshotPropertyInitializers = {
         return result;
     },
 
-    boundingClientRect: element => {
+    boundingClientRect: (element: Element) => {
         const rect = element.getBoundingClientRect();
 
         return {
@@ -91,22 +89,23 @@ const elementSnapshotPropertyInitializers = {
         };
     },
 
-    classNames: element => {
-        let className = element.className;
+    classNames: (element: Element) => {
+        let className = (element as Element | SVGAElement).className;
 
-        className = typeof className.animVal === 'string' ? className.animVal : className;
+        if (typeof className.animVal === 'string')
+            className = className.animVal;
 
         return className
             .replace(/^\s+|\s+$/g, '')
             .split(/\s+/g);
     },
 
-    style: element => {
-        const result   = {};
-        const computed = window.getComputedStyle(element);
+    style: (element: Element) => {
+        const result: Dictionary<unknown> = {};
+        const computed                    = window.getComputedStyle(element);
 
         for (let i = 0; i < computed.length; i++) {
-            const prop = computed[i];
+            const prop = computed[i] as keyof CSSStyleDeclaration;
 
             result[prop] = computed[prop];
         }
@@ -115,19 +114,19 @@ const elementSnapshotPropertyInitializers = {
     },
 
     // eslint-disable-next-line no-restricted-properties
-    innerText: element => element.innerText,
+    innerText: (element: Element) => (element as HTMLElement).innerText,
 };
 
 export class ElementActionSnapshot extends BaseSnapshot {
-    constructor (element) {
-        super(element);
+    public constructor (element: Element) {
+        super();
 
         this._initializeProperties(element, ELEMENT_ACTION_SNAPSHOT_PROPERTIES, elementSnapshotPropertyInitializers);
     }
 }
 
 export class ElementSnapshot extends NodeSnapshot {
-    constructor (element) {
+    public constructor (element: Element) {
         super(element);
 
         this._initializeProperties(element, ELEMENT_SNAPSHOT_PROPERTIES, elementSnapshotPropertyInitializers);

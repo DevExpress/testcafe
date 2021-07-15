@@ -101,6 +101,9 @@ import sendConfirmationMessage from './driver-link/send-confirmation-message';
 import DriverRole from './role';
 import { CHECK_CHILD_WINDOW_CLOSED_INTERVAL, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT } from './driver-link/timeouts';
 import sendMessageToDriver from './driver-link/send-message-to-driver';
+import clientFunctionAdapter from './command-executors/client-functions/adapter';
+import initializeAdapter from './command-executors/client-functions/adapter/initializer';
+import getExecutorResultDriverStatus from './command-executors/get-executor-result-driver-status';
 
 const settings = hammerhead.settings;
 
@@ -170,6 +173,8 @@ export default class Driver extends serviceUtils.EventEmitter {
         this.dialogHandler              = options.dialogHandler;
         this.canUseDefaultWindowActions = options.canUseDefaultWindowActions;
         this.isFirstPageLoad            = settings.get().isFirstPageLoad;
+
+        initializeAdapter(clientFunctionAdapter);
 
         this.customCommandHandlers = {};
 
@@ -1130,7 +1135,7 @@ export default class Driver extends serviceUtils.EventEmitter {
 
         const executor = new ClientFunctionExecutor(command);
 
-        executor.getResultDriverStatus()
+        getExecutorResultDriverStatus(executor)
             .then(driverStatus => {
                 this.contextStorage.setItem(EXECUTING_CLIENT_FUNCTION_DESCRIPTOR, null);
                 this._onReady(driverStatus);

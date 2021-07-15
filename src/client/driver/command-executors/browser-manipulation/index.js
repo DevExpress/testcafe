@@ -59,7 +59,7 @@ messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
 
 class ManipulationExecutor {
     constructor (command, globalSelectorTimeout, statusBar) {
-        this.command  = command;
+        this.command = command;
         this.globalSelectorTimeout = globalSelectorTimeout;
         this.statusBar = statusBar;
         this.element = null;

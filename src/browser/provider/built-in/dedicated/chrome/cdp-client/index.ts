@@ -347,15 +347,7 @@ export class BrowserClient {
         if (!client)
             throw new Error('Cannot get the active browser client');
 
-        const expression = `
-            (function () {debugger;
-                const proxyless              = window['%proxyless%'];
-                const ClientFunctionExecutor = proxyless.ClientFunctionExecutor;
-                const executor               = new ClientFunctionExecutor(${JSON.stringify(command)});
-
-                return executor.getResult().then(result => JSON.stringify(result));
-            })();
-        `;
+        const expression = `window['%proxyless%'].executeClientFunctionCommand(${JSON.stringify(command)});`;
 
         let result;
         let exceptionDetails;

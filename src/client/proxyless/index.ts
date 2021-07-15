@@ -1,8 +1,22 @@
-import ClientFunctionExecutor from './client-function-executor';
+/* eslint-disable no-restricted-globals */
+import ClientFunctionExecutor from '../driver/command-executors/client-functions/client-function-executor';
+import { ExecuteClientFunctionCommandBase } from '../../test-run/commands/observation';
+import adapter from '../driver/command-executors/client-functions/adapter/index';
+import initializeAdapter from './adapter-initializer';
 
-// eslint-disable-next-line no-restricted-globals
+
+initializeAdapter(adapter);
+
 Object.defineProperty(window, '%proxyless%', {
-    value:        { ClientFunctionExecutor },
+    value: {
+        executeClientFunctionCommand: function (command: ExecuteClientFunctionCommandBase) {
+            const executor = new ClientFunctionExecutor(command);
+
+            return executor.getResult()
+                .then(result => JSON.stringify(executor.encodeResult(result)));
+        },
+    },
+
     configurable: true,
 });
 
