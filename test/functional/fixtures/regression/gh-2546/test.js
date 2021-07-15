@@ -12,36 +12,38 @@ if (config.useLocalBrowsers) {
             unhandledRejection.delete();
         });
 
-        it('Should fail on uncaught promise rejection when skipUncaughtErrors is false', function () {
-            return runTests('./testcafe-fixtures/index.js', 'Unhandled promise rejection', { shouldFail: true })
-                .catch(function (errs) {
-                    const allErrors = [];
+        describe('uncaught promise rejection', () => {
+            it('Should fail when skipUncaughtErrors is false', function () {
+                return runTests('./testcafe-fixtures/index.js', 'Unhandled promise rejection', { shouldFail: true })
+                    .catch(function (errs) {
+                        const allErrors = [];
 
-                    if (!Array.isArray(errs)) {
-                        const browsers = Object.keys(errs);
+                        if (!Array.isArray(errs)) {
+                            const browsers = Object.keys(errs);
 
-                        browsers.forEach(browser => {
-                            allErrors.push(errs[browser][0]);
+                            browsers.forEach(browser => {
+                                allErrors.push(errs[browser][0]);
+                            });
+                        }
+                        else
+                            allErrors.push(errs[0]);
+
+                        expect(allErrors.length).gte(1);
+
+                        allErrors.forEach(function (err) {
+                            expect(err).contains('Unhandled promise rejection');
                         });
-                    }
-                    else
-                        allErrors.push(errs[0]);
 
-                    expect(allErrors.length).gte(1);
-
-                    allErrors.forEach(function (err) {
-                        expect(err).contains('Unhandled promise rejection');
+                        expect(unhandledRejection.getData()).contains('reject');
                     });
+            });
 
-                    expect(unhandledRejection.getData()).contains('reject');
-                });
-        });
-
-        it('Should not fail on uncaught exception when skipUncaughtErrors is true', function () {
-            return runTests('./testcafe-fixtures/index.js', 'Unhandled promise rejection', { skipUncaughtErrors: true })
-                .then(() => {
-                    expect(unhandledRejection.getData()).contains('reject');
-                });
+            it('Should not fail when skipUncaughtErrors is true', function () {
+                return runTests('./testcafe-fixtures/index.js', 'Unhandled promise rejection', { skipUncaughtErrors: true })
+                    .then(() => {
+                        expect(unhandledRejection.getData()).contains('reject');
+                    });
+            });
         });
 
         it('Should fail on uncaught exception when skipUncaughtErrors is false', function () {
