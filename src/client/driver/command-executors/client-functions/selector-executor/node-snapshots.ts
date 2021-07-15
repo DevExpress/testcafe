@@ -101,8 +101,8 @@ const elementSnapshotPropertyInitializers = {
     },
 
     style: (element: Element) => {
-        const result: Dictionary<string> = {};
-        const computed                   = window.getComputedStyle(element);
+        const result: Dictionary<unknown> = {};
+        const computed                    = window.getComputedStyle(element);
 
         for (let i = 0; i < computed.length; i++) {
             const prop = computed[i] as keyof CSSStyleDeclaration;
