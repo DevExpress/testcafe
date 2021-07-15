@@ -5,10 +5,10 @@ import {
     ElementSnapshot,
     ElementActionSnapshot,
 } from './selector-executor/node-snapshots';
-import { DomNodeClientFunctionResultError, UncaughtErrorInCustomDOMPropertyCode } from '../../../../shared/errors';
+import { DomNodeClientFunctionResultError, UncaughtErrorInCustomDOMPropertyCode } from '../../../../shared/errors/index';
 import { ExecuteClientFunctionCommandBase } from '../../../../test-run/commands/observation';
-import { CommandExecutorsAdapterBase } from '../../../proxyless/command-executors-adapter-base';
-import { CustomDOMProperties } from './selector-executor/types';
+import { CustomDOMProperties } from './types';
+import adapter from './adapter/index';
 
 
 const identity = (val: unknown): unknown => val;
@@ -29,11 +29,6 @@ export function createReplicator (transforms: Transform[]): Replicator {
 
 export class FunctionTransform implements Transform {
     public readonly type = 'Function';
-    private readonly _adapter: CommandExecutorsAdapterBase;
-
-    public constructor (adapter: CommandExecutorsAdapterBase) {
-        this._adapter = adapter;
-    }
 
     public shouldTransform (type: string): boolean {
         return type === 'function';
@@ -49,20 +44,15 @@ export class FunctionTransform implements Transform {
         const fnCode       = opts.fnCode;
         const dependencies = opts.dependencies;
 
-        return evalFunction(fnCode, dependencies, this._adapter);
+        return evalFunction(fnCode, dependencies);
     }
 }
 
 export class SelectorElementActionTransform implements Transform {
     public readonly type = 'Node';
-    private readonly _adapter: CommandExecutorsAdapterBase;
-
-    public constructor (adapter: CommandExecutorsAdapterBase) {
-        this._adapter = adapter;
-    }
 
     public shouldTransform (type: string, val: unknown): boolean {
-        return val instanceof this._adapter.getNativeMethods().Node;
+        return val instanceof adapter.nativeMethods.Node;
     }
 
     public toSerializable (node: Element): ElementActionSnapshot {
@@ -77,17 +67,14 @@ export class SelectorNodeTransform implements Transform {
     public readonly type = 'Node';
     private readonly _customDOMProperties: CustomDOMProperties;
     private readonly _instantiationCallsiteName: string;
-    private readonly _adapter: CommandExecutorsAdapterBase;
 
-    public constructor (customDOMProperties: CustomDOMProperties = {}, instantiationCallsiteName: string,
-        adapter: CommandExecutorsAdapterBase) {
+    public constructor (customDOMProperties: CustomDOMProperties = {}, instantiationCallsiteName: string) {
         this._customDOMProperties       = customDOMProperties;
         this._instantiationCallsiteName = instantiationCallsiteName;
-        this._adapter                   = adapter;
     }
 
     private _extend (snapshot: NodeSnapshot | ElementSnapshot, node: Node): void {
-        const props = this._adapter.getNativeMethods().objectKeys(this._customDOMProperties);
+        const props = adapter.nativeMethods.objectKeys(this._customDOMProperties);
 
         for (const prop of props) {
             try {
@@ -96,7 +83,7 @@ export class SelectorNodeTransform implements Transform {
                 snapshot[prop] = this._customDOMProperties[prop](node);
             }
             catch (err) {
-                throw this._adapter.isProxyless()
+                throw adapter.isProxyless
                     ? UncaughtErrorInCustomDOMPropertyCode.name
                     : new UncaughtErrorInCustomDOMPropertyCode(this._instantiationCallsiteName, err, prop);
             }
@@ -104,7 +91,7 @@ export class SelectorNodeTransform implements Transform {
     }
 
     public shouldTransform (type: string, val: unknown): boolean {
-        return val instanceof this._adapter.getNativeMethods().Node;
+        return val instanceof adapter.nativeMethods.Node;
     }
 
     public toSerializable (node: Element): NodeSnapshot | ElementSnapshot {
@@ -122,16 +109,14 @@ export class SelectorNodeTransform implements Transform {
 export class ClientFunctionNodeTransform implements Transform {
     public readonly type = 'Node';
     private readonly _instantiationCallsiteName: string;
-    private readonly _adapter: CommandExecutorsAdapterBase;
 
-    public constructor (instantiationCallsiteName: string, adapter: CommandExecutorsAdapterBase) {
+    public constructor (instantiationCallsiteName: string) {
         this._instantiationCallsiteName = instantiationCallsiteName;
-        this._adapter                   = adapter;
     }
 
     public shouldTransform (type: string, val: unknown): boolean {
         if (val instanceof Node) {
-            throw this._adapter.isProxyless()
+            throw adapter.isProxyless
                 ? DomNodeClientFunctionResultError.name
                 : new DomNodeClientFunctionResultError(this._instantiationCallsiteName);
         }

@@ -1,5 +1,5 @@
-import ClientFunctionExecutor from './client-function-executor';
-import DriverStatus from '../../status';
+import ClientFunctionExecutor from './client-functions/client-function-executor';
+import DriverStatus from '../status';
 
 export default function getExecutorResultDriverStatus (executor: ClientFunctionExecutor): Promise<DriverStatus> {
     return executor

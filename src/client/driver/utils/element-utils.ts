@@ -1,27 +1,18 @@
-// @ts-ignore
-import { domUtils, positionUtils } from '../deps/testcafe-core';
-// @ts-ignore
-import { selectElement as selectElementUI } from '../deps/testcafe-ui';
-
-// NOTE: save original ctors and methods because they may be overwritten by page code
-const isArray        = Array.isArray;
-const Node           = window.Node;
-const HTMLCollection = window.HTMLCollection;
-const NodeList       = window.NodeList;
+import adapter from '../command-executors/client-functions/adapter/index';
 
 
 export function visible (el: Node): boolean {
-    if (!domUtils.isDomElement(el) && !domUtils.isTextNode(el))
+    if (!adapter.isDomElement(el) && !adapter.isTextNode(el))
         return false;
 
-    if (domUtils.isOptionElement(el) || domUtils.getTagName(el) === 'optgroup')
-        return selectElementUI.isOptionElementVisible(el);
+    if (adapter.isOptionElement(el) || adapter.getTagName(el) === 'optgroup')
+        return adapter.isOptionElementVisible(el);
 
-    return positionUtils.isElementVisible(el);
+    return adapter.isElementVisible(el);
 }
 
 export function isNodeCollection (obj: unknown): obj is HTMLCollection | NodeList {
-    return obj instanceof HTMLCollection || obj instanceof NodeList;
+    return obj instanceof adapter.nativeMethods.HTMLCollection || obj instanceof adapter.nativeMethods.NodeList;
 }
 
 export function castToArray (list: HTMLCollection | NodeList): Node[] {
@@ -35,11 +26,11 @@ export function castToArray (list: HTMLCollection | NodeList): Node[] {
 }
 
 export function isArrayOfNodes (obj: unknown): obj is Node[] {
-    if (!isArray(obj))
+    if (!adapter.nativeMethods.isArray(obj))
         return false;
 
     for (let i = 0; i < obj.length; i++) {
-        if (!(obj[i] instanceof Node))
+        if (!(obj[i] instanceof adapter.nativeMethods.Node))
             return false;
     }
 

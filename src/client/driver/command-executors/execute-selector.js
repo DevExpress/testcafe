@@ -1,9 +1,8 @@
 import SelectorExecutor from './client-functions/selector-executor';
-import getExecutorResultDriverStatus from './client-functions/get-executor-result-driver-status';
-import './client-functions/selector-executor/filter';
+import getExecutorResultDriverStatus from './get-executor-result-driver-status';
 
-export function getResult (command, commandExecutorsAdapter, globalTimeout, startTime, createNotFoundError, createIsInvisibleError, statusBar) {
-    const selectorExecutor = new SelectorExecutor(command, commandExecutorsAdapter, globalTimeout, startTime, createNotFoundError, createIsInvisibleError);
+export function getResult (command, globalTimeout, startTime, createNotFoundError, createIsInvisibleError, statusBar) {
+    const selectorExecutor = new SelectorExecutor(command, globalTimeout, startTime, createNotFoundError, createIsInvisibleError);
 
     statusBar.showWaitingElementStatus(selectorExecutor.timeout);
 
@@ -20,8 +19,8 @@ export function getResult (command, commandExecutorsAdapter, globalTimeout, star
         });
 }
 
-export function getResultDriverStatus (command, commandExecutorsAdapter, globalTimeout, startTime, createNotFoundError, createIsInvisibleError, statusBar) {
-    const selectorExecutor = new SelectorExecutor(command, commandExecutorsAdapter, globalTimeout, startTime, createNotFoundError, createIsInvisibleError);
+export function getResultDriverStatus (command, globalTimeout, startTime, createNotFoundError, createIsInvisibleError, statusBar) {
+    const selectorExecutor = new SelectorExecutor(command, globalTimeout, startTime, createNotFoundError, createIsInvisibleError);
 
     statusBar.showWaitingElementStatus(selectorExecutor.timeout);
 

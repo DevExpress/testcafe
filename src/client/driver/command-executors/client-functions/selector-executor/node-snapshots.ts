@@ -1,12 +1,10 @@
-// @ts-ignore
-import { positionUtils, domUtils } from '../../../deps/testcafe-core';
-
 import {
     NODE_SNAPSHOT_PROPERTIES,
     ELEMENT_SNAPSHOT_PROPERTIES,
     ELEMENT_ACTION_SNAPSHOT_PROPERTIES,
 } from '../../../../../client-functions/selectors/snapshot-properties';
 import { Dictionary } from '../../../../../configuration/interfaces';
+import adapter from '../adapter/index';
 
 
 const nodeSnapshotPropertyInitializers = {
@@ -63,8 +61,8 @@ export class NodeSnapshot extends BaseSnapshot {
 // Element
 const elementSnapshotPropertyInitializers = {
     tagName: (element: Element) => element.tagName.toLowerCase(),
-    visible: positionUtils.isElementVisible,
-    focused: (element: Element) => domUtils.getActiveElement() === element,
+    visible: adapter.isElementVisible,
+    focused: (element: Element) => adapter.getActiveElement() === element,
 
     attributes: (element: Element) => {
         // eslint-disable-next-line no-restricted-properties

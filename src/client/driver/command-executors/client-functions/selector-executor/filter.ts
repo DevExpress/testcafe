@@ -1,17 +1,12 @@
-import { InvalidSelectorResultError } from '../../../../../shared/errors';
+import { InvalidSelectorResultError } from '../../../../../shared/errors/index';
 import {
     visible,
     isNodeCollection,
     isArrayOfNodes,
     castToArray,
 } from '../../../utils/element-utils';
-import { APIInfo, FilterOptions } from './types';
-
-
-// trash
-import hammerhead from '../../../deps/hammerhead';
-
-const nativeMethods  = hammerhead.nativeMethods;
+import { APIInfo, FilterOptions } from '../types';
+import adapter from '../adapter/index';
 
 
 const SELECTOR_FILTER_ERROR = {
@@ -25,6 +20,7 @@ const FILTER_ERROR_TO_API_RE = {
     [SELECTOR_FILTER_ERROR.filterHidden]:  /^\.filterHidden\(\)$/,
     [SELECTOR_FILTER_ERROR.nth]:           /^\.nth\(\d+\)$/,
 };
+
 
 export default class SelectorFilter {
     private _err: number | null = null;
@@ -82,7 +78,7 @@ export default class SelectorFilter {
         if (searchResult === null || searchResult === void 0)
             return [];
 
-        else if (searchResult instanceof Node) // TODO: may be need to use class from adapter
+        else if (searchResult instanceof adapter.nativeMethods.Node)
             return [searchResult];
 
         else if (isArrayOfNodes(searchResult))
@@ -114,9 +110,3 @@ export default class SelectorFilter {
         return index < 0 ? nodes[nodes.length + index] : nodes[index];
     }
 }
-
-// Selector filter
-nativeMethods.objectDefineProperty(window, '%testCafeSelectorFilter%', {
-    value:        new SelectorFilter(),
-    configurable: true,
-});

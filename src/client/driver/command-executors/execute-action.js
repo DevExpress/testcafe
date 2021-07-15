@@ -94,9 +94,8 @@ const CHECK_ELEMENT_IN_AUTOMATIONS_INTERVAL = 250;
 const DateCtor = nativeMethods.date;
 
 class ActionExecutor {
-    constructor (command, commandExecutorsAdapter, globalSelectorTimeout, statusBar, testSpeed) {
+    constructor (command, globalSelectorTimeout, statusBar, testSpeed) {
         this.command                 = command;
-        this.commandExecutorsAdapter = commandExecutorsAdapter;
         this.globalSelectorTimeout   = globalSelectorTimeout;
         this.statusBar               = statusBar;
         this.testSpeed               = testSpeed;
@@ -152,7 +151,7 @@ class ActionExecutor {
         else if (this.command.type === COMMAND_TYPE.dispatchEvent && this.command.relatedTarget)
             elementDescriptors.push(createAdditionalElementDescriptor(this.command.relatedTarget, 'relatedTarget'));
 
-        return ensureElements(elementDescriptors, this.globalSelectorTimeout, this.commandExecutorsAdapter)
+        return ensureElements(elementDescriptors, this.globalSelectorTimeout)
             .then(elements => {
                 this.elements = elements;
             });
@@ -347,7 +346,7 @@ class ActionExecutor {
                     if (this.targetElement)
                         elements[0] = this.targetElement;
 
-                    status.result = createReplicator(new SelectorElementActionTransform(this.commandExecutorsAdapter)).encode(elements);
+                    status.result = createReplicator(new SelectorElementActionTransform()).encode(elements);
 
                     resolve(new DriverStatus(status));
                 })
@@ -361,8 +360,8 @@ class ActionExecutor {
     }
 }
 
-export default function executeAction (command, commandExecutorsAdapter, globalSelectorTimeout, statusBar, testSpeed) {
-    const actionExecutor = new ActionExecutor(command, commandExecutorsAdapter, globalSelectorTimeout, statusBar, testSpeed);
+export default function executeAction (command, globalSelectorTimeout, statusBar, testSpeed) {
+    const actionExecutor = new ActionExecutor(command, globalSelectorTimeout, statusBar, testSpeed);
 
     return actionExecutor.execute();
 }

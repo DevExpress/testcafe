@@ -4,11 +4,11 @@ import {
     ClientFunctionNodeTransform,
 } from './replicator';
 import evalFunction from './eval-function';
-import { UncaughtErrorInClientFunctionCode } from '../../../../shared/errors';
+import { UncaughtErrorInClientFunctionCode } from '../../../../shared/errors/index';
 import Replicator from 'replicator';
 import { ExecuteClientFunctionCommand, ExecuteClientFunctionCommandBase } from '../../../../test-run/commands/observation';
-import { CommandExecutorsAdapterBase } from '../../../proxyless/command-executors-adapter-base';
 import { Dictionary } from '../../../../configuration/interfaces';
+import adapter from './adapter/index';
 
 export default class ClientFunctionExecutor<
     C extends ExecuteClientFunctionCommandBase = ExecuteClientFunctionCommand,
@@ -18,26 +18,24 @@ export default class ClientFunctionExecutor<
     protected readonly replicator: Replicator;
     protected readonly dependencies: D;
     protected readonly command: C;
-    protected readonly adapter: CommandExecutorsAdapterBase;
 
-    public constructor (command: C, adapter: CommandExecutorsAdapterBase) {
+    public constructor (command: C) {
         this.command      = command;
-        this.adapter      = adapter;
         this.replicator   = this._createReplicator();
         this.dependencies = this.replicator.decode(command.dependencies) as D;
 
-        this.fn = evalFunction(command.fnCode, this.dependencies, adapter);
+        this.fn = evalFunction(command.fnCode, this.dependencies);
     }
 
     public getResult (): Promise<unknown> {
-        return this.adapter.getPromiseCtor().resolve()
+        return adapter.PromiseCtor.resolve()
             .then(() => {
                 const args = this.replicator.decode(this.command.args) as unknown[];
 
                 return this._executeFn(args);
             })
             .catch(err => {
-                if (!err.isTestCafeError && !this.adapter.isProxyless())
+                if (!err.isTestCafeError && !adapter.isProxyless)
                     err = new UncaughtErrorInClientFunctionCode(this.command.instantiationCallsiteName, err);
 
                 throw err;
@@ -50,8 +48,8 @@ export default class ClientFunctionExecutor<
 
     protected _createReplicator (): Replicator {
         return createReplicator([
-            new ClientFunctionNodeTransform(this.command.instantiationCallsiteName, this.adapter),
-            new FunctionTransform(this.adapter),
+            new ClientFunctionNodeTransform(this.command.instantiationCallsiteName),
+            new FunctionTransform(),
         ]);
     }
 
