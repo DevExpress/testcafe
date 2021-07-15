@@ -113,9 +113,9 @@ class CompilerService implements CompilerProtocol {
         this.proxy = new IPCProxy(new ServiceTransport(input, output, SERVICE_SYNC_FD));
         this.state = this._initState();
 
+        this._registerErrorHandlers();
         this._setupRoutes();
         this.ready();
-        this._registerErrorHandlers();
     }
 
     private _initState (): ServiceState {

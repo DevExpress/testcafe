@@ -98,13 +98,15 @@ const errorTypeConstructors = new Map<string, Function>([
 export default class CompilerHost extends AsyncEventEmitter implements CompilerProtocol {
     private runtime: Promise<RuntimeResources|undefined>;
     private cdp: cdp.ProtocolApi & EventEmitter | undefined;
-    private developmentMode: boolean;
+    private readonly developmentMode: boolean;
+    public initialized: boolean;
 
     public constructor ({ developmentMode }: any) {
         super();
 
         this.runtime         = Promise.resolve(void 0);
         this.developmentMode = developmentMode;
+        this.initialized     = false;
     }
 
     private _setupRoutes (proxy: IPCProxy): void {
@@ -268,9 +270,14 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
         this.runtime = this._init(this.runtime);
 
         await this.runtime;
+
+        this.initialized = true;
     }
 
     public async stop (): Promise<void> {
+        if (!this.initialized)
+            return;
+
         const { service } = await this._getRuntime();
 
         service.kill();

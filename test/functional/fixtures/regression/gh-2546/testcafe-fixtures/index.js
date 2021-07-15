@@ -1,7 +1,6 @@
 import unhandledRejection from '../unhandled-rejection';
 
 fixture `Should fail on unhandled promise rejection`
-    .page `http://localhost:3000/fixtures/regression/gh-2546/pages/index.html`
     .after(() => {
         unhandledRejection.save();
         unhandledRejection.clear();

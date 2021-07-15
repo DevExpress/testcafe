@@ -1,5 +1,4 @@
-fixture('Fixture3')
-    .page `https://example.com`;
+fixture('Fixture3');
 
 test('test', async t => {
     t.testRun.addError = function () {
