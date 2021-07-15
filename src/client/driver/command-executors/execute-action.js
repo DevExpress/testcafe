@@ -95,10 +95,10 @@ const DateCtor = nativeMethods.date;
 
 class ActionExecutor {
     constructor (command, globalSelectorTimeout, statusBar, testSpeed) {
-        this.command                 = command;
-        this.globalSelectorTimeout   = globalSelectorTimeout;
-        this.statusBar               = statusBar;
-        this.testSpeed               = testSpeed;
+        this.command                = command;
+        this.globalSelectorTimeout  = globalSelectorTimeout;
+        this.statusBar              = statusBar;
+        this.testSpeed              = testSpeed;
 
         this.targetElement           = null;
         this.elements                = [];

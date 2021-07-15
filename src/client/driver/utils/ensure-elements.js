@@ -16,12 +16,11 @@ import {
 const DateCtor = nativeMethods.date;
 
 class ElementsRetriever {
-    constructor (elementDescriptors, globalSelectorTimeout, commandExecutorsAdapter) {
+    constructor (elementDescriptors, globalSelectorTimeout) {
         this.elements                = [];
         this.globalSelectorTimeout   = globalSelectorTimeout;
         this.ensureElementsPromise   = Promise.resolve();
         this.ensureElementsStartTime = new DateCtor();
-        this.commandExecutorsAdapter = commandExecutorsAdapter;
 
         elementDescriptors.forEach(descriptor => this._ensureElement(descriptor));
     }
@@ -29,8 +28,8 @@ class ElementsRetriever {
     _ensureElement ({ selector, createNotFoundError, createIsInvisibleError, createHasWrongNodeTypeError }) {
         this.ensureElementsPromise = this.ensureElementsPromise
             .then(() => {
-                const selectorExecutor = new SelectorExecutor(selector, this.commandExecutorsAdapter,
-                    this.globalSelectorTimeout, this.ensureElementsStartTime, createNotFoundError, createIsInvisibleError);
+                const selectorExecutor = new SelectorExecutor(selector, this.globalSelectorTimeout, this.ensureElementsStartTime,
+                    createNotFoundError, createIsInvisibleError);
 
                 return selectorExecutor.getResult();
             })
@@ -48,8 +47,8 @@ class ElementsRetriever {
     }
 }
 
-export function ensureElements (elementDescriptors, globalSelectorTimeout, commandExecutorsAdapter) {
-    const elementsRetriever = new ElementsRetriever(elementDescriptors, globalSelectorTimeout, commandExecutorsAdapter);
+export function ensureElements (elementDescriptors, globalSelectorTimeout) {
+    const elementsRetriever = new ElementsRetriever(elementDescriptors, globalSelectorTimeout);
 
     return elementsRetriever.getElements();
 }

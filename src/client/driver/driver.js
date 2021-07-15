@@ -86,7 +86,7 @@ import ChildIframeDriverLink from './driver-link/iframe/child';
 import { createReplicator, SelectorNodeTransform } from './command-executors/client-functions/replicator';
 
 import executeActionCommand from './command-executors/execute-action';
-import { executeManipulationCommand } from './command-executors/browser-manipulation';
+import executeManipulationCommand from './command-executors/browser-manipulation';
 import executeNavigateToCommand from './command-executors/execute-navigate-to';
 import {
     getResult as getExecuteSelectorResult,
@@ -217,9 +217,7 @@ export default class Driver extends serviceUtils.EventEmitter {
             this._sendStartToRestoreCommand();
         });
 
-        this.replicator = createReplicator([
-            new SelectorNodeTransform({}, void 0),
-        ]);
+        this.replicator = createReplicator([ new SelectorNodeTransform() ]);
     }
 
     _isOpenedInIframe () {

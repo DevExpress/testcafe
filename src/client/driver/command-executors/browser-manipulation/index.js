@@ -37,7 +37,7 @@ const POSSIBLE_RESIZE_ERROR_DELAY = 200;
 const MANIPULATION_REQUEST_CMD  = 'driver|browser-manipulation|request';
 const MANIPULATION_RESPONSE_CMD = 'driver|browser-manipulation|response';
 
-
+// Setup cross-iframe interaction
 messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
     if (e.message.cmd === MANIPULATION_REQUEST_CMD) {
         const element = domUtils.findIframeByWindow(e.source);
@@ -59,10 +59,10 @@ messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
 
 class ManipulationExecutor {
     constructor (command, globalSelectorTimeout, statusBar) {
-        this.command               = command;
+        this.command = command;
         this.globalSelectorTimeout = globalSelectorTimeout;
-        this.statusBar             = statusBar;
-        this.element               = null;
+        this.statusBar = statusBar;
+        this.element = null;
     }
 
     _getAbsoluteCropValues () {
@@ -236,7 +236,7 @@ class ManipulationExecutor {
     }
 }
 
-export function executeManipulationCommand (command, globalSelectorTimeout, statusBar) {
+export default function (command, globalSelectorTimeout, statusBar) {
     const manipulationExecutor = new ManipulationExecutor(command, globalSelectorTimeout, statusBar);
 
     return manipulationExecutor.execute();
