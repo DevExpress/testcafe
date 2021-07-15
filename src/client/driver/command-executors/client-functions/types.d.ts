@@ -1,6 +1,6 @@
 import { Dictionary } from '../../../../configuration/interfaces';
 import { SelectorErrorBase } from '../../../../shared/errors/index';
-import SelectorFilter from './selector-executor/filter';
+import selectorFilter from './selector-executor/filter';
 
 export interface FilterOptions {
     filterVisible: boolean;
@@ -24,11 +24,11 @@ export interface FnInfo {
 type CustomDOMProperties = Dictionary<(n: Node) => unknown>;
 
 export interface SelectorDependencies extends Dictionary<unknown> {
-    filter: SelectorFilter;
+    selectorFilter: typeof selectorFilter;
     filterOptions: FilterOptions;
     apiInfo: APIInfo;
-    boundArgs: unknown[];
-    customDOMProperties: CustomDOMProperties;
+    boundArgs?: unknown[];
+    customDOMProperties?: CustomDOMProperties;
 }
 
 type SelectorErrorCb = (fn: FnInfo | null) => SelectorErrorBase;

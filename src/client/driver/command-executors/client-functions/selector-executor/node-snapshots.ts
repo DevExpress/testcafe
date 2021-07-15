@@ -61,7 +61,7 @@ export class NodeSnapshot extends BaseSnapshot {
 // Element
 const elementSnapshotPropertyInitializers = {
     tagName: (element: Element) => element.tagName.toLowerCase(),
-    visible: adapter.isElementVisible,
+    visible: (element: Element) => adapter.isElementVisible(element),
     focused: (element: Element) => adapter.getActiveElement() === element,
 
     attributes: (element: Element) => {

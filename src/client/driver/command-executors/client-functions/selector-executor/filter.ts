@@ -22,7 +22,7 @@ const FILTER_ERROR_TO_API_RE = {
 };
 
 
-export default class SelectorFilter {
+class SelectorFilter {
     private _err: number | null = null;
 
     public get error (): number | null {
@@ -110,3 +110,5 @@ export default class SelectorFilter {
         return index < 0 ? nodes[nodes.length + index] : nodes[index];
     }
 }
+
+export default new SelectorFilter();

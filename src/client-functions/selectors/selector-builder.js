@@ -70,7 +70,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
                     var __f$=${code};
                     return function(){
                         var args           = __dependencies$.boundArgs || arguments;
-                        var selectorFilter = __dependencies$.filter;
+                        var selectorFilter = __dependencies$.selectorFilter;
 
                         var nodes = __f$.apply(this, args);
                         nodes     = selectorFilter.cast(nodes);

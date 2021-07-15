@@ -6,9 +6,10 @@ import {
     ElementActionSnapshot,
 } from './selector-executor/node-snapshots';
 import { DomNodeClientFunctionResultError, UncaughtErrorInCustomDOMPropertyCode } from '../../../../shared/errors/index';
-import { ExecuteClientFunctionCommandBase } from '../../../../test-run/commands/observation';
-import { CustomDOMProperties } from './types';
+import { CustomDOMProperties, SelectorDependencies } from './types';
 import adapter from './adapter/index';
+import selectorFilter from './selector-executor/filter';
+import { Dictionary } from '../../../../configuration/interfaces';
 
 
 const identity = (val: unknown): unknown => val;
@@ -40,9 +41,12 @@ export class FunctionTransform implements Transform {
 
     // HACK: UglifyJS + TypeScript + argument destructuring can generate incorrect code.
     // So we have to use plain assignments here.
-    public fromSerializable (opts: ExecuteClientFunctionCommandBase): Function {
+    public fromSerializable (opts: { fnCode: string; dependencies: Dictionary<unknown> }): Function {
         const fnCode       = opts.fnCode;
         const dependencies = opts.dependencies;
+
+        if ('filterOptions' in dependencies)
+            (dependencies as SelectorDependencies).selectorFilter = selectorFilter;
 
         return evalFunction(fnCode, dependencies);
     }

@@ -10,7 +10,7 @@ import {
     SelectorDependencies,
     SelectorErrorCb,
 } from '../types';
-import SelectorFilter from './filter';
+import selectorFilter from './filter';
 import Replicator from 'replicator';
 import adapter from '../adapter/index';
 import { visible } from '../../../utils/element-utils';
@@ -20,8 +20,6 @@ const CHECK_ELEMENT_DELAY = 200;
 
 
 export default class SelectorExecutor extends ClientFunctionExecutor<ExecuteSelectorCommand, SelectorDependencies> {
-    private static readonly FILTER = new SelectorFilter();
-
     private readonly createNotFoundError: SelectorErrorCb | null;
     private readonly createIsInvisibleError: SelectorErrorCb | null;
     private readonly timeout: number;
@@ -38,7 +36,8 @@ export default class SelectorExecutor extends ClientFunctionExecutor<ExecuteSele
         this.timeout                = typeof command.timeout === 'number' ? command.timeout : globalTimeout;
         this.counterMode            = this.dependencies.filterOptions.counterMode;
         this.getVisibleValueMode    = this.dependencies.filterOptions.getVisibleValueMode;
-        this.dependencies.filter    = SelectorExecutor.FILTER;
+
+        this.dependencies.selectorFilter = selectorFilter;
 
         if (startTime) {
             const elapsed = adapter.nativeMethods.dateNow() - startTime;
@@ -60,7 +59,7 @@ export default class SelectorExecutor extends ClientFunctionExecutor<ExecuteSele
     }
 
     private _getTimeoutErrorParams (): FnInfo | null {
-        const apiFnIndex = SelectorExecutor.FILTER.error;
+        const apiFnIndex = selectorFilter.error;
         const apiFnChain = this.command.apiFnChain; // TODO: in this line "string[]" but "(string | number)[]" in other
 
         if (apiFnIndex !== null)
