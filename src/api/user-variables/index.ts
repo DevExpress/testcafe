@@ -1,5 +1,5 @@
 export default {
-    _variables: null,
+    _variables: null as OptionValue,
 
     get value () {
         return this._variables;

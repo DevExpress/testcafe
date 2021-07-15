@@ -79,10 +79,7 @@ async function createTestCafe (...args) {
         getValidPort(configuration.getOption(OPTION_NAMES.port2)),
     ]);
 
-    const userVariablesOption = configuration.getOption(OPTION_NAMES.userVariables);
-
-    if (userVariablesOption)
-        userVariables.value = userVariablesOption;
+    userVariables.value = configuration.getOption(OPTION_NAMES.userVariables);
 
     configuration.mergeOptions({ hostname, port1, port2 });
 
