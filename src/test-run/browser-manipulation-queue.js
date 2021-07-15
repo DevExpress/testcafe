@@ -74,6 +74,7 @@ export default class BrowserManipulationQueue {
                     cropDimensions: driverMsg.cropDimensions,
                     markSeed:       command.markSeed,
                     fullPage:       command.fullPage,
+                    thumbnails:     command.thumbnails,
                 }));
 
             case COMMAND_TYPE.takeScreenshotOnFail:

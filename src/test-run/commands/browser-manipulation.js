@@ -36,14 +36,15 @@ export class TakeScreenshotBaseCommand extends CommandBase {
 }
 
 export class TakeScreenshotCommand extends TakeScreenshotBaseCommand {
-    constructor (obj, testRun) {
-        super(obj, testRun, TYPE.takeScreenshot);
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.takeScreenshot, validateProperties);
     }
 
     _getAssignableProperties () {
         return [
             { name: 'path', type: screenshotPathArgument, defaultValue: '' },
             { name: 'fullPage', type: booleanArgument, defaultValue: void 0 },
+            { name: 'thumbnails', type: booleanArgument, defaultValue: void 0 },
         ];
     }
 }
