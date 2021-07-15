@@ -156,7 +156,7 @@ interface Runner {
             fixturePath: string,
             testMeta: Record<string, string>,
             fixtureMeta: Record<string, string>
-        ) => boolean
+        ) => Promise<boolean>
     ): this;
 
     /**

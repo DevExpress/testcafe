@@ -609,6 +609,17 @@ describe('Runner', () => {
             return testFilter(filter, expectedTestNames);
         });
 
+        it('Should filter by async predicate', () => {
+            const filter = async testName => testName.includes('Fixture5');
+
+            const expectedTestNames = [
+                'Fixture5Test1',
+                'Fixture5Test2',
+            ];
+
+            return testFilter(filter, expectedTestNames);
+        });
+
         it('Should raise an error if all tests are rejected by the filter', () => {
             return runner
                 .filter(() => false)
