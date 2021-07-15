@@ -36,8 +36,8 @@ export class TakeScreenshotBaseCommand extends CommandBase {
 }
 
 export class TakeScreenshotCommand extends TakeScreenshotBaseCommand {
-    constructor (obj, testRun) {
-        super(obj, testRun, TYPE.takeScreenshot);
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.takeScreenshot, validateProperties);
     }
 
     _getAssignableProperties () {
