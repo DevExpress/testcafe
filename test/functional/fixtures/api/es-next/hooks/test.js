@@ -154,8 +154,8 @@ describe('[API] fixture global before/after hooks', () => {
                 await delay(100);
 
                 global.fixtureAfter++;
-            }
-        }
+            },
+        },
     };
 
     it('Should run hooks for all fixture', () => {
