@@ -1,4 +1,6 @@
-const { expect } = require('chai');
+const { expect }      = require('chai');
+const exportableLib   = require('../../../../../../lib/api/exportable-lib');
+const { RequestMock, RequestLogger } = exportableLib;
 
 describe('Request Hooks', () => {
     describe('RequestMock', () => {
@@ -18,6 +20,44 @@ describe('Request Hooks', () => {
         it('Asynchronous response function (GH-4467)', () => {
             return runTests('./testcafe-fixtures/request-mock/async-response-function.js', null, { only: 'chrome' });
         });
+
+        it('Global', () => {
+
+            const testPageMarkup = `
+                <html>
+                    <body>
+                        <h1>Mocked page</h1>
+                        <h2></h2>
+                        <button onclick="sendRequest()"></button>
+                        <script>
+                            function sendRequest() {
+                                fetch('http://dummy-url.com/get')
+                                    .then(res => {
+                                        return res.text();
+                                    })
+                                    .then(text => {
+                                        document.querySelector('h2').textContent = text;                            
+                                    });                    
+                            }
+                        </script>
+                    </body>
+                </html>
+            `;
+
+            const requestMock = RequestMock()
+                .onRequestTo('http://dummy-url.com')
+                .respond(testPageMarkup)
+                .onRequestTo('http://dummy-url.com/get')
+                .respond('Data from mocked fetch request')
+                .onRequestTo('https://another-dummy-url.com')
+                .respond();
+
+            const hooks = {
+                request: requestMock,
+            };
+
+            return runTests('./testcafe-fixtures/request-mock/global.js', 'Global', { only: 'chrome', hooks });
+        });
     });
 
     describe('RequestLogger', () => {
@@ -35,6 +75,22 @@ describe('Request Hooks', () => {
 
         it('Request filter rule predicate', () => {
             return runTests('./testcafe-fixtures/request-logger/request-filter-rule-predicate.js', null, { only: 'chrome' });
+        });
+
+        it('Global', () => {
+            after(() => {
+                delete global.pageUrl;
+                delete global.logger;
+            });
+
+            global.pageUrl = 'http://localhost:3000/fixtures/api/es-next/request-hooks/pages/index.html';
+            global.logger  = new RequestLogger(global.pageUrl);
+
+            const hooks = {
+                request: global.logger,
+            };
+
+            return runTests('./testcafe-fixtures/request-logger/global.js', 'Global', { only: 'chrome', hooks });
         });
     });
 
