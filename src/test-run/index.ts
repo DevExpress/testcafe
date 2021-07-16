@@ -673,7 +673,12 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     private async _enqueueSetBreakpointCommand (callsite: CallsiteRecord | undefined, error?: string): Promise<void> {
-        if (this.browserConnection.isHeadlessBrowser()) {
+        const inCompilerService = !!this.compilerService;
+
+        // NOTE: In regular mode, it's possible to debug tests only using TestCafe UI ('Resume' and 'Next step' buttons).
+        // So, we should warn on trying to debug in headless mode.
+        // In compiler service mode, we can debug even in headless mode using any debugging tools. So, in this case, the warning is excessive.
+        if (!inCompilerService && this.browserConnection.isHeadlessBrowser()) {
             this.warningLog.addWarning(WARNING_MESSAGE.debugInHeadlessError);
             return;
         }
@@ -681,7 +686,7 @@ export default class TestRun extends AsyncEventEmitter {
         if (this.debugLogger)
             this.debugLogger.showBreakpoint(this.session.id, this.browserConnection.userAgent, callsite, error);
 
-        this.debugging = await this.executeCommand(new serviceCommands.SetBreakpointCommand(!!error, !!this.compilerService), callsite) as boolean;
+        this.debugging = await this.executeCommand(new serviceCommands.SetBreakpointCommand(!!error, inCompilerService), callsite) as boolean;
     }
 
     private _removeAllNonServiceTasks (): void {
