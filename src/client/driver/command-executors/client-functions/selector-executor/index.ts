@@ -62,10 +62,7 @@ export default class SelectorExecutor extends ClientFunctionExecutor<ExecuteSele
         const apiFnIndex = selectorFilter.error;
         const apiFnChain = this.command.apiFnChain;
 
-        if (apiFnIndex !== null)
-            return { apiFnIndex, apiFnChain };
-
-        return null;
+        return { apiFnIndex, apiFnChain };
     }
 
     private _getTimeoutError (elementExists: boolean): SelectorErrorCb | null {

@@ -5,7 +5,7 @@ export function visible (el: Node): boolean {
     if (!adapter.isDomElement(el) && !adapter.isTextNode(el))
         return false;
 
-    if (adapter.isOptionElement(el) || adapter.getTagName(el) === 'optgroup')
+    if (adapter.isOptionElement(el) || adapter.getTagName(el as Element) === 'optgroup')
         return adapter.isOptionElementVisible(el);
 
     return adapter.isElementVisible(el);

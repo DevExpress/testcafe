@@ -18,7 +18,7 @@ export interface APIInfo {
 
 export interface FnInfo {
     apiFnChain: string[];
-    apiFnIndex: number;
+    apiFnIndex: number | null;
 }
 
 type CustomDOMProperties = Dictionary<(n: Node) => unknown>;
@@ -37,11 +37,17 @@ export interface NativeMethods {
     Function: typeof Function;
     Node: typeof Node;
     objectKeys: ObjectConstructor['keys'];
+    objectAssign: ObjectConstructor['assign'];
+    objectGetPrototypeOf: ObjectConstructor['getPrototypeOf'];
+    objectToString: Object['toString']; // eslint-disable-line @typescript-eslint/ban-types
     Promise: typeof Promise;
     dateNow: DateConstructor['now'];
     isArray: ArrayConstructor['isArray'];
     NodeList: typeof NodeList;
     HTMLCollection: typeof HTMLCollection;
+    setTimeout: Window['setTimeout'];
+    elementClass: typeof Element;
+    closest: Element['closest'];
 }
 
 export interface ClientFunctionAdapter {
@@ -53,7 +59,7 @@ export interface ClientFunctionAdapter {
     isDomElement (el: unknown): boolean;
     isTextNode (el: unknown): boolean;
     isOptionElement (el: unknown): boolean;
-    getTagName (el: Node): string;
+    getTagName (el: Element): string;
     isOptionElementVisible (el: Node): boolean;
     isElementVisible (el: Node): boolean;
     getActiveElement (): Node;

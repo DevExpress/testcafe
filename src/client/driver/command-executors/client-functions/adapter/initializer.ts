@@ -15,17 +15,19 @@ import { ClientFunctionAdapter } from '../types';
 // Hack, remove it
 nativeMethods.isArray = Array.isArray;
 
-export default function initializeAdapter (adapter: ClientFunctionAdapter): void {
-    adapter.isProxyless            = false;
-    adapter.nativeMethods          = nativeMethods;
-    adapter.PromiseCtor            = Promise;
-    adapter.delay                  = delay;
-    adapter.isShadowRoot           = domUtils.isShadowRoot;
-    adapter.isDomElement           = domUtils.isDomElement;
-    adapter.isTextNode             = domUtils.isTextNode;
-    adapter.isOptionElement        = domUtils.isOptionElement;
-    adapter.getTagName             = domUtils.getTagName;
-    adapter.isOptionElementVisible = selectElementUI.isOptionElementVisible;
-    adapter.isElementVisible       = positionUtils.isElementVisible;
-    adapter.getActiveElement       = domUtils.getActiveElement;
-}
+const initializer: ClientFunctionAdapter = {
+    isProxyless:            false,
+    nativeMethods:          nativeMethods,
+    PromiseCtor:            Promise,
+    delay:                  delay,
+    isShadowRoot:           domUtils.isShadowRoot,
+    isDomElement:           domUtils.isDomElement,
+    isTextNode:             domUtils.isTextNode,
+    isOptionElement:        domUtils.isOptionElement,
+    getTagName:             domUtils.getTagName,
+    isOptionElementVisible: selectElementUI.isOptionElementVisible,
+    isElementVisible:       positionUtils.isElementVisible,
+    getActiveElement:       domUtils.getActiveElement,
+};
+
+export default initializer;

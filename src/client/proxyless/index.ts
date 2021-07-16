@@ -1,11 +1,11 @@
 /* eslint-disable no-restricted-globals */
 import ClientFunctionExecutor from '../driver/command-executors/client-functions/client-function-executor';
 import { ExecuteClientFunctionCommandBase } from '../../test-run/commands/observation';
-import adapter from '../driver/command-executors/client-functions/adapter/index';
-import initializeAdapter from './adapter-initializer';
+import { initializeAdapter } from '../driver/command-executors/client-functions/adapter/index';
+import adapterInitializer from './adapter-initializer';
 
 
-initializeAdapter(adapter);
+initializeAdapter(adapterInitializer);
 
 Object.defineProperty(window, '%proxyless%', {
     value: {
