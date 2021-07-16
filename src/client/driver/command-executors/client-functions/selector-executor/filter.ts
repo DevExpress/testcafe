@@ -98,7 +98,7 @@ class SelectorFilter {
     private static _getErrorItem ({ apiFnChain, apiFnID }: APIInfo, err: number): number | null {
         if (err) {
             for (let i = apiFnID; i < apiFnChain.length; i++) {
-                if (FILTER_ERROR_TO_API_RE[err].test(apiFnChain[i] as string))
+                if (FILTER_ERROR_TO_API_RE[err].test(apiFnChain[i]))
                     return i;
             }
         }

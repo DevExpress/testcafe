@@ -60,7 +60,7 @@ export default class SelectorExecutor extends ClientFunctionExecutor<ExecuteSele
 
     private _getTimeoutErrorParams (): FnInfo | null {
         const apiFnIndex = selectorFilter.error;
-        const apiFnChain = this.command.apiFnChain; // TODO: in this line "string[]" but "(string | number)[]" in other
+        const apiFnChain = this.command.apiFnChain;
 
         if (apiFnIndex !== null)
             return { apiFnIndex, apiFnChain };

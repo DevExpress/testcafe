@@ -12,7 +12,7 @@ export interface FilterOptions {
 }
 
 export interface APIInfo {
-    apiFnChain: (string | number)[];
+    apiFnChain: string[];
     apiFnID: number;
 }
 
