@@ -190,7 +190,7 @@ interface SelectorAPI {
      *
      * @param attributeName - The name of the attribute.
      */
-    getAttribute(attributeName: string): Promise<string>;
+    getAttribute(attributeName: string): Promise<string | null>;
     /**
      * Returns the value of the property from the `boundingClientRect` object.
      *

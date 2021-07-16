@@ -268,6 +268,14 @@ function prepareSnapshotPropertyList (customDOMProperties) {
     return properties;
 }
 
+function getAttributeValue (attributes, attrName) {
+    if (attributes && attributes.hasOwnProperty(attrName))
+        return attributes[attrName];
+
+    // NOTE: https://dom.spec.whatwg.org/#dom-element-getattribute (null result for nonexistent attributes)
+    return null;
+}
+
 function addSnapshotPropertyShorthands ({ obj, getSelector, SelectorBuilder, customDOMProperties, customMethods, observedCallsites }) {
     const properties = prepareSnapshotPropertyList(customDOMProperties);
 
@@ -296,13 +304,13 @@ function addSnapshotPropertyShorthands ({ obj, getSelector, SelectorBuilder, cus
         if (selectorApiExecutionMode.isSync) {
             const snapshot = getSnapshotSync(getSelector, callsite, SelectorBuilder);
 
-            return snapshot.attributes ? snapshot.attributes[attrName] : void 0;
+            return getAttributeValue(snapshot.attributes, attrName);
         }
 
         return ReExecutablePromise.fromFn(async () => {
             const snapshot = await getSnapshot(getSelector, callsite, SelectorBuilder);
 
-            return snapshot.attributes ? snapshot.attributes[attrName] : void 0;
+            return getAttributeValue(snapshot.attributes, attrName);
         });
     };
 

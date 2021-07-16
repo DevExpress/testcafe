@@ -357,6 +357,7 @@ test('Snapshot properties shorthands on selector', async t => {
         .expect(el.getStyleProperty('display')).eql('block')
         .expect(el.getAttribute('id')).eql('htmlElement')
         .expect(el.getAttribute('class')).eql('yo hey cool')
+        .expect(el.getAttribute('nonexistent-attr')).eql(null)
         .expect(el.getBoundingClientRectProperty('width')).eql(43)
         .expect(el.getBoundingClientRectProperty('left')).eql(0)
         .expect(el.hasClass('yo')).ok()
@@ -375,7 +376,7 @@ test('Snapshot properties shorthands on selector', async t => {
     await t
         .expect(el.hasClass('some-class')).notOk()
         .expect(el.getStyleProperty('width')).eql(void 0)
-        .expect(el.getAttribute('id')).eql(void 0)
+        .expect(el.getAttribute('id')).eql(null)
         .expect(el.getBoundingClientRectProperty('left')).eql(void 0);
 
     const selector = Selector(id => document.getElementById(id));

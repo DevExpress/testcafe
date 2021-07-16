@@ -190,7 +190,7 @@ interface NodeSnapshot {
      *
      * @param attributeName - The name of the attribute.
      */
-    getAttribute?(attributeName: string): string;
+    getAttribute?(attributeName: string): string | null;
     /**
      * Returns the value of the property from the `boundingClientRect` object.
      *
