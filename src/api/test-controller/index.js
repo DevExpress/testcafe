@@ -153,12 +153,12 @@ export default class TestController {
     }
 
     _validateMultipleWindowCommand (apiMethodName) {
-        const { disableMultipleWindows, browserConnection } = this.testRun;
+        const { disableMultipleWindows, activeWindowId } = this.testRun;
 
         if (disableMultipleWindows)
             throw new MultipleWindowsModeIsDisabledError(apiMethodName);
 
-        if (!browserConnection.activeWindowId)
+        if (!activeWindowId)
             throw new MultipleWindowsModeIsNotAvailableInRemoteBrowserError(apiMethodName);
     }
 
@@ -397,7 +397,7 @@ export default class TestController {
         if (typeof windowSelector === 'function') {
             command = SwitchToWindowByPredicateCommand;
 
-            args = { findWindow: windowSelector };
+            args = { checkWindow: windowSelector };
         }
         else {
             command = SwitchToWindowCommand;

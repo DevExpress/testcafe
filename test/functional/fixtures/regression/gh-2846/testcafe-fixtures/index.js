@@ -1,5 +1,4 @@
-fixture `GH-2846`
-    .page `http://localhost:3000/fixtures/regression/gh-2846/pages/index.html`;
+fixture `GH-2846`;
 
 test(`Debug`, async t => {
     await t.debug();

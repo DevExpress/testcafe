@@ -95,6 +95,7 @@ export interface ExecuteMockPredicate extends RequestFilterRuleLocator {
 export interface InitializeTestRunDataArguments extends TestRunLocator {
     testId: string;
     browser: Browser;
+    activeWindowId: string | null;
 }
 
 export interface RoleLocator {
@@ -135,5 +136,11 @@ export interface CommandLocator extends TestRunLocator {
 export interface AddUnexpectedErrorArguments {
     type: string;
     message: string;
+}
+
+export interface CheckWindowArgument extends TestRunLocator {
+    commandId: string;
+    url: URL;
+    title: string;
 }
 

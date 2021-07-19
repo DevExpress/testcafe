@@ -44,7 +44,6 @@ import {
     ResponseEvent,
     RequestHookMethodError,
     StoragesSnapshot,
-    generateUniqueId,
 } from 'testcafe-hammerhead';
 
 import * as INJECTABLES from '../assets/injectables';
@@ -104,9 +103,9 @@ import { RE_EXECUTABLE_PROMISE_MARKER_DESCRIPTION } from '../services/serializat
 import ReExecutablePromise from '../utils/re-executable-promise';
 import { ExternalAssertionLibraryError } from '../errors/test-run';
 import addRenderedWarning from '../notifications/add-rendered-warning';
-import { ERROR_FILENAME } from './execute-js-expression/constants';
 import getBrowser from '../utils/get-browser';
 import AssertionExecutor from '../assertions/executor';
+import asyncFilter from '../utils/async-filter';
 
 const lazyRequire                 = require('import-lazy')(require);
 const ClientFunctionBuilder       = lazyRequire('../client-functions/client-function-builder');
@@ -589,7 +588,7 @@ export default class TestRun extends AsyncEventEmitter {
         this.session.clearRequestEventListeners();
         this.normalizeRequestHookErrors();
 
-        delete testRunTracker.activeTestRuns[this.session.id];
+        testRunTracker.removeActiveTestRun(this.session.id);
 
         await this.emit('done');
     }
@@ -669,7 +668,7 @@ export default class TestRun extends AsyncEventEmitter {
         const consoleMessageCopy = this.consoleMessages.getCopy();
 
         // @ts-ignore
-        return consoleMessageCopy[String(this.browserConnection.activeWindowId)];
+        return consoleMessageCopy[String(this.activeWindowId)];
     }
 
     private async _enqueueSetBreakpointCommand (callsite: CallsiteRecord | undefined, error?: string): Promise<void> {
@@ -1254,11 +1253,23 @@ export default class TestRun extends AsyncEventEmitter {
     private async _switchToWindowByPredicate (command: SwitchToWindowByPredicateCommand): Promise<void> {
         const currentWindows = await this.executeCommand(new GetCurrentWindowsCommand({}, this) as CommandBase) as OpenedWindowInformation[];
 
-        const windows = currentWindows.filter(wnd => {
+        const windows = await asyncFilter<OpenedWindowInformation>(currentWindows, async wnd => {
             try {
-                const url = new URL(wnd.url);
+                const predicateData = {
+                    url:   new URL(wnd.url),
+                    title: wnd.title,
+                };
 
-                return (command as any).findWindow({ url, title: wnd.title });
+                if (this.compilerService) {
+                    const compilerServicePredicateData = Object.assign(predicateData, {
+                        testRunId: this.id,
+                        commandId: command.id,
+                    });
+
+                    return this.compilerService.checkWindow(compilerServicePredicateData);
+                }
+
+                return command.checkWindow(predicateData);
             }
             catch (e) {
                 throw new SwitchToWindowPredicateError(e.message);
@@ -1282,19 +1293,7 @@ export default class TestRun extends AsyncEventEmitter {
 
         this.emit('disconnected', err);
 
-        delete testRunTracker.activeTestRuns[this.session.id];
-    }
-
-    private _storeCommandCallsitesOfExecutedAsyncJsExpression (callsite: CallsiteRecord): void {
-        // @ts-ignore
-        if (callsite?.filename === ERROR_FILENAME) {
-            const id = generateUniqueId();
-
-            // @ts-ignore
-            callsite.id = id;
-
-            this.asyncJsExpressionCallsites.set(id, callsite as CallsiteRecord);
-        }
+        testRunTracker.removeActiveTestRun(this.session.id);
     }
 
     public async emitActionEvent (eventName: string, args: unknown): Promise<void> {
@@ -1304,9 +1303,9 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     public static isMultipleWindowsAllowed (testRun: TestRun): boolean {
-        const { disableMultipleWindows, test, browserConnection } = testRun;
+        const { disableMultipleWindows, test } = testRun;
 
-        return !disableMultipleWindows && !(test as LegacyTestRun).isLegacy && !!browserConnection.activeWindowId;
+        return !disableMultipleWindows && !(test as LegacyTestRun).isLegacy && !!testRun.activeWindowId;
     }
 
     public async initialize (): Promise<void> {
@@ -1314,10 +1313,15 @@ export default class TestRun extends AsyncEventEmitter {
             return;
 
         await this.compilerService.initializeTestRunData({
-            testRunId: this.id,
-            testId:    this.test.id,
-            browser:   this.browser,
+            testRunId:      this.id,
+            testId:         this.test.id,
+            browser:        this.browser,
+            activeWindowId: this.activeWindowId,
         });
+    }
+
+    public get activeWindowId (): null | string {
+        return this.browserConnection.activeWindowId;
     }
 
     // NOTE: this function is time-critical and must return ASAP to avoid client disconnection

@@ -52,6 +52,7 @@ import {
     ExecuteAsyncJsExpressionArguments,
     CommandLocator,
     AddUnexpectedErrorArguments,
+    CheckWindowArgument,
 } from './interfaces';
 
 import { CompilerArguments } from '../../compiler/interfaces';
@@ -85,6 +86,7 @@ import {
 import { renderHtmlWithoutStack, shouldRenderHtmlWithoutStack } from '../../errors/test-run/render-error-template/utils';
 import setupSourceMapSupport from '../../utils/setup-sourcemap-support';
 import { formatError } from '../../utils/handle-errors';
+import { SwitchToWindowPredicateError } from '../../shared/errors';
 
 setupSourceMapSupport();
 
@@ -98,6 +100,13 @@ interface ServiceState {
 
 interface WrapSetMockArguments extends RequestHookLocator {
     event: RequestEvent;
+}
+
+interface InitTestRunProxyData {
+    testRunId: string;
+    test: Test;
+    browser: Browser;
+    activeWindowId: string | null;
 }
 
 class CompilerService implements CompilerProtocol {
@@ -190,6 +199,7 @@ class CompilerService implements CompilerProtocol {
             this.executeJsExpression,
             this.executeAsyncJsExpression,
             this.addUnexpectedError,
+            this.checkWindow,
         ], this);
     }
 
@@ -239,13 +249,14 @@ class CompilerService implements CompilerProtocol {
         };
     }
 
-    private _initializeTestRunProxy (testRunId: string, test: Test, browser: Browser): void {
+    private _initializeTestRunProxy ({ testRunId, test, browser, activeWindowId }: InitTestRunProxyData): void {
         const testRunProxy = new TestRunProxy({
             dispatcher: this,
             id:         testRunId,
             options:    this.state.options,
             test,
             browser,
+            activeWindowId,
         });
 
         this.state.testRuns[testRunId] = testRunProxy;
@@ -383,10 +394,10 @@ class CompilerService implements CompilerProtocol {
         return await this.proxy.call(this.removeRequestEventListeners, { rules });
     }
 
-    public async initializeTestRunData ({ testRunId, testId, browser }: InitializeTestRunDataArguments): Promise<void> {
+    public async initializeTestRunData ({ testRunId, testId, browser, activeWindowId }: InitializeTestRunDataArguments): Promise<void> {
         const test = this.state.units[testId] as Test;
 
-        this._initializeTestRunProxy(testRunId, test, browser);
+        this._initializeTestRunProxy({ testRunId, test, browser, activeWindowId });
         this._initializeFixtureCtx(test);
     }
 
@@ -472,6 +483,17 @@ class CompilerService implements CompilerProtocol {
 
     public async addUnexpectedError ({ type, message }: AddUnexpectedErrorArguments): Promise<void> {
         return this.proxy.call(this.addUnexpectedError, { type, message });
+    }
+
+    public async checkWindow ({ testRunId, commandId, url, title }: CheckWindowArgument): Promise<boolean> {
+        try {
+            return this
+                ._getTargetTestRun(testRunId)
+                .checkWindow(commandId, { title, url });
+        }
+        catch (err) {
+            throw new SwitchToWindowPredicateError(err.message);
+        }
     }
 }
 

@@ -12,6 +12,7 @@ import TestCafeErrorListTransform from './transforms/testcafe-error-list-transfo
 import FunctionMarkerTransform from './transforms/function-marker-transform';
 import PromiseMarkerTransform from './transforms/promise-marker-transform';
 import ConfigureResponseEventOptionTransform from './transforms/configure-response-event-option-transform';
+import URLTransform from './transforms/url-transform';
 
 const DEFAULT_ERROR_TRANSFORM_TYPE = '[[Error]]';
 
@@ -34,6 +35,7 @@ export default function (): Replicator {
         .addTransforms([
             customErrorTransform,
             defaultErrorTransform,
+            new URLTransform(),
             new TestCafeErrorListTransform(),
             new BrowserConsoleMessagesTransform(),
             new ReExecutablePromiseTransform(),

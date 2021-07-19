@@ -1247,7 +1247,7 @@ export default class Driver extends serviceUtils.EventEmitter {
 
     async _onSwitchToWindow (command, err) {
         const wnd      = this._getTopOpenedWindow();
-        const response = await this._validateChildWindowSwitchToWindowCommandExists({ windowId: command.windowId, fn: command.findWindow }, wnd);
+        const response = await this._validateChildWindowSwitchToWindowCommandExists({ windowId: command.windowId, fn: command.checkWindow }, wnd);
         const result   = response.result;
 
         if (!result.success) {
@@ -1259,7 +1259,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         else {
             this._stopInternal();
 
-            sendMessageToDriver(new SwitchToWindowCommandMessage({ windowId: command.windowId, fn: command.findWindow }), wnd, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT, CannotSwitchToWindowError);
+            sendMessageToDriver(new SwitchToWindowCommandMessage({ windowId: command.windowId, fn: command.checkWindow }), wnd, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT, CannotSwitchToWindowError);
         }
     }
 

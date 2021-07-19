@@ -112,6 +112,10 @@ class TestRunTracker extends EventEmitter {
 
         testRun.onAny((eventName: string, eventData: unknown) => this.emit(eventName, { testRun, data: eventData }));
     }
+
+    public removeActiveTestRun (id: string): void {
+        delete this.activeTestRuns[id];
+    }
 }
 
 // Tracker

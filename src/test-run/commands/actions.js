@@ -459,7 +459,8 @@ export class SwitchToWindowByPredicateCommand extends CommandBase {
 
     _getAssignableProperties () {
         return [
-            { name: 'findWindow', type: functionArgument, required: true },
+            { name: 'id', type: nonEmptyStringArgument, required: false },
+            { name: 'checkWindow', type: functionArgument, required: true },
         ];
     }
 }
