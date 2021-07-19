@@ -85,7 +85,7 @@ export default class CLIArgumentParser {
     public opts: CommandLineOptions;
     public args: string[];
 
-    public constructor (cwd: string) {
+    public constructor (cwd?: string) {
         this.program      = new Command('testcafe');
         this.cwd          = cwd || process.cwd();
         this.remoteCount  = 0;

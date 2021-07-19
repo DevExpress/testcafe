@@ -43,6 +43,7 @@ import BrowserConnection from '../browser/connection';
 import OS from 'os-family';
 import detectDisplay from '../utils/detect-display';
 import { validateQuarantineOptions } from '../utils/get-options/quarantine';
+import logEntry from '../utils/log-entry';
 
 const DEBUG_LOGGER = debug('testcafe:runner');
 
@@ -650,6 +651,8 @@ export default class Runner extends EventEmitter {
     run (options = {}) {
         this.apiMethodWasCalled.reset();
         this.configuration.mergeOptions(options);
+
+        logEntry(DEBUG_LOGGER, this.configuration);
 
         const runTaskPromise = Promise.resolve()
             .then(() => this._applyOptions())

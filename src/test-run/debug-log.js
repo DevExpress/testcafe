@@ -1,6 +1,5 @@
-import { inspect } from 'util';
 import debugLogger from 'debug';
-import indentString from 'indent-string';
+import logEntry from '../utils/log-entry';
 
 export default class TestRunDebugLog {
     constructor (userAgent) {
@@ -9,16 +8,7 @@ export default class TestRunDebugLog {
     }
 
     static _addEntry (logger, data) {
-        try {
-            const entry = data ?
-                indentString(`\n${inspect(data, { isTestCafeInspect: true, compact: false })}\n`, ' ', 4) :
-                '';
-
-            logger(entry);
-        }
-        catch (e) {
-            logger(e.stack ? e.stack : String(e));
-        }
+        logEntry(logger, data);
     }
 
     driverMessage (msg) {
