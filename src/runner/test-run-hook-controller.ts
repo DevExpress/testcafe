@@ -2,6 +2,7 @@ import processTestFnError from '../errors/process-test-fn-error';
 import Test from '../api/structure/test';
 import TEST_RUN_PHASE from '../test-run/phase';
 import TestRun from '../test-run';
+import { assertType, is } from '../errors/runtime/type-assertions';
 
 export default class TestRunHookController {
     public beforeFn?: Function;
@@ -20,6 +21,16 @@ export default class TestRunHookController {
         this.beforeHookErr       = null;
         this.pendingTestRunCount = tests.length;
         this.testRunCtx          = Object.create(null);
+
+        this._assertHooks();
+    }
+
+    private _assertHooks (): void {
+        if (this.beforeFn)
+            assertType(is.function, 'globalBefore', 'The testRun.globalBefore hook', this.beforeFn);
+
+        if (this.afterFn)
+            assertType(is.function, 'globalAfter', 'The testRun.globalAfter hook', this.afterFn);
     }
 
     public isTestBlocked (): boolean {
