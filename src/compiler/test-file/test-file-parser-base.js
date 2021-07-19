@@ -20,23 +20,25 @@ function getLoc (loc) {
 }
 
 export class Fixture {
-    constructor (name, start, end, loc, meta) {
+    constructor (name, start, end, loc, meta, isSkipped) {
         this.name  = name;
         this.loc   = getLoc(loc);
         this.start = start;
         this.end   = end;
         this.meta  = meta;
         this.tests = [];
+        this.isSkipped = isSkipped ? isSkipped : false;
     }
 }
 
 export class Test {
-    constructor (name, start, end, loc, meta) {
+    constructor (name, start, end, loc, meta, isSkipped) {
         this.name  = name;
         this.loc   = getLoc(loc);
         this.start = start;
         this.end   = end;
         this.meta  = meta;
+        this.isSkipped = isSkipped ? isSkipped : false;
     }
 }
 
@@ -235,13 +237,15 @@ export class TestFileParserBase {
             if (!call || typeof call.value !== 'string') return;
 
             if (call.fnName === 'fixture') {
-                fixtures.push(new Fixture(call.value, call.start, call.end, call.loc, call.meta));
+                fixtures.push(new Fixture(call.value, call.start, call.end, call.loc, call.meta, call.isSkipped));
                 return;
             }
 
             if (!fixtures.length) return;
 
-            const test = new Test(call.value, call.start, call.end, call.loc, call.meta);
+            // If the fixture is skipped, mark all the tests in the fixture skipped, otherwise, use the current test identifier
+            const testIsSkipped = fixtures[fixtures.length - 1].isSkipped ? fixtures[fixtures.length - 1].isSkipped : call.isSkipped;
+            const test = new Test(call.value, call.start, call.end, call.loc, call.meta, testIsSkipped);
 
             fixtures[fixtures.length - 1].tests.push(test);
         });

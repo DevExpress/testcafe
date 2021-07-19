@@ -63,14 +63,15 @@ export class EsNextTestFileParser extends TestFileParserBase {
         return token.callee.property.name;
     }
 
-    formatFnData (name, value, token, meta = [{}]) {
+    formatFnData (name, value, token, meta = [{}], isSkipped) {
         return {
-            fnName: name,
-            value:  value,
-            loc:    token.loc,
-            start:  token.start,
-            end:    token.end,
-            meta:   merge({}, ...meta),
+            fnName:    name,
+            value:     value,
+            loc:       token.loc,
+            start:     token.start,
+            end:       token.end,
+            meta:      merge({}, ...meta),
+            isSkipped: isSkipped,
         };
     }
 
@@ -123,16 +124,23 @@ export class EsNextTestFileParser extends TestFileParserBase {
                     const calleeType     = parentExp.callee.type;
                     const calleeMemberFn = parentExp.callee.property && parentExp.callee.property.name;
 
-                    if (this.checkExpDefineTargetName(calleeType, calleeMemberFn))
+                    if (this.checkExpDefineTargetName(calleeType, calleeMemberFn)) {
+                        if (calleeMemberFn === 'skip')
+                            return this.formatFnData(exp.name, this.formatFnArg(parentExp.arguments[0]), token, meta, true);
                         return this.formatFnData(exp.name, this.formatFnArg(parentExp.arguments[0]), token, meta);
+                    }
                 }
 
                 if (parentExp.type === tokenType.TaggedTemplateExpression && parentExp.tag) {
                     const tagType     = parentExp.tag.type;
                     const tagMemberFn = parentExp.tag.property && parentExp.tag.property.name;
 
-                    if (this.checkExpDefineTargetName(tagType, tagMemberFn))
+                    if (this.checkExpDefineTargetName(tagType, tagMemberFn)) {
+                        if (tagMemberFn === 'skip')
+                            return this.formatFnData(exp.name, EsNextTestFileParser.getTagStrValue(parentExp.quasi), token, meta, true);
                         return this.formatFnData(exp.name, EsNextTestFileParser.getTagStrValue(parentExp.quasi), token, meta);
+                    }
+
                 }
 
                 parentExp = callStack.pop();

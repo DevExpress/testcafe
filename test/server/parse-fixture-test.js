@@ -15,9 +15,9 @@ const {
 const parserBase = require('../../lib/compiler/test-file/test-file-parser-base');
 
 const Test    = parserBase.Test;
-const Fixture = function (name, start, end, loc, meta, tests) {
+const Fixture = function (name, start, end, loc, meta, tests, isSkipped) {
     return assign(
-        new parserBase.Fixture(name, start, end, loc, meta),
+        new parserBase.Fixture(name, start, end, loc, meta, isSkipped),
         { tests: tests }
     );
 };
@@ -79,13 +79,13 @@ describe('Should get structure of files (esnext and typescript common cases)', f
                     [
                         new Test('Fixture1Test1', 52, 148, new Loc(5, 0, 9, 2), {}),
                         new Test('<computed name>(line: 13)', 187, 238, new Loc(13, 0, 15, 2), {}),
-                    ]
+                    ],
                 ),
 
                 new Fixture('<computed name>(line: 17)', 241, 353, new Loc(17, 0, 20, 26), {},
                     [
                         new Test('Fixture2Test1', 356, 413, new Loc(22, 0, 24, 2), {}),
-                    ]
+                    ],
                 ),
             ],
             [
@@ -156,11 +156,12 @@ describe('Should get structure of files (esnext and typescript common cases)', f
 
                 new Fixture('fixture2', 115, 137, new Loc(12, 0, 12, 22), {},
                     [
-                        new Test('fixture2test1', 140, 164, new Loc(14, 0, 14, 24), {}),
-                        new Test('fixture2test2', 166, 190, new Loc(15, 0, 15, 24), {}),
-                        new Test('fixture2test3', 193, 241, new Loc(17, 0, 17, 48), {}),
-                        new Test('fixture2test4', 243, 269, new Loc(18, 0, 18, 26), {}),
-                    ]
+                        new Test('fixture2test1', 140, 164, new Loc(14, 0, 14, 24), {}, true),
+                        new Test('fixture2test2', 166, 190, new Loc(15, 0, 15, 24), {}, true),
+                        new Test('fixture2test3', 193, 241, new Loc(17, 0, 17, 48), {}, true),
+                        new Test('fixture2test4', 243, 269, new Loc(18, 0, 18, 26), {}, true),
+                    ],
+                    true
                 ),
 
                 new Fixture('fixture 3', 272, 297, new Loc(20, 0, 20, 25), {},

@@ -103,16 +103,17 @@ class TypeScriptTestFileParser extends TestFileParserBase {
         return token.body.statements;
     }
 
-    formatFnData (name, value, token, meta = [{}]) {
+    formatFnData (name, value, token, meta = [{}], isSkipped) {
         const loc = this.getLocationByOffsets(token.pos, token.end);
 
         return {
-            fnName: name,
-            value:  value,
-            loc:    loc.loc,
-            start:  loc.start,
-            end:    loc.end,
-            meta:   merge({}, ...meta),
+            fnName:    name,
+            value:     value,
+            loc:       loc.loc,
+            start:     loc.start,
+            end:       loc.end,
+            meta:      merge({}, ...meta),
+            isSkipped: isSkipped,
         };
     }
 
@@ -138,16 +139,22 @@ class TypeScriptTestFileParser extends TestFileParserBase {
                     const calleeMemberFn = calleeType === tokenType.PropertyAccessExpression &&
                                            parentExp.expression.name.text;
 
-                    if (this.checkExpDefineTargetName(calleeType, calleeMemberFn))
+                    if (this.checkExpDefineTargetName(calleeType, calleeMemberFn)) {
+                        if (calleeMemberFn === 'skip')
+                            return this.formatFnData(exp.text, this.formatFnArg(parentExp.arguments[0]), token, meta, true);
                         return this.formatFnData(exp.text, this.formatFnArg(parentExp.arguments[0]), token, meta);
+                    }
                 }
 
                 if (parentExp.kind === tokenType.TaggedTemplateExpression && parentExp.tag) {
                     const tagType     = parentExp.tag.kind;
                     const tagMemberFn = tagType === tokenType.PropertyAccessExpression && parentExp.tag.name.text;
 
-                    if (this.checkExpDefineTargetName(tagType, tagMemberFn))
+                    if (this.checkExpDefineTargetName(tagType, tagMemberFn)) {
+                        if (tagMemberFn === 'skip')
+                            return this.formatFnData(exp.text, this.formatFnArg(parentExp), token, meta, true);
                         return this.formatFnData(exp.text, this.formatFnArg(parentExp), token, meta);
+                    }
                 }
 
                 parentExp = callStack.pop();
