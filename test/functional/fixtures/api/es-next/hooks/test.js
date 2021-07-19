@@ -142,23 +142,60 @@ describe('[API] fixture global before/after hooks', () => {
         delete global.fixtureAfter;
     });
 
-
-    const hooks = {
-        fixture: {
-            before: async () => {
-                await delay(100);
-
-                global.fixtureBefore++;
-            },
-            after: async () => {
-                await delay(100);
-
-                global.fixtureAfter++;
-            },
-        },
-    };
-
     it('Should run hooks for all fixture', () => {
+        const hooks = {
+            fixture: {
+                before: async () => {
+                    await delay(100);
+
+                    global.fixtureBefore++;
+                },
+                after: async () => {
+                    await delay(100);
+
+                    global.fixtureAfter++;
+                },
+            },
+        };
+
         return runTests('./testcafe-fixtures/fixture-hooks-global.js', null, { only: 'chrome', hooks });
+    });
+
+    it('Error should occur with the before hook', () => {
+        const hooks = {
+            fixture: {
+                before: {},
+                after:  async () => {
+                    await delay(100);
+
+                    global.fixtureAfter++;
+                },
+            },
+        };
+
+        return runTests('./testcafe-fixtures/fixture-hooks-global.js', null, { only: 'chrome', hooks })
+            .catch(error => {
+                expect(error.message).eql('Cannot prepare tests due to the following error:\n\n' +
+                                  'The fixture.globalBefore hook (object) is not of expected type (function).');
+            });
+    });
+
+    it('Error should occur with the after hook', () => {
+        const hooks = {
+            fixture: {
+                before: async () => {
+                    await delay(100);
+
+                    global.fixtureBefore++;
+                },
+                after: {},
+            },
+        };
+
+        return runTests('./testcafe-fixtures/fixture-hooks-global.js', null, { only: 'chrome', hooks })
+            .catch(error => {
+                expect(error.message).eql('Cannot prepare tests due to the following error:\n\n' +
+                                  'The fixture.globalAfter hook (object) is not of expected type (function).');
+            });
     });
 });
