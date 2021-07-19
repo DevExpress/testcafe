@@ -132,28 +132,71 @@ describe('[API] fixture.before/fixture.after hooks', () => {
 });
 
 describe('[API] testRun global before/after hooks', () => {
-    const hooks = {
-        testRun: {
-            before: async (ctx) => {
-                await delay(100);
-
-                ctx.testRunBefore = 1;
-                ctx.testRunAfter  = 0;
-            },
-            after: async (ctx) => {
-                await delay(100);
-
-                ctx.testRunAfter++;
-
-                expect(ctx.testsCompleted).eql(3);
-                expect(ctx.testRunBefore).eql(1);
-                expect(ctx.testRunAfter).eql(1);
-            },
-        },
-    };
-
     it('Should run hooks for all tests', async () => {
+        const hooks = {
+            testRun: {
+                before: async (ctx) => {
+                    await delay(100);
+
+                    ctx.testRunBefore = 1;
+                    ctx.testRunAfter  = 0;
+                },
+                after: async (ctx) => {
+                    await delay(100);
+
+                    ctx.testRunAfter++;
+
+                    expect(ctx.testsCompleted).eql(3);
+                    expect(ctx.testRunBefore).eql(1);
+                    expect(ctx.testRunAfter).eql(1);
+                },
+            },
+        };
+
         await runTests('./testcafe-fixtures/test-run-hooks-global.js', null, { only: 'chrome', hooks });
+    });
+
+    it('Error should occur with the before hook', () => {
+        const hooks = {
+            testRun: {
+                before: {},
+                after:  async (ctx) => {
+                    await delay(100);
+
+                    ctx.testRunAfter++;
+
+                    expect(ctx.testsCompleted).eql(3);
+                    expect(ctx.testRunBefore).eql(1);
+                    expect(ctx.testRunAfter).eql(1);
+                },
+            },
+        };
+
+        return runTests('./testcafe-fixtures/test-run-hooks-global.js', null, { only: 'chrome', hooks })
+            .catch(error => {
+                expect(error.message).eql('Cannot prepare tests due to the following error:\n\n' +
+                                          'The testRun.globalBefore hook (object) is not of expected type (function).');
+            });
+    });
+
+    it('Error should occur with the after hook', () => {
+        const hooks = {
+            testRun: {
+                before: async (ctx) => {
+                    await delay(100);
+
+                    ctx.testRunBefore = 1;
+                    ctx.testRunAfter  = 0;
+                },
+                after: {},
+            },
+        };
+
+        return runTests('./testcafe-fixtures/test-run-hooks-global.js', null, { only: 'chrome', hooks })
+            .catch(error => {
+                expect(error.message).eql('Cannot prepare tests due to the following error:\n\n' +
+                                          'The testRun.globalAfter hook (object) is not of expected type (function).');
+            });
     });
 
     it('Should fail all tests in fixture if testRun.before hooks fails', () => {
