@@ -5,6 +5,7 @@ const NECESSARY_OPTIONS = [
     OptionNames.assertionTimeout,
     OptionNames.speed,
     OptionNames.pageLoadTimeout,
+    OptionNames.disableMultipleWindows,
 ];
 
 export default function (value: Dictionary<OptionValue>): Dictionary<OptionValue> {

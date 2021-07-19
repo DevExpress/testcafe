@@ -1,5 +1,5 @@
 import path from 'path';
-import url from 'url';
+import { pathToFileURL } from 'url';
 import cdp from 'chrome-remote-interface';
 import EventEmitter from 'events';
 import { spawn, ChildProcess } from 'child_process';
@@ -63,13 +63,14 @@ import {
     ExecuteAsyncJsExpressionArguments,
     CommandLocator,
     AddUnexpectedErrorArguments,
+    CheckWindowArgument,
 } from './interfaces';
 
 import { UncaughtExceptionError, UnhandledPromiseRejectionError } from '../../errors/test-run';
 import { handleUnexpectedError } from '../../utils/handle-errors';
 
 const SERVICE_PATH       = require.resolve('./service');
-const INTERNAL_FILES_URL = url.pathToFileURL(path.join(__dirname, '../../'));
+const INTERNAL_FILES_URL = pathToFileURL(path.join(__dirname, '../../'));
 
 interface RuntimeResources {
     service: ChildProcess;
@@ -136,6 +137,7 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
             this.executeAsyncJsExpression,
             this.executeAssertionFn,
             this.addUnexpectedError,
+            this.checkWindow,
         ], this);
     }
 
@@ -422,10 +424,10 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
         await this.emit('removeRequestEventListeners', { rules });
     }
 
-    public async initializeTestRunData ({ testRunId, testId, browser }: InitializeTestRunDataArguments): Promise<void> {
+    public async initializeTestRunData ({ testRunId, testId, browser, activeWindowId }: InitializeTestRunDataArguments): Promise<void> {
         const { proxy } = await this._getRuntime();
 
-        return proxy.call(this.initializeTestRunData, { testRunId, testId, browser });
+        return proxy.call(this.initializeTestRunData, { testRunId, testId, browser, activeWindowId });
     }
 
     public async getAssertionActualValue ({ testRunId, commandId }: CommandLocator): Promise<unknown> {
@@ -496,5 +498,11 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
         const ErrorTypeConstructor = this._getErrorTypeConstructor(type);
 
         handleUnexpectedError(ErrorTypeConstructor, message);
+    }
+
+    public async checkWindow ({ testRunId, commandId, url, title }: CheckWindowArgument): Promise<boolean> {
+        const { proxy } = await this._getRuntime();
+
+        return proxy.call(this.checkWindow, { testRunId, commandId, url, title });
     }
 }

@@ -24,6 +24,7 @@ import {
     ExecuteAsyncJsExpressionArguments,
     CommandLocator,
     AddUnexpectedErrorArguments,
+    CheckWindowArgument,
 } from './interfaces';
 
 export const BEFORE_AFTER_PROPERTIES      = ['beforeFn', 'afterFn'] as const;
@@ -85,4 +86,5 @@ export interface CompilerProtocol extends TestRunDispatcherProtocol {
     executeAsyncJsExpression ({ expression, testRunId, callsite }: ExecuteAsyncJsExpressionArguments): Promise<unknown>;
     executeAssertionFn ({ testRunId, commandId }: CommandLocator): Promise<unknown>;
     addUnexpectedError ({ type, message }: AddUnexpectedErrorArguments): Promise<void>;
+    checkWindow ({ url, title }: CheckWindowArgument): Promise<boolean>;
 }

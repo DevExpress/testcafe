@@ -6,6 +6,7 @@ import OS from 'os-family';
 import { isEmpty, flatten } from 'lodash';
 import { stat } from '../utils/promisified-functions';
 
+
 const DEFAULT_TEST_LOOKUP_DIRS = ['test', 'tests'];
 const TEST_FILE_GLOB_PATTERN   = `./**/*@(${Compiler.getSupportedTestFileExtensions().join('|')})`;
 const GLOB_POSIX_SLASH_ENDING  = '*' + path.posix.sep;

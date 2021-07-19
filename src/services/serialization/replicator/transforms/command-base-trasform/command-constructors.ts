@@ -9,14 +9,17 @@ import {
 import {
     ClearUploadCommand,
     ClickCommand,
+    CloseWindowCommand,
     DispatchEventCommand,
     DoubleClickCommand,
     DragCommand,
     DragToElementCommand,
     ExecuteAsyncExpressionCommand,
     ExecuteExpressionCommand,
+    GetCurrentWindowCommand,
     HoverCommand,
     NavigateToCommand,
+    OpenWindowCommand,
     PressKeyCommand,
     RightClickCommand,
     ScrollByCommand,
@@ -30,6 +33,10 @@ import {
     SetPageLoadTimeoutCommand,
     SetTestSpeedCommand,
     SwitchToIframeCommand,
+    SwitchToParentWindowCommand,
+    SwitchToPreviousWindowCommand,
+    SwitchToWindowByPredicateCommand,
+    SwitchToWindowCommand,
     TypeTextCommand,
     UseRoleCommand,
 } from '../../../../../test-run/commands/actions';
@@ -79,6 +86,13 @@ const COMMAND_CONSTRUCTORS = new Map<string, CommandConstructor>([
     [CommandType.scroll, ScrollCommand],
     [CommandType.scrollBy, ScrollByCommand],
     [CommandType.scrollIntoView, ScrollIntoViewCommand],
+    [CommandType.openWindow, OpenWindowCommand],
+    [CommandType.closeWindow, CloseWindowCommand],
+    [CommandType.getCurrentWindow, GetCurrentWindowCommand],
+    [CommandType.switchToWindow, SwitchToWindowCommand],
+    [CommandType.switchToWindowByPredicate, SwitchToWindowByPredicateCommand],
+    [CommandType.switchToParentWindow, SwitchToParentWindowCommand],
+    [CommandType.switchToPreviousWindow, SwitchToPreviousWindowCommand],
 ]);
 
 export default COMMAND_CONSTRUCTORS;

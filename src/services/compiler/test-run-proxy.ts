@@ -13,7 +13,13 @@ import Test from '../../api/structure/test';
 import RequestHook from '../../api/request-hooks/hook';
 import { generateUniqueId } from 'testcafe-hammerhead';
 import { CallsiteRecord } from 'callsite-record';
-import { UseRoleCommand } from '../../test-run/commands/actions';
+
+import {
+    CheckWindowPredicateData,
+    SwitchToWindowByPredicateCommand,
+    UseRoleCommand,
+} from '../../test-run/commands/actions';
+
 import ReExecutablePromise from '../../utils/re-executable-promise';
 import AsyncEventEmitter from '../../utils/async-event-emitter';
 import testRunMarker from '../../test-run/marker-symbol';
@@ -37,29 +43,31 @@ class TestRunProxy extends AsyncEventEmitter {
     public ctx: object;
     private readonly _options: Dictionary<OptionValue>;
     private readonly assertionCommands: Map<string, AssertionCommand>;
+    private readonly switchToWindowByPredicateCommands: Map<string, SwitchToWindowByPredicateCommand>;
     private readonly asyncJsExpressionCallsites: Map<string, CallsiteRecord>;
     public readonly browser: Browser;
+    public readonly disableMultipleWindows: boolean;
+    public activeWindowId: null | string;
 
-    public constructor ({ dispatcher, id, test, options, browser }: TestRunProxyInit) {
+    public constructor ({ dispatcher, id, test, options, browser, activeWindowId }: TestRunProxyInit) {
         super();
 
-        this[testRunMarker] = true;
-        this.dispatcher     = dispatcher;
-        this.id             = id;
-        this.test           = test;
-        this.ctx            = Object.create(null);
-        this.fixtureCtx     = Object.create(null);
-        this._options       = options;
-        this.browser        = browser;
-
-        this.assertionCommands          = new Map<string, AssertionCommand>();
-        this.asyncJsExpressionCallsites = new Map<string, CallsiteRecord>();
-
-        // TODO: Synchronize these properties with their real counterparts in the main process.
-        // Postponed until (GH-3244). See details in (GH-5250).
-        this.controller        = new TestController(this);
-        this.observedCallsites = new ObservedCallsitesStorage();
-        this.warningLog        = new WarningLog();
+        this[testRunMarker]                    = true;
+        this.dispatcher                        = dispatcher;
+        this.id                                = id;
+        this.test                              = test;
+        this.ctx                               = Object.create(null);
+        this.fixtureCtx                        = Object.create(null);
+        this._options                          = options;
+        this.browser                           = browser;
+        this.assertionCommands                 = new Map<string, AssertionCommand>();
+        this.switchToWindowByPredicateCommands = new Map<string, SwitchToWindowByPredicateCommand>();
+        this.asyncJsExpressionCallsites        = new Map<string, CallsiteRecord>();
+        this.controller                        = new TestController(this);
+        this.observedCallsites                 = new ObservedCallsitesStorage();
+        this.warningLog                        = new WarningLog();
+        this.disableMultipleWindows            = options.disableMultipleWindows as boolean;
+        this.activeWindowId                    = activeWindowId;
 
         testRunTracker.addActiveTestRun(this);
 
@@ -82,6 +90,12 @@ class TestRunProxy extends AsyncEventEmitter {
         command.id = generateUniqueId();
 
         this.assertionCommands.set(command.id, command);
+    }
+
+    private _storeSwitchToWindowByPredicateCommand (command: SwitchToWindowByPredicateCommand): void {
+        command.id = generateUniqueId();
+
+        this.switchToWindowByPredicateCommands.set(command.id, command);
     }
 
     private _handleAssertionCommand (command: AssertionCommand): void {
@@ -122,6 +136,8 @@ class TestRunProxy extends AsyncEventEmitter {
             this._handleAssertionCommand(command as AssertionCommand);
         else if (command.type === COMMAND_TYPE.useRole)
             this.dispatcher.onRoleAppeared((command as UseRoleCommand).role);
+        else if (command.type === COMMAND_TYPE.switchToWindowByPredicate)
+            this._storeSwitchToWindowByPredicateCommand(command as SwitchToWindowByPredicateCommand);
 
         return this.dispatcher.executeAction({
             apiMethodName,
@@ -200,6 +216,12 @@ class TestRunProxy extends AsyncEventEmitter {
         err.errCallsite = this.asyncJsExpressionCallsites.get(err.errCallsite.id);
 
         this.asyncJsExpressionCallsites.clear();
+    }
+
+    public checkWindow (commandId: string, { title, url }: CheckWindowPredicateData): boolean {
+        const command = this.switchToWindowByPredicateCommands.get(commandId) as SwitchToWindowByPredicateCommand;
+
+        return command.checkWindow({ title, url });
     }
 }
 

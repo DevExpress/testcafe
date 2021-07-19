@@ -13,6 +13,7 @@ import {
 import Role from '../../role/role';
 import TestRun from '../index';
 
+
 export class SetNativeDialogHandlerCommand extends CommandBase {
     public constructor(obj: object, testRun?: TestRun, validateProperties?: boolean);
     public dialogHandler: ExecuteClientFunctionCommand;
@@ -44,6 +45,20 @@ export class UseRoleCommand extends CommandBase {
     public role: Role;
 }
 
+export class OpenWindowCommand extends CommandBase {
+    public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
+    public url: string;
+}
+
+export class CloseWindowCommand extends CommandBase {
+    public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
+    public windowId: string;
+}
+
+export class GetCurrentWindowCommand extends CommandBase {
+    public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
+}
+
 export class GetCurrentWindowsCommand extends CommandBase {
     public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
 }
@@ -53,9 +68,23 @@ export class SwitchToWindowCommand extends CommandBase {
     public windowId: string;
 }
 
+export interface CheckWindowPredicateData {
+    url: URL;
+    title: string;
+}
+
 export class SwitchToWindowByPredicateCommand extends CommandBase {
     public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
-    public findWindow: Function;
+    public id: string;
+    public checkWindow(w: CheckWindowPredicateData): boolean;
+}
+
+export class SwitchToParentWindowCommand extends CommandBase {
+    public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
+}
+
+export class SwitchToPreviousWindowCommand extends CommandBase {
+    public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
 }
 
 export class SetTestSpeedCommand extends CommandBase {

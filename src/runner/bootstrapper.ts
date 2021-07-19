@@ -18,7 +18,6 @@ import parseFileList from '../utils/parse-file-list';
 import resolvePathRelativelyCwd from '../utils/resolve-path-relatively-cwd';
 import loadClientScripts from '../custom-client-scripts/load';
 import { getConcatenatedValuesString } from '../utils/string';
-
 import { Writable as WritableStream } from 'stream';
 import { ReporterSource, ReporterPluginSource } from '../reporter/interfaces';
 import ClientScript from '../custom-client-scripts/client-script';
