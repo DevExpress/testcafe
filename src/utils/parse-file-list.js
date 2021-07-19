@@ -5,7 +5,7 @@ import Compiler from '../compiler';
 import OS from 'os-family';
 import { isEmpty, flatten } from 'lodash';
 import { stat } from '../utils/promisified-functions';
-import asyncFilter from '../utils/async-filter';
+
 
 const DEFAULT_TEST_LOOKUP_DIRS = ['test', 'tests'];
 const TEST_FILE_GLOB_PATTERN   = `./**/*@(${Compiler.getSupportedTestFileExtensions().join('|')})`;
@@ -40,7 +40,7 @@ function ensurePosix (fileString) {
 }
 
 async function convertDirsToGlobs (fileList, baseDir) {
-    fileList = await asyncFilter(fileList, async file => {
+    fileList = await Promise.all(fileList.map(async file => {
         if (!isGlob(file)) {
             const absPath = path.resolve(baseDir, file);
             let fileStat  = null;
@@ -70,7 +70,7 @@ async function convertDirsToGlobs (fileList, baseDir) {
         }
 
         return ensurePosix(file);
-    });
+    }));
 
     return fileList.filter(file => !!file);
 }
