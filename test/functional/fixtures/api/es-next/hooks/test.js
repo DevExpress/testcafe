@@ -154,47 +154,4 @@ describe('[API] test global before/after hooks', () => {
 
         return runTests('./testcafe-fixtures/test-hooks-global.js', null, { only: 'chrome', hooks });
     });
-
-    it('Error should occur with the before hook', () => {
-        const hooks = {
-            test: {
-                before: {},
-                after:  async (t) => {
-                    await t
-                        .click('#afterEach')
-                        .wait(100);
-
-                    t.ctx.testAfter++;
-                },
-            },
-        };
-
-        return runTests('./testcafe-fixtures/test-hooks-global.js', null, { only: 'chrome', hooks })
-            .catch(error => {
-                expect(error.message).eql('Cannot prepare tests due to the following error:\n\n' +
-                                          'The test.globalBefore hook (object) is not of expected type (function).');
-            });
-    });
-
-    it('Error should occur with the after hook', () => {
-        const hooks = {
-            test: {
-                before: async (t) => {
-                    await t
-                        .click('#beforeEach')
-                        .wait(100);
-
-                    t.ctx.testBefore = t.ctx.testBefore ? t.ctx.testBefore + 1 : 1;
-                    t.ctx.testAfter = t.ctx.testAfter || 0;
-                },
-                after: {},
-            },
-        };
-
-        return runTests('./testcafe-fixtures/test-hooks-global.js', null, { only: 'chrome', hooks })
-            .catch(error => {
-                expect(error.message).eql('Cannot prepare tests due to the following error:\n\n' +
-                                          'The test.globalAfter hook (object) is not of expected type (function).');
-            });
-    });
 });

@@ -85,5 +85,41 @@ describe('Bootstrapper', () => {
                                         'The fixture.globalAfter hook (string) is not of expected type (function).');
             }
         });
+
+        it('Should raise an error if test.globalBefore is not a function', async function () {
+            bootstrapper.hooks = {
+                test: {
+                    before: 'yo',
+                },
+            };
+
+            try {
+                await bootstrapper.createRunnableConfiguration();
+
+                throw new Error('Promise rejection expected');
+            }
+            catch (err) {
+                expect(err.message).eql('Cannot prepare tests due to the following error:\n\n' +
+                                        'The test.globalBefore hook (string) is not of expected type (function).');
+            }
+        });
+
+        it('Should raise an error if test.globalAfter is not a function', async function () {
+            bootstrapper.hooks = {
+                test: {
+                    after: 'yo',
+                },
+            };
+
+            try {
+                await bootstrapper.createRunnableConfiguration();
+
+                throw new Error('Promise rejection expected');
+            }
+            catch (err) {
+                expect(err.message).eql('Cannot prepare tests due to the following error:\n\n' +
+                                        'The test.globalAfter hook (string) is not of expected type (function).');
+            }
+        });
     });
 });
