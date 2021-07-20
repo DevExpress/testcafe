@@ -205,7 +205,7 @@ export default class Bootstrapper {
             assertType(is.function, 'globalAfter', 'The fixture.globalAfter hook', this.hooks.fixture.after);
     }
 
-    private _setGlobalHooksToTest (tests: Test[]): void {
+    private _setGlobalHooksToTests (tests: Test[]): void {
         this._assertGlobalHooks();
 
         const fixtureBefore = this.hooks?.fixture?.before || null;
@@ -252,7 +252,7 @@ export default class Bootstrapper {
         if (!tests.length)
             throw new GeneralError(RUNTIME_ERRORS.noTestsToRunDueFiltering);
 
-        this._setGlobalHooksToTest(tests);
+        this._setGlobalHooksToTests(tests);
 
         return tests;
     }
