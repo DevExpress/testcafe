@@ -231,7 +231,7 @@ export default class Bootstrapper {
             }
 
             item.globalBeforeFn = this.hooks?.test?.before ? wrapTestFunction(this.hooks.test.before) : null;
-            item.globalAfterFn = this.hooks?.test?.after ? wrapTestFunction(this.hooks.test.after) : null;
+            item.globalAfterFn  = this.hooks?.test?.after ? wrapTestFunction(this.hooks.test.after) : null;
         });
     }
 
