@@ -60,9 +60,7 @@ export default class FixtureHookController {
     }
 
     private async _runFixtureBeforeHook (item: FixtureState, fn: Function): Promise<boolean> {
-        const shouldRunBeforeHook = !item.started && fn;
-
-        if (!shouldRunBeforeHook)
+        if (!fn)
             return !item.fixtureBeforeHookErr;
 
         item.runningFixtureBeforeHook = true;
@@ -98,10 +96,13 @@ export default class FixtureHookController {
         const item    = this._getFixtureMapItem(testRun.test);
 
         if (item) {
-            const success = await this._runFixtureBeforeHook(item, fixture.globalBeforeFn as Function)
-                            && await this._runFixtureBeforeHook(item, fixture.beforeFn as Function);
+            const shouldRunBeforeHook = !item.started;
 
             item.started = true;
+
+            const success = shouldRunBeforeHook
+                            && await this._runFixtureBeforeHook(item, fixture.globalBeforeFn as Function)
+                            && await this._runFixtureBeforeHook(item, fixture.beforeFn as Function);
 
             // NOTE: fail all tests in fixture if fixture.before hook has error
             if (!success && item.fixtureBeforeHookErr) {
