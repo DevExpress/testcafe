@@ -205,17 +205,15 @@ export default class Bootstrapper {
             assertType(is.function, 'globalAfter', 'The fixture.globalAfter hook', this.hooks.fixture.after);
     }
 
-    private _setGlobalHooksToTest (tests: Test[]): Test[] {
+    private _setGlobalHooksToTest (tests: Test[]): void {
         this._assertGlobalHooks();
 
         const fixtureBefore = this.hooks?.fixture?.before || null;
         const fixtureAfter = this.hooks?.fixture?.after || null;
 
-        return tests.map(item => {
+        tests.forEach(item => {
             item.fixture.globalBeforeFn = fixtureBefore;
             item.fixture.globalAfterFn = fixtureAfter;
-
-            return item;
         });
     }
 
@@ -252,7 +250,7 @@ export default class Bootstrapper {
         if (!tests.length)
             throw new GeneralError(RUNTIME_ERRORS.noTestsToRunDueFiltering);
 
-        tests = this._setGlobalHooksToTest(tests);
+        this._setGlobalHooksToTest(tests);
 
         return tests;
     }
