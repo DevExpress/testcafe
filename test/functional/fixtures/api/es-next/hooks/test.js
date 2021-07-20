@@ -132,12 +132,12 @@ describe('[API] fixture.before/fixture.after hooks', () => {
 });
 
 describe('[API] fixture global before/after hooks', () => {
-    before(() => {
+    beforeEach(() => {
         global.fixtureBefore = 0;
         global.fixtureAfter  = 0;
     });
 
-    after(() => {
+    afterEach(() => {
         delete global.fixtureBefore;
         delete global.fixtureAfter;
     });
@@ -158,6 +158,25 @@ describe('[API] fixture global before/after hooks', () => {
             },
         };
 
-        return runTests('./testcafe-fixtures/fixture-hooks-global.js', null, { only: 'chrome', hooks });
+        return runTests('./testcafe-fixtures/fixture-hooks-global.js', 'Test1', { only: 'chrome', hooks });
+    });
+
+    it('Should run all hooks for fixture', () => {
+        const hooks = {
+            fixture: {
+                before: async () => {
+                    await delay(100);
+
+                    global.fixtureBefore++;
+                },
+                after: async () => {
+                    await delay(100);
+
+                    global.fixtureAfter++;
+                },
+            },
+        };
+
+        return runTests('./testcafe-fixtures/fixture-hooks-global.js', 'Test2', { only: 'chrome', hooks });
     });
 });
