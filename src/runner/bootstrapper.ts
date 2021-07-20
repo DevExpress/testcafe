@@ -209,12 +209,12 @@ export default class Bootstrapper {
         this._assertGlobalHooks();
 
         const fixtureBefore = this.hooks?.fixture?.before || null;
-        const fixtureAfter = this.hooks?.fixture?.after || null;
+        const fixtureAfter  = this.hooks?.fixture?.after || null;
 
         tests.forEach(item => {
             if (item.fixture) {
                 item.fixture.globalBeforeFn = item.fixture.globalBeforeFn || fixtureBefore;
-                item.fixture.globalAfterFn = item.fixture.globalAfterFn || fixtureAfter;
+                item.fixture.globalAfterFn  = item.fixture.globalAfterFn || fixtureAfter;
             }
         });
     }
