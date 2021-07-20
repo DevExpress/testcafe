@@ -1133,6 +1133,50 @@ describe('Runner', () => {
 
             expect(runner.configuration.getOption('quarantineMode')).eql(quarantineMode);
         });
+
+        it('Should raise an error if testRun.globalBefore is not a function', async function () {
+            try {
+                await runner
+                    .browsers(connection)
+                    .src('test/server/data/test-suites/basic/testfile2.js')
+                    .run({
+                        hooks: {
+                            testRun: {
+                                before: 'yo',
+                            }
+                            ,
+                        },
+                    });
+
+                throw new Error('Promise rejection expected');
+            }
+            catch (err) {
+                expect(err.message).eql('Cannot prepare tests due to the following error:\n\n' +
+                                            'The testRun.globalBefore hook (string) is not of expected type (function).');
+            }
+        });
+
+        it('Should raise an error if testRun.after is not a function', async function () {
+            try {
+                await runner
+                    .browsers(connection)
+                    .src('test/server/data/test-suites/basic/testfile2.js')
+                    .run({
+                        hooks: {
+                            testRun: {
+                                after: 'yo',
+                            }
+                            ,
+                        },
+                    });
+
+                throw new Error('Promise rejection expected');
+            }
+            catch (err) {
+                expect(err.message).eql('Cannot prepare tests due to the following error:\n\n' +
+                                        'The testRun.globalAfter hook (string) is not of expected type (function).');
+            }
+        });
     });
 
     describe('.clientScripts', () => {
