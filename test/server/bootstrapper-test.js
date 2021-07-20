@@ -7,24 +7,22 @@ const delay                   = require('../../lib/utils/delay');
 
 describe('Bootstrapper', () => {
     describe('.createRunnableConfiguration()', () => {
-        it('Browser connection error message should include hint that tests compilation takes too long', async function () {
-            this.timeout(3000);
+        const browserConnectionGateway = {
+            startServingConnection: noop,
+            stopServingConnection:  noop,
+        };
+        const compilerService = {
+            init:     noop,
+            getTests: async () => {
+                await delay(1500);
 
-            const browserConnectionGateway = {
-                startServingConnection: noop,
-                stopServingConnection:  noop,
-            };
+                return [ new Test({ currentFixture: void 0 }) ];
+            },
+        };
+        let bootstrapper = null;
 
-            const compilerService = {
-                init:     noop,
-                getTests: async () => {
-                    await delay(1500);
-
-                    return [ new Test({ currentFixture: void 0 }) ];
-                },
-            };
-
-            const bootstrapper = new Bootstrapper({ browserConnectionGateway, compilerService });
+        beforeEach(() => {
+            bootstrapper = new Bootstrapper({ browserConnectionGateway, compilerService });
 
             bootstrapper.browserInitTimeout           = 100;
             bootstrapper.TESTS_COMPILATION_UPPERBOUND = 0;
@@ -37,6 +35,10 @@ describe('Bootstrapper', () => {
             };
 
             bootstrapper.browsers = [ new BrowserConnection(browserConnectionGateway, { provider }) ];
+        });
+
+        it('Browser connection error message should include hint that tests compilation takes too long', async function () {
+            this.timeout(3000);
 
             try {
                 await bootstrapper.createRunnableConfiguration();
@@ -45,6 +47,42 @@ describe('Bootstrapper', () => {
             }
             catch (err) {
                 expect(err.message).contains('Tests took too long to compile');
+            }
+        });
+
+        it('Should raise an error if fixture.globalBefore is not a function', async function () {
+            bootstrapper.hooks = {
+                fixture: {
+                    before: 'yo',
+                },
+            };
+
+            try {
+                await bootstrapper.createRunnableConfiguration();
+
+                throw new Error('Promise rejection expected');
+            }
+            catch (err) {
+                expect(err.message).eql('Cannot prepare tests due to the following error:\n\n' +
+                                          'The fixture.globalBefore hook (string) is not of expected type (function).');
+            }
+        });
+
+        it('Should raise an error if fixture.globalAfter is not a function', async function () {
+            bootstrapper.hooks = {
+                fixture: {
+                    after: 'yo',
+                },
+            };
+
+            try {
+                await bootstrapper.createRunnableConfiguration();
+
+                throw new Error('Promise rejection expected');
+            }
+            catch (err) {
+                expect(err.message).eql('Cannot prepare tests due to the following error:\n\n' +
+                                        'The fixture.globalAfter hook (string) is not of expected type (function).');
             }
         });
     });
