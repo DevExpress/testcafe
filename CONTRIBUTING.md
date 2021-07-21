@@ -63,7 +63,7 @@ leave a comment confirming that you have began your work on said issue.
     node bin/testcafe.js chrome ./tests
     ```
 
-    In this example, `chrome` is a [browser alias](./docs/articles/documentation/reference/command-line-interface.md#browser-list) and `./tests` is a path to the [directory with tests](./docs/articles/documentation/reference/command-line-interface.md#file-pathglob-pattern). You can use other [CLI arguments](./docs/articles/documentation/reference/command-line-interface.md) as needed.
+    In this example, `chrome` is a [browser alias](https://testcafe.io/documentation/402639/reference/command-line-interface#browser-list) and `./tests` is a path to the [directory with tests](https://testcafe.io/documentation/402639/reference/command-line-interface#file-pathglob-pattern). You can use other [CLI arguments](https://testcafe.io/documentation/402639/reference/command-line-interface) as needed.
 
     For additional guidance, see [Build Instructions](#build-instructions).
 
