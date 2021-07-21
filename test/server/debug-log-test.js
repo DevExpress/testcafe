@@ -46,9 +46,7 @@ describe('Debug Log', () => {
     });
 
     it('Should not throw if data inspection fails', () => {
-        const TestRunDebugLog = proxyquire('../../lib/test-run/debug-log', {
-            debug: debugMock,
-
+        const logEntry = proxyquire('../../lib/utils/log-entry', {
             util: {
                 inspect () {
                     throw new Error('inspect error');
@@ -56,15 +54,11 @@ describe('Debug Log', () => {
             },
         });
 
-        const debugLog = new TestRunDebugLog('Chrome');
+        logEntry(debugMock, {});
 
-        debugLog.command({});
-        debugLog.driverMessage({});
+        const debugData = Object.keys(debugMock.data)[0];
 
-        expect(debugMock.data['testcafe:test-run:Chrome:command']).contain('inspect error');
-        expect(debugMock.data['testcafe:test-run:Chrome:command']).match(/at .*inspect/);
-
-        expect(debugMock.data['testcafe:test-run:Chrome:driver-message']).contain('inspect error');
-        expect(debugMock.data['testcafe:test-run:Chrome:driver-message']).match(/at .*inspect/);
+        expect(debugData).contain('inspect error');
+        expect(debugData).match(/at .*inspect/);
     });
 });

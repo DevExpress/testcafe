@@ -7,6 +7,10 @@ import log from './log';
 import remotesWizard from './remotes-wizard';
 import correctBrowsersAndSources from './correct-browsers-and-sources';
 import createTestCafe from '../';
+import debug from 'debug';
+import logEntry from '../utils/log-entry';
+
+const LOGGER = debug('testcafe:cli');
 
 // NOTE: Load the provider pool lazily to reduce startup time
 const lazyRequire         = require('import-lazy')(require);
@@ -158,7 +162,11 @@ async function listBrowsers (providerName) {
     try {
         const argParser = new CliArgumentParser();
 
+        logEntry(LOGGER, process.argv);
+
         await argParser.parse(process.argv);
+
+        logEntry(LOGGER, argParser.opts);
 
         if (argParser.opts.listBrowsers)
             await listBrowsers(argParser.opts.providerName);
