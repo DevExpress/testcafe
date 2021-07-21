@@ -26,7 +26,7 @@ export default function wrapTestFunction (fn: Function): Function {
             });
         }
 
-        testRun.controller = new TestController(testRun);
+        testRun.controller = new TestController(testRun, testRun.controller?.getExecutionContext());
 
         testRun.observedCallsites.clear();
 

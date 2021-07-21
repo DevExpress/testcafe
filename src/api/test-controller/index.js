@@ -76,8 +76,8 @@ const originalThen = Promise.resolve().then;
 let inDebug = false;
 
 export default class TestController {
-    constructor (testRun) {
-        this._executionContext = null;
+    constructor (testRun, executionContext = null) {
+        this._executionContext = executionContext;
 
         this.testRun               = testRun;
         this.executionChain        = Promise.resolve();
