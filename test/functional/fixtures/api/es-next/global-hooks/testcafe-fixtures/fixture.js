@@ -1,4 +1,4 @@
-fixture `Fixture 1`;
+fixture`Fixture 1`;
 
 test('Test1', async t => {
     await t
@@ -12,7 +12,7 @@ test('Test1', async t => {
         .expect(global.fixtureAfter).eql(0);
 });
 
-fixture `Fixture2`;
+fixture`Fixture2`;
 
 test('Test1', async t => {
     await t
@@ -20,7 +20,7 @@ test('Test1', async t => {
         .expect(global.fixtureAfter).eql(1);
 });
 
-fixture `Fixture 3`
+fixture`Fixture 3`
     .before(() => {
         global.fixtureBefore++;
     })
@@ -40,7 +40,7 @@ test('Test2', async t => {
         .expect(global.fixtureAfter).eql(0);
 });
 
-fixture `Fixture 4`
+fixture`Fixture 4`
     .before(() => {
         global.fixtureBefore += 2;
     })

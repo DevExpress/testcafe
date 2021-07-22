@@ -1,4 +1,3 @@
-const delay      = require('../../../../../../lib/utils/delay');
 const { expect } = require('chai');
 const { uniq }   = require('lodash');
 const config     = require('../../../../config');
@@ -128,55 +127,5 @@ describe('[API] fixture.before/fixture.after hooks', () => {
 
     it('Fixture context', () => {
         return runTests('./testcafe-fixtures/fixture-ctx.js', null, { only: 'chrome, firefox' });
-    });
-});
-
-describe('[API] fixture global before/after hooks', () => {
-    beforeEach(() => {
-        global.fixtureBefore = 0;
-        global.fixtureAfter  = 0;
-    });
-
-    afterEach(() => {
-        delete global.fixtureBefore;
-        delete global.fixtureAfter;
-    });
-
-    it('Should run hooks for all fixture', () => {
-        const hooks = {
-            fixture: {
-                before: async () => {
-                    await delay(100);
-
-                    global.fixtureBefore++;
-                },
-                after: async () => {
-                    await delay(100);
-
-                    global.fixtureAfter++;
-                },
-            },
-        };
-
-        return runTests('./testcafe-fixtures/fixture-hooks-global.js', 'Test1', { only: 'chrome', hooks });
-    });
-
-    it('Should run all hooks for fixture', () => {
-        const hooks = {
-            fixture: {
-                before: async () => {
-                    await delay(100);
-
-                    global.fixtureBefore++;
-                },
-                after: async () => {
-                    await delay(100);
-
-                    global.fixtureAfter++;
-                },
-            },
-        };
-
-        return runTests('./testcafe-fixtures/fixture-hooks-global.js', 'Test2', { only: 'chrome', hooks });
     });
 });
