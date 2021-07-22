@@ -68,6 +68,9 @@ export function setContextOptions (context, options) {
 }
 
 export function createExecutionContext (testRun) {
+    if (!testRun.test?.testFile?.filename)
+        return null;
+
     const filename = testRun.test.testFile.filename;
 
     const replacers = {
