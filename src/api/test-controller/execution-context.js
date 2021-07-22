@@ -68,9 +68,6 @@ export function setContextOptions (context, options) {
 }
 
 export function createExecutionContext (testRun) {
-    if (!testRun.test?.testFile?.filename)
-        return null;
-
     const filename = testRun.test.testFile.filename;
 
     const replacers = {
@@ -84,6 +81,7 @@ export function createExecutionContext (testRun) {
         RequestLogger:  exportableLib.RequestLogger,
         RequestMock:    exportableLib.RequestMock,
         RequestHook:    exportableLib.RequestHook,
+        [OPTIONS_KEY]:  {},
     };
 
     return createContext(new Proxy(replacers, {
