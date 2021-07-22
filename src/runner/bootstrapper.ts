@@ -86,7 +86,7 @@ export default class Bootstrapper {
     public proxyless: boolean;
     public compilerOptions?: CompilerOptions;
     public browserInitTimeout?: number;
-    public hooks?: HooksValue;
+    public hooks?: GlobalHooks;
 
     private readonly compilerService?: CompilerService;
     private readonly debugLogger: debug.Debugger;
