@@ -44,4 +44,8 @@ describe('[API] fixture global before/after hooks', () => {
     it('Should run all hooks for fixture', async () => {
         return runTest('Test2');
     });
+
+    it('Should run hooks in the right order', async () => {
+        return runTest('Test3');
+    });
 });
