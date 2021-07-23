@@ -6,6 +6,11 @@ import NODE_MODULES from '../../shared/node-modules-folder-name';
 
 const OPTIONS_KEY = Symbol('options');
 
+export const DEFAULT_CONTEXT_OPTIONS = {
+    skipVisibilityCheck: false,
+    collectionMode:      false,
+};
+
 function getModuleBasePaths (currentPath) {
     const nodePaths = [];
     let parentDir   = path.dirname(currentPath);
@@ -81,7 +86,7 @@ export function createExecutionContext (testRun) {
         RequestLogger:  exportableLib.RequestLogger,
         RequestMock:    exportableLib.RequestMock,
         RequestHook:    exportableLib.RequestHook,
-        [OPTIONS_KEY]:  {},
+        [OPTIONS_KEY]:  DEFAULT_CONTEXT_OPTIONS,
     };
 
     return createContext(new Proxy(replacers, {

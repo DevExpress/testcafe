@@ -8,7 +8,7 @@ import {
 } from '../../errors/runtime';
 
 import { UncaughtErrorInCustomScript, UncaughtTestCafeErrorInCustomScript } from '../../errors/test-run';
-import { setContextOptions } from '../../api/test-controller/execution-context';
+import { setContextOptions, DEFAULT_CONTEXT_OPTIONS } from '../../api/test-controller/execution-context';
 
 import {
     ERROR_LINE_COLUMN_REGEXP,
@@ -59,7 +59,7 @@ function createErrorFormattingOptions () {
     };
 }
 
-function getExecutionContext (testController, options = {}) {
+function getExecutionContext (testController, options = DEFAULT_CONTEXT_OPTIONS) {
     const context = testController.getExecutionContext();
 
     // TODO: Find a way to avoid this assignment
