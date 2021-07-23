@@ -198,18 +198,24 @@ export default class Bootstrapper {
     }
 
     private _assertGlobalHooks (): void {
-        if (this.hooks?.fixture?.before)
+        if (!this.hooks)
+            return;
+
+        if (this.hooks.fixture?.before)
             assertType(is.function, 'globalBefore', 'The fixture.globalBefore hook', this.hooks.fixture.before);
 
-        if (this.hooks?.fixture?.after)
+        if (this.hooks.fixture?.after)
             assertType(is.function, 'globalAfter', 'The fixture.globalAfter hook', this.hooks.fixture.after);
     }
 
     private _setGlobalHooksToTests (tests: Test[]): void {
+        if (!this.hooks)
+            return;
+
         this._assertGlobalHooks();
 
-        const fixtureBefore = this.hooks?.fixture?.before || null;
-        const fixtureAfter  = this.hooks?.fixture?.after || null;
+        const fixtureBefore = this.hooks.fixture?.before || null;
+        const fixtureAfter  = this.hooks.fixture?.after || null;
 
         tests.forEach(item => {
             if (item.fixture) {
