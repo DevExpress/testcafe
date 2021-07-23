@@ -11,7 +11,7 @@ describe('[Raw API] Execute expression action', function () {
         return runTests('./testcafe-fixtures/shared-context.testcafe', 'Share variables between commands');
     });
 
-    it('Shouldn\'t lose context in nested functions with Selector', function () {
-        return runTests('./testcafe-fixtures/shared-context.testcafe', 'Don\'t lose context in nested functions');
+    it("Shouldn't lose context in nested functions with Selector", function () {
+        return runTests('./testcafe-fixtures/shared-context.testcafe', "Don't lose context in nested functions");
     });
 });
