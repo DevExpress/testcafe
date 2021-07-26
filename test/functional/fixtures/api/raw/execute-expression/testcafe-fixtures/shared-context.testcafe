@@ -40,7 +40,7 @@
                     "commands": [
                         {
                             "type": "execute-expression",
-                            "expression": "shared = 'initial value';"                           
+                            "expression": "shared = 'initial value';"
                         },
                         {
                             "type": "execute-expression",
@@ -57,6 +57,15 @@
                             "assertionType": "eql",
                             "actual": { "type" : "js-expr", "value" : "shared" },
                             "expected": "initial value"
+                        }
+                    ]
+                },
+                {
+                    "name": "Don't lose context in nested functions",
+                    "commands": [
+                        {
+                            "type": "execute-async-expression",
+                            "expression": "const role = Role('https://demos.devexpress.com/XAF/MainDemo', async t => {\r\n   \r\n    await t.typeText('.dxeEditArea_XafTheme.dxeEditAreaSys', 'John', {\r\n                replace: true\r\n            })\r\n            .click(Selector('span').withText('Log In'));\r\n});\r\n\r\nawait t.useRole(role);\r\n"
                         }
                     ]
                 }
