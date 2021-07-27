@@ -1,12 +1,16 @@
-fixture `GH-1994 - The element that matches the specified selector is not visible`
-    .page `http://localhost:3000/fixtures/regression/gh-1994/pages/index.html`;
+import { Selector, t } from 'testcafe';
 
-test(`Recreate invisible element and click`, async t => {
-    await t
-        .click('#targetRecreate');
-});
+fixture('DevExpress/testcafe/issues/6405')
+    .page('https://www.my.eloan.com/apply');
 
-test(`Remove invisible element and click`, async t => {
-    await t
-        .click('#targetRemove');
-});
+test('test 1', async t => {
+    console.log('here');
+    console.log('here 1');
+})
+
+
+test('test 2', async t => {
+    console.log('here');
+    await t.pressKey('tab');
+    console.log('here 1');
+})
