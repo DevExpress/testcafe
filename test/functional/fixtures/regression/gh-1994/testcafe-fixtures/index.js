@@ -8,9 +8,3 @@ test('test 1', async t => {
     console.log('here 1');
 })
 
-
-test('test 2', async t => {
-    console.log('here');
-    await t.pressKey('tab');
-    console.log('here 1');
-})
