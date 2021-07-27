@@ -89,6 +89,11 @@ export class EsNextTestFileParser extends TestFileParserBase {
         const tokenType = this.tokenType;
         const callStack = [exp];
 
+        let currentSkip;
+
+        if (token.property && token.property.type === tokenType.Identifier && token.property.name === 'skip')
+            currentSkip = true;
+
         while (exp.type !== tokenType.Identifier) {
             if (exp.type === tokenType.CallExpression)
                 exp = exp.callee;
@@ -113,10 +118,11 @@ export class EsNextTestFileParser extends TestFileParserBase {
         let parentExp = callStack.pop();
 
         if (parentExp.type === tokenType.CallExpression)
-            return this.formatFnData(exp.name, this.formatFnArg(parentExp.arguments[0]), token, meta);
+            return this.formatFnData(exp.name, this.formatFnArg(parentExp.arguments[0]), token, meta, currentSkip);
+
 
         if (parentExp.type === tokenType.TaggedTemplateExpression)
-            return this.formatFnData(exp.name, EsNextTestFileParser.getTagStrValue(parentExp.quasi), token, meta);
+            return this.formatFnData(exp.name, EsNextTestFileParser.getTagStrValue(parentExp.quasi), token, meta, currentSkip);
 
         if (parentExp.type === tokenType.PropertyAccessExpression) {
             while (parentExp) {
@@ -126,8 +132,9 @@ export class EsNextTestFileParser extends TestFileParserBase {
 
                     if (this.checkExpDefineTargetName(calleeType, calleeMemberFn)) {
                         if (calleeMemberFn === 'skip')
-                            return this.formatFnData(exp.name, this.formatFnArg(parentExp.arguments[0]), token, meta, true);
-                        return this.formatFnData(exp.name, this.formatFnArg(parentExp.arguments[0]), token, meta);
+                            currentSkip = true;
+
+                        return this.formatFnData(exp.name, this.formatFnArg(parentExp.arguments[0]), token, meta, currentSkip);
                     }
                 }
 
@@ -137,8 +144,9 @@ export class EsNextTestFileParser extends TestFileParserBase {
 
                     if (this.checkExpDefineTargetName(tagType, tagMemberFn)) {
                         if (tagMemberFn === 'skip')
-                            return this.formatFnData(exp.name, EsNextTestFileParser.getTagStrValue(parentExp.quasi), token, meta, true);
-                        return this.formatFnData(exp.name, EsNextTestFileParser.getTagStrValue(parentExp.quasi), token, meta);
+                            currentSkip = true;
+
+                        return this.formatFnData(exp.name, EsNextTestFileParser.getTagStrValue(parentExp.quasi), token, meta, currentSkip);
                     }
 
                 }

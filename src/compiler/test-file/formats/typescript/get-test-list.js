@@ -122,6 +122,11 @@ class TypeScriptTestFileParser extends TestFileParserBase {
         const tokenType = this.tokenType;
         const callStack = [exp];
 
+        let currentSkip;
+
+        if (token.property && token.property.type === tokenType.Identifier && token.property.name === 'skip')
+            currentSkip = true;
+
         while (exp.kind !== this.tokenType.Identifier) {
             exp = exp.expression || exp.tag;
 
@@ -140,9 +145,9 @@ class TypeScriptTestFileParser extends TestFileParserBase {
                                            parentExp.expression.name.text;
 
                     if (this.checkExpDefineTargetName(calleeType, calleeMemberFn)) {
-                        if (calleeMemberFn === 'skip')
-                            return this.formatFnData(exp.text, this.formatFnArg(parentExp.arguments[0]), token, meta, true);
-                        return this.formatFnData(exp.text, this.formatFnArg(parentExp.arguments[0]), token, meta);
+                        if (calleeMemberFn === 'skip') currentSkip = true;
+
+                        return this.formatFnData(exp.text, this.formatFnArg(parentExp.arguments[0]), token, meta, currentSkip);
                     }
                 }
 
@@ -151,9 +156,9 @@ class TypeScriptTestFileParser extends TestFileParserBase {
                     const tagMemberFn = tagType === tokenType.PropertyAccessExpression && parentExp.tag.name.text;
 
                     if (this.checkExpDefineTargetName(tagType, tagMemberFn)) {
-                        if (tagMemberFn === 'skip')
-                            return this.formatFnData(exp.text, this.formatFnArg(parentExp), token, meta, true);
-                        return this.formatFnData(exp.text, this.formatFnArg(parentExp), token, meta);
+                        if (tagMemberFn === 'skip') currentSkip = true;
+
+                        return this.formatFnData(exp.text, this.formatFnArg(parentExp), token, meta, currentSkip);
                     }
                 }
 
