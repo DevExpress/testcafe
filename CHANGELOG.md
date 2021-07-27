@@ -11,7 +11,7 @@
 * TestCafe raises the blur event when you focus a non-focusable element ([#6236](https://github.com/DevExpress/testcafe/pull/6236)).
 * TestCafe test hangs when you click a link within a cross-domain iframe ([#6331](https://github.com/DevExpress/testcafe/pull/6331)).
 * TestCafe loads the Babel compiler libraries multiple times ([#6310](https://github.com/DevExpress/testcafe/pull/6310)). 
-* (remove?) TestCafe incorrectly parses the meta refresh tags ([#2663](https://github.com/DevExpress/testcafe-hammerhead/pull/2663))
+* TestCafe incorrectly parses the meta refresh tags ([#2663](https://github.com/DevExpress/testcafe-hammerhead/pull/2663))
 * TestCafe incorrectly processes iframe elements with the "srcdoc" attribute ([#2647](https://github.com/DevExpress/testcafe-hammerhead/issues/2647)).
 * TestCafe incorrectly specifies the Referer HTTP request header if you use the "navigateTo" action ([#2607](https://github.com/DevExpress/testcafe-hammerhead/issues/2607)).
 * An error related to the [bug in Node.js](https://github.com/nodejs/node/issues/37849) occurs ([#2655](https://github.com/DevExpress/testcafe-hammerhead/pull/2655)). 
