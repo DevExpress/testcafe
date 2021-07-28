@@ -120,7 +120,6 @@ export class EsNextTestFileParser extends TestFileParserBase {
         if (parentExp.type === tokenType.CallExpression)
             return this.formatFnData(exp.name, this.formatFnArg(parentExp.arguments[0]), token, meta, currentSkip);
 
-
         if (parentExp.type === tokenType.TaggedTemplateExpression)
             return this.formatFnData(exp.name, EsNextTestFileParser.getTagStrValue(parentExp.quasi), token, meta, currentSkip);
 
@@ -131,8 +130,7 @@ export class EsNextTestFileParser extends TestFileParserBase {
                     const calleeMemberFn = parentExp.callee.property && parentExp.callee.property.name;
 
                     if (this.checkExpDefineTargetName(calleeType, calleeMemberFn)) {
-                        if (calleeMemberFn === 'skip')
-                            currentSkip = true;
+                        if (calleeMemberFn === 'skip') currentSkip = true;
 
                         return this.formatFnData(exp.name, this.formatFnArg(parentExp.arguments[0]), token, meta, currentSkip);
                     }
@@ -143,8 +141,7 @@ export class EsNextTestFileParser extends TestFileParserBase {
                     const tagMemberFn = parentExp.tag.property && parentExp.tag.property.name;
 
                     if (this.checkExpDefineTargetName(tagType, tagMemberFn)) {
-                        if (tagMemberFn === 'skip')
-                            currentSkip = true;
+                        if (tagMemberFn === 'skip') currentSkip = true;
 
                         return this.formatFnData(exp.name, EsNextTestFileParser.getTagStrValue(parentExp.quasi), token, meta, currentSkip);
                     }

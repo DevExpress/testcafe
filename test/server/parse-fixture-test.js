@@ -150,8 +150,9 @@ describe('Should get structure of files (esnext and typescript common cases)', f
             [
                 new Fixture('fixture1', 0, 23, new Loc(1, 0, 1, 23), {},
                     [
-                        new Test('fixture1test1', 26, 111, new Loc(3, 0, 9, 2), {}),
-                    ]
+                        new Test('fixture1test1', 26, 111, new Loc(3, 0, 9, 2), {}, true),
+                    ],
+                    true
                 ),
 
                 new Fixture('fixture2', 115, 137, new Loc(12, 0, 12, 22), {},
