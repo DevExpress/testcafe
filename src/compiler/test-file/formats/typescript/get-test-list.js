@@ -124,9 +124,6 @@ class TypeScriptTestFileParser extends TestFileParserBase {
 
         let currentSkip;
 
-        if (token.property && token.property.type === tokenType.Identifier && token.property.name === 'skip')
-            currentSkip = true;
-
         while (exp.kind !== this.tokenType.Identifier) {
             exp = exp.expression || exp.tag;
 
@@ -139,6 +136,10 @@ class TypeScriptTestFileParser extends TestFileParserBase {
             let parentExp = callStack.pop();
 
             while (parentExp) {
+
+                if (parentExp.parent && parentExp.parent.name && parentExp.parent.name.text === 'skip')
+                    currentSkip = true;
+
                 if (parentExp.kind === tokenType.CallExpression && parentExp.expression) {
                     const calleeType     = parentExp.expression.kind;
                     const calleeMemberFn = calleeType === tokenType.PropertyAccessExpression &&
