@@ -1,5 +1,21 @@
 # Changelog
 
+## v1.15.1 (2021-07-28)
+
+### Bug Fixes
+
+* The `Element.getAttribute` method returns an incorrect value ([#5984](https://github.com/DevExpress/testcafe/issues/5984)). 
+* TestCafe test fails when you forget to include the `await` keyword before the assertion statement ([#4613](https://github.com/DevExpress/testcafe/issues/4613)).
+* TestCafe fails to focus an element inside a shadow DOM ([#4988](https://github.com/DevExpress/testcafe/issues/4988)).
+* TestCafe fails to focus SVG elements ([#6262](https://github.com/DevExpress/testcafe/issues/6262)).
+* TestCafe raises the blur event when you focus a non-focusable element ([#6236](https://github.com/DevExpress/testcafe/pull/6236)).
+* TestCafe test hangs when you click a link within a cross-domain iframe ([#6331](https://github.com/DevExpress/testcafe/pull/6331)).
+* TestCafe loads the Babel compiler libraries multiple times ([#6310](https://github.com/DevExpress/testcafe/pull/6310)). 
+* TestCafe incorrectly parses the meta refresh tags ([#2663](https://github.com/DevExpress/testcafe-hammerhead/pull/2663))
+* TestCafe incorrectly processes iframe elements with the "srcdoc" attribute ([#2647](https://github.com/DevExpress/testcafe-hammerhead/issues/2647)).
+* TestCafe incorrectly specifies the Referer HTTP request header if you use the "navigateTo" action ([#2607](https://github.com/DevExpress/testcafe-hammerhead/issues/2607)).
+* An error related to the [bug in Node.js](https://github.com/nodejs/node/issues/37849) occurs ([#2655](https://github.com/DevExpress/testcafe-hammerhead/pull/2655)). 
+
 ## v1.15.0 (2021-07-08)
 
 ### Enhancements
