@@ -128,5 +128,5 @@ export default {
                                                            'Try to decrease the concurrency factor or allocate more computing resources to the host machine.',
     [BrowserConnectionErrorHint.UseBrowserInitOption]:    'Increase the value of the "browserInitTimeout" option if it is too low (currently: {browserInitTimeoutMsg}). This option determines how long TestCafe waits for browsers to be ready.',
     [BrowserConnectionErrorHint.RestErrorCauses]:         'The error can also be caused by network issues or remote device failure. Make sure that your network connection is stable and you can reach the remote device.',
-    [RUNTIME_ERRORS.cannotFindTestcafeConfigurationFile]: '"{filePath}" is not a valid TestCafe configuration file.',
+    [RUNTIME_ERRORS.cannotFindTestcafeConfigurationFile]: '"{filePath}" is not a valid path to the TestCafe configuration file. Make sure the configuration file exists and you spell the path name correctly.',
 };

@@ -299,7 +299,7 @@ describe('TestCafeConfiguration', function () {
                 message = err.message;
             }
 
-            expect(message).eql(`"${nonExistingConfiguration.filePath}" is not a valid TestCafe configuration file.`);
+            expect(message).eql(`"${nonExistingConfiguration.filePath}" is not a valid path to the TestCafe configuration file. Make sure the configuration file exists and you spell the path name correctly.`);
         });
     });
 
