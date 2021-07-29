@@ -552,7 +552,7 @@ describe('TypeScriptConfiguration', function () {
                 });
         });
 
-        it('TestCafe config + TypeScript config', function () {
+        it('TestCafe config + TypeScript config', async function () {
             createTestCafeConfigurationFile({
                 tsConfigPath: customTSConfigFilePath,
             });
@@ -566,19 +566,15 @@ describe('TypeScriptConfiguration', function () {
             const configuration = new TestCafeConfiguration();
             const runner        = new RunnerCtor({ configuration });
 
-            return runner
-                .src('test/server/data/test-suites/typescript-basic/testfile1.ts')
-                ._applyOptions()
-                .then(() => {
-                    return runner.bootstrapper._getTests();
-                })
-                .then(() => {
-                    fs.unlinkSync(TestCafeConfiguration.FILENAME);
-                    typeScriptConfiguration._filePath = customTSConfigFilePath;
+            await configuration.init();
+            await runner.src('test/server/data/test-suites/typescript-basic/testfile1.ts')._applyOptions();
+            await runner.bootstrapper._getTests();
 
-                    expect(runner.bootstrapper.tsConfigPath).eql(customTSConfigFilePath);
-                    expect(consoleWrapper.messages.log).contains('You cannot override the "target" compiler option in the TypeScript configuration file.');
-                });
+            fs.unlinkSync(TestCafeConfiguration.FILENAME);
+            typeScriptConfiguration._filePath = customTSConfigFilePath;
+
+            expect(runner.bootstrapper.tsConfigPath).eql(customTSConfigFilePath);
+            expect(consoleWrapper.messages.log).contains('You cannot override the "target" compiler option in the TypeScript configuration file.');
         });
 
         describe('Should warn message on rewrite a non-overridable property', () => {
