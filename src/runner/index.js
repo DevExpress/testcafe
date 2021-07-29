@@ -535,7 +535,7 @@ export default class Runner extends EventEmitter {
     }
 
     async _applyOptions () {
-        await this.configuration.init(this._options);
+        await this.configuration.asyncMergeOptions(this._options);
 
         return this._setBootstrapperOptions();
     }
