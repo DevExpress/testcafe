@@ -63,7 +63,7 @@ export class EsNextTestFileParser extends TestFileParserBase {
         return token.callee.property.name;
     }
 
-    formatFnData (name, value, token, meta = [{}], isSkipped) {
+    formatFnData (name, value, token, meta = [{}]) {
         return {
             fnName:    name,
             value:     value,
@@ -71,7 +71,7 @@ export class EsNextTestFileParser extends TestFileParserBase {
             start:     token.start,
             end:       token.end,
             meta:      merge({}, ...meta),
-            isSkipped: isSkipped,
+            isSkipped: token.isSkipped,
         };
     }
 
@@ -88,11 +88,6 @@ export class EsNextTestFileParser extends TestFileParserBase {
         let exp         = token;
         const tokenType = this.tokenType;
         const callStack = [exp];
-
-        let currentSkip;
-
-        if (token.property && token.property.type === tokenType.Identifier && token.property.name === 'skip')
-            currentSkip = true;
 
         while (exp.type !== tokenType.Identifier) {
             if (exp.type === tokenType.CallExpression)
@@ -118,10 +113,10 @@ export class EsNextTestFileParser extends TestFileParserBase {
         let parentExp = callStack.pop();
 
         if (parentExp.type === tokenType.CallExpression)
-            return this.formatFnData(exp.name, this.formatFnArg(parentExp.arguments[0]), token, meta, currentSkip);
+            return this.formatFnData(exp.name, this.formatFnArg(parentExp.arguments[0]), token, meta);
 
         if (parentExp.type === tokenType.TaggedTemplateExpression)
-            return this.formatFnData(exp.name, EsNextTestFileParser.getTagStrValue(parentExp.quasi), token, meta, currentSkip);
+            return this.formatFnData(exp.name, EsNextTestFileParser.getTagStrValue(parentExp.quasi), token, meta);
 
         if (parentExp.type === tokenType.PropertyAccessExpression) {
             while (parentExp) {
@@ -129,23 +124,16 @@ export class EsNextTestFileParser extends TestFileParserBase {
                     const calleeType     = parentExp.callee.type;
                     const calleeMemberFn = parentExp.callee.property && parentExp.callee.property.name;
 
-                    if (this.checkExpDefineTargetName(calleeType, calleeMemberFn)) {
-                        if (calleeMemberFn === 'skip') currentSkip = true;
-
-                        return this.formatFnData(exp.name, this.formatFnArg(parentExp.arguments[0]), token, meta, currentSkip);
-                    }
+                    if (this.checkExpDefineTargetName(calleeType, calleeMemberFn))
+                        return this.formatFnData(exp.name, this.formatFnArg(parentExp.arguments[0]), token, meta);
                 }
 
                 if (parentExp.type === tokenType.TaggedTemplateExpression && parentExp.tag) {
                     const tagType     = parentExp.tag.type;
                     const tagMemberFn = parentExp.tag.property && parentExp.tag.property.name;
 
-                    if (this.checkExpDefineTargetName(tagType, tagMemberFn)) {
-                        if (tagMemberFn === 'skip') currentSkip = true;
-
-                        return this.formatFnData(exp.name, EsNextTestFileParser.getTagStrValue(parentExp.quasi), token, meta, currentSkip);
-                    }
-
+                    if (this.checkExpDefineTargetName(tagType, tagMemberFn))
+                        return this.formatFnData(exp.name, EsNextTestFileParser.getTagStrValue(parentExp.quasi), token, meta);
                 }
 
                 parentExp = callStack.pop();

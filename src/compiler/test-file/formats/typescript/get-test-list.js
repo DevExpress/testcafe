@@ -103,7 +103,7 @@ class TypeScriptTestFileParser extends TestFileParserBase {
         return token.body.statements;
     }
 
-    formatFnData (name, value, token, meta = [{}], isSkipped) {
+    formatFnData (name, value, token, meta = [{}]) {
         const loc = this.getLocationByOffsets(token.pos, token.end);
 
         return {
@@ -113,7 +113,7 @@ class TypeScriptTestFileParser extends TestFileParserBase {
             start:     loc.start,
             end:       loc.end,
             meta:      merge({}, ...meta),
-            isSkipped: isSkipped,
+            isSkipped: token.isSkipped,
         };
     }
 
@@ -121,11 +121,6 @@ class TypeScriptTestFileParser extends TestFileParserBase {
         let exp         = token;
         const tokenType = this.tokenType;
         const callStack = [exp];
-
-        let currentSkip;
-
-        if (token.name && token.name.text === 'skip')
-            currentSkip = true;
 
         while (exp.kind !== this.tokenType.Identifier) {
             exp = exp.expression || exp.tag;
@@ -139,31 +134,21 @@ class TypeScriptTestFileParser extends TestFileParserBase {
             let parentExp = callStack.pop();
 
             while (parentExp) {
-
-                if (parentExp.parent && parentExp.parent.name && parentExp.parent.name.text === 'skip')
-                    currentSkip = true;
-
                 if (parentExp.kind === tokenType.CallExpression && parentExp.expression) {
                     const calleeType     = parentExp.expression.kind;
                     const calleeMemberFn = calleeType === tokenType.PropertyAccessExpression &&
                                            parentExp.expression.name.text;
 
-                    if (this.checkExpDefineTargetName(calleeType, calleeMemberFn)) {
-                        if (calleeMemberFn === 'skip') currentSkip = true;
-
-                        return this.formatFnData(exp.text, this.formatFnArg(parentExp.arguments[0]), token, meta, currentSkip);
-                    }
+                    if (this.checkExpDefineTargetName(calleeType, calleeMemberFn))
+                        return this.formatFnData(exp.text, this.formatFnArg(parentExp.arguments[0]), token, meta);
                 }
 
                 if (parentExp.kind === tokenType.TaggedTemplateExpression && parentExp.tag) {
                     const tagType     = parentExp.tag.kind;
                     const tagMemberFn = tagType === tokenType.PropertyAccessExpression && parentExp.tag.name.text;
 
-                    if (this.checkExpDefineTargetName(tagType, tagMemberFn)) {
-                        if (tagMemberFn === 'skip') currentSkip = true;
-
-                        return this.formatFnData(exp.text, this.formatFnArg(parentExp), token, meta, currentSkip);
-                    }
+                    if (this.checkExpDefineTargetName(tagType, tagMemberFn))
+                        return this.formatFnData(exp.text, this.formatFnArg(parentExp), token, meta);
                 }
 
                 parentExp = callStack.pop();

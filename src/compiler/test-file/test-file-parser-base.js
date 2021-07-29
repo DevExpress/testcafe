@@ -21,23 +21,23 @@ function getLoc (loc) {
 
 export class Fixture {
     constructor (name, start, end, loc, meta, isSkipped) {
-        this.name  = name;
-        this.loc   = getLoc(loc);
-        this.start = start;
-        this.end   = end;
-        this.meta  = meta;
-        this.tests = [];
+        this.name      = name;
+        this.loc       = getLoc(loc);
+        this.start     = start;
+        this.end       = end;
+        this.meta      = meta;
+        this.tests     = [];
         this.isSkipped = isSkipped ? isSkipped : false;
     }
 }
 
 export class Test {
     constructor (name, start, end, loc, meta, isSkipped) {
-        this.name  = name;
-        this.loc   = getLoc(loc);
-        this.start = start;
-        this.end   = end;
-        this.meta  = meta;
+        this.name      = name;
+        this.loc       = getLoc(loc);
+        this.start     = start;
+        this.end       = end;
+        this.meta      = meta;
         this.isSkipped = isSkipped ? isSkipped : false;
     }
 }
@@ -168,6 +168,25 @@ export class TestFileParserBase {
         }, []);
     }
 
+    getSkippedInfo (token, originalToken) {
+
+        // For js: PropertyAccessExpression, TaggedTemplateExpression, CallExpression
+        if (token && token.property && token.property.name === 'skip')
+            originalToken.isSkipped = true;
+
+        // For ts
+        if (token && token.name && token.name.text === 'skip')
+            originalToken.isSkipped = true;
+
+        else if (token.callee || token.tag || token.object || token.expression) {
+            const curr = token.callee || token.tag || token.object || token.expression;
+
+            return this.getSkippedInfo(curr, originalToken);
+        }
+
+        return originalToken;
+    }
+
     checkExpDefineTargetName (type, apiFn) {
         //NOTE: fixture('fixtureName').chainFn or test('testName').chainFn
         const isDirectCall = type === this.tokenType.Identifier;
@@ -183,34 +202,35 @@ export class TestFileParserBase {
     }
 
     analyzeToken (token) {
+        const currToken     = this.getSkippedInfo(token, token);
         const tokenType     = this.tokenType;
-        const currTokenType = this.getTokenType(token);
+        const currTokenType = this.getTokenType(currToken);
 
         switch (currTokenType) {
             case tokenType.ExpressionStatement:
             case tokenType.TypeAssertionExpression:
-                return this.analyzeToken(token.expression);
+                return this.analyzeToken(currToken.expression);
 
             case tokenType.FunctionDeclaration:
             case tokenType.FunctionExpression:
-                if (this.isAsyncFn(token))
+                if (this.isAsyncFn(currToken))
                     return null;
 
-                return this.getFunctionBody(token).map(this.analyzeToken, this);
+                return this.getFunctionBody(currToken).map(this.analyzeToken, this);
 
             case tokenType.VariableDeclaration:
             case tokenType.VariableStatement: {
-                const variableValue = this.getRValue(token); // Skip variable declarations like `var foo;`
+                const variableValue = this.getRValue(currToken); // Skip variable declarations like `var foo;`
 
                 return variableValue ? this.analyzeToken(variableValue) : null;
             }
             case tokenType.CallExpression:
             case tokenType.PropertyAccessExpression:
             case tokenType.TaggedTemplateExpression:
-                return this.analyzeFnCall(token);
+                return this.analyzeFnCall(currToken);
 
             case tokenType.ReturnStatement:
-                return token.argument ? this.analyzeToken(token.argument) : null;
+                return currToken.argument ? this.analyzeToken(currToken.argument) : null;
         }
 
         return null;
