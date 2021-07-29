@@ -2,6 +2,8 @@
 
 const path                    = require('path');
 const chai                    = require('chai');
+const fs                      = require('fs');
+const del                     = require('del');
 const { expect }              = chai;
 const request                 = require('request');
 const { times, uniqBy }       = require('lodash');
@@ -21,6 +23,12 @@ const proxyquire              = require('proxyquire');
 const BrowserConnectionStatus = require('../../lib/browser/connection/status');
 const { noop }                = require('lodash');
 const Test                    = require('../../lib/api/structure/test');
+const TestCafeConfiguration   = require('../../lib/configuration/testcafe-configuration');
+
+const createConfigFile = (configPath, options) => {
+    options = options || {};
+    fs.writeFileSync(configPath, JSON.stringify(options));
+};
 
 
 describe('Runner', () => {
@@ -1087,6 +1095,28 @@ describe('Runner', () => {
             await checkQuarantineOptions({ quarantineMode: { test: '1' } }, 'The "quarantineMode" option does not exist. Specify "attemptLimit" and "successThreshold" to configure quarantine mode.');
 
             expect(errorCount).eql(6);
+        });
+
+        it("Shouldn't overwrite the quarantine option before run task if the config file exists", async function () {
+            createConfigFile(TestCafeConfiguration.FILENAME, { anyOption: null });
+
+            const storedRunTaskFn = runner._runTask;
+            const quarantineMode  = { attemptLimit: 3, successThreshold: 1 };
+
+            runner._runTask = function () {
+                runner._runTask = storedRunTaskFn;
+
+                return Promise.resolve({});
+            };
+
+            await runner
+                .browsers(connection)
+                .src('test/server/data/test-suites/basic/testfile2.js')
+                .run({ quarantineMode });
+
+            await del([runner.configuration.filePath]);
+
+            expect(runner.configuration.getOption('quarantineMode')).eql(quarantineMode);
         });
     });
 
