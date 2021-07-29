@@ -124,6 +124,9 @@ class TypeScriptTestFileParser extends TestFileParserBase {
 
         let currentSkip;
 
+        if (token.name && token.name.text === 'skip')
+            currentSkip = true;
+
         while (exp.kind !== this.tokenType.Identifier) {
             exp = exp.expression || exp.tag;
 

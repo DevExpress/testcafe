@@ -202,6 +202,24 @@ describe('Should get structure of files (esnext and typescript common cases)', f
                         new Test('<computed name>(line: 88)', 1363, 1467, new Loc(85, 0, 89, 31), {}),
                     ]
                 ),
+                new Fixture('fixture9', 1470, 1499, new Loc(91, 0, 91, 29), {},
+                    [
+                        new Test('fixture9test1', 1502, 1528, new Loc(93, 0, 93, 26), {}, true),
+                    ],
+                    true
+                ),
+                new Fixture('fixture10', 1531, 1655, new Loc(95, 0, 100, 5), {},
+                    [
+                        new Test('fixture10test1', 1658, 1680, new Loc(102, 0, 102, 22), {}, true),
+                    ],
+                    true
+                ),
+                new Fixture('fixture11', 1683, 1703, new Loc(104, 0, 104, 20), {},
+                    [
+                        new Test('fixture11test1', 1706, 1738, new Loc(106, 0, 106, 32), {}, true),
+                        new Test('fixture11test2', 1741, 1829, new Loc(108, 0, 112, 9), {}, true),
+                    ]
+                ),
             ],
         ];
 

@@ -87,3 +87,26 @@ test
     .after(async t => {})
     `${value}`
     .page('http://example.com');
+
+fixture.only(`fixture9`).skip;
+
+test.only(`fixture9test1`);
+
+fixture(`fixture10`)
+.before(async t => {})
+.beforeEach(async t => {})
+.afterEach(async t => {})
+.after(async t => {})
+.skip;
+
+test(`fixture10test1`);
+
+fixture(`fixture11`);
+
+test.only(`fixture11test1`).skip;
+
+test
+    .before(async t => {})
+    `fixture11test2`
+    .after(async t => {})
+    .skip;
