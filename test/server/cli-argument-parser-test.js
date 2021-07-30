@@ -744,6 +744,15 @@ describe('CLI argument parser', function () {
             });
     });
 
+    it('Should parse unknown command line arguments', function () {
+        const unknownArgument = '--unknown-argument=unknown-value';
+
+        return parse(unknownArgument)
+            .then(parser => {
+                expect(parser.args).eql([unknownArgument]);
+            });
+    });
+
     it('Should have static CLI', () => {
         const CHANGE_CLI_WARNING         = 'IMPORTANT: Please be sure what you want to change CLI if this test is failing!';
         const ADD_TO_RUN_OPTIONS_WARNING = 'Check that the added option is correctly passed from the command-line interface to the run options.' +
