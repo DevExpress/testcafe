@@ -99,7 +99,7 @@ function buildFocusableTree (parent, sort) {
     if (isIframeElement(parent))
         parent = nativeMethods.contentDocumentGetter.call(parent);
 
-    if (parent.nodeType === Node.DOCUMENT_FRAGMENT_NODE || parent.nodeType === Node.DOCUMENT_NODE) {
+    if (parent && (parent.nodeType === Node.DOCUMENT_FRAGMENT_NODE || parent.nodeType === Node.DOCUMENT_NODE)) {
         const elements = filterFocusableElements(parent);
 
         for (const el of elements) {
