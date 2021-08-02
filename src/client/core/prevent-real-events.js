@@ -1,4 +1,4 @@
-import { utils, eventSandbox } from './deps/hammerhead';
+import { utils, eventSandbox, nativeMethods } from './deps/hammerhead';
 
 import scrollController from './scroll-controller';
 
@@ -33,7 +33,7 @@ function checkBrowserHotkey (e) {
 // NOTE: when tests are running, we should block real events (from mouse
 // or keyboard), because they may lead to unexpected test result.
 function preventRealEventHandler (e, dispatched, preventDefault, cancelHandlers, stopEventPropagation) {
-    const target = e.target || e.srcElement;
+    const target = nativeMethods.eventTargetGetter.call(e) || e.srcElement;
 
     if (!dispatched && !isShadowUIElement(target)) {
         // NOTE: this will allow pressing hotkeys to open developer tools.
