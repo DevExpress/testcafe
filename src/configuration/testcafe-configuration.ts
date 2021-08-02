@@ -79,8 +79,6 @@ export default class TestCafeConfiguration extends Configuration {
     }
 
     public async init (options?: object): Promise<void> {
-        options = options || {};
-
         await super.init();
 
         const opts = await this._load();
@@ -91,7 +89,13 @@ export default class TestCafeConfiguration extends Configuration {
             await this._normalizeOptionsAfterLoad();
         }
 
-        this.mergeOptions(options);
+        await this.asyncMergeOptions(options);
+    }
+
+    public async asyncMergeOptions (options?: object): Promise<void> {
+        options = options || {};
+
+        super.mergeOptions(options);
 
         if (this._options.browsers)
             this._options.browsers.value = await this._getBrowserInfo();
