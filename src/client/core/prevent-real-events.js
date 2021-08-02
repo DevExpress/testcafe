@@ -1,7 +1,7 @@
 import {
     utils,
     eventSandbox,
-    nativeMethods
+    nativeMethods,
 } from './deps/hammerhead';
 
 import scrollController from './scroll-controller';
