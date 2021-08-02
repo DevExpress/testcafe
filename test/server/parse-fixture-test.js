@@ -218,7 +218,19 @@ describe('Should get structure of files (esnext and typescript common cases)', f
                     [
                         new Test('fixture11test1', 1706, 1738, new Loc(106, 0, 106, 32), {}, true),
                         new Test('fixture11test2', 1741, 1829, new Loc(108, 0, 112, 9), {}, true),
+                        new Test('fixture11test3', 1832, 1920, new Loc(114, 0, 118, 20), {}, true),
+                        new Test('fixture11test4', 1923, 2028, new Loc(120, 0, 124, 37), {}, true),
+                        new Test('fixture11test5', 2031, 2216, new Loc(126, 0, 138, 18), { 'key1': 'value1' }, true),
+                        new Test('fixture11test6', 2219, 2444, new Loc(140, 0, 149, 25), { 'key2': 'value2' }, true),
                     ]
+                ),
+                new Fixture('fixture12', 2447, 2566, new Loc(151, 0, 156, 17), {},
+                    [],
+                    true
+                ),
+                new Fixture('fixture13', 2569, 2811, new Loc(158, 0, 167, 59), {},
+                    [],
+                    true
                 ),
             ],
         ];

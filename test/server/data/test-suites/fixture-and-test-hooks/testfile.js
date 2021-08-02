@@ -110,3 +110,58 @@ test
     `fixture11test2`
     .after(async t => {})
     .skip;
+
+test
+    .skip
+    .before(async t => {})
+    .after(async t => {})
+    `fixture11test3`;
+
+test
+    .before(async t => {})
+    .skip
+    .after(async t => {})
+    (`fixture11test4`, async t => {});
+
+test
+.skip
+.clientScripts()
+.requestHooks()
+.timeouts({
+    pageLoadTimeout: 2000,
+})
+.httpAuth({
+    username: 'user1',
+    password: '123'
+})
+.meta(`key1`,'value1')
+(`fixture11test5`);
+
+test.disablePageCaching
+    .before(async t => {})
+    .after(async t => {})
+    .requestHooks()
+    .clientScripts()
+    .meta(`key2`, `value2`)
+    .timeouts({
+        pageLoadTimeout: 2000,
+    })
+    `fixture11test6`.skip;
+
+fixture
+    .skip
+    .beforeEach(async t => {})
+    .before(async t => {})
+    .after(async t => {})
+    ('fixture12');
+
+fixture(`fixture13`)
+    .before(async t => {})
+    .after(async t => {})
+    .disablePageCaching
+    .clientScripts()
+    .timeouts({
+        pageLoadTimeout: 2000,
+    })
+    .skip
+    .page(`https://devexpress.github.io/testcafe/example/`);
