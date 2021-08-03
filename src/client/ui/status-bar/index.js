@@ -318,7 +318,8 @@ export default class StatusBar extends serviceUtils.EventEmitter {
         const eventName = featureDetection.isTouchDevice ? 'touchstart' : 'mousedown';
 
         const downHandler = e => {
-            const isTargetElement = !!arrayUtils.find(elements, el => domUtils.containsElement(el, e.target));
+            const target          = nativeMethods.eventTargetGetter.call(e);
+            const isTargetElement = !!arrayUtils.find(elements, el => domUtils.containsElement(el, target));
 
             if (isTargetElement) {
                 eventUtils.preventDefault(e);
@@ -326,7 +327,7 @@ export default class StatusBar extends serviceUtils.EventEmitter {
 
                 handler(e);
             }
-            else if (domUtils.containsElement(this.statusBar, e.target))
+            else if (domUtils.containsElement(this.statusBar, target))
                 eventUtils.preventDefault(e);
         };
 
@@ -419,7 +420,8 @@ export default class StatusBar extends serviceUtils.EventEmitter {
 
 
             this._bindClickOnce([this.resumeButton, this.nextButton, this.finishButton], e => {
-                const isNextButton = domUtils.containsElement(this.nextButton, e.target);
+                const target       = nativeMethods.eventTargetGetter.call(e);
+                const isNextButton = domUtils.containsElement(this.nextButton, target);
 
                 this._resetState();
 

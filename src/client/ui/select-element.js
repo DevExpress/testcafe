@@ -31,21 +31,24 @@ let groups      = [];
 let options     = [];
 
 function onDocumentMouseDown (e) {
+    const target = nativeMethods.eventTargetGetter.call(e);
+
     //NOTE: only in Mozilla 'mousedown' raises for option
-    if ((e.target || e.srcElement) !== curSelectEl && !domUtils.containsElement(curSelectEl, e.target) &&
-        !domUtils.containsElement(optionList, e.target))
+    if ((target || e.srcElement) !== curSelectEl && !domUtils.containsElement(curSelectEl, target) &&
+        !domUtils.containsElement(optionList, target))
         collapseOptionList();
 }
 
 function onWindowClick (e, dispatched, preventDefault) {
-    const optionIndex = arrayUtils.indexOf(options, e.target);
+    const target      = nativeMethods.eventTargetGetter.call(e);
+    const optionIndex = arrayUtils.indexOf(options, target);
 
     if (optionIndex < 0)
         return;
 
     preventDefault();
 
-    const isDisabled = e.target.className.indexOf(DISABLED_CLASS) > -1;
+    const isDisabled = target.className.indexOf(DISABLED_CLASS) > -1;
 
     if (isDisabled && browserUtils.isWebKit)
         return;

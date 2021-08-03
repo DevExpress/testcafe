@@ -6,6 +6,7 @@ import { focusByRelatedElement, getElementBoundToLabel } from '../../utils/utils
 const browserUtils   = hammerhead.utils.browser;
 const eventSimulator = hammerhead.eventSandbox.eventSimulator;
 const listeners      = hammerhead.eventSandbox.listeners;
+const nativeMethods  = hammerhead.nativeMethods;
 
 const domUtils   = testCafeCore.domUtils;
 const styleUtils = testCafeCore.styleUtils;
@@ -39,7 +40,7 @@ class LabelElementClickCommand extends ElementClickCommand {
         let focusRaised = false;
 
         const ensureFocusRaised = e => {
-            focusRaised = e.target === this.input;
+            focusRaised = nativeMethods.eventTargetGetter.call(e) === this.input;
         };
 
         listeners.addInternalEventBeforeListener(window, ['focus'], ensureFocusRaised);
