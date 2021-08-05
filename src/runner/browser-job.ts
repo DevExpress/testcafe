@@ -21,6 +21,7 @@ interface BrowserJobResultInfo {
 
 export default class BrowserJob extends AsyncEventEmitter {
     private _started: boolean;
+    private _startTime: Date;
     private _total: number;
     private _passed: number;
     private readonly _opts: Dictionary<OptionValue>;
@@ -50,7 +51,8 @@ export default class BrowserJob extends AsyncEventEmitter {
     }: BrowserJobInit) {
         super();
 
-        this._started = false;
+        this._started   = false;
+        this._startTime = new Date();
 
         this._total                = 0;
         this._passed               = 0;
@@ -206,12 +208,13 @@ export default class BrowserJob extends AsyncEventEmitter {
             this._addToCompletionQueue(testRunController);
 
             if (!this._started) {
-                this._started = true;
+                this._started   = true;
+                this._startTime = new Date();
 
-                await this.emit('start');
+                await this.emit('start', this._startTime);
             }
 
-            const testRunUrl = await testRunController.start(connection);
+            const testRunUrl = await testRunController.start(connection, this._startTime);
 
             if (testRunUrl)
                 return testRunUrl;

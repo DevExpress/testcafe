@@ -413,7 +413,7 @@ export default class Reporter {
             pendingTaskDonePromise: Reporter._createPendingPromise(),
         };
 
-        const startTime  = new Date();
+        const startTime  = task.startTime;
         const userAgents = task.browserConnectionGroups.map(group => group[0].userAgent);
         const first      = this.taskInfo.testQueue[0];
 

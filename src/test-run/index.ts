@@ -21,6 +21,8 @@ import {
     WindowNotFoundError,
     RequestHookBaseError,
     TestTimeoutError,
+    ExternalAssertionLibraryError,
+    RunTimeoutError,
 } from '../errors/test-run/';
 
 import CLIENT_MESSAGES from './client-messages';
@@ -108,7 +110,6 @@ import {
 
 import { RE_EXECUTABLE_PROMISE_MARKER_DESCRIPTION } from '../services/serialization/replicator/transforms/re-executable-promise-transform/marker';
 import ReExecutablePromise from '../utils/re-executable-promise';
-import { ExternalAssertionLibraryError } from '../errors/test-run';
 import addRenderedWarning from '../notifications/add-rendered-warning';
 import getBrowser from '../utils/get-browser';
 import AssertionExecutor from '../assertions/executor';
@@ -152,6 +153,7 @@ interface TestRunInit {
     opts: Dictionary<OptionValue>;
     compilerService?: CompilerService;
     messageBus?: MessageBus;
+    startRunExecutionTime?: Date;
 }
 
 interface DriverTask {
@@ -202,6 +204,7 @@ export default class TestRun extends AsyncEventEmitter {
     public speed: number;
     public pageLoadTimeout: number;
     public executionTimeout: number;
+    public runExecutionTimeout: number;
     private disablePageReloads: boolean;
     private disablePageCaching: boolean;
     private disableMultipleWindows: boolean;
@@ -239,8 +242,9 @@ export default class TestRun extends AsyncEventEmitter {
     public readonly browser: Browser;
     private readonly _messageBus?: MessageBus;
     private _clientEnvironmentPrepared: boolean = false;
+    public readonly startRunExecutionTime?: Date;
 
-    public constructor ({ test, browserConnection, screenshotCapturer, globalWarningLog, opts, compilerService, messageBus }: TestRunInit) {
+    public constructor ({ test, browserConnection, screenshotCapturer, globalWarningLog, opts, compilerService, messageBus, startRunExecutionTime }: TestRunInit) {
         super();
 
         this[testRunMarker]    = true;
@@ -318,6 +322,9 @@ export default class TestRun extends AsyncEventEmitter {
         this.disconnected      = false;
         this.errScreenshotPath = null;
 
+        this.startRunExecutionTime = startRunExecutionTime;
+        this.runExecutionTimeout   = opts.runExecutionTimeout as number || 0;
+
         this._addInjectables();
         this._initRequestHooks();
     }
@@ -338,6 +345,12 @@ export default class TestRun extends AsyncEventEmitter {
 
     private _getTestExecutionTimeout (opts: Dictionary<OptionValue>): number {
         return opts.testExecutionTimeout as number;
+    }
+
+    public get restRunExecutionTimeout (): number {
+        return this.startRunExecutionTime
+            ? Math.max(this.runExecutionTimeout - (Date.now() - this.startRunExecutionTime.getTime()), 0)
+            : 0;
     }
 
     private _addClientScriptContentWarningsIfNecessary (): void {
@@ -540,7 +553,13 @@ export default class TestRun extends AsyncEventEmitter {
         this.phase = phase;
 
         try {
-            if (timeout)
+            if (this.runExecutionTimeout && (this.restRunExecutionTimeout < timeout || !timeout)) {
+                if (this.restRunExecutionTimeout <= 1)
+                    throw new RunTimeoutError(this.runExecutionTimeout);
+
+                await timeLimit(fn(this), this.restRunExecutionTimeout, { rejectWith: new RunTimeoutError(this.runExecutionTimeout) });
+            }
+            else if (timeout)
                 await timeLimit(fn(this), timeout, { rejectWith: new TestTimeoutError(timeout) });
             else
                 await fn(this);

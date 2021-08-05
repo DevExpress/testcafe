@@ -40,6 +40,7 @@ export default class Task extends AsyncEventEmitter {
     public readonly videos?: Videos;
     private readonly _compilerService?: CompilerService;
     private readonly _messageBus: MessageBus;
+    public startTime?: Date;
 
     public constructor ({
         tests,
@@ -97,9 +98,10 @@ export default class Task extends AsyncEventEmitter {
             }
         });
 
-        job.once('start', async () => {
+        job.once('start', async (startTime: Date) => {
             if (this._phase !== TaskPhase.started) {
-                this._phase = TaskPhase.started;
+                this._phase    = TaskPhase.started;
+                this.startTime = startTime;
 
                 await this._messageBus.emit('start', this);
             }

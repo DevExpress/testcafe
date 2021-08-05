@@ -73,7 +73,7 @@ export default class TestRunController extends AsyncEventEmitter {
         return (test as LegacyTestRun).isLegacy ? LegacyTestRun : TestRun;
     }
 
-    private async _createTestRun (connection: BrowserConnection): Promise<TestRun | LegacyTestRun> {
+    private async _createTestRun (connection: BrowserConnection, startRunExecutionTime?: Date): Promise<TestRun | LegacyTestRun> {
         const screenshotCapturer = this._screenshots.createCapturerFor(this.test, this.index, this._quarantine, connection, this._warningLog);
         const TestRunCtor        = this._testRunCtor;
 
@@ -85,6 +85,7 @@ export default class TestRunController extends AsyncEventEmitter {
             compilerService:   this.compilerService,
             messageBus:        this._messageBus,
             screenshotCapturer,
+            startRunExecutionTime,
         });
 
         await this.testRun.initialize();
@@ -223,8 +224,8 @@ export default class TestRunController extends AsyncEventEmitter {
         return this._fixtureHookController.isTestBlocked(this.test);
     }
 
-    public async start (connection: BrowserConnection): Promise<string | null> {
-        const testRun = await this._createTestRun(connection);
+    public async start (connection: BrowserConnection, startRunExecutionTime?: Date): Promise<string | null> {
+        const testRun = await this._createTestRun(connection, startRunExecutionTime);
 
         const hookOk = await this._fixtureHookController.runFixtureBeforeHookIfNecessary(testRun);
 

@@ -22,6 +22,7 @@ export interface RunnerRunOptions {
     pageLoadTimeout?: number;
     browserInitTimeout?: number;
     testExecutionTimeout?: number;
+    runExecutionTimeout?: number;
     speed?: number;
     stopOnFirstFail?: boolean;
     disablePageCaching?: boolean;
