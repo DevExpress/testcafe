@@ -84,6 +84,7 @@ export const TEST_RUN_ERRORS = {
     multipleWindowsModeIsNotSupportedInRemoteBrowserError: 'E81',
     cannotCloseWindowWithoutParent:                        'E82',
     cannotRestoreChildWindowError:                         'E83',
+    executionTimeoutExceeded:                              'E84',
 };
 
 export const RUNTIME_ERRORS = {

@@ -386,4 +386,8 @@ export default {
     [TEST_RUN_ERRORS.cannotRestoreChildWindowError]: () => `
         Failed to restore connection to window within the allocated timeout.
     `,
+
+    [TEST_RUN_ERRORS.executionTimeoutExceeded]: err => {
+        return `${err.scope} timeout of ${err.timeout}ms exceeded.`;
+    },
 };

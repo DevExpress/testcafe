@@ -50,6 +50,28 @@ export class PageLoadError extends TestRunErrorBase {
     }
 }
 
+// Timeout errors
+//--------------------------------------------------------------------
+export class TimeoutError extends TestRunErrorBase {
+    constructor (timeout, scope) {
+        super(TEST_RUN_ERRORS.executionTimeoutExceeded);
+
+        this.timeout = timeout;
+        this.scope   = scope;
+    }
+}
+
+export class TestTimeoutError extends TimeoutError {
+    constructor (timeout) {
+        super(timeout, 'Test');
+    }
+}
+
+export class RunTimeoutError extends TimeoutError {
+    constructor (timeout) {
+        super(timeout, 'Run');
+    }
+}
 
 // Uncaught errors
 //--------------------------------------------------------------------
