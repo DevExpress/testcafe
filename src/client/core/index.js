@@ -29,6 +29,11 @@ import * as browser from '../browser';
 
 import selectorTextFilter from '../../client-functions/selectors/selector-text-filter';
 import selectorAttributeFilter from '../../client-functions/selectors/selector-attribute-filter';
+import { initializeAdapter } from './utils/adapter/index';
+import adapterInitializer from './utils/adapter/initializer';
+
+
+initializeAdapter(adapterInitializer);
 
 const exports = {};
 

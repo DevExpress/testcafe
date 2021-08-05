@@ -12,8 +12,6 @@ import {
 import { selectElement as selectElementUI } from '../../../deps/testcafe-ui';
 import { ClientFunctionAdapter } from '../types';
 
-// Hack, remove it
-nativeMethods.isArray = Array.isArray;
 
 const initializer: ClientFunctionAdapter = {
     isProxyless:            false,

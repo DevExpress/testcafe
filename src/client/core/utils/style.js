@@ -2,6 +2,8 @@ import hammerhead from '../deps/hammerhead';
 import * as domUtils from './dom';
 import { filter } from './array';
 
+export * from './style.shared';
+
 
 const styleUtils   = hammerhead.utils.style;
 const browserUtils = hammerhead.utils.browser;
@@ -45,28 +47,8 @@ const getScrollable = function (el) {
     return { scrollableHorizontally, scrollableVertically };
 };
 
-const isVisibilityHiddenNode = function (node) {
-    node = domUtils.findParent(node, true, ancestor => {
-        return domUtils.isElementNode(ancestor) && get(ancestor, 'visibility') === 'hidden';
-    });
-
-    return !!node;
-};
-
-const isHiddenNode = function (node) {
-    node = domUtils.findParent(node, true, ancestor => {
-        return domUtils.isElementNode(ancestor) && get(ancestor, 'display') === 'none';
-    });
-
-    return !!node;
-};
-
 export function isFixedElement (node) {
     return domUtils.isElementNode(node) && get(node, 'position') === 'fixed';
-}
-
-export function isNotVisibleNode (node) {
-    return !domUtils.isRenderedNode(node) || isHiddenNode(node) || isVisibilityHiddenNode(node);
 }
 
 export function getScrollableParents (element) {
@@ -147,11 +129,6 @@ export function hasScroll (el) {
     const hasHorizontalScroll = scrollableHorizontally && el.scrollWidth > el.clientWidth;
 
     return hasHorizontalScroll || hasVerticalScroll;
-}
-
-export function hasDimensions (el) {
-    //NOTE: it's like jquery ':visible' selector (http://blog.jquery.com/2009/02/20/jquery-1-3-2-released/)
-    return el && !(el.offsetHeight <= 0 && el.offsetWidth <= 0);
 }
 
 export function set (el, style, value) {
