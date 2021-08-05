@@ -10,6 +10,7 @@ export default [
     OPTION_NAMES.assertionTimeout,
     OPTION_NAMES.pageLoadTimeout,
     OPTION_NAMES.browserInitTimeout,
+    OPTION_NAMES.testExecutionTimeout,
     OPTION_NAMES.speed,
     OPTION_NAMES.stopOnFirstFail,
     OPTION_NAMES.disablePageCaching,

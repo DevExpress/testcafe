@@ -25,6 +25,7 @@ enum OptionNames {
     assertionTimeout = 'assertionTimeout',
     pageLoadTimeout = 'pageLoadTimeout',
     browserInitTimeout = 'browserInitTimeout',
+    testExecutionTimeout = 'testExecutionTimeout',
     videoPath = 'videoPath',
     videoOptions = 'videoOptions',
     videoEncodingOptions = 'videoEncodingOptions',

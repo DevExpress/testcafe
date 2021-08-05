@@ -20,6 +20,7 @@ import {
     SwitchToWindowPredicateError,
     WindowNotFoundError,
     RequestHookBaseError,
+    TestTimeoutError,
 } from '../errors/test-run/';
 
 import CLIENT_MESSAGES from './client-messages';
@@ -115,6 +116,7 @@ import asyncFilter from '../utils/async-filter';
 import PROXYLESS_COMMANDS from './proxyless-commands-support';
 import Fixture from '../api/structure/fixture';
 import MessageBus from '../utils/message-bus';
+import timeLimit from 'time-limit-promise';
 
 const lazyRequire                 = require('import-lazy')(require);
 const ClientFunctionBuilder       = lazyRequire('../client-functions/client-function-builder');
@@ -199,6 +201,7 @@ export default class TestRun extends AsyncEventEmitter {
     public activeIframeSelector: ExecuteSelectorCommand | null;
     public speed: number;
     public pageLoadTimeout: number;
+    public executionTimeout: number;
     private disablePageReloads: boolean;
     private disablePageCaching: boolean;
     private disableMultipleWindows: boolean;
@@ -258,6 +261,7 @@ export default class TestRun extends AsyncEventEmitter {
         this.activeIframeSelector = null;
         this.speed                = this.opts.speed as number;
         this.pageLoadTimeout      = this._getPageLoadTimeout(test, opts);
+        this.executionTimeout     = this._getTestExecutionTimeout(opts);
 
         this.disablePageReloads   = test.disablePageReloads || opts.disablePageReloads as boolean && test.disablePageReloads !== false;
         this.disablePageCaching   = test.disablePageCaching || opts.disablePageCaching as boolean;
@@ -330,6 +334,10 @@ export default class TestRun extends AsyncEventEmitter {
             page: test.timeouts?.pageRequestTimeout || opts.pageRequestTimeout as number,
             ajax: test.timeouts?.ajaxRequestTimeout || opts.ajaxRequestTimeout as number,
         };
+    }
+
+    private _getTestExecutionTimeout (opts: Dictionary<OptionValue>): number {
+        return opts.testExecutionTimeout as number;
     }
 
     private _addClientScriptContentWarningsIfNecessary (): void {
@@ -528,11 +536,14 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     // Test function execution
-    private async _executeTestFn (phase: TestRunPhase, fn: Function): Promise<boolean> {
+    private async _executeTestFn (phase: TestRunPhase, fn: Function, timeout = 0): Promise<boolean> {
         this.phase = phase;
 
         try {
-            await fn(this);
+            if (timeout)
+                await timeLimit(fn(this), timeout, { rejectWith: new TestTimeoutError(timeout) });
+            else
+                await fn(this);
         }
         catch (err) {
             await this._makeScreenshotOnFail();
@@ -602,7 +613,7 @@ export default class TestRun extends AsyncEventEmitter {
         await this.emit('ready');
 
         if (await this._runBeforeHook()) {
-            await this._executeTestFn(TestRunPhase.inTest, this.test.fn as Function);
+            await this._executeTestFn(TestRunPhase.inTest, this.test.fn as Function, this.executionTimeout);
             await this._runAfterHook();
         }
 

@@ -21,6 +21,7 @@ export interface RunnerRunOptions {
     assertionTimeout?: number;
     pageLoadTimeout?: number;
     browserInitTimeout?: number;
+    testExecutionTimeout?: number;
     speed?: number;
     stopOnFirstFail?: boolean;
     disablePageCaching?: boolean;
