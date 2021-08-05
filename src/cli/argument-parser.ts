@@ -64,6 +64,7 @@ interface CommandLineOptions {
     ajaxRequestTimeout?: string | number;
     browserInitTimeout?: string | number;
     testExecutionTimeout?: string | number;
+    runExecutionTimeout?: string | number;
     concurrency?: string | number;
     quarantineMode?: boolean | Dictionary<string | number>;
     ports?: string | number[];
@@ -145,6 +146,7 @@ export default class CLIArgumentParser {
             .option('--ajax-request-timeout <ms>', 'specifies the timeout in milliseconds to complete the AJAX requests (XHR or fetch)')
             .option('--browser-init-timeout <ms>', 'specify the time (in milliseconds) TestCafe waits for the browser to start')
             .option('--test-execution-timeout <ms>', 'specify the time (in milliseconds) TestCafe waits for the test executed')
+            .option('--run-execution-timeout <ms>', 'specify the time (in milliseconds) TestCafe waits for the all test executed')
             .option('--speed <factor>', 'set the speed of test execution (0.01 ... 1)')
             .option('--ports <port1,port2>', 'specify custom port numbers')
             .option('--hostname <name>', 'specify the hostname')
@@ -275,6 +277,14 @@ export default class CLIArgumentParser {
             assertType(is.nonNegativeNumberString, null, 'The test execution timeout', this.opts.testExecutionTimeout);
 
             this.opts.testExecutionTimeout = parseInt(this.opts.testExecutionTimeout as string, 10);
+        }
+    }
+
+    private _parseRunExecutionTimeout (): void {
+        if (this.opts.runExecutionTimeout) {
+            assertType(is.nonNegativeNumberString, null, 'The run execution timeout', this.opts.runExecutionTimeout);
+
+            this.opts.runExecutionTimeout = parseInt(this.opts.runExecutionTimeout as string, 10);
         }
     }
 
@@ -422,6 +432,7 @@ export default class CLIArgumentParser {
         this._parseAjaxRequestTimeout();
         this._parseBrowserInitTimeout();
         this._parseTestExecutionTimeout();
+        this._parseRunExecutionTimeout();
         this._parseAppInitDelay();
         this._parseSpeed();
         this._parsePorts();
