@@ -132,7 +132,7 @@ class TestRunProxy extends AsyncEventEmitter {
     public async executeExpression (command: CommandBase, apiActionName?: string, callsite?: CallsiteRecord | string): Promise<unknown> {
         return apiActionName && callsite instanceof CallsiteRecord
             ? this.executeAction(apiActionName, command, callsite)
-            : this.executeCommand(command, callsite as string);
+            : this._executeCommand(command, callsite as string);
     }
 
     public async executeAction (apiMethodName: string, command: CommandBase, callsite: CallsiteRecord): Promise<unknown> {
@@ -167,7 +167,7 @@ class TestRunProxy extends AsyncEventEmitter {
         });
     }
 
-    public async executeCommand (command: CommandBase, callsite?: string): Promise<unknown> {
+    public async _executeCommand (command: CommandBase, callsite?: string): Promise<unknown> {
         if (command.type === COMMAND_TYPE.assertion)
             this._handleAssertionCommand(command as AssertionCommand);
 
