@@ -970,8 +970,8 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     public async executeExpression (command: CommandBase, callsite?: string | CallsiteRecord, apiActionName?: string): Promise<unknown> {
-        return apiActionName && callsite instanceof CallsiteRecord
-            ? this._executeAction(apiActionName, command, callsite)
+        return apiActionName
+            ? this._executeAction(apiActionName, command, callsite as CallsiteRecord)
             : this._executeCommand(command, callsite);
     }
 
