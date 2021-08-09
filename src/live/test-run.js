@@ -41,14 +41,14 @@ export const TestRunCtorFactory = function (callbacks) {
                 });
         }
 
-        executeCommand (commandToExec, callsite, forced) {
+        _executeCommand (commandToExec, callsite, forced) {
             // NOTE: don't close the page and the session when the last test in the queue is done
             if (commandToExec.type === COMMAND_TYPE.testDone && !forced) {
                 done(this, this.stopped)
-                    .then(() => this.executeCommand(commandToExec, callsite, true))
+                    .then(() => this._executeCommand(commandToExec, callsite, true))
                     .then(() => readyToNext(this));
 
-                this.executeCommand(new UnlockPageCommand(), null);
+                this._executeCommand(new UnlockPageCommand(), null);
 
                 return Promise.resolve();
             }
@@ -60,7 +60,7 @@ export const TestRunCtorFactory = function (callbacks) {
                 return Promise.reject(new Error(TEST_RUN_ABORTED_MESSAGE));
             }
 
-            return super.executeCommand(commandToExec, callsite);
+            return super._executeCommand(commandToExec, callsite);
         }
     };
 };
