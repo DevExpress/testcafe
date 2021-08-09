@@ -969,10 +969,10 @@ export default class TestRun extends AsyncEventEmitter {
             await this._enqueueSetBreakpointCommand(callsite);
     }
 
-    public async executeExpression (command: CommandBase, callsite?: string | CallsiteRecord, apiActionName?: string) {
+    public async executeExpression (command: CommandBase, callsite?: string | CallsiteRecord, apiActionName?: string): Promise<unknown> {
         return apiActionName && callsite instanceof CallsiteRecord
-               ? this.executeAction(apiActionName, command, callsite)
-               : this._executeCommand(command, callsite);
+            ? this.executeAction(apiActionName, command, callsite)
+            : this._executeCommand(command, callsite);
     }
 
     public async executeAction (apiActionName: string, command: CommandBase, callsite: CallsiteRecord): Promise<unknown> {
