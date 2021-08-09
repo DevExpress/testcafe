@@ -17,7 +17,7 @@ class TestRunMock extends BaseTestRunMock {
         this.errors.push(err);
     }
 
-    executeAction (actionName, command) {
+    _executeAction (actionName, command) {
         return this._executeCommand(command);
     }
 

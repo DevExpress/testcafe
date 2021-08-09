@@ -971,11 +971,11 @@ export default class TestRun extends AsyncEventEmitter {
 
     public async executeExpression (command: CommandBase, callsite?: string | CallsiteRecord, apiActionName?: string): Promise<unknown> {
         return apiActionName && callsite instanceof CallsiteRecord
-            ? this.executeAction(apiActionName, command, callsite)
+            ? this._executeAction(apiActionName, command, callsite)
             : this._executeCommand(command, callsite);
     }
 
-    public async executeAction (apiActionName: string, command: CommandBase, callsite: CallsiteRecord): Promise<unknown> {
+    public async _executeAction (apiActionName: string, command: CommandBase, callsite: CallsiteRecord): Promise<unknown> {
         const actionArgs = { apiActionName, command };
 
         let errorAdapter = null;
