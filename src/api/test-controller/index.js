@@ -142,7 +142,7 @@ export default class TestController {
             }
 
             return () => {
-                return this.testRun.executeAction(apiMethodName, command, callsite)
+                return this.testRun.executeExpression(command, callsite, apiMethodName)
                     .catch(err => {
                         this.executionChain = Promise.resolve();
 
@@ -444,14 +444,14 @@ export default class TestController {
         const name     = 'getNativeDialogHistory';
         const callsite = getCallsiteForMethod(name);
 
-        return this.testRun.executeAction(name, new GetNativeDialogHistoryCommand(), callsite);
+        return this.testRun.executeExpression(new GetNativeDialogHistoryCommand(), callsite, name);
     }
 
     _getBrowserConsoleMessages$ () {
         const name     = 'getBrowserConsoleMessages';
         const callsite = getCallsiteForMethod(name);
 
-        return this.testRun.executeAction(name, new GetBrowserConsoleMessagesCommand(), callsite);
+        return this.testRun.executeExpression(new GetBrowserConsoleMessagesCommand(), callsite, name);
     }
 
     _checkForExcessiveAwaits (snapshotPropertyCallsites, checkedCallsite) {
