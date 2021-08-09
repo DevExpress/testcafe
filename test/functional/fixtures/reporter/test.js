@@ -235,6 +235,44 @@ describe('Reporter', () => {
             });
     });
 
+    it('reportTestActionDone should work in the raw tests', () => {
+        const expected = [
+            { expression: 'Selector(\'#button\')', element: { tagName: 'button', attributes: { type: 'button', id: 'button' } } },
+        ];
+
+        function customReporter (log) {
+            return () => {
+                return {
+                    async reportTestActionDone (name, { command, browser }) {
+                        log[browser.alias] = log[browser.alias] || [];
+
+                        if (command.selector)
+                            log[browser.alias].push(command.selector);
+                    },
+                    async reportTaskStart () {
+                    },
+                    async reportFixtureStart () {
+                    },
+                    async reportTestDone () {
+                    },
+                    async reportTaskDone () {
+                    },
+                };
+            };
+        }
+
+        const log = {};
+
+        return runTests('testcafe-fixtures/index-test.testcafe', 'reportTestActionDone should work in the raw tests', { reporter: customReporter(log) })
+            .then(() => {
+                const logs = Object.values(log);
+
+                expect(logs.length).gt(0);
+
+                logs.forEach(browserLog => expect(browserLog).eql(expected));
+            });
+    });
+
     describe('Test actions', () => {
         function generateRunOptions (log, options) {
             return {
