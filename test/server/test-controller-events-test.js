@@ -220,7 +220,7 @@ describe('TestController action events', () => {
             },
         });
 
-        testController.testRun.executeCommand = () => {
+        testController.testRun._executeCommand = () => {
             return delay(10)
                 .then(() => {
                     throw new Error('test error');
@@ -248,7 +248,7 @@ describe('TestController action events', () => {
             },
         });
 
-        testController.testRun.executeCommand = () => {
+        testController.testRun._executeCommand = () => {
             return delay(10);
         };
 

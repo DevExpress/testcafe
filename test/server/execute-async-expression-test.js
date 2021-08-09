@@ -44,14 +44,14 @@ class TestRunMock extends BaseTestRunMock {
 async function executeAsyncExpression (expression, testRun = new TestRunMock()) {
     callsite++;
 
-    return await testRun.executeCommand({
+    return await testRun.executeExpression({
         type: COMMAND_TYPE.executeAsyncExpression,
         expression,
     }, callsite.toString());
 }
 
 async function executeExpression (expression, customVarName, testRun = new TestRunMock()) {
-    return testRun.executeCommand({
+    return testRun.executeExpression({
         type:               COMMAND_TYPE.executeExpression,
         resultVariableName: customVarName,
         expression,
