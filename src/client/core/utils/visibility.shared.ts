@@ -20,7 +20,7 @@ export function isElementVisible (el: Node): boolean {
     }
 
     if (adapter.isSelectVisibleChild(el)) {
-        const select              = adapter.getSelectParent(el);
+        const select              = adapter.getSelectParent(el) as HTMLSelectElement;
         const childRealIndex      = adapter.getChildVisibleIndex(select, el);
         const realSelectSizeValue = adapter.getSelectElementSize(select);
         const topVisibleIndex     = Math.max(adapter.getScrollTop(select) / adapter.getOptionHeight(select), 0);

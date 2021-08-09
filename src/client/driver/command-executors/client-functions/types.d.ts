@@ -47,7 +47,11 @@ export interface NativeMethods {
     HTMLCollection: typeof HTMLCollection;
     setTimeout: Window['setTimeout'];
     elementClass: typeof Element;
+    svgElementClass: typeof SVGElement;
     closest: Element['closest'];
+    getAttribute: Element['getAttribute'];
+    querySelector: HTMLElement['querySelector'];
+    querySelectorAll: HTMLElement['querySelectorAll'];
 }
 
 export interface ClientFunctionAdapter {
