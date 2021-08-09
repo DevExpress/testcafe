@@ -26,7 +26,7 @@ class TestRunMock extends BaseTestRunMock {
         this.disableMultipleWindows = false;
     }
 
-    executeCommand () {
+    _executeCommand () {
         return delay(10);
     }
 
