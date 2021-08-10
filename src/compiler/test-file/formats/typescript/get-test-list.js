@@ -113,7 +113,7 @@ class TypeScriptTestFileParser extends TestFileParserBase {
             start:     loc.start,
             end:       loc.end,
             meta:      merge({}, ...meta),
-            isSkipped: token.isSkipped,
+            isSkipped: TestFileParserBase.isSkipped(token),
         };
     }
 

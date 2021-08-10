@@ -71,7 +71,7 @@ export class EsNextTestFileParser extends TestFileParserBase {
             start:     token.start,
             end:       token.end,
             meta:      merge({}, ...meta),
-            isSkipped: token.isSkipped,
+            isSkipped: TestFileParserBase.isSkipped(token),
         };
     }
 

@@ -169,17 +169,16 @@ export class TestFileParserBase {
         }, []);
     }
 
-    setSkipped (originalToken, token = originalToken) {
+    static isSkipped (originalToken, token = originalToken) {
         const needSkip = token?.property?.name === SKIP_PROPERTY_NAME || token?.name?.text === SKIP_PROPERTY_NAME;
 
-        if (needSkip)
-            originalToken.isSkipped = true;
-        else {
+        if (!needSkip) {
             token = token.callee || token.tag || token.object || token.expression;
 
-            if (token)
-                this.setSkipped(originalToken, token);
+            return token ? TestFileParserBase.isSkipped(originalToken, token) : false;
         }
+
+        return true;
     }
 
     checkExpDefineTargetName (type, apiFn) {
@@ -199,8 +198,6 @@ export class TestFileParserBase {
     analyzeToken (token) {
         const tokenType     = this.tokenType;
         const currTokenType = this.getTokenType(token);
-
-        this.setSkipped(token);
 
         switch (currTokenType) {
             case tokenType.ExpressionStatement:
