@@ -67,8 +67,8 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
     private readonly _compilerPath: string;
     private readonly _customCompilerOptions?: object;
 
-    public constructor (compilerOptions?: TypeScriptCompilerOptions, isExternalServiceMode?: boolean) {
-        super(isExternalServiceMode);
+    public constructor (compilerOptions?: TypeScriptCompilerOptions, isCompilerServiceMode?: boolean) {
+        super(isCompilerServiceMode);
 
         // NOTE: At present, it's necessary create an instance TypeScriptTestFileCompiler
         // to collect a list of supported test file extensions.
@@ -79,7 +79,7 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
         const configPath = compilerOptions && compilerOptions.configPath || null;
 
         this._customCompilerOptions = compilerOptions && compilerOptions.options;
-        this._tsConfig              = new TypescriptConfiguration(configPath, isExternalServiceMode);
+        this._tsConfig              = new TypescriptConfiguration(configPath, isCompilerServiceMode);
         this._compilerPath          = TypeScriptTestFileCompiler._getCompilerPath(compilerOptions);
     }
 

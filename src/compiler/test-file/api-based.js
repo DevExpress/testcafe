@@ -22,10 +22,10 @@ const TEST_RE    = /(^|;|\s+)test\s*(\.|\()/;
 const Module = module.constructor;
 
 export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
-    constructor (isExternalServiceMode) {
+    constructor (isCompilerServiceMode) {
         super();
 
-        this.isExternalServiceMode = isExternalServiceMode;
+        this.isCompilerServiceMode = isCompilerServiceMode;
         this.cache                 = Object.create(null);
         this.origRequireExtensions = Object.create(null);
     }
@@ -83,8 +83,6 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
                 global.customExtensionHook = null;
 
                 this._compileModule(mod, filename, requireCompiler);
-
-                global.customExtensionHook = null;
             };
         }
 
@@ -115,7 +113,7 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
                 // NOTE: remove global API so that it will be unavailable for the dependencies
                 this._removeGlobalAPI();
 
-                if (this.isExternalServiceMode)
+                if (this.isCompilerServiceMode)
                     this._compileExternalModuleInEsmMode(mod, filename, requireCompilers[ext], origExt);
                 else
                     this._compileExternalModule(mod, filename, requireCompilers[ext], origExt);
