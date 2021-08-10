@@ -6,12 +6,15 @@ const adapter: CoreUtilsAdapter = {};
 export default adapter;
 
 export function initializeAdapter (initializer: CoreUtilsAdapter): void {
-    if (initializer.nativeMethods.objectAssign)
-        return void initializer.nativeMethods.objectAssign(adapter, initializer);
+    if (initializer.nativeMethods.objectAssign) {
+        initializer.nativeMethods.objectAssign(adapter, initializer);
 
-    let keys = initializer.nativeMethods.objectKeys(initializer) as (keyof CoreUtilsAdapter)[];
+        return;
+    }
 
-    for (let key of keys)
+    const keys = initializer.nativeMethods.objectKeys(initializer) as (keyof CoreUtilsAdapter)[];
+
+    for (const key of keys)
         // @ts-ignore
         adapter[key] = initializer[key];
 }
