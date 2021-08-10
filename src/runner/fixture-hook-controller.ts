@@ -3,7 +3,7 @@ import processTestFnError from '../errors/process-test-fn-error';
 import Test from '../api/structure/test';
 import Fixture from '../api/structure/fixture';
 import TestRun from '../test-run';
-import timeLimit from 'time-limit-promise';
+import executeFnWithTimeout from '../utils/execute-fn-with-timeout';
 
 interface FixtureState {
     started: boolean;
@@ -66,15 +66,12 @@ export default class FixtureHookController {
 
         item.runningFixtureBeforeHook = true;
 
-        try {
-            if (testRun.restRunExecutionTimeout)
-                await timeLimit(fn(item.fixtureCtx), testRun.restRunExecutionTimeout.timeout, { rejectWith: testRun.restRunExecutionTimeout?.rejectWith });
-            else
-                await fn(item.fixtureCtx);
-        }
-        catch (err) {
-            item.fixtureBeforeHookErr = processTestFnError(err);
-        }
+                try {
+                    await executeFnWithTimeout(fn, testRun.executionTimeout, item.fixtureCtx);
+                }
+                catch (err) {
+                    item.fixtureBeforeHookErr = processTestFnError(err);
+                }
 
         item.runningFixtureBeforeHook = false;
 
@@ -88,10 +85,7 @@ export default class FixtureHookController {
         testRun.phase = TEST_RUN_PHASE.inFixtureAfterHook;
 
         try {
-            if (testRun.restRunExecutionTimeout)
-                await timeLimit(fn(item.fixtureCtx), testRun.restRunExecutionTimeout.timeout, { rejectWith: testRun.restRunExecutionTimeout.rejectWith });
-            else
-                await fn(item.fixtureCtx);
+            await executeFnWithTimeout(fn, testRun.executionTimeout, item.fixtureCtx);
         }
         catch (err) {
             testRun.addError(processTestFnError(err));

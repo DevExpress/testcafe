@@ -118,6 +118,7 @@ import PROXYLESS_COMMANDS from './proxyless-commands-support';
 import Fixture from '../api/structure/fixture';
 import MessageBus from '../utils/message-bus';
 import timeLimit from 'time-limit-promise';
+import executeFnWithTimeout from '../utils/execute-fn-with-timeout';
 
 const lazyRequire                 = require('import-lazy')(require);
 const ClientFunctionBuilder       = lazyRequire('../client-functions/client-function-builder');
@@ -382,6 +383,12 @@ export default class TestRun extends AsyncEventEmitter {
         return this._getExecutionTimeout(currentTimeout, this.runExecutionTimeout.rejectWith);
     }
 
+    public get executionTimeout (): ExecutionTimeout | null {
+        return this.restRunExecutionTimeout && (!this.testExecutionTimeout || this.restRunExecutionTimeout.timeout < this.testExecutionTimeout.timeout)
+            ? this.restRunExecutionTimeout
+            : this.testExecutionTimeout || null;
+    }
+
     private _addClientScriptContentWarningsIfNecessary (): void {
         const { empty, duplicatedContent } = findProblematicScripts(this.test.clientScripts as ClientScript[]);
 
@@ -578,15 +585,11 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     // Test function execution
-    private async _executeTestFn (phase: TestRunPhase, fn: Function, timeout?: ExecutionTimeout | null): Promise<boolean> {
-        const minTimeout = this.restRunExecutionTimeout && (!timeout || this.restRunExecutionTimeout.timeout < timeout.timeout)
-            ? this.restRunExecutionTimeout
-            : timeout;
-
+    private async _executeTestFn (phase: TestRunPhase, fn: Function, timeout: ExecutionTimeout | null): Promise<boolean> {
         this.phase = phase;
 
         try {
-            await this._executeFnWithTimeout(fn, minTimeout);
+            await executeFnWithTimeout(fn, timeout, this);
         }
         catch (err) {
             await this._makeScreenshotOnFail();
@@ -602,25 +605,15 @@ export default class TestRun extends AsyncEventEmitter {
         return !this._addPendingPageErrorIfAny();
     }
 
-    // This function can finish with reject
-    private async _executeFnWithTimeout (fn: Function, timeout?: ExecutionTimeout | null): Promise<void> {
-        if (!timeout)
-            await fn(this);
-        else if (!timeout.timeout)
-            throw timeout.rejectWith;
-        else
-            await timeLimit(fn(this), timeout.timeout, { rejectWith: timeout.rejectWith });
-    }
-
     private async _runBeforeHook (): Promise<boolean> {
         if (this.test.globalBeforeFn)
             await this._executeTestFn(TestRunPhase.inTestBeforeHook, this.test.globalBeforeFn);
 
         if (this.test.beforeFn)
-            return await this._executeTestFn(TestRunPhase.inTestBeforeHook, this.test.beforeFn);
+            return await this._executeTestFn(TestRunPhase.inTestBeforeHook, this.test.beforeFn, this.executionTimeout);
 
         if (this.test.fixture?.beforeEachFn)
-            return await this._executeTestFn(TestRunPhase.inFixtureBeforeEachHook, this.test.fixture?.beforeEachFn);
+            return await this._executeTestFn(TestRunPhase.inFixtureBeforeEachHook, this.test.fixture?.beforeEachFn, this.executionTimeout);
 
         return true;
     }
@@ -630,10 +623,10 @@ export default class TestRun extends AsyncEventEmitter {
             await this._executeTestFn(TestRunPhase.inTestAfterHook, this.test.globalAfterFn);
 
         if (this.test.afterFn)
-            return await this._executeTestFn(TestRunPhase.inTestAfterHook, this.test.afterFn);
+            return await this._executeTestFn(TestRunPhase.inTestAfterHook, this.test.afterFn, this.executionTimeout);
 
         if (this.test.fixture?.afterEachFn)
-            return await this._executeTestFn(TestRunPhase.inFixtureAfterEachHook, this.test.fixture?.afterEachFn);
+            return await this._executeTestFn(TestRunPhase.inFixtureAfterEachHook, this.test.fixture?.afterEachFn, this.executionTimeout);
 
         return true;
     }
@@ -666,7 +659,7 @@ export default class TestRun extends AsyncEventEmitter {
         await this.emit('ready');
 
         if (await this._runBeforeHook()) {
-            await this._executeTestFn(TestRunPhase.inTest, this.test.fn as Function, this.testExecutionTimeout);
+            await this._executeTestFn(TestRunPhase.inTest, this.test.fn as Function, this.executionTimeout);
             await this._runAfterHook();
         }
 
