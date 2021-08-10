@@ -21,6 +21,8 @@ const CWD = process.cwd();
 const FIXTURE_RE = /(^|;|\s+)fixture\s*(\.|\(|`)/;
 const TEST_RE    = /(^|;|\s+)test\s*(\.|\()/;
 
+const TESTCAFE_LIB_FOLDER_NAME = 'lib';
+
 const Module = module.constructor;
 
 export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
@@ -46,7 +48,7 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
 
     static _isTestCafeLibDep (filename) {
         return relative(CWD, filename)
-            .split(pathSep)[0] === 'lib';
+            .split(pathSep)[0] === TESTCAFE_LIB_FOLDER_NAME;
     }
 
     _execAsModule (code, filename) {

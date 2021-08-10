@@ -4,9 +4,11 @@ import { Dictionary } from '../../configuration/interfaces';
 const Module = require('module');
 
 let cachePrefix: string | null = null;
+let storedComplilerId: string | null = null;
+let cachePrevented = false;
 
 function getFileNameCacheKey (fileName: string): string {
-    if (cachePrefix &&
+    if (!cachePrevented && cachePrefix && storedComplilerId !== cachePrefix &&
         !APIBasedTestFileCompilerBase._isNodeModulesDep(fileName) &&
         !APIBasedTestFileCompilerBase._isTestCafeLibDep(fileName))
         return `${fileName}_${cachePrefix}`;
@@ -35,11 +37,18 @@ class RequireCacheProxy {
     }
 
     public startExternalCaching (compilerId: string): void {
+        if (!storedComplilerId)
+            storedComplilerId = compilerId;
+
         cachePrefix = compilerId;
     }
 
     public stopExternalCaching (): void {
         cachePrefix = null;
+    }
+
+    public preventCaching (): void {
+        cachePrevented = true;
     }
 }
 
