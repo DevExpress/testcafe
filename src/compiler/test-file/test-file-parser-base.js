@@ -5,6 +5,7 @@ import { RUNTIME_ERRORS } from '../../errors/types';
 
 const METHODS_SPECIFYING_NAME = ['only', 'skip'];
 const COMPUTED_NAME_TEXT_TMP  = '<computed name>(line: %s)';
+const SKIP_PROPERTY_NAME      = 'skip';
 
 function getLoc (loc) {
     // NOTE: Don't modify the Babel's parser data structure
@@ -27,7 +28,7 @@ export class Fixture {
         this.end       = end;
         this.meta      = meta;
         this.tests     = [];
-        this.isSkipped = isSkipped ? isSkipped : false;
+        this.isSkipped = !!isSkipped;
     }
 }
 
@@ -38,7 +39,7 @@ export class Test {
         this.start     = start;
         this.end       = end;
         this.meta      = meta;
-        this.isSkipped = isSkipped ? isSkipped : false;
+        this.isSkipped = !!isSkipped;
     }
 }
 
@@ -168,23 +169,17 @@ export class TestFileParserBase {
         }, []);
     }
 
-    getSkippedInfo (token, originalToken) {
+    setSkipped (originalToken, token = originalToken) {
+        const needSkip = token?.property?.name === SKIP_PROPERTY_NAME || token?.name?.text === SKIP_PROPERTY_NAME;
 
-        // For js: PropertyAccessExpression, TaggedTemplateExpression, CallExpression
-        if (token && token.property && token.property.name === 'skip')
+        if (needSkip)
             originalToken.isSkipped = true;
+        else {
+            token = token.callee || token.tag || token.object || token.expression;
 
-        // For ts
-        if (token && token.name && token.name.text === 'skip')
-            originalToken.isSkipped = true;
-
-        else if (token.callee || token.tag || token.object || token.expression) {
-            const curr = token.callee || token.tag || token.object || token.expression;
-
-            return this.getSkippedInfo(curr, originalToken);
+            if (token)
+                this.setSkipped(originalToken, token);
         }
-
-        return originalToken;
     }
 
     checkExpDefineTargetName (type, apiFn) {
@@ -202,35 +197,36 @@ export class TestFileParserBase {
     }
 
     analyzeToken (token) {
-        const currToken     = this.getSkippedInfo(token, token);
         const tokenType     = this.tokenType;
-        const currTokenType = this.getTokenType(currToken);
+        const currTokenType = this.getTokenType(token);
+
+        this.setSkipped(token);
 
         switch (currTokenType) {
             case tokenType.ExpressionStatement:
             case tokenType.TypeAssertionExpression:
-                return this.analyzeToken(currToken.expression);
+                return this.analyzeToken(token.expression);
 
             case tokenType.FunctionDeclaration:
             case tokenType.FunctionExpression:
-                if (this.isAsyncFn(currToken))
+                if (this.isAsyncFn(token))
                     return null;
 
-                return this.getFunctionBody(currToken).map(this.analyzeToken, this);
+                return this.getFunctionBody(token).map(this.analyzeToken, this);
 
             case tokenType.VariableDeclaration:
             case tokenType.VariableStatement: {
-                const variableValue = this.getRValue(currToken); // Skip variable declarations like `var foo;`
+                const variableValue = this.getRValue(token); // Skip variable declarations like `var foo;`
 
                 return variableValue ? this.analyzeToken(variableValue) : null;
             }
             case tokenType.CallExpression:
             case tokenType.PropertyAccessExpression:
             case tokenType.TaggedTemplateExpression:
-                return this.analyzeFnCall(currToken);
+                return this.analyzeFnCall(token);
 
             case tokenType.ReturnStatement:
-                return currToken.argument ? this.analyzeToken(currToken.argument) : null;
+                return token.argument ? this.analyzeToken(token.argument) : null;
         }
 
         return null;
@@ -258,16 +254,18 @@ export class TestFileParserBase {
 
             if (call.fnName === 'fixture') {
                 fixtures.push(new Fixture(call.value, call.start, call.end, call.loc, call.meta, call.isSkipped));
+
                 return;
             }
 
             if (!fixtures.length) return;
 
-            // If the fixture is skipped, mark all the tests in the fixture skipped, otherwise, use the current test identifier
-            const testIsSkipped = fixtures[fixtures.length - 1].isSkipped ? fixtures[fixtures.length - 1].isSkipped : call.isSkipped;
-            const test = new Test(call.value, call.start, call.end, call.loc, call.meta, testIsSkipped);
+            // NOTE: If the fixture is skipped, mark all the tests in the fixture skipped, otherwise, use the current test identifier
+            const currentFixture = fixtures[fixtures.length - 1];
+            const testIsSkipped  = currentFixture.isSkipped || call.isSkipped;
+            const test           = new Test(call.value, call.start, call.end, call.loc, call.meta, testIsSkipped);
 
-            fixtures[fixtures.length - 1].tests.push(test);
+            currentFixture.tests.push(test);
         });
 
         return fixtures;
