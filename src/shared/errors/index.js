@@ -55,8 +55,8 @@ export class SelectorErrorBase extends TestRunErrorBase {
 }
 
 export class InvalidSelectorResultError extends TestRunErrorBase {
-    constructor () {
-        super(TEST_RUN_ERRORS.invalidSelectorResultError);
+    constructor (callsite) {
+        super(TEST_RUN_ERRORS.invalidSelectorResultError, callsite);
     }
 }
 
@@ -90,8 +90,8 @@ export class UncaughtErrorInClientFunctionCode extends TestRunErrorBase {
 }
 
 export class UncaughtErrorInCustomDOMPropertyCode extends TestRunErrorBase {
-    constructor (instantiationCallsiteName, err, prop) {
-        super(TEST_RUN_ERRORS.uncaughtErrorInCustomDOMPropertyCode);
+    constructor (instantiationCallsiteName, err, prop, callsite) {
+        super(TEST_RUN_ERRORS.uncaughtErrorInCustomDOMPropertyCode, callsite);
 
         this.errMsg                    = String(err);
         this.property                  = prop;

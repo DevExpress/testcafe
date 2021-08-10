@@ -124,6 +124,7 @@ export default {
             hasExecuteClientFunction:       !!client,
             hasSwitchToIframe:              !!client,
             hasSwitchToMainWindow:          !!client,
+            hasExecuteSelector:             !!client,
         };
     },
 

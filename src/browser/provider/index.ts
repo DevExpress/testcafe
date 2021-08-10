@@ -405,6 +405,10 @@ export default class BrowserProvider {
         return this.plugin.executeClientFunction(browserId, command, callsite);
     }
 
+    public async executeSelector (browserId: string, command: any, callsite: any, selectorTimeout: number): Promise<any> {
+        return this.plugin.executeSelector(browserId, command, callsite, selectorTimeout);
+    }
+
     public async switchToIframe (browserId: string): Promise<void> {
         return this.plugin.switchToIframe(browserId);
     }

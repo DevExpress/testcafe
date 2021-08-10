@@ -82,14 +82,10 @@ export class SelectorNodeTransform implements Transform {
 
         for (const prop of props) {
             try {
-                // TODO: remove ts-ignore
-                // @ts-ignore
                 snapshot[prop] = this._customDOMProperties[prop](node);
             }
             catch (err) {
-                throw adapter.isProxyless
-                    ? UncaughtErrorInCustomDOMPropertyCode.name
-                    : new UncaughtErrorInCustomDOMPropertyCode(this._instantiationCallsiteName, err, prop);
+                throw new UncaughtErrorInCustomDOMPropertyCode(this._instantiationCallsiteName, err, prop);
             }
         }
     }
@@ -119,7 +115,7 @@ export class ClientFunctionNodeTransform implements Transform {
     }
 
     public shouldTransform (type: string, val: unknown): boolean {
-        if (val instanceof Node) {
+        if (val instanceof adapter.nativeMethods.Node) {
             throw adapter.isProxyless
                 ? DomNodeClientFunctionResultError.name
                 : new DomNodeClientFunctionResultError(this._instantiationCallsiteName);

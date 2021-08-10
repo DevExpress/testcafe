@@ -53,7 +53,7 @@ export function getActiveElement (): Element {
 export function getSelectParent (el: Node): HTMLSelectElement | null {
     const parent = el.parentNode; // eslint-disable-line no-restricted-properties
 
-    return parent && nativeMethods.closest.call(parent, 'select') as HTMLSelectElement;
+    return closest(parent as Element, 'select') as HTMLSelectElement;
 }
 
 export function isOptionElementVisible (el: HTMLOptionElement): boolean {

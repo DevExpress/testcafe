@@ -10,7 +10,7 @@ const initializer: ClientFunctionAdapter = {
     PromiseCtor:   nativeMethods.Promise,
 
     // eslint-disable-next-line hammerhead/use-native-methods
-    delay: (ms: number) => new nativeMethods.Promise(resolve => nativeMethods.setTimeout(resolve, ms)),
+    delay: (ms: number) => new nativeMethods.Promise(resolve => nativeMethods.setTimeout.call(window, resolve, ms)),
 
     isShadowRoot:     domUtils.isShadowRoot,
     isDomElement:     domUtils.isDomElement,

@@ -108,6 +108,13 @@ export default {
         return browserClient.executeClientFunction(command, callsite);
     },
 
+    async executeSelector (browserId, command, callsite, selectorTimeout) {
+        const runtimeInfo   = this.openedBrowsers[browserId];
+        const browserClient = this._getBrowserProtocolClient(runtimeInfo);
+
+        return browserClient.executeSelector(command, callsite, selectorTimeout);
+    },
+
     async switchToIframe (browserId) {
         const runtimeInfo   = this.openedBrowsers[browserId];
         const browserClient = this._getBrowserProtocolClient(runtimeInfo);

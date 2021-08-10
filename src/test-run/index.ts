@@ -137,6 +137,7 @@ const PROXYLESS_COMMANDS = new Map<string, string>();
 PROXYLESS_COMMANDS.set(COMMAND_TYPE.executeClientFunction, 'hasExecuteClientFunction');
 PROXYLESS_COMMANDS.set(COMMAND_TYPE.switchToIframe, 'hasSwitchToIframe');
 PROXYLESS_COMMANDS.set(COMMAND_TYPE.switchToMainWindow, 'hasSwitchToMainWindow');
+PROXYLESS_COMMANDS.set(COMMAND_TYPE.executeSelector, 'hasExecuteSelector');
 
 interface TestRunInit {
     test: Test;
@@ -1040,6 +1041,8 @@ export default class TestRun extends AsyncEventEmitter {
                 postAction = async () => this.browserConnection.provider.switchToIframe(browserId);
             else if (command.type === COMMAND_TYPE.switchToMainWindow)
                 postAction = async () => this.browserConnection.provider.switchToMainWindow(browserId);
+            else if (command.type === COMMAND_TYPE.executeSelector)
+                return this.browserConnection.provider.executeSelector(browserId, command, callsite, this.opts.selectorTimeout);
         }
 
         if (isScreenshotCommand(command)) {

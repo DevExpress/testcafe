@@ -21,11 +21,15 @@ import {
     ClientFunctionExecutionInterruptionError,
     UncaughtErrorInClientFunctionCode,
     DomNodeClientFunctionResultError,
+    UncaughtErrorInCustomDOMPropertyCode,
+    InvalidSelectorResultError,
+    CannotObtainInfoForElementSpecifiedBySelectorError,
 } from '../../../../../../shared/errors';
 
 const DEBUG_SCOPE = (id: string): string => `testcafe:browser:provider:built-in:chrome:browser-client:${id}`;
 const DOWNLOADS_DIR = path.join(os.homedir(), 'Downloads');
 const EXECUTION_CTX_WAS_DESTROYED_CODE = -32000;
+const SELECTOR_MAX_EXECUTE_COUNT = 10;
 
 const debugLog = debug('testcafe:browser:provider:built-in:dedicated:chrome');
 
@@ -348,16 +352,15 @@ export class BrowserClient {
             throw new Error('Cannot get the active browser client');
 
         const expression = `window['%proxyless%'].executeClientFunctionCommand(${JSON.stringify(command)});`;
+        const script     = { expression, awaitPromise: true } as Protocol.Runtime.EvaluateRequest;
+
+        if (this._currentFrameId && this._frameExecutionContexts.has(this._currentFrameId))
+            script.contextId = this._frameExecutionContexts.get(this._currentFrameId);
 
         let result;
         let exceptionDetails;
 
         try {
-            const script = { expression, awaitPromise: true } as Protocol.Runtime.EvaluateRequest;
-
-            if (this._currentFrameId && this._frameExecutionContexts.has(this._currentFrameId))
-                script.contextId = this._frameExecutionContexts.get(this._currentFrameId);
-
             ({ result, exceptionDetails } = await client.Runtime.evaluate(script));
         }
         catch (e) {
@@ -370,6 +373,73 @@ export class BrowserClient {
         if (exceptionDetails) {
             if (exceptionDetails.exception?.value === DomNodeClientFunctionResultError.name)
                 throw new DomNodeClientFunctionResultError(command.instantiationCallsiteName, callsite);
+
+            throw new UncaughtErrorInClientFunctionCode(command.instantiationCallsiteName, exceptionDetails.text, callsite);
+        }
+
+        return JSON.parse(result.value);
+    }
+
+    public async executeSelector (command: any, callsite: any, selectorTimeout: number): Promise<object> {
+        const client = await this.getActiveClient();
+
+        if (!client)
+            throw new Error('Cannot get the active browser client');
+
+        const expression = `window['%proxyless%'].executeSelectorCommand(${JSON.stringify(command)}, ${selectorTimeout}, ${Date.now()});`;
+        const script     = { expression, awaitPromise: true } as Protocol.Runtime.EvaluateRequest;
+
+        let attempts = 0;
+        let err;
+        let result;
+        let exceptionDetails;
+
+        while (attempts++ < SELECTOR_MAX_EXECUTE_COUNT) {
+            if (this._currentFrameId && this._frameExecutionContexts.has(this._currentFrameId))
+                script.contextId = this._frameExecutionContexts.get(this._currentFrameId);
+
+            try {
+                ({ result, exceptionDetails } = await client.Runtime.evaluate(script));
+            }
+            catch (e) {
+                err = e;
+
+                if (e.response?.code === EXECUTION_CTX_WAS_DESTROYED_CODE)
+                    continue;
+            }
+
+            if (result)
+                break;
+        }
+
+        if (!result)
+            throw err;
+
+        if (exceptionDetails) {
+            const exception = exceptionDetails.exception;
+
+            if (exception) {
+                const className  = exception.className;
+                const properties = exception.preview?.properties as Protocol.Runtime.PropertyPreview[];
+
+                if (className === UncaughtErrorInCustomDOMPropertyCode.name) {
+                    throw new UncaughtErrorInCustomDOMPropertyCode(command.instantiationCallsiteName,
+                        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                        properties.find(prop => prop.name === 'errMsg')!.value,
+                        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                        properties.find(prop => prop.name === 'property')!.value,
+                        callsite);
+                }
+                else if (className === CannotObtainInfoForElementSpecifiedBySelectorError.name) {
+                    throw new CannotObtainInfoForElementSpecifiedBySelectorError(callsite, {
+                        apiFnChain: command.apiFnChain,
+                        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                        apiFnIndex: parseInt(properties.find(prop => prop.name === 'apiFnIndex')!.value!, 10),
+                    });
+                }
+                else if (className === InvalidSelectorResultError.name)
+                    throw new InvalidSelectorResultError(callsite);
+            }
 
             throw new UncaughtErrorInClientFunctionCode(command.instantiationCallsiteName, exceptionDetails.text, callsite);
         }
