@@ -4,7 +4,6 @@ import Test from '../api/structure/test';
 import Fixture from '../api/structure/fixture';
 import TestRun from '../test-run';
 import timeLimit from 'time-limit-promise';
-import { RunTimeoutError } from '../errors/test-run';
 
 interface FixtureState {
     started: boolean;
@@ -68,8 +67,8 @@ export default class FixtureHookController {
         item.runningFixtureBeforeHook = true;
 
         try {
-            if (testRun.runExecutionTimeout)
-                await timeLimit(fn(item.fixtureCtx), testRun.restRunExecutionTimeout, { rejectWith: new RunTimeoutError(testRun.runExecutionTimeout) });
+            if (testRun.restRunExecutionTimeout)
+                await timeLimit(fn(item.fixtureCtx), testRun.restRunExecutionTimeout.timeout, { rejectWith: testRun.restRunExecutionTimeout?.rejectWith });
             else
                 await fn(item.fixtureCtx);
         }
@@ -89,8 +88,8 @@ export default class FixtureHookController {
         testRun.phase = TEST_RUN_PHASE.inFixtureAfterHook;
 
         try {
-            if (testRun.runExecutionTimeout)
-                await timeLimit(fn(item.fixtureCtx), testRun.restRunExecutionTimeout, { rejectWith: new RunTimeoutError(testRun.runExecutionTimeout) });
+            if (testRun.restRunExecutionTimeout)
+                await timeLimit(fn(item.fixtureCtx), testRun.restRunExecutionTimeout.timeout, { rejectWith: testRun.restRunExecutionTimeout.rejectWith });
             else
                 await fn(item.fixtureCtx);
         }
