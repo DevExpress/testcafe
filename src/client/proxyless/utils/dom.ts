@@ -62,11 +62,6 @@ export function isOptionElementVisible (el: HTMLOptionElement): boolean {
     if (!parentSelect)
         return true;
 
-    // const expanded        = isOptionListExpanded(parentSelect);
-    // const selectSizeValue = styleUtils.getSelectElementSize(parentSelect);
-    //
-    // return expanded || selectSizeValue > 1;
-
     const selectSizeValue = styleUtils.getSelectElementSize(parentSelect);
 
     return selectSizeValue > 1;

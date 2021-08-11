@@ -83,7 +83,8 @@ import DriverStatus from './status';
 import generateId from './generate-id';
 import ChildIframeDriverLink from './driver-link/iframe/child';
 
-import { createReplicator, SelectorNodeTransform } from './command-executors/client-functions/replicator';
+import createReplicator from './command-executors/client-functions/replicator/index';
+import SelectorNodeTransform from './command-executors/client-functions/replicator/transforms/selector-node-transform';
 
 import executeActionCommand from './command-executors/execute-action';
 import executeManipulationCommand from './command-executors/browser-manipulation';

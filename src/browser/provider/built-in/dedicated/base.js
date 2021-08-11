@@ -108,7 +108,7 @@ export default {
         return browserClient.executeClientFunction(command, callsite);
     },
 
-    async executeSelector (browserId, command, callsite, selectorTimeout) {
+    async executeSelector ({ browserId, command, callsite, selectorTimeout }) {
         const runtimeInfo   = this.openedBrowsers[browserId];
         const browserClient = this._getBrowserProtocolClient(runtimeInfo);
 
