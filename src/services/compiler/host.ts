@@ -69,7 +69,7 @@ import {
 import { UncaughtExceptionError, UnhandledPromiseRejectionError } from '../../errors/test-run';
 import { handleUnexpectedError } from '../../utils/handle-errors';
 
-const SERVICE_PATH       = require.resolve('./service');
+const SERVICE_PATH       = require.resolve('./service-loader');
 const INTERNAL_FILES_URL = pathToFileURL(path.join(__dirname, '../../'));
 
 interface RuntimeResources {

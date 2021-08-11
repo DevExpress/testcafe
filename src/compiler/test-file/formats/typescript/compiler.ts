@@ -11,9 +11,19 @@ import { isRelative } from '../../../../api/test-page-url';
 import EXPORTABLE_LIB_PATH from '../../exportble-lib-path';
 
 // NOTE: For type definitions only
-import TypeScript, { CompilerOptionsValue } from 'typescript';
-import { Dictionary, TypeScriptCompilerOptions } from '../../../../configuration/interfaces';
+import TypeScript, {
+    CompilerOptionsValue,
+    SyntaxKind,
+    VisitResult,
+    Visitor,
+    Node,
+    createStringLiteral,
+    visitEachChild,
+    visitNode,
+    TransformerFactory,
+} from 'typescript';
 
+import { Dictionary, TypeScriptCompilerOptions } from '../../../../configuration/interfaces';
 
 declare type TypeScriptInstance = typeof TypeScript;
 
@@ -29,6 +39,21 @@ interface RequireCompilers {
     [extension: string]: RequireCompilerFunction;
 }
 
+function testcafeImportPathReplacer<T extends Node> (): TransformerFactory<T> {
+    return context => {
+        const visit: Visitor = (node): VisitResult<Node> => {
+            // @ts-ignore
+            if (node.parent?.kind === SyntaxKind.ImportDeclaration && node.kind === SyntaxKind.StringLiteral && node.text === 'testcafe')
+                return createStringLiteral(EXPORTABLE_LIB_PATH);
+
+            return visitEachChild(node, child => visit(child), context);
+        };
+
+        return node => visitNode(node, visit);
+    };
+}
+
+
 const DEBUG_LOGGER = debug('testcafe:compiler:typescript');
 
 const RENAMED_DEPENDENCIES_MAP = new Map([['testcafe', EXPORTABLE_LIB_PATH]]);
@@ -42,8 +67,8 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
     private readonly _compilerPath: string;
     private readonly _customCompilerOptions?: object;
 
-    public constructor (compilerOptions?: TypeScriptCompilerOptions) {
-        super();
+    public constructor (compilerOptions?: TypeScriptCompilerOptions, isCompilerServiceMode?: boolean) {
+        super(isCompilerServiceMode);
 
         // NOTE: At present, it's necessary create an instance TypeScriptTestFileCompiler
         // to collect a list of supported test file extensions.
@@ -54,7 +79,7 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
         const configPath = compilerOptions && compilerOptions.configPath || null;
 
         this._customCompilerOptions = compilerOptions && compilerOptions.options;
-        this._tsConfig              = new TypescriptConfiguration(configPath);
+        this._tsConfig              = new TypescriptConfiguration(configPath, isCompilerServiceMode);
         this._compilerPath          = TypeScriptTestFileCompiler._getCompilerPath(compilerOptions);
     }
 
@@ -152,6 +177,8 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
             const sourcePath = TypeScriptTestFileCompiler._normalizeFilename(sources[0].fileName);
 
             this.cache[sourcePath] = result;
+        }, void 0, void 0, {
+            before: [testcafeImportPathReplacer()],
         });
     }
 

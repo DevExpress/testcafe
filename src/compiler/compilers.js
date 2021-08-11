@@ -6,11 +6,11 @@ import CoffeeScriptTestFileCompiler from './test-file/formats/coffeescript/compi
 import RawTestFileCompiler from './test-file/formats/raw';
 import CustomizableCompilers from '../configuration/customizable-compilers';
 
-function createTestFileCompilers (options = {}) {
+function createTestFileCompilers (options = {}, isCompilerServiceMode) {
     return [
         new LegacyTestFileCompiler(hammerhead.processScript),
-        new EsNextTestFileCompiler(),
-        new TypeScriptTestFileCompiler(options[CustomizableCompilers.typescript]),
+        new EsNextTestFileCompiler(isCompilerServiceMode),
+        new TypeScriptTestFileCompiler(options[CustomizableCompilers.typescript], isCompilerServiceMode),
         new CoffeeScriptTestFileCompiler(),
         new RawTestFileCompiler(),
     ];
@@ -25,6 +25,6 @@ export function getTestFileCompilers () {
     return testFileCompilers;
 }
 
-export function initTestFileCompilers (options) {
-    testFileCompilers = createTestFileCompilers(options);
+export function initTestFileCompilers (options, isCompilerServiceMode) {
+    testFileCompilers = createTestFileCompilers(options, isCompilerServiceMode);
 }
