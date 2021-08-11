@@ -6,3 +6,7 @@ export default class CommandBase {
     [key: string]: unknown;
     public _getAssignableProperties(): { name: string }[];
 }
+
+export class ActionCommandBase extends CommandBase {
+
+}

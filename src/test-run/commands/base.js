@@ -13,3 +13,7 @@ export default class CommandBase extends Assignable {
         return [];
     }
 }
+
+export class ActionCommandBase extends CommandBase {
+
+}
