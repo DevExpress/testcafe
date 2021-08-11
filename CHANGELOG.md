@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.15.2 (2021-08-11)
+
+### Bug Fixes
+
+* TestCafe fails to emulate the `tab` action if a page contains a cross-domain iframe ([#6405](https://github.com/DevExpress/testcafe/issues/6405)).
+* TestCafe ignores the quarantine mode options if you specify the configuration file ([#6420](https://github.com/DevExpress/testcafe/issues/6420)).
+* TestCafe test fails if you specify a custom option as a command line argument ([#6426](https://github.com/DevExpress/testcafe/issues/6426))
+* The [ERR_HTTP2_GOAWAY_SESSION](https://nodejs.org/api/errors.html#errors_err_http2_goaway_session) error occurs randomly when you use HTTP/2 protocol ([testcafe-hammerhead/#2653](https://github.com/DevExpress/testcafe-hammerhead/issues/2653)).
+* TestCafe fails if a page contains overridden getters for target elements ([testcafe-hammerhead/#2662](https://github.com/DevExpress/testcafe-hammerhead/issues/2662)).
+* TestCafe incorrectly processes scripts that destruct empty elements ([testcafe-hammerhead/#2670](https://github.com/DevExpress/testcafe-hammerhead/issues/2670)).
+
 ## v1.15.1 (2021-07-28)
 
 ### Bug Fixes
