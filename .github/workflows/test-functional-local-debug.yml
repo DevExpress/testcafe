@@ -1,4 +1,4 @@
-name: Test Functional (Compiler Service)
+name: Test Functional (Debug)
 
 on:
   workflow_dispatch:
@@ -86,7 +86,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - run: npm ci
-      - run: npx gulp test-functional-local-compiler-service-run --steps-as-tasks
+      - run: npx gulp test-functional-local-debug-run --steps-as-tasks
         timeout-minutes: 60
       - uses: actions/github-script@v3
         with:

@@ -807,7 +807,7 @@ describe('CLI argument parser', function () {
             { long: '--disable-screenshots' },
             { long: '--screenshots-full-page' },
             { long: '--disable-multiple-windows' },
-            { long: '--experimental-compiler-service' },
+            { long: '--experimental-debug' },
             { long: '--compiler-options' },
             { long: '--page-request-timeout' },
             { long: '--ajax-request-timeout' },

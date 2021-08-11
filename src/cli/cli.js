@@ -75,7 +75,7 @@ async function runTests (argParser) {
 
     log.showSpinner();
 
-    const { hostname, ssl, dev, experimentalCompilerService, retryTestPages, cache } = opts;
+    const { hostname, ssl, dev, experimentalDebug, retryTestPages, cache } = opts;
 
     const testCafe = await createTestCafe({
         developmentMode: dev,
@@ -84,7 +84,7 @@ async function runTests (argParser) {
         port1,
         port2,
         ssl,
-        experimentalCompilerService,
+        experimentalDebug,
         retryTestPages,
         cache,
         configFile,
