@@ -8,6 +8,8 @@ const config                     = require('../../config');
 
 const SCREENSHOTS_PATH = config.testScreenshotsDir;
 
+const experimentalDebug = !!process.env.EXPERIMENTAL_DEBUG;
+
 async function assertScreenshotColor (fileName, pixel) {
     for (const browser of config.currentEnvironment.browsers) {
         const filePath = path.join(SCREENSHOTS_PATH, 'custom', browser.alias + fileName);
@@ -99,9 +101,15 @@ describe('Multiple windows', () => {
         return runTests('testcafe-fixtures/cookie-synchronization/same-domain.js', null, { only: 'chrome' });
     });
 
-    it('Should continue debugging when a child window closes', () => {
-        return runTests('testcafe-fixtures/debug-synchronization.js', null, { only: 'chrome' });
-    });
+    if (!experimentalDebug) {
+        it('Should continue debugging when a child window closes', () => {
+            // NOTE: This test imitates the user clicks for TestCafe's debug UI.
+            // This scenario is not suitable for a run in compiler service due to
+            // the compiler service tests execute in the headless chrome
+            // and TestCafe's debug UI is not visible for end-user.
+            return runTests('testcafe-fixtures/debug-synchronization.js', null, { only: 'chrome' });
+        });
+    }
 
     it('Should make screenshots of different windows', () => {
         return runTests('testcafe-fixtures/features/screenshots.js', null, { setScreenshotPath: true })

@@ -23,12 +23,12 @@ function shouldAddTakeScreenshotTestGlob (glob) {
     return [TESTS_GLOB, MIGRATE_ALL_TESTS_TO_COMPILER_SERVICE_GLOB].includes(glob);
 }
 
-module.exports = function testFunctional (src, testingEnvironmentName, { experimentalCompilerService, isProxyless } = {}) {
+module.exports = function testFunctional (src, testingEnvironmentName, { experimentalDebug, isProxyless } = {}) {
     process.env.TESTING_ENVIRONMENT       = testingEnvironmentName;
     process.env.BROWSERSTACK_USE_AUTOMATE = 1;
 
-    if (experimentalCompilerService)
-        process.env.EXPERIMENTAL_COMPILER_SERVICE = 'true';
+    if (experimentalDebug)
+        process.env.EXPERIMENTAL_DEBUG = 'true';
 
     if (isProxyless)
         process.env.PROXYLESS = 'true';

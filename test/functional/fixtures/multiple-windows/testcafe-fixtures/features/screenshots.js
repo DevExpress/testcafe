@@ -5,13 +5,15 @@ fixture `Screenshots`
     .page(RED_PAGE);
 
 test('should make screenshots of multiple windows', async t => {
-    await t.takeScreenshot(`custom/${t.browser.alias}0.png`);
+    const browserName = t.browser.name.toLowerCase();
+
+    await t.takeScreenshot(`custom/${browserName}0.png`);
 
     const child = await t.openWindow(GREEN_PAGE);
 
-    await t.takeScreenshot(`custom/${t.browser.alias}1.png`);
+    await t.takeScreenshot(`custom/${browserName}1.png`);
     await t.openWindow(RED_PAGE);
-    await t.takeScreenshot(`custom/${t.browser.alias}2.png`);
+    await t.takeScreenshot(`custom/${browserName}2.png`);
     await t.switchToWindow(child);
-    await t.takeScreenshot(`custom/${t.browser.alias}3.png`);
+    await t.takeScreenshot(`custom/${browserName}3.png`);
 });

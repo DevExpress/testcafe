@@ -9,17 +9,16 @@ const TESTS_GLOB = [
     `!${COMPILER_SERVICE_TESTS_GLOB}`,
 ];
 
-const MIGRATE_ALL_TESTS_TO_COMPILER_SERVICE_GLOB = [
+const DEBUG_GLOB = [
     BASIC_TESTS_GLOB,
     COMPILER_SERVICE_TESTS_GLOB,
-    '!test/functional/fixtures/multiple-windows/test.js',
-    '!test/functional/fixtures/regression/gh-2846/test.js',
 ];
 
 module.exports = {
     TESTS_GLOB,
     LEGACY_TESTS_GLOB,
     MULTIPLE_WINDOWS_TESTS_GLOB,
-    MIGRATE_ALL_TESTS_TO_COMPILER_SERVICE_GLOB,
+    BASIC_TESTS_GLOB,
     COMPILER_SERVICE_TESTS_GLOB,
+    DEBUG_GLOB,
 };

@@ -169,7 +169,7 @@ export default class CLIArgumentParser {
             .option('--no-color', 'disable colors in command line')
 
             // NOTE: temporary hide experimental options from --help command
-            .addOption(new Option('--experimental-compiler-service', 'run compiler in a separate process').hideHelp())
+            .addOption(new Option('--experimental-debug', 'enable experimental debug mode').hideHelp())
             .addOption(new Option('--cache', 'cache web assets between test runs').hideHelp());
     }
 

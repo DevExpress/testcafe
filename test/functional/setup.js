@@ -153,8 +153,8 @@ before(function () {
 
         retryTestPages,
 
-        experimentalCompilerService: !!process.env.EXPERIMENTAL_COMPILER_SERVICE,
-        isProxyless:                 config.isProxyless,
+        experimentalDebug: !!process.env.EXPERIMENTAL_DEBUG,
+        isProxyless:       config.isProxyless,
     };
 
     return createTestCafe(testCafeOptions)
