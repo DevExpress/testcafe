@@ -206,7 +206,7 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
 
                 Object.values(testRunTracker.activeTestRuns).forEach(testRun => {
                     if (!testRun.debugging)
-                        testRun.executeExpression(new DebugCommand());
+                        testRun.executeCommand(new DebugCommand());
                 });
             }
 
@@ -218,7 +218,7 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
         this.cdp.on('Debugger.resumed', () => {
             Object.values(testRunTracker.activeTestRuns).forEach(testRun => {
                 if (testRun.debugging)
-                    testRun.executeExpression(new DisableDebugCommand());
+                    testRun.executeCommand(new DisableDebugCommand());
             });
         });
     }
@@ -349,7 +349,7 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
     public async executeAction (data: ExecuteActionArguments): Promise<unknown> {
         return this
             ._getTargetTestRun(data.id)
-            .executeExpression(data.command, data.callsite as CallsiteRecord, data.apiMethodName);
+            .executeCommand(data.command, data.callsite as CallsiteRecord, data.apiMethodName);
     }
 
     public executeActionSync (): never {
@@ -359,7 +359,7 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
     public async executeCommand ({ command, id, callsite }: ExecuteCommandArguments): Promise<unknown> {
         return this
             ._getTargetTestRun(id)
-            .executeExpression(command, callsite);
+            .executeCommand(command, callsite);
     }
 
     public async getTests ({ sourceList, compilerOptions }: CompilerArguments): Promise<Test[]> {

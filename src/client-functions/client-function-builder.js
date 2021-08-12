@@ -144,7 +144,7 @@ export default class ClientFunctionBuilder {
                 throw err;
             }
 
-            const result = await testRun.executeExpression(command, callsite, command.type);
+            const result = await testRun.executeCommand(command, callsite, command.type);
 
             return this._processResult(result, args);
         });

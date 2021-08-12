@@ -47,8 +47,8 @@ function imitateCommandResolvingFromClient () {
 describe('Driver task queue', () => {
     it('Should return real queue length after all client commands are added', async () => {
         const commandExecutionPromises = [
-            testRunMock._executeCommand(new PressKeyCommand({ keys: 'a' })),
-            testRunMock._executeCommand(new PressKeyCommand({ keys: 'b' })),
+            testRunMock._executeInternalCommand(new PressKeyCommand({ keys: 'a' })),
+            testRunMock._executeInternalCommand(new PressKeyCommand({ keys: 'b' })),
         ];
 
         const driverTaskQueueLength     = testRunMock.driverTaskQueue.length;
@@ -64,8 +64,8 @@ describe('Driver task queue', () => {
 
     it('Should return real queue length after all server commands are added', async () => {
         const commandExecutionPromises = [
-            testRunMock.executeExpression(new WaitCommand({ timeout: 0 })),
-            testRunMock.executeExpression(new WaitCommand({ timeout: 0 })),
+            testRunMock.executeCommand(new WaitCommand({ timeout: 0 })),
+            testRunMock.executeCommand(new WaitCommand({ timeout: 0 })),
         ];
 
         const driverTaskQueueLength     = testRunMock.driverTaskQueue.length;
@@ -81,18 +81,18 @@ describe('Driver task queue', () => {
 
     it('Should return real queue length after execute-expression commands are added', async () => {
         const commandExecutionPromises = [
-            testRunMock.executeExpression(new ExecuteExpressionCommand({
+            testRunMock.executeCommand(new ExecuteExpressionCommand({
                 resultVariableName: 'el1',
                 expression:         'Selector(\'div\')',
             })),
-            testRunMock.executeExpression(new ExecuteExpressionCommand({
+            testRunMock.executeCommand(new ExecuteExpressionCommand({
                 resultVariableName: 'el2',
                 expression:         'Selector(\'div\')',
             })),
-            testRunMock.executeExpression(new ExecuteAsyncExpressionCommand({
+            testRunMock.executeCommand(new ExecuteAsyncExpressionCommand({
                 expression: 'return Selector(\'div\')',
             })),
-            testRunMock.executeExpression(new ExecuteAsyncExpressionCommand({
+            testRunMock.executeCommand(new ExecuteAsyncExpressionCommand({
                 expression: `
                 await t.click('#input1');
                 await t.click('#input2');

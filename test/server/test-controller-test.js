@@ -17,11 +17,11 @@ class TestRunMock extends BaseTestRunMock {
         this.errors.push(err);
     }
 
-    _executeAction (actionName, command) {
-        return this._executeCommand(command);
+    _executeActionCommand (actionName, command) {
+        return this._executeInternalCommand(command);
     }
 
-    _executeCommand (command, callsite) {
+    _executeInternalCommand (command, callsite) {
         if (command.type === 'click')
             return Promise.reject(new Error(errorMessage));
 

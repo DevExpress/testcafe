@@ -81,7 +81,7 @@ export default class TestRunBookmark {
         await this._initCtxs();
 
         if (this.testRun.activeIframeSelector)
-            await this.testRun.executeExpression(new SwitchToMainWindowCommand() as CommandBase);
+            await this.testRun.executeCommand(new SwitchToMainWindowCommand() as CommandBase);
 
         if (!this.role.opts.preserveUrl)
             await this.role.setCurrentUrlAsRedirectUrl(this.testRun);
@@ -91,7 +91,7 @@ export default class TestRunBookmark {
         if (this.testRun.activeDialogHandler !== this.dialogHandler) {
             const restoreDialogCommand = new SetNativeDialogHandlerCommand({ dialogHandler: { fn: this.dialogHandler } });
 
-            await this.testRun.executeExpression(restoreDialogCommand);
+            await this.testRun.executeCommand(restoreDialogCommand);
         }
     }
 
@@ -99,7 +99,7 @@ export default class TestRunBookmark {
         if (this.testRun.speed !== this.speed) {
             const restoreSpeedCommand = new SetTestSpeedCommand({ speed: this.speed });
 
-            await this.testRun.executeExpression(restoreSpeedCommand);
+            await this.testRun.executeCommand(restoreSpeedCommand);
         }
     }
 
@@ -107,7 +107,7 @@ export default class TestRunBookmark {
         if (this.testRun.pageLoadTimeout !== this.pageLoadTimeout) {
             const restorePageLoadTimeoutCommand = new SetPageLoadTimeoutCommand({ duration: this.pageLoadTimeout });
 
-            await this.testRun.executeExpression(restorePageLoadTimeoutCommand);
+            await this.testRun.executeCommand(restorePageLoadTimeoutCommand);
         }
     }
 
@@ -118,7 +118,7 @@ export default class TestRunBookmark {
                 new SwitchToMainWindowCommand();
 
             try {
-                await this.testRun.executeExpression(switchWorkingFrameCommand as CommandBase);
+                await this.testRun.executeCommand(switchWorkingFrameCommand as CommandBase);
             }
             catch (err) {
                 if (err.code === TEST_RUN_ERRORS.actionElementNotFoundError)
