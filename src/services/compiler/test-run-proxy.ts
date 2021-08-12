@@ -7,7 +7,7 @@ import WarningLog from '../../notifications/warning-log';
 import AssertionCommand from '../../test-run/commands/assertion';
 import { Dictionary } from '../../configuration/interfaces';
 import COMMAND_TYPE from '../../test-run/commands/type';
-import { CommandBase } from '../../test-run/commands/base';
+import { ActionCommandBase, CommandBase } from '../../test-run/commands/base';
 import { TestRunProxyInit } from '../interfaces';
 import Test from '../../api/structure/test';
 import RequestHook from '../../api/request-hooks/hook';
@@ -130,8 +130,8 @@ class TestRunProxy extends AsyncEventEmitter {
     }
 
     public async executeExpression (command: CommandBase, callsite?: CallsiteRecord | string, apiActionName?: string): Promise<unknown> {
-        return apiActionName
-            ? this._executeAction(apiActionName, command, callsite as CallsiteRecord)
+        return command instanceof ActionCommandBase
+            ? this._executeAction(apiActionName as string, command, callsite as CallsiteRecord)
             : this._executeCommand(command, callsite as string);
     }
 

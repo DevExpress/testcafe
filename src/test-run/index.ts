@@ -86,7 +86,7 @@ import BrowserConnection from '../browser/connection';
 import { Quarantine } from '../utils/get-options/quarantine';
 import RequestHook from '../api/request-hooks/hook';
 import DriverStatus from '../client/driver/status';
-import { CommandBase } from './commands/base.js';
+import { CommandBase, ActionCommandBase } from './commands/base.js';
 import Role from '../role/role';
 import { TestRunErrorBase } from '../shared/errors';
 import { CallsiteRecord } from 'callsite-record';
@@ -970,8 +970,8 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     public async executeExpression (command: CommandBase, callsite?: string | CallsiteRecord, apiActionName?: string): Promise<unknown> {
-        return apiActionName
-            ? this._executeAction(apiActionName, command, callsite as CallsiteRecord)
+        return command instanceof ActionCommandBase
+            ? this._executeAction(apiActionName as string, command, callsite as CallsiteRecord)
             : this._executeCommand(command, callsite);
     }
 
