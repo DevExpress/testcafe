@@ -1,5 +1,5 @@
 import TYPE from './type';
-import { CommandBase } from './base';
+import { ActionCommandBase } from './base';
 import { ElementScreenshotOptions, ResizeToFitDeviceOptions } from './options';
 import { initSelector } from './validations/initializers';
 
@@ -22,7 +22,7 @@ function initElementScreenshotOptions (name, val, initOptions, validate = true) 
 }
 
 // Commands
-export class TakeScreenshotBaseCommand extends CommandBase {
+export class TakeScreenshotBaseCommand extends ActionCommandBase {
     constructor (obj, testRun, type, validateProperties) {
         super(obj, testRun, type, validateProperties);
 
@@ -75,7 +75,7 @@ export class TakeScreenshotOnFailCommand extends TakeScreenshotBaseCommand {
     }
 }
 
-export class ResizeWindowCommand extends CommandBase {
+export class ResizeWindowCommand extends ActionCommandBase {
     constructor (obj, testRun) {
         super(obj, testRun, TYPE.resizeWindow);
     }
@@ -88,7 +88,7 @@ export class ResizeWindowCommand extends CommandBase {
     }
 }
 
-export class ResizeWindowToFitDeviceCommand extends CommandBase {
+export class ResizeWindowToFitDeviceCommand extends ActionCommandBase {
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.resizeWindowToFitDevice, validateProperties);
     }
@@ -101,8 +101,9 @@ export class ResizeWindowToFitDeviceCommand extends CommandBase {
     }
 }
 
-export class MaximizeWindowCommand {
+export class MaximizeWindowCommand extends ActionCommandBase {
     constructor () {
+        super();
         this.type = TYPE.maximizeWindow;
     }
 }

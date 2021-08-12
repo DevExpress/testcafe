@@ -1,5 +1,5 @@
 import TYPE from './type';
-import { CommandBase } from './base';
+import { ActionCommandBase } from './base';
 import { AssertionOptions } from './options';
 import { APIError } from '../../errors/runtime';
 import { AssertionExecutableArgumentError } from '../../errors/test-run';
@@ -34,7 +34,7 @@ function initAssertionParameter (name, val, { skipVisibilityCheck, testRun }) {
 const NOT_REPORTED_PROPERTIES = ['id', 'originActual'];
 
 // Commands
-export default class AssertionCommand extends CommandBase {
+export default class AssertionCommand extends ActionCommandBase {
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.assertion, validateProperties);
     }

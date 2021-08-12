@@ -1,9 +1,9 @@
 import TYPE from './type';
-import { CommandBase } from './base';
+import { CommandBase, ActionCommandBase } from './base';
 import { positiveIntegerArgument } from './validations/argument';
 
 // Commands
-export class WaitCommand extends CommandBase {
+export class WaitCommand extends ActionCommandBase {
     constructor (obj, testRun) {
         super(obj, testRun, TYPE.wait);
     }
@@ -52,13 +52,13 @@ export class ExecuteSelectorCommand extends ExecuteClientFunctionCommandBase {
     }
 }
 
-export class DebugCommand extends CommandBase {
+export class DebugCommand extends ActionCommandBase {
     constructor () {
         super(null, null, TYPE.debug);
     }
 }
 
-export class DisableDebugCommand extends CommandBase {
+export class DisableDebugCommand extends ActionCommandBase {
     constructor () {
         super(null, null, TYPE.disableDebug);
     }
