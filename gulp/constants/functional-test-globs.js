@@ -12,6 +12,7 @@ const TESTS_GLOB = [
 const DEBUG_GLOB = [
     BASIC_TESTS_GLOB,
     COMPILER_SERVICE_TESTS_GLOB,
+    '!test/functional/fixtures/multiple-windows/test.js',
 ];
 
 module.exports = {
