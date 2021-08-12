@@ -1,5 +1,5 @@
 import BaseTransform from '../base-transform';
-import CommandBase from '../../../../../test-run/commands/base';
+import { CommandBase } from '../../../../../test-run/commands/base';
 import { SerializedCommand } from '../../interfaces';
 import { isObservationCommand } from '../../../../../test-run/commands/utils';
 import TestRun from '../../../../../test-run';

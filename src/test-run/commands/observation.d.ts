@@ -1,4 +1,4 @@
-import CommandBase from './base';
+import { CommandBase } from './base';
 import TestRun from '../index';
 
 declare class ExecuteClientFunctionCommandBase extends CommandBase {

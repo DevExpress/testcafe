@@ -1,4 +1,4 @@
-import CommandBase from '../test-run/commands/base';
+import { CommandBase } from '../test-run/commands/base';
 import TestRun from '../test-run';
 import WarningLog from '../notifications/warning-log';
 import { Writable as WritableStream } from 'stream';

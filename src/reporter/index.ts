@@ -16,7 +16,7 @@ import TestRun from '../test-run';
 import Test from '../api/structure/test';
 import Fixture from '../api/structure/fixture';
 import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapter';
-import CommandBase from '../test-run/commands/base';
+import { CommandBase } from '../test-run/commands/base';
 
 
 interface PendingPromise {

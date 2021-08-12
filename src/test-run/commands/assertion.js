@@ -1,5 +1,5 @@
 import TYPE from './type';
-import CommandBase from './base';
+import { CommandBase } from './base';
 import { AssertionOptions } from './options';
 import { APIError } from '../../errors/runtime';
 import { AssertionExecutableArgumentError } from '../../errors/test-run';

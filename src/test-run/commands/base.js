@@ -1,6 +1,6 @@
 import Assignable from '../../utils/assignable';
 
-export default class CommandBase extends Assignable {
+export class CommandBase extends Assignable {
     constructor (obj, testRun, type, validateProperties = true) {
         super();
 

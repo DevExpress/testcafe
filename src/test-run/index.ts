@@ -86,7 +86,7 @@ import BrowserConnection from '../browser/connection';
 import { Quarantine } from '../utils/get-options/quarantine';
 import RequestHook from '../api/request-hooks/hook';
 import DriverStatus from '../client/driver/status';
-import CommandBase from './commands/base.js';
+import { CommandBase } from './commands/base.js';
 import Role from '../role/role';
 import { TestRunErrorBase } from '../shared/errors';
 import { CallsiteRecord } from 'callsite-record';

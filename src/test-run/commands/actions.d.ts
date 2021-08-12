@@ -1,4 +1,4 @@
-import CommandBase from './base';
+import { CommandBase } from './base';
 import { ExecuteClientFunctionCommand, ExecuteSelectorCommand } from './observation';
 
 import {

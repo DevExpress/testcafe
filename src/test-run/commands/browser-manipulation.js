@@ -1,5 +1,5 @@
 import TYPE from './type';
-import CommandBase from './base';
+import { CommandBase } from './base';
 import { ElementScreenshotOptions, ResizeToFitDeviceOptions } from './options';
 import { initSelector } from './validations/initializers';
 

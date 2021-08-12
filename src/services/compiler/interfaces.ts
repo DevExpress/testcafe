@@ -1,4 +1,4 @@
-import CommandBase from '../../test-run/commands/base';
+import { CommandBase } from '../../test-run/commands/base';
 
 import {
     ConfigureResponseEvent,

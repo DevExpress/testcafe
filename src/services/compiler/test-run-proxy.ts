@@ -7,7 +7,7 @@ import WarningLog from '../../notifications/warning-log';
 import AssertionCommand from '../../test-run/commands/assertion';
 import { Dictionary } from '../../configuration/interfaces';
 import COMMAND_TYPE from '../../test-run/commands/type';
-import CommandBase from '../../test-run/commands/base';
+import { CommandBase } from '../../test-run/commands/base';
 import { TestRunProxyInit } from '../interfaces';
 import Test from '../../api/structure/test';
 import RequestHook from '../../api/request-hooks/hook';

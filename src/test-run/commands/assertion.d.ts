@@ -1,4 +1,4 @@
-import CommandBase from './base';
+import { CommandBase } from './base';
 import { AssertionOptions } from './options';
 import TestRun from '../index';
 
