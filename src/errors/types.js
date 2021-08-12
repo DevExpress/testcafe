@@ -155,4 +155,5 @@ export const RUNTIME_ERRORS = {
     invalidAttemptLimitValue:                           'E1067',
     invalidSuccessThresholdValue:                       'E1068',
     cannotSetConcurrencyWithCDPPort:                    'E1069',
+    cannotFindTestcafeConfigurationFile:                'E1070',
 };
