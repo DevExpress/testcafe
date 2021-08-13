@@ -6,6 +6,7 @@ import {
 
 import { readFileSync } from 'fs';
 import stripBom from 'strip-bom';
+import nanoid from 'nanoid';
 import TestFileCompilerBase from './base';
 import TestFile from '../../api/structure/test-file';
 import Fixture from '../../api/structure/fixture';
@@ -13,11 +14,14 @@ import Test from '../../api/structure/test';
 import { TestCompilationError, APIError } from '../../errors/runtime';
 import stackCleaningHook from '../../errors/stack-cleaning-hook';
 import NODE_MODULES from '../../shared/node-modules-folder-name';
+import cacheProxy from './cache-proxy';
 
 const CWD = process.cwd();
 
 const FIXTURE_RE = /(^|;|\s+)fixture\s*(\.|\(|`)/;
 const TEST_RE    = /(^|;|\s+)test\s*(\.|\()/;
+
+const TESTCAFE_LIB_FOLDER_NAME = 'lib';
 
 const Module = module.constructor;
 
@@ -28,6 +32,7 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         this.isCompilerServiceMode = isCompilerServiceMode;
         this.cache                 = Object.create(null);
         this.origRequireExtensions = Object.create(null);
+        this.cachePrefix           = nanoid(7);
     }
 
     static _getNodeModulesLookupPath (filename) {
@@ -42,13 +47,22 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
             .includes(NODE_MODULES);
     }
 
-    static _execAsModule (code, filename) {
+    static _isTestCafeLibDep (filename) {
+        return relative(CWD, filename)
+            .split(pathSep)[0] === TESTCAFE_LIB_FOLDER_NAME;
+    }
+
+    _execAsModule (code, filename) {
         const mod = new Module(filename, module.parent);
 
         mod.filename = filename;
         mod.paths    = APIBasedTestFileCompilerBase._getNodeModulesLookupPath(filename);
 
+        cacheProxy.startExternalCaching(this.cachePrefix);
+
         mod._compile(code, filename);
+
+        cacheProxy.stopExternalCaching();
     }
 
     _compileCode (code, filename) {
@@ -173,7 +187,7 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         this._setupRequireHook(testFile);
 
         try {
-            APIBasedTestFileCompilerBase._execAsModule(compiledCode, filename);
+            this._execAsModule(compiledCode, filename);
         }
         catch (err) {
             if (!(err instanceof APIError))

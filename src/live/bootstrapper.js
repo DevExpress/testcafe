@@ -2,6 +2,7 @@ import path from 'path';
 import Module from 'module';
 import Bootstrapper from '../runner/bootstrapper';
 import Compiler from '../compiler';
+import cacheProxy from './../compiler/test-file/cache-proxy';
 
 const originalRequire = Module.prototype.require;
 
@@ -10,6 +11,8 @@ class LiveModeBootstrapper extends Bootstrapper {
         super({ browserConnectionGateway });
 
         this.runner = runner;
+
+        cacheProxy.preventCaching();
     }
 
     _getTests () {
