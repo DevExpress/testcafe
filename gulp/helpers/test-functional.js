@@ -6,7 +6,7 @@ const chai           = require('chai');
 
 const {
     TESTS_GLOB,
-    MIGRATE_ALL_TESTS_TO_COMPILER_SERVICE_GLOB,
+    DEBUG_GLOB,
 } = require('../constants/functional-test-globs');
 
 chai.use(require('chai-string'));
@@ -20,7 +20,7 @@ const SCREENSHOT_TESTS_GLOB = [
 ];
 
 function shouldAddTakeScreenshotTestGlob (glob) {
-    return [TESTS_GLOB, MIGRATE_ALL_TESTS_TO_COMPILER_SERVICE_GLOB].includes(glob);
+    return [TESTS_GLOB, DEBUG_GLOB].includes(glob);
 }
 
 module.exports = function testFunctional (src, testingEnvironmentName, { experimentalDebug, isProxyless } = {}) {
