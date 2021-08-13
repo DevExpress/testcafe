@@ -144,15 +144,17 @@ export default class Configuration {
             return null;
 
         const configs = await Promise.all(this.defaultPaths.map(async filePath => {
-            if (!await this._isConfigurationFileExists(filePath))
+            this._filePath = filePath;
+
+            if (!await this._isConfigurationFileExists())
                 return { filePath, options: null };
 
             let options = null as object | null;
 
-            if (this._isJSConfiguration(filePath))
+            if (this._isJSConfiguration())
                 options = this._readJsConfigurationFileContent(filePath);
             else {
-                const configurationFileContent = await this._readConfigurationFileContent(filePath);
+                const configurationFileContent = await this._readConfigurationFileContent();
 
                 if (configurationFileContent)
                     options = this._parseConfigurationFileContent(configurationFileContent);
@@ -177,21 +179,21 @@ export default class Configuration {
         return existedConfigs[0].options;
     }
 
-    protected async _isConfigurationFileExists (filePath = this.filePath): Promise<boolean> {
+    protected async _isConfigurationFileExists (): Promise<boolean> {
         try {
-            await stat(filePath);
+            await stat(this.filePath);
 
             return true;
         }
         catch (error) {
-            DEBUG_LOGGER(renderTemplate(WARNING_MESSAGES.cannotFindConfigurationFile, filePath, error.stack));
+            DEBUG_LOGGER(renderTemplate(WARNING_MESSAGES.cannotFindConfigurationFile, this.filePath, error.stack));
 
             return false;
         }
     }
 
-    protected _isJSConfiguration (filePath: string): boolean {
-        return extname(filePath) === JS_CONFIGURATION_EXTENSION;
+    protected _isJSConfiguration (): boolean {
+        return !!this.filePath && extname(this.filePath) === JS_CONFIGURATION_EXTENSION;
     }
 
     public _readJsConfigurationFileContent (filePath = this.filePath): object | null {
@@ -209,12 +211,12 @@ export default class Configuration {
         return null;
     }
 
-    public async _readConfigurationFileContent (filePath = this.filePath): Promise<Buffer | null> {
+    public async _readConfigurationFileContent (): Promise<Buffer | null> {
         try {
-            return await readFile(filePath);
+            return await readFile(this.filePath);
         }
         catch (error) {
-            Configuration._showWarningForError(error, WARNING_MESSAGES.cannotReadConfigFile, filePath);
+            Configuration._showWarningForError(error, WARNING_MESSAGES.cannotReadConfigFile, this.filePath);
         }
 
         return null;
@@ -225,7 +227,7 @@ export default class Configuration {
             return JSON5.parse(configurationFileContent.toString());
         }
         catch (error) {
-            Configuration._showWarningForError(error, WARNING_MESSAGES.cannotParseConfigFile, this._filePath);
+            Configuration._showWarningForError(error, WARNING_MESSAGES.cannotParseConfigFile, this.filePath);
         }
 
         return null;

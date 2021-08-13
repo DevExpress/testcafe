@@ -100,7 +100,7 @@ describe('TestCafeConfiguration', function () {
                         consoleWrapper.unwrap();
 
                         expect(testCafeConfiguration.getOption('hostname')).eql(void 0);
-                        expect(consoleWrapper.messages.log).contains(`Failed to parse the '${testCafeConfiguration.filePath}' file.`);
+                        expect(consoleWrapper.messages.log).contains(`Failed to parse the '${testCafeConfiguration.defaultPaths[jsonConfigIndex]}' file.`);
                     });
             });
 
