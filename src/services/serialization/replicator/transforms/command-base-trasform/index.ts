@@ -6,7 +6,7 @@ import TestRun from '../../../../../test-run';
 import { ExecuteExpressionCommand, SetNativeDialogHandlerCommand } from '../../../../../test-run/commands/actions';
 import COMMAND_CONSTRUCTORS from './command-constructors';
 import { CommandConstructor, ObservationConstructor } from './types';
-import AssertionCommand from '../../../../../test-run/commands/assertion';
+import { AssertionCommand } from '../../../../../test-run/commands/assertion';
 
 const OBSERVABLE_COMMAND_CONSTRUCTORS_WITH_SKIPPED_ARGUMENT_VALIDATION = [
     AssertionCommand,

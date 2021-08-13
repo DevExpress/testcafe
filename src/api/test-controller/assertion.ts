@@ -1,4 +1,4 @@
-import AssertionCommand from '../../test-run/commands/assertion';
+import { AssertionCommand } from '../../test-run/commands/assertion';
 import ASSERTION_TYPE from '../../assertions/type';
 import { AssertionWithoutMethodCallError } from '../../errors/test-run';
 import TestController from './index';

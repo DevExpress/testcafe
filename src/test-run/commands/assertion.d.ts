@@ -2,7 +2,7 @@ import { ActionCommandBase } from './base';
 import { AssertionOptions } from './options';
 import TestRun from '../index';
 
-export default class AssertionCommand extends ActionCommandBase {
+export class AssertionCommand extends ActionCommandBase {
     public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
     public id: string;
     public assertionType: string;

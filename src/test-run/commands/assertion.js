@@ -35,7 +35,7 @@ function initAssertionParameter (name, val, { skipVisibilityCheck, testRun }) {
 const NOT_REPORTED_PROPERTIES = ['id', 'originActual'];
 
 // Commands
-export default class AssertionCommand extends ActionCommandBase {
+export class AssertionCommand extends ActionCommandBase {
     static methodName = 'assertionCommand';
 
     constructor (obj, testRun, validateProperties) {

@@ -92,7 +92,7 @@ import { TestRunErrorBase } from '../shared/errors';
 import { CallsiteRecord } from 'callsite-record';
 import EventEmitter from 'events';
 import getAssertionTimeout from '../utils/get-options/get-assertion-timeout';
-import AssertionCommand from './commands/assertion';
+import { AssertionCommand } from './commands/assertion';
 import { TakeScreenshotBaseCommand } from './commands/browser-manipulation';
 //@ts-ignore
 import { TestRun as LegacyTestRun } from 'testcafe-legacy-api';

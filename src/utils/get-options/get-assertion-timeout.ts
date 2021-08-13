@@ -1,4 +1,4 @@
-import AssertionCommand from '../../test-run/commands/assertion';
+import { AssertionCommand } from '../../test-run/commands/assertion';
 import { Dictionary } from '../../configuration/interfaces';
 
 export default function getAssertionTimeout (command: AssertionCommand, options: Dictionary<OptionValue>): number {

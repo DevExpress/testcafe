@@ -1,6 +1,6 @@
 import { assert, expect } from 'chai';
 import ASSERTION_TYPE from './type';
-import AssertionCommand from '../test-run/commands/assertion';
+import { AssertionCommand } from '../test-run/commands/assertion';
 
 export default function getFn (command: AssertionCommand): Function {
     switch (command.assertionType) {

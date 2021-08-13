@@ -25,7 +25,7 @@ import {
     RecorderCommand,
 } from './actions';
 
-import AssertionCommand from './assertion';
+import { AssertionCommand } from './assertion';
 
 import {
     TakeScreenshotCommand,

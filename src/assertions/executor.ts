@@ -4,7 +4,7 @@ import { isThennable } from '../utils/thennable';
 import { ExternalAssertionLibraryError, AssertionUnawaitedPromiseError } from '../errors/test-run';
 import ReExecutablePromise from '../utils/re-executable-promise';
 import getFn from './get-fn';
-import AssertionCommand from '../test-run/commands/assertion';
+import { AssertionCommand } from '../test-run/commands/assertion';
 import { CallsiteRecord } from 'callsite-record';
 import { FUNCTION_MARKER_DESCRIPTION } from '../services/serialization/replicator/transforms/function-marker-transform/marker';
 import { PROMISE_MARKER_DESCRIPTION } from '../services/serialization/replicator/transforms/promise-marker-transform/marker';

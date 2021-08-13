@@ -22,7 +22,7 @@ import {
 
 import { CommandBase } from '../../test-run/commands/base';
 import CommandType from '../../test-run/commands/type';
-import AssertionCommand from '../../test-run/commands/assertion';
+import { AssertionCommand } from '../../test-run/commands/assertion';
 
 
 const CONFIDENTIAL_INFO_PLACEHOLDER = '********';
