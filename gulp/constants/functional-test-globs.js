@@ -13,7 +13,6 @@ const DEBUG_GLOB = [
     BASIC_TESTS_GLOB,
     COMPILER_SERVICE_TESTS_GLOB,
     '!test/functional/fixtures/multiple-windows/test.js',
-    '!test/functional/fixtures/regression/gh-2846/test.js',
 ];
 
 module.exports = {
