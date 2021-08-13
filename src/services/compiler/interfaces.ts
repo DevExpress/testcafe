@@ -14,6 +14,7 @@ import {
 import { Dictionary } from '../../configuration/interfaces';
 import RequestHookMethodNames from '../../api/request-hooks/hook-method-names';
 import Role from '../../role/role';
+import { CallsiteRecord } from 'callsite-record';
 
 export interface TestRunLocator {
     testRunId: string;
@@ -29,7 +30,7 @@ export interface ExecuteActionArguments {
 export interface ExecuteCommandArguments {
     id: string;
     command: CommandBase;
-    callsite?: string;
+    callsite?: string | CallsiteRecord;
 }
 
 export interface RemoveRequestEventListenersArguments {

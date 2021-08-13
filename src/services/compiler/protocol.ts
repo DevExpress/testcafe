@@ -54,7 +54,6 @@ export interface RunTestArguments extends TestRunLocator {
 
 export interface TestRunDispatcherProtocol {
     executeActionSync ({ id, apiMethodName, command, callsite }: ExecuteActionArguments): unknown;
-    executeAction ({ id, apiMethodName, command, callsite }: ExecuteActionArguments): Promise<unknown>;
     executeCommand ({ command, callsite }: ExecuteCommandArguments): Promise<unknown>;
     addRequestEventListeners ( { hookId, hookClassName, rules }: AddRequestEventListenersArguments): Promise<void>;
     removeRequestEventListeners ({ rules }: RemoveRequestEventListenersArguments): Promise<void>;

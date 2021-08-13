@@ -130,13 +130,8 @@ class TestRunProxy extends AsyncEventEmitter {
     }
 
     public async executeCommand (command: CommandBase | ActionCommandBase, callsite?: CallsiteRecord | string): Promise<unknown> {
-        return command instanceof ActionCommandBase
-            ? this._executeActionCommand(command, callsite as CallsiteRecord)
-            : this._executeInternalCommand(command, callsite as string);
-    }
-
-    public async _executeActionCommand (command: ActionCommandBase, callsite: CallsiteRecord): Promise<unknown> {
-        this._storeActionCallsitesForExecutedAsyncJsExpression(callsite);
+        if (command instanceof ActionCommandBase && callsite)
+            this._storeActionCallsitesForExecutedAsyncJsExpression(callsite as CallsiteRecord);
 
         if (command.type === COMMAND_TYPE.assertion)
             this._handleAssertionCommand(command as AssertionCommand);
@@ -145,11 +140,10 @@ class TestRunProxy extends AsyncEventEmitter {
         else if (command.type === COMMAND_TYPE.switchToWindowByPredicate)
             this._storeSwitchToWindowByPredicateCommand(command as SwitchToWindowByPredicateCommand);
 
-        return this.dispatcher.executeAction({
-            apiMethodName: command.methodName,
+        return this.dispatcher.executeCommand({
             command,
             callsite,
-            id:            this.id,
+            id: this.id,
         });
     }
 
@@ -161,17 +155,6 @@ class TestRunProxy extends AsyncEventEmitter {
 
         return this.dispatcher.executeActionSync({
             apiMethodName,
-            command,
-            callsite,
-            id: this.id,
-        });
-    }
-
-    public async _executeInternalCommand (command: CommandBase, callsite?: string): Promise<unknown> {
-        if (command.type === COMMAND_TYPE.assertion)
-            this._handleAssertionCommand(command as AssertionCommand);
-
-        return this.dispatcher.executeCommand({
             command,
             callsite,
             id: this.id,
