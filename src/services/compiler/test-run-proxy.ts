@@ -129,13 +129,13 @@ class TestRunProxy extends AsyncEventEmitter {
         this.asyncJsExpressionCallsites.set(id, callsite as CallsiteRecord);
     }
 
-    public async executeCommand (command: CommandBase, callsite?: CallsiteRecord | string, apiActionName?: string): Promise<unknown> {
+    public async executeCommand (command: CommandBase | ActionCommandBase, callsite?: CallsiteRecord | string): Promise<unknown> {
         return command instanceof ActionCommandBase
-            ? this._executeActionCommand(apiActionName as string, command, callsite as CallsiteRecord)
+            ? this._executeActionCommand(command, callsite as CallsiteRecord)
             : this._executeInternalCommand(command, callsite as string);
     }
 
-    public async _executeActionCommand (apiMethodName: string, command: CommandBase, callsite: CallsiteRecord): Promise<unknown> {
+    public async _executeActionCommand (command: ActionCommandBase, callsite: CallsiteRecord): Promise<unknown> {
         this._storeActionCallsitesForExecutedAsyncJsExpression(callsite);
 
         if (command.type === COMMAND_TYPE.assertion)
@@ -146,10 +146,10 @@ class TestRunProxy extends AsyncEventEmitter {
             this._storeSwitchToWindowByPredicateCommand(command as SwitchToWindowByPredicateCommand);
 
         return this.dispatcher.executeAction({
-            apiMethodName,
+            apiMethodName: command.methodName,
             command,
             callsite,
-            id: this.id,
+            id:            this.id,
         });
     }
 

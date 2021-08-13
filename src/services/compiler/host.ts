@@ -349,7 +349,7 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
     public async executeAction (data: ExecuteActionArguments): Promise<unknown> {
         return this
             ._getTargetTestRun(data.id)
-            .executeCommand(data.command, data.callsite as CallsiteRecord, data.apiMethodName);
+            .executeCommand(data.command, data.callsite as CallsiteRecord);
     }
 
     public executeActionSync (): never {

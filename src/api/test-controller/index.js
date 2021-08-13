@@ -129,8 +129,8 @@ export default class TestController {
         return this.executionChain;
     }
 
-    _enqueueCommand (apiMethodName, CmdCtor, cmdArgs) {
-        return this._enqueueTask(apiMethodName, callsite => {
+    _enqueueCommand (CmdCtor, cmdArgs) {
+        return this._enqueueTask(CmdCtor.methodName, callsite => {
             let command = null;
 
             try {
@@ -142,7 +142,7 @@ export default class TestController {
             }
 
             return () => {
-                return this.testRun.executeCommand(command, callsite, apiMethodName)
+                return this.testRun.executeCommand(command, callsite)
                     .catch(err => {
                         this.executionChain = Promise.resolve();
 
@@ -192,31 +192,31 @@ export default class TestController {
     }
 
     _dispatchEvent$ (selector, eventName, options = {}) {
-        return this._enqueueCommand('dispatchEvent', DispatchEventCommand, { selector, eventName, options, relatedTarget: options.relatedTarget });
+        return this._enqueueCommand(DispatchEventCommand, { selector, eventName, options, relatedTarget: options.relatedTarget });
     }
 
     _click$ (selector, options) {
-        return this._enqueueCommand('click', ClickCommand, { selector, options });
+        return this._enqueueCommand(ClickCommand, { selector, options });
     }
 
     _rightClick$ (selector, options) {
-        return this._enqueueCommand('rightClick', RightClickCommand, { selector, options });
+        return this._enqueueCommand(RightClickCommand, { selector, options });
     }
 
     _doubleClick$ (selector, options) {
-        return this._enqueueCommand('doubleClick', DoubleClickCommand, { selector, options });
+        return this._enqueueCommand(DoubleClickCommand, { selector, options });
     }
 
     _hover$ (selector, options) {
-        return this._enqueueCommand('hover', HoverCommand, { selector, options });
+        return this._enqueueCommand(HoverCommand, { selector, options });
     }
 
     _drag$ (selector, dragOffsetX, dragOffsetY, options) {
-        return this._enqueueCommand('drag', DragCommand, { selector, dragOffsetX, dragOffsetY, options });
+        return this._enqueueCommand(DragCommand, { selector, dragOffsetX, dragOffsetY, options });
     }
 
     _dragToElement$ (selector, destinationSelector, options) {
-        return this._enqueueCommand('dragToElement', DragToElementCommand, { selector, destinationSelector, options });
+        return this._enqueueCommand(DragToElementCommand, { selector, destinationSelector, options });
     }
 
     _getSelectorForScroll (args) {
@@ -257,7 +257,7 @@ export default class TestController {
         if (typeof args[0] === 'number')
             [ x, y, options ] = args;
 
-        return this._enqueueCommand('scroll', ScrollCommand, { selector, x, y, position, options });
+        return this._enqueueCommand(ScrollCommand, { selector, x, y, position, options });
     }
 
     _scrollBy$ (...args) {
@@ -265,23 +265,23 @@ export default class TestController {
 
         const [byX, byY, options] = args;
 
-        return this._enqueueCommand('scrollBy', ScrollByCommand, { selector, byX, byY, options });
+        return this._enqueueCommand(ScrollByCommand, { selector, byX, byY, options });
     }
 
     _scrollIntoView$ (selector, options) {
-        return this._enqueueCommand('scrollIntoView', ScrollIntoViewCommand, { selector, options });
+        return this._enqueueCommand(ScrollIntoViewCommand, { selector, options });
     }
 
     _typeText$ (selector, text, options) {
-        return this._enqueueCommand('typeText', TypeTextCommand, { selector, text, options });
+        return this._enqueueCommand(TypeTextCommand, { selector, text, options });
     }
 
     _selectText$ (selector, startPos, endPos, options) {
-        return this._enqueueCommand('selectText', SelectTextCommand, { selector, startPos, endPos, options });
+        return this._enqueueCommand(SelectTextCommand, { selector, startPos, endPos, options });
     }
 
     _selectTextAreaContent$ (selector, startLine, startPos, endLine, endPos, options) {
-        return this._enqueueCommand('selectTextAreaContent', SelectTextAreaContentCommand, {
+        return this._enqueueCommand(SelectTextAreaContentCommand, {
             selector,
             startLine,
             startPos,
@@ -292,7 +292,7 @@ export default class TestController {
     }
 
     _selectEditableContent$ (startSelector, endSelector, options) {
-        return this._enqueueCommand('selectEditableContent', SelectEditableContentCommand, {
+        return this._enqueueCommand(SelectEditableContentCommand, {
             startSelector,
             endSelector,
             options,
@@ -300,30 +300,30 @@ export default class TestController {
     }
 
     _pressKey$ (keys, options) {
-        return this._enqueueCommand('pressKey', PressKeyCommand, { keys, options });
+        return this._enqueueCommand(PressKeyCommand, { keys, options });
     }
 
     _wait$ (timeout) {
-        return this._enqueueCommand('wait', WaitCommand, { timeout });
+        return this._enqueueCommand(WaitCommand, { timeout });
     }
 
     _navigateTo$ (url) {
-        return this._enqueueCommand('navigateTo', NavigateToCommand, { url });
+        return this._enqueueCommand(NavigateToCommand, { url });
     }
 
     _setFilesToUpload$ (selector, filePath) {
-        return this._enqueueCommand('setFilesToUpload', SetFilesToUploadCommand, { selector, filePath });
+        return this._enqueueCommand(SetFilesToUploadCommand, { selector, filePath });
     }
 
     _clearUpload$ (selector) {
-        return this._enqueueCommand('clearUpload', ClearUploadCommand, { selector });
+        return this._enqueueCommand(ClearUploadCommand, { selector });
     }
 
     _takeScreenshot$ (options) {
         if (options && typeof options !== 'object')
             options = { path: options };
 
-        return this._enqueueCommand('takeScreenshot', TakeScreenshotCommand, options);
+        return this._enqueueCommand(TakeScreenshotCommand, options);
     }
 
     _takeElementScreenshot$ (selector, ...args) {
@@ -338,59 +338,50 @@ export default class TestController {
         else
             commandArgs.path = args[0];
 
-        return this._enqueueCommand('takeElementScreenshot', TakeElementScreenshotCommand, commandArgs);
+        return this._enqueueCommand(TakeElementScreenshotCommand, commandArgs);
     }
 
     _resizeWindow$ (width, height) {
-        return this._enqueueCommand('resizeWindow', ResizeWindowCommand, { width, height });
+        return this._enqueueCommand(ResizeWindowCommand, { width, height });
     }
 
     _resizeWindowToFitDevice$ (device, options) {
-        return this._enqueueCommand('resizeWindowToFitDevice', ResizeWindowToFitDeviceCommand, { device, options });
+        return this._enqueueCommand(ResizeWindowToFitDeviceCommand, { device, options });
     }
 
     _maximizeWindow$ () {
-        return this._enqueueCommand('maximizeWindow', MaximizeWindowCommand);
+        return this._enqueueCommand(MaximizeWindowCommand);
     }
 
     _switchToIframe$ (selector) {
-        return this._enqueueCommand('switchToIframe', SwitchToIframeCommand, { selector });
+        return this._enqueueCommand(SwitchToIframeCommand, { selector });
     }
 
     _switchToMainWindow$ () {
-        return this._enqueueCommand('switchToMainWindow', SwitchToMainWindowCommand);
+        return this._enqueueCommand(SwitchToMainWindowCommand);
     }
 
     _openWindow$ (url) {
-        const apiMethodName = 'openWindow';
+        this._validateMultipleWindowCommand(OpenWindowCommand.methodName);
 
-        this._validateMultipleWindowCommand(apiMethodName);
-
-        return this._enqueueCommand(apiMethodName, OpenWindowCommand, { url });
+        return this._enqueueCommand(OpenWindowCommand, { url });
     }
 
     _closeWindow$ (window) {
-        const apiMethodName = 'closeWindow';
         const windowId      = window?.id || null;
 
-        this._validateMultipleWindowCommand(apiMethodName);
+        this._validateMultipleWindowCommand(CloseWindowCommand.methodName);
 
-        return this._enqueueCommand(apiMethodName, CloseWindowCommand, { windowId });
+        return this._enqueueCommand(CloseWindowCommand, { windowId });
     }
 
     _getCurrentWindow$ () {
-        const apiMethodName = 'getCurrentWindow';
+        this._validateMultipleWindowCommand(GetCurrentWindowCommand.methodName);
 
-        this._validateMultipleWindowCommand(apiMethodName);
-
-        return this._enqueueCommand(apiMethodName, GetCurrentWindowCommand);
+        return this._enqueueCommand(GetCurrentWindowCommand);
     }
 
     _switchToWindow$ (windowSelector) {
-        const apiMethodName = 'switchToWindow';
-
-        this._validateMultipleWindowCommand(apiMethodName);
-
         let command;
         let args;
 
@@ -405,23 +396,21 @@ export default class TestController {
             args = { windowId: windowSelector?.id };
         }
 
-        return this._enqueueCommand(apiMethodName, command, args);
+        this._validateMultipleWindowCommand(command.methodName);
+
+        return this._enqueueCommand(command, args);
     }
 
     _switchToParentWindow$ () {
-        const apiMethodName = 'switchToParentWindow';
+        this._validateMultipleWindowCommand(SwitchToParentWindowCommand.methodName);
 
-        this._validateMultipleWindowCommand(apiMethodName);
-
-        return this._enqueueCommand(apiMethodName, SwitchToParentWindowCommand);
+        return this._enqueueCommand(SwitchToParentWindowCommand);
     }
 
     _switchToPreviousWindow$ () {
-        const apiMethodName = 'switchToPreviousWindow';
+        this._validateMultipleWindowCommand(SwitchToPreviousWindowCommand.methodName);
 
-        this._validateMultipleWindowCommand(apiMethodName);
-
-        return this._enqueueCommand(apiMethodName, SwitchToPreviousWindowCommand);
+        return this._enqueueCommand(SwitchToPreviousWindowCommand);
     }
 
     _eval$ (fn, options) {
@@ -435,23 +424,21 @@ export default class TestController {
     }
 
     _setNativeDialogHandler$ (fn, options) {
-        return this._enqueueCommand('setNativeDialogHandler', SetNativeDialogHandlerCommand, {
+        return this._enqueueCommand(SetNativeDialogHandlerCommand, {
             dialogHandler: { fn, options },
         });
     }
 
     _getNativeDialogHistory$ () {
-        const name     = 'getNativeDialogHistory';
-        const callsite = getCallsiteForMethod(name);
+        const callsite = getCallsiteForMethod(GetNativeDialogHistoryCommand.methodName);
 
-        return this.testRun.executeCommand(new GetNativeDialogHistoryCommand(), callsite, name);
+        return this.testRun.executeCommand(new GetNativeDialogHistoryCommand(), callsite, GetNativeDialogHistoryCommand.methodName);
     }
 
     _getBrowserConsoleMessages$ () {
-        const name     = 'getBrowserConsoleMessages';
-        const callsite = getCallsiteForMethod(name);
+        const callsite = getCallsiteForMethod(GetBrowserConsoleMessagesCommand.methodName);
 
-        return this.testRun.executeCommand(new GetBrowserConsoleMessagesCommand(), callsite, name);
+        return this.testRun.executeCommand(new GetBrowserConsoleMessagesCommand(), callsite, GetBrowserConsoleMessagesCommand.methodName);
     }
 
     _checkForExcessiveAwaits (snapshotPropertyCallsites, checkedCallsite) {
@@ -485,21 +472,21 @@ export default class TestController {
     _debug$ () {
         // NOTE: do not need to enqueue the Debug command if we are in compiler service debugging mode
         // the Debug command will be executed by CDP
-        return this.isCompilerServiceMode() ? void 0 : this._enqueueCommand('debug', DebugCommand);
+        return this.isCompilerServiceMode() ? void 0 : this._enqueueCommand(DebugCommand);
     }
 
     _setTestSpeed$ (speed) {
-        return this._enqueueCommand('setTestSpeed', SetTestSpeedCommand, { speed });
+        return this._enqueueCommand(SetTestSpeedCommand, { speed });
     }
 
     _setPageLoadTimeout$ (duration) {
         addWarning(this.warningLog, getDeprecationMessage(DEPRECATED.setPageLoadTimeout));
 
-        return this._enqueueCommand('setPageLoadTimeout', SetPageLoadTimeoutCommand, { duration });
+        return this._enqueueCommand(SetPageLoadTimeoutCommand, { duration });
     }
 
     _useRole$ (role) {
-        return this._enqueueCommand('useRole', UseRoleCommand, { role });
+        return this._enqueueCommand(UseRoleCommand, { role });
     }
 
     _addRequestHooks$ (...hooks) {
