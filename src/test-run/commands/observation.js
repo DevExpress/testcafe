@@ -1,10 +1,11 @@
 import TYPE from './type';
 import { CommandBase, ActionCommandBase } from './base';
 import { positiveIntegerArgument } from './validations/argument';
+import { camelCase } from 'lodash';
 
 // Commands
 export class WaitCommand extends ActionCommandBase {
-    static methodName = 'wait';
+    static methodName = camelCase(TYPE.wait);
 
     constructor (obj, testRun) {
         super(obj, testRun, TYPE.wait);
@@ -55,7 +56,7 @@ export class ExecuteSelectorCommand extends ExecuteClientFunctionCommandBase {
 }
 
 export class DebugCommand extends ActionCommandBase {
-    static methodName = 'debug';
+    static methodName = camelCase(TYPE.debug);
 
     constructor () {
         super(null, null, TYPE.debug);
@@ -63,7 +64,7 @@ export class DebugCommand extends ActionCommandBase {
 }
 
 export class DisableDebugCommand extends ActionCommandBase {
-    static methodName = 'disableDebug';
+    static methodName = camelCase(TYPE.disableDebug);
 
     constructor () {
         super(null, null, TYPE.disableDebug);

@@ -12,6 +12,7 @@ import {
 } from './validations/argument';
 
 import { generateScreenshotMark } from '../../screenshots/utils';
+import { camelCase } from 'lodash';
 
 function initResizeToFitDeviceOptions (name, val, initOptions, validate = true) {
     return new ResizeToFitDeviceOptions(val, validate);
@@ -36,7 +37,7 @@ export class TakeScreenshotBaseCommand extends ActionCommandBase {
 }
 
 export class TakeScreenshotCommand extends TakeScreenshotBaseCommand {
-    static methodName = 'takeScreenshot';
+    static methodName = camelCase(TYPE.takeScreenshot);
 
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.takeScreenshot, validateProperties);
@@ -52,7 +53,7 @@ export class TakeScreenshotCommand extends TakeScreenshotBaseCommand {
 }
 
 export class TakeElementScreenshotCommand extends TakeScreenshotBaseCommand {
-    static methodName = 'takeElementScreenshot';
+    static methodName = camelCase(TYPE.takeElementScreenshot);
 
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.takeElementScreenshot, validateProperties);
@@ -68,7 +69,7 @@ export class TakeElementScreenshotCommand extends TakeScreenshotBaseCommand {
 }
 
 export class TakeScreenshotOnFailCommand extends TakeScreenshotBaseCommand {
-    static methodName = 'takeScreenshotOnFail';
+    static methodName = camelCase(TYPE.takeScreenshotOnFail);
 
     constructor (obj, testRun) {
         super(obj, testRun, TYPE.takeScreenshotOnFail);
@@ -82,7 +83,7 @@ export class TakeScreenshotOnFailCommand extends TakeScreenshotBaseCommand {
 }
 
 export class ResizeWindowCommand extends ActionCommandBase {
-    static methodName = 'resizeWindow';
+    static methodName = camelCase(TYPE.resizeWindow);
 
     constructor (obj, testRun) {
         super(obj, testRun, TYPE.resizeWindow);
@@ -97,7 +98,7 @@ export class ResizeWindowCommand extends ActionCommandBase {
 }
 
 export class ResizeWindowToFitDeviceCommand extends ActionCommandBase {
-    static methodName = 'resizeWindowToFitDevice';
+    static methodName = camelCase(TYPE.resizeWindowToFitDevice);
 
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.resizeWindowToFitDevice, validateProperties);
@@ -112,7 +113,7 @@ export class ResizeWindowToFitDeviceCommand extends ActionCommandBase {
 }
 
 export class MaximizeWindowCommand extends ActionCommandBase {
-    static methodName = 'maximizeWindow';
+    static methodName = camelCase(TYPE.maximizeWindow);
 
     constructor () {
         super();
