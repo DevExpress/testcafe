@@ -20,13 +20,6 @@ export interface TestRunLocator {
     testRunId: string;
 }
 
-export interface ExecuteActionArguments {
-    id: string;
-    apiMethodName: string;
-    command: CommandBase;
-    callsite: unknown;
-}
-
 export interface ExecuteCommandArguments {
     id: string;
     command: CommandBase;

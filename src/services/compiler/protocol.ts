@@ -4,7 +4,6 @@ import Role from '../../role/role';
 
 import {
     AddRequestEventListenersArguments,
-    ExecuteActionArguments,
     ExecuteCommandArguments,
     ExecuteMockPredicate,
     ExecuteRequestFilterRulePredicateArguments,
@@ -53,7 +52,7 @@ export interface RunTestArguments extends TestRunLocator {
 }
 
 export interface TestRunDispatcherProtocol {
-    executeActionSync ({ id, apiMethodName, command, callsite }: ExecuteActionArguments): unknown;
+    executeCommandSync ({ id, command, callsite }: ExecuteCommandArguments): unknown;
     executeCommand ({ command, callsite }: ExecuteCommandArguments): Promise<unknown>;
     addRequestEventListeners ( { hookId, hookClassName, rules }: AddRequestEventListenersArguments): Promise<void>;
     removeRequestEventListeners ({ rules }: RemoveRequestEventListenersArguments): Promise<void>;

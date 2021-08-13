@@ -147,14 +147,13 @@ class TestRunProxy extends AsyncEventEmitter {
         });
     }
 
-    public executeActionSync (apiMethodName: string, command: CommandBase, callsite: CallsiteRecord): unknown {
+    public executeCommandSync (command: CommandBase, callsite: CallsiteRecord): unknown {
         if (command.type === COMMAND_TYPE.assertion)
             this._handleAssertionCommand(command as AssertionCommand);
         else if (command.type === COMMAND_TYPE.useRole)
             this.dispatcher.onRoleAppeared((command as UseRoleCommand).role);
 
-        return this.dispatcher.executeActionSync({
-            apiMethodName,
+        return this.dispatcher.executeCommandSync({
             command,
             callsite,
             id: this.id,

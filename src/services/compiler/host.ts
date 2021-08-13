@@ -343,7 +343,7 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
         this.emit('ready');
     }
 
-    public executeActionSync (): never {
+    public executeCommandSync (): never {
         throw new MethodShouldNotBeCalledError();
     }
 
