@@ -5,6 +5,7 @@ import { APIError } from '../../errors/runtime';
 import { AssertionExecutableArgumentError } from '../../errors/test-run';
 import { executeJsExpression } from '../execute-js-expression';
 import { isJSExpression } from './utils';
+import ASSERTION_TYPE from '../../assertions/type';
 
 import {
     stringArgument,
@@ -35,6 +36,8 @@ const NOT_REPORTED_PROPERTIES = ['id', 'originActual'];
 
 // Commands
 export default class AssertionCommand extends ActionCommandBase {
+    static methodName = 'assertionCommand';
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.assertion, validateProperties);
     }
@@ -55,4 +58,68 @@ export default class AssertionCommand extends ActionCommandBase {
     static get NOT_REPORTED_PROPERTIES () {
         return NOT_REPORTED_PROPERTIES;
     }
+}
+
+export class Eql extends AssertionCommand {
+    static methodName = ASSERTION_TYPE.eql;
+}
+
+export class NotEql extends AssertionCommand {
+    static methodName = ASSERTION_TYPE.notEql;
+}
+
+export class Ok extends AssertionCommand {
+    static methodName = ASSERTION_TYPE.ok;
+}
+
+export class NotOk extends AssertionCommand {
+    static methodName = ASSERTION_TYPE.notOk;
+}
+
+export class Contains extends AssertionCommand {
+    static methodName = ASSERTION_TYPE.contains;
+}
+
+export class NotContains extends AssertionCommand {
+    static methodName = ASSERTION_TYPE.notContains;
+}
+
+export class TypeOf extends AssertionCommand {
+    static methodName = ASSERTION_TYPE.typeOf;
+}
+
+export class NotTypeOf extends AssertionCommand {
+    static methodName = ASSERTION_TYPE.notTypeOf;
+}
+
+export class Gt extends AssertionCommand {
+    static methodName = ASSERTION_TYPE.gt;
+}
+
+export class Gte extends AssertionCommand {
+    static methodName = ASSERTION_TYPE.gte;
+}
+
+export class Lt extends AssertionCommand {
+    static methodName = ASSERTION_TYPE.lt;
+}
+
+export class Lte extends AssertionCommand {
+    static methodName = ASSERTION_TYPE.lte;
+}
+
+export class Within extends AssertionCommand {
+    static methodName = ASSERTION_TYPE.within;
+}
+
+export class NotWithin extends AssertionCommand {
+    static methodName = ASSERTION_TYPE.notWithin;
+}
+
+export class Match extends AssertionCommand {
+    static methodName = ASSERTION_TYPE.match;
+}
+
+export class NotMatch extends AssertionCommand {
+    static methodName = ASSERTION_TYPE.notMatch;
 }

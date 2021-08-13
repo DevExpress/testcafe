@@ -98,6 +98,8 @@ function initDialogHandler (name, val, { skipVisibilityCheck, testRun }) {
 
 // Commands
 export class DispatchEventCommand extends ActionCommandBase {
+    static methodName = 'dispatchEvent';
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.dispatchEvent, validateProperties);
     }
@@ -113,6 +115,8 @@ export class DispatchEventCommand extends ActionCommandBase {
 }
 
 export class ClickCommand extends ActionCommandBase {
+    static methodName = 'click';
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.click, validateProperties);
     }
@@ -126,6 +130,8 @@ export class ClickCommand extends ActionCommandBase {
 }
 
 export class RightClickCommand extends ActionCommandBase {
+    static methodName = 'rightClick';
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.rightClick, validateProperties);
     }
@@ -164,6 +170,8 @@ export class ExecuteAsyncExpressionCommand extends CommandBase {
 }
 
 export class DoubleClickCommand extends ActionCommandBase {
+    static methodName = 'doubleClick';
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.doubleClick, validateProperties);
     }
@@ -177,6 +185,8 @@ export class DoubleClickCommand extends ActionCommandBase {
 }
 
 export class HoverCommand extends ActionCommandBase {
+    static methodName = 'hover';
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.hover, validateProperties);
     }
@@ -190,6 +200,8 @@ export class HoverCommand extends ActionCommandBase {
 }
 
 export class TypeTextCommand extends ActionCommandBase {
+    static methodName = 'typeText';
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.typeText, validateProperties);
     }
@@ -204,6 +216,8 @@ export class TypeTextCommand extends ActionCommandBase {
 }
 
 export class DragCommand extends ActionCommandBase {
+    static methodName = 'drag';
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.drag, validateProperties);
     }
@@ -219,6 +233,8 @@ export class DragCommand extends ActionCommandBase {
 }
 
 export class DragToElementCommand extends ActionCommandBase {
+    static methodName = 'dragToElement';
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.dragToElement, validateProperties);
     }
@@ -233,6 +249,8 @@ export class DragToElementCommand extends ActionCommandBase {
 }
 
 export class ScrollCommand extends ActionCommandBase {
+    static methodName = 'scroll';
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.scroll, validateProperties);
     }
@@ -249,6 +267,8 @@ export class ScrollCommand extends ActionCommandBase {
 }
 
 export class ScrollByCommand extends ActionCommandBase {
+    static methodName = 'scrollBy';
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.scrollBy, validateProperties);
     }
@@ -264,6 +284,8 @@ export class ScrollByCommand extends ActionCommandBase {
 }
 
 export class ScrollIntoViewCommand extends ActionCommandBase {
+    static methodName = 'scrollIntoView';
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.scrollIntoView, validateProperties);
     }
@@ -277,6 +299,8 @@ export class ScrollIntoViewCommand extends ActionCommandBase {
 }
 
 export class SelectTextCommand extends ActionCommandBase {
+    static methodName = 'selectText';
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.selectText, validateProperties);
     }
@@ -292,6 +316,8 @@ export class SelectTextCommand extends ActionCommandBase {
 }
 
 export class SelectEditableContentCommand extends ActionCommandBase {
+    static methodName = 'selectEditableContent';
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.selectEditableContent, validateProperties);
     }
@@ -306,6 +332,8 @@ export class SelectEditableContentCommand extends ActionCommandBase {
 }
 
 export class SelectTextAreaContentCommand extends ActionCommandBase {
+    static methodName = 'selectTextAreaContent';
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.selectTextAreaContent, validateProperties);
     }
@@ -323,6 +351,8 @@ export class SelectTextAreaContentCommand extends ActionCommandBase {
 }
 
 export class PressKeyCommand extends ActionCommandBase {
+    static methodName = 'pressKey';
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.pressKey, validateProperties);
     }
@@ -336,6 +366,8 @@ export class PressKeyCommand extends ActionCommandBase {
 }
 
 export class NavigateToCommand extends ActionCommandBase {
+    static methodName = 'navigateTo';
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.navigateTo, validateProperties);
     }
@@ -350,6 +382,8 @@ export class NavigateToCommand extends ActionCommandBase {
 }
 
 export class SetFilesToUploadCommand extends ActionCommandBase {
+    static methodName = 'setFilesToUpload';
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.setFilesToUpload, validateProperties);
     }
@@ -363,6 +397,8 @@ export class SetFilesToUploadCommand extends ActionCommandBase {
 }
 
 export class ClearUploadCommand extends ActionCommandBase {
+    static methodName = 'clearUpload';
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.clearUpload, validateProperties);
     }
@@ -375,6 +411,8 @@ export class ClearUploadCommand extends ActionCommandBase {
 }
 
 export class SwitchToIframeCommand extends ActionCommandBase {
+    static methodName = 'switchToIframe';
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.switchToIframe, validateProperties);
     }
@@ -387,6 +425,8 @@ export class SwitchToIframeCommand extends ActionCommandBase {
 }
 
 export class SwitchToMainWindowCommand extends ActionCommandBase {
+    static methodName = 'switchToMainWindow';
+
     constructor () {
         super();
         this.type = TYPE.switchToMainWindow;
@@ -394,6 +434,8 @@ export class SwitchToMainWindowCommand extends ActionCommandBase {
 }
 
 export class OpenWindowCommand extends ActionCommandBase {
+    static methodName = 'openWindow';
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.openWindow, validateProperties);
     }
@@ -406,6 +448,8 @@ export class OpenWindowCommand extends ActionCommandBase {
 }
 
 export class CloseWindowCommand extends ActionCommandBase {
+    static methodName = 'closeWindow';
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.closeWindow, validateProperties);
     }
@@ -419,6 +463,8 @@ export class CloseWindowCommand extends ActionCommandBase {
 
 
 export class GetCurrentWindowCommand extends ActionCommandBase {
+    static methodName = 'getCurrentWindow';
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.getCurrentWindow, validateProperties);
     }
@@ -430,6 +476,8 @@ export class GetCurrentWindowCommand extends ActionCommandBase {
 }
 
 export class GetCurrentWindowsCommand extends ActionCommandBase {
+    static methodName = 'getCurrentWindows';
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.getCurrentWindows, validateProperties);
     }
@@ -442,6 +490,8 @@ export class GetCurrentWindowsCommand extends ActionCommandBase {
 
 
 export class SwitchToWindowCommand extends ActionCommandBase {
+    static methodName = 'switchToWindow';
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.switchToWindow, validateProperties);
     }
@@ -454,6 +504,8 @@ export class SwitchToWindowCommand extends ActionCommandBase {
 }
 
 export class SwitchToWindowByPredicateCommand extends ActionCommandBase {
+    static methodName = 'switchToWindow';
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.switchToWindowByPredicate, validateProperties);
     }
@@ -467,6 +519,8 @@ export class SwitchToWindowByPredicateCommand extends ActionCommandBase {
 }
 
 export class SwitchToParentWindowCommand extends ActionCommandBase {
+    static methodName = 'switchToParentWindow';
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.switchToParentWindow, validateProperties);
     }
@@ -478,6 +532,8 @@ export class SwitchToParentWindowCommand extends ActionCommandBase {
 }
 
 export class SwitchToPreviousWindowCommand extends ActionCommandBase {
+    static methodName = 'switchToPreviousWindow';
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.switchToPreviousWindow, validateProperties);
     }
@@ -488,6 +544,8 @@ export class SwitchToPreviousWindowCommand extends ActionCommandBase {
 }
 
 export class SetNativeDialogHandlerCommand extends ActionCommandBase {
+    static methodName = 'setNativeDialogHandler';
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.setNativeDialogHandler, validateProperties);
     }
@@ -512,6 +570,8 @@ export class SetNativeDialogHandlerCommand extends ActionCommandBase {
 }
 
 export class GetNativeDialogHistoryCommand extends ActionCommandBase {
+    static methodName = 'getNativeDialogHistory';
+
     constructor () {
         super();
         this.type = TYPE.getNativeDialogHistory;
@@ -519,6 +579,8 @@ export class GetNativeDialogHistoryCommand extends ActionCommandBase {
 }
 
 export class GetBrowserConsoleMessagesCommand extends ActionCommandBase {
+    static methodName = 'getBrowserConsoleMessages';
+
     constructor () {
         super();
         this.type = TYPE.getBrowserConsoleMessages;
@@ -526,6 +588,8 @@ export class GetBrowserConsoleMessagesCommand extends ActionCommandBase {
 }
 
 export class SetTestSpeedCommand extends ActionCommandBase {
+    static methodName = 'setTestSpeed';
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.setTestSpeed, validateProperties);
     }
@@ -538,6 +602,8 @@ export class SetTestSpeedCommand extends ActionCommandBase {
 }
 
 export class SetPageLoadTimeoutCommand extends ActionCommandBase {
+    static methodName = 'setPageLoadTimeout';
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.setPageLoadTimeout, validateProperties);
     }
@@ -550,6 +616,8 @@ export class SetPageLoadTimeoutCommand extends ActionCommandBase {
 }
 
 export class UseRoleCommand extends ActionCommandBase {
+    static methodName = 'useRole';
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.useRole, validateProperties);
     }
@@ -562,6 +630,8 @@ export class UseRoleCommand extends ActionCommandBase {
 }
 
 export class RecorderCommand extends ActionCommandBase {
+    static methodName = 'recorder';
+
     constructor (obj, testRun) {
         super(obj, testRun, TYPE.recorder);
     }

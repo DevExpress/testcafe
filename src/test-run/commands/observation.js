@@ -4,6 +4,8 @@ import { positiveIntegerArgument } from './validations/argument';
 
 // Commands
 export class WaitCommand extends ActionCommandBase {
+    static methodName = 'wait';
+
     constructor (obj, testRun) {
         super(obj, testRun, TYPE.wait);
     }
@@ -53,12 +55,16 @@ export class ExecuteSelectorCommand extends ExecuteClientFunctionCommandBase {
 }
 
 export class DebugCommand extends ActionCommandBase {
+    static methodName = 'debug';
+
     constructor () {
         super(null, null, TYPE.debug);
     }
 }
 
 export class DisableDebugCommand extends ActionCommandBase {
+    static methodName = 'disableDebug';
+
     constructor () {
         super(null, null, TYPE.disableDebug);
     }

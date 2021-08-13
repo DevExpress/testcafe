@@ -8,5 +8,6 @@ export class CommandBase {
 }
 
 export class ActionCommandBase extends CommandBase {
-
+    public static methodName: string;
+    public get methodName(): string;
 }

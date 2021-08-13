@@ -36,6 +36,8 @@ export class TakeScreenshotBaseCommand extends ActionCommandBase {
 }
 
 export class TakeScreenshotCommand extends TakeScreenshotBaseCommand {
+    static methodName = 'takeScreenshot';
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.takeScreenshot, validateProperties);
     }
@@ -50,6 +52,8 @@ export class TakeScreenshotCommand extends TakeScreenshotBaseCommand {
 }
 
 export class TakeElementScreenshotCommand extends TakeScreenshotBaseCommand {
+    static methodName = 'takeElementScreenshot';
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.takeElementScreenshot, validateProperties);
     }
@@ -64,6 +68,8 @@ export class TakeElementScreenshotCommand extends TakeScreenshotBaseCommand {
 }
 
 export class TakeScreenshotOnFailCommand extends TakeScreenshotBaseCommand {
+    static methodName = 'takeScreenshotOnFail';
+
     constructor (obj, testRun) {
         super(obj, testRun, TYPE.takeScreenshotOnFail);
     }
@@ -76,6 +82,8 @@ export class TakeScreenshotOnFailCommand extends TakeScreenshotBaseCommand {
 }
 
 export class ResizeWindowCommand extends ActionCommandBase {
+    static methodName = 'resizeWindow';
+
     constructor (obj, testRun) {
         super(obj, testRun, TYPE.resizeWindow);
     }
@@ -89,6 +97,8 @@ export class ResizeWindowCommand extends ActionCommandBase {
 }
 
 export class ResizeWindowToFitDeviceCommand extends ActionCommandBase {
+    static methodName = 'resizeWindowToFitDevice';
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.resizeWindowToFitDevice, validateProperties);
     }
@@ -102,6 +112,8 @@ export class ResizeWindowToFitDeviceCommand extends ActionCommandBase {
 }
 
 export class MaximizeWindowCommand extends ActionCommandBase {
+    static methodName = 'maximizeWindow';
+
     constructor () {
         super();
         this.type = TYPE.maximizeWindow;

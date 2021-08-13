@@ -15,5 +15,9 @@ export class CommandBase extends Assignable {
 }
 
 export class ActionCommandBase extends CommandBase {
+    static methodName = 'actionCommandBase';
 
+    get methodName () {
+        return this.constructor.methodName;
+    }
 }
