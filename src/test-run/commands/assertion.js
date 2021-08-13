@@ -36,7 +36,7 @@ const NOT_REPORTED_PROPERTIES = ['id', 'originActual'];
 
 // Commands
 export class AssertionCommand extends ActionCommandBase {
-    static methodName = 'assertionCommand';
+    static methodName = 'expect';
 
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.assertion, validateProperties);

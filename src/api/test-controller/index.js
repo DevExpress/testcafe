@@ -70,10 +70,15 @@ import {
     MultipleWindowsModeIsDisabledError,
     MultipleWindowsModeIsNotAvailableInRemoteBrowserError,
 } from '../../errors/test-run';
+import { AssertionCommand } from '../../test-run/commands/assertion';
 
 const originalThen = Promise.resolve().then;
 
 let inDebug = false;
+
+function delegatedAPI (methodName) {
+    return `_${methodName}$`;
+}
 
 export default class TestController {
     constructor (testRun) {
@@ -191,31 +196,31 @@ export default class TestController {
         return this.testRun.browser;
     }
 
-    _dispatchEvent$ (selector, eventName, options = {}) {
+    [delegatedAPI(DispatchEventCommand.methodName)] (selector, eventName, options = {}) {
         return this._enqueueCommand(DispatchEventCommand, { selector, eventName, options, relatedTarget: options.relatedTarget });
     }
 
-    _click$ (selector, options) {
+    [delegatedAPI(ClickCommand.methodName)] (selector, options) {
         return this._enqueueCommand(ClickCommand, { selector, options });
     }
 
-    _rightClick$ (selector, options) {
+    [delegatedAPI(RightClickCommand.methodName)] (selector, options) {
         return this._enqueueCommand(RightClickCommand, { selector, options });
     }
 
-    _doubleClick$ (selector, options) {
+    [delegatedAPI(DoubleClickCommand.methodName)] (selector, options) {
         return this._enqueueCommand(DoubleClickCommand, { selector, options });
     }
 
-    _hover$ (selector, options) {
+    [delegatedAPI(HoverCommand.methodName)] (selector, options) {
         return this._enqueueCommand(HoverCommand, { selector, options });
     }
 
-    _drag$ (selector, dragOffsetX, dragOffsetY, options) {
+    [delegatedAPI(DragCommand.methodName)] (selector, dragOffsetX, dragOffsetY, options) {
         return this._enqueueCommand(DragCommand, { selector, dragOffsetX, dragOffsetY, options });
     }
 
-    _dragToElement$ (selector, destinationSelector, options) {
+    [delegatedAPI(DragToElementCommand.methodName)] (selector, destinationSelector, options) {
         return this._enqueueCommand(DragToElementCommand, { selector, destinationSelector, options });
     }
 
@@ -242,7 +247,7 @@ export default class TestController {
         return position;
     }
 
-    _scroll$ (...args) {
+    [delegatedAPI(ScrollCommand.methodName)] (...args) {
         let position = this._getPosition(args);
 
         const selector = this._getSelectorForScroll(args);
@@ -260,7 +265,7 @@ export default class TestController {
         return this._enqueueCommand(ScrollCommand, { selector, x, y, position, options });
     }
 
-    _scrollBy$ (...args) {
+    [delegatedAPI(ScrollByCommand.methodName)] (...args) {
         const selector = this._getSelectorForScroll(args);
 
         const [byX, byY, options] = args;
@@ -268,19 +273,19 @@ export default class TestController {
         return this._enqueueCommand(ScrollByCommand, { selector, byX, byY, options });
     }
 
-    _scrollIntoView$ (selector, options) {
+    [delegatedAPI(ScrollIntoViewCommand.methodName)] (selector, options) {
         return this._enqueueCommand(ScrollIntoViewCommand, { selector, options });
     }
 
-    _typeText$ (selector, text, options) {
+    [delegatedAPI(TypeTextCommand.methodName)] (selector, text, options) {
         return this._enqueueCommand(TypeTextCommand, { selector, text, options });
     }
 
-    _selectText$ (selector, startPos, endPos, options) {
+    [delegatedAPI(SelectTextCommand.methodName)] (selector, startPos, endPos, options) {
         return this._enqueueCommand(SelectTextCommand, { selector, startPos, endPos, options });
     }
 
-    _selectTextAreaContent$ (selector, startLine, startPos, endLine, endPos, options) {
+    [delegatedAPI(SelectTextAreaContentCommand.methodName)] (selector, startLine, startPos, endLine, endPos, options) {
         return this._enqueueCommand(SelectTextAreaContentCommand, {
             selector,
             startLine,
@@ -291,7 +296,7 @@ export default class TestController {
         });
     }
 
-    _selectEditableContent$ (startSelector, endSelector, options) {
+    [delegatedAPI(SelectEditableContentCommand.methodName)] (startSelector, endSelector, options) {
         return this._enqueueCommand(SelectEditableContentCommand, {
             startSelector,
             endSelector,
@@ -299,34 +304,34 @@ export default class TestController {
         });
     }
 
-    _pressKey$ (keys, options) {
+    [delegatedAPI(PressKeyCommand.methodName)] (keys, options) {
         return this._enqueueCommand(PressKeyCommand, { keys, options });
     }
 
-    _wait$ (timeout) {
+    [delegatedAPI(WaitCommand.methodName)] (timeout) {
         return this._enqueueCommand(WaitCommand, { timeout });
     }
 
-    _navigateTo$ (url) {
+    [delegatedAPI(NavigateToCommand.methodName)] (url) {
         return this._enqueueCommand(NavigateToCommand, { url });
     }
 
-    _setFilesToUpload$ (selector, filePath) {
+    [delegatedAPI(SetFilesToUploadCommand.methodName)] (selector, filePath) {
         return this._enqueueCommand(SetFilesToUploadCommand, { selector, filePath });
     }
 
-    _clearUpload$ (selector) {
+    [delegatedAPI(ClearUploadCommand.methodName)] (selector) {
         return this._enqueueCommand(ClearUploadCommand, { selector });
     }
 
-    _takeScreenshot$ (options) {
+    [delegatedAPI(TakeScreenshotCommand.methodName)] (options) {
         if (options && typeof options !== 'object')
             options = { path: options };
 
         return this._enqueueCommand(TakeScreenshotCommand, options);
     }
 
-    _takeElementScreenshot$ (selector, ...args) {
+    [delegatedAPI(TakeElementScreenshotCommand.methodName)] (selector, ...args) {
         const commandArgs = { selector };
 
         if (args[1]) {
@@ -341,33 +346,33 @@ export default class TestController {
         return this._enqueueCommand(TakeElementScreenshotCommand, commandArgs);
     }
 
-    _resizeWindow$ (width, height) {
+    [delegatedAPI(ResizeWindowCommand.methodName)] (width, height) {
         return this._enqueueCommand(ResizeWindowCommand, { width, height });
     }
 
-    _resizeWindowToFitDevice$ (device, options) {
+    [delegatedAPI(ResizeWindowToFitDeviceCommand.methodName)] (device, options) {
         return this._enqueueCommand(ResizeWindowToFitDeviceCommand, { device, options });
     }
 
-    _maximizeWindow$ () {
+    [delegatedAPI(MaximizeWindowCommand.methodName)] () {
         return this._enqueueCommand(MaximizeWindowCommand);
     }
 
-    _switchToIframe$ (selector) {
+    [delegatedAPI(SwitchToIframeCommand.methodName)] (selector) {
         return this._enqueueCommand(SwitchToIframeCommand, { selector });
     }
 
-    _switchToMainWindow$ () {
+    [delegatedAPI(SwitchToMainWindowCommand.methodName)] () {
         return this._enqueueCommand(SwitchToMainWindowCommand);
     }
 
-    _openWindow$ (url) {
+    [delegatedAPI(OpenWindowCommand.methodName)] (url) {
         this._validateMultipleWindowCommand(OpenWindowCommand.methodName);
 
         return this._enqueueCommand(OpenWindowCommand, { url });
     }
 
-    _closeWindow$ (window) {
+    [delegatedAPI(CloseWindowCommand.methodName)] (window) {
         const windowId      = window?.id || null;
 
         this._validateMultipleWindowCommand(CloseWindowCommand.methodName);
@@ -375,13 +380,15 @@ export default class TestController {
         return this._enqueueCommand(CloseWindowCommand, { windowId });
     }
 
-    _getCurrentWindow$ () {
+    [delegatedAPI(GetCurrentWindowCommand.methodName)] () {
         this._validateMultipleWindowCommand(GetCurrentWindowCommand.methodName);
 
         return this._enqueueCommand(GetCurrentWindowCommand);
     }
 
-    _switchToWindow$ (windowSelector) {
+    [delegatedAPI(SwitchToWindowCommand.methodName)] (windowSelector) {
+        this._validateMultipleWindowCommand(SwitchToWindowCommand.methodName);
+
         let command;
         let args;
 
@@ -396,18 +403,16 @@ export default class TestController {
             args = { windowId: windowSelector?.id };
         }
 
-        this._validateMultipleWindowCommand(command.methodName);
-
         return this._enqueueCommand(command, args);
     }
 
-    _switchToParentWindow$ () {
+    [delegatedAPI(SwitchToParentWindowCommand.methodName)] () {
         this._validateMultipleWindowCommand(SwitchToParentWindowCommand.methodName);
 
         return this._enqueueCommand(SwitchToParentWindowCommand);
     }
 
-    _switchToPreviousWindow$ () {
+    [delegatedAPI(SwitchToPreviousWindowCommand.methodName)] () {
         this._validateMultipleWindowCommand(SwitchToPreviousWindowCommand.methodName);
 
         return this._enqueueCommand(SwitchToPreviousWindowCommand);
@@ -423,19 +428,19 @@ export default class TestController {
         return clientFn();
     }
 
-    _setNativeDialogHandler$ (fn, options) {
+    [delegatedAPI(SetNativeDialogHandlerCommand.methodName)] (fn, options) {
         return this._enqueueCommand(SetNativeDialogHandlerCommand, {
             dialogHandler: { fn, options },
         });
     }
 
-    _getNativeDialogHistory$ () {
+    [delegatedAPI(GetNativeDialogHistoryCommand.methodName)] () {
         const callsite = getCallsiteForMethod(GetNativeDialogHistoryCommand.methodName);
 
         return this.testRun.executeCommand(new GetNativeDialogHistoryCommand(), callsite, GetNativeDialogHistoryCommand.methodName);
     }
 
-    _getBrowserConsoleMessages$ () {
+    [delegatedAPI(GetBrowserConsoleMessagesCommand.methodName)] () {
         const callsite = getCallsiteForMethod(GetBrowserConsoleMessagesCommand.methodName);
 
         return this.testRun.executeCommand(new GetBrowserConsoleMessagesCommand(), callsite, GetBrowserConsoleMessagesCommand.methodName);
@@ -456,7 +461,7 @@ export default class TestController {
             snapshotPropertyCallsites[callsiteId] = { callsites: [], checked: true };
     }
 
-    _expect$ (actual) {
+    [delegatedAPI(AssertionCommand.methodName)] (actual) {
         const callsite = getCallsiteForMethod('expect');
 
         this._checkForExcessiveAwaits(this.testRun.observedCallsites.snapshotPropertyCallsites, callsite);
@@ -469,23 +474,23 @@ export default class TestController {
         return new Assertion(actual, this, callsite);
     }
 
-    _debug$ () {
+    [delegatedAPI(DebugCommand.methodName)] () {
         // NOTE: do not need to enqueue the Debug command if we are in compiler service debugging mode
         // the Debug command will be executed by CDP
         return this.isCompilerServiceMode() ? void 0 : this._enqueueCommand(DebugCommand);
     }
 
-    _setTestSpeed$ (speed) {
+    [delegatedAPI(SetTestSpeedCommand.methodName)] (speed) {
         return this._enqueueCommand(SetTestSpeedCommand, { speed });
     }
 
-    _setPageLoadTimeout$ (duration) {
+    [delegatedAPI(SetPageLoadTimeoutCommand.methodName)] (duration) {
         addWarning(this.warningLog, getDeprecationMessage(DEPRECATED.setPageLoadTimeout));
 
         return this._enqueueCommand(SetPageLoadTimeoutCommand, { duration });
     }
 
-    _useRole$ (role) {
+    [delegatedAPI(UseRoleCommand.methodName)] (role) {
         return this._enqueueCommand(UseRoleCommand, { role });
     }
 
