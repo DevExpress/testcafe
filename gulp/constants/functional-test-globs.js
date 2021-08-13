@@ -12,6 +12,10 @@ const TESTS_GLOB = [
 const DEBUG_GLOB = [
     BASIC_TESTS_GLOB,
     COMPILER_SERVICE_TESTS_GLOB,
+    '!test/functional/fixtures/multiple-windows/test.js',
+    '!test/functional/fixtures/regression/gh-1907/test.js',
+    '!test/functional/fixtures/screenshots-on-fails/test.js',
+    '!test/functional/fixtures/api/es-next/take-screenshot/test.js',
 ];
 
 module.exports = {
