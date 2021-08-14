@@ -10,6 +10,8 @@ const SCREENSHOTS_PATH = config.testScreenshotsDir;
 
 const experimentalDebug = !!process.env.EXPERIMENTAL_DEBUG;
 
+let testCafeInstance = null;
+
 async function assertScreenshotColor (fileName, pixel) {
     for (const browser of config.currentEnvironment.browsers) {
         const filePath = path.join(SCREENSHOTS_PATH, 'custom', browser.alias + fileName);
@@ -72,18 +74,18 @@ describe('Multiple windows', () => {
     it('headless', () => {
         return createTestCafe('127.0.0.1', 1335, 1336)
             .then(tc => {
-                testCafe = tc;
+                testCafeInstance = tc;
             })
             .then(() => {
                 const fullTestPath = path.join(__dirname, './testcafe-fixtures/headless.js');
 
-                return testCafe.createRunner()
+                return testCafeInstance.createRunner()
                     .browsers(`chrome:headless`)
                     .src(fullTestPath)
                     .run();
             })
             .then(() => {
-                return testCafe.close();
+                return testCafeInstance.close();
             });
     });
 
@@ -324,10 +326,10 @@ describe('Multiple windows', () => {
         it('Should resize window when emulating device', async () => {
             return createTestCafe('127.0.0.1', 1335, 1336)
                 .then(tc => {
-                    testCafe = tc;
+                    testCafeInstance = tc;
                 })
                 .then(() => {
-                    return testCafe
+                    return testCafeInstance
                         .createRunner()
                         .src(path.join(__dirname, './testcafe-fixtures/features/emulation.js'))
                         .browsers('chrome:emulation:device=iphone X')
@@ -336,7 +338,7 @@ describe('Multiple windows', () => {
                 .then(failedCount => {
                     expect(failedCount).eql(0);
 
-                    return testCafe.close();
+                    return testCafeInstance.close();
                 });
         });
     });
@@ -345,10 +347,10 @@ describe('Multiple windows', () => {
         function runTestsResize (browser) {
             return createTestCafe('127.0.0.1', 1335, 1336)
                 .then(tc => {
-                    testCafe = tc;
+                    testCafeInstance = tc;
                 })
                 .then(() => {
-                    return testCafe
+                    return testCafeInstance
                         .createRunner()
                         .src(path.join(__dirname, './testcafe-fixtures/api/api-test.js'))
                         .filter(testName => testName === 'Resize multiple windows')
@@ -358,7 +360,7 @@ describe('Multiple windows', () => {
                 .then(failedCount => {
                     expect(failedCount).eql(0);
 
-                    return testCafe.close();
+                    return testCafeInstance.close();
                 });
         }
 
