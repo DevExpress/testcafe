@@ -1,5 +1,5 @@
 import TYPE from './type';
-import { CommandBase, ActionCommandBase } from './base';
+import { ActionCommandBase } from './base';
 import { positiveIntegerArgument } from './validations/argument';
 import { camelCase } from 'lodash';
 
@@ -18,7 +18,7 @@ export class WaitCommand extends ActionCommandBase {
     }
 }
 
-export class ExecuteClientFunctionCommandBase extends CommandBase {
+export class ExecuteClientFunctionCommandBase extends ActionCommandBase {
     constructor (obj, testRun, type) {
         super(obj, testRun, type, false);
     }
@@ -34,12 +34,16 @@ export class ExecuteClientFunctionCommandBase extends CommandBase {
 }
 
 export class ExecuteClientFunctionCommand extends ExecuteClientFunctionCommandBase {
+    static methodName = TYPE.executeClientFunction;
+
     constructor (obj, testRun) {
         super(obj, testRun, TYPE.executeClientFunction);
     }
 }
 
 export class ExecuteSelectorCommand extends ExecuteClientFunctionCommandBase {
+    static methodName = TYPE.executeSelector;
+
     constructor (obj, testRun) {
         super(obj, testRun, TYPE.executeSelector);
     }
