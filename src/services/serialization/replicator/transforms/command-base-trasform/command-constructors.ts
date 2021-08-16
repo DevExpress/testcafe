@@ -45,6 +45,7 @@ import { AssertionCommand } from '../../../../../test-run/commands/assertion';
 import { CommandConstructor } from './types';
 
 import {
+    MaximizeWindowCommand,
     ResizeWindowCommand,
     ResizeWindowToFitDeviceCommand,
     TakeElementScreenshotCommand,
@@ -82,6 +83,7 @@ const COMMAND_CONSTRUCTORS = new Map<string, CommandConstructor>([
     [CommandType.takeElementScreenshot, TakeElementScreenshotCommand],
     [CommandType.resizeWindow, ResizeWindowCommand],
     [CommandType.resizeWindowToFitDevice, ResizeWindowToFitDeviceCommand],
+    [CommandType.maximizeWindow, MaximizeWindowCommand],
     [CommandType.dispatchEvent, DispatchEventCommand],
     [CommandType.scroll, ScrollCommand],
     [CommandType.scrollBy, ScrollByCommand],
