@@ -163,14 +163,14 @@ export default class CLIArgumentParser {
             .option('--screenshots-full-page', 'enable full-page screenshots')
             .option('--compiler-options <option=value[,...]>', 'specify test file compiler options')
             .option('--disable-multiple-windows', 'disable multiple windows mode')
+            .option('--cache', 'cache web assets between test runs')
 
             // NOTE: these options will be handled by chalk internally
             .option('--color', 'force colors in command line')
             .option('--no-color', 'disable colors in command line')
 
             // NOTE: temporary hide experimental options from --help command
-            .addOption(new Option('--experimental-debug', 'enable experimental debug mode').hideHelp())
-            .addOption(new Option('--cache', 'cache web assets between test runs').hideHelp());
+            .addOption(new Option('--experimental-debug', 'enable experimental debug mode').hideHelp());
     }
 
     private _parseList (val: string): string[] {
