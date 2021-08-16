@@ -4,4 +4,5 @@ export interface SerializedEntityWithPredicate {
 
 export interface SerializedCommand {
     type: string;
+    assertionType?: string;
 }

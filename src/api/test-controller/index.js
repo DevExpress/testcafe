@@ -462,7 +462,7 @@ export default class TestController {
     }
 
     [delegatedAPI(AssertionCommand.methodName)] (actual) {
-        const callsite = getCallsiteForMethod('expect');
+        const callsite = getCallsiteForMethod(AssertionCommand.methodName);
 
         this._checkForExcessiveAwaits(this.testRun.observedCallsites.snapshotPropertyCallsites, callsite);
 

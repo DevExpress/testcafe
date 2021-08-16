@@ -1,15 +1,14 @@
 import BaseTransform from '../base-transform';
 import { CommandBase } from '../../../../../test-run/commands/base';
 import { SerializedCommand } from '../../interfaces';
-import { isObservationCommand } from '../../../../../test-run/commands/utils';
+import { isAssertionCommand, isObservationCommand } from '../../../../../test-run/commands/utils';
 import TestRun from '../../../../../test-run';
 import { ExecuteExpressionCommand, SetNativeDialogHandlerCommand } from '../../../../../test-run/commands/actions';
 import COMMAND_CONSTRUCTORS from './command-constructors';
+import ASSERTION_COMMAND_CONSTRUCTORS from './assertion-command-constructors';
 import { CommandConstructor, ObservationConstructor } from './types';
-import { AssertionCommand } from '../../../../../test-run/commands/assertion';
 
 const OBSERVABLE_COMMAND_CONSTRUCTORS_WITH_SKIPPED_ARGUMENT_VALIDATION = [
-    AssertionCommand,
     ExecuteExpressionCommand,
 ];
 
@@ -24,6 +23,7 @@ export default class CommandBaseTransform extends BaseTransform {
 
     private _skipArgumentValidation (CommandCtor: CommandConstructor, value: SerializedCommand): boolean {
         return isObservationCommand(value) &&
+            !isAssertionCommand(value) &&
             !OBSERVABLE_COMMAND_CONSTRUCTORS_WITH_SKIPPED_ARGUMENT_VALIDATION.includes(CommandCtor);
     }
 
@@ -43,7 +43,9 @@ export default class CommandBaseTransform extends BaseTransform {
     }
 
     public fromSerializable (value: SerializedCommand): any {
-        const CommandCtor = COMMAND_CONSTRUCTORS.get(value.type);
+        const CommandCtor = value.assertionType
+            ? ASSERTION_COMMAND_CONSTRUCTORS.get(value.assertionType)
+            : COMMAND_CONSTRUCTORS.get(value.type);
 
         if (!CommandCtor)
             throw new Error(`An appropriate command constructor for "${value.type}" type was not found.`);
