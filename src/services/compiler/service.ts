@@ -325,7 +325,7 @@ class CompilerService implements CompilerProtocol {
     }
 
     public executeCommandSync ({ id, command, callsite }: ExecuteCommandArguments): unknown {
-        return this.proxy.callSync(this.executeCommandSync, { id, command, callsite });
+        return this.proxy.callSync(this.executeCommand, { id, command, callsite });
     }
 
     public async executeCommand ({ command, id, callsite }: ExecuteCommandArguments): Promise<unknown> {
