@@ -508,7 +508,7 @@ export class SwitchToWindowByPredicateCommand extends ActionCommandBase {
     static methodName = camelCase(TYPE.switchToWindow);
 
     constructor (obj, testRun, validateProperties) {
-        super(obj, testRun, TYPE.switchToWindow, validateProperties);
+        super(obj, testRun, TYPE.switchToWindowByPredicate, validateProperties);
     }
 
     _getAssignableProperties () {
