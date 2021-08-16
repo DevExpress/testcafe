@@ -87,6 +87,10 @@ export class SwitchToPreviousWindowCommand extends ActionCommandBase {
     public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
 }
 
+export class GetNativeDialogHistoryCommand extends ActionCommandBase {
+    public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
+}
+
 export class GetBrowserConsoleMessagesCommand extends ActionCommandBase {
     public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
 }
