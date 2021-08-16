@@ -244,6 +244,15 @@ describe('CLI argument parser', function () {
         });
     });
 
+    describe('Node arguments', function () {
+        it('Should parse node flags', function () {
+            return parse('chrome test 1 --inspect-brk flag')
+                .then(function (parser) {
+                    expect(parser.opts.v8Flags).to.deep.equal(['--inspect-brk']);
+                });
+        });
+    });
+
     describe('Filtering options', function () {
         it('Should filter by test name with "-t, --test" option', function () {
             return parse('-t test.js')
