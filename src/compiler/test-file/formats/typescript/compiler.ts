@@ -21,6 +21,11 @@ import TypeScript, {
     visitEachChild,
     visitNode,
     TransformerFactory,
+    createExpressionStatement,
+    createCall,
+    createIdentifier,
+    updateSourceFileNode,
+    SourceFile,
 } from 'typescript';
 
 import { Dictionary, TypeScriptCompilerOptions } from '../../../../configuration/interfaces';
@@ -47,6 +52,21 @@ function testcafeImportPathReplacer<T extends Node> (): TransformerFactory<T> {
                 return createStringLiteral(EXPORTABLE_LIB_PATH);
 
             return visitEachChild(node, child => visit(child), context);
+        };
+
+        return node => visitNode(node, visit);
+    };
+}
+
+function evalAppender<T extends Node> (): TransformerFactory<T> {
+    return () => {
+        const visit: Visitor = (node): VisitResult<Node> => {
+            // @ts-ignore
+            return updateSourceFileNode(node, [...node.statements, createExpressionStatement(createCall(
+                createIdentifier('eval'),
+                void 0,
+                [createStringLiteral('')]
+            ))]);
         };
 
         return node => visitNode(node, visit);
@@ -178,8 +198,17 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
 
             this.cache[sourcePath] = result;
         }, void 0, void 0, {
-            before: [testcafeImportPathReplacer()],
+            before: this._getTypescriptTransformers(),
         });
+    }
+
+    private _getTypescriptTransformers (): TransformerFactory<SourceFile>[] {
+        const transformers: TransformerFactory<SourceFile>[] = [testcafeImportPathReplacer()];
+
+        if (this.isCompilerServiceMode)
+            transformers.push(evalAppender());
+
+        return transformers;
     }
 
     public _precompileCode (testFilesInfo: TestFileInfo[]): string[] {
