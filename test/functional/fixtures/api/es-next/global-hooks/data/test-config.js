@@ -22,6 +22,9 @@ module.exports = {
 
                 t.fixtureCtx.testBefore = t.fixtureCtx.testBefore ? t.fixtureCtx.testBefore + 1 : 1;
                 t.fixtureCtx.testAfter  = t.fixtureCtx.testAfter || 0;
+
+                t.ctx.testBefore = t.ctx.testBefore ? t.ctx.testBefore + 1 : 1;
+                t.ctx.testAfter  = t.ctx.testAfter || 0;
             },
             after: async (t) => {
                 await t
@@ -29,6 +32,8 @@ module.exports = {
                     .wait(100);
 
                 t.fixtureCtx.testAfter++;
+
+                t.ctx.testAfter++;
             },
         },
     },

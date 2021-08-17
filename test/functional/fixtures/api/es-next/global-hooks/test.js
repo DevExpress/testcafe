@@ -60,4 +60,8 @@ describe('[API] test global before/after hooks', () => {
     it('Should run global hooks for all tests', () => {
         return runTests('Test1');
     });
+
+    it('Should run all hooks in the right order', () => {
+        return runTests('Test2');
+    });
 });
