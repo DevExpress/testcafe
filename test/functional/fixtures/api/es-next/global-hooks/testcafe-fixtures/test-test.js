@@ -1,5 +1,5 @@
 fixture`Fixture 1`
-    .page`http://localhost:3000/fixtures/api/es-next/hooks/pages/index.html`;
+    .page`http://localhost:3000/fixtures/api/es-next/global-hooks/pages/index.html`;
 
 test('Test1', async t => {
     await t
@@ -30,7 +30,7 @@ test
     });
 
 fixture`Fixture2`
-    .page`http://localhost:3000/fixtures/api/es-next/hooks/pages/index.html`
+    .page`http://localhost:3000/fixtures/api/es-next/global-hooks/pages/index.html`
     .beforeEach(async (t) => {
         t.ctx.testBefore = t.ctx.testBefore ? t.ctx.testBefore + 1 : 1;
     })
