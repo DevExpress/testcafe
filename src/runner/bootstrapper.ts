@@ -208,10 +208,10 @@ export default class Bootstrapper {
         if (this.hooks.fixture?.after)
             assertType(is.function, 'globalAfter', 'The fixture.globalAfter hook', this.hooks.fixture.after);
 
-        if (this.hooks?.test?.before)
+        if (this.hooks.test?.before)
             assertType(is.function, 'globalBefore', 'The test.globalBefore hook', this.hooks.test.before);
 
-        if (this.hooks?.test?.after)
+        if (this.hooks.test?.after)
             assertType(is.function, 'globalAfter', 'The test.globalAfter hook', this.hooks.test.after);
     }
 
@@ -223,6 +223,8 @@ export default class Bootstrapper {
 
         const fixtureBefore = this.hooks.fixture?.before || null;
         const fixtureAfter  = this.hooks.fixture?.after || null;
+        const testBefore    = this.hooks.test?.before ? wrapTestFunction(this.hooks.test.before) : null;
+        const testAfter     = this.hooks.test?.after ? wrapTestFunction(this.hooks.test.after) : null;
 
         tests.forEach(item => {
             if (item.fixture) {
@@ -230,8 +232,8 @@ export default class Bootstrapper {
                 item.fixture.globalAfterFn  = item.fixture.globalAfterFn || fixtureAfter;
             }
 
-            item.globalBeforeFn = this.hooks?.test?.before ? wrapTestFunction(this.hooks.test.before) : null;
-            item.globalAfterFn  = this.hooks?.test?.after ? wrapTestFunction(this.hooks.test.after) : null;
+            item.globalBeforeFn = testBefore;
+            item.globalAfterFn  = testAfter;
         });
     }
 
