@@ -10,7 +10,7 @@ module.exports = {
     retryTestPages:    config.retryTestPages,
     experimentalDebug: !!process.env.EXPERIMENTAL_DEBUG,
     isProxyless:       config.isProxyless,
-    src:               path.resolve('./test/functional/fixtures/api/es-next/global-hooks/testcafe-fixtures/fixture.js'),
+    src:               path.resolve('./test/functional/fixtures/api/es-next/global-hooks/testcafe-fixtures/fixture-test.js'),
     selectorTimeout:   200,
     assertionTimeout:  1000,
     pageLoadTimeout:   0,
