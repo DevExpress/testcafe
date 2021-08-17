@@ -3,7 +3,7 @@ const createTestCafe = require('../../../../../../lib');
 
 let testCafe = null;
 
-const runTest = (testName) => {
+const runTests = (testName) => {
     if (!testCafe)
         throw new Error('"testCafe" isn\'t defined');
 
@@ -38,14 +38,14 @@ describe('[API] fixture global before/after hooks', () => {
     });
 
     it('Should run hooks for all fixture', async () => {
-        return runTest('Test1');
+        return runTests('Test1');
     });
 
     it('Should run all hooks for fixture', async () => {
-        return runTest('Test2');
+        return runTests('Test2');
     });
 
     it('Should run hooks in the right order', async () => {
-        return runTest('Test3');
+        return runTests('Test3');
     });
 });
