@@ -4,15 +4,15 @@ fixture`Fixture 1`
 test('Test1', async t => {
     await t
         .click('#test')
-        .expect(t.ctx.testBefore).eql(1)
-        .expect(t.ctx.testAfter).eql(0);
+        .expect(t.fixtureCtx.testBefore).eql(1)
+        .expect(t.fixtureCtx.testAfter).eql(0);
 });
 
 test('Test1', async t => {
     await t
         .click('#test')
-        .expect(t.ctx.testBefore).eql(2)
-        .expect(t.ctx.testAfter).eql(1);
+        .expect(t.fixtureCtx.testBefore).eql(2)
+        .expect(t.fixtureCtx.testAfter).eql(1);
 });
 
 test

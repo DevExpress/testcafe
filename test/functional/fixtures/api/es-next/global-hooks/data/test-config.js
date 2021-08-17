@@ -20,15 +20,15 @@ module.exports = {
                     .click('#beforeEach')
                     .wait(100);
 
-                t.ctx.testBefore = t.ctx.testBefore ? t.ctx.testBefore + 1 : 1;
-                t.ctx.testAfter  = t.ctx.testAfter || 0;
+                t.fixtureCtx.testBefore = t.fixtureCtx.testBefore ? t.fixtureCtx.testBefore + 1 : 1;
+                t.fixtureCtx.testAfter  = t.fixtureCtx.testAfter || 0;
             },
             after: async (t) => {
                 await t
                     .click('#afterEach')
                     .wait(100);
 
-                t.ctx.testAfter++;
+                t.fixtureCtx.testAfter++;
             },
         },
     },
