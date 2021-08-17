@@ -22,8 +22,6 @@ describe('[API] fixture global before/after hooks', () => {
     });
 
     after(function () {
-        this.timeout(60000);
-
         testCafe.close();
     });
 
@@ -56,8 +54,6 @@ describe('[API] test global before/after hooks', () => {
     });
 
     after(function () {
-        this.timeout(60000);
-
         testCafe.close();
     });
 
