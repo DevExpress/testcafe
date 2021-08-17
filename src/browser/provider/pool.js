@@ -120,6 +120,9 @@ export default {
         if (!await provider.isValidBrowserName(browserName))
             throw new GeneralError(RUNTIME_ERRORS.cannotFindBrowser, alias);
 
+        if (typeof alias === 'object' && alias.alias)
+            alias = alias.alias;
+
         if (typeof alias !== 'string')
             alias = JSON.stringify(alias);
 
