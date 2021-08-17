@@ -49,3 +49,19 @@ describe('[API] fixture global before/after hooks', () => {
         return runTests('Test3');
     });
 });
+
+describe('[API] test global before/after hooks', () => {
+    before(async () => {
+        testCafe = await createTestCafe({ configFile: path.resolve('./test/functional/fixtures/api/es-next/global-hooks/data/test-config.js') });
+    });
+
+    after(function () {
+        this.timeout(60000);
+
+        testCafe.close();
+    });
+
+    it('Should run global hooks for all tests', () => {
+        return runTests('Test1');
+    });
+});

@@ -8,6 +8,13 @@ test('Test1', async t => {
         .expect(t.ctx.testAfter).eql(0);
 });
 
+test('Test1', async t => {
+    await t
+        .click('#test')
+        .expect(t.ctx.testBefore).eql(2)
+        .expect(t.ctx.testAfter).eql(1);
+});
+
 test
     .before((t) => {
         t.ctx.testBefore = t.ctx.testBefore ? t.ctx.testBefore + 1 : 1;

@@ -129,29 +129,3 @@ describe('[API] fixture.before/fixture.after hooks', () => {
         return runTests('./testcafe-fixtures/fixture-ctx.js', null, { only: 'chrome, firefox' });
     });
 });
-
-describe('[API] test global before/after hooks', () => {
-    it('Should run hooks for all tests', () => {
-        const hooks = {
-            test: {
-                before: async (t) => {
-                    await t
-                        .click('#beforeEach')
-                        .wait(100);
-
-                    t.ctx.testBefore = t.ctx.testBefore ? t.ctx.testBefore + 1 : 1;
-                    t.ctx.testAfter = t.ctx.testAfter || 0;
-                },
-                after: async (t) => {
-                    await t
-                        .click('#afterEach')
-                        .wait(100);
-
-                    t.ctx.testAfter++;
-                },
-            },
-        };
-
-        return runTests('./testcafe-fixtures/test-hooks-global.js', null, { only: 'chrome', hooks });
-    });
-});
