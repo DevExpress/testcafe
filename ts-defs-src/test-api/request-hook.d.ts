@@ -212,5 +212,5 @@ interface RequestOptions {
 interface ResponseMock {
     headers: Record<string, string>;
     statusCode: number;
-    setBody(value: string): void;
+    setBody(value: string | object | Buffer | null): void;
 }

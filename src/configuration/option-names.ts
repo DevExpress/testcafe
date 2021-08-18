@@ -41,6 +41,7 @@ enum OptionNames {
     disableScreenshots = 'disableScreenshots',
     debugLogger = 'debugLogger',
     disableMultipleWindows = 'disableMultipleWindows',
+    disableHttp2 = 'disableHttp2',
     experimentalDebug = 'experimentalDebug',
     compilerOptions = 'compilerOptions',
     pageRequestTimeout = 'pageRequestTimeout',
