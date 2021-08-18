@@ -68,10 +68,10 @@ export default {
             [];
 
         if (!allBrowserNames.length)
-            return { provider, providerName, browserName: '' };
+            return { provider, providerName, browserName: '', browserOption: '' };
 
         return allBrowserNames
-            .map(browserName => ({ provider, providerName, browserName }));
+            .map(browserName => ({ provider, providerName, browserName, browserOption: browserName }));
     },
 
     _getProviderModule (providerName, moduleName) {
