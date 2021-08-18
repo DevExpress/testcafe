@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.15.3 (2021-08-)
+
+### Bug Fixes
+
+* TestCafe throws an error if you use the 'all' alias in the command line to run tests in all installed browsers ([#6456](https://github.com/DevExpress/testcafe/issues/6456)).
+* TestCafe does not clean the 'require.cache' object between test runs ([#5432](https://github.com/DevExpress/testcafe/issues/5432)).
+* TestCafe does not check if the configuration file exists ([#6337](https://github.com/DevExpress/testcafe/issues/6337)).
+
 ## v1.15.2 (2021-08-11)
 
 ### Bug Fixes
