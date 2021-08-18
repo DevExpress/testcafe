@@ -6,6 +6,7 @@
 
 * TestCafe throws an error if you use the 'all' alias in the command line to run tests in all installed browsers ([#6456](https://github.com/DevExpress/testcafe/issues/6456)).
 * TestCafe does not check if the configuration file exists ([#6337](https://github.com/DevExpress/testcafe/issues/6337)).
+* TestCafe cannot disable HTTP/2 to avoid compatibility issues ([#2681](https://github.com/DevExpress/testcafe-hammerhead/pull/2681)).
 
 ## v1.15.2 (2021-08-11)
 
