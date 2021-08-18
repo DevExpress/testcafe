@@ -77,6 +77,23 @@ describe('Browser provider', function () {
             });
         });
 
+        it( 'Should get full info for all browsers', async () => {
+            const browserInfoProperties = [
+                'provider',
+                'providerName',
+                'browserName',
+                'browserOption',
+            ];
+
+            const browsersInfo = await browserProviderPool.getBrowserInfo( 'all' );
+
+            browsersInfo.forEach( item => {
+                browserInfoProperties.forEach(porp => {
+                    expect(item[porp]).exist;
+                });
+            } );
+        } );
+
         it('Should parse the chrome: alias with arguments', async () => {
             const builtInProviders = {
                 chrome: { isValidBrowserName: sinon.stub() },
