@@ -32,6 +32,11 @@ export default class ESNextTestFileCompiler extends APIBasedTestFileCompilerBase
     _compileCode (code, filename) {
         const { babel } = loadBabelLibs();
 
+        if (this.isCompilerServiceMode) {
+            code += '\n// NOTE: this code was generated automatically to prevent v8 optimization.';
+            code += '\neval(\'\');';
+        }
+
         if (this.cache[filename])
             return this.cache[filename];
 

@@ -16,8 +16,7 @@ const SOURCE_CHUNK_LENGTH = 1000;
 
 export default class Compiler {
     constructor (sources, options, isCompilerServiceMode) {
-        this.sources               = sources;
-        this.isCompilerServiceMode = isCompilerServiceMode;
+        this.sources = sources;
 
         initTestFileCompilers(options, isCompilerServiceMode);
     }
@@ -37,9 +36,6 @@ export default class Compiler {
         }
 
         code = stripBom(code).toString();
-
-        if (this.isCompilerServiceMode)
-            code += '\neval(\'\');';
 
         const compiler = find(getTestFileCompilers(), someCompiler => someCompiler.canCompile(code, filename));
 
