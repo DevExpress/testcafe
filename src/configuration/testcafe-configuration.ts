@@ -17,6 +17,7 @@ import {
     DEFAULT_SOURCE_DIRECTORIES,
     DEFAULT_DEVELOPMENT_MODE,
     DEFAULT_RETRY_TEST_PAGES,
+    DEFAULT_DISABLE_HTTP2,
     getDefaultCompilerOptions,
 } from './default-values';
 
@@ -57,6 +58,7 @@ const OPTION_INIT_FLAG_NAMES = [
     OPTION_NAMES.developmentMode,
     OPTION_NAMES.retryTestPages,
     OPTION_NAMES.cache,
+    OPTION_NAMES.disableHttp2,
 ];
 
 interface TestCafeAdditionalStartOptions {
@@ -64,6 +66,7 @@ interface TestCafeAdditionalStartOptions {
     ssl: string;
     developmentMode: boolean;
     cache: boolean;
+    disableHttp2: boolean;
 }
 
 interface TestCafeStartOptions {
@@ -143,6 +146,7 @@ export default class TestCafeConfiguration extends Configuration {
                 developmentMode: this.getOption(OPTION_NAMES.developmentMode) as boolean,
                 retryTestPages:  this.getOption(OPTION_NAMES.retryTestPages) as boolean,
                 cache:           this.getOption(OPTION_NAMES.cache) as boolean,
+                disableHttp2:    this.getOption(OPTION_NAMES.disableHttp2) as boolean,
             },
         };
 
@@ -228,6 +232,7 @@ export default class TestCafeConfiguration extends Configuration {
         this._ensureOptionWithValue(OPTION_NAMES.src, DEFAULT_SOURCE_DIRECTORIES, OptionSource.Configuration);
         this._ensureOptionWithValue(OPTION_NAMES.developmentMode, DEFAULT_DEVELOPMENT_MODE, OptionSource.Configuration);
         this._ensureOptionWithValue(OPTION_NAMES.retryTestPages, DEFAULT_RETRY_TEST_PAGES, OptionSource.Configuration);
+        this._ensureOptionWithValue(OPTION_NAMES.disableHttp2, DEFAULT_DISABLE_HTTP2, OptionSource.Configuration);
 
         this._ensureScreenshotPath();
     }

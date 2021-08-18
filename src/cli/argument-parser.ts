@@ -163,6 +163,7 @@ export default class CLIArgumentParser {
             .option('--screenshots-full-page', 'enable full-page screenshots')
             .option('--compiler-options <option=value[,...]>', 'specify test file compiler options')
             .option('--disable-multiple-windows', 'disable multiple windows mode')
+            .option('--disable-http2', 'disable the HTTP/2 proxy backend and force the proxy to use only HTTP/1.1 requests')
 
             // NOTE: these options will be handled by chalk internally
             .option('--color', 'force colors in command line')
