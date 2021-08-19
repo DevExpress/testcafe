@@ -3,6 +3,9 @@ import APIBasedTestFileCompilerBase from '../../api-based';
 import isFlowCode from './is-flow-code';
 import BASE_BABEL_OPTIONS from '../../../babel/get-base-babel-options';
 
+const DISABLE_V8_OPTIMIZATION_CODE = '\n// NOTE: this code was generated automatically to prevent v8 optimization.\n'
+                                     + 'eval(\'\')';
+
 export default class ESNextTestFileCompiler extends APIBasedTestFileCompilerBase {
     static getBabelOptions (filename, code) {
         const {
@@ -32,10 +35,8 @@ export default class ESNextTestFileCompiler extends APIBasedTestFileCompilerBase
     _compileCode (code, filename) {
         const { babel } = loadBabelLibs();
 
-        if (this.isCompilerServiceMode) {
-            code += '\n// NOTE: this code was generated automatically to prevent v8 optimization.';
-            code += '\neval(\'\');';
-        }
+        if (this.isCompilerServiceMode)
+            code += DISABLE_V8_OPTIMIZATION_CODE;
 
         if (this.cache[filename])
             return this.cache[filename];
