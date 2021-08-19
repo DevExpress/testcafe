@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.15.3 (2021-08-19)
+
+### Bug Fixes
+
+* TestCafe throws an error if you use the 'all' alias in the command line to run tests in all installed browsers ([#6456](https://github.com/DevExpress/testcafe/issues/6456)).
+* TestCafe does not check if the configuration file exists ([#6337](https://github.com/DevExpress/testcafe/issues/6337)).
+* TestCafe cannot disable HTTP/2 to avoid compatibility issues ([testcafe-hammerhead/#2681](https://github.com/DevExpress/testcafe-hammerhead/pull/2681)).
+* TestCafe works incorrectly if you use extended Function objects ([testcafe-hammerhead/#2439](https://github.com/DevExpress/testcafe-hammerhead/issues/2439)).
+* TestCafe processes a test application incorrectly if it uses the Immutable.js library ([testcafe-hammerhead/#2669](https://github.com/DevExpress/testcafe-hammerhead/issues/2669)).
+* TestCafe adds an element incorrectly into a nested body element ([PR testcafe-hammerhead/#2682](https://github.com/DevExpress/testcafe-hammerhead/pull/2682)).
+
 ## v1.15.2 (2021-08-11)
 
 ### Bug Fixes
