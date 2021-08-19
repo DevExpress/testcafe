@@ -5,12 +5,13 @@ import TestFile from '../../../api/structure/test-file';
 import Fixture from '../../../api/structure/fixture';
 import Test from '../../../api/structure/test';
 import createCommandFromObject from '../../../test-run/commands/from-object';
+import CallsiteCommand from '../../../utils/callsite-command';
 
 export default class RawTestFileCompiler extends TestFileCompilerBase {
     static _createTestFn (commands) {
         return async t => {
             for (let i = 0; i < commands.length; i++) {
-                const callsite = commands[i] && commands[i].callsite;
+                const callsite = new CallsiteCommand(commands[i].callsite, commands);
                 let command  = null;
 
                 try {
