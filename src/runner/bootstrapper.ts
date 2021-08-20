@@ -25,7 +25,6 @@ import ClientScriptInit from '../custom-client-scripts/client-script-init';
 import BrowserConnectionGateway from '../browser/connection/gateway';
 import { CompilerArguments } from '../compiler/interfaces';
 import CompilerService from '../services/compiler/host';
-import { Metadata } from '../api/structure/interfaces';
 import Test from '../api/structure/test';
 import { getPluginFactory, processReporterName } from '../utils/reporter';
 import { BootstrapperInit, BrowserSetOptions } from './interfaces';
@@ -37,10 +36,6 @@ import asyncFilter from '../utils/async-filter';
 const DEBUG_SCOPE = 'testcafe:bootstrapper';
 
 type TestSource = unknown;
-
-interface Filter {
-    (testName: string, fixtureName: string, fixturePath: string, testMeta: Metadata, fixtureMeta: Metadata): Promise<boolean>;
-}
 
 type BrowserInfoSource = BrowserInfo | BrowserConnection;
 
@@ -86,7 +81,7 @@ export default class Bootstrapper {
     public sources: TestSource[];
     public browsers: BrowserInfoSource[];
     public reporters: ReporterSource[];
-    public filter?: Filter;
+    public filter?: FilterFunction;
     public appCommand?: string;
     public appInitDelay?: number;
     public tsConfigPath?: string;
@@ -171,7 +166,7 @@ export default class Bootstrapper {
         return BrowserSet.from(browserConnections, this._getBrowserSetOptions());
     }
 
-    private async _filterTests (tests: Test[], predicate: Filter): Promise<Test[]> {
+    private async _filterTests (tests: Test[], predicate: FilterFunction): Promise<Test[]> {
         return asyncFilter(tests, test => {
             return predicate(
                 test.name as string,
