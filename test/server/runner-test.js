@@ -618,7 +618,11 @@ describe('Runner', () => {
         });
 
         it('Should filter by async predicate', () => {
-            const filter = async testName => testName.includes('Fixture5');
+            const filter = async testName => {
+                await new Promise(r => setTimeout(r, 2000));
+
+                return testName.includes('Fixture5');
+            };
 
             const expectedTestNames = [
                 'Fixture5Test1',

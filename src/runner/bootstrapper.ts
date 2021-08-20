@@ -32,6 +32,7 @@ import { BootstrapperInit, BrowserSetOptions } from './interfaces';
 import WarningLog from '../notifications/warning-log';
 import WARNING_MESSAGES from '../notifications/warning-message';
 import guardTimeExecution from '../utils/guard-time-execution';
+import asyncFilter from '../utils/async-filter';
 
 const DEBUG_SCOPE = 'testcafe:bootstrapper';
 
@@ -170,18 +171,15 @@ export default class Bootstrapper {
         return BrowserSet.from(browserConnections, this._getBrowserSetOptions());
     }
 
-    private static async asyncFilter<T> (arr: T[], predicate: (item: T) => Promise<boolean>): Promise<T[]> {
-        const results = await Promise.all(arr.map(predicate));
-
-        return arr.filter((_, index) => results[index]);
-    }
-
     private async _filterTests (tests: Test[], predicate: Filter): Promise<Test[]> {
-        return Bootstrapper.asyncFilter(
-            tests, async (test: Test): Promise<boolean> => predicate(
-                test.name as string, test.fixture.name as string, test.fixture.path, test.meta, test.fixture.meta
-            )
-        );
+        return asyncFilter(tests, test => {
+            return predicate(
+                test.name as string,
+                test.fixture.name as string,
+                test.fixture.path,
+                test.meta,
+                test.fixture.meta);
+        });
     }
 
     private async _compileTests ({ sourceList, compilerOptions }: CompilerArguments): Promise<Test[]> {
