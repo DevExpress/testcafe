@@ -11,11 +11,7 @@ export default class RawTestFileCompiler extends TestFileCompilerBase {
     static _createTestFn (commands) {
         return async t => {
             for (let i = 0; i < commands.length; i++) {
-                let callsite = commands[i] && commands[i].callsite;
-
-                if (!isNaN(callsite))
-                    callsite = new CallsiteCommand(callsite, commands);
-
+                const callsite = commands[i]?.id ? new CallsiteCommand(commands[i].id, commands) : commands[i]?.callsite;
                 let command  = null;
 
                 try {

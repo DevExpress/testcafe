@@ -1,8 +1,8 @@
 import chalk from 'chalk';
 import { camelCase, upperFirst } from 'lodash';
 
-interface Step {
-    callsite: number;
+interface Command {
+    id: number;
     selector?: {
         type: string;
         value: string;
@@ -17,11 +17,11 @@ interface RenderOptions {
 }
 
 class CallsiteCommand {
-    private readonly _id: number;
-    private readonly _list: Step[];
+    public readonly id: number;
+    private readonly _list: Command[];
 
-    public constructor (id: number, list: Step[]) {
-        this._id   = id;
+    public constructor (id: number, list: Command[]) {
+        this.id   = id;
         this._list = list;
     }
 
@@ -30,7 +30,7 @@ class CallsiteCommand {
             frameSize = 1,
         } = opts;
 
-        const baseId = this._list.findIndex(item => item.callsite === this._id);
+        const baseId = this._list.findIndex(item => item.id === this.id);
 
         if (baseId < 0)
             return '';
@@ -40,24 +40,24 @@ class CallsiteCommand {
         let frame     = '';
 
         for (let i = firstId; i <= lastId; i++)
-            frame += CallsiteCommand._stepLine(i + 1, this._list[i], i === baseId);
+            frame += CallsiteCommand._commandLine(i + 1, this._list[i], i === baseId);
 
         return frame;
     }
 
-    private static _stepLine (num: number, step: Step, base: boolean): string {
+    private static _commandLine (num: number, command: Command, base: boolean): string {
         const {
             type,
             assertionType,
             selector,
-        } = step;
+        } = command;
 
-        let stepNum = `${base ? ' > ' : '   '}${num} `;
+        let commandNum = `${base ? ' > ' : '   '}${num} `;
 
         if (base)
-            stepNum = chalk.bgRed(stepNum);
+            commandNum = chalk.bgRed(commandNum);
 
-        return `${stepNum}|${upperFirst(camelCase(assertionType || type))} ${selector ? `(${selector.value})` : ''}\n`;
+        return `${commandNum}|${upperFirst(camelCase(assertionType || type))} ${selector ? `(${selector.value})` : ''}\n`;
     }
 }
 
