@@ -12,10 +12,9 @@ export default class RawTestFileCompiler extends TestFileCompilerBase {
         return async t => {
             for (let i = 0; i < commands.length; i++) {
                 const callsite = commands[i]?.id ? new CallsiteCommand(commands[i].id, commands) : commands[i]?.callsite;
-                let command  = null;
 
                 try {
-                    command = createCommandFromObject(commands[i], t.testRun);
+                    const command = createCommandFromObject(commands[i], t.testRun);
 
                     await t.testRun.executeCommand(command, callsite);
                 }
