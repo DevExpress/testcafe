@@ -83,11 +83,9 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
     }
 
     _compileExternalModule (mod, filename, requireCompiler, origExt) {
-        if (APIBasedTestFileCompilerBase._isNodeModulesDep(filename) && origExt) {
-            // NOTE: remove global API so that it will be unavailable for the dependencies
-            this._removeGlobalAPI();
+        if (APIBasedTestFileCompilerBase._isNodeModulesDep(filename) && origExt)
             origExt( mod, filename );
-        } else
+        else
             this._compileModule(mod, filename, requireCompiler, origExt);
     }
 
@@ -96,9 +94,6 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
             origExt = this.origRequireExtensions['.js'];
 
         if (!APIBasedTestFileCompilerBase._isNodeModulesDep(filename)) {
-            // NOTE: remove global API so that it will be unavailable for the dependencies
-            this._removeGlobalAPI();
-
             global.customExtensionHook = () => {
                 global.customExtensionHook = null;
 
@@ -130,7 +125,7 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
             this.origRequireExtensions[ext] = origExt;
 
             require.extensions[ext] = (mod, filename) => {
-                const hadGlobalAPI     = this._hasGlobalAPI();
+                const hadGlobalAPI = this._hasGlobalAPI();
 
                 // NOTE: remove global API so that it will be unavailable for the dependencies
                 if (APIBasedTestFileCompilerBase._isNodeModulesDep(filename) && hadGlobalAPI)
@@ -185,12 +180,12 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
     _addExportAPI (testFile) {
         Object.defineProperty(exportableLib, 'fixture', {
             get:          () => new Fixture(testFile),
-            configurable: true
+            configurable: true,
         });
 
         Object.defineProperty(exportableLib, 'test', {
             get:          () => new Test(testFile),
-            configurable: true
+            configurable: true,
         });
     }
 
