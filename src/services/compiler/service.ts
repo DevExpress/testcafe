@@ -74,6 +74,7 @@ import {
 import RequestHook from '../../api/request-hooks/hook';
 import RequestMock from '../../api/request-hooks/request-mock';
 import Role from '../../role/role';
+import userVariables from '../../api/user-variables';
 import { executeJsExpression, executeAsyncJsExpression } from '../../test-run/execute-js-expression';
 
 import {
@@ -279,8 +280,14 @@ class CompilerService implements CompilerProtocol {
         return this.state.roles.get(roleId) as Role;
     }
 
+    private _updateUserVariables (value: OptionValue): void {
+        userVariables.value = value;
+    }
+
     public async setOptions ({ value }: SetOptionsArguments): Promise<void> {
         this.state.options = value;
+
+        this._updateUserVariables(value.userVariables);
     }
 
     public async ready (): Promise<void> {
