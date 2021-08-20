@@ -6,6 +6,15 @@ const createTestCafe        = require('../../lib/');
 const exportableLib         = require('../../lib/api/exportable-lib');
 const selfSignedCertificate = require('openssl-self-signed-certificate');
 
+const {
+    CONFIGURATION_EXTENSIONS,
+    JS_CONFIGURATION_EXTENSION,
+    JSON_CONFIGURATION_EXTENSION,
+} = require('../../lib/configuration/formats');
+
+const jsConfigIndex   = CONFIGURATION_EXTENSIONS.indexOf(JS_CONFIGURATION_EXTENSION);
+const jsonConfigIndex = CONFIGURATION_EXTENSIONS.indexOf(JSON_CONFIGURATION_EXTENSION);
+
 describe('TestCafe factory function', function () {
     let testCafe = null;
     let server   = null;
@@ -110,23 +119,27 @@ describe('TestCafe factory function', function () {
 
     describe('Custom Testcafe Config Path', () => {
         it('Reverts back to default when not specified', () => {
-            const defaultConfigFile = '.testcaferc.json';
+            const defaultConfigJSONFile = '.testcaferc.json';
+            const defaultConfigJsFile   = '.testcaferc.js';
 
             return getTestCafe('localhost', 1338, 1339)
                 .then(() => {
-                    expect(path.basename(testCafe.configuration.filePath)).eql(defaultConfigFile);
+                    expect(path.basename(testCafe.configuration.defaultPaths[jsConfigIndex])).eql(defaultConfigJsFile);
+                    expect(path.basename(testCafe.configuration.defaultPaths[jsonConfigIndex])).eql(defaultConfigJSONFile);
                 });
         });
 
         it('Works when created using null', () => {
-            const defaultConfigFile = '.testcaferc.json';
+            const defaultConfigJSONFile = '.testcaferc.json';
+            const defaultConfigJsFile   = '.testcaferc.js';
 
             return createTestCafe(null)
                 .then(tc => {
                     testCafe = tc;
                 })
                 .then(() => {
-                    expect(path.basename(testCafe.configuration.filePath)).eql(defaultConfigFile);
+                    expect(path.basename(testCafe.configuration.defaultPaths[jsConfigIndex])).eql(defaultConfigJsFile);
+                    expect(path.basename(testCafe.configuration.defaultPaths[jsonConfigIndex])).eql(defaultConfigJSONFile);
                 });
         });
     });

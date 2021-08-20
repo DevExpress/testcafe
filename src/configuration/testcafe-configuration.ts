@@ -34,10 +34,12 @@ import { DEPRECATED, getDeprecationMessage } from '../notifications/deprecated';
 import WarningLog from '../notifications/warning-log';
 import browserProviderPool from '../browser/provider/pool';
 import BrowserConnection, { BrowserInfo } from '../browser/connection';
+import { CONFIGURATION_EXTENSIONS } from './formats';
 import { GeneralError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
 
-const CONFIGURATION_FILENAME = '.testcaferc.json';
+const BASE_CONFIGURATION_FILENAME = '.testcaferc';
+const CONFIGURATION_FILENAMES     = CONFIGURATION_EXTENSIONS.map(ext => `${BASE_CONFIGURATION_FILENAME}${ext}`);
 
 const DEFAULT_SCREENSHOTS_DIRECTORY = 'screenshots';
 
@@ -82,7 +84,7 @@ export default class TestCafeConfiguration extends Configuration {
     protected readonly _isExplicitConfig: boolean;
 
     public constructor (configFile = '') {
-        super(configFile || CONFIGURATION_FILENAME);
+        super(configFile || CONFIGURATION_FILENAMES);
 
         this._isExplicitConfig = !!configFile;
     }
@@ -276,7 +278,7 @@ export default class TestCafeConfiguration extends Configuration {
         return fileExists;
     }
 
-    public static get FILENAME (): string {
-        return CONFIGURATION_FILENAME;
+    public static get FILENAMES (): string[] {
+        return CONFIGURATION_FILENAMES;
     }
 }

@@ -14,16 +14,31 @@ const RunnerCtor                              = require('../../lib/runner');
 const OptionNames                             = require('../../lib/configuration/option-names');
 const consoleWrapper                          = require('./helpers/console-wrapper');
 
+const {
+    CONFIGURATION_EXTENSIONS,
+    JS_CONFIGURATION_EXTENSION,
+    JSON_CONFIGURATION_EXTENSION,
+} = require('../../lib/configuration/formats');
+
 const tsConfigPath           = 'tsconfig.json';
 const customTSConfigFilePath = 'custom-config.json';
 
-const createConfigFile = (path, options) => {
+const createJSONConfig = (path, options) => {
     options = options || {};
     fs.writeFileSync(path, JSON.stringify(options));
 };
 
-const createTestCafeConfigurationFile   = createConfigFile.bind(null, TestCafeConfiguration.FILENAME);
-const createTypeScriptConfigurationFile = createConfigFile.bind(null, tsConfigPath);
+const createJsConfig = (path, options) => {
+    options = options || {};
+    fs.writeFileSync(path, `module.exports = ${JSON.stringify(options)}`);
+};
+
+const jsConfigIndex   = CONFIGURATION_EXTENSIONS.indexOf(JS_CONFIGURATION_EXTENSION);
+const jsonConfigIndex = CONFIGURATION_EXTENSIONS.indexOf(JSON_CONFIGURATION_EXTENSION);
+
+const createJsTestCafeConfigurationFile   = createJsConfig.bind(null, TestCafeConfiguration.FILENAMES[jsConfigIndex]);
+const createJSONTestCafeConfigurationFile = createJSONConfig.bind(null, TestCafeConfiguration.FILENAMES[jsonConfigIndex]);
+const createTypeScriptConfigurationFile   = createJSONConfig.bind(null, tsConfigPath);
 
 const TEST_TIMEOUT = 5000;
 
@@ -42,7 +57,7 @@ describe('TestCafeConfiguration', function () {
         keyFileContent = Buffer.from(nanoid());
         fs.writeFileSync(keyFile.name, keyFileContent);
 
-        createTestCafeConfigurationFile({
+        createJSONTestCafeConfigurationFile({
             'hostname': '123.456.789',
             'port1':    1234,
             'port2':    5678,
@@ -67,7 +82,7 @@ describe('TestCafeConfiguration', function () {
     });
 
     afterEach(async () => {
-        await del([testCafeConfiguration.filePath]);
+        await del(testCafeConfiguration.defaultPaths);
 
         consoleWrapper.unwrap();
         consoleWrapper.messages.clear();
@@ -76,7 +91,9 @@ describe('TestCafeConfiguration', function () {
     describe('Init', () => {
         describe('Exists', () => {
             it('Config is not well-formed', () => {
-                fs.writeFileSync(testCafeConfiguration.filePath, '{');
+                const filePath = testCafeConfiguration.defaultPaths[jsonConfigIndex];
+
+                fs.writeFileSync(filePath, '{');
                 consoleWrapper.wrap();
 
                 return testCafeConfiguration.init()
@@ -84,7 +101,7 @@ describe('TestCafeConfiguration', function () {
                         consoleWrapper.unwrap();
 
                         expect(testCafeConfiguration.getOption('hostname')).eql(void 0);
-                        expect(consoleWrapper.messages.log).contains(`Failed to parse the '${testCafeConfiguration.filePath}' file.`);
+                        expect(consoleWrapper.messages.log).contains(`Failed to parse the '${testCafeConfiguration.defaultPaths[jsonConfigIndex]}' file.`);
                     });
             });
 
@@ -115,7 +132,7 @@ describe('TestCafeConfiguration', function () {
             it('"Reporter" option', () => {
                 let optionValue = null;
 
-                createTestCafeConfigurationFile({
+                createJSONTestCafeConfigurationFile({
                     reporter: 'json',
                 });
 
@@ -127,7 +144,7 @@ describe('TestCafeConfiguration', function () {
                         expect(optionValue.length).eql(1);
                         expect(optionValue[0].name).eql('json');
 
-                        createTestCafeConfigurationFile({
+                        createJSONTestCafeConfigurationFile({
                             reporter: ['json', 'minimal'],
                         });
 
@@ -140,7 +157,7 @@ describe('TestCafeConfiguration', function () {
                         expect(optionValue[0].name).eql('json');
                         expect(optionValue[1].name).eql('minimal');
 
-                        createTestCafeConfigurationFile({
+                        createJSONTestCafeConfigurationFile({
                             reporter: [ {
                                 name: 'json',
                                 file: 'path/to/file',
@@ -160,7 +177,7 @@ describe('TestCafeConfiguration', function () {
 
             describe('Screenshot options', () => {
                 it('`mergeOptions` overrides config values', () => {
-                    createTestCafeConfigurationFile({
+                    createJSONTestCafeConfigurationFile({
                         'screenshots': {
                             'path':        'screenshot-path',
                             'pathPattern': 'screenshot-path-pattern',
@@ -197,7 +214,7 @@ describe('TestCafeConfiguration', function () {
                 });
 
                 it('`mergeOptions` merges config values', () => {
-                    createTestCafeConfigurationFile({
+                    createJSONTestCafeConfigurationFile({
                         'screenshots': {
                             'path':        'screenshot-path',
                             'pathPattern': 'screenshot-path-pattern',
@@ -225,7 +242,7 @@ describe('TestCafeConfiguration', function () {
                 });
 
                 it('`mergeOptions` with an empty object does not override anything', () => {
-                    createTestCafeConfigurationFile({
+                    createJSONTestCafeConfigurationFile({
                         'screenshots': {
                             'path':        'screenshot-path',
                             'pathPattern': 'screenshot-path-pattern',
@@ -247,7 +264,7 @@ describe('TestCafeConfiguration', function () {
                 });
 
                 it('both `screenshots` options exist in config', () => {
-                    createTestCafeConfigurationFile({
+                    createJSONTestCafeConfigurationFile({
                         'screenshots': {
                             'path':        'screenshot-path-1',
                             'pathPattern': 'screenshot-path-pattern-1',
@@ -276,10 +293,33 @@ describe('TestCafeConfiguration', function () {
                         });
                 });
             });
+
+            it('Should warn message on multiple configuration files', async () => {
+                createJsTestCafeConfigurationFile({
+                    'hostname': '123.456.789',
+                    'port1':    1234,
+                    'port2':    5678,
+                    'src':      'path1/folder',
+                    'browser':  'ie',
+                });
+
+                consoleWrapper.wrap();
+                await testCafeConfiguration.init();
+                consoleWrapper.unwrap();
+                await del([testCafeConfiguration.defaultPaths[jsConfigIndex]]);
+
+                const expectedMessage =
+                          `There are multiple configuration files found, TestCafe will only use one. The file "${pathUtil.resolve('.testcaferc.js')}" will be used.\n` +
+                          'The priority order is as follows:\n' +
+                          `1. ${pathUtil.resolve('.testcaferc.js')}\n` +
+                          `2. ${pathUtil.resolve('.testcaferc.json')}`;
+
+                expect(consoleWrapper.messages.log).eql(expectedMessage);
+            });
         });
 
         it('File doesn\'t exists', () => {
-            fs.unlinkSync(testCafeConfiguration.filePath);
+            fs.unlinkSync(TestCafeConfiguration.FILENAMES[jsonConfigIndex]);
 
             const defaultOptions = cloneDeep(testCafeConfiguration._options);
 
@@ -436,7 +476,7 @@ describe('TypeScriptConfiguration', function () {
             message = err.message;
         }
 
-        expect(message).eql(`"${nonExistingConfiguration.filePath}" is not a valid TypeScript configuration file.`);
+        expect(message).eql(`"${nonExistingConfiguration.defaultPaths[jsConfigIndex]}" is not a valid TypeScript configuration file.`);
     });
 
     it('Config is not well-formed', () => {
@@ -462,7 +502,7 @@ describe('TypeScriptConfiguration', function () {
         });
 
         afterEach(async () => {
-            await del([typeScriptConfiguration.filePath, customTSConfigFilePath]);
+            await del(typeScriptConfiguration.defaultPaths.concat(customTSConfigFilePath));
 
             consoleWrapper.unwrap();
             consoleWrapper.messages.clear();
@@ -570,11 +610,11 @@ describe('TypeScriptConfiguration', function () {
         });
 
         it('TestCafe config + TypeScript config', async function () {
-            createTestCafeConfigurationFile({
+            createJSONTestCafeConfigurationFile({
                 tsConfigPath: customTSConfigFilePath,
             });
 
-            createConfigFile(customTSConfigFilePath, {
+            createJSONConfig(customTSConfigFilePath, {
                 compilerOptions: {
                     target: 'es5',
                 },
@@ -587,7 +627,7 @@ describe('TypeScriptConfiguration', function () {
             await runner.src('test/server/data/test-suites/typescript-basic/testfile1.ts')._applyOptions();
             await runner.bootstrapper._getTests();
 
-            fs.unlinkSync(TestCafeConfiguration.FILENAME);
+            fs.unlinkSync(TestCafeConfiguration.FILENAMES[jsonConfigIndex]);
             typeScriptConfiguration._filePath = customTSConfigFilePath;
 
             expect(runner.bootstrapper.tsConfigPath).eql(customTSConfigFilePath);
@@ -598,7 +638,7 @@ describe('TypeScriptConfiguration', function () {
             it('TypeScript config', function () {
                 let runner = null;
 
-                createConfigFile(customTSConfigFilePath, {
+                createJSONConfig(customTSConfigFilePath, {
                     compilerOptions: {
                         target: 'es5',
                     },
@@ -644,7 +684,7 @@ describe('TypeScriptConfiguration', function () {
         let configuration;
 
         afterEach(async () => {
-            await del([configuration.filePath]);
+            await del(configuration.defaultPaths);
         });
 
         it('Custom config path is used', () => {
@@ -658,7 +698,7 @@ describe('TypeScriptConfiguration', function () {
                 'browser':  'ie',
             };
 
-            createConfigFile(customConfigFile, options);
+            createJSONConfig(customConfigFile, options);
 
             configuration = new TestCafeConfiguration(customConfigFile);
 
@@ -673,6 +713,31 @@ describe('TypeScriptConfiguration', function () {
                 });
         });
 
+        it('Custom js config path is used', async () => {
+            const customConfigFile = 'custom11.testcaferc.js';
+
+            const options = {
+                'hostname': '123.456.789',
+                'port1':    1234,
+                'port2':    5678,
+                'src':      'path1/folder',
+                'browser':  'ie',
+            };
+
+            createJsConfig(customConfigFile, options);
+
+            configuration = new TestCafeConfiguration(customConfigFile);
+
+            await configuration.init();
+
+            expect(pathUtil.basename(configuration.filePath)).eql(customConfigFile);
+            expect(configuration.getOption('hostname')).eql(options.hostname);
+            expect(configuration.getOption('port1')).eql(options.port1);
+            expect(configuration.getOption('port2')).eql(options.port2);
+            expect(configuration.getOption('src')).eql([ options.src ]);
+            expect(configuration.getOption('browser')).eql(options.browser);
+        });
+
         it('Constructor should revert back to default when no custom config', () => {
             const defaultFileLocation = '.testcaferc.json';
 
@@ -684,7 +749,7 @@ describe('TypeScriptConfiguration', function () {
                 'browser':  'ie',
             };
 
-            createConfigFile(defaultFileLocation, options);
+            createJSONConfig(defaultFileLocation, options);
 
             configuration = new TestCafeConfiguration();
 

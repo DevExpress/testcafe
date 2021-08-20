@@ -1098,7 +1098,7 @@ describe('Runner', () => {
         });
 
         it("Shouldn't overwrite the quarantine option before run task if the config file exists", async function () {
-            createConfigFile(TestCafeConfiguration.FILENAME, { anyOption: null });
+            createConfigFile(TestCafeConfiguration.FILENAMES[0], { anyOption: null });
 
             const storedRunTaskFn = runner._runTask;
             const quarantineMode  = { attemptLimit: 3, successThreshold: 1 };
@@ -1114,7 +1114,7 @@ describe('Runner', () => {
                 .src('test/server/data/test-suites/basic/testfile2.js')
                 .run({ quarantineMode });
 
-            await del([runner.configuration.filePath]);
+            await del(runner.configuration.defaultPaths);
 
             expect(runner.configuration.getOption('quarantineMode')).eql(quarantineMode);
         });
