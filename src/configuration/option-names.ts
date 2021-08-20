@@ -48,6 +48,7 @@ enum OptionNames {
     ajaxRequestTimeout = 'ajaxRequestTimeout',
     cache = 'cache',
     userVariables = 'userVariables',
+    v8Flags = 'v8Flags',
 }
 
 export default OptionNames;

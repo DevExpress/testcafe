@@ -26,6 +26,7 @@ import {
     RunnerRunOptions,
 } from '../configuration/interfaces';
 import QUARANTINE_OPTION_NAMES from '../configuration/quarantine-option-names';
+import { extractNodeProcessArguments } from './node-arguments-filter';
 
 
 const REMOTE_ALIAS_RE = /^remote(?::(\d*))?$/;
@@ -76,6 +77,7 @@ interface CommandLineOptions {
     compilerOptions?: string | Dictionary<number | string | boolean>;
     configFile?: string;
     isProxyless?: boolean;
+    v8Flags?: string[];
 }
 
 export default class CLIArgumentParser {
@@ -370,7 +372,7 @@ export default class CLIArgumentParser {
         this.opts.providerName = typeof listBrowserOption === 'string' ? listBrowserOption : 'locally-installed';
     }
 
-    public async parse (argv: string[]): Promise<void> {
+    private static _prepareQuarantineOptions (argv: string[]): void {
         // NOTE: move the quarantine mode options to the end of the array to avoid the wrong quarantine mode CLI options parsing (GH-6231)
         const quarantineOptionIndex = argv.findIndex(
             el => ['-q', '--quarantine-mode'].some(opt => el.startsWith(opt)));
@@ -383,12 +385,17 @@ export default class CLIArgumentParser {
             if (shouldMoveOptionToEnd)
                 argv.push(argv.splice(quarantineOptionIndex, 1)[0]);
         }
+    }
 
+    public async parse (argv: string[]): Promise<void> {
+        CLIArgumentParser._prepareQuarantineOptions(argv);
 
-        this.program.parse(argv);
+        const { args, v8Flags } = extractNodeProcessArguments(argv);
+
+        this.program.parse(args);
 
         this.args = this.program.args;
-        this.opts = this.program.opts();
+        this.opts = Object.assign(this.program.opts(), { v8Flags });
 
         this._parseListBrowsers();
 

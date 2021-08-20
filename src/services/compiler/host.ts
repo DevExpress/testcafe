@@ -68,6 +68,8 @@ import {
 
 import { UncaughtExceptionError, UnhandledPromiseRejectionError } from '../../errors/test-run';
 import { handleUnexpectedError } from '../../utils/handle-errors';
+import { pull } from 'lodash';
+import { V8_DEBUG_FLAGS } from '../../cli/node-arguments-filter';
 
 const SERVICE_PATH       = require.resolve('./service-loader');
 const INTERNAL_FILES_URL = pathToFileURL(path.join(__dirname, '../../'));
@@ -96,17 +98,24 @@ const errorTypeConstructors = new Map<string, Function>([
     [UncaughtExceptionError.name, UncaughtExceptionError],
 ]);
 
+interface CompilerHostInitOptions {
+    developmentMode: boolean;
+    v8Flags: string[];
+}
+
 export default class CompilerHost extends AsyncEventEmitter implements CompilerProtocol {
     private runtime: Promise<RuntimeResources|undefined>;
     private cdp: cdp.ProtocolApi & EventEmitter | undefined;
     private readonly developmentMode: boolean;
+    private readonly v8Flags: string[];
     public initialized: boolean;
 
-    public constructor ({ developmentMode }: any) {
+    public constructor ({ developmentMode, v8Flags }: CompilerHostInitOptions) {
         super();
 
         this.runtime         = Promise.resolve(void 0);
         this.developmentMode = developmentMode;
+        this.v8Flags         = v8Flags;
         this.initialized     = false;
     }
 
@@ -211,6 +220,21 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
         });
     }
 
+    private _getServiceProcessArgs (port: string): string [] {
+        let args: string[] = [];
+
+        if (this.v8Flags)
+            args = pull(this.v8Flags, ...V8_DEBUG_FLAGS);
+
+        // NOTE: fixed port number for debugging purposes. Will be replaced with the `getFreePort` util
+        // TODO: debugging: refactor to a separate debug info parsing unit
+        const inspectBrkFlag = `--inspect-brk=127.0.0.1:${port}`;
+
+        args.push(inspectBrkFlag, SERVICE_PATH);
+
+        return args;
+    }
+
     private async _init (runtime: Promise<RuntimeResources|undefined>): Promise<RuntimeResources|undefined> {
         const resolvedRuntime = await runtime;
 
@@ -218,10 +242,9 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
             return resolvedRuntime;
 
         try {
-            // NOTE: fixed port number for debugging purposes. Will be replaced with the `getFreePort` util
-            // TODO: debugging: refactor to a separate debug info parsing unit
             const port    = '64128';
-            const service = spawn(process.argv0, [`--inspect-brk=127.0.0.1:${port}`, SERVICE_PATH], { stdio: [0, 1, 2, 'pipe', 'pipe', 'pipe'] });
+            const args    = this._getServiceProcessArgs(port);
+            const service = spawn(process.argv0, args, { stdio: [0, 1, 2, 'pipe', 'pipe', 'pipe'] });
 
             // NOTE: need to wait, otherwise the error will be at `await cdp(...)`
             // TODO: debugging: refactor to use delay and multiple tries

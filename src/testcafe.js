@@ -32,7 +32,12 @@ export default class TestCafe {
         this.runners                  = [];
         this.configuration            = configuration;
 
-        this.compilerService = configuration.getOption(OPTION_NAMES.experimentalDebug) ? new CompilerHost(options) : void 0;
+        if (configuration.getOption(OPTION_NAMES.experimentalDebug)) {
+            const developmentMode = configuration.getOption(OPTION_NAMES.developmentMode);
+            const v8Flags         = configuration.getOption(OPTION_NAMES.v8Flags);
+
+            this.compilerService = new CompilerHost({ developmentMode, v8Flags });
+        }
 
         this._registerAssets(options.developmentMode);
     }
