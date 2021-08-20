@@ -107,12 +107,13 @@ class TypeScriptTestFileParser extends TestFileParserBase {
         const loc = this.getLocationByOffsets(token.pos, token.end);
 
         return {
-            fnName: name,
-            value:  value,
-            loc:    loc.loc,
-            start:  loc.start,
-            end:    loc.end,
-            meta:   merge({}, ...meta),
+            fnName:    name,
+            value:     value,
+            loc:       loc.loc,
+            start:     loc.start,
+            end:       loc.end,
+            meta:      merge({}, ...meta),
+            isSkipped: TestFileParserBase.isSkipped(token),
         };
     }
 

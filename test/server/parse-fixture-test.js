@@ -15,9 +15,9 @@ const {
 const parserBase = require('../../lib/compiler/test-file/test-file-parser-base');
 
 const Test    = parserBase.Test;
-const Fixture = function (name, start, end, loc, meta, tests) {
+const Fixture = function (name, start, end, loc, meta, tests, isSkipped) {
     return assign(
-        new parserBase.Fixture(name, start, end, loc, meta),
+        new parserBase.Fixture(name, start, end, loc, meta, isSkipped),
         { tests: tests }
     );
 };
@@ -79,13 +79,13 @@ describe('Should get structure of files (esnext and typescript common cases)', f
                     [
                         new Test('Fixture1Test1', 52, 148, new Loc(5, 0, 9, 2), {}),
                         new Test('<computed name>(line: 13)', 187, 238, new Loc(13, 0, 15, 2), {}),
-                    ]
+                    ],
                 ),
 
                 new Fixture('<computed name>(line: 17)', 241, 353, new Loc(17, 0, 20, 26), {},
                     [
                         new Test('Fixture2Test1', 356, 413, new Loc(22, 0, 24, 2), {}),
-                    ]
+                    ],
                 ),
             ],
             [
@@ -150,17 +150,19 @@ describe('Should get structure of files (esnext and typescript common cases)', f
             [
                 new Fixture('fixture1', 0, 23, new Loc(1, 0, 1, 23), {},
                     [
-                        new Test('fixture1test1', 26, 111, new Loc(3, 0, 9, 2), {}),
-                    ]
+                        new Test('fixture1test1', 26, 111, new Loc(3, 0, 9, 2), {}, true),
+                    ],
+                    true
                 ),
 
                 new Fixture('fixture2', 115, 137, new Loc(12, 0, 12, 22), {},
                     [
-                        new Test('fixture2test1', 140, 164, new Loc(14, 0, 14, 24), {}),
-                        new Test('fixture2test2', 166, 190, new Loc(15, 0, 15, 24), {}),
-                        new Test('fixture2test3', 193, 241, new Loc(17, 0, 17, 48), {}),
-                        new Test('fixture2test4', 243, 269, new Loc(18, 0, 18, 26), {}),
-                    ]
+                        new Test('fixture2test1', 140, 164, new Loc(14, 0, 14, 24), {}, true),
+                        new Test('fixture2test2', 166, 190, new Loc(15, 0, 15, 24), {}, true),
+                        new Test('fixture2test3', 193, 241, new Loc(17, 0, 17, 48), {}, true),
+                        new Test('fixture2test4', 243, 269, new Loc(18, 0, 18, 26), {}, true),
+                    ],
+                    true
                 ),
 
                 new Fixture('fixture 3', 272, 297, new Loc(20, 0, 20, 25), {},
@@ -199,6 +201,36 @@ describe('Should get structure of files (esnext and typescript common cases)', f
                     [
                         new Test('<computed name>(line: 88)', 1363, 1467, new Loc(85, 0, 89, 31), {}),
                     ]
+                ),
+                new Fixture('fixture9', 1470, 1499, new Loc(91, 0, 91, 29), {},
+                    [
+                        new Test('fixture9test1', 1502, 1528, new Loc(93, 0, 93, 26), {}, true),
+                    ],
+                    true
+                ),
+                new Fixture('fixture10', 1531, 1655, new Loc(95, 0, 100, 5), {},
+                    [
+                        new Test('fixture10test1', 1658, 1680, new Loc(102, 0, 102, 22), {}, true),
+                    ],
+                    true
+                ),
+                new Fixture('fixture11', 1683, 1703, new Loc(104, 0, 104, 20), {},
+                    [
+                        new Test('fixture11test1', 1706, 1738, new Loc(106, 0, 106, 32), {}, true),
+                        new Test('fixture11test2', 1741, 1829, new Loc(108, 0, 112, 9), {}, true),
+                        new Test('fixture11test3', 1832, 1920, new Loc(114, 0, 118, 20), {}, true),
+                        new Test('fixture11test4', 1923, 2028, new Loc(120, 0, 124, 37), {}, true),
+                        new Test('fixture11test5', 2031, 2216, new Loc(126, 0, 138, 18), { 'key1': 'value1' }, true),
+                        new Test('fixture11test6', 2219, 2444, new Loc(140, 0, 149, 25), { 'key2': 'value2' }, true),
+                    ]
+                ),
+                new Fixture('fixture12', 2447, 2566, new Loc(151, 0, 156, 17), {},
+                    [],
+                    true
+                ),
+                new Fixture('fixture13', 2569, 2811, new Loc(158, 0, 167, 59), {},
+                    [],
+                    true
                 ),
             ],
         ];

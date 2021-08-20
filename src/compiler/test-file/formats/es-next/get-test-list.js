@@ -65,12 +65,13 @@ export class EsNextTestFileParser extends TestFileParserBase {
 
     formatFnData (name, value, token, meta = [{}]) {
         return {
-            fnName: name,
-            value:  value,
-            loc:    token.loc,
-            start:  token.start,
-            end:    token.end,
-            meta:   merge({}, ...meta),
+            fnName:    name,
+            value:     value,
+            loc:       token.loc,
+            start:     token.start,
+            end:       token.end,
+            meta:      merge({}, ...meta),
+            isSkipped: TestFileParserBase.isSkipped(token),
         };
     }
 

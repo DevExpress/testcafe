@@ -5,6 +5,7 @@ import { RUNTIME_ERRORS } from '../../errors/types';
 
 const METHODS_SPECIFYING_NAME = ['only', 'skip'];
 const COMPUTED_NAME_TEXT_TMP  = '<computed name>(line: %s)';
+const SKIP_PROPERTY_NAME      = 'skip';
 
 function getLoc (loc) {
     // NOTE: Don't modify the Babel's parser data structure
@@ -20,23 +21,25 @@ function getLoc (loc) {
 }
 
 export class Fixture {
-    constructor (name, start, end, loc, meta) {
-        this.name  = name;
-        this.loc   = getLoc(loc);
-        this.start = start;
-        this.end   = end;
-        this.meta  = meta;
-        this.tests = [];
+    constructor (name, start, end, loc, meta, isSkipped) {
+        this.name      = name;
+        this.loc       = getLoc(loc);
+        this.start     = start;
+        this.end       = end;
+        this.meta      = meta;
+        this.tests     = [];
+        this.isSkipped = !!isSkipped;
     }
 }
 
 export class Test {
-    constructor (name, start, end, loc, meta) {
-        this.name  = name;
-        this.loc   = getLoc(loc);
-        this.start = start;
-        this.end   = end;
-        this.meta  = meta;
+    constructor (name, start, end, loc, meta, isSkipped) {
+        this.name      = name;
+        this.loc       = getLoc(loc);
+        this.start     = start;
+        this.end       = end;
+        this.meta      = meta;
+        this.isSkipped = !!isSkipped;
     }
 }
 
@@ -166,6 +169,18 @@ export class TestFileParserBase {
         }, []);
     }
 
+    static isSkipped (originalToken, token = originalToken) {
+        const needSkip = token?.property?.name === SKIP_PROPERTY_NAME || token?.name?.text === SKIP_PROPERTY_NAME;
+
+        if (!needSkip) {
+            token = token.callee || token.tag || token.object || token.expression;
+
+            return token ? TestFileParserBase.isSkipped(originalToken, token) : false;
+        }
+
+        return true;
+    }
+
     checkExpDefineTargetName (type, apiFn) {
         //NOTE: fixture('fixtureName').chainFn or test('testName').chainFn
         const isDirectCall = type === this.tokenType.Identifier;
@@ -235,15 +250,19 @@ export class TestFileParserBase {
             if (!call || typeof call.value !== 'string') return;
 
             if (call.fnName === 'fixture') {
-                fixtures.push(new Fixture(call.value, call.start, call.end, call.loc, call.meta));
+                fixtures.push(new Fixture(call.value, call.start, call.end, call.loc, call.meta, call.isSkipped));
+
                 return;
             }
 
             if (!fixtures.length) return;
 
-            const test = new Test(call.value, call.start, call.end, call.loc, call.meta);
+            // NOTE: If the fixture is skipped, mark all the tests in the fixture skipped, otherwise, use the current test identifier
+            const currentFixture = fixtures[fixtures.length - 1];
+            const testIsSkipped  = currentFixture.isSkipped || call.isSkipped;
+            const test           = new Test(call.value, call.start, call.end, call.loc, call.meta, testIsSkipped);
 
-            fixtures[fixtures.length - 1].tests.push(test);
+            currentFixture.tests.push(test);
         });
 
         return fixtures;
