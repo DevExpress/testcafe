@@ -4,6 +4,7 @@
 /// <reference path="../test-api/user-variables.d.ts" />
 /// <reference path="../test-api/role.d.ts" />
 /// <reference path="../test-api/test-controller.d.ts" />
+/// <reference path="../test-api/structure.d.ts" />
 // {{/allowReferences}}
 
 // {{>selectors-exports.d.ts}}
@@ -40,3 +41,6 @@ export const t: TestController;
  * Object which contains userVariables data
  */
 export const userVariables: UserVariables;
+
+export const fixture: FixtureFn;
+export const test: TestFn;
