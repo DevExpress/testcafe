@@ -96,3 +96,13 @@
   unlabel:
     - 'STATE: No workarounds'
     - 'STATE: Need response'
+
+? 'STATE: PR Review Pending'
+:
+  # Post a comment
+  comment: |
+    Thank you for your contribution to TestCafe. We will review this PR.
+  unlabel:
+    - 'STATE: PR Review Pending'
+    - 'STATE: Need response'
+    
