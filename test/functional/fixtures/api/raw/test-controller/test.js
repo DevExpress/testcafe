@@ -12,7 +12,7 @@ describe('[Raw API] TestController', () => {
             .catch(errs => {
                 expect(errs[0]).to.contains(
                     ' 2 |Click (Selector(\'#btn2\'))' +
-                    ' > 3 |Click (Selector(\'#error\'))' +
+                    ' > 3 |Click (Selector(\'#errorrr\'))' +
                     ' 4 |Click (Selector(\'#btn3\'))'
                 );
             });

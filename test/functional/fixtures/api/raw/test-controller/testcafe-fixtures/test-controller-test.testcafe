@@ -22,7 +22,7 @@
                             "id": "1"
                         },
                         {
-                            "selector": {"type":"js-expr","value":"Selector('#error')"},
+                            "selector": {"type":"js-expr","value":"Selector('#errorrr')"},
                             "studio": {"selectors":[{"rawSelector":{"type":"js-expr","value":"Selector('#error')"},"ruleType":"id"},{"rawSelector":{"type":"js-expr","value":"Selector('form input').nth(3)"},"ruleType":"$dom$"}],"useOffsets":false,"offsetX":14,"offsetY":10},
                             "options":{},
                             "type":"click",
