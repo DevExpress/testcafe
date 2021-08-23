@@ -5,9 +5,8 @@ const { expect } = require('chai');
 describe('[Raw API] TestController', () => {
     it('Should produce correct callsites for chained calls in raw test', () => {
         return runTests('./testcafe-fixtures/test-controller-test.testcafe', 'Chaining callsites', {
-            shouldFail:   true,
-            only:         'chrome',
-            skipJsErrors: true,
+            shouldFail: true,
+            only:       'chrome',
         })
             .catch(errs => {
                 expect(errs[0]).to.contains(

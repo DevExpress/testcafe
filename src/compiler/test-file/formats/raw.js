@@ -5,7 +5,7 @@ import TestFile from '../../../api/structure/test-file';
 import Fixture from '../../../api/structure/fixture';
 import Test from '../../../api/structure/test';
 import createCommandFromObject from '../../../test-run/commands/from-object';
-import CallsiteCommand from '../../../utils/callsite-command';
+import { CallsiteCommand } from '../../../utils/callsite-command';
 
 export default class RawTestFileCompiler extends TestFileCompilerBase {
     static _createTestFn (commands) {

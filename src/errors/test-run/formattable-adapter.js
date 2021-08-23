@@ -1,9 +1,11 @@
 import { find, assignIn } from 'lodash';
 import { Parser } from 'parse5';
-import { renderers } from 'callsite-record';
+import { renderers as renderersRecord } from 'callsite-record';
 import renderErrorTemplate from './render-error-template';
 import createStackFilter from '../create-stack-filter';
 import renderCallsiteSync from '../../utils/render-callsite-sync';
+import { CALLSITE_RECORD_CLASS_NAME } from '../../test-run/execute-js-expression/constants';
+import { renderers as renderersCommand } from '../../utils/callsite-command';
 
 const parser = new Parser();
 
@@ -53,6 +55,8 @@ export default class TestRunErrorFormattableAdapter {
     }
 
     getCallsiteMarkup () {
+        const renderers = this.callsite?.constructor.name === CALLSITE_RECORD_CLASS_NAME ? renderersRecord : renderersCommand;
+
         return renderCallsiteSync(this.callsite, {
             renderer:    renderers.html,
             stackFilter: createStackFilter(Error.stackTraceLimit),

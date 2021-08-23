@@ -1,4 +1,5 @@
-import { renderers } from 'callsite-record';
+import { renderers as renderersRecord } from 'callsite-record';
+import { renderers as renderersCommand } from './callsite-command';
 
 
 export default function renderCallsiteSync (callsite, options) {
@@ -12,10 +13,10 @@ export default function renderCallsiteSync (callsite, options) {
     if (callsite.prerendered) {
         const renderer = options && options.renderer;
 
-        if (renderer === renderers.html)
+        if (renderer === renderersRecord.html || renderer === renderersCommand.html)
             return callsite.html;
 
-        if (renderer === renderers.noColor)
+        if (renderer === renderersRecord.noColor || renderer === renderersCommand.noColor)
             return callsite.noColor;
 
         return callsite.default || '';
