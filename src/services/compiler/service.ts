@@ -201,6 +201,7 @@ class CompilerService implements CompilerProtocol {
             this.executeAsyncJsExpression,
             this.addUnexpectedError,
             this.checkWindow,
+            this.removeTestRun,
         ], this);
     }
 
@@ -501,6 +502,10 @@ class CompilerService implements CompilerProtocol {
         catch (err) {
             throw new SwitchToWindowPredicateError(err.message);
         }
+    }
+
+    public async removeTestRun ({ testRunId }: TestRunLocator): Promise<void> {
+        delete this.state.testRuns[testRunId];
     }
 }
 

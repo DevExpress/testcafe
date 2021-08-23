@@ -87,4 +87,5 @@ export interface CompilerProtocol extends TestRunDispatcherProtocol {
     executeAssertionFn ({ testRunId, commandId }: CommandLocator): Promise<unknown>;
     addUnexpectedError ({ type, message }: AddUnexpectedErrorArguments): Promise<void>;
     checkWindow ({ url, title }: CheckWindowArgument): Promise<boolean>;
+    removeTestRun({ testRunId }: TestRunLocator): Promise<void>;
 }

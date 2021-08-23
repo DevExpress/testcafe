@@ -81,24 +81,12 @@ export default class Task extends AsyncEventEmitter {
         }
     }
 
-    private async _copyWarningsFromCompilerService (testRun: TestRun): Promise<void> {
-        if (!this._compilerService)
-            return;
-
-        const warnings = await this._compilerService.getWarningMessages({ testRunId: testRun.id });
-
-        warnings.forEach(warning => {
-            testRun.warningLog.addWarning(warning);
-        });
-    }
-
     private _assignBrowserJobEventHandlers (job: BrowserJob): void {
         job.on('test-run-start', async (testRun: TestRun) => {
             await this.emit('test-run-start', testRun);
         });
 
         job.on('test-run-done', async (testRun: TestRun) => {
-            await this._copyWarningsFromCompilerService(testRun);
             await this.emit('test-run-done', testRun);
 
             if (this.opts.stopOnFirstFail && testRun.errs.length) {

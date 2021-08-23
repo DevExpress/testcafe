@@ -549,6 +549,20 @@ export default class TestRun extends AsyncEventEmitter {
         return true;
     }
 
+    private async _finalizeTestRun (id: string): Promise<void> {
+        if (this.compilerService) {
+            const warnings = await this.compilerService.getWarningMessages({ testRunId: id });
+
+            warnings.forEach(warning => {
+                this.warningLog.addWarning(warning);
+            });
+
+            await this.compilerService.removeTestRun({ testRunId: id });
+        }
+
+        testRunTracker.removeActiveTestRun(id);
+    }
+
     public async start (): Promise<void> {
         testRunTracker.addActiveTestRun(this);
 
@@ -588,7 +602,7 @@ export default class TestRun extends AsyncEventEmitter {
         this.session.clearRequestEventListeners();
         this.normalizeRequestHookErrors();
 
-        testRunTracker.removeActiveTestRun(this.session.id);
+        await this._finalizeTestRun(this.session.id);
 
         await this.emit('done');
     }
