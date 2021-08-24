@@ -100,19 +100,31 @@ export default class FixtureHookController {
         const fixture = testRun.test.fixture;
         const item    = this._getFixtureMapItem(testRun.test);
 
-        if (item) {
-            item.pendingTestRunCount--;
+        if (!item)
+            return;
 
-            if (item.pendingTestRunCount === 0 && fixture.afterFn) {
-                testRun.phase = TEST_RUN_PHASE.inFixtureAfterHook;
+        item.pendingTestRunCount--;
 
-                try {
-                    await fixture.afterFn(item.fixtureCtx);
-                }
-                catch (err) {
-                    testRun.addError(processTestFnError(err));
-                }
+        if (item.pendingTestRunCount !== 0)
+            return;
+
+        if (fixture.afterFn) {
+            testRun.phase = TEST_RUN_PHASE.inFixtureAfterHook;
+
+            try {
+                await fixture.afterFn(item.fixtureCtx);
+            }
+            catch (err) {
+                testRun.addError(processTestFnError(err));
             }
         }
+
+        if (item.fixtureCtx) {
+            await testRun.compilerService?.removeFixtureCtx({
+                fixtureId: fixture.id,
+            });
+        }
+
+        this._fixtureMap.delete(fixture);
     }
 }

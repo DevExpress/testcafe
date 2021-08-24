@@ -53,6 +53,7 @@ import {
     CommandLocator,
     AddUnexpectedErrorArguments,
     CheckWindowArgument,
+    RemoveFixtureCtxArguments,
 } from './interfaces';
 
 import { CompilerArguments } from '../../compiler/interfaces';
@@ -201,6 +202,8 @@ class CompilerService implements CompilerProtocol {
             this.executeAsyncJsExpression,
             this.addUnexpectedError,
             this.checkWindow,
+            this.removeTestRun,
+            this.removeFixtureCtx,
         ], this);
     }
 
@@ -501,6 +504,14 @@ class CompilerService implements CompilerProtocol {
         catch (err) {
             throw new SwitchToWindowPredicateError(err.message);
         }
+    }
+
+    public async removeTestRun ({ testRunId }: TestRunLocator): Promise<void> {
+        delete this.state.testRuns[testRunId];
+    }
+
+    public async removeFixtureCtx ({ fixtureId }: RemoveFixtureCtxArguments): Promise<void> {
+        delete this.state.fixtureCtxs[fixtureId];
     }
 }
 

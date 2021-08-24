@@ -64,6 +64,7 @@ import {
     CommandLocator,
     AddUnexpectedErrorArguments,
     CheckWindowArgument,
+    RemoveFixtureCtxArguments,
 } from './interfaces';
 
 import { UncaughtExceptionError, UnhandledPromiseRejectionError } from '../../errors/test-run';
@@ -147,6 +148,8 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
             this.executeAssertionFn,
             this.addUnexpectedError,
             this.checkWindow,
+            this.removeTestRun,
+            this.removeFixtureCtx,
         ], this);
     }
 
@@ -527,5 +530,17 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
         const { proxy } = await this._getRuntime();
 
         return proxy.call(this.checkWindow, { testRunId, commandId, url, title });
+    }
+
+    public async removeTestRun ({ testRunId }: TestRunLocator): Promise<void> {
+        const { proxy } = await this._getRuntime();
+
+        return proxy.call(this.removeTestRun, { testRunId });
+    }
+
+    public async removeFixtureCtx ({ fixtureId }: RemoveFixtureCtxArguments): Promise<void> {
+        const { proxy } = await this._getRuntime();
+
+        return proxy.call(this.removeFixtureCtx, { fixtureId });
     }
 }
