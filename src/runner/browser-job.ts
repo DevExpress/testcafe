@@ -64,7 +64,7 @@ export default class BrowserJob extends AsyncEventEmitter {
         this.fixtureHookController = fixtureHookController;
         this._result               = null;
         this._messageBus           = messageBus;
-        this._testRunHook          = new TestRunHookController(tests, (opts.hooks as HooksValue)?.testRun);
+        this._testRunHook          = new TestRunHookController(tests, (opts.hooks as GlobalHooks)?.testRun);
 
         this._testRunControllerQueue = tests.map((test, index) => this._createTestRunController(test, index, compilerService));
 

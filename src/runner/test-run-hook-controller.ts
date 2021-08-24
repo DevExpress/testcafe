@@ -13,7 +13,7 @@ export default class TestRunHookController {
     public pendingTestRunCount: number;
     public testRunCtx: object;
 
-    public constructor (tests: Test[], hook?: Hook) {
+    public constructor (tests: Test[], hook?: TestingEntryHooks) {
         this.beforeFn            = hook?.before;
         this.afterFn             = hook?.after;
         this.started             = false;
