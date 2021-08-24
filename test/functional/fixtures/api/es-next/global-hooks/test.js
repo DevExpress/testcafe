@@ -2,6 +2,7 @@ const path                       = require('path');
 const createTestCafe             = require('../../../../../../lib');
 const config                     = require('../../../../config');
 const { createSimpleTestStream } = require('../../../../utils/stream');
+const { expect }                 = require('chai');
 
 let cafe = null;
 
@@ -89,3 +90,39 @@ if (isLocalChrome) {
         });
     });
 }
+
+describe('[API] testRun global before/after hooks', () => {
+
+    afterEach(function () {
+        testCafe.close();
+    });
+
+    it('Should run hooks for all tests', async () => {
+        testCafe = await createTestCafe({ configFile: path.resolve('./test/functional/fixtures/api/es-next/global-hooks/data/test-run-config.js') });
+        await runTests('');
+    });
+
+    it('Should fail all tests in fixture if testRun.before hooks fails', async () => {
+        return global.runTests('./testcafe-fixtures/test-run-test.js', null, {
+            shouldFail: true,
+            only:       'chrome, firefox',
+            hooks:      {
+                testRun: {
+                    before: async () => {
+                        throw new Error('$$before$$');
+                    },
+                },
+            },
+        }).catch(errs => {
+            const allErrors = config.currentEnvironment.browsers.length ===
+            1 ? errs : errs['chrome'].concat(errs['firefox']);
+
+            expect(allErrors.length).eql(config.currentEnvironment.browsers.length * 3);
+
+            allErrors.forEach(err => {
+                expect(err).contains('Error in testRun.before hook');
+                expect(err).contains('$$before$$');
+            });
+        });
+    });
+});

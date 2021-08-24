@@ -1,4 +1,3 @@
-const delay      = require('../../../../../../lib/utils/delay');
 const { expect } = require('chai');
 const { uniq }   = require('lodash');
 const config     = require('../../../../config');
@@ -128,55 +127,5 @@ describe('[API] fixture.before/fixture.after hooks', () => {
 
     it('Fixture context', () => {
         return runTests('./testcafe-fixtures/fixture-ctx.js', null, { only: 'chrome, firefox' });
-    });
-});
-
-describe('[API] testRun global before/after hooks', () => {
-    it('Should run hooks for all tests', async () => {
-        const hooks = {
-            testRun: {
-                before: async (ctx) => {
-                    await delay(100);
-
-                    ctx.testRunBefore = 1;
-                    ctx.testRunAfter  = 0;
-                },
-                after: async (ctx) => {
-                    await delay(100);
-
-                    ctx.testRunAfter++;
-
-                    expect(ctx.testsCompleted).eql(3);
-                    expect(ctx.testRunBefore).eql(1);
-                    expect(ctx.testRunAfter).eql(1);
-                },
-            },
-        };
-
-        await runTests('./testcafe-fixtures/test-run-hooks-global.js', null, { only: 'chrome', hooks });
-    });
-
-    it('Should fail all tests in fixture if testRun.before hooks fails', () => {
-        return runTests('./testcafe-fixtures/test-run-before-fail.js', null, {
-            shouldFail: true,
-            only:       'chrome, firefox',
-            hooks:      {
-                testRun: {
-                    before: async () => {
-                        throw new Error('$$before$$');
-                    },
-                },
-            },
-        }).catch(errs => {
-            const allErrors = config.currentEnvironment.browsers.length ===
-            1 ? errs : errs['chrome'].concat(errs['firefox']);
-
-            expect(allErrors.length).eql(config.currentEnvironment.browsers.length * 3);
-
-            allErrors.forEach(err => {
-                expect(err).contains('Error in testRun.before hook');
-                expect(err).contains('$$before$$');
-            });
-        });
     });
 });
