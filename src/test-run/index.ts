@@ -596,7 +596,7 @@ export default class TestRun extends AsyncEventEmitter {
 
         await this.emit('before-done');
 
-        await this._executeInternalCommand(new serviceCommands.TestDoneCommand());
+        await this._internalExecuteCommand(new serviceCommands.TestDoneCommand());
 
         this._addPendingPageErrorIfAny();
         this.session.clearRequestEventListeners();
@@ -699,7 +699,7 @@ export default class TestRun extends AsyncEventEmitter {
         if (this.debugLogger)
             this.debugLogger.showBreakpoint(this.session.id, this.browserConnection.userAgent, callsite, error);
 
-        this.debugging = await this._executeInternalCommand(new serviceCommands.SetBreakpointCommand(!!error, inCompilerService), callsite) as boolean;
+        this.debugging = await this._internalExecuteCommand(new serviceCommands.SetBreakpointCommand(!!error, inCompilerService), callsite) as boolean;
     }
 
     private _removeAllNonServiceTasks (): void {
@@ -887,8 +887,8 @@ export default class TestRun extends AsyncEventEmitter {
         const assertionTimeout = getAssertionTimeout(command, this.opts);
         const executor         = new AssertionExecutor(command, assertionTimeout, callsite);
 
-        executor.once('start-assertion-retries', (timeout: number) => this._executeInternalCommand(new serviceCommands.ShowAssertionRetriesStatusCommand(timeout)));
-        executor.once('end-assertion-retries', (success: boolean) => this._executeInternalCommand(new serviceCommands.HideAssertionRetriesStatusCommand(success)));
+        executor.once('start-assertion-retries', (timeout: number) => this._internalExecuteCommand(new serviceCommands.ShowAssertionRetriesStatusCommand(timeout)));
+        executor.once('end-assertion-retries', (success: boolean) => this._internalExecuteCommand(new serviceCommands.HideAssertionRetriesStatusCommand(success)));
         executor.once('non-serializable-actual-value', this._redirectAssertionFnExecutionToCompilerService);
 
         const executeFn = this.decoratePreventEmitActionEvents(() => executor.run(), { prevent: true });
@@ -942,7 +942,7 @@ export default class TestRun extends AsyncEventEmitter {
             return;
 
         if (command.type === COMMAND_TYPE.typeText) {
-            const result = await this._executeInternalCommand((command as any).selector);
+            const result = await this._internalExecuteCommand((command as any).selector);
 
             if (!result)
                 return;
@@ -953,7 +953,7 @@ export default class TestRun extends AsyncEventEmitter {
         }
 
         else if (command.type === COMMAND_TYPE.pressKey) {
-            const result = await this._executeInternalCommand(new serviceCommands.GetActiveElementCommand());
+            const result = await this._internalExecuteCommand(new serviceCommands.GetActiveElementCommand());
 
             if (!result)
                 return;
@@ -972,7 +972,7 @@ export default class TestRun extends AsyncEventEmitter {
     public async executeCommand (command: CommandBase | ActionCommandBase, callsite?: string | CallsiteRecord): Promise<unknown> {
         return command instanceof ActionCommandBase
             ? this._executeActionCommand(command, callsite as CallsiteRecord)
-            : this._executeInternalCommand(command, callsite);
+            : this._internalExecuteCommand(command, callsite);
     }
 
     public async _executeActionCommand (command: ActionCommandBase, callsite: CallsiteRecord): Promise<unknown> {
@@ -989,7 +989,7 @@ export default class TestRun extends AsyncEventEmitter {
         const start = new Date().getTime();
 
         try {
-            result = await this._executeInternalCommand(command, callsite);
+            result = await this._internalExecuteCommand(command, callsite);
         }
         catch (err) {
             if (this.phase === TestRunPhase.pendingFinalization && err instanceof ExternalAssertionLibraryError)
@@ -1036,7 +1036,7 @@ export default class TestRun extends AsyncEventEmitter {
         return customActionsInfo[PROXYLESS_COMMANDS.get(command.type)!];
     }
 
-    public async _executeInternalCommand (command: CommandBase, callsite?: CallsiteRecord | string): Promise<unknown> {
+    public async _internalExecuteCommand (command: CommandBase, callsite?: CallsiteRecord | string): Promise<unknown> {
         this.debugLog.command(command);
 
         let postAction = null as (() => Promise<unknown>) | null;
@@ -1137,7 +1137,7 @@ export default class TestRun extends AsyncEventEmitter {
         const { screenshots } = this.opts;
 
         if (!this.errScreenshotPath && (screenshots as ScreenshotOptionValue)?.takeOnFails)
-            this.errScreenshotPath = await this._executeInternalCommand(new browserManipulationCommands.TakeScreenshotOnFailCommand()) as string;
+            this.errScreenshotPath = await this._internalExecuteCommand(new browserManipulationCommands.TakeScreenshotOnFailCommand()) as string;
     }
 
     private _decorateWithFlag (fn: Function, flagName: string, value: boolean): () => Promise<void> {
@@ -1170,7 +1170,7 @@ export default class TestRun extends AsyncEventEmitter {
     public async getStateSnapshot (): Promise<StateSnapshot> {
         const state = this.session.getStateSnapshot();
 
-        state.storages = await this._executeInternalCommand(new serviceCommands.BackupStoragesCommand()) as StoragesSnapshot;
+        state.storages = await this._internalExecuteCommand(new serviceCommands.BackupStoragesCommand()) as StoragesSnapshot;
 
         return state;
     }
@@ -1202,13 +1202,13 @@ export default class TestRun extends AsyncEventEmitter {
         if (this.speed !== this.opts.speed) {
             const setSpeedCommand = new actionCommands.SetTestSpeedCommand({ speed: this.opts.speed });
 
-            await this._executeInternalCommand(setSpeedCommand);
+            await this._internalExecuteCommand(setSpeedCommand);
         }
 
         if (this.pageLoadTimeout !== this.opts.pageLoadTimeout) {
             const setPageLoadTimeoutCommand = new actionCommands.SetPageLoadTimeoutCommand({ duration: this.opts.pageLoadTimeout });
 
-            await this._executeInternalCommand(setPageLoadTimeoutCommand);
+            await this._internalExecuteCommand(setPageLoadTimeoutCommand);
         }
 
         await this.navigateToUrl(url, true);
@@ -1216,14 +1216,14 @@ export default class TestRun extends AsyncEventEmitter {
         if (this.activeDialogHandler) {
             const removeDialogHandlerCommand = new actionCommands.SetNativeDialogHandlerCommand({ dialogHandler: { fn: null } });
 
-            await this._executeInternalCommand(removeDialogHandlerCommand);
+            await this._internalExecuteCommand(removeDialogHandlerCommand);
         }
     }
 
     public async navigateToUrl (url: string, forceReload: boolean, stateSnapshot?: string): Promise<void> {
         const navigateCommand = new actionCommands.NavigateToCommand({ url, forceReload, stateSnapshot });
 
-        await this._executeInternalCommand(navigateCommand);
+        await this._internalExecuteCommand(navigateCommand);
     }
 
     private async _getStateSnapshotFromRole (role: Role): Promise<StateSnapshot> {
@@ -1276,7 +1276,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     private async _switchToWindowByPredicate (command: SwitchToWindowByPredicateCommand): Promise<void> {
-        const currentWindows = await this._executeInternalCommand(new GetCurrentWindowsCommand({}, this) as CommandBase) as OpenedWindowInformation[];
+        const currentWindows = await this._internalExecuteCommand(new GetCurrentWindowsCommand({}, this) as CommandBase) as OpenedWindowInformation[];
 
         const windows = await asyncFilter<OpenedWindowInformation>(currentWindows, async wnd => {
             try {
@@ -1307,7 +1307,7 @@ export default class TestRun extends AsyncEventEmitter {
         if (windows.length > 1)
             this.warningLog.addWarning(WARNING_MESSAGE.multipleWindowsFoundByPredicate);
 
-        await this._executeInternalCommand(new SwitchToWindowCommand({ windowId: windows[0].id }, this) as CommandBase);
+        await this._internalExecuteCommand(new SwitchToWindowCommand({ windowId: windows[0].id }, this) as CommandBase);
     }
 
     private _disconnect (err: Error): void {

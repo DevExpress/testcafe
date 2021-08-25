@@ -26,7 +26,7 @@ const writeFile = promisify(fs.writeFile);
 require('source-map-support').install();
 
 class TestRunMock extends BaseTestRunMock {
-    _executeInternalCommand (command) {
+    _internalExecuteCommand (command) {
         this.commands.push(command);
 
         return this.expectedError ? Promise.reject(new Error(this.expectedError)) : Promise.resolve();

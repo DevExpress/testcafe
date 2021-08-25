@@ -62,7 +62,7 @@ class TestRunMock {
         this.errors.push(err);
     }
 
-    _executeInternalCommand (command, callsite) {
+    _internalExecuteCommand (command, callsite) {
         return new AssertionExecutor(command, 0, callsite).run();
     }
 }

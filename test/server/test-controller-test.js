@@ -18,10 +18,10 @@ class TestRunMock extends BaseTestRunMock {
     }
 
     _executeActionCommand (command) {
-        return this._executeInternalCommand(command);
+        return this._internalExecuteCommand(command);
     }
 
-    _executeInternalCommand (command, callsite) {
+    _internalExecuteCommand (command, callsite) {
         if (command.type === 'click')
             return Promise.reject(new Error(errorMessage));
 
