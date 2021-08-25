@@ -2,9 +2,12 @@ const { noop }           = require('lodash');
 const createTestCafe     = require('../../../../lib');
 const config             = require('../../config');
 const path               = require('path');
+const { Buffer }         = require('buffer');
 const { expect }         = require('chai');
 const helper             = require('./test-helper');
 const { createReporter } = require('../../utils/reporter');
+const fs                 = require( 'fs' );
+const del                = require('del');
 
 const DEFAULT_BROWSERS = ['chrome', 'firefox'];
 let cafe               = null;
@@ -185,6 +188,54 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
                 });
 
             return promise;
+        });
+
+        it('Should rerun tests after changing file', async function () {
+            const relativeFilePath = '/testcafe-fixtures/watch-test-file.js';
+            const filePath         = path.join(__dirname, relativeFilePath);
+            const fileHandle       = await fs.promises.open(filePath, 'w');
+            const firstPartTests   = Buffer.from('import helper from "../test-helper";\n' +
+                                                '\n' +
+                                                'fixture `Should rerun tests after changing file`\n' +
+                                                '    .page `../pages/index.html`\n' +
+                                                '    .after(() => {\n' +
+                                                '        helper.emitter.emit("tests-completed");\n' +
+                                                '    });\n' +
+                                                '\n' +
+                                                'test("Old test", async t => {\n' +
+                                                '    for (let i = 0; i < 10; i++)\n' +
+                                                '        await t.click("#button1");\n' +
+                                                '});' +
+                                                '\n');
+
+            await fileHandle.write(firstPartTests);
+            await fileHandle.sync();
+
+            cafe         = await createTestCafe( 'localhost', 1337, 1338 );
+            const runner = createLiveModeRunner(cafe, relativeFilePath, ['chrome']);
+
+            helper.emitter.once('tests-completed', async () => {
+                helper.emitter.once('tests-completed', () => {
+                    runner.exit();
+                    del([filePath]);
+                });
+
+                const secondPartTests = Buffer.from('\n' +
+                                                    'test("New test", async t => {\n' +
+                                                    '    for (let i = 0; i < 10; i++)\n' +
+                                                    '        await t.click("#button2");\n' +
+                                                    '});' +
+                                                    '\n');
+
+                await fileHandle.write(secondPartTests);
+                await fileHandle.sync();
+            });
+
+            return runner
+                .run()
+                .then(() => {
+                    return cafe.close();
+                });
         });
     });
 }
