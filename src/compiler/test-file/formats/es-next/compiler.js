@@ -7,6 +7,10 @@ const DISABLE_V8_OPTIMIZATION_CODE = '\n// NOTE: this code was generated automat
                                      + 'eval(\'\')';
 
 export default class ESNextTestFileCompiler extends APIBasedTestFileCompilerBase {
+    constructor (isCompilerServiceMode) {
+        super(isCompilerServiceMode);
+    }
+
     static getBabelOptions (filename, code) {
         const {
             presetStage2,
