@@ -2,6 +2,7 @@ const expect               = require('chai').expect;
 const fs                   = require('fs');
 const generateReporter     = require('./reporter');
 const ReporterPluginMethod = require('../../../../lib/reporter/plugin-methods');
+const { createReporter }   = require('../../utils/reporter');
 
 const {
     createSimpleTestStream,
@@ -241,24 +242,14 @@ describe('Reporter', () => {
         ];
 
         function customReporter (log) {
-            return () => {
-                return {
-                    async reportTestActionDone (name, { command, browser }) {
-                        log[browser.alias] = log[browser.alias] || [];
+            return createReporter({
+                reportTestActionDone: async (name, { command, browser }) => {
+                    log[browser.alias] = log[browser.alias] || [];
 
-                        if (command.selector)
-                            log[browser.alias].push(command.selector);
-                    },
-                    async reportTaskStart () {
-                    },
-                    async reportFixtureStart () {
-                    },
-                    async reportTestDone () {
-                    },
-                    async reportTaskDone () {
-                    },
-                };
-            };
+                    if (command.selector)
+                        log[browser.alias].push(command.selector);
+                },
+            });
         }
 
         const log = {};
