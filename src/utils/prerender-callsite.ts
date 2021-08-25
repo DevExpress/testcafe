@@ -1,8 +1,8 @@
-import { CallsiteRecord, renderers as renderersRecord } from 'callsite-record';
+import { CallsiteRecord } from 'callsite-record';
 import renderCallsiteSync from './render-callsite-sync';
 import createStackFilter from '../errors/create-stack-filter';
-import { CallsiteCommand, renderers as renderersCommand } from './callsite-command';
-import { CALLSITE_RECORD_CLASS_NAME } from '../test-run/execute-js-expression/constants';
+import { CallsiteCommand } from './callsite-command';
+import getRenderers from './get-renderes';
 
 export interface RenderedCallsite {
     prerendered: boolean;
@@ -13,7 +13,7 @@ export interface RenderedCallsite {
 
 export default function prerenderCallsite (callsite: CallsiteRecord | CallsiteCommand): RenderedCallsite {
     const stackFilter = createStackFilter(Error.stackTraceLimit);
-    const renderers = callsite.constructor.name === CALLSITE_RECORD_CLASS_NAME ? renderersRecord : renderersCommand;
+    const renderers   = getRenderers(callsite);
 
     return {
         prerendered: true,
