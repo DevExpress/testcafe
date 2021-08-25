@@ -16,7 +16,7 @@ export default class RawTestFileCompiler extends TestFileCompilerBase {
                 try {
                     command = createCommandFromObject(commands[i], t.testRun);
 
-                    await t.testRun.executeCommand(command, callsite, command.type);
+                    await t.testRun.executeCommand(command, callsite);
                 }
                 catch (err) {
                     err.callsite = callsite;

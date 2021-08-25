@@ -437,13 +437,13 @@ export default class TestController {
     [delegatedAPI(GetNativeDialogHistoryCommand.methodName)] () {
         const callsite = getCallsiteForMethod(GetNativeDialogHistoryCommand.methodName);
 
-        return this.testRun.executeCommand(new GetNativeDialogHistoryCommand(), callsite, GetNativeDialogHistoryCommand.methodName);
+        return this.testRun.executeCommand(new GetNativeDialogHistoryCommand(), callsite);
     }
 
     [delegatedAPI(GetBrowserConsoleMessagesCommand.methodName)] () {
         const callsite = getCallsiteForMethod(GetBrowserConsoleMessagesCommand.methodName);
 
-        return this.testRun.executeCommand(new GetBrowserConsoleMessagesCommand(), callsite, GetBrowserConsoleMessagesCommand.methodName);
+        return this.testRun.executeCommand(new GetBrowserConsoleMessagesCommand(), callsite);
     }
 
     _checkForExcessiveAwaits (snapshotPropertyCallsites, checkedCallsite) {
