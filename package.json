@@ -54,7 +54,8 @@
   "scripts": {
     "test": "gulp travis",
     "publish-please-only": "publish-please",
-    "publish-please": "del-cli package-lock.json node_modules && npm i && publish-please",
+    "docker-publish": "gulp docker-publish",
+    "publish-please": "del-cli package-lock.json node_modules && npm i && publish-please && npm run docker-publish",
     "prepublishOnly": "publish-please guard"
   },
   "dependencies": {

@@ -23,29 +23,12 @@ jobs:
       - run: npm run publish-please-only
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-  docker:
-    needs: publish
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out the repo
-        uses: actions/checkout@v2
-
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v1
+      - uses: actions/github-script@v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v3
-        with:
-          images: testcafe/testcafe
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          script: |
+            await github.actions.createWorkflowDispatch({
+              ref: 'master',
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'publish-docker.yml'
+            });
