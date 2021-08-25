@@ -77,7 +77,7 @@ export const renderers = {
     noColor: NoColorRender,
 };
 
-export class CallsiteCommand {
+export class RawCommandCallsiteRecord {
     public readonly id: number;
     private readonly _list: Command[];
 
