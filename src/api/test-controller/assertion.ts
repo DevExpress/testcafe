@@ -44,7 +44,7 @@ export default class Assertion {
         throw new AssertionWithoutMethodCallError(this._callsite);
     }
 
-    private _enqueueAssertion (command: unknown, assertionArgs: AssertionArgs): () => Promise<unknown> {
+    private _enqueueAssertion (command: typeof AssertionCommand, assertionArgs: AssertionArgs): () => Promise<unknown> {
         let options = assertionArgs.opts || {};
         let message = assertionArgs.message;
 
@@ -58,7 +58,7 @@ export default class Assertion {
         }
 
         return this._testController._enqueueCommand(command, {
-            assertionType: (command as AssertionCommand).methodName,
+            assertionType: command.methodName,
             actual:        this._actual,
             expected:      assertionArgs.expected,
             expected2:     assertionArgs.expected2,
