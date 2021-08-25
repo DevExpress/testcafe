@@ -3,8 +3,8 @@ const path   = require('path');
 
 module.exports = {
     hostname:          config.testCafe.hostname,
-    port1:             1335,
-    port2:             1336,
+    port1:             1337,
+    port2:             1338,
     developmentMode:   config.devMode,
     retryTestPages:    config.retryTestPages,
     experimentalDebug: !!process.env.EXPERIMENTAL_DEBUG,
