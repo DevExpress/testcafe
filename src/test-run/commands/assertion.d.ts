@@ -15,34 +15,34 @@ export class AssertionCommand extends ActionCommandBase {
     public static NOT_REPORTED_PROPERTIES: string[];
 }
 
-export class Eql extends AssertionCommand {}
+export class EqlAssertionCommand extends AssertionCommand {}
 
-export class NotEql extends AssertionCommand {}
+export class NotEqlAssertionCommand extends AssertionCommand {}
 
-export class Ok extends AssertionCommand {}
+export class OkAssertionCommand extends AssertionCommand {}
 
-export class NotOk extends AssertionCommand {}
+export class NotOkAssertionCommand extends AssertionCommand {}
 
-export class Contains extends AssertionCommand {}
+export class ContainsAssertionCommand extends AssertionCommand {}
 
-export class NotContains extends AssertionCommand {}
+export class NotContainsAssertionCommand extends AssertionCommand {}
 
-export class TypeOf extends AssertionCommand {}
+export class TypeOfAssertionCommand extends AssertionCommand {}
 
-export class NotTypeOf extends AssertionCommand {}
+export class NotTypeOfAssertionCommand extends AssertionCommand {}
 
-export class Gt extends AssertionCommand {}
+export class GtAssertionCommand extends AssertionCommand {}
 
-export class Gte extends AssertionCommand {}
+export class GteAssertionCommand extends AssertionCommand {}
 
-export class Lt extends AssertionCommand {}
+export class LtAssertionCommand extends AssertionCommand {}
 
-export class Lte extends AssertionCommand {}
+export class LteAssertionCommand extends AssertionCommand {}
 
-export class Within extends AssertionCommand {}
+export class WithinAssertionCommand extends AssertionCommand {}
 
-export class NotWithin extends AssertionCommand {}
+export class NotWithinAssertionCommand extends AssertionCommand {}
 
-export class Match extends AssertionCommand {}
+export class MatchAssertionCommand extends AssertionCommand {}
 
-export class NotMatch extends AssertionCommand {}
+export class NotMatchAssertionCommand extends AssertionCommand {}

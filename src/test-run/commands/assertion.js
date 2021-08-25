@@ -60,66 +60,66 @@ export class AssertionCommand extends ActionCommandBase {
     }
 }
 
-export class Eql extends AssertionCommand {
+export class EqlAssertionCommand extends AssertionCommand {
     static methodName = ASSERTION_TYPE.eql;
 }
 
-export class NotEql extends AssertionCommand {
+export class NotEqlAssertionCommand extends AssertionCommand {
     static methodName = ASSERTION_TYPE.notEql;
 }
 
-export class Ok extends AssertionCommand {
+export class OkAssertionCommand extends AssertionCommand {
     static methodName = ASSERTION_TYPE.ok;
 }
 
-export class NotOk extends AssertionCommand {
+export class NotOkAssertionCommand extends AssertionCommand {
     static methodName = ASSERTION_TYPE.notOk;
 }
 
-export class Contains extends AssertionCommand {
+export class ContainsAssertionCommand extends AssertionCommand {
     static methodName = ASSERTION_TYPE.contains;
 }
 
-export class NotContains extends AssertionCommand {
+export class NotContainsAssertionCommand extends AssertionCommand {
     static methodName = ASSERTION_TYPE.notContains;
 }
 
-export class TypeOf extends AssertionCommand {
+export class TypeOfAssertionCommand extends AssertionCommand {
     static methodName = ASSERTION_TYPE.typeOf;
 }
 
-export class NotTypeOf extends AssertionCommand {
+export class NotTypeOfAssertionCommand extends AssertionCommand {
     static methodName = ASSERTION_TYPE.notTypeOf;
 }
 
-export class Gt extends AssertionCommand {
+export class GtAssertionCommand extends AssertionCommand {
     static methodName = ASSERTION_TYPE.gt;
 }
 
-export class Gte extends AssertionCommand {
+export class GteAssertionCommand extends AssertionCommand {
     static methodName = ASSERTION_TYPE.gte;
 }
 
-export class Lt extends AssertionCommand {
+export class LtAssertionCommand extends AssertionCommand {
     static methodName = ASSERTION_TYPE.lt;
 }
 
-export class Lte extends AssertionCommand {
+export class LteAssertionCommand extends AssertionCommand {
     static methodName = ASSERTION_TYPE.lte;
 }
 
-export class Within extends AssertionCommand {
+export class WithinAssertionCommand extends AssertionCommand {
     static methodName = ASSERTION_TYPE.within;
 }
 
-export class NotWithin extends AssertionCommand {
+export class NotWithinAssertionCommand extends AssertionCommand {
     static methodName = ASSERTION_TYPE.notWithin;
 }
 
-export class Match extends AssertionCommand {
+export class MatchAssertionCommand extends AssertionCommand {
     static methodName = ASSERTION_TYPE.match;
 }
 
-export class NotMatch extends AssertionCommand {
+export class NotMatchAssertionCommand extends AssertionCommand {
     static methodName = ASSERTION_TYPE.notMatch;
 }

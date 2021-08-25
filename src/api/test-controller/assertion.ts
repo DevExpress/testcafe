@@ -1,21 +1,21 @@
 import {
     AssertionCommand,
-    Contains,
-    Eql,
-    Gt,
-    Gte,
-    Lt,
-    Lte,
-    Match,
-    NotContains,
-    NotEql,
-    NotMatch,
-    NotOk,
-    NotTypeOf,
-    NotWithin,
-    Ok,
-    TypeOf,
-    Within,
+    ContainsAssertionCommand,
+    EqlAssertionCommand,
+    GtAssertionCommand,
+    GteAssertionCommand,
+    LtAssertionCommand,
+    LteAssertionCommand,
+    MatchAssertionCommand,
+    NotContainsAssertionCommand,
+    NotEqlAssertionCommand,
+    NotMatchAssertionCommand,
+    NotOkAssertionCommand,
+    NotTypeOfAssertionCommand,
+    NotWithinAssertionCommand,
+    OkAssertionCommand,
+    TypeOfAssertionCommand,
+    WithinAssertionCommand,
 } from '../../test-run/commands/assertion';
 import { AssertionWithoutMethodCallError } from '../../errors/test-run';
 import TestController from './index';
@@ -67,68 +67,68 @@ export default class Assertion {
         });
     }
 
-    public [Eql.methodName] (expected: unknown, message: string, opts: AssertionOptions): () => Promise<unknown> {
-        return this._enqueueAssertion(Eql, { expected, message, opts });
+    public [EqlAssertionCommand.methodName] (expected: unknown, message: string, opts: AssertionOptions): () => Promise<unknown> {
+        return this._enqueueAssertion(EqlAssertionCommand, { expected, message, opts });
     }
 
-    public [NotEql.methodName] (expected: unknown, message: string, opts: AssertionOptions): () => Promise<unknown> {
-        return this._enqueueAssertion(NotEql, { expected, message, opts });
+    public [NotEqlAssertionCommand.methodName] (expected: unknown, message: string, opts: AssertionOptions): () => Promise<unknown> {
+        return this._enqueueAssertion(NotEqlAssertionCommand, { expected, message, opts });
     }
 
-    public [Ok.methodName] (message: string, opts: AssertionOptions): () => Promise<unknown> {
-        return this._enqueueAssertion(Ok, { message, opts });
+    public [OkAssertionCommand.methodName] (message: string, opts: AssertionOptions): () => Promise<unknown> {
+        return this._enqueueAssertion(OkAssertionCommand, { message, opts });
     }
 
-    public [NotOk.methodName] (message: string, opts: AssertionOptions): () => Promise<unknown> {
-        return this._enqueueAssertion(NotOk, { message, opts });
+    public [NotOkAssertionCommand.methodName] (message: string, opts: AssertionOptions): () => Promise<unknown> {
+        return this._enqueueAssertion(NotOkAssertionCommand, { message, opts });
     }
 
-    public [Contains.methodName] (expected: unknown, message: string, opts: AssertionOptions): () => Promise<unknown> {
-        return this._enqueueAssertion(Contains, { expected, message, opts });
+    public [ContainsAssertionCommand.methodName] (expected: unknown, message: string, opts: AssertionOptions): () => Promise<unknown> {
+        return this._enqueueAssertion(ContainsAssertionCommand, { expected, message, opts });
     }
 
-    public [NotContains.methodName] (expected: unknown, message: string, opts: AssertionOptions): () => Promise<unknown> {
-        return this._enqueueAssertion(NotContains, { expected, message, opts });
+    public [NotContainsAssertionCommand.methodName] (expected: unknown, message: string, opts: AssertionOptions): () => Promise<unknown> {
+        return this._enqueueAssertion(NotContainsAssertionCommand, { expected, message, opts });
     }
 
-    public [TypeOf.methodName] (expected: unknown, message: string, opts: AssertionOptions): () => Promise<unknown> {
-        return this._enqueueAssertion(TypeOf, { expected, message, opts });
+    public [TypeOfAssertionCommand.methodName] (expected: unknown, message: string, opts: AssertionOptions): () => Promise<unknown> {
+        return this._enqueueAssertion(TypeOfAssertionCommand, { expected, message, opts });
     }
 
-    public [NotTypeOf.methodName] (expected: unknown, message: string, opts: AssertionOptions): () => Promise<unknown> {
-        return this._enqueueAssertion(NotTypeOf, { expected, message, opts });
+    public [NotTypeOfAssertionCommand.methodName] (expected: unknown, message: string, opts: AssertionOptions): () => Promise<unknown> {
+        return this._enqueueAssertion(NotTypeOfAssertionCommand, { expected, message, opts });
     }
 
-    public [Gt.methodName] (expected: unknown, message: string, opts: AssertionOptions): () => Promise<unknown> {
-        return this._enqueueAssertion(Gt, { expected, message, opts });
+    public [GtAssertionCommand.methodName] (expected: unknown, message: string, opts: AssertionOptions): () => Promise<unknown> {
+        return this._enqueueAssertion(GtAssertionCommand, { expected, message, opts });
     }
 
-    public [Gte.methodName] (expected: unknown, message: string, opts: AssertionOptions): () => Promise<unknown> {
-        return this._enqueueAssertion(Gte, { expected, message, opts });
+    public [GteAssertionCommand.methodName] (expected: unknown, message: string, opts: AssertionOptions): () => Promise<unknown> {
+        return this._enqueueAssertion(GteAssertionCommand, { expected, message, opts });
     }
 
-    public [Lt.methodName] (expected: unknown, message: string, opts: AssertionOptions): () => Promise<unknown> {
-        return this._enqueueAssertion(Lt, { expected, message, opts });
+    public [LtAssertionCommand.methodName] (expected: unknown, message: string, opts: AssertionOptions): () => Promise<unknown> {
+        return this._enqueueAssertion(LtAssertionCommand, { expected, message, opts });
     }
 
-    public [Lte.methodName] (expected: unknown, message: string, opts: AssertionOptions): () => Promise<unknown> {
-        return this._enqueueAssertion(Lte, { expected, message, opts });
+    public [LteAssertionCommand.methodName] (expected: unknown, message: string, opts: AssertionOptions): () => Promise<unknown> {
+        return this._enqueueAssertion(LteAssertionCommand, { expected, message, opts });
     }
 
-    public [Within.methodName] (start: number, finish: number, message: string, opts: AssertionOptions): () => Promise<unknown> {
+    public [WithinAssertionCommand.methodName] (start: number, finish: number, message: string, opts: AssertionOptions): () => Promise<unknown> {
         // NOTE: `within` is not available in Chai `assert` interface.
-        return this._enqueueAssertion(Within, { expected: start, expected2: finish, message, opts });
+        return this._enqueueAssertion(WithinAssertionCommand, { expected: start, expected2: finish, message, opts });
     }
 
-    public [NotWithin.methodName] (start: number, finish: number, message: string, opts: AssertionOptions): () => Promise<unknown> {
-        return this._enqueueAssertion(NotWithin, { expected: start, expected2: finish, message, opts });
+    public [NotWithinAssertionCommand.methodName] (start: number, finish: number, message: string, opts: AssertionOptions): () => Promise<unknown> {
+        return this._enqueueAssertion(NotWithinAssertionCommand, { expected: start, expected2: finish, message, opts });
     }
 
-    public [Match.methodName] (expected: unknown, message: string, opts: AssertionOptions): () => Promise<unknown> {
-        return this._enqueueAssertion(Match, { expected, message, opts });
+    public [MatchAssertionCommand.methodName] (expected: unknown, message: string, opts: AssertionOptions): () => Promise<unknown> {
+        return this._enqueueAssertion(MatchAssertionCommand, { expected, message, opts });
     }
 
-    public [NotMatch.methodName] (expected: unknown, message: string, opts: AssertionOptions): () => Promise<unknown> {
-        return this._enqueueAssertion(NotMatch, { expected, message, opts });
+    public [NotMatchAssertionCommand.methodName] (expected: unknown, message: string, opts: AssertionOptions): () => Promise<unknown> {
+        return this._enqueueAssertion(NotMatchAssertionCommand, { expected, message, opts });
     }
 }
