@@ -3,6 +3,7 @@ import hammerhead from '../deps/hammerhead';
 import * as styleUtils from './style';
 import * as domUtils from './dom';
 
+export { isElementVisible } from './visibility.shared';
 
 export const getElementRectangle  = hammerhead.utils.position.getElementRectangle;
 export const getOffsetPosition    = hammerhead.utils.position.getOffsetPosition;
@@ -22,40 +23,6 @@ export function getIframeClientCoordinates (iframe) {
         right:  iframeRectangleLeft + styleUtils.getWidth(iframe),
         bottom: iframeRectangleTop + styleUtils.getHeight(iframe),
     };
-}
-
-export function isElementVisible (el) {
-    if (domUtils.isTextNode(el))
-        return !styleUtils.isNotVisibleNode(el);
-
-    const elementRectangle = getElementRectangle(el);
-
-    if (!domUtils.isContentEditableElement(el)) {
-        if (elementRectangle.width === 0 || elementRectangle.height === 0)
-            return false;
-    }
-
-    if (domUtils.isMapElement(el)) {
-        const mapContainer = domUtils.getMapContainer(domUtils.closest(el, 'map'));
-
-        return mapContainer ? isElementVisible(mapContainer) : false;
-    }
-
-    if (styleUtils.isSelectVisibleChild(el)) {
-        const select              = domUtils.getSelectParent(el);
-        const childRealIndex      = domUtils.getChildVisibleIndex(select, el);
-        const realSelectSizeValue = styleUtils.getSelectElementSize(select);
-        const topVisibleIndex     = Math.max(styleUtils.getScrollTop(select) / styleUtils.getOptionHeight(select), 0);
-        const bottomVisibleIndex  = topVisibleIndex + realSelectSizeValue - 1;
-        const optionVisibleIndex  = Math.max(childRealIndex - topVisibleIndex, 0);
-
-        return optionVisibleIndex >= topVisibleIndex && optionVisibleIndex <= bottomVisibleIndex;
-    }
-
-    if (domUtils.isSVGElement(el))
-        return styleUtils.get(el, 'visibility') !== 'hidden' && styleUtils.get(el, 'display') !== 'none';
-
-    return styleUtils.hasDimensions(el) && styleUtils.get(el, 'visibility') !== 'hidden';
 }
 
 export function getClientDimensions (target) {

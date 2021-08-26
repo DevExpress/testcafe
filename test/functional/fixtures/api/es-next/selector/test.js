@@ -288,49 +288,42 @@ describe('[API] Selector', function () {
                 });
         });
 
-        it('Should raise error if custom DOM property throws an error',
-            function () {
-                return runTests('./testcafe-fixtures/selector-error-test.js', 'Add custom DOM properties method - property throws an error', {
-                    shouldFail: true,
-                    only:       'chrome',
-                })
-                    .catch(function (errs) {
-                        expect(errs[0]).contains(
-                            'An error occurred when trying to calculate a custom Selector property "prop":  Error: test'
-                        );
-                        expect(errs[0]).contains('> 53 |    await el();');
-                    });
-            }
-        );
+        it('Should raise error if custom DOM property throws an error', function () {
+            return runTests('./testcafe-fixtures/selector-error-test.js', 'Add custom DOM properties method - property throws an error', {
+                shouldFail: true,
+                only:       'chrome',
+            })
+                .catch(function (errs) {
+                    expect(errs[0]).contains(
+                        'An error occurred when trying to calculate a custom Selector property "prop":  Error: test'
+                    );
+                    expect(errs[0]).contains('> 53 |    await el();');
+                });
+        });
 
-        it('Should raise error if custom method throws an error',
-            function () {
-                return runTests('./testcafe-fixtures/selector-error-test.js', 'Add custom method - method throws an error', {
-                    shouldFail: true,
-                    only:       'chrome',
-                })
-                    .catch(function (errs) {
-                        expect(errs[0]).contains('An error occurred in customMethod code:');
-                        expect(errs[0]).contains('Error: test');
-                        expect(errs[0]).contains('> 63 |    await el.customMethod();');
-                    });
-            }
-        );
+        it('Should raise error if custom method throws an error', function () {
+            return runTests('./testcafe-fixtures/selector-error-test.js', 'Add custom method - method throws an error', {
+                shouldFail: true,
+                only:       'chrome',
+            })
+                .catch(function (errs) {
+                    expect(errs[0]).contains('An error occurred in customMethod code:');
+                    expect(errs[0]).contains('Error: test');
+                    expect(errs[0]).contains('> 63 |    await el.customMethod();');
+                });
+        });
 
-        it('Should raise error if custom method throws an error - Selector mode',
-            function () {
-                return runTests('./testcafe-fixtures/selector-error-test.js', 'Add custom method - method throws an error - Selector mode', {
-                    shouldFail: true,
-                    only:       'chrome',
-                })
-                    .catch(function (errs) {
-                        expect(errs[0]).contains(
-                            'An error occurred in Selector code:  Error: test'
-                        );
-                        expect(errs[0]).contains('> 73 |    await el.customMethod()();');
-                    });
-            }
-        );
+        it('Should raise error if custom method throws an error - Selector mode', function () {
+            return runTests('./testcafe-fixtures/selector-error-test.js', 'Add custom method - method throws an error - Selector mode', {
+                shouldFail: true,
+                only:       'chrome',
+            })
+                .catch(function (errs) {
+                    expect(errs[0]).contains('An error occurred in Selector code:');
+                    expect(errs[0]).contains('Error: test');
+                    expect(errs[0]).contains('> 73 |    await el.customMethod()();');
+                });
+        });
     });
 
     describe('Regression', function () {

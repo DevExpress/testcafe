@@ -1,5 +1,6 @@
 import { Promise, nativeMethods } from '../deps/hammerhead';
-import { SelectorElementActionTransform, createReplicator } from './client-functions/replicator';
+import createReplicator from './client-functions/replicator/index';
+import SelectorElementActionTransform from './client-functions/replicator/transforms/selector-element-action-transform';
 
 import {
     domUtils,
