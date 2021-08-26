@@ -5,7 +5,7 @@ import { initializeAdapter as initializeClientFnAdapter } from '../driver/comman
 import { initializeAdapter as initializeCoreUtilsAdapter } from '../core/utils/adapter/index';
 import clientFnAdapterInitializer from './client-fn-adapter-initializer';
 import coreUtilsAdapterInitializer from './core-utils-adapter-initializer';
-import { CannotObtainInfoForElementSpecifiedBySelectorError } from '../../shared/errors/index';
+import * as Errors from '../../shared/errors/index';
 import SelectorExecutor from '../driver/command-executors/client-functions/selector-executor/index';
 import { FnInfo } from '../driver/command-executors/client-functions/types';
 
@@ -22,15 +22,20 @@ Object.defineProperty(window, '%proxyless%', {
                 .then(result => JSON.stringify(executor.encodeResult(result)));
         },
 
-        executeSelectorCommand: function (command: ExecuteSelectorCommand, selectorTimeout: number, startTime: number) {
-            const createError = command.needError
-                ? (fn: FnInfo | null) => new CannotObtainInfoForElementSpecifiedBySelectorError(null, fn)
-                : null;
+        executeSelectorCommand: function (command: ExecuteSelectorCommand, selectorTimeout: number, startTime: number,
+            returnNode: boolean, errTypes: { notFound: string; invisible: string }) {
 
-            const selectorExecutor = new SelectorExecutor(command, selectorTimeout, startTime, createError, createError);
+            const needError = typeof command.needError === 'boolean' ? command.needError : true;
+
+            // @ts-ignore
+            const createNotFoundError    = needError ? (fn: FnInfo | null) => new Errors[errTypes.notFound](null, fn) : null;
+            // @ts-ignore
+            const createIsInvisibleError = needError ? (fn: FnInfo | null) => new Errors[errTypes.invisible](null, fn) : null;
+
+            const selectorExecutor = new SelectorExecutor(command, selectorTimeout, startTime, createNotFoundError, createIsInvisibleError);
 
             return selectorExecutor.getResult()
-                .then(result => JSON.stringify(selectorExecutor.encodeResult(result)));
+                .then(result => returnNode ? result : JSON.stringify(selectorExecutor.encodeResult(result)));
         },
     },
 

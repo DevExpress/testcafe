@@ -1029,8 +1029,6 @@ export default class TestRun extends AsyncEventEmitter {
     public async executeCommand (command: CommandBase, callsite?: CallsiteRecord | string): Promise<unknown> {
         this.debugLog.command(command);
 
-        let postAction = null as (() => Promise<unknown>) | null;
-
         if (this.pendingPageError && isCommandRejectableByPageError(command))
             return this._rejectCommandWithPageError(callsite as CallsiteRecord);
 
@@ -1047,9 +1045,11 @@ export default class TestRun extends AsyncEventEmitter {
             if (command.type === COMMAND_TYPE.executeClientFunction)
                 return this.browserConnection.provider.executeClientFunction(browserId, command, callsite);
             else if (command.type === COMMAND_TYPE.switchToIframe)
-                postAction = async () => this.browserConnection.provider.switchToIframe(browserId);
+                // TODO: return the switchToIframe call result when any command will not need the switching through the proxy
+                /*return */this.browserConnection.provider.switchToIframe(browserId, command, callsite, this.opts.selectorTimeout);
             else if (command.type === COMMAND_TYPE.switchToMainWindow)
-                postAction = async () => this.browserConnection.provider.switchToMainWindow(browserId);
+                // TODO: return the switchToMainWindow call result when any command will not need the switching through the proxy
+                /*return */this.browserConnection.provider.switchToMainWindow(browserId);
             else if (command.type === COMMAND_TYPE.executeSelector)
                 return this.browserConnection.provider.executeSelector(browserId, command, callsite, this.opts.selectorTimeout);
         }
@@ -1096,10 +1096,10 @@ export default class TestRun extends AsyncEventEmitter {
             return await this._executeJsExpression(command as ExecuteExpressionCommand);
 
         if (command.type === COMMAND_TYPE.executeAsyncExpression)
-            return await this._executeAsyncJsExpression(command as ExecuteAsyncExpressionCommand, callsite as string);
+            return this._executeAsyncJsExpression(command as ExecuteAsyncExpressionCommand, callsite as string);
 
         if (command.type === COMMAND_TYPE.getBrowserConsoleMessages)
-            return await this._enqueueBrowserConsoleMessagesCommand(command, callsite as CallsiteRecord);
+            return this._enqueueBrowserConsoleMessagesCommand(command, callsite as CallsiteRecord);
 
         if (command.type === COMMAND_TYPE.switchToPreviousWindow)
             (command as any).windowId = this.browserConnection.previousActiveWindowId;
@@ -1107,12 +1107,7 @@ export default class TestRun extends AsyncEventEmitter {
         if (command.type === COMMAND_TYPE.switchToWindowByPredicate)
             return this._switchToWindowByPredicate(command as SwitchToWindowByPredicateCommand);
 
-        const result = await this._enqueueCommand(command, callsite as CallsiteRecord);
-
-        if (postAction)
-            await postAction();
-
-        return result;
+        return this._enqueueCommand(command, callsite as CallsiteRecord);
     }
 
     private _rejectCommandWithPageError (callsite?: CallsiteRecord): Promise<Error> {
