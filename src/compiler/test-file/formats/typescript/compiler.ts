@@ -60,7 +60,7 @@ function testcafeImportPathReplacer<T extends Node> (): TransformerFactory<T> {
     };
 }
 
-function evalAppender<T extends Node> (): TransformerFactory<T> {
+function disableV8OptimizationCodeAppender<T extends Node> (): TransformerFactory<T> {
     return () => {
         const visit: Visitor = (node): VisitResult<Node> => {
             const evalStatement = createExpressionStatement(createCall(
@@ -212,7 +212,7 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
         const transformers: TransformerFactory<SourceFile>[] = [testcafeImportPathReplacer()];
 
         if (this.isCompilerServiceMode)
-            transformers.push(evalAppender());
+            transformers.push(disableV8OptimizationCodeAppender());
 
         return transformers;
     }
