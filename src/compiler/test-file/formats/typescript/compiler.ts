@@ -9,6 +9,7 @@ import { RUNTIME_ERRORS } from '../../../../errors/types';
 import debug from 'debug';
 import { isRelative } from '../../../../api/test-page-url';
 import EXPORTABLE_LIB_PATH from '../../exportble-lib-path';
+import DISABLE_V8_OPTIMIZATION_NOTE from '../../disable-v8-optimization-note';
 
 // NOTE: For type definitions only
 import TypeScript, {
@@ -26,6 +27,7 @@ import TypeScript, {
     createIdentifier,
     updateSourceFileNode,
     SourceFile,
+    addSyntheticLeadingComment,
 } from 'typescript';
 
 import { Dictionary, TypeScriptCompilerOptions } from '../../../../configuration/interfaces';
@@ -61,12 +63,16 @@ function testcafeImportPathReplacer<T extends Node> (): TransformerFactory<T> {
 function evalAppender<T extends Node> (): TransformerFactory<T> {
     return () => {
         const visit: Visitor = (node): VisitResult<Node> => {
-            // @ts-ignore
-            return updateSourceFileNode(node, [...node.statements, createExpressionStatement(createCall(
+            const evalStatement = createExpressionStatement(createCall(
                 createIdentifier('eval'),
                 void 0,
                 [createStringLiteral('')]
-            ))]);
+            ));
+
+            const evalStatementWithComment = addSyntheticLeadingComment(evalStatement, SyntaxKind.MultiLineCommentTrivia, DISABLE_V8_OPTIMIZATION_NOTE, true);
+
+            // @ts-ignore
+            return updateSourceFileNode(node, [...node.statements, evalStatementWithComment]);
         };
 
         return node => visitNode(node, visit);
