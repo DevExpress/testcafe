@@ -9,6 +9,7 @@ import { RUNTIME_ERRORS } from '../../../../errors/types';
 import debug from 'debug';
 import { isRelative } from '../../../../api/test-page-url';
 import EXPORTABLE_LIB_PATH from '../../exportble-lib-path';
+import DISABLE_V8_OPTIMIZATION_NOTE from '../../disable-v8-optimization-note';
 
 // NOTE: For type definitions only
 import TypeScript, {
@@ -21,6 +22,12 @@ import TypeScript, {
     visitEachChild,
     visitNode,
     TransformerFactory,
+    createExpressionStatement,
+    createCall,
+    createIdentifier,
+    updateSourceFileNode,
+    SourceFile,
+    addSyntheticLeadingComment,
 } from 'typescript';
 
 import { Dictionary, TypeScriptCompilerOptions } from '../../../../configuration/interfaces';
@@ -47,6 +54,25 @@ function testcafeImportPathReplacer<T extends Node> (): TransformerFactory<T> {
                 return createStringLiteral(EXPORTABLE_LIB_PATH);
 
             return visitEachChild(node, child => visit(child), context);
+        };
+
+        return node => visitNode(node, visit);
+    };
+}
+
+function disableV8OptimizationCodeAppender<T extends Node> (): TransformerFactory<T> {
+    return () => {
+        const visit: Visitor = (node): VisitResult<Node> => {
+            const evalStatement = createExpressionStatement(createCall(
+                createIdentifier('eval'),
+                void 0,
+                [createStringLiteral('')]
+            ));
+
+            const evalStatementWithComment = addSyntheticLeadingComment(evalStatement, SyntaxKind.MultiLineCommentTrivia, DISABLE_V8_OPTIMIZATION_NOTE, true);
+
+            // @ts-ignore
+            return updateSourceFileNode(node, [...node.statements, evalStatementWithComment]);
         };
 
         return node => visitNode(node, visit);
@@ -178,8 +204,17 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
 
             this.cache[sourcePath] = result;
         }, void 0, void 0, {
-            before: [testcafeImportPathReplacer()],
+            before: this._getTypescriptTransformers(),
         });
+    }
+
+    private _getTypescriptTransformers (): TransformerFactory<SourceFile>[] {
+        const transformers: TransformerFactory<SourceFile>[] = [testcafeImportPathReplacer()];
+
+        if (this.isCompilerServiceMode)
+            transformers.push(disableV8OptimizationCodeAppender());
+
+        return transformers;
     }
 
     public _precompileCode (testFilesInfo: TestFileInfo[]): string[] {
