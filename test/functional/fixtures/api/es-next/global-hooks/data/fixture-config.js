@@ -4,8 +4,8 @@ const path   = require('path');
 
 module.exports = {
     hostname:          config.testCafe.hostname,
-    port1:             1337,
-    port2:             1338,
+    port1:             1335,
+    port2:             1336,
     developmentMode:   config.devMode,
     retryTestPages:    config.retryTestPages,
     experimentalDebug: !!process.env.EXPERIMENTAL_DEBUG,
@@ -29,5 +29,5 @@ module.exports = {
         },
     },
     ...config.currentEnvironment,
-    browsers: config.currentEnvironment.browsers.map(item => item.browserName),
+    browsers: 'chrome:headless',
 };
