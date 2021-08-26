@@ -339,6 +339,12 @@ describe('TestCafe Live', function () {
             });
     });
 
+    it('Should fill bootstraper source', async () => {
+        await runTests([testFileWithSingleTestPath, testFileWithMultipleTestsPath]);
+
+        expect(runner.bootstrapper.sources).eql([testFileWithSingleTestPath, testFileWithMultipleTestsPath]);
+    });
+
     it('done-bootstrap event', function () {
         let handled = false;
 
