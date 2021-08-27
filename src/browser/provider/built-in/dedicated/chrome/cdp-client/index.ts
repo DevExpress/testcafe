@@ -356,6 +356,8 @@ export class BrowserClient {
         if (typeof selector.timeout === 'number')
             selectorTimeout = selector.timeout;
 
+        selector.needError = true;
+
         const node = await this._clientFunctionExecutor.executeSelectorAndGetNode({
             DOM:      client.DOM,
             Runtime:  client.Runtime,

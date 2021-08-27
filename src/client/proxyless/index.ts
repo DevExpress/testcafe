@@ -25,12 +25,10 @@ Object.defineProperty(window, '%proxyless%', {
         executeSelectorCommand: function (command: ExecuteSelectorCommand, selectorTimeout: number, startTime: number,
             returnNode: boolean, errTypes: { notFound: string; invisible: string }) {
 
-            const needError = typeof command.needError === 'boolean' ? command.needError : true;
-
             // @ts-ignore
-            const createNotFoundError    = needError ? (fn: FnInfo | null) => new Errors[errTypes.notFound](null, fn) : null;
+            const createNotFoundError    = command.needError ? (fn: FnInfo | null) => new Errors[errTypes.notFound](null, fn) : null;
             // @ts-ignore
-            const createIsInvisibleError = needError ? (fn: FnInfo | null) => new Errors[errTypes.invisible](null, fn) : null;
+            const createIsInvisibleError = command.needError ? (fn: FnInfo | null) => new Errors[errTypes.invisible](null, fn) : null;
 
             const selectorExecutor = new SelectorExecutor(command, selectorTimeout, startTime, createNotFoundError, createIsInvisibleError);
 
