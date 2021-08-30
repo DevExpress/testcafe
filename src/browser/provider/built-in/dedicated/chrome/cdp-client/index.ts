@@ -7,7 +7,7 @@ import remoteChrome from 'chrome-remote-interface';
 import debug from 'debug';
 import { GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from '../../../../utils/client-functions';
 import WARNING_MESSAGE from '../../../../../../notifications/warning-message';
-import * as Errors from '../../../../../../shared/errors';
+import * as SharedErrors from '../../../../../../shared/errors';
 
 import {
     Config,
@@ -337,8 +337,8 @@ export class BrowserClient {
         return this._clientFunctionExecutor.executeSelector({
             Runtime:  client.Runtime,
             errTypes: {
-                notFound:  Errors.CannotObtainInfoForElementSpecifiedBySelectorError.name,
-                invisible: Errors.CannotObtainInfoForElementSpecifiedBySelectorError.name,
+                notFound:  SharedErrors.CannotObtainInfoForElementSpecifiedBySelectorError.name,
+                invisible: SharedErrors.CannotObtainInfoForElementSpecifiedBySelectorError.name,
             },
 
             command, callsite, selectorTimeout,
@@ -358,26 +358,22 @@ export class BrowserClient {
 
         selector.needError = true;
 
-        const node = await this._clientFunctionExecutor.executeSelectorAndGetNode({
+        const node = await this._clientFunctionExecutor.getNode({
             DOM:      client.DOM,
             Runtime:  client.Runtime,
             command:  selector,
             errTypes: {
-                notFound:  Errors.ActionElementNotFoundError.name,
-                invisible: Errors.ActionElementIsInvisibleError.name,
+                notFound:  SharedErrors.ActionElementNotFoundError.name,
+                invisible: SharedErrors.ActionElementIsInvisibleError.name,
             },
 
             callsite, selectorTimeout,
         });
 
         if (!node.frameId)
-            throw new Errors.ActionElementNotIframeError(callsite);
+            throw new SharedErrors.ActionElementNotIframeError(callsite);
 
         this._clientFunctionExecutor.setCurrentFrameId(node.frameId);
-
-        // TODO:
-        // return this._ensureChildIframeDriverLink(nativeMethods.contentWindowGetter.call(iframe),
-        //     iframeErrorCtors.NotLoadedError, commandSelectorTimeout);
     }
 
     public switchToMainWindow (): void {

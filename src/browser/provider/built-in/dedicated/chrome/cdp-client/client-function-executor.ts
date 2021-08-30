@@ -10,7 +10,7 @@ import DOMApi = ProtocolProxyApi.DOMApi;
 import ExecutionContextCreatedEvent = Protocol.Runtime.ExecutionContextCreatedEvent;
 import ExecutionContextDestroyedEvent = Protocol.Runtime.ExecutionContextDestroyedEvent;
 import DOM = Protocol.DOM;
-import * as Errors from '../../../../../../shared/errors';
+import * as SharedErrors from '../../../../../../shared/errors';
 import {
     ExecuteClientFunctionCommand,
     ExecuteClientFunctionCommandBase,
@@ -102,33 +102,33 @@ export default class ClientFunctionExecutor {
             const className  = exception.className;
             const properties = exception.preview?.properties as PropertyPreview[];
 
-            if (className === Errors.UncaughtErrorInCustomDOMPropertyCode.name) {
-                throw new Errors.UncaughtErrorInCustomDOMPropertyCode(command.instantiationCallsiteName,
+            if (className === SharedErrors.UncaughtErrorInCustomDOMPropertyCode.name) {
+                throw new SharedErrors.UncaughtErrorInCustomDOMPropertyCode(command.instantiationCallsiteName,
                     ClientFunctionExecutor._getPropertyByName(properties, 'errMsg'),
                     ClientFunctionExecutor._getPropertyByName(properties, 'property'),
                     callsite);
             }
-            else if (className === Errors.CannotObtainInfoForElementSpecifiedBySelectorError.name) {
-                throw new Errors.CannotObtainInfoForElementSpecifiedBySelectorError(callsite, {
+            else if (className === SharedErrors.CannotObtainInfoForElementSpecifiedBySelectorError.name) {
+                throw new SharedErrors.CannotObtainInfoForElementSpecifiedBySelectorError(callsite, {
                     apiFnChain: command.apiFnChain,
                     apiFnIndex: parseInt(ClientFunctionExecutor._getPropertyByName(properties, 'apiFnIndex'), 10),
                 });
             }
-            else if (className === Errors.ActionElementNotFoundError.name) {
-                throw new Errors.ActionElementNotFoundError(callsite, {
+            else if (className === SharedErrors.ActionElementNotFoundError.name) {
+                throw new SharedErrors.ActionElementNotFoundError(callsite, {
                     apiFnChain: command.apiFnChain,
                     apiFnIndex: parseInt(ClientFunctionExecutor._getPropertyByName(properties, 'apiFnIndex'), 10),
                 });
             }
-            else if (className === Errors.DomNodeClientFunctionResultError.name)
-                throw new Errors.DomNodeClientFunctionResultError(command.instantiationCallsiteName, callsite);
-            else if (className === Errors.InvalidSelectorResultError.name)
-                throw new Errors.InvalidSelectorResultError(callsite);
-            else if (className === Errors.ActionElementIsInvisibleError.name)
-                throw new Errors.ActionElementIsInvisibleError(callsite);
+            else if (className === SharedErrors.DomNodeClientFunctionResultError.name)
+                throw new SharedErrors.DomNodeClientFunctionResultError(command.instantiationCallsiteName, callsite);
+            else if (className === SharedErrors.InvalidSelectorResultError.name)
+                throw new SharedErrors.InvalidSelectorResultError(callsite);
+            else if (className === SharedErrors.ActionElementIsInvisibleError.name)
+                throw new SharedErrors.ActionElementIsInvisibleError(callsite);
         }
 
-        throw new Errors.UncaughtErrorInClientFunctionCode(command.instantiationCallsiteName, details.text, callsite);
+        throw new SharedErrors.UncaughtErrorInClientFunctionCode(command.instantiationCallsiteName, details.text, callsite);
     }
 
     public async executeClientFunction (Runtime: RuntimeApi, command: ExecuteClientFunctionCommand, callsite: CallsiteRecord): Promise<object> {
@@ -138,7 +138,7 @@ export default class ClientFunctionExecutor {
 
         if (error) {
             if (error.response.code === EXECUTION_CTX_WAS_DESTROYED_CODE)
-                throw new Errors.ClientFunctionExecutionInterruptionError(command.instantiationCallsiteName, callsite);
+                throw new SharedErrors.ClientFunctionExecutionInterruptionError(command.instantiationCallsiteName, callsite);
 
             throw error;
         }
@@ -152,8 +152,9 @@ export default class ClientFunctionExecutor {
     public async executeSelector <T extends SelectorSnapshotArgs | SelectorNodeArgs> (args: T): Promise<T extends SelectorNodeArgs ? string : object> {
         const { Runtime, command, callsite, selectorTimeout, errTypes } = args;
 
-        const expression = `${PROXYLESS_SCRIPT}.executeSelectorCommand(${JSON.stringify(command)}, ${selectorTimeout}, ${Date.now()},
-                            ${'DOM' in args}, ${JSON.stringify(errTypes)});`;
+        const returnNodeObjId = 'DOM' in args;
+        const expression      = `${PROXYLESS_SCRIPT}.executeSelectorCommand(${JSON.stringify(command)}, ${selectorTimeout}, ${Date.now()},
+                                 ${returnNodeObjId}, ${JSON.stringify(errTypes)});`;
 
         const { result, exceptionDetails, error } = await this._evaluateScriptWithReloadPageIgnore(Runtime, expression);
 
@@ -164,10 +165,10 @@ export default class ClientFunctionExecutor {
             ClientFunctionExecutor._throwException(exceptionDetails, command, callsite);
 
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        return 'DOM' in args ? result!.objectId : JSON.parse(result!.value);
+        return returnNodeObjId ? result!.objectId : JSON.parse(result!.value);
     }
 
-    public async executeSelectorAndGetNode (args: SelectorNodeArgs): Promise<DOM.Node> {
+    public async getNode (args: SelectorNodeArgs): Promise<DOM.Node> {
         const objectId = await this.executeSelector(args);
         const response = await args.DOM.describeNode({ objectId });
 
