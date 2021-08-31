@@ -75,7 +75,7 @@ async function runTests (argParser) {
 
     log.showSpinner();
 
-    const { hostname, ssl, dev, experimentalDebug, retryTestPages, cache, proxyless } = opts;
+    const { hostname, ssl, dev, experimentalDebug, retryTestPages, cache, disableHttp2, proxyless } = opts;
 
     const testCafe = await createTestCafe({
         developmentMode: dev,
@@ -88,6 +88,7 @@ async function runTests (argParser) {
         retryTestPages,
         cache,
         configFile,
+        disableHttp2,
         proxyless,
     });
 
