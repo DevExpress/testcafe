@@ -78,6 +78,7 @@ describe('TestCafeConfiguration', function () {
             },
             'clientScripts': 'test-client-script.js',
             'disableHttp2':  true,
+            'proxyless':     true,
         });
     });
 
@@ -126,6 +127,7 @@ describe('TestCafeConfiguration', function () {
                         expect(testCafeConfiguration.getOption('filter').fixtureMeta).to.be.deep.equal({ fixture: 'meta' });
                         expect(testCafeConfiguration.getOption('clientScripts')).eql([ 'test-client-script.js' ]);
                         expect(testCafeConfiguration.getOption('disableHttp2')).to.be.true;
+                        expect(testCafeConfiguration.getOption('proxyless')).to.be.true;
                     });
             });
 

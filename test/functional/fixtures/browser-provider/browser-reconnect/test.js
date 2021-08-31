@@ -64,7 +64,7 @@ function run (pathToTest, filter, initializeConnection = initializeConnectionLow
 }
 
 describe('Browser reconnect', function () {
-    if (config.useLocalBrowsers && !config.isProxyless) {
+    if (config.useLocalBrowsers && !config.proxyless) {
         it('Should restart browser when it does not respond', function () {
             return run('./testcafe-fixtures/index-test.js', 'Should restart browser when it does not respond')
                 .then(() => {

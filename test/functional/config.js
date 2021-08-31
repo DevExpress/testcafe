@@ -221,7 +221,7 @@ module.exports = {
         return process.env.DEV_MODE === 'true';
     },
 
-    get isProxyless () {
+    get proxyless () {
         return process.env.PROXYLESS === 'true';
     },
 

@@ -18,6 +18,7 @@ import {
     DEFAULT_DEVELOPMENT_MODE,
     DEFAULT_RETRY_TEST_PAGES,
     DEFAULT_DISABLE_HTTP2,
+    DEFAULT_PROXYLESS,
     DEFAULT_SCREENSHOT_THUMBNAILS,
     getDefaultCompilerOptions,
 } from './default-values';
@@ -62,6 +63,7 @@ const OPTION_INIT_FLAG_NAMES = [
     OPTION_NAMES.retryTestPages,
     OPTION_NAMES.cache,
     OPTION_NAMES.disableHttp2,
+    OPTION_NAMES.proxyless,
 ];
 
 interface TestCafeAdditionalStartOptions {
@@ -239,6 +241,7 @@ export default class TestCafeConfiguration extends Configuration {
         this._ensureOptionWithValue(OPTION_NAMES.developmentMode, DEFAULT_DEVELOPMENT_MODE, OptionSource.Configuration);
         this._ensureOptionWithValue(OPTION_NAMES.retryTestPages, DEFAULT_RETRY_TEST_PAGES, OptionSource.Configuration);
         this._ensureOptionWithValue(OPTION_NAMES.disableHttp2, DEFAULT_DISABLE_HTTP2, OptionSource.Configuration);
+        this._ensureOptionWithValue(OPTION_NAMES.proxyless, DEFAULT_PROXYLESS, OptionSource.Configuration);
 
         this._ensureScreenshotOptions();
     }
