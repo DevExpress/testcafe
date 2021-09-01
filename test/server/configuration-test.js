@@ -300,6 +300,14 @@ describe('TestCafeConfiguration', function () {
                 });
             });
 
+            it('Filter option with function', async () => {
+                fs.writeFileSync(TestCafeConfiguration.FILENAMES[jsConfigIndex], `module.exports = {filter: (testName, fixtureName, fixturePath, testMeta, fixtureMeta) => {}}`)
+
+                await testCafeConfiguration.init();
+
+                expect(testCafeConfiguration.getOption('filter')).to.be.a('function');
+            });
+
             it('Should warn message on multiple configuration files', async () => {
                 createJsTestCafeConfigurationFile({
                     'hostname': '123.456.789',
