@@ -300,12 +300,13 @@ describe('TestCafeConfiguration', function () {
                 });
             });
 
-            it('Filter option with function', async () => {
-                fs.writeFileSync(TestCafeConfiguration.FILENAMES[jsConfigIndex], `module.exports = {filter: (testName, fixtureName, fixturePath, testMeta, fixtureMeta) => {}}`)
+            it("Shouldn't change filter option with function", async () => {
+                fs.writeFileSync(TestCafeConfiguration.FILENAMES[jsConfigIndex], `module.exports = {filter: (testName, fixtureName, fixturePath, testMeta, fixtureMeta) => true}`);
 
                 await testCafeConfiguration.init();
 
                 expect(testCafeConfiguration.getOption('filter')).to.be.a('function');
+                expect(testCafeConfiguration.getOption('filter')()).to.be.true;
             });
 
             it('Should warn message on multiple configuration files', async () => {
