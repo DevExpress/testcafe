@@ -1,0 +1,28 @@
+name: Publishing
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    if: ${{ !github.event.release.draft }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.release.target_commitish }}
+      - run: git fetch --force --tags
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+          registry-url: 'https://registry.npmjs.org'
+      - uses: docker/login-action@v1
+        with:
+            username: ${{ secrets.DOCKERHUB_USERNAME }}
+            password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - run: npm install
+      - run: npm run publish-please-only
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

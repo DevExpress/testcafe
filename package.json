@@ -53,6 +53,7 @@
   ],
   "scripts": {
     "test": "gulp travis",
+    "publish-please-only": "publish-please",
     "publish-please": "del-cli package-lock.json node_modules && npm i && publish-please",
     "prepublishOnly": "publish-please guard"
   },
