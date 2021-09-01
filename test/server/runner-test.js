@@ -1189,7 +1189,7 @@ describe('Runner', () => {
 
     describe('Regression', () => {
         it('Should not have unhandled rejections in runner (GH-825)', function () {
-            this.timeout(10000);
+            this.timeout(20000);
 
             let rejectionReason = null;
 

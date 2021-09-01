@@ -106,6 +106,7 @@ import addRenderedWarning from '../notifications/add-rendered-warning';
 import getBrowser from '../utils/get-browser';
 import AssertionExecutor from '../assertions/executor';
 import asyncFilter from '../utils/async-filter';
+import PROXYLESS_COMMANDS from './proxyless-commands-support';
 
 const lazyRequire                 = require('import-lazy')(require);
 const ClientFunctionBuilder       = lazyRequire('../client-functions/client-function-builder');
@@ -132,11 +133,6 @@ const COMPILER_SERVICE_EVENTS = [
     'removeHeaderOnConfigureResponseEvent',
 ];
 
-const PROXYLESS_COMMANDS = new Map<string, string>();
-
-PROXYLESS_COMMANDS.set(COMMAND_TYPE.executeClientFunction, 'hasExecuteClientFunction');
-PROXYLESS_COMMANDS.set(COMMAND_TYPE.switchToIframe, 'hasSwitchToIframe');
-PROXYLESS_COMMANDS.set(COMMAND_TYPE.switchToMainWindow, 'hasSwitchToMainWindow');
 
 interface TestRunInit {
     test: Test;
@@ -1054,6 +1050,8 @@ export default class TestRun extends AsyncEventEmitter {
                 postAction = async () => this.browserConnection.provider.switchToIframe(browserId);
             else if (command.type === COMMAND_TYPE.switchToMainWindow)
                 postAction = async () => this.browserConnection.provider.switchToMainWindow(browserId);
+            else if (command.type === COMMAND_TYPE.executeSelector)
+                return this.browserConnection.provider.executeSelector(browserId, command, callsite, this.opts.selectorTimeout);
         }
 
         if (isScreenshotCommand(command)) {

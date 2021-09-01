@@ -1,11 +1,22 @@
-import { Promise, nativeMethods } from '../../deps/hammerhead';
-
+import adapter from './adapter/index';
 
 // NOTE: evalFunction is isolated into a separate module to
 // restrict access to TestCafe intrinsics for the evaluated code.
 // It also accepts `__dependencies$` argument which may be used by evaluated code.
-export default function evalFunction (fnCode, __dependencies$) {
-    const evaluator = new nativeMethods.Function(
+export default function evalFunction (fnCode: string, __dependencies$: unknown): Function {
+    const FunctionCtor = adapter.nativeMethods.Function;
+
+    if (adapter.isProxyless) {
+        const evaluator = new FunctionCtor(
+            'fnCode',
+            '__dependencies$',
+            '"use strict"; return eval(fnCode)'
+        );
+
+        return evaluator(fnCode, __dependencies$);
+    }
+
+    const evaluator = new FunctionCtor(
         'fnCode',
         '__dependencies$',
         'Promise',
@@ -16,5 +27,5 @@ export default function evalFunction (fnCode, __dependencies$) {
         '"use strict"; return eval(fnCode)'
     );
 
-    return evaluator(fnCode, __dependencies$, Promise, RegExp);
+    return evaluator(fnCode, __dependencies$, adapter.PromiseCtor, RegExp);
 }
