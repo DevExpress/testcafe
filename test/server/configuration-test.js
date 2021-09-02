@@ -312,7 +312,6 @@ describe('TestCafeConfiguration', function () {
                 consoleWrapper.wrap();
                 await testCafeConfiguration.init();
                 consoleWrapper.unwrap();
-                await del([testCafeConfiguration.defaultPaths[jsConfigIndex]]);
 
                 const expectedMessage =
                           `There are multiple configuration files found, TestCafe will only use one. The file "${pathUtil.resolve('.testcaferc.js')}" will be used.\n` +
