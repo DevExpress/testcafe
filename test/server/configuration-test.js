@@ -321,6 +321,19 @@ describe('TestCafeConfiguration', function () {
 
                 expect(consoleWrapper.messages.log).eql(expectedMessage);
             });
+
+            it('Should read JS config file if JSON and JS default files exist', async () => {
+                createJsTestCafeConfigurationFile({
+                    'jsConfig': true,
+                });
+                createJSONTestCafeConfigurationFile({
+                    'jsConfig': false,
+                });
+
+                await testCafeConfiguration.init();
+
+                expect(testCafeConfiguration.getOption('jsConfig')).to.be.true;
+            });
         });
 
         it('File doesn\'t exists', () => {
