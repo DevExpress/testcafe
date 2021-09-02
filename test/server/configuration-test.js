@@ -312,7 +312,6 @@ describe('TestCafeConfiguration', function () {
                 consoleWrapper.wrap();
                 await testCafeConfiguration.init();
                 consoleWrapper.unwrap();
-                await del([testCafeConfiguration.defaultPaths[jsConfigIndex]]);
 
                 const expectedMessage =
                           `There are multiple configuration files found, TestCafe will only use one. The file "${pathUtil.resolve('.testcaferc.js')}" will be used.\n` +
@@ -321,6 +320,19 @@ describe('TestCafeConfiguration', function () {
                           `2. ${pathUtil.resolve('.testcaferc.json')}`;
 
                 expect(consoleWrapper.messages.log).eql(expectedMessage);
+            });
+
+            it('Should read JS config file if JSON and JS default files exist', async () => {
+                createJsTestCafeConfigurationFile({
+                    'jsConfig': true,
+                });
+                createJSONTestCafeConfigurationFile({
+                    'jsConfig': false,
+                });
+
+                await testCafeConfiguration.init();
+
+                expect(testCafeConfiguration.getOption('jsConfig')).to.be.true;
             });
         });
 

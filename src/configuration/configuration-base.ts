@@ -29,6 +29,7 @@ export default class Configuration {
     public constructor (configurationFilesNames: string | null | string[]) {
         this._options           = {};
         this._defaultPaths      = this._resolveFilePaths(configurationFilesNames);
+        this._filePath          = this._defaultPaths?.[0];
         this._overriddenOptions = [];
     }
 
@@ -144,20 +145,18 @@ export default class Configuration {
             return null;
 
         const configs = await Promise.all(this.defaultPaths.map(async filePath => {
-            this._filePath = filePath;
-
-            if (!await this._isConfigurationFileExists())
+            if (!await this._isConfigurationFileExists(filePath))
                 return { filePath, options: null };
 
             let options = null as object | null;
 
-            if (this._isJSConfiguration())
+            if (this._isJSConfiguration(filePath))
                 options = this._readJsConfigurationFileContent(filePath);
             else {
-                const configurationFileContent = await this._readConfigurationFileContent();
+                const configurationFileContent = await this._readConfigurationFileContent(filePath);
 
                 if (configurationFileContent)
-                    options = this._parseConfigurationFileContent(configurationFileContent);
+                    options = this._parseConfigurationFileContent(configurationFileContent, filePath);
             }
 
             return { filePath, options };
@@ -179,21 +178,21 @@ export default class Configuration {
         return existedConfigs[0].options;
     }
 
-    protected async _isConfigurationFileExists (): Promise<boolean> {
+    protected async _isConfigurationFileExists (filePath = this.filePath): Promise<boolean> {
         try {
-            await stat(this.filePath);
+            await stat(filePath);
 
             return true;
         }
         catch (error) {
-            DEBUG_LOGGER(renderTemplate(WARNING_MESSAGES.cannotFindConfigurationFile, this.filePath, error.stack));
+            DEBUG_LOGGER(renderTemplate(WARNING_MESSAGES.cannotFindConfigurationFile, filePath, error.stack));
 
             return false;
         }
     }
 
-    protected _isJSConfiguration (): boolean {
-        return !!this.filePath && extname(this.filePath) === JS_CONFIGURATION_EXTENSION;
+    protected _isJSConfiguration (filePath = this.filePath): boolean {
+        return !!filePath && extname(filePath) === JS_CONFIGURATION_EXTENSION;
     }
 
     public _readJsConfigurationFileContent (filePath = this.filePath): object | null {
@@ -211,23 +210,23 @@ export default class Configuration {
         return null;
     }
 
-    public async _readConfigurationFileContent (): Promise<Buffer | null> {
+    public async _readConfigurationFileContent (filePath = this.filePath): Promise<Buffer | null> {
         try {
-            return await readFile(this.filePath);
+            return await readFile(filePath);
         }
         catch (error) {
-            Configuration._showWarningForError(error, WARNING_MESSAGES.cannotReadConfigFile, this.filePath);
+            Configuration._showWarningForError(error, WARNING_MESSAGES.cannotReadConfigFile, filePath);
         }
 
         return null;
     }
 
-    private _parseConfigurationFileContent (configurationFileContent: Buffer): object | null {
+    private _parseConfigurationFileContent (configurationFileContent: Buffer, filePath = this.filePath): object | null {
         try {
             return JSON5.parse(configurationFileContent.toString());
         }
         catch (error) {
-            Configuration._showWarningForError(error, WARNING_MESSAGES.cannotParseConfigFile, this.filePath);
+            Configuration._showWarningForError(error, WARNING_MESSAGES.cannotParseConfigFile, filePath);
         }
 
         return null;

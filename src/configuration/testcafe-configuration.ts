@@ -273,11 +273,11 @@ export default class TestCafeConfiguration extends Configuration {
         return flatten(browserInfo);
     }
 
-    protected async _isConfigurationFileExists (): Promise<boolean> {
-        const fileExists = await super._isConfigurationFileExists();
+    protected async _isConfigurationFileExists (filePath = this.filePath): Promise<boolean> {
+        const fileExists = await super._isConfigurationFileExists(filePath);
 
         if (!fileExists && this._isExplicitConfig)
-            throw new GeneralError(RUNTIME_ERRORS.cannotFindTestcafeConfigurationFile, this.filePath);
+            throw new GeneralError(RUNTIME_ERRORS.cannotFindTestcafeConfigurationFile, filePath);
 
         return fileExists;
     }
