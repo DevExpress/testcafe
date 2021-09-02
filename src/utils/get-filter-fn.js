@@ -40,6 +40,9 @@ function createFilterFn (opts) {
 }
 
 export default function (opts) {
+    if (typeof opts === 'function')
+        return opts;
+
     const filteringOpts = pick(opts, Object.keys(FILTERING_OPTIONS));
 
     if (isAllFilteringOptionsAreUndefined(filteringOpts))
