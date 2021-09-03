@@ -1,6 +1,7 @@
 const expect               = require('chai').expect;
 const fs                   = require('fs');
 const generateReporter     = require('./reporter');
+const { createReporter }   = require('../../utils/reporter');
 const ReporterPluginMethod = require('../../../../lib/reporter/plugin-methods');
 const { createReporter }   = require('../../utils/reporter');
 
@@ -825,6 +826,35 @@ describe('Reporter', () => {
                 ]);
             });
         });
+    });
+
+    describe('Warnings', () => {
+        it('Should show warning with test ID', async () => {
+            const resultWarning = {};
+            const reporter      = createReporter({
+                reportWarnings: (warning) => {
+                    Object.assign(resultWarning, warning);
+                },
+            });
+
+            try {
+                await runTests(
+                    'testcafe-fixtures/index-test.js',
+                    'Test warning',
+                    {
+                        reporter:   reporter,
+                        shouldFail: true,
+                    }
+                );
+
+                throw new Error('Promise rejection expected');
+            }
+            catch (err) {
+                expect(resultWarning.text).to.be.eql("An asynchronous method that you do not await includes an assertion. Inspect that method's execution chain and add the 'await' keyword where necessary.");
+                expect(resultWarning.testRunId).to.be.eql('1');
+            }
+        });
+
     });
 
     describe('Action snapshots', () => {
