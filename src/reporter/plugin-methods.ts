@@ -9,6 +9,7 @@ const ReporterPluginMethod: EnumFromPropertiesOf<ReporterPlugin> = {
     reportTestActionDone:  'reportTestActionDone',
     reportTestDone:        'reportTestDone',
     reportTaskDone:        'reportTaskDone',
+    reportWarnings:        'reportWarnings',
 };
 
 export default ReporterPluginMethod;

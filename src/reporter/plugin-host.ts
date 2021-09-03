@@ -192,4 +192,9 @@ export default class ReporterPluginHost {
     public async reportTaskDone (/* endTime, passed, warnings */): Promise<never> {
         throw new Error('Not implemented');
     }
+
+    // NOTE: It's an optional method
+    // public async reportWarnings (/* warnings */): Promise<never> {
+    //     throw new Error('Not implemented');
+    // }
 }
