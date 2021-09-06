@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>gh-1999</title>
+</head>
+<body>
+    <form target="iframe-name" action="http://localhost:3001/fixtures/regression/gh-1921/pages/iframe.html">
+        <input type="submit" value="click me" />
+    </form>
+    <script>
+        var iframe = document.createElement('iframe');
+
+        iframe.name = 'iframe-name';
+
+        document.body.appendChild(iframe);
+    </script>
+</body>
+</html>
