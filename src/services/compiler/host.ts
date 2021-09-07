@@ -3,6 +3,7 @@ import { pathToFileURL } from 'url';
 import cdp from 'chrome-remote-interface';
 import EventEmitter from 'events';
 import { spawn, ChildProcess } from 'child_process';
+import { getFreePort } from 'endpoint-utils';
 
 import {
     HOST_INPUT_FD,
@@ -67,11 +68,13 @@ import {
 
 import { UncaughtExceptionError, UnhandledPromiseRejectionError } from '../../errors/test-run';
 import { handleUnexpectedError } from '../../utils/handle-errors';
-import { pull } from 'lodash';
 import { V8_DEBUG_FLAGS } from '../../cli/node-arguments-filter';
 
 const SERVICE_PATH       = require.resolve('./service-loader');
 const INTERNAL_FILES_URL = pathToFileURL(path.join(__dirname, '../../'));
+
+const INSPECT_RE      = new RegExp(`^(${V8_DEBUG_FLAGS.join('|')})`);
+const INSPECT_PORT_RE = new RegExp(`^(${V8_DEBUG_FLAGS.join('|')})=(.+:)?(\\d+)$`);
 
 interface RuntimeResources {
     service: ChildProcess;
@@ -220,13 +223,25 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
         });
     }
 
+    private parseDebugPort (): string | null {
+        if (this.v8Flags) {
+            for (let i = 0; i < this.v8Flags.length; i++) {
+                const match = this.v8Flags[i].match(INSPECT_PORT_RE);
+
+                if (match)
+                    return match[3];
+            }
+        }
+
+        return null;
+    }
+
     private _getServiceProcessArgs (port: string): string [] {
         let args: string[] = [];
 
         if (this.v8Flags)
-            args = pull(this.v8Flags, ...V8_DEBUG_FLAGS);
+            args = this.v8Flags.filter(flag => !INSPECT_RE.test(flag));
 
-        // NOTE: fixed port number for debugging purposes. Will be replaced with the `getFreePort` util
         // TODO: debugging: refactor to a separate debug info parsing unit
         const inspectBrkFlag = `--inspect-brk=127.0.0.1:${port}`;
 
@@ -242,8 +257,8 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
             return resolvedRuntime;
 
         try {
-            const port    = '64128';
-            const args    = this._getServiceProcessArgs(port);
+            const port    = this.parseDebugPort() || await getFreePort();
+            const args    = this._getServiceProcessArgs(port.toString());
             const service = spawn(process.argv0, args, { stdio: [0, 1, 2, 'pipe', 'pipe', 'pipe'] });
 
             // NOTE: need to wait, otherwise the error will be at `await cdp(...)`
