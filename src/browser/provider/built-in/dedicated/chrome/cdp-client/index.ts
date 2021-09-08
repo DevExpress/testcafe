@@ -7,6 +7,7 @@ import remoteChrome from 'chrome-remote-interface';
 import debug from 'debug';
 import { GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from '../../../../utils/client-functions';
 import WARNING_MESSAGE from '../../../../../../notifications/warning-message';
+import * as SharedErrors from '../../../../../../shared/errors';
 
 import {
     Config,
@@ -20,6 +21,7 @@ import guardTimeExecution from '../../../../../../utils/guard-time-execution';
 import { CallsiteRecord } from 'callsite-record';
 import { ExecuteClientFunctionCommand, ExecuteSelectorCommand } from '../../../../../../test-run/commands/observation';
 import ClientFunctionExecutor from './client-function-executor';
+import { SwitchToIframeCommand } from '../../../../../../test-run/commands/actions';
 
 const DEBUG_SCOPE = (id: string): string => `testcafe:browser:provider:built-in:chrome:browser-client:${id}`;
 const DOWNLOADS_DIR = path.join(os.homedir(), 'Downloads');
@@ -332,24 +334,44 @@ export class BrowserClient {
         if (!client)
             throw new Error('Cannot get the active browser client');
 
-        return this._clientFunctionExecutor.executeSelector(client.Runtime, command, callsite, selectorTimeout);
+        return this._clientFunctionExecutor.executeSelector({
+            Runtime:  client.Runtime,
+            errTypes: {
+                notFound:  SharedErrors.CannotObtainInfoForElementSpecifiedBySelectorError.name,
+                invisible: SharedErrors.CannotObtainInfoForElementSpecifiedBySelectorError.name,
+            },
+
+            command, callsite, selectorTimeout,
+        });
     }
 
-    public async switchToIframe (): Promise<void> {
+    public async switchToIframe (command: SwitchToIframeCommand, callsite: CallsiteRecord, selectorTimeout: number): Promise<void> {
         const client = await this.getActiveClient();
 
         if (!client)
             return;
 
-        const { result } = await this._clientFunctionExecutor.evaluateScript(client.Runtime, 'window["%switchedIframe%"]');
+        const selector = command.selector;
 
-        if (!result || result.subtype !== 'node')
-            return;
+        if (typeof selector.timeout === 'number')
+            selectorTimeout = selector.timeout;
 
-        const { node } = await client.DOM.describeNode({ objectId: result.objectId });
+        selector.needError = true;
+
+        const node = await this._clientFunctionExecutor.getNode({
+            DOM:      client.DOM,
+            Runtime:  client.Runtime,
+            command:  selector,
+            errTypes: {
+                notFound:  SharedErrors.ActionElementNotFoundError.name,
+                invisible: SharedErrors.ActionElementIsInvisibleError.name,
+            },
+
+            callsite, selectorTimeout,
+        });
 
         if (!node.frameId)
-            return;
+            throw new SharedErrors.ActionElementNotIframeError(callsite);
 
         this._clientFunctionExecutor.setCurrentFrameId(node.frameId);
     }

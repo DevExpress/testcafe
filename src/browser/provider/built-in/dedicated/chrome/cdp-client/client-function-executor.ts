@@ -6,12 +6,11 @@ import EvaluateRequest = Protocol.Runtime.EvaluateRequest;
 import RemoteObject = Protocol.Runtime.RemoteObject;
 import ExceptionDetails = Protocol.Runtime.ExceptionDetails;
 import PropertyPreview = Protocol.Runtime.PropertyPreview;
-import {
-    CannotObtainInfoForElementSpecifiedBySelectorError,
-    ClientFunctionExecutionInterruptionError, DomNodeClientFunctionResultError,
-    InvalidSelectorResultError, UncaughtErrorInClientFunctionCode,
-    UncaughtErrorInCustomDOMPropertyCode,
-} from '../../../../../../shared/errors';
+import DOMApi = ProtocolProxyApi.DOMApi;
+import ExecutionContextCreatedEvent = Protocol.Runtime.ExecutionContextCreatedEvent;
+import ExecutionContextDestroyedEvent = Protocol.Runtime.ExecutionContextDestroyedEvent;
+import DOM = Protocol.DOM;
+import * as SharedErrors from '../../../../../../shared/errors';
 import {
     ExecuteClientFunctionCommand,
     ExecuteClientFunctionCommandBase,
@@ -28,6 +27,21 @@ interface EvaluateScriptResult {
     result: RemoteObject | null;
     exceptionDetails: ExceptionDetails | null;
     error: EvaluationError | null;
+}
+
+interface SelectorSnapshotArgs {
+    Runtime: RuntimeApi;
+    command: ExecuteSelectorCommand;
+    callsite: CallsiteRecord;
+    selectorTimeout: number;
+    errTypes: {
+        notFound: string;
+        invisible: string;
+    };
+}
+
+interface SelectorNodeArgs extends SelectorSnapshotArgs {
+    DOM: DOMApi;
 }
 
 
@@ -88,25 +102,33 @@ export default class ClientFunctionExecutor {
             const className  = exception.className;
             const properties = exception.preview?.properties as PropertyPreview[];
 
-            if (className === UncaughtErrorInCustomDOMPropertyCode.name) {
-                throw new UncaughtErrorInCustomDOMPropertyCode(command.instantiationCallsiteName,
+            if (className === SharedErrors.UncaughtErrorInCustomDOMPropertyCode.name) {
+                throw new SharedErrors.UncaughtErrorInCustomDOMPropertyCode(command.instantiationCallsiteName,
                     ClientFunctionExecutor._getPropertyByName(properties, 'errMsg'),
                     ClientFunctionExecutor._getPropertyByName(properties, 'property'),
                     callsite);
             }
-            else if (className === CannotObtainInfoForElementSpecifiedBySelectorError.name) {
-                throw new CannotObtainInfoForElementSpecifiedBySelectorError(callsite, {
+            else if (className === SharedErrors.CannotObtainInfoForElementSpecifiedBySelectorError.name) {
+                throw new SharedErrors.CannotObtainInfoForElementSpecifiedBySelectorError(callsite, {
                     apiFnChain: command.apiFnChain,
                     apiFnIndex: parseInt(ClientFunctionExecutor._getPropertyByName(properties, 'apiFnIndex'), 10),
                 });
             }
-            else if (className === DomNodeClientFunctionResultError.name)
-                throw new DomNodeClientFunctionResultError(command.instantiationCallsiteName, callsite);
-            else if (className === InvalidSelectorResultError.name)
-                throw new InvalidSelectorResultError(callsite);
+            else if (className === SharedErrors.ActionElementNotFoundError.name) {
+                throw new SharedErrors.ActionElementNotFoundError(callsite, {
+                    apiFnChain: command.apiFnChain,
+                    apiFnIndex: parseInt(ClientFunctionExecutor._getPropertyByName(properties, 'apiFnIndex'), 10),
+                });
+            }
+            else if (className === SharedErrors.DomNodeClientFunctionResultError.name)
+                throw new SharedErrors.DomNodeClientFunctionResultError(command.instantiationCallsiteName, callsite);
+            else if (className === SharedErrors.InvalidSelectorResultError.name)
+                throw new SharedErrors.InvalidSelectorResultError(callsite);
+            else if (className === SharedErrors.ActionElementIsInvisibleError.name)
+                throw new SharedErrors.ActionElementIsInvisibleError(callsite);
         }
 
-        throw new UncaughtErrorInClientFunctionCode(command.instantiationCallsiteName, details.text, callsite);
+        throw new SharedErrors.UncaughtErrorInClientFunctionCode(command.instantiationCallsiteName, details.text, callsite);
     }
 
     public async executeClientFunction (Runtime: RuntimeApi, command: ExecuteClientFunctionCommand, callsite: CallsiteRecord): Promise<object> {
@@ -116,7 +138,7 @@ export default class ClientFunctionExecutor {
 
         if (error) {
             if (error.response.code === EXECUTION_CTX_WAS_DESTROYED_CODE)
-                throw new ClientFunctionExecutionInterruptionError(command.instantiationCallsiteName, callsite);
+                throw new SharedErrors.ClientFunctionExecutionInterruptionError(command.instantiationCallsiteName, callsite);
 
             throw error;
         }
@@ -127,8 +149,12 @@ export default class ClientFunctionExecutor {
         return JSON.parse(result!.value); // eslint-disable-line @typescript-eslint/no-non-null-assertion
     }
 
-    public async executeSelector (Runtime: RuntimeApi, command: ExecuteSelectorCommand, callsite: CallsiteRecord, selectorTimeout: number): Promise<object> {
-        const expression = `${PROXYLESS_SCRIPT}.executeSelectorCommand(${JSON.stringify(command)}, ${selectorTimeout}, ${Date.now()});`;
+    public async executeSelector <T extends SelectorSnapshotArgs | SelectorNodeArgs> (args: T): Promise<T extends SelectorNodeArgs ? string : object> {
+        const { Runtime, command, callsite, selectorTimeout, errTypes } = args;
+
+        const returnNodeObjId = 'DOM' in args;
+        const expression      = `${PROXYLESS_SCRIPT}.executeSelectorCommand(${JSON.stringify(command)}, ${selectorTimeout}, ${Date.now()},
+                                 ${returnNodeObjId}, ${JSON.stringify(errTypes)});`;
 
         const { result, exceptionDetails, error } = await this._evaluateScriptWithReloadPageIgnore(Runtime, expression);
 
@@ -138,18 +164,26 @@ export default class ClientFunctionExecutor {
         if (exceptionDetails)
             ClientFunctionExecutor._throwException(exceptionDetails, command, callsite);
 
-        return JSON.parse(result!.value); // eslint-disable-line @typescript-eslint/no-non-null-assertion
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        return returnNodeObjId ? result!.objectId : JSON.parse(result!.value);
+    }
+
+    public async getNode (args: SelectorNodeArgs): Promise<DOM.Node> {
+        const objectId = await this.executeSelector(args);
+        const response = await args.DOM.describeNode({ objectId });
+
+        return response.node;
     }
 
     public setupFramesWatching (Runtime: RuntimeApi): void {
-        Runtime.on('executionContextCreated', (event: Protocol.Runtime.ExecutionContextCreatedEvent) => {
+        Runtime.on('executionContextCreated', (event: ExecutionContextCreatedEvent) => {
             if (!event.context.auxData?.frameId)
                 return;
 
             this._frameExecutionContexts.set(event.context.auxData.frameId, event.context.id);
         });
 
-        Runtime.on('executionContextDestroyed', (event: Protocol.Runtime.ExecutionContextDestroyedEvent) => {
+        Runtime.on('executionContextDestroyed', (event: ExecutionContextDestroyedEvent) => {
             for (const [frameId, executionContextId] of this._frameExecutionContexts.entries()) {
                 if (executionContextId === event.executionContextId)
                     this._frameExecutionContexts.delete(frameId);

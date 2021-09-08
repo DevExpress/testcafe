@@ -99,7 +99,7 @@ export class SetPageLoadTimeoutCommand extends CommandBase {
 
 export class SwitchToIframeCommand extends CommandBase {
     public constructor(obj: object, testRun?: TestRun, validateProperties?: boolean);
-    public selector: ExecuteClientFunctionCommand;
+    public selector: ExecuteSelectorCommand;
 }
 
 export class SwitchToMainWindowCommand extends CommandBase { }

@@ -388,7 +388,7 @@ describe('Error formatting', () => {
         });
 
         it('Should format "actionElementNotFoundError" message', () => {
-            assertErrorMessage('action-element-not-found-error', new ActionElementNotFoundError({
+            assertErrorMessage('action-element-not-found-error', new ActionElementNotFoundError(null, {
                 apiFnChain: [longSelector, 'one', 'two', 'three'],
                 apiFnIndex: 1,
             }));

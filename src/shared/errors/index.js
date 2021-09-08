@@ -46,8 +46,8 @@ export class DomNodeClientFunctionResultError extends TestRunErrorBase {
 // Selector errors
 //--------------------------------------------------------------------
 export class SelectorErrorBase extends TestRunErrorBase {
-    constructor (code, { apiFnChain, apiFnIndex }) {
-        super(code);
+    constructor (code, { apiFnChain, apiFnIndex }, callsite) {
+        super(code, callsite);
 
         this.apiFnChain = apiFnChain;
         this.apiFnIndex = apiFnIndex;
@@ -62,9 +62,7 @@ export class InvalidSelectorResultError extends TestRunErrorBase {
 
 export class CannotObtainInfoForElementSpecifiedBySelectorError extends SelectorErrorBase {
     constructor (callsite, apiFnArgs) {
-        super(TEST_RUN_ERRORS.cannotObtainInfoForElementSpecifiedBySelectorError, apiFnArgs);
-
-        this.callsite = callsite;
+        super(TEST_RUN_ERRORS.cannotObtainInfoForElementSpecifiedBySelectorError, apiFnArgs, callsite);
     }
 }
 
@@ -149,14 +147,14 @@ export class ActionSpeedOptionError extends ActionOptionErrorBase {
 // Action execution errors
 //--------------------------------------------------------------------
 export class ActionElementNotFoundError extends SelectorErrorBase {
-    constructor (apiFnArgs) {
-        super(TEST_RUN_ERRORS.actionElementNotFoundError, apiFnArgs);
+    constructor (callsite, apiFnArgs) {
+        super(TEST_RUN_ERRORS.actionElementNotFoundError, apiFnArgs, callsite);
     }
 }
 
 export class ActionElementIsInvisibleError extends TestRunErrorBase {
-    constructor () {
-        super(TEST_RUN_ERRORS.actionElementIsInvisibleError);
+    constructor (callsite) {
+        super(TEST_RUN_ERRORS.actionElementIsInvisibleError, callsite);
     }
 }
 
@@ -285,8 +283,8 @@ export class InvalidElementScreenshotDimensionsError extends TestRunErrorBase {
 // Iframe errors
 //--------------------------------------------------------------------
 export class ActionElementNotIframeError extends TestRunErrorBase {
-    constructor () {
-        super(TEST_RUN_ERRORS.actionElementNotIframeError);
+    constructor (callsite) {
+        super(TEST_RUN_ERRORS.actionElementNotIframeError, callsite);
     }
 }
 

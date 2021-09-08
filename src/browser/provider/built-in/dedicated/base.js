@@ -115,11 +115,11 @@ export default {
         return browserClient.executeSelector(command, callsite, selectorTimeout);
     },
 
-    async switchToIframe (browserId) {
+    async switchToIframe ({ browserId, command, callsite, selectorTimeout }) {
         const runtimeInfo   = this.openedBrowsers[browserId];
         const browserClient = this._getBrowserProtocolClient(runtimeInfo);
 
-        return browserClient.switchToIframe();
+        return browserClient.switchToIframe(command, callsite, selectorTimeout);
     },
 
     async switchToMainWindow (browserId) {

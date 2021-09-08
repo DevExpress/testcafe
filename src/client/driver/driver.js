@@ -930,19 +930,17 @@ export default class Driver extends serviceUtils.EventEmitter {
         const commandSelectorTimeout = hasSpecificTimeout ? selector.timeout : this.selectorTimeout;
 
         return getExecuteSelectorResult(selector, commandSelectorTimeout, null,
-            fn => new iframeErrorCtors.NotFoundError(fn), () => new iframeErrorCtors.IsInvisibleError(), this.statusBar)
+            fn => new iframeErrorCtors.NotFoundError(null, fn), () => new iframeErrorCtors.IsInvisibleError(), this.statusBar)
             .then(iframe => {
                 if (!domUtils.isIframeElement(iframe))
                     throw new ActionElementNotIframeError();
-
-                window['%switchedIframe%'] = iframe;
 
                 return this._ensureChildIframeDriverLink(nativeMethods.contentWindowGetter.call(iframe),
                     iframeErrorCtors.NotLoadedError, commandSelectorTimeout);
             })
             .then(childDriverLink => {
                 childDriverLink.availabilityTimeout = commandSelectorTimeout;
-                this.activeChildIframeDriverLink          = childDriverLink;
+                this.activeChildIframeDriverLink    = childDriverLink;
                 this.contextStorage.setItem(ACTIVE_IFRAME_SELECTOR, selector);
             });
     }

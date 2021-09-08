@@ -15,6 +15,7 @@ import { Dictionary } from '../../configuration/interfaces';
 import { WindowDimentionsInfo } from '../interfaces';
 import { CallsiteRecord } from 'callsite-record';
 import { ExecuteClientFunctionCommand, ExecuteSelectorCommand } from '../../test-run/commands/observation';
+import { SwitchToIframeCommand } from '../../test-run/commands/actions';
 
 const DEBUG_LOGGER = debug('testcafe:browser:provider');
 
@@ -411,8 +412,8 @@ export default class BrowserProvider {
         return this.plugin.executeSelector({ browserId, command, callsite, selectorTimeout });
     }
 
-    public async switchToIframe (browserId: string): Promise<void> {
-        return this.plugin.switchToIframe(browserId);
+    public async switchToIframe (browserId: string, command: SwitchToIframeCommand, callsite: CallsiteRecord, selectorTimeout: number): Promise<void> {
+        return this.plugin.switchToIframe({ browserId, command, callsite, selectorTimeout });
     }
 
     public switchToMainWindow (browserId: string): Promise<void> {
