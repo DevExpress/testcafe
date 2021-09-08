@@ -93,7 +93,8 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         if (!origExt)
             origExt = this.origRequireExtensions['.js'];
 
-        if (!APIBasedTestFileCompilerBase._isNodeModulesDep(filename)) {
+        if (!APIBasedTestFileCompilerBase._isNodeModulesDep(filename) &&
+            !APIBasedTestFileCompilerBase._isTestCafeLibDep(filename)) {
             global.customExtensionHook = () => {
                 global.customExtensionHook = null;
 
