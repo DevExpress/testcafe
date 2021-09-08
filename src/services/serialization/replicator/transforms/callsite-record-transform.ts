@@ -1,13 +1,11 @@
 import { CallsiteRecord } from 'callsite-record';
 import prerenderCallsite, { RenderedCallsite } from '../../../../utils/prerender-callsite';
 import BaseTransform from './base-transform';
-import { ERROR_FILENAME } from '../../../../test-run/execute-js-expression/constants';
+import { ERROR_FILENAME, CALLSITE_RECORD_CLASS_NAME } from '../../../../test-run/execute-js-expression/constants';
 
 interface CallsiteRecordLike {
     filename: string;
 }
-
-const CALLSITE_RECORD_CLASS_NAME = 'CallsiteRecord';
 
 export default class CallsiteRecordTransform extends BaseTransform {
     public constructor () {

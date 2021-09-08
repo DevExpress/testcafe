@@ -1,9 +1,9 @@
 import { find, assignIn } from 'lodash';
 import { Parser } from 'parse5';
-import { renderers } from 'callsite-record';
 import renderErrorTemplate from './render-error-template';
 import createStackFilter from '../create-stack-filter';
 import renderCallsiteSync from '../../utils/render-callsite-sync';
+import getRenderers from '../../utils/get-renderes';
 
 const parser = new Parser();
 
@@ -53,6 +53,8 @@ export default class TestRunErrorFormattableAdapter {
     }
 
     getCallsiteMarkup () {
+        const renderers = getRenderers(this.callsite);
+
         return renderCallsiteSync(this.callsite, {
             renderer:    renderers.html,
             stackFilter: createStackFilter(Error.stackTraceLimit),

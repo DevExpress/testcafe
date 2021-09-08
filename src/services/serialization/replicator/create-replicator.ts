@@ -13,6 +13,7 @@ import FunctionMarkerTransform from './transforms/function-marker-transform';
 import PromiseMarkerTransform from './transforms/promise-marker-transform';
 import ConfigureResponseEventOptionTransform from './transforms/configure-response-event-option-transform';
 import URLTransform from './transforms/url-transform';
+import RawCommandCallsiteRecordTransform from './transforms/raw-command-callsite-record-transform';
 
 const DEFAULT_ERROR_TRANSFORM_TYPE = '[[Error]]';
 
@@ -48,5 +49,6 @@ export default function (): Replicator {
             new RequestHookEventDataTransform(),
             new RoleTransform(),
             new CallsiteRecordTransform(),
+            new RawCommandCallsiteRecordTransform(),
         ]);
 }

@@ -1,10 +1,10 @@
-import { renderers } from 'callsite-record';
 import TEMPLATES from './templates';
 import createStackFilter from '../create-stack-filter';
 import { getCallsiteForMethod } from '../get-callsite';
 import renderTemplate from '../../utils/render-template';
 import renderCallsiteSync from '../../utils/render-callsite-sync';
 import { RUNTIME_ERRORS } from '../types';
+import getRenderers from '../../utils/get-renderes';
 
 const ERROR_SEPARATOR = '\n\n';
 
@@ -68,6 +68,8 @@ export class APIError extends Error {
         // See https://github.com/DevExpress/testcafe/blob/v1.0.0/src/compiler/test-file/formats/raw.js#L22
         // Also we can't use an ES6 getter for the 'stack' property, because it will create a getter on the class prototype
         // that cannot override the instance property created by the Error parent class.
+        const renderers = getRenderers(this.callsite);
+
         Object.defineProperties(this, {
             'stack': {
                 get: () => this._createStack(renderers.noColor),
