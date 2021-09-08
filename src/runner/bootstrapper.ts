@@ -87,6 +87,7 @@ export default class Bootstrapper {
     public tsConfigPath?: string;
     public clientScripts: ClientScriptInit[];
     public disableMultipleWindows: boolean;
+    public proxyless: boolean;
     public compilerOptions?: CompilerOptions;
     public browserInitTimeout?: number;
 
@@ -108,6 +109,7 @@ export default class Bootstrapper {
         this.tsConfigPath             = void 0;
         this.clientScripts            = [];
         this.disableMultipleWindows   = false;
+        this.proxyless                = false;
         this.compilerOptions          = void 0;
         this.debugLogger              = debug(DEBUG_SCOPE);
         this.warningLog               = new WarningLog();
@@ -142,7 +144,8 @@ export default class Bootstrapper {
             return [];
 
         return browserInfo
-            .map(browser => times(this.concurrency, () => new BrowserConnection(this.browserConnectionGateway, browser, false, this.disableMultipleWindows)));
+            .map(browser => times(this.concurrency, () => new BrowserConnection(
+                this.browserConnectionGateway, browser, false, this.disableMultipleWindows, this.proxyless)));
     }
 
     private _getBrowserSetOptions (): BrowserSetOptions {

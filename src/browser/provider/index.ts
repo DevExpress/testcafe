@@ -312,8 +312,8 @@ export default class BrowserProvider {
         return this.plugin.isHeadlessBrowser(browserId, browserName);
     }
 
-    public async openBrowser (browserId: string, pageUrl: string, browserOption: unknown, disableMultipleWindows: boolean, isProxyless: boolean): Promise<void> {
-        await this.plugin.openBrowser(browserId, pageUrl, browserOption, disableMultipleWindows, isProxyless);
+    public async openBrowser (browserId: string, pageUrl: string, browserOption: unknown, disableMultipleWindows: boolean, proxyless: boolean): Promise<void> {
+        await this.plugin.openBrowser(browserId, pageUrl, browserOption, disableMultipleWindows, proxyless);
 
         await this._ensureRetryTestPagesWarning(browserId);
 

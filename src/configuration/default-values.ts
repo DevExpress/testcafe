@@ -18,6 +18,7 @@ export const DEFAULT_SOURCE_DIRECTORIES = ['tests', 'test'];
 export const DEFAULT_DEVELOPMENT_MODE      = false;
 export const DEFAULT_RETRY_TEST_PAGES      = false;
 export const DEFAULT_DISABLE_HTTP2         = false;
+export const DEFAULT_PROXYLESS             = false;
 export const DEFAULT_SCREENSHOT_THUMBNAILS = true;
 
 export const DEFAULT_TYPESCRIPT_COMPILER_OPTIONS: Dictionary<boolean | number> = {

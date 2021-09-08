@@ -76,7 +76,7 @@ interface CommandLineOptions {
     videoEncodingOptions?: string | Dictionary<number | string | boolean>;
     compilerOptions?: string | Dictionary<number | string | boolean>;
     configFile?: string;
-    isProxyless?: boolean;
+    proxyless?: boolean;
     v8Flags?: string[];
 }
 
@@ -173,6 +173,7 @@ export default class CLIArgumentParser {
             .option('--no-color', 'disable colors in command line')
 
             // NOTE: temporary hide experimental options from --help command
+            .addOption(new Option('--proxyless', 'experimental').hideHelp())
             .addOption(new Option('--experimental-debug', 'enable experimental debug mode').hideHelp());
     }
 

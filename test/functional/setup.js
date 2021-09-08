@@ -53,7 +53,7 @@ function getBrowserInfo (settings) {
 
             return browserProviderPool
                 .getBrowserInfo(settings.browserName)
-                .then(browserInfo => new BrowserConnection(testCafe.browserConnectionGateway, browserInfo, true, false, config.isProxyless));
+                .then(browserInfo => new BrowserConnection(testCafe.browserConnectionGateway, browserInfo, true, false, config.proxyless));
         })
         .then(connection => {
             return {
@@ -154,7 +154,7 @@ before(function () {
         retryTestPages,
 
         experimentalDebug: !!process.env.EXPERIMENTAL_DEBUG,
-        isProxyless:       config.isProxyless,
+        proxyless:         config.proxyless,
         userVariables:     {
             url:             'localhost',
             port:            1337,

@@ -1016,7 +1016,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     private async _canExecuteCommandThroughCDP (command: CommandBase): Promise<boolean> {
-        if (!this.opts.isProxyless || !PROXYLESS_COMMANDS.has(command.type))
+        if (!this.opts.proxyless || !PROXYLESS_COMMANDS.has(command.type))
             return false;
 
         const browserId         = this.browserConnection.id;

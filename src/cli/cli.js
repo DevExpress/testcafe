@@ -75,7 +75,7 @@ async function runTests (argParser) {
 
     log.showSpinner();
 
-    const { hostname, ssl, dev, experimentalDebug, retryTestPages, cache } = opts;
+    const { hostname, ssl, dev, experimentalDebug, retryTestPages, cache, disableHttp2 } = opts;
 
     const testCafe = await createTestCafe({
         developmentMode: dev,
@@ -88,6 +88,7 @@ async function runTests (argParser) {
         retryTestPages,
         cache,
         configFile,
+        disableHttp2,
     });
 
     const correctedBrowsersAndSources = await correctBrowsersAndSources(argParser, testCafe.configuration);

@@ -39,7 +39,7 @@ export default {
         this.setUserAgentMetaInfo(browserId, metaInfo, options);
     },
 
-    async openBrowser (browserId, pageUrl, config, disableMultipleWindows, isProxyless) {
+    async openBrowser (browserId, pageUrl, config, disableMultipleWindows, proxyless) {
         const parsedPageUrl = parseUrl(pageUrl);
         const runtimeInfo   = await this._createRunTimeInfo(parsedPageUrl.hostname, config, disableMultipleWindows);
 
@@ -62,7 +62,7 @@ export default {
         if (!disableMultipleWindows)
             runtimeInfo.activeWindowId = this.calculateWindowId();
 
-        const browserClient = new BrowserClient(runtimeInfo, isProxyless);
+        const browserClient = new BrowserClient(runtimeInfo, proxyless);
 
         this.openedBrowsers[browserId] = runtimeInfo;
 

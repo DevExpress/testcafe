@@ -29,15 +29,15 @@ const debugLog = debug('testcafe:browser:provider:built-in:dedicated:chrome');
 export class BrowserClient {
     private _clients: Dictionary<remoteChrome.ProtocolApi> = {};
     private _runtimeInfo: RuntimeInfo;
-    private readonly _isProxyless: boolean;
+    private readonly _proxyless: boolean;
     private _parentTarget?: remoteChrome.TargetInfo;
     private readonly debugLogger: debug.Debugger;
     private readonly _clientFunctionExecutor: ClientFunctionExecutor;
 
-    public constructor (runtimeInfo: RuntimeInfo, isProxyless: boolean) {
+    public constructor (runtimeInfo: RuntimeInfo, proxyless: boolean) {
         this._runtimeInfo = runtimeInfo;
         this.debugLogger  = debug(DEBUG_SCOPE(runtimeInfo.browserId));
-        this._isProxyless = isProxyless;
+        this._proxyless   = proxyless;
 
         this._clientFunctionExecutor = new ClientFunctionExecutor();
 
@@ -244,7 +244,7 @@ export class BrowserClient {
                 await this._calculateEmulatedDevicePixelRatio(client);
                 await this._setupClient(client);
 
-                if (this._isProxyless) {
+                if (this._proxyless) {
                     await this._injectProxylessStuff(client);
                     this._clientFunctionExecutor.setupFramesWatching(client.Runtime);
                 }
