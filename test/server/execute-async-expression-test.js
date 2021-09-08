@@ -109,7 +109,7 @@ describe('Code steps', () => {
         await assertError(
             'let q = void 0;\n' +
             '        q.t = 5;'
-            , 'Cannot set property \'t\' of undefined', 2, 13, '2');
+            , "Cannot set properties of undefined (setting 't')", 2, 13, '2');
 
         await assertError(
             'let q = 3;\n' +
