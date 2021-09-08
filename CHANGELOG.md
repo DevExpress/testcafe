@@ -1,5 +1,67 @@
 # Changelog
 
+## v1.16.0 (2021-09-08)
+
+### Enhancements
+
+#### Support for JavaScript configuration files
+
+You can now store TestCafe settings in a `js` file. Configuration properties in JavaScript files can reference JavaScript methods, functions and variables, which makes it easy to create dynamic configuration files.
+
+Just `export` the JSON name/value pairs in the file:
+
+```js
+module.exports = {
+    skipJsErrors: true,
+    hostname: "localhost",
+    // other settings
+}
+```
+
+#### Support for custom user variables in the configuration file
+
+TestCafe v1.16.0 and later supports configuration files with variable declarations. Users can reference variables from a configuration file in the tests that utilize that configuration file. To enable access to configuration file variables, import the `userVariables` object from the `testcafe` module at the beginning of the test script.
+
+This capability can come in handy if there's a single piece of data you want to use in multiple tests — for example, the website's URL. That way, if your website moves to a new domain name, you don't have to change your tests one by one.
+
+If you previously used environment variables to achieve the same goal, you might prefer the new method — it significantly simplifies the setup process, and allows you to commit the data to a version control system.
+
+Define your custom variables with the `userVariables` JSON object:
+
+```JSON
+{
+  "userVariables": {
+    "url": "http://devexpress.github.io/testcafe/example",
+  }
+}
+```
+
+Reference this variable in your test:
+
+```js
+import { userVariables } from 'testcafe';
+
+fixture `Test user variables`
+    .page(userVariables.url);
+
+test('Type text', async t => {
+    await t
+        .typeText('#developer-name', 'John Smith')
+        .click('#submit-button');
+});
+```
+
+#### Other enhancements
+
+* New option that disables thumbnail generation for test screenshots ([PR by @taki-fw](https://github.com/DevExpress/testcafe/pull/6078)).
+* New `embedding-utils` API method that retrieves information about skipped tests ([PR by @flora8984461](https://github.com/DevExpress/testcafe/pull/6398)).
+* The `Runner.filter` function supports asynchronous arguments ([PR by @eignatyev](https://github.com/DevExpress/testcafe/pull/6371)).
+* You can import the `test` and `fixture` objects directly from the `testcafe` module ([PR #6338](https://github.com/DevExpress/testcafe/pull/6338)).
+
+### Bug Fixes
+
+* TestCafe does not keep track of file changes in live mode ([#6481](https://github.com/DevExpress/testcafe/issues/6481)).
+
 ## v1.15.3 (2021-08-19)
 
 ### Bug Fixes
