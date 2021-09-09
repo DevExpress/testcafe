@@ -193,9 +193,8 @@ export default class Runner extends EventEmitter {
         });
     }
 
-    _runTask ({ reporterPlugins, browserSet, tests, testedApp, options }) {
+    _runTask ({ reporters, browserSet, tests, testedApp, options }) {
         const task              = this._createTask(tests, browserSet.browserConnectionGroups, this.proxy, options, this.warningLog);
-        const reporters         = reporterPlugins.map(reporter => new Reporter(reporter.plugin, task, reporter.outStream, reporter.name));
         const completionPromise = this._getTaskResult(task, browserSet, reporters, testedApp);
         let completed           = false;
 
@@ -657,7 +656,13 @@ export default class Runner extends EventEmitter {
         this.apiMethodWasCalled.reset();
         this.configuration.mergeOptions(options);
 
+        let reporters;
+
         const runTaskPromise = Promise.resolve()
+            .then(() => Reporter.getReporterPlugins(this._options.reporter))
+            .then(reporterPlugins => {
+                reporters = reporterPlugins.map(reporter => new Reporter(this._messageBus, reporter.plugin, reporter.outStream, reporter.name));
+            })
             .then(() => this._applyOptions())
             .then(() => {
                 logEntry(DEBUG_LOGGER, this.configuration);
@@ -665,14 +670,14 @@ export default class Runner extends EventEmitter {
                 return this._validateRunOptions();
             })
             .then(() => this._createRunnableConfiguration())
-            .then(async ({ reporterPlugins, browserSet, tests, testedApp, commonClientScripts }) => {
+            .then(async ({ browserSet, tests, testedApp, commonClientScripts }) => {
                 await this._prepareClientScripts(tests, commonClientScripts);
 
                 const resultOptions = this.configuration.getOptions();
 
                 await this.bootstrapper.compilerService?.setOptions({ value: resultOptions });
 
-                return this._runTask({ reporterPlugins, browserSet, tests, testedApp, options: resultOptions });
+                return this._runTask({ reporters, browserSet, tests, testedApp, options: resultOptions });
             });
 
         return this._createCancelablePromise(runTaskPromise);
