@@ -10,13 +10,21 @@ import ReporterPluginMethod from './plugin-methods';
 import formatCommand from './command/format-command';
 import { ReporterPluginError } from '../errors/runtime';
 import Task from '../runner/task';
-import { Writable } from 'stream';
+import { Writable as WritableStream, Writable } from 'stream';
 import { WriteStream } from 'tty';
 import TestRun from '../test-run';
 import Test from '../api/structure/test';
 import Fixture from '../api/structure/fixture';
 import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapter';
 import { CommandBase } from '../test-run/commands/base';
+import {
+    ReporterPlugin, ReporterPluginSource, ReporterSource,
+} from './interfaces';
+import { getPluginFactory, processReporterName } from '../utils/reporter';
+import resolvePathRelativelyCwd from '../utils/resolve-path-relatively-cwd';
+import makeDir from 'make-dir';
+import path from 'path';
+import fs from 'fs';
 
 
 interface PendingPromise {
@@ -452,5 +460,40 @@ export default class Reporter {
         this.outStream.end();
 
         return streamFinishedPromise;
+    }
+
+    private static async _ensureOutStream (outStream: string | WritableStream): Promise<WritableStream> {
+        if (typeof outStream !== 'string')
+            return outStream;
+
+        const fullReporterOutputPath = resolvePathRelativelyCwd(outStream);
+
+        await makeDir(path.dirname(fullReporterOutputPath));
+
+        return fs.createWriteStream(fullReporterOutputPath);
+    }
+
+    private static _addDefaultReporter (reporters: ReporterSource[]): void {
+        reporters.push({
+            name:   'spec',
+            output: process.stdout,
+        });
+    }
+
+    public static async getReporterPlugins (reporters: ReporterSource[]): Promise<ReporterPluginSource[]> {
+        if (!reporters.length)
+            Reporter._addDefaultReporter(reporters);
+
+        return Promise.all(reporters.map(async ({ name, output }) => {
+            const pluginFactory = getPluginFactory(name);
+            const processedName = processReporterName(name);
+            const outStream     = output ? await Reporter._ensureOutStream(output) : void 0;
+
+            return {
+                plugin: pluginFactory(),
+                name:   processedName,
+                outStream,
+            };
+        }));
     }
 }
