@@ -130,7 +130,7 @@ export default class Runner extends EventEmitter {
 
     // Run task
     _getFailedTestCount (task, reporter) {
-        let failedTestCount = reporter.testCount - reporter.passed;
+        let failedTestCount = reporter.taskInfo.testCount - reporter.taskInfo.passed;
 
         if (task.opts.stopOnFirstFail && !!failedTestCount)
             failedTestCount = 1;
@@ -152,7 +152,7 @@ export default class Runner extends EventEmitter {
         const taskDonePromise = task.once('done')
             .then(() => browserSetErrorPromise.cancel())
             .then(() => {
-                return Promise.all(reporters.map(reporter => reporter.pendingTaskDonePromise));
+                return Promise.all(reporters.map(reporter => reporter.taskInfo.pendingTaskDonePromise));
             });
 
         const promises = [

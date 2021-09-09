@@ -17,6 +17,7 @@ export interface ReporterSource {
 
 export interface ReporterPluginSource {
     plugin: ReporterPlugin;
+    name: string;
     outStream?: WritableStream;
 }
 

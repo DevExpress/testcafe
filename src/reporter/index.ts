@@ -25,6 +25,7 @@ import resolvePathRelativelyCwd from '../utils/resolve-path-relatively-cwd';
 import makeDir from 'make-dir';
 import path from 'path';
 import fs from 'fs';
+import MessageBus from '../utils/message-bus';
 
 
 interface PendingPromise {
@@ -32,7 +33,18 @@ interface PendingPromise {
     then: Function;
 }
 
-interface ReportItem {
+interface TaskInfo {
+    task: Task | null;
+    passed: number;
+    failed: number;
+    skipped: number;
+    testCount: number;
+    testQueue: TestInfo[];
+    readonly stopOnFirstFail: boolean;
+    readonly pendingTaskDonePromise: PendingPromise;
+}
+
+interface TestInfo {
     fixture: Fixture;
     test: Test;
     testRunIds: string[];
@@ -67,6 +79,7 @@ interface TestRunInfo {
 }
 
 interface PluginMethodArguments {
+    initialObject: Task | null;
     method: string;
     args: unknown[];
 }
@@ -86,32 +99,20 @@ interface ReportTaskActionEventArguments {
 
 export default class Reporter {
     public readonly plugin: ReporterPluginHost;
-    public readonly task: Task;
+    public readonly messageBus: MessageBus;
     public disposed: boolean;
-    public passed: number;
-    public failed: number;
-    public skipped: number;
-    public testCount: number;
-    public readonly reportQueue: ReportItem[];
-    public readonly stopOnFirstFail: boolean;
+    public taskInfo: TaskInfo | null;
     public readonly outStream: Writable;
-    public readonly pendingTaskDonePromise: PendingPromise;
 
-    public constructor (plugin: ReporterPluginHost, task: Task, outStream: Writable, name: string) {
-        this.plugin = new ReporterPluginHost(plugin, outStream, name);
-        this.task   = task;
+    public constructor (messageBus: MessageBus, plugin: ReporterPlugin, outStream: Writable, name: string) {
+        this.plugin     = new ReporterPluginHost(plugin, outStream, name);
+        this.messageBus = messageBus;
 
-        this.disposed               = false;
-        this.passed                 = 0;
-        this.failed                 = 0;
-        this.skipped                = 0;
-        this.testCount              = task.tests.filter(test => !test.skip).length;
-        this.reportQueue            = Reporter._createReportQueue(task);
-        this.stopOnFirstFail        = task.opts.stopOnFirstFail as boolean;
-        this.outStream              = outStream;
-        this.pendingTaskDonePromise = Reporter._createPendingPromise();
+        this.disposed  = false;
+        this.taskInfo  = null;
+        this.outStream = outStream;
 
-        this._assignTaskEventHandlers();
+        this._assignMessageBusEventHandlers();
     }
 
     private static _isSpecialStream (stream: Writable): boolean {
@@ -130,158 +131,7 @@ export default class Reporter {
         return promise;
     }
 
-    private static _createReportItem (test: Test, runsPerTest: number): ReportItem {
-        return {
-            fixture:                    test.fixture as Fixture,
-            test:                       test,
-            testRunIds:                 [],
-            screenshotPath:             null,
-            screenshots:                [],
-            videos:                     [],
-            quarantine:                 null,
-            errs:                       [],
-            warnings:                   [],
-            unstable:                   false,
-            startTime:                  null,
-            testRunInfo:                null,
-            pendingRuns:                runsPerTest,
-            pendingStarts:              runsPerTest,
-            pendingTestRunDonePromise:  Reporter._createPendingPromise(),
-            pendingTestRunStartPromise: Reporter._createPendingPromise(),
-            browsers:                   [],
-        };
-    }
-
-    private static _createReportQueue (task: Task): ReportItem[] {
-        const runsPerTest = task.browserConnectionGroups.length;
-
-        return task.tests.map(test => Reporter._createReportItem(test, runsPerTest));
-    }
-
-    private static _createTestRunInfo (reportItem: ReportItem): TestRunInfo {
-        return {
-            errs:           sortBy(reportItem.errs, ['userAgent', 'code']),
-            warnings:       reportItem.warnings,
-            durationMs:     +new Date() - (reportItem.startTime as number), //eslint-disable-line  @typescript-eslint/no-extra-parens
-            unstable:       reportItem.unstable,
-            screenshotPath: reportItem.screenshotPath as string,
-            screenshots:    reportItem.screenshots,
-            videos:         reportItem.videos,
-            quarantine:     reportItem.quarantine,
-            skipped:        reportItem.test.skip,
-            browsers:       reportItem.browsers,
-            testId:         reportItem.test.id,
-        };
-    }
-
-    private _getReportItemForTestRun (testRun: TestRun): ReportItem | undefined {
-        return find(this.reportQueue, i => i.test === testRun.test);
-    }
-
-    private async _shiftReportQueue (): Promise<void> {
-        let currentFixture = null;
-        let nextReportItem = null;
-        let reportItem     = null;
-
-        while (this.reportQueue.length && this.reportQueue[0].testRunInfo) {
-            reportItem     = this.reportQueue.shift() as ReportItem;
-            currentFixture = reportItem.fixture;
-
-            // NOTE: here we assume that tests are sorted by fixture.
-            // Therefore, if the next report item has a different
-            // fixture, we can report this fixture start.
-            nextReportItem = this.reportQueue[0];
-
-            await this.dispatchToPlugin({
-                method: ReporterPluginMethod.reportTestDone,
-                args:   [
-                    reportItem.test.name,
-                    reportItem.testRunInfo,
-                    reportItem.test.meta,
-                ],
-            });
-
-            if (!nextReportItem)
-                continue;
-
-            if (nextReportItem.fixture === currentFixture)
-                continue;
-
-            await this.dispatchToPlugin({
-                method: ReporterPluginMethod.reportFixtureStart,
-                args:   [
-                    nextReportItem.fixture.name,
-                    nextReportItem.fixture.path,
-                    nextReportItem.fixture.meta,
-                ],
-            });
-        }
-    }
-
-    private async _resolveReportItem (reportItem: ReportItem, testRun: TestRun): Promise<void> {
-        if (this.task.screenshots.hasCapturedFor(testRun.test)) {
-            reportItem.screenshotPath = this.task.screenshots.getPathFor(testRun.test);
-            reportItem.screenshots    = this.task.screenshots.getScreenshotsInfo(testRun.test);
-        }
-
-        if (this.task.videos)
-            reportItem.videos = this.task.videos.getTestVideos(reportItem.test.id);
-
-        if (testRun.quarantine) {
-            reportItem.quarantine = testRun.quarantine.attempts.reduce((result: Record<string, object>, errors: TestRunErrorFormattableAdapter[], index: number) => {
-                const passed            = !errors.length;
-                const quarantineAttempt = index + 1;
-
-                result[quarantineAttempt] = { passed };
-
-                return result;
-            }, {});
-        }
-
-        if (!reportItem.testRunInfo) {
-            reportItem.testRunInfo = Reporter._createTestRunInfo(reportItem);
-
-            if (reportItem.test.skip)
-                this.skipped++;
-            else if (reportItem.errs.length)
-                this.failed++;
-            else
-                this.passed++;
-        }
-
-        await this._shiftReportQueue();
-
-        (reportItem.pendingTestRunDonePromise.resolve as Function)();
-    }
-
-    private _prepareReportTestActionEventArgs ({ command, duration, result, testRun, err }: ReportTestActionEventArguments): any {
-        const args: any = {};
-
-        if (err)
-            args.err = err;
-
-        if (typeof duration === 'number')
-            args.duration = duration;
-
-        const testFixture = testRun.test.fixture as Fixture;
-
-        return Object.assign(args, {
-            testRunId: testRun.id,
-            test:      {
-                id:    testRun.test.id,
-                name:  testRun.test.name,
-                phase: testRun.phase,
-            },
-            fixture: {
-                name: testFixture.name,
-                id:   testFixture.id,
-            },
-            command: formatCommand(command, result),
-            browser: testRun.browser,
-        });
-    }
-
-    public async dispatchToPlugin ({ method, args = [] }: PluginMethodArguments): Promise<void> {
+    public async dispatchToPlugin ({ method, initialObject, args = [] }: PluginMethodArguments): Promise<void> {
         try {
             // @ts-ignore
             await this.plugin[method](...args);
@@ -293,154 +143,24 @@ export default class Reporter {
                 originalError,
             });
 
-            this.task.emit('error', uncaughtError);
+            initialObject?.emit('error', uncaughtError);
         }
     }
 
-    private async _onceTaskStartHandler (): Promise<void> {
-        const startTime  = new Date();
-        const userAgents = this.task.browserConnectionGroups.map(group => group[0].userAgent);
-        const first      = this.reportQueue[0];
+    private _assignMessageBusEventHandlers (): void {
+        const messageBus = this.messageBus;
 
-        const taskProperties = {
-            configuration: this.task.opts,
-        };
+        messageBus.once('start', async (task: Task) => await this._onceTaskStartHandler(task));
 
-        await this.dispatchToPlugin({
-            method: ReporterPluginMethod.reportTaskStart,
-            args:   [
-                startTime,
-                userAgents,
-                this.testCount,
-                this.task.testStructure,
-                taskProperties,
-            ],
-        });
+        messageBus.on('test-run-start', async testRun => await this._onTaskTestRunStartHandler(testRun));
 
-        await this.dispatchToPlugin({
-            method: ReporterPluginMethod.reportFixtureStart,
-            args:   [
-                first.fixture.name,
-                first.fixture.path,
-                first.fixture.meta,
-            ],
-        });
-    }
+        messageBus.on('test-run-done', async testRun => await this._onTaskTestRunDoneHandler(testRun));
 
-    private async _onTaskTestRunStartHandler (testRun: TestRun): Promise<unknown> {
-        const reportItem = this._getReportItemForTestRun(testRun) as ReportItem;
+        messageBus.on('test-action-start', async e => await this._onTaskTestActionStart(e));
 
-        reportItem.testRunIds.push(testRun.id);
+        messageBus.on('test-action-done', async e => await this._onTaskTestActionDone(e));
 
-        if (!reportItem.startTime)
-            reportItem.startTime = +new Date();
-
-        reportItem.pendingStarts--;
-
-        if (!reportItem.pendingStarts) {
-            // @ts-ignore
-            if (this.plugin.reportTestStart) {
-                const testStartInfo = { testRunIds: reportItem.testRunIds, testId: reportItem.test.id };
-
-                await this.dispatchToPlugin({
-                    method: ReporterPluginMethod.reportTestStart as string,
-                    args:   [
-                        reportItem.test.name,
-                        reportItem.test.meta,
-                        testStartInfo,
-                    ],
-                });
-            }
-
-            (reportItem.pendingTestRunStartPromise.resolve as Function)();
-        }
-
-        return reportItem.pendingTestRunStartPromise;
-    }
-
-    private async _onTaskTestRunDoneHandler (testRun: TestRun): Promise<void> {
-        const reportItem                    = this._getReportItemForTestRun(testRun) as ReportItem;
-        const isTestRunStoppedTaskExecution = !!testRun.errs.length && this.stopOnFirstFail;
-
-        reportItem.pendingRuns = isTestRunStoppedTaskExecution ? 0 : reportItem.pendingRuns - 1;
-        reportItem.unstable    = reportItem.unstable || testRun.unstable;
-        reportItem.errs        = reportItem.errs.concat(testRun.errs);
-        reportItem.warnings    = testRun.warningLog ? union(reportItem.warnings, testRun.warningLog.messages) : [];
-
-        reportItem.browsers.push(Object.assign({ testRunId: testRun.id }, testRun.browser));
-
-        if (!reportItem.pendingRuns)
-            await this._resolveReportItem(reportItem, testRun);
-
-        await reportItem.pendingTestRunDonePromise;
-    }
-
-    private async _onTaskTestActionStart ({ apiActionName, ...restArgs }: ReportTaskActionEventArguments): Promise<void> {
-        // @ts-ignore
-        if (this.plugin.reportTestActionStart) {
-            restArgs = this._prepareReportTestActionEventArgs(restArgs as unknown as ReportTestActionEventArguments);
-
-            await this.dispatchToPlugin({
-                method: ReporterPluginMethod.reportTestActionStart as string,
-                args:   [
-                    apiActionName,
-                    restArgs,
-                ],
-            });
-        }
-    }
-
-    private async _onTaskTestActionDone ({ apiActionName, ...restArgs }: ReportTaskActionEventArguments): Promise<void> {
-        // @ts-ignore
-        if (this.plugin.reportTestActionDone) {
-            restArgs = this._prepareReportTestActionEventArgs(restArgs as unknown as ReportTestActionEventArguments);
-
-            await this.dispatchToPlugin({
-                method: ReporterPluginMethod.reportTestActionDone as string,
-                args:   [
-                    apiActionName,
-                    restArgs,
-                ],
-            });
-        }
-    }
-
-    private async _onceTaskDoneHandler (): Promise<void> {
-        const endTime = new Date();
-
-        const result = {
-            passedCount:  this.passed,
-            failedCount:  this.failed,
-            skippedCount: this.skipped,
-        };
-
-        await this.dispatchToPlugin({
-            method: ReporterPluginMethod.reportTaskDone,
-            args:   [
-                endTime,
-                this.passed,
-                this.task.warningLog.messages,
-                result,
-            ],
-        });
-
-        (this.pendingTaskDonePromise.resolve as Function)();
-    }
-
-    private _assignTaskEventHandlers (): void {
-        const task = this.task;
-
-        task.once('start', async () => await this._onceTaskStartHandler());
-
-        task.on('test-run-start', async testRun => await this._onTaskTestRunStartHandler(testRun));
-
-        task.on('test-run-done', async testRun => await this._onTaskTestRunDoneHandler(testRun));
-
-        task.on('test-action-start', async e => await this._onTaskTestActionStart(e));
-
-        task.on('test-action-done', async e => await this._onTaskTestActionDone(e));
-
-        task.once('done', async () => await this._onceTaskDoneHandler());
+        messageBus.once('done', async () => await this._onceTaskDoneHandler());
     }
 
     public async dispose (): Promise<unknown> {
@@ -495,5 +215,328 @@ export default class Reporter {
                 outStream,
             };
         }));
+    }
+
+    //Task
+    private static _createTestItem (test: Test, runsPerTest: number): TestInfo {
+        return {
+            fixture:                    test.fixture as Fixture,
+            test:                       test,
+            testRunIds:                 [],
+            screenshotPath:             null,
+            screenshots:                [],
+            videos:                     [],
+            quarantine:                 null,
+            errs:                       [],
+            warnings:                   [],
+            unstable:                   false,
+            startTime:                  null,
+            testRunInfo:                null,
+            pendingRuns:                runsPerTest,
+            pendingStarts:              runsPerTest,
+            pendingTestRunDonePromise:  Reporter._createPendingPromise(),
+            pendingTestRunStartPromise: Reporter._createPendingPromise(),
+            browsers:                   [],
+        };
+    }
+
+    private static _createTestQueue (task: Task): TestInfo[] {
+        const runsPerTest = task.browserConnectionGroups.length;
+
+        return task.tests.map(test => Reporter._createTestItem(test, runsPerTest));
+    }
+
+    private static _createTestRunInfo (reportItem: TestInfo): TestRunInfo {
+        return {
+            errs:           sortBy(reportItem.errs, ['userAgent', 'code']),
+            warnings:       reportItem.warnings,
+            durationMs:     +new Date() - (reportItem.startTime as number), //eslint-disable-line  @typescript-eslint/no-extra-parens
+            unstable:       reportItem.unstable,
+            screenshotPath: reportItem.screenshotPath as string,
+            screenshots:    reportItem.screenshots,
+            videos:         reportItem.videos,
+            quarantine:     reportItem.quarantine,
+            skipped:        reportItem.test.skip,
+            browsers:       reportItem.browsers,
+            testId:         reportItem.test.id,
+        };
+    }
+
+    private _getTestItemForTestRun (taskInfo: TaskInfo, testRun: TestRun): TestInfo | undefined {
+        return find(taskInfo.testQueue, i => i.test === testRun.test);
+    }
+
+    private async _shiftTestQueue (): Promise<void> {
+        if (!this.taskInfo)
+            return;
+
+        let currentFixture = null;
+        let nextReportItem = null;
+        let testItem       = null;
+        const testQueue    = this.taskInfo.testQueue;
+
+        while (testQueue.length && testQueue[0].testRunInfo) {
+            testItem       = testQueue.shift() as TestInfo;
+            currentFixture = testItem.fixture;
+
+            // NOTE: here we assume that tests are sorted by fixture.
+            // Therefore, if the next report item has a different
+            // fixture, we can report this fixture start.
+            nextReportItem = testQueue[0];
+
+            await this.dispatchToPlugin({
+                method:        ReporterPluginMethod.reportTestDone,
+                initialObject: this.taskInfo.task,
+                args:          [
+                    testItem.test.name,
+                    testItem.testRunInfo,
+                    testItem.test.meta,
+                ],
+            });
+
+            if (!nextReportItem)
+                continue;
+
+            if (nextReportItem.fixture === currentFixture)
+                continue;
+
+            await this.dispatchToPlugin({
+                method:        ReporterPluginMethod.reportFixtureStart,
+                initialObject: this.taskInfo.task,
+                args:          [
+                    nextReportItem.fixture.name,
+                    nextReportItem.fixture.path,
+                    nextReportItem.fixture.meta,
+                ],
+            });
+        }
+    }
+
+    private async _resolveTestItem (taskInfo: TaskInfo, testItem: TestInfo, testRun: TestRun): Promise<void> {
+        if (!taskInfo.task)
+            return;
+
+        if (taskInfo.task.screenshots.hasCapturedFor(testRun.test)) {
+            testItem.screenshotPath = taskInfo.task.screenshots.getPathFor(testRun.test);
+            testItem.screenshots    = taskInfo.task.screenshots.getScreenshotsInfo(testRun.test);
+        }
+
+        if (taskInfo.task.videos)
+            testItem.videos = taskInfo.task.videos.getTestVideos(testItem.test.id);
+
+        if (testRun.quarantine) {
+            testItem.quarantine = testRun.quarantine.attempts.reduce((result: Record<string, object>, errors: TestRunErrorFormattableAdapter[], index: number) => {
+                const passed            = !errors.length;
+                const quarantineAttempt = index + 1;
+
+                result[quarantineAttempt] = { passed };
+
+                return result;
+            }, {});
+        }
+
+        if (!testItem.testRunInfo) {
+            testItem.testRunInfo = Reporter._createTestRunInfo(testItem);
+
+            if (testItem.test.skip)
+                taskInfo.skipped++;
+            else if (testItem.errs.length)
+                taskInfo.failed++;
+            else
+                taskInfo.passed++;
+        }
+
+        await this._shiftTestQueue();
+
+        (testItem.pendingTestRunDonePromise.resolve as Function)();
+    }
+
+    private _prepareReportTestActionEventArgs ({ command, duration, result, testRun, err }: ReportTestActionEventArguments): any {
+        const args: any = {};
+
+        if (err)
+            args.err = err;
+
+        if (typeof duration === 'number')
+            args.duration = duration;
+
+        const testFixture = testRun.test.fixture as Fixture;
+
+        return Object.assign(args, {
+            testRunId: testRun.id,
+            test:      {
+                id:    testRun.test.id,
+                name:  testRun.test.name,
+                phase: testRun.phase,
+            },
+            fixture: {
+                name: testFixture.name,
+                id:   testFixture.id,
+            },
+            command: formatCommand(command, result),
+            browser: testRun.browser,
+        });
+    }
+
+    private async _onceTaskStartHandler (task: Task): Promise<void> {
+        this.taskInfo = {
+            task:                   task,
+            passed:                 0,
+            failed:                 0,
+            skipped:                0,
+            testCount:              task.tests.filter(test => !test.skip).length,
+            testQueue:              Reporter._createTestQueue(task),
+            stopOnFirstFail:        false,
+            pendingTaskDonePromise: Reporter._createPendingPromise(),
+        };
+
+        const startTime  = new Date();
+        const userAgents = task.browserConnectionGroups.map(group => group[0].userAgent);
+        const first      = this.taskInfo.testQueue[0];
+
+        const taskProperties = {
+            configuration: task.opts,
+        };
+
+        await this.dispatchToPlugin({
+            method:        ReporterPluginMethod.reportTaskStart,
+            initialObject: task,
+            args:          [
+                startTime,
+                userAgents,
+                this.taskInfo.testCount,
+                task.testStructure,
+                taskProperties,
+            ],
+        });
+
+        await this.dispatchToPlugin({
+            method:        ReporterPluginMethod.reportFixtureStart,
+            initialObject: task,
+            args:          [
+                first.fixture.name,
+                first.fixture.path,
+                first.fixture.meta,
+            ],
+        });
+    }
+
+    private async _onTaskTestRunStartHandler (testRun: TestRun): Promise<unknown> {
+        if (!this.taskInfo)
+            return void 0;
+
+        const testItem = this._getTestItemForTestRun(this.taskInfo, testRun) as TestInfo;
+
+        testItem.testRunIds.push(testRun.id);
+
+        if (!testItem.startTime)
+            testItem.startTime = +new Date();
+
+        testItem.pendingStarts--;
+
+        if (!testItem.pendingStarts) {
+            // @ts-ignore
+            if (this.plugin.reportTestStart) {
+                const testStartInfo = { testRunIds: testItem.testRunIds, testId: testItem.test.id };
+
+                await this.dispatchToPlugin({
+                    method:        ReporterPluginMethod.reportTestStart as string,
+                    initialObject: this.taskInfo.task,
+                    args:          [
+                        testItem.test.name,
+                        testItem.test.meta,
+                        testStartInfo,
+                    ],
+                });
+            }
+
+            (testItem.pendingTestRunStartPromise.resolve as Function)();
+        }
+
+        return testItem.pendingTestRunStartPromise;
+    }
+
+    private async _onTaskTestRunDoneHandler (testRun: TestRun): Promise<void> {
+        if (!this.taskInfo)
+            return;
+
+        const reportItem                    = this._getTestItemForTestRun(this.taskInfo, testRun) as TestInfo;
+        const isTestRunStoppedTaskExecution = !!testRun.errs.length && this.taskInfo.stopOnFirstFail;
+
+        reportItem.pendingRuns = isTestRunStoppedTaskExecution ? 0 : reportItem.pendingRuns - 1;
+        reportItem.unstable    = reportItem.unstable || testRun.unstable;
+        reportItem.errs        = reportItem.errs.concat(testRun.errs);
+        reportItem.warnings    = testRun.warningLog ? union(reportItem.warnings, testRun.warningLog.messages) : [];
+
+        reportItem.browsers.push(Object.assign({ testRunId: testRun.id }, testRun.browser));
+
+        if (!reportItem.pendingRuns)
+            await this._resolveTestItem(this.taskInfo, reportItem, testRun);
+
+        await reportItem.pendingTestRunDonePromise;
+    }
+
+    private async _onTaskTestActionStart ({ apiActionName, ...restArgs }: ReportTaskActionEventArguments): Promise<void> {
+        if (!this.taskInfo)
+            return;
+
+        // @ts-ignore
+        if (this.plugin.reportTestActionStart) {
+            restArgs = this._prepareReportTestActionEventArgs(restArgs as unknown as ReportTestActionEventArguments);
+
+            await this.dispatchToPlugin({
+                method:        ReporterPluginMethod.reportTestActionStart as string,
+                initialObject: this.taskInfo.task,
+                args:          [
+                    apiActionName,
+                    restArgs,
+                ],
+            });
+        }
+    }
+
+    private async _onTaskTestActionDone ({ apiActionName, ...restArgs }: ReportTaskActionEventArguments): Promise<void> {
+        if (!this.taskInfo)
+            return;
+
+        // @ts-ignore
+        if (this.plugin.reportTestActionDone) {
+            restArgs = this._prepareReportTestActionEventArgs(restArgs as unknown as ReportTestActionEventArguments);
+
+            await this.dispatchToPlugin({
+                method:        ReporterPluginMethod.reportTestActionDone as string,
+                initialObject: this.taskInfo.task,
+                args:          [
+                    apiActionName,
+                    restArgs,
+                ],
+            });
+        }
+    }
+
+    private async _onceTaskDoneHandler (): Promise<void> {
+        if (!this.taskInfo)
+            return;
+
+        const endTime = new Date();
+
+        const result = {
+            passedCount:  this.taskInfo.passed,
+            failedCount:  this.taskInfo.failed,
+            skippedCount: this.taskInfo.skipped,
+        };
+
+        await this.dispatchToPlugin({
+            method:        ReporterPluginMethod.reportTaskDone,
+            initialObject: this.taskInfo.task,
+            args:          [
+                endTime,
+                this.taskInfo.passed,
+                this.taskInfo.task?.warningLog.messages,
+                result,
+            ],
+        });
+
+        (this.taskInfo.pendingTaskDonePromise.resolve as Function)();
     }
 }
