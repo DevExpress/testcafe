@@ -7,6 +7,7 @@ const markerSymbol               = require('../../lib/test-run/marker-symbol');
 const assertTestRunError         = require('./helpers/assert-test-run-error');
 const { createSimpleTestStream } = require('../functional/utils/stream');
 const BaseTestRunMock            = require('./helpers/base-test-run-mock');
+const semver                     = require('semver');
 
 let callsite = 0;
 
@@ -104,12 +105,16 @@ describe('Code steps', () => {
     });
 
     it('error', async () => {
-        await assertError('u=void 0;u.t=5;', 'Cannot set property \'t\' of undefined', 1, 13, '1');
+        const expectedMessage = semver.gte(process.version, '16.9.0') ?
+            "Cannot set properties of undefined (setting 't')" :
+            "Cannot set property 't' of undefined";
+
+        await assertError('u=void 0;u.t=5;', expectedMessage, 1, 13, '1');
 
         await assertError(
             'let q = void 0;\n' +
             '        q.t = 5;'
-            , "Cannot set properties of undefined (setting 't')", 2, 13, '2');
+            , expectedMessage, 2, 13, '2');
 
         await assertError(
             'let q = 3;\n' +
