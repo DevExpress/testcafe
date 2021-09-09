@@ -61,7 +61,7 @@ describe('Custom client scripts', () => {
         it('Script loaded from file', () => {
             return runTests('./testcafe-fixtures/error-in-script-from-file.js', null, { shouldFail: true, only: 'chrome' })
                 .catch(errs => {
-                    expect(errs[0]).eql("An error occurred in a script injected into the tested page:  TypeError: Cannot read property 'some-property' of undefined  [[user-agent]]");
+                    expect(errs[0]).eql("An error occurred in a script injected into the tested page:  TypeError: Cannot read properties of undefined (reading 'some-property')  [[user-agent]]");
                 });
         });
 
