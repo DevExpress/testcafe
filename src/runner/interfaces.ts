@@ -11,6 +11,7 @@ import { Dictionary } from '../configuration/interfaces';
 import FixtureHookController from './fixture-hook-controller';
 import Screenshots from '../screenshots';
 import Capturer from '../screenshots/capturer';
+import MessageBus from '../utils/message-bus';
 
 export interface ActionEventArg {
     apiActionName: string;
@@ -61,6 +62,7 @@ export interface BrowserJobInit {
     fixtureHookController: FixtureHookController;
     opts: Dictionary<OptionValue>;
     compilerService?: CompilerService;
+    messageBus: MessageBus;
 }
 
 export interface TaskInit {
@@ -70,6 +72,7 @@ export interface TaskInit {
     opts: Dictionary<OptionValue>;
     runnerWarningLog: WarningLog;
     compilerService?: CompilerService;
+    messageBus: MessageBus;
 }
 
 export interface TestRunControllerInit {
@@ -81,6 +84,7 @@ export interface TestRunControllerInit {
     fixtureHookController: FixtureHookController;
     opts: Dictionary<OptionValue>;
     compilerService?: CompilerService;
+    messageBus: MessageBus;
 }
 
 export interface TestRunInit {

@@ -44,6 +44,7 @@ import OS from 'os-family';
 import detectDisplay from '../utils/detect-display';
 import { validateQuarantineOptions } from '../utils/get-options/quarantine';
 import logEntry from '../utils/log-entry';
+import MessageBus from '../utils/message-bus';
 
 const DEBUG_LOGGER = debug('testcafe:runner');
 
@@ -59,6 +60,7 @@ export default class Runner extends EventEmitter {
         this.warningLog          = new WarningLog();
         this.compilerService     = compilerService;
         this._options            = {};
+        this._messageBus         = new MessageBus();
 
         this.apiMethodWasCalled = new FlagList([
             OPTION_NAMES.src,
@@ -187,6 +189,7 @@ export default class Runner extends EventEmitter {
             opts,
             runnerWarningLog: warningLog,
             compilerService:  this.compilerService,
+            messageBus:       this._messageBus,
         });
     }
 

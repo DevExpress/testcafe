@@ -22,6 +22,7 @@ import { VideoOptions } from '../../video-recorder/interfaces';
 import TaskPhase from './phase';
 import CompilerService from '../../services/compiler/host';
 import Fixture from '../../api/structure/fixture';
+import MessageBus from '../../utils/message-bus';
 
 export default class Task extends AsyncEventEmitter {
     private readonly _timeStamp: moment.Moment;
@@ -38,6 +39,7 @@ export default class Task extends AsyncEventEmitter {
     public readonly testStructure: ReportedTestStructureItem[];
     public readonly videos?: Videos;
     private readonly _compilerService?: CompilerService;
+    private readonly _messageBus: MessageBus;
 
     public constructor ({
         tests,
@@ -46,6 +48,7 @@ export default class Task extends AsyncEventEmitter {
         opts,
         runnerWarningLog,
         compilerService,
+        messageBus,
     }: TaskInit) {
         super({ captureRejections: true });
 
@@ -57,6 +60,7 @@ export default class Task extends AsyncEventEmitter {
         this._proxy                  = proxy;
         this.warningLog              = new WarningLog();
         this._compilerService        = compilerService;
+        this._messageBus             = messageBus;
 
         runnerWarningLog.copyTo(this.warningLog);
 
@@ -162,6 +166,7 @@ export default class Task extends AsyncEventEmitter {
                 warningLog:            this.warningLog,
                 fixtureHookController: this.fixtureHookController,
                 compilerService:       this._compilerService,
+                messageBus:            this._messageBus,
                 proxy,
                 opts,
             });
