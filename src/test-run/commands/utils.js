@@ -24,6 +24,10 @@ export function isObservationCommand (command) {
            command.type === TYPE.executeExpression;
 }
 
+export function isAssertionCommand (command) {
+    return !!command.assertionType;
+}
+
 function isWindowSwitchingCommand (command) {
     return command.type === TYPE.switchToIframe || command.type === TYPE.switchToMainWindow;
 }

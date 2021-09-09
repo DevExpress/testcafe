@@ -36,13 +36,11 @@ import {
     IncomingMessageLikeInitOptions,
 } from 'testcafe-hammerhead';
 
-import { CallsiteRecord } from 'callsite-record';
 import { DebugCommand, DisableDebugCommand } from '../../test-run/commands/observation';
 import MethodShouldNotBeCalledError from '../utils/method-should-not-be-called-error';
 
 import {
     AddRequestEventListenersArguments,
-    ExecuteActionArguments,
     ExecuteCommandArguments,
     ExecuteMockPredicate,
     ExecuteRequestFilterRulePredicateArguments,
@@ -122,7 +120,6 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
 
     private _setupRoutes (proxy: IPCProxy): void {
         proxy.register([
-            this.executeAction,
             this.executeCommand,
             this.ready,
             this.onRequestHookEvent,
@@ -346,13 +343,7 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
         this.emit('ready');
     }
 
-    public async executeAction (data: ExecuteActionArguments): Promise<unknown> {
-        return this
-            ._getTargetTestRun(data.id)
-            .executeAction(data.apiMethodName, data.command, data.callsite as CallsiteRecord);
-    }
-
-    public executeActionSync (): never {
+    public executeCommandSync (): never {
         throw new MethodShouldNotBeCalledError();
     }
 

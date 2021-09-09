@@ -1,4 +1,4 @@
-import CommandBase from './base';
+import { CommandBase, ActionCommandBase } from './base';
 import TestRun from '../index';
 
 declare class ExecuteClientFunctionCommandBase extends CommandBase {
@@ -22,11 +22,11 @@ export class ExecuteSelectorCommand extends ExecuteClientFunctionCommandBase {
     public index: number;
 }
 
-export class WaitCommand extends CommandBase {
+export class WaitCommand extends ActionCommandBase {
     public constructor(obj: object, testRun: TestRun);
     public timeout: number;
 }
 
-export class DebugCommand extends CommandBase { }
+export class DebugCommand extends ActionCommandBase { }
 
-export class DisableDebugCommand extends CommandBase { }
+export class DisableDebugCommand extends ActionCommandBase { }

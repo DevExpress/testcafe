@@ -1,5 +1,5 @@
 import TYPE from './type';
-import CommandBase from './base';
+import { ActionCommandBase } from './base';
 import { ElementScreenshotOptions, ResizeToFitDeviceOptions } from './options';
 import { initSelector } from './validations/initializers';
 
@@ -12,6 +12,7 @@ import {
 } from './validations/argument';
 
 import { generateScreenshotMark } from '../../screenshots/utils';
+import { camelCase } from 'lodash';
 
 function initResizeToFitDeviceOptions (name, val, initOptions, validate = true) {
     return new ResizeToFitDeviceOptions(val, validate);
@@ -22,7 +23,7 @@ function initElementScreenshotOptions (name, val, initOptions, validate = true) 
 }
 
 // Commands
-export class TakeScreenshotBaseCommand extends CommandBase {
+export class TakeScreenshotBaseCommand extends ActionCommandBase {
     constructor (obj, testRun, type, validateProperties) {
         super(obj, testRun, type, validateProperties);
 
@@ -36,6 +37,8 @@ export class TakeScreenshotBaseCommand extends CommandBase {
 }
 
 export class TakeScreenshotCommand extends TakeScreenshotBaseCommand {
+    static methodName = camelCase(TYPE.takeScreenshot);
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.takeScreenshot, validateProperties);
     }
@@ -50,6 +53,8 @@ export class TakeScreenshotCommand extends TakeScreenshotBaseCommand {
 }
 
 export class TakeElementScreenshotCommand extends TakeScreenshotBaseCommand {
+    static methodName = camelCase(TYPE.takeElementScreenshot);
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.takeElementScreenshot, validateProperties);
     }
@@ -64,6 +69,8 @@ export class TakeElementScreenshotCommand extends TakeScreenshotBaseCommand {
 }
 
 export class TakeScreenshotOnFailCommand extends TakeScreenshotBaseCommand {
+    static methodName = camelCase(TYPE.takeScreenshotOnFail);
+
     constructor (obj, testRun) {
         super(obj, testRun, TYPE.takeScreenshotOnFail);
     }
@@ -75,7 +82,9 @@ export class TakeScreenshotOnFailCommand extends TakeScreenshotBaseCommand {
     }
 }
 
-export class ResizeWindowCommand extends CommandBase {
+export class ResizeWindowCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.resizeWindow);
+
     constructor (obj, testRun) {
         super(obj, testRun, TYPE.resizeWindow);
     }
@@ -88,7 +97,9 @@ export class ResizeWindowCommand extends CommandBase {
     }
 }
 
-export class ResizeWindowToFitDeviceCommand extends CommandBase {
+export class ResizeWindowToFitDeviceCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.resizeWindowToFitDevice);
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.resizeWindowToFitDevice, validateProperties);
     }
@@ -101,8 +112,11 @@ export class ResizeWindowToFitDeviceCommand extends CommandBase {
     }
 }
 
-export class MaximizeWindowCommand {
+export class MaximizeWindowCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.maximizeWindow);
+
     constructor () {
+        super();
         this.type = TYPE.maximizeWindow;
     }
 }

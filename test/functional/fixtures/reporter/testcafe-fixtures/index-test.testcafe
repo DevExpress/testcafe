@@ -1,0 +1,26 @@
+{
+    "fixtures": [
+        {
+            "name": "Reporter",
+            "pageUrl": "http://localhost:3000/fixtures/reporter/pages/index.html",
+            "tests": [
+                {
+                    "name": "reportTestActionDone should work in the raw tests",
+                    "commands": [
+                        {
+                            "type": "click",
+                            "selector": {
+                                "type": "js-expr",
+                                "value": "Selector('#button')"
+                            },
+                            "options": {
+                                "offsetX": 10,
+                                "offsetY": 10
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

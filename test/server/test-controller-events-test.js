@@ -26,7 +26,7 @@ class TestRunMock extends BaseTestRunMock {
         this.disableMultipleWindows = false;
     }
 
-    executeCommand () {
+    _internalExecuteCommand () {
         return delay(10);
     }
 
@@ -220,7 +220,7 @@ describe('TestController action events', () => {
             },
         });
 
-        testController.testRun.executeCommand = () => {
+        testController.testRun._internalExecuteCommand = () => {
             return delay(10)
                 .then(() => {
                     throw new Error('test error');
@@ -248,7 +248,7 @@ describe('TestController action events', () => {
             },
         });
 
-        testController.testRun.executeCommand = () => {
+        testController.testRun._internalExecuteCommand = () => {
             return delay(10);
         };
 

@@ -144,7 +144,7 @@ export default class ClientFunctionBuilder {
                 throw err;
             }
 
-            const result = await testRun.executeAction(command.type, command, callsite);
+            const result = await testRun.executeCommand(command, callsite);
 
             return this._processResult(result, args);
         });
@@ -165,7 +165,7 @@ export default class ClientFunctionBuilder {
             throw err;
         }
 
-        const result = testRun.executeActionSync(command.type, command, callsite);
+        const result = testRun.executeCommandSync(command, callsite);
 
         return this._processResult(result, args);
     }

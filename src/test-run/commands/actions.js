@@ -2,7 +2,7 @@ import TYPE from './type';
 import SelectorBuilder from '../../client-functions/selectors/selector-builder';
 import ClientFunctionBuilder from '../../client-functions/client-function-builder';
 import functionBuilderSymbol from '../../client-functions/builder-symbol';
-import CommandBase from './base';
+import { ActionCommandBase, CommandBase } from './base';
 import {
     ActionOptions,
     ClickOptions,
@@ -34,6 +34,7 @@ import {
 
 import { SetNativeDialogHandlerCodeWrongTypeError } from '../../errors/test-run';
 import { ExecuteClientFunctionCommand } from './observation';
+import { camelCase } from 'lodash';
 
 
 // Initializers
@@ -97,7 +98,9 @@ function initDialogHandler (name, val, { skipVisibilityCheck, testRun }) {
 }
 
 // Commands
-export class DispatchEventCommand extends CommandBase {
+export class DispatchEventCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.dispatchEvent);
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.dispatchEvent, validateProperties);
     }
@@ -112,7 +115,9 @@ export class DispatchEventCommand extends CommandBase {
     }
 }
 
-export class ClickCommand extends CommandBase {
+export class ClickCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.click);
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.click, validateProperties);
     }
@@ -125,7 +130,9 @@ export class ClickCommand extends CommandBase {
     }
 }
 
-export class RightClickCommand extends CommandBase {
+export class RightClickCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.rightClick);
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.rightClick, validateProperties);
     }
@@ -163,7 +170,9 @@ export class ExecuteAsyncExpressionCommand extends CommandBase {
     }
 }
 
-export class DoubleClickCommand extends CommandBase {
+export class DoubleClickCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.doubleClick);
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.doubleClick, validateProperties);
     }
@@ -176,7 +185,9 @@ export class DoubleClickCommand extends CommandBase {
     }
 }
 
-export class HoverCommand extends CommandBase {
+export class HoverCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.hover);
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.hover, validateProperties);
     }
@@ -189,7 +200,9 @@ export class HoverCommand extends CommandBase {
     }
 }
 
-export class TypeTextCommand extends CommandBase {
+export class TypeTextCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.typeText);
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.typeText, validateProperties);
     }
@@ -203,7 +216,9 @@ export class TypeTextCommand extends CommandBase {
     }
 }
 
-export class DragCommand extends CommandBase {
+export class DragCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.drag);
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.drag, validateProperties);
     }
@@ -218,7 +233,9 @@ export class DragCommand extends CommandBase {
     }
 }
 
-export class DragToElementCommand extends CommandBase {
+export class DragToElementCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.dragToElement);
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.dragToElement, validateProperties);
     }
@@ -232,7 +249,9 @@ export class DragToElementCommand extends CommandBase {
     }
 }
 
-export class ScrollCommand extends CommandBase {
+export class ScrollCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.scroll);
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.scroll, validateProperties);
     }
@@ -248,7 +267,9 @@ export class ScrollCommand extends CommandBase {
     }
 }
 
-export class ScrollByCommand extends CommandBase {
+export class ScrollByCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.scrollBy);
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.scrollBy, validateProperties);
     }
@@ -263,7 +284,9 @@ export class ScrollByCommand extends CommandBase {
     }
 }
 
-export class ScrollIntoViewCommand extends CommandBase {
+export class ScrollIntoViewCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.scrollIntoView);
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.scrollIntoView, validateProperties);
     }
@@ -276,7 +299,9 @@ export class ScrollIntoViewCommand extends CommandBase {
     }
 }
 
-export class SelectTextCommand extends CommandBase {
+export class SelectTextCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.selectText);
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.selectText, validateProperties);
     }
@@ -291,7 +316,9 @@ export class SelectTextCommand extends CommandBase {
     }
 }
 
-export class SelectEditableContentCommand extends CommandBase {
+export class SelectEditableContentCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.selectEditableContent);
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.selectEditableContent, validateProperties);
     }
@@ -305,7 +332,9 @@ export class SelectEditableContentCommand extends CommandBase {
     }
 }
 
-export class SelectTextAreaContentCommand extends CommandBase {
+export class SelectTextAreaContentCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.selectTextAreaContent);
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.selectTextAreaContent, validateProperties);
     }
@@ -322,7 +351,9 @@ export class SelectTextAreaContentCommand extends CommandBase {
     }
 }
 
-export class PressKeyCommand extends CommandBase {
+export class PressKeyCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.pressKey);
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.pressKey, validateProperties);
     }
@@ -335,7 +366,9 @@ export class PressKeyCommand extends CommandBase {
     }
 }
 
-export class NavigateToCommand extends CommandBase {
+export class NavigateToCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.navigateTo);
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.navigateTo, validateProperties);
     }
@@ -349,7 +382,9 @@ export class NavigateToCommand extends CommandBase {
     }
 }
 
-export class SetFilesToUploadCommand extends CommandBase {
+export class SetFilesToUploadCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.setFilesToUpload);
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.setFilesToUpload, validateProperties);
     }
@@ -362,7 +397,9 @@ export class SetFilesToUploadCommand extends CommandBase {
     }
 }
 
-export class ClearUploadCommand extends CommandBase {
+export class ClearUploadCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.clearUpload);
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.clearUpload, validateProperties);
     }
@@ -374,7 +411,9 @@ export class ClearUploadCommand extends CommandBase {
     }
 }
 
-export class SwitchToIframeCommand extends CommandBase {
+export class SwitchToIframeCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.switchToIframe);
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.switchToIframe, validateProperties);
     }
@@ -386,13 +425,18 @@ export class SwitchToIframeCommand extends CommandBase {
     }
 }
 
-export class SwitchToMainWindowCommand {
+export class SwitchToMainWindowCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.switchToMainWindow);
+
     constructor () {
+        super();
         this.type = TYPE.switchToMainWindow;
     }
 }
 
-export class OpenWindowCommand extends CommandBase {
+export class OpenWindowCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.openWindow);
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.openWindow, validateProperties);
     }
@@ -404,7 +448,9 @@ export class OpenWindowCommand extends CommandBase {
     }
 }
 
-export class CloseWindowCommand extends CommandBase {
+export class CloseWindowCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.closeWindow);
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.closeWindow, validateProperties);
     }
@@ -417,7 +463,9 @@ export class CloseWindowCommand extends CommandBase {
 }
 
 
-export class GetCurrentWindowCommand extends CommandBase {
+export class GetCurrentWindowCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.getCurrentWindow);
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.getCurrentWindow, validateProperties);
     }
@@ -428,7 +476,9 @@ export class GetCurrentWindowCommand extends CommandBase {
     }
 }
 
-export class GetCurrentWindowsCommand extends CommandBase {
+export class GetCurrentWindowsCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.getCurrentWindows);
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.getCurrentWindows, validateProperties);
     }
@@ -440,7 +490,9 @@ export class GetCurrentWindowsCommand extends CommandBase {
 }
 
 
-export class SwitchToWindowCommand extends CommandBase {
+export class SwitchToWindowCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.switchToWindow);
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.switchToWindow, validateProperties);
     }
@@ -452,7 +504,9 @@ export class SwitchToWindowCommand extends CommandBase {
     }
 }
 
-export class SwitchToWindowByPredicateCommand extends CommandBase {
+export class SwitchToWindowByPredicateCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.switchToWindow);
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.switchToWindowByPredicate, validateProperties);
     }
@@ -465,7 +519,9 @@ export class SwitchToWindowByPredicateCommand extends CommandBase {
     }
 }
 
-export class SwitchToParentWindowCommand extends CommandBase {
+export class SwitchToParentWindowCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.switchToParentWindow);
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.switchToParentWindow, validateProperties);
     }
@@ -476,7 +532,9 @@ export class SwitchToParentWindowCommand extends CommandBase {
     }
 }
 
-export class SwitchToPreviousWindowCommand extends CommandBase {
+export class SwitchToPreviousWindowCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.switchToPreviousWindow);
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.switchToPreviousWindow, validateProperties);
     }
@@ -486,7 +544,9 @@ export class SwitchToPreviousWindowCommand extends CommandBase {
     }
 }
 
-export class SetNativeDialogHandlerCommand extends CommandBase {
+export class SetNativeDialogHandlerCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.setNativeDialogHandler);
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.setNativeDialogHandler, validateProperties);
     }
@@ -510,19 +570,27 @@ export class SetNativeDialogHandlerCommand extends CommandBase {
     }
 }
 
-export class GetNativeDialogHistoryCommand {
+export class GetNativeDialogHistoryCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.getNativeDialogHistory);
+
     constructor () {
+        super();
         this.type = TYPE.getNativeDialogHistory;
     }
 }
 
-export class GetBrowserConsoleMessagesCommand {
+export class GetBrowserConsoleMessagesCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.getBrowserConsoleMessages);
+
     constructor () {
+        super();
         this.type = TYPE.getBrowserConsoleMessages;
     }
 }
 
-export class SetTestSpeedCommand extends CommandBase {
+export class SetTestSpeedCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.setTestSpeed);
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.setTestSpeed, validateProperties);
     }
@@ -534,7 +602,9 @@ export class SetTestSpeedCommand extends CommandBase {
     }
 }
 
-export class SetPageLoadTimeoutCommand extends CommandBase {
+export class SetPageLoadTimeoutCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.setPageLoadTimeout);
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.setPageLoadTimeout, validateProperties);
     }
@@ -546,7 +616,9 @@ export class SetPageLoadTimeoutCommand extends CommandBase {
     }
 }
 
-export class UseRoleCommand extends CommandBase {
+export class UseRoleCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.useRole);
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.useRole, validateProperties);
     }
@@ -558,7 +630,9 @@ export class UseRoleCommand extends CommandBase {
     }
 }
 
-export class RecorderCommand extends CommandBase {
+export class RecorderCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.recorder);
+
     constructor (obj, testRun) {
         super(obj, testRun, TYPE.recorder);
     }

@@ -1,6 +1,6 @@
 import Assignable from '../../utils/assignable';
 
-export default class CommandBase extends Assignable {
+export class CommandBase extends Assignable {
     constructor (obj, testRun, type, validateProperties = true) {
         super();
 
@@ -11,5 +11,13 @@ export default class CommandBase extends Assignable {
 
     _getAssignableProperties () {
         return [];
+    }
+}
+
+export class ActionCommandBase extends CommandBase {
+    static methodName = 'actionCommandBase';
+
+    get methodName () {
+        return this.constructor.methodName;
     }
 }

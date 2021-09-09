@@ -47,8 +47,8 @@ function imitateCommandResolvingFromClient () {
 describe('Driver task queue', () => {
     it('Should return real queue length after all client commands are added', async () => {
         const commandExecutionPromises = [
-            testRunMock.executeCommand(new PressKeyCommand({ keys: 'a' })),
-            testRunMock.executeCommand(new PressKeyCommand({ keys: 'b' })),
+            testRunMock._internalExecuteCommand(new PressKeyCommand({ keys: 'a' })),
+            testRunMock._internalExecuteCommand(new PressKeyCommand({ keys: 'b' })),
         ];
 
         const driverTaskQueueLength     = testRunMock.driverTaskQueue.length;

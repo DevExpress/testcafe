@@ -30,7 +30,6 @@ import {
 } from './protocol';
 
 import {
-    ExecuteActionArguments,
     ExecuteCommandArguments,
     ExecuteMockPredicate,
     ExecuteRequestFilterRulePredicateArguments,
@@ -325,12 +324,8 @@ class CompilerService implements CompilerProtocol {
         return await functionObject(context);
     }
 
-    public executeActionSync ({ id, apiMethodName, command, callsite }: ExecuteActionArguments): unknown {
-        return this.proxy.callSync(this.executeAction, { id, apiMethodName, command, callsite });
-    }
-
-    public async executeAction ({ id, apiMethodName, command, callsite }: ExecuteActionArguments): Promise<unknown> {
-        return this.proxy.call(this.executeAction, { id, apiMethodName, command, callsite });
+    public executeCommandSync ({ id, command, callsite }: ExecuteCommandArguments): unknown {
+        return this.proxy.callSync(this.executeCommand, { id, command, callsite });
     }
 
     public async executeCommand ({ command, id, callsite }: ExecuteCommandArguments): Promise<unknown> {

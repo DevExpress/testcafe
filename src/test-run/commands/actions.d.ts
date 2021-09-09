@@ -1,4 +1,4 @@
-import CommandBase from './base';
+import { ActionCommandBase, CommandBase } from './base';
 import { ExecuteClientFunctionCommand, ExecuteSelectorCommand } from './observation';
 
 import {
@@ -14,56 +14,56 @@ import Role from '../../role/role';
 import TestRun from '../index';
 
 
-export class SetNativeDialogHandlerCommand extends CommandBase {
+export class SetNativeDialogHandlerCommand extends ActionCommandBase {
     public constructor(obj: object, testRun?: TestRun, validateProperties?: boolean);
     public dialogHandler: ExecuteClientFunctionCommand;
     public static from (val: object): SetNativeDialogHandlerCommand;
 }
 
-export class NavigateToCommand extends CommandBase {
+export class NavigateToCommand extends ActionCommandBase {
     public constructor(obj: object, testRun?: TestRun, validateProperties?: boolean);
     public url: string;
     public stateSnapshot: string;
     public forceReload: boolean;
 }
 
-export class PressKeyCommand extends CommandBase {
+export class PressKeyCommand extends ActionCommandBase {
     public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
     public keys: string;
     public options: PressOptions;
 }
 
-export class TypeTextCommand extends CommandBase {
+export class TypeTextCommand extends ActionCommandBase {
     public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
     public selector: ExecuteSelectorCommand;
     public text: string;
     public options: TypeOptions;
 }
 
-export class UseRoleCommand extends CommandBase {
+export class UseRoleCommand extends ActionCommandBase {
     public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
     public role: Role;
 }
 
-export class OpenWindowCommand extends CommandBase {
+export class OpenWindowCommand extends ActionCommandBase {
     public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
     public url: string;
 }
 
-export class CloseWindowCommand extends CommandBase {
+export class CloseWindowCommand extends ActionCommandBase {
     public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
     public windowId: string;
 }
 
-export class GetCurrentWindowCommand extends CommandBase {
+export class GetCurrentWindowCommand extends ActionCommandBase {
     public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
 }
 
-export class GetCurrentWindowsCommand extends CommandBase {
+export class GetCurrentWindowsCommand extends ActionCommandBase {
     public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
 }
 
-export class SwitchToWindowCommand extends CommandBase {
+export class SwitchToWindowCommand extends ActionCommandBase {
     public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
     public windowId: string;
 }
@@ -73,56 +73,64 @@ export interface CheckWindowPredicateData {
     title: string;
 }
 
-export class SwitchToWindowByPredicateCommand extends CommandBase {
+export class SwitchToWindowByPredicateCommand extends ActionCommandBase {
     public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
     public id: string;
     public checkWindow(w: CheckWindowPredicateData): boolean;
 }
 
-export class SwitchToParentWindowCommand extends CommandBase {
+export class SwitchToParentWindowCommand extends ActionCommandBase {
     public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
 }
 
-export class SwitchToPreviousWindowCommand extends CommandBase {
+export class SwitchToPreviousWindowCommand extends ActionCommandBase {
     public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
 }
 
-export class SetTestSpeedCommand extends CommandBase {
+export class GetNativeDialogHistoryCommand extends ActionCommandBase {
+    public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
+}
+
+export class GetBrowserConsoleMessagesCommand extends ActionCommandBase {
+    public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
+}
+
+export class SetTestSpeedCommand extends ActionCommandBase {
     public constructor(obj: object, testRun?: TestRun, validateProperties?: boolean);
     public speed: number;
 }
 
-export class SetPageLoadTimeoutCommand extends CommandBase {
+export class SetPageLoadTimeoutCommand extends ActionCommandBase {
     public constructor(obj: object, testRun?: TestRun, validateProperties?: boolean);
     public duration: number;
 }
 
-export class SwitchToIframeCommand extends CommandBase {
+export class SwitchToIframeCommand extends ActionCommandBase {
     public constructor(obj: object, testRun?: TestRun, validateProperties?: boolean);
     public selector: ExecuteSelectorCommand;
 }
 
-export class SwitchToMainWindowCommand extends CommandBase { }
+export class SwitchToMainWindowCommand extends ActionCommandBase { }
 
-export class ClickCommand extends CommandBase {
+export class ClickCommand extends ActionCommandBase {
     public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
     public selector: ExecuteClientFunctionCommand;
     public options: ClickOptions;
 }
 
-export class RightClickCommand extends CommandBase {
+export class RightClickCommand extends ActionCommandBase {
     public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
     public selector: ExecuteClientFunctionCommand;
     public options: ClickOptions;
 }
 
-export class DoubleClickCommand extends CommandBase {
+export class DoubleClickCommand extends ActionCommandBase {
     public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
     public selector: ExecuteClientFunctionCommand;
     public options: ClickOptions;
 }
 
-export class DragCommand extends CommandBase {
+export class DragCommand extends ActionCommandBase {
     public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
     public selector: ExecuteClientFunctionCommand;
     public dragOffsetX: number;
@@ -130,14 +138,14 @@ export class DragCommand extends CommandBase {
     public options: DragToElementOptions;
 }
 
-export class DragToElementCommand extends CommandBase {
+export class DragToElementCommand extends ActionCommandBase {
     public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
     public selector: ExecuteClientFunctionCommand;
     public destinationSelector: ExecuteClientFunctionCommand;
     public options: DragToElementOptions;
 }
 
-export class SelectTextCommand extends CommandBase {
+export class SelectTextCommand extends ActionCommandBase {
     public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
     public selector: ExecuteClientFunctionCommand;
     public startPos: number;
@@ -145,14 +153,14 @@ export class SelectTextCommand extends CommandBase {
     public options: ActionOptions;
 }
 
-export class SelectEditableContentCommand extends CommandBase {
+export class SelectEditableContentCommand extends ActionCommandBase {
     public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
     public startSelector: ExecuteClientFunctionCommand;
     public endSelector: ExecuteClientFunctionCommand;
     public options: ActionOptions;
 }
 
-export class SelectTextAreaContentCommand extends CommandBase {
+export class SelectTextAreaContentCommand extends ActionCommandBase {
     public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
     public selector: ExecuteClientFunctionCommand;
     public startLine: number;
@@ -162,7 +170,7 @@ export class SelectTextAreaContentCommand extends CommandBase {
     public options: ActionOptions;
 }
 
-export class HoverCommand extends CommandBase {
+export class HoverCommand extends ActionCommandBase {
     public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
     public selector: ExecuteClientFunctionCommand;
     public options: MouseOptions;
@@ -179,18 +187,18 @@ export class ExecuteAsyncExpressionCommand extends CommandBase {
     public expression: string;
 }
 
-export class SetFilesToUploadCommand extends CommandBase {
+export class SetFilesToUploadCommand extends ActionCommandBase {
     public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
     public selector: ExecuteClientFunctionCommand;
     public filePath: string | string[];
 }
 
-export class ClearUploadCommand extends CommandBase {
+export class ClearUploadCommand extends ActionCommandBase {
     public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
     public selector: ExecuteClientFunctionCommand;
 }
 
-export class DispatchEventCommand extends CommandBase {
+export class DispatchEventCommand extends ActionCommandBase {
     public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
     public selector: ExecuteClientFunctionCommand;
     public eventName: string;
@@ -198,7 +206,7 @@ export class DispatchEventCommand extends CommandBase {
     public relatedTarget: ExecuteClientFunctionCommand;
 }
 
-export class ScrollCommand extends CommandBase {
+export class ScrollCommand extends ActionCommandBase {
     public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
     public selector: ExecuteClientFunctionCommand;
     public position: string;
@@ -207,7 +215,7 @@ export class ScrollCommand extends CommandBase {
     public options: ActionOptions;
 }
 
-export class ScrollByCommand extends CommandBase {
+export class ScrollByCommand extends ActionCommandBase {
     public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
     public selector: ExecuteClientFunctionCommand;
     public byX: number;
@@ -215,7 +223,7 @@ export class ScrollByCommand extends CommandBase {
     public options: ActionOptions;
 }
 
-export class ScrollIntoViewCommand extends CommandBase {
+export class ScrollIntoViewCommand extends ActionCommandBase {
     public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
     public selector: ExecuteClientFunctionCommand;
     public options: ActionOptions;

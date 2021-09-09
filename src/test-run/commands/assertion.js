@@ -1,10 +1,11 @@
 import TYPE from './type';
-import CommandBase from './base';
+import { ActionCommandBase } from './base';
 import { AssertionOptions } from './options';
 import { APIError } from '../../errors/runtime';
 import { AssertionExecutableArgumentError } from '../../errors/test-run';
 import { executeJsExpression } from '../execute-js-expression';
 import { isJSExpression } from './utils';
+import ASSERTION_TYPE from '../../assertions/type';
 
 import {
     stringArgument,
@@ -34,7 +35,9 @@ function initAssertionParameter (name, val, { skipVisibilityCheck, testRun }) {
 const NOT_REPORTED_PROPERTIES = ['id', 'originActual'];
 
 // Commands
-export default class AssertionCommand extends CommandBase {
+export class AssertionCommand extends ActionCommandBase {
+    static methodName = 'expect';
+
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.assertion, validateProperties);
     }
@@ -55,4 +58,68 @@ export default class AssertionCommand extends CommandBase {
     static get NOT_REPORTED_PROPERTIES () {
         return NOT_REPORTED_PROPERTIES;
     }
+}
+
+export class EqlAssertionCommand extends AssertionCommand {
+    static methodName = ASSERTION_TYPE.eql;
+}
+
+export class NotEqlAssertionCommand extends AssertionCommand {
+    static methodName = ASSERTION_TYPE.notEql;
+}
+
+export class OkAssertionCommand extends AssertionCommand {
+    static methodName = ASSERTION_TYPE.ok;
+}
+
+export class NotOkAssertionCommand extends AssertionCommand {
+    static methodName = ASSERTION_TYPE.notOk;
+}
+
+export class ContainsAssertionCommand extends AssertionCommand {
+    static methodName = ASSERTION_TYPE.contains;
+}
+
+export class NotContainsAssertionCommand extends AssertionCommand {
+    static methodName = ASSERTION_TYPE.notContains;
+}
+
+export class TypeOfAssertionCommand extends AssertionCommand {
+    static methodName = ASSERTION_TYPE.typeOf;
+}
+
+export class NotTypeOfAssertionCommand extends AssertionCommand {
+    static methodName = ASSERTION_TYPE.notTypeOf;
+}
+
+export class GtAssertionCommand extends AssertionCommand {
+    static methodName = ASSERTION_TYPE.gt;
+}
+
+export class GteAssertionCommand extends AssertionCommand {
+    static methodName = ASSERTION_TYPE.gte;
+}
+
+export class LtAssertionCommand extends AssertionCommand {
+    static methodName = ASSERTION_TYPE.lt;
+}
+
+export class LteAssertionCommand extends AssertionCommand {
+    static methodName = ASSERTION_TYPE.lte;
+}
+
+export class WithinAssertionCommand extends AssertionCommand {
+    static methodName = ASSERTION_TYPE.within;
+}
+
+export class NotWithinAssertionCommand extends AssertionCommand {
+    static methodName = ASSERTION_TYPE.notWithin;
+}
+
+export class MatchAssertionCommand extends AssertionCommand {
+    static methodName = ASSERTION_TYPE.match;
+}
+
+export class NotMatchAssertionCommand extends AssertionCommand {
+    static methodName = ASSERTION_TYPE.notMatch;
 }

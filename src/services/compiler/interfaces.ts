@@ -1,4 +1,4 @@
-import CommandBase from '../../test-run/commands/base';
+import { CommandBase } from '../../test-run/commands/base';
 
 import {
     ConfigureResponseEvent,
@@ -14,22 +14,16 @@ import {
 import { Dictionary } from '../../configuration/interfaces';
 import RequestHookMethodNames from '../../api/request-hooks/hook-method-names';
 import Role from '../../role/role';
+import { CallsiteRecord } from 'callsite-record';
 
 export interface TestRunLocator {
     testRunId: string;
 }
 
-export interface ExecuteActionArguments {
-    id: string;
-    apiMethodName: string;
-    command: CommandBase;
-    callsite: unknown;
-}
-
 export interface ExecuteCommandArguments {
     id: string;
     command: CommandBase;
-    callsite?: string;
+    callsite?: string | CallsiteRecord;
 }
 
 export interface RemoveRequestEventListenersArguments {

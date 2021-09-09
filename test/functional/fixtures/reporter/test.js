@@ -2,6 +2,7 @@ const expect               = require('chai').expect;
 const fs                   = require('fs');
 const generateReporter     = require('./reporter');
 const ReporterPluginMethod = require('../../../../lib/reporter/plugin-methods');
+const { createReporter }   = require('../../utils/reporter');
 
 const {
     createSimpleTestStream,
@@ -232,6 +233,34 @@ describe('Reporter', () => {
         return runTests('testcafe-fixtures/index-test.js', 'Simple test', runOpts)
             .then(() => {
                 expect(stream.finalCalled).to.be.ok;
+            });
+    });
+
+    it('reportTestActionDone should work in the raw tests', () => {
+        const expected = [
+            { expression: 'Selector(\'#button\')', element: { tagName: 'button', attributes: { type: 'button', id: 'button' } } },
+        ];
+
+        function customReporter (log) {
+            return createReporter({
+                reportTestActionDone: async (name, { command, browser }) => {
+                    log[browser.alias] = log[browser.alias] || [];
+
+                    if (command.selector)
+                        log[browser.alias].push(command.selector);
+                },
+            });
+        }
+
+        const log = {};
+
+        return runTests('testcafe-fixtures/index-test.testcafe', 'reportTestActionDone should work in the raw tests', { reporter: customReporter(log) })
+            .then(() => {
+                const logs = Object.values(log);
+
+                expect(logs.length).gt(0);
+
+                logs.forEach(browserLog => expect(browserLog).eql(expected));
             });
     });
 

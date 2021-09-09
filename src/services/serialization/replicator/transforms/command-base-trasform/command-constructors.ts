@@ -16,7 +16,9 @@ import {
     DragToElementCommand,
     ExecuteAsyncExpressionCommand,
     ExecuteExpressionCommand,
+    GetBrowserConsoleMessagesCommand,
     GetCurrentWindowCommand,
+    GetNativeDialogHistoryCommand,
     HoverCommand,
     NavigateToCommand,
     OpenWindowCommand,
@@ -33,6 +35,7 @@ import {
     SetPageLoadTimeoutCommand,
     SetTestSpeedCommand,
     SwitchToIframeCommand,
+    SwitchToMainWindowCommand,
     SwitchToParentWindowCommand,
     SwitchToPreviousWindowCommand,
     SwitchToWindowByPredicateCommand,
@@ -41,10 +44,11 @@ import {
     UseRoleCommand,
 } from '../../../../../test-run/commands/actions';
 
-import AssertionCommand from '../../../../../test-run/commands/assertion';
+import { AssertionCommand } from '../../../../../test-run/commands/assertion';
 import { CommandConstructor } from './types';
 
 import {
+    MaximizeWindowCommand,
     ResizeWindowCommand,
     ResizeWindowToFitDeviceCommand,
     TakeElementScreenshotCommand,
@@ -62,6 +66,9 @@ const COMMAND_CONSTRUCTORS = new Map<string, CommandConstructor>([
     [CommandType.typeText, TypeTextCommand],
     [CommandType.setNativeDialogHandler, SetNativeDialogHandlerCommand],
     [CommandType.switchToIframe, SwitchToIframeCommand],
+    [CommandType.switchToMainWindow, SwitchToMainWindowCommand],
+    [CommandType.getNativeDialogHistory, GetNativeDialogHistoryCommand],
+    [CommandType.getBrowserConsoleMessages, GetBrowserConsoleMessagesCommand],
     [CommandType.setTestSpeed, SetTestSpeedCommand],
     [CommandType.setPageLoadTimeout, SetPageLoadTimeoutCommand],
     [CommandType.pressKey, PressKeyCommand],
@@ -82,6 +89,7 @@ const COMMAND_CONSTRUCTORS = new Map<string, CommandConstructor>([
     [CommandType.takeElementScreenshot, TakeElementScreenshotCommand],
     [CommandType.resizeWindow, ResizeWindowCommand],
     [CommandType.resizeWindowToFitDevice, ResizeWindowToFitDeviceCommand],
+    [CommandType.maximizeWindow, MaximizeWindowCommand],
     [CommandType.dispatchEvent, DispatchEventCommand],
     [CommandType.scroll, ScrollCommand],
     [CommandType.scrollBy, ScrollByCommand],

@@ -4,10 +4,10 @@ import { TestRunDispatcherProtocol } from './protocol';
 import TestController from '../../api/test-controller';
 import ObservedCallsitesStorage from '../../test-run/observed-callsites-storage';
 import WarningLog from '../../notifications/warning-log';
-import AssertionCommand from '../../test-run/commands/assertion';
+import { AssertionCommand } from '../../test-run/commands/assertion';
 import { Dictionary } from '../../configuration/interfaces';
 import COMMAND_TYPE from '../../test-run/commands/type';
-import CommandBase from '../../test-run/commands/base';
+import { ActionCommandBase, CommandBase } from '../../test-run/commands/base';
 import { TestRunProxyInit } from '../interfaces';
 import Test from '../../api/structure/test';
 import RequestHook from '../../api/request-hooks/hook';
@@ -129,8 +129,9 @@ class TestRunProxy extends AsyncEventEmitter {
         this.asyncJsExpressionCallsites.set(id, callsite as CallsiteRecord);
     }
 
-    public async executeAction (apiMethodName: string, command: CommandBase, callsite: CallsiteRecord): Promise<unknown> {
-        this._storeActionCallsitesForExecutedAsyncJsExpression(callsite);
+    public async executeCommand (command: CommandBase | ActionCommandBase, callsite?: CallsiteRecord | string): Promise<unknown> {
+        if (command instanceof ActionCommandBase && callsite)
+            this._storeActionCallsitesForExecutedAsyncJsExpression(callsite as CallsiteRecord);
 
         if (command.type === COMMAND_TYPE.assertion)
             this._handleAssertionCommand(command as AssertionCommand);
@@ -139,33 +140,20 @@ class TestRunProxy extends AsyncEventEmitter {
         else if (command.type === COMMAND_TYPE.switchToWindowByPredicate)
             this._storeSwitchToWindowByPredicateCommand(command as SwitchToWindowByPredicateCommand);
 
-        return this.dispatcher.executeAction({
-            apiMethodName,
+        return this.dispatcher.executeCommand({
             command,
             callsite,
             id: this.id,
         });
     }
 
-    public executeActionSync (apiMethodName: string, command: CommandBase, callsite: CallsiteRecord): unknown {
+    public executeCommandSync (command: CommandBase, callsite: CallsiteRecord): unknown {
         if (command.type === COMMAND_TYPE.assertion)
             this._handleAssertionCommand(command as AssertionCommand);
         else if (command.type === COMMAND_TYPE.useRole)
             this.dispatcher.onRoleAppeared((command as UseRoleCommand).role);
 
-        return this.dispatcher.executeActionSync({
-            apiMethodName,
-            command,
-            callsite,
-            id: this.id,
-        });
-    }
-
-    public async executeCommand (command: CommandBase, callsite?: string): Promise<unknown> {
-        if (command.type === COMMAND_TYPE.assertion)
-            this._handleAssertionCommand(command as AssertionCommand);
-
-        return this.dispatcher.executeCommand({
+        return this.dispatcher.executeCommandSync({
             command,
             callsite,
             id: this.id,
