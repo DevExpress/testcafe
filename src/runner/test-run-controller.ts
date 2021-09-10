@@ -83,6 +83,7 @@ export default class TestRunController extends AsyncEventEmitter {
             globalWarningLog:  this._warningLog,
             opts:              this._opts,
             compilerService:   this.compilerService,
+            messageBus:        this._messageBus,
             screenshotCapturer,
         });
 
