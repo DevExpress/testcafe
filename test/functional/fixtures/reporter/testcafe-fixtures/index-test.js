@@ -118,3 +118,9 @@ test('Asynchronous method', async t => {
 test('Asynchronous method', async t => {
     await errorCheck(t);
 });
+
+test('Take screenshots with same path', async t => {
+    await t
+        .takeScreenshot('1.png')
+        .takeScreenshot('1.png');
+});
