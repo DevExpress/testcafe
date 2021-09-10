@@ -198,7 +198,7 @@ export default class Runner extends EventEmitter {
         const completionPromise = this._getTaskResult(task, browserSet, reporters, testedApp);
         let completed           = false;
 
-        task.on('start', startHandlingTestErrors);
+        this._messageBus.on('start', startHandlingTestErrors);
 
         if (!this.configuration.getOption(OPTION_NAMES.skipUncaughtErrors)) {
             this._messageBus.on('test-run-start', addRunningTest);

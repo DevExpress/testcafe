@@ -101,7 +101,7 @@ export default class Task extends AsyncEventEmitter {
             if (this._phase !== TaskPhase.started) {
                 this._phase = TaskPhase.started;
 
-                await this.emit('start');
+                await this._messageBus.emit('start', this);
             }
         });
 
