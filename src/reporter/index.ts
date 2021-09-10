@@ -97,6 +97,11 @@ interface ReportTaskActionEventArguments {
     restArgs: object;
 }
 
+interface ReportWarningEventArguments {
+    message: string;
+    testRun?: TestRun;
+}
+
 export default class Reporter {
     public readonly plugin: ReporterPluginHost;
     public readonly messageBus: MessageBus;
@@ -143,12 +148,17 @@ export default class Reporter {
                 originalError,
             });
 
-            initialObject?.emit('error', uncaughtError);
+            if (initialObject)
+                await initialObject.emit('error', uncaughtError);
+            else
+                throw uncaughtError;
         }
     }
 
     private _assignMessageBusEventHandlers (): void {
         const messageBus = this.messageBus;
+
+        messageBus.on('warning-add', async e => await this._onWarningAddHandler(e));
 
         messageBus.once('start', async (task: Task) => await this._onceTaskStartHandler(task));
 
@@ -215,6 +225,22 @@ export default class Reporter {
                 outStream,
             };
         }));
+    }
+
+    private async _onWarningAddHandler ({ message, testRun }: ReportWarningEventArguments): Promise<void> {
+        // @ts-ignore
+        if (this.plugin.reportWarnings) {
+            await this.dispatchToPlugin({
+                method:        ReporterPluginMethod.reportWarnings as string,
+                initialObject: null,
+                args:          [
+                    {
+                        message,
+                        testRunId: testRun?.id,
+                    },
+                ],
+            });
+        }
     }
 
     //Task
