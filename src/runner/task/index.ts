@@ -121,7 +121,7 @@ export default class Task extends AsyncEventEmitter {
             if (this._phase === TaskPhase.done)
                 return;
 
-            await this.emit('test-action-done', args);
+            await this._messageBus.emit('test-action-done', args);
         });
 
     }
