@@ -87,10 +87,6 @@ export default class Task extends AsyncEventEmitter {
     }
 
     private _assignBrowserJobEventHandlers (job: BrowserJob): void {
-        job.on('test-run-start', async (testRun: TestRun) => {
-            await this.emit('test-run-start', testRun);
-        });
-
         job.on('test-run-done', async (testRun: TestRun) => {
             await this.emit('test-run-done', testRun);
 

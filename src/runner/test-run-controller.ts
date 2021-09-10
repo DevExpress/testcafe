@@ -175,7 +175,7 @@ export default class TestRunController extends AsyncEventEmitter {
     }
 
     private async _emitTestRunStart (): Promise<void> {
-        await this.emit('test-run-start');
+        await this._messageBus.emit('test-run-start', this.testRun);
     }
 
     private async _testRunBeforeDone (): Promise<void> {
@@ -228,7 +228,7 @@ export default class TestRunController extends AsyncEventEmitter {
         const hookOk = await this._fixtureHookController.runFixtureBeforeHookIfNecessary(testRun);
 
         if (this.test.skip || !hookOk) {
-            await this.emit('test-run-start');
+            await this._emitTestRunStart();
             await this.emit('test-run-before-done');
             await this._emitTestRunDone();
 
