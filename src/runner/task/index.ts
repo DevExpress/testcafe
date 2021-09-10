@@ -117,10 +117,6 @@ export default class Task extends AsyncEventEmitter {
             }
         });
 
-        job.on('test-action-start', async (args: ActionEventArg) => {
-            await this.emit('test-action-start', args);
-        });
-
         job.on('test-action-done', async (args: ActionEventArg) => {
             if (this._phase === TaskPhase.done)
                 return;
