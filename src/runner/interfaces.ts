@@ -51,7 +51,7 @@ export type BrowserInit = string | object | BrowserConnection;
 export interface BootstrapperInit {
     browserConnectionGateway: BrowserConnectionGateway;
     compilerService?: CompilerService;
-    messageBus: MessageBus;
+    messageBus?: MessageBus;
 }
 
 export interface BrowserJobInit {
