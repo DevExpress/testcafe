@@ -873,6 +873,15 @@ describe('Reporter', () => {
                 'including the user agent in the screenshot path or generate a unique identifier in another way.',
             );
         });
+
+        it('Should get warning for request hook', async () => {
+            await runTests('./testcafe-fixtures/failed-cors-validation.js', 'Failed CORS validation', {
+                only: 'chrome',
+                reporter,
+            });
+
+            expect(resultWarning.message).to.include('RequestMock: CORS validation failed for a request specified as { url: "http://dummy-url.com/get" }');
+        });
     });
 
     describe('Action snapshots', () => {
