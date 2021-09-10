@@ -210,7 +210,7 @@ export default class Reporter {
         });
     }
 
-    public static async getReporterPlugins (reporters: ReporterSource[]): Promise<ReporterPluginSource[]> {
+    public static async getReporterPlugins (reporters: ReporterSource[] = []): Promise<ReporterPluginSource[]> {
         if (!reporters.length)
             Reporter._addDefaultReporter(reporters);
 

@@ -58,7 +58,7 @@ export default class Runner extends EventEmitter {
         this.pendingTaskPromises = [];
         this.configuration       = configuration;
         this.isCli               = false;
-        this.warningLog          = new WarningLog();
+        this.warningLog          = new WarningLog(null, WarningLog.creatAddWarningCallback(this._messageBus));
         this.compilerService     = compilerService;
         this._options            = {};
 
@@ -653,10 +653,10 @@ export default class Runner extends EventEmitter {
     }
 
     run (options = {}) {
-        this.apiMethodWasCalled.reset();
-        this.configuration.mergeOptions(options);
-
         let reporters;
+
+        this.apiMethodWasCalled.reset();
+        this._options = Object.assign(this._options, options);
 
         const runTaskPromise = Promise.resolve()
             .then(() => Reporter.getReporterPlugins(this._options.reporter))
