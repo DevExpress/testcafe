@@ -232,12 +232,7 @@ export default class TestRun extends AsyncEventEmitter {
         super();
 
         this[testRunMarker]    = true;
-        this.warningLog        = new WarningLog(globalWarningLog, async (message: string) => {
-            await messageBus.emit('warning-add', {
-                message,
-                testRun: this,
-            });
-        });
+        this.warningLog        = new WarningLog(globalWarningLog, WarningLog.creatAddWarningCallback(messageBus, this));
         this.opts              = opts;
         this.test              = test;
         this.browserConnection = browserConnection;

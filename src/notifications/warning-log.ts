@@ -1,11 +1,13 @@
 import renderTemplate from '../utils/render-template';
+import TestRun from '../test-run';
+import MessageBus from '../utils/message-bus';
 
 export default class WarningLog {
     public messages: string[];
     public globalLog: WarningLog | null;
-    public callback?: (message: string) => void;
+    public callback?: (message: string) => Promise<void>;
 
-    public constructor (globalLog: WarningLog | null = null, callback?: (message: string) => void) {
+    public constructor (globalLog: WarningLog | null = null, callback?: (message: string) => Promise<void>) {
         this.globalLog = globalLog;
         this.messages  = [];
         this.callback  = callback;
@@ -36,5 +38,14 @@ export default class WarningLog {
 
     public copyTo (warningLog: WarningLog): void {
         this.messages.forEach(msg => warningLog.addWarning(msg));
+    }
+
+    public static creatAddWarningCallback (messageBus: MessageBus, testRun?: TestRun): (message: string) => Promise<void> {
+        return async (message: string) => {
+            await messageBus.emit('warning-add', {
+                message,
+                testRun,
+            });
+        };
     }
 }

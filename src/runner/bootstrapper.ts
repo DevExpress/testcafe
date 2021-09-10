@@ -106,9 +106,7 @@ export default class Bootstrapper {
         this.proxyless                = false;
         this.compilerOptions          = void 0;
         this.debugLogger              = debug(DEBUG_SCOPE);
-        this.warningLog               = new WarningLog(null, async message => {
-            await messageBus.emit('warning-add', { message });
-        });
+        this.warningLog               = new WarningLog(null, WarningLog.creatAddWarningCallback(messageBus));
         this.compilerService          = compilerService;
 
         this.TESTS_COMPILATION_UPPERBOUND = 60;
