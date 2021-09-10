@@ -233,6 +233,7 @@ before(function () {
                     pageRequestTimeout,
                     ajaxRequestTimeout,
                     userVariables,
+                    tsConfigPath,
                 } = opts;
 
                 const actualBrowsers = browsersInfo.filter(browserInfo => {
@@ -298,6 +299,7 @@ before(function () {
                         pageRequestTimeout,
                         ajaxRequestTimeout,
                         userVariables,
+                        tsConfigPath,
                     })
                     .then(failedCount => {
                         if (customReporters)

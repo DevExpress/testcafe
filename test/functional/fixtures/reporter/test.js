@@ -882,6 +882,16 @@ describe('Reporter', () => {
 
             expect(resultWarning.message).to.include('RequestMock: CORS validation failed for a request specified as { url: "http://dummy-url.com/get" }');
         });
+
+        it('Should get warning for request hook', async () => {
+            await runTests('./testcafe-fixtures/index-test.js', 'Simple test', {
+                only: 'chrome',
+                reporter,
+                tsConfigPath: 'path-to-ts-config',
+            });
+
+            expect(resultWarning.message).to.eql("The 'tsConfigPath' option is deprecated and will be removed in the next major release. Use the 'compilerOptions.typescript.configPath' option instead.");
+        });
     });
 
     describe('Action snapshots', () => {
