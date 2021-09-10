@@ -147,9 +147,9 @@ export default class Runner extends EventEmitter {
 
         const browserSetErrorPromise = promisifyEvent(browserSet, 'error');
         const taskErrorPromise       = promisifyEvent(task, 'error');
-        const streamController       = new ReporterStreamController(task, reporters);
+        const streamController       = new ReporterStreamController(this._messageBus, reporters);
 
-        const taskDonePromise = task.once('done')
+        const taskDonePromise = this._messageBus.once('done')
             .then(() => browserSetErrorPromise.cancel())
             .then(() => {
                 return Promise.all(reporters.map(reporter => reporter.taskInfo.pendingTaskDonePromise));
@@ -205,7 +205,7 @@ export default class Runner extends EventEmitter {
             this._messageBus.on('test-run-done', removeRunningTest);
         }
 
-        task.on('done', stopHandlingTestErrors);
+        this._messageBus.on('done', stopHandlingTestErrors);
 
         task.on('error', stopHandlingTestErrors);
 

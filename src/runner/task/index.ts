@@ -93,7 +93,7 @@ export default class Task extends AsyncEventEmitter {
             if (this.opts.stopOnFirstFail && testRun.errs.length) {
                 this.abort();
 
-                await this.emit('done');
+                await this._messageBus.emit('done');
             }
         });
 
@@ -113,7 +113,7 @@ export default class Task extends AsyncEventEmitter {
             if (!this._pendingBrowserJobs.length) {
                 this._phase = TaskPhase.done;
 
-                await this.emit('done');
+                await this._messageBus.emit('done');
             }
         });
 
