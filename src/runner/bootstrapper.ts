@@ -91,7 +91,7 @@ export default class Bootstrapper {
 
     private readonly TESTS_COMPILATION_UPPERBOUND: number;
 
-    public constructor ({ browserConnectionGateway, compilerService }: BootstrapperInit) {
+    public constructor ({ browserConnectionGateway, compilerService, messageBus }: BootstrapperInit) {
         this.browserConnectionGateway = browserConnectionGateway;
         this.concurrency              = 1;
         this.sources                  = [];
@@ -106,7 +106,9 @@ export default class Bootstrapper {
         this.proxyless                = false;
         this.compilerOptions          = void 0;
         this.debugLogger              = debug(DEBUG_SCOPE);
-        this.warningLog               = new WarningLog();
+        this.warningLog               = new WarningLog(null, async message => {
+            await messageBus.emit('warning-add', { message });
+        });
         this.compilerService          = compilerService;
 
         this.TESTS_COMPILATION_UPPERBOUND = 60;

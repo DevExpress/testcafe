@@ -52,15 +52,15 @@ export default class Runner extends EventEmitter {
     constructor ({ proxy, browserConnectionGateway, configuration, compilerService }) {
         super();
 
+        this._messageBus         = new MessageBus();
         this.proxy               = proxy;
-        this.bootstrapper        = this._createBootstrapper(browserConnectionGateway, compilerService);
+        this.bootstrapper        = this._createBootstrapper(browserConnectionGateway, compilerService, this._messageBus);
         this.pendingTaskPromises = [];
         this.configuration       = configuration;
         this.isCli               = false;
         this.warningLog          = new WarningLog();
         this.compilerService     = compilerService;
         this._options            = {};
-        this._messageBus         = new MessageBus();
 
         this.apiMethodWasCalled = new FlagList([
             OPTION_NAMES.src,
@@ -70,8 +70,8 @@ export default class Runner extends EventEmitter {
         ]);
     }
 
-    _createBootstrapper (browserConnectionGateway, compilerService) {
-        return new Bootstrapper({ browserConnectionGateway, compilerService });
+    _createBootstrapper (browserConnectionGateway, compilerService, messageBus) {
+        return new Bootstrapper({ browserConnectionGateway, compilerService, messageBus });
     }
 
     _disposeBrowserSet (browserSet) {
