@@ -143,7 +143,7 @@ interface TestRunInit {
     globalWarningLog: WarningLog;
     opts: Dictionary<OptionValue>;
     compilerService?: CompilerService;
-    messageBus: MessageBus;
+    messageBus?: MessageBus;
 }
 
 interface DriverTask {
@@ -227,11 +227,13 @@ export default class TestRun extends AsyncEventEmitter {
     private errScreenshotPath: string | null;
     private asyncJsExpressionCallsites: Map<string, CallsiteRecord>;
     public readonly browser: Browser;
+    private readonly _messageBus?: MessageBus;
 
     public constructor ({ test, browserConnection, screenshotCapturer, globalWarningLog, opts, compilerService, messageBus }: TestRunInit) {
         super();
 
         this[testRunMarker]    = true;
+        this._messageBus       = messageBus;
         this.warningLog        = new WarningLog(globalWarningLog, WarningLog.creatAddWarningCallback(messageBus, this));
         this.opts              = opts;
         this.test              = test;
