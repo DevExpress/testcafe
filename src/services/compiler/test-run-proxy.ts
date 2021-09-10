@@ -49,7 +49,7 @@ class TestRunProxy extends AsyncEventEmitter {
     public readonly disableMultipleWindows: boolean;
     public activeWindowId: null | string;
 
-    public constructor ({ dispatcher, id, test, options, browser, activeWindowId }: TestRunProxyInit) {
+    public constructor ({ dispatcher, id, test, options, browser, activeWindowId, messageBus }: TestRunProxyInit) {
         super();
 
         this[testRunMarker]                    = true;
@@ -65,7 +65,7 @@ class TestRunProxy extends AsyncEventEmitter {
         this.asyncJsExpressionCallsites        = new Map<string, CallsiteRecord>();
         this.controller                        = new TestController(this);
         this.observedCallsites                 = new ObservedCallsitesStorage();
-        this.warningLog                        = new WarningLog();
+        this.warningLog                        = new WarningLog(null, WarningLog.creatAddWarningCallback(messageBus));
         this.disableMultipleWindows            = options.disableMultipleWindows as boolean;
         this.activeWindowId                    = activeWindowId;
 

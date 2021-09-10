@@ -15,6 +15,7 @@ import { Dictionary } from '../../configuration/interfaces';
 import RequestHookMethodNames from '../../api/request-hooks/hook-method-names';
 import Role from '../../role/role';
 import { CallsiteRecord } from 'callsite-record';
+import MessageBus from '../../utils/message-bus';
 
 export interface TestRunLocator {
     testRunId: string;
@@ -90,6 +91,7 @@ export interface InitializeTestRunDataArguments extends TestRunLocator {
     testId: string;
     browser: Browser;
     activeWindowId: string | null;
+    messageBus?: MessageBus;
 }
 
 export interface RoleLocator {

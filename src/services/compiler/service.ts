@@ -88,6 +88,7 @@ import { renderHtmlWithoutStack, shouldRenderHtmlWithoutStack } from '../../erro
 import setupSourceMapSupport from '../../utils/setup-sourcemap-support';
 import { formatError } from '../../utils/handle-errors';
 import { SwitchToWindowPredicateError } from '../../shared/errors';
+import MessageBus from '../../utils/message-bus';
 
 setupSourceMapSupport();
 
@@ -112,6 +113,7 @@ interface InitTestRunProxyData {
     test: Test;
     browser: Browser;
     activeWindowId: string | null;
+    messageBus?: MessageBus;
 }
 
 class CompilerService implements CompilerProtocol {
@@ -256,7 +258,7 @@ class CompilerService implements CompilerProtocol {
         };
     }
 
-    private _initializeTestRunProxy ({ testRunId, test, browser, activeWindowId }: InitTestRunProxyData): void {
+    private _initializeTestRunProxy ({ testRunId, test, browser, activeWindowId, messageBus }: InitTestRunProxyData): void {
         const testRunProxy = new TestRunProxy({
             dispatcher: this,
             id:         testRunId,
@@ -264,6 +266,7 @@ class CompilerService implements CompilerProtocol {
             test,
             browser,
             activeWindowId,
+            messageBus,
         });
 
         this.state.testRuns[testRunId] = testRunProxy;
@@ -403,10 +406,10 @@ class CompilerService implements CompilerProtocol {
         return await this.proxy.call(this.removeRequestEventListeners, { rules });
     }
 
-    public async initializeTestRunData ({ testRunId, testId, browser, activeWindowId }: InitializeTestRunDataArguments): Promise<void> {
+    public async initializeTestRunData ({ testRunId, testId, browser, activeWindowId, messageBus }: InitializeTestRunDataArguments): Promise<void> {
         const test = this.state.units[testId] as Test;
 
-        this._initializeTestRunProxy({ testRunId, test, browser, activeWindowId });
+        this._initializeTestRunProxy({ testRunId, test, browser, activeWindowId, messageBus });
         this._initializeFixtureCtx(test);
     }
 

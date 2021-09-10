@@ -1345,6 +1345,7 @@ export default class TestRun extends AsyncEventEmitter {
             testId:         this.test.id,
             browser:        this.browser,
             activeWindowId: this.activeWindowId,
+            messageBus:     this._messageBus,
         });
     }
 
