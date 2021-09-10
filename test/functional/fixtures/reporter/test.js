@@ -838,20 +838,17 @@ describe('Reporter', () => {
             });
 
             try {
-                await runTests(
-                    'testcafe-fixtures/index-test.js',
-                    'Test warning',
-                    {
-                        reporter:   reporter,
-                        shouldFail: true,
-                    }
-                );
+                await runTests('testcafe-fixtures/index-test.js', 'Asynchronous method', {
+                    reporter,
+                    shouldFail: true,
+                } );
 
                 throw new Error('Promise rejection expected');
             }
             catch (err) {
-                expect(resultWarning.text).to.be.eql("An asynchronous method that you do not await includes an assertion. Inspect that method's execution chain and add the 'await' keyword where necessary.");
-                expect(resultWarning.testRunId).to.be.eql('1');
+                expect(resultWarning.message).to.include("An asynchronous method that you do not await includes an assertion. Inspect that method's execution chain and add the 'await' keyword where necessary.");
+                expect(resultWarning.testRunId).to.be.a('string');
+                expect(resultWarning.testRunId).to.not.empty;
             }
         });
 

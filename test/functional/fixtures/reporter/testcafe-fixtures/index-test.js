@@ -111,10 +111,10 @@ test('The "pressKey" action with the input[type=password] and the "confidential"
         .pressKey('p a $ $ w 0 r d enter', { confidential: false });
 });
 
-test('Test warning', async t => {
+test('Asynchronous method', async t => {
     errorCheck(t);
 });
 
-test('Test warning', async t => {
+test('Asynchronous method', async t => {
     await errorCheck(t);
 });
