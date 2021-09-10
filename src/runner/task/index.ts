@@ -88,7 +88,7 @@ export default class Task extends AsyncEventEmitter {
 
     private _assignBrowserJobEventHandlers (job: BrowserJob): void {
         job.on('test-run-done', async (testRun: TestRun) => {
-            await this.emit('test-run-done', testRun);
+            await this._messageBus.emit('test-run-done', testRun);
 
             if (this.opts.stopOnFirstFail && testRun.errs.length) {
                 this.abort();
