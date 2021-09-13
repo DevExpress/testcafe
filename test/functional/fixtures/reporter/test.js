@@ -885,7 +885,7 @@ describe('Reporter', () => {
 
         it('Should get warning for request hook', async () => {
             await runTests('./testcafe-fixtures/index-test.js', 'Simple test', {
-                only: 'chrome',
+                only:         'chrome',
                 reporter,
                 tsConfigPath: 'path-to-ts-config',
             });
