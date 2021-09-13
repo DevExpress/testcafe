@@ -121,14 +121,17 @@ export default class TestCafeConfiguration extends Configuration {
         this._prepareCompilerOptions();
     }
 
-    public notifyAboutOverriddenOptions (): void {
+    public notifyAboutOverriddenOptions (warningLog: WarningLog): void {
         if (!this._overriddenOptions.length)
             return;
 
         const optionsStr    = getConcatenatedValuesString(this._overriddenOptions);
         const optionsSuffix = getPluralSuffix(this._overriddenOptions);
+        const renderedMessage = renderTemplate(WARNING_MESSAGES.configOptionsWereOverridden, optionsStr, optionsSuffix);
 
-        Configuration._showConsoleWarning(renderTemplate(WARNING_MESSAGES.configOptionsWereOverridden, optionsStr, optionsSuffix));
+        Configuration._showConsoleWarning(renderedMessage);
+
+        warningLog.addWarning(renderedMessage);
 
         this._overriddenOptions = [];
     }
