@@ -27,6 +27,7 @@ import WARNING_MESSAGES from '../notifications/warning-message';
 import guardTimeExecution from '../utils/guard-time-execution';
 import asyncFilter from '../utils/async-filter';
 import Fixture from '../api/structure/fixture';
+import MessageBus from '../utils/message-bus';
 
 const DEBUG_SCOPE = 'testcafe:bootstrapper';
 
@@ -88,6 +89,7 @@ export default class Bootstrapper {
     private readonly compilerService?: CompilerService;
     private readonly debugLogger: debug.Debugger;
     private readonly warningLog: WarningLog;
+    private readonly messageBus?: MessageBus;
 
     private readonly TESTS_COMPILATION_UPPERBOUND: number;
 
@@ -108,6 +110,7 @@ export default class Bootstrapper {
         this.debugLogger              = debug(DEBUG_SCOPE);
         this.warningLog               = new WarningLog(null, WarningLog.creatAddWarningCallback(messageBus));
         this.compilerService          = compilerService;
+        this.messageBus               = messageBus;
 
         this.TESTS_COMPILATION_UPPERBOUND = 60;
     }
@@ -139,7 +142,7 @@ export default class Bootstrapper {
 
         return browserInfo
             .map(browser => times(this.concurrency, () => new BrowserConnection(
-                this.browserConnectionGateway, browser, false, this.disableMultipleWindows, this.proxyless)));
+                this.browserConnectionGateway, browser, false, this.messageBus, this.disableMultipleWindows, this.proxyless)));
     }
 
     private _getBrowserSetOptions (): BrowserSetOptions {
@@ -157,6 +160,11 @@ export default class Bootstrapper {
             throw new GeneralError(RUNTIME_ERRORS.cannotDivideRemotesCountByConcurrency);
 
         let browserConnections = this._createAutomatedConnections(automated);
+
+        remotes.forEach(remoteConnection => {
+            if (this.messageBus)
+                remoteConnection.messageBus = this.messageBus;
+        });
 
         browserConnections = browserConnections.concat(chunk(remotes, this.concurrency));
 
