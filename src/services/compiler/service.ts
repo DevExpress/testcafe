@@ -89,9 +89,6 @@ import setupSourceMapSupport from '../../utils/setup-sourcemap-support';
 import { formatError } from '../../utils/handle-errors';
 import { SwitchToWindowPredicateError } from '../../shared/errors';
 
-// NOTE: Hack for esm module loader.
-require('../../api/test-controller/proxy');
-
 setupSourceMapSupport();
 
 interface ServiceState {
