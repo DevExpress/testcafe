@@ -472,6 +472,25 @@ describe('Reporter', () => {
         log = [];
     });
 
+    it('MessageBus events', () => {
+        function createReporter (messageBus) {
+            return new Reporter({}, messageBus);
+        }
+
+        const messageBus = new MessageBus();
+
+        createReporter(messageBus);
+
+        expect(messageBus.listenerCount()).eql(7);
+        expect(messageBus.listenerCount('warning-add')).eql(1);
+        expect(messageBus.listenerCount('start')).eql(1);
+        expect(messageBus.listenerCount('test-run-start')).eql(1);
+        expect(messageBus.listenerCount('test-run-done')).eql(1);
+        expect(messageBus.listenerCount('test-action-start')).eql(1);
+        expect(messageBus.listenerCount('test-action-done')).eql(1);
+        expect(messageBus.listenerCount('done')).eql(1);
+    });
+
     it('Should analyze task progress and call appropriate plugin methods', function () {
         this.timeout(30000);
 
