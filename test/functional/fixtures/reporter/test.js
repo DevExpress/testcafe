@@ -872,6 +872,8 @@ describe('Reporter', () => {
                 'that each screenshot has a unique path. If a test runs in multiple browsers, consider ' +
                 'including the user agent in the screenshot path or generate a unique identifier in another way.',
             );
+
+            await assertionHelper.removeScreenshotDir();
         });
 
         it('Should get warning for request hook', async () => {
