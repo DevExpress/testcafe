@@ -14,7 +14,7 @@ export default class ESNextTestFileCompiler extends APIBasedTestFileCompilerBase
         super(isCompilerServiceMode);
     }
 
-    static getBabelOptions (filename, code) {
+    static getBabelOptions (filename, code, isCompilerServiceMode) {
         const {
             presetStage2,
             presetFlow,
@@ -24,7 +24,7 @@ export default class ESNextTestFileCompiler extends APIBasedTestFileCompilerBase
             moduleResolver,
             proposalPrivateMethods,
             proposalClassProperties,
-        } = loadBabelLibs();
+        } = loadBabelLibs(isCompilerServiceMode);
 
         const opts = Object.assign({}, BASE_BABEL_OPTIONS, {
             presets:    [presetStage2, presetEnvForTestCode, presetReact],
@@ -48,7 +48,7 @@ export default class ESNextTestFileCompiler extends APIBasedTestFileCompilerBase
         if (this.isCompilerServiceMode)
             code += DISABLE_V8_OPTIMIZATION_CODE;
 
-        const opts     = ESNextTestFileCompiler.getBabelOptions(filename, code);
+        const opts     = ESNextTestFileCompiler.getBabelOptions(filename, code, this.isCompilerServiceMode);
         const compiled = babel.transform(code, opts);
 
         this.cache[filename] = compiled.code;

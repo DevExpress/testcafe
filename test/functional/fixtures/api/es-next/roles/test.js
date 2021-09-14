@@ -1,5 +1,5 @@
-const expect = require('chai').expect;
-const config = require('../../../../config');
+const { expect } = require('chai');
+const config     = require('../../../../config');
 
 
 // NOTE: we set selectorTimeout to a large value in some tests to wait for
@@ -12,8 +12,12 @@ const TEST_WITH_IFRAME_FAILED_RUN_OPTIONS = {
     selectorTimeout: IFRAME_SELECTOR_TIMEOUT,
 };
 
+const experimentalDebug = !!process.env.EXPERIMENTAL_DEBUG;
+
 // TODO: IMPORTANT: Azure test tasks hang when a role is used in a test, fix it immediately
-if (config.currentEnvironmentName !== config.testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers && config.currentEnvironmentName !== config.testingEnvironmentNames.mobileBrowsers) {
+if (config.currentEnvironmentName !== config.testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers &&
+    config.currentEnvironmentName !== config.testingEnvironmentNames.mobileBrowsers &&
+    !experimentalDebug) {
     describe('[API] t.useRole()', function () {
         it('Should initialize and switch roles', function () {
             return runTests('./testcafe-fixtures/use-role-test.js', null, { only: 'chrome,ie,firefox' });
@@ -39,7 +43,7 @@ if (config.currentEnvironmentName !== config.testingEnvironmentNames.osXDesktopA
             return runTests('./testcafe-fixtures/preserve-url-test.js', 'Preserve url test', TEST_WITH_IFRAME_RUN_OPTIONS);
         });
 
-        describe('Should allways reload role`s login url', () => {
+        describe('Should always reload role`s login url', () => {
             it('Hash-based navigation', () => {
                 return runTests('./testcafe-fixtures/hash-based-navigation-test.js', null, { only: 'chrome' });
             });
@@ -50,7 +54,7 @@ if (config.currentEnvironmentName !== config.testingEnvironmentNames.osXDesktopA
         });
 
         describe('Errors', function () {
-            it('Should fail all tests that use role with the initiliazer error', function () {
+            it('Should fail all tests that use role with the initializer error', function () {
                 return runTests('./testcafe-fixtures/init-error-test.js', null, {
                     shouldFail: true,
                     only:       'chrome,ie,firefox',
@@ -101,7 +105,6 @@ if (config.currentEnvironmentName !== config.testingEnvironmentNames.osXDesktopA
                         expect(errs[0]).contains('> 29 |        .useRole(Role.anonymous());');
                     });
             });
-
         });
     });
 }

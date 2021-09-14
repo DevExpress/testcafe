@@ -1,11 +1,16 @@
 import EXPORTABLE_LIB_PATH from '../test-file/exportble-lib-path';
 
-function getPresetEnvForTestCodeOpts () {
-    return {
+function getPresetEnvForTestCodeOpts (isCompilerServiceMode) {
+    const opts = {
         targets: { node: 'current' },
         loose:   true,
         exclude: ['transform-regenerator'],
     };
+
+    if (isCompilerServiceMode)
+        opts.modules = false;
+
+    return opts;
 }
 
 function getPresetEnvForClientFunctionOpts () {
@@ -50,7 +55,7 @@ function getPresetReact () {
 }
 
 // NOTE: lazy load heavy dependencies
-export default function loadLibs () {
+export default function loadLibs (isCompilerServiceMode) {
     return {
         babel:                      require('@babel/core'),
         presetStage2:               require('./preset-stage-2'),
@@ -58,7 +63,7 @@ export default function loadLibs () {
         transformRuntime:           [require('@babel/plugin-transform-runtime'), getTransformRuntimeOpts()],
         transformForOfAsArray:      [require('@babel/plugin-transform-for-of'), getTransformForOfOptions()],
         presetEnvForClientFunction: [require('@babel/preset-env'), getPresetEnvForClientFunctionOpts()],
-        presetEnvForTestCode:       [require('@babel/preset-env'), getPresetEnvForTestCodeOpts()],
+        presetEnvForTestCode:       [require('@babel/preset-env'), getPresetEnvForTestCodeOpts(isCompilerServiceMode)],
         moduleResolver:             [require('babel-plugin-module-resolver'), getModuleResolverOpts()],
         presetReact:                getPresetReact(),
         proposalPrivateMethods:     [require('@babel/plugin-proposal-private-methods'), { loose: true }],

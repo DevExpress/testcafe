@@ -1,22 +1,29 @@
 import { RequestHook, Selector } from 'testcafe';
+import { resolve } from 'path';
+
+const ReExecutablePromise = require(resolve('./lib/utils/re-executable-promise'));
 
 export default class CustomHook extends RequestHook {
     constructor (config) {
         super(null, config);
 
         this.pendingAjaxRequestIds = new Set();
-        this.hasAjaxRequests       = false;
+        this._hasAjaxRequests      = false;
     }
 
     onRequest (event) {
         if (event.isAjax) {
             this.pendingAjaxRequestIds.add(event._requestInfo.requestId);
-            this.hasAjaxRequests = true;
+            this._hasAjaxRequests = true;
         }
     }
 
     onResponse (event) {
         this.pendingAjaxRequestIds.delete(event.requestId);
+    }
+
+    get hasAjaxRequests () {
+        return ReExecutablePromise.fromFn(async () => this._hasAjaxRequests);
     }
 }
 
