@@ -436,15 +436,17 @@ export default class Reporter {
             ],
         });
 
-        await this.dispatchToPlugin({
-            method:        ReporterPluginMethod.reportFixtureStart,
-            initialObject: task,
-            args:          [
-                first.fixture.name,
-                first.fixture.path,
-                first.fixture.meta,
-            ],
-        });
+        if (first) {
+            await this.dispatchToPlugin({
+                method:        ReporterPluginMethod.reportFixtureStart,
+                initialObject: task,
+                args:          [
+                    first.fixture.name,
+                    first.fixture.path,
+                    first.fixture.meta,
+                ],
+            });
+        }
     }
 
     private async _onTaskTestRunStartHandler (testRun: TestRun): Promise<unknown> {
