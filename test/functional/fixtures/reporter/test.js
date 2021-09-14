@@ -846,7 +846,7 @@ describe('Reporter', () => {
                 await runTests('testcafe-fixtures/index-test.js', 'Asynchronous method', {
                     reporter,
                     shouldFail: true,
-                } );
+                });
 
                 throw new Error('Promise rejection expected');
             }
