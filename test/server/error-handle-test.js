@@ -169,20 +169,20 @@ describe('Global error handlers', () => {
         const runner = new RunnerMock();
 
         const { completionPromise } = runner._runTask({
-            reporterPlugins: [],
-            browserSet:      new BrowserSetMock(),
-            testedApp:       null,
+            reporters:  [],
+            browserSet: new BrowserSetMock(),
+            testedApp:  null,
         });
 
         const testRunMock1 = new TestRunMock(1);
         const testRunMock2 = new TestRunMock(2);
         const testRunMock3 = new TestRunMock(3);
 
-        await runner.task.emit('start');
+        await runner._messageBus.emit('start');
 
-        await runner.task.emit('test-run-start', testRunMock1);
-        await runner.task.emit('test-run-start', testRunMock2);
-        await runner.task.emit('test-run-start', testRunMock3);
+        await runner._messageBus.emit('test-run-start', testRunMock1);
+        await runner._messageBus.emit('test-run-start', testRunMock2);
+        await runner._messageBus.emit('test-run-start', testRunMock3);
 
         /* eslint-disable no-new */
         new Promise((resolve, reject) => {
@@ -191,7 +191,7 @@ describe('Global error handlers', () => {
         /* eslint-enable no-new */
 
         await delay(1);
-        await runner.task.emit('done');
+        await runner._messageBus.emit('done');
         await completionPromise;
 
         expect(testRunMock1.errors.length).eql(1);
