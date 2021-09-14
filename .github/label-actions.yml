@@ -24,7 +24,7 @@
 :
   # Post a comment
   comment: |
-    Thank you for submitting this issue. We would love to assist you and diagnose it. However, we need a simple sample that we can easily run on our side in order to replicate the issue and research its cause. Without a sample, we are not able to figure out what's going on and why this issue occurs. We look forward to your response.
+    Thank you for submitting this issue. We would love to assist you and diagnose it. However, we need a simple sample that we can easily run on our side in order to replicate the issue and research its cause. Without a sample, we are not able to figure out what's going on and why this issue occurs. Refer to this article to create the best example: [How To: Create a Minimal Working Example When You Submit an Issue](https://testcafe.io/402636/faq#how-to-create-a-minimal-working-example-when-you-submit-an-issue). We look forward to your response.
   label: 'STATE: Need clarification'
   unlabel:
     - 'STATE: Need simple sample'
