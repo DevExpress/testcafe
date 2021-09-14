@@ -121,7 +121,7 @@ export default class TestCafeConfiguration extends Configuration {
         this._prepareCompilerOptions();
     }
 
-    public notifyAboutOverriddenOptions (warningLog: WarningLog): void {
+    public notifyAboutOverriddenOptions (warningLog?: WarningLog): void {
         if (!this._overriddenOptions.length)
             return;
 
@@ -131,7 +131,8 @@ export default class TestCafeConfiguration extends Configuration {
 
         Configuration._showConsoleWarning(renderedMessage);
 
-        warningLog.addWarning(renderedMessage);
+        if (warningLog)
+            warningLog.addWarning(renderedMessage);
 
         this._overriddenOptions = [];
     }
