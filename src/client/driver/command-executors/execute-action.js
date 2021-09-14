@@ -101,10 +101,8 @@ class ActionExecutor {
         this.statusBar              = statusBar;
         this.testSpeed              = testSpeed;
 
-        this.targetElement           = null;
-        this.elements                = [];
-        this.ensureElementsPromise   = null;
-        this.ensureElementsStartTime = null;
+        this.targetElement = null;
+        this.elements      = [];
 
         this.executionStartTime      = null;
         this.executionStartedHandler = null;

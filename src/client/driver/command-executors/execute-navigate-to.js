@@ -1,12 +1,17 @@
 import { navigateTo, Promise } from '../deps/hammerhead';
-import { RequestBarrier, pageUnloadBarrier } from '../deps/testcafe-core';
+import {
+    RequestBarrier,
+    ClientReqEmitter,
+    pageUnloadBarrier,
+} from '../deps/testcafe-core';
 
 import DriverStatus from '../status';
 
 
 export default async function executeNavigateTo (command) {
     try {
-        const requestBarrier = new RequestBarrier();
+        const requestEmitter = new ClientReqEmitter();
+        const requestBarrier = new RequestBarrier(requestEmitter);
 
         navigateTo(command.url, command.forceReload);
 

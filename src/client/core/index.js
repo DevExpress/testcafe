@@ -2,7 +2,8 @@ import hammerhead from './deps/hammerhead';
 
 import KEY_MAPS from './utils/key-maps';
 import NODE_TYPE_DESCRIPTIONS from './utils/node-type-descriptions';
-import RequestBarrier from './request-barrier';
+import RequestBarrier from '../../shared/barriers/request';
+import ClientReqEmitter from './client-req-emitter';
 import * as pageUnloadBarrier from './page-unload-barrier';
 import { preventRealEvents, disableRealEventsPreventing } from './prevent-real-events';
 import scrollController from './scroll-controller';
@@ -29,15 +30,19 @@ import * as browser from '../browser';
 
 import selectorTextFilter from '../../client-functions/selectors/selector-text-filter';
 import selectorAttributeFilter from '../../client-functions/selectors/selector-attribute-filter';
-import { initializeAdapter } from './utils/adapter/index';
-import adapterInitializer from './utils/adapter/initializer';
+import { initializeAdapter as initializeUtilsAdapter } from './utils/adapter/index';
+import utilsAdapterInitializer from './utils/adapter/initializer';
+import { initializeAdapter as initializeSharedAdapter } from '../../shared/adapter';
+import sharedAdapterInitializer from './shared-adapter-initializer';
 
 
-initializeAdapter(adapterInitializer);
+initializeUtilsAdapter(utilsAdapterInitializer);
+initializeSharedAdapter(sharedAdapterInitializer);
 
 const exports = {};
 
 exports.RequestBarrier              = RequestBarrier;
+exports.ClientReqEmitter            = ClientReqEmitter;
 exports.pageUnloadBarrier           = pageUnloadBarrier;
 exports.preventRealEvents           = preventRealEvents;
 exports.disableRealEventsPreventing = disableRealEventsPreventing;

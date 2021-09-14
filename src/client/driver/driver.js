@@ -1,6 +1,7 @@
 import hammerhead from './deps/hammerhead';
 import {
     RequestBarrier,
+    ClientReqEmitter,
     pageUnloadBarrier,
     eventUtils,
     domUtils,
@@ -195,7 +196,9 @@ export default class Driver extends serviceUtils.EventEmitter {
         this.setAsMasterInProgress            = false;
         this.checkClosedChildWindowIntervalId = null;
 
-        this.pageInitialRequestBarrier = new RequestBarrier();
+        const requestEmitter = new ClientReqEmitter();
+
+        this.pageInitialRequestBarrier = new RequestBarrier(requestEmitter);
 
         this.readyPromise = this._getReadyPromise();
 

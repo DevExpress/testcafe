@@ -1,12 +1,17 @@
 import { Promise } from '../deps/hammerhead';
 
-import { RequestBarrier, pageUnloadBarrier } from '../deps/testcafe-core';
+import {
+    RequestBarrier,
+    ClientReqEmitter,
+    pageUnloadBarrier,
+} from '../deps/testcafe-core';
 
 import ScriptExecutionBarrier from '../script-execution-barrier';
 
 
 export default function (action, ...args) {
-    const requestBarrier         = new RequestBarrier();
+    const requestEmitter         = new ClientReqEmitter();
+    const requestBarrier         = new RequestBarrier(requestEmitter);
     const scriptExecutionBarrier = new ScriptExecutionBarrier();
 
     pageUnloadBarrier.watchForPageNavigationTriggers();
