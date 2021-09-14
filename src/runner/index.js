@@ -661,7 +661,7 @@ export default class Runner extends EventEmitter {
         const runTaskPromise = Promise.resolve()
             .then(() => Reporter.getReporterPlugins(this._options.reporter))
             .then(reporterPlugins => {
-                reporters = reporterPlugins.map(reporter => new Reporter(this._messageBus, reporter.plugin, reporter.outStream, reporter.name));
+                reporters = reporterPlugins.map(reporter => new Reporter(reporter.plugin, this._messageBus, reporter.outStream, reporter.name));
             })
             .then(() => this._applyOptions())
             .then(() => {

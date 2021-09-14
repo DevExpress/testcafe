@@ -109,7 +109,7 @@ export default class Reporter {
     public taskInfo: TaskInfo | null;
     public readonly outStream: Writable;
 
-    public constructor (messageBus: MessageBus, plugin: ReporterPlugin, outStream: Writable, name: string) {
+    public constructor (plugin: ReporterPlugin, messageBus: MessageBus, outStream: Writable, name: string) {
         this.plugin     = new ReporterPluginHost(plugin, outStream, name);
         this.messageBus = messageBus;
 
