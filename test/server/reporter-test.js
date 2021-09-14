@@ -4,6 +4,7 @@ const { chunk, random, noop, sortBy } = require('lodash');
 const Reporter                        = require('../../lib/reporter');
 const ReporterPluginMethod            = require('../../lib/reporter/plugin-methods');
 const Task                            = require('../../lib/runner/task');
+const MessageBus                      = require('../../lib/utils/message-bus');
 const Videos                          = require('../../lib/video-recorder/videos');
 const delay                           = require('../../lib/utils/delay');
 const { ReporterPluginError }         = require('../../lib/errors/runtime');
@@ -429,6 +430,7 @@ describe('Reporter', () => {
                 proxy:                   {},
                 opts:                    taskOptions,
                 runnerWarningLog:        new WarningLog(),
+                messageBus:              new MessageBus(),
             });
 
             this.screenshots = new ScreenshotsMock();
@@ -457,10 +459,10 @@ describe('Reporter', () => {
     function emulateBrowserJob (taskMock, testRunMocks) {
         return testRunMocks.reduce((chain, testRun) => {
             return chain
-                .then(() => taskMock.emit('test-run-start', testRun))
+                .then(() => taskMock._messageBus.emit('test-run-start', testRun))
                 .then(() => log.push('test-run-start resolved'))
                 .then(randomDelay)
-                .then(() => taskMock.emit('test-run-done', testRun))
+                .then(() => taskMock._messageBus.emit('test-run-done', testRun))
                 .then(() => log.push('test-run-done resolved'))
                 .then(randomDelay);
         }, randomDelay());
@@ -521,7 +523,7 @@ describe('Reporter', () => {
                     return delay(1000)
                         .then(() => log.push({ method: 'reportTaskDone', args: args }));
                 },
-            }, taskMock);
+            }, taskMock._messageBus);
         }
 
         const expectedLog = [
@@ -1160,8 +1162,8 @@ describe('Reporter', () => {
 
         createReporter(taskMock);
 
-        return taskMock
-            .emit('start')
+        return taskMock._messageBus
+            .emit('start', taskMock)
             .then(() => {
                 log.push('task-start resolved');
                 return Promise.all([
@@ -1169,7 +1171,7 @@ describe('Reporter', () => {
                     emulateBrowserJob(taskMock, firefoxTestRunMocks),
                 ]);
             })
-            .then(() => taskMock.emit('done'))
+            .then(() => taskMock._messageBus.emit('done'))
             .then(() => {
                 log.push('task-done resolved');
 
@@ -1179,7 +1181,7 @@ describe('Reporter', () => {
 
     it('Should disable colors if plugin has "noColors" flag', () => {
         const taskMock = new TaskMock();
-        const reporter = new Reporter({ noColors: true }, taskMock);
+        const reporter = new Reporter({ noColors: true }, taskMock._messageBus);
 
         expect(reporter.plugin.chalk.enabled).to.be.false;
     });
@@ -1220,15 +1222,18 @@ describe('Reporter', () => {
                 reportTestDone:     (name, testRunInfo) => {
                     videoLog.push(testRunInfo.videos);
                 },
-            }, taskMock);
+            }, taskMock._messageBus);
         }
 
         createReporter();
 
-        return Promise.all([
-            emulateBrowserJob(taskMock, chromeTestRunMocks.slice(0, 2)),
-            emulateBrowserJob(taskMock, firefoxTestRunMocks.slice(0, 2)),
-        ])
+        return taskMock._messageBus.emit('start', taskMock)
+            .then(() => {
+                return Promise.all([
+                    emulateBrowserJob(taskMock, chromeTestRunMocks.slice(0, 2)),
+                    emulateBrowserJob(taskMock, firefoxTestRunMocks.slice(0, 2)),
+                ]);
+            })
             .then(() => {
                 expect(videoLog).eql([
                     [
@@ -1253,7 +1258,7 @@ describe('Reporter', () => {
                 };
             }
 
-            return new Reporter(reporterObject, task, null, 'customReporter');
+            return new Reporter(reporterObject, task._messageBus, null, 'customReporter');
         }
 
         const taskMock = new TaskMock();
@@ -1263,7 +1268,7 @@ describe('Reporter', () => {
         const reporter = createBrokenReporter(taskMock);
 
         for (const method of Object.values(ReporterPluginMethod)) {
-            await reporter.dispatchToPlugin({ method });
+            await reporter.dispatchToPlugin({ method, initialObject: taskMock });
 
             const lastErr = log.pop();
 
