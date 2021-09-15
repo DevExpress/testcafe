@@ -17,9 +17,9 @@ export interface SharedAdapter {
     PromiseCtor: typeof Promise;
 }
 
-interface ClientReqEmitter<R> {
-    onReqSend: (fn: (req: R) => void) => void;
-    onReqCompleted: (fn: (req: R) => void) => void;
-    onReqError: (fn: (req: R) => void) => void;
+interface ClientRequestEmitter<R> {
+    onRequestSend: (fn: (req: R) => void) => void;
+    onRequestCompleted: (fn: (req: R) => void) => void;
+    onRequestError: (fn: (req: R) => void) => void;
     offAll: () => void;
 }

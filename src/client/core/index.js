@@ -3,7 +3,7 @@ import hammerhead from './deps/hammerhead';
 import KEY_MAPS from './utils/key-maps';
 import NODE_TYPE_DESCRIPTIONS from './utils/node-type-descriptions';
 import RequestBarrier from '../../shared/barriers/request';
-import ClientReqEmitter from './client-req-emitter';
+import ClientRequestEmitter from './client-request-emitter';
 import * as pageUnloadBarrier from './page-unload-barrier';
 import { preventRealEvents, disableRealEventsPreventing } from './prevent-real-events';
 import scrollController from './scroll-controller';
@@ -42,7 +42,7 @@ initializeSharedAdapter(sharedAdapterInitializer);
 const exports = {};
 
 exports.RequestBarrier              = RequestBarrier;
-exports.ClientReqEmitter            = ClientReqEmitter;
+exports.ClientRequestEmitter        = ClientRequestEmitter;
 exports.pageUnloadBarrier           = pageUnloadBarrier;
 exports.preventRealEvents           = preventRealEvents;
 exports.disableRealEventsPreventing = disableRealEventsPreventing;

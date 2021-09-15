@@ -1,6 +1,6 @@
 import { adapter } from '../adapter';
 import delay from '../../utils/delay';
-import { NativeMethods, ClientReqEmitter } from '../types';
+import { NativeMethods, ClientRequestEmitter } from '../types';
 
 
 interface Delays {
@@ -16,12 +16,12 @@ export default class RequestBarrier<R> {
 
     private readonly _delays: Delays;
     private readonly _requests: Set<R>;
-    private readonly _emitter: ClientReqEmitter<R>;
+    private readonly _emitter: ClientRequestEmitter<R>;
     private _waitResolve: (() => void) | null;
     private _watchdog: ReturnType<NativeMethods['setTimeout']> | null;
     protected _collectingReqs: boolean;
 
-    protected constructor (emitter: ClientReqEmitter<R>, delays: Partial<Delays> = {}) {
+    public constructor (emitter: ClientRequestEmitter<R>, delays: Partial<Delays> = {}) {
         this._delays = {
             requestsCollection:            delays.requestsCollection ?? REQUESTS_COLLECTION_DELAY_DEFAULT,
             additionalRequestsCollection:  delays.additionalRequestsCollection ?? REQUESTS_COLLECTION_DELAY_DEFAULT,
@@ -34,32 +34,32 @@ export default class RequestBarrier<R> {
         this._requests       = new Set();
         this._collectingReqs = true;
 
-        this.startListening();
+        this._startListening();
     }
 
-    protected startListening (): void {
-        this._emitter.onReqSend((req: R) => this._onReqSend(req));
-        this._emitter.onReqCompleted((req: R) => this._onReqCompleted(req));
-        this._emitter.onReqError((req: R) => this._onReqError(req));
+    private _startListening (): void {
+        this._emitter.onRequestSend((req: R) => this._onRequestSend(req));
+        this._emitter.onRequestCompleted((req: R) => this._onRequestCompleted(req));
+        this._emitter.onRequestError((req: R) => this._onRequestError(req));
     }
 
-    protected _offListening (): void {
+    private _offListening (): void {
         this._emitter.offAll();
     }
 
-    protected _onReqSend (req: R): void {
+    private _onRequestSend (req: R): void {
         if (this._collectingReqs)
             this._requests.add(req);
     }
 
-    protected _onReqCompleted (req: R): void {
+    private _onRequestCompleted (req: R): void {
         // NOTE: let the last real XHR handler finish its job and try to obtain
         // any additional requests if they were initiated by this handler
         delay(this._delays.additionalRequestsCollection)
-            .then(() => this._onReqFinished(req));
+            .then(() => this._onRequestFinished(req));
     }
 
-    protected _onReqFinished (req: R): void {
+    private _onRequestFinished (req: R): void {
         if (!this._requests.has(req))
             return;
 
@@ -69,8 +69,8 @@ export default class RequestBarrier<R> {
             this._finishWaiting();
     }
 
-    protected _onReqError (req: R): void {
-        this._onReqFinished(req);
+    private _onRequestError (req: R): void {
+        this._onRequestFinished(req);
     }
 
     private _finishWaiting (): void {
@@ -83,7 +83,7 @@ export default class RequestBarrier<R> {
         }
 
         this._offListening();
-        this._waitResolve?.();
+        this._waitResolve!(); // eslint-disable-line @typescript-eslint/no-non-null-assertion
     }
 
     public wait (isPageLoad: boolean): Promise<void> {

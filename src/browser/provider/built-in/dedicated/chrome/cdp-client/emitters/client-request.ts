@@ -1,5 +1,5 @@
 import EventEmitter from '../../../../../../../shared/utils/event-emitter';
-import { ClientReqEmitter } from '../../../../../../../shared/types';
+import { ClientRequestEmitter } from '../../../../../../../shared/types';
 import ProtocolProxyApi from 'devtools-protocol/types/protocol-proxy-api';
 import NetworkApi = ProtocolProxyApi.NetworkApi;
 import Protocol from 'devtools-protocol';
@@ -8,54 +8,54 @@ import LoadingFinishedEvent = Protocol.Network.LoadingFinishedEvent;
 import LoadingFailedEvent = Protocol.Network.LoadingFailedEvent;
 
 
-type ClientReqType = string;
-type ClientReqEvtListener = (req: ClientReqType) => void;
+type ClientRequestType = string;
+type ClientRequestEventListener = (req: ClientRequestType) => void;
 
-const REQ_SEND_EVENT      = 'req-send';
-const REQ_COMPLETED_EVENT = 'req-completed';
-const REQ_ERROR_EVENT     = 'req-error';
+const REQUEST_SEND_EVENT      = 'request-send';
+const REQUEST_COMPLETED_EVENT = 'request-completed';
+const REQUEST_ERROR_EVENT     = 'request-error';
 
-export default class CdpClientReqEmitter extends EventEmitter implements ClientReqEmitter<ClientReqType> {
-    private readonly _cdpOffFns: (() => void)[];
+export default class CdpClientRequestEmitter extends EventEmitter implements ClientRequestEmitter<ClientRequestType> {
+    private readonly _cdpOffFunctions: (() => void)[];
 
     public constructor (Network: NetworkApi, frameId: string) {
         super();
 
-        this._cdpOffFns = [];
+        this._cdpOffFunctions = [];
 
         // @ts-ignore
-        this._cdpOffFns.push(Network.on('requestWillBeSent', (e: RequestWillBeSentEvent) => {
+        this._cdpOffFunctions.push(Network.on('requestWillBeSent', (e: RequestWillBeSentEvent) => {
             if (e.type !== 'Fetch' && e.type !== 'XHR' || (e.frameId || '') !== frameId)
                 return;
 
-            this.emit(REQ_SEND_EVENT, e.requestId);
+            this.emit(REQUEST_SEND_EVENT, e.requestId);
         }));
         // @ts-ignore
-        this._cdpOffFns.push(Network.on('loadingFinished', (e: LoadingFinishedEvent) => {
-            this.emit(REQ_COMPLETED_EVENT, e.requestId);
+        this._cdpOffFunctions.push(Network.on('loadingFinished', (e: LoadingFinishedEvent) => {
+            this.emit(REQUEST_COMPLETED_EVENT, e.requestId);
         }));
         // @ts-ignore
-        this._cdpOffFns.push(Network.on('loadingFailed', (e: LoadingFailedEvent) => {
-            this.emit(REQ_ERROR_EVENT, e.requestId);
+        this._cdpOffFunctions.push(Network.on('loadingFailed', (e: LoadingFailedEvent) => {
+            this.emit(REQUEST_ERROR_EVENT, e.requestId);
         }));
     }
 
-    public onReqSend (listener: ClientReqEvtListener): void {
-        this.on(REQ_SEND_EVENT, listener);
+    public onRequestSend (listener: ClientRequestEventListener): void {
+        this.on(REQUEST_SEND_EVENT, listener);
     }
 
-    public onReqCompleted (listener: ClientReqEvtListener): void {
-        this.on(REQ_COMPLETED_EVENT, listener);
+    public onRequestCompleted (listener: ClientRequestEventListener): void {
+        this.on(REQUEST_COMPLETED_EVENT, listener);
     }
 
-    public onReqError (listener: ClientReqEvtListener): void {
-        this.on(REQ_ERROR_EVENT, listener);
+    public onRequestError (listener: ClientRequestEventListener): void {
+        this.on(REQUEST_ERROR_EVENT, listener);
     }
 
     public offAll (): void {
         super.offAll();
 
-        for (const cdpOff of this._cdpOffFns)
+        for (const cdpOff of this._cdpOffFunctions)
             cdpOff();
     }
 }

@@ -31,8 +31,8 @@ export default class RequestMock extends RequestHook {
     }
 
     public async onResponse (event: ResponseEvent): Promise<void> {
-        if (event.isSameOriginPolicyFailed)
-            this._warningLog?.addWarning(WARNING_MESSAGE.requestMockCORSValidationFailed, RequestMock.name, event.requestFilterRule);
+        if (event.isSameOriginPolicyFailed && this._warningLog)
+            this._warningLog.addWarning(WARNING_MESSAGE.requestMockCORSValidationFailed, RequestMock.name, event.requestFilterRule);
     }
 
     // API
