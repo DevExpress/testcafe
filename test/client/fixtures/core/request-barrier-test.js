@@ -3,9 +3,9 @@ const Promise       = hammerhead.Promise;
 const hhsettings    = hammerhead.settings.get();
 const iframeSandbox = hammerhead.sandbox.iframe;
 
-const testCafeCore     = window.getTestCafeModule('testCafeCore');
-const RequestBarrier   = testCafeCore.RequestBarrier;
-const ClientReqEmitter = testCafeCore.ClientReqEmitter;
+const testCafeCore         = window.getTestCafeModule('testCafeCore');
+const RequestBarrier       = testCafeCore.RequestBarrier;
+const ClientRequestEmitter = testCafeCore.ClientRequestEmitter;
 
 
 $.support.cors = true;
@@ -35,7 +35,7 @@ $(document).ready(function () {
 
             expect(1);
 
-            const requestEmitter = new ClientReqEmitter();
+            const requestEmitter = new ClientRequestEmitter();
             const requestBarrier = new RequestBarrier(requestEmitter);
             const onReqCompleted = function () {
                 completeReqCount++;
@@ -67,7 +67,7 @@ $(document).ready(function () {
 
             expect(1);
 
-            const requestEmitter = new ClientReqEmitter();
+            const requestEmitter = new ClientRequestEmitter();
             const requestBarrier = new RequestBarrier(requestEmitter);
             const onReqCompleted = function () {
                 completeReqCount++;
@@ -97,7 +97,7 @@ $(document).ready(function () {
 
             expect(1);
 
-            const requestEmitter = new ClientReqEmitter();
+            const requestEmitter = new ClientRequestEmitter();
             const requestBarrier = new RequestBarrier(requestEmitter);
 
             hhsettings.serviceMsgUrl = '/xhr-test/8000';
@@ -128,7 +128,7 @@ $(document).ready(function () {
 
             expect(1);
 
-            const requestEmitter = new ClientReqEmitter();
+            const requestEmitter = new ClientRequestEmitter();
             const requestBarrier = new RequestBarrier(requestEmitter);
 
             requestBarrier.TIMEOUT = 0;
@@ -159,7 +159,7 @@ $(document).ready(function () {
 
             expect(2);
 
-            const requestEmitter = new ClientReqEmitter();
+            const requestEmitter = new ClientRequestEmitter();
             const requestBarrier = new RequestBarrier(requestEmitter);
 
             window.setTimeout(function () {
@@ -183,7 +183,7 @@ $(document).ready(function () {
 
             expect(1);
 
-            const requestEmitter = new ClientReqEmitter();
+            const requestEmitter = new ClientRequestEmitter();
             const requestBarrier = new RequestBarrier(requestEmitter);
 
             requestBarrier
@@ -225,7 +225,7 @@ $(document).ready(function () {
                 callback();
             };
 
-            const requestEmitter = new ClientReqEmitter();
+            const requestEmitter = new ClientRequestEmitter();
             const requestBarrier = new RequestBarrier(requestEmitter);
 
             action.call(window, function () {
@@ -258,7 +258,7 @@ $(document).ready(function () {
                 callback();
             };
 
-            const requestEmitter = new ClientReqEmitter();
+            const requestEmitter = new ClientRequestEmitter();
             const requestBarrier = new RequestBarrier(requestEmitter);
 
             action.call(window, function () {
@@ -286,7 +286,7 @@ $(document).ready(function () {
 
                 expect(1);
 
-                const requestEmitter     = new ClientReqEmitter();
+                const requestEmitter     = new ClientRequestEmitter();
                 const requestBarrier     = new RequestBarrier(requestEmitter);
                 const returnResponseText = function (response) {
                     return response.text();
@@ -323,7 +323,7 @@ $(document).ready(function () {
 
                 expect(1);
 
-                const requestEmitter = new ClientReqEmitter();
+                const requestEmitter = new ClientRequestEmitter();
                 const requestBarrier = new RequestBarrier(requestEmitter);
 
                 fetch('/close-request')
