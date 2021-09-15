@@ -3,8 +3,9 @@ const Promise       = hammerhead.Promise;
 const hhsettings    = hammerhead.settings.get();
 const iframeSandbox = hammerhead.sandbox.iframe;
 
-const testCafeCore   = window.getTestCafeModule('testCafeCore');
-const RequestBarrier = testCafeCore.RequestBarrier;
+const testCafeCore     = window.getTestCafeModule('testCafeCore');
+const RequestBarrier   = testCafeCore.RequestBarrier;
+const ClientReqEmitter = testCafeCore.ClientReqEmitter;
 
 
 $.support.cors = true;
@@ -34,7 +35,8 @@ $(document).ready(function () {
 
             expect(1);
 
-            const requestBarrier = new RequestBarrier();
+            const requestEmitter = new ClientReqEmitter();
+            const requestBarrier = new RequestBarrier(requestEmitter);
             const onReqCompleted = function () {
                 completeReqCount++;
             };
@@ -44,7 +46,7 @@ $(document).ready(function () {
 
             // NOTE: ignore slow connection on the testing
             // farm that leads to unstable tests appearing
-            delay(requestBarrier.BARRIER_TIMEOUT)
+            delay(requestBarrier.TIMEOUT)
                 .then(function () {
                     barrierTimeoutExceeded = true;
                 });
@@ -65,7 +67,8 @@ $(document).ready(function () {
 
             expect(1);
 
-            const requestBarrier = new RequestBarrier();
+            const requestEmitter = new ClientReqEmitter();
+            const requestBarrier = new RequestBarrier(requestEmitter);
             const onReqCompleted = function () {
                 completeReqCount++;
             };
@@ -75,7 +78,7 @@ $(document).ready(function () {
 
             // NOTE: ignore slow connection on the testing
             // farm that leads to unstable tests appearing
-            delay(requestBarrier.BARRIER_TIMEOUT)
+            delay(requestBarrier.TIMEOUT)
                 .then(function () {
                     barrierTimeoutExceeded = true;
                 });
@@ -94,7 +97,8 @@ $(document).ready(function () {
 
             expect(1);
 
-            const requestBarrier = new RequestBarrier();
+            const requestEmitter = new ClientReqEmitter();
+            const requestBarrier = new RequestBarrier(requestEmitter);
 
             hhsettings.serviceMsgUrl = '/xhr-test/8000';
 
@@ -124,9 +128,10 @@ $(document).ready(function () {
 
             expect(1);
 
-            const requestBarrier = new RequestBarrier();
+            const requestEmitter = new ClientReqEmitter();
+            const requestBarrier = new RequestBarrier(requestEmitter);
 
-            requestBarrier.BARRIER_TIMEOUT = 0;
+            requestBarrier.TIMEOUT = 0;
 
             jqxhr = $.get('/xhr-test/8000');
 
@@ -154,7 +159,8 @@ $(document).ready(function () {
 
             expect(2);
 
-            const requestBarrier = new RequestBarrier();
+            const requestEmitter = new ClientReqEmitter();
+            const requestBarrier = new RequestBarrier(requestEmitter);
 
             window.setTimeout(function () {
                 requestBarrier
@@ -177,7 +183,8 @@ $(document).ready(function () {
 
             expect(1);
 
-            const requestBarrier = new RequestBarrier();
+            const requestEmitter = new ClientReqEmitter();
+            const requestBarrier = new RequestBarrier(requestEmitter);
 
             requestBarrier
                 .wait()
@@ -218,7 +225,8 @@ $(document).ready(function () {
                 callback();
             };
 
-            const requestBarrier = new RequestBarrier();
+            const requestEmitter = new ClientReqEmitter();
+            const requestBarrier = new RequestBarrier(requestEmitter);
 
             action.call(window, function () {
                 requestBarrier
@@ -250,7 +258,8 @@ $(document).ready(function () {
                 callback();
             };
 
-            const requestBarrier = new RequestBarrier();
+            const requestEmitter = new ClientReqEmitter();
+            const requestBarrier = new RequestBarrier(requestEmitter);
 
             action.call(window, function () {
                 requestBarrier
@@ -277,7 +286,8 @@ $(document).ready(function () {
 
                 expect(1);
 
-                const requestBarrier     = new RequestBarrier();
+                const requestEmitter     = new ClientReqEmitter();
+                const requestBarrier     = new RequestBarrier(requestEmitter);
                 const returnResponseText = function (response) {
                     return response.text();
                 };
@@ -294,7 +304,7 @@ $(document).ready(function () {
 
                 // NOTE: ignore slow connection on the testing
                 // farm that leads to unstable tests appearing
-                delay(requestBarrier.BARRIER_TIMEOUT)
+                delay(requestBarrier.TIMEOUT)
                     .then(function () {
                         barrierTimeoutExceeded = true;
                     });
@@ -313,7 +323,8 @@ $(document).ready(function () {
 
                 expect(1);
 
-                const requestBarrier = new RequestBarrier();
+                const requestEmitter = new ClientReqEmitter();
+                const requestBarrier = new RequestBarrier(requestEmitter);
 
                 fetch('/close-request')
                     .then(function (response) {
@@ -334,7 +345,7 @@ $(document).ready(function () {
 
                 // NOTE: ignore slow connection on the testing
                 // farm that leads to unstable tests appearing
-                delay(requestBarrier.BARRIER_TIMEOUT)
+                delay(requestBarrier.TIMEOUT)
                     .then(function () {
                         barrierTimeoutExceeded = true;
                     });

@@ -12,7 +12,7 @@ interface Delays {
 const REQUESTS_COLLECTION_DELAY_DEFAULT = 50;
 
 export default class RequestBarrier<R> {
-    private static readonly BARRIER_TIMEOUT = 3000;
+    private static readonly TIMEOUT = 3000;
 
     private readonly _delays: Delays;
     private readonly _requests: Set<R>;
@@ -98,7 +98,7 @@ export default class RequestBarrier<R> {
 
                 const setTimeout = adapter.nativeMethods.setTimeout;
 
-                this._watchdog = setTimeout(() => this._finishWaiting(), RequestBarrier.BARRIER_TIMEOUT);
+                this._watchdog = setTimeout(() => this._finishWaiting(), RequestBarrier.TIMEOUT);
             }));
     }
 }
