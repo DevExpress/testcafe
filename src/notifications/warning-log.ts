@@ -40,9 +40,9 @@ export default class WarningLog {
         this.messages.forEach(msg => warningLog.addWarning(msg));
     }
 
-    public static creatAddWarningCallback (messageBus?: MessageBus, testRun?: TestRun): (message: string) => Promise<void> {
+    public static creatAddWarningCallback (messageBus?: MessageBus | object, testRun?: TestRun): (message: string) => Promise<void> {
         return async (message: string) => {
-            if (messageBus) {
+            if (messageBus && messageBus instanceof MessageBus) {
                 await messageBus.emit('warning-add', {
                     message,
                     testRun,
