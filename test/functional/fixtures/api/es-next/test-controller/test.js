@@ -30,7 +30,7 @@ describe('[API] TestController', () => {
     });
 
     describe('Proxy object', () => {
-        it.only('Should provide importable proxy object', () => {
+        it('Should provide importable proxy object', () => {
             return runTests('./testcafe-fixtures/proxy-test.js', 'Proxy object');
         });
     });
