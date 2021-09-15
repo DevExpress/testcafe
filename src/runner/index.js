@@ -656,6 +656,8 @@ export default class Runner extends EventEmitter {
         let reporters;
 
         this.apiMethodWasCalled.reset();
+        this._messageBus.clearListeners();
+
         this._options = Object.assign(this._options, options);
 
         const runTaskPromise = Promise.resolve()
