@@ -5,6 +5,7 @@ const { createReporter }   = require('../../utils/reporter');
 const ReporterPluginMethod = require('../../../../lib/reporter/plugin-methods');
 const assertionHelper      = require('../../assertion-helper.js');
 const path                 = require('path');
+const config               = require('../../config');
 
 const {
     createSimpleTestStream,
@@ -841,21 +842,23 @@ describe('Reporter', () => {
             resultWarning = {};
         });
 
-        it('Should get warning for TestRun', async () => {
-            try {
-                await runTests('testcafe-fixtures/index-test.js', 'Asynchronous method', {
-                    reporter,
-                    shouldFail: true,
-                });
+        if (!config.experimentalDebug) {
+            it('Should get warning for TestRun', async () => {
+                try {
+                    await runTests('testcafe-fixtures/index-test.js', 'Asynchronous method', {
+                        reporter,
+                        shouldFail: true,
+                    });
 
-                throw new Error('Promise rejection expected');
-            }
-            catch (err) {
-                expect(resultWarning.message).to.include("An asynchronous method that you do not await includes an assertion. Inspect that method's execution chain and add the 'await' keyword where necessary.");
-                expect(resultWarning.testRunId).to.be.a('string');
-                expect(resultWarning.testRunId).to.not.empty;
-            }
-        });
+                    throw new Error('Promise rejection expected');
+                }
+                catch (err) {
+                    expect(resultWarning.message).to.include("An asynchronous method that you do not await includes an assertion. Inspect that method's execution chain and add the 'await' keyword where necessary.");
+                    expect(resultWarning.testRunId).to.be.a('string');
+                    expect(resultWarning.testRunId).to.not.empty;
+                }
+            });
+        }
 
         it('Should get warning for Task', async () => {
             await runTests('./testcafe-fixtures/index-test.js', 'Take screenshots with same path', {
