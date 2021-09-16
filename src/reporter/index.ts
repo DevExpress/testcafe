@@ -79,7 +79,7 @@ interface TestRunInfo {
 }
 
 interface PluginMethodArguments {
-    initialObject: Task | null;
+    initialObject: Task | MessageBus | null;
     method: string;
     args: unknown[];
 }
@@ -232,7 +232,7 @@ export default class Reporter {
         if (this.plugin.reportWarnings) {
             await this.dispatchToPlugin({
                 method:        ReporterPluginMethod.reportWarnings as string,
-                initialObject: null,
+                initialObject: this.messageBus,
                 args:          [
                     {
                         message,

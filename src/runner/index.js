@@ -147,6 +147,7 @@ export default class Runner extends EventEmitter {
 
         const browserSetErrorPromise = promisifyEvent(browserSet, 'error');
         const taskErrorPromise       = promisifyEvent(task, 'error');
+        const messageBusErrorPromise = promisifyEvent(this._messageBus, 'error');
         const streamController       = new ReporterStreamController(this._messageBus, reporters);
 
         const taskDonePromise = this._messageBus.once('done')
@@ -159,6 +160,7 @@ export default class Runner extends EventEmitter {
             taskDonePromise,
             browserSetErrorPromise,
             taskErrorPromise,
+            messageBusErrorPromise,
         ];
 
         if (testedApp)
