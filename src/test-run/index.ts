@@ -421,19 +421,23 @@ export default class TestRun extends AsyncEventEmitter {
 
     private _subscribeOnCompilerServiceEvents (): void {
         COMPILER_SERVICE_EVENTS.forEach(eventName => {
-            this.compilerService?.on(eventName, async args => {
-                // @ts-ignore
-                await this.session[eventName](...args);
+            if (this.compilerService) {
+                this.compilerService.on(eventName, async args => {
+                    // @ts-ignore
+                    await this.session[eventName](...args);
+                });
+            }
+        });
+
+        if (this.compilerService) {
+            this.compilerService.on('addRequestEventListeners', async ({ hookId, hookClassName, rules }) => {
+                this._initRequestHookForCompilerService(hookId, hookClassName, rules);
             });
-        });
 
-        this.compilerService?.on('addRequestEventListeners', async ({ hookId, hookClassName, rules }) => {
-            this._initRequestHookForCompilerService(hookId, hookClassName, rules);
-        });
-
-        this.compilerService?.on('removeRequestEventListeners', async ({ rules }) => {
-            this._detachRequestEventListeners(rules);
-        });
+            this.compilerService.on('removeRequestEventListeners', async ({ rules }) => {
+                this._detachRequestEventListeners(rules);
+            });
+        }
     }
 
     private _initRequestHooks (): void {
@@ -740,7 +744,10 @@ export default class TestRun extends AsyncEventEmitter {
 
     private _resolvePendingRequest (command: CommandBase | null): void {
         this.lastDriverStatusResponse = command;
-        this.pendingRequest?.resolve(command);
+
+        if (this.pendingRequest)
+            this.pendingRequest.resolve(command);
+
         this._clearPendingRequest();
     }
 

@@ -56,8 +56,11 @@ export default class TestedApp {
 
         this._process = spawnCommand(command, { shell: true, env });
 
-        this._process.stdout?.on('data', data => this._stdoutLogger(String(data)));
-        this._process.stderr?.on('data', data => this._stderrLogger(String(data)));
+        if (this._process.stdout)
+            this._process.stdout.on('data', data => this._stdoutLogger(String(data)));
+
+        if (this._process.stderr)
+            this._process.stderr.on('data', data => this._stderrLogger(String(data)));
 
         try {
             await this._process;
