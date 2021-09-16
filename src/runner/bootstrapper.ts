@@ -142,7 +142,7 @@ export default class Bootstrapper {
 
         return browserInfo
             .map(browser => times(this.concurrency, () => new BrowserConnection(
-                this.browserConnectionGateway, browser, false, this.messageBus, this.disableMultipleWindows, this.proxyless)));
+                this.browserConnectionGateway, browser, false, this.disableMultipleWindows, this.proxyless, this.messageBus)));
     }
 
     private _getBrowserSetOptions (): BrowserSetOptions {

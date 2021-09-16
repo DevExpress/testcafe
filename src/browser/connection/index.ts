@@ -111,9 +111,9 @@ export default class BrowserConnection extends EventEmitter {
         gateway: BrowserConnectionGateway,
         browserInfo: BrowserInfo,
         permanent: boolean,
-        messageBus?: MessageBus,
         disableMultipleWindows = false,
-        proxyless = false) {
+        proxyless = false,
+        messageBus?: MessageBus) {
         super();
 
         this.HEARTBEAT_TIMEOUT       = HEARTBEAT_TIMEOUT;
