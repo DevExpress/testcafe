@@ -23,3 +23,9 @@ interface ClientRequestEmitter<R> {
     onRequestError: (fn: (req: R) => void) => void;
     offAll: () => void;
 }
+
+interface ScriptExecutionEmitter<S> {
+    onScriptAdded: (fn: (scr: S) => void) => void;
+    onScriptLoadedOrFailed: (fn: (scr: S) => void) => void;
+    offAll: () => void;
+}
