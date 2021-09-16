@@ -4,15 +4,16 @@ import {
     RequestBarrier,
     ClientRequestEmitter,
     pageUnloadBarrier,
+    ScriptExecutionBarrier,
+    ScriptExecutionEmitter,
 } from '../deps/testcafe-core';
-
-import ScriptExecutionBarrier from '../script-execution-barrier';
 
 
 export default function (action, ...args) {
     const requestEmitter         = new ClientRequestEmitter();
     const requestBarrier         = new RequestBarrier(requestEmitter);
-    const scriptExecutionBarrier = new ScriptExecutionBarrier();
+    const scriptEmitter          = new ScriptExecutionEmitter();
+    const scriptExecutionBarrier = new ScriptExecutionBarrier(scriptEmitter);
 
     pageUnloadBarrier.watchForPageNavigationTriggers();
 

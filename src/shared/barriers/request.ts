@@ -82,19 +82,22 @@ export default class RequestBarrier<R> {
             this._watchdog = null;
         }
 
+        this._requests.clear();
         this._offListening();
         this._waitResolve!(); // eslint-disable-line @typescript-eslint/no-non-null-assertion
     }
 
-    public wait (isPageLoad: boolean): Promise<void> {
+    public wait (isPageLoad?: boolean): Promise<void> {
         return delay(isPageLoad ? this._delays.pageInitialRequestsCollection : this._delays.requestsCollection)
-            // eslint-disable-next-line consistent-return
             .then(() => new adapter.PromiseCtor((resolve: () => void) => {
                 this._collectingReqs = false;
                 this._waitResolve    = resolve;
 
-                if (!this._requests.size)
-                    return this._finishWaiting();
+                if (!this._requests.size) {
+                    this._finishWaiting();
+
+                    return;
+                }
 
                 const setTimeout = adapter.nativeMethods.setTimeout;
 

@@ -1,4 +1,7 @@
-const ScriptExecutionBarrier = window.getTestCafeModule('ScriptExecutionBarrier');
+const testCafeCore           = window.getTestCafeModule('testCafeCore');
+const ScriptExecutionBarrier = testCafeCore.ScriptExecutionBarrier;
+const ScriptExecutionEmitter = testCafeCore.ScriptExecutionEmitter;
+
 
 QUnit.testStart(function () {
     window.scriptExecuted     = false;
@@ -9,18 +12,18 @@ QUnit.testStart(function () {
 $(document).ready(function () {
     module('script execution barrier', function () {
         asyncTest('should wait while added script is loaded and executed', function () {
-            const barrier       = new ScriptExecutionBarrier();
+            const emitter       = new ScriptExecutionEmitter();
+            const barrier       = new ScriptExecutionBarrier(emitter);
             const script        = document.createElement('script');
             const scriptContent = encodeURIComponent('window.scriptExecuted=true;');
 
             script.src = '/xhr-test/500?expectedResponse=' + scriptContent;
             document.body.appendChild(script);
 
-            barrier.SCRIPT_LOADING_TIMEOUT = 2000;
-            barrier.BARRIER_TIMEOUT        = 2000;
+            ScriptExecutionBarrier.LOADING_TIMEOUT = 2000;
+            ScriptExecutionBarrier.TIMEOUT         = 2000;
 
-            barrier
-                .wait()
+            barrier.wait()
                 .then(function () {
                     ok(window.scriptExecuted);
                     start();
@@ -28,20 +31,20 @@ $(document).ready(function () {
         });
 
         asyncTest('should not wait if the script is loading too much time', function () {
-            const barrier       = new ScriptExecutionBarrier();
+            const emitter       = new ScriptExecutionEmitter();
+            const barrier       = new ScriptExecutionBarrier(emitter);
             const script        = document.createElement('script');
             const scriptContent = encodeURIComponent('window.scriptExecuted=true');
 
             script.src           = '/xhr-test/500?expectedResponse=' + scriptContent;
             script.style.display = 'none';
 
-            barrier.SCRIPT_LOADING_TIMEOUT = 50;
-            barrier.BARRIER_TIMEOUT        = 2000;
+            ScriptExecutionBarrier.LOADING_TIMEOUT = 50;
+            ScriptExecutionBarrier.TIMEOUT         = 2000;
 
             document.body.appendChild(script);
 
-            barrier
-                .wait()
+            barrier.wait()
                 .then(function () {
                     ok(!window.scriptExecuted);
                     start();
@@ -49,7 +52,8 @@ $(document).ready(function () {
         });
 
         asyncTest("should not wait if the script can't be loaded or it's without src", function () {
-            const barrier              = new ScriptExecutionBarrier();
+            const emitter              = new ScriptExecutionEmitter();
+            const barrier              = new ScriptExecutionBarrier(emitter);
             const scriptWithInvalidSrc = document.createElement('script');
             const scriptWithoutSrc     = document.createElement('script');
             const scriptWithEmptySrc   = document.createElement('script');
@@ -67,11 +71,10 @@ $(document).ready(function () {
 
             const startTime = Date.now();
 
-            barrier.SCRIPT_LOADING_TIMEOUT = 2000;
-            barrier.BARRIER_TIMEOUT        = 2000;
+            ScriptExecutionBarrier.LOADING_TIMEOUT = 2000;
+            ScriptExecutionBarrier.TIMEOUT         = 2000;
 
-            barrier
-                .wait()
+            barrier.wait()
                 .then(function () {
                     const waitingTime = Date.now() - startTime;
 
@@ -81,7 +84,8 @@ $(document).ready(function () {
         });
 
         asyncTest('should not wait if scripts are added recursively', function () {
-            const barrier = new ScriptExecutionBarrier();
+            const emitter = new ScriptExecutionEmitter();
+            const barrier = new ScriptExecutionBarrier(emitter);
 
             let scriptCounter = 0;
 
@@ -97,13 +101,12 @@ $(document).ready(function () {
                 document.body.appendChild(script);
             };
 
-            barrier.SCRIPT_LOADING_TIMEOUT = 500;
-            barrier.BARRIER_TIMEOUT        = 500;
+            ScriptExecutionBarrier.LOADING_TIMEOUT = 500;
+            ScriptExecutionBarrier.TIMEOUT         = 500;
 
             window.appendCustomScript();
 
-            barrier
-                .wait()
+            barrier.wait()
                 .then(function () {
                     window.stopAppending = true;
 
@@ -113,5 +116,4 @@ $(document).ready(function () {
                 });
         });
     });
-
 });
