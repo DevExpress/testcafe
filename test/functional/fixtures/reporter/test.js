@@ -843,6 +843,8 @@ describe('Reporter', () => {
         });
 
         if (!config.experimentalDebug) {
+            //TODO: Debug mode loses synchronization with unwaiting async function. This bug need to fix.
+
             it('Should get warning for TestRun', async () => {
                 try {
                     await runTests('testcafe-fixtures/index-test.js', 'Asynchronous method', {
