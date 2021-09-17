@@ -124,7 +124,7 @@ export default class Reporter {
 
     private static _createReportItem (test: Test, runsPerTest: number): ReportItem {
         return {
-            fixture:                    test.fixture,
+            fixture:                    test.fixture as Fixture,
             test:                       test,
             testRunIds:                 [],
             screenshotPath:             null,
@@ -255,6 +255,8 @@ export default class Reporter {
         if (typeof duration === 'number')
             args.duration = duration;
 
+        const testFixture = testRun.test.fixture as Fixture;
+
         return Object.assign(args, {
             testRunId: testRun.id,
             test:      {
@@ -263,8 +265,8 @@ export default class Reporter {
                 phase: testRun.phase,
             },
             fixture: {
-                name: testRun.test.fixture.name,
-                id:   testRun.test.fixture.id,
+                name: testFixture.name,
+                id:   testFixture.id,
             },
             command: formatCommand(command, result),
             browser: testRun.browser,

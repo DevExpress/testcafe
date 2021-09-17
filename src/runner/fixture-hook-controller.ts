@@ -38,7 +38,7 @@ export default class FixtureHookController {
             const fixture = test.fixture;
 
             if (!test.skip) {
-                FixtureHookController._ensureFixtureMapItem(fixtureMap, fixture);
+                FixtureHookController._ensureFixtureMapItem(fixtureMap, fixture as Fixture);
 
                 const item = fixtureMap.get(fixture);
 
@@ -50,7 +50,7 @@ export default class FixtureHookController {
     }
 
     private _getFixtureMapItem (test: Test): null | FixtureState | undefined {
-        return test.skip ? null : this._fixtureMap.get(test.fixture);
+        return test.skip ? null : this._fixtureMap.get(test.fixture as Fixture);
     }
 
     public isTestBlocked (test: Test): boolean {
@@ -60,7 +60,7 @@ export default class FixtureHookController {
     }
 
     public async runFixtureBeforeHookIfNecessary (testRun: TestRun): Promise<boolean> {
-        const fixture = testRun.test.fixture;
+        const fixture = testRun.test.fixture as Fixture;
         const item    = this._getFixtureMapItem(testRun.test);
 
         if (item) {
@@ -97,7 +97,7 @@ export default class FixtureHookController {
     }
 
     public async runFixtureAfterHookIfNecessary (testRun: TestRun): Promise<void> {
-        const fixture = testRun.test.fixture;
+        const fixture = testRun.test.fixture as Fixture;
         const item    = this._getFixtureMapItem(testRun.test);
 
         if (!item)

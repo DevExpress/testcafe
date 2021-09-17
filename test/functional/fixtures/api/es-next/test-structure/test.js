@@ -5,16 +5,19 @@ const DEFAULT_RUN_OPTIONS        = {
 
 const experimentalDebug = !!process.env.EXPERIMENTAL_DEBUG;
 
-if (!experimentalDebug) {
-    describe('Test structure', function () {
-        it('Should work import "test"', function () {
-            return runTests('./testcafe-test-structure/imported-fixture-test.js', '', DEFAULT_RUN_OPTIONS);
-        });
-        it('Should work import "fixture"', function () {
-            return runTests('./testcafe-test-structure/imported-test-test.js', '', DEFAULT_RUN_OPTIONS);
-        });
+describe('Test structure', function () {
+    it('Should work import "test"', function () {
+        return runTests('./testcafe-test-structure/imported-fixture-test.js', '', DEFAULT_RUN_OPTIONS);
+    });
+
+    it('Should work import "fixture"', function () {
+        return runTests('./testcafe-test-structure/imported-test-test.js', '', DEFAULT_RUN_OPTIONS);
+    });
+
+    if (!experimentalDebug) {
         it('Should work attached tests', function () {
             return runTests('./testcafe-test-structure/test-structure-test.js', 'Attached tests should work', DEFAULT_RUN_OPTIONS);
         });
-    });
-}
+    }
+});
+

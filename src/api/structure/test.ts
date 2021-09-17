@@ -16,35 +16,51 @@ import { SPECIAL_BLANK_PAGE } from 'testcafe-hammerhead';
 import { TestTimeouts } from './interfaces';
 import TestTimeout from './test-timeout';
 
+
 export default class Test extends TestingUnit {
-    public fixture: Fixture;
+    public fixture: Fixture | null;
     public fn: Function | null;
     public beforeFn: Function | null;
     public afterFn: Function | null;
     public timeouts: TestTimeouts | null;
+    private readonly _isCompilerService: boolean;
 
-    public constructor (testFile: TestFile) {
+    public constructor (testFile: TestFile, isCompilerServiceMode = false) {
         // NOTE: 'fixture' directive can be missing
         const fixture = testFile.currentFixture as Fixture;
-        const pageUrl = fixture && fixture.pageUrl || SPECIAL_BLANK_PAGE;
+        const pageUrl = fixture?.pageUrl || SPECIAL_BLANK_PAGE;
 
         super(testFile, UnitType.test, pageUrl);
 
-        this.fixture  = fixture;
+        this.fixture  = null;
         this.fn       = null;
         this.beforeFn = null;
         this.afterFn  = null;
         this.timeouts = null;
 
-        if (this.fixture) {
-            this.requestHooks  = this.fixture.requestHooks.slice();
-            this.clientScripts = this.fixture.clientScripts.slice();
-        }
+        this._isCompilerService = isCompilerServiceMode;
+
+        this._initFixture(testFile);
 
         return this.apiOrigin as unknown as Test;
     }
 
+    private _initFixture (testFile: TestFile): void {
+        const fixture = testFile.currentFixture as Fixture;
+
+        this.fixture = fixture;
+
+        if (!this.fixture)
+            return;
+
+        this.requestHooks  = this.fixture.requestHooks.slice();
+        this.clientScripts = this.fixture.clientScripts.slice();
+    }
+
     protected _add (name: string, fn: Function): Function {
+        if (this._isCompilerService && !this.fixture)
+            this._initFixture(this.testFile);
+
         assertType(is.string, 'apiOrigin', 'The test name', name);
         assertType(is.function, 'apiOrigin', 'The test body', fn);
         assertType(is.nonNullObject, 'apiOrigin', `The fixture of '${name}' test`, this.fixture);

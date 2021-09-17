@@ -26,11 +26,13 @@ export default class TestFile extends BaseUnit {
                 test[prop] = test[prop] || test.fixture[prop];
             });
 
+            const testFixture = test.fixture as Fixture;
+
             if (test.disablePageReloads === void 0)
-                test.disablePageReloads = test.fixture.disablePageReloads;
+                test.disablePageReloads = testFixture.disablePageReloads;
 
             if (!test.disablePageCaching)
-                test.disablePageCaching = test.fixture.disablePageCaching;
+                test.disablePageCaching = testFixture.disablePageCaching;
         });
 
         return this.collectedTests;

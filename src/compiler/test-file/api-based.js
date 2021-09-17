@@ -16,6 +16,8 @@ import stackCleaningHook from '../../errors/stack-cleaning-hook';
 import NODE_MODULES from '../../shared/node-modules-folder-name';
 import cacheProxy from './cache-proxy';
 import exportableLib from '../../api/exportable-lib';
+import TEST_FILE_TEMP_VARIABLE_NAME from './test-file-temp-variable-name';
+import addExportAPI from './add-export-api';
 
 const CWD = process.cwd();
 
@@ -178,16 +180,24 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         });
     }
 
-    _addExportAPI (testFile) {
-        Object.defineProperty(exportableLib, 'fixture', {
-            get:          () => new Fixture(testFile),
-            configurable: true,
-        });
+    _addExportAPIInCompilerServiceMode (testFile) {
+        // 'esm' library has an issue with loading modules
+        // in case of the combination of require and import directives.
+        // This hack allowing achieve the desired behavior.
+        const exportableLibPath = require.resolve('../../api/exportable-lib');
 
-        Object.defineProperty(exportableLib, 'test', {
-            get:          () => new Test(testFile),
-            configurable: true,
-        });
+        delete require.cache[exportableLibPath];
+
+        global[TEST_FILE_TEMP_VARIABLE_NAME] = testFile;
+
+        require('../../api/exportable-lib');
+    }
+
+    _addExportAPI (testFile) {
+        if (this.isCompilerServiceMode)
+            this._addExportAPIInCompilerServiceMode(testFile);
+        else
+            addExportAPI(testFile, exportableLib);
     }
 
     _removeGlobalAPI () {

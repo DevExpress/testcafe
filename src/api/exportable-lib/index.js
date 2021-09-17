@@ -1,3 +1,5 @@
+import TEST_FILE_TEMP_VARIABLE_NAME from '../../compiler/test-file/test-file-temp-variable-name';
+
 const lazyRequire           = require('import-lazy')(require);
 const ClientFunctionBuilder = lazyRequire('../../client-functions/client-function-builder');
 const SelectorBuilder       = lazyRequire('../../client-functions/selectors/selector-builder');
@@ -5,6 +7,7 @@ const role                  = lazyRequire('../../role');
 const createRequestLogger   = lazyRequire('../request-hooks/request-logger');
 const createRequestMock     = lazyRequire('../request-hooks/request-mock/create-request-mock');
 const userVariables         = lazyRequire('../user-variables');
+const addExportAPI          = lazyRequire('../../compiler/test-file/add-export-api');
 
 // NOTE: We can't use lazy require for RequestHook, because it will break base class detection for inherited classes
 let RequestHook = null;
@@ -40,7 +43,7 @@ Object.defineProperty(Role, 'anonymous', {
     get: () => role.createAnonymousRole,
 });
 
-export default {
+const exportableLib = {
     Role,
 
     ClientFunction,
@@ -69,3 +72,14 @@ export default {
         return userVariables.value;
     },
 };
+
+const tempTestFile = global[TEST_FILE_TEMP_VARIABLE_NAME];
+
+if (tempTestFile) {
+    addExportAPI(tempTestFile, exportableLib, true);
+
+    delete global[TEST_FILE_TEMP_VARIABLE_NAME];
+}
+
+export default exportableLib;
+
