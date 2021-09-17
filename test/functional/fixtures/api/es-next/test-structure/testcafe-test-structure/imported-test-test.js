@@ -1,7 +1,7 @@
-import { test } from 'testcafe';
+import { test, Selector } from 'testcafe';
 
 fixture `Test`;
 
 test('"test" should be imported', async t => {
-    await t.click('body');
+    await t.expect(Selector('body').exists).ok();
 });

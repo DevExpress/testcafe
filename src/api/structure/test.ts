@@ -46,9 +46,7 @@ export default class Test extends TestingUnit {
     }
 
     private _initFixture (testFile: TestFile): void {
-        const fixture = testFile.currentFixture as Fixture;
-
-        this.fixture = fixture;
+        this.fixture = testFile.currentFixture;
 
         if (!this.fixture)
             return;
