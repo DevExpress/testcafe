@@ -91,6 +91,10 @@ import { SwitchToWindowPredicateError } from '../../shared/errors';
 
 setupSourceMapSupport();
 
+// This is hack for supporting the 'import { t } from "testcafe"' expression in tests.
+// It caused by using the 'esm' module.
+require('../../api/test-controller/proxy');
+
 interface ServiceState {
     testRuns: { [id: string]: TestRunProxy };
     fixtureCtxs: { [id: string]: object };

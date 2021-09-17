@@ -12,12 +12,9 @@ const TEST_WITH_IFRAME_FAILED_RUN_OPTIONS = {
     selectorTimeout: IFRAME_SELECTOR_TIMEOUT,
 };
 
-const experimentalDebug = !!process.env.EXPERIMENTAL_DEBUG;
-
 // TODO: IMPORTANT: Azure test tasks hang when a role is used in a test, fix it immediately
 if (config.currentEnvironmentName !== config.testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers &&
-    config.currentEnvironmentName !== config.testingEnvironmentNames.mobileBrowsers &&
-    !experimentalDebug) {
+    config.currentEnvironmentName !== config.testingEnvironmentNames.mobileBrowsers) {
     describe('[API] t.useRole()', function () {
         it('Should initialize and switch roles', function () {
             return runTests('./testcafe-fixtures/use-role-test.js', null, { only: 'chrome,ie,firefox' });

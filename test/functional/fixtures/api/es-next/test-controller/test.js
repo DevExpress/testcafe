@@ -1,7 +1,5 @@
 const { expect } = require('chai');
 
-const experimentalDebug = !!process.env.EXPERIMENTAL_DEBUG;
-
 // NOTE: we run tests in chrome only, because we mainly test server API functionality.
 // Actions functionality is tested in lower-level raw API.
 describe('[API] TestController', () => {
@@ -32,11 +30,9 @@ describe('[API] TestController', () => {
     });
 
     describe('Proxy object', () => {
-        if (!experimentalDebug) {
-            it('Should provide importable proxy object', () => {
-                return runTests('./testcafe-fixtures/proxy-test.js', 'Proxy object');
-            });
-        }
+        it('Should provide importable proxy object', () => {
+            return runTests('./testcafe-fixtures/proxy-test.js', 'Proxy object');
+        });
     });
 
     describe('Missing `await` tracking', () => {
