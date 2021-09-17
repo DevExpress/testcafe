@@ -412,7 +412,7 @@ export default class Reporter {
             skipped:                0,
             testCount:              task.tests.filter(test => !test.skip).length,
             testQueue:              Reporter._createTestQueue(task),
-            stopOnFirstFail:        false,
+            stopOnFirstFail:        task.opts.stopOnFirstFail as boolean,
             pendingTaskDonePromise: Reporter._createPendingPromise(),
         };
 
