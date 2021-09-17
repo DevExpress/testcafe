@@ -90,6 +90,7 @@ export default class Runner extends EventEmitter {
         task.abort();
         task.unRegisterClientScriptRouting();
         task.clearListeners();
+        this._messageBus.abort();
 
         await this._disposeAssets(browserSet, reporters, testedApp);
     }
