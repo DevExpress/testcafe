@@ -861,20 +861,26 @@ describe('Reporter', () => {
         }
 
         it('Should get warning for Task', async () => {
-            await runTests('./testcafe-fixtures/index-test.js', 'Take screenshots with same path', {
-                setScreenshotPath: true,
-                reporter,
-            });
+            try {
+                await runTests('./testcafe-fixtures/index-test.js', 'Take screenshots with same path', {
+                    setScreenshotPath: true,
+                    shouldFail:        true,
+                    reporter,
+                });
 
-            const SCREENSHOTS_PATH   = path.resolve(assertionHelper.SCREENSHOTS_PATH);
-            const screenshotFileName = path.join(SCREENSHOTS_PATH, '1.png');
+                throw new Error('Promise rejection expected');
+            }
+            catch (err) {
+                const SCREENSHOTS_PATH   = path.resolve(assertionHelper.SCREENSHOTS_PATH);
+                const screenshotFileName = path.join(SCREENSHOTS_PATH, '1.png');
 
-            expect(resultWarning.message).to.include(
-                `The file at "${screenshotFileName}" already exists. It has just been rewritten ` +
-                'with a recent screenshot. This situation can possibly cause issues. To avoid them, make sure ' +
-                'that each screenshot has a unique path. If a test runs in multiple browsers, consider ' +
-                'including the user agent in the screenshot path or generate a unique identifier in another way.',
-            );
+                expect(resultWarning.message).to.include(
+                    `The file at "${screenshotFileName}" already exists. It has just been rewritten ` +
+                    'with a recent screenshot. This situation can possibly cause issues. To avoid them, make sure ' +
+                    'that each screenshot has a unique path. If a test runs in multiple browsers, consider ' +
+                    'including the user agent in the screenshot path or generate a unique identifier in another way.',
+                );
+            }
 
             await assertionHelper.removeScreenshotDir();
         });
