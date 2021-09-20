@@ -26,9 +26,9 @@ interface BrowserConnection {
     once(event: 'ready', callback: Function): void;
 }
 
-interface BrowserDescriptor { 
-    path: string; 
-    cmd?: string; 
+interface BrowserDescriptor {
+    path: string;
+    cmd?: string;
 }
 
 type BrowserOption  = string | BrowserConnection | BrowserDescriptor;
@@ -67,12 +67,12 @@ interface FilterDescriptor {
     fixture?: string;
     fixtureGrep?: string;
     testMeta?: Metadata;
-    fixtureMeta?: Metadata;    
+    fixtureMeta?: Metadata;
 }
 
-interface ReporterDescriptor { 
+interface ReporterDescriptor {
     name: string;
-    output?: string | NodeJS.WritableStream; 
+    output?: string | NodeJS.WritableStream;
 }
 
 type ReporterOption  = string | ReporterDescriptor;
@@ -94,6 +94,10 @@ interface ScreenshotsOptions extends TakeScreenshotOptions {
      * Specifies a custom pattern to compose screenshot files' relative path and name.
      */
     pathPattern?: string;
+    /**
+     * Specifies whether to make thumbnails for captured screenshots.
+     */
+    thumbnails?: boolean;
 }
 
 interface VideoOptions {
@@ -261,7 +265,7 @@ interface StartOptions {
     retryTestPages: boolean;
     cache: boolean;
     configFile: string;
-    disableHttp2: boolean;    
+    disableHttp2: boolean;
 }
 
 interface ColorOutputOptions {
