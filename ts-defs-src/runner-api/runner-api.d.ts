@@ -1,6 +1,7 @@
 
 // {{#allowReferences}}
 /// <reference path="./options.d.ts" />
+/// <reference path="./configuration.d.ts" />
 // {{/allowReferences}}
 
 interface TestCafe {
