@@ -1,10 +1,9 @@
 /*eslint-disable no-console */
 
 const path                    = require('path');
-const chai                    = require('chai');
+const { expect }              = require('chai');
 const fs                      = require('fs');
 const del                     = require('del');
-const { expect }              = chai;
 const request                 = require('request');
 const { times, uniqBy }       = require('lodash');
 const consoleWrapper          = require('./helpers/console-wrapper');
@@ -1197,6 +1196,12 @@ describe('Runner', () => {
                 rejectionReason = reason;
             });
 
+            const storedCreateRunnableConfigurationFn = runner._createRunnableConfiguration;
+
+            runner._createRunnableConfiguration = () => {
+                throw new Error('Raised test error in the internal code.');
+            };
+
             return runner
                 .browsers(BROWSER_NAME)
                 .src([])
@@ -1205,6 +1210,8 @@ describe('Runner', () => {
                     throw new Error('Promise rejection expected');
                 })
                 .catch(err => {
+                    runner._createRunnableConfiguration = storedCreateRunnableConfigurationFn;
+
                     expect(err).not.eql('Promise rejection expected');
 
                     return delay(100);
