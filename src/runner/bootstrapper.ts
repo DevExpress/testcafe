@@ -32,6 +32,7 @@ import WarningLog from '../notifications/warning-log';
 import WARNING_MESSAGES from '../notifications/warning-message';
 import guardTimeExecution from '../utils/guard-time-execution';
 import asyncFilter from '../utils/async-filter';
+import Fixture from '../api/structure/fixture';
 
 const DEBUG_SCOPE = 'testcafe:bootstrapper';
 
@@ -171,12 +172,14 @@ export default class Bootstrapper {
 
     private async _filterTests (tests: Test[], predicate: FilterFunction): Promise<Test[]> {
         return asyncFilter(tests, test => {
+            const testFixture = test.fixture as Fixture;
+
             return predicate(
                 test.name as string,
-                test.fixture.name as string,
-                test.fixture.path,
+                testFixture.name as string,
+                testFixture.path,
                 test.meta,
-                test.fixture.meta);
+                testFixture.meta);
         });
     }
 

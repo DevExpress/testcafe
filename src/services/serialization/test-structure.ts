@@ -95,7 +95,7 @@ function restorePredicateInRequestFilterRules (test: Test, mapper: RequestFilter
 
 export function flatten (tests: Test[]): Units {
     const testFiles = uniq(tests.map(test => test.testFile));
-    const fixtures  = uniq(tests.map(test => test.fixture));
+    const fixtures  = uniq(tests.map(test => test.fixture as Fixture));
 
     return keyBy([...tests, ...fixtures, ...testFiles], unit => unit.id);
 }

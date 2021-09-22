@@ -21,6 +21,7 @@ import Test from '../../api/structure/test';
 import { VideoOptions } from '../../video-recorder/interfaces';
 import TaskPhase from './phase';
 import CompilerService from '../../services/compiler/host';
+import Fixture from '../../api/structure/fixture';
 
 export default class Task extends AsyncEventEmitter {
     private readonly _timeStamp: moment.Moment;
@@ -134,7 +135,7 @@ export default class Task extends AsyncEventEmitter {
 
         return Object.keys(groups).map(fixtureId => {
             const testsByGroup = groups[fixtureId];
-            const fixture      = testsByGroup[0].fixture;
+            const fixture      = testsByGroup[0].fixture as Fixture;
 
             return {
                 fixture: {

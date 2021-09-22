@@ -155,7 +155,7 @@ class CompilerService implements CompilerProtocol {
     }
 
     private _getFixtureCtx (unit: Unit): object {
-        const fixtureId = isTest(unit) ? unit.fixture.id : (unit as Fixture).id;
+        const fixtureId = isTest(unit) ? (unit.fixture as Fixture).id : (unit as Fixture).id;
 
         return this.state.fixtureCtxs[fixtureId];
     }
@@ -270,7 +270,7 @@ class CompilerService implements CompilerProtocol {
     }
 
     private _initializeFixtureCtx (test: Test): void {
-        const fixtureId = test.fixture.id;
+        const fixtureId = (test.fixture as Fixture).id;
 
         if (this.state.fixtureCtxs[fixtureId])
             return;

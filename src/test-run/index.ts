@@ -107,6 +107,7 @@ import getBrowser from '../utils/get-browser';
 import AssertionExecutor from '../assertions/executor';
 import asyncFilter from '../utils/async-filter';
 import PROXYLESS_COMMANDS from './proxyless-commands-support';
+import Fixture from '../api/structure/fixture';
 
 const lazyRequire                 = require('import-lazy')(require);
 const ClientFunctionBuilder       = lazyRequire('../client-functions/client-function-builder');
@@ -465,7 +466,7 @@ export default class TestRun extends AsyncEventEmitter {
             browserActiveWindowIdUrl:     JSON.stringify(this.browserConnection.activeWindowIdUrl),
             userAgent:                    JSON.stringify(this.browserConnection.userAgent),
             testName:                     JSON.stringify(this.test.name),
-            fixtureName:                  JSON.stringify(this.test.fixture.name),
+            fixtureName:                  JSON.stringify((this.test.fixture as Fixture).name),
             selectorTimeout:              this.opts.selectorTimeout,
             pageLoadTimeout:              this.pageLoadTimeout,
             childWindowReadyTimeout:      CHILD_WINDOW_READY_TIMEOUT,
@@ -533,8 +534,8 @@ export default class TestRun extends AsyncEventEmitter {
         if (this.test.beforeFn)
             return await this._executeTestFn(TestRunPhase.inTestBeforeHook, this.test.beforeFn);
 
-        if (this.test.fixture.beforeEachFn)
-            return await this._executeTestFn(TestRunPhase.inFixtureBeforeEachHook, this.test.fixture.beforeEachFn);
+        if (this.test.fixture?.beforeEachFn)
+            return await this._executeTestFn(TestRunPhase.inFixtureBeforeEachHook, this.test.fixture?.beforeEachFn);
 
         return true;
     }
@@ -543,8 +544,8 @@ export default class TestRun extends AsyncEventEmitter {
         if (this.test.afterFn)
             return await this._executeTestFn(TestRunPhase.inTestAfterHook, this.test.afterFn);
 
-        if (this.test.fixture.afterEachFn)
-            return await this._executeTestFn(TestRunPhase.inFixtureAfterEachHook, this.test.fixture.afterEachFn);
+        if (this.test.fixture?.afterEachFn)
+            return await this._executeTestFn(TestRunPhase.inFixtureAfterEachHook, this.test.fixture?.afterEachFn);
 
         return true;
     }

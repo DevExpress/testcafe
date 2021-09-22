@@ -1,9 +1,7 @@
-import { test } from 'testcafe';
+import { test, Selector } from 'testcafe';
 
-fixture `Test`
-    .page `http://localhost:3000/fixtures/api/es-next/test-structure/pages/index.html`;
+fixture `Test`;
 
 test('"test" should be imported', async t => {
-    await t
-        .click('#button1');
+    await t.expect(Selector('body').exists).ok();
 });
