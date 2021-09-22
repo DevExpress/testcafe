@@ -544,7 +544,7 @@ $(document).ready(function () {
         });
     }
 
-    if (nativeMethods.WindowInputEvent && !browserUtils.isFirefox) {
+    if (nativeMethods.WindowInputEvent) {
         const expectedAllEvents = [
             { type: 'beforeinput', data: '1' },
             { type: 'textInput', data: '1' },
@@ -576,6 +576,15 @@ $(document).ready(function () {
             { type: 'textInput', data: '2' },
             { type: 'beforeinput', data: '3' },
             { type: 'textInput', data: '3' },
+        ];
+
+        const expectedEventsWithoutTextInput = [
+            { type: 'beforeinput', data: '1' },
+            { type: 'input', data: '1' },
+            { type: 'beforeinput', data: '2' },
+            { type: 'input', data: '2' },
+            { type: 'beforeinput', data: '3' },
+            { type: 'input', data: '3' },
         ];
 
         const expectedEventsWithoutInputReversed = [
@@ -684,9 +693,15 @@ $(document).ready(function () {
                         deepEqual(log3, expectedOnlyTextInput);
                     }
 
+                    if (browserUtils.isFirefox) {
+                        deepEqual(log1, expectedEventsWithoutTextInput);
+                        deepEqual(log2, expectedOnlyBeforeInput);
+                        deepEqual(log3, expectedEventsWithoutTextInput);
+                    }
+
                     strictEqual(input1.value, '123');
                     strictEqual(input2.value, '');
-                    strictEqual(input3.value, '');
+                    strictEqual(input3.value, browserUtils.isFirefox ? '123' : '');
 
                     start();
                 });
@@ -781,9 +796,15 @@ $(document).ready(function () {
                         deepEqual(log3, expectedOnlyTextInput);
                     }
 
+                    if (browserUtils.isFirefox) {
+                        deepEqual(log1, expectedEventsWithoutTextInput);
+                        deepEqual(log2, expectedOnlyBeforeInput);
+                        deepEqual(log3, expectedEventsWithoutTextInput);
+                    }
+
                     strictEqual(input1.innerText, '123');
                     strictEqual(input2.innerText, '');
-                    strictEqual(input3.innerText, '');
+                    strictEqual(input3.innerText, browserUtils.isFirefox ? '123' : '');
 
                     start();
                 });

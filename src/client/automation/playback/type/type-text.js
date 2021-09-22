@@ -220,7 +220,7 @@ function _typeTextToContentEditable (element, text) {
     if (!startNode || !domUtils.isContentEditableElement(startNode) || !domUtils.isRenderedNode(startNode))
         return;
 
-    if (!simulateBeforeInput(element, text, browserUtils.isChrome))
+    if (!simulateBeforeInput(element, text, browserUtils.isChrome || browserUtils.isFirefox))
         return;
 
     beforeContentChanged();
@@ -246,7 +246,7 @@ function _typeTextToTextEditable (element, text) {
     let endSelection        = textSelection.getSelectionEnd(element);
     const isInputTypeNumber = domUtils.isInputElement(element) && element.type === 'number';
 
-    if (!simulateBeforeInput(element, text, browserUtils.isChrome))
+    if (!simulateBeforeInput(element, text, browserUtils.isChrome || browserUtils.isFirefox))
         return;
 
     let needProcessInput = simulateTextInput(element, text);
