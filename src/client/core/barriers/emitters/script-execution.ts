@@ -1,6 +1,6 @@
-import hammerhead from '../deps/hammerhead';
-import EventEmitter from '../../../shared/utils/event-emitter';
-import { ScriptExecutionEmitter } from '../../../shared/types';
+import hammerhead from '../../deps/hammerhead';
+import EventEmitter from '../../../../shared/utils/event-emitter';
+import { ScriptExecutionEmitter } from '../../../../shared/types';
 
 
 const { nativeMethods } = hammerhead;

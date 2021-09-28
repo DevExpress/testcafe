@@ -1,5 +1,5 @@
-import EventEmitter from '../../../../../../../shared/utils/event-emitter';
-import { ClientRequestEmitter } from '../../../../../../../shared/types';
+import EventEmitter from '../../../../../../../../shared/utils/event-emitter';
+import { ClientRequestEmitter } from '../../../../../../../../shared/types';
 import ProtocolProxyApi from 'devtools-protocol/types/protocol-proxy-api';
 import NetworkApi = ProtocolProxyApi.NetworkApi;
 import Protocol from 'devtools-protocol';

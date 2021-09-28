@@ -1,6 +1,6 @@
-import hammerhead from '../deps/hammerhead';
-import EventEmitter from '../../../shared/utils/event-emitter';
-import { ClientRequestEmitter } from '../../../shared/types';
+import hammerhead from '../../deps/hammerhead';
+import EventEmitter from '../../../../shared/utils/event-emitter';
+import { ClientRequestEmitter } from '../../../../shared/types';
 
 
 interface XhrEvent { xhr: XMLHttpRequest }
