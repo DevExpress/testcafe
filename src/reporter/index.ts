@@ -228,19 +228,16 @@ export default class Reporter {
     }
 
     private async _onWarningAddHandler ({ message, testRun }: ReportWarningEventArguments): Promise<void> {
-        // @ts-ignore
-        if (this.plugin.reportWarnings) {
-            await this.dispatchToPlugin({
-                method:        ReporterPluginMethod.reportWarnings as string,
-                initialObject: this.messageBus,
-                args:          [
-                    {
-                        message,
-                        testRunId: testRun?.id,
-                    },
-                ],
-            });
-        }
+        await this.dispatchToPlugin({
+            method:        ReporterPluginMethod.reportWarnings as string,
+            initialObject: this.messageBus,
+            args:          [
+                {
+                    message,
+                    testRunId: testRun?.id,
+                },
+            ],
+        });
     }
 
     //Task

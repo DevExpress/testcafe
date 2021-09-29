@@ -194,7 +194,7 @@ export default class ReporterPluginHost {
     }
 
     // NOTE: It's an optional method
-    // public async reportWarnings (/* warnings */): Promise<never> {
-    //     throw new Error('Not implemented');
-    // }
+    public async reportWarnings (/* warnings */): Promise<void> {
+        return Promise.resolve();
+    }
 }
