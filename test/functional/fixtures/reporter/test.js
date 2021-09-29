@@ -1039,10 +1039,6 @@ describe('Reporter', () => {
     });
 
     it('Should raise an error when uncaught exception occurred in any reporter method', async () => {
-        const exceptions = [
-            'reportWarnings',
-        ];
-
         function createReporterWithBrokenMethod (method) {
             const base = {
                 async reportTaskStart () {},
@@ -1059,16 +1055,14 @@ describe('Reporter', () => {
         }
 
         for (const method of Object.values(ReporterPluginMethod)) {
-            if (exceptions.includes(method))
-                continue;
-
             try {
                 await runTests(
                     'testcafe-fixtures/index-test.js',
                     'Simple test',
                     {
-                        reporter:   createReporterWithBrokenMethod(method),
-                        shouldFail: true,
+                        reporter:     createReporterWithBrokenMethod(method),
+                        shouldFail:   true,
+                        tsConfigPath: 'path-to-ts-config',
                     }
                 );
 
