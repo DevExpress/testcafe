@@ -89,7 +89,7 @@ export default class Bootstrapper {
     private readonly compilerService?: CompilerService;
     private readonly debugLogger: debug.Debugger;
     private readonly warningLog: WarningLog;
-    private readonly messageBus?: MessageBus;
+    private readonly messageBus: MessageBus;
 
     private readonly TESTS_COMPILATION_UPPERBOUND: number;
 
@@ -162,8 +162,7 @@ export default class Bootstrapper {
         let browserConnections = this._createAutomatedConnections(automated);
 
         remotes.forEach(remoteConnection => {
-            if (this.messageBus)
-                remoteConnection.messageBus = this.messageBus;
+            remoteConnection.messageBus = this.messageBus;
         });
 
         browserConnections = browserConnections.concat(chunk(remotes, this.concurrency));
