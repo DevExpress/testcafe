@@ -127,7 +127,7 @@ export default class BrowserConnection extends EventEmitter {
         this.disconnectionPromise     = null;
         this.testRunAborted           = false;
         this._messageBus              = messageBus;
-        this.warningLog               = new WarningLog(null, WarningLog.creatAddWarningCallback(this._messageBus));
+        this.warningLog               = new WarningLog(null, WarningLog.createAddWarningCallback(this._messageBus));
         this.debugLogger              = debug(getBrowserConnectionDebugScope(this.id));
 
         this.browserInfo                           = browserInfo;
@@ -171,7 +171,7 @@ export default class BrowserConnection extends EventEmitter {
 
     public set messageBus (messageBus: MessageBus) {
         this._messageBus = messageBus;
-        this.warningLog.callback = WarningLog.creatAddWarningCallback(this._messageBus);
+        this.warningLog.callback = WarningLog.createAddWarningCallback(this._messageBus);
     }
 
     private _setEventHandlers (): void {

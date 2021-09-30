@@ -58,7 +58,7 @@ export default class Runner extends EventEmitter {
         this.pendingTaskPromises = [];
         this.configuration       = configuration;
         this.isCli               = false;
-        this.warningLog          = new WarningLog(null, WarningLog.creatAddWarningCallback(this._messageBus));
+        this.warningLog          = new WarningLog(null, WarningLog.createAddWarningCallback(this._messageBus));
         this.compilerService     = compilerService;
         this._options            = {};
 

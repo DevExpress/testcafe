@@ -65,7 +65,7 @@ class TestRunProxy extends AsyncEventEmitter {
         this.asyncJsExpressionCallsites        = new Map<string, CallsiteRecord>();
         this.controller                        = new TestController(this);
         this.observedCallsites                 = new ObservedCallsitesStorage();
-        this.warningLog                        = new WarningLog(null, WarningLog.creatAddWarningCallback(messageBus));
+        this.warningLog                        = new WarningLog(null, WarningLog.createAddWarningCallback(messageBus));
         this.disableMultipleWindows            = options.disableMultipleWindows as boolean;
         this.activeWindowId                    = activeWindowId;
 

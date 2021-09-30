@@ -108,7 +108,7 @@ export default class Bootstrapper {
         this.proxyless                = false;
         this.compilerOptions          = void 0;
         this.debugLogger              = debug(DEBUG_SCOPE);
-        this.warningLog               = new WarningLog(null, WarningLog.creatAddWarningCallback(messageBus));
+        this.warningLog               = new WarningLog(null, WarningLog.createAddWarningCallback(messageBus));
         this.compilerService          = compilerService;
         this.messageBus               = messageBus;
 

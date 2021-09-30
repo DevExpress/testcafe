@@ -58,7 +58,7 @@ export default class Task extends AsyncEventEmitter {
         this.tests                   = tests;
         this.opts                    = opts;
         this._proxy                  = proxy;
-        this.warningLog              = new WarningLog(null, WarningLog.creatAddWarningCallback(messageBus));
+        this.warningLog              = new WarningLog(null, WarningLog.createAddWarningCallback(messageBus));
         this._compilerService        = compilerService;
         this._messageBus             = messageBus;
 
