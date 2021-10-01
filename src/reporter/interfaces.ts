@@ -8,6 +8,7 @@ export interface ReporterPlugin {
     reportTestActionDone?(): void;
     reportTestDone(): void;
     reportTaskDone(): void;
+    reportWarnings?(): void;
 }
 
 export interface ReporterSource {
@@ -17,6 +18,7 @@ export interface ReporterSource {
 
 export interface ReporterPluginSource {
     plugin: ReporterPlugin;
+    name: string;
     outStream?: WritableStream;
 }
 

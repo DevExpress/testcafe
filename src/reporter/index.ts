@@ -10,13 +10,22 @@ import ReporterPluginMethod from './plugin-methods';
 import formatCommand from './command/format-command';
 import { ReporterPluginError } from '../errors/runtime';
 import Task from '../runner/task';
-import { Writable } from 'stream';
+import { Writable as WritableStream, Writable } from 'stream';
 import { WriteStream } from 'tty';
 import TestRun from '../test-run';
 import Test from '../api/structure/test';
 import Fixture from '../api/structure/fixture';
 import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapter';
 import { CommandBase } from '../test-run/commands/base';
+import {
+    ReporterPlugin, ReporterPluginSource, ReporterSource,
+} from './interfaces';
+import { getPluginFactory, processReporterName } from '../utils/reporter';
+import resolvePathRelativelyCwd from '../utils/resolve-path-relatively-cwd';
+import makeDir from 'make-dir';
+import path from 'path';
+import fs from 'fs';
+import MessageBus from '../utils/message-bus';
 
 
 interface PendingPromise {
@@ -24,7 +33,18 @@ interface PendingPromise {
     then: Function;
 }
 
-interface ReportItem {
+interface TaskInfo {
+    task: Task | null;
+    passed: number;
+    failed: number;
+    skipped: number;
+    testCount: number;
+    testQueue: TestInfo[];
+    readonly stopOnFirstFail: boolean;
+    readonly pendingTaskDonePromise: PendingPromise;
+}
+
+interface TestInfo {
     fixture: Fixture;
     test: Test;
     testRunIds: string[];
@@ -59,6 +79,7 @@ interface TestRunInfo {
 }
 
 interface PluginMethodArguments {
+    initialObject: Task | MessageBus | null;
     method: string;
     args: unknown[];
 }
@@ -76,34 +97,27 @@ interface ReportTaskActionEventArguments {
     restArgs: object;
 }
 
+interface ReportWarningEventArguments {
+    message: string;
+    testRun?: TestRun;
+}
+
 export default class Reporter {
     public readonly plugin: ReporterPluginHost;
-    public readonly task: Task;
+    public readonly messageBus: MessageBus;
     public disposed: boolean;
-    public passed: number;
-    public failed: number;
-    public skipped: number;
-    public testCount: number;
-    public readonly reportQueue: ReportItem[];
-    public readonly stopOnFirstFail: boolean;
+    public taskInfo: TaskInfo | null;
     public readonly outStream: Writable;
-    public readonly pendingTaskDonePromise: PendingPromise;
 
-    public constructor (plugin: ReporterPluginHost, task: Task, outStream: Writable, name: string) {
-        this.plugin = new ReporterPluginHost(plugin, outStream, name);
-        this.task   = task;
+    public constructor (plugin: ReporterPlugin, messageBus: MessageBus, outStream: Writable, name: string) {
+        this.plugin     = new ReporterPluginHost(plugin, outStream, name);
+        this.messageBus = messageBus;
 
-        this.disposed               = false;
-        this.passed                 = 0;
-        this.failed                 = 0;
-        this.skipped                = 0;
-        this.testCount              = task.tests.filter(test => !test.skip).length;
-        this.reportQueue            = Reporter._createReportQueue(task);
-        this.stopOnFirstFail        = task.opts.stopOnFirstFail as boolean;
-        this.outStream              = outStream;
-        this.pendingTaskDonePromise = Reporter._createPendingPromise();
+        this.disposed  = false;
+        this.taskInfo  = null;
+        this.outStream = outStream;
 
-        this._assignTaskEventHandlers();
+        this._assignMessageBusEventHandlers();
     }
 
     private static _isSpecialStream (stream: Writable): boolean {
@@ -122,7 +136,112 @@ export default class Reporter {
         return promise;
     }
 
-    private static _createReportItem (test: Test, runsPerTest: number): ReportItem {
+    public async dispatchToPlugin ({ method, initialObject, args = [] }: PluginMethodArguments): Promise<void> {
+        try {
+            // @ts-ignore
+            await this.plugin[method](...args);
+        }
+        catch (originalError) {
+            const uncaughtError = new ReporterPluginError({
+                name: this.plugin.name,
+                method,
+                originalError,
+            });
+
+            if (initialObject)
+                await initialObject.emit('error', uncaughtError);
+            else
+                throw uncaughtError;
+        }
+    }
+
+    private _assignMessageBusEventHandlers (): void {
+        const messageBus = this.messageBus;
+
+        messageBus.on('warning-add', async e => await this._onWarningAddHandler(e));
+
+        messageBus.once('start', async (task: Task) => await this._onceTaskStartHandler(task));
+
+        messageBus.on('test-run-start', async testRun => await this._onTaskTestRunStartHandler(testRun));
+
+        messageBus.on('test-run-done', async testRun => await this._onTaskTestRunDoneHandler(testRun));
+
+        messageBus.on('test-action-start', async e => await this._onTaskTestActionStart(e));
+
+        messageBus.on('test-action-done', async e => await this._onTaskTestActionDone(e));
+
+        messageBus.once('done', async () => await this._onceTaskDoneHandler());
+    }
+
+    public async dispose (): Promise<unknown> {
+        if (this.disposed)
+            return Promise.resolve();
+
+        this.disposed = true;
+
+        if (!this.outStream || Reporter._isSpecialStream(this.outStream) || !isWritableStream(this.outStream))
+            return Promise.resolve();
+
+        const streamFinishedPromise = new Promise(resolve => {
+            this.outStream.once('finish', resolve);
+            this.outStream.once('error', resolve);
+        });
+
+        this.outStream.end();
+
+        return streamFinishedPromise;
+    }
+
+    private static async _ensureOutStream (outStream: string | WritableStream): Promise<WritableStream> {
+        if (typeof outStream !== 'string')
+            return outStream;
+
+        const fullReporterOutputPath = resolvePathRelativelyCwd(outStream);
+
+        await makeDir(path.dirname(fullReporterOutputPath));
+
+        return fs.createWriteStream(fullReporterOutputPath);
+    }
+
+    private static _addDefaultReporter (reporters: ReporterSource[]): void {
+        reporters.push({
+            name:   'spec',
+            output: process.stdout,
+        });
+    }
+
+    public static async getReporterPlugins (reporters: ReporterSource[] = []): Promise<ReporterPluginSource[]> {
+        if (!reporters.length)
+            Reporter._addDefaultReporter(reporters);
+
+        return Promise.all(reporters.map(async ({ name, output }) => {
+            const pluginFactory = getPluginFactory(name);
+            const processedName = processReporterName(name);
+            const outStream     = output ? await Reporter._ensureOutStream(output) : void 0;
+
+            return {
+                plugin: pluginFactory(),
+                name:   processedName,
+                outStream,
+            };
+        }));
+    }
+
+    private async _onWarningAddHandler ({ message, testRun }: ReportWarningEventArguments): Promise<void> {
+        await this.dispatchToPlugin({
+            method:        ReporterPluginMethod.reportWarnings as string,
+            initialObject: this.messageBus,
+            args:          [
+                {
+                    message,
+                    testRunId: testRun?.id,
+                },
+            ],
+        });
+    }
+
+    //Task
+    private static _createTestItem (test: Test, runsPerTest: number): TestInfo {
         return {
             fixture:                    test.fixture as Fixture,
             test:                       test,
@@ -144,13 +263,13 @@ export default class Reporter {
         };
     }
 
-    private static _createReportQueue (task: Task): ReportItem[] {
+    private static _createTestQueue (task: Task): TestInfo[] {
         const runsPerTest = task.browserConnectionGroups.length;
 
-        return task.tests.map(test => Reporter._createReportItem(test, runsPerTest));
+        return task.tests.map(test => Reporter._createTestItem(test, runsPerTest));
     }
 
-    private static _createTestRunInfo (reportItem: ReportItem): TestRunInfo {
+    private static _createTestRunInfo (reportItem: TestInfo): TestRunInfo {
         return {
             errs:           sortBy(reportItem.errs, ['userAgent', 'code']),
             warnings:       reportItem.warnings,
@@ -166,30 +285,35 @@ export default class Reporter {
         };
     }
 
-    private _getReportItemForTestRun (testRun: TestRun): ReportItem | undefined {
-        return find(this.reportQueue, i => i.test === testRun.test);
+    private _getTestItemForTestRun (taskInfo: TaskInfo, testRun: TestRun): TestInfo | undefined {
+        return find(taskInfo.testQueue, i => i.test === testRun.test);
     }
 
-    private async _shiftReportQueue (): Promise<void> {
+    private async _shiftTestQueue (): Promise<void> {
+        if (!this.taskInfo)
+            return;
+
         let currentFixture = null;
         let nextReportItem = null;
-        let reportItem     = null;
+        let testItem       = null;
+        const testQueue    = this.taskInfo.testQueue;
 
-        while (this.reportQueue.length && this.reportQueue[0].testRunInfo) {
-            reportItem     = this.reportQueue.shift() as ReportItem;
-            currentFixture = reportItem.fixture;
+        while (testQueue.length && testQueue[0].testRunInfo) {
+            testItem       = testQueue.shift() as TestInfo;
+            currentFixture = testItem.fixture;
 
             // NOTE: here we assume that tests are sorted by fixture.
             // Therefore, if the next report item has a different
             // fixture, we can report this fixture start.
-            nextReportItem = this.reportQueue[0];
+            nextReportItem = testQueue[0];
 
             await this.dispatchToPlugin({
-                method: ReporterPluginMethod.reportTestDone,
-                args:   [
-                    reportItem.test.name,
-                    reportItem.testRunInfo,
-                    reportItem.test.meta,
+                method:        ReporterPluginMethod.reportTestDone,
+                initialObject: this.taskInfo.task,
+                args:          [
+                    testItem.test.name,
+                    testItem.testRunInfo,
+                    testItem.test.meta,
                 ],
             });
 
@@ -200,8 +324,9 @@ export default class Reporter {
                 continue;
 
             await this.dispatchToPlugin({
-                method: ReporterPluginMethod.reportFixtureStart,
-                args:   [
+                method:        ReporterPluginMethod.reportFixtureStart,
+                initialObject: this.taskInfo.task,
+                args:          [
                     nextReportItem.fixture.name,
                     nextReportItem.fixture.path,
                     nextReportItem.fixture.meta,
@@ -210,17 +335,20 @@ export default class Reporter {
         }
     }
 
-    private async _resolveReportItem (reportItem: ReportItem, testRun: TestRun): Promise<void> {
-        if (this.task.screenshots.hasCapturedFor(testRun.test)) {
-            reportItem.screenshotPath = this.task.screenshots.getPathFor(testRun.test);
-            reportItem.screenshots    = this.task.screenshots.getScreenshotsInfo(testRun.test);
+    private async _resolveTestItem (taskInfo: TaskInfo, testItem: TestInfo, testRun: TestRun): Promise<void> {
+        if (!taskInfo.task)
+            return;
+
+        if (taskInfo.task.screenshots.hasCapturedFor(testRun.test)) {
+            testItem.screenshotPath = taskInfo.task.screenshots.getPathFor(testRun.test);
+            testItem.screenshots    = taskInfo.task.screenshots.getScreenshotsInfo(testRun.test);
         }
 
-        if (this.task.videos)
-            reportItem.videos = this.task.videos.getTestVideos(reportItem.test.id);
+        if (taskInfo.task.videos)
+            testItem.videos = taskInfo.task.videos.getTestVideos(testItem.test.id);
 
         if (testRun.quarantine) {
-            reportItem.quarantine = testRun.quarantine.attempts.reduce((result: Record<string, object>, errors: TestRunErrorFormattableAdapter[], index: number) => {
+            testItem.quarantine = testRun.quarantine.attempts.reduce((result: Record<string, object>, errors: TestRunErrorFormattableAdapter[], index: number) => {
                 const passed            = !errors.length;
                 const quarantineAttempt = index + 1;
 
@@ -230,20 +358,20 @@ export default class Reporter {
             }, {});
         }
 
-        if (!reportItem.testRunInfo) {
-            reportItem.testRunInfo = Reporter._createTestRunInfo(reportItem);
+        if (!testItem.testRunInfo) {
+            testItem.testRunInfo = Reporter._createTestRunInfo(testItem);
 
-            if (reportItem.test.skip)
-                this.skipped++;
-            else if (reportItem.errs.length)
-                this.failed++;
+            if (testItem.test.skip)
+                taskInfo.skipped++;
+            else if (testItem.errs.length)
+                taskInfo.failed++;
             else
-                this.passed++;
+                taskInfo.passed++;
         }
 
-        await this._shiftReportQueue();
+        await this._shiftTestQueue();
 
-        (reportItem.pendingTestRunDonePromise.resolve as Function)();
+        (testItem.pendingTestRunDonePromise.resolve as Function)();
     }
 
     private _prepareReportTestActionEventArgs ({ command, duration, result, testRun, err }: ReportTestActionEventArguments): any {
@@ -273,86 +401,92 @@ export default class Reporter {
         });
     }
 
-    public async dispatchToPlugin ({ method, args = [] }: PluginMethodArguments): Promise<void> {
-        try {
-            // @ts-ignore
-            await this.plugin[method](...args);
-        }
-        catch (originalError) {
-            const uncaughtError = new ReporterPluginError({
-                name: this.plugin.name,
-                method,
-                originalError,
-            });
+    private async _onceTaskStartHandler (task: Task): Promise<void> {
+        this.taskInfo = {
+            task:                   task,
+            passed:                 0,
+            failed:                 0,
+            skipped:                0,
+            testCount:              task.tests.filter(test => !test.skip).length,
+            testQueue:              Reporter._createTestQueue(task),
+            stopOnFirstFail:        task.opts.stopOnFirstFail as boolean,
+            pendingTaskDonePromise: Reporter._createPendingPromise(),
+        };
 
-            this.task.emit('error', uncaughtError);
-        }
-    }
-
-    private async _onceTaskStartHandler (): Promise<void> {
         const startTime  = new Date();
-        const userAgents = this.task.browserConnectionGroups.map(group => group[0].userAgent);
-        const first      = this.reportQueue[0];
+        const userAgents = task.browserConnectionGroups.map(group => group[0].userAgent);
+        const first      = this.taskInfo.testQueue[0];
 
         const taskProperties = {
-            configuration: this.task.opts,
+            configuration: task.opts,
         };
 
         await this.dispatchToPlugin({
-            method: ReporterPluginMethod.reportTaskStart,
-            args:   [
+            method:        ReporterPluginMethod.reportTaskStart,
+            initialObject: task,
+            args:          [
                 startTime,
                 userAgents,
-                this.testCount,
-                this.task.testStructure,
+                this.taskInfo.testCount,
+                task.testStructure,
                 taskProperties,
             ],
         });
 
-        await this.dispatchToPlugin({
-            method: ReporterPluginMethod.reportFixtureStart,
-            args:   [
-                first.fixture.name,
-                first.fixture.path,
-                first.fixture.meta,
-            ],
-        });
+        if (first) {
+            await this.dispatchToPlugin({
+                method:        ReporterPluginMethod.reportFixtureStart,
+                initialObject: task,
+                args:          [
+                    first.fixture.name,
+                    first.fixture.path,
+                    first.fixture.meta,
+                ],
+            });
+        }
     }
 
     private async _onTaskTestRunStartHandler (testRun: TestRun): Promise<unknown> {
-        const reportItem = this._getReportItemForTestRun(testRun) as ReportItem;
+        if (!this.taskInfo)
+            return void 0;
 
-        reportItem.testRunIds.push(testRun.id);
+        const testItem = this._getTestItemForTestRun(this.taskInfo, testRun) as TestInfo;
 
-        if (!reportItem.startTime)
-            reportItem.startTime = +new Date();
+        testItem.testRunIds.push(testRun.id);
 
-        reportItem.pendingStarts--;
+        if (!testItem.startTime)
+            testItem.startTime = +new Date();
 
-        if (!reportItem.pendingStarts) {
+        testItem.pendingStarts--;
+
+        if (!testItem.pendingStarts) {
             // @ts-ignore
             if (this.plugin.reportTestStart) {
-                const testStartInfo = { testRunIds: reportItem.testRunIds, testId: reportItem.test.id };
+                const testStartInfo = { testRunIds: testItem.testRunIds, testId: testItem.test.id };
 
                 await this.dispatchToPlugin({
-                    method: ReporterPluginMethod.reportTestStart as string,
-                    args:   [
-                        reportItem.test.name,
-                        reportItem.test.meta,
+                    method:        ReporterPluginMethod.reportTestStart as string,
+                    initialObject: this.taskInfo.task,
+                    args:          [
+                        testItem.test.name,
+                        testItem.test.meta,
                         testStartInfo,
                     ],
                 });
             }
 
-            (reportItem.pendingTestRunStartPromise.resolve as Function)();
+            (testItem.pendingTestRunStartPromise.resolve as Function)();
         }
 
-        return reportItem.pendingTestRunStartPromise;
+        return testItem.pendingTestRunStartPromise;
     }
 
     private async _onTaskTestRunDoneHandler (testRun: TestRun): Promise<void> {
-        const reportItem                    = this._getReportItemForTestRun(testRun) as ReportItem;
-        const isTestRunStoppedTaskExecution = !!testRun.errs.length && this.stopOnFirstFail;
+        if (!this.taskInfo)
+            return;
+
+        const reportItem                    = this._getTestItemForTestRun(this.taskInfo, testRun) as TestInfo;
+        const isTestRunStoppedTaskExecution = !!testRun.errs.length && this.taskInfo.stopOnFirstFail;
 
         reportItem.pendingRuns = isTestRunStoppedTaskExecution ? 0 : reportItem.pendingRuns - 1;
         reportItem.unstable    = reportItem.unstable || testRun.unstable;
@@ -362,19 +496,23 @@ export default class Reporter {
         reportItem.browsers.push(Object.assign({ testRunId: testRun.id }, testRun.browser));
 
         if (!reportItem.pendingRuns)
-            await this._resolveReportItem(reportItem, testRun);
+            await this._resolveTestItem(this.taskInfo, reportItem, testRun);
 
         await reportItem.pendingTestRunDonePromise;
     }
 
     private async _onTaskTestActionStart ({ apiActionName, ...restArgs }: ReportTaskActionEventArguments): Promise<void> {
+        if (!this.taskInfo)
+            return;
+
         // @ts-ignore
         if (this.plugin.reportTestActionStart) {
             restArgs = this._prepareReportTestActionEventArgs(restArgs as unknown as ReportTestActionEventArguments);
 
             await this.dispatchToPlugin({
-                method: ReporterPluginMethod.reportTestActionStart as string,
-                args:   [
+                method:        ReporterPluginMethod.reportTestActionStart as string,
+                initialObject: this.taskInfo.task,
+                args:          [
                     apiActionName,
                     restArgs,
                 ],
@@ -383,13 +521,17 @@ export default class Reporter {
     }
 
     private async _onTaskTestActionDone ({ apiActionName, ...restArgs }: ReportTaskActionEventArguments): Promise<void> {
+        if (!this.taskInfo)
+            return;
+
         // @ts-ignore
         if (this.plugin.reportTestActionDone) {
             restArgs = this._prepareReportTestActionEventArgs(restArgs as unknown as ReportTestActionEventArguments);
 
             await this.dispatchToPlugin({
-                method: ReporterPluginMethod.reportTestActionDone as string,
-                args:   [
+                method:        ReporterPluginMethod.reportTestActionDone as string,
+                initialObject: this.taskInfo.task,
+                args:          [
                     apiActionName,
                     restArgs,
                 ],
@@ -398,59 +540,28 @@ export default class Reporter {
     }
 
     private async _onceTaskDoneHandler (): Promise<void> {
+        if (!this.taskInfo)
+            return;
+
         const endTime = new Date();
 
         const result = {
-            passedCount:  this.passed,
-            failedCount:  this.failed,
-            skippedCount: this.skipped,
+            passedCount:  this.taskInfo.passed,
+            failedCount:  this.taskInfo.failed,
+            skippedCount: this.taskInfo.skipped,
         };
 
         await this.dispatchToPlugin({
-            method: ReporterPluginMethod.reportTaskDone,
-            args:   [
+            method:        ReporterPluginMethod.reportTaskDone,
+            initialObject: this.taskInfo.task,
+            args:          [
                 endTime,
-                this.passed,
-                this.task.warningLog.messages,
+                this.taskInfo.passed,
+                this.taskInfo.task?.warningLog.messages,
                 result,
             ],
         });
 
-        (this.pendingTaskDonePromise.resolve as Function)();
-    }
-
-    private _assignTaskEventHandlers (): void {
-        const task = this.task;
-
-        task.once('start', async () => await this._onceTaskStartHandler());
-
-        task.on('test-run-start', async testRun => await this._onTaskTestRunStartHandler(testRun));
-
-        task.on('test-run-done', async testRun => await this._onTaskTestRunDoneHandler(testRun));
-
-        task.on('test-action-start', async e => await this._onTaskTestActionStart(e));
-
-        task.on('test-action-done', async e => await this._onTaskTestActionDone(e));
-
-        task.once('done', async () => await this._onceTaskDoneHandler());
-    }
-
-    public async dispose (): Promise<unknown> {
-        if (this.disposed)
-            return Promise.resolve();
-
-        this.disposed = true;
-
-        if (!this.outStream || Reporter._isSpecialStream(this.outStream) || !isWritableStream(this.outStream))
-            return Promise.resolve();
-
-        const streamFinishedPromise = new Promise(resolve => {
-            this.outStream.once('finish', resolve);
-            this.outStream.once('error', resolve);
-        });
-
-        this.outStream.end();
-
-        return streamFinishedPromise;
+        (this.taskInfo.pendingTaskDonePromise.resolve as Function)();
     }
 }

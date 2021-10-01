@@ -25,6 +25,7 @@ import {
     LOCAL_BROWSER_INIT_TIMEOUT,
     REMOTE_BROWSER_INIT_TIMEOUT,
 } from '../../utils/browser-connection-timeouts';
+import MessageBus from '../../utils/message-bus';
 
 const getBrowserConnectionDebugScope = (id: string): string => `testcafe:browser:connection:${id}`;
 
@@ -99,6 +100,7 @@ export default class BrowserConnection extends EventEmitter {
     private readonly debugLogger: debug.Debugger;
 
     public readonly warningLog: WarningLog;
+    private _messageBus?: MessageBus;
 
     public idle: boolean;
 
@@ -110,7 +112,8 @@ export default class BrowserConnection extends EventEmitter {
         browserInfo: BrowserInfo,
         permanent: boolean,
         disableMultipleWindows = false,
-        proxyless = false) {
+        proxyless = false,
+        messageBus?: MessageBus) {
         super();
 
         this.HEARTBEAT_TIMEOUT       = HEARTBEAT_TIMEOUT;
@@ -123,7 +126,8 @@ export default class BrowserConnection extends EventEmitter {
         this.browserConnectionGateway = gateway;
         this.disconnectionPromise     = null;
         this.testRunAborted           = false;
-        this.warningLog               = new WarningLog();
+        this._messageBus              = messageBus;
+        this.warningLog               = new WarningLog(null, WarningLog.createAddWarningCallback(this._messageBus));
         this.debugLogger              = debug(getBrowserConnectionDebugScope(this.id));
 
         this.browserInfo                           = browserInfo;
@@ -163,6 +167,11 @@ export default class BrowserConnection extends EventEmitter {
 
         // NOTE: Give a caller time to assign event listeners
         process.nextTick(() => this._runBrowser());
+    }
+
+    public set messageBus (messageBus: MessageBus) {
+        this._messageBus = messageBus;
+        this.warningLog.callback = WarningLog.createAddWarningCallback(this._messageBus);
     }
 
     private _setEventHandlers (): void {

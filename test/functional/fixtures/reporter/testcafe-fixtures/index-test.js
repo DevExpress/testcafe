@@ -18,6 +18,11 @@ const errorRole = Role(page, async t => {
 
 const foo = ClientFunction(bool => () => bool);
 
+async function errorCheck (t) {
+    await new Promise(r => setTimeout(r, 100));
+    await t.expect(false).ok();
+}
+
 test('Simple test', async t => {
     await t.wait(1);
 });
@@ -104,4 +109,18 @@ test('The "pressKey" action with the input[type=password] and the "confidential"
     await t
         .click('#password-input')
         .pressKey('p a $ $ w 0 r d enter', { confidential: false });
+});
+
+test('Asynchronous method', async t => {
+    errorCheck(t);
+});
+
+test('Asynchronous method', async t => {
+    await errorCheck(t);
+});
+
+test('Take screenshots with same path', async t => {
+    await t
+        .takeScreenshot('1.png')
+        .takeScreenshot('1.png');
 });

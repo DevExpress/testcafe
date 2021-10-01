@@ -108,6 +108,7 @@ import AssertionExecutor from '../assertions/executor';
 import asyncFilter from '../utils/async-filter';
 import PROXYLESS_COMMANDS from './proxyless-commands-support';
 import Fixture from '../api/structure/fixture';
+import MessageBus from '../utils/message-bus';
 
 const lazyRequire                 = require('import-lazy')(require);
 const ClientFunctionBuilder       = lazyRequire('../client-functions/client-function-builder');
@@ -142,6 +143,7 @@ interface TestRunInit {
     globalWarningLog: WarningLog;
     opts: Dictionary<OptionValue>;
     compilerService?: CompilerService;
+    messageBus?: MessageBus;
 }
 
 interface DriverTask {
@@ -225,12 +227,14 @@ export default class TestRun extends AsyncEventEmitter {
     private errScreenshotPath: string | null;
     private asyncJsExpressionCallsites: Map<string, CallsiteRecord>;
     public readonly browser: Browser;
+    private readonly _messageBus?: MessageBus;
 
-    public constructor ({ test, browserConnection, screenshotCapturer, globalWarningLog, opts, compilerService }: TestRunInit) {
+    public constructor ({ test, browserConnection, screenshotCapturer, globalWarningLog, opts, compilerService, messageBus }: TestRunInit) {
         super();
 
         this[testRunMarker]    = true;
-        this.warningLog        = new WarningLog(globalWarningLog);
+        this._messageBus       = messageBus;
+        this.warningLog        = new WarningLog(globalWarningLog, WarningLog.createAddWarningCallback(messageBus, this));
         this.opts              = opts;
         this.test              = test;
         this.browserConnection = browserConnection;
@@ -1343,6 +1347,7 @@ export default class TestRun extends AsyncEventEmitter {
             testId:         this.test.id,
             browser:        this.browser,
             activeWindowId: this.activeWindowId,
+            messageBus:     this._messageBus,
         });
     }
 

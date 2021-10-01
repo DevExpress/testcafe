@@ -13,11 +13,11 @@ interface PluginInfo {
 class ReporterStreamController {
     public multipleStreamError: GeneralError | null;
     private _pluginInfos: PluginInfo[];
-    private _task: EventEmitter;
+    private _messageBus: EventEmitter;
 
-    public constructor (task: EventEmitter, reporters: Reporter[]) {
+    public constructor (messageBus: EventEmitter, reporters: Reporter[]) {
         this._pluginInfos = [];
-        this._task = task;
+        this._messageBus = messageBus;
         this.multipleStreamError = null;
 
         reporters.forEach(({ plugin }) => {
@@ -35,7 +35,7 @@ class ReporterStreamController {
 
             this.multipleStreamError = new GeneralError(RUNTIME_ERRORS.multipleSameStreamReporters, message);
 
-            this._task.emit('done');
+            this._messageBus.emit('done');
 
             return false;
         }

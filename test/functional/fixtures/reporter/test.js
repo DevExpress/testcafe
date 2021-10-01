@@ -1,8 +1,11 @@
 const expect               = require('chai').expect;
 const fs                   = require('fs');
 const generateReporter     = require('./reporter');
-const ReporterPluginMethod = require('../../../../lib/reporter/plugin-methods');
 const { createReporter }   = require('../../utils/reporter');
+const ReporterPluginMethod = require('../../../../lib/reporter/plugin-methods');
+const assertionHelper      = require('../../assertion-helper.js');
+const path                 = require('path');
+const config               = require('../../config');
 
 const {
     createSimpleTestStream,
@@ -827,6 +830,85 @@ describe('Reporter', () => {
         });
     });
 
+    describe('Warnings', () => {
+        let resultWarning = {};
+        const reporter    = createReporter({
+            reportWarnings: (warning) => {
+                resultWarning = warning;
+            },
+        });
+
+        afterEach(() => {
+            resultWarning = {};
+        });
+
+        if (!config.experimentalDebug) {
+            //TODO: Debug mode loses synchronization with unwaiting async function. This bug need to fix.
+
+            it('Should get warning for TestRun', async () => {
+                try {
+                    await runTests('testcafe-fixtures/index-test.js', 'Asynchronous method', {
+                        reporter,
+                        shouldFail: true,
+                    });
+
+                    throw new Error('Promise rejection expected');
+                }
+                catch (err) {
+                    expect(resultWarning.message).to.include("An asynchronous method that you do not await includes an assertion. Inspect that method's execution chain and add the 'await' keyword where necessary.");
+                    expect(resultWarning.testRunId).to.be.a('string');
+                    expect(resultWarning.testRunId).to.not.empty;
+                }
+            });
+        }
+
+        if (config.useLocalBrowsers) {
+            it('Should get warning for Task', async () => {
+                try {
+                    await runTests('./testcafe-fixtures/index-test.js', 'Take screenshots with same path', {
+                        setScreenshotPath: true,
+                        shouldFail:        true,
+                        reporter,
+                    });
+
+                    throw new Error('Promise rejection expected');
+                }
+                catch (err) {
+                    const SCREENSHOTS_PATH   = path.resolve(assertionHelper.SCREENSHOTS_PATH);
+                    const screenshotFileName = path.join(SCREENSHOTS_PATH, '1.png');
+
+                    expect(resultWarning.message).to.include(
+                        `The file at "${screenshotFileName}" already exists. It has just been rewritten ` +
+                        'with a recent screenshot. This situation can possibly cause issues. To avoid them, make sure ' +
+                        'that each screenshot has a unique path. If a test runs in multiple browsers, consider ' +
+                        'including the user agent in the screenshot path or generate a unique identifier in another way.',
+                    );
+                }
+
+                await assertionHelper.removeScreenshotDir();
+            });
+        }
+
+        it('Should get warning for request hook', async () => {
+            await runTests('./testcafe-fixtures/failed-cors-validation.js', 'Failed CORS validation', {
+                only: 'chrome',
+                reporter,
+            });
+
+            expect(resultWarning.message).to.include('RequestMock: CORS validation failed for a request specified as { url: "http://dummy-url.com/get" }');
+        });
+
+        it('Should get warning for request hook', async () => {
+            await runTests('./testcafe-fixtures/index-test.js', 'Simple test', {
+                only:         'chrome',
+                reporter,
+                tsConfigPath: 'path-to-ts-config',
+            });
+
+            expect(resultWarning.message).to.eql("The 'tsConfigPath' option is deprecated and will be removed in the next major release. Use the 'compilerOptions.typescript.configPath' option instead.");
+        });
+    });
+
     describe('Action snapshots', () => {
         it('Basic', () => {
             const expected = [
@@ -978,8 +1060,9 @@ describe('Reporter', () => {
                     'testcafe-fixtures/index-test.js',
                     'Simple test',
                     {
-                        reporter:   createReporterWithBrokenMethod(method),
-                        shouldFail: true,
+                        reporter:     createReporterWithBrokenMethod(method),
+                        shouldFail:   true,
+                        tsConfigPath: 'path-to-ts-config',
                     }
                 );
 

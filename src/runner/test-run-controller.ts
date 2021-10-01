@@ -13,6 +13,7 @@ import { Dictionary } from '../configuration/interfaces';
 import { ActionEventArg, TestRunControllerInit } from './interfaces';
 import CompilerService from '../services/compiler/host';
 import { Quarantine } from '../utils/get-options/quarantine';
+import MessageBus from '../utils/message-bus';
 
 const DISCONNECT_THRESHOLD = 3;
 
@@ -31,6 +32,7 @@ export default class TestRunController extends AsyncEventEmitter {
     public testRun: null | LegacyTestRun | TestRun;
     public done: boolean;
     private readonly compilerService?: CompilerService;
+    private readonly _messageBus: MessageBus;
 
     public constructor ({
         test,
@@ -41,6 +43,7 @@ export default class TestRunController extends AsyncEventEmitter {
         fixtureHookController,
         opts,
         compilerService,
+        messageBus,
     }: TestRunControllerInit) {
         super();
 
@@ -60,6 +63,7 @@ export default class TestRunController extends AsyncEventEmitter {
         this._quarantine         = this._opts.quarantineMode ? new Quarantine() : null;
         this._disconnectionCount = 0;
         this.compilerService     = compilerService;
+        this._messageBus         = messageBus;
     }
 
     private static _getTestRunCtor (test: Test, opts: Dictionary<OptionValue>): LegacyTestRun | TestRun {
@@ -79,6 +83,7 @@ export default class TestRunController extends AsyncEventEmitter {
             globalWarningLog:  this._warningLog,
             opts:              this._opts,
             compilerService:   this.compilerService,
+            messageBus:        this._messageBus,
             screenshotCapturer,
         });
 
@@ -153,7 +158,7 @@ export default class TestRunController extends AsyncEventEmitter {
     }
 
     private async _emitActionStart (args: ActionEventArg): Promise<void> {
-        await this.emit('test-action-start', args);
+        await this._messageBus.emit('test-action-start', args);
     }
 
     private async _emitActionDone (args: ActionEventArg): Promise<void> {
@@ -171,7 +176,7 @@ export default class TestRunController extends AsyncEventEmitter {
     }
 
     private async _emitTestRunStart (): Promise<void> {
-        await this.emit('test-run-start');
+        await this._messageBus.emit('test-run-start', this.testRun);
     }
 
     private async _testRunBeforeDone (): Promise<void> {
@@ -224,7 +229,7 @@ export default class TestRunController extends AsyncEventEmitter {
         const hookOk = await this._fixtureHookController.runFixtureBeforeHookIfNecessary(testRun);
 
         if (this.test.skip || !hookOk) {
-            await this.emit('test-run-start');
+            await this._emitTestRunStart();
             await this.emit('test-run-before-done');
             await this._emitTestRunDone();
 

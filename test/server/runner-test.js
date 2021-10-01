@@ -164,8 +164,8 @@ describe('Runner', () => {
         it('Should fallback to the default reporter if reporter was not set', () => {
             const storedRunTaskFn = runner._runTask;
 
-            runner._runTask = ({ reporterPlugins }) => {
-                const reporterPlugin = reporterPlugins[0].plugin;
+            runner._runTask = ({ reporters }) => {
+                const reporterPlugin = reporters[0].plugin;
 
                 expect(reporterPlugin.reportFixtureStart).to.be.a('function');
                 expect(reporterPlugin.reportTestDone).to.be.a('function');
@@ -932,6 +932,7 @@ describe('Runner', () => {
                         expect(err.message).eql(expectedErrorMessage);
 
                         delete runner.configuration._options[optionName];
+                        delete runner._options[optionName];
                     });
             };
 
@@ -1269,7 +1270,7 @@ describe('Runner', () => {
                 this.emit('browser-job-done', job);
             });
 
-            this.emit('done');
+            this._messageBus.emit('done');
         }
 
         beforeEach(() => {
@@ -1286,6 +1287,8 @@ describe('Runner', () => {
             browserProviderPool.addProvider('mock', MockBrowserProvider);
 
             Task.prototype._createBrowserJobs = function () {
+                this._messageBus.emit('start', this);
+
                 setTimeout(taskActionCallback.bind(this), TASK_ACTION_DELAY);
 
                 return this.browserConnectionGroups.map(bcGroup => {

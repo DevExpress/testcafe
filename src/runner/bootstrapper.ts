@@ -1,11 +1,8 @@
-import path from 'path';
-import fs from 'fs';
 import {
     chunk,
     times,
 } from 'lodash';
 
-import makeDir from 'make-dir';
 import debug from 'debug';
 import prettyTime from 'pretty-hrtime';
 import Compiler from '../compiler';
@@ -15,24 +12,22 @@ import { GeneralError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
 import TestedApp from './tested-app';
 import parseFileList from '../utils/parse-file-list';
-import resolvePathRelativelyCwd from '../utils/resolve-path-relatively-cwd';
 import loadClientScripts from '../custom-client-scripts/load';
 import { getConcatenatedValuesString } from '../utils/string';
-import { Writable as WritableStream } from 'stream';
-import { ReporterSource, ReporterPluginSource } from '../reporter/interfaces';
+import { ReporterSource } from '../reporter/interfaces';
 import ClientScript from '../custom-client-scripts/client-script';
 import ClientScriptInit from '../custom-client-scripts/client-script-init';
 import BrowserConnectionGateway from '../browser/connection/gateway';
 import { CompilerArguments } from '../compiler/interfaces';
 import CompilerService from '../services/compiler/host';
 import Test from '../api/structure/test';
-import { getPluginFactory, processReporterName } from '../utils/reporter';
 import { BootstrapperInit, BrowserSetOptions } from './interfaces';
 import WarningLog from '../notifications/warning-log';
 import WARNING_MESSAGES from '../notifications/warning-message';
 import guardTimeExecution from '../utils/guard-time-execution';
 import asyncFilter from '../utils/async-filter';
 import Fixture from '../api/structure/fixture';
+import MessageBus from '../utils/message-bus';
 
 const DEBUG_SCOPE = 'testcafe:bootstrapper';
 
@@ -55,7 +50,6 @@ interface BasicRuntimeResources {
 }
 
 interface RuntimeResources extends BasicRuntimeResources {
-    reporterPlugins: ReporterPluginSource[];
     commonClientScripts: ClientScript[];
 }
 
@@ -95,10 +89,11 @@ export default class Bootstrapper {
     private readonly compilerService?: CompilerService;
     private readonly debugLogger: debug.Debugger;
     private readonly warningLog: WarningLog;
+    private readonly messageBus: MessageBus;
 
     private readonly TESTS_COMPILATION_UPPERBOUND: number;
 
-    public constructor ({ browserConnectionGateway, compilerService }: BootstrapperInit) {
+    public constructor ({ browserConnectionGateway, compilerService, messageBus }: BootstrapperInit) {
         this.browserConnectionGateway = browserConnectionGateway;
         this.concurrency              = 1;
         this.sources                  = [];
@@ -113,8 +108,9 @@ export default class Bootstrapper {
         this.proxyless                = false;
         this.compilerOptions          = void 0;
         this.debugLogger              = debug(DEBUG_SCOPE);
-        this.warningLog               = new WarningLog();
+        this.warningLog               = new WarningLog(null, WarningLog.createAddWarningCallback(messageBus));
         this.compilerService          = compilerService;
+        this.messageBus               = messageBus;
 
         this.TESTS_COMPILATION_UPPERBOUND = 60;
     }
@@ -146,7 +142,7 @@ export default class Bootstrapper {
 
         return browserInfo
             .map(browser => times(this.concurrency, () => new BrowserConnection(
-                this.browserConnectionGateway, browser, false, this.disableMultipleWindows, this.proxyless)));
+                this.browserConnectionGateway, browser, false, this.disableMultipleWindows, this.proxyless, this.messageBus)));
     }
 
     private _getBrowserSetOptions (): BrowserSetOptions {
@@ -164,6 +160,10 @@ export default class Bootstrapper {
             throw new GeneralError(RUNTIME_ERRORS.cannotDivideRemotesCountByConcurrency);
 
         let browserConnections = this._createAutomatedConnections(automated);
+
+        remotes.forEach(remoteConnection => {
+            remoteConnection.messageBus = this.messageBus;
+        });
 
         browserConnections = browserConnections.concat(chunk(remotes, this.concurrency));
 
@@ -229,41 +229,6 @@ export default class Bootstrapper {
             throw new GeneralError(RUNTIME_ERRORS.noTestsToRunDueFiltering);
 
         return tests;
-    }
-
-    private async _ensureOutStream (outStream: string | WritableStream): Promise<WritableStream> {
-        if (typeof outStream !== 'string')
-            return outStream;
-
-        const fullReporterOutputPath = resolvePathRelativelyCwd(outStream);
-
-        await makeDir(path.dirname(fullReporterOutputPath));
-
-        return fs.createWriteStream(fullReporterOutputPath);
-    }
-
-    private static _addDefaultReporter (reporters: ReporterSource[]): void {
-        reporters.push({
-            name:   'spec',
-            output: process.stdout,
-        });
-    }
-
-    private async _getReporterPlugins (): Promise<ReporterPluginSource[]> {
-        if (!this.reporters.length)
-            Bootstrapper._addDefaultReporter(this.reporters);
-
-        return Promise.all(this.reporters.map(async ({ name, output }) => {
-            const pluginFactory = getPluginFactory(name);
-            const processedName = processReporterName(name);
-            const outStream     = output ? await this._ensureOutStream(output) : void 0;
-
-            return {
-                plugin: pluginFactory(),
-                name:   processedName,
-                outStream,
-            };
-        }));
     }
 
     private async _startTestedApp (): Promise<TestedApp|undefined> {
@@ -355,12 +320,11 @@ export default class Bootstrapper {
 
     // API
     public async createRunnableConfiguration (): Promise<RuntimeResources> {
-        const reporterPlugins     = await this._getReporterPlugins();
         const commonClientScripts = await loadClientScripts(this.clientScripts);
 
         if (await this._canUseParallelBootstrapping(this.browsers))
-            return { reporterPlugins, ...await this._bootstrapParallel(this.browsers), commonClientScripts };
+            return { ...await this._bootstrapParallel(this.browsers), commonClientScripts };
 
-        return { reporterPlugins, ...await this._bootstrapSequence(this.browsers), commonClientScripts };
+        return { ...await this._bootstrapSequence(this.browsers), commonClientScripts };
     }
 }

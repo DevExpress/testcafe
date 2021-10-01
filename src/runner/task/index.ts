@@ -22,6 +22,7 @@ import { VideoOptions } from '../../video-recorder/interfaces';
 import TaskPhase from './phase';
 import CompilerService from '../../services/compiler/host';
 import Fixture from '../../api/structure/fixture';
+import MessageBus from '../../utils/message-bus';
 
 export default class Task extends AsyncEventEmitter {
     private readonly _timeStamp: moment.Moment;
@@ -38,6 +39,7 @@ export default class Task extends AsyncEventEmitter {
     public readonly testStructure: ReportedTestStructureItem[];
     public readonly videos?: Videos;
     private readonly _compilerService?: CompilerService;
+    private readonly _messageBus: MessageBus;
 
     public constructor ({
         tests,
@@ -46,6 +48,7 @@ export default class Task extends AsyncEventEmitter {
         opts,
         runnerWarningLog,
         compilerService,
+        messageBus,
     }: TaskInit) {
         super({ captureRejections: true });
 
@@ -55,8 +58,9 @@ export default class Task extends AsyncEventEmitter {
         this.tests                   = tests;
         this.opts                    = opts;
         this._proxy                  = proxy;
-        this.warningLog              = new WarningLog();
+        this.warningLog              = new WarningLog(null, WarningLog.createAddWarningCallback(messageBus));
         this._compilerService        = compilerService;
+        this._messageBus             = messageBus;
 
         runnerWarningLog.copyTo(this.warningLog);
 
@@ -83,17 +87,13 @@ export default class Task extends AsyncEventEmitter {
     }
 
     private _assignBrowserJobEventHandlers (job: BrowserJob): void {
-        job.on('test-run-start', async (testRun: TestRun) => {
-            await this.emit('test-run-start', testRun);
-        });
-
         job.on('test-run-done', async (testRun: TestRun) => {
-            await this.emit('test-run-done', testRun);
+            await this._messageBus.emit('test-run-done', testRun);
 
             if (this.opts.stopOnFirstFail && testRun.errs.length) {
                 this.abort();
 
-                await this.emit('done');
+                await this._messageBus.emit('done');
             }
         });
 
@@ -101,7 +101,7 @@ export default class Task extends AsyncEventEmitter {
             if (this._phase !== TaskPhase.started) {
                 this._phase = TaskPhase.started;
 
-                await this.emit('start');
+                await this._messageBus.emit('start', this);
             }
         });
 
@@ -113,19 +113,15 @@ export default class Task extends AsyncEventEmitter {
             if (!this._pendingBrowserJobs.length) {
                 this._phase = TaskPhase.done;
 
-                await this.emit('done');
+                await this._messageBus.emit('done');
             }
-        });
-
-        job.on('test-action-start', async (args: ActionEventArg) => {
-            await this.emit('test-action-start', args);
         });
 
         job.on('test-action-done', async (args: ActionEventArg) => {
             if (this._phase === TaskPhase.done)
                 return;
 
-            await this.emit('test-action-done', args);
+            await this._messageBus.emit('test-action-done', args);
         });
 
     }
@@ -162,6 +158,7 @@ export default class Task extends AsyncEventEmitter {
                 warningLog:            this.warningLog,
                 fixtureHookController: this.fixtureHookController,
                 compilerService:       this._compilerService,
+                messageBus:            this._messageBus,
                 proxy,
                 opts,
             });

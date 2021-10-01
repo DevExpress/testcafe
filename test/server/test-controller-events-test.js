@@ -9,13 +9,15 @@ const Reporter                       = require('../../lib/reporter');
 const { Role }                       = require('../../lib/api/exportable-lib');
 const TestRunErrorFormattableAdapter = require('../../lib/errors/test-run/formattable-adapter');
 const BaseTestRunMock                = require('./helpers/base-test-run-mock');
+const MessageBus                     = require('../../lib/utils/message-bus');
 
 class TestRunMock extends BaseTestRunMock {
-    constructor () {
+    constructor (messageBus) {
         super({
             test:              { id: 'test-id', name: 'test-name', fixture: { path: 'dummy', id: 'fixture-id', name: 'fixture-name' } },
             globalWarningLog:  { addPlainMessage: noop },
             browserConnection: { activeWindowId: 'activeWindowId' },
+            messageBus,
         });
 
         this.browser = {
@@ -44,12 +46,13 @@ class TestControllerMock extends TestController {
 }
 
 class TaskMock extends AsyncEventEmitter {
-    constructor () {
+    constructor (messageBus) {
         super();
 
         this.tests                   = [];
         this.browserConnectionGroups = [];
         this.opts                    = {};
+        this._messageBus             = messageBus;
     }
 
     _assignBrowserJobEventHandlers (job) {
@@ -133,13 +136,16 @@ const actions = {
 
 let testController = null;
 let task           = null;
+let messageBus     = null;
 
 const initializeReporter = (reporter) => {
-    return new Reporter(reporter, task);
+    return new Reporter(reporter, messageBus);
 };
 
 describe('TestController action events', () => {
     beforeEach(() => {
+        messageBus = new MessageBus();
+
         const job = new BrowserJob({
             tests:                 [],
             browserConnections:    [],
@@ -148,15 +154,16 @@ describe('TestController action events', () => {
             warningLog:            null,
             fixtureHookController: null,
             opts:                  { TestRunCtor: TestRunMock },
+            messageBus,
         });
 
         const testRunController = job._createTestRunController();
-        const testRun           = new TestRunMock();
+        const testRun           = new TestRunMock(messageBus);
 
         testRunController.testRun = testRun;
 
         testController            = new TestControllerMock(testRun);
-        task                      = new TaskMock();
+        task                      = new TaskMock(messageBus);
 
         task._assignBrowserJobEventHandlers(job);
         testRunController._assignTestRunEvents(testRun);
@@ -176,7 +183,9 @@ describe('TestController action events', () => {
 
                 doneLog.push(item);
             },
-        }, task);
+        });
+
+        await messageBus.emit('start', task);
 
         // eval and expect has their functional tests
         // addRequestHooks/removeRequestHooks are not logged
@@ -207,7 +216,7 @@ describe('TestController action events', () => {
         expect(doneLog).eql(expected);
     });
 
-    it('Error action', () => {
+    it('Error action', async () => {
         let actionResult   = null;
         let errorAdapter   = null;
         let resultDuration = null;
@@ -219,6 +228,8 @@ describe('TestController action events', () => {
                 actionResult   = { name, command: command.type, err: err.errMsg };
             },
         });
+
+        await messageBus.emit('start', task);
 
         testController.testRun._internalExecuteCommand = () => {
             return delay(10)
@@ -239,7 +250,7 @@ describe('TestController action events', () => {
             });
     });
 
-    it('Duration', () => {
+    it('Duration', async () => {
         let resultDuration = null;
 
         initializeReporter({
@@ -247,6 +258,8 @@ describe('TestController action events', () => {
                 resultDuration = duration;
             },
         });
+
+        await messageBus.emit('start', task);
 
         testController.testRun._internalExecuteCommand = () => {
             return delay(10);
@@ -268,7 +281,9 @@ describe('TestController action events', () => {
                 if (command.options)
                     log.push(command.options);
             },
-        }, task);
+        });
+
+        await messageBus.emit('start', task);
 
         const actionsKeys = Object.keys(actionsWithoutOptions);
 
@@ -291,6 +306,8 @@ describe('TestController action events', () => {
                 doneLog.push(item);
             },
         }, task);
+
+        await messageBus.emit('start', task);
 
         await testController.click('#target', { caretPos: 1, modifiers: { shift: true } });
         await testController.click('#target', { modifiers: { ctrl: false } });

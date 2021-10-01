@@ -44,6 +44,7 @@ import OS from 'os-family';
 import detectDisplay from '../utils/detect-display';
 import { validateQuarantineOptions } from '../utils/get-options/quarantine';
 import logEntry from '../utils/log-entry';
+import MessageBus from '../utils/message-bus';
 
 const DEBUG_LOGGER = debug('testcafe:runner');
 
@@ -51,12 +52,13 @@ export default class Runner extends EventEmitter {
     constructor ({ proxy, browserConnectionGateway, configuration, compilerService }) {
         super();
 
+        this._messageBus         = new MessageBus();
         this.proxy               = proxy;
-        this.bootstrapper        = this._createBootstrapper(browserConnectionGateway, compilerService);
+        this.bootstrapper        = this._createBootstrapper(browserConnectionGateway, compilerService, this._messageBus);
         this.pendingTaskPromises = [];
         this.configuration       = configuration;
         this.isCli               = false;
-        this.warningLog          = new WarningLog();
+        this.warningLog          = new WarningLog(null, WarningLog.createAddWarningCallback(this._messageBus));
         this.compilerService     = compilerService;
         this._options            = {};
 
@@ -68,8 +70,8 @@ export default class Runner extends EventEmitter {
         ]);
     }
 
-    _createBootstrapper (browserConnectionGateway, compilerService) {
-        return new Bootstrapper({ browserConnectionGateway, compilerService });
+    _createBootstrapper (browserConnectionGateway, compilerService, messageBus) {
+        return new Bootstrapper({ browserConnectionGateway, compilerService, messageBus });
     }
 
     _disposeBrowserSet (browserSet) {
@@ -88,6 +90,7 @@ export default class Runner extends EventEmitter {
         task.abort();
         task.unRegisterClientScriptRouting();
         task.clearListeners();
+        this._messageBus.abort();
 
         await this._disposeAssets(browserSet, reporters, testedApp);
     }
@@ -128,7 +131,7 @@ export default class Runner extends EventEmitter {
 
     // Run task
     _getFailedTestCount (task, reporter) {
-        let failedTestCount = reporter.testCount - reporter.passed;
+        let failedTestCount = reporter.taskInfo.testCount - reporter.taskInfo.passed;
 
         if (task.opts.stopOnFirstFail && !!failedTestCount)
             failedTestCount = 1;
@@ -145,18 +148,20 @@ export default class Runner extends EventEmitter {
 
         const browserSetErrorPromise = promisifyEvent(browserSet, 'error');
         const taskErrorPromise       = promisifyEvent(task, 'error');
-        const streamController       = new ReporterStreamController(task, reporters);
+        const messageBusErrorPromise = promisifyEvent(this._messageBus, 'error');
+        const streamController       = new ReporterStreamController(this._messageBus, reporters);
 
-        const taskDonePromise = task.once('done')
+        const taskDonePromise = this._messageBus.once('done')
             .then(() => browserSetErrorPromise.cancel())
             .then(() => {
-                return Promise.all(reporters.map(reporter => reporter.pendingTaskDonePromise));
+                return Promise.all(reporters.map(reporter => reporter.taskInfo.pendingTaskDonePromise));
             });
 
         const promises = [
             taskDonePromise,
             browserSetErrorPromise,
             taskErrorPromise,
+            messageBusErrorPromise,
         ];
 
         if (testedApp)
@@ -187,23 +192,23 @@ export default class Runner extends EventEmitter {
             opts,
             runnerWarningLog: warningLog,
             compilerService:  this.compilerService,
+            messageBus:       this._messageBus,
         });
     }
 
-    _runTask ({ reporterPlugins, browserSet, tests, testedApp, options }) {
+    _runTask ({ reporters, browserSet, tests, testedApp, options }) {
         const task              = this._createTask(tests, browserSet.browserConnectionGroups, this.proxy, options, this.warningLog);
-        const reporters         = reporterPlugins.map(reporter => new Reporter(reporter.plugin, task, reporter.outStream, reporter.name));
         const completionPromise = this._getTaskResult(task, browserSet, reporters, testedApp);
         let completed           = false;
 
-        task.on('start', startHandlingTestErrors);
+        this._messageBus.on('start', startHandlingTestErrors);
 
         if (!this.configuration.getOption(OPTION_NAMES.skipUncaughtErrors)) {
-            task.on('test-run-start', addRunningTest);
-            task.on('test-run-done', removeRunningTest);
+            this._messageBus.on('test-run-start', addRunningTest);
+            this._messageBus.on('test-run-done', removeRunningTest);
         }
 
-        task.on('done', stopHandlingTestErrors);
+        this._messageBus.on('done', stopHandlingTestErrors);
 
         task.on('error', stopHandlingTestErrors);
 
@@ -455,7 +460,7 @@ export default class Runner extends EventEmitter {
 
     _setBootstrapperOptions () {
         this.configuration.prepare();
-        this.configuration.notifyAboutOverriddenOptions();
+        this.configuration.notifyAboutOverriddenOptions(this.warningLog);
         this.configuration.notifyAboutDeprecatedOptions(this.warningLog);
 
         this.bootstrapper.sources                = this.configuration.getOption(OPTION_NAMES.src) || this.bootstrapper.sources;
@@ -651,10 +656,18 @@ export default class Runner extends EventEmitter {
     }
 
     run (options = {}) {
+        let reporters;
+
         this.apiMethodWasCalled.reset();
-        this.configuration.mergeOptions(options);
+        this._messageBus.clearListeners();
+
+        this._options = Object.assign(this._options, options);
 
         const runTaskPromise = Promise.resolve()
+            .then(() => Reporter.getReporterPlugins(this._options.reporter))
+            .then(reporterPlugins => {
+                reporters = reporterPlugins.map(reporter => new Reporter(reporter.plugin, this._messageBus, reporter.outStream, reporter.name));
+            })
             .then(() => this._applyOptions())
             .then(() => {
                 logEntry(DEBUG_LOGGER, this.configuration);
@@ -662,14 +675,14 @@ export default class Runner extends EventEmitter {
                 return this._validateRunOptions();
             })
             .then(() => this._createRunnableConfiguration())
-            .then(async ({ reporterPlugins, browserSet, tests, testedApp, commonClientScripts }) => {
+            .then(async ({ browserSet, tests, testedApp, commonClientScripts }) => {
                 await this._prepareClientScripts(tests, commonClientScripts);
 
                 const resultOptions = this.configuration.getOptions();
 
                 await this.bootstrapper.compilerService?.setOptions({ value: resultOptions });
 
-                return this._runTask({ reporterPlugins, browserSet, tests, testedApp, options: resultOptions });
+                return this._runTask({ reporters, browserSet, tests, testedApp, options: resultOptions });
             });
 
         return this._createCancelablePromise(runTaskPromise);

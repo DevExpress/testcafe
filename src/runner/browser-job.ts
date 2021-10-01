@@ -12,6 +12,7 @@ import { Dictionary } from '../configuration/interfaces';
 import BrowserJobResult from './browser-job-result';
 import CompilerService from '../services/compiler/host';
 import { BrowserJobInit } from './interfaces';
+import MessageBus from '../utils/message-bus';
 
 interface BrowserJobResultInfo {
     status: BrowserJobResult;
@@ -34,6 +35,7 @@ export default class BrowserJob extends AsyncEventEmitter {
     private readonly _connectionErrorListener: (error: Error) => void;
     private readonly _completionQueue: TestRunController[];
     private _resolveWaitingLastTestInFixture: Function | null;
+    private readonly _messageBus: MessageBus;
 
     public constructor ({
         tests,
@@ -44,6 +46,7 @@ export default class BrowserJob extends AsyncEventEmitter {
         fixtureHookController,
         opts,
         compilerService,
+        messageBus,
     }: BrowserJobInit) {
         super();
 
@@ -58,6 +61,7 @@ export default class BrowserJob extends AsyncEventEmitter {
         this.warningLog            = warningLog;
         this.fixtureHookController = fixtureHookController;
         this._result               = null;
+        this._messageBus           = messageBus;
 
         this._testRunControllerQueue = tests.map((test, index) => this._createTestRunController(test, index, compilerService));
 
@@ -80,14 +84,12 @@ export default class BrowserJob extends AsyncEventEmitter {
             warningLog:            this.warningLog,
             fixtureHookController: this.fixtureHookController,
             opts:                  this._opts,
+            messageBus:            this._messageBus,
             compilerService,
         });
 
         testRunController.on('test-run-create', async testRunInfo => {
             await this.emit('test-run-create', testRunInfo);
-        });
-        testRunController.on('test-run-start', async () => {
-            await this.emit('test-run-start', testRunController.testRun);
         });
         testRunController.on('test-run-ready', async () => {
             await this.emit('test-run-ready', testRunController);
@@ -97,10 +99,6 @@ export default class BrowserJob extends AsyncEventEmitter {
             await this.emit('test-run-before-done', testRunController);
         });
         testRunController.on('test-run-done', async () => this._onTestRunDone(testRunController));
-
-        testRunController.on('test-action-start', async args => {
-            await this.emit('test-action-start', args);
-        });
 
         testRunController.on('test-action-done', async args => {
             await this.emit('test-action-done', args);
