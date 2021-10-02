@@ -1,0 +1,4 @@
+const CHECK_ELEMENT_DELAY = 200;
+
+export default CHECK_ELEMENT_DELAY;
+

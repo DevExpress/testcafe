@@ -1,13 +1,18 @@
 import { Selector } from 'testcafe';
 import { expect } from 'chai';
 import selectorApiExecutionMode from '../../../../../lib/client-functions/selector-api-execution-mode';
+import CHECK_ELEMENT_DELAY from '../../../../../lib/client/driver/command-executors/client-functions/selector-executor/check-element-delay';
 
 fixture `Selector`
-    .page`../../api/es-next/selector/pages/index.html`;
+    .page`../../api/es-next/selector/pages/index.html`
+    .beforeEach(async () => {
+        selectorApiExecutionMode.forceSync();
+    })
+    .afterEach(async () => {
+        selectorApiExecutionMode.resetForcedSync();
+    });
 
-test('Selector API', async () => {
-    selectorApiExecutionMode.forceSync();
-
+test('API', async () => {
     const el = Selector('#htmlElement');
 
     expect(el.nodeType).eql(1);
@@ -85,6 +90,15 @@ test('Selector API', async () => {
     expect(withClass('idxEl').exists).true;
     expect(withClass('idxEl').withText('Hey?!').exists).true;
     expect(withClass('idxEl').withText('testtesttest').exists).false;
+});
 
-    selectorApiExecutionMode.resetForcedSync();
+test('timeout', async () => {
+    const CHECK_ELEMENT_DELAY_THRESHOLD = 2000;
+
+    const start         = new Date().getTime();
+    const el            = Selector('#wrong')();
+    const executionTime = new Date().getTime() - start;
+
+    expect(el).eql(null);
+    expect(executionTime).below(CHECK_ELEMENT_DELAY + CHECK_ELEMENT_DELAY_THRESHOLD);
 });
