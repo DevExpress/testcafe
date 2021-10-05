@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.16.1 (2021-10-05)
+
+### Bug Fixes
+
+* Incorrect handling of the beforeInput Firefox event ([#6504](https://github.com/DevExpress/testcafe/issues/6504))
+* Incorrect handling of page styles leads to test failure in Safari 15 ([#6546](https://github.com/DevExpress/testcafe/issues/6546))
+* Incorrect stylesheet filtering procedure leads to client-side errors in IE11 ([#6439](https://github.com/DevExpress/testcafe/issues/6439))
+
 ## v1.16.0 (2021-09-08)
 
 ### Enhancements
