@@ -1234,6 +1234,9 @@ export default class TestRun extends AsyncEventEmitter {
     private async _getStateSnapshotFromRole (role: Role): Promise<StateSnapshot> {
         const prevPhase = this.phase;
 
+        if (role.phase === ROLE_PHASE.initialized && role.initErr instanceof TestCafeErrorList && role.initErr.items.length)
+            throw role.initErr.items[0];
+
         this.phase = TestRunPhase.inRoleInitializer;
 
         if (role.phase === ROLE_PHASE.uninitialized)
