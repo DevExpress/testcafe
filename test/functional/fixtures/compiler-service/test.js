@@ -1,8 +1,15 @@
-const delay = require('../../../../lib/utils/delay');
+const delay               = require('../../../../lib/utils/delay');
+const { DEFAULT_TIMEOUT } = require('../../../../lib/configuration/default-values');
 
 describe('Compiler service', () => {
-    it('Should execute Selectors in sync mode', async () => {
-        await runTests('testcafe-fixtures/synchronous-selectors.js');
+    describe('Sync selectors', () => {
+        it('API', async () => {
+            await runTests('testcafe-fixtures/synchronous-selectors.js', 'API');
+        });
+
+        it('selector timeout', async () => {
+            await runTests('testcafe-fixtures/synchronous-selectors.js', 'timeout', { selectorTimeout: DEFAULT_TIMEOUT.selector });
+        });
     });
 
     it('debug', async () => {

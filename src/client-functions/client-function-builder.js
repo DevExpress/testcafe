@@ -11,6 +11,7 @@ import { getCallsiteForMethod } from '../errors/get-callsite';
 import ReExecutablePromise from '../utils/re-executable-promise';
 import testRunMarker from '../test-run/marker-symbol';
 import selectorApiExecutionMode from './selector-api-execution-mode';
+import CHECK_ELEMENT_DELAY from '../client/driver/command-executors/client-functions/selector-executor/check-element-delay';
 
 const DEFAULT_EXECUTION_CALLSITE_NAME = '__$$clientFunction$$';
 
@@ -164,6 +165,11 @@ export default class ClientFunctionBuilder {
 
             throw err;
         }
+
+        // NOTE: reset the command timeout to minimal check interval to
+        // ensure the find element loop will execute only one time.
+        if (typeof command.timeout !== 'number')
+            command.timeout = CHECK_ELEMENT_DELAY;
 
         const result = testRun.executeCommandSync(command, callsite);
 

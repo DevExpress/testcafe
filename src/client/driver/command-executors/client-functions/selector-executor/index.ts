@@ -12,9 +12,7 @@ import selectorFilter from './filter';
 import Replicator from 'replicator';
 import adapter from '../adapter/index';
 import { visible } from '../../../utils/element-utils';
-
-
-const CHECK_ELEMENT_DELAY = 200;
+import CHECK_ELEMENT_DELAY from './check-element-delay';
 
 
 export default class SelectorExecutor extends ClientFunctionExecutor<ExecuteSelectorCommand, SelectorDependencies> {
