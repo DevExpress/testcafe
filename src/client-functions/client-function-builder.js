@@ -41,7 +41,7 @@ export default class ClientFunctionBuilder {
 
     _renderError (error) {
         // The rendered template is shown in the Watch panel of browser dev tools or IDE.
-        // and its size is unlimited.
+        // Viewport size is unlimited there.
         const viewportWidth   = Number.MIN_SAFE_INTEGER;
         const renderedMessage = TEMPLATES[error.code](error, viewportWidth);
 
