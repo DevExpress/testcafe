@@ -12,6 +12,8 @@ import ReExecutablePromise from '../utils/re-executable-promise';
 import testRunMarker from '../test-run/marker-symbol';
 import selectorApiExecutionMode from './selector-api-execution-mode';
 import CHECK_ELEMENT_DELAY from '../client/driver/command-executors/client-functions/selector-executor/check-element-delay';
+import TEMPLATES from '../errors/test-run/templates';
+import dedent from 'dedent';
 
 const DEFAULT_EXECUTION_CALLSITE_NAME = '__$$clientFunction$$';
 
@@ -35,6 +37,15 @@ export default class ClientFunctionBuilder {
             throw this._createInvalidFnTypeError();
 
         this.replicator = createReplicator(this._getReplicatorTransforms());
+    }
+
+    _renderError (error) {
+        // The rendered template is shown in the Watch panel of browser dev tools or IDE.
+        // and its size is unlimited.
+        const viewportWidth   = Number.MIN_SAFE_INTEGER;
+        const renderedMessage = TEMPLATES[error.code](error, viewportWidth);
+
+        return dedent(renderedMessage);
     }
 
     _decorateFunction (clientFn) {
@@ -171,9 +182,14 @@ export default class ClientFunctionBuilder {
         if (typeof command.timeout !== 'number')
             command.timeout = CHECK_ELEMENT_DELAY;
 
-        const result = testRun.executeCommandSync(command, callsite);
+        try {
+            const result = testRun.executeCommandSync(command, callsite);
 
-        return this._processResult(result, args);
+            return this._processResult(result, args);
+        }
+        catch (err) {
+            throw this._renderError(err);
+        }
     }
 
     _processResult (result) {

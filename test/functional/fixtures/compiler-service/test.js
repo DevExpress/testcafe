@@ -10,6 +10,10 @@ describe('Compiler service', () => {
         it('selector timeout', async () => {
             await runTests('testcafe-fixtures/synchronous-selectors.js', 'timeout', { selectorTimeout: DEFAULT_TIMEOUT.selector });
         });
+
+        it('error', async () => {
+            await runTests('testcafe-fixtures/synchronous-selectors.js', 'error');
+        });
     });
 
     it('debug', async () => {
