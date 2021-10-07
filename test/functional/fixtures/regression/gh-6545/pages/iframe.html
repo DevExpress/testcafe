@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>gh-6545</title>
+</head>
+<body>
+    <script>
+        window.top.createMutationObserver(window);
+    </script>
+    <div></div>
+    <script>
+        var div = document.querySelector('div');
+
+        window.hasCorrectContext = div instanceof HTMLElement && div instanceof Object;
+    </script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>gh-6545</title>
+</head>
+<body>
+
+    <script>
+        function createMutationObserver (w) {
+            var doc      = w.document;
+            var observer = new MutationObserver(() => {});
+
+            observer.observe(doc.documentElement, {
+                childList:  true,
+                subtree:    true,
+                attributes: true
+            });
+        }
+    </script>
+
+    <script>
+        const frame = document.createElement('iframe');
+
+        frame.setAttribute('src', 'http://localhost:3000/fixtures/regression/gh-6545/pages/iframe.html');
+
+        document.body.appendChild(frame);
+    </script>
+</body>
+</html>
