@@ -1237,7 +1237,7 @@ export default class TestRun extends AsyncEventEmitter {
         const prevPhase = this.phase;
 
         if (role.phase === ROLE_PHASE.initialized && role.initErr instanceof TestCafeErrorList && role.initErr.hasErrors)
-            role.initErr.adapter = this._createErrorAdapter(role.initErr.items[role.initErr.items.length - 1]);
+            role.initErr.adapter = this._createErrorAdapter(role.initErr.items[0]);
 
         this.phase = TestRunPhase.inRoleInitializer;
 
