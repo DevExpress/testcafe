@@ -1,4 +1,4 @@
-import { Selector } from 'testcafe';
+import { Selector, ClientFunction } from 'testcafe';
 import { expect } from 'chai';
 import selectorApiExecutionMode from '../../../../../lib/client-functions/selector-api-execution-mode';
 import CHECK_ELEMENT_DELAY from '../../../../../lib/client/driver/command-executors/client-functions/selector-executor/check-element-delay';
@@ -101,4 +101,21 @@ test('timeout', async () => {
 
     expect(el).eql(null);
     expect(executionTime).below(CHECK_ELEMENT_DELAY + CHECK_ELEMENT_DELAY_THRESHOLD);
+});
+
+test('error', async () => {
+    const fn = ClientFunction(() => {
+        throw new Error('!!!test');
+    });
+
+    try {
+        fn();
+    }
+    catch (err) {
+        expect(err).to.be.a('string');
+        expect(err).eql(
+            'An error occurred in ClientFunction code:\n\n' +
+            'Error: !!!test'
+        );
+    }
 });
