@@ -4,6 +4,7 @@ import { StateSnapshot } from 'testcafe-hammerhead';
 import roleMarker from './marker-symbol';
 import nanoid from 'nanoid';
 import TestRun from '../test-run';
+import TestCafeErrorList from '../errors/error-list';
 
 export default class Role extends EventEmitter {
     public id: string;
@@ -12,7 +13,7 @@ export default class Role extends EventEmitter {
     public redirectUrl: string | null;
     public _initFn: Function | null;
     public opts: RoleOptions;
-    public initErr: null | Error;
+    public initErr: null | Error | TestCafeErrorList;
     public stateSnapshot: StateSnapshot;
     private [roleMarker]: boolean;
 

@@ -124,3 +124,11 @@ test('Take screenshots with same path', async t => {
         .takeScreenshot('1.png')
         .takeScreenshot('1.png');
 });
+
+test('Repeated role error', async t => {
+    await t.useRole(errorRole);
+});
+
+test('Repeated role error', async t => {
+    await t.useRole(errorRole);
+});

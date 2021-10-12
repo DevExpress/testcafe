@@ -828,6 +828,51 @@ describe('Reporter', () => {
                 ]);
             });
         });
+
+        it('Should repeat role error in each tests', function () {
+            return runTests('testcafe-fixtures/index-test.js', 'Repeated role error', generateRunOptions(log))
+                .then(() => {
+                    expect(log).eql([
+                        { name: 'useRole', action: 'start' },
+                        { name: 'click', action: 'start' },
+                        {
+                            name:    'click',
+                            action:  'done',
+                            command: {
+                                selector: 'Selector(\'#non-existing-element\')',
+                                type:     'click',
+                            },
+                            err: 'E24',
+                        },
+                        {
+                            name:    'useRole',
+                            action:  'done',
+                            command: {
+                                role: {
+                                    loginUrl: 'http://localhost:3000/fixtures/reporter/pages/index.html',
+                                    options:  { 'preserveUrl': false },
+                                    phase:    'initialized',
+                                },
+                                type: 'useRole',
+                            },
+                        },
+                        { name: 'useRole', action: 'start' },
+                        {
+                            name:    'useRole',
+                            action:  'done',
+                            command: {
+                                role: {
+                                    loginUrl: 'http://localhost:3000/fixtures/reporter/pages/index.html',
+                                    options:  { 'preserveUrl': false },
+                                    phase:    'initialized',
+                                },
+                                type: 'useRole',
+                            },
+                            err: 'E24',
+                        },
+                    ]);
+                });
+        });
     });
 
     describe('Warnings', () => {

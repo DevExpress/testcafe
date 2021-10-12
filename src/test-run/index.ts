@@ -1017,6 +1017,8 @@ export default class TestRun extends AsyncEventEmitter {
 
                 errorAdapter = this._createErrorAdapter(processTestFnError(error));
             }
+            else
+                errorAdapter = error.adapter;
         }
 
         Object.assign(actionArgs, {
@@ -1233,6 +1235,9 @@ export default class TestRun extends AsyncEventEmitter {
 
     private async _getStateSnapshotFromRole (role: Role): Promise<StateSnapshot> {
         const prevPhase = this.phase;
+
+        if (role.phase === ROLE_PHASE.initialized && role.initErr instanceof TestCafeErrorList && role.initErr.hasErrors)
+            role.initErr.adapter = this._createErrorAdapter(role.initErr.items[0]);
 
         this.phase = TestRunPhase.inRoleInitializer;
 
