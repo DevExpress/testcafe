@@ -1442,6 +1442,22 @@ export default class Driver extends serviceUtils.EventEmitter {
         }));
     }
 
+    _onPrepareClientEnvironmentInDebugMode (command) {
+        // NOTE: repeat the function call wrapping produced by the 'esm' module on the client-side
+        // (same as on the server-side).
+        nativeMethods.objectDefineProperty(window, command.esmRuntime, {
+            value: {
+                g: window,
+                c: window.eval, //eslint-disable-line no-eval
+            },
+        });
+
+        this._onReady(new DriverStatus({
+            isCommandResult: true,
+            result:          true,
+        }));
+    }
+
     _isStatusWithCommandResultInPendingWindowSwitchingMode (status) {
         return status.isCommandResult && !!this.contextStorage.getItem(this.PENDING_WINDOW_SWITCHING_FLAG);
     }
@@ -1553,6 +1569,9 @@ export default class Driver extends serviceUtils.EventEmitter {
 
         else if (command.type === COMMAND_TYPE.backupStorages)
             this._onBackupStoragesCommand();
+
+        else if (command.type === COMMAND_TYPE.prepareClientEnvironmentInDebugMode)
+            this._onPrepareClientEnvironmentInDebugMode(command);
 
         else
             this._onActionCommand(command);
