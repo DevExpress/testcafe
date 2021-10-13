@@ -4,7 +4,7 @@ import {
     isNodeCollection,
     isArrayOfNodes,
     castToArray,
-} from '../../../utils/element-utils';
+} from './utils';
 import { APIInfo, FilterOptions } from '../types';
 import adapter from '../adapter/index';
 

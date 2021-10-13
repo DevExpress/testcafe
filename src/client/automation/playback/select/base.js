@@ -6,7 +6,7 @@ import * as selectUtils from './utils';
 import MoveAutomation from '../move';
 import { MoveOptions } from '../../../../test-run/commands/options';
 import cursor from '../../cursor';
-import AUTOMATION_ERROR_TYPES from '../../errors';
+import AUTOMATION_ERROR_TYPES from '../../../../shared/errors/automation-errors';
 
 const Promise          = hammerhead.Promise;
 const browserUtils     = hammerhead.utils.browser;

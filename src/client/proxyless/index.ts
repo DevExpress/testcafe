@@ -5,18 +5,13 @@ import { initializeAdapter as initializeClientFnAdapter } from '../driver/comman
 import { initializeAdapter as initializeCoreUtilsAdapter } from '../core/utils/adapter/index';
 import clientFnAdapterInitializer from './client-fn-adapter-initializer';
 import coreUtilsAdapterInitializer from './core-utils-adapter-initializer';
-import * as Errors from '../../shared/errors/index';
 import SelectorExecutor from '../driver/command-executors/client-functions/selector-executor/index';
-import { FnInfo, SelectorErrorCb } from '../driver/command-executors/client-functions/types';
+import { AutomationErrorCtors } from '../../shared/types';
+import createErrorCtorCallback from '../../shared/errors/selector-error-ctor-callback';
 
 
 initializeClientFnAdapter(clientFnAdapterInitializer);
 initializeCoreUtilsAdapter(coreUtilsAdapterInitializer);
-
-function createErrorFn (errType: string): SelectorErrorCb {
-    // @ts-ignore
-    return (fn: FnInfo | null) => new Errors[errType](null, fn);
-}
 
 Object.defineProperty(window, '%proxyless%', {
     value: {
@@ -28,10 +23,10 @@ Object.defineProperty(window, '%proxyless%', {
         },
 
         executeSelectorCommand: function (command: ExecuteSelectorCommand, selectorTimeout: number, startTime: number,
-            returnNode: boolean, errTypes: { notFound: string; invisible: string }) {
+            returnNode: boolean, errCtors: AutomationErrorCtors) {
 
-            const createNotFoundError    = command.needError ? createErrorFn(errTypes.notFound) : null;
-            const createIsInvisibleError = command.needError ? createErrorFn(errTypes.invisible) : null;
+            const createNotFoundError    = command.needError ? createErrorCtorCallback(errCtors.notFound) : null;
+            const createIsInvisibleError = command.needError ? createErrorCtorCallback(errCtors.invisible) : null;
 
             const selectorExecutor = new SelectorExecutor(command, selectorTimeout, startTime, createNotFoundError, createIsInvisibleError);
 

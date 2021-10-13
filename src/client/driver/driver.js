@@ -1,6 +1,7 @@
 import hammerhead from './deps/hammerhead';
 import {
     RequestBarrier,
+    ScriptExecutionEmitter,
     ClientRequestEmitter,
     pageUnloadBarrier,
     eventUtils,
@@ -87,7 +88,7 @@ import ChildIframeDriverLink from './driver-link/iframe/child';
 import createReplicator from './command-executors/client-functions/replicator/index';
 import SelectorNodeTransform from './command-executors/client-functions/replicator/transforms/selector-node-transform';
 
-import executeActionCommand from './command-executors/execute-action';
+import ActionExecutor from '../../shared/actions/action-executor';
 import executeManipulationCommand from './command-executors/browser-manipulation';
 import executeNavigateToCommand from './command-executors/execute-navigate-to';
 import {
@@ -103,9 +104,12 @@ import sendConfirmationMessage from './driver-link/send-confirmation-message';
 import DriverRole from './role';
 import { CHECK_CHILD_WINDOW_CLOSED_INTERVAL, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT } from './driver-link/timeouts';
 import sendMessageToDriver from './driver-link/send-message-to-driver';
-import { initializeAdapter } from './command-executors/client-functions/adapter';
-import adapterInitializer from './command-executors/client-functions/adapter/initializer';
 import getExecutorResultDriverStatus from './command-executors/get-executor-result-driver-status';
+import SelectorExecutor from './command-executors/client-functions/selector-executor';
+import SelectorElementActionTransform from './command-executors/client-functions/replicator/transforms/selector-element-action-transform';
+import BarriersComplex from '../../shared/barriers/complex-barrier';
+import createErrorCtorCallback from '../../shared/errors/selector-error-ctor-callback';
+import './command-executors/actions-initializer';
 
 const settings = hammerhead.settings;
 
@@ -175,8 +179,6 @@ export default class Driver extends serviceUtils.EventEmitter {
         this.dialogHandler              = options.dialogHandler;
         this.canUseDefaultWindowActions = options.canUseDefaultWindowActions;
         this.isFirstPageLoad            = settings.get().isFirstPageLoad;
-
-        initializeAdapter(adapterInitializer);
 
         this.customCommandHandlers = {};
 
@@ -1091,11 +1093,38 @@ export default class Driver extends serviceUtils.EventEmitter {
 
     // Commands handling
     _onActionCommand (command) {
-        const { startPromise, completionPromise } = executeActionCommand(command, this.selectorTimeout, this.statusBar, this.speed);
+        const executeSelectorCb = (selector/*: ExecuteSelectorCommand*/, errCtors/*: AutomationErrorCtors*/, startTime/*: number*/) => {
+            const createNotFoundError    = createErrorCtorCallback(errCtors.notFound);
+            const createIsInvisibleError = createErrorCtorCallback(errCtors.invisible);
+            const selectorExecutor       = new SelectorExecutor(selector, this.globalSelectorTimeout,
+                startTime, createNotFoundError, createIsInvisibleError);
 
-        startPromise.then(() => this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, true));
+            return selectorExecutor.getResult();
+        };
 
-        completionPromise
+        const executor = new ActionExecutor(command, this.selectorTimeout, this.speed, executeSelectorCb);
+
+        executor.on(ActionExecutor.EXECUTION_STARTED_EVENT, () => {
+            this.statusBar.hideWaitingElementStatus(true);
+            this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, true);
+        });
+
+        executor.on(ActionExecutor.WAITING_FOR_ELEMENT_EVENT, timeout => {
+            this.statusBar.showWaitingElementStatus(timeout);
+        });
+
+        const clientRequestEmitter   = new ClientRequestEmitter();
+        const scriptExecutionEmitter = new ScriptExecutionEmitter();
+        const barriers               = new BarriersComplex(clientRequestEmitter, scriptExecutionEmitter, pageUnloadBarrier);
+
+        executor.execute(barriers)
+            .then(elements => new DriverStatus({
+                isCommandResult: true,
+                result:          createReplicator(new SelectorElementActionTransform()).encode(elements),
+            }))
+            .catch(err => this.statusBar.hideWaitingElementStatus(false)
+                .then(() => new DriverStatus({ isCommandResult: true, executionError: err }))
+            )
             .then(driverStatus => {
                 this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, false);
 

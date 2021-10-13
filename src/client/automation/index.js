@@ -1,6 +1,8 @@
 import hammerhead from './deps/hammerhead';
 import DispatchEventAutomation from './playback/dispatch-event';
 import ScrollAutomation from './playback/scroll';
+import SetScrollAutomation from './playback/set-scroll';
+import ScrollIntoViewAutomation from './playback/scroll-into-view';
 import ClickAutomation from './playback/click';
 import SelectChildClickAutomation from './playback/click/select-child';
 import DblClickAutomation from './playback/dblclick';
@@ -25,7 +27,7 @@ import SHORTCUT_TYPE from './playback/press/shortcut-type';
 import { getSelectionCoordinatesByPosition } from './playback/select/utils';
 import { fromPoint as getElementFromPoint } from './get-element';
 import calculateSelectTextArguments from './playback/select/calculate-select-text-arguments';
-import ERROR_TYPES from './errors';
+import ERROR_TYPES from '../../shared/errors/automation-errors';
 import cursor from './cursor';
 
 
@@ -33,6 +35,8 @@ const exports = {};
 
 exports.DispatchEvent         = DispatchEventAutomation;
 exports.Scroll                = ScrollAutomation;
+exports.SetScroll             = SetScrollAutomation;
+exports.ScrollIntoView        = ScrollIntoViewAutomation;
 exports.Click                 = ClickAutomation;
 exports.SelectChildClick      = SelectChildClickAutomation;
 exports.DblClick              = DblClickAutomation;

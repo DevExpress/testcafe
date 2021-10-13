@@ -336,7 +336,7 @@ export class BrowserClient {
 
         return this._clientFunctionExecutor.executeSelector({
             Runtime:  client.Runtime,
-            errTypes: {
+            errCtors: {
                 notFound:  SharedErrors.CannotObtainInfoForElementSpecifiedBySelectorError.name,
                 invisible: SharedErrors.CannotObtainInfoForElementSpecifiedBySelectorError.name,
             },
@@ -362,7 +362,7 @@ export class BrowserClient {
             DOM:      client.DOM,
             Runtime:  client.Runtime,
             command:  selector,
-            errTypes: {
+            errCtors: {
                 notFound:  SharedErrors.ActionElementNotFoundError.name,
                 invisible: SharedErrors.ActionElementIsInvisibleError.name,
             },

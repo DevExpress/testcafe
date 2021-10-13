@@ -1,8 +1,8 @@
-import hammerhead from './deps/hammerhead';
-import * as eventUtils from './utils/event';
-import delay from './utils/delay';
-import MESSAGE from '../../test-run/client-messages';
-import { isAnchorElement } from './utils/dom';
+import hammerhead from '../deps/hammerhead';
+import * as eventUtils from '../utils/event';
+import delay from '../utils/delay';
+import MESSAGE from '../../../test-run/client-messages';
+import { isAnchorElement } from '../utils/dom';
 
 const Promise       = hammerhead.Promise;
 const browserUtils  = hammerhead.utils.browser;

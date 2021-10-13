@@ -16,6 +16,7 @@ import {
     ExecuteClientFunctionCommandBase,
     ExecuteSelectorCommand,
 } from '../../../../../../test-run/commands/observation';
+import { AutomationErrorCtors } from '../../../../../../shared/types';
 
 
 interface EvaluationError extends Error {
@@ -34,10 +35,7 @@ interface SelectorSnapshotArgs {
     command: ExecuteSelectorCommand;
     callsite: CallsiteRecord;
     selectorTimeout: number;
-    errTypes: {
-        notFound: string;
-        invisible: string;
-    };
+    errCtors: AutomationErrorCtors;
 }
 
 interface SelectorNodeArgs extends SelectorSnapshotArgs {
@@ -150,11 +148,11 @@ export default class ClientFunctionExecutor {
     }
 
     public async executeSelector <T extends SelectorSnapshotArgs | SelectorNodeArgs> (args: T): Promise<T extends SelectorNodeArgs ? string : object> {
-        const { Runtime, command, callsite, selectorTimeout, errTypes } = args;
+        const { Runtime, command, callsite, selectorTimeout, errCtors } = args;
 
         const returnNodeObjId = 'DOM' in args;
         const expression      = `${PROXYLESS_SCRIPT}.executeSelectorCommand(${JSON.stringify(command)}, ${selectorTimeout}, ${Date.now()},
-                                 ${returnNodeObjId}, ${JSON.stringify(errTypes)});`;
+                                 ${returnNodeObjId}, ${JSON.stringify(errCtors)});`;
 
         const { result, exceptionDetails, error } = await this._evaluateScriptWithReloadPageIgnore(Runtime, expression);
 
