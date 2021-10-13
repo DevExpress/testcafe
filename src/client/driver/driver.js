@@ -1096,7 +1096,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         const executeSelectorCb = (selector/*: ExecuteSelectorCommand*/, errCtors/*: AutomationErrorCtors*/, startTime/*: number*/) => {
             const createNotFoundError    = createErrorCtorCallback(errCtors.notFound);
             const createIsInvisibleError = createErrorCtorCallback(errCtors.invisible);
-            const selectorExecutor       = new SelectorExecutor(selector, this.globalSelectorTimeout,
+            const selectorExecutor       = new SelectorExecutor(selector, this.selectorTimeout,
                 startTime, createNotFoundError, createIsInvisibleError);
 
             return selectorExecutor.getResult();
