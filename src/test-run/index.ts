@@ -978,9 +978,9 @@ export default class TestRun extends AsyncEventEmitter {
             (command as any).options.confidential = isPasswordInput(node);
         }
         else if (command instanceof ExecuteClientFunctionCommandBase && !!this.compilerService && !this._clientEnvironmentPrepared) {
-            await this._internalExecuteCommand(new serviceCommands.PrepareClientEnvironmentInDebugMode(command.esmRuntime));
-
             this._clientEnvironmentPrepared = true;
+
+            await this._internalExecuteCommand(new serviceCommands.PrepareClientEnvironmentInDebugMode(command.esmRuntime));
         }
 
     }
