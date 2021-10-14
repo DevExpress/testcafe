@@ -72,8 +72,11 @@ export default class ActionExecutor<T> extends EventEmitter {
     }
 
     private _ensureCommandElements (): Promise<void> {
-        // @ts-ignore TODO
-        const elsRetriever = new ElementsRetriever(this._command.selector, this._globalSelectorTimeout, this._executeSelectorFn);
+        const elsRetriever = new ElementsRetriever(this._globalSelectorTimeout, this._executeSelectorFn);
+
+        if (this._command.selector)
+            // @ts-ignore TODO
+            elsRetriever.push(this._command.selector);
 
         const additionalSelectorProps = ActionExecutor.ACTIONS_HANDLERS[this._command.type]?.additionalSelectorProps;
 

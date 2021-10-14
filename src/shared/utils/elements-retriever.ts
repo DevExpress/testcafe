@@ -19,14 +19,12 @@ export default class ElementsRetriever<T> {
     private readonly _elements: T[];
     private _ensureElementsPromise: Promise<void>;
 
-    public constructor (selector: ExecuteSelectorCommand, globalSelectorTimeout: number, executeSelectorFn: ExecuteSelectorFn<T>) {
+    public constructor (globalSelectorTimeout: number, executeSelectorFn: ExecuteSelectorFn<T>) {
         this._globalSelectorTimeout   = globalSelectorTimeout;
         this._ensureElementsStartTime = adapter.nativeMethods.dateNow();
         this._ensureElementsPromise   = adapter.PromiseCtor.resolve();
         this._executeSelectorFn       = executeSelectorFn;
         this._elements                = [];
-
-        this.push(selector);
     }
 
     public push (selector: ExecuteSelectorCommand, elementName?: string): void {
