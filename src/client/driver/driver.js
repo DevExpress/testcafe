@@ -1450,6 +1450,7 @@ export default class Driver extends serviceUtils.EventEmitter {
                 g: window,
                 c: window.eval, //eslint-disable-line no-eval
             },
+            configurable: true, // NOTE: for the 'disablePageReloads' option
         });
 
         this._onReady(new DriverStatus({
