@@ -59,7 +59,7 @@ export default class ActionExecutor<T> extends EventEmitter {
     }
 
     private _isExecutionTimeoutExpired (): boolean {
-        return adapter.nativeMethods.dateNow() - this._executionStartTime >= this._globalSelectorTimeout;
+        return adapter.nativeMethods.dateNow() - this._executionStartTime >= this._commandSelectorTimeout;
     }
 
     private _ensureCommandArguments (): void {
