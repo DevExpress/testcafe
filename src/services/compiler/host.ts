@@ -318,9 +318,10 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
         if (!this.initialized)
             return;
 
-        const { service } = await this._getRuntime();
+        const { service, proxy } = await this._getRuntime();
 
         service.kill();
+        proxy.stop();
     }
 
     private _wrapTestFunction (id: string, functionName: FunctionProperties): TestFunction {

@@ -22,10 +22,12 @@ export class IPCProxy extends EventEmitter {
     private _transport: IPCTransport;
     private _requestCounter: number = 0;
     private readonly _handlers: { [name: string]: Function };
+    private _stopped: boolean;
 
     public constructor (transport: IPCTransport) {
         super();
 
+        this._stopped   = false;
         this._transport = transport;
 
         this._handlers = {};
@@ -59,6 +61,10 @@ export class IPCProxy extends EventEmitter {
 
             data: resultData,
         };
+
+        // NOTE: The result of long-running action can come after the compiler service was terminated.
+        if (this._stopped)
+            return;
 
         await this._transport.write(responsePacket);
     }
@@ -126,5 +132,9 @@ export class IPCProxy extends EventEmitter {
             throw response.error;
 
         return response.result;
+    }
+
+    public stop (): void {
+        this._stopped = true;
     }
 }

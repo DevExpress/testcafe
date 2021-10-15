@@ -13,6 +13,8 @@ const {
     createSyncTestStream,
 } = require('../../utils/stream');
 
+const experimentalDebug = !!process.env.EXPERIMENTAL_DEBUG;
+
 describe('Reporter', () => {
     const stdoutWrite = process.stdout.write;
     const stderrWrite = process.stderr.write;
@@ -601,9 +603,14 @@ describe('Reporter', () => {
         it('Should not add action information in report if action was emitted after test done (GH-5650)', () => {
             return runTests('testcafe-fixtures/index-test.js', 'Action done after test done', generateRunOptions(log))
                 .then(() => {
-                    expect(log).eql([
-                        { name: 'execute-client-function', action: 'start' },
-                        { name: 'wait', action: 'start' },
+                    const EXECUTE_CLIENT_FUNCTION_ACTION_RECORD = { name: 'execute-client-function', action: 'start' };
+                    const WAIT_ACTION_RECORD                    = { name: 'wait', action: 'start' };
+
+                    // NOTE: Due to an additional internal command in debug mode,
+                    // the events execution order is different.
+                    const EXPECTED_LOG = [
+                        experimentalDebug ? WAIT_ACTION_RECORD : EXECUTE_CLIENT_FUNCTION_ACTION_RECORD,
+                        experimentalDebug ? EXECUTE_CLIENT_FUNCTION_ACTION_RECORD : WAIT_ACTION_RECORD,
                         {
                             name:    'execute-client-function',
                             action:  'done',
@@ -615,7 +622,9 @@ describe('Reporter', () => {
                                 },
                             },
                         },
-                    ]);
+                    ];
+
+                    expect(log).eql(EXPECTED_LOG);
                 });
         });
 
