@@ -3,10 +3,6 @@ import { ExecuteSelectorCommand } from '../../test-run/commands/observation';
 import { ExecuteSelectorFn } from '../types';
 import NODE_TYPE_DESCRIPTIONS from '../utils/node-type-descriptions';
 import {
-    ActionElementNotFoundError,
-    ActionElementIsInvisibleError,
-    ActionAdditionalElementNotFoundError,
-    ActionAdditionalElementIsInvisibleError,
     ActionSelectorMatchesWrongNodeTypeError,
     ActionAdditionalSelectorMatchesWrongNodeTypeError,
 } from '../../shared/errors';
@@ -31,12 +27,12 @@ export default class ElementsRetriever<T> {
         this._ensureElementsPromise = this._ensureElementsPromise
             .then(() => {
                 return this._executeSelectorFn(selector, {
-                    invisible: !elementName ? ActionElementIsInvisibleError.name : {
-                        name:     ActionAdditionalElementIsInvisibleError.name,
+                    invisible: !elementName ? 'ActionElementIsInvisibleError' : {
+                        name:     'ActionAdditionalElementIsInvisibleError',
                         firstArg: elementName,
                     },
-                    notFound: !elementName ? ActionElementNotFoundError.name : {
-                        name:     ActionAdditionalElementNotFoundError.name,
+                    notFound: !elementName ? 'ActionElementNotFoundError' : {
+                        name:     'ActionAdditionalElementNotFoundError',
                         firstArg: elementName,
                     },
                 }, this._ensureElementsStartTime);
