@@ -41,7 +41,7 @@ export default class ActionExecutor<T> extends EventEmitter {
 
         // TODO: move it to the server
         // @ts-ignore
-        if (!command.options?.speed) // @ts-ignore
+        if (command.options && !command.options.speed) // @ts-ignore
             command.options.speed = testSpeed;
 
         // TODO: and this
