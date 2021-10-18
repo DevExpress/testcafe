@@ -21,10 +21,10 @@ export default class ActionExecutor<T> extends EventEmitter {
     public static readonly ACTIONS_HANDLERS: Dictionary<AutomationHandler> = {};
 
     private readonly _command: ActionCommandBase;
-    private readonly _elements: T[];
     private readonly _globalSelectorTimeout: number;
     private readonly _commandSelectorTimeout: number;
     private readonly _executeSelectorFn: ExecuteSelectorFn<T>;
+    private _elements: T[];
     private _executionStartTime: number;
     private _targetElement: T | null;
 
@@ -90,7 +90,7 @@ export default class ActionExecutor<T> extends EventEmitter {
 
         return elsRetriever.getElements()
             .then(elements => {
-                this._elements.push(...elements);
+                this._elements = elements;
             });
     }
 
@@ -144,8 +144,7 @@ export default class ActionExecutor<T> extends EventEmitter {
                 else
                     this.emit(ActionExecutor.EXECUTION_STARTED_EVENT);
 
-                return automation
-                    .run(strictElementCheck);
+                return automation.run(strictElementCheck);
             });
     }
 
@@ -159,20 +158,19 @@ export default class ActionExecutor<T> extends EventEmitter {
                     actionFinished = true;
                 })
                 .catch(err => {
-                    if (this._isExecutionTimeoutExpired()) {
-                        if (err.message === AUTOMATION_ERROR_TYPES.foundElementIsNotTarget) {
-                            // If we can't get a target element via elementFromPoint but it's
-                            // visible we click on the point where the element is located.
-                            strictElementCheck = false;
+                    if (!this._isExecutionTimeoutExpired())
+                        return delay(CHECK_ELEMENT_IN_AUTOMATIONS_INTERVAL);
 
-                            return adapter.PromiseCtor.resolve();
-                        }
+                    if (err.message === AUTOMATION_ERROR_TYPES.foundElementIsNotTarget) {
+                        // If we can't get a target element via elementFromPoint but it's
+                        // visible we click on the point where the element is located.
+                        strictElementCheck = false;
 
-                        throw err.message === AUTOMATION_ERROR_TYPES.elementIsInvisibleError ?
-                            new ActionElementIsInvisibleError() : err;
+                        return adapter.PromiseCtor.resolve();
                     }
 
-                    return delay(CHECK_ELEMENT_IN_AUTOMATIONS_INTERVAL);
+                    throw err.message === AUTOMATION_ERROR_TYPES.elementIsInvisibleError ?
+                        new ActionElementIsInvisibleError() : err;
                 });
         });
     }
