@@ -15,6 +15,7 @@ import ClientScriptInit from '../../custom-client-scripts/client-script-init';
 import { SPECIAL_BLANK_PAGE } from 'testcafe-hammerhead';
 import { TestTimeouts } from './interfaces';
 import TestTimeout from './test-timeout';
+import ESM_RUNTIME_HOLDER_NAME from '../../services/compiler/esm-runtime-holder-name';
 
 
 export default class Test extends TestingUnit {
@@ -24,6 +25,7 @@ export default class Test extends TestingUnit {
     public afterFn: Function | null;
     public timeouts: TestTimeouts | null;
     private readonly _isCompilerService: boolean;
+    public readonly esmRuntime: string;
 
     public constructor (testFile: TestFile, isCompilerServiceMode = false) {
         // NOTE: 'fixture' directive can be missing
@@ -41,6 +43,10 @@ export default class Test extends TestingUnit {
         this._isCompilerService = isCompilerServiceMode;
 
         this._initFixture(testFile);
+
+        // NOTE: This is internal data of 'esm' module
+        // @ts-ignore
+        this.esmRuntime = global[ESM_RUNTIME_HOLDER_NAME] || null;
 
         return this.apiOrigin as unknown as Test;
     }

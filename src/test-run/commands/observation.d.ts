@@ -7,6 +7,7 @@ declare class ExecuteClientFunctionCommandBase extends CommandBase {
     public fnCode: string;
     public args: string[];
     public dependencies: string[];
+    public esmRuntime: string;
 }
 
 export class ExecuteClientFunctionCommand extends ExecuteClientFunctionCommandBase {

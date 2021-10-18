@@ -17,6 +17,6 @@ for (const ext of extensionKeys) {
 }
 
 // eslint-disable-next-line
-require = require('esm')(module/*, options*/);
+require = require('@miherlosev/esm')(module);
 
 module.exports = require('./service');

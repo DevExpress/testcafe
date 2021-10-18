@@ -16,6 +16,16 @@ describe('Compiler service', () => {
         });
     });
 
+    describe('proxy globals on client side (produced by "esm" module)', () => {
+        it('Selector', async () => {
+            await runTests('testcafe-fixtures/proxy-globals.js', 'Selector');
+        });
+
+        it('ClientFunction', async () => {
+            await runTests('testcafe-fixtures/proxy-globals.js', 'ClientFunction');
+        });
+    });
+
     it('debug', async () => {
         let resolver = null;
 

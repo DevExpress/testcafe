@@ -29,6 +29,7 @@ import { FunctionMarker } from '../serialization/replicator/transforms/function-
 import getFn from '../../assertions/get-fn';
 import { isThennable } from '../../utils/thennable';
 import { PromiseMarker } from '../serialization/replicator/transforms/promise-marker-transform/marker';
+import { ExecuteClientFunctionCommandBase } from '../../test-run/commands/observation';
 
 class TestRunProxy extends AsyncEventEmitter {
     private [testRunMarker]: boolean;
@@ -116,6 +117,10 @@ class TestRunProxy extends AsyncEventEmitter {
         }
     }
 
+    private _handleExecuteClientFunctionCommandBase (command: ExecuteClientFunctionCommandBase): void {
+        command.esmRuntime = this.test.esmRuntime;
+    }
+
     private _storeActionCallsitesForExecutedAsyncJsExpression (callsite: CallsiteRecord): void {
         // @ts-ignore
         if (callsite?.filename !== ERROR_FILENAME)
@@ -139,6 +144,8 @@ class TestRunProxy extends AsyncEventEmitter {
             this.dispatcher.onRoleAppeared((command as UseRoleCommand).role);
         else if (command.type === COMMAND_TYPE.switchToWindowByPredicate)
             this._storeSwitchToWindowByPredicateCommand(command as SwitchToWindowByPredicateCommand);
+        else if (command instanceof ExecuteClientFunctionCommandBase)
+            this._handleExecuteClientFunctionCommandBase(command);
 
         return this.dispatcher.executeCommand({
             command,

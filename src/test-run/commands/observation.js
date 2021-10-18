@@ -29,6 +29,7 @@ export class ExecuteClientFunctionCommandBase extends ActionCommandBase {
             { name: 'fnCode', defaultValue: '' },
             { name: 'args', defaultValue: [] },
             { name: 'dependencies', defaultValue: [] },
+            { name: 'esmRuntime', defaultValue: null },
         ];
     }
 }

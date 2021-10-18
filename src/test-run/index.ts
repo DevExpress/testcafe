@@ -98,7 +98,13 @@ import { TakeScreenshotBaseCommand } from './commands/browser-manipulation';
 import { TestRun as LegacyTestRun } from 'testcafe-legacy-api';
 import { AuthCredentials } from '../api/structure/interfaces';
 import TestRunPhase from './phase';
-import { ExecuteClientFunctionCommand, ExecuteSelectorCommand } from './commands/observation';
+
+import {
+    ExecuteClientFunctionCommand,
+    ExecuteClientFunctionCommandBase,
+    ExecuteSelectorCommand,
+} from './commands/observation';
+
 import { RE_EXECUTABLE_PROMISE_MARKER_DESCRIPTION } from '../services/serialization/replicator/transforms/re-executable-promise-transform/marker';
 import ReExecutablePromise from '../utils/re-executable-promise';
 import { ExternalAssertionLibraryError } from '../errors/test-run';
@@ -228,6 +234,7 @@ export default class TestRun extends AsyncEventEmitter {
     private asyncJsExpressionCallsites: Map<string, CallsiteRecord>;
     public readonly browser: Browser;
     private readonly _messageBus?: MessageBus;
+    private _clientEnvironmentPrepared: boolean = false;
 
     public constructor ({ test, browserConnection, screenshotCapturer, globalWarningLog, opts, compilerService, messageBus }: TestRunInit) {
         super();
@@ -945,7 +952,7 @@ export default class TestRun extends AsyncEventEmitter {
             command.generateScreenshotMark();
     }
 
-    public async _adjustCommandOptions (command: CommandBase): Promise<void> {
+    public async _adjustCommandOptionsAndEnvironment (command: CommandBase): Promise<void> {
         if ((command as any).options?.confidential !== void 0)
             return;
 
@@ -970,6 +977,12 @@ export default class TestRun extends AsyncEventEmitter {
 
             (command as any).options.confidential = isPasswordInput(node);
         }
+        else if (command instanceof ExecuteClientFunctionCommandBase && !!this.compilerService && !this._clientEnvironmentPrepared) {
+            this._clientEnvironmentPrepared = true;
+
+            await this._internalExecuteCommand(new serviceCommands.PrepareClientEnvironmentInDebugMode(command.esmRuntime));
+        }
+
     }
 
     public async _setBreakpointIfNecessary (command: CommandBase, callsite?: CallsiteRecord): Promise<void> {
@@ -990,7 +1003,7 @@ export default class TestRun extends AsyncEventEmitter {
         let error        = null;
         let result       = null;
 
-        await this._adjustCommandOptions(command);
+        await this._adjustCommandOptionsAndEnvironment(command);
 
         await this.emitActionEvent('action-start', actionArgs);
 
