@@ -40,6 +40,7 @@ export default class SessionController extends Session {
     }
 
     handleAttachment () {
+        return this.currentTestRun.handleAttachment();
     }
 
     handlePageError (ctx, err) {

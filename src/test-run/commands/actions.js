@@ -630,6 +630,14 @@ export class UseRoleCommand extends ActionCommandBase {
     }
 }
 
+export class CloseChildWindowOnFileDownloading extends ActionCommandBase {
+    static methodName = camelCase(TYPE.closeChildWindowOnFileDownloading);
+
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.closeChildWindowOnFileDownloading, validateProperties);
+    }
+}
+
 export class RecorderCommand extends ActionCommandBase {
     static methodName = camelCase(TYPE.recorder);
 
