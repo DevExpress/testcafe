@@ -515,8 +515,12 @@ describe('Reporter', () => {
 
                 reportTestStart: function (...args) {
                     expect(args[0]).to.be.an('string');
+                    expect(args[2].startTime).to.be.a('date');
 
                     args[2].testRunIds = args[2].testRunIds.sort();
+
+                    // NOTE: replace startTime
+                    args[2].startTime = new Date('Thu Jan 01 1970 00:00:00 UTC');
 
                     return delay(1000)
                         .then(() => log.push({ method: 'reportTestStart', args: args }));
@@ -678,6 +682,7 @@ describe('Reporter', () => {
                             'f1t1',
                             'f1t1ff',
                         ],
+                        startTime: new Date('1970-01-01T00:00:00.000Z'),
                     },
                 ],
             },
@@ -743,6 +748,7 @@ describe('Reporter', () => {
                             'f1t2',
                             'f1t2ff',
                         ],
+                        startTime: new Date('1970-01-01T00:00:00.000Z'),
                     },
                 ],
             },
@@ -826,6 +832,7 @@ describe('Reporter', () => {
                             'f1t3',
                             'f1t3ff',
                         ],
+                        startTime: new Date('1970-01-01T00:00:00.000Z'),
                     },
                 ],
             },
@@ -891,6 +898,7 @@ describe('Reporter', () => {
                             'f2t1',
                             'f2t1ff',
                         ],
+                        startTime: new Date('1970-01-01T00:00:00.000Z'),
                     },
                 ],
             },
@@ -946,6 +954,7 @@ describe('Reporter', () => {
                             'f2t2',
                             'f2t2ff',
                         ],
+                        startTime: new Date('1970-01-01T00:00:00.000Z'),
                     },
                 ],
             },
@@ -1009,6 +1018,7 @@ describe('Reporter', () => {
                             'f3t1',
                             'f3t1ff',
                         ],
+                        startTime: new Date('1970-01-01T00:00:00.000Z'),
                     },
                 ],
             },
@@ -1070,6 +1080,7 @@ describe('Reporter', () => {
                             'f3t2',
                             'f3t2ff',
                         ],
+                        startTime: new Date('1970-01-01T00:00:00.000Z'),
                     },
                 ],
             },
@@ -1125,6 +1136,7 @@ describe('Reporter', () => {
                             'f3t3',
                             'f3t3ff',
                         ],
+                        startTime: new Date('1970-01-01T00:00:00.000Z'),
                     },
                 ],
             },
