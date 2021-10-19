@@ -462,7 +462,7 @@ export default class Reporter {
         if (!testItem.pendingStarts) {
             // @ts-ignore
             if (this.plugin.reportTestStart) {
-                const testStartInfo = { testRunIds: testItem.testRunIds, testId: testItem.test.id };
+                const testStartInfo = { testRunIds: testItem.testRunIds, testId: testItem.test.id, startTime: new Date(testItem.startTime) };
 
                 await this.dispatchToPlugin({
                     method:        ReporterPluginMethod.reportTestStart as string,
