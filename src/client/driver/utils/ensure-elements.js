@@ -1,6 +1,8 @@
 import { Promise, nativeMethods } from '../deps/hammerhead';
 
-import { domUtils, NODE_TYPE_DESCRIPTIONS } from '../deps/testcafe-core';
+import { domUtils } from '../deps/testcafe-core';
+
+import NODE_TYPE_DESCRIPTIONS from '../../../shared/utils/node-type-descriptions';
 
 import SelectorExecutor from '../command-executors/client-functions/selector-executor';
 

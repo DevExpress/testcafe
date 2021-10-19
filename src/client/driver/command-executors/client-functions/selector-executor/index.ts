@@ -11,7 +11,7 @@ import {
 import selectorFilter from './filter';
 import Replicator from 'replicator';
 import adapter from '../adapter/index';
-import { visible } from '../../../utils/element-utils';
+import { visible } from './utils';
 import CHECK_ELEMENT_DELAY from './check-element-delay';
 
 
@@ -22,8 +22,8 @@ export default class SelectorExecutor extends ClientFunctionExecutor<ExecuteSele
     private readonly counterMode: boolean;
     private readonly getVisibleValueMode: boolean;
 
-    public constructor (command: ExecuteSelectorCommand, globalTimeout: number,
-        startTime: number | null, createNotFoundError: SelectorErrorCb | null, createIsInvisibleError: SelectorErrorCb | null) {
+    public constructor (command: ExecuteSelectorCommand, globalTimeout: number, startTime: number | null,
+        createNotFoundError: SelectorErrorCb | null, createIsInvisibleError: SelectorErrorCb | null) {
 
         super(command);
 

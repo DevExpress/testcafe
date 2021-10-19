@@ -1,12 +1,11 @@
 import hammerhead from './deps/hammerhead';
 
 import KEY_MAPS from './utils/key-maps';
-import NODE_TYPE_DESCRIPTIONS from './utils/node-type-descriptions';
 import RequestBarrier from '../../shared/barriers/request';
 import ClientRequestEmitter from './barriers/emitters/client-request';
 import ScriptExecutionBarrier from '../../shared/barriers/script-execution';
 import ScriptExecutionEmitter from './barriers/emitters/script-execution';
-import * as pageUnloadBarrier from './page-unload-barrier';
+import * as pageUnloadBarrier from './barriers/page-unload-barrier';
 import { preventRealEvents, disableRealEventsPreventing } from './prevent-real-events';
 import scrollController from './scroll-controller';
 
@@ -70,7 +69,6 @@ exports.getSanitizedKey        = getSanitizedKey;
 exports.parseKeySequence       = parseKeySequence;
 exports.sendRequestToFrame     = sendRequestToFrame;
 exports.KEY_MAPS               = KEY_MAPS;
-exports.NODE_TYPE_DESCRIPTIONS = NODE_TYPE_DESCRIPTIONS;
 exports.browser                = browser;
 
 exports.selectorTextFilter      = selectorTextFilter;

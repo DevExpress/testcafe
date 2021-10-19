@@ -1,4 +1,4 @@
-import adapter from '../command-executors/client-functions/adapter/index';
+import adapter from '..//adapter/index';
 
 
 export function visible (el: Node): boolean {

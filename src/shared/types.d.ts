@@ -1,5 +1,7 @@
 /* global globalThis */
 
+import { ExecuteSelectorCommand } from '../test-run/commands/observation';
+
 export interface NativeMethods {
     setTimeout: typeof globalThis.setTimeout;
     clearTimeout: typeof globalThis.clearTimeout;
@@ -15,17 +17,31 @@ export interface NativeMethods {
 export interface SharedAdapter {
     nativeMethods: NativeMethods;
     PromiseCtor: typeof Promise;
+    getOffsetOptions?: (el: any, offsetX: number, offsetY: number) => { offsetX: number; offsetY: number };
+    isDomElement: (el: any) => boolean;
 }
 
-interface ClientRequestEmitter<R> {
+export interface ClientRequestEmitter<R> {
     onRequestSend: (fn: (req: R) => void) => void;
     onRequestCompleted: (fn: (req: R) => void) => void;
     onRequestError: (fn: (req: R) => void) => void;
     offAll: () => void;
 }
 
-interface ScriptExecutionEmitter<S> {
+export interface ScriptExecutionEmitter<S> {
     onScriptAdded: (fn: (scr: S) => void) => void;
     onScriptLoadedOrFailed: (fn: (scr: S) => void) => void;
     offAll: () => void;
 }
+
+interface AutomationErrorCtor {
+    name: string;
+    firstArg: string | null;
+}
+
+interface AutomationErrorCtors {
+    notFound: AutomationErrorCtor | string;
+    invisible: AutomationErrorCtor | string;
+}
+
+export type ExecuteSelectorFn<T> = (selector: ExecuteSelectorCommand, errCtors: AutomationErrorCtors, startTime: number) => Promise<T>;
