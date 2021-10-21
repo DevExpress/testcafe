@@ -1,5 +1,6 @@
 const delay               = require('../../../../lib/utils/delay');
 const { DEFAULT_TIMEOUT } = require('../../../../lib/configuration/default-values');
+const { expect }          = require('chai');
 
 describe('Compiler service', () => {
     describe('Sync selectors', () => {
@@ -16,7 +17,7 @@ describe('Compiler service', () => {
         });
     });
 
-    describe('proxy globals on client side (produced by "esm" module)', () => {
+    describe('Proxy globals on client side (produced by "esm" module)', () => {
         it('Selector', async () => {
             await runTests('testcafe-fixtures/proxy-globals.js', 'Selector');
         });
@@ -26,28 +27,58 @@ describe('Compiler service', () => {
         });
     });
 
-    it('debug', async () => {
-        let resolver = null;
+    describe('Debug', () => {
+        it('Basic', async () => {
+            let resolver = null;
 
-        const result = new Promise(resolve => {
-            resolver = resolve;
+            const result = new Promise(resolve => {
+                resolver = resolve;
+            });
+
+            runTests('testcafe-fixtures/debug.js')
+                .then(() => resolver());
+
+            setTimeout(async () => {
+                const client = global.testCafe.runner.compilerService.cdp;
+
+                await client.Debugger.resume();
+
+                await delay(1000);
+
+                await client.Debugger.resume();
+            }, 10000);
+
+
+            return result;
         });
 
-        runTests('testcafe-fixtures/debug.js')
-            .then(() => resolver());
+        it('Should not break execution chain on using "t.debug" action (GH-6622)', async () => {
+            let resolver = null;
+            let rejecter = null;
 
-        setTimeout(async () => {
-            const client = global.testCafe.runner.compilerService.cdp;
+            const result = new Promise((resolve, reject) => {
+                resolver = resolve;
+                rejecter = reject;
+            });
 
-            await client.Debugger.resume();
+            runTests('testcafe-fixtures/keep-execution-chain.js')
+                .then(() => rejecter('The test should fail.'))
+                .catch(err => {
+                    expect(err[0]).contain('The specified selector does not match any element in the DOM tree.  > | Selector(\'#wrong-selector\')');
 
-            await delay(1000);
+                    resolver();
+                });
 
-            await client.Debugger.resume();
-        }, 10000);
+            setTimeout(async () => {
+                const client = global.testCafe.runner.compilerService.cdp;
 
+                await client.Debugger.resume();
 
-        return result;
+                await delay(1000);
+            }, 10000);
+
+            return result;
+        });
     });
 });
 

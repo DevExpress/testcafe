@@ -61,5 +61,5 @@ export default {
     executeAsyncExpression:              'execute-async-expression',
     unlockPage:                          'unlock-page',
     recorder:                            'recorder',
-    prepareClientEnvironmentInDebugMode: 'prepareClientEnvironmentInDebugMode',
+    prepareClientEnvironmentInDebugMode: 'prepare-client-environment-in-debug-mode',
 };

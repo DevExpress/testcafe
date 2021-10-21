@@ -1,5 +1,19 @@
 const API_IMPLEMENTATION_METHOD_RE = /^_(\S+)\$(getter|setter)?$/;
 
+function isTestController (obj) {
+    return obj?.constructor?.name === 'TestController';
+}
+
+function getTestController (obj) {
+    if (isTestController(obj))
+        return obj;
+
+    else if (isTestController(obj._testController))
+        return obj._testController;
+
+    return null;
+}
+
 export function getDelegatedAPIList (src) {
     return Object
         .getOwnPropertyNames(src)
@@ -57,7 +71,9 @@ export function delegateAPI (dest, apiList, opts) {
             // before the action is called
             Object.defineProperty(dest, apiProp, {
                 get () {
-                    if (this.shouldStop && this.shouldStop(apiProp)) {
+                    const testController = getTestController(this);
+
+                    if (testController && testController.shouldStop(apiProp)) {
                         // eslint-disable-next-line no-debugger
                         debugger;
                     }
