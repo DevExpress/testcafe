@@ -117,7 +117,6 @@ import asyncFilter from '../utils/async-filter';
 import PROXYLESS_COMMANDS from './proxyless-commands-support';
 import Fixture from '../api/structure/fixture';
 import MessageBus from '../utils/message-bus';
-import timeLimit from 'time-limit-promise';
 import executeFnWithTimeout from '../utils/execute-fn-with-timeout';
 
 const lazyRequire                 = require('import-lazy')(require);
