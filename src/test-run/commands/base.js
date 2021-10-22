@@ -1,3 +1,4 @@
+import nanoid from 'nanoid';
 import Assignable from '../../utils/assignable';
 
 export class CommandBase extends Assignable {
@@ -7,6 +8,8 @@ export class CommandBase extends Assignable {
         this.type = type;
 
         this._assignFrom(obj, validateProperties, { testRun });
+
+        this.actionId = obj?.actionId || nanoid(7);
     }
 
     _getAssignableProperties () {

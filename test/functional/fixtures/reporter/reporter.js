@@ -9,6 +9,13 @@ const baseReport = {
     },
 };
 
+function deleteCommandActionId (command) {
+    if (!command.actionId)
+        throw new Error('command does not have action id');
+
+    delete command.actionId;
+}
+
 function generateReporter (log, options = {}) {
     const {
         emitOnStart = true,
@@ -23,6 +30,8 @@ function generateReporter (log, options = {}) {
             async reportTestActionStart (name, { browser, test, fixture, command }) {
                 if (!emitOnStart)
                     return;
+
+                deleteCommandActionId(command);
 
                 const item = { action: 'start', name };
 
@@ -55,6 +64,8 @@ function generateReporter (log, options = {}) {
             async reportTestActionDone (name, { command, test, fixture, err }) {
                 if (!emitOnDone)
                     return;
+
+                deleteCommandActionId(command);
 
                 if (command.selector)
                     command.selector = command.selector.expression;

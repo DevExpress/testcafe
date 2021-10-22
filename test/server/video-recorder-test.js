@@ -162,7 +162,7 @@ describe('Video Recorder', () => {
             '\n\n' +
             'The placeholder was replaced with an empty string.',
         ]);
-        warningLog.messages = [];
+        warningLog.messageInfos = [];
 
         videoRecorder._addProblematicPlaceholdersWarning(['${TEST_INDEX}', '${FIXTURE}']);
         expect(warningLog.messages).eql([

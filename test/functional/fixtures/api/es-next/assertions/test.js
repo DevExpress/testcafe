@@ -6,6 +6,10 @@ const WARNING_MESSAGES   = require('../../../../../../lib/notifications/warning-
 
 const DATA_PATH = path.join(__dirname, './data');
 
+const { createWarningReporter } = require('../../../../utils/warning-reporter');
+let assertReporterWarnings      = null;
+let reporter                    = null;
+
 function createRegExp (message) {
     return new RegExp(escapeStringRegExp(message));
 }
@@ -23,6 +27,10 @@ function getSnapshotWarnings () {
 }
 
 describe('[API] Assertions', function () {
+    beforeEach(function () {
+        ({ reporter, assertReporterWarnings } = createWarningReporter());
+    });
+
     it('Should perform .eql() assertion', function () {
         return runTests('./testcafe-fixtures/assertions-test.js', '.eql() assertion', {
             shouldFail: true,
@@ -227,6 +235,34 @@ describe('[API] Assertions', function () {
 
         expect(getSnapshotWarnings().length).to.eql(1);
         expect(getSnapshotWarnings()[0]).to.match(createRegExpFromFile('expected-selector-property-awaited-callsite'));
+    });
+
+    it('Should report a warning with the `actionId` argument when trying to assert ClientFunction instance', function () {
+        return runTests('./testcafe-fixtures/assertions-test.js', 'Passing ClientFunction instance into an assertion', {
+            reporter,
+            only: 'chrome',
+        })
+            .then(() => {
+                assertReporterWarnings('eql');
+            });
+    });
+
+    it('Should report a warning with the `actionId` argument when trying to await Selector property in assertion', async function () {
+        await runTests('./testcafe-fixtures/assertions-test.js', 'Passing Selector instance into an assertion', {
+            reporter,
+            only: 'chrome',
+        });
+
+        assertReporterWarnings('eql');
+    });
+
+    it('Should report a warning with the `actionId` argument when passing Selector with excessive `await` in assertion', async function () {
+        await runTests('./testcafe-fixtures/assertions-test.js', 'Passing Selector with excessive `await` in assertion', {
+            reporter,
+            only: 'chrome',
+        });
+
+        assertReporterWarnings('eql');
     });
 
     it('Should raise a warning when using DOM Node snapshot property without await', async function () {

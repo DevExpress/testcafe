@@ -344,11 +344,11 @@ export default class BrowserConnection extends EventEmitter {
             resolve();
     }
 
-    public addWarning (...args: any[]): void {
+    public addWarning (message: string, ...args: any[]): void {
         if (this.currentJob)
-            this.currentJob.warningLog.addWarning(...args);
+            this.currentJob.warningLog.addWarning(message, ...args);
         else
-            this.warningLog.addWarning(...args);
+            this.warningLog.addWarning(message, ...args);
     }
 
     private _appendToPrettyUserAgent (str: string): void {

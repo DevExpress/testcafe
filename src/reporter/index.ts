@@ -100,6 +100,7 @@ interface ReportTaskActionEventArguments {
 interface ReportWarningEventArguments {
     message: string;
     testRun?: TestRun;
+    actionId?: string;
 }
 
 export default class Reporter {
@@ -227,7 +228,7 @@ export default class Reporter {
         }));
     }
 
-    private async _onWarningAddHandler ({ message, testRun }: ReportWarningEventArguments): Promise<void> {
+    private async _onWarningAddHandler ({ message, testRun, actionId }: ReportWarningEventArguments): Promise<void> {
         await this.dispatchToPlugin({
             method:        ReporterPluginMethod.reportWarnings as string,
             initialObject: this.messageBus,
@@ -235,6 +236,7 @@ export default class Reporter {
                 {
                     message,
                     testRunId: testRun?.id,
+                    actionId,
                 },
             ],
         });

@@ -40,8 +40,8 @@ export default function wrapTestFunction (fn: Function): Function {
         }
 
         if (!errList.hasUncaughtErrorsInTestCode) {
-            for (const callsite of testRun.observedCallsites.awaitedSnapshotWarnings.values())
-                addRenderedWarning(testRun.warningLog, WARNING_MESSAGES.excessiveAwaitInAssertion, callsite);
+            for (const { callsite, actionId } of testRun.observedCallsites.awaitedSnapshotWarnings.values())
+                addRenderedWarning(testRun.warningLog, { message: WARNING_MESSAGES.excessiveAwaitInAssertion, actionId }, callsite);
 
             addWarnings(testRun.observedCallsites.unawaitedSnapshotCallsites, WARNING_MESSAGES.missingAwaitOnSnapshotProperty);
             addErrors(testRun.observedCallsites.callsitesWithoutAwait, MissingAwaitError);

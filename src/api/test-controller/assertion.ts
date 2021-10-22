@@ -21,6 +21,9 @@ import { AssertionWithoutMethodCallError } from '../../errors/test-run';
 import TestController from './index';
 import { CallsiteRecord } from 'callsite-record';
 import { AssertionOptions } from '../../test-run/commands/options';
+import { isClientFunction, isSelector } from '../../client-functions/types';
+import addWarning from '../../notifications/add-rendered-warning';
+import WARNING_MESSAGE from '../../notifications/warning-message';
 
 interface AssertionArgs {
     opts: AssertionOptions;
@@ -64,7 +67,24 @@ export default class Assertion {
             expected2:     assertionArgs.expected2,
             message:       message,
             options:       { timeout: options.timeout, allowUnawaitedPromise: options.allowUnawaitedPromise },
-        });
+        }, this._checkForWarnings.bind(this));
+    }
+
+    private _checkForWarnings (testController: TestController, c: AssertionCommand, callsite: CallsiteRecord): void {
+        testController.checkForExcessiveAwaits(callsite, c);
+
+        if (isClientFunction(c.actual)) {
+            addWarning(testController.warningLog, {
+                message:  WARNING_MESSAGE.assertedClientFunctionInstance,
+                actionId: c.actionId,
+            }, callsite);
+        }
+        else if (isSelector(c.actual)) {
+            addWarning(testController.warningLog, {
+                message:  WARNING_MESSAGE.assertedSelectorInstance,
+                actionId: c.actionId,
+            }, callsite);
+        }
     }
 
     public [EqlAssertionCommand.methodName] (expected: unknown, message: string, opts: AssertionOptions): () => Promise<unknown> {

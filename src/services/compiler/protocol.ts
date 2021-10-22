@@ -1,6 +1,7 @@
 import { CompilerArguments } from '../../compiler/interfaces';
 import { IncomingMessageLikeInitOptions } from 'testcafe-hammerhead';
 import Role from '../../role/role';
+import { WarningLogMessage } from '../../notifications/warning-log';
 
 import {
     AddRequestEventListenersArguments,
@@ -74,7 +75,7 @@ export interface CompilerProtocol extends TestRunDispatcherProtocol {
     removeHeaderOnConfigureResponseEvent ({ eventId, headerName }: RemoveHeaderOnConfigureResponseEventArguments): Promise<void>;
     executeRequestFilterRulePredicate ({ testId, hookId, ruleId, requestInfo }: ExecuteRequestFilterRulePredicateArguments): Promise<boolean>;
     executeMockPredicate ({ testId, hookId, ruleId, requestInfo, res }: ExecuteMockPredicate): Promise<IncomingMessageLikeInitOptions>;
-    getWarningMessages ({ testRunId }: TestRunLocator): Promise<string[]>;
+    getWarningMessages ({ testRunId }: TestRunLocator): Promise<WarningLogMessage[]>;
     initializeTestRunData ({ testRunId, testId }: InitializeTestRunDataArguments): Promise<void>;
     getCtx ({ testRunId }: TestRunLocator): Promise<object>;
     getFixtureCtx ({ testRunId }: TestRunLocator): Promise<object>;

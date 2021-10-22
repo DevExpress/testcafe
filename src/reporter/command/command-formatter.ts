@@ -42,7 +42,7 @@ export class CommandFormatter {
     }
 
     public format (): FormattedCommand {
-        const formattedCommand: FormattedCommand = { type: this._command.type };
+        const formattedCommand: FormattedCommand = { type: this._command.type, actionId: this._command.actionId };
 
         if (this._command instanceof ExecuteSelectorCommand)
             formattedCommand.selector = this._prepareSelector(this._command, 'selector');

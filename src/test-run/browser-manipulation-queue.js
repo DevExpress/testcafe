@@ -15,7 +15,7 @@ export default class BrowserManipulationQueue {
         this.warningLog         = warningLog;
     }
 
-    async _resizeWindow (width, height, currentWidth, currentHeight) {
+    async _resizeWindow (width, height, currentWidth, currentHeight, command) {
         const canResizeWindow = await this.browserProvider.canResizeWindowToDimensions(this.browserId, width, height);
 
         if (!canResizeWindow)
@@ -25,26 +25,26 @@ export default class BrowserManipulationQueue {
             return await this.browserProvider.resizeWindow(this.browserId, width, height, currentWidth, currentHeight);
         }
         catch (err) {
-            this.warningLog.addWarning(WARNING_MESSAGE.resizeError, err.message);
+            this.warningLog.addWarning({ message: WARNING_MESSAGE.resizeError, actionId: command.actionId }, err.message);
             return null;
         }
     }
 
-    async _resizeWindowToFitDevice (device, portrait, currentWidth, currentHeight) {
+    async _resizeWindowToFitDevice (device, portrait, currentWidth, currentHeight, command) {
         const { landscapeWidth, portraitWidth } = getViewportSize(device);
 
         const width  = portrait ? portraitWidth : landscapeWidth;
         const height = portrait ? landscapeWidth : portraitWidth;
 
-        return await this._resizeWindow(width, height, currentWidth, currentHeight);
+        return await this._resizeWindow(width, height, currentWidth, currentHeight, command);
     }
 
-    async _maximizeWindow () {
+    async _maximizeWindow (command) {
         try {
             return await this.browserProvider.maximizeWindow(this.browserId);
         }
         catch (err) {
-            this.warningLog.addWarning(WARNING_MESSAGE.maximizeError, err.message);
+            this.warningLog.addWarning({ message: WARNING_MESSAGE.maximizeError, actionId: command.actionId }, err.message);
             return null;
         }
     }
@@ -85,13 +85,13 @@ export default class BrowserManipulationQueue {
                 }));
 
             case COMMAND_TYPE.resizeWindow:
-                return await this._resizeWindow(command.width, command.height, driverMsg.pageDimensions.innerWidth, driverMsg.pageDimensions.innerHeight);
+                return await this._resizeWindow(command.width, command.height, driverMsg.pageDimensions.innerWidth, driverMsg.pageDimensions.innerHeight, command);
 
             case COMMAND_TYPE.resizeWindowToFitDevice:
-                return await this._resizeWindowToFitDevice(command.device, command.options.portraitOrientation, driverMsg.pageDimensions.innerWidth, driverMsg.pageDimensions.innerHeight);
+                return await this._resizeWindowToFitDevice(command.device, command.options.portraitOrientation, driverMsg.pageDimensions.innerWidth, driverMsg.pageDimensions.innerHeight, command);
 
             case COMMAND_TYPE.maximizeWindow:
-                return await this._maximizeWindow();
+                return await this._maximizeWindow(command);
         }
 
         return null;
