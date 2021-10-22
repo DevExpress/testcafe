@@ -55,6 +55,8 @@ class VideoRecorderMock extends VideoRecorder {
 
         this.warningLog = {
             addWarning: (message, ...args) => {
+                message = typeof message === 'string' ? message : message.message;
+
                 const msg = renderTemplate(message, ...args);
 
                 this.log.push(msg);

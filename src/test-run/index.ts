@@ -1101,7 +1101,7 @@ export default class TestRun extends AsyncEventEmitter {
             this.browserManipulationQueue.push(command);
 
             if (isResizeWindowCommand(command) && this.opts.videoPath)
-                this.warningLog.addWarning(WARNING_MESSAGE.videoBrowserResizing, this.test.name);
+                this.warningLog.addWarning({ message: WARNING_MESSAGE.videoBrowserResizing, actionId: command.actionId }, this.test.name);
         }
 
         if (command.type === COMMAND_TYPE.wait)
