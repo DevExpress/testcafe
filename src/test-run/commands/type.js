@@ -62,5 +62,5 @@ export default {
     unlockPage:                          'unlock-page',
     closeChildWindowOnFileDownloading:   'close-child-window-on-file-downloading',
     recorder:                            'recorder',
-    prepareClientEnvironmentInDebugMode: 'prepareClientEnvironmentInDebugMode',
+    prepareClientEnvironmentInDebugMode: 'prepare-client-environment-in-debug-mode',
 };

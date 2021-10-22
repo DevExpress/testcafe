@@ -5,6 +5,7 @@ import {
     assign,
     isNil as isNullOrUndefined,
     flattenDeep as flatten,
+    noop,
 } from 'lodash';
 
 import { getCallsiteForMethod } from '../../errors/get-callsite';
@@ -87,8 +88,13 @@ export default class TestController {
         this.testRun               = testRun;
         this.executionChain        = Promise.resolve();
         this.warningLog            = testRun.warningLog;
+
+        this._addTestControllerToExecutionChain();
     }
 
+    _addTestControllerToExecutionChain () {
+        this.executionChain._testController = this;
+    }
     // NOTE: we track missing `awaits` by exposing a special custom Promise to user code.
     // Action or assertion is awaited if:
     // a)someone used `await` so Promise's `then` function executed
@@ -130,6 +136,8 @@ export default class TestController {
         this.testRun.observedCallsites.callsitesWithoutAwait.add(callsite);
 
         this.executionChain = this._createExtendedPromise(this.executionChain, callsite);
+
+        this._addTestControllerToExecutionChain();
 
         return this.executionChain;
     }
@@ -475,9 +483,10 @@ export default class TestController {
     }
 
     [delegatedAPI(DebugCommand.methodName)] () {
-        // NOTE: do not need to enqueue the Debug command if we are in compiler service debugging mode
-        // the Debug command will be executed by CDP
-        return this.isCompilerServiceMode() ? void 0 : this._enqueueCommand(DebugCommand);
+        // NOTE: do not need to enqueue the Debug command if we are in debugging mode.
+        // The Debug command will be executed by CDP.
+        // Also, we are forced to add empty function to the execution chain to preserve it.
+        return this.isCompilerServiceMode() ? this._enqueueTask(DebugCommand.methodName, noop) : this._enqueueCommand(DebugCommand);
     }
 
     [delegatedAPI(SetTestSpeedCommand.methodName)] (speed) {
