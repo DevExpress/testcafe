@@ -88,6 +88,7 @@ const {
     CannotCloseWindowWithoutParentError,
     MultipleWindowsModeIsNotAvailableInRemoteBrowserError,
     CannotRestoreChildWindowError,
+    TimeoutError,
 } = require('../../lib/errors/test-run');
 
 const untestedErrorTypes = Object.keys(TEST_RUN_ERRORS).map(key => TEST_RUN_ERRORS[key]);
@@ -743,6 +744,10 @@ describe('Error formatting', () => {
 
         it('Should format "cannotRestoreChildWindowError"', () => {
             assertErrorMessage('cannot-restore-child-window-error', new CannotRestoreChildWindowError());
+        });
+
+        it('Should format "executionTimeoutExceeded"', () => {
+            assertErrorMessage('execution-timeout-exceeded', new TimeoutError(500, 'Scope'));
         });
     });
 

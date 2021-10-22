@@ -3,6 +3,7 @@ import processTestFnError from '../errors/process-test-fn-error';
 import Test from '../api/structure/test';
 import Fixture from '../api/structure/fixture';
 import TestRun from '../test-run';
+import executeFnWithTimeout from '../utils/execute-fn-with-timeout';
 
 interface FixtureState {
     started: boolean;
@@ -59,14 +60,14 @@ export default class FixtureHookController {
         return !!item && item.runningFixtureBeforeHook;
     }
 
-    private async _runFixtureBeforeHook (item: FixtureState, fn: Function): Promise<boolean> {
+    private async _runFixtureBeforeHook (item: FixtureState, fn: Function, testRun: TestRun): Promise<boolean> {
         if (!fn)
             return true;
 
         item.runningFixtureBeforeHook = true;
 
         try {
-            await fn(item.fixtureCtx);
+            await executeFnWithTimeout(fn, testRun.executionTimeout, item.fixtureCtx);
         }
         catch (err) {
             item.fixtureBeforeHookErr = processTestFnError(err);
@@ -84,7 +85,7 @@ export default class FixtureHookController {
         testRun.phase = TEST_RUN_PHASE.inFixtureAfterHook;
 
         try {
-            await fn(item.fixtureCtx);
+            await executeFnWithTimeout(fn, testRun.executionTimeout, item.fixtureCtx);
         }
         catch (err) {
             testRun.addError(processTestFnError(err));
@@ -101,8 +102,8 @@ export default class FixtureHookController {
             item.started = true;
 
             const success = shouldRunBeforeHook
-                            && await this._runFixtureBeforeHook(item, fixture.globalBeforeFn as Function)
-                            && await this._runFixtureBeforeHook(item, fixture.beforeFn as Function);
+                            && await this._runFixtureBeforeHook(item, fixture.globalBeforeFn as Function, testRun)
+                            && await this._runFixtureBeforeHook(item, fixture.beforeFn as Function, testRun);
 
             // NOTE: fail all tests in fixture if fixture.before hook has error
             if (!success && item.fixtureBeforeHookErr) {

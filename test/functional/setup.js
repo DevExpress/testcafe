@@ -235,6 +235,8 @@ before(function () {
                     userVariables,
                     tsConfigPath,
                     hooks,
+                    testExecutionTimeout,
+                    runExecutionTimeout,
                 } = opts;
 
                 const actualBrowsers = browsersInfo.filter(browserInfo => {
@@ -302,6 +304,8 @@ before(function () {
                         userVariables,
                         tsConfigPath,
                         hooks,
+                        testExecutionTimeout,
+                        runExecutionTimeout,
                     })
                     .then(failedCount => {
                         if (customReporters)

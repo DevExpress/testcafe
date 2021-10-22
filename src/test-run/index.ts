@@ -20,6 +20,9 @@ import {
     SwitchToWindowPredicateError,
     WindowNotFoundError,
     RequestHookBaseError,
+    TestTimeoutError,
+    ExternalAssertionLibraryError,
+    RunTimeoutError,
 } from '../errors/test-run/';
 
 import CLIENT_MESSAGES from './client-messages';
@@ -107,7 +110,6 @@ import {
 
 import { RE_EXECUTABLE_PROMISE_MARKER_DESCRIPTION } from '../services/serialization/replicator/transforms/re-executable-promise-transform/marker';
 import ReExecutablePromise from '../utils/re-executable-promise';
-import { ExternalAssertionLibraryError } from '../errors/test-run';
 import addRenderedWarning from '../notifications/add-rendered-warning';
 import getBrowser from '../utils/get-browser';
 import AssertionExecutor from '../assertions/executor';
@@ -115,6 +117,7 @@ import asyncFilter from '../utils/async-filter';
 import PROXYLESS_COMMANDS from './proxyless-commands-support';
 import Fixture from '../api/structure/fixture';
 import MessageBus from '../utils/message-bus';
+import executeFnWithTimeout from '../utils/execute-fn-with-timeout';
 
 const lazyRequire                 = require('import-lazy')(require);
 const ClientFunctionBuilder       = lazyRequire('../client-functions/client-function-builder');
@@ -150,6 +153,7 @@ interface TestRunInit {
     opts: Dictionary<OptionValue>;
     compilerService?: CompilerService;
     messageBus?: MessageBus;
+    startRunExecutionTime?: Date;
 }
 
 interface DriverTask {
@@ -166,6 +170,11 @@ interface DriverMessage {
 interface RequestTimeout {
     page?: number;
     ajax?: number;
+}
+
+interface ExecutionTimeout {
+    timeout: number;
+    rejectWith: TestTimeoutError | RunTimeoutError;
 }
 
 interface PendingRequest {
@@ -199,6 +208,8 @@ export default class TestRun extends AsyncEventEmitter {
     public activeIframeSelector: ExecuteSelectorCommand | null;
     public speed: number;
     public pageLoadTimeout: number;
+    private readonly testExecutionTimeout: ExecutionTimeout | null;
+    private readonly runExecutionTimeout: ExecutionTimeout | null;
     private disablePageReloads: boolean;
     private disablePageCaching: boolean;
     private disableMultipleWindows: boolean;
@@ -236,8 +247,9 @@ export default class TestRun extends AsyncEventEmitter {
     public readonly browser: Browser;
     private readonly _messageBus?: MessageBus;
     private _clientEnvironmentPrepared: boolean = false;
+    public readonly startRunExecutionTime?: Date;
 
-    public constructor ({ test, browserConnection, screenshotCapturer, globalWarningLog, opts, compilerService, messageBus }: TestRunInit) {
+    public constructor ({ test, browserConnection, screenshotCapturer, globalWarningLog, opts, compilerService, messageBus, startRunExecutionTime }: TestRunInit) {
         super();
 
         this[testRunMarker]    = true;
@@ -258,6 +270,7 @@ export default class TestRun extends AsyncEventEmitter {
         this.activeIframeSelector = null;
         this.speed                = this.opts.speed as number;
         this.pageLoadTimeout      = this._getPageLoadTimeout(test, opts);
+        this.testExecutionTimeout = this._getTestExecutionTimeout(opts);
 
         this.disablePageReloads   = test.disablePageReloads || opts.disablePageReloads as boolean && test.disablePageReloads !== false;
         this.disablePageCaching   = test.disablePageCaching || opts.disablePageCaching as boolean;
@@ -314,6 +327,9 @@ export default class TestRun extends AsyncEventEmitter {
         this.disconnected      = false;
         this.errScreenshotPath = null;
 
+        this.startRunExecutionTime = startRunExecutionTime;
+        this.runExecutionTimeout   = this._getRunExecutionTimeout(opts);
+
         this._addInjectables();
         this._initRequestHooks();
     }
@@ -330,6 +346,46 @@ export default class TestRun extends AsyncEventEmitter {
             page: test.timeouts?.pageRequestTimeout || opts.pageRequestTimeout as number,
             ajax: test.timeouts?.ajaxRequestTimeout || opts.ajaxRequestTimeout as number,
         };
+    }
+
+    private _getExecutionTimeout (timeout: number, error: TestTimeoutError | RunTimeoutError): ExecutionTimeout {
+        return {
+            timeout,
+            rejectWith: error,
+        };
+    }
+
+    private _getTestExecutionTimeout (opts: Dictionary<OptionValue>): ExecutionTimeout | null {
+        const testExecutionTimeout = opts.testExecutionTimeout as number || 0;
+
+        if (!testExecutionTimeout)
+            return null;
+
+        return this._getExecutionTimeout(testExecutionTimeout, new TestTimeoutError(testExecutionTimeout));
+    }
+
+    private _getRunExecutionTimeout (opts: Dictionary<OptionValue>): ExecutionTimeout | null {
+        const runExecutionTimeout = opts.runExecutionTimeout as number || 0;
+
+        if (!runExecutionTimeout)
+            return null;
+
+        return this._getExecutionTimeout(runExecutionTimeout, new RunTimeoutError(runExecutionTimeout));
+    }
+
+    public get restRunExecutionTimeout (): ExecutionTimeout | null {
+        if (!this.startRunExecutionTime || !this.runExecutionTimeout)
+            return null;
+
+        const currentTimeout = Math.max(this.runExecutionTimeout.timeout - (Date.now() - this.startRunExecutionTime.getTime()), 0);
+
+        return this._getExecutionTimeout(currentTimeout, this.runExecutionTimeout.rejectWith);
+    }
+
+    public get executionTimeout (): ExecutionTimeout | null {
+        return this.restRunExecutionTimeout && (!this.testExecutionTimeout || this.restRunExecutionTimeout.timeout < this.testExecutionTimeout.timeout)
+            ? this.restRunExecutionTimeout
+            : this.testExecutionTimeout || null;
     }
 
     private _addClientScriptContentWarningsIfNecessary (): void {
@@ -528,11 +584,11 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     // Test function execution
-    private async _executeTestFn (phase: TestRunPhase, fn: Function): Promise<boolean> {
+    private async _executeTestFn (phase: TestRunPhase, fn: Function, timeout: ExecutionTimeout | null): Promise<boolean> {
         this.phase = phase;
 
         try {
-            await fn(this);
+            await executeFnWithTimeout(fn, timeout, this);
         }
         catch (err) {
             await this._makeScreenshotOnFail();
@@ -550,26 +606,26 @@ export default class TestRun extends AsyncEventEmitter {
 
     private async _runBeforeHook (): Promise<boolean> {
         if (this.test.globalBeforeFn)
-            await this._executeTestFn(TestRunPhase.inTestBeforeHook, this.test.globalBeforeFn);
+            await this._executeTestFn(TestRunPhase.inTestBeforeHook, this.test.globalBeforeFn, this.executionTimeout);
 
         if (this.test.beforeFn)
-            return await this._executeTestFn(TestRunPhase.inTestBeforeHook, this.test.beforeFn);
+            return await this._executeTestFn(TestRunPhase.inTestBeforeHook, this.test.beforeFn, this.executionTimeout);
 
         if (this.test.fixture?.beforeEachFn)
-            return await this._executeTestFn(TestRunPhase.inFixtureBeforeEachHook, this.test.fixture?.beforeEachFn);
+            return await this._executeTestFn(TestRunPhase.inFixtureBeforeEachHook, this.test.fixture?.beforeEachFn, this.executionTimeout);
 
         return true;
     }
 
     private async _runAfterHook (): Promise<boolean> {
         if (this.test.globalAfterFn)
-            await this._executeTestFn(TestRunPhase.inTestAfterHook, this.test.globalAfterFn);
+            await this._executeTestFn(TestRunPhase.inTestAfterHook, this.test.globalAfterFn, this.executionTimeout);
 
         if (this.test.afterFn)
-            return await this._executeTestFn(TestRunPhase.inTestAfterHook, this.test.afterFn);
+            return await this._executeTestFn(TestRunPhase.inTestAfterHook, this.test.afterFn, this.executionTimeout);
 
         if (this.test.fixture?.afterEachFn)
-            return await this._executeTestFn(TestRunPhase.inFixtureAfterEachHook, this.test.fixture?.afterEachFn);
+            return await this._executeTestFn(TestRunPhase.inFixtureAfterEachHook, this.test.fixture?.afterEachFn, this.executionTimeout);
 
         return true;
     }
@@ -602,7 +658,7 @@ export default class TestRun extends AsyncEventEmitter {
         await this.emit('ready');
 
         if (await this._runBeforeHook()) {
-            await this._executeTestFn(TestRunPhase.inTest, this.test.fn as Function);
+            await this._executeTestFn(TestRunPhase.inTest, this.test.fn as Function, this.executionTimeout);
             await this._runAfterHook();
         }
 

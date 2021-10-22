@@ -206,6 +206,32 @@ describe('CLI argument parser', function () {
         });
     });
 
+    describe('Test execution timeout', function () {
+        it('Should parse "--test-execution-timeout" option as integer value', function () {
+            return parse('--test-execution-timeout 1000')
+                .then(function (parser) {
+                    expect(parser.opts.testExecutionTimeout).eql(1000);
+                });
+        });
+
+        it('Should raise an error if the "--test-execution-timeout" option value is not an integer', function () {
+            return assertRaisesError('--test-execution-timeout yo', 'The test execution timeout ("yo") is not of expected type (non-negative number).');
+        });
+    });
+
+    describe('Run execution timeout', function () {
+        it('Should parse "--run-execution-timeout" option as integer value', function () {
+            return parse('--run-execution-timeout 1000')
+                .then(function (parser) {
+                    expect(parser.opts.runExecutionTimeout).eql(1000);
+                });
+        });
+
+        it('Should raise an error if the "--run-execution-timeout" option value is not an integer', function () {
+            return assertRaisesError('--run-execution-timeout yo', 'The run execution timeout ("yo") is not of expected type (non-negative number).');
+        });
+    });
+
     describe('Speed', function () {
         it('Should parse "--speed" option as a number', function () {
             return parse('--speed 0.01')
@@ -794,6 +820,8 @@ describe('CLI argument parser', function () {
             { long: '--assertion-timeout' },
             { long: '--page-load-timeout' },
             { long: '--browser-init-timeout' },
+            { long: '--test-execution-timeout' },
+            { long: '--run-execution-timeout' },
             { long: '--speed' },
             { long: '--ports' },
             { long: '--hostname' },
@@ -840,7 +868,7 @@ describe('CLI argument parser', function () {
             expect(option.short).eql(EXPECTED_OPTIONS[i].short, CHANGE_CLI_WARNING);
         }
 
-        const expectedRunOptionsCount   = 19;
+        const expectedRunOptionsCount   = 21;
         const expectedOtherOptionsCount = 36;
         const otherOptionsCount         = options.length - expectedRunOptionsCount;
 
@@ -860,6 +888,8 @@ describe('CLI argument parser', function () {
             '--assertion-timeout 1000',
             '--page-load-timeout 1000',
             '--browser-init-timeout 1000',
+            '--test-execution-timeout 1000',
+            '--run-execution-timeout 1000',
             '--speed 1',
             '--stop-on-first-fail',
             '--disable-page-caching',
@@ -881,6 +911,8 @@ describe('CLI argument parser', function () {
                 expect(runOpts.assertionTimeout).eql(1000);
                 expect(runOpts.pageLoadTimeout).eql(1000);
                 expect(runOpts.browserInitTimeout).eql(1000);
+                expect(runOpts.testExecutionTimeout).eql(1000);
+                expect(runOpts.runExecutionTimeout).eql(1000);
                 expect(runOpts.speed).eql(1);
                 expect(runOpts.stopOnFirstFail).eql(true);
                 expect(runOpts.disablePageCaching).eql(true);
