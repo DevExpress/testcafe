@@ -1089,7 +1089,7 @@ export default class TestRun extends AsyncEventEmitter {
 
         if (isScreenshotCommand(command)) {
             if (this.opts.disableScreenshots) {
-                this.warningLog.addWarning(WARNING_MESSAGE.screenshotsDisabled);
+                this.warningLog.addWarning({ message: WARNING_MESSAGE.screenshotsDisabled, actionId: command.actionId });
 
                 return null;
             }

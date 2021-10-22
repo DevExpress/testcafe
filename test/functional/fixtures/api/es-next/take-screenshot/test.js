@@ -1,9 +1,10 @@
-const path               = require('path');
-const fs                 = require('fs');
-const { expect }         = require('chai');
-const config             = require('../../../../config.js');
-const assertionHelper    = require('../../../../assertion-helper.js');
-const { createReporter } = require('../../../../utils/reporter');
+const path                      = require('path');
+const fs                        = require('fs');
+const { expect }                = require('chai');
+const config                    = require('../../../../config.js');
+const assertionHelper           = require('../../../../assertion-helper.js');
+const { createReporter }        = require('../../../../utils/reporter');
+const { createWarningReporter } = require('../../../../utils/warning-reporter');
 
 const SCREENSHOTS_PATH                   = path.resolve(assertionHelper.SCREENSHOTS_PATH);
 const THUMBNAILS_DIR_NAME                = assertionHelper.THUMBNAILS_DIR_NAME;
@@ -105,13 +106,16 @@ describe('[API] t.takeScreenshot()', function () {
         });
 
         it('Should create warning if screenshots are disabled', function () {
-            return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot', { disableScreenshots: true })
+            const { reporter, assertReporterWarnings, warningResult } = createWarningReporter();
+
+            return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot', { reporter, disableScreenshots: true })
                 .then(function () {
                     expect(assertionHelper.isScreenshotDirExists()).eql(false);
-                    expect(testReport.warnings).eql([
-                        'Screenshots are disabled. To take screenshots, remove the "--disable-screenshots" command line flag ' +
-                        'or set the "disableScreenshots" option to "false" in the API or configuration file.',
-                    ]);
+                    expect(warningResult.warnings[0].message).eql('Screenshots are disabled. To take screenshots, remove the "--disable-screenshots" command line flag ' +
+                        'or set the "disableScreenshots" option to "false" in the API or configuration file.'
+                    );
+
+                    assertReporterWarnings('takeScreenshot');
                 });
         });
 
