@@ -54,6 +54,25 @@ describe('[API] t.takeScreenshot()', function () {
                 });
         });
 
+        it('Should emit a warning on rewriting a screenshot', function () {
+            const { reporter, assertReporterWarnings, warningResult } = createWarningReporter();
+
+            const screenshotPath = path.join(SCREENSHOTS_PATH, 'custom', 'duplicate.png');
+
+            return runTests('./testcafe-fixtures/take-screenshot.js', 'Rewrite a screenshot with warning', { reporter, setScreenshotPath: true })
+                .then(function () {
+                    expect(warningResult.warnings[0].message).eql('The file at "' + screenshotPath + '" already exists. ' +
+                                                          'It has just been rewritten with a recent screenshot. ' +
+                                                          'This situation can possibly cause issues. To avoid them, make sure ' +
+                                                          'that each screenshot has a unique path. ' +
+                                                          'If a test runs in multiple browsers, consider including the user ' +
+                                                          'agent in the screenshot path or generate a unique identifier' +
+                                                          ' in another way.');
+
+                    assertReporterWarnings('takeScreenshot');
+                });
+        });
+
         it('Should not generate thumbnails to take a screenshot', function () {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot without thumbnails', { setScreenshotPath: true })
                 .then(function () {

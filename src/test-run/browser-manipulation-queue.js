@@ -69,6 +69,7 @@ export default class BrowserManipulationQueue {
             case COMMAND_TYPE.takeElementScreenshot:
             case COMMAND_TYPE.takeScreenshot:
                 return await this._takeScreenshot(() => this.screenshotCapturer.captureAction({
+                    actionId:       command.actionId,
                     customPath:     command.path,
                     pageDimensions: driverMsg.pageDimensions,
                     cropDimensions: driverMsg.cropDimensions,
@@ -79,6 +80,7 @@ export default class BrowserManipulationQueue {
 
             case COMMAND_TYPE.takeScreenshotOnFail:
                 return await this._takeScreenshot(() => this.screenshotCapturer.captureError({
+                    actionId:       command.actionId,
                     pageDimensions: driverMsg.pageDimensions,
                     markSeed:       command.markSeed,
                     fullPage:       command.fullPage,
