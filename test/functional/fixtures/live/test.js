@@ -66,6 +66,8 @@ function createLiveModeRunner (tc, src, browsers = DEFAULT_BROWSERS) {
         .reporter(createReporter());
 }
 
+const testingEnvironmentName = process.env.TESTING_ENVIRONMENT;
+
 if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
     describe('Live Mode', () => {
         afterEach (() => {
@@ -239,7 +241,10 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
                     return cafe.close();
                 });
         });
-
+    });
+}
+else if (testingEnvironmentName === 'local-headless-chrome') {
+    describe('Live Mode', () => {
         it('Experimental debug', () => {
             const markerFile = path.join(__dirname, 'testcafe-fixtures', '.test-completed.marker');
 
@@ -253,7 +258,7 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
                     cafe = tc;
                 })
                 .then(() => {
-                    const runner = createLiveModeRunner(cafe, '/testcafe-fixtures/experimental-debug.js', ['chrome']);
+                    const runner = createLiveModeRunner(cafe, '/testcafe-fixtures/experimental-debug.js', [config.currentEnvironment.browsers[0].browserName]);
 
                     const timeoutId = setTimeout(() => {
                         clearInterval(intervalId); // eslint-disable-line @typescript-eslint/no-use-before-define
@@ -288,3 +293,5 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
         });
     });
 }
+
+
