@@ -49,7 +49,7 @@ export default class BrowserManipulationQueue {
         }
     }
 
-    async _takeScreenshot (capture) {
+    async _takeScreenshot (capture, command) {
         try {
             return await capture();
         }
@@ -57,7 +57,7 @@ export default class BrowserManipulationQueue {
             if (err.code === TEST_RUN_ERRORS.invalidElementScreenshotDimensionsError)
                 throw err;
 
-            this.warningLog.addWarning(WARNING_MESSAGE.screenshotError, err.stack);
+            this.warningLog.addWarning({ message: WARNING_MESSAGE.screenshotError, actionId: command.actionId }, err.stack);
             return null;
         }
     }
@@ -75,14 +75,14 @@ export default class BrowserManipulationQueue {
                     markSeed:       command.markSeed,
                     fullPage:       command.fullPage,
                     thumbnails:     command.thumbnails,
-                }));
+                }), command);
 
             case COMMAND_TYPE.takeScreenshotOnFail:
                 return await this._takeScreenshot(() => this.screenshotCapturer.captureError({
                     pageDimensions: driverMsg.pageDimensions,
                     markSeed:       command.markSeed,
                     fullPage:       command.fullPage,
-                }));
+                }), command);
 
             case COMMAND_TYPE.resizeWindow:
                 return await this._resizeWindow(command.width, command.height, driverMsg.pageDimensions.innerWidth, driverMsg.pageDimensions.innerHeight, command);
