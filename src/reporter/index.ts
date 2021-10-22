@@ -17,9 +17,13 @@ import Test from '../api/structure/test';
 import Fixture from '../api/structure/fixture';
 import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapter';
 import { CommandBase } from '../test-run/commands/base';
+
 import {
-    ReporterPlugin, ReporterPluginSource, ReporterSource,
+    ReporterPlugin,
+    ReporterPluginSource,
+    ReporterSource,
 } from './interfaces';
+
 import { getPluginFactory, processReporterName } from '../utils/reporter';
 import resolvePathRelativelyCwd from '../utils/resolve-path-relatively-cwd';
 import makeDir from 'make-dir';

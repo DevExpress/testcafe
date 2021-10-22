@@ -64,6 +64,7 @@ import {
     AddUnexpectedErrorArguments,
     CheckWindowArgument,
     RemoveFixtureCtxArguments,
+    RemoveUnitsFromStateArguments,
 } from './interfaces';
 
 import { UncaughtExceptionError, UnhandledPromiseRejectionError } from '../../errors/test-run';
@@ -149,8 +150,9 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
             this.executeAssertionFn,
             this.addUnexpectedError,
             this.checkWindow,
-            this.removeTestRun,
-            this.removeFixtureCtx,
+            this.removeTestRunFromState,
+            this.removeFixtureCtxFromState,
+            this.removeUnitsFromState,
         ], this);
     }
 
@@ -370,10 +372,10 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
             .executeCommand(command, callsite);
     }
 
-    public async getTests ({ sourceList, compilerOptions }: CompilerArguments): Promise<Test[]> {
+    public async getTests ({ sourceList, compilerOptions, runnableConfigurationId }: CompilerArguments): Promise<Test[]> {
         const { proxy } = await this._getRuntime();
 
-        const units = await proxy.call(this.getTests, { sourceList, compilerOptions });
+        const units = await proxy.call(this.getTests, { sourceList, compilerOptions, runnableConfigurationId });
 
         return restoreTestStructure(
             units,
@@ -540,15 +542,21 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
         return proxy.call(this.checkWindow, { testRunId, commandId, url, title });
     }
 
-    public async removeTestRun ({ testRunId }: TestRunLocator): Promise<void> {
+    public async removeTestRunFromState ({ testRunId }: TestRunLocator): Promise<void> {
         const { proxy } = await this._getRuntime();
 
-        return proxy.call(this.removeTestRun, { testRunId });
+        return proxy.call(this.removeTestRunFromState, { testRunId });
     }
 
-    public async removeFixtureCtx ({ fixtureId }: RemoveFixtureCtxArguments): Promise<void> {
+    public async removeFixtureCtxFromState ({ fixtureId }: RemoveFixtureCtxArguments): Promise<void> {
         const { proxy } = await this._getRuntime();
 
-        return proxy.call(this.removeFixtureCtx, { fixtureId });
+        return proxy.call(this.removeFixtureCtxFromState, { fixtureId });
+    }
+
+    public async removeUnitsFromState ({ runnableConfigurationId }: RemoveUnitsFromStateArguments): Promise<void> {
+        const { proxy } = await this._getRuntime();
+
+        return proxy.call(this.removeUnitsFromState, { runnableConfigurationId });
     }
 }

@@ -638,7 +638,7 @@ export default class TestRun extends AsyncEventEmitter {
                 this.warningLog.addWarning(warning);
             });
 
-            await this.compilerService.removeTestRun({ testRunId: id });
+            await this.compilerService.removeTestRunFromState({ testRunId: id });
         }
 
         testRunTracker.removeActiveTestRun(id);
