@@ -216,6 +216,7 @@ export default class TestRun extends AsyncEventEmitter {
     private lastDriverStatusId: string | null;
     private lastDriverStatusResponse: CommandBase | null | string;
     private fileDownloadingHandled: boolean;
+    private attachmentDownloadingHandled: boolean;
     private resolveWaitForFileDownloadingPromise: Function | null;
     private addingDriverTasksCount: number;
     public debugging: boolean;
@@ -286,6 +287,8 @@ export default class TestRun extends AsyncEventEmitter {
 
         this.fileDownloadingHandled               = false;
         this.resolveWaitForFileDownloadingPromise = null;
+
+        this.attachmentDownloadingHandled = false;
 
         this.addingDriverTasksCount = 0;
 
@@ -512,6 +515,10 @@ export default class TestRun extends AsyncEventEmitter {
         }
         else
             this.fileDownloadingHandled = true;
+    }
+
+    public async handleAttachment (): Promise<void> {
+        this.attachmentDownloadingHandled = true;
     }
 
     public handlePageError (ctx: any, err: Error): void {
@@ -1153,6 +1160,10 @@ export default class TestRun extends AsyncEventEmitter {
         return Promise.reject(err);
     }
 
+    private _sendCloseChildWindowOnFileDownloadingCommand (): CommandBase {
+        return new actionCommands.CloseChildWindowOnFileDownloading();
+    }
+
     public async _makeScreenshotOnFail (): Promise<void> {
         const { screenshots } = this.opts;
 
@@ -1344,6 +1355,16 @@ export default class TestRun extends AsyncEventEmitter {
         testRunTracker.removeActiveTestRun(this.session.id);
     }
 
+    private _handleFileDownloadingInNewWindowRequest (): CommandBase | null {
+        if (this.attachmentDownloadingHandled) {
+            this.attachmentDownloadingHandled = false;
+
+            return this._sendCloseChildWindowOnFileDownloadingCommand();
+        }
+
+        return null;
+    }
+
     public async emitActionEvent (eventName: string, args: unknown): Promise<void> {
         // @ts-ignore
         if (!this.preventEmitActionEvents)
@@ -1375,6 +1396,9 @@ export default class TestRun extends AsyncEventEmitter {
 
     // NOTE: this function is time-critical and must return ASAP to avoid client disconnection
     private async [CLIENT_MESSAGES.ready] (msg: DriverMessage): Promise<unknown> {
+        if (msg.status.isObservingFileDownloadingInNewWindow)
+            return this._handleFileDownloadingInNewWindowRequest();
+
         this.debugLog.driverMessage(msg);
 
         if (this.disconnected)

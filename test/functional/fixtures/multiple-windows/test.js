@@ -143,6 +143,10 @@ describe('Multiple windows', () => {
             });
     });
 
+    it('Should switch to parent and close window if the file was downloaded in separate window', () => {
+        return runTests('testcafe-fixtures/i6242.js');
+    });
+
     describe('API', () => {
         it('Open child window', () => {
             return runTests('testcafe-fixtures/api/api-test.js', 'Open child window', { only: 'chrome' });

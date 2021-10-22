@@ -60,6 +60,7 @@ export default {
     executeExpression:                   'execute-expression',
     executeAsyncExpression:              'execute-async-expression',
     unlockPage:                          'unlock-page',
+    closeChildWindowOnFileDownloading:   'close-child-window-on-file-downloading',
     recorder:                            'recorder',
     prepareClientEnvironmentInDebugMode: 'prepareClientEnvironmentInDebugMode',
 };

@@ -444,7 +444,7 @@ export default class Driver extends serviceUtils.EventEmitter {
     }
 
     _addPendingWindowSwitchingStateToStatus (status) {
-        status.isPendingWindowSwitching = !!this.contextStorage.getItem(this.PENDING_WINDOW_SWITCHING_FLAG);
+        status.isPendingWindowSwitching = this._isPendingSwitchingWindow();
     }
 
     _sendStatusRequest (status) {
@@ -1013,6 +1013,7 @@ export default class Driver extends serviceUtils.EventEmitter {
                 return isWindowOpenedViaAPI ? void 0 : this._waitForEmptyCommand();
             })
             .then(() => {
+                this._observeFileDownloadingInNewWindow();
                 this._abortSwitchingToChildWindowIfItClosed();
                 this._stopInternal();
 
@@ -1471,6 +1472,10 @@ export default class Driver extends serviceUtils.EventEmitter {
         }));
     }
 
+    _isPendingSwitchingWindow () {
+        return !!this.contextStorage.getItem(this.PENDING_WINDOW_SWITCHING_FLAG);
+    }
+
     _onPrepareClientEnvironmentInDebugMode (command) {
         // NOTE: repeat the function call wrapping produced by the 'esm' module on the client-side
         // (same as on the server-side).
@@ -1489,11 +1494,25 @@ export default class Driver extends serviceUtils.EventEmitter {
     }
 
     _isStatusWithCommandResultInPendingWindowSwitchingMode (status) {
-        return status.isCommandResult && !!this.contextStorage.getItem(this.PENDING_WINDOW_SWITCHING_FLAG);
+        return status.isCommandResult && this._isPendingSwitchingWindow();
     }
 
     _isEmptyCommandInPendingWindowSwitchingMode (command) {
-        return !command && !!this.contextStorage.getItem(this.PENDING_WINDOW_SWITCHING_FLAG);
+        return !command && this._isPendingSwitchingWindow();
+    }
+
+    _observeFileDownloadingInNewWindow () {
+        const status = new DriverStatus({ isObservingFileDownloadingInNewWindow: true });
+
+        if (this._isPendingSwitchingWindow()) {
+            this._sendStatus(status)
+                .then(command => {
+                    if (command)
+                        this._onCommand(command);
+                    else
+                        this._observeFileDownloadingInNewWindow();
+                });
+        }
     }
 
     // Routing
@@ -1599,12 +1618,20 @@ export default class Driver extends serviceUtils.EventEmitter {
 
         else if (command.type === COMMAND_TYPE.backupStorages)
             this._onBackupStoragesCommand();
+        else if (command.type === COMMAND_TYPE.closeChildWindowOnFileDownloading)
+            this._closeChildWindowOnFileDownloading();
 
         else if (command.type === COMMAND_TYPE.prepareClientEnvironmentInDebugMode)
             this._onPrepareClientEnvironmentInDebugMode(command);
-
         else
             this._onActionCommand(command);
+    }
+
+    _closeChildWindowOnFileDownloading () {
+        this.activeChildWindowDriverLink.closeFileDownloadingWindow();
+        arrayUtils.remove(this.childWindowDriverLinks, this.activeChildWindowDriverLink);
+        cursor.show();
+        this._startInternal();
     }
 
     _isExecutableInTopWindowOnly (command) {

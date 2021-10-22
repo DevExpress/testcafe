@@ -10,6 +10,8 @@ import { WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT } from '../timeouts';
 
 export default class ChildWindowDriverLink {
     constructor (driverWindow, windowId) {
+        this._isNonPageWindow = false;
+
         this.driverWindow = driverWindow;
         this.windowId     = windowId;
     }
@@ -17,7 +19,14 @@ export default class ChildWindowDriverLink {
     setAsMaster (finalizePendingCommand) {
         const msg = new SetAsMasterMessage(finalizePendingCommand);
 
-        return sendMessageToDriver(msg, this.driverWindow, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT, CannotSwitchToWindowError);
+        return sendMessageToDriver(msg, this.driverWindow, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT, CannotSwitchToWindowError)
+            .catch(err => {
+                if (this._isNonPageWindow)
+                    return;
+
+                throw err;
+            });
+
     }
 
     closeAllChildWindows () {
@@ -36,5 +45,11 @@ export default class ChildWindowDriverLink {
         const msg = new StartToRestoreChildLinkMessage();
 
         return sendMessageToDriver(msg, this.driverWindow, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT, CannotSwitchToWindowError);
+    }
+
+    closeFileDownloadingWindow () {
+        this._isNonPageWindow = true;
+
+        this.driverWindow.close();
     }
 }
