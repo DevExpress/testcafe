@@ -10,7 +10,7 @@ import { WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT } from '../timeouts';
 
 export default class ChildWindowDriverLink {
     constructor (driverWindow, windowId) {
-        this._isFileDownloadingWindow = false;
+        this._isNonPageWindow = false;
 
         this.driverWindow = driverWindow;
         this.windowId     = windowId;
@@ -21,7 +21,7 @@ export default class ChildWindowDriverLink {
 
         return sendMessageToDriver(msg, this.driverWindow, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT, CannotSwitchToWindowError)
             .catch(err => {
-                if (this._isFileDownloadingWindow)
+                if (this._isNonPageWindow)
                     return;
 
                 throw err;
@@ -48,7 +48,7 @@ export default class ChildWindowDriverLink {
     }
 
     closeFileDownloadingWindow () {
-        this._isFileDownloadingWindow = true;
+        this._isNonPageWindow = true;
 
         this.driverWindow.close();
     }
