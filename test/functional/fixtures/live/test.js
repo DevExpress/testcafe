@@ -15,6 +15,8 @@ let cafe               = null;
 const LiveModeController            = require('../../../../lib/live/controller');
 const LiveModeRunner                = require('../../../../lib/live/test-runner');
 const LiveModeKeyboardEventObserver = require('../../../../lib/live/keyboard-observer');
+const ProcessTitle                  = require('../../../../lib/services/process-title');
+
 
 class LiveModeKeyboardEventObserverMock extends LiveModeKeyboardEventObserver {
     _listenKeyEvents () {
@@ -47,12 +49,13 @@ class RunnerMock extends LiveModeRunner {
 }
 
 function createLiveModeRunner (tc, src, browsers = DEFAULT_BROWSERS) {
-    const { proxy, browserConnectionGateway, configuration } = tc;
+    const { proxy, browserConnectionGateway, configuration, compilerService } = tc;
 
     const runner = new RunnerMock({
         proxy,
         browserConnectionGateway,
         configuration: configuration.clone(),
+        compilerService,
     });
 
     tc.runners.push(runner);
@@ -149,7 +152,6 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
                 });
         });
 
-
         it('Same runner stops and then runs again with other settings', function () {
             let finishTest = null;
 
@@ -234,6 +236,53 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
             return runner
                 .run()
                 .then(() => {
+                    return cafe.close();
+                });
+        });
+
+        it('Experimental debug', () => {
+            const markerFile = path.join(__dirname, 'testcafe-fixtures', '.test-completed.marker');
+
+            return createTestCafe({
+                hostname:          '127.0.0.1',
+                port1:             1335,
+                port2:             1336,
+                experimentalDebug: true,
+            })
+                .then(tc => {
+                    cafe = tc;
+                })
+                .then(() => {
+                    const runner = createLiveModeRunner(cafe, '/testcafe-fixtures/experimental-debug.js', ['chrome']);
+
+                    const timeoutId = setTimeout(() => {
+                        clearInterval(intervalId); // eslint-disable-line @typescript-eslint/no-use-before-define
+                        runner.exit();
+
+                        expect.fail('Marker file not found.');
+                    }, 20000);
+
+                    const intervalId = setInterval(async () => {
+                        if (!fs.existsSync(markerFile))
+                            return;
+
+                        const inTestProcessName = fs.readFileSync(markerFile).toString();
+
+                        await new Promise(resolve => setTimeout(resolve, 3000));
+
+                        clearTimeout(timeoutId);
+                        clearInterval(intervalId);
+                        runner.exit();
+
+                        expect(inTestProcessName).eql(ProcessTitle.service);
+                    }, 1000);
+
+                    return runner.run();
+                })
+                .then(() => {
+                    if (fs.existsSync(markerFile))
+                        fs.unlinkSync(markerFile);
+
                     return cafe.close();
                 });
         });
