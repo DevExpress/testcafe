@@ -66,12 +66,12 @@ export default class FixtureHookController {
 
         item.runningFixtureBeforeHook = true;
 
-                try {
-                    await executeFnWithTimeout(fn, testRun.executionTimeout, item.fixtureCtx);
-                }
-                catch (err) {
-                    item.fixtureBeforeHookErr = processTestFnError(err);
-                }
+        try {
+            await executeFnWithTimeout(fn, testRun.executionTimeout, item.fixtureCtx);
+        }
+        catch (err) {
+            item.fixtureBeforeHookErr = processTestFnError(err);
+        }
 
         item.runningFixtureBeforeHook = false;
 
