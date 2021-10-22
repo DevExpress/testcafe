@@ -28,6 +28,8 @@ import guardTimeExecution from '../utils/guard-time-execution';
 import asyncFilter from '../utils/async-filter';
 import Fixture from '../api/structure/fixture';
 import MessageBus from '../utils/message-bus';
+import wrapTestFunction from '../api/wrap-test-function';
+import { assertType, is } from '../errors/runtime/type-assertions';
 
 const DEBUG_SCOPE = 'testcafe:bootstrapper';
 
@@ -85,6 +87,7 @@ export default class Bootstrapper {
     public proxyless: boolean;
     public compilerOptions?: CompilerOptions;
     public browserInitTimeout?: number;
+    public hooks?: GlobalHooks;
 
     private readonly compilerService?: CompilerService;
     private readonly debugLogger: debug.Debugger;
@@ -195,6 +198,45 @@ export default class Bootstrapper {
         return compiler.getTests();
     }
 
+    private _assertGlobalHooks (): void {
+        if (!this.hooks)
+            return;
+
+        if (this.hooks.fixture?.before)
+            assertType(is.function, 'globalBefore', 'The fixture.globalBefore hook', this.hooks.fixture.before);
+
+        if (this.hooks.fixture?.after)
+            assertType(is.function, 'globalAfter', 'The fixture.globalAfter hook', this.hooks.fixture.after);
+
+        if (this.hooks.test?.before)
+            assertType(is.function, 'globalBefore', 'The test.globalBefore hook', this.hooks.test.before);
+
+        if (this.hooks.test?.after)
+            assertType(is.function, 'globalAfter', 'The test.globalAfter hook', this.hooks.test.after);
+    }
+
+    private _setGlobalHooksToTests (tests: Test[]): void {
+        if (!this.hooks)
+            return;
+
+        this._assertGlobalHooks();
+
+        const fixtureBefore = this.hooks.fixture?.before || null;
+        const fixtureAfter  = this.hooks.fixture?.after || null;
+        const testBefore    = this.hooks.test?.before ? wrapTestFunction(this.hooks.test.before) : null;
+        const testAfter     = this.hooks.test?.after ? wrapTestFunction(this.hooks.test.after) : null;
+
+        tests.forEach(item => {
+            if (item.fixture) {
+                item.fixture.globalBeforeFn = item.fixture.globalBeforeFn || fixtureBefore;
+                item.fixture.globalAfterFn  = item.fixture.globalAfterFn || fixtureAfter;
+            }
+
+            item.globalBeforeFn = testBefore;
+            item.globalAfterFn  = testAfter;
+        });
+    }
+
     private async _getTests (): Promise<Test[]> {
         const cwd        = process.cwd();
         const sourceList = await parseFileList(this.sources, cwd);
@@ -227,6 +269,8 @@ export default class Bootstrapper {
 
         if (!tests.length)
             throw new GeneralError(RUNTIME_ERRORS.noTestsToRunDueFiltering);
+
+        this._setGlobalHooksToTests(tests);
 
         return tests;
     }

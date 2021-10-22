@@ -23,6 +23,8 @@ export default class Test extends TestingUnit {
     public fn: Function | null;
     public beforeFn: Function | null;
     public afterFn: Function | null;
+    public globalBeforeFn: Function | null;
+    public globalAfterFn: Function | null;
     public timeouts: TestTimeouts | null;
     private readonly _isCompilerService: boolean;
     public readonly esmRuntime: string;
@@ -34,11 +36,13 @@ export default class Test extends TestingUnit {
 
         super(testFile, UnitType.test, pageUrl);
 
-        this.fixture  = null;
-        this.fn       = null;
-        this.beforeFn = null;
-        this.afterFn  = null;
-        this.timeouts = null;
+        this.fixture        = null;
+        this.fn             = null;
+        this.beforeFn       = null;
+        this.afterFn        = null;
+        this.globalBeforeFn = null;
+        this.globalAfterFn  = null;
+        this.timeouts       = null;
 
         this._isCompilerService = isCompilerServiceMode;
 
