@@ -118,7 +118,7 @@ export default class Capturer {
         await this.provider.takeScreenshot(this.browserId, filePath, pageWidth, pageHeight, fullPage);
     }
 
-    async _capture (forError, { pageDimensions, cropDimensions, markSeed, customPath, fullPage, thumbnails, actionId } = {}) {
+    async _capture (forError, { pageDimensions, cropDimensions, markSeed, customPath, fullPage, thumbnails } = {}) {
         if (!this.enabled)
             return null;
 
@@ -128,7 +128,7 @@ export default class Capturer {
         const thumbnailPath  = this._getThumbnailPath(screenshotPath);
 
         if (isInQueue(screenshotPath))
-            this.warningLog.addWarning({ message: WARNING_MESSAGE.screenshotRewritingError, actionId }, screenshotPath);
+            this.warningLog.addWarning(WARNING_MESSAGE.screenshotRewritingError, screenshotPath);
 
         await addToQueue(screenshotPath, async () => {
             const clientAreaDimensions = Capturer._getClientAreaDimensions(pageDimensions);

@@ -63,11 +63,14 @@ export default class WarningLog {
     public static createAddWarningCallback (messageBus?: MessageBus | object, testRun?: TestRun): (message: string, actionId: string | null) => Promise<void> {
         return async (message: string, actionId: string | null) => {
             if (messageBus && messageBus instanceof MessageBus) {
-                await messageBus.emit('warning-add', {
+                const warning = {
                     message,
                     testRun,
                     actionId,
-                });
+                };
+
+                await messageBus.emit('before-warning-add', warning);
+                await messageBus.emit('warning-add', warning);
             }
         };
     }

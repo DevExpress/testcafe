@@ -1411,7 +1411,7 @@ export default class TestRun extends AsyncEventEmitter {
         let error  = null;
 
         try {
-            result = await this.browserManipulationQueue.executePendingManipulation(msg);
+            result = await this.browserManipulationQueue.executePendingManipulation(msg, this._messageBus);
         }
         catch (err) {
             error = err;
