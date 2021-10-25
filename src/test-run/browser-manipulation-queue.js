@@ -26,6 +26,7 @@ export default class BrowserManipulationQueue {
         }
         catch (err) {
             this.warningLog.addWarning(WARNING_MESSAGE.resizeError, err.message);
+
             return null;
         }
     }

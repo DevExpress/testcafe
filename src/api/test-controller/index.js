@@ -143,12 +143,12 @@ export default class TestController {
         return this.executionChain;
     }
 
-    _enqueueCommand (CmdCtor, cmdArgs, validateCommand) {
+    _enqueueCommand (CmdCtor, cmdArgs, validateCommandFn) {
         const callsite = getCallsiteForMethod(CmdCtor.methodName);
         const command  = this._createCommand(CmdCtor, cmdArgs, callsite);
 
-        if (typeof validateCommand === 'function')
-            validateCommand(this, command, callsite);
+        if (typeof validateCommandFn === 'function')
+            validateCommandFn(this, command, callsite);
 
         return this._enqueueTask(command.methodName, () => {
             return () => {

@@ -70,19 +70,19 @@ export default class Assertion {
         }, this._checkForWarnings.bind(this));
     }
 
-    private _checkForWarnings (testController: TestController, c: AssertionCommand, callsite: CallsiteRecord): void {
-        testController.checkForExcessiveAwaits(callsite, c);
+    private _checkForWarnings (testController: TestController, assertionCommand: AssertionCommand, callsite: CallsiteRecord): void {
+        testController.checkForExcessiveAwaits(callsite, assertionCommand);
 
-        if (isClientFunction(c.actual)) {
+        if (isClientFunction(assertionCommand.actual)) {
             addWarning(testController.warningLog, {
                 message:  WARNING_MESSAGE.assertedClientFunctionInstance,
-                actionId: c.actionId,
+                actionId: assertionCommand.actionId,
             }, callsite);
         }
-        else if (isSelector(c.actual)) {
+        else if (isSelector(assertionCommand.actual)) {
             addWarning(testController.warningLog, {
                 message:  WARNING_MESSAGE.assertedSelectorInstance,
-                actionId: c.actionId,
+                actionId: assertionCommand.actionId,
             }, callsite);
         }
     }

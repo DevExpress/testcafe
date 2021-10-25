@@ -7,12 +7,14 @@ export interface WarningLogMessage {
     actionId: string | null;
 }
 
+type WarningLogCallback = (message: string, actionId: string | null) => Promise<void>;
+
 export default class WarningLog {
     public messageInfos: WarningLogMessage[];
     public globalLog: WarningLog | null;
-    public callback?: (message: string, actionId: string | null) => Promise<void>;
+    public callback?: WarningLogCallback;
 
-    public constructor (globalLog: WarningLog | null = null, callback?: (message: string, actionId: string | null) => Promise<void>) {
+    public constructor (globalLog: WarningLog | null = null, callback?: WarningLogCallback) {
         this.messageInfos = [];
 
         this.globalLog = globalLog;
@@ -60,7 +62,7 @@ export default class WarningLog {
         this.messages.forEach(msg => warningLog.addWarning(msg));
     }
 
-    public static createAddWarningCallback (messageBus?: MessageBus | object, testRun?: TestRun): (message: string, actionId: string | null) => Promise<void> {
+    public static createAddWarningCallback (messageBus?: MessageBus | object, testRun?: TestRun): WarningLogCallback {
         return async (message: string, actionId: string | null) => {
             if (messageBus && messageBus instanceof MessageBus) {
                 const warning = {
