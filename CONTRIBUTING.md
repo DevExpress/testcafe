@@ -50,8 +50,8 @@ You also need [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Gi
     npm install
     ```
 
-    > [!NOTE]
-    > TestCafe comes with a TypeScript 3 compiler. If your development environment contains a TypeScript 4+ compiler, the two packages may come into conflict and prevent a successful installation of TestCafe. If you can't resolve this conflict by other means, use a TypeScript [version manager](https://github.com/watilde/tvm) to manually install a compatible TypeScript compiler and switch between the two.
+    <!-- > [!NOTE]
+    > TestCafe comes with a TypeScript 3 compiler. If your development environment contains a TypeScript 4+ compiler, the two packages may come into conflict and prevent a successful installation of TestCafe. If you can't resolve this conflict by other means, use a TypeScript [version manager](https://github.com/watilde/tvm) to manually install a compatible TypeScript compiler and switch between the two. -->
 
 4. Run the following shell command to build the project:
     ```sh
