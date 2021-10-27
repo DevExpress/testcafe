@@ -167,6 +167,7 @@ describe('Runner', () => {
             runner._runTask = ({ reporters }) => {
                 const reporterPlugin = reporters[0].plugin;
 
+                expect(reporterPlugin.name).eql('spec');
                 expect(reporterPlugin.reportFixtureStart).to.be.a('function');
                 expect(reporterPlugin.reportTestDone).to.be.a('function');
                 expect(reporterPlugin.reportTaskStart).to.be.a('function');
@@ -214,6 +215,28 @@ describe('Runner', () => {
             catch (e) {
                 expect(e.message).eql("Specify a file name or a writable stream as the reporter's output target.");
             }
+        });
+
+        it('Should add the dashboard reporter if its options are specified', () => {
+            const storedRunTaskFn = runner._runTask;
+
+            runner._runTask = ({ reporters }) => {
+                console.log(reporters);
+
+                expect(reporters).to.have.length(1);
+
+                expect(reporters[0].plugin.name).eql('dashboard');
+                // expect(reporters[0].plugin.name).eql('spec');                
+
+                runner._runTask = storedRunTaskFn;
+
+                return Promise.resolve({});
+            };
+
+            return runner
+                .browsers(connection)
+                .src('test/server/data/test-suites/basic/testfile2.js')
+                .run({ dashboard: {} });
         });
     });
 

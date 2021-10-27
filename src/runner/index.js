@@ -48,7 +48,8 @@ import { validateQuarantineOptions } from '../utils/get-options/quarantine';
 import logEntry from '../utils/log-entry';
 import MessageBus from '../utils/message-bus';
 
-const DEBUG_LOGGER = debug('testcafe:runner');
+const DEBUG_LOGGER            = debug('testcafe:runner');
+const DASHBOARD_REPORTER_NAME = 'dashboard';
 
 export default class Runner extends EventEmitter {
     constructor ({ proxy, browserConnectionGateway, configuration, compilerService }) {
@@ -499,6 +500,19 @@ export default class Runner extends EventEmitter {
         this.bootstrapper.hooks                  = this.configuration.getOption(OPTION_NAMES.hooks);
     }
 
+    _addDashboardReporterIfNeeded () {
+        const { _options } = this;
+
+        if (!_options.dashboard)
+            return;
+
+        if (!_options.reporter)
+            _options.reporter = [];
+
+        if (!_options.reporter.some(reporter => reporter.name === DASHBOARD_REPORTER_NAME))
+            _options.reporter.push({ name: DASHBOARD_REPORTER_NAME });
+    }
+
     async _prepareClientScripts (tests, clientScripts) {
         return Promise.all(tests.map(async test => {
             if (test.isLegacy)
@@ -683,6 +697,8 @@ export default class Runner extends EventEmitter {
         const messageBusErrorPromise = promisifyEvent(this._messageBus, 'error');
 
         this._options = Object.assign(this._options, options);
+
+        this._addDashboardReporterIfNeeded();
 
         const runTaskPromise = Promise.resolve()
             .then(() => this._setConfigurationOptions())
