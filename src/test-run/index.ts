@@ -4,6 +4,7 @@ import {
     chain,
 } from 'lodash';
 
+import nanoid from 'nanoid';
 import { readSync as read } from 'read-file-relative';
 import promisifyEvent from 'promisify-event';
 import Mustache from 'mustache';
@@ -700,7 +701,14 @@ export default class TestRun extends AsyncEventEmitter {
         return false;
     }
 
+    private _ensureErrorId (err: Error): void {
+        // @ts-ignore
+        err.id = err.id || nanoid(7);
+    }
+
     private _createErrorAdapter (err: Error): TestRunErrorFormattableAdapter {
+        this._ensureErrorId(err);
+
         return new TestRunErrorFormattableAdapter(err, {
             userAgent:      this.browserConnection.userAgent,
             screenshotPath: this.errScreenshotPath || '',

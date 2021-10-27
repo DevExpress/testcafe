@@ -291,6 +291,10 @@ describe('Error formatting', () => {
         it('Base error formattable adapter properties', () => {
             const testRunMock = TestRun.prototype;
 
+            testRunMock._ensureErrorId = err => {
+                err.id = 'error-id';
+            };
+
             Object.assign(testRunMock, {
                 session:           { id: 'test-run-id' },
                 browserConnection: { userAgent: 'chrome' },
@@ -312,6 +316,7 @@ describe('Error formatting', () => {
                 testRunId:      'test-run-id',
                 testRunPhase:   'test-run-phase',
                 callsite:       'callsite',
+                id:             'error-id',
             });
         });
 
