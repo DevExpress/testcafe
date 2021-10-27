@@ -15,6 +15,7 @@ import {
     getMetaOptions,
     getGrepOptions,
     getCompilerOptions,
+    getDashboardOptions,
 } from '../utils/get-options';
 
 import getFilterFn from '../utils/get-filter-fn';
@@ -80,6 +81,7 @@ interface CommandLineOptions {
     configFile?: string;
     proxyless?: boolean;
     v8Flags?: string[];
+    dashboardOptions? : string | Dictionary<string | boolean | number>;
 }
 
 export default class CLIArgumentParser {
@@ -171,6 +173,7 @@ export default class CLIArgumentParser {
             .option('--disable-multiple-windows', 'disable multiple windows mode')
             .option('--disable-http2', 'disable the HTTP/2 proxy backend and force the proxy to use only HTTP/1.1 requests')
             .option('--cache', 'cache web assets between test runs')
+            .option('--dashboard-token <token>', 'specify Dashboard Authentication token')
 
             // NOTE: these options will be handled by chalk internally
             .option('--color', 'force colors in command line')
@@ -178,7 +181,9 @@ export default class CLIArgumentParser {
 
             // NOTE: temporary hide experimental options from --help command
             .addOption(new Option('--proxyless', 'experimental').hideHelp())
-            .addOption(new Option('--experimental-debug', 'enable experimental debug mode').hideHelp());
+            .addOption(new Option('--experimental-debug', 'enable experimental debug mode').hideHelp())
+
+            .option('--dashboard-options <option=value[,...]>', 'specify Dashboard options');
     }
 
     private _parseList (val: string): string[] {
@@ -382,6 +387,11 @@ export default class CLIArgumentParser {
         this.opts.compilerOptions = resultCompilerOptions;
     }
 
+    private async _parseDashboardOptions (): Promise<void> {
+        if (this.opts.dashboardOptions)
+            this.opts.dashboardOptions = await getDashboardOptions(this.opts.dashboardOptions as string);
+    }
+
     private _parseListBrowsers (): void {
         const listBrowserOption = this.opts.listBrowsers;
 
@@ -447,6 +457,7 @@ export default class CLIArgumentParser {
         await this._parseCompilerOptions();
         await this._parseSslOptions();
         await this._parseReporters();
+        await this._parseDashboardOptions();
     }
 
     public getRunOptions (): RunnerRunOptions {
