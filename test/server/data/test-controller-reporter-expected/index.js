@@ -40,7 +40,8 @@ module.exports = [
             selector: { expression: 'Selector(\'#target\')' },
             options: {},
             relatedTarget: void 0,
-            type:     'dispatch-event'
+            type:     'dispatch-event',
+            actionId: 'DispatchEventCommand',
         },
         test:    {
             id:    'test-id',
@@ -59,7 +60,8 @@ module.exports = [
         command: {
             options:  clickOptions,
             selector: { expression: 'Selector(\'#target\')' },
-            type:     'click'
+            type:     'click',
+            actionId: 'ClickCommand',
         },
         test:    {
             id:    'test-id',
@@ -78,7 +80,8 @@ module.exports = [
         command: {
             options:  clickOptions,
             selector: { expression:'Selector(\'#target\')' },
-            type:     'right-click'
+            type:     'right-click',
+            actionId: 'RightClickCommand',
         },
         test:    {
             id:    'test-id',
@@ -97,7 +100,8 @@ module.exports = [
         command: {
             options:  clickOptions,
             selector: { expression:'Selector(\'#target\')' },
-            type:     'double-click'
+            type:     'double-click',
+            actionId: 'DoubleClickCommand',
         },
         test:    {
             id:    'test-id',
@@ -116,7 +120,8 @@ module.exports = [
         command: {
             options:  mouseOptions,
             selector: { expression:'Selector(\'#target\')' },
-            type:     'hover'
+            type:     'hover',
+            actionId: 'HoverCommand',
         },
         test:    {
             id:    'test-id',
@@ -137,7 +142,8 @@ module.exports = [
             selector: { expression: 'Selector(\'#target\')' },
             dragOffsetX: 100,
             dragOffsetY: 200,
-            type:        'drag'
+            type:        'drag',
+            actionId:    'DragCommand',
         },
         test:    {
             id:    'test-id',
@@ -157,7 +163,8 @@ module.exports = [
             options:             dragToElementOptions,
             selector: { expression: 'Selector(\'#target\')' },
             destinationSelector: { expression: 'Selector(\'#target\')' },
-            type:                'drag-to-element'
+            type:                'drag-to-element',
+            actionId:            'DragToElementCommand',
         },
         test:    {
             id:    'test-id',
@@ -179,7 +186,8 @@ module.exports = [
             position: null,
             options:  offsetOptions,
             selector: { expression: 'Selector(\'#target\')' },
-            type:     'scroll'
+            type:     'scroll',
+            actionId: 'ScrollCommand',
         },
         test:    {
             id:    'test-id',
@@ -200,7 +208,8 @@ module.exports = [
             byY:      200,
             options:  offsetOptions,
             selector: { expression: 'Selector(\'#target\')' },
-            type:     'scroll-by'
+            type:     'scroll-by',
+            actionId: 'ScrollByCommand',
         },
         test:    {
             id:    'test-id',
@@ -219,7 +228,8 @@ module.exports = [
         command: {
             options:  offsetOptions,
             selector: { expression: 'Selector(\'#target\')' },
-            type:     'scroll-into-view'
+            type:     'scroll-into-view',
+            actionId: 'ScrollIntoViewCommand',
         },
         test:    {
             id:    'test-id',
@@ -239,7 +249,8 @@ module.exports = [
             options:  typeTextOptions,
             selector: { expression:'Selector(\'#input\')' },
             text:     'test',
-            type:     'type-text'
+            type:     'type-text',
+            actionId: 'TypeTextCommand',
         },
         test:    {
             id:    'test-id',
@@ -260,7 +271,8 @@ module.exports = [
             selector: { expression:'Selector(\'#input\')' },
             startPos: 1,
             endPos:   3,
-            type:     'select-text'
+            type:     'select-text',
+            actionId: 'SelectTextCommand',
         },
         test:    {
             id:    'test-id',
@@ -284,7 +296,8 @@ module.exports = [
             startPos:  2,
             endLine:   3,
             endPos:    4,
-            type:      'select-text-area-content'
+            type:      'select-text-area-content',
+            actionId:  'SelectTextAreaContentCommand',
         },
         test:    {
             id:    'test-id',
@@ -304,7 +317,8 @@ module.exports = [
             options:       basicOptions,
             startSelector: { expression:'Selector(\'#contenteditable\')' },
             endSelector:   { expression:  'Selector(\'#contenteditable\')' },
-            type:          'select-editable-content'
+            type:          'select-editable-content',
+            actionId:      'SelectEditableContentCommand',
         },
         test:    {
             id:    'test-id',
@@ -322,6 +336,7 @@ module.exports = [
         name:    'pressKey',
         command: {
             options: basicOptions,
+            actionId: 'PressKeyCommand',
             keys:    'enter',
             type:    'press-key'
         },
@@ -342,7 +357,8 @@ module.exports = [
 
         command: {
             type:    'wait',
-            timeout: 1
+            timeout: 1,
+            actionId: 'WaitCommand',
         },
         test:    {
             id:    'test-id',
@@ -360,7 +376,8 @@ module.exports = [
         name:    'navigateTo',
         command: {
             type: 'navigate-to',
-            url:  './index.html'
+            url:  './index.html',
+            actionId: 'NavigateToCommand',
         },
         test:    {
             id:    'test-id',
@@ -379,7 +396,8 @@ module.exports = [
         command: {
             selector: { expression:'Selector(\'#file\')' },
             type:     'set-files-to-upload',
-            filePath: '../test.js'
+            filePath: '../test.js',
+            actionId: 'SetFilesToUploadCommand',
         },
         test:    {
             id:    'test-id',
@@ -396,6 +414,7 @@ module.exports = [
         testRunId: 'test-run-id',
         name:    'clearUpload',
         command: {
+            actionId: 'ClearUploadCommand',
             selector: { expression:'Selector(\'#file\')' },
             type:     'clear-upload',
         },
@@ -418,6 +437,7 @@ module.exports = [
             fullPage: true,
             thumbnails: undefined,
             type:     'take-screenshot',
+            actionId: 'TakeScreenshotCommand',
         },
         test:    {
             id:    'test-id',
@@ -437,6 +457,7 @@ module.exports = [
             selector: { expression:'Selector(\'#target\')' },
             path:     'screenshotPath',
             type:     'take-element-screenshot',
+            actionId: 'TakeElementScreenshotCommand',
             options:  {
                 includeMargins: true,
                 crop: {
@@ -461,7 +482,8 @@ module.exports = [
         command: {
             width:  200,
             height: 200,
-            type:   'resize-window'
+            type:     'resize-window',
+            actionId: 'ResizeWindowCommand',
         },
         test:    {
             id:    'test-id',
@@ -482,7 +504,8 @@ module.exports = [
             options: {
                 portraitOrientation: true
             },
-            type:    'resize-window-to-fit-device'
+            type:     'resize-window-to-fit-device',
+            actionId: 'ResizeWindowToFitDeviceCommand',
         },
         test:    {
             id:    'test-id',
@@ -499,7 +522,8 @@ module.exports = [
         testRunId: 'test-run-id',
         name:    'maximizeWindow',
         command: {
-            type: 'maximize-window'
+            type:     'maximize-window',
+            actionId: 'MaximizeWindowCommand',
         },
         test:    {
             id:    'test-id',
@@ -516,6 +540,7 @@ module.exports = [
         testRunId: 'test-run-id',
         name:    'switchToIframe',
         command: {
+            actionId: 'SwitchToIframeCommand',
             selector: { expression:'Selector(\'#iframe\')' },
             type:     'switch-to-iframe'
         },
@@ -534,7 +559,8 @@ module.exports = [
         testRunId: 'test-run-id',
         name:    'switchToMainWindow',
         command: {
-            type: 'switch-to-main-window'
+            type:     'switch-to-main-window',
+            actionId: 'SwitchToMainWindowCommand',
         },
         test:    {
             id:    'test-id',
@@ -552,7 +578,8 @@ module.exports = [
         name:    'openWindow',
         command: {
             type: 'open-window',
-            url:  'http://example.com'
+            url:  'http://example.com',
+            actionId: 'OpenWindowCommand',
         },
         test:    {
             id:    'test-id',
@@ -570,7 +597,8 @@ module.exports = [
         name:    'switchToWindow',
         command: {
             type:     'switch-to-window',
-            windowId: 'window-id'
+            windowId: 'window-id',
+            actionId: 'SwitchToWindowCommand',
         },
         test:    {
             id:    'test-id',
@@ -588,7 +616,8 @@ module.exports = [
         name:    'closeWindow',
         command: {
             type:     'close-window',
-            windowId: 'window-id'
+            windowId: 'window-id',
+            actionId: 'CloseWindowCommand',
         },
         test:    {
             id:    'test-id',
@@ -605,7 +634,8 @@ module.exports = [
         testRunId: 'test-run-id',
         name:    'getCurrentWindow',
         command: {
-            type: 'get-current-window'
+            type:     'get-current-window',
+            actionId: 'GetCurrentWindowCommand',
         },
         test:    {
             id:    'test-id',
@@ -622,7 +652,8 @@ module.exports = [
         testRunId: 'test-run-id',
         name:    'switchToParentWindow',
         command: {
-            type: 'switch-to-parent-window'
+            type:     'switch-to-parent-window',
+            actionId: 'SwitchToParentWindowCommand',
         },
         test:    {
             id:    'test-id',
@@ -639,7 +670,8 @@ module.exports = [
         testRunId: 'test-run-id',
         name:      'switchToPreviousWindow',
         command:   {
-            type: 'switch-to-previous-window'
+            type:     'switch-to-previous-window',
+            actionId: 'SwitchToPreviousWindowCommand',
         },
         test:      {
             id:    'test-id',
@@ -660,7 +692,8 @@ module.exports = [
                 args: [],
                 code: '(function(){ var func = function func() {return true;}; return func;})();'
             },
-            type: 'set-native-dialog-handler'
+            type:          'set-native-dialog-handler',
+            actionId:      'SetNativeDialogHandlerCommand',
         },
         test:    {
             id:    'test-id',
@@ -677,7 +710,8 @@ module.exports = [
         testRunId: 'test-run-id',
         name:    'getNativeDialogHistory',
         command: {
-            type: 'get-native-dialog-history'
+            type:     'get-native-dialog-history',
+            actionId: 'GetNativeDialogHistoryCommand',
         },
         test:    {
             id:    'test-id',
@@ -694,7 +728,8 @@ module.exports = [
         testRunId: 'test-run-id',
         name:    'getBrowserConsoleMessages',
         command: {
-            type: 'get-browser-console-messages',
+            type:     'get-browser-console-messages',
+            actionId: 'GetBrowserConsoleMessagesCommand',
         },
         test:    {
             id:    'test-id',
@@ -711,7 +746,8 @@ module.exports = [
         testRunId: 'test-run-id',
         name:    'debug',
         command: {
-            type: 'debug'
+            type:     'debug',
+            actionId: 'DebugCommand',
         },
         test:    {
             id:    'test-id',
@@ -729,7 +765,8 @@ module.exports = [
         name:    'setTestSpeed',
         command: {
             speed: 1,
-            type:  'set-test-speed'
+            type:     'set-test-speed',
+            actionId: 'SetTestSpeedCommand',
         },
         test:    {
             id:    'test-id',
@@ -747,7 +784,8 @@ module.exports = [
         name:    'setPageLoadTimeout',
         command: {
             duration: 1,
-            type:     'set-page-load-timeout'
+            type:     'set-page-load-timeout',
+            actionId: 'SetPageLoadTimeoutCommand',
         },
         test:    {
             id:    'test-id',
@@ -769,7 +807,8 @@ module.exports = [
                 options:  { preserveUrl: true },
                 phase:    'uninitialized'
             },
-            type: 'useRole'
+            type:     'useRole',
+            actionId: 'UseRoleCommand',
         },
         test:    {
             id:    'test-id',

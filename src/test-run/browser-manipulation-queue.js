@@ -26,6 +26,7 @@ export default class BrowserManipulationQueue {
         }
         catch (err) {
             this.warningLog.addWarning(WARNING_MESSAGE.resizeError, err.message);
+
             return null;
         }
     }
@@ -62,13 +63,14 @@ export default class BrowserManipulationQueue {
         }
     }
 
-    async executePendingManipulation (driverMsg) {
+    async _executeCommand (driverMsg) {
         const command = this.commands.shift();
 
         switch (command.type) {
             case COMMAND_TYPE.takeElementScreenshot:
             case COMMAND_TYPE.takeScreenshot:
                 return await this._takeScreenshot(() => this.screenshotCapturer.captureAction({
+                    actionId:       command.actionId,
                     customPath:     command.path,
                     pageDimensions: driverMsg.pageDimensions,
                     cropDimensions: driverMsg.cropDimensions,
@@ -79,6 +81,7 @@ export default class BrowserManipulationQueue {
 
             case COMMAND_TYPE.takeScreenshotOnFail:
                 return await this._takeScreenshot(() => this.screenshotCapturer.captureError({
+                    actionId:       command.actionId,
                     pageDimensions: driverMsg.pageDimensions,
                     markSeed:       command.markSeed,
                     fullPage:       command.fullPage,
@@ -95,6 +98,22 @@ export default class BrowserManipulationQueue {
         }
 
         return null;
+    }
+
+    async executePendingManipulation (driverMsg, messageBus) {
+        const command = this.commands[0];
+
+        const handleBrowserManipulationWarning = warning => {
+            warning.actionId = warning.actionId || command.actionId;
+        };
+
+        messageBus.on('before-warning-add', handleBrowserManipulationWarning);
+
+        const result = await this._executeCommand(driverMsg);
+
+        messageBus.off('before-warning-add', handleBrowserManipulationWarning);
+
+        return result;
     }
 
     push (command) {

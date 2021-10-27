@@ -1,9 +1,10 @@
-const path               = require('path');
-const fs                 = require('fs');
-const { expect }         = require('chai');
-const config             = require('../../../../config.js');
-const assertionHelper    = require('../../../../assertion-helper.js');
-const { createReporter } = require('../../../../utils/reporter');
+const path                      = require('path');
+const fs                        = require('fs');
+const { expect }                = require('chai');
+const config                    = require('../../../../config.js');
+const assertionHelper           = require('../../../../assertion-helper.js');
+const { createReporter }        = require('../../../../utils/reporter');
+const { createWarningReporter } = require('../../../../utils/warning-reporter');
 
 const SCREENSHOTS_PATH                   = path.resolve(assertionHelper.SCREENSHOTS_PATH);
 const THUMBNAILS_DIR_NAME                = assertionHelper.THUMBNAILS_DIR_NAME;
@@ -50,6 +51,25 @@ describe('[API] t.takeScreenshot()', function () {
                 .then(function () {
                     expect(SCREENSHOT_PATH_MESSAGE_RE.test(testReport.screenshotPath)).eql(true);
                     expect(assertionHelper.checkScreenshotsCreated({ forError: false, screenshotsCount: 4 })).eql(true);
+                });
+        });
+
+        it('Should emit a warning on rewriting a screenshot', function () {
+            const { reporter, assertReporterWarnings, warningResult } = createWarningReporter();
+
+            const screenshotPath = path.join(SCREENSHOTS_PATH, 'custom', 'duplicate.png');
+
+            return runTests('./testcafe-fixtures/take-screenshot.js', 'Rewrite a screenshot with warning', { reporter, setScreenshotPath: true })
+                .then(function () {
+                    expect(warningResult.warnings[0].message).eql('The file at "' + screenshotPath + '" already exists. ' +
+                                                          'It has just been rewritten with a recent screenshot. ' +
+                                                          'This situation can possibly cause issues. To avoid them, make sure ' +
+                                                          'that each screenshot has a unique path. ' +
+                                                          'If a test runs in multiple browsers, consider including the user ' +
+                                                          'agent in the screenshot path or generate a unique identifier' +
+                                                          ' in another way.');
+
+                    assertReporterWarnings('takeScreenshot');
                 });
         });
 
@@ -105,13 +125,16 @@ describe('[API] t.takeScreenshot()', function () {
         });
 
         it('Should create warning if screenshots are disabled', function () {
-            return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot', { disableScreenshots: true })
+            const { reporter, assertReporterWarnings, warningResult } = createWarningReporter();
+
+            return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot', { reporter, disableScreenshots: true })
                 .then(function () {
                     expect(assertionHelper.isScreenshotDirExists()).eql(false);
-                    expect(testReport.warnings).eql([
-                        'Screenshots are disabled. To take screenshots, remove the "--disable-screenshots" command line flag ' +
-                        'or set the "disableScreenshots" option to "false" in the API or configuration file.',
-                    ]);
+                    expect(warningResult.warnings[0].message).eql('Screenshots are disabled. To take screenshots, remove the "--disable-screenshots" command line flag ' +
+                        'or set the "disableScreenshots" option to "false" in the API or configuration file.'
+                    );
+
+                    assertReporterWarnings('takeScreenshot');
                 });
         });
 

@@ -766,14 +766,14 @@ export default class TestRun extends AsyncEventEmitter {
         return consoleMessageCopy[String(this.activeWindowId)];
     }
 
-    private async _enqueueSetBreakpointCommand (callsite: CallsiteRecord | undefined, error?: string): Promise<void> {
+    private async _enqueueSetBreakpointCommand (callsite: CallsiteRecord | undefined, error?: string, command?: CommandBase): Promise<void> {
         const inCompilerService = !!this.compilerService;
 
         // NOTE: In regular mode, it's possible to debug tests only using TestCafe UI ('Resume' and 'Next step' buttons).
         // So, we should warn on trying to debug in headless mode.
         // In compiler service mode, we can debug even in headless mode using any debugging tools. So, in this case, the warning is excessive.
         if (!inCompilerService && this.browserConnection.isHeadlessBrowser()) {
-            this.warningLog.addWarning(WARNING_MESSAGE.debugInHeadlessError);
+            this.warningLog.addWarning({ message: WARNING_MESSAGE.debugInHeadlessError, actionId: command ? command.actionId : null });
             return;
         }
 
@@ -1083,7 +1083,7 @@ export default class TestRun extends AsyncEventEmitter {
         }
         catch (err) {
             if (this.phase === TestRunPhase.pendingFinalization && err instanceof ExternalAssertionLibraryError)
-                addRenderedWarning(this.warningLog, WARNING_MESSAGE.unawaitedMethodWithAssertion, callsite);
+                addRenderedWarning(this.warningLog, { message: WARNING_MESSAGE.unawaitedMethodWithAssertion, actionId: command.actionId }, callsite);
             else
                 error = err;
         }
@@ -1158,7 +1158,7 @@ export default class TestRun extends AsyncEventEmitter {
 
         if (isScreenshotCommand(command)) {
             if (this.opts.disableScreenshots) {
-                this.warningLog.addWarning(WARNING_MESSAGE.screenshotsDisabled);
+                this.warningLog.addWarning({ message: WARNING_MESSAGE.screenshotsDisabled, actionId: command.actionId });
 
                 return null;
             }
@@ -1170,7 +1170,7 @@ export default class TestRun extends AsyncEventEmitter {
             this.browserManipulationQueue.push(command);
 
             if (isResizeWindowCommand(command) && this.opts.videoPath)
-                this.warningLog.addWarning(WARNING_MESSAGE.videoBrowserResizing, this.test.name);
+                this.warningLog.addWarning({ message: WARNING_MESSAGE.videoBrowserResizing, actionId: command.actionId }, this.test.name);
         }
 
         if (command.type === COMMAND_TYPE.wait)
@@ -1180,7 +1180,7 @@ export default class TestRun extends AsyncEventEmitter {
             return null;
 
         if (command.type === COMMAND_TYPE.debug)
-            return await this._enqueueSetBreakpointCommand(callsite as CallsiteRecord);
+            return await this._enqueueSetBreakpointCommand(callsite as CallsiteRecord, void 0, command);
 
         if (command.type === COMMAND_TYPE.useRole) {
             let fn = (): Promise<void> => this._useRole((command as any).role, callsite as CallsiteRecord);
@@ -1401,7 +1401,7 @@ export default class TestRun extends AsyncEventEmitter {
             throw new WindowNotFoundError();
 
         if (windows.length > 1)
-            this.warningLog.addWarning(WARNING_MESSAGE.multipleWindowsFoundByPredicate);
+            this.warningLog.addWarning({ message: WARNING_MESSAGE.multipleWindowsFoundByPredicate, actionId: command.actionId });
 
         await this._internalExecuteCommand(new SwitchToWindowCommand({ windowId: windows[0].id }, this) as CommandBase);
     }
@@ -1497,7 +1497,7 @@ export default class TestRun extends AsyncEventEmitter {
         let error  = null;
 
         try {
-            result = await this.browserManipulationQueue.executePendingManipulation(msg);
+            result = await this.browserManipulationQueue.executePendingManipulation(msg, this._messageBus);
         }
         catch (err) {
             error = err;

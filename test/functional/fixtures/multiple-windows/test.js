@@ -5,6 +5,7 @@ const assertionHelper            = require('../../assertion-helper.js');
 const { GREEN_PIXEL, RED_PIXEL } = require('../../assertion-helper');
 const { readPngFile }            = require('../../../../lib/utils/promisified-functions');
 const config                     = require('../../config');
+const { createWarningReporter }  = require('../../utils/warning-reporter');
 
 const SCREENSHOTS_PATH = config.testScreenshotsDir;
 
@@ -195,10 +196,13 @@ describe('Multiple windows', () => {
         });
 
         it('Multiple windows are found warning', () => {
-            return runTests('testcafe-fixtures/api/api-test.js', 'Multiple windows are found warning', { only: 'chrome' })
+            const { reporter, assertReporterWarnings, warningResult } = createWarningReporter();
+
+            return runTests('testcafe-fixtures/api/api-test.js', 'Multiple windows are found warning', { only: 'chrome', reporter })
                 .then(() => {
-                    expect(testReport.warnings.length).eql(1);
-                    expect(testReport.warnings[0]).eql('The predicate function passed to the \'switchToWindow\' method matched multiple windows. The first matching window was activated.');
+                    expect(warningResult.warnings.length).eql(1);
+                    expect(warningResult.warnings[0].message).eql('The predicate function passed to the \'switchToWindow\' method matched multiple windows. The first matching window was activated.');
+                    assertReporterWarnings('switchToWindow');
                 });
         });
 

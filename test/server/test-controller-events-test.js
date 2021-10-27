@@ -43,6 +43,17 @@ class TestControllerMock extends TestController {
 
         testRun.controller = this;
     }
+
+    _createCommand (CmdCtor, cmdArgs, callsite) {
+        const command = super._createCommand(CmdCtor, cmdArgs, callsite);
+
+        if (!command.actionId)
+            throw new Error('command does not have action id');
+
+        command.actionId = CmdCtor.name;
+
+        return command;
+    }
 }
 
 class TaskMock extends AsyncEventEmitter {

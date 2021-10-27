@@ -134,3 +134,8 @@ test
 test('Should add default extension', async t => {
     await t.takeScreenshot('screenshot-path');
 });
+
+test('Rewrite a screenshot with warning', async t => {
+    await t.takeScreenshot('custom/duplicate.png');
+    await t.takeScreenshot('custom/duplicate.png');
+});

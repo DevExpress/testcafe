@@ -16,9 +16,36 @@ const testRunMock = {
 
 testRunMock.controller = new TestController(testRunMock);
 
+const CHILD_SELECTOR_PROPERTY_NAMES = [
+    'selector',
+    'startSelector',
+    'endSelector',
+    'destinationSelector',
+];
+
+function ensureActionId (command, { type }) {
+    if (!command.actionId)
+        throw new Error('command does not have action id');
+
+    command.actionId = type;
+
+    for (const selectorProperty of CHILD_SELECTOR_PROPERTY_NAMES) {
+        if (command[selectorProperty]) {
+            if (!command[selectorProperty].actionId)
+                throw new Error('nested command does not have action id');
+
+            command[selectorProperty].actionId = 'child-command-selector';
+        }
+    }
+}
+
 function createCommand (obj) {
     try {
-        return createCommandFromObject(obj, testRunMock);
+        const command = createCommandFromObject(obj, testRunMock);
+
+        ensureActionId(command, obj);
+
+        return command;
     }
     catch (e) {
         // TODO: add an assertion for APIError
@@ -45,6 +72,8 @@ function assertErrorMessage (fn, expectedErrMessage) {
 function makeSelector (str, skipVisibilityCheck) {
     const builder = new SelectorBuilder(str, { visibilityCheck: !skipVisibilityCheck }, { instantiation: 'Selector' });
     const command = builder.getCommand([]);
+
+    command.actionId = 'child-command-selector';
 
     return JSON.parse(JSON.stringify(command));
 }
@@ -78,6 +107,7 @@ describe('Test run commands', () => {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.click,
+                actionId: TYPE.click,
                 selector: makeSelector('#yo'),
 
                 options: {
@@ -104,6 +134,7 @@ describe('Test run commands', () => {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.click,
+                actionId: TYPE.click,
                 selector: makeSelector('#yo'),
 
                 options: {
@@ -149,6 +180,7 @@ describe('Test run commands', () => {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.rightClick,
+                actionId: TYPE.rightClick,
                 selector: makeSelector('#yo'),
 
                 options: {
@@ -175,6 +207,7 @@ describe('Test run commands', () => {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.rightClick,
+                actionId: TYPE.rightClick,
                 selector: makeSelector('#yo'),
 
                 options: {
@@ -220,6 +253,7 @@ describe('Test run commands', () => {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.doubleClick,
+                actionId: TYPE.doubleClick,
                 selector: makeSelector('#yo'),
 
                 options: {
@@ -246,6 +280,7 @@ describe('Test run commands', () => {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.doubleClick,
+                actionId: TYPE.doubleClick,
                 selector: makeSelector('#yo'),
 
                 options: {
@@ -291,6 +326,7 @@ describe('Test run commands', () => {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.hover,
+                actionId: TYPE.hover,
                 selector: makeSelector('#yo'),
 
                 options: {
@@ -316,6 +352,7 @@ describe('Test run commands', () => {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.hover,
+                actionId: TYPE.hover,
                 selector: makeSelector('#yo'),
 
                 options: {
@@ -362,6 +399,7 @@ describe('Test run commands', () => {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:        TYPE.drag,
+                actionId:    TYPE.drag,
                 selector:    makeSelector('#yo'),
                 dragOffsetX: 10,
                 dragOffsetY: -15,
@@ -391,6 +429,7 @@ describe('Test run commands', () => {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:        TYPE.drag,
+                actionId:    TYPE.drag,
                 selector:    makeSelector('#yo'),
                 dragOffsetX: 10,
                 dragOffsetY: -15,
@@ -440,6 +479,7 @@ describe('Test run commands', () => {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:                TYPE.dragToElement,
+                actionId:            TYPE.dragToElement,
                 selector:            makeSelector('#yo'),
                 destinationSelector: makeSelector('#destination'),
 
@@ -469,7 +509,9 @@ describe('Test run commands', () => {
             command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
-                type:                TYPE.dragToElement,
+                type:     TYPE.dragToElement,
+                actionId: TYPE.dragToElement,
+
                 selector:            makeSelector('#yo'),
                 destinationSelector: makeSelector('#destination'),
 
@@ -522,6 +564,7 @@ describe('Test run commands', () => {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.typeText,
+                actionId: TYPE.typeText,
                 selector: makeSelector('#yo'),
                 text:     'testText',
 
@@ -554,6 +597,7 @@ describe('Test run commands', () => {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.typeText,
+                actionId: TYPE.typeText,
                 selector: makeSelector('#yo'),
                 text:     'testText',
 
@@ -594,6 +638,7 @@ describe('Test run commands', () => {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.selectText,
+                actionId: TYPE.selectText,
                 selector: makeSelector('#yo'),
                 startPos: 1,
                 endPos:   2,
@@ -612,6 +657,7 @@ describe('Test run commands', () => {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.selectText,
+                actionId: TYPE.selectText,
                 selector: makeSelector('#yo'),
                 startPos: null,
                 endPos:   null,
@@ -643,6 +689,7 @@ describe('Test run commands', () => {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:      TYPE.selectTextAreaContent,
+                actionId:  TYPE.selectTextAreaContent,
                 selector:  makeSelector('#yo'),
                 startLine: 0,
                 startPos:  1,
@@ -663,6 +710,7 @@ describe('Test run commands', () => {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:      TYPE.selectTextAreaContent,
+                actionId:  TYPE.selectTextAreaContent,
                 selector:  makeSelector('#yo'),
                 startLine: null,
                 startPos:  null,
@@ -694,6 +742,7 @@ describe('Test run commands', () => {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:          TYPE.selectEditableContent,
+                actionId:      TYPE.selectEditableContent,
                 startSelector: makeSelector('#node1'),
                 endSelector:   makeSelector('#node2'),
 
@@ -712,6 +761,7 @@ describe('Test run commands', () => {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:          TYPE.selectEditableContent,
+                actionId:      TYPE.selectEditableContent,
                 startSelector: makeSelector('#node1'),
                 endSelector:   null,
 
@@ -747,8 +797,9 @@ describe('Test run commands', () => {
             const command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
-                type: TYPE.pressKey,
-                keys: 'a+b c',
+                type:     TYPE.pressKey,
+                actionId: TYPE.pressKey,
+                keys:     'a+b c',
 
                 options: {
                     speed: 0.5,
@@ -764,8 +815,9 @@ describe('Test run commands', () => {
             const command    = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
-                type:    TYPE.wait,
-                timeout: 1000,
+                type:     TYPE.wait,
+                actionId: TYPE.wait,
+                timeout:  1000,
             });
         });
 
@@ -781,6 +833,7 @@ describe('Test run commands', () => {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:          TYPE.navigateTo,
+                actionId:      TYPE.navigateTo,
                 url:           'localhost',
                 stateSnapshot: 'stateSnapshot',
                 forceReload:   true,
@@ -803,6 +856,7 @@ describe('Test run commands', () => {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.setFilesToUpload,
+                actionId: TYPE.setFilesToUpload,
                 selector: makeSelector('#yo', true),
                 filePath: '/test/path',
             });
@@ -822,6 +876,7 @@ describe('Test run commands', () => {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.setFilesToUpload,
+                actionId: TYPE.setFilesToUpload,
                 selector: makeSelector('#yo', true),
                 filePath: ['/test/path/1', '/test/path/2'],
             });
@@ -842,6 +897,7 @@ describe('Test run commands', () => {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.clearUpload,
+                actionId: TYPE.clearUpload,
                 selector: makeSelector('#yo', true),
             });
         });
@@ -863,6 +919,7 @@ describe('Test run commands', () => {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.takeScreenshot,
+                actionId: TYPE.takeScreenshot,
                 markData: '',
                 markSeed: null,
                 path:     'custom',
@@ -884,6 +941,7 @@ describe('Test run commands', () => {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.takeScreenshot,
+                actionId: TYPE.takeScreenshot,
                 markData: '',
                 markSeed: null,
                 path:     '',
@@ -913,6 +971,7 @@ describe('Test run commands', () => {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.takeElementScreenshot,
+                actionId: TYPE.takeElementScreenshot,
                 markData: '',
                 markSeed: null,
                 selector: makeSelector('#yo'),
@@ -953,9 +1012,10 @@ describe('Test run commands', () => {
             const command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
-                type:   TYPE.resizeWindow,
-                width:  100,
-                height: 100,
+                type:     TYPE.resizeWindow,
+                actionId: TYPE.resizeWindow,
+                width:    100,
+                height:   100,
             });
         });
 
@@ -975,9 +1035,10 @@ describe('Test run commands', () => {
             let command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
-                type:    TYPE.resizeWindowToFitDevice,
-                device:  'iPhone',
-                options: { portraitOrientation: true },
+                type:     TYPE.resizeWindowToFitDevice,
+                actionId: TYPE.resizeWindowToFitDevice,
+                device:   'iPhone',
+                options:  { portraitOrientation: true },
             });
 
             commandObj = {
@@ -988,9 +1049,10 @@ describe('Test run commands', () => {
             command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
-                type:    TYPE.resizeWindowToFitDevice,
-                device:  'iPhone',
-                options: { portraitOrientation: false },
+                type:     TYPE.resizeWindowToFitDevice,
+                actionId: TYPE.resizeWindowToFitDevice,
+                device:   'iPhone',
+                options:  { portraitOrientation: false },
             });
         });
 
@@ -1003,6 +1065,7 @@ describe('Test run commands', () => {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.switchToIframe,
+                actionId: TYPE.switchToIframe,
                 selector: makeSelector('#iframe'),
             });
         });
@@ -1014,7 +1077,8 @@ describe('Test run commands', () => {
             const command    = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
-                type: TYPE.switchToMainWindow,
+                type:     TYPE.switchToMainWindow,
+                actionId: TYPE.switchToMainWindow,
             });
         });
 
@@ -1026,8 +1090,9 @@ describe('Test run commands', () => {
             const command    = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
-                type:  TYPE.setTestSpeed,
-                speed: 0.5,
+                type:     TYPE.setTestSpeed,
+                actionId: TYPE.setTestSpeed,
+                speed:    0.5,
             });
         });
 
@@ -1040,6 +1105,7 @@ describe('Test run commands', () => {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.setPageLoadTimeout,
+                actionId: TYPE.setPageLoadTimeout,
                 duration: 3,
             });
         });
@@ -1064,6 +1130,7 @@ describe('Test run commands', () => {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:          TYPE.assertion,
+                actionId:      TYPE.assertion,
                 assertionType: 'eql',
                 actual:        1,
                 expected:      0.2,
@@ -1086,6 +1153,7 @@ describe('Test run commands', () => {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:          TYPE.assertion,
+                actionId:      TYPE.assertion,
                 assertionType: 'ok',
                 actual:        1,
                 message:       null,
@@ -1107,7 +1175,8 @@ describe('Test run commands', () => {
             let command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
-                type: TYPE.executeExpression,
+                type:     TYPE.executeExpression,
+                actionId: TYPE.executeExpression,
 
                 expression:         'js-expression',
                 resultVariableName: 'variable',
@@ -1121,7 +1190,8 @@ describe('Test run commands', () => {
             command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
-                type: TYPE.executeExpression,
+                type:     TYPE.executeExpression,
+                actionId: TYPE.executeExpression,
 
                 expression:         'js-expression',
                 resultVariableName: null,
@@ -1133,7 +1203,7 @@ describe('Test run commands', () => {
                 type:     TYPE.click,
                 selector: {
                     type:  'js-expr',
-                    value: "Selector('#yo')",
+                    value: 'Selector(\'#yo\')',
                 },
             };
 
@@ -1141,6 +1211,7 @@ describe('Test run commands', () => {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.click,
+                actionId: TYPE.click,
                 selector: makeSelector('#yo'),
 
                 options: {
@@ -1176,6 +1247,7 @@ describe('Test run commands', () => {
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:          TYPE.assertion,
+                actionId:      TYPE.assertion,
                 assertionType: 'eql',
                 actual:        3,
                 expected:      1,
@@ -1200,8 +1272,9 @@ describe('Test run commands', () => {
             let command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
-                type:    TYPE.recorder,
-                subtype: 'test',
+                type:     TYPE.recorder,
+                actionId: TYPE.recorder,
+                subtype:  'test',
 
                 forceExecutionInTopWindowOnly: false,
             });
@@ -1220,8 +1293,9 @@ describe('Test run commands', () => {
             command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
-                type:    TYPE.recorder,
-                subtype: 'test',
+                type:     TYPE.recorder,
+                actionId: TYPE.recorder,
+                subtype:  'test',
 
                 forceExecutionInTopWindowOnly: true,
             });

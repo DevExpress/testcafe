@@ -258,3 +258,7 @@ test('Multiple awaited selector properties in one assertion', async t => {
 
     await t.expect(await selector.innerText + await selector.innerText).eql('');
 });
+
+test('Passing Selector with excessive `await` in assertion', async t => {
+    await t.expect(await Selector('#el1').innerText).eql('');
+});

@@ -12,9 +12,7 @@ import { getCallsiteForMethod } from '../../errors/get-callsite';
 import ClientFunctionBuilder from '../../client-functions/client-function-builder';
 import Assertion from './assertion';
 import { getDelegatedAPIList, delegateAPI } from '../../utils/delegated-api';
-import WARNING_MESSAGE from '../../notifications/warning-message';
 import addWarning from '../../notifications/add-rendered-warning';
-import { getCallsiteId, getCallsiteStackFrameString } from '../../utils/callsite';
 import { getDeprecationMessage, DEPRECATED } from '../../notifications/deprecated';
 
 import {
@@ -64,7 +62,7 @@ import {
 import { WaitCommand, DebugCommand } from '../../test-run/commands/observation';
 import assertRequestHookType from '../request-hooks/assert-type';
 import { createExecutionContext as createContext } from './execution-context';
-import { isClientFunction, isSelector } from '../../client-functions/types';
+import { isSelector } from '../../client-functions/types';
 import TestRunProxy from '../../services/compiler/test-run-proxy';
 
 import {
@@ -72,6 +70,7 @@ import {
     MultipleWindowsModeIsNotAvailableInRemoteBrowserError,
 } from '../../errors/test-run';
 import { AssertionCommand } from '../../test-run/commands/assertion';
+import { getCallsiteId, getCallsiteStackFrameString } from '../../utils/callsite';
 
 const originalThen = Promise.resolve().then;
 
@@ -126,9 +125,19 @@ export default class TestController {
         return extendedPromise;
     }
 
-    _enqueueTask (apiMethodName, createTaskExecutor) {
-        const callsite = getCallsiteForMethod(apiMethodName);
-        const executor = createTaskExecutor(callsite);
+    _createCommand (CmdCtor, cmdArgs, callsite) {
+        try {
+            return new CmdCtor(cmdArgs, this.testRun);
+        }
+        catch (err) {
+            err.callsite = callsite;
+
+            throw err;
+        }
+    }
+
+    _enqueueTask (apiMethodName, createTaskExecutor, callsite) {
+        const executor = createTaskExecutor();
 
         this.executionChain.then = originalThen;
         this.executionChain      = this.executionChain.then(executor);
@@ -142,18 +151,14 @@ export default class TestController {
         return this.executionChain;
     }
 
-    _enqueueCommand (CmdCtor, cmdArgs) {
-        return this._enqueueTask(CmdCtor.methodName, callsite => {
-            let command = null;
+    _enqueueCommand (CmdCtor, cmdArgs, validateCommandFn) {
+        const callsite = getCallsiteForMethod(CmdCtor.methodName);
+        const command  = this._createCommand(CmdCtor, cmdArgs, callsite);
 
-            try {
-                command = new CmdCtor(cmdArgs, this.testRun);
-            }
-            catch (err) {
-                err.callsite = callsite;
-                throw err;
-            }
+        if (typeof validateCommandFn === 'function')
+            validateCommandFn(this, command, callsite);
 
+        return this._enqueueTask(command.methodName, () => {
             return () => {
                 return this.testRun.executeCommand(command, callsite)
                     .catch(err => {
@@ -162,7 +167,7 @@ export default class TestController {
                         throw err;
                     });
             };
-        });
+        }, callsite);
     }
 
     _validateMultipleWindowCommand (apiMethodName) {
@@ -444,24 +449,27 @@ export default class TestController {
 
     [delegatedAPI(GetNativeDialogHistoryCommand.methodName)] () {
         const callsite = getCallsiteForMethod(GetNativeDialogHistoryCommand.methodName);
+        const command  = this._createCommand(GetNativeDialogHistoryCommand, {}, callsite);
 
-        return this.testRun.executeCommand(new GetNativeDialogHistoryCommand(), callsite);
+        return this.testRun.executeCommand(command, callsite);
     }
 
     [delegatedAPI(GetBrowserConsoleMessagesCommand.methodName)] () {
         const callsite = getCallsiteForMethod(GetBrowserConsoleMessagesCommand.methodName);
+        const command  = this._createCommand(GetBrowserConsoleMessagesCommand, {}, callsite);
 
-        return this.testRun.executeCommand(new GetBrowserConsoleMessagesCommand(), callsite);
+        return this.testRun.executeCommand(command, callsite);
     }
 
-    _checkForExcessiveAwaits (snapshotPropertyCallsites, checkedCallsite) {
-        const callsiteId = getCallsiteId(checkedCallsite);
+    checkForExcessiveAwaits (checkedCallsite, { actionId }) {
+        const snapshotPropertyCallsites = this.testRun.observedCallsites.snapshotPropertyCallsites;
+        const callsiteId                = getCallsiteId(checkedCallsite);
 
         // NOTE: If there are unasserted callsites, we should add all of them to awaitedSnapshotWarnings.
         // The warnings themselves are raised after the test run in wrap-test-function
         if (snapshotPropertyCallsites[callsiteId] && !snapshotPropertyCallsites[callsiteId].checked) {
             for (const propertyCallsite of snapshotPropertyCallsites[callsiteId].callsites)
-                this.testRun.observedCallsites.awaitedSnapshotWarnings.set(getCallsiteStackFrameString(propertyCallsite), propertyCallsite);
+                this.testRun.observedCallsites.awaitedSnapshotWarnings.set(getCallsiteStackFrameString(propertyCallsite), { callsite: propertyCallsite, actionId });
 
             delete snapshotPropertyCallsites[callsiteId];
         }
@@ -471,13 +479,6 @@ export default class TestController {
 
     [delegatedAPI(AssertionCommand.methodName)] (actual) {
         const callsite = getCallsiteForMethod(AssertionCommand.methodName);
-
-        this._checkForExcessiveAwaits(this.testRun.observedCallsites.snapshotPropertyCallsites, callsite);
-
-        if (isClientFunction(actual))
-            addWarning(this.warningLog, WARNING_MESSAGE.assertedClientFunctionInstance, callsite);
-        else if (isSelector(actual))
-            addWarning(this.warningLog, WARNING_MESSAGE.assertedSelectorInstance, callsite);
 
         return new Assertion(actual, this, callsite);
     }
@@ -494,9 +495,9 @@ export default class TestController {
     }
 
     [delegatedAPI(SetPageLoadTimeoutCommand.methodName)] (duration) {
-        addWarning(this.warningLog, getDeprecationMessage(DEPRECATED.setPageLoadTimeout));
-
-        return this._enqueueCommand(SetPageLoadTimeoutCommand, { duration });
+        return this._enqueueCommand(SetPageLoadTimeoutCommand, { duration }, (testController, command) => {
+            addWarning(testController.warningLog, { message: getDeprecationMessage(DEPRECATED.setPageLoadTimeout), actionId: command.actionId });
+        });
     }
 
     [delegatedAPI(UseRoleCommand.methodName)] (role) {

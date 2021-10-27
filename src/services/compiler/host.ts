@@ -69,6 +69,7 @@ import {
 import { UncaughtExceptionError, UnhandledPromiseRejectionError } from '../../errors/test-run';
 import { handleUnexpectedError } from '../../utils/handle-errors';
 import { V8_DEBUG_FLAGS } from '../../cli/node-arguments-filter';
+import { WarningLogMessage } from '../../notifications/warning-log';
 
 const SERVICE_PATH       = require.resolve('./service-loader');
 const INTERNAL_FILES_URL = pathToFileURL(path.join(__dirname, '../../'));
@@ -443,7 +444,7 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
         return await proxy.call(this.executeMockPredicate, { testId, hookId, ruleId, requestInfo, res });
     }
 
-    public async getWarningMessages ({ testRunId }: TestRunLocator): Promise<string[]> {
+    public async getWarningMessages ({ testRunId }: TestRunLocator): Promise<WarningLogMessage[]> {
         const { proxy } = await this._getRuntime();
 
         return proxy.call(this.getWarningMessages, { testRunId });

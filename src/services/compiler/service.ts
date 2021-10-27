@@ -89,6 +89,7 @@ import setupSourceMapSupport from '../../utils/setup-sourcemap-support';
 import { formatError } from '../../utils/handle-errors';
 import { SwitchToWindowPredicateError } from '../../shared/errors';
 import MessageBus from '../../utils/message-bus';
+import { WarningLogMessage } from '../../notifications/warning-log';
 
 setupSourceMapSupport();
 
@@ -394,8 +395,8 @@ class CompilerService implements CompilerProtocol {
         return res;
     }
 
-    public async getWarningMessages ({ testRunId }: TestRunLocator): Promise<string[]> {
-        return this._getTargetTestRun(testRunId).warningLog.messages;
+    public async getWarningMessages ({ testRunId }: TestRunLocator): Promise<WarningLogMessage[]> {
+        return this._getTargetTestRun(testRunId).warningLog.messageInfos;
     }
 
     public async addRequestEventListeners ( { hookId, hookClassName, rules }: AddRequestEventListenersArguments): Promise<void> {

@@ -1,11 +1,12 @@
-const expect               = require('chai').expect;
-const fs                   = require('fs');
-const generateReporter     = require('./reporter');
-const { createReporter }   = require('../../utils/reporter');
-const ReporterPluginMethod = require('../../../../lib/reporter/plugin-methods');
-const assertionHelper      = require('../../assertion-helper.js');
-const path                 = require('path');
-const config               = require('../../config');
+const expect                    = require('chai').expect;
+const fs                        = require('fs');
+const generateReporter          = require('./reporter');
+const { createReporter }        = require('../../utils/reporter');
+const { createWarningReporter } = require('../../utils/warning-reporter');
+const ReporterPluginMethod      = require('../../../../lib/reporter/plugin-methods');
+const assertionHelper           = require('../../assertion-helper.js');
+const path                      = require('path');
+const config                    = require('../../config');
 
 const {
     createSimpleTestStream,
@@ -885,15 +886,12 @@ describe('Reporter', () => {
     });
 
     describe('Warnings', () => {
-        let resultWarning = {};
-        const reporter    = createReporter({
-            reportWarnings: (warning) => {
-                resultWarning = warning;
-            },
-        });
+        let warningResult          = {};
+        let reporter               = null;
+        let assertReporterWarnings = null;
 
-        afterEach(() => {
-            resultWarning = {};
+        beforeEach(() => {
+            ({ reporter, assertReporterWarnings, warningResult } = createWarningReporter());
         });
 
         if (!config.experimentalDebug) {
@@ -909,9 +907,11 @@ describe('Reporter', () => {
                     throw new Error('Promise rejection expected');
                 }
                 catch (err) {
-                    expect(resultWarning.message).to.include("An asynchronous method that you do not await includes an assertion. Inspect that method's execution chain and add the 'await' keyword where necessary.");
-                    expect(resultWarning.testRunId).to.be.a('string');
-                    expect(resultWarning.testRunId).to.not.empty;
+                    expect(warningResult.warnings[0].message).to.include("An asynchronous method that you do not await includes an assertion. Inspect that method's execution chain and add the 'await' keyword where necessary.");
+                    expect(warningResult.warnings[0].testRunId).to.be.a('string');
+                    expect(warningResult.warnings[0].testRunId).to.not.empty;
+
+                    assertReporterWarnings('ok');
                 }
             });
         }
@@ -931,7 +931,7 @@ describe('Reporter', () => {
                     const SCREENSHOTS_PATH   = path.resolve(assertionHelper.SCREENSHOTS_PATH);
                     const screenshotFileName = path.join(SCREENSHOTS_PATH, '1.png');
 
-                    expect(resultWarning.message).to.include(
+                    expect(warningResult.warnings[0].message).to.include(
                         `The file at "${screenshotFileName}" already exists. It has just been rewritten ` +
                         'with a recent screenshot. This situation can possibly cause issues. To avoid them, make sure ' +
                         'that each screenshot has a unique path. If a test runs in multiple browsers, consider ' +
@@ -949,7 +949,7 @@ describe('Reporter', () => {
                 reporter,
             });
 
-            expect(resultWarning.message).to.include('RequestMock: CORS validation failed for a request specified as { url: "http://dummy-url.com/get" }');
+            expect(warningResult.warnings[0].message).to.include('RequestMock: CORS validation failed for a request specified as { url: "http://dummy-url.com/get" }');
         });
 
         it('Should get warning for request hook', async () => {
@@ -959,7 +959,7 @@ describe('Reporter', () => {
                 tsConfigPath: 'path-to-ts-config',
             });
 
-            expect(resultWarning.message).to.eql("The 'tsConfigPath' option is deprecated and will be removed in the next major release. Use the 'compilerOptions.typescript.configPath' option instead.");
+            expect(warningResult.warnings[0].message).to.eql("The 'tsConfigPath' option is deprecated and will be removed in the next major release. Use the 'compilerOptions.typescript.configPath' option instead.");
         });
     });
 
