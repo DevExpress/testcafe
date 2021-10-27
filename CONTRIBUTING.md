@@ -2,7 +2,7 @@
 
 TestCafe would not be possible without active support from the community. We appreciate and encourage your contributions.
 
-TestCafe is proud to follow a set of ethical standards called the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md). This code of conduct helps us create a more open and welcoming environment. Both project maintainers and project contributors should adhere to these rules.
+TestCafe is proud to follow a set of ethical standards called the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md). This code of conduct helps us create a more open and welcoming environment. The TestCafe team expects both project maintainers and project contributors to adhere to these rules.
 
 ### Table of Contents
 
@@ -53,7 +53,7 @@ You also need [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Gi
     npx gulp build
     ```
 
-You now have two options to install the package you built in the previous step:
+You now have two options to install TestCafe:
 
 -   `npm link` is a useful option for testers and most other users. This command creates a [symbolic link](https://en.wikipedia.org/wiki/Symbolic_link) (symlink) that lets you use TestCafe while you make changes to its code.
 
@@ -75,23 +75,26 @@ You now have two options to install the package you built in the previous step:
 
 ##### Install from a package
 
-1. From the root of the `testcafe` directory, run the following shell command to create a `tgz` archive with the TestCafe framework:
+1.  Run the following shell command to [package](https://docs.npmjs.com/cli/v7/commands/npm-pack) the framework:
 
     ```sh
     npm pack
     ```
 
-2. Run the following shell command to install the package globally. Replace the `path/to/package` part with the path of the `tgz` archive:
+    This command creates a `name-version.tgz` package in the `testcafe` folder.
+
+2.  Run the following shell command to install the package globally. Replace the `path/to/package` part with the path to the package:
 
     ```sh
     npm install -g path/to/package
     ```
 
-<!-- The `/lib` directory stores build artifacts. Build tasks remove this folder before they run. To remove this directory manually, run the following command:
-
-```sh
-gulp clean
-``` -->
+> [!NOTE]
+> The `/lib` directory stores build artifacts. Build tasks remove this folder before they run. To remove this directory manually, run the following command:
+>
+> ```sh
+> gulp clean
+> ```
 
 ## Test New Versions of Testcafe
 
@@ -120,7 +123,7 @@ If you need help with using TestCafe, or want to help other users, join the Test
 
 ## Contribute Code
 
-TestCafe expects contributor pull requests to meet certain standards. Before submitting a pull request, ensure that you have completed the following steps:
+TestCafe expects contributor pull requests to meet certain standards. Before submitting a pull request, ensure that you have completed the following tasks:
 
 -   Pull requests that fix bugs need to include regression tests. Pull requests that introduce new capabilities need to include unit tests and/or functional tests.
 
@@ -146,10 +149,10 @@ TestCafe expects contributor pull requests to meet certain standards. Before sub
 
 -   The TestCafe package includes a linter and rules for that linter. Lint your code before you submit it.
 
-Please keep in mind that the team may **suspend or reject** pull requests. There are multiple reasons why this could happen:
+Please keep in mind that the team may **suspend or reject** pull requests. There are multiple reasons why this can happen:
 
 -   Failure to meet [code contribution](#contribute-code) requirements.
 -   Poor quality code.
 -   Other [development priorities](https://testcafe.io/402949/roadmap) may take precedence.
 
-Please also note that we do not merge pull requests until the changes have been documented.
+Please also note that we do not merge pull requests until the changes are documented.
