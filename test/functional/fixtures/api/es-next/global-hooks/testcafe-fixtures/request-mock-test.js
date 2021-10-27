@@ -1,8 +1,8 @@
 import { Selector } from 'testcafe';
 
-fixture `Global`;
+fixture `Global request mock`;
 
-test('Global', async t => {
+test('test', async t => {
     await t
         .navigateTo('http://dummy-url.com')
         .expect(Selector('h1').textContent).eql('Mocked page')

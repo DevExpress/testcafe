@@ -129,5 +129,39 @@ if (isLocalChrome) {
         });
     });
 
+
+    describe('[API] Request Hooks', () => {
+        describe('RequestMock', () => {
+            before(async () => {
+                cafe = await createTestCafe({
+                    configFile: path.resolve('./test/functional/fixtures/api/es-next/global-hooks/data/request-mock-config.js'),
+                });
+            });
+
+            after(function () {
+                cafe.close();
+            });
+
+            it('Should mock requests', () => {
+                return runTestsLocal('test');
+            });
+        });
+
+        describe('RequestLogger', () => {
+            before(async () => {
+                cafe = await createTestCafe({
+                    configFile: path.resolve('./test/functional/fixtures/api/es-next/global-hooks/data/request-logger-config.js'),
+                });
+            });
+
+            after(function () {
+                cafe.close();
+            });
+
+            it('Should log requests', () => {
+                return runTestsLocal('test');
+            });
+        });
+    });
 }
 
