@@ -234,7 +234,7 @@ export default class Bootstrapper {
         const fixtureAfter  = this.hooks.fixture?.after || null;
         const testBefore    = this.hooks.test?.before ? wrapTestFunction(this.hooks.test.before) : null;
         const testAfter     = this.hooks.test?.after ? wrapTestFunction(this.hooks.test.after) : null;
-        const request       = this.hooks.request;
+        const request       = this.hooks.request || [];
 
         tests.forEach(item => {
             if (item.fixture) {
