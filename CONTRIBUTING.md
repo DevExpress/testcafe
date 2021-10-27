@@ -2,7 +2,7 @@
 
 TestCafe would not be possible without active support from the community. We appreciate and encourage your contributions.
 
-TestCafe is proud to follow the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md), which is a set of standards we expect all contributors to follow. This helps to create an open and welcoming environment so that everyone can participate.
+TestCafe is proud to follow a set of ethical standards called the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md). This code of conduct helps us create a more open and welcoming environment. Both project maintainers and project contributors should adhere to these rules.
 
 ### Table of Contents
 
@@ -36,33 +36,28 @@ node -v; npm -v
 
 If your system does not contain Node.js, download and install it from the [Node.js website](https://nodejs.org/en/).
 
-You also need [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) installed on your computer. Installation instructions differ depending on your operating system — consult the [Git website](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
+You also need [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) installed on your computer. Installation instructions depend on your operating system — consult the [Git website](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) for details.
 
 #### Build TestCafe
 
-1. [Fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) the [TestCafe repository](https://github.com/DevExpress/testcafe).
+1. [Clone](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) the [TestCafe repository](https://github.com/DevExpress/testcafe).
 
-2. [Clone](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) the repository.
-
-3. From the root directory of the TestCafe clone, run the following shell command to install dependencies:
+2. Navigate to the root directory of the repository. To install dependencies, run the following shell command:
 
     ```sh
     npm install
     ```
 
-    <!-- > [!NOTE]
-    > TestCafe comes with a TypeScript 3 compiler. If your development environment contains a TypeScript 4+ compiler, the two packages may come into conflict and prevent a successful installation of TestCafe. If you can't resolve this conflict by other means, use a TypeScript [version manager](https://github.com/watilde/tvm) to manually install a compatible TypeScript compiler and switch between the two. -->
-
-4. Run the following shell command to build the project:
+3. Run the following shell command to build the project:
     ```sh
     npx gulp build
     ```
 
-You can now choose one of two options to test the built project &mdash; `npm link`, or `npm install`.
+You now have two options to install the package you built in the previous step:
 
--   `npm link` is useful during testing, as you can write code and test iteratively without having to continually rebuild. This creates a [symlink](https://en.wikipedia.org/wiki/Symbolic_link), and so any changes you make in the `testcafe` project will be reflected in your test files directory.
+-   `npm link` is a useful option for testers and most other users. This command creates a [symbolic link](https://en.wikipedia.org/wiki/Symbolic_link) (symlink) that lets you use TestCafe while you make changes to its code.
 
--   `npm install` will create a local copy (rather than a symlink) of the `testcafe` package. You can also install the built project globally using the `-g` flag.
+-   Package the application and install it with `npm install package_name`.
 
 ##### npm link
 
@@ -78,18 +73,18 @@ You can now choose one of two options to test the built project &mdash; `npm lin
     npm link testcafe
     ```
 
-##### npm install
+##### Install from a package
 
-1. From the root of the `testcafe` directory, run the following shell command to pack the TestCafe project as a `tgz` package:
+1. From the root of the `testcafe` directory, run the following shell command to create a `tgz` archive with the TestCafe framework:
 
     ```sh
     npm pack
     ```
 
-2. Navigate to the directory with your test files. Run the following shell command to install the built TestCafe project, with the correct path of the `tgz` file, and where `x.y.z` is the version number:
+2. Run the following shell command to install the package globally. Replace the `path/to/package` part with the path of the `tgz` archive:
 
     ```sh
-    npm install testcafe-x.y.z.tgz
+    npm install -g path/to/package
     ```
 
 <!-- The `/lib` directory stores build artifacts. Build tasks remove this folder before they run. To remove this directory manually, run the following command:
@@ -125,22 +120,19 @@ If you need help with using TestCafe, or want to help other users, join the Test
 
 ## Contribute Code
 
-<!-- On your local machine, from the root directory of the project, run the following command to create a new branch. Replace `branch-name` with (what?)
+TestCafe expects contributor pull requests to meet certain standards. Before submitting a pull request, ensure that you have completed the following steps:
 
-```sh
-git checkout -b branch-name
-``` -->
+-   Pull requests that fix bugs need to include regression tests. Pull requests that introduce new capabilities need to include unit tests and/or functional tests.
 
-TestCafe has certain standards that need to be met. Before submitting a pull request, ensure that you have completed the following steps:
+-   Run the following shell commands to fetch upstream changes and rebase your branch onto `master`:
 
--   Add regression tests to the appropriate sections if you are fixing a bug. To find these sections, search for `Regression` in the code. If you are adding new functionality, add unit / functional tests.
--   Use the following commands to fetch upstream changes and rebase your branch onto `master`:
     ```sh
     git checkout master
     git fetch upstream
     git merge upstream/master
     ```
--   Run the following shell commands to run tests to check that everything works:
+
+-   Run the following shell commands to run tests:
 
     ```sh
     gulp test-server
@@ -148,8 +140,16 @@ TestCafe has certain standards that need to be met. Before submitting a pull req
     gulp test-client-local
     ```
 
--   The pull request name should describe the changes you implemented.
--   If you are fixing a bug, the pull request description should contain the [closes](https://github.blog/2013-05-14-closing-issues-via-pull-requests/) directive with the appropriate issue number.
--   Code must be linted without errors.
+-   Give the pull request a name that describes the changes you have made.
 
-Please keep in mind that the team may **suspend or reject** pull requests that fail to meet these requirements. We do not merge pull requests until the changes have been documented.
+-   If the pull request contains a bug fix, reference the issue that it [closes](https://github.blog/2013-05-14-closing-issues-via-pull-requests/) in the description.
+
+-   The TestCafe package includes a linter and rules for that linter. Lint your code before you submit it.
+
+Please keep in mind that the team may **suspend or reject** pull requests. There are multiple reasons why this could happen:
+
+-   Failure to meet [code contribution](#contribute-code) requirements.
+-   Poor quality code.
+-   Other [development priorities](https://testcafe.io/402949/roadmap) may take precedence.
+
+Please also note that we do not merge pull requests until the changes have been documented.
