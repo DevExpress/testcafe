@@ -24,7 +24,7 @@ TestCafe is proud to follow a set of ethical standards called the [Contributor C
 
 ## Build TestCafe from Source
 
-If you want to test the most up-to-date version of TestCafe, or you want to contribute code, you need to build the project from [source](https://github.com/DevExpress/testcafe).
+If you want to test the development version of TestCafe, or contribute code to the project, you need know how to build the framework from [source](https://github.com/DevExpress/testcafe).
 
 #### Prerequisites
 
@@ -59,7 +59,7 @@ You now have two options to install TestCafe:
 
 -   `npm link` is a useful option for testers and most other users. This command creates a [symbolic link](https://en.wikipedia.org/wiki/Symbolic_link) (symlink) that lets you use TestCafe while you make changes to its code.
 
--   `npm pack` creates a package, that you can install with `npm install package_name`.
+-   `npm pack` creates a package that you can install with `npm install package_name`.
 
 ##### npm link
 
@@ -69,7 +69,7 @@ You now have two options to install TestCafe:
     npm link
     ```
 
-2. Navigate to the directory with your test files, and run the following shell command:
+2. Navigate to the directory with your test files and run the following shell command:
 
     ```sh
     npm link testcafe
@@ -100,9 +100,9 @@ You now have two options to install TestCafe:
 
 ## Test New Versions of Testcafe
 
-Before we release a new version of TestCafe to the stable [npm channel](https://www.npmjs.com/package/testcafe), it's vital that we test everything thoroughly. Your feedback is invaluable during this stage.
+Before we publish new versions of TestCafe [on npm](https://www.npmjs.com/package/testcafe), we thoroughly test them. We invite you to participate in this process.
 
-Please note that we advise against running test versions in production.
+Please don't use the development version of TestCafe in production.
 
 ### Report Bugs and Issues
 
@@ -122,9 +122,11 @@ A Minimal Working Example should:
 -   Not contain code that does not help reproduce the issue. Remove actions that do not affect the outcome.
 -   Include a complete set of relevant data: the URL of the test page, the list of launch options, and the steps you follow to launch the tests.
 
+For further information, refer to our [MWE guide](https://testcafe.io/402636/faq#how-to-create-a-minimal-working-example-when-you-submit-an-issue).
+
 ### Ask for Community Support
 
-If you need help with using TestCafe, or want to help other users, join the TestCafe community on Stack Overflow. Ask and answer [questions with the TestCafe tag](https://stackoverflow.com/questions/tagged/testcafe).
+If you need help with TestCafe, or want to help other users, join the TestCafe community on Stack Overflow. Ask and answer [questions with the TestCafe tag](https://stackoverflow.com/questions/tagged/testcafe).
 
 ## Contribute Code
 
