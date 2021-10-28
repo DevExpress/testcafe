@@ -1,12 +1,8 @@
 # Contributing to TestCafe
 
-TestCafe would not be possible without active support from the community. We appreciate and encourage your contributions.
-
-TestCafe is proud to follow a set of ethical standards called the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md). This code of conduct helps us create a more open and welcoming environment. The TestCafe team expects both project maintainers and project contributors to adhere to these rules.
-
 ### Table of Contents
 
--   [The TestCafe Team](#the-testcafe-team)
+-   [The TestCafe Community](#the-testcafe-community)
 -   [Build TestCafe from Source](#build-testcafe-from-source)
     -   [Prerequisites](#prerequisites)
     -   [Build TestCafe](#build-testcafe)
@@ -16,13 +12,15 @@ TestCafe is proud to follow a set of ethical standards called the [Contributor C
     -   [Ask for Community Support](#ask-for-community-support)
 -   [Contribute Code](#contribute-code)
 
-## The TestCafe Team
+## The TestCafe Community
 
-TestCafe is maintained by a core team of developers at [Developer Express Inc.](https://devexpress.com)
+TestCafe is maintained by a core team of developers at [Developer Express](https://devexpress.com). TestCafe is an [open-source](https://github.com/DevExpress/testcafe/blob/master/LICENSE) project, and would not be possible without active support from the community. We appreciate and encourage your contributions.
 
 The TestCafe team maintains a [project roadmap](https://testcafe.io/402949/roadmap). This roadmap contains a list of capabilities that we want to implement in the near future. We update the roadmap as we receive user feedback.
 
 GitHub activity helps the TestCafe team gauge what our users want the most. Submit a [GitHub issue](https://github.com/DevExpress/testcafe/issues) to share your ideas about the future of TestCafe. Add votes and comments to existing issues to help us prioritise our work.
+
+TestCafe is proud to follow a set of ethical standards called the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md). This code of conduct helps us create a more open and welcoming environment. The TestCafe team expects both project maintainers and project contributors to adhere to these rules.
 
 ## Build TestCafe from Source
 
