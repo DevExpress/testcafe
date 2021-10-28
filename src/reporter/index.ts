@@ -219,13 +219,13 @@ export default class Reporter {
         if (!reporters.length)
             Reporter._addDefaultReporter(reporters);
 
-        return Promise.all(reporters.map(async ({ name, output }) => {
+        return Promise.all(reporters.map(async ({ name, output, options }) => {
             const pluginFactory = getPluginFactory(name);
             const processedName = processReporterName(name);
             const outStream     = output ? await Reporter._ensureOutStream(output) : void 0;
 
             return {
-                plugin: pluginFactory(),
+                plugin: pluginFactory(options),
                 name:   processedName,
                 outStream,
             };

@@ -853,8 +853,7 @@ describe('CLI argument parser', function () {
             { long: '--cache' },
             { long: '--disable-http2' },
             { long: '--proxyless' },
-            { long: '--dashboard-token' },
-            { long: '--dashboard-options' },
+            { long: '--dashboard', short: '-D' },
         ];
 
         const parser  = new CliArgumentParser('');
@@ -871,7 +870,7 @@ describe('CLI argument parser', function () {
         }
 
         const expectedRunOptionsCount   = 21;
-        const expectedOtherOptionsCount = 38;
+        const expectedOtherOptionsCount = 37;
         const otherOptionsCount         = options.length - expectedRunOptionsCount;
 
         expect(runOptionNames.length).eql(expectedRunOptionsCount, ADD_TO_RUN_OPTIONS_WARNING);
@@ -927,13 +926,12 @@ describe('CLI argument parser', function () {
 
     describe('Dashboard options', () => {
         it('should parse dashboard arguments', async () => {
-            const parser = await parse('--dashboard-token 12345 --dashboard-options noVideoUpload=true,buildId=1');
+            const parser = await parse('--dashboard token=12345,noVideoUpload=true,buildId=1');
 
-            expect(parser.opts.dashboardToken).equal('12345');
-            expect(parser.opts.dashboardOptions).to.be.ok;
-
-            expect(parser.opts.dashboardOptions.buildId).equal('1');
-            expect(parser.opts.dashboardOptions.noVideoUpload).equal(true);
+            expect(parser.opts.dashboard).to.be.ok;
+            expect(parser.opts.dashboard.token).equal('12345');
+            expect(parser.opts.dashboard.buildId).equal('1');
+            expect(parser.opts.dashboard.noVideoUpload).equal(true);
         });
     });
 });

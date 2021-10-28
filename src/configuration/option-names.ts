@@ -53,6 +53,7 @@ enum OptionNames {
     userVariables = 'userVariables',
     v8Flags = 'v8Flags',
     hooks = 'hooks',
+    dashboard = 'dashboard',
 }
 
 export default OptionNames;

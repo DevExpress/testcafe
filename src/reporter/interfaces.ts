@@ -14,6 +14,7 @@ export interface ReporterPlugin {
 export interface ReporterSource {
     name: string;
     output?: string | WritableStream;
+    options?: Record<string, any>;
 }
 
 export interface ReporterPluginSource {
@@ -23,5 +24,5 @@ export interface ReporterPluginSource {
 }
 
 export interface ReporterPluginFactory {
-    (): ReporterPlugin;
+    (options?: Record<string, any>): ReporterPlugin;
 }

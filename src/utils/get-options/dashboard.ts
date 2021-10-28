@@ -1,7 +1,7 @@
 import baseGetOptions from './base';
 import { Dictionary } from '../../configuration/interfaces';
 
-const STRING_OPTION_NAMES = ['buildId'];
+const STRING_OPTION_NAMES = ['buildId', 'token'];
 
 export default async function (options: string): Promise<Dictionary<number | string | boolean>> {
     return baseGetOptions(options, {

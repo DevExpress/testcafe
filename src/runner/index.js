@@ -510,7 +510,7 @@ export default class Runner extends EventEmitter {
             _options.reporter = [];
 
         if (!_options.reporter.some(reporter => reporter.name === DASHBOARD_REPORTER_NAME))
-            _options.reporter.push({ name: DASHBOARD_REPORTER_NAME });
+            _options.reporter.push({ name: DASHBOARD_REPORTER_NAME, options: _options.dashboard });
     }
 
     async _prepareClientScripts (tests, clientScripts) {
@@ -684,6 +684,12 @@ export default class Runner extends EventEmitter {
 
     compilerOptions (opts) {
         this._options[OPTION_NAMES.compilerOptions] = opts;
+
+        return this;
+    }
+
+    dashboard (opts) {
+        this._options[OPTION_NAMES.dashboard] = opts;
 
         return this;
     }

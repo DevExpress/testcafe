@@ -29,7 +29,6 @@ const createConfigFile = (configPath, options) => {
     fs.writeFileSync(configPath, JSON.stringify(options));
 };
 
-
 describe('Runner', () => {
     let testCafe                  = null;
     let runner                    = null;
@@ -217,26 +216,25 @@ describe('Runner', () => {
             }
         });
 
-        it('Should add the dashboard reporter if its options are specified', () => {
-            const storedRunTaskFn = runner._runTask;
+        describe('._addDashboardReporterIfNeeded', () => {
+            let sourceReporter = null;
 
-            runner._runTask = ({ reporters }) => {
-                console.log(reporters);
+            beforeEach(() => {
+                sourceReporter = runner._options.reporter;
+            });
 
-                expect(reporters).to.have.length(1);
+            afterEach(() => {
+                runner._options.reporter = sourceReporter;
 
-                expect(reporters[0].plugin.name).eql('dashboard');
-                // expect(reporters[0].plugin.name).eql('spec');                
+                delete runner._options.dashboard;
+            });
 
-                runner._runTask = storedRunTaskFn;
+            it('Should add the dashboard reporter if its options are specified', () => {
+                runner._options.dashboard = {};
+                runner._addDashboardReporterIfNeeded();
 
-                return Promise.resolve({});
-            };
-
-            return runner
-                .browsers(connection)
-                .src('test/server/data/test-suites/basic/testfile2.js')
-                .run({ dashboard: {} });
+                expect(runner._options.reporter[0].name).eql('dashboard');
+            });
         });
     });
 
