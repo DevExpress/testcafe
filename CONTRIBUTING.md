@@ -61,7 +61,7 @@ You now have two options to install TestCafe:
 
 -   `npm link` is a useful option for testers and most other users. This command creates a [symbolic link](https://en.wikipedia.org/wiki/Symbolic_link) (symlink) that lets you use TestCafe while you make changes to its code.
 
--   Package the application and install it with `npm install package_name`.
+-   `npm pack` creates a package, that you can install with `npm install package_name`.
 
 ##### npm link
 
@@ -153,7 +153,7 @@ TestCafe expects contributor pull requests to meet certain standards. Complete t
     gulp test-client-local
     ```
 
--   Give the pull request a name that describes the changes you have made.
+-   Give the pull request a name that describes the changes you made.
 
 -   If the pull request contains a bug fix, reference the issue that it [closes](https://github.blog/2013-05-14-closing-issues-via-pull-requests/) in the description.
 
