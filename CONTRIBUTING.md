@@ -16,13 +16,17 @@ TestCafe is proud to follow a set of ethical standards called the [Contributor C
     -   [Ask for Community Support](#ask-for-community-support)
 -   [Contribute Code](#contribute-code)
 
-## The TestCafe Project
+## The TestCafe Team
+
+TestCafe is maintained by a core team of developers at [Developer Express Inc.](https://devexpress.com)
 
 The TestCafe team maintains a [project roadmap](https://testcafe.io/402949/roadmap). This roadmap contains a list of capabilities that we want to implement in the near future. We update the roadmap as we receive user feedback.
 
 GitHub activity helps the TestCafe team gauge what our users want the most. Submit a [GitHub issue](https://github.com/DevExpress/testcafe/issues) to share your ideas about the future of TestCafe. Add votes and comments to existing issues to help us prioritise our work.
 
 ## Build TestCafe from Source
+
+If you want to test the most up-to-date version of TestCafe, or you want to contribute code, you need to build the project from [source](https://github.com/DevExpress/testcafe).
 
 #### Prerequisites
 
@@ -98,14 +102,17 @@ You now have two options to install TestCafe:
 
 ## Test New Versions of Testcafe
 
+Before we release a new version of TestCafe to the stable [npm channel](https://www.npmjs.com/package/testcafe), it's vital that we test everything thoroughly. Your feedback is invaluable during this stage.
+
+Please note that we advise against running test versions in production.
+
 ### Report Bugs and Issues
 
-If you encounter a bug with TestCafe, check if it has already been reported in the [GitHub repository](https://github.com/DevExpress/testcafe/issues). If it hasn't, please file a new issue.
+If you encounter a bug, check the [issue tracker](https://github.com/DevExpress/testcafe/issues) for an existing bug report. If no report for the issue exists, please file a new issue.
 
-When you create a new issue, a template is provided. Complete all sections of the template to help us understand the problem you are describing. Missing information could delay processing time.
+When you create a new issue, GitHub displays an issue template. Complete all sections of the template to help us understand the problem you are describing. Missing information could increase ticket processing time.
 
-> [!NOTE]
-> You are also welcome to [submit issues](https://github.com/DevExpress/testcafe/issues) relating to our [documentation](https://testcafe.io/documentation/402635/getting-started).
+You are also welcome to [submit issues](https://github.com/DevExpress/testcafe/issues) relating to our [documentation](https://testcafe.io/documentation/402635/getting-started).
 
 #### Create a Minimal Working Example
 
@@ -123,9 +130,12 @@ If you need help with using TestCafe, or want to help other users, join the Test
 
 ## Contribute Code
 
-TestCafe expects contributor pull requests to meet certain standards. Before submitting a pull request, ensure that you have completed the following tasks:
+TestCafe expects contributor pull requests to meet certain standards. Complete the following tasks before you submit a pull request:
 
--   Pull requests that fix bugs need to include regression tests. Pull requests that introduce new capabilities need to include unit tests and/or functional tests.
+-   Include appropriate tests:
+
+    -   If your code contains a bug fix, include regression tests.
+    -   If your code introduces new capabilities, include unit tests and/or functional tests.
 
 -   Run the following shell commands to fetch upstream changes and rebase your branch onto `master`:
 
@@ -135,7 +145,7 @@ TestCafe expects contributor pull requests to meet certain standards. Before sub
     git merge upstream/master
     ```
 
--   Run the following shell commands to run tests:
+-   Run the following shell commands to test the changes:
 
     ```sh
     gulp test-server
