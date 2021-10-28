@@ -6,7 +6,7 @@ TestCafe is proud to follow a set of ethical standards called the [Contributor C
 
 ### Table of Contents
 
--   [The TestCafe Project](#the-testcafe-project)
+-   [The TestCafe Team](#the-testcafe-team)
 -   [Build TestCafe from Source](#build-testcafe-from-source)
     -   [Prerequisites](#prerequisites)
     -   [Build TestCafe](#build-testcafe)
