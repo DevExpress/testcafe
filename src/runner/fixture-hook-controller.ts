@@ -136,8 +136,8 @@ export default class FixtureHookController {
         await this._runFixtureAfterHook(item, fixture.globalAfterFn, testRun);
 
         if (item.fixtureCtx) {
-            await testRun.compilerService?.removeFixtureCtxFromState({
-                fixtureId: fixture.id,
+            await testRun.compilerService?.removeFixtureCtxsFromState({
+                fixtureIds: [fixture.id],
             });
         }
 

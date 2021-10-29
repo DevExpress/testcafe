@@ -63,7 +63,7 @@ import {
     CommandLocator,
     AddUnexpectedErrorArguments,
     CheckWindowArgument,
-    RemoveFixtureCtxArguments,
+    RemoveFixtureCtxsArguments,
     RemoveUnitsFromStateArguments,
 } from './interfaces';
 
@@ -151,7 +151,7 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
             this.addUnexpectedError,
             this.checkWindow,
             this.removeTestRunFromState,
-            this.removeFixtureCtxFromState,
+            this.removeFixtureCtxsFromState,
             this.removeUnitsFromState,
         ], this);
     }
@@ -548,10 +548,10 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
         return proxy.call(this.removeTestRunFromState, { testRunId });
     }
 
-    public async removeFixtureCtxFromState ({ fixtureId }: RemoveFixtureCtxArguments): Promise<void> {
+    public async removeFixtureCtxsFromState ({ fixtureIds }: RemoveFixtureCtxsArguments): Promise<void> {
         const { proxy } = await this._getRuntime();
 
-        return proxy.call(this.removeFixtureCtxFromState, { fixtureId });
+        return proxy.call(this.removeFixtureCtxsFromState, { fixtureIds });
     }
 
     public async removeUnitsFromState ({ runnableConfigurationId }: RemoveUnitsFromStateArguments): Promise<void> {

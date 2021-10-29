@@ -2,10 +2,12 @@ import { resolve as resolvePath, dirname } from 'path';
 import debug from 'debug';
 import promisifyEvent from 'promisify-event';
 import { EventEmitter } from 'events';
+
 import {
     flattenDeep as flatten,
     pull as remove,
     isFunction,
+    uniq,
 } from 'lodash';
 
 import Bootstrapper from './bootstrapper';
@@ -92,7 +94,7 @@ export default class Runner extends EventEmitter {
         task.clearListeners();
         this._messageBus.abort();
 
-        await this._removeUnitsFromCompilerServiceState(runnableConfigurationId);
+        await this._finalizeCompilerServiceState(task, runnableConfigurationId);
         await this._disposeAssets(browserSet, reporters, testedApp);
     }
 
@@ -130,8 +132,18 @@ export default class Runner extends EventEmitter {
         return promise;
     }
 
-    async _removeUnitsFromCompilerServiceState (runnableConfigurationId) {
+    async _finalizeCompilerServiceState (task, runnableConfigurationId) {
+        if (!this.compilerService)
+            return;
+
         await this.compilerService?.removeUnitsFromState({ runnableConfigurationId });
+
+        // NOTE: In some cases (browser restart, stop task on first fail, etc.),
+        // the fixture contexts may not be deleted.
+        // We remove all fixture context at the end of test execution to clean forgotten contexts.
+        const fixtureIds = uniq(task.tests.map(test => test.fixture.id));
+
+        await this.compilerService.removeFixtureCtxsFromState({ fixtureIds });
     }
 
     // Run task
@@ -182,7 +194,7 @@ export default class Runner extends EventEmitter {
         }
 
         await this._disposeAssets(browserSet, reporters, testedApp);
-        await this._removeUnitsFromCompilerServiceState(runnableConfigurationId);
+        await this._finalizeCompilerServiceState(task, runnableConfigurationId);
 
         if (streamController.multipleStreamError)
             throw streamController.multipleStreamError;

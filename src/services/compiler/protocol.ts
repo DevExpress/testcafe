@@ -25,7 +25,7 @@ import {
     CommandLocator,
     AddUnexpectedErrorArguments,
     CheckWindowArgument,
-    RemoveFixtureCtxArguments,
+    RemoveFixtureCtxsArguments,
     RemoveUnitsFromStateArguments,
 } from './interfaces';
 
@@ -89,6 +89,6 @@ export interface CompilerProtocol extends TestRunDispatcherProtocol {
     addUnexpectedError ({ type, message }: AddUnexpectedErrorArguments): Promise<void>;
     checkWindow ({ url, title }: CheckWindowArgument): Promise<boolean>;
     removeTestRunFromState({ testRunId }: TestRunLocator): Promise<void>;
-    removeFixtureCtxFromState ({ fixtureId }: RemoveFixtureCtxArguments): Promise<void>;
+    removeFixtureCtxsFromState ({ fixtureIds }: RemoveFixtureCtxsArguments): Promise<void>;
     removeUnitsFromState ({ runnableConfigurationId }: RemoveUnitsFromStateArguments): Promise<void>;
 }
