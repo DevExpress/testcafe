@@ -18,13 +18,13 @@ TestCafe is maintained by a core team of developers at [Developer Express](https
 
 The TestCafe team maintains a [project roadmap](https://testcafe.io/402949/roadmap). This roadmap contains a list of capabilities that we want to implement in the near future. We update the roadmap as we receive user feedback.
 
-GitHub activity helps the TestCafe team gauge what our users want the most. Submit a [GitHub issue](https://github.com/DevExpress/testcafe/issues) to share your ideas about the future of TestCafe. Add votes and comments to existing issues to help us prioritise our work.
+GitHub activity helps the TestCafe team gauge what our users want the most. Submit a [GitHub issue](https://github.com/DevExpress/testcafe/issues) to share your ideas about the future of TestCafe. Add votes and comments to existing issues to help us prioritize our work.
 
 TestCafe is proud to follow a set of ethical standards called the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md). This code of conduct helps us create a more open and welcoming environment. The TestCafe team expects both project maintainers and project contributors to adhere to these rules.
 
 ## Build TestCafe from Source
 
-If you want to test the development version of TestCafe, or contribute code to the project, you need know how to build the framework from [source](https://github.com/DevExpress/testcafe).
+If you want to test the development version of TestCafe, or contribute code to the project, you need to know how to build the framework from [source](https://github.com/DevExpress/testcafe).
 
 #### Prerequisites
 
@@ -69,7 +69,7 @@ You now have two options to install TestCafe:
     npm link
     ```
 
-2. Navigate to the directory with your test files and run the following shell command:
+2. Navigate to the directory that contains your test files and run the following shell command:
 
     ```sh
     npm link testcafe
@@ -119,7 +119,7 @@ It is important to include a [Minimal Working Example](https://testcafe.io/40263
 A Minimal Working Example should:
 
 -   Be simple and easy to follow. Convoluted scenarios are hard to reproduce.
--   Not contain code that does not help reproduce the issue. Remove actions that do not affect the outcome.
+-   Exclude code that does not help reproduce the issue. Remove actions that do not affect the outcome.
 -   Include a complete set of relevant data: the URL of the test page, the list of launch options, and the steps you follow to launch the tests.
 
 For further information, refer to our [MWE guide](https://testcafe.io/402636/faq#how-to-create-a-minimal-working-example-when-you-submit-an-issue).
