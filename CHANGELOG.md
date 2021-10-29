@@ -1,5 +1,18 @@
 # Changelog
 
+## v1.17.1 (2021-10-29)
+
+### Enhancements
+
+- TestCafe now allows you to specify test run hooks and executes these hooks before and after the test run ([#6487](https://github.com/DevExpress/testcafe/pull/6487)).
+- The [reportTestStart](https://testcafe.io/documentation/402790/reference/plugin-api/reporter#reportteststart) method now has the `testStartInfo` parameter that contains detailed information about the test start ([#6441](https://github.com/DevExpress/testcafe/pull/6441)).
+
+### Bug Fixes
+
+- TestCafe does not switch back to a tested web page if a button click opens a new window to download a file ([#6242](https://github.com/DevExpress/testcafe/issues/6242)). 
+- Fixed the "This socket has been ended by the other party" error ([#6558](https://github.com/DevExpress/testcafe/issues/6558)). 
+- TestCafe incorrectly handles rewritten uninitialized iframes ([#2694](https://github.com/DevExpress/testcafe-hammerhead/issues/2694)). 
+
 ## v1.16.1 (2021-10-05)
 
 ### Bug Fixes
