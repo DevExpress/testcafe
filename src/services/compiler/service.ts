@@ -548,6 +548,8 @@ class CompilerService implements CompilerProtocol {
 
         for (const unitId of unitIds)
             delete this.state.units[unitId];
+
+        delete this._runnableConfigurationUnitsRelations[runnableConfigurationId];
     }
 }
 
