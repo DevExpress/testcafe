@@ -2,17 +2,17 @@ import adapter from './adapter/index';
 
 
 const isVisibilityHiddenNode = function (node: Node): boolean {
-    return !!adapter.findParent(node, true, (ancestor: Node) =>
-        adapter.isElementNode(ancestor) && adapter.getStyle(ancestor, 'visibility') === 'hidden');
+    return !!adapter.dom.findParent(node, true, (ancestor: Node) =>
+        adapter.dom.isElementNode(ancestor) && adapter.style.get(ancestor, 'visibility') === 'hidden');
 };
 
 const isHiddenNode = function (node: Node): boolean {
-    return !!adapter.findParent(node, true, (ancestor: Node) =>
-        adapter.isElementNode(ancestor) && adapter.getStyle(ancestor, 'display') === 'none');
+    return !!adapter.dom.findParent(node, true, (ancestor: Node) =>
+        adapter.dom.isElementNode(ancestor) && adapter.style.get(ancestor, 'display') === 'none');
 };
 
 export function isNotVisibleNode (node: Node): boolean {
-    return !adapter.isRenderedNode(node) || isHiddenNode(node) || isVisibilityHiddenNode(node);
+    return !adapter.dom.isRenderedNode(node) || isHiddenNode(node) || isVisibilityHiddenNode(node);
 }
 
 export function hasDimensions (el: HTMLElement): boolean {

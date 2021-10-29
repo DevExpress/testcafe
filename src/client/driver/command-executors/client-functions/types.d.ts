@@ -43,12 +43,14 @@ export interface NativeMethods {
     Promise: typeof Promise;
     dateNow: DateConstructor['now'];
     isArray: ArrayConstructor['isArray'];
+    arrayFilter: any[]['filter'];
     NodeList: typeof NodeList;
     HTMLCollection: typeof HTMLCollection;
     setTimeout: Window['setTimeout'];
     elementClass: typeof Element;
     svgElementClass: typeof SVGElement;
     closest: Element['closest'];
+    matches: Element['matches'];
     getAttribute: Element['getAttribute'];
     querySelector: HTMLElement['querySelector'];
     querySelectorAll: HTMLElement['querySelectorAll'];

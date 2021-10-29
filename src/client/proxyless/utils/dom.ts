@@ -1,6 +1,4 @@
 import nativeMethods from '../native-methods';
-import * as styleUtils from './style';
-
 
 const NOT_CONTENT_EDITABLE_ELEMENTS_RE = /^(select|option|applet|area|audio|canvas|datalist|keygen|map|meter|object|progress|source|track|video|img)$/;
 const INPUT_ELEMENTS_RE                = /^(input|textarea|button)$/;
@@ -13,6 +11,8 @@ const Text                  = window.Text;
 const HTMLMapElement        = window.HTMLMapElement;
 const HTMLAreaElement       = window.HTMLAreaElement;
 const HTMLSelectElement     = window.HTMLSelectElement;
+const HTMLHtmlElement       = window.HTMLHtmlElement;
+const HTMLBodyElement       = window.HTMLBodyElement;
 const ProcessingInstruction = window.ProcessingInstruction;
 
 
@@ -36,9 +36,46 @@ export function isOptionElement (el: unknown): el is HTMLOptionElement {
     return el instanceof HTMLOptionElement;
 }
 
+export function isBodyElement (el: unknown): el is HTMLBodyElement {
+    return el instanceof HTMLBodyElement;
+}
+
+export function isHtmlElement (el: unknown): el is HTMLHtmlElement {
+    return el instanceof HTMLHtmlElement;
+}
+
 export function getTagName (el: Element): string {
     // NOTE: Check for tagName being a string, because it may be a function in an Angular app (T175340).
     return el && typeof el.tagName === 'string' ? el.tagName.toLowerCase() : '';
+}
+
+function getParent (el: Element): Element | null {
+    el = el.assignedSlot || el;
+
+    // @ts-ignore
+    return el.parentNode || el.host; // eslint-disable-line no-restricted-properties
+}
+
+export function matches (el: Element, selector: string): boolean {
+    if (!isElementNode(el))
+        return false;
+
+    return nativeMethods.matches.call(el, selector);
+}
+
+export function getParents (el: Element, selector?: string): Element[] {
+    const parents = [];
+
+    let parent = getParent(el);
+
+    while (parent) {
+        if (!selector && isElementNode(parent) || selector && matches(parent, selector))
+            parents.push(parent);
+
+        parent = getParent(parent);
+    }
+
+    return parents;
 }
 
 export function getActiveElement (): Element {
@@ -54,17 +91,6 @@ export function getSelectParent (el: Node): HTMLSelectElement | null {
     const parent = el.parentNode; // eslint-disable-line no-restricted-properties
 
     return closest(parent as Element, 'select') as HTMLSelectElement;
-}
-
-export function isOptionElementVisible (el: HTMLOptionElement): boolean {
-    const parentSelect = getSelectParent(el);
-
-    if (!parentSelect)
-        return true;
-
-    const selectSizeValue = styleUtils.getSelectElementSize(parentSelect);
-
-    return selectSizeValue > 1;
 }
 
 export function isMapElement (el: unknown): el is HTMLMapElement | HTMLAreaElement {
