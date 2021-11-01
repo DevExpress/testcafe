@@ -6,7 +6,7 @@
 
 #### Test Run Hooks
 
-TestCafe now allows you to specify test run hooks. TestCafe executes these hooks before and after the entire test run ([#6487](https://github.com/DevExpress/testcafe/pull/6487)).
+TestCafe now allows you to specify test run hooks. TestCafe executes these hooks before and after the test run ([#6487](https://github.com/DevExpress/testcafe/pull/6487)).
 
 ```js
 module.exports = {
