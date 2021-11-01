@@ -6,7 +6,7 @@
 
 #### Test Run Hooks
 
-TestCafe now allows you to specify test run hooks. TestCafe executes these hooks before and after the entire test run ([#6487](https://github.com/DevExpress/testcafe/pull/6487)).
+TestCafe now allows you to specify test run hooks. TestCafe executes these hooks before and after the entire test run ([PR #6487](https://github.com/DevExpress/testcafe/pull/6487)).
 
 ```js
 module.exports = {
@@ -26,7 +26,7 @@ module.exports = {
 
 #### Execution Timeouts
 
-You can now specify test and run execution timeouts in the [configuration file](https://testcafe.io/documentation/402638/reference/configuration-file) or [command line interface](https://testcafe.io/documentation/402639/reference/command-line-interface). TestCafe terminates a test or a test run, if a timeout expires.
+You can now specify test and run execution timeouts in the [configuration file](https://testcafe.io/documentation/402638/reference/configuration-file) or [command line interface](https://testcafe.io/documentation/402639/reference/command-line-interface). TestCafe terminates a test or a test run when a timeout expires.
 
 **Command line interface**
 
