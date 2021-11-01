@@ -1,11 +1,49 @@
 # Changelog
 
-## v1.17.1 (2021-10-29)
+## v1.17.0 (2021-11-01)
 
 ### Enhancements
 
-- TestCafe now allows you to specify test run hooks and executes these hooks before and after the test run ([#6487](https://github.com/DevExpress/testcafe/pull/6487)).
-- The [reportTestStart](https://testcafe.io/documentation/402790/reference/plugin-api/reporter#reportteststart) method now has the `testStartInfo` parameter that contains detailed information about the test start ([#6441](https://github.com/DevExpress/testcafe/pull/6441)).
+#### Test Run Hooks
+
+TestCafe now allows you to specify test run hooks. TestCafe executes these hooks before and after the entire test run ([#6487](https://github.com/DevExpress/testcafe/pull/6487)).
+
+# [JS](#tab/tabid-js)
+
+```js
+module.exports = {
+  hooks: {
+    testRun: {
+      before: async () => {
+        // your code
+      },
+      after: async () => {
+        // your code
+      },
+    },
+  },
+};
+```
+***
+
+#### Execution Timeouts
+
+You can now specify test and run execution timeouts in the [configuration file](https://testcafe.io/documentation/402638/reference/configuration-file) or [command line interface](https://testcafe.io/documentation/402639/reference/command-line-interface). TestCafe terminates a test or a test run, if a timeout expires.
+
+**Command line interface**
+
+```sh
+testcafe chrome my-tests --test-execution-timeout 180000
+testcafe chrome my-tests --run-execution-timeout 180000
+```
+**Configuration file**
+
+```json
+{
+    "runExecutionTimeout": 180000,
+    "testExecutionTimeout": 180000
+}
+```
 
 ### Bug Fixes
 
