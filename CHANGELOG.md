@@ -22,7 +22,6 @@ module.exports = {
   },
 };
 ```
-***
 
 #### Execution Timeouts
 
