@@ -753,7 +753,7 @@ describe('CLI argument parser', function () {
     });
 
     it('Should parse command line arguments', function () {
-        return parse('-r list -S -q -e --hostname myhost --proxy localhost:1234 --proxy-bypass localhost:5678 --qr-code --app run-app --speed 0.5 --debug-on-fail --disable-page-reloads --retry-test-pages --dev --sf --disable-page-caching --disable-http2 --proxyless ie test/server/data/file-list/file-1.js')
+        return parse('-r list -S -q -e --hostname myhost --proxy localhost:1234 --proxy-bypass localhost:5678 --qr-code --app run-app --speed 0.5 --debug-on-fail --disable-page-reloads --retry-test-pages --dev --sf --disable-page-caching --disable-http2 --proxyless ie test/server/data/file-list/file-1.js --dashboard token=qwe.rty,noVideoUpload=true')
             .then(parser => {
                 expect(parser.opts.browsers).eql(['ie']);
                 expect(parser.opts.src).eql(['test/server/data/file-list/file-1.js']);
@@ -778,6 +778,7 @@ describe('CLI argument parser', function () {
                 expect(parser.opts.retryTestPages).to.be.ok;
                 expect(parser.opts.disableHttp2).to.be.ok;
                 expect(parser.opts.proxyless).to.be.ok;
+                expect(parser.opts.dashboard).eql({ token: 'qwe.rty', noVideoUpload: true });
             });
     });
 
