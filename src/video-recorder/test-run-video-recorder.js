@@ -21,6 +21,9 @@ export default class TestRunVideoRecorder {
         this.path            = path;
         this.ffmpegPath      = ffmpegPath;
         this.encodingOptions = encodingOptions;
+
+        this.start     = null;
+        this.timecodes = null;
     }
 
     get testRunInfo () {
@@ -28,6 +31,7 @@ export default class TestRunVideoRecorder {
             testIndex:       this.index,
             fixture:         this.test.fixture.name,
             test:            this.test.name,
+            timecodes:       this.timecodes,
             alias:           this._connection.browserInfo.alias,
             parsedUserAgent: this._connection.browserInfo.parsedUserAgent,
         };
@@ -43,6 +47,8 @@ export default class TestRunVideoRecorder {
 
     async startCapturing () {
         await this.videoRecorder.startCapturing();
+
+        this.start = Date.now();
     }
 
     async finishCapturing () {
@@ -64,6 +70,16 @@ export default class TestRunVideoRecorder {
 
     async isVideoEnabled () {
         return !this.test.skip;
+    }
+
+    onTestRunRestart () {
+        this.timecodes = this.timecodes || [0];
+
+        this._addTimeCode();
+    }
+
+    _addTimeCode () {
+        this.timecodes.push(Date.now() - this.start);
     }
 
     _createVideoRecorderProcess () {

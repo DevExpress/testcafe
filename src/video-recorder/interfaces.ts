@@ -2,6 +2,7 @@ export interface TestRunVideoInfo {
     testRunId: string;
     videoPath: string;
     singleFile: boolean;
+    timecodes?: number[];
 }
 
 export interface TestVideoInfo {
@@ -12,6 +13,7 @@ export interface TestRunVideoSavedEventArgs {
     testRun: { id: string; test: { id: string } };
     videoPath: string;
     singleFile: boolean;
+    timecodes?: number[];
 }
 
 export interface VideoOptions {

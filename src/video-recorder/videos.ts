@@ -37,7 +37,7 @@ export default class Videos {
         return new VideoRecorder(browserJob, videoPath, options, videoEncodingOptions, warningLog);
     }
 
-    private _addTestRunVideoInfo ({ testRun, videoPath, singleFile }: TestRunVideoSavedEventArgs): void {
+    private _addTestRunVideoInfo ({ testRun, videoPath, singleFile, timecodes }: TestRunVideoSavedEventArgs): void {
         const testId: string         = testRun.test.id;
         let testVideo: TestVideoInfo = this.testVideoInfos[testId];
 
@@ -47,10 +47,15 @@ export default class Videos {
             this.testVideoInfos[testId] = testVideo;
         }
 
-        testVideo.recordings.push({
+        const recording: TestRunVideoInfo = {
             testRunId: testRun.id,
             videoPath,
             singleFile,
-        });
+        };
+
+        if (timecodes)
+            recording.timecodes = timecodes;
+
+        testVideo.recordings.push(recording);
     }
 }

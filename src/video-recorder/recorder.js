@@ -68,6 +68,7 @@ export default class VideoRecorder extends EventEmitter {
         browserJob.on('test-run-create', this._createSafeListener(this._onTestRunCreate));
         browserJob.on('test-run-ready', this._createSafeListener(this._onTestRunReady));
         browserJob.on('test-run-before-done', this._createSafeListener(this._onTestRunBeforeDone));
+        browserJob.on('test-run-restart', this._createSafeListener(this._onTestRunRestart));
     }
 
     _addProblematicPlaceholdersWarning (placeholders) {
@@ -160,6 +161,15 @@ export default class VideoRecorder extends EventEmitter {
         await testRunRecorder.startCapturing();
     }
 
+    async _onTestRunRestart ({ index }) {
+        const testRunRecorder = this.testRunVideoRecorders[index];
+
+        if (!testRunRecorder)
+            return;
+
+        testRunRecorder.onTestRunRestart();
+    }
+
     async _onTestRunBeforeDone ({ index }) {
         const testRunRecorder = this.testRunVideoRecorders[index];
 
@@ -177,7 +187,16 @@ export default class VideoRecorder extends EventEmitter {
 
         await this._saveFiles(testRunRecorder, videoPath);
 
-        this.emit('test-run-video-saved', { testRun: testRunRecorder.testRun, videoPath, singleFile: !!this.singleFile });
+        const testRunVideoSavedEventArgs = {
+            testRun:    testRunRecorder.testRun,
+            videoPath,
+            singleFile: !!this.singleFile,
+        };
+
+        if (!this.singleFile)
+            testRunVideoSavedEventArgs.timecodes = testRunRecorder.testRunInfo.timecodes;
+
+        this.emit('test-run-video-saved', testRunVideoSavedEventArgs);
     }
 
     async _saveFiles (testRunRecorder, videoPath) {
