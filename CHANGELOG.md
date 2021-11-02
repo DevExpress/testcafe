@@ -53,7 +53,7 @@ testcafe chrome my-tests --run-execution-timeout 180000
 ### Bug Fixes
 
 - TestCafe fails to continue the test after the user downloads a file. ([#6242](https://github.com/DevExpress/testcafe/issues/6242)).
-- The TestCafe proxy does not execute the "uncork" event after working with web sockets. This omission leads to the "This socket has been ended by the other party" error ([#6558](https://github.com/DevExpress/testcafe/issues/6558)).
+- The TestCafe proxy does not fire the "unpipe" event when necessary. This omission leads to the "This socket has been ended by the other party" error ([#6558](https://github.com/DevExpress/testcafe/issues/6558)).
 - TestCafe incorrectly handles rewritten uninitialized iframes ([testcafe-hammerhead/#2694](https://github.com/DevExpress/testcafe-hammerhead/issues/2694), [testcafe-hammerhead/#2693](https://github.com/DevExpress/testcafe-hammerhead/issues/2693)).
 
 ## v1.16.1 (2021-10-05)
