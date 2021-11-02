@@ -10,16 +10,24 @@ You can now specify [global test and fixture hooks](https://testcafe.io/document
 
 ```js
 module.exports = {
-  hooks: {
-    fixture: {
-      before: fn(ctx),
-      after: fn(ctx),
+    hooks: {
+        fixture: {
+            before: async (ctx) => {
+                // your code
+            },
+            after: async (ctx) => {
+                // your code
+            },
+        },
+        test: {
+            before: async (t) => {
+                // your code
+            },
+            after: async (t) => {
+                // your code
+            },
+        },
     },
-    test: {
-      before: fn(t),
-      after: fn(t),
-    },
-  },
 };
 ```
 
