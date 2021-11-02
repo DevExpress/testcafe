@@ -12,6 +12,6 @@ describe('[Raw API] Execute expression action', function () {
     });
 
     it("Shouldn't lose context in nested functions with Selector", function () {
-        return runTests('./testcafe-fixtures/shared-context.testcafe', "Don't lose context in nested functions");
+        return runTests('./testcafe-fixtures/shared-context.testcafe', "Don't lose context in nested functions", { skipJsErrors: true });
     });
 });
