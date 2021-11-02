@@ -26,31 +26,6 @@ export function getIframeClientCoordinates (iframe) {
 }
 
 export function getClientDimensions (target) {
-    if (!domUtils.isDomElement(target)) {
-        const clientPoint = offsetToClientCoords(target);
-
-        return {
-            width:  0,
-            height: 0,
-
-            border: {
-                bottom: 0,
-                left:   0,
-                right:  0,
-                top:    0,
-            },
-            scroll: {
-                left: 0,
-                top:  0,
-            },
-
-            left:   clientPoint.x,
-            right:  clientPoint.x,
-            top:    clientPoint.y,
-            bottom: clientPoint.y,
-        };
-    }
-
     const isHtmlElement       = /html/i.test(target.tagName);
     const body                = isHtmlElement ? target.getElementsByTagName('body')[0] : null;
     const elementBorders      = styleUtils.getBordersWidth(target);
