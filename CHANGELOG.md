@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.17.0 (2021-11-01)
+## v1.17.0 (2021-11-02)
 
 ### Enhancements
 
@@ -44,9 +44,9 @@ testcafe chrome my-tests --run-execution-timeout 180000
 
 ### Bug Fixes
 
-- TestCafe does not switch back to a tested web page if a button click opens a new window to download a file ([#6242](https://github.com/DevExpress/testcafe/issues/6242)). 
-- Fixed the "This socket has been ended by the other party" error ([#6558](https://github.com/DevExpress/testcafe/issues/6558)). 
-- TestCafe incorrectly handles rewritten uninitialized iframes ([testcafe-hammerhead/#2694](https://github.com/DevExpress/testcafe-hammerhead/issues/2694), [testcafe-hammerhead/#2693](https://github.com/DevExpress/testcafe-hammerhead/issues/2693)). 
+- TestCafe does not switch back to a tested web page if a button click opens a new window to download a file ([#6242](https://github.com/DevExpress/testcafe/issues/6242)).
+- Fixed the "This socket has been ended by the other party" error ([#6558](https://github.com/DevExpress/testcafe/issues/6558)).
+- TestCafe incorrectly handles rewritten uninitialized iframes ([testcafe-hammerhead/#2694](https://github.com/DevExpress/testcafe-hammerhead/issues/2694), [testcafe-hammerhead/#2693](https://github.com/DevExpress/testcafe-hammerhead/issues/2693)).
 
 ## v1.16.1 (2021-10-05)
 
