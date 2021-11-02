@@ -1169,8 +1169,8 @@ $(document).ready(function () {
             },
 
             scrollbar: {
-                bottom: 0,
                 right:  0,
+                bottom: 0,
             },
         };
 
@@ -1195,16 +1195,16 @@ $(document).ready(function () {
             },
 
             scrollbar: {
-                bottom: 0,
                 right:  0,
+                bottom: 0,
             },
         };
 
-        deepEqual(positionUtils.calcRelativePosition(mockChildDimension, mockParentDimension), {
+        strictEqual(JSON.stringify(positionUtils.calcRelativePosition(mockChildDimension, mockParentDimension)), JSON.stringify({
             top:    4,
             right:  431,
             bottom: 4,
             left:   572,
-        });
+        }));
     });
 });

@@ -25,6 +25,9 @@ const nativeMethods: NativeMethods = {
     getAttribute:     window.Element.prototype.getAttribute,
     querySelector:    window.HTMLElement.prototype.querySelector,
     querySelectorAll: window.HTMLElement.prototype.querySelectorAll,
+
+    // @ts-ignore
+    contentWindowGetter: window.Object.getOwnPropertyDescriptor(window.HTMLIFrameElement.prototype, 'contentWindow').get,
 };
 
 export default nativeMethods;

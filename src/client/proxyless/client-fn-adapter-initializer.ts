@@ -2,7 +2,7 @@ import { ClientFunctionAdapter } from '../driver/command-executors/client-functi
 import nativeMethods from './native-methods';
 import * as domUtils from './utils/dom';
 import * as styleUtils from './utils/style';
-import { isElementVisible } from '../core/utils/visibility.shared';
+import { isElementVisible } from '../core/utils/shared/visibility';
 
 
 const initializer: ClientFunctionAdapter = {

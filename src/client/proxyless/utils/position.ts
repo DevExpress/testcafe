@@ -1,15 +1,12 @@
 import * as domUtils from './dom';
 import * as styleUtils from './style';
 import nativeMethods from '../native-methods';
-import { ElementRectangle } from '../../core/utils/types';
+import { ElementRectangle } from '../../core/utils/shared/types';
+import { BoundaryValuesData } from '../../core/utils/shared/values/boundary-values';
+import AxisValues, { AxisValuesData, LeftTopValues } from '../../core/utils/shared/values/axis-values';
 
 
-interface Coords {
-    x: number;
-    y: number;
-}
-
-function calcOffsetPosition (el: Element, borders: styleUtils.RoundedValues, offsetPosition: styleUtils.Offset): styleUtils.Offset {
+function calcOffsetPosition (el: Element, borders: BoundaryValuesData, offsetPosition: LeftTopValues<number>): LeftTopValues<number> {
     if (domUtils.isSVGElementOrChild(el)) {
         const relativeRectangle = getSvgElementRelativeRectangle(el);
 
@@ -25,20 +22,18 @@ function calcOffsetPosition (el: Element, borders: styleUtils.RoundedValues, off
     };
 }
 
-function offsetToClientCoords (coords: Coords, currentDocument?: Document): Coords {
-    const doc                = currentDocument || document;
-    const documentScrollLeft = styleUtils.getScrollLeft(doc);
-    const documentScrollTop  = styleUtils.getScrollTop(doc);
-    const bodyScrollLeft     = styleUtils.getScrollLeft(doc.body);
-    const bodyScrollTop      = styleUtils.getScrollTop(doc.body);
-
-    const scrollLeft = documentScrollLeft === 0 && bodyScrollLeft !== 0 ? bodyScrollLeft : documentScrollLeft;
-    const scrollTop  = documentScrollTop === 0 && bodyScrollTop !== 0 ? bodyScrollTop : documentScrollTop;
-
-    return {
-        x: coords.x - scrollLeft,
-        y: coords.y - scrollTop,
+export function offsetToClientCoords (coords: AxisValuesData<number>, currentDocument?: Document): AxisValuesData<number> {
+    const doc            = currentDocument || document;
+    const docScrollLeft  = styleUtils.getScrollLeft(doc);
+    const docScrollTop   = styleUtils.getScrollTop(doc);
+    const bodyScrollLeft = styleUtils.getScrollLeft(doc.body);
+    const bodyScrollTop  = styleUtils.getScrollTop(doc.body);
+    const scroll         = {
+        x: docScrollLeft === 0 && bodyScrollLeft !== 0 ? bodyScrollLeft : docScrollLeft,
+        y: docScrollTop === 0 && bodyScrollTop !== 0 ? bodyScrollTop : docScrollTop,
     };
+
+    return AxisValues.create(coords).sub(scroll);
 }
 
 function getOffsetParent (el: Element): Element | null {
@@ -70,8 +65,8 @@ function getSvgElementRelativeRectangle (el: SVGElement): ElementRectangle {
         const htmlEl = el as HTMLElement;
 
         const offsetParent       = getOffsetParent(el) as Element;
-        const elOffset           = styleUtils.getOffset(el) as styleUtils.Offset;
-        const offsetParentOffset = styleUtils.getOffset(offsetParent) as styleUtils.Offset;
+        const elOffset           = styleUtils.getOffset(el) as LeftTopValues<number>;
+        const offsetParentOffset = styleUtils.getOffset(offsetParent) as LeftTopValues<number>;
         const offsetParentIsBody = domUtils.getTagName(offsetParent) === 'body';
 
         return {
@@ -118,8 +113,8 @@ function getSvgElementRelativeRectangle (el: SVGElement): ElementRectangle {
     return elementRect;
 }
 
-function calcOffsetPositionInIframe (el: Element, borders: styleUtils.RoundedValues, offsetPosition: styleUtils.Offset,
-    doc: Document, currentIframe: HTMLIFrameElement | HTMLFrameElement): styleUtils.Offset {
+function calcOffsetPositionInIframe (el: Element, borders: BoundaryValuesData, offsetPosition: LeftTopValues<number>,
+    doc: Document, currentIframe: HTMLIFrameElement | HTMLFrameElement): LeftTopValues<number> {
 
     const iframeBorders = styleUtils.getBordersWidth(currentIframe);
 
@@ -174,7 +169,7 @@ function getSelectChildRectangle (el: HTMLElement): ElementRectangle {
     return getElementRectangle(el);
 }
 
-function getOffsetPosition (el: Element | Document, roundFn = Math.round): styleUtils.Offset {
+export function getOffsetPosition (el: Element | Document, roundFn = Math.round): LeftTopValues<number> {
     if (domUtils.isMapElement(el)) {
         const rectangle = getMapElementRectangle(el);
 
@@ -194,9 +189,9 @@ function getOffsetPosition (el: Element | Document, roundFn = Math.round): style
     let top;
 
     if (!isInIframe || !currentIframe)
-        ({ left, top } = calcOffsetPosition(el as Element, borders, offsetPosition as styleUtils.Offset));
+        ({ left, top } = calcOffsetPosition(el as Element, borders, offsetPosition as LeftTopValues<number>));
     else
-        ({ left, top } = calcOffsetPositionInIframe(el as Element, borders, offsetPosition as styleUtils.Offset, doc, currentIframe));
+        ({ left, top } = calcOffsetPositionInIframe(el as Element, borders, offsetPosition as LeftTopValues<number>, doc, currentIframe));
 
     if (typeof roundFn === 'function') {
         left = roundFn(left);

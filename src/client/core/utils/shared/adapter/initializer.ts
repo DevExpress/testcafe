@@ -1,8 +1,8 @@
 // @ts-ignore
-import { nativeMethods, utils } from '../../deps/hammerhead';
-import * as dom from '../dom';
-import * as position from '../position';
-import * as style from '../style';
+import { nativeMethods, utils } from '../../../deps/hammerhead';
+import * as dom from '../../dom';
+import * as position from '../../position';
+import * as style from '../../style';
 import { CoreUtilsAdapter } from '../types';
 
 const browser = utils.browser;

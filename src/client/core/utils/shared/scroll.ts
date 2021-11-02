@@ -94,7 +94,7 @@ export function getScrollableParents (element: Element): Element[] {
     const parentsArray = adapter.dom.getParents(element);
 
     if (adapter.dom.isElementInIframe(element)) {
-        const iframe = adapter.dom.getIframeByElement(element as HTMLElement);
+        const iframe = adapter.dom.getIframeByElement(element);
 
         if (iframe) {
             const iFrameParents = adapter.dom.getParents(iframe);

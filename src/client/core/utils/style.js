@@ -1,8 +1,8 @@
 import hammerhead from '../deps/hammerhead';
 import * as domUtils from './dom';
 
-export * from './style.shared';
-export { hasScroll } from './scroll.shared';
+export * from './shared/style';
+export { hasScroll } from './shared/scroll';
 
 
 const styleUtils   = hammerhead.utils.style;
