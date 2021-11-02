@@ -4,28 +4,36 @@
 
 ### Enhancements
 
-#### Test Run Hooks
+#### Global Test and Fixture Hooks
 
-TestCafe now allows you to specify test run hooks. TestCafe executes these hooks before and after the test run ([#6487](https://github.com/DevExpress/testcafe/pull/6487)).
+You can now specify [global test and fixture hooks](https://testcafe.io/documentation/403435/guides/advanced-guides/hooks#global-hooks). TestCafe attaches these hooks to every test / fixture in the test suite.
 
 ```js
 module.exports = {
-  hooks: {
-    testRun: {
-      before: async () => {
-        // your code
-      },
-      after: async () => {
-        // your code
-      },
-    },
-  },
+    hooks: {
+        fixture: {
+            before: async (ctx) => {
+                // your code
+            },
+            after: async (ctx) => {
+                // your code
+            }
+        },
+        test: {
+            before: async (t) => {
+                // your code
+            },
+            after: async (t) => {
+                // your code
+            }
+        }
+    }
 };
 ```
 
 #### Execution Timeouts
 
-You can now specify test and run execution timeouts in the [configuration file](https://testcafe.io/documentation/402638/reference/configuration-file) or [command line interface](https://testcafe.io/documentation/402639/reference/command-line-interface). TestCafe terminates a test or a test run when a timeout expires.
+You can now specify custom timeouts for tests and test runs. If a test/test run is idle or unresponsive for the specified length of time, TestCafe terminates it. Specify these timeouts in the [configuration file](https://testcafe.io/documentation/402638/reference/configuration-file) or from the [command line](https://testcafe.io/documentation/402639/reference/command-line-interface). 
 
 **Command line interface**
 
@@ -44,8 +52,8 @@ testcafe chrome my-tests --run-execution-timeout 180000
 
 ### Bug Fixes
 
-- TestCafe does not switch back to a tested web page if a button click opens a new window to download a file ([#6242](https://github.com/DevExpress/testcafe/issues/6242)).
-- Fixed the "This socket has been ended by the other party" error ([#6558](https://github.com/DevExpress/testcafe/issues/6558)).
+- TestCafe fails to continue the test after the user downloads a file. ([#6242](https://github.com/DevExpress/testcafe/issues/6242)).
+- The TestCafe proxy does not fire the "unpipe" event when necessary. This omission leads to the "This socket has been ended by the other party" error ([#6558](https://github.com/DevExpress/testcafe/issues/6558)).
 - TestCafe incorrectly handles rewritten uninitialized iframes ([testcafe-hammerhead/#2694](https://github.com/DevExpress/testcafe-hammerhead/issues/2694), [testcafe-hammerhead/#2693](https://github.com/DevExpress/testcafe-hammerhead/issues/2693)).
 
 ## v1.16.1 (2021-10-05)
