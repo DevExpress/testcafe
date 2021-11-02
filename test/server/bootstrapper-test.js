@@ -18,6 +18,7 @@ describe('Bootstrapper', () => {
 
                 return [ new Test({ currentFixture: void 0 }) ];
             },
+            setUserVariables: noop,
         };
         let bootstrapper = null;
 
