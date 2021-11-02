@@ -17,7 +17,7 @@ module.exports = {
             },
             after: async (ctx) => {
                 // your code
-            },
+            }
         },
         test: {
             before: async (t) => {
@@ -25,9 +25,9 @@ module.exports = {
             },
             after: async (t) => {
                 // your code
-            },
-        },
-    },
+            }
+        }
+    }
 };
 ```
 
