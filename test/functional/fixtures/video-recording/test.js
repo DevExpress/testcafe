@@ -157,7 +157,10 @@ if (config.useLocalBrowsers) {
             })
                 .then(assertionHelper.getVideoFilesList)
                 .then(videoFiles => {
-                    expect(videoFiles.length).to.equal(1);
+                    expect(videoFiles.length).eql(1);
+                    expect(videos[0].timecodes.length).eql(4);
+                    expect(videos[0].timecodes[0]).eql(0);
+                    expect(videos[0].timecodes.filter(tc => tc > 0).length).eql(3);
 
                     checkVideoPaths(videos, videoFiles);
                 });
