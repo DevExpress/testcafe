@@ -35,6 +35,7 @@ import wrapTestFunction from '../api/wrap-test-function';
 import { assertType, is } from '../errors/runtime/type-assertions';
 import { generateUniqueId } from 'testcafe-hammerhead';
 import assertRequestHookType from '../api/request-hooks/assert-type';
+import userVariables from '../api/user-variables';
 
 const DEBUG_SCOPE = 'testcafe:bootstrapper';
 
@@ -195,6 +196,7 @@ export default class Bootstrapper {
     private async _compileTests ({ sourceList, compilerOptions, runnableConfigurationId }: CompilerArguments): Promise<Test[]> {
         if (this.compilerService) {
             await this.compilerService.init();
+            await this.compilerService.setUserVariables(userVariables.value);
 
             return this.compilerService.getTests({ sourceList, compilerOptions, runnableConfigurationId });
         }
