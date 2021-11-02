@@ -79,6 +79,10 @@ describe('TestCafeConfiguration', function () {
             'clientScripts': 'test-client-script.js',
             'disableHttp2':  true,
             'proxyless':     true,
+            'dashboard':     {
+                'token':         'qwe.rty',
+                'noVideoUpload': true,
+            },
         });
     });
 
@@ -128,6 +132,7 @@ describe('TestCafeConfiguration', function () {
                         expect(testCafeConfiguration.getOption('clientScripts')).eql([ 'test-client-script.js' ]);
                         expect(testCafeConfiguration.getOption('disableHttp2')).to.be.true;
                         expect(testCafeConfiguration.getOption('proxyless')).to.be.true;
+                        expect(testCafeConfiguration.getOption('dashboard')).eql({ token: 'qwe.rty', noVideoUpload: true });
                     });
             });
 
