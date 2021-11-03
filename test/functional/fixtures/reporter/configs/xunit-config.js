@@ -1,5 +1,4 @@
 const config = require('../../../config');
-const path   = require('path');
 
 module.exports = {
     hostname:          config.testCafe.hostname,
