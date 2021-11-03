@@ -423,58 +423,57 @@ describe('TestCafeConfiguration', function () {
     });
 
     describe('Should copy value from "tsConfigPath" to compiler options', () => {
-        it('only tsConfigPath is specified', () => {
+        it('only tsConfigPath is specified', async () => {
             const configuration = new TestCafeConfiguration();
             const runner        = new RunnerCtor({ configuration });
 
-            return runner
-                .tsConfigPath('path-to-ts-config')
-                ._applyOptions()
-                .then(() => {
-                    expect(runner.configuration.getOption(OptionNames.compilerOptions)).eql({
-                        'typescript': {
-                            configPath: 'path-to-ts-config',
-                        },
-                    });
-                });
+            await runner.tsConfigPath('path-to-ts-config');
+            await runner._setConfigurationOptions();
+            await runner._setBootstrapperOptions();
+
+            expect(runner.configuration.getOption(OptionNames.compilerOptions)).eql({
+                'typescript': {
+                    configPath: 'path-to-ts-config',
+                },
+            });
         });
 
-        it('tsConfigPath is specified and compiler options are "undefined"', () => {
+        it('tsConfigPath is specified and compiler options are "undefined"', async () => {
             const configuration = new TestCafeConfiguration();
             const runner        = new RunnerCtor({ configuration });
 
-            return runner
+            await runner
                 .tsConfigPath('path-to-ts-config')
-                .compilerOptions(void 0) // emulate command-line run
-                ._applyOptions()
-                .then(() => {
-                    expect(runner.configuration.getOption(OptionNames.compilerOptions)).eql({
-                        'typescript': {
-                            configPath: 'path-to-ts-config',
-                        },
-                    });
-                });
+                .compilerOptions(void 0); // emulate command-line run
+            await runner._setConfigurationOptions();
+            await runner._setBootstrapperOptions();
+
+            expect(runner.configuration.getOption(OptionNames.compilerOptions)).eql({
+                'typescript': {
+                    configPath: 'path-to-ts-config',
+                },
+            });
         });
 
-        it('both "tsConfigPath" and compiler options are specified', () => {
+        it('both "tsConfigPath" and compiler options are specified', async () => {
             const configuration = new TestCafeConfiguration();
             const runner        = new RunnerCtor({ configuration });
 
-            return runner
+            await runner
                 .tsConfigPath('path-to-ts-config')
                 .compilerOptions({
                     'typescript': {
                         configPath: 'path-in-compiler-options',
                     },
-                })
-                ._applyOptions()
-                .then(() => {
-                    expect(runner.configuration.getOption(OptionNames.compilerOptions)).eql({
-                        'typescript': {
-                            configPath: 'path-in-compiler-options',
-                        },
-                    });
                 });
+            await runner._setConfigurationOptions();
+            await runner._setBootstrapperOptions();
+
+            expect(runner.configuration.getOption(OptionNames.compilerOptions)).eql({
+                'typescript': {
+                    configPath: 'path-in-compiler-options',
+                },
+            });
         });
     });
 });
@@ -653,7 +652,9 @@ describe('TypeScriptConfiguration', function () {
             const runner        = new RunnerCtor({ configuration });
 
             await configuration.init();
-            await runner.src('test/server/data/test-suites/typescript-basic/testfile1.ts')._applyOptions();
+            await runner.src('test/server/data/test-suites/typescript-basic/testfile1.ts');
+            await runner._setConfigurationOptions();
+            await runner._setBootstrapperOptions();
             await runner.bootstrapper._getTests();
 
             fs.unlinkSync(TestCafeConfiguration.FILENAMES[jsonConfigIndex]);
@@ -664,7 +665,7 @@ describe('TypeScriptConfiguration', function () {
         });
 
         describe('Should warn message on rewrite a non-overridable property', () => {
-            it('TypeScript config', function () {
+            it('TypeScript config', async function () {
                 let runner = null;
 
                 createJSONConfig(customTSConfigFilePath, {
@@ -679,17 +680,17 @@ describe('TypeScriptConfiguration', function () {
                 runner.tsConfigPath(customTSConfigFilePath);
                 runner._setBootstrapperOptions();
 
-                return runner._applyOptions()
-                    .then(() => runner.bootstrapper._getTests())
-                    .then(() => {
-                        typeScriptConfiguration._filePath = customTSConfigFilePath;
+                await runner._setConfigurationOptions();
+                await runner._setBootstrapperOptions();
+                await runner.bootstrapper._getTests();
 
-                        expect(runner.bootstrapper.tsConfigPath).eql(customTSConfigFilePath);
-                        expect(consoleWrapper.messages.log).contains('You cannot override the "target" compiler option in the TypeScript configuration file.');
-                    });
+                typeScriptConfiguration._filePath = customTSConfigFilePath;
+
+                expect(runner.bootstrapper.tsConfigPath).eql(customTSConfigFilePath);
+                expect(consoleWrapper.messages.log).contains('You cannot override the "target" compiler option in the TypeScript configuration file.');
             });
 
-            it('Custom compiler options', () => {
+            it('Custom compiler options', async () => {
                 const runner = new RunnerCtor({ configuration: new TestCafeConfiguration() });
 
                 runner
@@ -700,11 +701,11 @@ describe('TypeScriptConfiguration', function () {
                         },
                     });
 
-                return runner._applyOptions()
-                    .then(() => runner.bootstrapper._getTests())
-                    .then(() => {
-                        expect(consoleWrapper.messages.log).contains('You cannot override the "target" compiler option in the TypeScript configuration file.');
-                    });
+                await runner._setConfigurationOptions();
+                await runner._setBootstrapperOptions();
+                await runner.bootstrapper._getTests();
+
+                expect(consoleWrapper.messages.log).contains('You cannot override the "target" compiler option in the TypeScript configuration file.');
             });
         });
     });

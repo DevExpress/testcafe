@@ -308,8 +308,9 @@ describe('Runner', () => {
                     takeOnFails: true,
                     pathPattern: 'pathPattern',
                     fullPage:    true,
-                })
-                ._applyOptions();
+                });
+            await runner._setConfigurationOptions();
+            await runner._setBootstrapperOptions();
 
             expect(runner.configuration.getOption('screenshots').path).eql('path');
             expect(runner.configuration.getOption('screenshots').takeOnFails).eql(true);
@@ -1040,34 +1041,36 @@ describe('Runner', () => {
             it('Should not raise an error when browser is specified as headless', async function () {
                 let isErrorThrown = false;
 
-                return runnerLinux
-                    .browsers(`${BROWSER_NAME}`)
-                    ._applyOptions()
-                    .then(() => runnerLinux._validateRunOptions())
-                    .then(() => runnerLinux._createRunnableConfiguration())
-                    .catch(() => {
-                        isErrorThrown = true;
-                    })
-                    .finally(() => {
-                        expect(isErrorThrown).to.be.false;
-                    });
+                try {
+                    await runnerLinux.browsers(`${BROWSER_NAME}`);
+                    await runnerLinux._setConfigurationOptions();
+                    await runnerLinux._setBootstrapperOptions();
+                    await runnerLinux._validateRunOptions();
+                    await runnerLinux._createRunnableConfiguration();
+                }
+                catch {
+                    isErrorThrown = true;
+                }
+
+                expect(isErrorThrown).to.be.false;
             });
 
             it('Should not raise an error when remote browser is passed as BrowserConnection', async function () {
                 const browserInfo = await browserProviderPool.getBrowserInfo('remote');
                 let isErrorThrown = false;
 
-                return runnerLinux
-                    .browsers([new BrowserConnection(browserConnectionGateway, browserInfo)])
-                    ._applyOptions()
-                    .then(() => runnerLinux._validateRunOptions())
-                    .then(() => runnerLinux._createRunnableConfiguration())
-                    .catch(() => {
-                        isErrorThrown = true;
-                    })
-                    .finally(() => {
-                        expect(isErrorThrown).to.be.false;
-                    });
+                try {
+                    await runnerLinux.browsers([new BrowserConnection(browserConnectionGateway, browserInfo)]);
+                    await runnerLinux._setConfigurationOptions();
+                    await runnerLinux._setBootstrapperOptions();
+                    await runnerLinux._validateRunOptions();
+                    await runnerLinux._createRunnableConfiguration();
+                }
+                catch {
+                    isErrorThrown = true;
+                }
+
+                expect(isErrorThrown).to.be.false;
             });
         });
 
@@ -1418,16 +1421,18 @@ describe('Runner', () => {
         await runner
             .src('/path-to-test')
             .browsers('remote')
-            .reporter('json')
-            ._applyOptions();
+            .reporter('json');
+        await runner._setConfigurationOptions();
+        await runner._setBootstrapperOptions();
 
         runner.apiMethodWasCalled.reset();
 
         await runner
             .src([])
             .browsers([])
-            .reporter([])
-            ._applyOptions();
+            .reporter([]);
+        await runner._setConfigurationOptions();
+        await runner._setBootstrapperOptions();
 
         expect(runner.configuration.getOption('src')).eql(['/path-to-test']);
         expect(runner.configuration.getOption('browsers')).to.be.an('array').that.not.empty;

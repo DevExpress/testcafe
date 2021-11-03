@@ -256,9 +256,10 @@ describe('TestCafe Live', function () {
 
     it('rerun and add file', function () {
         return runTests(testFileWithSingleTestPath)
-            .then(() => {
+            .then(async () => {
                 runner.src(testFileWithMultipleTestsPath);
-                return runner._applyOptions();
+                await runner._setConfigurationOptions();
+                await runner._setBootstrapperOptions();
             })
             .then(() => {
                 return runner.controller.restart();
@@ -279,9 +280,10 @@ describe('TestCafe Live', function () {
         expect(errors.length).eql(0);
 
         return runTests(testFileWithSingleTestPath)
-            .then(() => {
+            .then(async () => {
                 runner.src(testFileWithSyntaxErrorPath);
-                return runner._applyOptions();
+                await runner._setConfigurationOptions();
+                await runner._setBootstrapperOptions();
             })
             .then(() => {
                 return runner.controller.restart();
@@ -291,16 +293,17 @@ describe('TestCafe Live', function () {
                 expect(errors[0].toString()).contains('Error: Cannot prepare tests due to the following error');
                 expect(runner.runCount).eql(2);
             })
-            .then(() => {
+            .then(async () => {
                 runner.clearSources();
                 runner.src(testFileWithSingleTestPath);
 
-                return runner._applyOptions();
+                await runner._setConfigurationOptions();
+                await runner._setBootstrapperOptions();
             })
             .then(() => {
                 return runner.controller.restart();
             })
-            .then(() => {
+            .then(async () => {
                 expect(runner.runCount).eql(3);
                 expect(errors.length).eql(1);
 
@@ -312,7 +315,8 @@ describe('TestCafe Live', function () {
                 runner.clearSources();
                 runner.src(testFileWithSyntaxErrorPath);
 
-                return runner._applyOptions();
+                await runner._setConfigurationOptions();
+                await runner._setBootstrapperOptions();
             })
             .then(() => {
                 return runner.controller.restart();
