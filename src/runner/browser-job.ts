@@ -128,9 +128,11 @@ export default class BrowserJob extends AsyncEventEmitter {
         remove(this._completionQueue, testRunInfo);
     }
 
-    private _onTestRunRestart (testRunController: TestRunController): void {
+    private async _onTestRunRestart (testRunController: TestRunController): Promise<void> {
         this._removeFromCompletionQueue(testRunController);
         this._testRunControllerQueue.unshift(testRunController);
+
+        await this.emit('test-run-restart', testRunController);
     }
 
     private async _onTestRunDone (testRunController: TestRunController): Promise<void> {

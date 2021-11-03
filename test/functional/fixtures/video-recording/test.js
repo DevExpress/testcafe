@@ -1,29 +1,22 @@
-const expect          = require('chai').expect;
-const path            = require('path');
-const { uniq }        = require('lodash');
-const config          = require('../../config');
-const assertionHelper = require('../../assertion-helper.js');
+const expect             = require('chai').expect;
+const path               = require('path');
+const { uniq }           = require('lodash');
+const config             = require('../../config');
+const assertionHelper    = require('../../assertion-helper.js');
+const { createReporter } = require('../../utils/reporter');
 
 function customReporter (errs, videos) {
-    return () => {
-        return {
-            async reportTaskStart () {
-            },
-            async reportFixtureStart () {
-            },
-            async reportTestDone (name, testRunInfo) {
-                testRunInfo.errs.forEach(err => {
-                    errs[err.errMsg] = true;
-                });
+    return createReporter({
+        async reportTestDone (name, testRunInfo) {
+            testRunInfo.errs.forEach(err => {
+                errs[err.errMsg] = true;
+            });
 
-                testRunInfo.videos.forEach(video => {
-                    videos.push(video);
-                });
-            },
-            async reportTaskDone () {
-            },
-        };
-    };
+            testRunInfo.videos.forEach(video => {
+                videos.push(video);
+            });
+        },
+    });
 }
 
 function checkVideoPaths (videoLog, videoPaths) {
@@ -152,11 +145,11 @@ if (config.useLocalBrowsers) {
                 });
         });
 
-        it('Should record video with quarantine mode enabled', () => {
+        it('Should record video with quarantine mode enabled (multiple attempts)', () => {
             const errs   = {};
             const videos = [];
 
-            return runTests('./testcafe-fixtures/quarantine-test.js', '', {
+            return runTests('./testcafe-fixtures/quarantine-test.js', 'quarantine with attempts', {
                 only:           'chrome',
                 quarantineMode: true,
                 setVideoPath:   true,
@@ -164,7 +157,28 @@ if (config.useLocalBrowsers) {
             })
                 .then(assertionHelper.getVideoFilesList)
                 .then(videoFiles => {
-                    expect(videoFiles.length).to.equal(2);
+                    expect(videoFiles.length).eql(1);
+                    expect(videos[0].timecodes.length).eql(4);
+                    expect(videos[0].timecodes[0]).eql(0);
+                    expect(videos[0].timecodes.filter(tc => tc > 0).length).eql(3);
+
+                    checkVideoPaths(videos, videoFiles);
+                });
+        });
+
+        it('Should record video with quarantine mode enabled (no attempts)', () => {
+            const errs   = {};
+            const videos = [];
+
+            return runTests('./testcafe-fixtures/quarantine-test.js', 'quarantine without attempts', {
+                only:           'chrome',
+                quarantineMode: true,
+                setVideoPath:   true,
+                reporter:       customReporter(errs, videos),
+            })
+                .then(assertionHelper.getVideoFilesList)
+                .then(videoFiles => {
+                    expect(videoFiles.length).to.equal(1);
 
                     checkVideoPaths(videos, videoFiles);
                 });

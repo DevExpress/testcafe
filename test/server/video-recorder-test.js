@@ -1,5 +1,3 @@
-
-
 const { expect }           = require('chai');
 const { noop }             = require('lodash');
 const TestRun              = require('../../lib/test-run/index');
@@ -44,6 +42,10 @@ class TestRunVideoRecorderMock extends TestRunVideoRecorder {
 
     _createVideoRecorderProcess () {
         return new VideoRecorderProcessMock();
+    }
+
+    _addTimeCode () {
+        this.timecodes.push(10);
     }
 }
 
@@ -114,8 +116,9 @@ function createTestRunMock (warningLog) {
         opts: { videoPath: 'path' },
 
         browserConnection: {
-            id:       'connectionId',
-            provider: {
+            id:          'connectionId',
+            browserInfo: {},
+            provider:    {
                 hasCustomActionForBrowser: () => {
                     return {
                         hasGetVideoFrameData: true,
@@ -127,7 +130,7 @@ function createTestRunMock (warningLog) {
 
     return {
         testRun,
-        test:  { skip: false },
+        test:  { skip: false, fixture: { name: 'Fixture' } },
         index: 0,
     };
 }
@@ -267,10 +270,12 @@ describe('Video Recorder', () => {
                     recordings: [{
                         testRunId:  'test-run-1',
                         videoPath:  'path-test-run-1',
+                        timecodes:  [0, 10],
                         singleFile: false,
                     }, {
                         testRunId:  'test-run-2',
                         videoPath:  'path-test-run-2',
+                        timecodes:  [0, 10],
                         singleFile: false,
                     }],
                 },
@@ -278,10 +283,12 @@ describe('Video Recorder', () => {
                     recordings: [{
                         testRunId:  'test-run-3',
                         videoPath:  'path-test-run-3',
+                        timecodes:  [0, 10],
                         singleFile: false,
                     }, {
                         testRunId:  'test-run-4',
                         videoPath:  'path-test-run-4',
+                        timecodes:  [0, 10],
                         singleFile: false,
                     }],
                 },
@@ -291,12 +298,20 @@ describe('Video Recorder', () => {
 
         return browserJobMock.emit('start')
             .then(() => browserJobMock.emit('test-run-create', testRunMock1))
+            .then(() => browserJobMock.emit('test-run-ready', testRunMock1))
+            .then(() => browserJobMock.emit('test-run-restart', testRunMock1))
             .then(() => browserJobMock.emit('test-run-before-done', testRunMock1))
             .then(() => browserJobMock.emit('test-run-create', testRunMock2))
+            .then(() => browserJobMock.emit('test-run-ready', testRunMock2))
+            .then(() => browserJobMock.emit('test-run-restart', testRunMock2))
             .then(() => browserJobMock.emit('test-run-before-done', testRunMock2))
             .then(() => browserJobMock.emit('test-run-create', testRunMock3))
+            .then(() => browserJobMock.emit('test-run-ready', testRunMock3))
+            .then(() => browserJobMock.emit('test-run-restart', testRunMock3))
             .then(() => browserJobMock.emit('test-run-before-done', testRunMock3))
             .then(() => browserJobMock.emit('test-run-create', testRunMock4))
+            .then(() => browserJobMock.emit('test-run-ready', testRunMock4))
+            .then(() => browserJobMock.emit('test-run-restart', testRunMock4))
             .then(() => browserJobMock.emit('test-run-before-done', testRunMock4))
             .then(() => {
                 expect(videos1).eql(expectedLog1);
