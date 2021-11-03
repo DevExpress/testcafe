@@ -1,30 +1,12 @@
 // @ts-ignore
-import { nativeMethods } from '../../deps/hammerhead';
-import * as domUtils from '../dom';
-import { getElementRectangle } from '../position';
+import { nativeMethods, utils } from '../../deps/hammerhead';
+import * as dom from '../dom';
+import * as position from '../position';
+import * as style from '../style';
 import { CoreUtilsAdapter } from '../types';
-import * as styleUtils from '../style';
 
+const browser = utils.browser;
 
-const initializer: CoreUtilsAdapter = {
-    nativeMethods:            nativeMethods,
-    isTextNode:               domUtils.isTextNode,
-    isMapElement:             domUtils.isMapElement,
-    isSVGElement:             domUtils.isSVGElement,
-    isContentEditableElement: domUtils.isContentEditableElement,
-    closest:                  domUtils.closest,
-    getMapContainer:          domUtils.getMapContainer,
-    getSelectParent:          domUtils.getSelectParent,
-    getChildVisibleIndex:     domUtils.getChildVisibleIndex,
-    getElementRectangle:      getElementRectangle,
-    findParent:               domUtils.findParent,
-    isElementNode:            domUtils.isElementNode,
-    getStyle:                 styleUtils.get,
-    isRenderedNode:           domUtils.isRenderedNode,
-    isSelectVisibleChild:     styleUtils.isSelectVisibleChild,
-    getScrollTop:             styleUtils.getScrollTop,
-    getOptionHeight:          styleUtils.getOptionHeight,
-    getSelectElementSize:     styleUtils.getSelectElementSize,
-};
+const initializer: CoreUtilsAdapter = { nativeMethods, browser, dom, position, style };
 
 export default initializer;

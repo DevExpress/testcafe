@@ -18,8 +18,10 @@ const nativeMethods: NativeMethods = {
     // eslint-disable-next-line no-restricted-properties
     dateNow:          window.Date.now,
     isArray:          window.Array.isArray,
+    arrayFilter:      window.Array.prototype.filter,
     setTimeout:       window.setTimeout,
     closest:          window.Element.prototype.closest,
+    matches:          window.Element.prototype.matches,
     getAttribute:     window.Element.prototype.getAttribute,
     querySelector:    window.HTMLElement.prototype.querySelector,
     querySelectorAll: window.HTMLElement.prototype.querySelectorAll,

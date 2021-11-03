@@ -15,6 +15,7 @@ export interface NativeMethods {
     Promise: typeof Promise;
     dateNow: DateConstructor['now'];
     isArray: ArrayConstructor['isArray'];
+    arrayFilter: any[]['filter'];
     NodeList: typeof NodeList;
     HTMLCollection: typeof HTMLCollection;
     setTimeout: Window['setTimeout'];
@@ -28,21 +29,41 @@ export interface NativeMethods {
 
 export interface CoreUtilsAdapter {
     nativeMethods: NativeMethods;
-    isTextNode (el: unknown): boolean;
-    isMapElement (el: unknown): el is HTMLMapElement | HTMLAreaElement;
-    isSVGElement (el: unknown): el is SVGElement;
-    isContentEditableElement (el: unknown): boolean;
-    closest (el: Element, selector: string): Element | null;
-    getMapContainer (el: Element | null): Element | null;
-    getSelectParent (el: Element): HTMLSelectElement | null;
-    getChildVisibleIndex (select: HTMLSelectElement, child: Node): number;
-    getElementRectangle (el: Node): ElementRectangle;
-    findParent (node: Node, includeSelf: boolean, predicate: (el: Node) => boolean): Node | null;
-    isElementNode (el: Node): el is Element;
-    getStyle (el: Node, property: keyof CSSStyleDeclaration): string | null;
-    isRenderedNode (node: Node): boolean;
-    isSelectVisibleChild (el: Node): el is HTMLElement;
-    getScrollTop (el: Window | Document | Element | null): number;
-    getOptionHeight (el: Element): number;
-    getSelectElementSize (select: HTMLSelectElement): number;
+    browser: {
+        isIE?: boolean;
+        isChrome?: boolean;
+        isFirefox?: boolean;
+    };
+
+    dom: {
+        isTextNode (el: unknown): boolean;
+        isMapElement (el: unknown): el is HTMLMapElement | HTMLAreaElement;
+        isSVGElement (el: unknown): el is SVGElement;
+        isContentEditableElement (el: unknown): boolean;
+        closest (el: Element, selector: string): Element | null;
+        getMapContainer (el: Element | null): Element | null;
+        getSelectParent (el: Element): HTMLSelectElement | null;
+        getChildVisibleIndex (select: HTMLSelectElement, child: Node): number;
+        findParent (node: Node, includeSelf: boolean, predicate: (el: Node) => boolean): Node | null;
+        isElementNode (el: Node): el is Element;
+        isBodyElement (el: unknown): el is HTMLBodyElement;
+        isHtmlElement (el: unknown): el is HTMLHtmlElement;
+        isRenderedNode (node: Node): boolean;
+        findDocument (el: Node): Document;
+        isElementInIframe (el: Element | Document, currentDocument?: Document): boolean;
+        getIframeByElement (el: HTMLElement | Document): HTMLFrameElement | HTMLIFrameElement | null;
+        getParents (el: Element, selector?: string): Element[];
+    };
+
+    style: {
+        get (el: Node, property: keyof CSSStyleDeclaration): string | null;
+        isSelectVisibleChild (el: Node): el is HTMLElement;
+        getScrollTop (el: Window | Document | Element | null): number;
+        getOptionHeight (el: Element): number;
+        getSelectElementSize (select: HTMLSelectElement): number;
+    };
+
+    position: {
+        getElementRectangle (el: Node): ElementRectangle;
+    };
 }

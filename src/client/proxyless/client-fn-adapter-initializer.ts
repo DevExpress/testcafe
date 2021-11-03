@@ -1,6 +1,7 @@
 import { ClientFunctionAdapter } from '../driver/command-executors/client-functions/types';
 import nativeMethods from './native-methods';
 import * as domUtils from './utils/dom';
+import * as styleUtils from './utils/style';
 import { isElementVisible } from '../core/utils/visibility.shared';
 
 
@@ -19,7 +20,7 @@ const initializer: ClientFunctionAdapter = {
     getTagName:       domUtils.getTagName,
     getActiveElement: domUtils.getActiveElement,
 
-    isOptionElementVisible: domUtils.isOptionElementVisible,
+    isOptionElementVisible: styleUtils.isOptionElementVisible,
     isElementVisible:       isElementVisible,
 };
 

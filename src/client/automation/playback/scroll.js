@@ -2,6 +2,7 @@ import hammerhead from '../deps/hammerhead';
 import {
     domUtils,
     styleUtils,
+    scrollUtils,
     positionUtils,
     promiseUtils,
     scrollController,
@@ -236,7 +237,7 @@ export default class ScrollAutomation {
     }
 
     _scrollParents () {
-        const parents = styleUtils.getScrollableParents(this.element);
+        const parents = scrollUtils.getScrollableParents(this.element);
 
         let currentChild     = this.element;
         let currentOffsetX   = this.offsetX - Math.round(styleUtils.getScrollLeft(currentChild));

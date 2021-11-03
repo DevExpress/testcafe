@@ -34,6 +34,17 @@ export function getBordersWidth (el: HTMLElement): RoundedValues {
     };
 }
 
+export function isOptionElementVisible (el: HTMLOptionElement): boolean {
+    const parentSelect = domUtils.getSelectParent(el);
+
+    if (!parentSelect)
+        return true;
+
+    const selectSizeValue = getSelectElementSize(parentSelect);
+
+    return selectSizeValue > 1;
+}
+
 export function isSelectVisibleChild (el: Node): el is HTMLElement {
     const select  = domUtils.getSelectParent(el);
     const tagName = domUtils.getTagName(el as Element);

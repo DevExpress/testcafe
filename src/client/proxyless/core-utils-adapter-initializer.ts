@@ -1,32 +1,10 @@
 import nativeMethods from './native-methods';
-import * as domUtils from './utils/dom';
-import { getElementRectangle } from './utils/position';
-import * as styleUtils from './utils/style';
+import * as dom from './utils/dom';
+import * as position from './utils/position';
+import * as style from './utils/style';
 import { CoreUtilsAdapter } from '../core/utils/types';
 
 
-const initializer: CoreUtilsAdapter = {
-    nativeMethods,
-
-    getElementRectangle: getElementRectangle,
-
-    isTextNode:               domUtils.isTextNode,
-    isMapElement:             domUtils.isMapElement,
-    isSVGElement:             domUtils.isSVGElement,
-    isContentEditableElement: domUtils.isContentEditableElement,
-    closest:                  domUtils.closest,
-    getMapContainer:          domUtils.getMapContainer,
-    getSelectParent:          domUtils.getSelectParent,
-    getChildVisibleIndex:     domUtils.getChildVisibleIndex,
-    findParent:               domUtils.findParent,
-    isElementNode:            domUtils.isElementNode,
-    isRenderedNode:           domUtils.isRenderedNode,
-
-    getStyle:             styleUtils.get,
-    isSelectVisibleChild: styleUtils.isSelectVisibleChild,
-    getScrollTop:         styleUtils.getScrollTop,
-    getOptionHeight:      styleUtils.getOptionHeight,
-    getSelectElementSize: styleUtils.getSelectElementSize,
-};
+const initializer: CoreUtilsAdapter = { nativeMethods, position, dom, style, browser: { isChrome: true } };
 
 export default initializer;
