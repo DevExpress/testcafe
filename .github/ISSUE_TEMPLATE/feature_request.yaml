@@ -7,7 +7,7 @@ body:
       value: |
         If you have an idea you think might be useful for others, please share as much detail as possible in the sections below.
         
-        Before submitting an issue, please check [CONTRIBUTING.md](https://github.com/DevExpress/testcafe/blob/master/CONTRIBUTING.md) and existing issues in this repository (https://github.com/DevExpress/testcafe/issues) in case a similar issue exists. This may save your time (and ours).
+        Before submitting an issue, please check [CONTRIBUTING.md](https://github.com/DevExpress/testcafe/blob/master/CONTRIBUTING.md) and existing issues in [this repository](https://github.com/DevExpress/testcafe/issues) in case a similar issue exists. This may save your time (and ours).
 
   - type: textarea
     id: scenario
