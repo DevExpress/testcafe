@@ -13,7 +13,7 @@ const {
     createAsyncTestStream,
     createSyncTestStream,
 }                        = require('../../utils/stream');
-const runTestsWithConfig = require('../../utils/runTestsWithConfig');
+const runTestsWithConfig = require('../../utils/run-tests-with-config');
 const del                = require('del');
 
 const experimentalDebug = !!process.env.EXPERIMENTAL_DEBUG;
