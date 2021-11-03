@@ -1,0 +1,159 @@
+name: Bug Report
+description: Submit the behavior you consider invalid
+labels: ["TYPE: bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        If you have all reproduction steps with a complete sample app, please share as many details as possible in the sections below.
+
+        Make sure that you tried using the latest [TestCafe](https://github.com/DevExpress/testcafe/releases) version, where this behavior might have been already addressed.
+
+        Before submitting an issue, please check existing issues in [this repository](https://github.com/DevExpress/testcafe/issues) in case a similar issue exists or was already addressed. This may save your time (and ours).
+  
+  - type: textarea
+    id: scenario
+    attributes:
+      label: What is your Scenario?
+      description: >
+        Describe what you'd like to do.
+    validations:
+      required: true
+
+  - type: textarea
+    id: current
+    attributes:
+      label: What is the Current behavior?
+      description: >
+        Describe the behavior you see and consider invalid.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What is the Expected behavior?
+      description: >
+        Describe what you expected to happen.
+    validations:
+      required: true
+
+  - type: textarea
+    id: url
+    attributes:
+      label: What is your public website URL? (or attach your complete example)
+      description: |
+        Please share a public accessible URL to your application or attach a simple app which we can run.
+        Note: if your website requires any additional access procedures like authentication, please ask the website owner to send us a written confirmation at [support@devexpress.com](mailto:support@devexpress.com) in a free text form. It will allow the DevExpress staff to remotely access the website and its internal resources for research, testing, and debugging purposes.
+        Note: If your website is not public and you can't share its URL, please refer to this article to learn how to create an example: [How To: Create a Minimal Working Example When You Submit an Issue](https://testcafe.io/402636/faq#how-to-create-a-minimal-working-example-when-you-submit-an-issue)
+    validations:
+      required: true
+
+  - type: textarea
+    id: testcase
+    attributes:
+      label: What is your TestCafe test code?
+      description: >
+        Paste your complete test code including all the referenced modules if any.
+    validations:
+      required: true
+
+  - type: textarea
+    id: config
+    attributes:
+      label: Your complete configuration file
+      description: >
+        Paste your complete configuration file.
+    validations:
+      required: false
+
+  - type: textarea
+    id: report
+    attributes:
+      label: Your complete test report
+      description: >
+        Paste your complete result test report here (even if it is huge).
+    validations:
+      required: false
+
+  - type: textarea
+    id: screenhots
+    attributes:
+      label: Screenshots
+      description: >
+        If applicable, attach screenshots to help explain the issue.
+    validations:
+      required: false
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: >
+        Describe what we should do to reproduce the behavior you encountered.
+      value: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+
+  - type: markdown
+    id: environment
+    attributes:
+      value: >
+        Your Environment details:
+
+  - type: input
+    id: version
+    attributes:
+      label: TestCafe version
+      description: >
+        Run `testcafe -v`
+    validations:
+      required: true
+
+  - type: input
+    id: nodejs
+    attributes:
+      label: Node.js version
+      description: >
+        Run `node -v`
+    validations:
+      required: false
+
+  - type: input
+    id: cmdline
+    attributes:
+      label: Command-line arguments
+      description: >
+        Example: testcafe ie,chrome -e test.js
+    validations:
+      required: true
+
+  - type: input
+    id: browser
+    attributes:
+      label: Browser name(s) and version(s)
+      description: >
+        Example: IE 11, Chrome 69, Firefox 100, etc.
+    validations:
+      required: false
+
+  - type: input
+    id: platform
+    attributes:
+      label: Platform(s) and version(s)
+      description: >
+        Example: macOS 10.14, Windows, Linux Ubuntu 18.04.1, iOS 13
+    validations:
+      required: false
+
+  - type: textarea
+    id: other
+    attributes:
+      label: Other
+      description: >
+        Any notes you consider important
+    validations:
+      required: false
