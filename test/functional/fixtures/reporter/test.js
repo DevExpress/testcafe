@@ -12,7 +12,9 @@ const {
     createSimpleTestStream,
     createAsyncTestStream,
     createSyncTestStream,
-} = require('../../utils/stream');
+}                        = require('../../utils/stream');
+const runTestsWithConfig = require('../../utils/runTestsWithConfig');
+const del                = require('del');
 
 const experimentalDebug = !!process.env.EXPERIMENTAL_DEBUG;
 
@@ -1126,5 +1128,17 @@ describe('Reporter', () => {
                 expect(err.message).startsWith(`The "${method}" method of the "function () {}" reporter produced an uncaught error. Error details:\nError: oops`);
             }
         }
+    });
+
+    it('Should work with option from configuration file', () => {
+        return runTestsWithConfig('Simple test', './test/functional/fixtures/reporter/configs/xunit-config.js')
+            .then(() => {
+                const pathReport = path.resolve(__dirname, 'report.xml');
+                const report = fs.readFileSync(pathReport).toString();
+
+                expect(report).contains('<?xml version="1.0" encoding="UTF-8" ?>');
+
+                del(pathReport);
+            });
     });
 });
