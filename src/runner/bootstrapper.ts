@@ -30,6 +30,7 @@ import Fixture from '../api/structure/fixture';
 import MessageBus from '../utils/message-bus';
 import wrapTestFunction from '../api/wrap-test-function';
 import { assertType, is } from '../errors/runtime/type-assertions';
+import { generateUniqueId } from 'testcafe-hammerhead';
 
 const DEBUG_SCOPE = 'testcafe:bootstrapper';
 
@@ -51,8 +52,9 @@ interface BasicRuntimeResources {
     testedApp?: TestedApp;
 }
 
-interface RuntimeResources extends BasicRuntimeResources {
+interface RunnableConfiguration extends BasicRuntimeResources {
     commonClientScripts: ClientScript[];
+    id: string;
 }
 
 type PromiseResult<T, E extends Error = Error> = PromiseSuccess<T> | PromiseError<E>;
@@ -186,11 +188,11 @@ export default class Bootstrapper {
         });
     }
 
-    private async _compileTests ({ sourceList, compilerOptions }: CompilerArguments): Promise<Test[]> {
+    private async _compileTests ({ sourceList, compilerOptions, runnableConfigurationId }: CompilerArguments): Promise<Test[]> {
         if (this.compilerService) {
             await this.compilerService.init();
 
-            return this.compilerService.getTests({ sourceList, compilerOptions });
+            return this.compilerService.getTests({ sourceList, compilerOptions, runnableConfigurationId });
         }
 
         const compiler = new Compiler(sourceList, compilerOptions);
@@ -237,7 +239,7 @@ export default class Bootstrapper {
         });
     }
 
-    private async _getTests (): Promise<Test[]> {
+    private async _getTests (id: string): Promise<Test[]> {
         const cwd        = process.cwd();
         const sourceList = await parseFileList(this.sources, cwd);
 
@@ -245,7 +247,7 @@ export default class Bootstrapper {
             throw new GeneralError(RUNTIME_ERRORS.testFilesNotFound, cwd, getConcatenatedValuesString(this.sources, '\n', ''));
 
         let tests = await guardTimeExecution(
-            async () => await this._compileTests({ sourceList, compilerOptions: this.compilerOptions }),
+            async () => await this._compileTests({ sourceList, compilerOptions: this.compilerOptions, runnableConfigurationId: id }),
             elapsedTime => {
                 this.debugLogger(`tests compilation took ${prettyTime(elapsedTime)}`);
 
@@ -293,8 +295,8 @@ export default class Bootstrapper {
         return isLocalBrowsers.every(result => result);
     }
 
-    private async _bootstrapSequence (browserInfo: BrowserInfoSource[]): Promise<BasicRuntimeResources> {
-        const tests       = await this._getTests();
+    private async _bootstrapSequence (browserInfo: BrowserInfoSource[], id: string): Promise<BasicRuntimeResources> {
+        const tests       = await this._getTests(id);
         const testedApp   = await this._startTestedApp();
         const browserSet  = await this._getBrowserConnections(browserInfo);
 
@@ -335,10 +337,10 @@ export default class Bootstrapper {
         return result;
     }
 
-    private async _bootstrapParallel (browserInfo: BrowserInfoSource[]): Promise<BasicRuntimeResources> {
+    private async _bootstrapParallel (browserInfo: BrowserInfoSource[], id: string): Promise<BasicRuntimeResources> {
         const bootstrappingPromises = {
             browserSet: this._getBrowserConnections(browserInfo),
-            tests:      this._getTests(),
+            tests:      this._getTests(id),
             app:        this._startTestedApp(),
         };
 
@@ -363,12 +365,13 @@ export default class Bootstrapper {
     }
 
     // API
-    public async createRunnableConfiguration (): Promise<RuntimeResources> {
+    public async createRunnableConfiguration (): Promise<RunnableConfiguration> {
+        const id                  = generateUniqueId();
         const commonClientScripts = await loadClientScripts(this.clientScripts);
 
         if (await this._canUseParallelBootstrapping(this.browsers))
-            return { ...await this._bootstrapParallel(this.browsers), commonClientScripts };
+            return { ...await this._bootstrapParallel(this.browsers, id), commonClientScripts, id };
 
-        return { ...await this._bootstrapSequence(this.browsers), commonClientScripts };
+        return { ...await this._bootstrapSequence(this.browsers, id), commonClientScripts, id };
     }
 }

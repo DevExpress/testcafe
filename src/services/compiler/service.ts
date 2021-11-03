@@ -53,6 +53,7 @@ import {
     AddUnexpectedErrorArguments,
     CheckWindowArgument,
     RemoveFixtureCtxArguments,
+    RemoveUnitsFromStateArguments,
 } from './interfaces';
 
 import { CompilerArguments } from '../../compiler/interfaces';
@@ -90,6 +91,7 @@ import { formatError } from '../../utils/handle-errors';
 import { SwitchToWindowPredicateError } from '../../shared/errors';
 import MessageBus from '../../utils/message-bus';
 import { WarningLogMessage } from '../../notifications/warning-log';
+import { uniq } from 'lodash';
 
 setupSourceMapSupport();
 
@@ -120,6 +122,7 @@ interface InitTestRunProxyData {
 class CompilerService implements CompilerProtocol {
     private readonly proxy: IPCProxy;
     private readonly state: ServiceState;
+    private readonly _runnableConfigurationUnitsRelations: { [id: string]: string[] };
 
     public constructor () {
         process.title = ProcessTitle.service;
@@ -129,6 +132,8 @@ class CompilerService implements CompilerProtocol {
 
         this.proxy = new IPCProxy(new ServiceTransport(input, output, SERVICE_SYNC_FD));
         this.state = this._initState();
+
+        this._runnableConfigurationUnitsRelations = {};
 
         this._registerErrorHandlers();
         this._setupRoutes();
@@ -208,8 +213,9 @@ class CompilerService implements CompilerProtocol {
             this.executeAsyncJsExpression,
             this.addUnexpectedError,
             this.checkWindow,
-            this.removeTestRun,
-            this.removeFixtureCtx,
+            this.removeTestRunFromState,
+            this.removeFixtureCtxFromState,
+            this.removeUnitsFromState,
         ], this);
     }
 
@@ -294,6 +300,14 @@ class CompilerService implements CompilerProtocol {
         userVariables.value = value;
     }
 
+    private _getUnitIds (tests: Test[]): string[] {
+        const testIds     = tests.map(test => test.id);
+        const fixtureIds  = tests.map(test => test.fixture?.id) as string[];
+        const testFileIds = tests.map(test => test.testFile.id);
+
+        return uniq([...testIds, ...fixtureIds, ...testFileIds]);
+    }
+
     public async setOptions ({ value }: SetOptionsArguments): Promise<void> {
         this.state.options = value;
 
@@ -308,11 +322,14 @@ class CompilerService implements CompilerProtocol {
         await Compiler.cleanUp();
     }
 
-    public async getTests ({ sourceList, compilerOptions }: CompilerArguments): Promise<Units> {
+    public async getTests ({ sourceList, compilerOptions, runnableConfigurationId }: CompilerArguments): Promise<Units> {
         const compiler = new Compiler(sourceList, compilerOptions, true);
 
-        const tests = await compiler.getTests();
-        const units = flattenTestStructure(tests);
+        const tests   = await compiler.getTests();
+        const units   = flattenTestStructure(tests);
+        const unitIds = this._getUnitIds(tests);
+
+        this._runnableConfigurationUnitsRelations[runnableConfigurationId] = unitIds;
 
         Object.assign(this.state.units, units);
 
@@ -396,7 +413,11 @@ class CompilerService implements CompilerProtocol {
     }
 
     public async getWarningMessages ({ testRunId }: TestRunLocator): Promise<WarningLogMessage[]> {
-        return this._getTargetTestRun(testRunId).warningLog.messageInfos;
+        // NOTE: In case of raising an error into ReporterPluginHost methods,
+        // TestRun has time to start.
+        const targetTestRun = this._getTargetTestRun(testRunId);
+
+        return targetTestRun ? targetTestRun.warningLog.messageInfos : [];
     }
 
     public async addRequestEventListeners ( { hookId, hookClassName, rules }: AddRequestEventListenersArguments): Promise<void> {
@@ -408,7 +429,12 @@ class CompilerService implements CompilerProtocol {
     }
 
     public async initializeTestRunData ({ testRunId, testId, browser, activeWindowId, messageBus }: InitializeTestRunDataArguments): Promise<void> {
+        // NOTE: In case of raising an error into ReporterPluginHost methods,
+        // TestRun has time to start.
         const test = this.state.units[testId] as Test;
+
+        if (!test)
+            return;
 
         this._initializeTestRunProxy({ testRunId, test, browser, activeWindowId, messageBus });
         this._initializeFixtureCtx(test);
@@ -509,12 +535,21 @@ class CompilerService implements CompilerProtocol {
         }
     }
 
-    public async removeTestRun ({ testRunId }: TestRunLocator): Promise<void> {
+    public async removeTestRunFromState ({ testRunId }: TestRunLocator): Promise<void> {
         delete this.state.testRuns[testRunId];
     }
 
-    public async removeFixtureCtx ({ fixtureId }: RemoveFixtureCtxArguments): Promise<void> {
+    public async removeFixtureCtxFromState ({ fixtureId }: RemoveFixtureCtxArguments): Promise<void> {
         delete this.state.fixtureCtxs[fixtureId];
+    }
+
+    public async removeUnitsFromState ({ runnableConfigurationId }: RemoveUnitsFromStateArguments): Promise<void> {
+        const unitIds = this._runnableConfigurationUnitsRelations[runnableConfigurationId];
+
+        for (const unitId of unitIds)
+            delete this.state.units[unitId];
+
+        delete this._runnableConfigurationUnitsRelations[runnableConfigurationId];
     }
 }
 

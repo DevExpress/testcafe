@@ -144,3 +144,7 @@ export interface RemoveFixtureCtxArguments {
     fixtureId: string;
 }
 
+export interface RemoveUnitsFromStateArguments {
+    runnableConfigurationId: string;
+}
+

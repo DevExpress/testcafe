@@ -15,10 +15,10 @@ class LiveModeBootstrapper extends Bootstrapper {
         cacheProxy.preventCaching();
     }
 
-    _getTests () {
+    _getTests (id) {
         this._mockRequire();
 
-        return super._getTests()
+        return super._getTests(id)
             .then(result => {
                 this._restoreRequire();
 

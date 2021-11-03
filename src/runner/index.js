@@ -86,12 +86,13 @@ export default class Runner extends EventEmitter {
         return testedApp ? testedApp.kill().catch(e => DEBUG_LOGGER(e)) : Promise.resolve();
     }
 
-    async _disposeTaskAndRelatedAssets (task, browserSet, reporters, testedApp) {
+    async _disposeTaskAndRelatedAssets (task, browserSet, reporters, testedApp, runnableConfigurationId) {
         task.abort();
         task.unRegisterClientScriptRouting();
         task.clearListeners();
         this._messageBus.abort();
 
+        await this._removeUnitsFromCompilerServiceState(runnableConfigurationId);
         await this._disposeAssets(browserSet, reporters, testedApp);
     }
 
@@ -129,6 +130,10 @@ export default class Runner extends EventEmitter {
         return promise;
     }
 
+    async _removeUnitsFromCompilerServiceState (runnableConfigurationId) {
+        await this.compilerService?.removeUnitsFromState({ runnableConfigurationId });
+    }
+
     // Run task
     _getFailedTestCount (task, reporter) {
         let failedTestCount = reporter.taskInfo.testCount - reporter.taskInfo.passed;
@@ -139,7 +144,7 @@ export default class Runner extends EventEmitter {
         return failedTestCount;
     }
 
-    async _getTaskResult (task, browserSet, reporters, testedApp) {
+    async _getTaskResult (task, browserSet, reporters, testedApp, runnableConfigurationId) {
         if (!task.opts.live) {
             task.on('browser-job-done', job => {
                 job.browserConnections.forEach(bc => browserSet.releaseConnection(bc));
@@ -171,12 +176,13 @@ export default class Runner extends EventEmitter {
             await Promise.race(promises);
         }
         catch (err) {
-            await this._disposeTaskAndRelatedAssets(task, browserSet, reporters, testedApp);
+            await this._disposeTaskAndRelatedAssets(task, browserSet, reporters, testedApp, runnableConfigurationId);
 
             throw err;
         }
 
         await this._disposeAssets(browserSet, reporters, testedApp);
+        await this._removeUnitsFromCompilerServiceState(runnableConfigurationId);
 
         if (streamController.multipleStreamError)
             throw streamController.multipleStreamError;
@@ -196,9 +202,9 @@ export default class Runner extends EventEmitter {
         });
     }
 
-    _runTask ({ reporters, browserSet, tests, testedApp, options }) {
+    _runTask ({ reporters, browserSet, tests, testedApp, options, runnableConfigurationId }) {
         const task              = this._createTask(tests, browserSet.browserConnectionGroups, this.proxy, options, this.warningLog);
-        const completionPromise = this._getTaskResult(task, browserSet, reporters, testedApp);
+        const completionPromise = this._getTaskResult(task, browserSet, reporters, testedApp, runnableConfigurationId);
         let completed           = false;
 
         this._messageBus.on('start', startHandlingTestErrors);
@@ -224,7 +230,7 @@ export default class Runner extends EventEmitter {
 
         const cancelTask = async () => {
             if (!completed)
-                await this._disposeTaskAndRelatedAssets(task, browserSet, reporters, testedApp);
+                await this._disposeTaskAndRelatedAssets(task, browserSet, reporters, testedApp, runnableConfigurationId);
         };
 
         return { completionPromise, cancelTask };
@@ -676,14 +682,21 @@ export default class Runner extends EventEmitter {
                 return this._validateRunOptions();
             })
             .then(() => this._createRunnableConfiguration())
-            .then(async ({ browserSet, tests, testedApp, commonClientScripts }) => {
+            .then(async ({ browserSet, tests, testedApp, commonClientScripts, id }) => {
                 await this._prepareClientScripts(tests, commonClientScripts);
 
                 const resultOptions = this.configuration.getOptions();
 
                 await this.bootstrapper.compilerService?.setOptions({ value: resultOptions });
 
-                return this._runTask({ reporters, browserSet, tests, testedApp, options: resultOptions });
+                return this._runTask({
+                    reporters,
+                    browserSet,
+                    tests,
+                    testedApp,
+                    options:                 resultOptions,
+                    runnableConfigurationId: id,
+                });
             });
 
         return this._createCancelablePromise(runTaskPromise);
