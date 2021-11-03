@@ -20,5 +20,5 @@ module.exports = {
         test: 'Simple test',
     },
     ...config.currentEnvironment,
-    browsers: 'chrome:headless',
+    browsers: config.browsers.map(browser => browser.browserName),
 };
