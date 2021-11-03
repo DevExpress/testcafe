@@ -559,10 +559,8 @@ export default class Runner extends EventEmitter {
         }
     }
 
-    async _applyOptions () {
+    async _setConfigurationOptions () {
         await this.configuration.asyncMergeOptions(this._options);
-
-        return this._setBootstrapperOptions();
     }
 
     // API
@@ -683,11 +681,12 @@ export default class Runner extends EventEmitter {
         this._options = Object.assign(this._options, options);
 
         const runTaskPromise = Promise.resolve()
+            .then(() => this._setConfigurationOptions())
             .then(() => Reporter.getReporterPlugins(this._options.reporter))
             .then(reporterPlugins => {
                 reporters = reporterPlugins.map(reporter => new Reporter(reporter.plugin, this._messageBus, reporter.outStream, reporter.name));
             })
-            .then(() => this._applyOptions())
+            .then(() => this._setBootstrapperOptions())
             .then(() => {
                 logEntry(DEBUG_LOGGER, this.configuration);
 
