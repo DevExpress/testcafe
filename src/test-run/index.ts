@@ -766,21 +766,11 @@ export default class TestRun extends AsyncEventEmitter {
         return consoleMessageCopy[String(this.activeWindowId)];
     }
 
-    private async _enqueueSetBreakpointCommand (callsite: CallsiteRecord | undefined, error?: string, command?: CommandBase): Promise<void> {
-        const inCompilerService = !!this.compilerService;
-
-        // NOTE: In regular mode, it's possible to debug tests only using TestCafe UI ('Resume' and 'Next step' buttons).
-        // So, we should warn on trying to debug in headless mode.
-        // In compiler service mode, we can debug even in headless mode using any debugging tools. So, in this case, the warning is excessive.
-        if (!inCompilerService && this.browserConnection.isHeadlessBrowser()) {
-            this.warningLog.addWarning({ message: WARNING_MESSAGE.debugInHeadlessError, actionId: command ? command.actionId : null });
-            return;
-        }
-
+    private async _enqueueSetBreakpointCommand (callsite: CallsiteRecord | undefined, error?: string): Promise<void> {
         if (this.debugLogger)
             this.debugLogger.showBreakpoint(this.session.id, this.browserConnection.userAgent, callsite, error);
 
-        this.debugging = await this._internalExecuteCommand(new serviceCommands.SetBreakpointCommand(!!error, inCompilerService), callsite) as boolean;
+        this.debugging = await this._internalExecuteCommand(new serviceCommands.SetBreakpointCommand(!!error, !!this.compilerService), callsite) as boolean;
     }
 
     private _removeAllNonServiceTasks (): void {
@@ -1179,8 +1169,21 @@ export default class TestRun extends AsyncEventEmitter {
         if (command.type === COMMAND_TYPE.setPageLoadTimeout)
             return null;
 
-        if (command.type === COMMAND_TYPE.debug)
-            return await this._enqueueSetBreakpointCommand(callsite as CallsiteRecord, void 0, command);
+        if (command.type === COMMAND_TYPE.debug) {
+            // NOTE: In regular mode, it's possible to debug tests only using TestCafe UI ('Resume' and 'Next step' buttons).
+            // So, we should warn on trying to debug in headless mode.
+            // In compiler service mode, we can debug even in headless mode using any debugging tools. So, in this case, the warning is excessive.
+            const canDebug = !!this.compilerService || !this.browserConnection.isHeadlessBrowser();
+
+            if (canDebug)
+                return await this._enqueueSetBreakpointCommand(callsite as CallsiteRecord, void 0);
+
+            this.debugging = false;
+
+            this.warningLog.addWarning({ message: WARNING_MESSAGE.debugInHeadlessError, actionId: command.actionId });
+
+            return null;
+        }
 
         if (command.type === COMMAND_TYPE.useRole) {
             let fn = (): Promise<void> => this._useRole((command as any).role, callsite as CallsiteRecord);
