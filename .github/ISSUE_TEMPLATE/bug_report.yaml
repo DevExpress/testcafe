@@ -63,7 +63,7 @@ body:
     attributes:
       label: Your complete configuration file
       description: >
-        Paste your complete configuration file.
+        Paste your complete configuration file (e.g., .testcaferc.js or .testcaferc.json).
     validations:
       required: false
 
