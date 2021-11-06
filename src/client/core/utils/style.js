@@ -1,11 +1,10 @@
 import hammerhead from '../deps/hammerhead';
-import * as domUtils from './dom';
 
 export * from './shared/style';
 export { hasScroll } from './shared/scroll';
 
 
-const styleUtils   = hammerhead.utils.style;
+const styleUtils = hammerhead.utils.style;
 
 export const getBordersWidth      = hammerhead.utils.style.getBordersWidth;
 export const getComputedStyle     = hammerhead.utils.style.getComputedStyle;
@@ -26,9 +25,6 @@ export const setScrollLeft        = hammerhead.utils.style.setScrollLeft;
 export const setScrollTop         = hammerhead.utils.style.setScrollTop;
 export const get                  = hammerhead.utils.style.get;
 
-export function isFixedElement (node) {
-    return domUtils.isElementNode(node) && get(node, 'position') === 'fixed';
-}
 
 export function set (el, style, value) {
     if (typeof style === 'string')

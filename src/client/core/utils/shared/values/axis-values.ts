@@ -44,4 +44,11 @@ export default class AxisValues<T> implements AxisValuesData<T> {
 
         return this;
     }
+
+    public round (this: AxisValues<number>, fn = Math.round): AxisValues<number> {
+        this.x = fn(this.x);
+        this.y = fn(this.y);
+
+        return this;
+    }
 }

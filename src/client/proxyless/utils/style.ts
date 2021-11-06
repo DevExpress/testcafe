@@ -227,3 +227,35 @@ export function getOffset (el: Element | Document | Window | null): LeftTopValue
         left: clientRect.left + scrollLeft - clientLeft,
     };
 }
+
+export function setScrollLeft (el: Element | Document | Window, value: number): void {
+    if (!el)
+        return;
+
+    if (domUtils.isDocument(el))
+        el = el.defaultView as Window;
+
+    if (domUtils.isWindow(el)) {
+        const scrollTop = getScrollTop(el);
+
+        nativeMethods.scrollTo.call(el, value, scrollTop);
+    }
+    else
+        el.scrollLeft = value;
+}
+
+export function setScrollTop (el: Element | Document | Window, value: number): void {
+    if (!el)
+        return;
+
+    if (domUtils.isDocument(el))
+        el = el.defaultView as Window;
+
+    if (domUtils.isWindow(el)) {
+        const scrollLeft = getScrollLeft(el);
+
+        nativeMethods.scrollTo.call(el, scrollLeft, value);
+    }
+    else
+        el.scrollTop = value;
+}

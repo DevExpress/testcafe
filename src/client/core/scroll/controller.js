@@ -1,6 +1,6 @@
-import { eventSandbox, Promise } from './deps/hammerhead';
-import { EventEmitter } from './utils/service';
-import { isShadowElement } from './utils/dom';
+import { eventSandbox, Promise } from '../deps/hammerhead';
+import { EventEmitter } from '../utils/service';
+import { isShadowElement } from '../utils/dom';
 
 const listeners = eventSandbox.listeners;
 

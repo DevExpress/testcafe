@@ -1,5 +1,6 @@
 import { BoundaryValuesData } from './values/boundary-values';
 import { AxisValuesData, LeftTopValues } from './values/axis-values';
+import { Dictionary } from '../../../../configuration/interfaces';
 
 export interface ElementRectangle {
     height: number;
@@ -28,6 +29,7 @@ export interface NativeMethods {
     getAttribute: Element['getAttribute'];
     querySelector: HTMLElement['querySelector'];
     querySelectorAll: HTMLElement['querySelectorAll'];
+    scrollTo: Window['scrollTo'];
 }
 
 export interface CoreUtilsAdapter {
@@ -70,6 +72,8 @@ export interface CoreUtilsAdapter {
         getInnerWidth (el: Element | Window | Document | null): number;
         getInnerHeight (el: Element | Window | Document | null): number;
         getScrollLeft (el: Window | Document | Element | null): number;
+        setScrollLeft (el: Element | Document | Window, value: number): void;
+        setScrollTop (el: Element | Document | Window, value: number): void;
     };
 
     position: {
@@ -77,4 +81,6 @@ export interface CoreUtilsAdapter {
         getOffsetPosition (el: Element | Document, roundFn?: (n: number) => number): LeftTopValues<number>;
         offsetToClientCoords (coords: AxisValuesData<number>, currentDocument?: Document): AxisValuesData<number>;
     };
+
+    sendRequestToFrame: null | ((msg: Dictionary<any>, responseCmd: string, receiverWindow: Window) => Promise<Dictionary<any>>);
 }
