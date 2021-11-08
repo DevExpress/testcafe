@@ -36,6 +36,7 @@ var environment = "auto";
 
 // Maps a file path to a string containing the file contents
 var fileContentsCache = {};
+var prevFileContentsCacheLength = 0;
 
 // Maps a file path to a source map for that file
 var sourceMapCache = {};
@@ -211,8 +212,16 @@ retrieveMapHandlers.push(function(source) {
 
 function mapSourcePosition(position) {
     if (process.title === 'service') {
-        console.log('sourceMapCache length', Object.keys(sourceMapCache).length);
-        console.log('fileContentsCache.length', Object.keys(fileContentsCache).length);
+        //console.log('sourceMapCache length', Object.keys(sourceMapCache).length);
+
+        var fileContentsCacheLength = Object.keys(fileContentsCache).length;
+
+        if (fileContentsCacheLength > prevFileContentsCacheLength + 100) {
+            prevFileContentsCacheLength = fileContentsCacheLength;
+
+            console.log('fileContentsCache.length', prevFileContentsCacheLength);
+        }
+
     }
 
   var sourceMap = sourceMapCache[position.source];
