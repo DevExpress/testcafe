@@ -194,6 +194,11 @@ export default class ReporterPluginHost {
     }
 
     // NOTE: It's an optional method
+    public async reportInit (): Promise<void> {
+        return Promise.resolve();
+    }
+
+    // NOTE: It's an optional method
     public async reportWarnings (/* warnings */): Promise<void> {
         return Promise.resolve();
     }

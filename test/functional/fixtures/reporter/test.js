@@ -1092,6 +1092,83 @@ describe('Reporter', () => {
         });
     });
 
+    describe('Reporter "init" method', () => {
+        const reportInitSuccess = result => createReporter({
+            reportInit () {
+                result.success = true;
+            },
+            reportWarnings (warning) {
+                result.warnings = result.warnings || [];
+
+                result.warnings.push(warning);
+            },
+        });
+
+        const reportInitFailure1 = () => createReporter({
+            reportInit () {
+                return { error: new Error('custom error on initialization 1') };
+            },
+        });
+
+        const reportInitFailure2 = () => createReporter({
+            reportInit () {
+                return { error: new Error('custom error on initialization 2') };
+            },
+        });
+
+        const reportNoInit = () => createReporter({
+        });
+
+        it('No init', function () {
+            return runTests('testcafe-fixtures/reporter-init-method.js', null, {
+                selectorTimeout: 1000,
+                reporter:        reportNoInit(),
+            });
+        });
+
+        it('Success', function () {
+            const result = {};
+
+            return runTests('testcafe-fixtures/reporter-init-method.js', null, {
+                selectorTimeout: 1000,
+                reporter:        reportInitSuccess(result),
+            })
+                .then(() => {
+                    expect(result.success).eql(true);
+                });
+        });
+
+        it('Failure', function () {
+            return runTests('testcafe-fixtures/reporter-init-method.js', null, {
+                selectorTimeout: 1000,
+                reporter:        [ reportInitFailure1(), reportInitFailure2() ],
+            })
+                .then(() => {
+                    throw new Error('');
+                })
+                .catch(err => {
+                    expect(err.message).eql(
+                        'Cannot initialize none of the following reporters:\n' +
+                        '- "function () {}": custom error on initialization 1\n' +
+                        '- "function () {}": custom error on initialization 2'
+                    );
+                });
+        });
+
+        it('Failure + Success', function () {
+            const result = {};
+
+            return runTests('testcafe-fixtures/reporter-init-method.js', null, {
+                selectorTimeout: 1000,
+                reporter:        [ reportInitSuccess(result), reportInitFailure1() ],
+            })
+                .then(() => {
+                    expect(result.warnings[0].message).eql('Cannot initialize the following reporters:\n' +
+                                                           '- "function () {}": custom error on initialization 1');
+                });
+        });
+    });
+
     it('Should raise an error when uncaught exception occurred in any reporter method', async () => {
         function createReporterWithBrokenMethod (method) {
             const base = {
