@@ -140,8 +140,8 @@ export interface CheckWindowArgument extends TestRunLocator {
     title: string;
 }
 
-export interface RemoveFixtureCtxArguments {
-    fixtureId: string;
+export interface RemoveFixtureCtxsArguments {
+    fixtureIds: string[];
 }
 
 export interface RemoveUnitsFromStateArguments {

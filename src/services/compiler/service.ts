@@ -52,7 +52,7 @@ import {
     CommandLocator,
     AddUnexpectedErrorArguments,
     CheckWindowArgument,
-    RemoveFixtureCtxArguments,
+    RemoveFixtureCtxsArguments,
     RemoveUnitsFromStateArguments,
 } from './interfaces';
 
@@ -214,7 +214,7 @@ class CompilerService implements CompilerProtocol {
             this.addUnexpectedError,
             this.checkWindow,
             this.removeTestRunFromState,
-            this.removeFixtureCtxFromState,
+            this.removeFixtureCtxsFromState,
             this.removeUnitsFromState,
         ], this);
     }
@@ -539,8 +539,9 @@ class CompilerService implements CompilerProtocol {
         delete this.state.testRuns[testRunId];
     }
 
-    public async removeFixtureCtxFromState ({ fixtureId }: RemoveFixtureCtxArguments): Promise<void> {
-        delete this.state.fixtureCtxs[fixtureId];
+    public async removeFixtureCtxsFromState ({ fixtureIds }: RemoveFixtureCtxsArguments): Promise<void> {
+        for (const fixtureId of fixtureIds)
+            delete this.state.fixtureCtxs[fixtureId];
     }
 
     public async removeUnitsFromState ({ runnableConfigurationId }: RemoveUnitsFromStateArguments): Promise<void> {
