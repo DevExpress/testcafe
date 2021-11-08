@@ -356,7 +356,7 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     private _moveWarningLogToJob (job: BrowserJob): void {
-        this.warningLog.copyTo(job.warningLog);
+        job.warningLog.copyFrom(this.warningLog);
         this.warningLog.clear();
     }
 
