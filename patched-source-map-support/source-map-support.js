@@ -210,9 +210,10 @@ retrieveMapHandlers.push(function(source) {
 });
 
 function mapSourcePosition(position) {
-  console.log(process.title);
-  console.log('sourceMapCache length', Object.keys(sourceMapCache).length);
-  console.log('fileContentsCache.length', Object.keys(fileContentsCache).length);
+    if (process.title === 'service') {
+        console.log('sourceMapCache length', Object.keys(sourceMapCache).length);
+        console.log('fileContentsCache.length', Object.keys(fileContentsCache).length);
+    }
 
   var sourceMap = sourceMapCache[position.source];
   if (!sourceMap) {

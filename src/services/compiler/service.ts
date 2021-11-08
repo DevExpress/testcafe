@@ -551,6 +551,8 @@ class CompilerService implements CompilerProtocol {
             delete this.state.units[unitId];
 
         delete this._runnableConfigurationUnitsRelations[runnableConfigurationId];
+
+        console.log('heapUsed', Math.round(process.memoryUsage().heapUsed / 1024 / 1024)); //eslint-disable-line
     }
 }
 
