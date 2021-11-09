@@ -7,6 +7,7 @@ const ReporterPluginMethod      = require('../../../../lib/reporter/plugin-metho
 const assertionHelper           = require('../../assertion-helper.js');
 const path                      = require('path');
 const config                    = require('../../config');
+const { pull }                  = require('lodash');
 
 const {
     createSimpleTestStream,
@@ -1170,6 +1171,10 @@ describe('Reporter', () => {
     });
 
     it('Should raise an error when uncaught exception occurred in any reporter method', async () => {
+        const reporterPluginMethods = Object.values(ReporterPluginMethod);
+
+        pull(reporterPluginMethods, ReporterPluginMethod.reportInit);
+
         function createReporterWithBrokenMethod (method) {
             const base = {
                 async reportTaskStart () {},
@@ -1185,7 +1190,7 @@ describe('Reporter', () => {
             return () => base;
         }
 
-        for (const method of Object.values(ReporterPluginMethod)) {
+        for (const method of reporterPluginMethods) {
             try {
                 await runTests(
                     'testcafe-fixtures/index-test.js',

@@ -156,10 +156,10 @@ export default class Reporter {
             error = err;
         }
 
-        return Promise.resolve({
+        return {
             reporter: this,
             error,
-        });
+        };
     }
 
     public async dispatchToPlugin ({ method, initialObject, args = [] }: PluginMethodArguments): Promise<void> {
