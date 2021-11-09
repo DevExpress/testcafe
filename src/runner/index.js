@@ -163,6 +163,8 @@ export default class Runner extends EventEmitter {
             });
         }
 
+        this._messageBus.clearListeners('error');
+
         const browserSetErrorPromise = promisifyEvent(browserSet, 'error');
         const taskErrorPromise       = promisifyEvent(task, 'error');
         const messageBusErrorPromise = promisifyEvent(this._messageBus, 'error');
@@ -678,6 +680,8 @@ export default class Runner extends EventEmitter {
         this.apiMethodWasCalled.reset();
         this._messageBus.clearListeners();
 
+        const messageBusErrorPromise = promisifyEvent(this._messageBus, 'error');
+
         this._options = Object.assign(this._options, options);
 
         const runTaskPromise = Promise.resolve()
@@ -710,7 +714,12 @@ export default class Runner extends EventEmitter {
                 });
             });
 
-        return this._createCancelablePromise(runTaskPromise);
+        const promises = [
+            runTaskPromise,
+            messageBusErrorPromise,
+        ];
+
+        return this._createCancelablePromise(Promise.race(promises));
     }
 
     async stop () {
