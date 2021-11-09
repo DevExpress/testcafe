@@ -21,7 +21,11 @@ require('coffeescript');
 
 export default class TestCafe {
     constructor (configuration) {
-        setupSourceMapSupport();
+        const isExperimentalDebug = configuration.getOption(OPTION_NAMES.experimentalDebug);
+
+        if (isExperimentalDebug)
+            setupSourceMapSupport();
+
         errorHandlers.registerErrorHandlers();
 
         const { hostname, port1, port2, options } = configuration.startOptions;
@@ -32,7 +36,7 @@ export default class TestCafe {
         this.runners                  = [];
         this.configuration            = configuration;
 
-        if (configuration.getOption(OPTION_NAMES.experimentalDebug)) {
+        if (isExperimentalDebug) {
             const developmentMode = configuration.getOption(OPTION_NAMES.developmentMode);
             const v8Flags         = configuration.getOption(OPTION_NAMES.v8Flags);
 
