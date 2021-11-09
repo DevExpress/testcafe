@@ -103,11 +103,8 @@ interface ReportWarningEventArguments {
     actionId?: string;
 }
 
-interface ReporterMethodResult {
+interface ReporterInitMethodResult {
     error?: Error;
-}
-
-interface ReporterInitMethodResult extends ReporterMethodResult{
     reporter: Reporter;
 }
 
@@ -146,13 +143,18 @@ export default class Reporter {
     }
 
     public async init (): Promise<ReporterInitMethodResult> {
-        const result = await this.dispatchToPlugin({
-            method:        ReporterPluginMethod.reportInit as string,
-            initialObject: null,
-            args:          [ {} ],
-        });
+        let error = void 0;
 
-        const error = result?.error;
+        try {
+            await this.dispatchToPlugin({
+                method:        ReporterPluginMethod.reportInit as string,
+                initialObject: null,
+                args:          [{}],
+            });
+        }
+        catch (err) {
+            error = err;
+        }
 
         return Promise.resolve({
             reporter: this,
@@ -160,10 +162,10 @@ export default class Reporter {
         });
     }
 
-    public async dispatchToPlugin ({ method, initialObject, args = [] }: PluginMethodArguments): Promise<ReporterMethodResult | null> {
+    public async dispatchToPlugin ({ method, initialObject, args = [] }: PluginMethodArguments): Promise<void> {
         try {
             // @ts-ignore
-            return await this.plugin[method](...args);
+            await this.plugin[method](...args);
         }
         catch (originalError) {
             const uncaughtError = new ReporterPluginError({
@@ -177,8 +179,6 @@ export default class Reporter {
             else
                 throw uncaughtError;
         }
-
-        return null;
     }
 
     private _assignMessageBusEventHandlers (): void {

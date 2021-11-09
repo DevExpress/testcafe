@@ -1106,13 +1106,13 @@ describe('Reporter', () => {
 
         const reportInitFailure1 = () => createReporter({
             reportInit () {
-                return { error: new Error('custom error on initialization 1') };
+                throw new Error('custom error on initialization 1');
             },
         });
 
         const reportInitFailure2 = () => createReporter({
             reportInit () {
-                return { error: new Error('custom error on initialization 2') };
+                throw new Error('custom error on initialization 2');
             },
         });
 
@@ -1147,11 +1147,10 @@ describe('Reporter', () => {
                     throw new Error('');
                 })
                 .catch(err => {
-                    expect(err.message).eql(
-                        'Cannot initialize none of the following reporters:\n' +
-                        '- "function () {}": custom error on initialization 1\n' +
-                        '- "function () {}": custom error on initialization 2'
-                    );
+                    expect(err.message).contains('Cannot initialize none of the following reporters:\n');
+                    expect(err.message).contains('"function () {}": The "reportInit" method of the "function () {}" reporter produced an uncaught error. Error details:\n');
+                    expect(err.message).contains('Error: custom error on initialization 1\n');
+                    expect(err.message).contains('Error: custom error on initialization 2\n');
                 });
         });
 
@@ -1163,8 +1162,9 @@ describe('Reporter', () => {
                 reporter:        [ reportInitSuccess(result), reportInitFailure1() ],
             })
                 .then(() => {
-                    expect(result.warnings[0].message).eql('Cannot initialize the following reporters:\n' +
-                                                           '- "function () {}": custom error on initialization 1');
+                    expect(result.warnings[0].message).contains('Cannot initialize the following reporters:\n');
+                    expect(result.warnings[0].message).contains('"function () {}": The "reportInit" method of the "function () {}" reporter produced an uncaught error. Error details:\n');
+                    expect(result.warnings[0].message).contains('Error: custom error on initialization 1\n');
                 });
         });
     });
