@@ -14,7 +14,7 @@ import * as domUtils from './utils/dom';
 import * as contentEditable from './utils/content-editable';
 import * as positionUtils from './utils/position';
 import * as styleUtils from './utils/style';
-import * as scrollUtils from './utils/scroll.shared';
+import * as scrollUtils from './utils/shared/scroll';
 import * as eventUtils from './utils/event';
 import * as arrayUtils from './utils/array';
 import * as promiseUtils from './utils/promise';
@@ -32,8 +32,8 @@ import * as browser from '../browser';
 
 import selectorTextFilter from '../../client-functions/selectors/selector-text-filter';
 import selectorAttributeFilter from '../../client-functions/selectors/selector-attribute-filter';
-import { initializeAdapter as initializeUtilsAdapter } from './utils/adapter/index';
-import utilsAdapterInitializer from './utils/adapter/initializer';
+import { initializeAdapter as initializeUtilsAdapter } from './utils/shared/adapter/index';
+import utilsAdapterInitializer from './utils/shared/adapter/initializer';
 import { initializeAdapter as initializeSharedAdapter } from '../../shared/adapter';
 import sharedAdapterInitializer from './shared-adapter-initializer';
 

@@ -54,6 +54,7 @@ export interface NativeMethods {
     getAttribute: Element['getAttribute'];
     querySelector: HTMLElement['querySelector'];
     querySelectorAll: HTMLElement['querySelectorAll'];
+    contentWindowGetter: () => HTMLIFrameElement['contentWindow'];
 }
 
 export interface ClientFunctionAdapter {

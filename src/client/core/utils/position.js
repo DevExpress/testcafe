@@ -1,13 +1,16 @@
-/* global isIFrameWithoutSrc:true */
 import hammerhead from '../deps/hammerhead';
 import * as styleUtils from './style';
 import * as domUtils from './dom';
+import * as shared from './shared/position';
 
-export { isElementVisible } from './visibility.shared';
+export { isElementVisible } from './shared/visibility';
 
 export const getElementRectangle  = hammerhead.utils.position.getElementRectangle;
 export const getOffsetPosition    = hammerhead.utils.position.getOffsetPosition;
 export const offsetToClientCoords = hammerhead.utils.position.offsetToClientCoords;
+export const getClientDimensions  = shared.getClientDimensions;
+export const getElementFromPoint  = shared.getElementFromPoint;
+export const calcRelativePosition = shared.calcRelativePosition;
 
 export function getIframeClientCoordinates (iframe) {
     const { left, top }       = getOffsetPosition(iframe);
@@ -22,99 +25,6 @@ export function getIframeClientCoordinates (iframe) {
         top:    iframeRectangleTop,
         right:  iframeRectangleLeft + styleUtils.getWidth(iframe),
         bottom: iframeRectangleTop + styleUtils.getHeight(iframe),
-    };
-}
-
-export function getClientDimensions (target) {
-    if (!domUtils.isDomElement(target)) {
-        const clientPoint = offsetToClientCoords(target);
-
-        return {
-            width:  0,
-            height: 0,
-
-            border: {
-                bottom: 0,
-                left:   0,
-                right:  0,
-                top:    0,
-            },
-            scroll: {
-                left: 0,
-                top:  0,
-            },
-
-            left:   clientPoint.x,
-            right:  clientPoint.x,
-            top:    clientPoint.y,
-            bottom: clientPoint.y,
-        };
-    }
-
-    const isHtmlElement       = /html/i.test(target.tagName);
-    const body                = isHtmlElement ? target.getElementsByTagName('body')[0] : null;
-    const elementBorders      = styleUtils.getBordersWidth(target);
-    const elementRect         = target.getBoundingClientRect();
-    const elementScroll       = styleUtils.getElementScroll(target);
-    const isElementInIframe   = domUtils.isElementInIframe(target);
-    let elementLeftPosition = isHtmlElement ? 0 : elementRect.left;
-    let elementTopPosition  = isHtmlElement ? 0 : elementRect.top;
-    let elementHeight       = isHtmlElement ? target.clientHeight : elementRect.height;
-    let elementWidth        = isHtmlElement ? target.clientWidth : elementRect.width;
-    const isCompatMode        = target.ownerDocument.compatMode === 'BackCompat';
-
-    if (isHtmlElement && body && (typeof isIFrameWithoutSrc === 'boolean' && isIFrameWithoutSrc || isCompatMode)) {
-        elementHeight = body.clientHeight;
-        elementWidth  = body.clientWidth;
-    }
-
-    if (isElementInIframe) {
-        const iframeElement = domUtils.getIframeByElement(target);
-
-        if (iframeElement) {
-            const iframeOffset  = getOffsetPosition(iframeElement);
-            const clientOffset  = offsetToClientCoords({
-                x: iframeOffset.left,
-                y: iframeOffset.top,
-            });
-            const iframeBorders = styleUtils.getBordersWidth(iframeElement);
-
-            elementLeftPosition += clientOffset.x + iframeBorders.left;
-            elementTopPosition += clientOffset.y + iframeBorders.top;
-
-            if (isHtmlElement) {
-                elementBorders.bottom += iframeBorders.bottom;
-                elementBorders.left += iframeBorders.left;
-                elementBorders.right += iframeBorders.right;
-                elementBorders.top += iframeBorders.top;
-            }
-        }
-    }
-
-    const hasRightScrollbar   = !isHtmlElement && styleUtils.getInnerWidth(target) !== target.clientWidth;
-    const rightScrollbarWidth = hasRightScrollbar ? domUtils.getScrollbarSize() : 0;
-
-    const hasBottomScrollbar    = !isHtmlElement && styleUtils.getInnerHeight(target) !== target.clientHeight;
-    const bottomScrollbarHeight = hasBottomScrollbar ? domUtils.getScrollbarSize() : 0;
-
-    return {
-        width:  elementWidth,
-        height: elementHeight,
-        left:   elementLeftPosition,
-        top:    elementTopPosition,
-        border: elementBorders,
-        bottom: elementTopPosition + elementHeight,
-        right:  elementLeftPosition + elementWidth,
-
-        scroll: {
-            left: elementScroll.left,
-            top:  elementScroll.top,
-        },
-
-        scrollbar: {
-            right:  rightScrollbarWidth,
-            bottom: bottomScrollbarHeight,
-        },
     };
 }
 
@@ -179,34 +89,6 @@ export function getEventPageCoordinates (ev) {
     };
 }
 
-export function getElementFromPoint (x, y) {
-    let el   = null;
-    const func = document.getElementFromPoint || document.elementFromPoint;
-
-    try {
-        // Permission denied to access property 'getElementFromPoint' error in iframe
-        el = func.call(document, x, y);
-    }
-    catch (ex) {
-        return null;
-    }
-
-    //NOTE: elementFromPoint returns null when is's a border of an iframe
-    if (el === null)
-        el = func.call(document, x - 1, y - 1);
-
-    while (el && el.shadowRoot && el.shadowRoot.elementFromPoint) {
-        const shadowEl = el.shadowRoot.elementFromPoint(x, y);
-
-        if (!shadowEl || el === shadowEl)
-            break;
-
-        el = shadowEl;
-    }
-
-    return el;
-}
-
 export function getIframePointRelativeToParentFrame (pos, iframeWin) {
     const iframe        = domUtils.findIframeByWindow(iframeWin);
     const iframeOffset  = getOffsetPosition(iframe);
@@ -260,20 +142,6 @@ export function getElementClientRectangle (el) {
         left:   clientPos.x,
         top:    clientPos.y,
         width:  rect.width,
-    };
-}
-
-export function calcRelativePosition (dimensions, toDimensions) {
-    return {
-        left: Math.ceil(dimensions.left - (toDimensions.left + toDimensions.border.left)),
-
-        right: Math.floor(toDimensions.right - toDimensions.border.right - toDimensions.scrollbar.right -
-                          dimensions.right),
-
-        top: Math.ceil(dimensions.top - (toDimensions.top + toDimensions.border.top)),
-
-        bottom: Math.floor(toDimensions.bottom - toDimensions.border.bottom - toDimensions.scrollbar.bottom -
-                           dimensions.bottom),
     };
 }
 

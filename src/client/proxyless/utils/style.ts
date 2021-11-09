@@ -1,21 +1,11 @@
 import * as domUtils from './dom';
 import nativeMethods from '../native-methods';
+import { BoundaryValuesData } from '../../core/utils/shared/values/boundary-values';
+import { LeftTopValues } from '../../core/utils/shared/values/axis-values';
 
 
 // NOTE: For Chrome.
 const MIN_SELECT_SIZE_VALUE = 4;
-
-export interface RoundedValues {
-    bottom: number;
-    left: number;
-    right: number;
-    top: number;
-}
-
-export interface Offset {
-    top: number;
-    left: number;
-}
 
 export function get (el: Element | Document, property: keyof CSSStyleDeclaration): string | null {
     el = 'documentElement' in el ? el.documentElement : el;
@@ -25,7 +15,7 @@ export function get (el: Element | Document, property: keyof CSSStyleDeclaration
     return computedStyle && computedStyle[property] as string | null;
 }
 
-export function getBordersWidth (el: HTMLElement): RoundedValues {
+export function getBordersWidth (el: Element): BoundaryValuesData {
     return {
         bottom: getIntValue(get(el, 'borderBottomWidth')),
         left:   getIntValue(get(el, 'borderLeftWidth')),
@@ -79,6 +69,26 @@ export function getScrollTop (el: Window | Document | Element | null): number {
     return el.scrollTop;
 }
 
+export function getElementScroll (el: Window | Document | Element): LeftTopValues<number> {
+    let targetEl = el;
+
+    if (domUtils.isHtmlElement(el)) {
+        targetEl = window;
+
+        if (domUtils.isElementInIframe(el)) {
+            const currentIframe = domUtils.getIframeByElement(el);
+
+            if (currentIframe)
+                targetEl = nativeMethods.contentWindowGetter.call(currentIframe) || window;
+        }
+    }
+
+    return {
+        left: getScrollLeft(targetEl),
+        top:  getScrollTop(targetEl),
+    };
+}
+
 function getIntValue (value: string | null): number {
     value = value || '';
 
@@ -87,7 +97,7 @@ function getIntValue (value: string | null): number {
     return isNaN(parsedValue) ? 0 : parsedValue;
 }
 
-export function getElementPadding (el: Element): RoundedValues {
+export function getElementPadding (el: Element): BoundaryValuesData {
     return {
         bottom: getIntValue(get(el, 'paddingBottom')),
         left:   getIntValue(get(el, 'paddingLeft')),
@@ -151,7 +161,7 @@ export function getSelectElementSize (select: HTMLSelectElement): number {
     return size;
 }
 
-export function getInnerWidth (el: HTMLElement | Window | Document | null): number {
+export function getInnerWidth (el: Element | Window | Document | null): number {
     if (!el)
         return 0;
 
@@ -161,7 +171,7 @@ export function getInnerWidth (el: HTMLElement | Window | Document | null): numb
     if (domUtils.isDocument(el))
         return el.documentElement.clientWidth;
 
-    let value = el.offsetWidth;
+    let value = (el as HTMLElement).offsetWidth;
 
     value -= getIntValue(get(el, 'borderLeftWidth'));
     value -= getIntValue(get(el, 'borderRightWidth'));
@@ -169,7 +179,25 @@ export function getInnerWidth (el: HTMLElement | Window | Document | null): numb
     return value;
 }
 
-export function getOffset (el: Element | Document | Window | null): Offset | null {
+export function getInnerHeight (el: Element | Window | Document | null): number {
+    if (!el)
+        return 0;
+
+    if (domUtils.isWindow(el))
+        return el.document.documentElement.clientHeight;
+
+    if (domUtils.isDocument(el))
+        return el.documentElement.clientHeight;
+
+    let value = (el as HTMLElement).offsetHeight;
+
+    value -= getIntValue(get(el, 'borderTopWidth'));
+    value -= getIntValue(get(el, 'borderBottomWidth'));
+
+    return value;
+}
+
+export function getOffset (el: Element | Document | Window | null): LeftTopValues<number> | null {
     if (!el || domUtils.isWindow(el) || domUtils.isDocument(el))
         return null;
 

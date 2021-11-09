@@ -2,7 +2,7 @@
 import ClientFunctionExecutor from '../driver/command-executors/client-functions/client-function-executor';
 import { ExecuteClientFunctionCommandBase, ExecuteSelectorCommand } from '../../test-run/commands/observation';
 import { initializeAdapter as initializeClientFnAdapter } from '../driver/command-executors/client-functions/adapter/index';
-import { initializeAdapter as initializeCoreUtilsAdapter } from '../core/utils/adapter/index';
+import { initializeAdapter as initializeCoreUtilsAdapter } from '../core/utils/shared/adapter/index';
 import clientFnAdapterInitializer from './client-fn-adapter-initializer';
 import coreUtilsAdapterInitializer from './core-utils-adapter-initializer';
 import SelectorExecutor from '../driver/command-executors/client-functions/selector-executor/index';

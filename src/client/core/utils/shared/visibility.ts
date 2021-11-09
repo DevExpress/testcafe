@@ -1,10 +1,10 @@
 import adapter from './adapter/index';
-import * as styleUtils from './style.shared';
+import { isNotVisibleNode, hasDimensions } from './style';
 
 
 export function isElementVisible (el: Node): boolean {
     if (adapter.dom.isTextNode(el))
-        return !styleUtils.isNotVisibleNode(el);
+        return !isNotVisibleNode(el);
 
     if (!adapter.dom.isContentEditableElement(el)) {
         const elementRectangle = adapter.position.getElementRectangle(el);
@@ -33,5 +33,5 @@ export function isElementVisible (el: Node): boolean {
     if (adapter.dom.isSVGElement(el))
         return adapter.style.get(el, 'visibility') !== 'hidden' && adapter.style.get(el, 'display') !== 'none';
 
-    return styleUtils.hasDimensions(el as HTMLElement) && adapter.style.get(el, 'visibility') !== 'hidden';
+    return hasDimensions(el as HTMLElement) && adapter.style.get(el, 'visibility') !== 'hidden';
 }

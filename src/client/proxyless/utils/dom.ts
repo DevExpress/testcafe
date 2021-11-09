@@ -231,7 +231,7 @@ function getFrameElement (win: Window): HTMLFrameElement | HTMLIFrameElement | n
     }
 }
 
-export function getIframeByElement (el: HTMLElement | Document): HTMLFrameElement | HTMLIFrameElement | null {
+export function getIframeByElement (el: Element | Document): HTMLFrameElement | HTMLIFrameElement | null {
     const doc = isDocument(el) ? el : el.ownerDocument;
     const win = doc.defaultView;
 
