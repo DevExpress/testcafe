@@ -1,4 +1,5 @@
 import fs from 'fs';
+import os from 'os';
 import Compiler from '../../compiler';
 import TestRunProxy from './test-run-proxy';
 import TestController from '../../api/test-controller';
@@ -552,7 +553,9 @@ class CompilerService implements CompilerProtocol {
 
         delete this._runnableConfigurationUnitsRelations[runnableConfigurationId];
 
-        console.log('heapUsed', Math.round(process.memoryUsage().heapUsed / 1024 / 1024)); //eslint-disable-line
+        console.log('heapUsed', Math.round(process.memoryUsage().heapUsed / 1024 / 1024), 'Mb'); //eslint-disable-line
+        console.log('freeMemory', Math.round(os.freemem() / 1024 / 1024), 'Mb');//eslint-disable-line
+        console.log('totalmem()', Math.round(os.totalmem() / 1024 / 1024), 'Mb');//eslint-disable-line
     }
 }
 

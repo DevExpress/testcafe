@@ -206,7 +206,7 @@ gulp.step('client-scripts', gulp.series('client-scripts-bundle', 'client-scripts
 
 gulp.step('server-scripts-compile', () => {
     return childProcess
-        .spawn('tsc -p src/tsconfig.json', { shell: true, stdio: 'inherit' });
+        .spawn('tsc -p src/tsconfig.json --inlineSourceMap false --inlineSources false', { shell: true, stdio: 'inherit' });
 });
 
 
