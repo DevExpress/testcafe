@@ -39,8 +39,8 @@ export default class SessionController extends Session {
         return this.currentTestRun.handleFileDownload();
     }
 
-    handleAttachment () {
-        return this.currentTestRun.handleAttachment();
+    handleAttachment (options) {
+        return this.currentTestRun.handleAttachment(options);
     }
 
     handlePageError (ctx, err) {

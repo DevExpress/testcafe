@@ -148,6 +148,10 @@ describe('Multiple windows', () => {
         return runTests('testcafe-fixtures/i6242.js');
     });
 
+    it('Should switch to child window if parent page has proxied image', () => {
+        return runTests('testcafe-fixtures/i6680.js');
+    });
+
     describe('API', () => {
         it('Open child window', () => {
             return runTests('testcafe-fixtures/api/api-test.js', 'Open child window', { only: 'chrome' });

@@ -574,8 +574,9 @@ export default class TestRun extends AsyncEventEmitter {
             this.fileDownloadingHandled = true;
     }
 
-    public async handleAttachment (): Promise<void> {
-        this.attachmentDownloadingHandled = true;
+    public async handleAttachment (options: { isOpenedInNewWindow: boolean }): Promise<void> {
+        if (options.isOpenedInNewWindow)
+            this.attachmentDownloadingHandled = true;
     }
 
     public handlePageError (ctx: any, err: Error): void {
