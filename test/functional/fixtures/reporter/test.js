@@ -7,7 +7,6 @@ const ReporterPluginMethod      = require('../../../../lib/reporter/plugin-metho
 const assertionHelper           = require('../../assertion-helper.js');
 const path                      = require('path');
 const config                    = require('../../config');
-const { pull }                  = require('lodash');
 
 const {
     createSimpleTestStream,
@@ -1093,88 +1092,40 @@ describe('Reporter', () => {
         });
     });
 
-    describe('Reporter "init" method', () => {
+    it('Should call the "init" method of reporters if it\'s defined', function () {
         const reportInitSuccess = result => createReporter({
-            reportInit () {
-                result.success = true;
-            },
-            reportWarnings (warning) {
-                result.warnings = result.warnings || [];
+            init () {
+                result.init = result.init || [];
 
-                result.warnings.push(warning);
+                result.init.push(true);
             },
-        });
+            reportTaskDone () {
+                result.done = result.done || [];
 
-        const reportInitFailure1 = () => createReporter({
-            reportInit () {
-                throw new Error('custom error on initialization 1');
+                result.done.push(true);
             },
         });
 
-        const reportInitFailure2 = () => createReporter({
-            reportInit () {
-                throw new Error('custom error on initialization 2');
+        const reportNoInit = result => createReporter({
+            reportTaskDone () {
+                result.done = result.done || [];
+
+                result.done.push(true);
             },
         });
 
-        const reportNoInit = () => createReporter({
-        });
+        const result = {};
 
-        it('No init', function () {
-            return runTests('testcafe-fixtures/reporter-init-method.js', null, {
-                selectorTimeout: 1000,
-                reporter:        reportNoInit(),
+        return runTests('testcafe-fixtures/reporter-init-method.js', null, {
+            reporter: [reportInitSuccess(result), reportNoInit(result)],
+        })
+            .then(() => {
+                expect(result.init).eql([true]);
+                expect(result.done).eql([true, true]);
             });
-        });
-
-        it('Success', function () {
-            const result = {};
-
-            return runTests('testcafe-fixtures/reporter-init-method.js', null, {
-                selectorTimeout: 1000,
-                reporter:        reportInitSuccess(result),
-            })
-                .then(() => {
-                    expect(result.success).eql(true);
-                });
-        });
-
-        it('Failure', function () {
-            return runTests('testcafe-fixtures/reporter-init-method.js', null, {
-                selectorTimeout: 1000,
-                reporter:        [ reportInitFailure1(), reportInitFailure2() ],
-            })
-                .then(() => {
-                    throw new Error('');
-                })
-                .catch(err => {
-                    expect(err.message).contains('Cannot initialize none of the following reporters:\n');
-                    expect(err.message).contains('"function () {}": The "reportInit" method of the "function () {}" reporter produced an uncaught error. Error details:\n');
-                    expect(err.message).contains('Error: custom error on initialization 1\n');
-                    expect(err.message).contains('Error: custom error on initialization 2\n');
-                });
-        });
-
-        it('Failure + Success', function () {
-            const result = {};
-
-            return runTests('testcafe-fixtures/reporter-init-method.js', null, {
-                selectorTimeout: 1000,
-                reporter:        [ reportInitSuccess(result), reportInitFailure1() ],
-            })
-                .then(() => {
-                    expect(result.warnings[0].message).contains('Cannot initialize the following reporters:\n');
-                    expect(result.warnings[0].message).contains('"function () {}": The "reportInit" method of the "function () {}" reporter produced an uncaught error. Error details:\n');
-                    expect(result.warnings[0].message).contains('Error: custom error on initialization 1\n');
-                });
-        });
     });
 
     it('Should raise an error when uncaught exception occurred in any reporter method', async () => {
-        const reporterPluginMethods = Object.values(ReporterPluginMethod);
-
-        pull(reporterPluginMethods, ReporterPluginMethod.reportInit);
-
         function createReporterWithBrokenMethod (method) {
             const base = {
                 async reportTaskStart () {},
@@ -1190,7 +1141,7 @@ describe('Reporter', () => {
             return () => base;
         }
 
-        for (const method of reporterPluginMethods) {
+        for (const method of Object.values(ReporterPluginMethod)) {
             try {
                 await runTests(
                     'testcafe-fixtures/index-test.js',

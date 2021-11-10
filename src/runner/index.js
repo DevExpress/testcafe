@@ -35,7 +35,6 @@ import CustomizableCompilers from '../configuration/customizable-compilers';
 import { getConcatenatedValuesString, getPluralSuffix } from '../utils/string';
 import isLocalhost from '../utils/is-localhost';
 import WarningLog from '../notifications/warning-log';
-import WARNING_MESSAGE from '../notifications/warning-message';
 import authenticationHelper from '../cli/authentication-helper';
 import { errors, findWindow } from 'testcafe-browser-tools';
 import isCI from 'is-ci';
@@ -548,31 +547,6 @@ export default class Runner extends EventEmitter {
         return this._setBootstrapperOptions();
     }
 
-    async _initReporters (reporters) {
-        return Promise.all(reporters.map(reporter => reporter.init()))
-            .then(initResults => {
-                const reporterInitErrors = [];
-
-                initResults.forEach(({ reporter, error }) => {
-                    if (error) {
-                        reporterInitErrors.push(`- "${reporter.plugin.name}": ${error.message}`);
-
-                        remove(reporters, reporter);
-                    }
-                });
-
-                const cannotInitAllReporters = initResults.length === reporterInitErrors.length;
-                const reporterInitErrMessage = reporterInitErrors.join('\n');
-
-                if (reporterInitErrors.length) {
-                    if (cannotInitAllReporters)
-                        throw new GeneralError(RUNTIME_ERRORS.cannotInitializeReporters, reporterInitErrMessage);
-                    else
-                        this.warningLog.addWarning(WARNING_MESSAGE.cannotInitializeReporters, reporterInitErrMessage);
-                }
-            });
-    }
-
     // API
     embeddingOptions (opts) {
         const { assets, TestRunCtor } = opts;
@@ -695,7 +669,7 @@ export default class Runner extends EventEmitter {
             .then(reporterPlugins => {
                 reporters = reporterPlugins.map(reporter => new Reporter(reporter.plugin, this._messageBus, reporter.outStream, reporter.name));
 
-                return this._initReporters(reporters);
+                return Promise.all(reporters.map(reporter => reporter.init()));
             })
             .then(() => this._applyOptions())
             .then(() => {

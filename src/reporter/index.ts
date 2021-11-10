@@ -103,11 +103,6 @@ interface ReportWarningEventArguments {
     actionId?: string;
 }
 
-interface ReporterInitMethodResult {
-    error?: Error;
-    reporter: Reporter;
-}
-
 export default class Reporter {
     public readonly plugin: ReporterPluginHost;
     public readonly messageBus: MessageBus;
@@ -142,24 +137,12 @@ export default class Reporter {
         return promise;
     }
 
-    public async init (): Promise<ReporterInitMethodResult> {
-        let error = void 0;
-
-        try {
-            await this.dispatchToPlugin({
-                method:        ReporterPluginMethod.reportInit as string,
-                initialObject: null,
-                args:          [{}],
-            });
-        }
-        catch (err) {
-            error = err;
-        }
-
-        return {
-            reporter: this,
-            error,
-        };
+    public async init (): Promise<void> {
+        await this.dispatchToPlugin({
+            method:        ReporterPluginMethod.init,
+            initialObject: null,
+            args:          [{}],
+        });
     }
 
     public async dispatchToPlugin ({ method, initialObject, args = [] }: PluginMethodArguments): Promise<void> {

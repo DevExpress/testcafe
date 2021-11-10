@@ -194,7 +194,7 @@ export default class ReporterPluginHost {
     }
 
     // NOTE: It's an optional method
-    public async reportInit (): Promise<void> {
+    public async init (): Promise<void> {
     }
 
     // NOTE: It's an optional method
