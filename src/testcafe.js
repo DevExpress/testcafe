@@ -21,9 +21,9 @@ require('coffeescript');
 
 export default class TestCafe {
     constructor (configuration) {
-        const isExperimentalDebug = configuration.getOption(OPTION_NAMES.experimentalDebug);
+        const experimentalDebug = configuration.getOption(OPTION_NAMES.experimentalDebug);
 
-        if (isExperimentalDebug)
+        if (!experimentalDebug)
             setupSourceMapSupport();
 
         errorHandlers.registerErrorHandlers();
@@ -36,7 +36,7 @@ export default class TestCafe {
         this.runners                  = [];
         this.configuration            = configuration;
 
-        if (isExperimentalDebug) {
+        if (experimentalDebug) {
             const developmentMode = configuration.getOption(OPTION_NAMES.developmentMode);
             const v8Flags         = configuration.getOption(OPTION_NAMES.v8Flags);
 
