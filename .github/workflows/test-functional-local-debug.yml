@@ -86,7 +86,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - run: npm ci
-      - run: npx gulp test-functional-local-debug-run --steps-as-tasks
+      - run: npx gulp test-functional-local-debug-run --steps-as-tasks --production
         timeout-minutes: 60
       - uses: actions/github-script@v3
         with:

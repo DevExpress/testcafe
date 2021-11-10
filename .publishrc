@@ -9,6 +9,6 @@
   },
   "confirm": false,
   "publishTag": "latest",
-  "prePublishScript": "gulp test-server",
+  "prePublishScript": "gulp test-server --production",
   "postPublishScript": "gulp docker-publish"
 }

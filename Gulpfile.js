@@ -75,6 +75,8 @@ process.env.PATH = NODE_MODULE_BINS + path.delimiter + process.env.PATH + path.d
 
 process.env.DEV_MODE = ('dev' in ARGS).toString();
 
+process.env.PRODUCTION = ('production' in ARGS).toString();
+
 gulp.task('audit', () => {
     return npmAuditor()
         .then(result => {
@@ -205,8 +207,13 @@ gulp.step('client-scripts-templates-render', () => {
 gulp.step('client-scripts', gulp.series('client-scripts-bundle', 'client-scripts-templates-render'));
 
 gulp.step('server-scripts-compile', () => {
+    let additionalArguments = '';
+
+    if (process.env.PRODUCTION === 'true')
+        additionalArguments = ' --inlineSourceMap false --inlineSources false';
+
     return childProcess
-        .spawn('tsc -p src/tsconfig.json', { shell: true, stdio: 'inherit' });
+        .spawn('tsc -p src/tsconfig.json' + additionalArguments, { shell: true, stdio: 'inherit' });
 });
 
 
