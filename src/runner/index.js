@@ -163,6 +163,8 @@ export default class Runner extends EventEmitter {
             });
         }
 
+        this._messageBus.clearListeners('error');
+
         const browserSetErrorPromise = promisifyEvent(browserSet, 'error');
         const taskErrorPromise       = promisifyEvent(task, 'error');
         const messageBusErrorPromise = promisifyEvent(this._messageBus, 'error');
@@ -559,10 +561,8 @@ export default class Runner extends EventEmitter {
         }
     }
 
-    async _applyOptions () {
+    async _setConfigurationOptions () {
         await this.configuration.asyncMergeOptions(this._options);
-
-        return this._setBootstrapperOptions();
     }
 
     // API
@@ -680,14 +680,17 @@ export default class Runner extends EventEmitter {
         this.apiMethodWasCalled.reset();
         this._messageBus.clearListeners();
 
+        const messageBusErrorPromise = promisifyEvent(this._messageBus, 'error');
+
         this._options = Object.assign(this._options, options);
 
         const runTaskPromise = Promise.resolve()
-            .then(() => Reporter.getReporterPlugins(this._options.reporter))
+            .then(() => this._setConfigurationOptions())
+            .then(() => Reporter.getReporterPlugins(this.configuration.getOption(OPTION_NAMES.reporter)))
             .then(reporterPlugins => {
                 reporters = reporterPlugins.map(reporter => new Reporter(reporter.plugin, this._messageBus, reporter.outStream, reporter.name));
             })
-            .then(() => this._applyOptions())
+            .then(() => this._setBootstrapperOptions())
             .then(() => {
                 logEntry(DEBUG_LOGGER, this.configuration);
 
@@ -711,7 +714,12 @@ export default class Runner extends EventEmitter {
                 });
             });
 
-        return this._createCancelablePromise(runTaskPromise);
+        const promises = [
+            runTaskPromise,
+            messageBusErrorPromise,
+        ];
+
+        return this._createCancelablePromise(Promise.race(promises));
     }
 
     async stop () {

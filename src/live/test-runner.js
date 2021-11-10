@@ -101,7 +101,8 @@ class LiveModeRunner extends Runner {
 
         this.opts = Object.assign({}, this.opts, options);
 
-        this._applyOptions()
+        this._setConfigurationOptions()
+            .then(() => this._setBootstrapperOptions())
             .then(() => parseFileList(this.bootstrapper.sources, process.cwd()))
             .then(files => {
                 return this.controller.init(files);

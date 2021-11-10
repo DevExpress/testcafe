@@ -136,6 +136,12 @@ describe('Browser connection', function () {
                 on: function () {
                     // Do nothing
                 },
+
+                warningLog: {
+                    copyFrom: function () {
+                        // Do nothing
+                    },
+                },
             };
         }
 

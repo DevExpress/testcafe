@@ -66,7 +66,7 @@ describe('Warning log', () => {
         const secondLog = new WarningLog();
 
         firstLog.addWarning(WARNINGS.screenshotError, TYPE_ERROR_TEXT);
-        firstLog.copyTo(secondLog);
+        secondLog.copyFrom(firstLog);
 
         expect(firstLog.messages).eql([
             'Was unable to take a screenshot due to an error.\n\n' + TYPE_ERROR_TEXT,

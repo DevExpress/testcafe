@@ -63,7 +63,7 @@ export default class Task extends AsyncEventEmitter {
         this._compilerService        = compilerService;
         this._messageBus             = messageBus;
 
-        runnerWarningLog.copyTo(this.warningLog);
+        this.warningLog.copyFrom(runnerWarningLog);
 
         const { path, pathPattern, fullPage, thumbnails } = this.opts.screenshots as ScreenshotOptionValue;
 

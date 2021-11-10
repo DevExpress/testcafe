@@ -13,12 +13,13 @@ export default class WarningLog {
     public messageInfos: WarningLogMessage[];
     public globalLog: WarningLog | null;
     public callback?: WarningLogCallback;
+    private _isCopying: boolean;
 
     public constructor (globalLog: WarningLog | null = null, callback?: WarningLogCallback) {
         this.messageInfos = [];
-
-        this.globalLog = globalLog;
-        this.callback  = callback;
+        this.globalLog    = globalLog;
+        this.callback     = callback;
+        this._isCopying   = false;
     }
 
     public get messages (): string[] {
@@ -50,7 +51,7 @@ export default class WarningLog {
         if (this.globalLog)
             this.globalLog.addPlainMessage({ message, actionId });
 
-        if (this.callback)
+        if (this.callback && !this._isCopying)
             this.callback(message, actionId);
     }
 
@@ -58,8 +59,10 @@ export default class WarningLog {
         this.messageInfos = [];
     }
 
-    public copyTo (warningLog: WarningLog): void {
-        this.messages.forEach(msg => warningLog.addWarning(msg));
+    public copyFrom (warningLog: WarningLog): void {
+        this._isCopying = true;
+        warningLog.messages.forEach(msg => this.addWarning(msg));
+        this._isCopying = false;
     }
 
     public static createAddWarningCallback (messageBus?: MessageBus | object, testRun?: TestRun): WarningLogCallback {
