@@ -504,7 +504,7 @@ export default class Runner extends EventEmitter {
         const { _options } = this;
 
         if (!_options.dashboard)
-            return;
+            return Promise.resolve();
 
         if (!_options.reporter)
             _options.reporter = [];
@@ -515,6 +515,8 @@ export default class Runner extends EventEmitter {
             _options.reporter.push({ name: DASHBOARD_REPORTER_NAME, options: _options.dashboard });
         else
             dashboardReporter.options = _options.dashboard;
+
+        return Promise.resolve();
     }
 
     async _prepareClientScripts (tests, clientScripts) {
@@ -708,10 +710,9 @@ export default class Runner extends EventEmitter {
 
         this._options = Object.assign(this._options, options);
 
-        this._addDashboardReporterIfNeeded();
-
         const runTaskPromise = Promise.resolve()
             .then(() => this._setConfigurationOptions())
+            .then(() => this._addDashboardReporterIfNeeded())
             .then(() => Reporter.getReporterPlugins(this.configuration.getOption(OPTION_NAMES.reporter)))
             .then(reporterPlugins => {
                 reporters = reporterPlugins.map(reporter => new Reporter(reporter.plugin, this._messageBus, reporter.outStream, reporter.name));
