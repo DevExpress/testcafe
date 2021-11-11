@@ -410,9 +410,9 @@ gulp.step('test-functional-local-multiple-windows-run', () => {
 gulp.task('test-functional-local-multiple-windows', gulp.series('prepare-tests', 'test-functional-local-multiple-windows-run'));
 
 gulp.step('test-functional-local-debug-run', () => {
-    const content = fs.readFileSync('patched-source-map-support/source-map-support.js');
+    //const content = fs.readFileSync('patched-source-map-support/source-map-support.js');
 
-    fs.writeFileSync('node_modules/source-map-support/source-map-support.js', content);
+    //fs.writeFileSync('node_modules/source-map-support/source-map-support.js', content);
 
     return testFunctional(DEBUG_GLOB, functionalTestConfig.testingEnvironmentNames.localHeadlessChrome, { experimentalDebug: true });
 });

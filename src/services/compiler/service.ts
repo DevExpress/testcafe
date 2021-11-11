@@ -553,9 +553,9 @@ class CompilerService implements CompilerProtocol {
 
         delete this._runnableConfigurationUnitsRelations[runnableConfigurationId];
 
-        console.log('heapUsed', Math.round(process.memoryUsage().heapUsed / 1024 / 1024), 'Mb'); //eslint-disable-line
-        console.log('freeMemory', Math.round(os.freemem() / 1024 / 1024), 'Mb');//eslint-disable-line
-        console.log('totalmem()', Math.round(os.totalmem() / 1024 / 1024), 'Mb');//eslint-disable-line
+        console.log('process heapUsed', Math.round(process.memoryUsage().heapUsed / 1024 / 1024), 'Mb'); //eslint-disable-line
+        console.log('all freeMemory', Math.round(os.freemem() / 1024 / 1024), 'Mb');//eslint-disable-line
+        console.log('all totalmem()', Math.round(os.totalmem() / 1024 / 1024), 'Mb');//eslint-disable-line
     }
 }
 
