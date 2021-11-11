@@ -501,20 +501,21 @@ export default class Runner extends EventEmitter {
     }
 
     _addDashboardReporterIfNeeded () {
-        const { _options } = this;
+        const dashboardOptions = this.configuration.getOption(OPTION_NAMES.dashboard);
+        let reporterOptions    = this.configuration.getOption(OPTION_NAMES.reporter);
 
-        if (!_options.dashboard)
+        if (!dashboardOptions)
             return Promise.resolve();
 
-        if (!_options.reporter)
-            _options.reporter = [];
+        if (!reporterOptions)
+            reporterOptions = [];
 
-        const dashboardReporter = _options.reporter.find(reporter => reporter.name === DASHBOARD_REPORTER_NAME);
+        const dashboardReporter = reporterOptions.find(reporter => reporter.name === DASHBOARD_REPORTER_NAME);
 
         if (!dashboardReporter)
-            _options.reporter.push({ name: DASHBOARD_REPORTER_NAME, options: _options.dashboard });
+            reporterOptions.push({ name: DASHBOARD_REPORTER_NAME, options: _options.dashboard });
         else
-            dashboardReporter.options = _options.dashboard;
+            dashboardReporter.options = dashboardOptions;
 
         return Promise.resolve();
     }
