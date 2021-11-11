@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.17.1 (2021-11-11)
+
+### Bug Fixes
+
+- TestCafe incorrectly reads the 'reporter' configuration file option ([#6665](https://github.com/DevExpress/testcafe/issues/6665), [#6594](https://github.com/DevExpress/testcafe/issues/6594)).
+- An error report displays multiple warnings when you debug a test in headless mode ([#6605](https://github.com/DevExpress/testcafe/issues/6605)).
+- The testcafe-hammerhead proxy fails to load a web page ([testcafe-hammerhead/#2708](https://github.com/DevExpress/testcafe-hammerhead/issues/2708)).
+
 ## v1.17.0 (2021-11-02)
 
 ### Enhancements
