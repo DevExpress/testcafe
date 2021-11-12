@@ -23,8 +23,8 @@ export default class TestCafe {
     constructor (configuration) {
         const experimentalDebug = configuration.getOption(OPTION_NAMES.experimentalDebug);
 
-        //if (!experimentalDebug)
-        setupSourceMapSupport();
+        if (!experimentalDebug)
+            setupSourceMapSupport();
 
         errorHandlers.registerErrorHandlers();
 
