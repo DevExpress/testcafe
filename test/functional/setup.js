@@ -333,6 +333,10 @@ beforeEach(function () {
     global.currentTest = this.currentTest;
 });
 
+afterEach(() => {
+    console.log('after test', new Date().toISOString()); // eslint-disable-line
+});
+
 after(function () {
     this.timeout(60000);
 
