@@ -6,7 +6,7 @@ const chai           = require('chai');
 
 const {
     TESTS_GLOB,
-    DEBUG_GLOB,
+    DEBUG_GLOB_1,
 } = require('../constants/functional-test-globs');
 
 chai.use(require('chai-string'));
@@ -20,7 +20,7 @@ const SCREENSHOT_TESTS_GLOB = [
 ];
 
 function shouldAddTakeScreenshotTestGlob (glob) {
-    return [TESTS_GLOB, DEBUG_GLOB].includes(glob);
+    return [TESTS_GLOB, DEBUG_GLOB_1].includes(glob);
 }
 
 module.exports = function testFunctional (src, testingEnvironmentName, { experimentalDebug, isProxyless } = {}) {
