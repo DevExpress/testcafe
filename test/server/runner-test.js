@@ -229,11 +229,12 @@ describe('Runner', () => {
                 delete runner._options.dashboard;
             });
 
-            it('Should add the dashboard reporter if its options are specified', () => {
-                runner._options.dashboard = {};
-                runner._addDashboardReporterIfNeeded();
+            it('Should add the dashboard reporter if its options are specified', async () => {
+                runner.configuration.mergeOptions({ dashboard: { token: 'foo' } });
 
-                expect(runner._options.reporter[0].name).eql('dashboard');
+                await runner._addDashboardReporterIfNeeded();
+
+                expect(runner.configuration.getOption('reporter')[0]).to.deep.equal({ name: 'dashboard', options: { token: 'foo' } });
             });
         });
     });
