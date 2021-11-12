@@ -689,6 +689,8 @@ export default class Runner extends EventEmitter {
             .then(() => Reporter.getReporterPlugins(this.configuration.getOption(OPTION_NAMES.reporter)))
             .then(reporterPlugins => {
                 reporters = reporterPlugins.map(reporter => new Reporter(reporter.plugin, this._messageBus, reporter.outStream, reporter.name));
+
+                return Promise.all(reporters.map(reporter => reporter.init()));
             })
             .then(() => this._setBootstrapperOptions())
             .then(() => {

@@ -2,6 +2,7 @@ import { ReporterPlugin } from './interfaces';
 import { EnumFromPropertiesOf } from '../utils/types';
 
 const ReporterPluginMethod: EnumFromPropertiesOf<ReporterPlugin> = {
+    init:                  'init',
     reportTaskStart:       'reportTaskStart',
     reportFixtureStart:    'reportFixtureStart',
     reportTestStart:       'reportTestStart',

@@ -141,6 +141,14 @@ export default class Reporter {
         return promise;
     }
 
+    public async init (): Promise<void> {
+        await this.dispatchToPlugin({
+            method:        ReporterPluginMethod.init,
+            initialObject: null,
+            args:          [{}],
+        });
+    }
+
     public async dispatchToPlugin ({ method, initialObject, args = [] }: PluginMethodArguments): Promise<void> {
         try {
             // @ts-ignore

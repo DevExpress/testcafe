@@ -1094,6 +1094,39 @@ describe('Reporter', () => {
         });
     });
 
+    it('Should call the "init" method of reporters if it\'s defined', function () {
+        const reportInitSuccess = result => createReporter({
+            init () {
+                result.init = result.init || [];
+
+                result.init.push(true);
+            },
+            reportTaskDone () {
+                result.done = result.done || [];
+
+                result.done.push(true);
+            },
+        });
+
+        const reportNoInit = result => createReporter({
+            reportTaskDone () {
+                result.done = result.done || [];
+
+                result.done.push(true);
+            },
+        });
+
+        const result = {};
+
+        return runTests('testcafe-fixtures/reporter-init-method.js', null, {
+            reporter: [reportInitSuccess(result), reportNoInit(result)],
+        })
+            .then(() => {
+                expect(result.init).eql([true]);
+                expect(result.done).eql([true, true]);
+            });
+    });
+
     it('Should raise an error when uncaught exception occurred in any reporter method', async () => {
         function createReporterWithBrokenMethod (method) {
             const base = {

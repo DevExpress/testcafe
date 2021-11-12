@@ -1,6 +1,7 @@
 import { Writable as WritableStream } from 'stream';
 
 export interface ReporterPlugin {
+    init(): void;
     reportTaskStart(): void;
     reportFixtureStart(): void;
     reportTestStart?(): void;
