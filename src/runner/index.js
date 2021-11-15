@@ -505,7 +505,7 @@ export default class Runner extends EventEmitter {
         let reporterOptions    = this.configuration.getOption(OPTION_NAMES.reporter);
 
         if (!dashboardOptions)
-            return Promise.resolve();
+            return;
 
         if (!reporterOptions)
             reporterOptions = [];
@@ -518,8 +518,6 @@ export default class Runner extends EventEmitter {
             dashboardReporter.options = dashboardOptions;
 
         this.configuration.mergeOptions({ [OPTION_NAMES.reporter]: reporterOptions });
-
-        return Promise.resolve();
     }
 
     async _prepareClientScripts (tests, clientScripts) {
