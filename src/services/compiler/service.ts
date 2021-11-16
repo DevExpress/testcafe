@@ -92,6 +92,7 @@ import { SwitchToWindowPredicateError } from '../../shared/errors';
 import MessageBus from '../../utils/message-bus';
 import { WarningLogMessage } from '../../notifications/warning-log';
 import { uniq } from 'lodash';
+import os from 'os';
 
 setupSourceMapSupport();
 
@@ -551,6 +552,8 @@ class CompilerService implements CompilerProtocol {
             delete this.state.units[unitId];
 
         delete this._runnableConfigurationUnitsRelations[runnableConfigurationId];
+
+        console.log(`free memory ${Math.round(os.freemem() / 1024 / 1024)} Mb`); // eslint-disable-line
     }
 }
 
