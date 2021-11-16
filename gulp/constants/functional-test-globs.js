@@ -9,9 +9,16 @@ const TESTS_GLOB = [
     `!${COMPILER_SERVICE_TESTS_GLOB}`,
 ];
 
-const DEBUG_GLOB = [
+const DEBUG_GLOB_1 = [
+    MULTIPLE_WINDOWS_TESTS_GLOB,
+    'test/functional/fixtures/regression/**/test.js',
+    'test/functional/fixtures/api/es-next/selector/test.js',
+    'test/functional/fixtures/api/raw/**/test.js',
+];
+
+const DEBUG_GLOB_2 = [
     BASIC_TESTS_GLOB,
-    COMPILER_SERVICE_TESTS_GLOB,
+    ...DEBUG_GLOB_1.map(glob => `!${glob}`),
 ];
 
 module.exports = {
@@ -20,5 +27,6 @@ module.exports = {
     MULTIPLE_WINDOWS_TESTS_GLOB,
     BASIC_TESTS_GLOB,
     COMPILER_SERVICE_TESTS_GLOB,
-    DEBUG_GLOB,
+    DEBUG_GLOB_1,
+    DEBUG_GLOB_2,
 };

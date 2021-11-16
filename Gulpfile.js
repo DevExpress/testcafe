@@ -34,7 +34,8 @@ const {
     TESTS_GLOB,
     LEGACY_TESTS_GLOB,
     MULTIPLE_WINDOWS_TESTS_GLOB,
-    DEBUG_GLOB,
+    DEBUG_GLOB_1,
+    DEBUG_GLOB_2,
 } = require('./gulp/constants/functional-test-globs');
 
 const {
@@ -409,11 +410,17 @@ gulp.step('test-functional-local-multiple-windows-run', () => {
 
 gulp.task('test-functional-local-multiple-windows', gulp.series('prepare-tests', 'test-functional-local-multiple-windows-run'));
 
-gulp.step('test-functional-local-debug-run', () => {
-    return testFunctional(DEBUG_GLOB, functionalTestConfig.testingEnvironmentNames.localHeadlessChrome, { experimentalDebug: true });
+gulp.step('test-functional-local-debug-run-1', () => {
+    return testFunctional(DEBUG_GLOB_1, functionalTestConfig.testingEnvironmentNames.localHeadlessChrome, { experimentalDebug: true });
 });
 
-gulp.task('test-functional-local-debug', gulp.series('prepare-tests', 'test-functional-local-debug-run'));
+gulp.step('test-functional-local-debug-run-2', () => {
+    return testFunctional(DEBUG_GLOB_2, functionalTestConfig.testingEnvironmentNames.localHeadlessChrome, { experimentalDebug: true });
+});
+
+gulp.task('test-functional-local-debug-1', gulp.series(/*'prepare-tests',*/ 'test-functional-local-debug-run-1'));
+
+gulp.task('test-functional-local-debug-2', gulp.series(/*'prepare-tests',*/ 'test-functional-local-debug-run-2'));
 
 gulp.step('test-functional-local-proxyless-run', () => {
     return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localHeadlessChrome, { isProxyless: true });
