@@ -48,7 +48,8 @@ import { validateQuarantineOptions } from '../utils/get-options/quarantine';
 import logEntry from '../utils/log-entry';
 import MessageBus from '../utils/message-bus';
 
-const DEBUG_LOGGER = debug('testcafe:runner');
+const DEBUG_LOGGER            = debug('testcafe:runner');
+const DASHBOARD_REPORTER_NAME = 'dashboard';
 
 export default class Runner extends EventEmitter {
     constructor ({ proxy, browserConnectionGateway, configuration, compilerService }) {
@@ -499,6 +500,26 @@ export default class Runner extends EventEmitter {
         this.bootstrapper.hooks                  = this.configuration.getOption(OPTION_NAMES.hooks);
     }
 
+    _addDashboardReporterIfNeeded () {
+        const dashboardOptions = this.configuration.getOption(OPTION_NAMES.dashboard);
+        let reporterOptions    = this.configuration.getOption(OPTION_NAMES.reporter);
+
+        if (!dashboardOptions)
+            return;
+
+        if (!reporterOptions)
+            reporterOptions = [];
+
+        const dashboardReporter = reporterOptions.find(reporter => reporter.name === DASHBOARD_REPORTER_NAME);
+
+        if (!dashboardReporter)
+            reporterOptions.push({ name: DASHBOARD_REPORTER_NAME, options: dashboardOptions });
+        else
+            dashboardReporter.options = dashboardOptions;
+
+        this.configuration.mergeOptions({ [OPTION_NAMES.reporter]: reporterOptions });
+    }
+
     async _prepareClientScripts (tests, clientScripts) {
         return Promise.all(tests.map(async test => {
             if (test.isLegacy)
@@ -674,6 +695,12 @@ export default class Runner extends EventEmitter {
         return this;
     }
 
+    dashboard (opts) {
+        this._options[OPTION_NAMES.dashboard] = opts;
+
+        return this;
+    }
+
     run (options = {}) {
         let reporters;
 
@@ -686,6 +713,7 @@ export default class Runner extends EventEmitter {
 
         const runTaskPromise = Promise.resolve()
             .then(() => this._setConfigurationOptions())
+            .then(() => this._addDashboardReporterIfNeeded())
             .then(() => Reporter.getReporterPlugins(this.configuration.getOption(OPTION_NAMES.reporter)))
             .then(reporterPlugins => {
                 reporters = reporterPlugins.map(reporter => new Reporter(reporter.plugin, this._messageBus, reporter.outStream, reporter.name));

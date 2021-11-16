@@ -15,6 +15,7 @@ import {
     getMetaOptions,
     getGrepOptions,
     getCompilerOptions,
+    getDashboardOptions,
 } from '../utils/get-options';
 
 import getFilterFn from '../utils/get-filter-fn';
@@ -80,6 +81,7 @@ interface CommandLineOptions {
     configFile?: string;
     proxyless?: boolean;
     v8Flags?: string[];
+    dashboard? : string | Dictionary<string | boolean | number>;
 }
 
 export default class CLIArgumentParser {
@@ -178,7 +180,9 @@ export default class CLIArgumentParser {
 
             // NOTE: temporary hide experimental options from --help command
             .addOption(new Option('--proxyless', 'experimental').hideHelp())
-            .addOption(new Option('--experimental-debug', 'enable experimental debug mode').hideHelp());
+            .addOption(new Option('--experimental-debug', 'enable experimental debug mode').hideHelp())
+
+            .option('-D, --dashboard <option=value[,...]>', 'specify Dashboard options');
     }
 
     private _parseList (val: string): string[] {
@@ -382,6 +386,11 @@ export default class CLIArgumentParser {
         this.opts.compilerOptions = resultCompilerOptions;
     }
 
+    private async _parseDashboardOptions (): Promise<void> {
+        if (this.opts.dashboard)
+            this.opts.dashboard = await getDashboardOptions(this.opts.dashboard as string);
+    }
+
     private _parseListBrowsers (): void {
         const listBrowserOption = this.opts.listBrowsers;
 
@@ -447,6 +456,7 @@ export default class CLIArgumentParser {
         await this._parseCompilerOptions();
         await this._parseSslOptions();
         await this._parseReporters();
+        await this._parseDashboardOptions();
     }
 
     public getRunOptions (): RunnerRunOptions {

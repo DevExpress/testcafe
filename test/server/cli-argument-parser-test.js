@@ -753,7 +753,7 @@ describe('CLI argument parser', function () {
     });
 
     it('Should parse command line arguments', function () {
-        return parse('-r list -S -q -e --hostname myhost --proxy localhost:1234 --proxy-bypass localhost:5678 --qr-code --app run-app --speed 0.5 --debug-on-fail --disable-page-reloads --retry-test-pages --dev --sf --disable-page-caching --disable-http2 --proxyless ie test/server/data/file-list/file-1.js')
+        return parse('-r list -S -q -e --hostname myhost --proxy localhost:1234 --proxy-bypass localhost:5678 --qr-code --app run-app --speed 0.5 --debug-on-fail --disable-page-reloads --retry-test-pages --dev --sf --disable-page-caching --disable-http2 --proxyless ie test/server/data/file-list/file-1.js --dashboard token=qwe.rty,noVideoUpload=true')
             .then(parser => {
                 expect(parser.opts.browsers).eql(['ie']);
                 expect(parser.opts.src).eql(['test/server/data/file-list/file-1.js']);
@@ -778,6 +778,7 @@ describe('CLI argument parser', function () {
                 expect(parser.opts.retryTestPages).to.be.ok;
                 expect(parser.opts.disableHttp2).to.be.ok;
                 expect(parser.opts.proxyless).to.be.ok;
+                expect(parser.opts.dashboard).eql({ token: 'qwe.rty', noVideoUpload: true });
             });
     });
 
@@ -853,6 +854,7 @@ describe('CLI argument parser', function () {
             { long: '--cache' },
             { long: '--disable-http2' },
             { long: '--proxyless' },
+            { long: '--dashboard', short: '-D' },
         ];
 
         const parser  = new CliArgumentParser('');
@@ -869,7 +871,7 @@ describe('CLI argument parser', function () {
         }
 
         const expectedRunOptionsCount   = 21;
-        const expectedOtherOptionsCount = 36;
+        const expectedOtherOptionsCount = 37;
         const otherOptionsCount         = options.length - expectedRunOptionsCount;
 
         expect(runOptionNames.length).eql(expectedRunOptionsCount, ADD_TO_RUN_OPTIONS_WARNING);
@@ -921,5 +923,16 @@ describe('CLI argument parser', function () {
                 expect(runOpts.disableMultipleWindows).eql(true);
                 expect(runOpts.browsers).to.be.undefined;
             });
+    });
+
+    describe('Dashboard options', () => {
+        it('should parse dashboard arguments', async () => {
+            const parser = await parse('--dashboard token=12345,noVideoUpload=true,buildId=1');
+
+            expect(parser.opts.dashboard).to.be.ok;
+            expect(parser.opts.dashboard.token).equal('12345');
+            expect(parser.opts.dashboard.buildId).equal('1');
+            expect(parser.opts.dashboard.noVideoUpload).equal(true);
+        });
     });
 });

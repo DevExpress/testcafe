@@ -29,7 +29,6 @@ const createConfigFile = (configPath, options) => {
     fs.writeFileSync(configPath, JSON.stringify(options));
 };
 
-
 describe('Runner', () => {
     let testCafe                  = null;
     let runner                    = null;
@@ -167,6 +166,7 @@ describe('Runner', () => {
             runner._runTask = ({ reporters }) => {
                 const reporterPlugin = reporters[0].plugin;
 
+                expect(reporterPlugin.name).eql('spec');
                 expect(reporterPlugin.reportFixtureStart).to.be.a('function');
                 expect(reporterPlugin.reportTestDone).to.be.a('function');
                 expect(reporterPlugin.reportTaskStart).to.be.a('function');
@@ -214,6 +214,28 @@ describe('Runner', () => {
             catch (e) {
                 expect(e.message).eql("Specify a file name or a writable stream as the reporter's output target.");
             }
+        });
+
+        describe('._addDashboardReporterIfNeeded', () => {
+            let sourceReporter = null;
+
+            beforeEach(() => {
+                sourceReporter = runner._options.reporter;
+            });
+
+            afterEach(() => {
+                runner._options.reporter = sourceReporter;
+
+                delete runner._options.dashboard;
+            });
+
+            it('Should add the dashboard reporter if its options are specified', async () => {
+                runner.configuration.mergeOptions({ dashboard: { token: 'foo' } });
+
+                await runner._addDashboardReporterIfNeeded();
+
+                expect(runner.configuration.getOption('reporter')[0]).to.deep.equal({ name: 'dashboard', options: { token: 'foo' } });
+            });
         });
     });
 
