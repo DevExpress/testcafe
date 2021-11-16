@@ -418,9 +418,9 @@ gulp.step('test-functional-local-debug-run-2', () => {
     return testFunctional(DEBUG_GLOB_2, functionalTestConfig.testingEnvironmentNames.localHeadlessChrome, { experimentalDebug: true });
 });
 
-gulp.task('test-functional-local-debug-1', gulp.series(/*'prepare-tests',*/ 'test-functional-local-debug-run-1'));
+gulp.task('test-functional-local-debug-1', gulp.series('prepare-tests', 'test-functional-local-debug-run-1'));
 
-gulp.task('test-functional-local-debug-2', gulp.series(/*'prepare-tests',*/ 'test-functional-local-debug-run-2'));
+gulp.task('test-functional-local-debug-2', gulp.series('prepare-tests', 'test-functional-local-debug-run-2'));
 
 gulp.step('test-functional-local-proxyless-run', () => {
     return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localHeadlessChrome, { isProxyless: true });
