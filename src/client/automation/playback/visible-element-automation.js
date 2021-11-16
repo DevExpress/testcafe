@@ -7,6 +7,7 @@ import {
     arrayUtils,
     serviceUtils,
     eventUtils,
+    ScrollAutomation,
 } from '../deps/testcafe-core';
 
 import getAutomationPoint from '../utils/get-automation-point';
@@ -16,7 +17,6 @@ import { getOffsetOptions } from '../utils/offsets';
 import { fromPoint as getElementFromPoint, underCursor as getElementUnderCursor } from '../get-element';
 import AUTOMATION_ERROR_TYPES from '../../../shared/errors/automation-errors';
 import AutomationSettings from '../settings';
-import ScrollAutomation from './scroll';
 import MoveAutomation from './move';
 import { MoveOptions, ScrollOptions } from '../../../test-run/commands/options';
 import lastHoveredElementHolder from './last-hovered-element-holder';

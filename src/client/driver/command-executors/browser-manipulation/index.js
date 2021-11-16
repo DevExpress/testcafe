@@ -9,9 +9,9 @@ import {
     scrollController,
     sendRequestToFrame,
     delay,
+    ScrollAutomation,
 } from '../../deps/testcafe-core';
 
-import { Scroll as ScrollAutomation } from '../../deps/testcafe-automation';
 import {
     hide as hideUI,
     show as showUI,

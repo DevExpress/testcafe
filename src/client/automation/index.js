@@ -1,6 +1,5 @@
 import hammerhead from './deps/hammerhead';
 import DispatchEventAutomation from './playback/dispatch-event';
-import ScrollAutomation from './playback/scroll';
 import SetScrollAutomation from './playback/set-scroll';
 import ScrollIntoViewAutomation from './playback/scroll-into-view';
 import ClickAutomation from './playback/click';
@@ -34,7 +33,6 @@ import cursor from './cursor';
 const exports = {};
 
 exports.DispatchEvent         = DispatchEventAutomation;
-exports.Scroll                = ScrollAutomation;
 exports.SetScroll             = SetScrollAutomation;
 exports.ScrollIntoView        = ScrollIntoViewAutomation;
 exports.Click                 = ClickAutomation;

@@ -55,6 +55,7 @@ export interface NativeMethods {
     querySelector: HTMLElement['querySelector'];
     querySelectorAll: HTMLElement['querySelectorAll'];
     contentWindowGetter: () => HTMLIFrameElement['contentWindow'];
+    scrollTo: Window['scrollTo'];
 }
 
 export interface ClientFunctionAdapter {

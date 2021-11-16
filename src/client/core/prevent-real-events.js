@@ -4,7 +4,7 @@ import {
     nativeMethods,
 } from './deps/hammerhead';
 
-import scrollController from './scroll-controller';
+import scrollController from './scroll/controller';
 
 import { get, hasDimensions } from './utils/style';
 import { filter } from './utils/array';

@@ -19,3 +19,7 @@ export function hasDimensions (el: HTMLElement): boolean {
     //NOTE: it's like jquery ':visible' selector (http://blog.jquery.com/2009/02/20/jquery-1-3-2-released/)
     return el && !(el.offsetHeight <= 0 && el.offsetWidth <= 0);
 }
+
+export function isFixedElement (node: Node): boolean {
+    return adapter.dom.isElementNode(node) && adapter.style.get(node, 'position') === 'fixed';
+}

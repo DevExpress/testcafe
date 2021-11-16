@@ -7,9 +7,9 @@
 <iframe width="640" height="480" src="same-domain-iframe.html">
 </iframe>
 <script>
-    const testCafeAutomation = window['%testCafeAutomation%'];
-    const ScrollAutomation   = testCafeAutomation.Scroll;
-    const origRunScroll      = ScrollAutomation.prototype.run;
+    const testCafeCore     = window['%testCafeCore%'];
+    const ScrollAutomation = testCafeCore.ScrollAutomation;
+    const origRunScroll    = ScrollAutomation.prototype.run;
 
     window.internalScrollEventsCount = 0;
 

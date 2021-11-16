@@ -1,3 +1,6 @@
+// NOTE: Initializer should be the first
+import './scroll/adapter/initializer';
+
 import hammerhead from './deps/hammerhead';
 
 import KEY_MAPS from './utils/key-maps';
@@ -7,7 +10,8 @@ import ScriptExecutionBarrier from '../../shared/barriers/script-execution';
 import ScriptExecutionEmitter from './barriers/emitters/script-execution';
 import * as pageUnloadBarrier from './barriers/page-unload-barrier';
 import { preventRealEvents, disableRealEventsPreventing } from './prevent-real-events';
-import scrollController from './scroll-controller';
+import scrollController from './scroll/controller';
+import ScrollAutomation from './scroll/index';
 
 import * as serviceUtils from './utils/service';
 import * as domUtils from './utils/dom';
@@ -51,6 +55,7 @@ exports.pageUnloadBarrier           = pageUnloadBarrier;
 exports.preventRealEvents           = preventRealEvents;
 exports.disableRealEventsPreventing = disableRealEventsPreventing;
 exports.scrollController            = scrollController;
+exports.ScrollAutomation            = ScrollAutomation;
 
 exports.serviceUtils           = serviceUtils;
 exports.domUtils               = domUtils;
@@ -84,3 +89,20 @@ nativeMethods.objectDefineProperty(window, '%testCafeCore%', { configurable: tru
 // NOTE: initTestCafeCore defined in wrapper template
 /* global initTestCafeCore */
 hammerhead.on(evalIframeScript, e => initTestCafeCore(nativeMethods.contentWindowGetter.call(e.iframe), true));
+
+
+const messageSandbox = hammerhead.eventSandbox.message;
+
+// Setup cross-iframe interaction
+messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
+    if (e.message.cmd !== ScrollAutomation.SCROLL_REQUEST_CMD)
+        return;
+
+    const { offsetX, offsetY, maxScrollMargin } = e.message;
+
+    const element = domUtils.findIframeByWindow(e.source);
+    const scroll  = new ScrollAutomation(element, { offsetX, offsetY }, maxScrollMargin);
+
+    scroll.run()
+        .then(() => messageSandbox.sendServiceMsg({ cmd: ScrollAutomation.SCROLL_RESPONSE_CMD }, e.source));
+});

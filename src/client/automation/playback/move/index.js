@@ -1,7 +1,6 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import { ScrollOptions, MoveOptions } from '../../../../test-run/commands/options';
-import ScrollAutomation from '../scroll';
 import cursor from '../../cursor';
 
 import { underCursor as getElementUnderCursor } from '../../get-element';
@@ -24,6 +23,7 @@ const eventSimulator   = hammerhead.eventSandbox.eventSimulator;
 const messageSandbox   = hammerhead.eventSandbox.message;
 const DataTransfer     = hammerhead.eventSandbox.DataTransfer;
 const DragDataStore    = hammerhead.eventSandbox.DragDataStore;
+const ScrollAutomation = testCafeCore.ScrollAutomation;
 
 const positionUtils      = testCafeCore.positionUtils;
 const domUtils           = testCafeCore.domUtils;
