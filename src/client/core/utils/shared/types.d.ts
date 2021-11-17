@@ -1,5 +1,5 @@
-import { BoundaryValuesData } from './values/boundary-values';
-import { AxisValuesData, LeftTopValues } from './values/axis-values';
+import { BoundaryValuesData } from '../../../../shared/utils/values/boundary-values';
+import { AxisValuesData, LeftTopValues } from '../../../../shared/utils/values/axis-values';
 import { Dictionary } from '../../../../configuration/interfaces';
 
 export interface ElementRectangle {

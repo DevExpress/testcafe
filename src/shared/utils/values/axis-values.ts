@@ -51,4 +51,15 @@ export default class AxisValues<T> implements AxisValuesData<T> {
 
         return this;
     }
+
+    public eql (p: AxisValuesData<T>): boolean {
+        return this.x === p.x && this.y === p.y;
+    }
+
+    public mul (this: AxisValues<number>, n: number): AxisValues<number> {
+        this.x *= n;
+        this.y *= n;
+
+        return this;
+    }
 }

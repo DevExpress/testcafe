@@ -1,5 +1,5 @@
 import adapter from './adapter/index';
-import AxisValues from './values/axis-values';
+import AxisValues from '../../../../shared/utils/values/axis-values';
 
 
 const SCROLLABLE_OVERFLOW_STYLE_RE               = /auto|scroll/i;

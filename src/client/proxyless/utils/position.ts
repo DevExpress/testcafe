@@ -2,8 +2,8 @@ import * as domUtils from './dom';
 import * as styleUtils from './style';
 import nativeMethods from '../native-methods';
 import { ElementRectangle } from '../../core/utils/shared/types';
-import { BoundaryValuesData } from '../../core/utils/shared/values/boundary-values';
-import AxisValues, { AxisValuesData, LeftTopValues } from '../../core/utils/shared/values/axis-values';
+import { BoundaryValuesData } from '../../../shared/utils/values/boundary-values';
+import AxisValues, { AxisValuesData, LeftTopValues } from '../../../shared/utils/values/axis-values';
 
 
 function calcOffsetPosition (el: Element, borders: BoundaryValuesData, offsetPosition: LeftTopValues<number>): LeftTopValues<number> {
