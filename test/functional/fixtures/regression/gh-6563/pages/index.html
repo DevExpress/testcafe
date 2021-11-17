@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<script>
+    (function () {
+        'use strict';
+
+        var domAdapter = {
+            listen (element, event, callback) {
+                element.addEventListener(event, callback);
+            }
+        }
+
+        const callback = (function(){ return function () {
+            if (!this)
+                throw new Error('this is undefined');
+        } })();
+
+        domAdapter.listen(window, 'beforeunload', callback);
+    })()
+</script>
+</body>
+</html>
