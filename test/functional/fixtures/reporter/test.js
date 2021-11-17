@@ -1090,6 +1090,8 @@ describe('Reporter', () => {
                     expect(testDoneErrors.map(err => err.code)).eql(['E24', 'E8']);
                     expect(testDoneErrors[0].screenshotPath).is.not.empty;
                     expect(testDoneErrors[0].screenshotPath).eql(testDoneErrors[1].screenshotPath);
+
+                    return assertionHelper.removeScreenshotDir('screenshots');
                 });
         });
     });
