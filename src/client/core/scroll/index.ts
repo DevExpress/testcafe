@@ -5,8 +5,8 @@ import * as positionUtils from '../utils/shared/position';
 import * as promiseUtils from '../../../shared/utils/promise';
 import { isFixedElement } from '../utils/shared/style';
 import isIframeWindow from '../../../utils/is-window-in-iframe';
-import AxisValues, { LeftTopValues } from '../utils/shared/values/axis-values';
-import Dimensions from '../utils/shared/values/dimensions';
+import AxisValues, { LeftTopValues } from '../../../shared/utils/values/axis-values';
+import Dimensions from '../../../shared/utils/values/dimensions';
 import { Dictionary } from '../../../configuration/interfaces';
 import scrollController from './controller';
 

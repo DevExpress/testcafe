@@ -1,7 +1,7 @@
 import * as domUtils from './dom';
 import nativeMethods from '../native-methods';
-import { BoundaryValuesData } from '../../core/utils/shared/values/boundary-values';
-import { LeftTopValues } from '../../core/utils/shared/values/axis-values';
+import { BoundaryValuesData } from '../../../shared/utils/values/boundary-values';
+import { LeftTopValues } from '../../../shared/utils/values/axis-values';
 
 
 // NOTE: For Chrome.

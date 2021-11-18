@@ -1,7 +1,7 @@
 import adapter from './adapter/index';
-import BoundaryValues, { BoundaryValuesData } from './values/boundary-values';
-import Dimensions from './values/dimensions';
-import AxisValues from './values/axis-values';
+import BoundaryValues, { BoundaryValuesData } from '../../../../shared/utils/values/boundary-values';
+import Dimensions from '../../../../shared/utils/values/dimensions';
+import AxisValues from '../../../../shared/utils/values/axis-values';
 
 export function getClientDimensions (target: Element): Dimensions {
     const isHtmlElement     = adapter.dom.isHtmlElement(target);

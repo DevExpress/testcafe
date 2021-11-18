@@ -106,9 +106,10 @@ export function fromPoint (x, y, expectedElement) {
 
             return resChain
                 .then(element => correctTopElementByExpectedElement(element, expectedElement))
-                .then(correctedElement => {
-                    return { element: correctedElement, corrected: correctedElement !== foundElement };
-                });
+                .then(correctedElement => ({
+                    element:   correctedElement,
+                    corrected: correctedElement !== foundElement,
+                }));
         });
 }
 

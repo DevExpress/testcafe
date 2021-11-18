@@ -13,6 +13,8 @@ import DragAndDropState from '../drag/drag-and-drop-state';
 import createEventSequence from './event-sequence/create-event-sequence';
 import lastHoveredElementHolder from '../last-hovered-element-holder';
 import isIframeWindow from '../../../../utils/is-window-in-iframe';
+import AxisValues from '../../../../shared/utils/values/axis-values';
+import { whilst } from '../../../../shared/utils/promise';
 
 const Promise          = hammerhead.Promise;
 const nativeMethods    = hammerhead.nativeMethods;
@@ -29,7 +31,6 @@ const positionUtils      = testCafeCore.positionUtils;
 const domUtils           = testCafeCore.domUtils;
 const styleUtils         = testCafeCore.styleUtils;
 const eventUtils         = testCafeCore.eventUtils;
-const promiseUtils       = testCafeCore.promiseUtils;
 const sendRequestToFrame = testCafeCore.sendRequestToFrame;
 
 
@@ -83,23 +84,11 @@ export default class MoveAutomation {
         this.speed       = moveOptions.speed;
         this.cursorSpeed = this.holdLeftButton ? this.automationSettings.draggingSpeed : this.automationSettings.cursorSpeed;
 
-        this.minMovingTime           = moveOptions.minMovingTime || null;
+        this.minMovingTime           = moveOptions.minMovingTime || 0;
         this.modifiers               = moveOptions.modifiers || {};
         this.skipScrolling           = moveOptions.skipScrolling;
         this.skipDefaultDragBehavior = moveOptions.skipDefaultDragBehavior;
-
-        this.endPoint = null;
-
-        // moving state
-        this.movingTime = null;
-        this.x          = null;
-        this.y          = null;
-        this.startTime  = null;
-        this.endTime    = null;
-        this.distanceX  = null;
-        this.distanceY  = null;
-
-        this.firstMovingStepOccured = false;
+        this.firstMovingStepOccured  = false;
     }
 
     static getTarget (el, offsetX, offsetY) {
@@ -268,13 +257,13 @@ export default class MoveAutomation {
         };
     }
 
-    _emulateEvents (currentElement) {
+    _emulateEvents (currentElement, currPosition) {
         const button      = this.holdLeftButton ? eventUtils.BUTTONS_PARAMETER.leftButton : eventUtils.BUTTONS_PARAMETER.noButton;
-        const devicePoint = getDevicePoint({ x: this.x, y: this.y });
+        const devicePoint = getDevicePoint(currPosition);
 
         const eventOptions = {
-            clientX:      this.x,
-            clientY:      this.y,
+            clientX:      currPosition.x,
+            clientY:      currPosition.y,
             screenX:      devicePoint.x,
             screenY:      devicePoint.y,
             buttons:      button,
@@ -303,30 +292,9 @@ export default class MoveAutomation {
         lastHoveredElementHolder.set(currentElement);
     }
 
-    _movingStep () {
-        if (this.touchMode && !this.holdLeftButton) {
-            this.x = this.endPoint.x;
-            this.y = this.endPoint.y;
-        }
-        else if (!this.startTime) {
-            this.startTime = nativeMethods.dateNow();
-            this.endTime   = this.startTime + this.movingTime;
-
-            // NOTE: the mousemove event can't be simulated at the point where the cursor
-            // was located at the start. Therefore, we add a minimal distance 1 px.
-            this.x += this.distanceX > 0 ? 1 : -1;
-            this.y += this.distanceY > 0 ? 1 : -1;
-        }
-        else {
-            const currentTime = Math.min(nativeMethods.dateNow(), this.endTime);
-            const progress    = (currentTime - this.startTime) / (this.endTime - this.startTime);
-
-            this.x = Math.floor(this.startPoint.x + this.distanceX * progress);
-            this.y = Math.floor(this.startPoint.y + this.distanceY * progress);
-        }
-
+    _movingStep (currPosition) {
         return cursor
-            .move(this.x, this.y)
+            .move(currPosition.x, currPosition.y)
             .then(getElementUnderCursor)
             // NOTE: in touch mode, events are simulated for the element for which mousedown was simulated (GH-372)
             .then(topElement => {
@@ -336,29 +304,41 @@ export default class MoveAutomation {
                 if (!currentElement)
                     return null;
 
-                return this._emulateEvents(currentElement);
+                return this._emulateEvents(currentElement, currPosition);
             })
             .then(nextTick);
     }
 
-    _isMovingFinished () {
-        return this.x === this.endPoint.x && this.y === this.endPoint.y;
-    }
+    _move (endPoint) {
+        const startPoint = cursor.position;
+        const distance   = AxisValues.create(endPoint).sub(startPoint);
+        const startTime  = nativeMethods.dateNow();
+        const movingTime = Math.max(Math.max(Math.abs(distance.x), Math.abs(distance.y)) / this.cursorSpeed, this.minMovingTime);
+        let currPosition = AxisValues.create(startPoint);
+        let isFirstStep  = true;
 
-    _move () {
-        this.startPoint = cursor.position;
-        this.x          = this.startPoint.x;
-        this.y          = this.startPoint.y;
+        return whilst(() => !currPosition.eql(endPoint), () => {
+            if (this.touchMode && !this.holdLeftButton)
+                currPosition = AxisValues.create(endPoint);
 
-        this.distanceX = this.endPoint.x - this.startPoint.x;
-        this.distanceY = this.endPoint.y - this.startPoint.y;
+            else if (isFirstStep) {
+                isFirstStep = false;
 
-        this.movingTime = Math.max(Math.abs(this.distanceX), Math.abs(this.distanceY)) / this.cursorSpeed;
+                // NOTE: the mousemove event can't be simulated at the point where the cursor
+                // was located at the start. Therefore, we add a minimal distance 1 px.
+                currPosition.add({
+                    x: distance.x > 0 ? 1 : -1,
+                    y: distance.y > 0 ? 1 : -1,
+                });
+            }
+            else {
+                const progress = Math.min((nativeMethods.dateNow() - startTime) / movingTime, 1);
 
-        if (this.minMovingTime)
-            this.movingTime = Math.max(this.movingTime, this.minMovingTime);
+                currPosition = AxisValues.create(distance).mul(progress).add(startPoint).round(Math.floor);
+            }
 
-        return promiseUtils.whilst(() => !this._isMovingFinished(), () => this._movingStep());
+            return this._movingStep(currPosition);
+        });
     }
 
     _scroll () {
@@ -371,7 +351,7 @@ export default class MoveAutomation {
         return scrollAutomation.run();
     }
 
-    _moveToCurrentFrame () {
+    _moveToCurrentFrame (endPoint) {
         if (cursor.active)
             return Promise.resolve();
 
@@ -385,8 +365,8 @@ export default class MoveAutomation {
             cmd:       MOVE_REQUEST_CMD,
             startX:    x,
             startY:    y,
-            endX:      this.endPoint.x,
-            endY:      this.endPoint.y,
+            endX:      endPoint.x,
+            endY:      endPoint.y,
             modifiers: this.modifiers,
             speed:     this.speed,
         };
@@ -452,16 +432,14 @@ export default class MoveAutomation {
                 return this._scroll();
             })
             .then(() => {
-                const { x, y }     = this._getTargetClientPoint();
+                const endPoint     = this._getTargetClientPoint();
                 const windowWidth  = styleUtils.getWidth(window);
                 const windowHeight = styleUtils.getHeight(window);
 
-                if (x >= 0 && x <= windowWidth && y >= 0 && y <= windowHeight) {
-                    this.endPoint = { x, y };
-
+                if (endPoint.x >= 0 && endPoint.x <= windowWidth && endPoint.y >= 0 && endPoint.y <= windowHeight) {
                     return this
-                        ._moveToCurrentFrame()
-                        .then(() => this._move());
+                        ._moveToCurrentFrame(endPoint)
+                        .then(() => this._move(endPoint));
                 }
 
                 return null;
