@@ -130,6 +130,58 @@ export default {
         Elements of the "${err.argumentName}" argument are expected to be non-empty strings, but the element at index ${err.elementIndex} was ${err.actualValue}.
     `,
 
+    [TEST_RUN_ERRORS.actionNoUrlForNameValueCookie]: () => `
+        The "url" argument is required if the cookie is represented by a name-value object.
+    `,
+
+    [TEST_RUN_ERRORS.actionRequiredParametersAreMissedError]: () => `
+        Required parameters ("cookies" or a pair of "nameValueObjects" and "url") are missed.
+    `,
+
+    [TEST_RUN_ERRORS.actionCookieArgumentError]: () => `
+        The "cookie" argument is expected to be a cookie-like object or a cookie-like object array.
+    `,
+
+    [TEST_RUN_ERRORS.actionCookieArgumentsError]: err => `
+        The "cookie" argument at position ${err.argumentPosition} is expected to be a cookie-like object or a cookie-like object array.
+    `,
+
+    [TEST_RUN_ERRORS.actionCookieArrayArgumentError]: err => `
+        Elements of the "cookie" argument is expected to be cookie-like objects, but the element at index ${err.cookieElementIndex} wasn't.
+    `,
+
+    [TEST_RUN_ERRORS.actionCookieArrayArgumentsError]: err => `
+        The elements of the "cookie" argument at position ${err.argumentPosition} are expected to be cookie-like objects, but the element at index ${err.cookieElementIndex} wasn't.
+    `,
+
+    [TEST_RUN_ERRORS.actionNamesCookieArgumentError]: err => `
+        The "names" argument is expected to be a string or a string array, but it was ${err.actualType}.
+    `,
+
+    [TEST_RUN_ERRORS.actionNamesArrayCookieArgumentError]: err => `
+        Elements of the "names" argument are expected to be non-empty strings, but the element at index ${err.elementIndex} was ${err.actualValue}.
+    `,
+
+    [TEST_RUN_ERRORS.actionUrlsCookieArgumentError]: err => `
+        The "urls" argument is expected to be a string or a string array, but it was ${err.actualType}.
+    `,
+
+    [TEST_RUN_ERRORS.actionUrlsArrayCookieArgumentError]: err => `
+        Elements of the "urls" argument are expected to be non-empty strings, but the element at index ${err.elementIndex} was ${err.actualType}.
+    `,
+
+    [TEST_RUN_ERRORS.actionNameValueObjectsCookieArgumentError]: () => `
+        The "nameValueObjects" argument is expected to be a name-value object or a name-value object array.
+    `,
+
+    [TEST_RUN_ERRORS.actionNameValueObjectsArrayCookieArgumentError]: err => `
+        Elements of the "nameValueObjects" argument are expected to be name-value objects, but the element at index ${err.elementIndex} is not one of them.
+    `,
+
+    [TEST_RUN_ERRORS.actionUrlArgumentError]: err => `
+        The "${err.argumentName}" argument is expected to be an URL, but it was not valid URL.
+    `,
+
     [TEST_RUN_ERRORS.actionIntegerArgumentError]: err => `
         The "${err.argumentName}" argument is expected to be an integer, but it was ${err.actualValue}.
     `,

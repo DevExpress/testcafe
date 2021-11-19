@@ -652,3 +652,51 @@ export class RecorderCommand extends ActionCommandBase {
         ];
     }
 }
+
+export class GetCookiesCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.getCookies);
+
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.getCookies, validateProperties);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'names', required: false },
+            { name: 'urls', required: false },
+            { name: 'cookies', required: false },
+        ];
+    }
+}
+
+export class SetCookiesCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.setCookies);
+
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.setCookies, validateProperties);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'nameValueObjects', required: false },
+            { name: 'url', required: false },
+            { name: 'cookies', required: false },
+        ];
+    }
+}
+
+export class DeleteCookiesCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.deleteCookies);
+
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.deleteCookies, validateProperties);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'names', required: false },
+            { name: 'urls', required: false },
+            { name: 'cookies', required: false },
+        ];
+    }
+}

@@ -42,6 +42,9 @@ import {
     SwitchToWindowCommand,
     TypeTextCommand,
     UseRoleCommand,
+    GetCookiesCommand,
+    SetCookiesCommand,
+    DeleteCookiesCommand,
 } from '../../../../../test-run/commands/actions';
 
 import { AssertionCommand } from '../../../../../test-run/commands/assertion';
@@ -101,6 +104,9 @@ const COMMAND_CONSTRUCTORS = new Map<string, CommandConstructor>([
     [CommandType.switchToWindowByPredicate, SwitchToWindowByPredicateCommand],
     [CommandType.switchToParentWindow, SwitchToParentWindowCommand],
     [CommandType.switchToPreviousWindow, SwitchToPreviousWindowCommand],
+    [CommandType.getCookies, GetCookiesCommand],
+    [CommandType.setCookies, SetCookiesCommand],
+    [CommandType.deleteCookies, DeleteCookiesCommand],
 ]);
 
 export default COMMAND_CONSTRUCTORS;

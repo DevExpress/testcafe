@@ -22,8 +22,21 @@ import {
     ActionFunctionArgumentError,
     SetTestSpeedArgumentError,
     ForbiddenCharactersInScreenshotPathError,
+    ActionCookieArgumentError,
+    ActionCookieArgumentsError,
+    ActionCookieArrayArgumentError,
+    ActionCookieArrayArgumentsError,
+    ActionNamesCookieArgumentError,
+    ActionNamesArrayCookieArgumentError,
+    ActionUrlsCookieArgumentError,
+    ActionUrlsArrayCookieArgumentError,
+    ActionNameValueObjectsCookieArgumentError,
+    ActionNameValueObjectsArrayCookieArgumentError,
+    ActionUrlTypeArgumentError,
+    ActionUrlArgumentError,
 } from '../../../errors/test-run';
 
+import { URL } from 'url';
 import { assertPageUrl } from '../../../api/test-page-url';
 import checkFilePath from '../../../utils/check-file-path';
 
@@ -126,4 +139,125 @@ export function screenshotPathArgument (name, val) {
 export function functionArgument (name, val) {
     if (typeof val !== 'function')
         throw new ActionFunctionArgumentError(name, val);
+}
+
+function isValidCookieToGet (target) {
+    return typeof target.name === 'string' || typeof target.domain === 'string';
+}
+
+function isValidCookieToSet (target) {
+    return typeof target.name === 'string' && typeof target.domain === 'string' && typeof target.path === 'string';
+}
+
+function isValidNameValueCookie (target) {
+    const targetEntries       = Object.keys(target);
+    const targetEntriesLength = targetEntries.length;
+
+    if (targetEntriesLength === 1) {
+        const cookieValueType = typeof targetEntries[0];
+
+        return cookieValueType === 'string';
+    }
+
+    return false;
+}
+
+function validateCookieArguments (callsite, cookieArguments, validateFunction) {
+    const cookieArgumentsLength = cookieArguments.length;
+
+    for (const [cookieArgumentIndex, cookieArgument] of cookieArguments.entries()) {
+        if (Array.isArray(cookieArgument)) {
+            for (const [cookieElementIndex, cookieElement] of cookieArgument.entries()) {
+                if (!validateFunction(cookieElement)) {
+                    return cookieArgumentsLength === 1
+                        ? new ActionCookieArrayArgumentError(callsite, cookieElementIndex)
+                        : new ActionCookieArrayArgumentsError(callsite, cookieArgumentIndex, cookieElementIndex);
+                }
+            }
+        }
+        else if (!validateFunction(cookieArgument)) {
+            return cookieArgumentsLength === 1
+                ? new ActionCookieArgumentError(callsite)
+                : new ActionCookieArgumentsError(callsite, cookieArgumentIndex);
+        }
+    }
+
+    return null;
+}
+
+export function cookieArgumentsToGetOrDelete (callsite, cookieArguments) {
+    return validateCookieArguments(callsite, cookieArguments, isValidCookieToGet);
+}
+
+export function cookieArgumentsToSet (callsite, cookieArguments) {
+    return validateCookieArguments(callsite, cookieArguments, isValidCookieToSet);
+}
+
+export function namesCookieArgument (callsite, namesArgumentValue) {
+    if (Array.isArray(namesArgumentValue)) {
+        for (const [namesElementIndex, namesElement] of namesArgumentValue.entries()) {
+            const namesElementType = typeof namesElement;
+
+            if (namesElementType !== 'string')
+                return new ActionNamesArrayCookieArgumentError(callsite, namesElementIndex, namesElementType);
+        }
+    }
+    else {
+        const namesArgumentType = typeof namesArgumentValue;
+
+        if (namesArgumentType !== 'string')
+            return new ActionNamesCookieArgumentError(callsite, namesArgumentType);
+    }
+
+    return null;
+}
+
+export function urlsCookieArgument (callsite, urlsArgumentValue) {
+    if (Array.isArray(urlsArgumentValue)) {
+        for (const [urlsElementIndex, urlsElement] of urlsArgumentValue.entries()) {
+            const urlsElementType = typeof urlsElement;
+
+            if (urlsElementType !== 'string')
+                return new ActionUrlsArrayCookieArgumentError(callsite, urlsElementIndex, urlsElementType);
+        }
+    }
+    else {
+        const urlsArgumentType = typeof urlsArgumentValue;
+
+        if (urlsArgumentType !== 'string')
+            return new ActionUrlsCookieArgumentError(callsite, urlsArgumentType);
+    }
+
+    return null;
+}
+
+export function nameValueObjectsCookieArgument (callsite, nameValueObjectsArgumentValue) {
+    if (Array.isArray(nameValueObjectsArgumentValue)) {
+        for (const [nameValueElementIndex, nameValueElement] of nameValueObjectsArgumentValue.entries()) {
+            if (!isValidNameValueCookie(nameValueElement))
+                return new ActionNameValueObjectsArrayCookieArgumentError(callsite, nameValueElementIndex);
+        }
+    }
+    else if (!isValidNameValueCookie(nameValueObjectsArgumentValue))
+        return new ActionNameValueObjectsCookieArgumentError(callsite, nameValueObjectsArgumentValue);
+
+    return null;
+}
+
+export function urlCookieArgument (callsite, urlArgumentValue) {
+    const urlArgumentType = typeof urlArgumentValue;
+
+    if (urlArgumentType !== 'string')
+        return new ActionUrlTypeArgumentError(callsite, 'url', urlArgumentType);
+    else if (!urlArgumentValue.length)
+        return new ActionUrlTypeArgumentError(callsite, 'url', '""');
+
+    try {
+        new URL(urlArgumentValue); // eslint-disable-line no-new
+    }
+    catch {
+        return new ActionUrlArgumentError(callsite, 'url');
+    }
+
+    return null;
 }

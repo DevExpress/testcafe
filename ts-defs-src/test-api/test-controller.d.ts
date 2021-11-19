@@ -98,6 +98,19 @@ interface WindowFilterData {
 
 type ScrollPosition = 'top' | 'right' | 'bottom' | 'left' | 'topRight' | 'topLeft' | 'bottomRight' | 'bottomLeft' | 'center';
 
+interface Cookie {
+    name: string;
+    value: string;
+    domain: string;
+    path: string;
+    expires: Date | 'Infinity';
+    secure: boolean;
+    httpOnly: boolean;
+    hostOnly: true;
+    sameSite: string;
+    creation: Date;
+}
+
 interface TestController {
     /**
      * Dictionary that is shared between test hook functions and test code.
@@ -474,17 +487,56 @@ interface TestController {
      */
     useRole(role: Role): TestControllerPromise;
     /**
-     * Attaches the hooks during a test run
+     * Attaches the hooks during a test run.
      *
-     * @param hooks - The set of RequestHook subclasses
+     * @param hooks - The set of RequestHook subclasses.
      */
     addRequestHooks(...hooks: object[]): TestControllerPromise;
     /**
-     * Detaches the hooks during a test run
+     * Detaches the hooks during a test run.
      *
-     * @param hooks - The set of RequestHook subclasses
+     * @param hooks - The set of RequestHook subclasses.
      */
     removeRequestHooks(...hooks: object[]): TestControllerPromise;
+    /**
+     * Returns cookies relative to the given cookie objects. If no parameters are specified - returns all cookies.
+     *
+     * @param cookies - cookies objects on the basis of which the URL context (domain, path, name) will be taken.
+     */
+    getCookies(...cookies: (Partial<Cookie> | Partial<Cookie>[])[]): Promise<Cookie[]>;
+    /**
+     * Returns cookies relative to the names and URLs context.
+     *
+     * @param names - The cookies name/names to get.
+     * @param urls - The URL/URLs context.
+     */
+    getCookies(names: string | string[], urls?: string | string[]): Promise<Cookie[]>;
+    /**
+     * Sets given cookies.
+     *
+     * @param cookies - cookies to set.
+     */
+    setCookies(...cookies: (Partial<Cookie> | Partial<Cookie>[])[]): TestControllerPromise;
+    /**
+     * Sets name-value cookies to the domain/path pair calculated on the given URL.
+     *
+     * @param nameValueObjects - The name-value object/objects to set.
+     * @param url - The URL context.
+     */
+    setCookies(nameValueObjects: Record<string, string> | Record<string, string>[], url: string): TestControllerPromise;
+    /**
+     * Deletes given cookies. If no cookies are specified - deletes all cookies.
+     *
+     * @param cookies - The cookies to delete.
+     */
+    deleteCookies(...cookies: (Partial<Cookie> | Partial<Cookie>[])[]): TestControllerPromise;
+    /**
+     * Deletes cookies, the URL context can be specified by the urls parameter. If no parameters are specified - deletes all cookies.
+     *
+     * @param names - The cookie name/names to delete.
+     * @param urls - The URL context.
+     */
+    deleteCookies(names: string | string[], urls?: string | string[]): TestControllerPromise;
 }
 
 interface TestControllerPromise<T=any> extends TestController, Promise<T> {
