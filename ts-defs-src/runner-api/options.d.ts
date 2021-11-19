@@ -59,7 +59,7 @@ type FilterFunction = (
     fixturePath: string,
     testMeta: Metadata,
     fixtureMeta: Metadata
-) => Promise<boolean>;
+) => Promise<boolean> | boolean;
 
 interface FilterDescriptor {
     test?: string;

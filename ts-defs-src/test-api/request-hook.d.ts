@@ -6,12 +6,12 @@ interface RequestHook {
     /**
      * The `onRequest` method is called before sending the request.
      */
-    onRequest(requestEvent: object): Promise<void>;
+    onRequest(requestEvent: object): Promise<void> | void;
 
     /**
      * The `onResponse` method is called after sending the request
      */
-    onResponse(responseEvent: object): Promise<void>;
+    onResponse(responseEvent: object): Promise<void> | void;
 }
 
 
