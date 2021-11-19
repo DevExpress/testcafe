@@ -3,7 +3,7 @@ import testCafeCore from '../../deps/testcafe-core';
 import VisibleElementAutomation from '../visible-element-automation';
 import { fromPoint as getElementFromPoint } from '../../get-element';
 import * as selectUtils from './utils';
-import MoveAutomation from '../move';
+import MoveAutomation from '../move/move';
 import { MoveOptions } from '../../../../test-run/commands/options';
 import cursor from '../../cursor';
 import AUTOMATION_ERROR_TYPES from '../../../../shared/errors/automation-errors';
