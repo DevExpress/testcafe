@@ -69,11 +69,6 @@ export default class MoveAutomation {
         this.touchMode = featureDetection.isTouchDevice;
         this.moveEvent = this.touchMode ? 'touchmove' : 'mousemove';
 
-        this.holdLeftButton = moveOptions.holdLeftButton;
-        this.dragElement    = null;
-
-        this.dragAndDropState = new DragAndDropState();
-
         this.automationSettings = new AutomationSettings(moveOptions.speed);
 
         const target = MoveAutomation.getTarget(element, moveOptions.offsetX, moveOptions.offsetY);
@@ -82,7 +77,7 @@ export default class MoveAutomation {
         this.offsetX     = target.offsetX;
         this.offsetY     = target.offsetY;
         this.speed       = moveOptions.speed;
-        this.cursorSpeed = this.holdLeftButton ? this.automationSettings.draggingSpeed : this.automationSettings.cursorSpeed;
+        this.cursorSpeed = this._getCursorSpeed();
 
         this.minMovingTime           = moveOptions.minMovingTime || 0;
         this.modifiers               = moveOptions.modifiers || {};
@@ -236,6 +231,10 @@ export default class MoveAutomation {
             });
     }
 
+    _getCursorSpeed () {
+        return this.automationSettings.cursorSpeed;
+    }
+
     _getTargetClientPoint () {
         const scroll = styleUtils.getElementScroll(this.element);
 
@@ -257,37 +256,41 @@ export default class MoveAutomation {
         };
     }
 
-    _emulateEvents (currentElement, currPosition) {
-        const button      = this.holdLeftButton ? eventUtils.BUTTONS_PARAMETER.leftButton : eventUtils.BUTTONS_PARAMETER.noButton;
+    _getEventSequenceOptions (currPosition) {
+        const button      = eventUtils.BUTTONS_PARAMETER.noButton;
         const devicePoint = getDevicePoint(currPosition);
 
         const eventOptions = {
-            clientX:      currPosition.x,
-            clientY:      currPosition.y,
-            screenX:      devicePoint.x,
-            screenY:      devicePoint.y,
-            buttons:      button,
-            ctrl:         this.modifiers.ctrl,
-            alt:          this.modifiers.alt,
-            shift:        this.modifiers.shift,
-            meta:         this.modifiers.meta,
-            dataTransfer: this.dragAndDropState.dataTransfer,
+            clientX: currPosition.x,
+            clientY: currPosition.y,
+            screenX: devicePoint.x,
+            screenY: devicePoint.y,
+            buttons: button,
+            ctrl:    this.modifiers.ctrl,
+            alt:     this.modifiers.alt,
+            shift:   this.modifiers.shift,
+            meta:    this.modifiers.meta,
         };
 
-        const eventSequenceOptions = { moveEvent: this.moveEvent, holdLeftButton: this.holdLeftButton };
-        const eventSequence        = createEventSequence(this.dragAndDropState.enabled, this.firstMovingStepOccured, eventSequenceOptions);
+        return { eventOptions, eventSequenceOptions: { moveEvent: this.moveEvent } };
+    }
 
-        const { dragAndDropMode, dropAllowed } = eventSequence.run(
+    _runEventSequence (currentElement, { eventOptions, eventSequenceOptions }) {
+        const eventSequence = createEventSequence(false, this.firstMovingStepOccured, eventSequenceOptions);
+
+        eventSequence.run(
             currentElement,
             lastHoveredElementHolder.get(),
             eventOptions,
-            this.dragElement,
-            this.dragAndDropState.dataStore
+            null,
+            null
         );
+    }
 
-        this.firstMovingStepOccured       = true;
-        this.dragAndDropState.enabled     = dragAndDropMode;
-        this.dragAndDropState.dropAllowed = dropAllowed;
+    _emulateEvents (currentElement, currPosition) {
+        this._runEventSequence(currentElement, this._getEventSequenceOptions(currPosition));
+
+        this.firstMovingStepOccured = true;
 
         lastHoveredElementHolder.set(currentElement);
     }
@@ -298,7 +301,7 @@ export default class MoveAutomation {
             .then(getElementUnderCursor)
             // NOTE: in touch mode, events are simulated for the element for which mousedown was simulated (GH-372)
             .then(topElement => {
-                const currentElement = this.holdLeftButton && this.touchMode ? this.dragElement : topElement;
+                const currentElement = this._getCorrectedTopElement(topElement);
 
                 // NOTE: it can be null in IE
                 if (!currentElement)
@@ -307,6 +310,10 @@ export default class MoveAutomation {
                 return this._emulateEvents(currentElement, currPosition);
             })
             .then(nextTick);
+    }
+
+    _getCorrectedTopElement (topElement) {
+        return topElement;
     }
 
     _move (endPoint) {
@@ -318,7 +325,7 @@ export default class MoveAutomation {
         let isFirstStep  = true;
 
         return whilst(() => !currPosition.eql(endPoint), () => {
-            if (this.touchMode && !this.holdLeftButton)
+            if (this._needMoveCursorImmediately())
                 currPosition = AxisValues.create(endPoint);
 
             else if (isFirstStep) {
@@ -339,6 +346,10 @@ export default class MoveAutomation {
 
             return this._movingStep(currPosition);
         });
+    }
+
+    _needMoveCursorImmediately () {
+        return this.touchMode;
     }
 
     _scroll () {
@@ -401,9 +412,72 @@ export default class MoveAutomation {
     }
 
     run () {
+        return this._scroll()
+            .then(() => {
+                const endPoint     = this._getTargetClientPoint();
+                const windowWidth  = styleUtils.getWidth(window);
+                const windowHeight = styleUtils.getHeight(window);
+
+                if (endPoint.x >= 0 && endPoint.x <= windowWidth && endPoint.y >= 0 && endPoint.y <= windowHeight) {
+                    return this
+                        ._moveToCurrentFrame(endPoint)
+                        .then(() => this._move(endPoint));
+                }
+
+                return null;
+            });
+    }
+}
+
+export class DragMoveAutomation extends MoveAutomation {
+    constructor (element, moveOptions) {
+        super(element, moveOptions);
+
+        this.dragElement      = null;
+        this.dragAndDropState = new DragAndDropState();
+    }
+
+    _getCursorSpeed () {
+        return this.automationSettings.draggingSpeed;
+    }
+
+    _getEventSequenceOptions (currPosition) {
+        const { eventOptions, eventSequenceOptions } = super._getEventSequenceOptions(currPosition);
+
+        eventOptions.dataTransfer           = this.dragAndDropState.dataTransfer;
+        eventOptions.buttons                = eventUtils.BUTTONS_PARAMETER.leftButton;
+        eventSequenceOptions.holdLeftButton = true;
+
+        return { eventOptions, eventSequenceOptions };
+    }
+
+    _getCorrectedTopElement (topElement) {
+        return this.touchMode ? this.dragElement : topElement;
+    }
+
+    _runEventSequence (currentElement, { eventOptions, eventSequenceOptions }) {
+        const eventSequence = createEventSequence(this.dragAndDropState.enabled, this.firstMovingStepOccured, eventSequenceOptions);
+
+        const { dragAndDropMode, dropAllowed } = eventSequence.run(
+            currentElement,
+            lastHoveredElementHolder.get(),
+            eventOptions,
+            this.dragElement,
+            this.dragAndDropState.dataStore
+        );
+
+        this.dragAndDropState.enabled     = dragAndDropMode;
+        this.dragAndDropState.dropAllowed = dropAllowed;
+    }
+
+    _needMoveCursorImmediately () {
+        return false;
+    }
+
+    run () {
         return getElementUnderCursor()
             .then(topElement => {
-                this.dragElement = this.holdLeftButton ? topElement : null;
+                this.dragElement = topElement;
 
                 const draggable = findDraggableElement(this.dragElement);
 
@@ -429,21 +503,8 @@ export default class MoveAutomation {
                     }
                 }
 
-                return this._scroll();
-            })
-            .then(() => {
-                const endPoint     = this._getTargetClientPoint();
-                const windowWidth  = styleUtils.getWidth(window);
-                const windowHeight = styleUtils.getHeight(window);
-
-                if (endPoint.x >= 0 && endPoint.x <= windowWidth && endPoint.y >= 0 && endPoint.y <= windowHeight) {
-                    return this
-                        ._moveToCurrentFrame(endPoint)
-                        .then(() => this._move(endPoint));
-                }
-
-                return null;
-            })
-            .then(() => this.dragAndDropState);
+                return super.run()
+                    .then(() => this.dragAndDropState);
+            });
     }
 }

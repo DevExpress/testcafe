@@ -7,7 +7,7 @@ import {
 } from '../../deps/testcafe-core';
 import { fromPoint as getElementFromPoint } from '../../get-element';
 import VisibleElementAutomation from '../visible-element-automation';
-import MoveAutomation from '../move';
+import { DragMoveAutomation } from '../move';
 import { MoveOptions } from '../../../../test-run/commands/options';
 import cursor from '../../cursor';
 
@@ -77,11 +77,10 @@ export default class DragAutomationBase extends VisibleElementAutomation {
             modifiers:               this.modifiers,
             speed:                   this.speed,
             minMovingTime:           MIN_MOVING_TIME,
-            holdLeftButton:          true,
             skipDefaultDragBehavior: this.simulateDefaultBehavior === false,
         }, false);
 
-        const moveAutomation = new MoveAutomation(element, dragOptions);
+        const moveAutomation = new DragMoveAutomation(element, dragOptions);
 
         return moveAutomation
             .run()
