@@ -2,6 +2,8 @@ import {
     pull,
     remove,
     chain,
+    flatten,
+    castArray,
 } from 'lodash';
 
 import nanoid from 'nanoid';
@@ -71,6 +73,9 @@ import {
     GetCurrentWindowsCommand,
     SwitchToWindowByPredicateCommand,
     SwitchToWindowCommand,
+    GetCookiesCommand,
+    SetCookiesCommand,
+    DeleteCookiesCommand,
 } from './commands/actions';
 
 import { RUNTIME_ERRORS, TEST_RUN_ERRORS } from '../errors/types';
@@ -119,6 +124,7 @@ import PROXYLESS_COMMANDS from './proxyless-commands-support';
 import Fixture from '../api/structure/fixture';
 import MessageBus from '../utils/message-bus';
 import executeFnWithTimeout from '../utils/execute-fn-with-timeout';
+import { URL } from 'url';
 
 const lazyRequire                 = require('import-lazy')(require);
 const ClientFunctionBuilder       = lazyRequire('../client-functions/client-function-builder');
@@ -775,6 +781,168 @@ export default class TestRun extends AsyncEventEmitter {
         return consoleMessageCopy[String(this.activeWindowId)];
     }
 
+    public async _enqueueGetCookies (command: CommandBase): Promise<unknown> {
+        const cookiesPromises = [];
+
+        const cookies = command.cookies as any;
+
+        const names = command.names as string[];
+        const urls  = command.urls as string[];
+
+        if (cookies) {
+            for (const cookie of cookies) {
+                const domain = cookie.domain;
+                const path   = cookie.path;
+                const name   = cookie.name;
+
+                if (domain) {
+                    if (name)
+                        cookiesPromises.push(this.session.cookies.findCookieByApi(domain, path, name));
+                    else
+                        cookiesPromises.push(this.session.cookies.findCookiesByApi(domain, path));
+                }
+                else {
+                    cookiesPromises.push(this.session.cookies.getAllCookiesByApi() // @ts-ignore
+                        .then(allCookies => allCookies.filter(c => c.key === name))
+                    );
+                }
+            }
+        }
+        else if (names) {
+            for (const name of names) {
+                if (urls.length > 0) {
+                    for (const url of urls) {
+                        const parsedPageUrl = new URL(url);
+
+                        const domain = parsedPageUrl.hostname;
+                        const path   = parsedPageUrl.pathname;
+
+                        cookiesPromises.push(this.session.cookies.findCookieByApi(domain, path, name));
+                    }
+                }
+                else {
+                    cookiesPromises.push(this.session.cookies.getAllCookiesByApi() // @ts-ignore
+                        .then(allCookies => allCookies.filter(c => c.key === name))
+                    );
+                }
+            }
+        }
+        else
+            cookiesPromises.push(this.session.cookies.getAllCookiesByApi());
+
+        return Promise.all(cookiesPromises).then((result: any) => {
+            const resultCookies = flatten(result) as any;
+            const apiCookies    = [];
+
+            for (const cookie of resultCookies) {
+                if (!cookie)
+                    continue;
+
+                const {
+                    key, value, expires,
+                    maxAge, domain, path,
+                    secure, httpOnly, sameSite,
+                    extensions, creation, hostOnly,
+                } = cookie;
+
+                apiCookies.push({
+                    name: key, value, expires,
+                    maxAge, domain, path,
+                    secure, httpOnly, sameSite,
+                    extensions, creation, hostOnly,
+                });
+            }
+
+            return apiCookies;
+        });
+    }
+
+    public _enqueueSetCookies (command: CommandBase): void {
+        const cookies = command.cookies;
+
+        const nameValueObjects = command.nameValueObjects as Record<string, string> | Record<string, string>[];
+        const url              = command.url as string;
+
+        if (cookies) {
+            const cookiesToSet = [];
+
+            for (const cookie of castArray(cookies) as any) {
+                // NOTE: tough-cookie uses "key" property for the cookie name
+                cookie.key = cookie.name;
+                delete cookie.name;
+
+                cookiesToSet.push(cookie);
+            }
+            this.session.cookies.setCookiesByApi(cookiesToSet);
+        }
+        else if (nameValueObjects) {
+            if (url) {
+                const cookiesToSet = [];
+
+                for (const nameValueObject of castArray(nameValueObjects as any)) {
+                    // NOTE: tough-cookie uses "key" property for the cookie name
+                    const key           = Object.keys(nameValueObject)[0];
+                    const value         = nameValueObject[key];
+                    const parsedPageUrl = new URL(url);
+                    const domain        = parsedPageUrl.hostname;
+                    const path          = parsedPageUrl.pathname;
+
+                    cookiesToSet.push({ key, value, domain, path });
+                }
+
+                this.session.cookies.setCookiesByApi(cookiesToSet);
+            }
+        }
+    }
+
+    public async _enqueueDeleteCookies (command: CommandBase): Promise<void> {
+        const cookiesPromises = [];
+
+        const cookies = command.cookies as any;
+
+        const names = command.names as string[];
+        const urls  = command.urls as string;
+
+        if (cookies) {
+            for (const cookie of cookies) {
+                const domain = cookie.domain;
+                const path   = cookie.path;
+                const name   = cookie.name;
+
+                if (domain && path) {
+                    if (name)
+                        cookiesPromises.push(this.session.cookies.deleteCookieByApi(domain, path, name));
+                    else
+                        cookiesPromises.push(this.session.cookies.deleteCookiesByApi(domain, path));
+                }
+            }
+        }
+        else if (names) {
+            for (const name of castArray(names)) {
+                if (urls) {
+                    for (const url of castArray(urls)) {
+                        const parsedPageUrl = new URL(url);
+
+                        const domain = parsedPageUrl.hostname;
+                        const path   = parsedPageUrl.pathname;
+
+                        cookiesPromises.push(this.session.cookies.deleteCookieByApi(domain, path, name));
+                    }
+                }
+                else {
+                    cookiesPromises.push(this.session.cookies.getAllCookiesByApi() // @ts-ignore
+                        .then(allCookies => allCookies.filter(cookie => cookie.key === name)) // @ts-ignore
+                        .then(cookiesToDelete => cookiesToDelete.map(cookieToDelete => this.session.cookies.deleteCookieByApi(cookieToDelete.domain, cookieToDelete.path, cookieToDelete.key)))
+                    );
+                }
+            }
+        }
+        else
+            cookiesPromises.push(this.session.cookies.deleteAllCookiesByApi());
+
+        await Promise.all(cookiesPromises);
+    }
+
     private async _enqueueSetBreakpointCommand (callsite: CallsiteRecord | undefined, error?: string): Promise<void> {
         if (this.debugLogger)
             this.debugLogger.showBreakpoint(this.session.id, this.browserConnection.userAgent, callsite, error);
@@ -1220,6 +1388,15 @@ export default class TestRun extends AsyncEventEmitter {
 
         if (command.type === COMMAND_TYPE.switchToWindowByPredicate)
             return this._switchToWindowByPredicate(command as SwitchToWindowByPredicateCommand);
+
+        if (command.type === COMMAND_TYPE.getCookies)
+            return this._enqueueGetCookies(command as GetCookiesCommand);
+
+        if (command.type === COMMAND_TYPE.setCookies)
+            return this._enqueueSetCookies(command as SetCookiesCommand);
+
+        if (command.type === COMMAND_TYPE.deleteCookies)
+            return this._enqueueDeleteCookies(command as DeleteCookiesCommand);
 
         return this._enqueueCommand(command, callsite as CallsiteRecord);
     }

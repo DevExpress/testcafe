@@ -63,4 +63,7 @@ export default {
     closeChildWindowOnFileDownloading:   'close-child-window-on-file-downloading',
     recorder:                            'recorder',
     prepareClientEnvironmentInDebugMode: 'prepare-client-environment-in-debug-mode',
+    getCookies:                          'get-cookies',
+    setCookies:                          'set-cookies',
+    deleteCookies:                       'delete-cookies',
 };

@@ -231,6 +231,132 @@ export class ActionUnsupportedDeviceTypeError extends ActionArgumentErrorBase {
     }
 }
 
+export class ActionCookieArgumentError extends TestRunErrorBase {
+    constructor (callsite) {
+        super(TEST_RUN_ERRORS.actionCookieArgumentError);
+
+        this.callsite = callsite;
+    }
+}
+
+export class ActionCookieArgumentsError extends TestRunErrorBase {
+    constructor (callsite, argumentPosition) {
+        super(TEST_RUN_ERRORS.actionCookieArgumentsError);
+
+        this.callsite         = callsite;
+        this.argumentPosition = argumentPosition;
+    }
+}
+
+export class ActionCookieArrayArgumentError extends TestRunErrorBase {
+    constructor (callsite, cookieElementIndex) {
+        super(TEST_RUN_ERRORS.actionCookieArrayArgumentError);
+
+        this.callsite           = callsite;
+        this.cookieElementIndex = cookieElementIndex;
+    }
+}
+
+export class ActionCookieArrayArgumentsError extends TestRunErrorBase {
+    constructor (callsite, argumentPosition, cookieElementIndex) {
+        super(TEST_RUN_ERRORS.actionCookieArrayArgumentsError);
+
+        this.callsite           = callsite;
+        this.argumentPosition   = argumentPosition;
+        this.cookieElementIndex = cookieElementIndex;
+    }
+}
+
+export class ActionNamesCookieArgumentError extends TestRunErrorBase {
+    constructor (callsite, actualType) {
+        super(TEST_RUN_ERRORS.actionNamesCookieArgumentError);
+
+        this.callsite   = callsite;
+        this.actualType = actualType;
+    }
+}
+
+export class ActionNamesArrayCookieArgumentError extends TestRunErrorBase {
+    constructor (callsite, elementIndex, actualValue) {
+        super(TEST_RUN_ERRORS.actionNamesArrayCookieArgumentError);
+
+        this.callsite     = callsite;
+        this.elementIndex = elementIndex;
+        this.actualValue  = actualValue;
+    }
+}
+
+export class ActionUrlsCookieArgumentError extends TestRunErrorBase {
+    constructor (callsite, actualType) {
+        super(TEST_RUN_ERRORS.actionUrlsCookieArgumentError);
+
+        this.callsite   = callsite;
+        this.actualType = actualType;
+    }
+}
+
+export class ActionUrlsArrayCookieArgumentError extends TestRunErrorBase {
+    constructor (callsite, elementIndex, actualType) {
+        super(TEST_RUN_ERRORS.actionUrlsArrayCookieArgumentError);
+
+        this.callsite     = callsite;
+        this.elementIndex = elementIndex;
+        this.actualType   = actualType;
+    }
+}
+
+export class ActionNameValueObjectsCookieArgumentError extends TestRunErrorBase {
+    constructor (callsite) {
+        super(TEST_RUN_ERRORS.actionNameValueObjectsCookieArgumentError);
+
+        this.callsite = callsite;
+    }
+}
+
+export class ActionNameValueObjectsArrayCookieArgumentError extends TestRunErrorBase {
+    constructor (callsite, nameValueElementIndex) {
+        super(TEST_RUN_ERRORS.actionNameValueObjectsArrayCookieArgumentError);
+
+        this.callsite      = callsite;
+        this.elementIndex  = nameValueElementIndex;
+    }
+}
+
+export class ActionUrlTypeArgumentError extends TestRunErrorBase {
+    constructor (callsite, argumentName, actualValue) {
+        super(TEST_RUN_ERRORS.actionStringArgumentError);
+
+        this.callsite     = callsite;
+        this.argumentName = argumentName;
+        this.actualValue  = actualValue;
+    }
+}
+
+export class ActionUrlArgumentError extends TestRunErrorBase {
+    constructor (callsite, argumentName) {
+        super(TEST_RUN_ERRORS.actionUrlArgumentError);
+
+        this.callsite     = callsite;
+        this.argumentName = argumentName;
+    }
+}
+
+export class ActionNoUrlForNameValueCookieError extends TestRunErrorBase {
+    constructor (callsite) {
+        super(TEST_RUN_ERRORS.actionNoUrlForNameValueCookie);
+
+        this.callsite = callsite;
+    }
+}
+
+export class ActionRequiredParametersAreMissedError extends TestRunErrorBase {
+    constructor (callsite) {
+        super(TEST_RUN_ERRORS.actionRequiredParametersAreMissedError);
+
+        this.callsite = callsite;
+    }
+}
+
 
 // Action execution errors
 //--------------------------------------------------------------------

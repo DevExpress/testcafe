@@ -4,7 +4,9 @@ import {
     identity,
     assign,
     isNil as isNullOrUndefined,
-    flattenDeep as flatten,
+    flattenDeep,
+    flatten,
+    castArray,
     noop,
 } from 'lodash';
 
@@ -49,6 +51,9 @@ import {
     ScrollIntoViewCommand,
     UseRoleCommand,
     DispatchEventCommand,
+    GetCookiesCommand,
+    SetCookiesCommand,
+    DeleteCookiesCommand,
 } from '../../test-run/commands/actions';
 
 import {
@@ -66,9 +71,21 @@ import { isSelector } from '../../client-functions/types';
 import TestRunProxy from '../../services/compiler/test-run-proxy';
 
 import {
+    ActionNoUrlForNameValueCookieError,
+    ActionRequiredParametersAreMissedError,
     MultipleWindowsModeIsDisabledError,
     MultipleWindowsModeIsNotAvailableInRemoteBrowserError,
 } from '../../errors/test-run';
+
+import {
+    cookieArgumentsToGetOrDelete,
+    cookieArgumentsToSet,
+    namesCookieArgument,
+    nameValueObjectsCookieArgument,
+    urlCookieArgument,
+    urlsCookieArgument,
+} from '../../test-run/commands/validations/argument';
+
 import { AssertionCommand } from '../../test-run/commands/assertion';
 import { getCallsiteId, getCallsiteStackFrameString } from '../../utils/callsite';
 
@@ -211,6 +228,152 @@ export default class TestController {
 
     [delegatedAPI(DispatchEventCommand.methodName)] (selector, eventName, options = {}) {
         return this._enqueueCommand(DispatchEventCommand, { selector, eventName, options, relatedTarget: options.relatedTarget });
+    }
+
+    [delegatedAPI(GetCookiesCommand.methodName)] (...args) {
+        let names   = void 0;
+        let urls    = void 0;
+        let cookies = void 0;
+
+        if (args.length === 0)
+            return this._enqueueCommand(GetCookiesCommand, { names, urls, cookies });
+
+        const callsite             = getCallsiteForMethod(GetCookiesCommand.methodName);
+        const cookieArgumentsError = cookieArgumentsToGetOrDelete(callsite, args);
+
+        if (args.length > 2) {
+            if (cookieArgumentsError)
+                throw cookieArgumentsError;
+
+            cookies = flatten(args);
+        }
+        else if (args.length === 2) {
+            if (cookieArgumentsError) {
+                const namesArgumentError = namesCookieArgument(callsite, args[0]);
+                const urlsArgumentError  = urlsCookieArgument(callsite, args[1]);
+
+                if (namesArgumentError)
+                    throw urlsArgumentError ? cookieArgumentsError : namesArgumentError;
+                else if (urlsArgumentError)
+                    throw urlsArgumentError;
+
+                names = castArray(args[0]);
+                urls  = castArray(args[1]);
+            }
+            else
+                cookies = flatten(args);
+        }
+        else if (args.length === 1) {
+            if (cookieArgumentsError) {
+                const namesArgumentError = namesCookieArgument(callsite, args[0]);
+
+                if (namesArgumentError)
+                    throw cookieArgumentsError;
+
+                names = castArray(args[0]);
+            }
+            else
+                cookies = flatten(args);
+        }
+
+        return this._enqueueCommand(GetCookiesCommand, { names, urls, cookies });
+    }
+
+    [delegatedAPI(SetCookiesCommand.methodName)] (...args) {
+        let nameValueObjects;
+        let url;
+        let cookies;
+
+        const callsite = getCallsiteForMethod(SetCookiesCommand.methodName);
+
+        if (args.length === 0)
+            throw new ActionRequiredParametersAreMissedError(callsite);
+
+        const cookieArgumentsError = cookieArgumentsToSet(callsite, args);
+
+        if (args.length > 2) {
+            if (cookieArgumentsError)
+                throw cookieArgumentsError;
+
+            cookies = flatten(args);
+        }
+        else if (args.length === 2) {
+            if (cookieArgumentsError) {
+                const nameValueArgumentError = nameValueObjectsCookieArgument(callsite, args[0]);
+                const urlArgumentError       = urlCookieArgument(callsite, args[1]);
+
+                if (nameValueArgumentError)
+                    throw urlArgumentError ? cookieArgumentsError : nameValueArgumentError;
+                else if (urlArgumentError)
+                    throw urlArgumentError;
+
+                nameValueObjects = args[0];
+                url              = args[1];
+            }
+            else
+                cookies = flatten(args);
+
+        }
+        else if (args.length === 1) {
+            if (cookieArgumentsError) {
+                const nameValueArgumentError = nameValueObjectsCookieArgument(callsite, args[0]);
+
+                throw nameValueArgumentError ? cookieArgumentsError : new ActionNoUrlForNameValueCookieError(callsite);
+            }
+
+            cookies = flatten(args);
+        }
+
+        return this._enqueueCommand(SetCookiesCommand, { nameValueObjects, url, cookies });
+    }
+
+    [delegatedAPI(DeleteCookiesCommand.methodName)] (...args) {
+        let names;
+        let urls;
+        let cookies;
+
+        if (args.length === 0)
+            return this._enqueueCommand(DeleteCookiesCommand, { names, urls, cookies });
+
+        const callsite             = getCallsiteForMethod(DeleteCookiesCommand.methodName);
+        const cookieArgumentsError = cookieArgumentsToGetOrDelete(callsite, args);
+
+        if (args.length > 2) {
+            if (cookieArgumentsError)
+                throw cookieArgumentsError;
+
+            cookies = flatten(args);
+        }
+        else if (args.length === 2) {
+            if (cookieArgumentsError) {
+                const namesArgumentError = namesCookieArgument(callsite, args[0]);
+                const urlsArgumentError  = urlsCookieArgument(callsite, args[1]);
+
+                if (namesArgumentError)
+                    throw urlsArgumentError ? cookieArgumentsError : namesArgumentError;
+                else if (urlsArgumentError)
+                    throw urlsArgumentError;
+
+                names = args[0];
+                urls  = args[1];
+            }
+            else
+                cookies = flatten(args);
+        }
+        else if (args.length === 1) {
+            if (cookieArgumentsError) {
+                const namesArgumentError = namesCookieArgument(callsite, args[0]);
+
+                if (namesArgumentError)
+                    throw cookieArgumentsError;
+
+                names = args[0];
+            }
+            else
+                cookies = flatten(args);
+        }
+
+        return this._enqueueCommand(DeleteCookiesCommand, { names, urls, cookies });
     }
 
     [delegatedAPI(ClickCommand.methodName)] (selector, options) {
@@ -506,7 +669,7 @@ export default class TestController {
 
     _addRequestHooks$ (...hooks) {
         return this._enqueueTask('addRequestHooks', () => {
-            hooks = flatten(hooks);
+            hooks = flattenDeep(hooks);
 
             assertRequestHookType(hooks);
 
@@ -516,7 +679,7 @@ export default class TestController {
 
     _removeRequestHooks$ (...hooks) {
         return this._enqueueTask('removeRequestHooks', () => {
-            hooks = flatten(hooks);
+            hooks = flattenDeep(hooks);
 
             assertRequestHookType(hooks);
 

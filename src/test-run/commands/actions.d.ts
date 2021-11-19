@@ -228,3 +228,24 @@ export class ScrollIntoViewCommand extends ActionCommandBase {
     public selector: ExecuteClientFunctionCommand;
     public options: ActionOptions;
 }
+
+export class GetCookiesCommand extends ActionCommandBase {
+    public constructor(obj: object, testRun: TestRun, validateProperties: boolean);
+    public names: string | string[];
+    public urls: string | string[];
+    public cookies: any;
+}
+
+export class SetCookiesCommand extends ActionCommandBase {
+    public constructor(obj: object, testRun: TestRun, validateProperties: boolean);
+    public nameValueObjects: Record<string, string> | Record<string, string>[];
+    public url: string;
+    public cookies: any;
+}
+
+export class DeleteCookiesCommand extends CommandBase {
+    public constructor(obj: object, testRun: TestRun, validateProperties: boolean);
+    public names: string | string[];
+    public urls: string | string[];
+    public cookies: any;
+}
