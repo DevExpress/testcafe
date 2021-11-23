@@ -501,7 +501,7 @@ interface TestController {
     /**
      * Returns cookies relative to the given cookie objects. If no parameters are specified - returns all cookies.
      *
-     * @param cookies - cookies objects on the basis of which the URL context (domain, path, name) will be taken.
+     * @param cookies - The cookies objects based on which cookies will be found.
      */
     getCookies(...cookies: (Partial<Cookie> | Partial<Cookie>[])[]): Promise<Cookie[]>;
     /**
@@ -514,7 +514,7 @@ interface TestController {
     /**
      * Sets given cookies.
      *
-     * @param cookies - cookies to set.
+     * @param cookies - The cookies to set.
      */
     setCookies(...cookies: (Partial<Cookie> | Partial<Cookie>[])[]): TestControllerPromise;
     /**
@@ -534,7 +534,7 @@ interface TestController {
      * Deletes cookies, the URL context can be specified by the urls parameter. If no parameters are specified - deletes all cookies.
      *
      * @param names - The cookie name/names to delete.
-     * @param urls - The URL context.
+     * @param urls - The URL/URLs context.
      */
     deleteCookies(names: string | string[], urls?: string | string[]): TestControllerPromise;
 }

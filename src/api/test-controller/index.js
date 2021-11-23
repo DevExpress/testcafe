@@ -6,7 +6,6 @@ import {
     isNil as isNullOrUndefined,
     flattenDeep,
     flatten,
-    castArray,
     noop,
 } from 'lodash';
 
@@ -257,8 +256,8 @@ export default class TestController {
                 else if (urlsArgumentError)
                     throw urlsArgumentError;
 
-                names = castArray(args[0]);
-                urls  = castArray(args[1]);
+                names = args[0];
+                urls  = args[1];
             }
             else
                 cookies = flatten(args);
@@ -270,7 +269,7 @@ export default class TestController {
                 if (namesArgumentError)
                     throw cookieArgumentsError;
 
-                names = castArray(args[0]);
+                names = args[0];
             }
             else
                 cookies = flatten(args);

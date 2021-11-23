@@ -143,6 +143,9 @@ const actions = {
     setTestSpeed:              [1],
     setPageLoadTimeout:        [1],
     useRole:                   [new Role('http://example.com', async () => {}, { preserveUrl: true })],
+    getCookies:                ['cookieName', 'https://domain.com'],
+    setCookies:                [{ cookieName: 'cookieValue' }, 'https://domain.com'],
+    deleteCookies:             [['cookieName1', 'cookieName2'], 'https://domain.com'],
 };
 
 let testController = null;
