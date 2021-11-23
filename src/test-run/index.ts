@@ -790,7 +790,7 @@ export default class TestRun extends AsyncEventEmitter {
         const urls  = command.urls as string[];
 
         if (cookies) {
-            for (const cookie of cookies) {
+            for (const cookie of castArray(cookies)) {
                 const domain = cookie.domain;
                 const path   = cookie.path;
                 const name   = cookie.name;
@@ -809,9 +809,9 @@ export default class TestRun extends AsyncEventEmitter {
             }
         }
         else if (names) {
-            for (const name of names) {
-                if (urls.length > 0) {
-                    for (const url of urls) {
+            for (const name of castArray(names)) {
+                if (urls) {
+                    for (const url of castArray(urls)) {
                         const parsedPageUrl = new URL(url);
 
                         const domain = parsedPageUrl.hostname;
@@ -830,7 +830,7 @@ export default class TestRun extends AsyncEventEmitter {
         else
             cookiesPromises.push(this.session.cookies.getAllCookiesByApi());
 
-        return Promise.all(cookiesPromises).then((result: any) => {
+        return await Promise.all(cookiesPromises).then((result: any) => {
             const resultCookies = flatten(result) as any;
             const apiCookies    = [];
 
@@ -857,7 +857,7 @@ export default class TestRun extends AsyncEventEmitter {
         });
     }
 
-    public _enqueueSetCookies (command: CommandBase): void {
+    public async _enqueueSetCookies (command: CommandBase): Promise<void> {
         const cookies = command.cookies;
 
         const nameValueObjects = command.nameValueObjects as Record<string, string> | Record<string, string>[];
@@ -873,7 +873,8 @@ export default class TestRun extends AsyncEventEmitter {
 
                 cookiesToSet.push(cookie);
             }
-            this.session.cookies.setCookiesByApi(cookiesToSet);
+
+            await this.session.cookies.setCookiesByApi(cookiesToSet);
         }
         else if (nameValueObjects) {
             if (url) {
@@ -890,7 +891,7 @@ export default class TestRun extends AsyncEventEmitter {
                     cookiesToSet.push({ key, value, domain, path });
                 }
 
-                this.session.cookies.setCookiesByApi(cookiesToSet);
+                await this.session.cookies.setCookiesByApi(cookiesToSet);
             }
         }
     }
@@ -904,7 +905,7 @@ export default class TestRun extends AsyncEventEmitter {
         const urls  = command.urls as string;
 
         if (cookies) {
-            for (const cookie of cookies) {
+            for (const cookie of castArray(cookies)) {
                 const domain = cookie.domain;
                 const path   = cookie.path;
                 const name   = cookie.name;

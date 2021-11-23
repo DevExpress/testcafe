@@ -141,7 +141,7 @@ export function functionArgument (name, val) {
         throw new ActionFunctionArgumentError(name, val);
 }
 
-function isValidCookieToGet (target) {
+function isValidCookieToGetOrDelete (target) {
     return typeof target.name === 'string' || typeof target.domain === 'string';
 }
 
@@ -186,7 +186,7 @@ function validateCookieArguments (callsite, cookieArguments, validateFunction) {
 }
 
 export function cookieArgumentsToGetOrDelete (callsite, cookieArguments) {
-    return validateCookieArguments(callsite, cookieArguments, isValidCookieToGet);
+    return validateCookieArguments(callsite, cookieArguments, isValidCookieToGetOrDelete);
 }
 
 export function cookieArgumentsToSet (callsite, cookieArguments) {
