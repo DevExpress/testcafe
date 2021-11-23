@@ -1,6 +1,5 @@
 import ProtocolProxyApi from 'devtools-protocol/types/protocol-proxy-api';
-import RuntimeApi = ProtocolProxyApi.RuntimeApi;
-import PageApi = ProtocolProxyApi.PageApi;
+import ProtocolApi = ProtocolProxyApi.ProtocolApi;
 
 
 const EMPTY_CONTEXT = -1;
@@ -85,7 +84,7 @@ export default class ExecutionContext {
     private static _current = new ExecutionContext();
     public static readonly top = ExecutionContext._current;
 
-    public static initialize (Runtime: RuntimeApi, Page: PageApi): void {
+    public static initialize ({ Runtime, Page }: ProtocolApi): void {
         Page.on('frameAttached', ({ frameId, parentFrameId }) => ExecutionContext.top.find(parentFrameId)._add(frameId));
         Page.on('frameDetached', ({ frameId }) => ExecutionContext.top.find(frameId)._remove());
         Runtime.on('executionContextsCleared', () => ExecutionContext.top._clearAll());

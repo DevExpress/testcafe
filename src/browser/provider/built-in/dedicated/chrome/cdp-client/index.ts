@@ -249,7 +249,7 @@ export class BrowserClient {
 
                 if (this._proxyless) {
                     await this._injectProxylessStuff(client);
-                    ExecutionContext.initialize(client.Runtime, client.Page);
+                    ExecutionContext.initialize(client);
                 }
             }
         }
