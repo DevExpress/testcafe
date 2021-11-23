@@ -31,7 +31,7 @@ function findDraggableElement (element) {
     return null;
 }
 
-export default class MoveWithDragAutomation extends MoveAutomation {
+export default class DragMoveAutomation extends MoveAutomation {
     constructor (element, moveOptions) {
         super(element, moveOptions);
 
