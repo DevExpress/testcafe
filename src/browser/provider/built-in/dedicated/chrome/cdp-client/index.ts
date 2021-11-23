@@ -22,6 +22,7 @@ import { CallsiteRecord } from 'callsite-record';
 import { ExecuteClientFunctionCommand, ExecuteSelectorCommand } from '../../../../../../test-run/commands/observation';
 import ClientFunctionExecutor from './client-function-executor';
 import { SwitchToIframeCommand } from '../../../../../../test-run/commands/actions';
+import ExecutionContext from './execution-context';
 
 const DEBUG_SCOPE = (id: string): string => `testcafe:browser:provider:built-in:chrome:browser-client:${id}`;
 const DOWNLOADS_DIR = path.join(os.homedir(), 'Downloads');
@@ -248,7 +249,7 @@ export class BrowserClient {
 
                 if (this._proxyless) {
                     await this._injectProxylessStuff(client);
-                    this._clientFunctionExecutor.setupFramesWatching(client.Runtime);
+                    ExecutionContext.initialize(client.Runtime, client.Page);
                 }
             }
         }
@@ -373,10 +374,10 @@ export class BrowserClient {
         if (!node.frameId)
             throw new SharedErrors.ActionElementNotIframeError(callsite);
 
-        this._clientFunctionExecutor.setCurrentFrameId(node.frameId);
+        ExecutionContext.switchToIframe(node.frameId);
     }
 
     public switchToMainWindow (): void {
-        this._clientFunctionExecutor.setCurrentFrameId('');
+        ExecutionContext.switchToMainWindow();
     }
 }
