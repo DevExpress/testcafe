@@ -9,7 +9,6 @@ import getLineRectIntersection from '../../utils/get-line-rect-intersection';
 import getDevicePoint from '../../utils/get-device-point';
 import nextTick from '../../utils/next-tick';
 import AutomationSettings from '../../settings';
-import DragAndDropState from '../drag/drag-and-drop-state';
 import createEventSequence from './event-sequence/create-event-sequence';
 import lastHoveredElementHolder from '../last-hovered-element-holder';
 import isIframeWindow from '../../../../utils/is-window-in-iframe';
@@ -19,12 +18,8 @@ import { whilst } from '../../../../shared/utils/promise';
 const Promise          = hammerhead.Promise;
 const nativeMethods    = hammerhead.nativeMethods;
 const featureDetection = hammerhead.utils.featureDetection;
-const htmlUtils        = hammerhead.utils.html;
-const urlUtils         = hammerhead.utils.url;
 const eventSimulator   = hammerhead.eventSandbox.eventSimulator;
 const messageSandbox   = hammerhead.eventSandbox.message;
-const DataTransfer     = hammerhead.eventSandbox.DataTransfer;
-const DragDataStore    = hammerhead.eventSandbox.DragDataStore;
 const ScrollAutomation = testCafeCore.ScrollAutomation;
 
 const positionUtils      = testCafeCore.positionUtils;
@@ -32,7 +27,6 @@ const domUtils           = testCafeCore.domUtils;
 const styleUtils         = testCafeCore.styleUtils;
 const eventUtils         = testCafeCore.eventUtils;
 const sendRequestToFrame = testCafeCore.sendRequestToFrame;
-
 
 const MOVE_REQUEST_CMD  = 'automation|move|request';
 const MOVE_RESPONSE_CMD = 'automation|move|response';
@@ -50,29 +44,10 @@ messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
     }
 });
 
-// Utils
-function findDraggableElement (element) {
-    let parentNode = element;
-
-    while (parentNode) {
-        if (parentNode.draggable)
-            return parentNode;
-
-        parentNode = nativeMethods.nodeParentNodeGetter.call(parentNode);
-    }
-
-    return null;
-}
-
 export default class MoveAutomation {
     constructor (element, moveOptions) {
         this.touchMode = featureDetection.isTouchDevice;
         this.moveEvent = this.touchMode ? 'touchmove' : 'mousemove';
-
-        this.holdLeftButton = moveOptions.holdLeftButton;
-        this.dragElement    = null;
-
-        this.dragAndDropState = new DragAndDropState();
 
         this.automationSettings = new AutomationSettings(moveOptions.speed);
 
@@ -82,7 +57,7 @@ export default class MoveAutomation {
         this.offsetX     = target.offsetX;
         this.offsetY     = target.offsetY;
         this.speed       = moveOptions.speed;
-        this.cursorSpeed = this.holdLeftButton ? this.automationSettings.draggingSpeed : this.automationSettings.cursorSpeed;
+        this.cursorSpeed = this._getCursorSpeed();
 
         this.minMovingTime           = moveOptions.minMovingTime || 0;
         this.modifiers               = moveOptions.modifiers || {};
@@ -236,6 +211,10 @@ export default class MoveAutomation {
             });
     }
 
+    _getCursorSpeed () {
+        return this.automationSettings.cursorSpeed;
+    }
+
     _getTargetClientPoint () {
         const scroll = styleUtils.getElementScroll(this.element);
 
@@ -257,37 +236,41 @@ export default class MoveAutomation {
         };
     }
 
-    _emulateEvents (currentElement, currPosition) {
-        const button      = this.holdLeftButton ? eventUtils.BUTTONS_PARAMETER.leftButton : eventUtils.BUTTONS_PARAMETER.noButton;
+    _getEventSequenceOptions (currPosition) {
+        const button      = eventUtils.BUTTONS_PARAMETER.noButton;
         const devicePoint = getDevicePoint(currPosition);
 
         const eventOptions = {
-            clientX:      currPosition.x,
-            clientY:      currPosition.y,
-            screenX:      devicePoint.x,
-            screenY:      devicePoint.y,
-            buttons:      button,
-            ctrl:         this.modifiers.ctrl,
-            alt:          this.modifiers.alt,
-            shift:        this.modifiers.shift,
-            meta:         this.modifiers.meta,
-            dataTransfer: this.dragAndDropState.dataTransfer,
+            clientX: currPosition.x,
+            clientY: currPosition.y,
+            screenX: devicePoint.x,
+            screenY: devicePoint.y,
+            buttons: button,
+            ctrl:    this.modifiers.ctrl,
+            alt:     this.modifiers.alt,
+            shift:   this.modifiers.shift,
+            meta:    this.modifiers.meta,
         };
 
-        const eventSequenceOptions = { moveEvent: this.moveEvent, holdLeftButton: this.holdLeftButton };
-        const eventSequence        = createEventSequence(this.dragAndDropState.enabled, this.firstMovingStepOccured, eventSequenceOptions);
+        return { eventOptions, eventSequenceOptions: { moveEvent: this.moveEvent } };
+    }
 
-        const { dragAndDropMode, dropAllowed } = eventSequence.run(
+    _runEventSequence (currentElement, { eventOptions, eventSequenceOptions }) {
+        const eventSequence = createEventSequence(false, this.firstMovingStepOccured, eventSequenceOptions);
+
+        eventSequence.run(
             currentElement,
             lastHoveredElementHolder.get(),
             eventOptions,
-            this.dragElement,
-            this.dragAndDropState.dataStore
+            null,
+            null
         );
+    }
 
-        this.firstMovingStepOccured       = true;
-        this.dragAndDropState.enabled     = dragAndDropMode;
-        this.dragAndDropState.dropAllowed = dropAllowed;
+    _emulateEvents (currentElement, currPosition) {
+        this._runEventSequence(currentElement, this._getEventSequenceOptions(currPosition));
+
+        this.firstMovingStepOccured = true;
 
         lastHoveredElementHolder.set(currentElement);
     }
@@ -298,7 +281,7 @@ export default class MoveAutomation {
             .then(getElementUnderCursor)
             // NOTE: in touch mode, events are simulated for the element for which mousedown was simulated (GH-372)
             .then(topElement => {
-                const currentElement = this.holdLeftButton && this.touchMode ? this.dragElement : topElement;
+                const currentElement = this._getCorrectedTopElement(topElement);
 
                 // NOTE: it can be null in IE
                 if (!currentElement)
@@ -307,6 +290,10 @@ export default class MoveAutomation {
                 return this._emulateEvents(currentElement, currPosition);
             })
             .then(nextTick);
+    }
+
+    _getCorrectedTopElement (topElement) {
+        return topElement;
     }
 
     _move (endPoint) {
@@ -318,7 +305,7 @@ export default class MoveAutomation {
         let isFirstStep  = true;
 
         return whilst(() => !currPosition.eql(endPoint), () => {
-            if (this.touchMode && !this.holdLeftButton)
+            if (this._needMoveCursorImmediately())
                 currPosition = AxisValues.create(endPoint);
 
             else if (isFirstStep) {
@@ -339,6 +326,10 @@ export default class MoveAutomation {
 
             return this._movingStep(currPosition);
         });
+    }
+
+    _needMoveCursorImmediately () {
+        return this.touchMode;
     }
 
     _scroll () {
@@ -401,36 +392,7 @@ export default class MoveAutomation {
     }
 
     run () {
-        return getElementUnderCursor()
-            .then(topElement => {
-                this.dragElement = this.holdLeftButton ? topElement : null;
-
-                const draggable = findDraggableElement(this.dragElement);
-
-                // NOTE: we should skip simulating drag&drop's native behavior if the mousedown event was prevented (GH - 2529)
-                if (draggable && featureDetection.hasDataTransfer && !this.skipDefaultDragBehavior) {
-                    this.dragAndDropState.enabled      = true;
-                    this.dragElement                   = draggable;
-                    this.dragAndDropState.element      = this.dragElement;
-                    this.dragAndDropState.dataStore    = new DragDataStore();
-                    this.dragAndDropState.dataTransfer = new DataTransfer(this.dragAndDropState.dataStore);
-
-                    const isLink = domUtils.isAnchorElement(this.dragElement);
-
-                    if (isLink || domUtils.isImgElement(this.dragElement)) {
-                        const srcAttr   = isLink ? 'href' : 'src';
-                        const parsedUrl = urlUtils.parseProxyUrl(this.dragElement[srcAttr]);
-                        const src       = parsedUrl ? parsedUrl.destUrl : this.dragElement[srcAttr];
-                        const outerHTML = htmlUtils.cleanUpHtml(nativeMethods.elementOuterHTMLGetter.call(this.dragElement));
-
-                        this.dragAndDropState.dataTransfer.setData('text/plain', src);
-                        this.dragAndDropState.dataTransfer.setData('text/uri-list', src);
-                        this.dragAndDropState.dataTransfer.setData('text/html', outerHTML);
-                    }
-                }
-
-                return this._scroll();
-            })
+        return this._scroll()
             .then(() => {
                 const endPoint     = this._getTargetClientPoint();
                 const windowWidth  = styleUtils.getWidth(window);
@@ -443,7 +405,7 @@ export default class MoveAutomation {
                 }
 
                 return null;
-            })
-            .then(() => this.dragAndDropState);
+            });
     }
 }
+
