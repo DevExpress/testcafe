@@ -249,6 +249,14 @@ interface RunOptions {
      * Prevents TestCafe from taking screenshots. When this option is specified, screenshots are not taken whenever a test fails or when t.takeScreenshot or t.takeElementScreenshot is executed.
      */
     disableScreenshots: boolean;
+    /**
+     * Time (in milliseconds). If a test is unresponsive for the specified length of time, TestCafe terminates it. Only applies to test contents.
+     */
+    testExecutionTimeout: number;
+    /**
+     * Time (in milliseconds). If TestCafe is idle for the specified length of time, TestCafe terminates the test run. Applies to actions inside and outside tests.
+     */
+    runExecutionTimeout: number;
     disableMultipleWindows: boolean;
 }
 
