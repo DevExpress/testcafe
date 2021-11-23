@@ -26,12 +26,12 @@ interface BrowserConnection {
     once(event: 'ready', callback: Function): void;
 }
 
-interface BrowserDescriptor { 
-    path: string; 
-    cmd?: string; 
+interface BrowserDescriptor {
+    path: string;
+    cmd?: string;
 }
 
-type BrowserOption  = string | BrowserConnection | BrowserDescriptor;
+type BrowserOption = string | BrowserConnection | BrowserDescriptor;
 type BrowserOptions = BrowserOption | BrowserOption [];
 
 type CompilerOptions = {
@@ -67,18 +67,18 @@ interface FilterDescriptor {
     fixture?: string;
     fixtureGrep?: string;
     testMeta?: Metadata;
-    fixtureMeta?: Metadata;    
+    fixtureMeta?: Metadata;
 }
 
-interface ReporterDescriptor { 
+interface ReporterDescriptor {
     name: string;
-    output?: string | NodeJS.WritableStream; 
+    output?: string | NodeJS.WritableStream;
 }
 
-type ReporterOption  = string | ReporterDescriptor;
+type ReporterOption = string | ReporterDescriptor;
 type ReporterOptions = ReporterOption | ReporterOptions [];
 
-type SourceOption  = string;
+type SourceOption = string;
 type SourceOptions = SourceOption | SourceOption [];
 
 interface ScreenshotsOptions extends TakeScreenshotOptions {
@@ -261,7 +261,7 @@ interface StartOptions {
     retryTestPages: boolean;
     cache: boolean;
     configFile: string;
-    disableHttp2: boolean;    
+    disableHttp2: boolean;
 }
 
 interface ColorOutputOptions {
