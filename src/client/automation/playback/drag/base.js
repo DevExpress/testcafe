@@ -43,8 +43,7 @@ export default class DragAutomationBase extends VisibleElementAutomation {
     }
 
     _mousedown (eventArgs) {
-        return cursor
-            .leftButtonDown()
+        return cursor.leftButtonDown()
             .then(() => {
                 this.simulateDefaultBehavior = eventSimulator[this.downEvent](eventArgs.element, eventArgs.options);
 
@@ -92,12 +91,11 @@ export default class DragAutomationBase extends VisibleElementAutomation {
     }
 
     _mouseup () {
-        return cursor
-            .buttonUp()
+        return cursor.buttonUp()
             .then(() => {
-                const point      = positionUtils.offsetToClientCoords(this.endPoint);
+                const point    = positionUtils.offsetToClientCoords(this.endPoint);
                 let topElement = null;
-                const options    = extend({
+                const options  = extend({
                     clientX: point.x,
                     clientY: point.y,
                 }, this.modifiers);

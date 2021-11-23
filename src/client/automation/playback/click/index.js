@@ -178,8 +178,7 @@ export default class ClickAutomation extends VisibleElementAutomation {
     }
 
     _mouseup (eventArgs) {
-        return cursor
-            .buttonUp()
+        return cursor.buttonUp()
             .then(() => this._getElementForEvent(eventArgs))
             .then(element => {
                 eventArgs.element = element;

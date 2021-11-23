@@ -27,13 +27,13 @@ export default class RClickAutomation extends VisibleElementAutomation {
     }
 
     _mousedown (eventArgs) {
-        return cursor
-            .rightButtonDown()
+        return cursor.rightButtonDown()
             .then(() => {
                 this.eventState.activeElementBeforeMouseDown = domUtils.getActiveElement();
                 this.eventState.simulateDefaultBehavior      = eventSimulator.mousedown(eventArgs.element, eventArgs.options);
-            })
-            .then(() => this._focus(eventArgs));
+
+                return this._focus(eventArgs);
+            });
     }
 
     _focus (eventArgs) {
@@ -53,8 +53,7 @@ export default class RClickAutomation extends VisibleElementAutomation {
     }
 
     _mouseup (eventArgs) {
-        return cursor
-            .buttonUp()
+        return cursor.buttonUp()
             .then(() => this._getElementForEvent(eventArgs))
             .then(element => eventSimulator.mouseup(element, eventArgs.options));
     }

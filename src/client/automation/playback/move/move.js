@@ -80,18 +80,14 @@ export default class MoveAutomation {
     }
 
     static onMoveToIframeRequest (e) {
-        const iframePoint = {
-            x: e.message.endX,
-            y: e.message.endY,
-        };
-
+        const iframePoint                 = new AxisValues(e.message.endX, e.message.endY);
         const iframeWin                   = e.source;
         const iframe                      = domUtils.findIframeByWindow(iframeWin);
         const iframeBorders               = styleUtils.getBordersWidth(iframe);
         const iframePadding               = styleUtils.getElementPadding(iframe);
         const iframeRectangle             = positionUtils.getIframeClientCoordinates(iframe);
         const iframePointRelativeToParent = positionUtils.getIframePointRelativeToParentFrame(iframePoint, iframeWin);
-        const cursorPosition              = cursor.position;
+        const cursorPosition              = cursor.getPosition();
 
         const intersectionPoint = positionUtils.isInRectangle(cursorPosition, iframeRectangle) ? cursorPosition :
             getLineRectIntersection(cursorPosition, iframePointRelativeToParent, iframeRectangle);
@@ -120,11 +116,10 @@ export default class MoveAutomation {
             y:   intersectionRelatedToIframe.y,
         };
 
-        if (cursor.activeWindow !== iframeWin) {
-            moveAutomation
-                .run()
+        if (cursor.getActiveWindow(window) !== iframeWin) {
+            moveAutomation.run()
                 .then(() => {
-                    cursor.activeWindow = iframeWin;
+                    cursor.setActiveWindow(iframeWin);
 
                     messageSandbox.sendServiceMsg(responseMsg, iframeWin);
                 });
@@ -162,14 +157,9 @@ export default class MoveAutomation {
             return;
         }
 
-        const cursorPosition = cursor.position;
-
-        const startPoint = {
-            x: iframeRectangle.left + cursorPosition.x,
-            y: iframeRectangle.top + cursorPosition.y,
-        };
-
-        const endPoint          = { x: e.message.endX, y: e.message.endY };
+        const cursorPosition    = cursor.getPosition();
+        const startPoint        = AxisValues.create(iframeRectangle).add(cursorPosition);
+        const endPoint          = new AxisValues(e.message.endX, e.message.endY);
         const intersectionPoint = getLineRectIntersection(startPoint, endPoint, iframeRectangle);
 
         // NOTE: We should not move the cursor out of the iframe if
@@ -197,8 +187,7 @@ export default class MoveAutomation {
 
         const moveAutomation = new MoveAutomation(document.documentElement, moveOptions);
 
-        moveAutomation
-            .run()
+        moveAutomation.run()
             .then(() => {
                 const responseMsg = {
                     cmd: MOVE_RESPONSE_CMD,
@@ -206,7 +195,7 @@ export default class MoveAutomation {
                     y:   intersectionPoint.y,
                 };
 
-                cursor.activeWindow = parentWin;
+                cursor.setActiveWindow(parentWin);
                 messageSandbox.sendServiceMsg(responseMsg, parentWin);
             });
     }
@@ -276,8 +265,7 @@ export default class MoveAutomation {
     }
 
     _movingStep (currPosition) {
-        return cursor
-            .move(currPosition.x, currPosition.y)
+        return cursor.move(currPosition)
             .then(getElementUnderCursor)
             // NOTE: in touch mode, events are simulated for the element for which mousedown was simulated (GH-372)
             .then(topElement => {
@@ -297,7 +285,7 @@ export default class MoveAutomation {
     }
 
     _move (endPoint) {
-        const startPoint = cursor.position;
+        const startPoint = cursor.getPosition();
         const distance   = AxisValues.create(endPoint).sub(startPoint);
         const startTime  = nativeMethods.dateNow();
         const movingTime = Math.max(Math.max(Math.abs(distance.x), Math.abs(distance.y)) / this.cursorSpeed, this.minMovingTime);
@@ -343,14 +331,13 @@ export default class MoveAutomation {
     }
 
     _moveToCurrentFrame (endPoint) {
-        if (cursor.active)
+        if (cursor.isActive(window))
             return Promise.resolve();
 
-        const { x, y }          = cursor.position;
-        const activeWindow      = cursor.activeWindow;
+        const { x, y }        = cursor.getPosition();
+        const activeWindow    = cursor.getActiveWindow(window);
         let iframe            = null;
         let iframeUnderCursor = null;
-        let iframeRectangle   = null;
 
         const msg = {
             cmd:       MOVE_REQUEST_CMD,
@@ -363,13 +350,13 @@ export default class MoveAutomation {
         };
 
         if (activeWindow.parent === window) {
-            iframe          = domUtils.findIframeByWindow(activeWindow);
-            iframeRectangle = positionUtils.getIframeClientCoordinates(iframe);
+            iframe     = domUtils.findIframeByWindow(activeWindow);
+            const rect = positionUtils.getIframeClientCoordinates(iframe);
 
-            msg.left   = iframeRectangle.left;
-            msg.top    = iframeRectangle.top;
-            msg.right  = iframeRectangle.right;
-            msg.bottom = iframeRectangle.bottom;
+            msg.left   = rect.left;
+            msg.top    = rect.top;
+            msg.right  = rect.right;
+            msg.bottom = rect.bottom;
         }
 
         return getElementUnderCursor()
@@ -382,10 +369,10 @@ export default class MoveAutomation {
                 return sendRequestToFrame(msg, MOVE_RESPONSE_CMD, activeWindow);
             })
             .then(message => {
-                cursor.activeWindow = window;
+                cursor.setActiveWindow(window);
 
                 if (iframeUnderCursor || isIframeWindow(window))
-                    return cursor.move(message.x, message.y);
+                    return cursor.move(message);
 
                 return null;
             });
@@ -399,8 +386,7 @@ export default class MoveAutomation {
                 const windowHeight = styleUtils.getHeight(window);
 
                 if (endPoint.x >= 0 && endPoint.x <= windowWidth && endPoint.y >= 0 && endPoint.y <= windowHeight) {
-                    return this
-                        ._moveToCurrentFrame(endPoint)
+                    return this._moveToCurrentFrame(endPoint)
                         .then(() => this._move(endPoint));
                 }
 
@@ -408,4 +394,3 @@ export default class MoveAutomation {
             });
     }
 }
-
