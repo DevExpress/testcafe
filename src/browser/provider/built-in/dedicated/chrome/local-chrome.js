@@ -17,7 +17,7 @@ export async function start (pageUrl, { browserName, config, cdpPort, tempProfil
 
 export async function startOnDocker (pageUrl, { browserName, config, cdpPort, tempProfileDir, inDocker }) {
     await start('', { browserName, config, cdpPort, tempProfileDir, inDocker });
-    await new Promise(resolve => setTimeout(() => resolve(), 500));
+    // await new Promise(resolve => setTimeout(() => resolve(), 100));
 
     const tabs       = await remoteChrome.List({ port: cdpPort });
     const target     = tabs.filter(t => t.type === 'page')[0];
