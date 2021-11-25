@@ -3,7 +3,11 @@ import { parse as parseUrl } from 'url';
 import dedicatedProviderBase from '../base';
 import ChromeRunTimeInfo from './runtime-info';
 import getConfig from './config';
-import { start as startLocalChrome, stop as stopLocalChrome } from './local-chrome';
+import {
+    start as startLocalChrome,
+    startOnDocker as startLocalChromeOnDocker,
+    stop as stopLocalChrome,
+} from './local-chrome';
 import { GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from '../../../utils/client-functions';
 import { BrowserClient } from './cdp-client';
 
@@ -51,7 +55,10 @@ export default {
             reportWarning:            (...args) => this.reportWarning(browserId, ...args),
         };
 
-        await startLocalChrome(pageUrl, runtimeInfo);
+        if (runtimeInfo.inDocker)
+            await startLocalChromeOnDocker(pageUrl, runtimeInfo);
+        else
+            await startLocalChrome(pageUrl, runtimeInfo);
 
         await this.waitForConnectionReady(browserId);
 
