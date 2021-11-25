@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>gh-1999</title>
+</head>
+<style>
+    html {
+        height: 100%;
+    }
+
+    #target1, #target2, #target3, #target4, #target5 {
+        width: 10px;
+        height: 20px;
+        border: 5px solid black;
+        padding: 7px;
+        position: absolute;
+        top: 20px;
+        left: 25px;
+        background-color: red;
+        margin: 6px;
+    }
+
+    #target2 {
+        top: 150px;
+        left: 150px;
+        border-left-width: 1px;
+        border-right-width: 2px;
+        border-bottom-width: 3px;
+        border-top-width: 4px;
+    }
+
+    #target3 {
+        top: 1500px;
+    }
+
+    #target4 {
+        top: 1000px;
+    }
+
+    #target5 {
+        left: 5000px;
+    }
+
+    #scrollableDiv {
+        position: absolute;
+        left: 70px;
+        top: 50px;
+        height: 100px;
+        width: 100px;
+        overflow: auto;
+        border: 1px solid black;
+        padding: 3px;
+    }
+
+    iframe {
+        position: absolute;
+        top: 300px;
+        left: 301px;
+        width: 100px;
+        height: 101px;
+        padding: 2px;
+    }
+</style>
+<body>
+<div id="target1"></div>
+<div id="scrollableDiv">
+    <div id="target2"></div>
+</div>
+<div id="target3"></div>
+<div id="target4"></div>
+<div id="target5"></div>
+<iframe></iframe>
+
+<script type="text/javascript">
+    var doc = document.querySelector('iframe').contentWindow.document;
+    doc.open();
+    doc.write(`
+        <html>
+        <head>
+            <title></title>
+        </head>
+        <body>
+            <p>
+                <div>iframe</div>
+                <iframe src="http://localhost:3000/frame"></iframe>
+            </p>
+        </body>
+        </html>
+    `);
+    doc.close();
+</script>
+</body>
+</html>
