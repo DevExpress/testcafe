@@ -257,6 +257,9 @@ interface RunOptions {
      * Time (in milliseconds). If TestCafe is idle for the specified length of time, TestCafe terminates the test run. Applies to actions inside and outside tests.
      */
     runExecutionTimeout: number;
+    /**
+     * Disables support for multi-window testing in Chrome and Firefox. Use this option if you encounter compatibility issues with your existing tests.
+     */
     disableMultipleWindows: boolean;
 }
 
