@@ -141,6 +141,12 @@ describe('.createRunnableConfiguration()', () => {
                 bottom: 0,
                 right:  0,
             },
+            paddings: {
+                bottom: 7,
+                left:   7,
+                right:  7,
+                top:    7,
+            },
             top:   26,
             width: 34,
         });
@@ -165,6 +171,12 @@ describe('.createRunnableConfiguration()', () => {
             scrollbar: {
                 bottom: 0,
                 right:  0,
+            },
+            paddings: {
+                bottom: 7,
+                left:   7,
+                right:  7,
+                top:    7,
             },
             top:   207,
             width: 27,
@@ -193,6 +205,12 @@ describe('.createRunnableConfiguration()', () => {
                 bottom: 0,
                 right:  0,
             },
+            paddings: {
+                bottom: 7,
+                left:   7,
+                right:  7,
+                top:    7,
+            },
             top:   187,
             width: 27,
         });
@@ -217,6 +235,12 @@ describe('.createRunnableConfiguration()', () => {
             scrollbar: {
                 bottom: 17,
                 right:  17,
+            },
+            paddings: {
+                bottom: 3,
+                left:   3,
+                right:  3,
+                top:    3,
             },
             top:   50,
             width: 108,
@@ -244,6 +268,12 @@ describe('.createRunnableConfiguration()', () => {
                 bottom: 0,
                 right:  0,
             },
+            paddings: {
+                bottom: 0,
+                left:   0,
+                right:  0,
+                top:    0,
+            },
             top:   8,
             width: 67,
         });
@@ -267,6 +297,15 @@ describe('.createRunnableConfiguration()', () => {
             right:  405,
             top:    304,
         });
+
+        const nestedIFrame = await client.Runtime.evaluate({ expression: 'document.querySelector(\'iframe\').contentDocument.querySelector(\'iframe\')' });
+
+        expect(await getIframeClientCoordinates(client, nestedIFrame)).eql({
+            bottom: 178,
+            left:   10,
+            right:  310,
+            top:    28,
+        });
     });
 
     it('getIframePointRelativeToParentFrame', async () => {
@@ -285,7 +324,7 @@ describe('.createRunnableConfiguration()', () => {
         expect(point4).eql({ x: -39, y: 19 });
     });
 
-    it('getIframePointRelativeToParentFrame', async () => {
+    it('isInRectangle', async () => {
         expect(isInRectangle({ x: 10, y: 20 }, { left: 0, right: 50, top: 0, bottom: 50 })).eql(true);
         expect(isInRectangle({ x: 0, y: 0 }, { left: 0, right: 50, top: 0, bottom: 50 })).eql(true);
         expect(isInRectangle({ x: 0, y: 50 }, { left: 0, right: 50, top: 0, bottom: 50 })).eql(true);

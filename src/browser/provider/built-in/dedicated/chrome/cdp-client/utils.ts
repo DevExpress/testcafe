@@ -4,7 +4,11 @@ import ExecutionContext from './execution-context';
 import { Dictionary } from '../../../../../../configuration/interfaces';
 import Dimensions from '../../../../../../shared/utils/values/dimensions';
 import AxisValues, { LeftTopValues } from '../../../../../../shared/utils/values/axis-values';
-import BoundaryValues from '../../../../../../shared/utils/values/boundary-values';
+import BoundaryValues, { BoundaryValuesData } from '../../../../../../shared/utils/values/boundary-values';
+
+interface PositionDimensions extends Dimensions {
+    paddings: BoundaryValuesData;
+}
 
 type ClientObject = string | { result: Protocol.Runtime.RemoteObject };
 
@@ -85,7 +89,7 @@ async function getScroll (client: ProtocolApi, objectId: string): Promise<LeftTo
     return { left: scrollLeft, top: scrollTop };
 }
 
-async function getElementDimensions (client: ProtocolApi, objectId: string): Promise<Dimensions> {
+async function getElementDimensions (client: ProtocolApi, objectId: string): Promise<PositionDimensions> {
     // NOTE: for some reason this method call is required for CSS.getComputedStyleForNode
     // TODO: remove this line after the problem is clear
     await client.DOM.getDocument({ });
@@ -125,6 +129,7 @@ async function getElementDimensions (client: ProtocolApi, objectId: string): Pro
             top:  Math.round(Number(scroll.top)),
         },
         scrollbar,
+        paddings,
         top,
         width,
     };
@@ -173,7 +178,7 @@ export async function getClientPosition (client: ProtocolApi, selector: string):
     return new AxisValues<number>(boxModel.border[0], boxModel.border[1]);
 }
 
-export async function getClientDimensions (client: ProtocolApi, element: ClientObject): Promise<Dimensions> {
+export async function getClientDimensions (client: ProtocolApi, element: ClientObject): Promise<PositionDimensions> {
     const objectId            = await getObjectId(client, element);
     const elementDimensions   = await getElementDimensions(client, objectId);
     const parentFrame         = await getIframeByElement(client, objectId);
@@ -206,10 +211,14 @@ export async function containsOffset (client: ProtocolApi, selector: string, off
 }
 
 export async function getIframeClientCoordinates (client: ProtocolApi, selector: string): Promise<BoundaryValues> {
-    const objectId = await getObjectId(client, selector);
-    const boxModel = await getBoxModel(client, objectId);
+    const dimensions = await getClientDimensions(client, selector);
 
-    const [ left, top, right, bottom ] = [boxModel.content[0], boxModel.content[1], boxModel.content[4], boxModel.content[5]];
+    const [ left, top, right, bottom ] = [
+        dimensions.left + dimensions.border.left + dimensions.paddings.left,
+        dimensions.top + dimensions.border.top + dimensions.paddings.left,
+        dimensions.right - dimensions.border.right - dimensions.paddings.right,
+        dimensions.bottom - dimensions.border.bottom - dimensions.paddings.bottom,
+    ];
 
     return new BoundaryValues(top, right, bottom, left);
 }
