@@ -55,6 +55,7 @@ export default {
             reportWarning:            (...args) => this.reportWarning(browserId, ...args),
         };
 
+        //NOTE: A not-working tab is opened when the browser start in the docker so we should create a new tab.
         if (runtimeInfo.inDocker)
             await startLocalChromeOnDocker(pageUrl, runtimeInfo);
         else
