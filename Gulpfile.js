@@ -286,6 +286,16 @@ gulp.step('test-server-bootstrap', gulp.series('prepare-tests', 'test-server-run
 
 gulp.task('test-server', gulp.parallel('check-licenses', 'test-server-bootstrap'));
 
+gulp.step('test-cdp-run', () => {
+    return gulp
+        .src('test/cdp/*-test.js', { read: false })
+        .pipe(mocha({
+            timeout: getTimeout(20_000),
+        }));
+});
+
+gulp.task('test-cdp', gulp.series('prepare-tests', 'test-cdp-run'));
+
 gulp.step('test-client-run', () => {
     return testClient('test/client/fixtures/**/*-test.js', CLIENT_TESTS_SETTINGS);
 });
