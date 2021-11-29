@@ -265,7 +265,8 @@ export default class MoveAutomation {
     }
 
     _movingStep (currPosition) {
-        return cursor.move(currPosition)
+        return cursor
+            .move(currPosition)
             .then(getElementUnderCursor)
             // NOTE: in touch mode, events are simulated for the element for which mousedown was simulated (GH-372)
             .then(topElement => {

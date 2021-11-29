@@ -106,7 +106,8 @@ export default class SelectBaseAutomation extends VisibleElementAutomation {
     }
 
     _mousedown () {
-        return cursor.leftButtonDown()
+        return cursor
+            .leftButtonDown()
             .then(() => SelectBaseAutomation._calculateEventArguments(this.clientPoint))
             .then(args => {
                 this.eventArgs = args;
@@ -144,7 +145,8 @@ export default class SelectBaseAutomation extends VisibleElementAutomation {
     }
 
     _mouseup () {
-        return cursor.buttonUp()
+        return cursor
+            .buttonUp()
             .then(() => {
                 this._setSelection();
 
