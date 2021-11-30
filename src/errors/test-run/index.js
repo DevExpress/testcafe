@@ -277,12 +277,12 @@ export class ActionNamesCookieArgumentError extends TestRunErrorBase {
 }
 
 export class ActionNamesArrayCookieArgumentError extends TestRunErrorBase {
-    constructor (callsite, elementIndex, actualValue) {
+    constructor (callsite, elementIndex, actualType) {
         super(TEST_RUN_ERRORS.actionNamesArrayCookieArgumentError);
 
         this.callsite     = callsite;
         this.elementIndex = elementIndex;
-        this.actualValue  = actualValue;
+        this.actualType   = actualType;
     }
 }
 
@@ -305,17 +305,17 @@ export class ActionUrlsArrayCookieArgumentError extends TestRunErrorBase {
     }
 }
 
-export class ActionNameValueObjectsCookieArgumentError extends TestRunErrorBase {
+export class ActionNameValueObjectCookieArgumentError extends TestRunErrorBase {
     constructor (callsite) {
-        super(TEST_RUN_ERRORS.actionNameValueObjectsCookieArgumentError);
+        super(TEST_RUN_ERRORS.actionNameValueObjectCookieArgumentError);
 
         this.callsite = callsite;
     }
 }
 
-export class ActionNameValueObjectsArrayCookieArgumentError extends TestRunErrorBase {
+export class ActionNameValueObjectsCookieArgumentError extends TestRunErrorBase {
     constructor (callsite, nameValueElementIndex) {
-        super(TEST_RUN_ERRORS.actionNameValueObjectsArrayCookieArgumentError);
+        super(TEST_RUN_ERRORS.actionNameValueObjectsCookieArgumentError);
 
         this.callsite      = callsite;
         this.elementIndex  = nameValueElementIndex;
@@ -341,17 +341,17 @@ export class ActionUrlArgumentError extends TestRunErrorBase {
     }
 }
 
-export class ActionNoUrlForNameValueCookieError extends TestRunErrorBase {
+export class ActionNoUrlForNameValueObjectsArgumentError extends TestRunErrorBase {
     constructor (callsite) {
-        super(TEST_RUN_ERRORS.actionNoUrlForNameValueCookie);
+        super(TEST_RUN_ERRORS.actionNoUrlForNameValueObjectsArgumentError);
 
         this.callsite = callsite;
     }
 }
 
-export class ActionRequiredParametersAreMissedError extends TestRunErrorBase {
+export class ActionRequiredSetCookieArgumentsAreMissedError extends TestRunErrorBase {
     constructor (callsite) {
-        super(TEST_RUN_ERRORS.actionRequiredParametersAreMissedError);
+        super(TEST_RUN_ERRORS.actionRequiredSetCookieArgumentsAreMissedError);
 
         this.callsite = callsite;
     }

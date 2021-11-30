@@ -89,6 +89,19 @@ const {
     MultipleWindowsModeIsNotAvailableInRemoteBrowserError,
     CannotRestoreChildWindowError,
     TimeoutError,
+    ActionCookieArgumentError,
+    ActionCookieArgumentsError,
+    ActionCookieArrayArgumentError,
+    ActionCookieArrayArgumentsError,
+    ActionNamesCookieArgumentError,
+    ActionNamesArrayCookieArgumentError,
+    ActionUrlsCookieArgumentError,
+    ActionUrlsArrayCookieArgumentError,
+    ActionNameValueObjectCookieArgumentError,
+    ActionNameValueObjectsCookieArgumentError,
+    ActionUrlArgumentError,
+    ActionNoUrlForNameValueObjectsArgumentError,
+    ActionRequiredSetCookieArgumentsAreMissedError,
 } = require('../../lib/errors/test-run');
 
 const untestedErrorTypes = Object.keys(TEST_RUN_ERRORS).map(key => TEST_RUN_ERRORS[key]);
@@ -753,6 +766,58 @@ describe('Error formatting', () => {
 
         it('Should format "executionTimeoutExceeded"', () => {
             assertErrorMessage('execution-timeout-exceeded', new TimeoutError(500, 'Scope'));
+        });
+
+        it('Should format "actionCookieArgumentError"', () => {
+            assertErrorMessage('action-cookie-argument-error', new ActionCookieArgumentError(testCallsite));
+        });
+
+        it('Should format "actionCookieArgumentsError"', () => {
+            assertErrorMessage('action-cookie-arguments-error', new ActionCookieArgumentsError(testCallsite, 0));
+        });
+
+        it('Should format "actionCookieArrayArgumentError"', () => {
+            assertErrorMessage('action-cookie-array-argument-error', new ActionCookieArrayArgumentError(testCallsite, 0));
+        });
+
+        it('Should format "actionCookieArrayArgumentsError"', () => {
+            assertErrorMessage('action-cookie-array-arguments-error', new ActionCookieArrayArgumentsError(testCallsite, 0, 0));
+        });
+
+        it('Should format "actionNamesCookieArgumentError"', () => {
+            assertErrorMessage('action-names-cookie-argument-error', new ActionNamesCookieArgumentError(testCallsite, 'number'));
+        });
+
+        it('Should format "actionNamesArrayCookieArgumentError"', () => {
+            assertErrorMessage('action-names-array-cookie-argument-error', new ActionNamesArrayCookieArgumentError(testCallsite, 0, 'number'));
+        });
+
+        it('Should format "actionUrlsCookieArgumentError"', () => {
+            assertErrorMessage('action-urls-cookie-argument-error', new ActionUrlsCookieArgumentError(testCallsite, 'number'));
+        });
+
+        it('Should format "actionUrlsArrayCookieArgumentError"', () => {
+            assertErrorMessage('action-urls-array-cookie-argument-error', new ActionUrlsArrayCookieArgumentError(testCallsite, 0, 'number'));
+        });
+
+        it('Should format "actionNameValueObjectCookieArgumentError"', () => {
+            assertErrorMessage('action-name-value-object-cookie-argument-error', new ActionNameValueObjectCookieArgumentError(testCallsite));
+        });
+
+        it('Should format "actionNameValueObjectsCookieArgumentError"', () => {
+            assertErrorMessage('action-name-value-objects-cookie-argument-error', new ActionNameValueObjectsCookieArgumentError(testCallsite, 0));
+        });
+
+        it('Should format "actionUrlArgumentError"', () => {
+            assertErrorMessage('action-url-argument-error', new ActionUrlArgumentError(testCallsite, 'url'));
+        });
+
+        it('Should format "actionNoUrlForNameValueObjectsArgumentError"', () => {
+            assertErrorMessage('action-no-url-for-name-value-objects-argument-error', new ActionNoUrlForNameValueObjectsArgumentError(testCallsite));
+        });
+
+        it('Should format "actionRequiredSetCookieArgumentsAreMissedError"', () => {
+            assertErrorMessage('action-required-set-cookie-arguments-are-missed-error', new ActionRequiredSetCookieArgumentsAreMissedError(testCallsite));
         });
     });
 
