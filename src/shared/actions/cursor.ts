@@ -48,7 +48,7 @@ export default class Cursor<W extends Window> {
         return new AxisValues(this._x, this._y);
     }
 
-    private move (point: AxisValuesData<number>): Promise<void> {
+    public move (point: AxisValuesData<number>): Promise<void> {
         this._x = point.x;
         this._y = point.y;
 
