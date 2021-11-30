@@ -1,5 +1,6 @@
 //import hammerhead from '../../deps/hammerhead';
 //import testCafeCore from '../../deps/testcafe-core';
+import { adapter } from '../../adapter';
 import { ScrollOptions, MoveOptions, Modifiers } from '../../../test-run/commands/options';
 import cursor from '../cursor';
 import AxisValues from '../../utils/values/axis-values';
@@ -17,8 +18,6 @@ import createEventSequence from './event-sequence/create-event-sequence';
 import lastHoveredElementHolder from '../last-hovered-element-holder';
 import isIframeWindow from '../../../../utils/is-window-in-iframe';
 
-const Promise          = hammerhead.Promise;
-const nativeMethods    = hammerhead.nativeMethods;
 const featureDetection = hammerhead.utils.featureDetection;
 const eventSimulator   = hammerhead.eventSandbox.eventSimulator;
 const messageSandbox   = hammerhead.eventSandbox.message;
@@ -298,7 +297,7 @@ export default class MoveAutomation<E> {
     private _move (endPoint: AxisValues<number>): Promise<void> {
         const startPoint = cursor.getPosition();
         const distance   = AxisValues.create(endPoint).sub(startPoint);
-        const startTime  = nativeMethods.dateNow();
+        const startTime  = adapter.nativeMethods.dateNow();
         const movingTime = Math.max(Math.max(Math.abs(distance.x), Math.abs(distance.y)) / this._cursorSpeed, this._minMovingTime);
         let currPosition = AxisValues.create(startPoint);
         let isFirstStep  = true;
@@ -318,7 +317,7 @@ export default class MoveAutomation<E> {
                 });
             }
             else {
-                const progress = Math.min((nativeMethods.dateNow() - startTime) / movingTime, 1);
+                const progress = Math.min((adapter.nativeMethods.dateNow() - startTime) / movingTime, 1);
 
                 currPosition = AxisValues.create(distance).mul(progress).add(startPoint).round(Math.floor);
             }
@@ -333,7 +332,7 @@ export default class MoveAutomation<E> {
 
     private _scroll (): Promise<void> {
         if (this._skipScrolling)
-            return Promise.resolve();
+            return adapter.PromiseCtor.resolve();
 
         const scrollOptions    = new ScrollOptions({ offsetX: this._offset.x, offsetY: this._offset.y }, false);
         const scrollAutomation = new ScrollAutomation(this._element, scrollOptions);
@@ -343,7 +342,7 @@ export default class MoveAutomation<E> {
 
     private _moveToCurrentFrame (endPoint: AxisValues<number>): Promise<void> {
         if (cursor.isActive(window))
-            return Promise.resolve();
+            return adapter.PromiseCtor.resolve();
 
         const { x, y }        = cursor.getPosition();
         const activeWindow    = cursor.getActiveWindow(window);
