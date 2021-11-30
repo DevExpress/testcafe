@@ -30,8 +30,8 @@ import {
     ActionNamesArrayCookieArgumentError,
     ActionUrlsCookieArgumentError,
     ActionUrlsArrayCookieArgumentError,
+    ActionNameValueObjectCookieArgumentError,
     ActionNameValueObjectsCookieArgumentError,
-    ActionNameValueObjectsArrayCookieArgumentError,
     ActionUrlTypeArgumentError,
     ActionUrlArgumentError,
 } from '../../../errors/test-run';
@@ -235,11 +235,11 @@ export function nameValueObjectsCookieArgument (callsite, nameValueObjectsArgume
     if (Array.isArray(nameValueObjectsArgumentValue)) {
         for (const [nameValueElementIndex, nameValueElement] of nameValueObjectsArgumentValue.entries()) {
             if (!isValidNameValueCookie(nameValueElement))
-                return new ActionNameValueObjectsArrayCookieArgumentError(callsite, nameValueElementIndex);
+                return new ActionNameValueObjectsCookieArgumentError(callsite, nameValueElementIndex);
         }
     }
     else if (!isValidNameValueCookie(nameValueObjectsArgumentValue))
-        return new ActionNameValueObjectsCookieArgumentError(callsite, nameValueObjectsArgumentValue);
+        return new ActionNameValueObjectCookieArgumentError(callsite, nameValueObjectsArgumentValue);
 
     return null;
 }

@@ -781,13 +781,8 @@ export default class TestRun extends AsyncEventEmitter {
         return consoleMessageCopy[String(this.activeWindowId)];
     }
 
-    public async _enqueueGetCookies (command: CommandBase): Promise<unknown> {
+    private _createGetCookiesResultPromise (cookies: any, names: string | string[], urls: string | string[]): Promise<any> {
         const cookiesPromises = [];
-
-        const cookies = command.cookies as any;
-
-        const names = command.names as string[];
-        const urls  = command.urls as string[];
 
         if (cookies) {
             for (const cookie of castArray(cookies)) {
@@ -830,7 +825,7 @@ export default class TestRun extends AsyncEventEmitter {
         else
             cookiesPromises.push(this.session.cookies.getAllCookiesByApi());
 
-        return await Promise.all(cookiesPromises).then((result: any) => {
+        return Promise.all(cookiesPromises).then((result: any) => {
             const resultCookies = flatten(result) as any;
             const apiCookies    = [];
 
@@ -857,15 +852,10 @@ export default class TestRun extends AsyncEventEmitter {
         });
     }
 
-    public async _enqueueSetCookies (command: CommandBase): Promise<void> {
-        const cookies = command.cookies;
-
-        const nameValueObjects = command.nameValueObjects as Record<string, string> | Record<string, string>[];
-        const url              = command.url as string;
+    private _createSetCookiesResultPromise (cookies: any, nameValueObjects: Record<string, string> | Record<string, string>[], url: string): Promise<void> {
+        const cookiesToSet = [];
 
         if (cookies) {
-            const cookiesToSet = [];
-
             for (const cookie of castArray(cookies) as any) {
                 // NOTE: tough-cookie uses "key" property for the cookie name
                 cookie.key = cookie.name;
@@ -874,35 +864,25 @@ export default class TestRun extends AsyncEventEmitter {
                 cookiesToSet.push(cookie);
             }
 
-            await this.session.cookies.setCookiesByApi(cookiesToSet);
+            return this.session.cookies.setCookiesByApi(cookiesToSet);
         }
-        else if (nameValueObjects) {
-            if (url) {
-                const cookiesToSet = [];
 
-                for (const nameValueObject of castArray(nameValueObjects as any)) {
-                    // NOTE: tough-cookie uses "key" property for the cookie name
-                    const key           = Object.keys(nameValueObject)[0];
-                    const value         = nameValueObject[key];
-                    const parsedPageUrl = new URL(url);
-                    const domain        = parsedPageUrl.hostname;
-                    const path          = parsedPageUrl.pathname;
+        for (const nameValueObject of castArray(nameValueObjects as any)) {
+            // NOTE: tough-cookie uses "key" property for the cookie name
+            const key           = Object.keys(nameValueObject)[0];
+            const value         = nameValueObject[key];
+            const parsedPageUrl = new URL(url);
+            const domain        = parsedPageUrl.hostname;
+            const path          = parsedPageUrl.pathname;
 
-                    cookiesToSet.push({ key, value, domain, path });
-                }
-
-                await this.session.cookies.setCookiesByApi(cookiesToSet);
-            }
+            cookiesToSet.push({ key, value, domain, path });
         }
+
+        return this.session.cookies.setCookiesByApi(cookiesToSet);
     }
 
-    public async _enqueueDeleteCookies (command: CommandBase): Promise<void> {
+    private _createDeleteCookiesResultPromise (cookies: any, names: string | string[], urls: string | string[]): Promise<any> {
         const cookiesPromises = [];
-
-        const cookies = command.cookies as any;
-
-        const names = command.names as string[];
-        const urls  = command.urls as string;
 
         if (cookies) {
             for (const cookie of castArray(cookies)) {
@@ -941,7 +921,40 @@ export default class TestRun extends AsyncEventEmitter {
         else
             cookiesPromises.push(this.session.cookies.deleteAllCookiesByApi());
 
-        await Promise.all(cookiesPromises);
+        return Promise.all(cookiesPromises);
+    }
+
+    public async _enqueueGetCookies (command: CommandBase): Promise<unknown> {
+        const cookies = command.cookies as any;
+
+        const names = command.names as string[];
+        const urls  = command.urls as string[];
+
+        const cookiesPromise = this._createGetCookiesResultPromise(cookies, names, urls);
+
+        return await cookiesPromise;
+    }
+
+    public async _enqueueSetCookies (command: CommandBase): Promise<void> {
+        const cookies = command.cookies;
+
+        const nameValueObjects = command.nameValueObjects as Record<string, string> | Record<string, string>[];
+        const url              = command.url as string;
+
+        const cookiesPromise = this._createSetCookiesResultPromise(cookies, nameValueObjects, url);
+
+        await cookiesPromise;
+    }
+
+    public async _enqueueDeleteCookies (command: CommandBase): Promise<void> {
+        const cookies = command.cookies as any;
+
+        const names = command.names as string[];
+        const urls  = command.urls as string;
+
+        const cookiesPromise = this._createDeleteCookiesResultPromise(cookies, names, urls);
+
+        await cookiesPromise;
     }
 
     private async _enqueueSetBreakpointCommand (callsite: CallsiteRecord | undefined, error?: string): Promise<void> {
