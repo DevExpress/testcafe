@@ -5,19 +5,19 @@ import ProtocolApi = ProtocolProxyApi.ProtocolApi;
 const EMPTY_CONTEXT = -1;
 
 export default class ExecutionContext {
-    private _frameId: string;
     private _ctxId: number;
+    public frameId: string;
     public parent: ExecutionContext | null;
     public children: ExecutionContext[] = [];
 
     public constructor (parent?: ExecutionContext, frameId = '', ctxId = EMPTY_CONTEXT) {
-        this._frameId = frameId;
-        this._ctxId   = ctxId;
-        this.parent   = parent ?? this;
+        this._ctxId  = ctxId;
+        this.frameId = frameId;
+        this.parent  = parent ?? this;
     }
 
     private _is (frameOrCtxId: string | number): boolean {
-        return (typeof frameOrCtxId === 'string' ? this._frameId : this._ctxId) === frameOrCtxId;
+        return (typeof frameOrCtxId === 'string' ? this.frameId : this._ctxId) === frameOrCtxId;
     }
 
     public find (frameOrCtxId: string | number): ExecutionContext {
@@ -75,7 +75,7 @@ export default class ExecutionContext {
     private _clearAll (): void {
         ExecutionContext._current = ExecutionContext.top;
 
-        this._frameId = '';
+        this.frameId = '';
         this._ctxId   = EMPTY_CONTEXT;
 
         this._remove();
@@ -85,7 +85,9 @@ export default class ExecutionContext {
     public static readonly top = ExecutionContext._current;
 
     public static initialize ({ Runtime, Page }: ProtocolApi): void {
-        Page.on('frameAttached', ({ frameId, parentFrameId }) => ExecutionContext.top.find(parentFrameId)._add(frameId));
+        Page.on('frameAttached', ({ frameId, parentFrameId }) => {
+            ExecutionContext.top.find(parentFrameId)._add(frameId);
+        });
         Page.on('frameDetached', ({ frameId }) => ExecutionContext.top.find(frameId)._remove());
         Runtime.on('executionContextsCleared', () => ExecutionContext.top._clearAll());
         Runtime.on('executionContextDestroyed', ({ executionContextId }) =>
@@ -95,8 +97,8 @@ export default class ExecutionContext {
             if (!context.auxData || !context.auxData.frameId || !context.auxData.isDefault)
                 return;
 
-            if (!ExecutionContext.top._frameId)
-                ExecutionContext.top._frameId = context.auxData.frameId;
+            if (!ExecutionContext.top.frameId)
+                ExecutionContext.top.frameId = context.auxData.frameId;
 
             ExecutionContext.top.find(context.auxData.frameId)._setContext(context.id);
         });
