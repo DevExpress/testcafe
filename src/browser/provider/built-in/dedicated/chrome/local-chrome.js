@@ -40,6 +40,7 @@ export async function startOnDocker (pageUrl, { browserName, config, cdpPort, te
     const { Target } = await remoteChrome({ target, port: cdpPort });
 
     await Target.createTarget({ url: pageUrl });
+    await remoteChrome.Close({ id: target.id, port: cdpPort });
 }
 
 export async function stop ({ browserId }) {
