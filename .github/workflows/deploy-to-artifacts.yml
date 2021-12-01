@@ -45,7 +45,7 @@ jobs:
         with:
           ref: ${{steps.prep.outputs.sha}}
       - run: |
-          npm i
+          npm i --legacy-peer-deps
           npx gulp build
           npm pack
       - id: package-name
