@@ -5,29 +5,30 @@ import { ScrollOptions, MoveOptions, Modifiers } from '../../../test-run/command
 import AxisValues, { AxisValuesData } from '../../utils/values/axis-values';
 import BoundaryValues from '../../utils/values/boundary-values';
 import { whilst } from '../../utils/promise';
+import Cursor from '../cursor';
+import { SharedWindow } from '../../types';
 
 
 // TODO:
-import cursor from '../cursor';
-import { underCursor as getElementUnderCursor } from '../../get-element';
-import getAutomationPoint from '../../utils/get-automation-point';
-import getLineRectIntersection from '../../utils/get-line-rect-intersection';
-import getDevicePoint from '../../utils/get-device-point';
-import nextTick from '../../utils/next-tick';
-import AutomationSettings from '../../settings';
-import createEventSequence from './event-sequence/create-event-sequence';
-import lastHoveredElementHolder from '../last-hovered-element-holder';
-import isIframeWindow from '../../../../utils/is-window-in-iframe';
-
-const featureDetection = hammerhead.utils.featureDetection;
-const eventSimulator   = hammerhead.eventSandbox.eventSimulator;
-const messageSandbox   = hammerhead.eventSandbox.message;
-
-const ScrollAutomation   = testCafeCore.ScrollAutomation;
-const domUtils           = testCafeCore.domUtils;
-const styleUtils         = testCafeCore.styleUtils;
-const eventUtils         = testCafeCore.eventUtils;
-const sendRequestToFrame = testCafeCore.sendRequestToFrame;
+// import { underCursor as getElementUnderCursor } from '../../get-element';
+// import getAutomationPoint from '../../utils/get-automation-point';
+// import getLineRectIntersection from '../../utils/get-line-rect-intersection';
+// import getDevicePoint from '../../utils/get-device-point';
+// import nextTick from '../../utils/next-tick';
+// import AutomationSettings from '../../settings';
+// import createEventSequence from './event-sequence/create-event-sequence';
+// import lastHoveredElementHolder from '../last-hovered-element-holder';
+// import isIframeWindow from '../../../../utils/is-window-in-iframe';
+//
+// const featureDetection = hammerhead.utils.featureDetection;
+// const eventSimulator   = hammerhead.eventSandbox.eventSimulator;
+// const messageSandbox   = hammerhead.eventSandbox.message;
+//
+// const ScrollAutomation   = testCafeCore.ScrollAutomation;
+// const sendRequestToFrame = testCafeCore.sendRequestToFrame;
+// const domUtils           = testCafeCore.domUtils;
+// const styleUtils         = testCafeCore.styleUtils;
+// const eventUtils         = testCafeCore.eventUtils;
 
 const MOVE_REQUEST_CMD  = 'automation|move|request';
 const MOVE_RESPONSE_CMD = 'automation|move|response';
@@ -50,13 +51,14 @@ interface MoveAutomationTarget<E> {
     offset: AxisValuesData<number>;
 }
 
-export default class MoveAutomation<E, W> {
+export default class MoveAutomation<E, W extends SharedWindow> {
     protected readonly _touchMode: boolean;
     protected readonly _automationSettings: AutomationSettings;
     private readonly _moveEvent: string;
     private readonly _element: E;
     private readonly _window: W;
     private readonly _offset: AxisValuesData<number>;
+    private readonly _cursor: Cursor<W>;
     private readonly _speed: number;
     private readonly _cursorSpeed: number;
     private readonly _minMovingTime: number;
@@ -65,8 +67,8 @@ export default class MoveAutomation<E, W> {
     private readonly _skipDefaultDragBehavior: boolean;
     private _firstMovingStepOccurred: boolean;
 
-    protected constructor (el: E, offset: AxisValuesData<number>, win: W, moveOptions: MoveOptions) {
-        this._touchMode = featureDetection.isTouchDevice;
+    protected constructor (el: E, offset: AxisValuesData<number>, win: W, cursor: Cursor<W>, moveOptions: MoveOptions) {
+        this._touchMode = false; // featureDetection.isTouchDevice;
         this._moveEvent = this._touchMode ? 'touchmove' : 'mousemove';
 
         this._automationSettings = new AutomationSettings(moveOptions.speed);
@@ -74,6 +76,7 @@ export default class MoveAutomation<E, W> {
         this._window      = win;
         this._element     = el;
         this._offset      = offset;
+        this._cursor      = cursor;
         this._speed       = moveOptions.speed;
         this._cursorSpeed = this._getCursorSpeed();
 
@@ -84,10 +87,10 @@ export default class MoveAutomation<E, W> {
         this._firstMovingStepOccurred  = false;
     }
 
-    public static async create<E, W> (el: E, win: W, moveOptions: MoveOptions): Promise<MoveAutomation<E, W>> {
+    public static async create<E, W extends SharedWindow> (el: E, win: W, cursor: Cursor<W>, moveOptions: MoveOptions): Promise<MoveAutomation<E, W>> {
         const { element, offset } = await MoveAutomation.getTarget(el, win, new AxisValues(moveOptions.offsetX, moveOptions.offsetY));
 
-        return new MoveAutomation(element, offset, win, moveOptions);
+        return new MoveAutomation(element, offset, win, cursor, moveOptions);
     }
 
     private static getTarget<E, W> (element: E, window: W, offset: AxisValuesData<number>): Promise<MoveAutomationTarget<E>> {
@@ -107,12 +110,12 @@ export default class MoveAutomation<E, W> {
     }
 
     static onMoveToIframeRequest (e) {
-        const iframePoint                 = new AxisValues(e.message.endX, e.message.endY);
-        const iframeWin                   = e.source;
-        const iframe                      = domUtils.findIframeByWindow(iframeWin);
-        const iframeBorders               = styleUtils.getBordersWidth(iframe);
-        const iframePadding               = styleUtils.getElementPadding(iframe);
-        const cursorPosition              = cursor.getPosition();
+        const iframePoint    = new AxisValues(e.message.endX, e.message.endY);
+        const iframeWin      = e.source;
+        const iframe         = domUtils.findIframeByWindow(iframeWin);
+        const iframeBorders  = styleUtils.getBordersWidth(iframe);
+        const iframePadding  = styleUtils.getElementPadding(iframe);
+        const cursorPosition = cursor.getPosition();
 
         Promise.all([
             adapter.position.getIframeClientCoordinates(iframe),
@@ -243,7 +246,7 @@ export default class MoveAutomation<E, W> {
 
         return adapter.PromiseCtor.resolve(adapter.position.getClientPosition(this._element))
             .then((clientPosition) => {
-                const isDocumentBody = this._element.tagName && domUtils.isBodyElement(this._element);
+                const isDocumentBody = domUtils.isBodyElement(this._element);
                 const clientPoint    = AxisValues.create(clientPosition).add(this._offset);
 
                 if (!isDocumentBody)
@@ -272,7 +275,7 @@ export default class MoveAutomation<E, W> {
         return { eventOptions, eventSequenceOptions: { moveEvent: this._moveEvent } };
     }
 
-    protected _runEventSequence (currentElement, { eventOptions, eventSequenceOptions }) {
+    protected _runEventSequence (currentElement: E, { eventOptions, eventSequenceOptions }) {
         const eventSequence = createEventSequence(false, this._firstMovingStepOccurred, eventSequenceOptions);
 
         eventSequence.run(
@@ -293,7 +296,7 @@ export default class MoveAutomation<E, W> {
     }
 
     private _movingStep (currPosition: AxisValues<number>): Promise<void> {
-        return cursor
+        return this._cursor
             .move(currPosition)
             .then(getElementUnderCursor)
             // NOTE: in touch mode, events are simulated for the element for which mousedown was simulated (GH-372)
@@ -314,7 +317,7 @@ export default class MoveAutomation<E, W> {
     }
 
     private _move (endPoint: AxisValues<number>): Promise<void> {
-        const startPoint = cursor.getPosition();
+        const startPoint = this._cursor.getPosition();
         const distance   = AxisValues.create(endPoint).sub(startPoint);
         const startTime  = adapter.nativeMethods.dateNow();
         const movingTime = Math.max(Math.max(Math.abs(distance.x), Math.abs(distance.y)) / this._cursorSpeed, this._minMovingTime);
@@ -360,13 +363,14 @@ export default class MoveAutomation<E, W> {
     }
 
     private _moveToCurrentFrame (endPoint: AxisValues<number>): Promise<void> {
-        if (cursor.isActive(window))
+        if (this._cursor.isActive(this._window))
             return adapter.PromiseCtor.resolve();
 
-        const { x, y }        = cursor.getPosition();
-        const activeWindow    = cursor.getActiveWindow(window);
-        let iframe            = null;
-        let iframeUnderCursor = null;
+        const { x, y }     = this._cursor.getPosition();
+        const activeWindow = this._cursor.getActiveWindow(this._window);
+
+        let iframe: E | null  = null;
+        let iframeUnderCursor = false;
 
         const msg = {
             cmd:       MOVE_REQUEST_CMD,
@@ -376,38 +380,36 @@ export default class MoveAutomation<E, W> {
             endY:      endPoint.y,
             modifiers: this._modifiers,
             speed:     this._speed,
+            rect:      new BoundaryValues(),
         };
 
         return adapter.PromiseCtor.resolve()
             .then(() => {
-                if (activeWindow.parent === window) {
-                    iframe = domUtils.findIframeByWindow(activeWindow);
+                if (activeWindow.parent !== this._window)
+                    return;
 
-                    return adapter.PromiseCtor.resolve(adapter.position.getIframeClientCoordinates(iframe))
-                        .then(rect => {
-                            msg.left   = rect.left;
-                            msg.top    = rect.top;
-                            msg.right  = rect.right;
-                            msg.bottom = rect.bottom;
-                        });
-                }
+                return adapter.PromiseCtor.resolve(adapter.dom.findIframeByWindow(activeWindow))
+                    .then((ifr: E) => {
+                        iframe = ifr;
+
+                        return adapter.position.getIframeClientCoordinates(iframe);
+                    })
+                    .then(rect => msg.rect.add(rect));
             })
             .then(getElementUnderCursor)
             .then(topElement => {
                 iframeUnderCursor = topElement === iframe;
 
-                if (activeWindow.parent === window)
+                if (activeWindow.parent === this._window)
                     msg.iframeUnderCursor = iframeUnderCursor;
 
                 return sendRequestToFrame(msg, MOVE_RESPONSE_CMD, activeWindow);
             })
             .then(message => {
-                cursor.setActiveWindow(window);
+                this._cursor.setActiveWindow(this._window);
 
-                if (iframeUnderCursor || isIframeWindow(window))
-                    return cursor.move(message);
-
-                return null;
+                if (iframeUnderCursor || isIframeWindow(this._window))
+                    return this._cursor.move(message);
             });
     }
 

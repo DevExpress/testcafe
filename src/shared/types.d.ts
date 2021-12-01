@@ -52,6 +52,14 @@ export interface SharedAdapter {
         getIframePointRelativeToParentFrame: (iframePoint: AxisValues<number>, win: any) => SharedFnResult<AxisValues<number> | null>;
         getClientPosition: (el: any) => SharedFnResult<AxisValues<number>>;
     };
+<<<<<<< HEAD
+=======
+
+    dom: {
+        getDocumentElement: (win: any) => SharedFnResult<any>;
+        findIframeByWindow: (win: any) => SharedFnResult<any>;
+    }
+>>>>>>> 9eb27021e (refactoring)
 }
 
 export interface ClientRequestEmitter<R> {
@@ -79,6 +87,6 @@ interface AutomationErrorCtors {
 
 export type ExecuteSelectorFn<T> = (selector: ExecuteSelectorCommand, errCtors: AutomationErrorCtors, startTime: number) => Promise<T>;
 
-export interface Window {
-    parent: Window;
+export interface SharedWindow {
+    parent: SharedWindow;
 }

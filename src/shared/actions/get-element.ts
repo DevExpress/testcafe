@@ -1,7 +1,7 @@
 import { adapter } from '../adapter';
 import isIframeWindow from '../utils/is-window-iframe';
 import { AxisValuesData } from '../utils/values/axis-values';
-import { Window } from '../types';
+import { SharedWindow } from '../types';
 
 
 function ensureImageMap<E> (imgElement: E, areaElement: E): Promise<E> {
@@ -60,7 +60,7 @@ function correctTopElementByExpectedElement<E> (topElement: E, expectedElement?:
         });
 }
 
-export default function getElementFromPoint<E, W extends Window> (point: AxisValuesData<number>, win: W, expectedEl?: E): Promise<E> {
+export default function getElementFromPoint<E, W extends SharedWindow> (point: AxisValuesData<number>, win: W, expectedEl?: E): Promise<E> {
     return adapter.getElementExceptUI(point)
         .then((topElement: E) => {
             // NOTE: when trying to get an element by elementFromPoint in iframe and the target

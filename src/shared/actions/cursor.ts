@@ -1,10 +1,10 @@
 import { adapter } from '../adapter';
 import { CursorUI } from './types';
 import AxisValues, { AxisValuesData } from '../utils/values/axis-values';
-import { Window } from '../types';
+import { SharedWindow } from '../types';
 
 
-export default class Cursor<W extends Window> {
+export default class Cursor<W extends SharedWindow> {
     private _activeWindow: W;
     private _x: number;
     private _y: number;
