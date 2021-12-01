@@ -495,3 +495,7 @@ export function getNodeText (el) {
 export function getImgMapName (img) {
     return img.useMap.substring(1);
 }
+
+export function getDocumentElement () {
+
+}

@@ -1,4 +1,4 @@
-import { RightBottomValues } from './axis-values';
+import AxisValues, { RightBottomValues } from './axis-values';
 
 export interface BoundaryValuesData {
     top: number;
@@ -52,5 +52,9 @@ export default class BoundaryValues implements BoundaryValuesData {
         this.left   = leftTopRound(this.left);
 
         return this;
+    }
+
+    public contains (point: AxisValues<number>): boolean {
+        return point.x >= this.left && point.x <= this.right && point.y >= this.top && point.y <= this.bottom;
     }
 }

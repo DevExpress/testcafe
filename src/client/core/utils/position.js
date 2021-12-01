@@ -2,6 +2,7 @@ import hammerhead from '../deps/hammerhead';
 import * as styleUtils from './style';
 import * as domUtils from './dom';
 import * as shared from './shared/position';
+import BoundaryValues from '../../../shared/utils/values/boundary-values';
 
 export { isElementVisible } from './shared/visibility';
 
@@ -20,12 +21,12 @@ export function getIframeClientCoordinates (iframe) {
     const iframeRectangleLeft = clientPosition.x + iframeBorders.left + iframePadding.left;
     const iframeRectangleTop  = clientPosition.y + iframeBorders.top + iframePadding.top;
 
-    return {
+    return BoundaryValues.create({
         left:   iframeRectangleLeft,
         top:    iframeRectangleTop,
         right:  iframeRectangleLeft + styleUtils.getWidth(iframe),
         bottom: iframeRectangleTop + styleUtils.getHeight(iframe),
-    };
+    });
 }
 
 export function containsOffset (el, offsetX, offsetY) {

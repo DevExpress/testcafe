@@ -5,6 +5,8 @@ import { getOffsetOptions } from './deps/testcafe-automation';
 // @ts-ignore
 import { domUtils as dom, positionUtils as position } from './deps/testcafe-core';
 import { initializeAdapter } from '../../shared/adapter/index';
+// @ts-ignore
+import { positionUtils, domUtils } from '../deps/testcafe-core';
 
 const { nativeMethods, Promise, utils: { browser } } = hammerhead;
 

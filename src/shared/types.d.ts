@@ -2,8 +2,9 @@
 
 import { ExecuteSelectorCommand } from '../test-run/commands/observation';
 import { ScrollOptions } from '../test-run/commands/options';
-import { AxisValuesData } from './utils/values/axis-values';
+import AxisValues, { AxisValuesData } from './utils/values/axis-values';
 import Dimensions from './utils/values/dimensions';
+import BoundaryValues from './utils/values/boundary-values';
 
 export interface NativeMethods {
     setTimeout: typeof globalThis.setTimeout;
@@ -40,11 +41,16 @@ export interface SharedAdapter {
         containsElement: (el1: any, el2: any) => SharedFnResult<boolean>;
         getNodeText: (el: any) => SharedFnResult<string>;
         getImgMapName: (el: any) => string;
+        getDocumentElement: (win: any) => SharedFnResult<any>;
     };
 
     position: {
         getElementFromPoint: (point: AxisValuesData<number>) => SharedFnResult<any>;
         getClientDimensions: (target: any) => SharedFnResult<Dimensions>;
+        containsOffset: (el: any, offsetX: number, offsetY: number) => SharedFnResult<boolean>;
+        getIframeClientCoordinates: (el: any) => SharedFnResult<BoundaryValues>;
+        getIframePointRelativeToParentFrame: (iframePoint: AxisValues<number>, win: any) => SharedFnResult<AxisValues<number> | null>;
+        getClientPosition: (el: any) => SharedFnResult<AxisValues<number>>;
     };
 }
 

@@ -2,12 +2,13 @@
 //import testCafeCore from '../../deps/testcafe-core';
 import { adapter } from '../../adapter';
 import { ScrollOptions, MoveOptions, Modifiers } from '../../../test-run/commands/options';
-import cursor from '../cursor';
-import AxisValues from '../../utils/values/axis-values';
+import AxisValues, { AxisValuesData } from '../../utils/values/axis-values';
+import BoundaryValues from '../../utils/values/boundary-values';
 import { whilst } from '../../utils/promise';
 
 
 // TODO:
+import cursor from '../cursor';
 import { underCursor as getElementUnderCursor } from '../../get-element';
 import getAutomationPoint from '../../utils/get-automation-point';
 import getLineRectIntersection from '../../utils/get-line-rect-intersection';
@@ -23,7 +24,6 @@ const eventSimulator   = hammerhead.eventSandbox.eventSimulator;
 const messageSandbox   = hammerhead.eventSandbox.message;
 
 const ScrollAutomation   = testCafeCore.ScrollAutomation;
-const positionUtils      = testCafeCore.positionUtils;
 const domUtils           = testCafeCore.domUtils;
 const styleUtils         = testCafeCore.styleUtils;
 const eventUtils         = testCafeCore.eventUtils;
@@ -45,12 +45,18 @@ messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
     }
 });
 
-export default class MoveAutomation<E> {
+interface MoveAutomationTarget<E> {
+    element: E;
+    offset: AxisValuesData<number>;
+}
+
+export default class MoveAutomation<E, W> {
     protected readonly _touchMode: boolean;
     protected readonly _automationSettings: AutomationSettings;
     private readonly _moveEvent: string;
     private readonly _element: E;
-    private readonly _offset: AxisValues<number>;
+    private readonly _window: W;
+    private readonly _offset: AxisValuesData<number>;
     private readonly _speed: number;
     private readonly _cursorSpeed: number;
     private readonly _minMovingTime: number;
@@ -59,16 +65,15 @@ export default class MoveAutomation<E> {
     private readonly _skipDefaultDragBehavior: boolean;
     private _firstMovingStepOccurred: boolean;
 
-    constructor (element: E, moveOptions: MoveOptions) {
+    protected constructor (el: E, offset: AxisValuesData<number>, win: W, moveOptions: MoveOptions) {
         this._touchMode = featureDetection.isTouchDevice;
         this._moveEvent = this._touchMode ? 'touchmove' : 'mousemove';
 
         this._automationSettings = new AutomationSettings(moveOptions.speed);
 
-        const target = MoveAutomation.getTarget(element, moveOptions.offsetX, moveOptions.offsetY);
-
-        this._element     = target.element;
-        this._offset      = new AxisValues(target.offsetX, target.offsetY)
+        this._window      = win;
+        this._element     = el;
+        this._offset      = offset;
         this._speed       = moveOptions.speed;
         this._cursorSpeed = this._getCursorSpeed();
 
@@ -79,17 +84,26 @@ export default class MoveAutomation<E> {
         this._firstMovingStepOccurred  = false;
     }
 
-    static getTarget (el, offsetX: number, offsetY: number) {
+    public static async create<E, W> (el: E, win: W, moveOptions: MoveOptions): Promise<MoveAutomation<E, W>> {
+        const { element, offset } = await MoveAutomation.getTarget(el, win, new AxisValues(moveOptions.offsetX, moveOptions.offsetY));
+
+        return new MoveAutomation(element, offset, win, moveOptions);
+    }
+
+    private static getTarget<E, W> (element: E, window: W, offset: AxisValuesData<number>): Promise<MoveAutomationTarget<E>> {
         // NOTE: if the target point (considering offsets) is out of
         // the element change the target element to the document element
-        const relateToDocument = !positionUtils.containsOffset(el, offsetX, offsetY);
-        const relatedPoint     = relateToDocument ? getAutomationPoint(el, offsetX, offsetY) : { x: offsetX, y: offsetY };
+        return adapter.PromiseCtor.resolve(adapter.position.containsOffset(element, offset.x, offset.y))
+            .then(containsOffset => {
+                if (!containsOffset) {
+                    const point = getAutomationPoint(element, offset.x, offset.y);
 
-        return {
-            element: relateToDocument ? document.documentElement : el,
-            offsetX: relatedPoint.x,
-            offsetY: relatedPoint.y,
-        };
+                    return adapter.dom.getDocumentElement(window)
+                        .then((docEl: E) => ({ element: docEl, offset: point }));
+                }
+
+                return { element, offset };
+            });
     }
 
     static onMoveToIframeRequest (e) {
@@ -98,47 +112,51 @@ export default class MoveAutomation<E> {
         const iframe                      = domUtils.findIframeByWindow(iframeWin);
         const iframeBorders               = styleUtils.getBordersWidth(iframe);
         const iframePadding               = styleUtils.getElementPadding(iframe);
-        const iframeRectangle             = positionUtils.getIframeClientCoordinates(iframe);
-        const iframePointRelativeToParent = positionUtils.getIframePointRelativeToParentFrame(iframePoint, iframeWin);
         const cursorPosition              = cursor.getPosition();
 
-        const intersectionPoint = positionUtils.isInRectangle(cursorPosition, iframeRectangle) ? cursorPosition :
-            getLineRectIntersection(cursorPosition, iframePointRelativeToParent, iframeRectangle);
+        Promise.all([
+            adapter.position.getIframeClientCoordinates(iframe),
+            adapter.position.getIframePointRelativeToParentFrame(iframePoint, iframeWin),
+        ])
+            .then(([iframeRectangle, iframePointRelativeToParent]) => {
+                const intersectionPoint = iframeRectangle.contains(cursorPosition) ? cursorPosition :
+                    getLineRectIntersection(cursorPosition, iframePointRelativeToParent, iframeRectangle);
 
-        const intersectionRelatedToIframe = {
-            x: intersectionPoint.x - iframeRectangle.left,
-            y: intersectionPoint.y - iframeRectangle.top,
-        };
+                const intersectionRelatedToIframe = {
+                    x: intersectionPoint.x - iframeRectangle.left,
+                    y: intersectionPoint.y - iframeRectangle.top,
+                };
 
-        const moveOptions = new MoveOptions({
-            modifiers: e.message._modifiers,
-            offsetX:   intersectionRelatedToIframe.x + iframeBorders.left + iframePadding.left,
-            offsetY:   intersectionRelatedToIframe.y + iframeBorders.top + iframePadding.top,
-            speed:     e.message._speed,
+                const moveOptions = new MoveOptions({
+                    modifiers: e.message._modifiers,
+                    offsetX:   intersectionRelatedToIframe.x + iframeBorders.left + iframePadding.left,
+                    offsetY:   intersectionRelatedToIframe.y + iframeBorders.top + iframePadding.top,
+                    speed:     e.message._speed,
 
-            // NOTE: we should not perform scrolling because the active window was
-            // already scrolled to the target element before the request (GH-847)
-            skipScrolling: true,
-        }, false);
+                    // NOTE: we should not perform scrolling because the active window was
+                    // already scrolled to the target element before the request (GH-847)
+                    skipScrolling: true,
+                }, false);
 
-        const moveAutomation = new MoveAutomation(iframe, moveOptions);
+                const moveAutomation = MoveAutomation.create(iframe, window, moveOptions);
 
-        const responseMsg = {
-            cmd: MOVE_RESPONSE_CMD,
-            x:   intersectionRelatedToIframe.x,
-            y:   intersectionRelatedToIframe.y,
-        };
+                const responseMsg = {
+                    cmd: MOVE_RESPONSE_CMD,
+                    x:   intersectionRelatedToIframe.x,
+                    y:   intersectionRelatedToIframe.y,
+                };
 
-        if (cursor.getActiveWindow(window) !== iframeWin) {
-            moveAutomation.run()
-                .then(() => {
-                    cursor.setActiveWindow(iframeWin);
+                if (cursor.getActiveWindow(window) !== iframeWin) {
+                    moveAutomation.run()
+                        .then(() => {
+                            cursor.setActiveWindow(iframeWin);
 
+                            messageSandbox.sendServiceMsg(responseMsg, iframeWin);
+                        });
+                }
+                else
                     messageSandbox.sendServiceMsg(responseMsg, iframeWin);
-                });
-        }
-        else
-            messageSandbox.sendServiceMsg(responseMsg, iframeWin);
+            });
     }
 
     static onMoveOutRequest (e) {
@@ -217,21 +235,22 @@ export default class MoveAutomation<E> {
         return this._automationSettings.cursorSpeed;
     }
 
-    private _getTargetClientPoint (): AxisValues<number> {
+    private _getTargetClientPoint (): Promise<AxisValues<number>> {
         const scroll = styleUtils.getElementScroll(this._element);
 
         if (domUtils.isHtmlElement(this._element))
-            return AxisValues.create(this._offset).sub(AxisValues.create(scroll));
+            return adapter.PromiseCtor.resolve(AxisValues.create(this._offset).sub(AxisValues.create(scroll)));
 
-        const clientPosition = positionUtils.getClientPosition(this._element);
-        const isDocumentBody = this._element.tagName && domUtils.isBodyElement(this._element);
+        return adapter.PromiseCtor.resolve(adapter.position.getClientPosition(this._element))
+            .then((clientPosition) => {
+                const isDocumentBody = this._element.tagName && domUtils.isBodyElement(this._element);
+                const clientPoint    = AxisValues.create(clientPosition).add(this._offset);
 
-        const clientPoint = AxisValues.create(clientPosition).add(this._offset);
+                if (!isDocumentBody)
+                    clientPoint.sub(AxisValues.create(scroll));
 
-        if (!isDocumentBody)
-            clientPoint.sub(AxisValues.create(scroll));
-
-        return clientPoint.round(Math.floor);
+                return clientPoint.round(Math.floor);
+            });
     }
 
     protected _getEventSequenceOptions (currPosition: AxisValues<number>) {
@@ -359,17 +378,21 @@ export default class MoveAutomation<E> {
             speed:     this._speed,
         };
 
-        if (activeWindow.parent === window) {
-            iframe     = domUtils.findIframeByWindow(activeWindow);
-            const rect = positionUtils.getIframeClientCoordinates(iframe);
+        return adapter.PromiseCtor.resolve()
+            .then(() => {
+                if (activeWindow.parent === window) {
+                    iframe = domUtils.findIframeByWindow(activeWindow);
 
-            msg.left   = rect.left;
-            msg.top    = rect.top;
-            msg.right  = rect.right;
-            msg.bottom = rect.bottom;
-        }
-
-        return getElementUnderCursor()
+                    return adapter.PromiseCtor.resolve(adapter.position.getIframeClientCoordinates(iframe))
+                        .then(rect => {
+                            msg.left   = rect.left;
+                            msg.top    = rect.top;
+                            msg.right  = rect.right;
+                            msg.bottom = rect.bottom;
+                        });
+                }
+            })
+            .then(getElementUnderCursor)
             .then(topElement => {
                 iframeUnderCursor = topElement === iframe;
 
@@ -390,17 +413,15 @@ export default class MoveAutomation<E> {
 
     public run () {
         return this._scroll()
-            .then(() => {
-                const endPoint     = this._getTargetClientPoint();
-                const windowWidth  = styleUtils.getWidth(window);
-                const windowHeight = styleUtils.getHeight(window);
+            .then(() => this._getTargetClientPoint())
+            .then(endPoint => {
+                const boundary = new BoundaryValues(0, styleUtils.getWidth(window), styleUtils.getHeight(window), 0);
 
-                if (endPoint.x >= 0 && endPoint.x <= windowWidth && endPoint.y >= 0 && endPoint.y <= windowHeight) {
-                    return this._moveToCurrentFrame(endPoint)
-                        .then(() => this._move(endPoint));
-                }
+                if (!boundary.contains(endPoint))
+                    return null;
 
-                return null;
+                return this._moveToCurrentFrame(endPoint)
+                    .then(() => this._move(endPoint));
             });
     }
 }
