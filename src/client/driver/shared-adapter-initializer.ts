@@ -1,17 +1,16 @@
 // @ts-ignore
 import { nativeMethods, Promise } from './deps/hammerhead';
-import { SharedAdapter } from '../../shared/types';
 // @ts-ignore
 import { getOffsetOptions } from './deps/testcafe-automation';
 // @ts-ignore
 import { domUtils } from './deps/testcafe-core';
+import { initializeAdapter } from '../../shared/adapter/index';
 
 
-const initializer: SharedAdapter = {
+initializeAdapter({
     PromiseCtor:      Promise,
     nativeMethods:    nativeMethods,
+    scroll:           () => Promise.resolve(),
     getOffsetOptions: getOffsetOptions,
     isDomElement:     domUtils.isDomElement,
-};
-
-export default initializer;
+});

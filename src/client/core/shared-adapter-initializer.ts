@@ -1,13 +1,12 @@
 // @ts-ignore
 import { nativeMethods, Promise } from './deps/hammerhead';
 import { isDomElement } from './utils/dom';
-import { SharedAdapter } from '../../shared/types';
+import { initializeAdapter } from '../../shared/adapter/index';
 
 
-const initializer: SharedAdapter = {
+initializeAdapter({
     PromiseCtor:   Promise,
     nativeMethods: nativeMethods,
+    scroll:        () => Promise.resolve(),
     isDomElement,
-};
-
-export default initializer;
+});

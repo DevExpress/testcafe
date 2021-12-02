@@ -1,3 +1,6 @@
+// NOTE: Initializer should be the first
+import './shared-adapter-initializer';
+
 import { readSync as read } from 'read-file-relative';
 import { Dictionary } from '../../../../../../configuration/interfaces';
 import Protocol from 'devtools-protocol';
@@ -23,6 +26,7 @@ import { ExecuteClientFunctionCommand, ExecuteSelectorCommand } from '../../../.
 import ClientFunctionExecutor from './client-function-executor';
 import { SwitchToIframeCommand } from '../../../../../../test-run/commands/actions';
 import ExecutionContext from './execution-context';
+import * as clientsManager from './clients-manager';
 
 const DEBUG_SCOPE = (id: string): string => `testcafe:browser:provider:built-in:chrome:browser-client:${id}`;
 const DOWNLOADS_DIR = path.join(os.homedir(), 'Downloads');
@@ -250,6 +254,7 @@ export class BrowserClient {
                 if (this._proxyless) {
                     await this._injectProxylessStuff(client);
                     ExecutionContext.initialize(client);
+                    clientsManager.setClient(client);
                 }
             }
         }

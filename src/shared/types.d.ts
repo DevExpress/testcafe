@@ -1,6 +1,7 @@
 /* global globalThis */
 
 import { ExecuteSelectorCommand } from '../test-run/commands/observation';
+import { ScrollOptions } from '../test-run/commands/options';
 
 export interface NativeMethods {
     setTimeout: typeof globalThis.setTimeout;
@@ -18,6 +19,7 @@ export interface SharedAdapter {
     nativeMethods: NativeMethods;
     PromiseCtor: typeof Promise;
     getOffsetOptions?: (el: any, offsetX: number, offsetY: number) => { offsetX: number; offsetY: number };
+    scroll: (el: any, scrollOptions: ScrollOptions) => Promise<boolean>;
     isDomElement: (el: any) => boolean;
 }
 

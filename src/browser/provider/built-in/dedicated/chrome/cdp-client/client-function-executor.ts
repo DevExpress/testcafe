@@ -7,7 +7,6 @@ import RemoteObject = Protocol.Runtime.RemoteObject;
 import ExceptionDetails = Protocol.Runtime.ExceptionDetails;
 import PropertyPreview = Protocol.Runtime.PropertyPreview;
 import DOMApi = ProtocolProxyApi.DOMApi;
-import DOM = Protocol.DOM;
 import * as SharedErrors from '../../../../../../shared/errors';
 import {
     ExecuteClientFunctionCommand,
@@ -16,6 +15,7 @@ import {
 } from '../../../../../../test-run/commands/observation';
 import { AutomationErrorCtors } from '../../../../../../shared/types';
 import ExecutionContext from './execution-context';
+import { ServerNode } from './types';
 
 
 interface EvaluationError extends Error {
@@ -162,10 +162,11 @@ export default class ClientFunctionExecutor {
         return returnNodeObjId ? result!.objectId : JSON.parse(result!.value);
     }
 
-    public async getNode (args: SelectorNodeArgs): Promise<DOM.Node> {
+    public async getNode (args: SelectorNodeArgs): Promise<ServerNode> {
         const objectId = await this.executeSelector(args);
-        const response = await args.DOM.describeNode({ objectId });
+        const object   = { objectId };
+        const { node } = await args.DOM.describeNode(object);
 
-        return response.node;
+        return Object.assign(node, object);
     }
 }
