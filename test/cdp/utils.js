@@ -31,7 +31,7 @@ function createServer () {
 async function before () {
     server = createServer();
 
-    const runtimeInfo = { config: {}, cdpPort: 9225, browserName: 'chrome', tempProfileDir: { path: '' } };
+    const runtimeInfo = { config: { headless: true }, cdpPort: 9225, browserName: 'chrome', tempProfileDir: { path: '' } };
 
     await start('about:blank', runtimeInfo);
     await delay(2000);
