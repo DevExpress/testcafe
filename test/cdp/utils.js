@@ -1,13 +1,41 @@
-const CDP              = require('chrome-remote-interface');
-const express          = require('express');
-const { readFileSync } = require('fs');
-const { join }         = require('path');
-const delay            = require('../../lib/utils/delay');
-const ExecutionContext = require('../../lib/browser/provider/built-in/dedicated/chrome/cdp-client/execution-context');
-const ChromeLauncher   = require('chrome-launcher');
+const CDP                     = require('chrome-remote-interface');
+const express                     = require('express');
+const { readFileSync, mkdirSync, existsSync } = require('fs');
+const { join }                    = require('path');
+const { start }               = require('../../lib/browser/provider/built-in/dedicated/chrome/local-chrome');
+const delay                   = require('../../lib/utils/delay');
+const ExecutionContext        = require('../../lib/browser/provider/built-in/dedicated/chrome/cdp-client/execution-context');
+const { getFreePort }         = require('endpoint-utils');
+
+
+// const ChromeLauncher          = require('chrome-launcher');
 
 const page  = readFileSync(join(__dirname, './position-utils-test-page.html')).toString();
 const frame = readFileSync(join(__dirname, './position-utils-test-iframe.html')).toString();
+
+const flags = [
+    '--disable-features=Translate',
+    '--disable-extensions',
+    '--disable-component-extensions-with-background-pages',
+    '--disable-background-networking',
+    '--disable-component-update',
+    '--disable-client-side-phishing-detection',
+    '--disable-sync',
+    '--metrics-recording-only',
+    '--disable-default-apps',
+    '--mute-audio',
+    '--no-default-browser-check',
+    '--no-first-run',
+    '--disable-backgrounding-occluded-windows',
+    '--disable-renderer-backgrounding',
+    '--disable-background-timer-throttling',
+    '--disable-ipc-flooding-protection',
+    '--password-store=basic',
+    '--use-mock-keychain',
+    '--force-fieldtrials=*BackgroundTracing/default/',
+    '--disable-gpu',
+    'about:blank',
+];
 
 let server = null;
 let client = null;
@@ -31,14 +59,27 @@ function createServer () {
 async function before () {
     server = createServer();
 
-    const chrome = await ChromeLauncher.launch({
-        startingUrl: 'about:blank',
-        chromeFlags: ['--headless', '--disable-gpu'],
-    });
+    const port = await getFreePort();
+    const dir = join(__dirname, 'tmp');
+
+    if (!existsSync(dir))
+        mkdirSync(dir);
+
+    const runtimeInfo = { config: { headless: true, userArgs: flags.join(' ') }, cdpPort: port, browserName: 'chrome', tempProfileDir: { path: dir } };
+
+    await start('about:blank', runtimeInfo);
+
+    // const chrome = await ChromeLauncher.launch({
+    //     startingUrl: 'about:blank',
+    //     chromeFlags: ['--disable-gpu'],
+    // });
 
     await delay(2000);
 
-    client = await CDP({ port: chrome.port });
+    // console.log(port);
+
+    client = await CDP({ port });
+    // client = await CDP({ port: chrome.port });
 
     await client.Runtime.enable();
     await client.Page.enable();
