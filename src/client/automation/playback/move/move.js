@@ -5,10 +5,10 @@ import cursor from '../../cursor';
 
 import { underCursor as getElementUnderCursor } from '../../get-element';
 import getAutomationPoint from '../../utils/get-automation-point';
-import getLineRectIntersection from '../../utils/get-line-rect-intersection';
+import getLineRectIntersection from '../../../../shared/utils/get-line-rect-intersection';
 import getDevicePoint from '../../utils/get-device-point';
 import nextTick from '../../utils/next-tick';
-import AutomationSettings from '../../settings';
+import AutomationSettings from '../../../../shared/actions/automations/settings';
 import createEventSequence from './event-sequence/create-event-sequence';
 import lastHoveredElementHolder from '../last-hovered-element-holder';
 import isIframeWindow from '../../../../utils/is-window-in-iframe';
