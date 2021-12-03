@@ -385,8 +385,8 @@ export default class MoveAutomation {
                 const endPoint = this._getTargetClientPoint();
 
                 const {
-                    width: windowWidth,
-                    height: windowHeight,
+                    right: windowWidth,
+                    bottom: windowHeight,
                 } = styleUtils.getWindowDimensions(window);
 
                 if (endPoint.x >= 0 && endPoint.x <= windowWidth && endPoint.y >= 0 && endPoint.y <= windowHeight) {

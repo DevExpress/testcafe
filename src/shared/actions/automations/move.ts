@@ -7,6 +7,8 @@ import BoundaryValues from '../../utils/values/boundary-values';
 import { whilst } from '../../utils/promise';
 import Cursor from '../cursor';
 import { SharedWindow } from '../../types';
+import AutomationSettings from './settings';
+import delay from '../../utils/delay';
 
 
 // TODO:
@@ -14,8 +16,6 @@ import { SharedWindow } from '../../types';
 // import getAutomationPoint from '../../utils/get-automation-point';
 // import getLineRectIntersection from '../../utils/get-line-rect-intersection';
 // import getDevicePoint from '../../utils/get-device-point';
-// import nextTick from '../../utils/next-tick';
-// import AutomationSettings from '../../settings';
 // import createEventSequence from './event-sequence/create-event-sequence';
 // import lastHoveredElementHolder from '../last-hovered-element-holder';
 // import isIframeWindow from '../../../../utils/is-window-in-iframe';
@@ -68,7 +68,7 @@ export default class MoveAutomation<E, W extends SharedWindow> {
     private _firstMovingStepOccurred: boolean;
 
     protected constructor (el: E, offset: AxisValuesData<number>, win: W, cursor: Cursor<W>, moveOptions: MoveOptions) {
-        this._touchMode = false; // featureDetection.isTouchDevice;
+        this._touchMode = false; // TODO: featureDetection.isTouchDevice;
         this._moveEvent = this._touchMode ? 'touchmove' : 'mousemove';
 
         this._automationSettings = new AutomationSettings(moveOptions.speed);
@@ -309,7 +309,7 @@ export default class MoveAutomation<E, W extends SharedWindow> {
 
                 return this._emulateEvents(currentElement, currPosition);
             })
-            .then(nextTick);
+            .then(() => delay(0));
     }
 
     protected _getCorrectedTopElement (topElement: E): E {
@@ -352,14 +352,13 @@ export default class MoveAutomation<E, W extends SharedWindow> {
         return this._touchMode;
     }
 
-    private _scroll (): Promise<void> {
+    private _scroll (): Promise<boolean> {
         if (this._skipScrolling)
-            return adapter.PromiseCtor.resolve();
+            return adapter.PromiseCtor.resolve(false);
 
         const scrollOptions    = new ScrollOptions({ offsetX: this._offset.x, offsetY: this._offset.y }, false);
-        const scrollAutomation = new ScrollAutomation(this._element, scrollOptions);
 
-        return scrollAutomation.run();
+        return adapter.scroll(this._element, scrollOptions);
     }
 
     private _moveToCurrentFrame (endPoint: AxisValues<number>): Promise<void> {
@@ -415,10 +414,11 @@ export default class MoveAutomation<E, W extends SharedWindow> {
 
     public run () {
         return this._scroll()
-            .then(() => this._getTargetClientPoint())
-            .then(endPoint => {
-                const boundary = new BoundaryValues(0, styleUtils.getWidth(window), styleUtils.getHeight(window), 0);
-
+            .then(() => Promise.all([
+                this._getTargetClientPoint(),
+                adapter.style.getWindowDimensions(this._window),
+            ]))
+            .then(([endPoint, boundary]) => {
                 if (!boundary.contains(endPoint))
                     return null;
 

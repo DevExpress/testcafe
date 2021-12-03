@@ -6,6 +6,8 @@ import { getScrollingElement, getIframeByElement } from './dom-utils';
 import ExecutionContext from '../execution-context';
 import * as clientsManager from '../clients-manager';
 import { ServerNode, PositionDimensions } from '../types';
+import { getClient } from '../clients-manager';
+
 
 async function getPadding (node: ServerNode): Promise<BoundaryValuesData> {
     const client     = clientsManager.getClient();
@@ -150,7 +152,7 @@ export async function getWindowDimensions (executionContext?: ExecutionContext):
     if (executionContext)
         args.contextId = executionContext.ctxId;
 
-    const { result }        = await Runtime.evaluate(args);
+    const { result }        = await getClient().Runtime.evaluate(args);
     const { width, height } = result.value;
 
     return new BoundaryValues(0, width, height, 0);

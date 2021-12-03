@@ -42,6 +42,7 @@ export interface SharedAdapter {
         getNodeText: (el: any) => SharedFnResult<string>;
         getImgMapName: (el: any) => string;
         getDocumentElement: (win: any) => SharedFnResult<any>;
+        findIframeByWindow: (win: any) => SharedFnResult<any>;
     };
 
     position: {
@@ -52,14 +53,10 @@ export interface SharedAdapter {
         getIframePointRelativeToParentFrame: (iframePoint: AxisValues<number>, win: any) => SharedFnResult<AxisValues<number> | null>;
         getClientPosition: (el: any) => SharedFnResult<AxisValues<number>>;
     };
-<<<<<<< HEAD
-=======
 
-    dom: {
-        getDocumentElement: (win: any) => SharedFnResult<any>;
-        findIframeByWindow: (win: any) => SharedFnResult<any>;
-    }
->>>>>>> 9eb27021e (refactoring)
+    style: {
+        getWindowDimensions: (win: any) => SharedFnResult<BoundaryValues>;
+    };
 }
 
 export interface ClientRequestEmitter<R> {
