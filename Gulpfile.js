@@ -257,10 +257,10 @@ gulp.step('package-content', buildTasks('ts-defs', 'server-scripts', 'client-scr
 
 gulp.task('fast-build', gulp.series('clean', 'package-content'));
 
-gulp.task('build', process.env.DEV_MODE === 'true' ? gulp.registry().get('fast-build') : buildTasks('lint', 'fast-build'));
+gulp.task('build', process.env.DEV_MODE === 'true' ? gulp.registry().get('fast-build') : buildTasks('fast-build'));
 
 // Test
-gulp.step('prepare-tests', gulp.registry().get(SKIP_BUILD ? 'lint' : 'build'));
+gulp.step('prepare-tests', gulp.registry().get('build'));
 
 gulp.step('test-server-run', () => {
     const chai = require('chai');
@@ -294,7 +294,7 @@ gulp.step('test-cdp-run', () => {
         }));
 });
 
-gulp.task('test-cdp', gulp.series('prepare-tests', 'test-cdp-run'));
+gulp.task('test-cdp', gulp.series('test-cdp-run'));
 
 gulp.step('test-client-run', () => {
     return testClient('test/client/fixtures/**/*-test.js', CLIENT_TESTS_SETTINGS);
