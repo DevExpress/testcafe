@@ -1,11 +1,12 @@
-const CDP                     = require('chrome-remote-interface');
-const express                     = require('express');
-const { readFileSync, mkdirSync, existsSync } = require('fs');
-const { join }                    = require('path');
-const { start }               = require('../../lib/browser/provider/built-in/dedicated/chrome/local-chrome');
-const delay                   = require('../../lib/utils/delay');
-const ExecutionContext        = require('../../lib/browser/provider/built-in/dedicated/chrome/cdp-client/execution-context');
-const { getFreePort }         = require('endpoint-utils');
+const CDP              = require('chrome-remote-interface');
+const express          = require('express');
+const { readFileSync } = require('fs');
+const { join }         = require('path');
+const { start }        = require('../../lib/browser/provider/built-in/dedicated/chrome/local-chrome');
+const delay            = require('../../lib/utils/delay');
+const ExecutionContext = require('../../lib/browser/provider/built-in/dedicated/chrome/cdp-client/execution-context');
+const { getFreePort }  = require('endpoint-utils');
+const { makeTmpDir }   = require('chrome-launcher/dist/utils');
 
 
 // const ChromeLauncher          = require('chrome-launcher');
@@ -60,12 +61,12 @@ async function before () {
     server = createServer();
 
     const port = await getFreePort();
-    const dir = join(__dirname, 'tmp');
+    // const dir = join(__dirname, 'tmp');
 
-    if (!existsSync(dir))
-        mkdirSync(dir);
+    // if (!existsSync(dir))
+    //     mkdirSync(dir);
 
-    const runtimeInfo = { config: { headless: true, userArgs: flags.join(' ') }, cdpPort: port, browserName: 'chrome', tempProfileDir: { path: dir } };
+    const runtimeInfo = { config: { headless: true, userArgs: flags.join(' ') }, cdpPort: port, browserName: 'chrome', tempProfileDir: { path: makeTmpDir() } };
 
     await start('about:blank', runtimeInfo);
 
@@ -76,10 +77,9 @@ async function before () {
 
     await delay(2000);
 
-    // console.log(port);
 
-    client = await CDP({ port });
-    // client = await CDP({ port: chrome.port });
+    // client = await CDP({ port });
+    client = await CDP({ port: port });
 
     await client.Runtime.enable();
     await client.Page.enable();

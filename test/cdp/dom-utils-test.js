@@ -7,7 +7,7 @@ const {
 
 const utils = require('./utils');
 
-describe('dom utils', () => {
+describe.only('dom utils', () => {
     before(utils.before);
     after(utils.after);
     beforeEach(utils.beforeEach);
