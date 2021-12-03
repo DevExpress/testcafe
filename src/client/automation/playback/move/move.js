@@ -382,9 +382,12 @@ export default class MoveAutomation {
     run () {
         return this._scroll()
             .then(() => {
-                const endPoint     = this._getTargetClientPoint();
-                const windowWidth  = styleUtils.getWidth(window);
-                const windowHeight = styleUtils.getHeight(window);
+                const endPoint = this._getTargetClientPoint();
+
+                const {
+                    width: windowWidth,
+                    height: windowHeight,
+                } = styleUtils.getWindowDimensions(window);
 
                 if (endPoint.x >= 0 && endPoint.x <= windowWidth && endPoint.y >= 0 && endPoint.y <= windowHeight) {
                     return this._moveToCurrentFrame(endPoint)

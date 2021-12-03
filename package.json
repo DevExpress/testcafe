@@ -175,6 +175,7 @@
     "browserstack-connector": "^0.1.7",
     "caller": "^1.0.1",
     "chai-string": "^1.5.0",
+    "chrome-launcher": "^0.15.0",
     "connect": "^3.4.0",
     "devtools-protocol": "0.0.678506",
     "dom-walk": "^0.1.1",

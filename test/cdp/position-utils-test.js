@@ -1,108 +1,50 @@
-const { expect }       = require('chai');
-const CDP              = require('chrome-remote-interface');
-const express          = require('express');
-const { readFileSync } = require('fs');
-const { start }        = require('../../lib/browser/provider/built-in/dedicated/chrome/local-chrome');
-const delay            = require('../../lib/utils/delay');
-const { join }         = require('path');
-const ExecutionContext = require('../../lib/browser/provider/built-in/dedicated/chrome/cdp-client/execution-context');
+const { expect }              = require('chai');
+const ExecutionContext        = require('../../lib/browser/provider/built-in/dedicated/chrome/cdp-client/execution-context');
+const { getClientDimensions } = require('../../lib/browser/provider/built-in/dedicated/chrome/cdp-client/utils/style-utils');
+
+const utils = require('./utils');
 
 const {
     getClientPosition,
-    getClientDimensions,
     containsOffset,
     getIframeClientCoordinates,
     getIframePointRelativeToParentFrame,
-    isInRectangle,
-} = require('../../lib/browser/provider/built-in/dedicated/chrome/cdp-client/utils');
+    getOffsetPosition,
+} = require('../../lib/browser/provider/built-in/dedicated/chrome/cdp-client/utils/position-utils');
 
-const page  = readFileSync(join(__dirname, './position-utils-test-page.html')).toString();
-const frame = readFileSync(join(__dirname, './position-utils-test-iframe.html')).toString();
-
-let client = null;
-let server = null;
-
-function createServer () {
-    const app  = express();
-    const port = 3000;
-
-    app.get('/', (req, res) => {
-        res.send(page);
-    });
-
-    app.get('/frame', (req, res) => {
-        res.send(frame);
-    });
-
-    return app.listen(port, () => {
-    });
-}
-
-async function setScroll ({ Runtime }, selector, { top, left }) {
-    await Runtime.evaluate({ expression: `${selector}.scrollTo({ top: ${top}, left: ${left} });` });
-}
-
-describe('.createRunnableConfiguration()', () => {
-    before(async () => {
-        server = createServer();
-
-        const runtimeInfo = { config: {}, cdpPort: 9225, browserName: 'chrome', tempProfileDir: { path: '' } };
-
-        await start('about:blank', runtimeInfo);
-        await delay(2000);
-
-        client = await CDP({ port: 9225 });
-
-        await client.Runtime.enable();
-        await client.Page.enable();
-        await client.DOM.enable();
-        await client.CSS.enable();
-
-        ExecutionContext.initialize(client);
-
-        await client.Page.navigate({ url: 'http://localhost:3000' });
-
-        await delay(2000);
-    });
-
-    after(async () => {
-        await client.Browser.close();
-        await server.close();
-    });
-
-    beforeEach(async () => {
-        await setScroll(client, 'window', { top: 0, left: 0 });
-        await setScroll(client, 'document.querySelector(\'#scrollableDiv\')', { top: 0, left: 0 });
-    });
+describe('position utils', () => {
+    before(utils.before);
+    after(utils.after);
+    beforeEach(utils.beforeEach);
 
     it('getClientPosition', async () => {
         const el1 = '#target1';
         const el2 = '#target2';
         const el3 = '#target3';
 
-        let position1 = await getClientPosition(client, el1);
-        let position2 = await getClientPosition(client, el2);
-        let position3 = await getClientPosition(client, el3);
+        let position1 = await getClientPosition(utils.getClient(), el1);
+        let position2 = await getClientPosition(utils.getClient(), el2);
+        let position3 = await getClientPosition(utils.getClient(), el3);
 
         expect(position1).eql({ x: 31, y: 26 });
         expect(position2).eql({ x: 227, y: 207 });
         expect(position3).eql({ x: 31, y: 1506 });
 
-        await setScroll(client, 'window', { top: 300, left: 0 });
+        await utils.setScroll(utils.getClient(), 'window', { top: 300, left: 0 });
 
-        position1 = await getClientPosition(client, el1);
-        position2 = await getClientPosition(client, el2);
-        position3 = await getClientPosition(client, el3);
+        position1 = await getClientPosition(utils.getClient(), el1);
+        position2 = await getClientPosition(utils.getClient(), el2);
+        position3 = await getClientPosition(utils.getClient(), el3);
 
         expect(position1).eql({ x: 31, y: -274 });
         expect(position2).eql({ x: 227, y: -93 });
         expect(position3).eql({ x: 31, y: 1206 });
 
-        await setScroll(client, 'window', { top: 600, left: 100 });
+        await utils.setScroll(utils.getClient(), 'window', { top: 600, left: 100 });
 
-        position1 = await getClientPosition(client, el1);
-        position2 = await getClientPosition(client, el2);
-        position3 = await getClientPosition(client, el3);
+        position1 = await getClientPosition(utils.getClient(), el1);
+        position2 = await getClientPosition(utils.getClient(), el2);
+        position3 = await getClientPosition(utils.getClient(), el3);
 
         expect(position1).eql({ x: -69, y: -574 });
         expect(position2).eql({ x: 127, y: -393 });
@@ -111,7 +53,7 @@ describe('.createRunnableConfiguration()', () => {
 
     it('getClientDimensions', async () => {
         let node       = null;
-        let dimensions = await getClientDimensions(client, 'html');
+        let dimensions = await getClientDimensions(utils.getClient(), 'html');
 
         expect(dimensions.border).eql({ bottom: 0, left: 0, right: 0, top: 0 });
         expect(dimensions.bottom).eql(dimensions.height);
@@ -120,7 +62,7 @@ describe('.createRunnableConfiguration()', () => {
         expect(dimensions.right).eql(dimensions.width);
         expect(dimensions.scroll).eql({ left: 0, top: 0 });
 
-        dimensions = await getClientDimensions(client, '#target1');
+        dimensions = await getClientDimensions(utils.getClient(), '#target1');
 
         expect(dimensions).eql({
             border: {
@@ -151,7 +93,7 @@ describe('.createRunnableConfiguration()', () => {
             width: 34,
         });
 
-        dimensions = await getClientDimensions(client, '#target2');
+        dimensions = await getClientDimensions(utils.getClient(), '#target2');
 
         expect(dimensions).eql({
             border: {
@@ -182,9 +124,9 @@ describe('.createRunnableConfiguration()', () => {
             width: 27,
         });
 
-        await setScroll(client, 'document.querySelector(\'#scrollableDiv\')', { top: 20, left: 10 });
+        await utils.setScroll(utils.getClient(), 'document.querySelector(\'#scrollableDiv\')', { top: 20, left: 10 });
 
-        dimensions = await getClientDimensions(client, '#target2');
+        dimensions = await getClientDimensions(utils.getClient(), '#target2');
 
         expect(dimensions).eql({
             border: {
@@ -215,7 +157,7 @@ describe('.createRunnableConfiguration()', () => {
             width: 27,
         });
 
-        dimensions = await getClientDimensions(client, '#scrollableDiv');
+        dimensions = await getClientDimensions(utils.getClient(), '#scrollableDiv');
 
         expect(dimensions).eql({
             border: {
@@ -246,8 +188,8 @@ describe('.createRunnableConfiguration()', () => {
             width: 108,
         });
 
-        node       = await client.Runtime.evaluate({ expression: 'document.querySelector(\'iframe\').contentDocument.querySelector(\'div\')' });
-        dimensions = await getClientDimensions(client, node);
+        node       = await utils.getClient().Runtime.evaluate({ expression: 'document.querySelector(\'iframe\').contentDocument.querySelector(\'div\')' });
+        dimensions = await getClientDimensions(utils.getClient(), node);
 
         expect(dimensions).eql({
             border: {
@@ -282,25 +224,25 @@ describe('.createRunnableConfiguration()', () => {
     it('containsOffset', async () => {
         const selector = '#scrollableDiv';
 
-        expect(await containsOffset(client, selector, 10, void 0)).eql(true);
-        expect(await containsOffset(client, selector, void 0, 10)).eql(true);
-        expect(await containsOffset(client, selector, -1, -1)).eql(false);
-        expect(await containsOffset(client, selector, 10, 10)).eql(true);
-        expect(await containsOffset(client, selector, 200, 200)).eql(true);
-        expect(await containsOffset(client, selector, 220, 220)).eql(false);
+        expect(await containsOffset(utils.getClient(), selector, 10, void 0)).eql(true);
+        expect(await containsOffset(utils.getClient(), selector, void 0, 10)).eql(true);
+        expect(await containsOffset(utils.getClient(), selector, -1, -1)).eql(false);
+        expect(await containsOffset(utils.getClient(), selector, 10, 10)).eql(true);
+        expect(await containsOffset(utils.getClient(), selector, 200, 200)).eql(true);
+        expect(await containsOffset(utils.getClient(), selector, 220, 220)).eql(false);
     });
 
     it('getIframeClientCoordinates', async () => {
-        expect(await getIframeClientCoordinates(client, 'iframe')).eql({
+        expect(await getIframeClientCoordinates(utils.getClient(), 'iframe')).eql({
             bottom: 405,
             left:   305,
             right:  405,
             top:    304,
         });
 
-        const nestedIFrame = await client.Runtime.evaluate({ expression: 'document.querySelector(\'iframe\').contentDocument.querySelector(\'iframe\')' });
+        const nestedIFrame = await utils.getClient().Runtime.evaluate({ expression: 'document.querySelector(\'iframe\').contentDocument.querySelector(\'iframe\')' });
 
-        expect(await getIframeClientCoordinates(client, nestedIFrame)).eql({
+        expect(await getIframeClientCoordinates(utils.getClient(), nestedIFrame)).eql({
             bottom: 178,
             left:   10,
             right:  310,
@@ -309,14 +251,14 @@ describe('.createRunnableConfiguration()', () => {
     });
 
     it('getIframePointRelativeToParentFrame', async () => {
-        const point1 = await getIframePointRelativeToParentFrame(client, { x: 42, y: 17 }, ExecutionContext.top.children[0]);
-        const point2 = await getIframePointRelativeToParentFrame(client, { x: 1, y: 1 }, ExecutionContext.top.children[0].children[0]);
+        const point1 = await getIframePointRelativeToParentFrame(utils.getClient(), { x: 42, y: 17 }, ExecutionContext.top.children[0]);
+        const point2 = await getIframePointRelativeToParentFrame(utils.getClient(), { x: 1, y: 1 }, ExecutionContext.top.children[0].children[0]);
 
-        await setScroll(client, 'window', { left: 100, top: 50 });
-        await setScroll(client, 'document.querySelector(\'iframe\').contentDocument.scrollingElement', { left: 50, top: 10 });
+        await utils.setScroll(utils.getClient(), 'window', { left: 100, top: 50 });
+        await utils.setScroll(utils.getClient(), 'document.querySelector(\'iframe\').contentDocument.scrollingElement', { left: 50, top: 10 });
 
-        const point3 = await getIframePointRelativeToParentFrame(client, { x: 42, y: 17 }, ExecutionContext.top.children[0]);
-        const point4 = await getIframePointRelativeToParentFrame(client, { x: 1, y: 1 }, ExecutionContext.top.children[0].children[0]);
+        const point3 = await getIframePointRelativeToParentFrame(utils.getClient(), { x: 42, y: 17 }, ExecutionContext.top.children[0]);
+        const point4 = await getIframePointRelativeToParentFrame(utils.getClient(), { x: 1, y: 1 }, ExecutionContext.top.children[0].children[0]);
 
         expect(point1).eql({ x: 347, y: 321 });
         expect(point2).eql({ x: 11, y: 29 });
@@ -324,15 +266,33 @@ describe('.createRunnableConfiguration()', () => {
         expect(point4).eql({ x: -39, y: 19 });
     });
 
-    it('isInRectangle', async () => {
-        expect(isInRectangle({ x: 10, y: 20 }, { left: 0, right: 50, top: 0, bottom: 50 })).eql(true);
-        expect(isInRectangle({ x: 0, y: 0 }, { left: 0, right: 50, top: 0, bottom: 50 })).eql(true);
-        expect(isInRectangle({ x: 0, y: 50 }, { left: 0, right: 50, top: 0, bottom: 50 })).eql(true);
-        expect(isInRectangle({ x: 50, y: 0 }, { left: 0, right: 50, top: 0, bottom: 50 })).eql(true);
-        expect(isInRectangle({ x: 50, y: 50 }, { left: 0, right: 50, top: 0, bottom: 50 })).eql(true);
-        expect(isInRectangle({ x: -1, y: 0 }, { left: 0, right: 50, top: 0, bottom: 50 })).eql(false);
-        expect(isInRectangle({ x: 51, y: 0 }, { left: 0, right: 50, top: 0, bottom: 50 })).eql(false);
-        expect(isInRectangle({ x: 0, y: -1 }, { left: 0, right: 50, top: 0, bottom: 50 })).eql(false);
-        expect(isInRectangle({ x: 0, y: 51 }, { left: 0, right: 50, top: 0, bottom: 50 })).eql(false);
+    it('getOffsetPosition', async () => {
+        let offsetPosition = await getOffsetPosition(utils.getClient(), '#target2');
+
+        expect(offsetPosition).eql({ left: 227, top: 207 });
+
+        await utils.setScroll(utils.getClient(), 'document.querySelector(\'#scrollableDiv\')', { top: 1000, left: 1000 });
+
+        offsetPosition = await getOffsetPosition(utils.getClient(), '#target2');
+
+        expect(offsetPosition).eql({ left: 133, top: 99 });
+
+        await utils.setScroll(utils.getClient(), 'window', { top: 100, left: 50 });
+
+        offsetPosition = await getOffsetPosition(utils.getClient(), '#target2');
+
+        expect(offsetPosition).eql({ left: 133, top: 99 });
+
+        const node = await utils.getClient().Runtime.evaluate({ expression: 'document.querySelector(\'iframe\').contentDocument.querySelector(\'div\')' });
+
+        offsetPosition = await getOffsetPosition(utils.getClient(), node);
+
+        expect(offsetPosition).eql({ left: 8, top: 8 });
+
+        await utils.setScroll(utils.getClient(), 'document.querySelector(\'iframe\').contentDocument.scrollingElement', { left: 50, top: 10 });
+
+        offsetPosition = await getOffsetPosition(utils.getClient(), node);
+
+        expect(offsetPosition).eql({ left: 8, top: 8 });
     });
 });

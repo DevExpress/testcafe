@@ -5,19 +5,19 @@ import ProtocolApi = ProtocolProxyApi.ProtocolApi;
 const EMPTY_CONTEXT = -1;
 
 export default class ExecutionContext {
-    private _ctxId: number;
+    public ctxId: number;
     public frameId: string;
     public parent: ExecutionContext | null;
     public children: ExecutionContext[] = [];
 
     public constructor (parent?: ExecutionContext, frameId = '', ctxId = EMPTY_CONTEXT) {
-        this._ctxId  = ctxId;
+        this.ctxId  = ctxId;
         this.frameId = frameId;
         this.parent  = parent ?? this;
     }
 
     private _is (frameOrCtxId: string | number): boolean {
-        return (typeof frameOrCtxId === 'string' ? this.frameId : this._ctxId) === frameOrCtxId;
+        return (typeof frameOrCtxId === 'string' ? this.frameId : this.ctxId) === frameOrCtxId;
     }
 
     public find (frameOrCtxId: string | number): ExecutionContext {
@@ -65,18 +65,18 @@ export default class ExecutionContext {
     }
 
     private _setContext (ctx: number): void {
-        this._ctxId = ctx;
+        this.ctxId = ctx;
     }
 
     private _deleteContext (): void {
-        this._ctxId = EMPTY_CONTEXT;
+        this.ctxId = EMPTY_CONTEXT;
     }
 
     private _clearAll (): void {
         ExecutionContext._current = ExecutionContext.top;
 
         this.frameId = '';
-        this._ctxId   = EMPTY_CONTEXT;
+        this.ctxId   = EMPTY_CONTEXT;
 
         this._remove();
     }
@@ -105,7 +105,7 @@ export default class ExecutionContext {
     }
 
     public static getCurrentContextId (): number {
-        return ExecutionContext._current._ctxId;
+        return ExecutionContext._current.ctxId;
     }
 
     public static switchToIframe (frameId: string): void {
