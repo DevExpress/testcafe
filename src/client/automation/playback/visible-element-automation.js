@@ -16,7 +16,7 @@ import getDevicePoint from '../utils/get-device-point';
 import { getOffsetOptions } from '../utils/offsets';
 import { fromPoint as getElementFromPoint, underCursor as getElementUnderCursor } from '../get-element';
 import AUTOMATION_ERROR_TYPES from '../../../shared/errors/automation-errors';
-import AutomationSettings from '../settings';
+import AutomationSettings from '../../../shared/actions/automations/settings';
 import MoveAutomation from './move/move';
 import { MoveOptions, ScrollOptions } from '../../../test-run/commands/options';
 import lastHoveredElementHolder from './last-hovered-element-holder';

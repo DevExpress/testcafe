@@ -1,11 +1,11 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
+import { getLineYByXCoord } from '../../../../shared/utils/position';
 
 const shadowUI      = hammerhead.shadowUI;
 const nativeMethods = hammerhead.nativeMethods;
 
-const styleUtils    = testCafeCore.styleUtils;
-const positionUtils = testCafeCore.positionUtils;
+const styleUtils = testCafeCore.styleUtils;
 
 
 const FIRST_VALUE_ANIMATION_OPTIONS = {
@@ -56,12 +56,12 @@ function getNewPosition (completePercent, positions) {
     let startPoint           = { x: startPercent, y: startPosition.left };
     let endPoint             = { x: endPercent, y: endPosition.left };
 
-    const left = positionUtils.getLineYByXCoord(startPoint, endPoint, completePercent);
+    const left = getLineYByXCoord(startPoint, endPoint, completePercent);
 
     startPoint = { x: startPercent, y: startPosition.right };
     endPoint   = { x: endPercent, y: endPosition.right };
 
-    const right = positionUtils.getLineYByXCoord(startPoint, endPoint, completePercent);
+    const right = getLineYByXCoord(startPoint, endPoint, completePercent);
 
     return { left, right };
 }

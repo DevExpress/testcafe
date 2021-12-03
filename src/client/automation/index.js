@@ -19,7 +19,7 @@ import {
     ClickOptions,
     TypeOptions,
 } from '../../test-run/commands/options';
-import AutomationSettings from './settings';
+import AutomationSettings from '../../shared/actions/automations/settings';
 import { getOffsetOptions } from './utils/offsets';
 import { getNextFocusableElement } from './playback/press/utils';
 import SHORTCUT_TYPE from './playback/press/shortcut-type';
