@@ -33,7 +33,7 @@ async function before () {
 
     const chrome = await ChromeLauncher.launch({
         startingUrl: 'about:blank',
-        chromeFlags: ['--disable-gpu'],
+        chromeFlags: ['--headless', '--disable-gpu'],
     });
 
     await delay(2000);
