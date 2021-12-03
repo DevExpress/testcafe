@@ -1,4 +1,6 @@
 /* eslint-disable no-restricted-globals */
+// NOTE: Initializer should be the first
+import './scroll-adapter-initializer';
 import ClientFunctionExecutor from '../driver/command-executors/client-functions/client-function-executor';
 import { ExecuteClientFunctionCommandBase, ExecuteSelectorCommand } from '../../test-run/commands/observation';
 import { initializeAdapter as initializeClientFnAdapter } from '../driver/command-executors/client-functions/adapter/index';
@@ -8,6 +10,9 @@ import coreUtilsAdapterInitializer from './core-utils-adapter-initializer';
 import SelectorExecutor from '../driver/command-executors/client-functions/selector-executor/index';
 import { AutomationErrorCtors } from '../../shared/types';
 import createErrorCtorCallback from '../../shared/errors/selector-error-ctor-callback';
+import { ScrollOptions } from '../../test-run/commands/options';
+import ScrollAutomation from '../core/scroll/index';
+import { LeftTopValues } from '../../shared/utils/values/axis-values';
 
 
 initializeClientFnAdapter(clientFnAdapterInitializer);
@@ -32,6 +37,12 @@ Object.defineProperty(window, '%proxyless%', {
 
             return selectorExecutor.getResult()
                 .then(result => returnNode ? result : JSON.stringify(selectorExecutor.encodeResult(result)));
+        },
+
+        scroll: function (el: Element, opts: ScrollOptions, margin?: LeftTopValues<number>) {
+            const scrollAutomation = new ScrollAutomation(el, opts, margin);
+
+            return scrollAutomation.run();
         },
     },
 

@@ -1,5 +1,6 @@
 // NOTE: Initializer should be the first
 import './scroll/adapter/initializer';
+import './shared-adapter-initializer';
 
 import hammerhead from './deps/hammerhead';
 
@@ -38,12 +39,9 @@ import selectorTextFilter from '../../client-functions/selectors/selector-text-f
 import selectorAttributeFilter from '../../client-functions/selectors/selector-attribute-filter';
 import { initializeAdapter as initializeUtilsAdapter } from './utils/shared/adapter/index';
 import utilsAdapterInitializer from './utils/shared/adapter/initializer';
-import { initializeAdapter as initializeSharedAdapter } from '../../shared/adapter';
-import sharedAdapterInitializer from './shared-adapter-initializer';
 
 
 initializeUtilsAdapter(utilsAdapterInitializer);
-initializeSharedAdapter(sharedAdapterInitializer);
 
 const exports = {};
 

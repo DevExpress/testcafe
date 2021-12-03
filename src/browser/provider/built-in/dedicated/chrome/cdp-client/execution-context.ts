@@ -51,8 +51,8 @@ export default class ExecutionContext {
     }
 
     private _remove (): void {
-        if (this === ExecutionContext._current)
-            ExecutionContext._current = ExecutionContext.top;
+        if (this === ExecutionContext.current)
+            ExecutionContext.current = ExecutionContext.top;
 
         for (const child of this.children)
             child._remove();
@@ -73,7 +73,7 @@ export default class ExecutionContext {
     }
 
     private _clearAll (): void {
-        ExecutionContext._current = ExecutionContext.top;
+        ExecutionContext.current = ExecutionContext.top;
 
         this.frameId = '';
         this.ctxId   = EMPTY_CONTEXT;
@@ -81,8 +81,8 @@ export default class ExecutionContext {
         this._remove();
     }
 
-    private static _current = new ExecutionContext();
-    public static readonly top = ExecutionContext._current;
+    public static current = new ExecutionContext();
+    public static readonly top = ExecutionContext.current;
 
     public static initialize ({ Runtime, Page }: ProtocolApi): void {
         Page.on('frameAttached', ({ frameId, parentFrameId }) => {
@@ -105,14 +105,14 @@ export default class ExecutionContext {
     }
 
     public static getCurrentContextId (): number {
-        return ExecutionContext._current.ctxId;
+        return ExecutionContext.current.ctxId;
     }
 
     public static switchToIframe (frameId: string): void {
-        ExecutionContext._current = ExecutionContext.top.find(frameId);
+        ExecutionContext.current = ExecutionContext.top.find(frameId);
     }
 
     public static switchToMainWindow (): void {
-        ExecutionContext._current = ExecutionContext.top;
+        ExecutionContext.current = ExecutionContext.top;
     }
 }

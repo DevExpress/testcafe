@@ -4,13 +4,8 @@ import { SharedAdapter } from '../types';
 export const adapter: SharedAdapter = { };
 
 export function initializeAdapter (initializer: SharedAdapter): void {
-    if (initializer.nativeMethods.objectAssign) {
-        initializer.nativeMethods.objectAssign(adapter, initializer);
-
-        return;
-    }
-
-    const keys = initializer.nativeMethods.objectKeys(initializer) as (keyof SharedAdapter)[];
+    // eslint-disable-next-line no-restricted-globals
+    const keys = Object.keys(initializer) as (keyof SharedAdapter)[];
 
     for (const key of keys)
         // @ts-ignore

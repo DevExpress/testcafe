@@ -8,17 +8,10 @@ import isIframeWindow from '../../../utils/is-window-in-iframe';
 import AxisValues, { LeftTopValues } from '../../../shared/utils/values/axis-values';
 import Dimensions from '../../../shared/utils/values/dimensions';
 import { Dictionary } from '../../../configuration/interfaces';
-import scrollController from './controller';
+import { ScrollOptions } from '../../../test-run/commands/options';
 
 
-interface ScrollOptions {
-    offsetX: number;
-    offsetY: number;
-    scrollToCenter?: boolean;
-    skipParentFrames?: boolean;
-}
-
-interface ScrollResultProxyless {
+export interface ScrollResultProxyless {
     scrollWasPerformed: boolean;
     offsetX: number;
     offsetY: number;
@@ -67,12 +60,13 @@ export default class ScrollAutomation {
         left = Math.max(left, 0);
         top  = Math.max(top, 0);
 
-        let scrollPromise = scrollController.waitForScroll(scrollElement);
+        let scrollPromise = scrollAdapter.controller.waitForScroll(scrollElement);
 
         utilsAdapter.style.setScrollLeft(scrollElement, left);
         utilsAdapter.style.setScrollTop(scrollElement, top);
 
         if (!ScrollAutomation._isScrollValuesChanged(scrollElement, originalScroll)) {
+            // @ts-ignore
             scrollPromise.cancel();
 
             return scrollAdapter.PromiseCtor.resolve();
