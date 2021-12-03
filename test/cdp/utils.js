@@ -1,10 +1,10 @@
-const CDP                     = require('chrome-remote-interface');
-const express                 = require('express');
-const { readFileSync }        = require('fs');
-const { join }                = require('path');
-const { start }               = require('../../lib/browser/provider/built-in/dedicated/chrome/local-chrome');
-const delay                   = require('../../lib/utils/delay');
-const ExecutionContext        = require('../../lib/browser/provider/built-in/dedicated/chrome/cdp-client/execution-context');
+const CDP              = require('chrome-remote-interface');
+const express          = require('express');
+const { readFileSync } = require('fs');
+const { join }         = require('path');
+const delay            = require('../../lib/utils/delay');
+const ExecutionContext = require('../../lib/browser/provider/built-in/dedicated/chrome/cdp-client/execution-context');
+const ChromeLauncher   = require('chrome-launcher');
 
 const page  = readFileSync(join(__dirname, './position-utils-test-page.html')).toString();
 const frame = readFileSync(join(__dirname, './position-utils-test-iframe.html')).toString();
@@ -31,12 +31,14 @@ function createServer () {
 async function before () {
     server = createServer();
 
-    const runtimeInfo = { config: { headless: true }, cdpPort: 9225, browserName: 'chrome', tempProfileDir: { path: '' } };
+    const chrome = await ChromeLauncher.launch({
+        startingUrl: 'about:blank',
+        chromeFlags: ['--disable-gpu'],
+    });
 
-    await start('about:blank', runtimeInfo);
     await delay(2000);
 
-    client = await CDP({ port: 9225 });
+    client = await CDP({ port: chrome.port });
 
     await client.Runtime.enable();
     await client.Page.enable();
