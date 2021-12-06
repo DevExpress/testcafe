@@ -98,19 +98,6 @@ interface WindowFilterData {
 
 type ScrollPosition = 'top' | 'right' | 'bottom' | 'left' | 'topRight' | 'topLeft' | 'bottomRight' | 'bottomLeft' | 'center';
 
-interface Cookie {
-    name: string;
-    value: string;
-    domain: string;
-    path: string;
-    expires: Date | 'Infinity';
-    secure: boolean;
-    httpOnly: boolean;
-    hostOnly: true;
-    sameSite: string;
-    creation: Date;
-}
-
 interface TestController {
     /**
      * Dictionary that is shared between test hook functions and test code.
@@ -503,20 +490,20 @@ interface TestController {
      *
      * @param cookies - The cookies objects based on which cookies will be found.
      */
-    getCookies(...cookies: (Partial<Cookie> | Partial<Cookie>[])[]): Promise<Cookie[]>;
+    getCookies(...cookies: any): Promise<any>;
     /**
      * Returns cookies relative to the names and URLs context.
      *
      * @param names - The cookies name/names to get.
      * @param urls - The URL/URLs context.
      */
-    getCookies(names: string | string[], urls?: string | string[]): Promise<Cookie[]>;
+    getCookies(names: string | string[], urls?: string | string[]): Promise<any>;
     /**
      * Sets given cookies.
      *
      * @param cookies - The cookies to set.
      */
-    setCookies(...cookies: (Partial<Cookie> | Partial<Cookie>[])[]): TestControllerPromise;
+    setCookies(...cookies: any): TestControllerPromise;
     /**
      * Sets name-value cookies to the domain/path pair calculated on the given URL.
      *
@@ -529,7 +516,7 @@ interface TestController {
      *
      * @param cookies - The cookies to delete.
      */
-    deleteCookies(...cookies: (Partial<Cookie> | Partial<Cookie>[])[]): TestControllerPromise;
+    deleteCookies(...cookies: any): TestControllerPromise;
     /**
      * Deletes cookies, the URL context can be specified by the urls parameter. If no parameters are specified - deletes all cookies.
      *

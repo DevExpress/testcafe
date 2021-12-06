@@ -3,7 +3,6 @@ import {
     remove,
     chain,
     flatten,
-    castArray,
 } from 'lodash';
 
 import nanoid from 'nanoid';
@@ -785,7 +784,7 @@ export default class TestRun extends AsyncEventEmitter {
         const cookiesPromises = [];
 
         if (cookies) {
-            for (const cookie of castArray(cookies)) {
+            for (const cookie of cookies) {
                 const domain = cookie.domain;
                 const path   = cookie.path;
                 const name   = cookie.name;
@@ -804,9 +803,9 @@ export default class TestRun extends AsyncEventEmitter {
             }
         }
         else if (names) {
-            for (const name of castArray(names)) {
+            for (const name of names) {
                 if (urls) {
-                    for (const url of castArray(urls)) {
+                    for (const url of urls) {
                         const parsedPageUrl = new URL(url);
 
                         const domain = parsedPageUrl.hostname;
@@ -856,7 +855,7 @@ export default class TestRun extends AsyncEventEmitter {
         const cookiesToSet = [];
 
         if (cookies) {
-            for (const cookie of castArray(cookies) as any) {
+            for (const cookie of cookies as any) {
                 // NOTE: tough-cookie uses "key" property for the cookie name
                 cookie.key = cookie.name;
                 delete cookie.name;
@@ -867,7 +866,7 @@ export default class TestRun extends AsyncEventEmitter {
             return this.session.cookies.setCookiesByApi(cookiesToSet);
         }
 
-        for (const nameValueObject of castArray(nameValueObjects as any)) {
+        for (const nameValueObject of nameValueObjects as any) {
             // NOTE: tough-cookie uses "key" property for the cookie name
             const key           = Object.keys(nameValueObject)[0];
             const value         = nameValueObject[key];
@@ -885,7 +884,7 @@ export default class TestRun extends AsyncEventEmitter {
         const cookiesPromises = [];
 
         if (cookies) {
-            for (const cookie of castArray(cookies)) {
+            for (const cookie of cookies) {
                 const domain = cookie.domain;
                 const path   = cookie.path;
                 const name   = cookie.name;
@@ -899,9 +898,9 @@ export default class TestRun extends AsyncEventEmitter {
             }
         }
         else if (names) {
-            for (const name of castArray(names)) {
+            for (const name of names) {
                 if (urls) {
-                    for (const url of castArray(urls)) {
+                    for (const url of urls) {
                         const parsedPageUrl = new URL(url);
 
                         const domain = parsedPageUrl.hostname;
