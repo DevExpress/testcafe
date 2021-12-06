@@ -1,6 +1,6 @@
 <p align="center">
-  <a href="https://www.devexpress.com/products/testcafestudio/?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-banner">
-    <img src="https://raw.github.com/DevExpress/testcafe/master/media/tda-banner.png" alt="Join the TestCafe Dashboard alpha test program" />
+  <a href="https://testcafe.io/403442/resources/blog/2021-10-7-dashboard-alpha-invitation-announce?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-banner">
+    <img src="https://raw.github.com/DevExpress/testcafe/master/media/tda-banner.png" alt="Join TestCafe Dashboard “Alpha Test” Program" />
   </a>
 </p>
 
