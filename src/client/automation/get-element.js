@@ -81,7 +81,7 @@ function correctTopElementByExpectedElement (topElement, expectedElement) {
            topElement;
 }
 
-export function getElementFromPoint (point/*: AxisValuesData<number>*/, expectedElement) {
+export default function getElementFromPoint (point/*: AxisValuesData<number>*/, expectedElement) {
     return fromPoint(point)
         .then(topElement => {
             let foundElement = topElement;

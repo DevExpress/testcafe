@@ -14,7 +14,7 @@ import getAutomationPoint from '../utils/get-automation-point';
 import screenPointToClient from '../utils/screen-point-to-client';
 import getDevicePoint from '../utils/get-device-point';
 import { getOffsetOptions } from '../utils/offsets';
-import { getElementFromPoint } from '../get-element';
+import getElementFromPoint from '../get-element';
 import AUTOMATION_ERROR_TYPES from '../../../shared/errors/automation-errors';
 import AutomationSettings from '../../../shared/actions/automations/settings';
 import MoveAutomation from './move/move';

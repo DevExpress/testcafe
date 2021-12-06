@@ -1,7 +1,7 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import VisibleElementAutomation from '../visible-element-automation';
-import { getElementFromPoint } from '../../get-element';
+import getElementFromPoint from '../../get-element';
 import * as selectUtils from './utils';
 import MoveAutomation from '../move/move';
 import { MoveOptions } from '../../../../test-run/commands/options';

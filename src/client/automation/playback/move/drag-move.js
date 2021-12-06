@@ -1,6 +1,6 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
-import { getElementFromPoint } from '../../get-element';
+import getElementFromPoint from '../../get-element';
 import DragAndDropState from '../drag/drag-and-drop-state';
 import createEventSequence from './event-sequence/create-event-sequence';
 import lastHoveredElementHolder from '../last-hovered-element-holder';

@@ -5,7 +5,7 @@ import {
     domUtils,
     delay,
 } from '../../deps/testcafe-core';
-import { getElementFromPoint } from '../../get-element';
+import getElementFromPoint from '../../get-element';
 import VisibleElementAutomation from '../visible-element-automation';
 import DragMoveAutomation from '../move/drag-move';
 import { MoveOptions } from '../../../../test-run/commands/options';

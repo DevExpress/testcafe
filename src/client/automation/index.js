@@ -24,7 +24,7 @@ import { getOffsetOptions } from './utils/offsets';
 import { getNextFocusableElement } from './playback/press/utils';
 import SHORTCUT_TYPE from './playback/press/shortcut-type';
 import { getSelectionCoordinatesByPosition } from './playback/select/utils';
-import { getElementFromPoint } from './get-element';
+import getElementFromPoint from './get-element';
 import calculateSelectTextArguments from './playback/select/calculate-select-text-arguments';
 import ERROR_TYPES from '../../shared/errors/automation-errors';
 import cursor from './cursor';

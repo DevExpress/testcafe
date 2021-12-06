@@ -3,7 +3,7 @@ import testCafeCore from '../../deps/testcafe-core';
 import { ScrollOptions, MoveOptions } from '../../../../test-run/commands/options';
 import cursor from '../../cursor';
 
-import { getElementFromPoint } from '../../get-element';
+import getElementFromPoint from '../../get-element';
 import getAutomationPoint from '../../utils/get-automation-point';
 import getLineRectIntersection from '../../../../shared/utils/get-line-rect-intersection';
 import getDevicePoint from '../../utils/get-device-point';

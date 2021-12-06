@@ -4,10 +4,10 @@ let $rootDiv      = null;
 let $underRootDiv = null;
 let $iframe       = null;
 
-function getElementFromPointMethod (window) {
+function getElementFromPointMethod (window, point) {
     const testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
 
-    return testCafeAutomation.getElementFromPoint;
+    return testCafeAutomation.getElementFromPoint(point);
 }
 
 function createRoot () {
@@ -66,10 +66,8 @@ $(document).ready(function () {
 
         createElementUnderRoot(document.body, shadowUILeft, shadowUITop);
 
-        getElementFromPointMethod(window).call(window, shadowUITop + 50, shadowUILeft + 50)
-            .then(function (res) {
-                const element = res.element;
-
+        getElementFromPointMethod(window, { x: shadowUITop + 50, y: shadowUILeft + 50 })
+            .then(function (element) {
                 equal(element.id, 'div-id');
                 start();
             })
@@ -95,10 +93,8 @@ $(document).ready(function () {
             createElementUnderRoot(iframeWindow.document.body, 0, 0);
 
             window.setTimeout(function () {
-                getElementFromPointMethod(iframeWindow).call(iframeWindow, 50, 50)
-                    .then(function (res) {
-                        const element = res.element;
-
+                getElementFromPointMethod(iframeWindow, { x: 50, y: 50 })
+                    .then(function (element) {
                         equal(element.id, 'div-id');
                         start();
                     })
