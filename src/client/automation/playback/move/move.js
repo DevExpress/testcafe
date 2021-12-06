@@ -3,7 +3,7 @@ import testCafeCore from '../../deps/testcafe-core';
 import { ScrollOptions, MoveOptions } from '../../../../test-run/commands/options';
 import cursor from '../../cursor';
 
-import { underCursor as getElementUnderCursor } from '../../get-element';
+import { getElementFromPoint } from '../../get-element';
 import getAutomationPoint from '../../utils/get-automation-point';
 import getLineRectIntersection from '../../../../shared/utils/get-line-rect-intersection';
 import getDevicePoint from '../../utils/get-device-point';
@@ -267,7 +267,7 @@ export default class MoveAutomation {
     _movingStep (currPosition) {
         return cursor
             .move(currPosition)
-            .then(getElementUnderCursor)
+            .then(() => getElementFromPoint(cursor.getPosition()))
             // NOTE: in touch mode, events are simulated for the element for which mousedown was simulated (GH-372)
             .then(topElement => {
                 const currentElement = this._getCorrectedTopElement(topElement);
@@ -360,7 +360,7 @@ export default class MoveAutomation {
             msg.bottom = rect.bottom;
         }
 
-        return getElementUnderCursor()
+        return getElementFromPoint(cursor.getPosition())
             .then(topElement => {
                 iframeUnderCursor = topElement === iframe;
 

@@ -14,13 +14,14 @@ import getAutomationPoint from '../utils/get-automation-point';
 import screenPointToClient from '../utils/screen-point-to-client';
 import getDevicePoint from '../utils/get-device-point';
 import { getOffsetOptions } from '../utils/offsets';
-import { fromPoint as getElementFromPoint, underCursor as getElementUnderCursor } from '../get-element';
+import { getElementFromPoint } from '../get-element';
 import AUTOMATION_ERROR_TYPES from '../../../shared/errors/automation-errors';
 import AutomationSettings from '../../../shared/actions/automations/settings';
 import MoveAutomation from './move/move';
 import { MoveOptions, ScrollOptions } from '../../../test-run/commands/options';
 import lastHoveredElementHolder from './last-hovered-element-holder';
 import { MoveBehaviour } from './move/event-sequence/event-behaviors';
+import cursor from '../cursor';
 
 const extend = hammerhead.utils.extend;
 
@@ -50,7 +51,7 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
         const { x, y }        = eventArgs.point;
         const expectedElement = positionUtils.containsOffset(this.element, this.options.offsetX, this.options.offsetY) ? this.element : null;
 
-        return getElementFromPoint(x, y, expectedElement).then(({ element }) => element);
+        return getElementFromPoint(x, y, expectedElement);
     }
 
     _moveToElement () {
@@ -74,7 +75,7 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
 
                 return delay(this.automationSettings.mouseActionStepDelay);
             })
-            .then(getElementUnderCursor)
+            .then(() => getElementFromPoint(cursor.getPosition()))
             .then(currentElement => {
                 const elementUnderCursorContainsTarget = !!currentElement && domUtils.contains(this.element, currentElement);
 
@@ -131,17 +132,15 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
                 const expectedElement           = positionUtils.containsOffset(this.element, offsetX, offsetY) ? this.element : null;
 
                 return getElementFromPoint(clientPoint.x, clientPoint.y, expectedElement)
-                    .then(({ element, corrected }) => {
-                        const foundElement = element;
-
-                        if (!foundElement)
+                    .then(element => {
+                        if (!element)
                             return new ElementState({});
 
-                        let isTarget = !expectedElement || corrected || foundElement === this.element;
+                        let isTarget = !expectedElement || element === expectedElement || element === this.element;
 
                         if (!isTarget) {
                             // NOTE: perform an operation with searching in dom only if necessary
-                            isTarget = arrayUtils.indexOf(domUtils.getParents(foundElement), this.element) > -1;
+                            isTarget = arrayUtils.indexOf(domUtils.getParents(element), this.element) > -1;
                         }
 
                         const offsetPositionChanged = screenPointBeforeAction.x !== screenPointAfterAction.x ||

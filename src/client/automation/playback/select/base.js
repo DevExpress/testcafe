@@ -1,7 +1,7 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import VisibleElementAutomation from '../visible-element-automation';
-import { fromPoint as getElementFromPoint } from '../../get-element';
+import { getElementFromPoint } from '../../get-element';
 import * as selectUtils from './utils';
 import MoveAutomation from '../move/move';
 import { MoveOptions } from '../../../../test-run/commands/options';
@@ -49,7 +49,7 @@ export default class SelectBaseAutomation extends VisibleElementAutomation {
         const clientPoint = positionUtils.offsetToClientCoords(point);
 
         return getElementFromPoint(clientPoint.x, clientPoint.y)
-            .then(({ element }) => {
+            .then(element => {
                 if (!element)
                     throw new Error(AUTOMATION_ERROR_TYPES.elementIsInvisibleError);
 
