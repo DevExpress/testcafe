@@ -142,14 +142,17 @@ export function functionArgument (name, val) {
 }
 
 function isValidCookieToGetOrDelete (target) {
-    return typeof target.name === 'string' || typeof target.domain === 'string';
+    return !!target && (typeof target.name === 'string' || typeof target.domain === 'string');
 }
 
 function isValidCookieToSet (target) {
-    return typeof target.name === 'string' && typeof target.domain === 'string' && typeof target.path === 'string';
+    return !!target && (typeof target.name === 'string' && typeof target.domain === 'string' && typeof target.path === 'string');
 }
 
 function isValidNameValueCookie (target) {
+    if (!target)
+        return false;
+
     const targetEntries       = Object.keys(target);
     const targetEntriesLength = targetEntries.length;
 
@@ -162,7 +165,7 @@ function isValidNameValueCookie (target) {
     return false;
 }
 
-function validateCookieArguments (callsite, cookieArguments, validateFunction) {
+function getCookieArgumentsValidationError (callsite, cookieArguments, validateFunction) {
     const cookieArgumentsLength = cookieArguments.length;
 
     for (const [cookieArgumentIndex, cookieArgument] of cookieArguments.entries()) {
@@ -185,12 +188,12 @@ function validateCookieArguments (callsite, cookieArguments, validateFunction) {
     return null;
 }
 
-export function cookieArgumentsToGetOrDelete (callsite, cookieArguments) {
-    return validateCookieArguments(callsite, cookieArguments, isValidCookieToGetOrDelete);
+export function getCookieToGetOrDeleteArgumentsValidationError (callsite, cookieArguments) {
+    return getCookieArgumentsValidationError(callsite, cookieArguments, isValidCookieToGetOrDelete);
 }
 
-export function cookieArgumentsToSet (callsite, cookieArguments) {
-    return validateCookieArguments(callsite, cookieArguments, isValidCookieToSet);
+export function getCookieToSetArgumentsValidationError (callsite, cookieArguments) {
+    return getCookieArgumentsValidationError(callsite, cookieArguments, isValidCookieToSet);
 }
 
 export function namesCookieArgument (callsite, namesArgumentValue) {
