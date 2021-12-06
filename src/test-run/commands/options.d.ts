@@ -23,6 +23,11 @@ export class ClickOptions extends MouseOptions {
     public caretPos: number;
 }
 
+export class ScrollOptions extends OffsetOptions {
+    public scrollToCenter?: boolean;
+    public skipParentFrames?: boolean;
+}
+
 export class MoveOptions extends MouseOptions {
     public minMovingTime: number;
     public holdLeftButton: boolean;

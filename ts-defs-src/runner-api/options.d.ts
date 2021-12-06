@@ -26,12 +26,12 @@ interface BrowserConnection {
     once(event: 'ready', callback: Function): void;
 }
 
-interface BrowserDescriptor { 
-    path: string; 
-    cmd?: string; 
+interface BrowserDescriptor {
+    path: string;
+    cmd?: string;
 }
 
-type BrowserOption  = string | BrowserConnection | BrowserDescriptor;
+type BrowserOption = string | BrowserConnection | BrowserDescriptor;
 type BrowserOptions = BrowserOption | BrowserOption [];
 
 type CompilerOptions = {
@@ -59,7 +59,7 @@ type FilterFunction = (
     fixturePath: string,
     testMeta: Metadata,
     fixtureMeta: Metadata
-) => Promise<boolean>;
+) => Promise<boolean> | boolean;
 
 interface FilterDescriptor {
     test?: string;
@@ -67,18 +67,18 @@ interface FilterDescriptor {
     fixture?: string;
     fixtureGrep?: string;
     testMeta?: Metadata;
-    fixtureMeta?: Metadata;    
+    fixtureMeta?: Metadata;
 }
 
-interface ReporterDescriptor { 
+interface ReporterDescriptor {
     name: string;
-    output?: string | NodeJS.WritableStream; 
+    output?: string | NodeJS.WritableStream;
 }
 
-type ReporterOption  = string | ReporterDescriptor;
+type ReporterOption = string | ReporterDescriptor;
 type ReporterOptions = ReporterOption | ReporterOptions [];
 
-type SourceOption  = string;
+type SourceOption = string;
 type SourceOptions = SourceOption | SourceOption [];
 
 interface ScreenshotsOptions extends TakeScreenshotOptions {
@@ -249,6 +249,17 @@ interface RunOptions {
      * Prevents TestCafe from taking screenshots. When this option is specified, screenshots are not taken whenever a test fails or when t.takeScreenshot or t.takeElementScreenshot is executed.
      */
     disableScreenshots: boolean;
+    /**
+     * Time (in milliseconds). If a test is unresponsive for the specified length of time, TestCafe terminates it. Only applies to test contents.
+     */
+    testExecutionTimeout: number;
+    /**
+     * Time (in milliseconds). If TestCafe is idle for the specified length of time, TestCafe terminates the test run. Applies to actions inside and outside tests.
+     */
+    runExecutionTimeout: number;
+    /**
+     * Disables support for multi-window testing in Chrome and Firefox. Use this option if you encounter compatibility issues with your existing tests.
+     */
     disableMultipleWindows: boolean;
 }
 
@@ -261,7 +272,7 @@ interface StartOptions {
     retryTestPages: boolean;
     cache: boolean;
     configFile: string;
-    disableHttp2: boolean;    
+    disableHttp2: boolean;
 }
 
 interface ColorOutputOptions {

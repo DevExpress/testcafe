@@ -65,7 +65,7 @@
                     "commands": [
                         {
                             "type": "execute-async-expression",
-                            "expression": "const role = Role('https://demos.devexpress.com/XAF/MainDemo', async t => {\r\n   \r\n    await t.typeText('.dxeEditArea_XafTheme.dxeEditAreaSys', 'John', {\r\n                replace: true\r\n            })\r\n            .click(Selector('span').withText('Log In'));\r\n});\r\n\r\nawait t.useRole(role);\r\n"
+                            "expression": "const role = Role('http://localhost:3000/fixtures/api/raw/execute-expression/pages/page-to-test-context-in-nested-functions.html', async t => {\r\n   \r\n    await t.typeText('.class1.class2', 'John', {\r\n                replace: true\r\n            })\r\n            .click(Selector('span').withText('Log In'));\r\n});\r\n\r\nawait t.useRole(role);\r\n"
                         }
                     ]
                 }

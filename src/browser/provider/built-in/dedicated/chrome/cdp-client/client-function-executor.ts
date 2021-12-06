@@ -7,9 +7,6 @@ import RemoteObject = Protocol.Runtime.RemoteObject;
 import ExceptionDetails = Protocol.Runtime.ExceptionDetails;
 import PropertyPreview = Protocol.Runtime.PropertyPreview;
 import DOMApi = ProtocolProxyApi.DOMApi;
-import ExecutionContextCreatedEvent = Protocol.Runtime.ExecutionContextCreatedEvent;
-import ExecutionContextDestroyedEvent = Protocol.Runtime.ExecutionContextDestroyedEvent;
-import DOM = Protocol.DOM;
 import * as SharedErrors from '../../../../../../shared/errors';
 import {
     ExecuteClientFunctionCommand,
@@ -17,6 +14,8 @@ import {
     ExecuteSelectorCommand,
 } from '../../../../../../test-run/commands/observation';
 import { AutomationErrorCtors } from '../../../../../../shared/types';
+import ExecutionContext from './execution-context';
+import { ServerNode } from './types';
 
 
 interface EvaluationError extends Error {
@@ -49,15 +48,12 @@ const PROXYLESS_SCRIPT                 = 'window["%proxyless%"]';
 
 
 export default class ClientFunctionExecutor {
-    // new Map<frameId, executionContextId>
-    private readonly _frameExecutionContexts = new Map<string, number>();
-    private _currentFrameId: string = '';
-
     public async evaluateScript (Runtime: RuntimeApi, expression: string): Promise<EvaluateScriptResult> {
-        const script: EvaluateRequest = { expression, awaitPromise: true };
-
-        if (this._currentFrameId && this._frameExecutionContexts.has(this._currentFrameId))
-            script.contextId = this._frameExecutionContexts.get(this._currentFrameId);
+        const script: EvaluateRequest = {
+            expression,
+            awaitPromise: true,
+            contextId:    ExecutionContext.getCurrentContextId(),
+        };
 
         try {
             const { result, exceptionDetails = null } = await Runtime.evaluate(script);
@@ -166,35 +162,11 @@ export default class ClientFunctionExecutor {
         return returnNodeObjId ? result!.objectId : JSON.parse(result!.value);
     }
 
-    public async getNode (args: SelectorNodeArgs): Promise<DOM.Node> {
+    public async getNode (args: SelectorNodeArgs): Promise<ServerNode> {
         const objectId = await this.executeSelector(args);
-        const response = await args.DOM.describeNode({ objectId });
+        const object   = { objectId };
+        const { node } = await args.DOM.describeNode(object);
 
-        return response.node;
-    }
-
-    public setupFramesWatching (Runtime: RuntimeApi): void {
-        Runtime.on('executionContextCreated', (event: ExecutionContextCreatedEvent) => {
-            if (!event.context.auxData?.frameId)
-                return;
-
-            this._frameExecutionContexts.set(event.context.auxData.frameId, event.context.id);
-        });
-
-        Runtime.on('executionContextDestroyed', (event: ExecutionContextDestroyedEvent) => {
-            for (const [frameId, executionContextId] of this._frameExecutionContexts.entries()) {
-                if (executionContextId === event.executionContextId)
-                    this._frameExecutionContexts.delete(frameId);
-            }
-        });
-
-        Runtime.on('executionContextsCleared', () => {
-            this._currentFrameId = '';
-            this._frameExecutionContexts.clear();
-        });
-    }
-
-    public setCurrentFrameId (frameId: string): void {
-        this._currentFrameId = frameId;
+        return Object.assign(node, object);
     }
 }

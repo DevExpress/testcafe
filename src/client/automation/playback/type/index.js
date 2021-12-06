@@ -6,7 +6,7 @@ import typeText from './type-text';
 import getKeyCode from '../../utils/get-key-code';
 import getKeyIdentifier from '../../utils/get-key-identifier';
 import { getDefaultAutomationOffsets } from '../../utils/offsets';
-import AutomationSettings from '../../settings';
+import AutomationSettings from '../../../../shared/actions/automations/settings';
 import getKeyProperties from '../../utils/get-key-properties';
 
 const Promise               = hammerhead.Promise;

@@ -1,22 +1,33 @@
 /// <reference path="../../../../../ts-defs/index.d.ts" />
 import {ClientFunction, RequestLogger, RequestMock, RequestHook} from 'testcafe';
 
-class CustomRequestHook extends RequestHook {
+class CustomAsyncRequestHook extends RequestHook {
     constructor() {
         super();
     }
 
     async onRequest (event: object) {
-
     }
 
     async onResponse (event: object) {
-
     }
 }
 
-const customHook = new CustomRequestHook();
-const logger1    = RequestLogger('example.com', {logRequestBody: true});
+class CustomSyncRequestHook extends RequestHook {
+    constructor() {
+        super();
+    }
+
+    onRequest (event: object) {
+    }
+
+    onResponse (event: object) {
+    }
+}
+
+const customAsyncHook = new CustomAsyncRequestHook();
+const customSyncHook  = new CustomSyncRequestHook();
+const logger1         = RequestLogger('example.com', {logRequestBody: true});
 
 const logger2 = RequestLogger(req => {
     return req.url === 'example.com';
@@ -39,7 +50,7 @@ const mock = RequestMock()
 
 
 fixture `Request Hooks`
-    .requestHooks(mock, logger1, logger2, customHook);
+    .requestHooks(mock, logger1, logger2, customAsyncHook, customSyncHook);
 
 test
     .requestHooks(logger1)

@@ -73,6 +73,8 @@ test('Starts and terminates runner', async () => {
     const runner = t.createRunner();
 
     runner
+        .filter(async (testName) => testName === 'test')
+        .filter(testName => testName === 'test')
         .browsers(remoteConnection)
         .clientScripts({
             content: 'abracadabra',

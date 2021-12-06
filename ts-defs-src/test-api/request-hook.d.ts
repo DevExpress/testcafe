@@ -6,12 +6,12 @@ interface RequestHook {
     /**
      * The `onRequest` method is called before sending the request.
      */
-    onRequest(requestEvent: object): Promise<void>;
+    onRequest(requestEvent: object): Promise<void> | void;
 
     /**
      * The `onResponse` method is called after sending the request
      */
-    onResponse(responseEvent: object): Promise<void>;
+    onResponse(responseEvent: object): Promise<void> | void;
 }
 
 
@@ -158,7 +158,7 @@ interface RequestMock {
      * @param statusCode - The response status code.
      * @param headers - Custom headers added to the response in the property-value form.
      */
-    respond(body?: object | string | ((req: RequestOptions, res: ResponseMock) => Promise<void>), statusCode?: number, headers?: Record<string, string>): RequestMock;
+    respond(body?: object | string | ((req: RequestOptions, res: ResponseMock) => Promise<void> | void), statusCode?: number, headers?: Record<string, string>): RequestMock;
 }
 
 interface RequestMockFactory {

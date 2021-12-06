@@ -4,7 +4,7 @@ import testCafeUI from '../../deps/testcafe-ui';
 import MoveAutomation from '../move/move';
 import { MoveOptions } from '../../../../test-run/commands/options';
 import { getDefaultAutomationOffsets } from '../../utils/offsets';
-import AutomationSettings from '../../settings';
+import AutomationSettings from '../../../../shared/actions/automations/settings';
 
 const Promise = hammerhead.Promise;
 

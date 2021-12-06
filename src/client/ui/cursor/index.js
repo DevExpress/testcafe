@@ -23,30 +23,22 @@ const STATE_CLASSES      = [L_MOUSE_DOWN_CLASS, R_MOUSE_DOWN_CLASS].join(' ');
 messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
     const msg = e.message;
 
-    let position = null;
-
     switch (msg.cmd) {
         case CURSOR_UI_MESSAGES.moveRequest:
-            position = positionUtils.getIframePointRelativeToParentFrame({ x: msg.x, y: msg.y }, e.source);
-
-            CursorUI
-                .move(position.x, position.y)
+            CursorUI.move(positionUtils.getIframePointRelativeToParentFrame({ x: msg.x, y: msg.y }, e.source))
                 .then(() => messageSandbox.sendServiceMsg({ cmd: CURSOR_UI_MESSAGES.moveResponse }, e.source));
             break;
 
         case CURSOR_UI_MESSAGES.leftButtonDownRequest:
-            CursorUI
-                .leftButtonDown()
+            CursorUI.leftButtonDown()
                 .then(() => messageSandbox.sendServiceMsg({ cmd: CURSOR_UI_MESSAGES.leftButtonDownResponse }, e.source));
             break;
         case CURSOR_UI_MESSAGES.rightButtonDownRequest:
-            CursorUI
-                .rightButtonDown()
+            CursorUI.rightButtonDown()
                 .then(() => messageSandbox.sendServiceMsg({ cmd: CURSOR_UI_MESSAGES.rightButtonDownResponse }, e.source));
             break;
         case CURSOR_UI_MESSAGES.buttonUpRequest:
-            CursorUI
-                .buttonUp()
+            CursorUI.buttonUp()
                 .then(() => messageSandbox.sendServiceMsg({ cmd: CURSOR_UI_MESSAGES.buttonUpResponse }, e.source));
             break;
     }
@@ -84,7 +76,8 @@ const CursorUI = {
         if (!this.cursorElement)
             this._createElement();
 
-        styleUtils.set(this.cursorElement, 'visibility', 'hidden');
+        if (this.isVisible())
+            styleUtils.set(this.cursorElement, 'visibility', 'hidden');
     },
 
     show () {
@@ -94,9 +87,9 @@ const CursorUI = {
         styleUtils.set(this.cursorElement, 'visibility', '');
     },
 
-    move (x, y) {
-        this.x = x;
-        this.y = y;
+    move (position) {
+        this.x = position.x;
+        this.y = position.y;
 
         if (!this.cursorElement)
             this._createElement();

@@ -148,28 +148,3 @@ export function getElementClientRectangle (el) {
 export function isInRectangle ({ x, y }, rectangle) {
     return x >= rectangle.left && x <= rectangle.right && y >= rectangle.top && y <= rectangle.bottom;
 }
-
-export function getLineYByXCoord (startLinePoint, endLinePoint, x) {
-    if (endLinePoint.x - startLinePoint.x === 0)
-        return null;
-
-    const equationSlope = (endLinePoint.y - startLinePoint.y) / (endLinePoint.x - startLinePoint.x);
-
-    const equationYIntercept = startLinePoint.x * (startLinePoint.y - endLinePoint.y) /
-                             (endLinePoint.x - startLinePoint.x) + startLinePoint.y;
-
-    return Math.round(equationSlope * x + equationYIntercept);
-}
-
-export function getLineXByYCoord (startLinePoint, endLinePoint, y) {
-    if (endLinePoint.y - startLinePoint.y === 0)
-        return null;
-
-    const equationSlope = (endLinePoint.x - startLinePoint.x) / (endLinePoint.y - startLinePoint.y);
-
-    const equationXIntercept = startLinePoint.y * (startLinePoint.x - endLinePoint.x) /
-                             (endLinePoint.y - startLinePoint.y) + startLinePoint.x;
-
-    return Math.round(equationSlope * y + equationXIntercept);
-
-}

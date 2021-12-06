@@ -32,8 +32,9 @@ export default class RClickAutomation extends VisibleElementAutomation {
             .then(() => {
                 this.eventState.activeElementBeforeMouseDown = domUtils.getActiveElement();
                 this.eventState.simulateDefaultBehavior      = eventSimulator.mousedown(eventArgs.element, eventArgs.options);
-            })
-            .then(() => this._focus(eventArgs));
+
+                return this._focus(eventArgs);
+            });
     }
 
     _focus (eventArgs) {

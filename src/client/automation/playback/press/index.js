@@ -10,7 +10,7 @@ import {
 import KeyPressSimulator from './key-press-simulator';
 import supportedShortcutHandlers from './shortcuts';
 import { getActualKeysAndEventKeyProperties, getDeepActiveElement } from './utils';
-import AutomationSettings from '../../settings';
+import AutomationSettings from '../../../../shared/actions/automations/settings';
 import isIframeWindow from '../../../../utils/is-window-in-iframe';
 
 const Promise        = hammerhead.Promise;

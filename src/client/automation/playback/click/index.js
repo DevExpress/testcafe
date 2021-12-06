@@ -77,7 +77,8 @@ export default class ClickAutomation extends VisibleElementAutomation {
         this.targetElementParentNodes = domUtils.getParents(eventArgs.element);
         this.mouseDownElement         = eventArgs.element;
 
-        return cursor.leftButtonDown()
+        return cursor
+            .leftButtonDown()
             .then(() => {
                 this._raiseTouchEvents(eventArgs);
 

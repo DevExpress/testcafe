@@ -114,7 +114,7 @@ export function fromPoint (x, y, expectedElement) {
 }
 
 export function underCursor () {
-    const cursorPosition = cursor.position;
+    const cursorPosition = cursor.getPosition();
 
     return fromPoint(cursorPosition.x, cursorPosition.y).then(({ element }) => element);
 }

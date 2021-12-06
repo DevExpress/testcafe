@@ -53,3 +53,9 @@ export function getViewportDimensions () {
     };
 }
 
+export function getWindowDimensions (window) {
+    return {
+        width:  getWidth(window),
+        height: getHeight(window),
+    };
+}
