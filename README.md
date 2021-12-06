@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://www.devexpress.com/products/testcafestudio/?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-banner">
-    <img src="https://raw.github.com/DevExpress/testcafe/master/media/testcafe-studio-banner.png" alt="Try TestCafe Studio IDE" />
+    <img src="https://raw.github.com/DevExpress/testcafe/master/media/tda-banner.png" alt="Join the TestCafe Dashboard alpha test program" />
   </a>
 </p>
 
