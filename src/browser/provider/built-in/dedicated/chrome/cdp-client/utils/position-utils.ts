@@ -1,4 +1,5 @@
 import { ProtocolApi } from 'chrome-remote-interface';
+import Protocol from 'devtools-protocol/types/protocol';
 import ExecutionContext from '../execution-context';
 import AxisValues, { LeftTopValues } from '../../../../../../../shared/utils/values/axis-values';
 import BoundaryValues, { BoundaryValuesData } from '../../../../../../../shared/utils/values/boundary-values';
@@ -68,4 +69,10 @@ export async function getIframePointRelativeToParentFrame (client: ProtocolApi, 
     const top  = dimensions.top + dimensions.border.top + paddings.top + iframePoint.y;
 
     return new AxisValues<number>(left, top);
+}
+
+export async function getElementFromPoint ({ DOM }: ProtocolApi, x: number, y: number): Promise<Protocol.DOM.ResolveNodeResponse> {
+    const { backendNodeId } = await DOM.getNodeForLocation({ x, y });
+
+    return DOM.resolveNode({ backendNodeId });
 }

@@ -10,6 +10,7 @@ const {
     getIframeClientCoordinates,
     getIframePointRelativeToParentFrame,
     getOffsetPosition,
+    getElementFromPoint,
 } = require('../../lib/browser/provider/built-in/dedicated/chrome/cdp-client/utils/position-utils');
 
 describe('position utils', () => {
@@ -294,5 +295,24 @@ describe('position utils', () => {
         offsetPosition = await getOffsetPosition(utils.getClient(), node);
 
         expect(offsetPosition).eql({ left: 8, top: 8 });
+    });
+
+    it('getElementFromPoint', async () => {
+        expect((await getElementFromPoint(utils.getClient(), 31, 26)).object.description).eql('div#target1');
+        expect((await getElementFromPoint(utils.getClient(), 64, 26)).object.description).eql('div#target1');
+        expect((await getElementFromPoint(utils.getClient(), 64, 69)).object.description).eql('div#target1');
+        expect((await getElementFromPoint(utils.getClient(), 31, 69)).object.description).eql('div#target1');
+
+        expect((await getElementFromPoint(utils.getClient(), 30, 25)).object.description).eql('html');
+        expect((await getElementFromPoint(utils.getClient(), 65, 25)).object.description).eql('html');
+        expect((await getElementFromPoint(utils.getClient(), 65, 70)).object.description).eql('html');
+        expect((await getElementFromPoint(utils.getClient(), 30, 70)).object.description).eql('html');
+
+        expect((await getElementFromPoint(utils.getClient(), 300, 299)).object.description).eql('html');
+        expect((await getElementFromPoint(utils.getClient(), 301, 300)).object.description).eql('iframe');
+        expect((await getElementFromPoint(utils.getClient(), 302, 301)).object.description).eql('iframe');
+        expect((await getElementFromPoint(utils.getClient(), 303, 302)).object.description).eql('iframe');
+
+        expect((await getElementFromPoint(utils.getClient(), 401, 32)).object.description).eql('h1');
     });
 });

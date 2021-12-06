@@ -55,6 +55,12 @@
         overflow: auto;
     }
 
+    #target7 {
+        position: absolute;
+        top: 10px;
+        left: 400px;
+    }
+
     #scrollableDiv {
         position: absolute;
         left: 70px;
@@ -84,6 +90,7 @@
 <div id="target4"></div>
 <div id="target5"></div>
 <div id="target6"><div style="width: 500px; height: 500px;"></div></div>
+<div id="target7"></div>
 <iframe></iframe>
 
 <script type="text/javascript">
@@ -103,6 +110,13 @@
         </html>
     `);
     doc.close();
+
+    var shadow   = document.querySelector('#target7').attachShadow({ mode: 'open' })
+    var shadowEl = document.createElement('h1');
+
+    shadowEl.innerHTML = 'h1';
+
+    shadow.appendChild(shadowEl);
 </script>
 </body>
 </html>
