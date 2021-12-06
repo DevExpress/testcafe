@@ -48,7 +48,7 @@ export default class SelectBaseAutomation extends VisibleElementAutomation {
     static _calculateEventArguments (point) {
         const clientPoint = positionUtils.offsetToClientCoords(point);
 
-        return getElementFromPoint(clientPoint.x, clientPoint.y)
+        return getElementFromPoint(clientPoint)
             .then(element => {
                 if (!element)
                     throw new Error(AUTOMATION_ERROR_TYPES.elementIsInvisibleError);

@@ -102,7 +102,7 @@ export default class DragAutomationBase extends VisibleElementAutomation {
                     clientY: point.y,
                 }, this.modifiers);
 
-                return getElementFromPoint(point.x, point.y)
+                return getElementFromPoint(point)
                     .then(element => {
                         topElement = element;
 
@@ -121,7 +121,7 @@ export default class DragAutomationBase extends VisibleElementAutomation {
                         else
                             eventSimulator[this.upEvent](topElement, options);
 
-                        return getElementFromPoint(point.x, point.y);
+                        return getElementFromPoint(point);
                     })
                     .then(element => {
                         //B231323

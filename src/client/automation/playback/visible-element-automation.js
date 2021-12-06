@@ -48,10 +48,9 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
     }
 
     _getElementForEvent (eventArgs) {
-        const { x, y }        = eventArgs.point;
         const expectedElement = positionUtils.containsOffset(this.element, this.options.offsetX, this.options.offsetY) ? this.element : null;
 
-        return getElementFromPoint(x, y, expectedElement);
+        return getElementFromPoint(eventArgs.point, expectedElement);
     }
 
     _moveToElement () {
@@ -131,7 +130,7 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
                 const clientPoint               = screenPointToClient(this.element, screenPointAfterAction);
                 const expectedElement           = positionUtils.containsOffset(this.element, offsetX, offsetY) ? this.element : null;
 
-                return getElementFromPoint(clientPoint.x, clientPoint.y, expectedElement)
+                return getElementFromPoint(clientPoint, expectedElement)
                     .then(element => {
                         if (!element)
                             return new ElementState({});
