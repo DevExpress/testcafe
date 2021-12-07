@@ -196,7 +196,7 @@ export function getCookieToSetArgumentsValidationError (callsite, cookieArgument
     return getCookieArgumentsValidationError(callsite, cookieArguments, isValidCookieToSet);
 }
 
-export function namesCookieArgument (callsite, namesArgumentValue) {
+export function getNamesCookieArgumentValidationError (callsite, namesArgumentValue) {
     if (Array.isArray(namesArgumentValue)) {
         for (const [namesElementIndex, namesElement] of namesArgumentValue.entries()) {
             const namesElementType = typeof namesElement;
@@ -215,7 +215,7 @@ export function namesCookieArgument (callsite, namesArgumentValue) {
     return null;
 }
 
-export function urlsCookieArgument (callsite, urlsArgumentValue) {
+export function getUrlsCookieArgumentValidationError (callsite, urlsArgumentValue) {
     if (Array.isArray(urlsArgumentValue)) {
         for (const [urlsElementIndex, urlsElement] of urlsArgumentValue.entries()) {
             const urlsElementType = typeof urlsElement;
@@ -234,7 +234,7 @@ export function urlsCookieArgument (callsite, urlsArgumentValue) {
     return null;
 }
 
-export function nameValueObjectsCookieArgument (callsite, nameValueObjectsArgumentValue) {
+export function getNameValueObjectsCookieArgumentValidationError (callsite, nameValueObjectsArgumentValue) {
     if (Array.isArray(nameValueObjectsArgumentValue)) {
         for (const [nameValueElementIndex, nameValueElement] of nameValueObjectsArgumentValue.entries()) {
             if (!isValidNameValueCookie(nameValueElement))
@@ -247,7 +247,7 @@ export function nameValueObjectsCookieArgument (callsite, nameValueObjectsArgume
     return null;
 }
 
-export function urlCookieArgument (callsite, urlArgumentValue) {
+export function getUrlCookieArgumentValidationError (callsite, urlArgumentValue) {
     const urlArgumentType = typeof urlArgumentValue;
 
     if (urlArgumentType !== 'string')
