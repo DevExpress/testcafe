@@ -1,10 +1,11 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
-import { underCursor as getElementUnderCursor } from '../../get-element';
+import getElementFromPoint from '../../get-element';
 import DragAndDropState from '../drag/drag-and-drop-state';
 import createEventSequence from './event-sequence/create-event-sequence';
 import lastHoveredElementHolder from '../last-hovered-element-holder';
 import MoveAutomation from './move';
+import cursor from '../../cursor';
 
 const nativeMethods    = hammerhead.nativeMethods;
 const featureDetection = hammerhead.utils.featureDetection;
@@ -77,7 +78,7 @@ export default class DragMoveAutomation extends MoveAutomation {
     }
 
     run () {
-        return getElementUnderCursor()
+        return getElementFromPoint(cursor.getPosition())
             .then(topElement => {
                 this.dragElement = topElement;
 

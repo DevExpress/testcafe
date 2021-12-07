@@ -5,7 +5,7 @@ import {
     domUtils,
     delay,
 } from '../../deps/testcafe-core';
-import { fromPoint as getElementFromPoint } from '../../get-element';
+import getElementFromPoint from '../../get-element';
 import VisibleElementAutomation from '../visible-element-automation';
 import DragMoveAutomation from '../move/drag-move';
 import { MoveOptions } from '../../../../test-run/commands/options';
@@ -102,8 +102,8 @@ export default class DragAutomationBase extends VisibleElementAutomation {
                     clientY: point.y,
                 }, this.modifiers);
 
-                return getElementFromPoint(point.x, point.y)
-                    .then(({ element }) => {
+                return getElementFromPoint(point)
+                    .then(element => {
                         topElement = element;
 
                         if (!topElement)
@@ -121,9 +121,9 @@ export default class DragAutomationBase extends VisibleElementAutomation {
                         else
                             eventSimulator[this.upEvent](topElement, options);
 
-                        return getElementFromPoint(point.x, point.y);
+                        return getElementFromPoint(point);
                     })
-                    .then(({ element }) => {
+                    .then(element => {
                         //B231323
                         if (topElement && element === topElement && !this.dragAndDropState.enabled)
                             eventSimulator.click(topElement, options);
