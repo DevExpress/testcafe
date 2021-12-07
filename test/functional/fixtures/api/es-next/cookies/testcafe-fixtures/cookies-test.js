@@ -17,7 +17,7 @@ test
                 { name: 'apiCookie9', value: 'value9', domain: 'domain3.com', path: '/path-3' },
                 { name: 'apiCookie10', value: 'value10', domain: 'domain3.com', path: '/path-4/path-4-1' },
             ]);
-    }).page('http://localhost:3000/fixtures/api/es-next/cookies/pages/index.html')('Should get cookies', async t => {
+    }).page('http://localhost:3000/fixtures/api/es-next/cookies/pages/index.html')('Should get cookies (t.getCookies)', async t => {
         const allCookies = await t.getCookies();
 
         await t
@@ -110,70 +110,7 @@ test
             .expect(cookiesByCookieLikeObjects.some(c => c.name === 'apiCookie9' && c.value === 'value9' && c.domain === 'domain3.com' && c.path === '/path-3')).ok();
     });
 
-test('Should throw an error if an invalid "cookie" argument is specified in t.getCookies(cookie)', async t => {
-    await t.getCookies({});
-});
-
-test
-    .before(async t => {
-        await t
-            .setCookies([{ apiCookie1: 'value1' }, { 'apiCookie2': 'value2' }], 'https://domain1.com/')
-            .setCookies([
-                { name: 'apiCookie3', value: 'value3', domain: 'domain2.com', path: '/' },
-                { name: 'apiCookie4', value: 'value4', domain: 'domain2.com', path: '/path-1' },
-            ]);
-    })('Should throw an error if a "cookie" argument contains invalid cookie array elements in t.getCookies(cookie)', async t => {
-        const validCookies = await t.getCookies();
-
-        await t.getCookies([validCookies[0], {}, validCookies[1], validCookies[2], validCookies[3]]);
-    });
-
-test
-    .before(async t => {
-        await t
-            .setCookies([{ apiCookie1: 'value1' }, { 'apiCookie2': 'value2' }], 'https://domain1.com/')
-            .setCookies([
-                { name: 'apiCookie3', value: 'value3', domain: 'domain2.com', path: '/' },
-                { name: 'apiCookie4', value: 'value4', domain: 'domain2.com', path: '/path-1' },
-            ]);
-    })('Should throw an error if "...cookies" arguments contain invalid cookie array elements in t.getCookies(...cookies)', async t => {
-        const validCookies = await t.getCookies();
-
-        await t.getCookies([validCookies[0], validCookies[1]], validCookies[2], {}, validCookies[3]);
-    });
-
-test
-    .before(async t => {
-        await t
-            .setCookies([{ apiCookie1: 'value1' }, { 'apiCookie2': 'value2' }], 'https://domain1.com/')
-            .setCookies([
-                { name: 'apiCookie3', value: 'value3', domain: 'domain2.com', path: '/' },
-                { name: 'apiCookie4', value: 'value4', domain: 'domain2.com', path: '/path-1' },
-            ]);
-    })('Should throw an error if invalid "...cookies" arguments are specified in t.getCookies(...cookies)', async t => {
-        const validCookies = await t.getCookies();
-
-        await t.getCookies(validCookies[0], [validCookies[1]], [validCookies[2], {}, validCookies[3]]);
-    });
-
-test('Should throw an error if an invalid "names" argument is specified in t.getCookies(names, urls)', async t => {
-    await t.getCookies(1, 'https://valid-url.com');
-});
-
-test('Should throw an error if an invalid "names" array argument is specified in t.getCookies(names, urls)', async t => {
-    await t.getCookies(['validCookieName', {}], 'https://valid-url.com');
-});
-
-test('Should throw an error if an invalid "urls" argument is specified in t.getCookies(names, urls)', async t => {
-    await t.getCookies(['validCookieName1', 'validCookieName2'], 1);
-});
-
-test('Should throw an error if an invalid "urls" array argument is specified in t.getCookies(names, urls)', async t => {
-    await t.getCookies(['validCookieName1', 'validCookieName2'], ['https://valid-url.com', {}]);
-});
-
-
-test('Should set cookies', async t => {
+test('Should set cookies (t.setCookies)', async t => {
     const logger = RequestLogger(/fixtures\/api\/es-next\/cookies\/pages/, { logRequestHeaders: true });
 
     await t.addRequestHooks(logger);
@@ -214,83 +151,6 @@ test('Should set cookies', async t => {
             'apiCookie9=value9; apiCookie10=value10; apiCookie11=value11; apiCookie12=value12');
 });
 
-test('Should throw an error if an invalid "cookie" argument is specified in t.setCookies(cookie)', async t => {
-    await t.setCookies({});
-});
-
-test
-    .before(async t => {
-        await t
-            .setCookies([{ apiCookie1: 'value1' }, { 'apiCookie2': 'value2' }], 'https://domain1.com/')
-            .setCookies([
-                { name: 'apiCookie3', value: 'value3', domain: 'domain2.com', path: '/' },
-                { name: 'apiCookie4', value: 'value4', domain: 'domain2.com', path: '/path' },
-            ]);
-    })('Should throw an error if a "cookie" argument contains invalid cookie array elements in t.setCookies(cookie)', async t => {
-        const validCookies = await t.getCookies();
-
-        await t.setCookies([validCookies[0], {}, validCookies[1], validCookies[2], validCookies[3]]);
-    });
-
-test
-    .before(async t => {
-        await t
-            .setCookies([{ apiCookie1: 'value1' }, { 'apiCookie2': 'value2' }], 'https://domain1.com/')
-            .setCookies([
-                { name: 'apiCookie3', value: 'value3', domain: 'domain2.com', path: '/' },
-                { name: 'apiCookie4', value: 'value4', domain: 'domain2.com', path: '/path' },
-            ]);
-    })('Should throw an error if "...cookies" arguments contain invalid cookie array elements in t.setCookies(...cookies)', async t => {
-        const validCookies = await t.getCookies();
-
-        await t.setCookies([validCookies[0], validCookies[1]], validCookies[2], {}, validCookies[3]);
-    });
-
-test
-    .before(async t => {
-        await t
-            .setCookies([{ apiCookie1: 'value1' }, { 'apiCookie2': 'value2' }], 'https://domain1.com/')
-            .setCookies([
-                { name: 'apiCookie3', value: 'value3', domain: 'domain2.com', path: '/' },
-                { name: 'apiCookie4', value: 'value4', domain: 'domain2.com', path: '/path' },
-            ]);
-    })('Should throw an error if invalid "...cookies" arguments are specified in t.setCookies(...cookies)', async t => {
-        const validCookies = await t.getCookies();
-
-        await t.setCookies(validCookies[0], [validCookies[1]], [validCookies[2], {}, validCookies[3]]);
-    });
-
-test('Should throw an error if an invalid "nameValueObjects" argument is specified in t.setCookies(nameValueObjects, url)', async t => {
-    await t.setCookies({ someCookieName: 'value', unexpectedAdditionalProp: 'value' }, 'https://domain.com');
-});
-
-test('Should throw an error if an invalid "nameValueObjects" array argument is specified in t.setCookies(nameValueObjects, url)', async t => {
-    await t
-        .setCookies([{ 'validCookie': 'value' }, { someCookieName: 'value', unexpectedAdditionalProp: 'value' }], 'https://domain.com');
-});
-
-test('Should throw an error if the required "url" argument is not specified in t.setCookies(nameValueObjects, url)', async t => {
-    await t
-        .setCookies({ 'validCookie': 'value' });
-});
-
-test('Should throw an error if no parameters are specified in t.setCookies()', async t => {
-    await t.setCookies();
-});
-
-test('Should throw an error if an "url" argument has a wrong type in t.setCookies(nameValueObjects, url)', async t => {
-    await t.setCookies({ 'validCookie': 'value' }, {});
-});
-
-test('Should throw an error if an empty string is set as the "url" argument in t.setCookies(nameValueObjects, url)', async t => {
-    await t.setCookies({ 'validCookie': 'value' }, '');
-});
-
-test('Should throw an error if a protocol part of the "url" argument cannot be parsed (t.setCookies(nameValueObjects, url))', async t => {
-    await t.setCookies({ 'validCookie': 'value' }, '1');
-});
-
-
 test
     .before(async t => {
         await t
@@ -307,7 +167,7 @@ test
                 { apiCookie9: 'value9' }, { apiCookie10: 'value10' },
             ],
             'https://domain.com');
-    })('Should delete cookies', async t => {
+    })('Should delete cookies (t.deleteCookies)', async t => {
         await t
             .expect((await t.getCookies()).length).eql(14)
             .expect((await t.getCookies()).some(c => c.name === 'apiCookie1' && c.domain === 'localhost')).ok()
@@ -403,65 +263,3 @@ test
         await t
             .expect(logger.requests[0].request.headers.cookie).notOk();
     });
-
-test('Should throw an error if an invalid "cookie" argument is specified in t.deleteCookies(cookie)', async t => {
-    await t.deleteCookies({});
-});
-
-test
-    .before(async t => {
-        await t
-            .setCookies([{ apiCookie1: 'value1' }, { 'apiCookie2': 'value2' }], 'https://domain1.com/')
-            .setCookies([
-                { name: 'apiCookie3', value: 'value3', domain: 'domain2.com', path: '/' },
-                { name: 'apiCookie4', value: 'value4', domain: 'domain2.com', path: '/path' },
-            ]);
-    })('Should throw an error if a "cookie" argument contains invalid cookie array elements in t.deleteCookies(cookie)', async t => {
-        const validCookies = await t.getCookies();
-
-        await t.deleteCookies([validCookies[0], {}, validCookies[1], validCookies[2], validCookies[3]]);
-    });
-
-test
-    .before(async t => {
-        await t
-            .setCookies([{ apiCookie1: 'value1' }, { 'apiCookie2': 'value2' }], 'https://domain1.com/')
-            .setCookies([
-                { name: 'apiCookie3', value: 'value3', domain: 'domain2.com', path: '/' },
-                { name: 'apiCookie4', value: 'value4', domain: 'domain2.com', path: '/path' },
-            ]);
-    })('Should throw an error if "...cookies" arguments contain invalid cookie array elements in t.deleteCookies(...cookies)', async t => {
-        const validCookies = await t.getCookies();
-
-        await t.deleteCookies([validCookies[0], validCookies[1]], validCookies[2], {}, validCookies[3]);
-    });
-
-test
-    .before(async t => {
-        await t
-            .setCookies([{ apiCookie1: 'value1' }, { 'apiCookie2': 'value2' }], 'https://domain1.com/')
-            .setCookies([
-                { name: 'apiCookie3', value: 'value3', domain: 'domain2.com', path: '/' },
-                { name: 'apiCookie4', value: 'value4', domain: 'domain2.com', path: '/path' },
-            ]);
-    })('Should throw an error if invalid "...cookies" arguments are specified in t.deleteCookies(...cookies)', async t => {
-        const validCookies = await t.getCookies();
-
-        await t.deleteCookies(validCookies[0], [validCookies[1]], [validCookies[2], {}, validCookies[3]]);
-    });
-
-test('Should throw an error if an invalid "names" argument is specified in t.deleteCookies(names, urls)', async t => {
-    await t.deleteCookies(1, 'https://valid-url.com');
-});
-
-test('Should throw an error if an invalid "names" array argument is specified in t.deleteCookies(names, urls)', async t => {
-    await t.deleteCookies(['validCookieName', {}], 'https://valid-url.com');
-});
-
-test('Should throw an error if an invalid "urls" argument is specified in t.deleteCookies(names, urls)', async t => {
-    await t.deleteCookies(['validCookieName1', 'validCookieName2'], 1);
-});
-
-test('Should throw an error if an invalid "urls" array argument is specified in t.deleteCookies(names, urls)', async t => {
-    await t.deleteCookies(['validCookieName1', 'validCookieName2'], ['https://valid-url.com', {}]);
-});
