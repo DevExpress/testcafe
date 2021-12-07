@@ -816,54 +816,79 @@ describe('Utils', () => {
                     actualErr = err;
                 }
 
-                expect(actualErr.code).eql(argumentsCase.expectedErrorCode);
+                expect(actualErr).contains(argumentsCase.expectedErrorProps);
             }
 
             describe('"...cookies"', () => {
                 const invalidCookieArgumentCases = [
                     {
-                        invalidArguments:  [{}],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionCookieArgumentError,
+                        invalidArguments:   [{}],
+                        expectedErrorProps: {
+                            code: TEST_RUN_ERRORS.actionCookieArgumentError,
+                        },
                     },
                     {
-                        invalidArguments:  [1],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionCookieArgumentError,
+                        invalidArguments:   [1],
+                        expectedErrorProps: {
+                            code: TEST_RUN_ERRORS.actionCookieArgumentError,
+                        },
                     },
                     {
-                        invalidArguments:  [true],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionCookieArgumentError,
+                        invalidArguments:   [true],
+                        expectedErrorProps: {
+                            code: TEST_RUN_ERRORS.actionCookieArgumentError,
+                        },
                     },
                     {
-                        invalidArguments:  [null],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionCookieArgumentError,
+                        invalidArguments:   [null],
+                        expectedErrorProps: {
+                            code: TEST_RUN_ERRORS.actionCookieArgumentError,
+                        },
                     },
                     {
-                        invalidArguments:  [void 0],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionCookieArgumentError,
+                        invalidArguments:   [void 0],
+                        expectedErrorProps: {
+                            code: TEST_RUN_ERRORS.actionCookieArgumentError,
+                        },
                     },
                 ];
 
                 function createInvalidCookieArgumentsCases (validCookies) {
                     return [
                         {
-                            invalidArguments:  [validCookies[0], {}],
-                            expectedErrorCode: TEST_RUN_ERRORS.actionCookieArgumentsError,
+                            invalidArguments:   [validCookies[0], {}],
+                            expectedErrorProps: {
+                                code:             TEST_RUN_ERRORS.actionCookieArgumentsError,
+                                argumentPosition: 1,
+                            },
                         },
                         {
-                            invalidArguments:  [true, validCookies[1]],
-                            expectedErrorCode: TEST_RUN_ERRORS.actionCookieArgumentsError,
+                            invalidArguments:   [true, validCookies[1]],
+                            expectedErrorProps: {
+                                code:             TEST_RUN_ERRORS.actionCookieArgumentsError,
+                                argumentPosition: 0,
+                            },
                         },
                         {
-                            invalidArguments:  [validCookies[2], null],
-                            expectedErrorCode: TEST_RUN_ERRORS.actionCookieArgumentsError,
+                            invalidArguments:   [validCookies[2], null],
+                            expectedErrorProps: {
+                                code:             TEST_RUN_ERRORS.actionCookieArgumentsError,
+                                argumentPosition: 1,
+                            },
                         },
                         {
-                            invalidArguments:  [[validCookies[3]], void 0],
-                            expectedErrorCode: TEST_RUN_ERRORS.actionCookieArgumentsError,
+                            invalidArguments:   [[validCookies[3]], void 0],
+                            expectedErrorProps: {
+                                code:             TEST_RUN_ERRORS.actionCookieArgumentsError,
+                                argumentPosition: 1,
+                            },
                         },
                         {
-                            invalidArguments:  [validCookies[0], [validCookies[1]], void 0],
-                            expectedErrorCode: TEST_RUN_ERRORS.actionCookieArgumentsError,
+                            invalidArguments:   [validCookies[0], [validCookies[1]], void 0],
+                            expectedErrorProps: {
+                                code:             TEST_RUN_ERRORS.actionCookieArgumentsError,
+                                argumentPosition: 2,
+                            },
                         },
                     ];
                 }
@@ -871,32 +896,53 @@ describe('Utils', () => {
                 function createInvalidCookieArrayArgumentCases (validCookies) {
                     return [
                         {
-                            invalidArguments:  [[{}]],
-                            expectedErrorCode: TEST_RUN_ERRORS.actionCookieArrayArgumentError,
+                            invalidArguments:   [[{}]],
+                            expectedErrorProps: {
+                                code:               TEST_RUN_ERRORS.actionCookieArrayArgumentError,
+                                cookieElementIndex: 0,
+                            },
                         },
                         {
-                            invalidArguments:  [[[]]],
-                            expectedErrorCode: TEST_RUN_ERRORS.actionCookieArrayArgumentError,
+                            invalidArguments:   [[[]]],
+                            expectedErrorProps: {
+                                code:               TEST_RUN_ERRORS.actionCookieArrayArgumentError,
+                                cookieElementIndex: 0,
+                            },
                         },
                         {
-                            invalidArguments:  [[validCookies[0], 1]],
-                            expectedErrorCode: TEST_RUN_ERRORS.actionCookieArrayArgumentError,
+                            invalidArguments:   [[validCookies[0], 1]],
+                            expectedErrorProps: {
+                                code:               TEST_RUN_ERRORS.actionCookieArrayArgumentError,
+                                cookieElementIndex: 1,
+                            },
                         },
                         {
-                            invalidArguments:  [[validCookies[1], true]],
-                            expectedErrorCode: TEST_RUN_ERRORS.actionCookieArrayArgumentError,
+                            invalidArguments:   [[validCookies[1], true]],
+                            expectedErrorProps: {
+                                code:               TEST_RUN_ERRORS.actionCookieArrayArgumentError,
+                                cookieElementIndex: 1,
+                            },
                         },
                         {
-                            invalidArguments:  [[validCookies[2], null]],
-                            expectedErrorCode: TEST_RUN_ERRORS.actionCookieArrayArgumentError,
+                            invalidArguments:   [[validCookies[2], null]],
+                            expectedErrorProps: {
+                                code:               TEST_RUN_ERRORS.actionCookieArrayArgumentError,
+                                cookieElementIndex: 1,
+                            },
                         },
                         {
-                            invalidArguments:  [[validCookies[3], void 0]],
-                            expectedErrorCode: TEST_RUN_ERRORS.actionCookieArrayArgumentError,
+                            invalidArguments:   [[validCookies[3], void 0]],
+                            expectedErrorProps: {
+                                code:               TEST_RUN_ERRORS.actionCookieArrayArgumentError,
+                                cookieElementIndex: 1,
+                            },
                         },
                         {
-                            invalidArguments:  [[validCookies[0], []]],
-                            expectedErrorCode: TEST_RUN_ERRORS.actionCookieArrayArgumentError,
+                            invalidArguments:   [[validCookies[0], []]],
+                            expectedErrorProps: {
+                                code:               TEST_RUN_ERRORS.actionCookieArrayArgumentError,
+                                cookieElementIndex: 1,
+                            },
                         },
                     ];
                 }
@@ -904,32 +950,60 @@ describe('Utils', () => {
                 function createInvalidCookieArrayArgumentsCases (validCookies) {
                     return [
                         {
-                            invalidArguments:  [validCookies[0], [{}]],
-                            expectedErrorCode: TEST_RUN_ERRORS.actionCookieArrayArgumentsError,
+                            invalidArguments:   [validCookies[0], [{}]],
+                            expectedErrorProps: {
+                                code:               TEST_RUN_ERRORS.actionCookieArrayArgumentsError,
+                                argumentPosition:   1,
+                                cookieElementIndex: 0,
+                            },
                         },
                         {
-                            invalidArguments:  [[[]], validCookies[1]],
-                            expectedErrorCode: TEST_RUN_ERRORS.actionCookieArrayArgumentsError,
+                            invalidArguments:   [[[]], validCookies[1]],
+                            expectedErrorProps: {
+                                code:               TEST_RUN_ERRORS.actionCookieArrayArgumentsError,
+                                argumentPosition:   0,
+                                cookieElementIndex: 0,
+                            },
                         },
                         {
-                            invalidArguments:  [validCookies[2], [validCookies[3], 1]],
-                            expectedErrorCode: TEST_RUN_ERRORS.actionCookieArrayArgumentsError,
+                            invalidArguments:   [validCookies[2], [validCookies[3], 1]],
+                            expectedErrorProps: {
+                                code:               TEST_RUN_ERRORS.actionCookieArrayArgumentsError,
+                                argumentPosition:   1,
+                                cookieElementIndex: 1,
+                            },
                         },
                         {
-                            invalidArguments:  [validCookies[0], [validCookies[1], true]],
-                            expectedErrorCode: TEST_RUN_ERRORS.actionCookieArrayArgumentsError,
+                            invalidArguments:   [validCookies[0], [validCookies[1], true]],
+                            expectedErrorProps: {
+                                code:               TEST_RUN_ERRORS.actionCookieArrayArgumentsError,
+                                argumentPosition:   1,
+                                cookieElementIndex: 1,
+                            },
                         },
                         {
-                            invalidArguments:  [validCookies[2], [validCookies[3], null]],
-                            expectedErrorCode: TEST_RUN_ERRORS.actionCookieArrayArgumentsError,
+                            invalidArguments:   [validCookies[2], [validCookies[3], null]],
+                            expectedErrorProps: {
+                                code:               TEST_RUN_ERRORS.actionCookieArrayArgumentsError,
+                                argumentPosition:   1,
+                                cookieElementIndex: 1,
+                            },
                         },
                         {
-                            invalidArguments:  [validCookies[0], [validCookies[1], void 0]],
-                            expectedErrorCode: TEST_RUN_ERRORS.actionCookieArrayArgumentsError,
+                            invalidArguments:   [validCookies[0], [validCookies[1], void 0], validCookies[2]],
+                            expectedErrorProps: {
+                                code:               TEST_RUN_ERRORS.actionCookieArrayArgumentsError,
+                                argumentPosition:   1,
+                                cookieElementIndex: 1,
+                            },
                         },
                         {
-                            invalidArguments:  [validCookies[2], [validCookies[3], []]],
-                            expectedErrorCode: TEST_RUN_ERRORS.actionCookieArrayArgumentsError,
+                            invalidArguments:   [validCookies[2], [validCookies[3], [], validCookies[1]]],
+                            expectedErrorProps: {
+                                code:               TEST_RUN_ERRORS.actionCookieArrayArgumentsError,
+                                argumentPosition:   1,
+                                cookieElementIndex: 1,
+                            },
                         },
                     ];
                 }
@@ -964,43 +1038,74 @@ describe('Utils', () => {
             it('"names" (_prepareAndValidateCookieArgumentsToGetOrDelete)', () => {
                 const invalidNamesArgumentCases = [
                     {
-                        invalidArguments:  [{}, 'https://some-url.com'],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionNamesCookieArgumentError,
+                        invalidArguments:   [{}, 'https://some-url.com'],
+                        expectedErrorProps: {
+                            code:       TEST_RUN_ERRORS.actionNamesCookieArgumentError,
+                            actualType: 'object',
+                        },
                     },
                     {
-                        invalidArguments:  [1, 'https://some-url.com'],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionNamesCookieArgumentError,
+                        invalidArguments:   [1, 'https://some-url.com'],
+                        expectedErrorProps: {
+                            code:       TEST_RUN_ERRORS.actionNamesCookieArgumentError,
+                            actualType: 'number',
+                        },
                     },
                     {
-                        invalidArguments:  [true, 'https://some-url.com'],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionNamesCookieArgumentError,
+                        invalidArguments:   [true, 'https://some-url.com'],
+                        expectedErrorProps: {
+                            code:       TEST_RUN_ERRORS.actionNamesCookieArgumentError,
+                            actualType: 'boolean',
+                        },
                     },
                     {
-                        invalidArguments:  [null, 'https://some-url.com'],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionNamesCookieArgumentError,
+                        invalidArguments:   [null, 'https://some-url.com'],
+                        expectedErrorProps: {
+                            code:       TEST_RUN_ERRORS.actionNamesCookieArgumentError,
+                            actualType: 'object',
+                        },
                     },
                     {
-                        invalidArguments:  [void 0, 'https://some-url.com'],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionNamesCookieArgumentError,
+                        invalidArguments:   [void 0, 'https://some-url.com'],
+                        expectedErrorProps: {
+                            code:       TEST_RUN_ERRORS.actionNamesCookieArgumentError,
+                            actualType: 'undefined',
+                        },
                     },
                 ];
 
                 const invalidNamesArrayArgumentCases = [
                     {
-                        invalidArguments:  [[true], 'https://some-url.com'],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionNamesArrayCookieArgumentError,
+                        invalidArguments:   [[true], 'https://some-url.com'],
+                        expectedErrorProps: {
+                            code:         TEST_RUN_ERRORS.actionNamesArrayCookieArgumentError,
+                            elementIndex: 0,
+                            actualType:   'boolean',
+                        },
                     },
                     {
-                        invalidArguments:  [[null], 'https://some-url.com'],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionNamesArrayCookieArgumentError,
+                        invalidArguments:   [['cookieName', null], 'https://some-url.com'],
+                        expectedErrorProps: {
+                            code:         TEST_RUN_ERRORS.actionNamesArrayCookieArgumentError,
+                            elementIndex: 1,
+                            actualType:   'object',
+                        },
                     },
                     {
-                        invalidArguments:  [[void 0], 'https://some-url.com'],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionNamesArrayCookieArgumentError,
+                        invalidArguments:   [['cookieName1', void 0, 'cookieName2'], 'https://some-url.com'],
+                        expectedErrorProps: {
+                            code:         TEST_RUN_ERRORS.actionNamesArrayCookieArgumentError,
+                            elementIndex: 1,
+                            actualType:   'undefined',
+                        },
                     },
                     {
-                        invalidArguments:  [['cookieName', 1], 'https://some-url.com'],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionNamesArrayCookieArgumentError,
+                        invalidArguments:   [['cookieName1', 'cookieName2', 1], 'https://some-url.com'],
+                        expectedErrorProps: {
+                            code:         TEST_RUN_ERRORS.actionNamesArrayCookieArgumentError,
+                            elementIndex: 2,
+                            actualType:   'number',
+                        },
                     },
                 ];
 
@@ -1015,51 +1120,75 @@ describe('Utils', () => {
             it('"urls" (_prepareAndValidateCookieArgumentsToGetOrDelete)', () => {
                 const invalidUrlsCookieArgumentCases = [
                     {
-                        invalidArguments:  ['cookieName', {}],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionUrlsCookieArgumentError,
+                        invalidArguments:   ['cookieName', {}],
+                        expectedErrorProps: {
+                            code:       TEST_RUN_ERRORS.actionUrlsCookieArgumentError,
+                            actualType: 'object',
+                        },
                     },
                     {
-                        invalidArguments:  ['cookieName', true],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionUrlsCookieArgumentError,
+                        invalidArguments:   ['cookieName', true],
+                        expectedErrorProps: {
+                            code:       TEST_RUN_ERRORS.actionUrlsCookieArgumentError,
+                            actualType: 'boolean',
+                        },
                     },
                     {
-                        invalidArguments:  ['cookieName', null],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionUrlsCookieArgumentError,
+                        invalidArguments:   ['cookieName', null],
+                        expectedErrorProps: {
+                            code:       TEST_RUN_ERRORS.actionUrlsCookieArgumentError,
+                            actualType: 'object',
+                        },
                     },
                     {
-                        invalidArguments:  ['cookieName', void 0],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionUrlsCookieArgumentError,
-                    },
-                    {
-                        invalidArguments:  [['cookieName1', 'cookieName2'], {}],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionUrlsCookieArgumentError,
+                        invalidArguments:   [['cookieName1', 'cookieName2'], void 0],
+                        expectedErrorProps: {
+                            code:       TEST_RUN_ERRORS.actionUrlsCookieArgumentError,
+                            actualType: 'undefined',
+                        },
                     },
                 ];
 
                 const invalidUrlsArrayCookieArgumentCases = [
                     {
-                        invalidArguments:  ['cookieName', ['https://domain.com', {}]],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionUrlsArrayCookieArgumentError,
+                        invalidArguments:   ['cookieName', [{}]],
+                        expectedErrorProps: {
+                            code:         TEST_RUN_ERRORS.actionUrlsArrayCookieArgumentError,
+                            elementIndex: 0,
+                            actualType:   'object',
+                        },
                     },
                     {
-                        invalidArguments:  ['cookieName', ['https://domain.com', true]],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionUrlsArrayCookieArgumentError,
+                        invalidArguments:   ['cookieName', ['https://domain.com', true]],
+                        expectedErrorProps: {
+                            code:         TEST_RUN_ERRORS.actionUrlsArrayCookieArgumentError,
+                            elementIndex: 1,
+                            actualType:   'boolean',
+                        },
                     },
                     {
-                        invalidArguments:  ['cookieName', ['https://domain.com', null]],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionUrlsArrayCookieArgumentError,
+                        invalidArguments:   ['cookieName', ['https://domain1.com', null, 'https://domain2.com']],
+                        expectedErrorProps: {
+                            code:         TEST_RUN_ERRORS.actionUrlsArrayCookieArgumentError,
+                            elementIndex: 1,
+                            actualType:   'object',
+                        },
                     },
                     {
-                        invalidArguments:  ['cookieName', ['https://domain.com', void 0]],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionUrlsArrayCookieArgumentError,
+                        invalidArguments:   ['cookieName', ['https://domain1.com', 'https://domain2.com', void 0]],
+                        expectedErrorProps: {
+                            code:         TEST_RUN_ERRORS.actionUrlsArrayCookieArgumentError,
+                            elementIndex: 2,
+                            actualType:   'undefined',
+                        },
                     },
                     {
-                        invalidArguments:  ['cookieName', ['https://domain.com', []]],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionUrlsArrayCookieArgumentError,
-                    },
-                    {
-                        invalidArguments:  [['cookieName1', 'cookieName2'], ['https://domain.com', {}]],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionUrlsArrayCookieArgumentError,
+                        invalidArguments:   [['cookieName1', 'cookieName2'], ['https://domain.com', []]],
+                        expectedErrorProps: {
+                            code:         TEST_RUN_ERRORS.actionUrlsArrayCookieArgumentError,
+                            elementIndex: 1,
+                            actualType:   'object',
+                        },
                     },
                 ];
 
@@ -1074,55 +1203,86 @@ describe('Utils', () => {
             it('"nameValueObjects" (_prepareAndValidateCookieArgumentsToSet)', () => {
                 const invalidNameValueObjectCookieArgumentCases = [
                     {
-                        invalidArguments:  [{}, 'https://domain.com'],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionNameValueObjectCookieArgumentError,
+                        invalidArguments:   [{}, 'https://domain.com'],
+                        expectedErrorProps: {
+                            code: TEST_RUN_ERRORS.actionNameValueObjectCookieArgumentError,
+                        },
                     },
                     {
-                        invalidArguments:  [true, 'https://domain.com'],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionNameValueObjectCookieArgumentError,
+                        invalidArguments:   [true, 'https://domain.com'],
+                        expectedErrorProps: {
+                            code: TEST_RUN_ERRORS.actionNameValueObjectCookieArgumentError,
+                        },
                     },
                     {
-                        invalidArguments:  [null, 'https://domain.com'],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionNameValueObjectCookieArgumentError,
+                        invalidArguments:   [null, 'https://domain.com'],
+                        expectedErrorProps: {
+                            code: TEST_RUN_ERRORS.actionNameValueObjectCookieArgumentError,
+                        },
                     },
                     {
-                        invalidArguments:  [void 0, 'https://domain.com'],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionNameValueObjectCookieArgumentError,
+                        invalidArguments:   [void 0, 'https://domain.com'],
+                        expectedErrorProps: {
+                            code: TEST_RUN_ERRORS.actionNameValueObjectCookieArgumentError,
+                        },
                     },
                     {
-                        invalidArguments:  [{ someCookieName: 'value', unexpectedAdditionalProp: 'value' }, 'https://domain.com'],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionNameValueObjectCookieArgumentError,
+                        invalidArguments:   [{ someCookieName: 'value', unexpectedAdditionalProp: 'value' }, 'https://domain.com'],
+                        expectedErrorProps: {
+                            code: TEST_RUN_ERRORS.actionNameValueObjectCookieArgumentError,
+                        },
                     },
                 ];
 
                 const invalidNameValueObjectsCookieArgumentCases = [
                     {
-                        invalidArguments:  [[{ someCookieName1: 'value1' }, {}], 'https://domain.com'],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionNameValueObjectsCookieArgumentError,
+                        invalidArguments:   [[{}], 'https://domain.com'],
+                        expectedErrorProps: {
+                            code:         TEST_RUN_ERRORS.actionNameValueObjectsCookieArgumentError,
+                            elementIndex: 0,
+                        },
                     },
                     {
-                        invalidArguments:  [[{ someCookieName1: 'value1' }, true], 'https://domain.com'],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionNameValueObjectsCookieArgumentError,
+                        invalidArguments:   [[{ someCookieName1: 'value1' }, { someCookieName2: 'value2' }, true], 'https://domain.com'],
+                        expectedErrorProps: {
+                            code:         TEST_RUN_ERRORS.actionNameValueObjectsCookieArgumentError,
+                            elementIndex: 2,
+                        },
                     },
                     {
-                        invalidArguments:  [[{ someCookieName1: 'value1' }, null], 'https://domain.com'],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionNameValueObjectsCookieArgumentError,
+                        invalidArguments:   [[{ someCookieName1: 'value1' }, null, { someCookieName2: 'value2' }], 'https://domain.com'],
+                        expectedErrorProps: {
+                            code:         TEST_RUN_ERRORS.actionNameValueObjectsCookieArgumentError,
+                            elementIndex: 1,
+                        },
                     },
                     {
-                        invalidArguments:  [[{ someCookieName1: 'value1' }, void 0], 'https://domain.com'],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionNameValueObjectsCookieArgumentError,
+                        invalidArguments:   [[{ someCookieName1: 'value1' }, void 0], 'https://domain.com'],
+                        expectedErrorProps: {
+                            code:         TEST_RUN_ERRORS.actionNameValueObjectsCookieArgumentError,
+                            elementIndex: 1,
+                        },
                     },
                     {
-                        invalidArguments:  [[{ someCookieName1: 'value1' }, []], 'https://domain.com'],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionNameValueObjectsCookieArgumentError,
+                        invalidArguments:   [[{ someCookieName1: 'value1' }, []], 'https://domain.com'],
+                        expectedErrorProps: {
+                            code:         TEST_RUN_ERRORS.actionNameValueObjectsCookieArgumentError,
+                            elementIndex: 1,
+                        },
                     },
                     {
-                        invalidArguments:  [[{ someCookieName: 'value', unexpectedAdditionalProp: 'value' }], 'https://domain.com'],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionNameValueObjectsCookieArgumentError,
+                        invalidArguments:   [[{ someCookieName: 'value', unexpectedAdditionalProp: 'value' }], 'https://domain.com'],
+                        expectedErrorProps: {
+                            code:         TEST_RUN_ERRORS.actionNameValueObjectsCookieArgumentError,
+                            elementIndex: 0,
+                        },
                     },
                     {
-                        invalidArguments:  [[{ someCookieName1: 'value1' }, { someCookieName2: 'value2', unexpectedAdditionalProp: 'value' }], 'https://domain.com'],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionNameValueObjectsCookieArgumentError,
+                        invalidArguments:   [[{ someCookieName1: 'value1' }, { someCookieName2: 'value2', unexpectedAdditionalProp: 'value' }], 'https://domain.com'],
+                        expectedErrorProps: {
+                            code:         TEST_RUN_ERRORS.actionNameValueObjectsCookieArgumentError,
+                            elementIndex: 1,
+                        },
                     },
                 ];
 
@@ -1137,43 +1297,75 @@ describe('Utils', () => {
             it('"url" (_prepareAndValidateCookieArgumentsToSet)', () => {
                 const invalidUrlTypeArgumentCases = [
                     {
-                        invalidArguments:  [{ someCookieName1: 'value1' }, ''],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionStringArgumentError,
+                        invalidArguments:   [{ someCookieName1: 'value1' }, ''],
+                        expectedErrorProps: {
+                            code:         TEST_RUN_ERRORS.actionStringArgumentError,
+                            argumentName: 'url',
+                            actualValue:  '""',
+
+                        },
                     },
                     {
-                        invalidArguments:  [{ someCookieName1: 'value1' }, {}],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionStringArgumentError,
+                        invalidArguments:   [[{ someCookieName1: 'value1' }], {}],
+                        expectedErrorProps: {
+                            code:         TEST_RUN_ERRORS.actionStringArgumentError,
+                            argumentName: 'url',
+                            actualValue:  'object',
+
+                        },
                     },
                     {
-                        invalidArguments:  [[{ someCookieName1: 'value1' }], {}],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionStringArgumentError,
+                        invalidArguments:   [{ someCookieName1: 'value1' }, true],
+                        expectedErrorProps: {
+                            code:         TEST_RUN_ERRORS.actionStringArgumentError,
+                            argumentName: 'url',
+                            actualValue:  'boolean',
+
+                        },
                     },
                     {
-                        invalidArguments:  [{ someCookieName1: 'value1' }, true],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionStringArgumentError,
+                        invalidArguments:   [{ someCookieName1: 'value1' }, null],
+                        expectedErrorProps: {
+                            code:         TEST_RUN_ERRORS.actionStringArgumentError,
+                            argumentName: 'url',
+                            actualValue:  'object',
+
+                        },
                     },
                     {
-                        invalidArguments:  [{ someCookieName1: 'value1' }, null],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionStringArgumentError,
+                        invalidArguments:   [{ someCookieName1: 'value1' }, void 0],
+                        expectedErrorProps: {
+                            code:         TEST_RUN_ERRORS.actionStringArgumentError,
+                            argumentName: 'url',
+                            actualValue:  'undefined',
+
+                        },
                     },
                     {
-                        invalidArguments:  [{ someCookieName1: 'value1' }, void 0],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionStringArgumentError,
-                    },
-                    {
-                        invalidArguments:  [{ someCookieName1: 'value1' }, []],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionStringArgumentError,
+                        invalidArguments:   [{ someCookieName1: 'value1' }, []],
+                        expectedErrorProps: {
+                            code:         TEST_RUN_ERRORS.actionStringArgumentError,
+                            argumentName: 'url',
+                            actualValue:  'object',
+
+                        },
                     },
                 ];
 
                 const invalidUrlArgumentCases = [
                     {
-                        invalidArguments:  [{ someCookieName1: 'value1' }, 'invalid-url'],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionUrlArgumentError,
+                        invalidArguments:   [{ someCookieName1: 'value1' }, 'invalid-url'],
+                        expectedErrorProps: {
+                            code:         TEST_RUN_ERRORS.actionUrlArgumentError,
+                            argumentName: 'url',
+                        },
                     },
                     {
-                        invalidArguments:  [{ someCookieName1: 'value1' }, 'https://'],
-                        expectedErrorCode: TEST_RUN_ERRORS.actionUrlArgumentError,
+                        invalidArguments:   [{ someCookieName1: 'value1' }, 'https://'],
+                        expectedErrorProps: {
+                            code:         TEST_RUN_ERRORS.actionUrlArgumentError,
+                            argumentName: 'url',
+                        },
                     },
                 ];
 
