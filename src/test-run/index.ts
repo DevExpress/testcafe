@@ -780,7 +780,7 @@ export default class TestRun extends AsyncEventEmitter {
         return consoleMessageCopy[String(this.activeWindowId)];
     }
 
-    private _createGetCookiesResultPromise (cookies: any, names: string | string[], urls: string | string[]): Promise<any> {
+    private _createGetCookiesResultPromise (cookies: any[], names: string[], urls: string[]): Promise<any> {
         const cookiesPromises = [];
 
         if (cookies) {
@@ -851,7 +851,7 @@ export default class TestRun extends AsyncEventEmitter {
         });
     }
 
-    private _createSetCookiesResultPromise (cookies: any, nameValueObjects: Record<string, string> | Record<string, string>[], url: string): Promise<void> {
+    private _createSetCookiesResultPromise (cookies: any[], nameValueObjects: Record<string, string>[], url: string): Promise<void> {
         const cookiesToSet = [];
 
         if (cookies) {
@@ -880,7 +880,7 @@ export default class TestRun extends AsyncEventEmitter {
         return this.session.cookies.setCookiesByApi(cookiesToSet);
     }
 
-    private _createDeleteCookiesResultPromise (cookies: any, names: string | string[], urls: string | string[]): Promise<any> {
+    private _createDeleteCookiesResultPromise (cookies: any[], names: string[], urls: string[]): Promise<any> {
         const cookiesPromises = [];
 
         if (cookies) {
@@ -924,7 +924,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     public async _enqueueGetCookies (command: CommandBase): Promise<unknown> {
-        const cookies = command.cookies as any;
+        const cookies = command.cookies as any[];
 
         const names = command.names as string[];
         const urls  = command.urls as string[];
@@ -935,9 +935,9 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     public async _enqueueSetCookies (command: CommandBase): Promise<void> {
-        const cookies = command.cookies;
+        const cookies = command.cookies as any[];
 
-        const nameValueObjects = command.nameValueObjects as Record<string, string> | Record<string, string>[];
+        const nameValueObjects = command.nameValueObjects as Record<string, string>[];
         const url              = command.url as string;
 
         const cookiesPromise = this._createSetCookiesResultPromise(cookies, nameValueObjects, url);
@@ -946,10 +946,10 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     public async _enqueueDeleteCookies (command: CommandBase): Promise<void> {
-        const cookies = command.cookies as any;
+        const cookies = command.cookies as any[];
 
         const names = command.names as string[];
-        const urls  = command.urls as string;
+        const urls  = command.urls as string[];
 
         const cookiesPromise = this._createDeleteCookiesResultPromise(cookies, names, urls);
 

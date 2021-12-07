@@ -827,8 +827,8 @@ module.exports = [
         command: {
             type: 'get-cookies',
             actionId: 'GetCookiesCommand',
-            names: 'cookieName',
-            urls: 'https://domain.com',
+            names: ['cookieName'],
+            urls: ['https://domain.com'],
             cookies: undefined
         },
         test: { id: 'test-id', name: 'test-name', phase: 'initial' },
@@ -841,7 +841,7 @@ module.exports = [
         command: {
             type: 'set-cookies',
             actionId: 'SetCookiesCommand',
-            nameValueObjects: { cookieName: 'cookieValue' },
+            nameValueObjects: [{ cookieName: 'cookieValue' }],
             url: 'https://domain.com',
             cookies: undefined
         },
@@ -856,7 +856,7 @@ module.exports = [
             type: 'delete-cookies',
             actionId: 'DeleteCookiesCommand',
             names: ['cookieName1', 'cookieName2'],
-            urls: 'https://domain.com',
+            urls: ['https://domain.com'],
             cookies: undefined
         },
         test: { id: 'test-id', name: 'test-name', phase: 'initial' },

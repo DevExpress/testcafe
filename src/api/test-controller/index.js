@@ -5,9 +5,7 @@ import {
     assign,
     isNil as isNullOrUndefined,
     flattenDeep,
-    flatten,
     noop,
-    castArray,
 } from 'lodash';
 
 import { getCallsiteForMethod } from '../../errors/get-callsite';
@@ -71,23 +69,17 @@ import { isSelector } from '../../client-functions/types';
 import TestRunProxy from '../../services/compiler/test-run-proxy';
 
 import {
-    ActionNoUrlForNameValueObjectsArgumentError,
-    ActionRequiredSetCookieArgumentsAreMissedError,
     MultipleWindowsModeIsDisabledError,
     MultipleWindowsModeIsNotAvailableInRemoteBrowserError,
 } from '../../errors/test-run';
 
-import {
-    getCookieToGetOrDeleteArgumentsValidationError,
-    getCookieToSetArgumentsValidationError,
-    namesCookieArgument,
-    nameValueObjectsCookieArgument,
-    urlCookieArgument,
-    urlsCookieArgument,
-} from '../../test-run/commands/validations/argument';
-
 import { AssertionCommand } from '../../test-run/commands/assertion';
 import { getCallsiteId, getCallsiteStackFrameString } from '../../utils/callsite';
+
+import {
+    prepareAndValidateCookieArgumentsToGetOrDelete,
+    prepareAndValidateCookieArgumentsToSet,
+} from '../../utils/prepare-and-validate-cookie-arguments';
 
 const originalThen = Promise.resolve().then;
 
@@ -230,114 +222,18 @@ export default class TestController {
         return this._enqueueCommand(DispatchEventCommand, { selector, eventName, options, relatedTarget: options.relatedTarget });
     }
 
-    _prepareAndValidateCookieArgumentsToGetOrDelete (callsite, ...args) {
-        let cookies = void 0;
-
-        let names = void 0;
-        let urls  = void 0;
-
-        if (args.length === 0)
-            return [cookies, names, urls];
-
-        const cookieArgumentsError = getCookieToGetOrDeleteArgumentsValidationError(callsite, args);
-
-        if (args.length > 2) {
-            if (cookieArgumentsError)
-                throw cookieArgumentsError;
-
-            cookies = flatten(args);
-        }
-        else if (args.length === 2) {
-            if (cookieArgumentsError) {
-                const namesArgumentError = namesCookieArgument(callsite, args[0]);
-                const urlsArgumentError  = urlsCookieArgument(callsite, args[1]);
-
-                if (namesArgumentError)
-                    throw urlsArgumentError ? cookieArgumentsError : namesArgumentError;
-                else if (urlsArgumentError)
-                    throw urlsArgumentError;
-
-                names = castArray(args[0]);
-                urls  = castArray(args[1]);
-            }
-            else
-                cookies = flatten(args);
-        }
-        else if (args.length === 1) {
-            if (cookieArgumentsError) {
-                const namesArgumentError = namesCookieArgument(callsite, args[0]);
-
-                if (namesArgumentError)
-                    throw cookieArgumentsError;
-
-                names = castArray(args[0]);
-            }
-            else
-                cookies = flatten(args);
-        }
-
-        return { cookies, names, urls };
-    }
-
     [delegatedAPI(GetCookiesCommand.methodName)] (...args) {
         const callsite = getCallsiteForMethod(GetCookiesCommand.methodName);
 
-        const commandArguments = this._prepareAndValidateCookieArgumentsToGetOrDelete(callsite, ...args);
+        const commandArguments = prepareAndValidateCookieArgumentsToGetOrDelete(callsite, ...args);
 
         return this._enqueueCommand(GetCookiesCommand, commandArguments);
-    }
-
-    _prepareAndValidateCookieArgumentsToSet (callsite, ...args) {
-        let cookies = void 0;
-
-        let nameValueObjects = void 0;
-        let url              = void 0;
-
-        if (args.length === 0)
-            throw new ActionRequiredSetCookieArgumentsAreMissedError(callsite);
-
-        const cookieArgumentsError = getCookieToSetArgumentsValidationError(callsite, args);
-
-        if (args.length > 2) {
-            if (cookieArgumentsError)
-                throw cookieArgumentsError;
-
-            cookies = flatten(args);
-        }
-        else if (args.length === 2) {
-            if (cookieArgumentsError) {
-                const nameValueArgumentError = nameValueObjectsCookieArgument(callsite, args[0]);
-                const urlArgumentError       = urlCookieArgument(callsite, args[1]);
-
-                if (nameValueArgumentError)
-                    throw urlArgumentError ? cookieArgumentsError : nameValueArgumentError;
-                else if (urlArgumentError)
-                    throw urlArgumentError;
-
-                nameValueObjects = castArray(args[0]);
-                url              = castArray(args[1]);
-            }
-            else
-                cookies = flatten(args);
-
-        }
-        else if (args.length === 1) {
-            if (cookieArgumentsError) {
-                const nameValueArgumentError = nameValueObjectsCookieArgument(callsite, args[0]);
-
-                throw nameValueArgumentError ? cookieArgumentsError : new ActionNoUrlForNameValueObjectsArgumentError(callsite);
-            }
-
-            cookies = flatten(args);
-        }
-
-        return { cookies, nameValueObjects, url };
     }
 
     [delegatedAPI(SetCookiesCommand.methodName)] (...args) {
         const callsite = getCallsiteForMethod(SetCookiesCommand.methodName);
 
-        const commandArguments = this._prepareAndValidateCookieArgumentsToSet(callsite, ...args);
+        const commandArguments = prepareAndValidateCookieArgumentsToSet(callsite, ...args);
 
         return this._enqueueCommand(SetCookiesCommand, commandArguments);
     }
@@ -345,7 +241,7 @@ export default class TestController {
     [delegatedAPI(DeleteCookiesCommand.methodName)] (...args) {
         const callsite = getCallsiteForMethod(DeleteCookiesCommand.methodName);
 
-        const comamndArguments = this._prepareAndValidateCookieArgumentsToGetOrDelete(callsite, ...args);
+        const comamndArguments = prepareAndValidateCookieArgumentsToGetOrDelete(callsite, ...args);
 
         return this._enqueueCommand(DeleteCookiesCommand, comamndArguments);
     }
