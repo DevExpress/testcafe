@@ -165,6 +165,6 @@ export default class ClientFunctionExecutor {
     public async getNode (args: SelectorNodeArgs): Promise<ServerNode> {
         const objectId = await this.executeSelector(args);
 
-        return describeNode(objectId);
+        return describeNode(args.DOM, objectId);
     }
 }

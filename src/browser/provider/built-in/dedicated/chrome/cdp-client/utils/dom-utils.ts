@@ -5,7 +5,7 @@ import * as clientsManager from '../clients-manager';
 import { ServerNode } from '../types';
 
 export async function getIframeByElement ({ objectId }: ServerNode): Promise<ServerNode | null> {
-    const { Runtime } = clientsManager.getClient();
+    const { Runtime, DOM } = clientsManager.getClient();
 
     const frame = await Runtime.callFunctionOn({
         functionDeclaration: `function () {
@@ -15,13 +15,13 @@ export async function getIframeByElement ({ objectId }: ServerNode): Promise<Ser
     });
 
     if (frame.result.value !== null)
-        return describeNode(frame.result.objectId || '');
+        return describeNode(DOM, frame.result.objectId || '');
 
     return null;
 }
 
 export async function getIFrameByIndex (objectId: string | undefined, index: number): Promise<ServerNode | null> {
-    const { Runtime } = clientsManager.getClient();
+    const { Runtime, DOM } = clientsManager.getClient();
 
     const frame = await Runtime.callFunctionOn({
         functionDeclaration: `function (index) {
@@ -34,7 +34,7 @@ export async function getIFrameByIndex (objectId: string | undefined, index: num
     const frameObjectId = frame.result.objectId;
 
     if (frameObjectId)
-        return describeNode(frameObjectId);
+        return describeNode(DOM, frameObjectId);
 
     return null;
 }
@@ -103,5 +103,5 @@ export async function getScrollingElement (node?: ServerNode): Promise<ServerNod
 
     const { result } = await client.Runtime.callFunctionOn(args);
 
-    return describeNode(result.objectId || '');
+    return describeNode(client.DOM, result.objectId || '');
 }
