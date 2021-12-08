@@ -16,7 +16,7 @@ import {
 import { AutomationErrorCtors } from '../../../../../../shared/types';
 import ExecutionContext from './execution-context';
 import { ServerNode } from './types';
-
+import { describeNode } from './utils';
 
 interface EvaluationError extends Error {
     request: EvaluateRequest;
@@ -164,9 +164,7 @@ export default class ClientFunctionExecutor {
 
     public async getNode (args: SelectorNodeArgs): Promise<ServerNode> {
         const objectId = await this.executeSelector(args);
-        const object   = { objectId };
-        const { node } = await args.DOM.describeNode(object);
 
-        return Object.assign(node, object);
+        return describeNode(objectId);
     }
 }

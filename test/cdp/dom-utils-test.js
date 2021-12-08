@@ -13,13 +13,13 @@ describe('dom utils', () => {
     beforeEach(utils.beforeEach);
 
     it('isHtmlElement', async () => {
-        expect(await isHtmlElement(utils.getClient(), 'html')).eql(true);
-        expect(await isHtmlElement(utils.getClient(), 'body')).eql(false);
+        expect(isHtmlElement(await utils.getNode('html'))).eql(true);
+        expect(isHtmlElement(await utils.getNode('body'))).eql(false);
     });
 
     it('isBodyElement', async () => {
-        expect(await isBodyElement(utils.getClient(), 'html')).eql(false);
-        expect(await isBodyElement(utils.getClient(), 'body')).eql(true);
+        expect(await isBodyElement(await utils.getNode('html'))).eql(false);
+        expect(await isBodyElement(await utils.getNode('body'))).eql(true);
     });
 });
 

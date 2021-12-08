@@ -19,7 +19,9 @@ describe('style utils', () => {
     const selector = '#target6';
 
     it('getBordersWidth', async () => {
-        expect(await getBordersWidth(utils.getClient(), selector)).eql({
+        const node = await utils.getNode(selector);
+
+        expect(await getBordersWidth(node)).eql({
             top:    1,
             right:  2,
             bottom: 3,
@@ -28,7 +30,9 @@ describe('style utils', () => {
     });
 
     it('getElementPadding', async () => {
-        expect(await getElementPadding(utils.getClient(), selector)).eql({
+        const node = await utils.getNode(selector);
+
+        expect(await getElementPadding(node)).eql({
             top:    4,
             right:  3,
             bottom: 2,
@@ -37,26 +41,28 @@ describe('style utils', () => {
     });
 
     it('getElementScroll', async () => {
-        expect(await getElementScroll(utils.getClient(), selector)).eql({
+        const node = await utils.getNode(selector);
+
+        expect(await getElementScroll(node)).eql({
             left: 0,
             top:  0,
         });
 
-        await utils.setScroll(utils.getClient(), 'document.querySelector(\'#target6\')', { top: 10, left: 20 });
+        await utils.setScroll('document.querySelector(\'#target6\')', { top: 10, left: 20 });
 
-        expect(await getElementScroll(utils.getClient(), selector)).eql({
+        expect(await getElementScroll(node)).eql({
             left: 20,
             top:  10,
         });
     });
 
     it('getWindowDimensions', async () => {
-        let dimensions = await getWindowDimensions(utils.getClient());
+        let dimensions = await getWindowDimensions();
 
         expect(dimensions.right).gt(500);
         expect(dimensions.bottom).gt(500);
 
-        dimensions = await getWindowDimensions(utils.getClient(), ExecutionContext.top.children[0]);
+        dimensions = await getWindowDimensions(ExecutionContext.top.children[0]);
 
         expect(dimensions).eql({
             right:  83,
@@ -67,25 +73,25 @@ describe('style utils', () => {
     });
 
     it('getDocumentScroll', async () => {
-        let scroll = await getDocumentScroll(utils.getClient());
+        let scroll = await getDocumentScroll();
 
         expect(scroll).eql({ left: 0, top: 0 });
 
-        await utils.setScroll(utils.getClient(), 'window', { top: 200, left: 100 });
+        await utils.setScroll('window', { top: 200, left: 100 });
 
-        scroll = await getDocumentScroll(utils.getClient());
+        scroll = await getDocumentScroll();
 
         expect(scroll).eql({ left: 100, top: 200 });
 
-        const node = await utils.getClient().Runtime.evaluate({ expression: 'document.querySelector(\'iframe\').contentDocument.querySelector(\'div\')' });
+        const node = await utils.getNode({ expression: 'document.querySelector(\'iframe\').contentDocument.querySelector(\'div\')' });
 
-        scroll = await getDocumentScroll(utils.getClient(), node);
+        scroll = await getDocumentScroll(node);
 
         expect(scroll).eql({ left: 0, top: 0 });
 
-        await utils.setScroll(utils.getClient(), 'document.querySelector(\'iframe\').contentDocument.scrollingElement', { left: 50, top: 10 });
+        await utils.setScroll('document.querySelector(\'iframe\').contentDocument.scrollingElement', { left: 50, top: 10 });
 
-        scroll = await getDocumentScroll(utils.getClient(), node);
+        scroll = await getDocumentScroll(node);
 
         expect(scroll).eql({ left: 50, top: 10 });
     });
