@@ -1,16 +1,16 @@
-import { ProtocolApi } from 'chrome-remote-interface';
-import { ClientObject, PositionDimensions } from '../interfaces';
 import { LeftTopValues } from '../../../../../../../shared/utils/values/axis-values';
 import BoundaryValues, { BoundaryValuesData } from '../../../../../../../shared/utils/values/boundary-values';
 import { Dictionary } from '../../../../../../../configuration/interfaces';
 import Protocol from 'devtools-protocol/types/protocol';
-import { getObjectId } from './index';
 import { getScrollingElement, getIframeByElement } from './dom-utils';
 import ExecutionContext from '../execution-context';
+import * as clientsManager from '../clients-manager';
+import { ServerNode, PositionDimensions } from '../types';
 
-async function getPadding (client: ProtocolApi, objectId: string): Promise<BoundaryValuesData> {
-    const { nodeId } = await client.DOM.requestNode({ objectId });
-    const style      = await getStyleProperties(client, nodeId, 'padding-right', 'padding-bottom', 'padding-left', 'padding-top');
+async function getPadding (node: ServerNode): Promise<BoundaryValuesData> {
+    const client     = clientsManager.getClient();
+    const { nodeId } = await client.DOM.requestNode(node);
+    const style      = await getStyleProperties(nodeId, 'padding-right', 'padding-bottom', 'padding-left', 'padding-top');
 
     const right  = parseInt(style['padding-right'], 10);
     const bottom = parseInt(style['padding-bottom'], 10);
@@ -20,7 +20,9 @@ async function getPadding (client: ProtocolApi, objectId: string): Promise<Bound
     return new BoundaryValues(top, right, bottom, left);
 }
 
-export async function getStyleProperties ({ CSS }: ProtocolApi, nodeId: number, ...names: string[]): Promise<Dictionary<string>> {
+export async function getStyleProperties (nodeId: number, ...names: string[]): Promise<Dictionary<string>> {
+    const { CSS } = clientsManager.getClient();
+
     const properties: Dictionary<string> = { };
     const style                          = await CSS.getComputedStyleForNode({ nodeId });
 
@@ -32,9 +34,11 @@ export async function getStyleProperties ({ CSS }: ProtocolApi, nodeId: number, 
     return properties;
 }
 
-export async function getProperties ({ Runtime }: ProtocolApi, objectId: string, ...names: string[]): Promise<Dictionary<string>> {
+export async function getProperties (node: ServerNode, ...names: string[]): Promise<Dictionary<string>> {
+    const { Runtime } = clientsManager.getClient();
+
     const properties: Dictionary<string> = { };
-    const { result }                     = await Runtime.getProperties({ objectId });
+    const { result }                     = await Runtime.getProperties(node);
 
     result.filter(property => names.includes(property.name))
         .forEach(property => {
@@ -44,26 +48,27 @@ export async function getProperties ({ Runtime }: ProtocolApi, objectId: string,
     return properties;
 }
 
-export async function getScroll (client: ProtocolApi, objectId: string): Promise<LeftTopValues<number>> {
-    const { scrollLeft, scrollTop } = await getProperties(client, objectId, 'scrollLeft', 'scrollTop');
+export async function getScroll (node: ServerNode): Promise<LeftTopValues<number>> {
+    const { scrollLeft, scrollTop } = await getProperties(node, 'scrollLeft', 'scrollTop');
 
     return { left: Number(scrollLeft), top: Number(scrollTop) };
 }
 
-export async function getBoxModel ({ DOM }: ProtocolApi, objectId: string): Promise<Protocol.DOM.BoxModel> {
-    const boxModel = await DOM.getBoxModel({ objectId });
+export async function getBoxModel (node: ServerNode): Promise<Protocol.DOM.BoxModel> {
+    const { DOM }  = clientsManager.getClient();
+    const boxModel = await DOM.getBoxModel({ objectId: node.objectId });
 
     return boxModel.model;
 }
 
-async function getElementDimensions (client: ProtocolApi, objectId: string): Promise<PositionDimensions> {
+async function getElementDimensions (node: ServerNode): Promise<PositionDimensions> {
     // NOTE: for some reason this method call is required for CSS.getComputedStyleForNode
     // TODO: remove this line after the problem is clear
-    await client.DOM.getDocument({ });
+    await clientsManager.getClient().DOM.getDocument({ });
 
-    const boxModel = await getBoxModel(client, objectId);
-    const scroll   = await getScroll(client, objectId);
-    const paddings = await getPadding(client, objectId);
+    const boxModel = await getBoxModel(node);
+    const scroll   = await getScroll(node);
+    const paddings = await getPadding(node);
 
     const { width, height, border, padding, content } = boxModel;
 
@@ -101,14 +106,12 @@ async function getElementDimensions (client: ProtocolApi, objectId: string): Pro
     };
 }
 
-export async function getClientDimensions (client: ProtocolApi, element: ClientObject): Promise<PositionDimensions> {
-    const objectId            = await getObjectId(client, element);
-    const elementDimensions   = await getElementDimensions(client, objectId);
-    const parentFrame         = await getIframeByElement(client, objectId);
-    const parentFrameObjectId = parentFrame.result?.objectId?.toString();
+export async function getClientDimensions (node: ServerNode): Promise<PositionDimensions> {
+    const elementDimensions = await getElementDimensions(node);
+    const parentFrame       = await getIframeByElement(node);
 
-    if (parentFrameObjectId) {
-        const frameBoxModel = await getBoxModel(client, parentFrameObjectId);
+    if (parentFrame) {
+        const frameBoxModel = await getBoxModel(parentFrame);
 
         elementDimensions.left   -= frameBoxModel.content[0];
         elementDimensions.top    -= frameBoxModel.content[1];
@@ -119,26 +122,23 @@ export async function getClientDimensions (client: ProtocolApi, element: ClientO
     return elementDimensions;
 }
 
-export async function getBordersWidth (client: ProtocolApi, element: ClientObject): Promise<BoundaryValuesData> {
-    const objectId   = await getObjectId(client, element);
-    const dimensions = await getElementDimensions(client, objectId);
+export async function getBordersWidth (node: ServerNode): Promise<BoundaryValuesData> {
+    const dimensions = await getElementDimensions(node);
 
     return dimensions.border;
 }
 
-export async function getElementPadding (client: ProtocolApi, element: ClientObject): Promise<BoundaryValuesData> {
-    const objectId = await getObjectId(client, element);
-
-    return getPadding(client, objectId);
+export async function getElementPadding (node: ServerNode): Promise<BoundaryValuesData> {
+    return getPadding(node);
 }
 
-export async function getElementScroll (client: ProtocolApi, element: ClientObject): Promise<LeftTopValues<number>> {
-    const objectId = await getObjectId(client, element);
-
-    return getScroll(client, objectId);
+export async function getElementScroll (node: ServerNode): Promise<LeftTopValues<number>> {
+    return getScroll(node);
 }
 
-export async function getWindowDimensions ({ Runtime }: ProtocolApi, executionContext?: ExecutionContext): Promise<BoundaryValues> {
+export async function getWindowDimensions (executionContext?: ExecutionContext): Promise<BoundaryValues> {
+    const { Runtime } = clientsManager.getClient();
+
     const args: Protocol.Runtime.EvaluateRequest = {
         expression: `({
             width: document.documentElement.clientWidth,
@@ -156,8 +156,8 @@ export async function getWindowDimensions ({ Runtime }: ProtocolApi, executionCo
     return new BoundaryValues(0, width, height, 0);
 }
 
-export async function getDocumentScroll (client: ProtocolApi, element?: ClientObject): Promise<LeftTopValues<number>> {
-    const document = await getScrollingElement(client, element);
+export async function getDocumentScroll (node: ServerNode): Promise<LeftTopValues<number>> {
+    const document = await getScrollingElement(node);
 
-    return getElementScroll(client, document);
+    return getElementScroll(document);
 }

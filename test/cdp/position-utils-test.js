@@ -19,33 +19,33 @@ describe('position utils', () => {
     beforeEach(utils.beforeEach);
 
     it('getClientPosition', async () => {
-        const el1 = '#target1';
-        const el2 = '#target2';
-        const el3 = '#target3';
+        const el1 = await utils.getNode('#target1');
+        const el2 = await utils.getNode('#target2');
+        const el3 = await utils.getNode('#target3');
 
-        let position1 = await getClientPosition(utils.getClient(), el1);
-        let position2 = await getClientPosition(utils.getClient(), el2);
-        let position3 = await getClientPosition(utils.getClient(), el3);
+        let position1 = await getClientPosition(el1);
+        let position2 = await getClientPosition(el2);
+        let position3 = await getClientPosition(el3);
 
         expect(position1).eql({ x: 31, y: 26 });
         expect(position2).eql({ x: 227, y: 207 });
         expect(position3).eql({ x: 31, y: 1506 });
 
-        await utils.setScroll(utils.getClient(), 'window', { top: 300, left: 0 });
+        await utils.setScroll('window', { top: 300, left: 0 });
 
-        position1 = await getClientPosition(utils.getClient(), el1);
-        position2 = await getClientPosition(utils.getClient(), el2);
-        position3 = await getClientPosition(utils.getClient(), el3);
+        position1 = await getClientPosition(el1);
+        position2 = await getClientPosition(el2);
+        position3 = await getClientPosition(el3);
 
         expect(position1).eql({ x: 31, y: -274 });
         expect(position2).eql({ x: 227, y: -93 });
         expect(position3).eql({ x: 31, y: 1206 });
 
-        await utils.setScroll(utils.getClient(), 'window', { top: 600, left: 100 });
+        await utils.setScroll('window', { top: 600, left: 100 });
 
-        position1 = await getClientPosition(utils.getClient(), el1);
-        position2 = await getClientPosition(utils.getClient(), el2);
-        position3 = await getClientPosition(utils.getClient(), el3);
+        position1 = await getClientPosition(el1);
+        position2 = await getClientPosition(el2);
+        position3 = await getClientPosition(el3);
 
         expect(position1).eql({ x: -69, y: -574 });
         expect(position2).eql({ x: 127, y: -393 });
@@ -54,7 +54,7 @@ describe('position utils', () => {
 
     it('getClientDimensions', async () => {
         let node       = null;
-        let dimensions = await getClientDimensions(utils.getClient(), 'html');
+        let dimensions = await getClientDimensions(await utils.getNode('html'));
 
         expect(dimensions.border).eql({ bottom: 0, left: 0, right: 0, top: 0 });
         expect(dimensions.bottom).eql(dimensions.height);
@@ -63,7 +63,7 @@ describe('position utils', () => {
         expect(dimensions.right).eql(dimensions.width);
         expect(dimensions.scroll).eql({ left: 0, top: 0 });
 
-        dimensions = await getClientDimensions(utils.getClient(), '#target1');
+        dimensions = await getClientDimensions(await utils.getNode('#target1'));
 
         expect(dimensions).eql({
             border: {
@@ -94,7 +94,7 @@ describe('position utils', () => {
             width: 34,
         });
 
-        dimensions = await getClientDimensions(utils.getClient(), '#target2');
+        dimensions = await getClientDimensions(await utils.getNode('#target2'));
 
         expect(dimensions).eql({
             border: {
@@ -125,9 +125,9 @@ describe('position utils', () => {
             width: 27,
         });
 
-        await utils.setScroll(utils.getClient(), 'document.querySelector(\'#scrollableDiv\')', { top: 20, left: 10 });
+        await utils.setScroll('document.querySelector(\'#scrollableDiv\')', { top: 20, left: 10 });
 
-        dimensions = await getClientDimensions(utils.getClient(), '#target2');
+        dimensions = await getClientDimensions(await utils.getNode('#target2'));
 
         expect(dimensions).eql({
             border: {
@@ -158,7 +158,7 @@ describe('position utils', () => {
             width: 27,
         });
 
-        dimensions = await getClientDimensions(utils.getClient(), '#scrollableDiv');
+        dimensions = await getClientDimensions(await utils.getNode('#scrollableDiv'));
 
         expect(dimensions).eql({
             border: {
@@ -189,8 +189,8 @@ describe('position utils', () => {
             width: 108,
         });
 
-        node       = await utils.getClient().Runtime.evaluate({ expression: 'document.querySelector(\'iframe\').contentDocument.querySelector(\'div\')' });
-        dimensions = await getClientDimensions(utils.getClient(), node);
+        node       = await utils.getNode({ expression: 'document.querySelector(\'iframe\').contentDocument.querySelector(\'div\')' });
+        dimensions = await getClientDimensions(node);
 
         expect(dimensions).eql({
             border: {
@@ -223,27 +223,27 @@ describe('position utils', () => {
     });
 
     it('containsOffset', async () => {
-        const selector = '#scrollableDiv';
+        const node = await utils.getNode('#scrollableDiv');
 
-        expect(await containsOffset(utils.getClient(), selector, 10, void 0)).eql(true);
-        expect(await containsOffset(utils.getClient(), selector, void 0, 10)).eql(true);
-        expect(await containsOffset(utils.getClient(), selector, -1, -1)).eql(false);
-        expect(await containsOffset(utils.getClient(), selector, 10, 10)).eql(true);
-        expect(await containsOffset(utils.getClient(), selector, 200, 200)).eql(true);
-        expect(await containsOffset(utils.getClient(), selector, 220, 220)).eql(false);
+        expect(await containsOffset(node, 10, void 0)).eql(true);
+        expect(await containsOffset(node, void 0, 10)).eql(true);
+        expect(await containsOffset(node, -1, -1)).eql(false);
+        expect(await containsOffset(node, 10, 10)).eql(true);
+        expect(await containsOffset(node, 200, 200)).eql(true);
+        expect(await containsOffset(node, 220, 220)).eql(false);
     });
 
     it('getIframeClientCoordinates', async () => {
-        expect(await getIframeClientCoordinates(utils.getClient(), 'iframe')).eql({
+        expect(await getIframeClientCoordinates(await utils.getNode('iframe'))).eql({
             bottom: 405,
             left:   305,
             right:  405,
             top:    304,
         });
 
-        const nestedIFrame = await utils.getClient().Runtime.evaluate({ expression: 'document.querySelector(\'iframe\').contentDocument.querySelector(\'iframe\')' });
+        const nestedIFrame = await utils.getNode({ expression: 'document.querySelector(\'iframe\').contentDocument.querySelector(\'iframe\')' });
 
-        expect(await getIframeClientCoordinates(utils.getClient(), nestedIFrame)).eql({
+        expect(await getIframeClientCoordinates(nestedIFrame)).eql({
             bottom: 178,
             left:   10,
             right:  310,
@@ -252,14 +252,14 @@ describe('position utils', () => {
     });
 
     it('getIframePointRelativeToParentFrame', async () => {
-        const point1 = await getIframePointRelativeToParentFrame(utils.getClient(), { x: 42, y: 17 }, ExecutionContext.top.children[0]);
-        const point2 = await getIframePointRelativeToParentFrame(utils.getClient(), { x: 1, y: 1 }, ExecutionContext.top.children[0].children[0]);
+        const point1 = await getIframePointRelativeToParentFrame({ x: 42, y: 17 }, ExecutionContext.top.children[0]);
+        const point2 = await getIframePointRelativeToParentFrame({ x: 1, y: 1 }, ExecutionContext.top.children[0].children[0]);
 
-        await utils.setScroll(utils.getClient(), 'window', { left: 100, top: 50 });
-        await utils.setScroll(utils.getClient(), 'document.querySelector(\'iframe\').contentDocument.scrollingElement', { left: 50, top: 10 });
+        await utils.setScroll('window', { left: 100, top: 50 });
+        await utils.setScroll('document.querySelector(\'iframe\').contentDocument.scrollingElement', { left: 50, top: 10 });
 
-        const point3 = await getIframePointRelativeToParentFrame(utils.getClient(), { x: 42, y: 17 }, ExecutionContext.top.children[0]);
-        const point4 = await getIframePointRelativeToParentFrame(utils.getClient(), { x: 1, y: 1 }, ExecutionContext.top.children[0].children[0]);
+        const point3 = await getIframePointRelativeToParentFrame({ x: 42, y: 17 }, ExecutionContext.top.children[0]);
+        const point4 = await getIframePointRelativeToParentFrame({ x: 1, y: 1 }, ExecutionContext.top.children[0].children[0]);
 
         expect(point1).eql({ x: 347, y: 321 });
         expect(point2).eql({ x: 11, y: 29 });
@@ -268,51 +268,51 @@ describe('position utils', () => {
     });
 
     it('getOffsetPosition', async () => {
-        let offsetPosition = await getOffsetPosition(utils.getClient(), '#target2');
+        let offsetPosition = await getOffsetPosition(await utils.getNode('#target2'));
 
         expect(offsetPosition).eql({ left: 227, top: 207 });
 
-        await utils.setScroll(utils.getClient(), 'document.querySelector(\'#scrollableDiv\')', { top: 1000, left: 1000 });
+        await utils.setScroll('document.querySelector(\'#scrollableDiv\')', { top: 1000, left: 1000 });
 
-        offsetPosition = await getOffsetPosition(utils.getClient(), '#target2');
-
-        expect(offsetPosition).eql({ left: 133, top: 99 });
-
-        await utils.setScroll(utils.getClient(), 'window', { top: 100, left: 50 });
-
-        offsetPosition = await getOffsetPosition(utils.getClient(), '#target2');
+        offsetPosition = await getOffsetPosition(await utils.getNode('#target2'));
 
         expect(offsetPosition).eql({ left: 133, top: 99 });
 
-        const node = await utils.getClient().Runtime.evaluate({ expression: 'document.querySelector(\'iframe\').contentDocument.querySelector(\'div\')' });
+        await utils.setScroll('window', { top: 100, left: 50 });
 
-        offsetPosition = await getOffsetPosition(utils.getClient(), node);
+        offsetPosition = await getOffsetPosition(await utils.getNode('#target2'));
+
+        expect(offsetPosition).eql({ left: 133, top: 99 });
+
+        const node = await utils.getNode({ expression: 'document.querySelector(\'iframe\').contentDocument.querySelector(\'div\')' });
+
+        offsetPosition = await getOffsetPosition(node);
 
         expect(offsetPosition).eql({ left: 8, top: 8 });
 
-        await utils.setScroll(utils.getClient(), 'document.querySelector(\'iframe\').contentDocument.scrollingElement', { left: 50, top: 10 });
+        await utils.setScroll('document.querySelector(\'iframe\').contentDocument.scrollingElement', { left: 50, top: 10 });
 
-        offsetPosition = await getOffsetPosition(utils.getClient(), node);
+        offsetPosition = await getOffsetPosition(node);
 
         expect(offsetPosition).eql({ left: 8, top: 8 });
     });
 
     it('getElementFromPoint', async () => {
-        expect((await getElementFromPoint(utils.getClient(), 31, 26)).object.description).eql('div#target1');
-        expect((await getElementFromPoint(utils.getClient(), 64, 26)).object.description).eql('div#target1');
-        expect((await getElementFromPoint(utils.getClient(), 64, 69)).object.description).eql('div#target1');
-        expect((await getElementFromPoint(utils.getClient(), 31, 69)).object.description).eql('div#target1');
+        expect((await getElementFromPoint(31, 26)).object.description).eql('div#target1');
+        expect((await getElementFromPoint(64, 26)).object.description).eql('div#target1');
+        expect((await getElementFromPoint(64, 69)).object.description).eql('div#target1');
+        expect((await getElementFromPoint(31, 69)).object.description).eql('div#target1');
 
-        expect((await getElementFromPoint(utils.getClient(), 30, 25)).object.description).eql('html');
-        expect((await getElementFromPoint(utils.getClient(), 65, 25)).object.description).eql('html');
-        expect((await getElementFromPoint(utils.getClient(), 65, 70)).object.description).eql('html');
-        expect((await getElementFromPoint(utils.getClient(), 30, 70)).object.description).eql('html');
+        expect((await getElementFromPoint(30, 25)).object.description).eql('html');
+        expect((await getElementFromPoint(65, 25)).object.description).eql('html');
+        expect((await getElementFromPoint(65, 70)).object.description).eql('html');
+        expect((await getElementFromPoint(30, 70)).object.description).eql('html');
 
-        expect((await getElementFromPoint(utils.getClient(), 300, 299)).object.description).eql('html');
-        expect((await getElementFromPoint(utils.getClient(), 301, 300)).object.description).eql('iframe');
-        expect((await getElementFromPoint(utils.getClient(), 302, 301)).object.description).eql('iframe');
-        expect((await getElementFromPoint(utils.getClient(), 303, 302)).object.description).eql('iframe');
+        expect((await getElementFromPoint(300, 299)).object.description).eql('html');
+        expect((await getElementFromPoint(301, 300)).object.description).eql('iframe');
+        expect((await getElementFromPoint(302, 301)).object.description).eql('iframe');
+        expect((await getElementFromPoint(303, 302)).object.description).eql('iframe');
 
-        expect((await getElementFromPoint(utils.getClient(), 401, 32)).object.description).eql('h1');
+        expect((await getElementFromPoint(401, 32)).object.description).eql('h1');
     });
 });

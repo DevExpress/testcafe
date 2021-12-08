@@ -1,8 +1,9 @@
-import { ProtocolApi } from 'chrome-remote-interface';
-import { ClientObject } from '../interfaces';
+import ProtocolProxyApi from 'devtools-protocol/types/protocol-proxy-api';
+import { ServerNode } from '../types';
 
-export async function getObjectId ({ Runtime }: ProtocolApi, element: ClientObject ): Promise<string> {
-    const node = typeof element === 'string' ? await Runtime.evaluate({ expression: `document.querySelector('${element}')` }) : element;
+export async function describeNode (DOM: ProtocolProxyApi.DOMApi, objectId: string): Promise<ServerNode> {
+    const object   = { objectId };
+    const { node } = await DOM.describeNode(object);
 
-    return node.result?.objectId || '';
+    return Object.assign(node, object);
 }
