@@ -290,7 +290,7 @@ gulp.step('test-cdp-run', () => {
     return gulp
         .src('test/cdp/*-test.js', { read: false })
         .pipe(mocha({
-            timeout: getTimeout(20_000),
+            timeout: getTimeout(2 * 20_000),
         }));
 });
 
