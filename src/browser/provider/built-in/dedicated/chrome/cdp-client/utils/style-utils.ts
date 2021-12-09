@@ -61,7 +61,7 @@ export async function getBoxModel (node: ServerNode): Promise<Protocol.DOM.BoxMo
     return boxModel.model;
 }
 
-async function getElementDimensions (node: ServerNode): Promise<PositionDimensions> {
+export async function getElementDimensions (node: ServerNode): Promise<PositionDimensions> {
     // NOTE: for some reason this method call is required for CSS.getComputedStyleForNode
     // TODO: remove this line after the problem is clear
     await clientsManager.getClient().DOM.getDocument({ });

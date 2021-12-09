@@ -4,7 +4,7 @@ import { hasScroll, getScrollableParents } from '../utils/shared/scroll';
 import * as positionUtils from '../utils/shared/position';
 import * as promiseUtils from '../../../shared/utils/promise';
 import { isFixedElement } from '../utils/shared/style';
-import isIframeWindow from '../../../utils/is-window-in-iframe';
+import isIframeWindow from '../../../shared/utils/is-window-iframe';
 import AxisValues, { LeftTopValues } from '../../../shared/utils/values/axis-values';
 import Dimensions from '../../../shared/utils/values/dimensions';
 import { Dictionary } from '../../../configuration/interfaces';
@@ -277,7 +277,7 @@ export default class ScrollAutomation {
     }
 
     private _isTargetElementObscuredInPoint (point: AxisValues<number>): boolean {
-        const elementInPoint = positionUtils.getElementFromPoint(point.x, point.y);
+        const elementInPoint = positionUtils.getElementFromPoint(point);
 
         if (!elementInPoint)
             return false;

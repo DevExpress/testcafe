@@ -2,6 +2,8 @@
 
 import { ExecuteSelectorCommand } from '../test-run/commands/observation';
 import { ScrollOptions } from '../test-run/commands/options';
+import { AxisValuesData } from './utils/values/axis-values';
+import Dimensions from './utils/values/dimensions';
 
 export interface NativeMethods {
     setTimeout: typeof globalThis.setTimeout;
@@ -15,12 +17,35 @@ export interface NativeMethods {
     dateNow: DateConstructor['now'];
 }
 
+type SharedFnResult<T> = T | Promise<T>;
+
 export interface SharedAdapter {
     nativeMethods: NativeMethods;
     PromiseCtor: typeof Promise;
     getOffsetOptions?: (el: any, offsetX: number, offsetY: number) => { offsetX: number; offsetY: number };
     scroll: (el: any, scrollOptions: ScrollOptions) => Promise<boolean>;
-    isDomElement: (el: any) => boolean;
+    getElementExceptUI: (point: AxisValuesData<number>, underTopShadowUIElement?: boolean) => Promise<any>;
+
+    browser: {
+        isChrome?: boolean;
+        isFirefox?: boolean;
+    };
+
+    dom: {
+        getTagName: (el: any) => string;
+        isImgElement: (el: any) => boolean;
+        isDomElement: (el: any) => boolean;
+        isNodeEqual: (el1: any, el2: any) => boolean;
+        closest: (el: any, selector: string) => SharedFnResult<any | null>;
+        containsElement: (el1: any, el2: any) => SharedFnResult<boolean>;
+        getNodeText: (el: any) => SharedFnResult<string>;
+        getImgMapName: (el: any) => string;
+    };
+
+    position: {
+        getElementFromPoint: (point: AxisValuesData<number>) => SharedFnResult<any>;
+        getClientDimensions: (target: any) => SharedFnResult<Dimensions>;
+    };
 }
 
 export interface ClientRequestEmitter<R> {
@@ -47,3 +72,7 @@ interface AutomationErrorCtors {
 }
 
 export type ExecuteSelectorFn<T> = (selector: ExecuteSelectorCommand, errCtors: AutomationErrorCtors, startTime: number) => Promise<T>;
+
+export interface Window {
+    parent: Window;
+}

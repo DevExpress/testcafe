@@ -46,13 +46,13 @@ export async function findIframeByWindow (context: ExecutionContext): Promise<Se
         (function findIframes(parentDocument, result = []) {
             if (!parentDocument)
                 return [];
-        
+
             const children = parentDocument.querySelectorAll('iframe');
-        
+
             for (const child of children) {
                 result.push(child, ...findIframes(child.contentDocument));
             }
-        
+
             return result;
         })(document);
    `;
@@ -77,6 +77,10 @@ function hasTagName (node: ServerNode, tagName: string): boolean {
     return node.nodeName.toLowerCase() === tagName.toLowerCase();
 }
 
+export function getTagName (node: ServerNode): string {
+    return node.nodeName.toLowerCase();
+}
+
 export function isHtmlElement (node: ServerNode): boolean {
     return hasTagName(node, 'html');
 }
@@ -85,13 +89,21 @@ export function isBodyElement (node: ServerNode): boolean {
     return hasTagName(node, 'body');
 }
 
+export function isImgElement (node: ServerNode): boolean {
+    return hasTagName(node, 'img');
+}
+
+export function isDomElement (node: ServerNode): boolean {
+    return node.nodeType === 1;
+}
+
 export async function getScrollingElement (node?: ServerNode): Promise<ServerNode> {
     const client = clientsManager.getClient();
 
     const args: Protocol.Runtime.CallFunctionOnRequest = {
         functionDeclaration: `function () {
             const doc = this !== window ? this.ownerDocument : document;
-            
+
             return doc.scrollingElement;
         }`,
     };
@@ -104,4 +116,77 @@ export async function getScrollingElement (node?: ServerNode): Promise<ServerNod
     const { result } = await client.Runtime.callFunctionOn(args);
 
     return describeNode(client.DOM, result.objectId || '');
+}
+
+export async function closest (el: ServerNode, selector: string): Promise<ServerNode | null> {
+    const { Runtime, DOM } = clientsManager.getClient();
+
+    const { exceptionDetails, result: resultObj } = await Runtime.callFunctionOn({
+        arguments:           [{ objectId: el.objectId }, { value: selector }],
+        functionDeclaration: `function (el, selector) {
+            return window["%proxyless%"].nativeMethods.closest.call(el, selector);
+        }`,
+        executionContextId: ExecutionContext.getCurrentContextId(),
+    });
+
+    if (exceptionDetails)
+        throw exceptionDetails;
+
+    return resultObj.value ? describeNode(DOM, resultObj.value.objectId) : null;
+}
+
+export function isNodeEqual (el1: ServerNode, el2: ServerNode): boolean {
+    return el1.backendNodeId === el2.backendNodeId;
+}
+
+export async function getNodeText (el: ServerNode): Promise<string> {
+    const { Runtime } = clientsManager.getClient();
+
+    const { exceptionDetails, result: resultObj } = await Runtime.callFunctionOn({
+        arguments:           [{ objectId: el.objectId }],
+        functionDeclaration: `function (el) {
+            return window["%proxyless%"].nativeMethods.nodeTextContentGetter.call(el);
+        }`,
+        executionContextId: ExecutionContext.getCurrentContextId(),
+    });
+
+    if (exceptionDetails)
+        throw exceptionDetails;
+
+    return resultObj.value;
+}
+
+export async function containsElement (el1: ServerNode, el2: ServerNode): Promise<boolean> {
+    const { Runtime } = clientsManager.getClient();
+
+    const { exceptionDetails, result: resultObj } = await Runtime.callFunctionOn({
+        arguments:           [{ objectId: el1.objectId }, { objectId: el2.objectId }],
+        functionDeclaration: `function (el1, el2) {
+            do {
+                if (el2.parentNode === el1)
+                    return true;
+            }
+            while(el2 = el2.parentNode);
+
+            return false;
+        }`,
+        executionContextId: ExecutionContext.getCurrentContextId(),
+    });
+
+    if (exceptionDetails)
+        throw exceptionDetails;
+
+    return resultObj.value;
+}
+
+export function getImgMapName (el: ServerNode): string {
+    if (!el.attributes)
+        return '';
+
+    const useMapIndex = el.attributes.indexOf('usemap');
+
+    if (useMapIndex === -1)
+        return '';
+
+    return el.attributes[useMapIndex + 1].substring(1);
 }

@@ -1,5 +1,5 @@
 import testCafeUI from './deps/testcafe-ui';
-import isIframeWindow from '../../utils/is-window-in-iframe';
+import isIframeWindow from '../../shared/utils/is-window-iframe';
 import Cursor from '../../shared/actions/cursor';
 
 const cursorUI = !isIframeWindow(window) ? testCafeUI.cursorUI : testCafeUI.iframeCursorUI;

@@ -26,7 +26,7 @@ import runWithBarriers from '../../utils/run-with-barriers';
 import MESSAGE from '../../../../test-run/client-messages';
 import COMMAND_TYPE from '../../../../test-run/commands/type';
 import { ScrollOptions, ElementScreenshotOptions } from '../../../../test-run/commands/options';
-import isIframeWindow from '../../../../utils/is-window-in-iframe';
+import isIframeWindow from '../../../../shared/utils/is-window-iframe';
 
 
 const messageSandbox = eventSandbox.message;

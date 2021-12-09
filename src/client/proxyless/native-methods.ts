@@ -29,6 +29,9 @@ const nativeMethods: NativeMethods = {
 
     // @ts-ignore
     contentWindowGetter: window.Object.getOwnPropertyDescriptor(window.HTMLIFrameElement.prototype, 'contentWindow').get,
+
+    // @ts-ignore
+    nodeTextContentGetter: window.Object.getOwnPropertyDescriptor(window.Node.prototype, 'textContent').get,
 };
 
 export default nativeMethods;
