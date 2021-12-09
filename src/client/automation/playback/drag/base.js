@@ -5,7 +5,7 @@ import {
     domUtils,
     delay,
 } from '../../deps/testcafe-core';
-import getElementFromPoint from '../../get-element';
+import getElementFromPoint from '../../../../shared/actions/get-element';
 import VisibleElementAutomation from '../visible-element-automation';
 import DragMoveAutomation from '../move/drag-move';
 import { MoveOptions } from '../../../../test-run/commands/options';
@@ -102,7 +102,7 @@ export default class DragAutomationBase extends VisibleElementAutomation {
                     clientY: point.y,
                 }, this.modifiers);
 
-                return getElementFromPoint(point)
+                return getElementFromPoint(point, window)
                     .then(element => {
                         topElement = element;
 
@@ -121,7 +121,7 @@ export default class DragAutomationBase extends VisibleElementAutomation {
                         else
                             eventSimulator[this.upEvent](topElement, options);
 
-                        return getElementFromPoint(point);
+                        return getElementFromPoint(point, window);
                     })
                     .then(element => {
                         //B231323

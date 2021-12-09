@@ -1,7 +1,7 @@
 import adapter from './adapter/index';
 import BoundaryValues, { BoundaryValuesData } from '../../../../shared/utils/values/boundary-values';
 import Dimensions from '../../../../shared/utils/values/dimensions';
-import AxisValues from '../../../../shared/utils/values/axis-values';
+import AxisValues, { AxisValuesData } from '../../../../shared/utils/values/axis-values';
 
 export function getClientDimensions (target: Element): Dimensions {
     const isHtmlElement     = adapter.dom.isHtmlElement(target);
@@ -53,7 +53,7 @@ export function getClientDimensions (target: Element): Dimensions {
     return new Dimensions(elWidth, elHeight, elPosition, elBorders, elScroll, scrollbar);
 }
 
-export function getElementFromPoint (x: number, y: number): Element | null {
+export function getElementFromPoint (point: AxisValuesData<number>): Element | null {
     // @ts-ignore
     const ieFn = document.getElementFromPoint;
     const func = ieFn || document.elementFromPoint;
@@ -62,7 +62,7 @@ export function getElementFromPoint (x: number, y: number): Element | null {
 
     try {
         // Permission denied to access property 'getElementFromPoint' error in iframe
-        el = func.call(document, x, y);
+        el = func.call(document, point.x, point.y);
     }
     catch {
         return null;
@@ -70,10 +70,10 @@ export function getElementFromPoint (x: number, y: number): Element | null {
 
     //NOTE: elementFromPoint returns null when is's a border of an iframe
     if (el === null)
-        el = func.call(document, x - 1, y - 1);
+        el = func.call(document, point.x - 1, point.y - 1);
 
     while (el && el.shadowRoot && el.shadowRoot.elementFromPoint) {
-        const shadowEl = el.shadowRoot.elementFromPoint(x, y);
+        const shadowEl = el.shadowRoot.elementFromPoint(point.x, point.y);
 
         if (!shadowEl || el === shadowEl)
             break;

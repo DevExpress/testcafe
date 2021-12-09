@@ -1,11 +1,8 @@
 import { adapter } from '../adapter';
 import { CursorUI } from './types';
 import AxisValues, { AxisValuesData } from '../utils/values/axis-values';
+import { Window } from '../types';
 
-
-interface Window {
-    parent: Window;
-}
 
 export default class Cursor<W extends Window> {
     private _activeWindow: W;

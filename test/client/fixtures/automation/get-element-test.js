@@ -7,7 +7,7 @@ let $iframe       = null;
 function getElementFromPointMethod (window, point) {
     const testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
 
-    return testCafeAutomation.getElementFromPoint(point);
+    return testCafeAutomation.getElementFromPoint(point, window);
 }
 
 function createRoot () {

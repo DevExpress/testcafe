@@ -1,6 +1,6 @@
 import Protocol from 'devtools-protocol/types/protocol';
 import ExecutionContext from '../execution-context';
-import AxisValues, { LeftTopValues } from '../../../../../../../shared/utils/values/axis-values';
+import AxisValues, { AxisValuesData, LeftTopValues } from '../../../../../../../shared/utils/values/axis-values';
 import BoundaryValues, { BoundaryValuesData } from '../../../../../../../shared/utils/values/boundary-values';
 import { findIframeByWindow } from './dom-utils';
 import * as clientsManager from '../clients-manager';
@@ -9,6 +9,7 @@ import { ServerNode } from '../types';
 import {
     getBoxModel,
     getClientDimensions,
+    getElementDimensions,
     getDocumentScroll,
     getElementPadding,
     getProperties,
@@ -68,9 +69,11 @@ export async function getIframePointRelativeToParentFrame (iframePoint: AxisValu
     return new AxisValues<number>(left, top);
 }
 
-export async function getElementFromPoint (x: number, y: number): Promise<Protocol.DOM.ResolveNodeResponse> {
+export async function getElementFromPoint (point: AxisValuesData<number>): Promise<Protocol.DOM.ResolveNodeResponse> {
     const { DOM }           = clientsManager.getClient();
-    const { backendNodeId } = await DOM.getNodeForLocation({ x, y });
+    const { backendNodeId } = await DOM.getNodeForLocation(point);
 
     return DOM.resolveNode({ backendNodeId });
 }
+
+export { getElementDimensions as getClientDimensions };

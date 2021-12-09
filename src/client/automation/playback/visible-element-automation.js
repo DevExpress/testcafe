@@ -14,7 +14,7 @@ import getAutomationPoint from '../utils/get-automation-point';
 import screenPointToClient from '../utils/screen-point-to-client';
 import getDevicePoint from '../utils/get-device-point';
 import { getOffsetOptions } from '../utils/offsets';
-import getElementFromPoint from '../get-element';
+import getElementFromPoint from '../../../shared/actions/get-element';
 import AUTOMATION_ERROR_TYPES from '../../../shared/errors/automation-errors';
 import AutomationSettings from '../../../shared/actions/automations/settings';
 import MoveAutomation from './move/move';
@@ -50,7 +50,7 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
     _getElementForEvent (eventArgs) {
         const expectedElement = positionUtils.containsOffset(this.element, this.options.offsetX, this.options.offsetY) ? this.element : null;
 
-        return getElementFromPoint(eventArgs.point, expectedElement);
+        return getElementFromPoint(eventArgs.point, window, expectedElement);
     }
 
     _moveToElement () {
@@ -74,7 +74,7 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
 
                 return delay(this.automationSettings.mouseActionStepDelay);
             })
-            .then(() => getElementFromPoint(cursor.getPosition()))
+            .then(() => getElementFromPoint(cursor.getPosition(), window))
             .then(currentElement => {
                 const elementUnderCursorContainsTarget = !!currentElement && domUtils.contains(this.element, currentElement);
 
@@ -130,7 +130,7 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
                 const clientPoint               = screenPointToClient(this.element, screenPointAfterAction);
                 const expectedElement           = positionUtils.containsOffset(this.element, offsetX, offsetY) ? this.element : null;
 
-                return getElementFromPoint(clientPoint, expectedElement)
+                return getElementFromPoint(clientPoint, window, expectedElement)
                     .then(element => {
                         if (!element)
                             return new ElementState({});

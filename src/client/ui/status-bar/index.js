@@ -4,7 +4,7 @@ import ProgressBar from './progress-bar';
 import uiRoot from '../ui-root';
 import MESSAGES from './messages';
 import DEBUG_ACTION from '../../../utils/debug-action';
-import isIframeWindow from '../../../utils/is-window-in-iframe';
+import isIframeWindow from '../../../shared/utils/is-window-iframe';
 
 
 const Promise          = hammerhead.Promise;

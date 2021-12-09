@@ -1,16 +1,21 @@
 // @ts-ignore
-import { nativeMethods, Promise } from './deps/hammerhead';
+import hammerhead from './deps/hammerhead';
 // @ts-ignore
 import { getOffsetOptions } from './deps/testcafe-automation';
 // @ts-ignore
-import { domUtils } from './deps/testcafe-core';
+import { domUtils as dom, positionUtils as position } from './deps/testcafe-core';
 import { initializeAdapter } from '../../shared/adapter/index';
 
+const { nativeMethods, Promise, utils: { browser } } = hammerhead;
 
 initializeAdapter({
     PromiseCtor:      Promise,
     nativeMethods:    nativeMethods,
-    scroll:           () => Promise.resolve(),
     getOffsetOptions: getOffsetOptions,
-    isDomElement:     domUtils.isDomElement,
+
+    dom, position, browser,
+
+    // NOTE: this functions are unnecessary in the driver
+    getElementExceptUI: () => Promise.resolve(),
+    scroll:             () => Promise.resolve(),
 });

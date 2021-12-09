@@ -11,7 +11,7 @@ import KeyPressSimulator from './key-press-simulator';
 import supportedShortcutHandlers from './shortcuts';
 import { getActualKeysAndEventKeyProperties, getDeepActiveElement } from './utils';
 import AutomationSettings from '../../../../shared/actions/automations/settings';
-import isIframeWindow from '../../../../utils/is-window-in-iframe';
+import isIframeWindow from '../../../../shared/utils/is-window-iframe';
 
 const Promise        = hammerhead.Promise;
 const browserUtils   = hammerhead.utils.browser;

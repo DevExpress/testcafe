@@ -13,6 +13,7 @@ import createErrorCtorCallback from '../../shared/errors/selector-error-ctor-cal
 import { ScrollOptions } from '../../test-run/commands/options';
 import ScrollAutomation from '../core/scroll/index';
 import { LeftTopValues } from '../../shared/utils/values/axis-values';
+import nativeMethods from './native-methods';
 
 
 initializeClientFnAdapter(clientFnAdapterInitializer);
@@ -44,6 +45,8 @@ Object.defineProperty(window, '%proxyless%', {
 
             return scrollAutomation.run();
         },
+
+        nativeMethods,
     },
 
     configurable: true,

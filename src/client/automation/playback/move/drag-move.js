@@ -1,6 +1,6 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
-import getElementFromPoint from '../../get-element';
+import getElementFromPoint from '../../../../shared/actions/get-element';
 import DragAndDropState from '../drag/drag-and-drop-state';
 import createEventSequence from './event-sequence/create-event-sequence';
 import lastHoveredElementHolder from '../last-hovered-element-holder';
@@ -78,7 +78,7 @@ export default class DragMoveAutomation extends MoveAutomation {
     }
 
     run () {
-        return getElementFromPoint(cursor.getPosition())
+        return getElementFromPoint(cursor.getPosition(), window)
             .then(topElement => {
                 this.dragElement = topElement;
 

@@ -1,7 +1,7 @@
 import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
 import sendRequestToFrame from '../../core/utils/send-request-to-frame';
-import isIframeWindow from '../../../utils/is-window-in-iframe';
+import isIframeWindow from '../../../shared/utils/is-window-iframe';
 
 const Promise          = hammerhead.Promise;
 const nativeMethods    = hammerhead.nativeMethods;
