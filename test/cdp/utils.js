@@ -69,6 +69,7 @@ async function before () {
     await client.Page.enable();
     await client.DOM.enable();
     await client.CSS.enable();
+    await client.Overlay.enable();
 
     ExecutionContext.initialize(client);
 
