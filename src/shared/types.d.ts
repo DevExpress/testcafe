@@ -46,6 +46,7 @@ export interface SharedAdapter {
         getImgMapName: (el: any) => string;
         getDocumentElement: (win: any) => SharedFnResult<any>;
         findIframeByWindow: (win: any) => SharedFnResult<any>;
+        isDocumentElement: (el: any) => SharedFnResult<boolean>;
     };
 
     position: {
@@ -55,6 +56,7 @@ export interface SharedAdapter {
         getIframeClientCoordinates: (el: any) => SharedFnResult<BoundaryValues>;
         getIframePointRelativeToParentFrame: (iframePoint: AxisValues<number>, win: any) => SharedFnResult<AxisValues<number> | null>;
         getClientPosition: (el: any) => SharedFnResult<AxisValues<number>>;
+        getOffsetPosition: (el: any, roundFn?: (n: number) => number) => SharedFnResult<LeftTopValues<number>>;
     };
 
     style: {

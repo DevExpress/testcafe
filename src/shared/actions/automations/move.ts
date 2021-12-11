@@ -10,10 +10,10 @@ import { SharedWindow } from '../../types';
 import AutomationSettings from './settings';
 import delay from '../../utils/delay';
 import getElementUnderCursor from '../get-element';
+import getAutomationPoint from '../utils/get-automation-point';
 
 
 // TODO:
-// import getAutomationPoint from '../../utils/get-automation-point';
 // import getLineRectIntersection from '../../utils/get-line-rect-intersection';
 // import getDevicePoint from '../../utils/get-device-point';
 // import createEventSequence from './event-sequence/create-event-sequence';
@@ -99,10 +99,11 @@ export default class MoveAutomation<E, W extends SharedWindow> {
         return adapter.PromiseCtor.resolve(adapter.position.containsOffset(element, offset.x, offset.y))
             .then(containsOffset => {
                 if (!containsOffset) {
-                    const point = getAutomationPoint(element, offset.x, offset.y);
-
-                    return adapter.dom.getDocumentElement(window)
-                        .then((docEl: E) => ({ element: docEl, offset: point }));
+                    return Promise.all([
+                        getAutomationPoint(element, offset),
+                        adapter.dom.getDocumentElement(window),
+                    ])
+                        .then(([offset, element]) => ({ element, offset }));
                 }
 
                 return { element, offset };
