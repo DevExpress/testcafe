@@ -2,9 +2,10 @@
 
 import { ExecuteSelectorCommand } from '../test-run/commands/observation';
 import { ScrollOptions } from '../test-run/commands/options';
-import AxisValues, { AxisValuesData } from './utils/values/axis-values';
+import AxisValues, { AxisValuesData, LeftTopValues } from './utils/values/axis-values';
 import Dimensions from './utils/values/dimensions';
 import BoundaryValues from './utils/values/boundary-values';
+import { ServerNode } from '../browser/provider/built-in/dedicated/chrome/cdp-client/types';
 
 export interface NativeMethods {
     setTimeout: typeof globalThis.setTimeout;
@@ -35,6 +36,8 @@ export interface SharedAdapter {
     dom: {
         getTagName: (el: any) => string;
         isImgElement: (el: any) => boolean;
+        isHtmlElement: (el: any) => boolean;
+        isBodyElement: (el: any) => boolean;
         isDomElement: (el: any) => boolean;
         isNodeEqual: (el1: any, el2: any) => boolean;
         closest: (el: any, selector: string) => SharedFnResult<any | null>;
@@ -56,6 +59,7 @@ export interface SharedAdapter {
 
     style: {
         getWindowDimensions: (win: any) => SharedFnResult<BoundaryValues>;
+        getElementScroll: (el: any) => SharedFnResult<LeftTopValues<number>>;
     };
 }
 
