@@ -1,21 +1,20 @@
-// @ts-ignore
 import hammerhead from './deps/hammerhead';
-// @ts-ignore
-import { getOffsetOptions } from './deps/testcafe-automation';
-// @ts-ignore
-import { domUtils as dom, positionUtils as position } from './deps/testcafe-core';
+import testCafeAutomation from './deps/testcafe-automation';
+import testCafeCore from './deps/testcafe-core';
 import { initializeAdapter } from '../../shared/adapter/index';
-// @ts-ignore
-import { positionUtils, domUtils } from '../deps/testcafe-core';
+
 
 const { nativeMethods, Promise, utils: { browser } } = hammerhead;
+const { domUtils: dom, positionUtils: position, styleUtils: style } = testCafeCore;
+const { getOffsetOptions } = testCafeAutomation;
+
 
 initializeAdapter({
     PromiseCtor:      Promise,
     nativeMethods:    nativeMethods,
     getOffsetOptions: getOffsetOptions,
 
-    dom, position, browser,
+    dom, position, style, browser,
 
     // NOTE: this functions are unnecessary in the driver
     getElementExceptUI: () => Promise.resolve(),

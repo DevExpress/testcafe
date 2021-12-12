@@ -32,7 +32,7 @@ class ElementState {
         this.screenPoint = screenPoint;
         this.isTarget    = isTarget;
         this.inMoving    = inMoving;
-        this.devicePoint = getDevicePoint(clientPoint);
+        this.devicePoint = clientPoint ? getDevicePoint(clientPoint) : null;
     }
 }
 

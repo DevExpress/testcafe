@@ -1,7 +1,11 @@
 //import hammerhead from '../../deps/hammerhead';
 //import testCafeCore from '../../deps/testcafe-core';
 import { adapter } from '../../adapter';
-import { ScrollOptions, MoveOptions, Modifiers } from '../../../test-run/commands/options';
+import {
+    ScrollOptions,
+    MoveOptions,
+    Modifiers,
+} from '../../../test-run/commands/options';
 import AxisValues, { AxisValuesData } from '../../utils/values/axis-values';
 //import BoundaryValues from '../../utils/values/boundary-values';
 import { whilst } from '../../utils/promise';
@@ -30,8 +34,8 @@ import getAutomationPoint from '../utils/get-automation-point';
 // const styleUtils         = testCafeCore.styleUtils;
 // const eventUtils         = testCafeCore.eventUtils;
 
-const MOVE_REQUEST_CMD  = 'automation|move|request';
-const MOVE_RESPONSE_CMD = 'automation|move|response';
+// const MOVE_REQUEST_CMD  = 'automation|move|request';
+// const MOVE_RESPONSE_CMD = 'automation|move|response';
 
 // Setup cross-iframe interaction
 // messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
@@ -103,7 +107,7 @@ export default class MoveAutomation<E, W extends SharedWindow> {
                         getAutomationPoint(element, offset),
                         adapter.dom.getDocumentElement(window),
                     ])
-                        .then(([offset, element]) => ({ element, offset }));
+                        .then(([point, docEl]) => ({ element: docEl, offset: point }));
                 }
 
                 return { element, offset };
@@ -246,7 +250,7 @@ export default class MoveAutomation<E, W extends SharedWindow> {
                     return AxisValues.create(this._offset).sub(AxisValues.create(scroll));
 
                 return adapter.PromiseCtor.resolve(adapter.position.getClientPosition(this._element))
-                    .then((clientPosition) => {
+                    .then(clientPosition => {
                         const isDocumentBody = adapter.dom.isBodyElement(this._element);
                         const clientPoint    = AxisValues.create(clientPosition).add(this._offset);
 
@@ -258,24 +262,24 @@ export default class MoveAutomation<E, W extends SharedWindow> {
             });
     }
 
-    protected _getEventSequenceOptions (currPosition: AxisValues<number>) {
-        const button      = eventUtils.BUTTONS_PARAMETER.noButton;
-        const devicePoint = getDevicePoint(currPosition);
-
-        const eventOptions = {
-            clientX: currPosition.x,
-            clientY: currPosition.y,
-            screenX: devicePoint.x,
-            screenY: devicePoint.y,
-            buttons: button,
-            ctrl:    this._modifiers.ctrl,
-            alt:     this._modifiers.alt,
-            shift:   this._modifiers.shift,
-            meta:    this._modifiers.meta,
-        };
-
-        return { eventOptions, eventSequenceOptions: { moveEvent: this._moveEvent } };
-    }
+    // protected _getEventSequenceOptions (currPosition: AxisValues<number>) {
+    //     const button      = eventUtils.BUTTONS_PARAMETER.noButton;
+    //     const devicePoint = getDevicePoint(currPosition);
+    //
+    //     const eventOptions = {
+    //         clientX: currPosition.x,
+    //         clientY: currPosition.y,
+    //         screenX: devicePoint.x,
+    //         screenY: devicePoint.y,
+    //         buttons: button,
+    //         ctrl:    this._modifiers.ctrl,
+    //         alt:     this._modifiers.alt,
+    //         shift:   this._modifiers.shift,
+    //         meta:    this._modifiers.meta,
+    //     };
+    //
+    //     return { eventOptions, eventSequenceOptions: { moveEvent: this._moveEvent } };
+    // }
 
     protected _runEventSequence (/*currentElement: E, { eventOptions, eventSequenceOptions }*/): void {
         // const eventSequence = createEventSequence(false, this._firstMovingStepOccurred, eventSequenceOptions);
@@ -413,7 +417,7 @@ export default class MoveAutomation<E, W extends SharedWindow> {
     //         });
     // }
 
-    public run () {
+    public run (): Promise<void> {
         return this._scroll()
             .then(() => Promise.all([
                 this._getTargetClientPoint(),
@@ -421,7 +425,7 @@ export default class MoveAutomation<E, W extends SharedWindow> {
             ]))
             .then(([endPoint, boundary]) => {
                 if (!boundary.contains(endPoint))
-                    return null;
+                    return void 0;
 
                 return this._move(endPoint);
 

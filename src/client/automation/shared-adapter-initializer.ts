@@ -6,7 +6,7 @@ import { ScrollOptions } from '../../test-run/commands/options';
 
 
 const { nativeMethods, Promise, utils: { browser } } = hammerhead;
-const { domUtils: dom, positionUtils: position, ScrollAutomation } = testCafeCore;
+const { domUtils: dom, positionUtils: position, styleUtils: style, ScrollAutomation } = testCafeCore;
 
 
 initializeAdapter({
@@ -14,5 +14,5 @@ initializeAdapter({
     nativeMethods: nativeMethods,
     scroll:        (el: any, scrollOptions: ScrollOptions) => new ScrollAutomation(el, scrollOptions).run(),
 
-    dom, position, browser, getElementExceptUI,
+    dom, position, style, browser, getElementExceptUI,
 });

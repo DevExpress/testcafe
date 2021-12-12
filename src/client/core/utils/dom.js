@@ -496,6 +496,10 @@ export function getImgMapName (img) {
     return img.useMap.substring(1);
 }
 
-export function getDocumentElement () {
+export function getDocumentElement (win) {
+    return win.document.documentElement;
+}
 
+export function isDocumentElement (el) {
+    return el === document.documentElement;
 }

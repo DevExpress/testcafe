@@ -4,13 +4,12 @@ import { Dictionary } from '../../../../../../../configuration/interfaces';
 import Protocol from 'devtools-protocol/types/protocol';
 import { getScrollingElement, getIframeByElement } from './dom-utils';
 import ExecutionContext from '../execution-context';
-import * as clientsManager from '../clients-manager';
 import { ServerNode, PositionDimensions } from '../types';
 import { getClient } from '../clients-manager';
 
 
 async function getPadding (node: ServerNode): Promise<BoundaryValuesData> {
-    const client     = clientsManager.getClient();
+    const client     = getClient();
     const { nodeId } = await client.DOM.requestNode(node);
     const style      = await getStyleProperties(nodeId, 'padding-right', 'padding-bottom', 'padding-left', 'padding-top');
 
@@ -23,7 +22,7 @@ async function getPadding (node: ServerNode): Promise<BoundaryValuesData> {
 }
 
 export async function getStyleProperties (nodeId: number, ...names: string[]): Promise<Dictionary<string>> {
-    const { CSS } = clientsManager.getClient();
+    const { CSS } = getClient();
 
     const properties: Dictionary<string> = { };
     const style                          = await CSS.getComputedStyleForNode({ nodeId });
@@ -37,7 +36,7 @@ export async function getStyleProperties (nodeId: number, ...names: string[]): P
 }
 
 export async function getProperties (node: ServerNode, ...names: string[]): Promise<Dictionary<string>> {
-    const { Runtime } = clientsManager.getClient();
+    const { Runtime } = getClient();
 
     const properties: Dictionary<string> = { };
     const { result }                     = await Runtime.getProperties(node);
@@ -57,7 +56,7 @@ export async function getScroll (node: ServerNode): Promise<LeftTopValues<number
 }
 
 export async function getBoxModel (node: ServerNode): Promise<Protocol.DOM.BoxModel> {
-    const { DOM }  = clientsManager.getClient();
+    const { DOM }  = getClient();
     const boxModel = await DOM.getBoxModel({ objectId: node.objectId });
 
     return boxModel.model;
@@ -66,7 +65,7 @@ export async function getBoxModel (node: ServerNode): Promise<Protocol.DOM.BoxMo
 export async function getElementDimensions (node: ServerNode): Promise<PositionDimensions> {
     // NOTE: for some reason this method call is required for CSS.getComputedStyleForNode
     // TODO: remove this line after the problem is clear
-    await clientsManager.getClient().DOM.getDocument({ });
+    await getClient().DOM.getDocument({ });
 
     const boxModel = await getBoxModel(node);
     const scroll   = await getScroll(node);
@@ -139,7 +138,7 @@ export async function getElementScroll (node: ServerNode): Promise<LeftTopValues
 }
 
 export async function getWindowDimensions (executionContext?: ExecutionContext): Promise<BoundaryValues> {
-    const { Runtime } = clientsManager.getClient();
+    const { Runtime } = getClient();
 
     const args: Protocol.Runtime.EvaluateRequest = {
         expression: `({

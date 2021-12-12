@@ -190,3 +190,23 @@ export function getImgMapName (el: ServerNode): string {
 
     return el.attributes[useMapIndex + 1].substring(1);
 }
+
+export async function getDocumentElement (win: ExecutionContext): Promise<ServerNode> {
+    const { Runtime, DOM } = clientsManager.getClient();
+
+    const { exceptionDetails, result: resultObj } = await Runtime.evaluate({
+        expression: 'document.documentElement',
+        contextId:  win.ctxId,
+    });
+
+    if (exceptionDetails)
+        throw exceptionDetails;
+
+    return describeNode(DOM, resultObj.value.objectId);
+}
+
+export async function isDocumentElement (el: ServerNode): Promise<boolean> {
+    const docEl = await getDocumentElement(ExecutionContext.current);
+
+    return isNodeEqual(el, docEl);
+}

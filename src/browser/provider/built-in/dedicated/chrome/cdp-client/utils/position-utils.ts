@@ -1,7 +1,7 @@
 import Protocol from 'devtools-protocol/types/protocol';
 import ExecutionContext from '../execution-context';
 import AxisValues, { AxisValuesData, LeftTopValues } from '../../../../../../../shared/utils/values/axis-values';
-import BoundaryValues, { BoundaryValuesData } from '../../../../../../../shared/utils/values/boundary-values';
+import BoundaryValues from '../../../../../../../shared/utils/values/boundary-values';
 import { findIframeByWindow } from './dom-utils';
 import * as clientsManager from '../clients-manager';
 import { ServerNode } from '../types';
@@ -41,7 +41,7 @@ export async function containsOffset (node: ServerNode, offsetX: number, offsetY
         (typeof offsetY === 'undefined' || offsetY >= 0 && maxY >= offsetY);
 }
 
-export async function getIframeClientCoordinates (node: ServerNode): Promise<BoundaryValuesData> {
+export async function getIframeClientCoordinates (node: ServerNode): Promise<BoundaryValues> {
     const dimensions = await getClientDimensions(node);
 
     const [ left, top, right, bottom ] = [

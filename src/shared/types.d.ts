@@ -5,7 +5,6 @@ import { ScrollOptions } from '../test-run/commands/options';
 import AxisValues, { AxisValuesData, LeftTopValues } from './utils/values/axis-values';
 import Dimensions from './utils/values/dimensions';
 import BoundaryValues from './utils/values/boundary-values';
-import { ServerNode } from '../browser/provider/built-in/dedicated/chrome/cdp-client/types';
 
 export interface NativeMethods {
     setTimeout: typeof globalThis.setTimeout;

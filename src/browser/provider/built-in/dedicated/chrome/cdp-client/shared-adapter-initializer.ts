@@ -7,6 +7,7 @@ import { LeftTopValues } from '../../../../../../shared/utils/values/axis-values
 import { ScrollResultProxyless } from '../../../../../../client/core/scroll';
 import * as domUtils from './utils/dom-utils';
 import * as positionUtils from './utils/position-utils';
+import * as styleUtils from './utils/style-utils';
 
 
 initializeAdapter({
@@ -67,5 +68,6 @@ initializeAdapter({
 
     dom:      domUtils,
     position: positionUtils,
+    style:    styleUtils,
     browser:  { isChrome: true },
 });

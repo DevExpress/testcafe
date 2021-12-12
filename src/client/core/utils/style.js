@@ -1,8 +1,5 @@
 import hammerhead from '../deps/hammerhead';
-import ExecutionContext from '../../../browser/provider/built-in/dedicated/chrome/cdp-client/execution-context';
 import BoundaryValues from '../../../shared/utils/values/boundary-values';
-import Protocol from 'devtools-protocol';
-import {getClient} from '../../../browser/provider/built-in/dedicated/chrome/cdp-client/clients-manager';
 
 export * from './shared/style';
 export { hasScroll } from './shared/scroll';

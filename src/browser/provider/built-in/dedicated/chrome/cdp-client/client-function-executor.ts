@@ -16,7 +16,7 @@ import {
 import { AutomationErrorCtors } from '../../../../../../shared/types';
 import ExecutionContext from './execution-context';
 import { ServerNode } from './types';
-import { describeNode } from './utils';
+import { describeNode } from './utils/index';
 
 interface EvaluationError extends Error {
     request: EvaluateRequest;
