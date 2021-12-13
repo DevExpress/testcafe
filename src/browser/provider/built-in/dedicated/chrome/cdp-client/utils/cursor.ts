@@ -9,8 +9,8 @@ const LEFT_BUTTON_DOWN_COLOR  = { r: 200, g: 50, b: 50, a: 0.5 };
 const RIGHT_BUTTON_DOWN_COLOR = { r: 50, g: 200, b: 50, a: 0.5 };
 
 const CURSOR_RECT = {
-    width:  20,
-    height: 20,
+    width:  10,
+    height: 10,
 };
 
 const HIGHTLIGHT_CONFIG: Protocol.Overlay.HighlightConfig = {
@@ -31,11 +31,14 @@ export class CursorUICdp implements CursorUI {
     private _position: AxisValuesData<number>;
     private _visible: boolean;
     private _state: CursorState;
+    private _devicePixelRatio: number;
 
-    public constructor () {
+    public constructor (devicePixelRatio: number) {
         this._position = new AxisValues<number>(0, 0);
         this._visible  = false;
         this._state    = CursorState.default;
+
+        this._devicePixelRatio = devicePixelRatio;
     }
 
     private get currentColor (): Protocol.DOM.RGBA {
@@ -59,7 +62,7 @@ export class CursorUICdp implements CursorUI {
     }
 
     public async move (position: AxisValuesData<number>): Promise<void> {
-        this._position = position;
+        this._position = AxisValues.create(position).div(this._devicePixelRatio).round();
 
         if (this.isVisible())
             await this.show();

@@ -24,8 +24,12 @@ async function getPadding (node: ServerNode): Promise<BoundaryValuesData> {
 export async function getStyleProperties (nodeId: number, ...names: string[]): Promise<Dictionary<string>> {
     const { CSS } = getClient();
 
+    await CSS.enable();
+
     const properties: Dictionary<string> = { };
     const style                          = await CSS.getComputedStyleForNode({ nodeId });
+
+    await CSS.disable();
 
     style.computedStyle.filter(property => names.includes(property.name))
         .forEach(property => {

@@ -61,7 +61,7 @@ export default class MoveAutomation<E, W extends SharedWindow> {
     private readonly _moveEvent: string;
     private readonly _element: E;
     private readonly _window: W;
-    private readonly _offset: AxisValuesData<number>;
+    private /*readonly*/ _offset: AxisValuesData<number>;
     private readonly _cursor: Cursor<W>;
     private readonly _speed: number;
     private readonly _cursorSpeed: number;
@@ -293,7 +293,9 @@ export default class MoveAutomation<E, W extends SharedWindow> {
         // );
     }
 
-    private _emulateEvents (/*currentElement: E, currPosition: AxisValues<number>*/): void {
+    private _emulateEvents (_currentElement: E, currPosition: AxisValues<number>): void {
+        if (adapter.emulation)
+            adapter.emulation.move(currPosition);
         // this._runEventSequence(currentElement, this._getEventSequenceOptions(currPosition));
         //
         // this._firstMovingStepOccurred = true;
@@ -312,7 +314,7 @@ export default class MoveAutomation<E, W extends SharedWindow> {
                 if (!currentElement)
                     return null;
 
-                return this._emulateEvents(/*currentElement, currPosition*/);
+                return this._emulateEvents(currentElement, currPosition);
             })
             .then(() => delay(0));
     }

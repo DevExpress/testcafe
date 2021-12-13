@@ -390,8 +390,11 @@ export default class MoveAutomation {
                 } = styleUtils.getWindowDimensions(window);
 
                 if (endPoint.x >= 0 && endPoint.x <= windowWidth && endPoint.y >= 0 && endPoint.y <= windowHeight) {
-                    return this._moveToCurrentFrame(endPoint)
-                        .then(() => this._move(endPoint));
+                    return this
+                        ._move(endPoint);
+
+                    // this._moveToCurrentFrame(endPoint)
+                    //     .then(() => this._move(endPoint));
                 }
 
                 return null;

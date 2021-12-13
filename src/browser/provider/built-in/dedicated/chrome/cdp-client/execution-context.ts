@@ -9,6 +9,7 @@ export default class ExecutionContext {
     public frameId: string;
     public parent: ExecutionContext | null;
     public children: ExecutionContext[] = [];
+    private _waitResolvers: ((n: number) => void)[] = [];
 
     public constructor (parent?: ExecutionContext, frameId = '', ctxId = EMPTY_CONTEXT) {
         this.ctxId  = ctxId;
@@ -42,6 +43,13 @@ export default class ExecutionContext {
         return ExecutionContext.top;
     }
 
+    public async waitContext (): Promise<number> {
+        if (this.ctxId !== EMPTY_CONTEXT)
+            return this.ctxId;
+
+        return new Promise((resolve: (n: number) => void) => void this._waitResolvers.push(resolve));
+    }
+
     private _add (frameId: string): ExecutionContext {
         const newCtx = new ExecutionContext(this, frameId);
 
@@ -66,6 +74,9 @@ export default class ExecutionContext {
 
     private _setContext (ctx: number): void {
         this.ctxId = ctx;
+
+        while (this._waitResolvers.length)
+            this._waitResolvers.pop()!(ctx); // eslint-disable-line @typescript-eslint/no-non-null-assertion
     }
 
     private _deleteContext (): void {

@@ -8,6 +8,7 @@ import { ScrollResultProxyless } from '../../../../../../client/core/scroll';
 import * as domUtils from './utils/dom-utils';
 import * as positionUtils from './utils/position-utils';
 import * as styleUtils from './utils/style-utils';
+import * as emulation from './emulation';
 
 
 initializeAdapter({
@@ -70,4 +71,6 @@ initializeAdapter({
     position: positionUtils,
     style:    styleUtils,
     browser:  { isChrome: true },
+
+    emulation,
 });

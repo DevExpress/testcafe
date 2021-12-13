@@ -27,6 +27,10 @@ export interface SharedAdapter {
     scroll: (el: any, scrollOptions: ScrollOptions) => Promise<boolean>;
     getElementExceptUI: (point: AxisValuesData<number>, underTopShadowUIElement?: boolean) => Promise<any>;
 
+    emulation?: {
+        move: (point: AxisValuesData<number>) => Promise<void>;
+    };
+
     browser: {
         isChrome?: boolean;
         isFirefox?: boolean;
@@ -90,5 +94,5 @@ interface AutomationErrorCtors {
 export type ExecuteSelectorFn<T> = (selector: ExecuteSelectorCommand, errCtors: AutomationErrorCtors, startTime: number) => Promise<T>;
 
 export interface SharedWindow {
-    parent: SharedWindow;
+    parent: SharedWindow | null;
 }

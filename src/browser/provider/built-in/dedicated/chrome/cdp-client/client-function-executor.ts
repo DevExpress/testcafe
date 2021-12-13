@@ -52,7 +52,7 @@ export default class ClientFunctionExecutor {
         const script: EvaluateRequest = {
             expression,
             awaitPromise: true,
-            contextId:    ExecutionContext.getCurrentContextId(),
+            contextId:    await ExecutionContext.current.waitContext(),
         };
 
         try {

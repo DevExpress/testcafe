@@ -88,9 +88,10 @@ export class BrowserClient {
     }
 
     private async _createClient (): Promise<remoteChrome.ProtocolApi> {
-        const target                     = await this._getActiveTab();
-        const client                     = await remoteChrome({ target, port: this._runtimeInfo.cdpPort });
-        const { Page, Network, Runtime } = client;
+        const target = await this._getActiveTab();
+        const client = await remoteChrome({ target, port: this._runtimeInfo.cdpPort });
+
+        const { Page, Network, Runtime, DOM, Overlay } = client;
 
         this._clients[this._clientKey] = client;
 
@@ -98,6 +99,11 @@ export class BrowserClient {
             async () => await Page.enable(),
             elapsedTime => this._checkDropOfPerformance(CheckedCDPMethod.PageEnable, elapsedTime)
         );
+
+        if (this._proxyless) {
+            await DOM.enable();
+            await Overlay.enable();
+        }
 
         await Network.enable({});
         await Runtime.enable();

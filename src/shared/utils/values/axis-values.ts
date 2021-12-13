@@ -63,6 +63,13 @@ export default class AxisValues<T> implements AxisValuesData<T> {
         return this;
     }
 
+    public div (this: AxisValues<number>, n: number): AxisValues<number> {
+        this.x /= n;
+        this.y /= n;
+
+        return this;
+    }
+
     public distance (this: AxisValues<number>, p: AxisValuesData<number>): number {
         return Math.sqrt(Math.pow(this.x - p.x, 2) + Math.pow(this.y - p.y, 2));
     }
