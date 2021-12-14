@@ -59,6 +59,10 @@ interface ProviderMetaInfoOptions {
     appendToUserAgent?: boolean;
 }
 
+export interface BrowserCloseData {
+    isRestarting?: boolean;
+}
+
 export interface BrowserInfo {
     alias: string;
     browserName: string;
@@ -213,12 +217,12 @@ export default class BrowserConnection extends EventEmitter {
         }
     }
 
-    private async _closeBrowser (): Promise<void> {
+    private async _closeBrowser (data: BrowserCloseData = {}): Promise<void> {
         if (!this.idle)
             await promisifyEvent(this, 'idle');
 
         try {
-            await this.provider.closeBrowser(this.id);
+            await this.provider.closeBrowser(this.id, data);
         }
         catch (err) {
             // NOTE: A warning would be really nice here, but it can't be done while log is stored in a task.
@@ -278,7 +282,7 @@ export default class BrowserConnection extends EventEmitter {
         let isTimeoutExpired                = false;
         let timeout: NodeJS.Timeout | null  = null;
 
-        const restartPromise = timeLimit(this._closeBrowser(), this.BROWSER_CLOSE_TIMEOUT, { rejectWith: new TimeoutError() })
+        const restartPromise = timeLimit(this._closeBrowser({ isRestarting: true }), this.BROWSER_CLOSE_TIMEOUT, { rejectWith: new TimeoutError() })
             .catch(err => this.debugLogger(err))
             .then(() => this._runBrowser());
 
