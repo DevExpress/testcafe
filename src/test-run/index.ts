@@ -780,7 +780,12 @@ export default class TestRun extends AsyncEventEmitter {
         return consoleMessageCopy[String(this.activeWindowId)];
     }
 
-    private _createGetCookiesResultPromise (cookies: any[], names: string[], urls: string[]): Promise<any> {
+    private _getGettingCookiePromiseByName (name: string): Promise<unknown> {
+        return this.session.cookies.getAllCookiesByApi() // @ts-ignore
+            .then(allCookies => allCookies.filter(c => c.key === name));
+    }
+
+    private _getCookies (cookies: any[], names: string[], urls: string[]): Promise<any> {
         const cookiesPromises = [];
 
         if (cookies) {
@@ -790,14 +795,26 @@ export default class TestRun extends AsyncEventEmitter {
                 const name   = cookie.name;
 
                 if (domain) {
-                    if (name)
-                        cookiesPromises.push(this.session.cookies.findCookieByApi(domain, path, name));
-                    else
-                        cookiesPromises.push(this.session.cookies.findCookiesByApi(domain, path));
+                    if (path) {
+                        if (name)
+                            cookiesPromises.push(this.session.cookies.findCookieByApi(domain, path, name));
+                        else
+                            cookiesPromises.push(this.session.cookies.findCookiesByApi(domain, path));
+                    }
+                    else if (name) {
+                        cookiesPromises.push(this.session.cookies.getAllCookiesByApi() // @ts-ignore
+                            .then(allCookies => allCookies.filter(c => c.key === name && c.domain === domain))
+                        );
+                    }
+                    else {
+                        cookiesPromises.push(this.session.cookies.getAllCookiesByApi() // @ts-ignore
+                            .then(allCookies => allCookies.filter(c => c.domain === domain))
+                        );
+                    }
                 }
                 else {
-                    cookiesPromises.push(this.session.cookies.getAllCookiesByApi() // @ts-ignore
-                        .then(allCookies => allCookies.filter(c => c.key === name))
+                    cookiesPromises.push(
+                        this._getGettingCookiePromiseByName(name)
                     );
                 }
             }
@@ -815,8 +832,8 @@ export default class TestRun extends AsyncEventEmitter {
                     }
                 }
                 else {
-                    cookiesPromises.push(this.session.cookies.getAllCookiesByApi() // @ts-ignore
-                        .then(allCookies => allCookies.filter(c => c.key === name))
+                    cookiesPromises.push(
+                        this._getGettingCookiePromiseByName(name)
                     );
                 }
             }
@@ -824,43 +841,45 @@ export default class TestRun extends AsyncEventEmitter {
         else
             cookiesPromises.push(this.session.cookies.getAllCookiesByApi());
 
-        return Promise.all(cookiesPromises).then((result: any) => {
-            const resultCookies = flatten(result) as any;
-            const apiCookies    = [];
-
-            for (const cookie of resultCookies) {
-                if (!cookie)
-                    continue;
-
-                const {
-                    key, value, expires,
-                    maxAge, domain, path,
-                    secure, httpOnly, sameSite,
-                    extensions, creation, hostOnly,
-                } = cookie;
-
-                apiCookies.push({
-                    name: key, value, expires,
-                    maxAge, domain, path,
-                    secure, httpOnly, sameSite,
-                    extensions, creation, hostOnly,
-                });
-            }
-
-            return apiCookies;
-        });
+        return Promise.all(cookiesPromises);
     }
 
-    private _createSetCookiesResultPromise (cookies: any[], nameValueObjects: Record<string, string>[], url: string): Promise<void> {
+    private _prepareCookies (internalCookies: any[]): any[] {
+        const flattenInternalCookies = flatten(internalCookies) as any;
+        const resultCookies          = [];
+
+        for (const cookie of flattenInternalCookies) {
+            if (!cookie)
+                continue;
+
+            const {
+                key, value, domain,
+                path, expires, maxAge,
+                secure, httpOnly, sameSite,
+            } = cookie;
+
+            resultCookies.push({
+                name: key, value, domain,
+                path, expires, maxAge,
+                secure, httpOnly, sameSite,
+            });
+        }
+
+        return resultCookies;
+    }
+
+    private _setCookies (cookies: any[], nameValueObjects: Record<string, string>[], url: string): Promise<void> {
         const cookiesToSet = [];
 
         if (cookies) {
             for (const cookie of cookies as any) {
-                // NOTE: tough-cookie uses "key" property for the cookie name
-                cookie.key = cookie.name;
-                delete cookie.name;
+                const cookieToSet = Object.assign({}, cookie);
 
-                cookiesToSet.push(cookie);
+                // NOTE: tough-cookie uses "key" property for the cookie name
+                cookieToSet.key = cookieToSet.name;
+                delete cookieToSet.name;
+
+                cookiesToSet.push(cookieToSet);
             }
 
             return this.session.cookies.setCookiesByApi(cookiesToSet);
@@ -880,7 +899,13 @@ export default class TestRun extends AsyncEventEmitter {
         return this.session.cookies.setCookiesByApi(cookiesToSet);
     }
 
-    private _createDeleteCookiesResultPromise (cookies: any[], names: string[], urls: string[]): Promise<any> {
+    private _getDeletingCookiePromiseByName (name: string): Promise<unknown> {
+        return this.session.cookies.getAllCookiesByApi() // @ts-ignore
+            .then(allCookies => allCookies.filter(c => c.key === name)) // @ts-ignore
+            .then(cookiesToDelete => cookiesToDelete.map(c => this.session.cookies.deleteCookieByApi(c.domain, c.path, c.key)));
+    }
+
+    private _deleteCookies (cookies: any[], names: string[], urls: string[]): Promise<any> {
         const cookiesPromises = [];
 
         if (cookies) {
@@ -889,11 +914,30 @@ export default class TestRun extends AsyncEventEmitter {
                 const path   = cookie.path;
                 const name   = cookie.name;
 
-                if (domain && path) {
-                    if (name)
-                        cookiesPromises.push(this.session.cookies.deleteCookieByApi(domain, path, name));
-                    else
-                        cookiesPromises.push(this.session.cookies.deleteCookiesByApi(domain, path));
+                if (domain) {
+                    if (path) {
+                        if (name)
+                            cookiesPromises.push(this.session.cookies.deleteCookieByApi(domain, path, name));
+                        else
+                            cookiesPromises.push(this.session.cookies.deleteCookiesByApi(domain, path));
+                    }
+                    else if (name) {
+                        cookiesPromises.push(this.session.cookies.getAllCookiesByApi() // @ts-ignore
+                            .then(allCookies => allCookies.filter(c => c.key === name && c.domain === domain)) // @ts-ignore
+                            .then(cookiesToDelete => cookiesToDelete.map(c => this.session.cookies.deleteCookieByApi(c.domain, c.path, c.key)))
+                        );
+                    }
+                    else {
+                        cookiesPromises.push(this.session.cookies.getAllCookiesByApi() // @ts-ignore
+                            .then(allCookies => allCookies.filter(c => c.domain === domain)) // @ts-ignore
+                            .then(cookiesToDelete => cookiesToDelete.map(c => this.session.cookies.deleteCookieByApi(c.domain, c.path, c.key)))
+                        );
+                    }
+                }
+                else {
+                    cookiesPromises.push(
+                        this._getDeletingCookiePromiseByName(name)
+                    );
                 }
             }
         }
@@ -910,9 +954,8 @@ export default class TestRun extends AsyncEventEmitter {
                     }
                 }
                 else {
-                    cookiesPromises.push(this.session.cookies.getAllCookiesByApi() // @ts-ignore
-                        .then(allCookies => allCookies.filter(cookie => cookie.key === name)) // @ts-ignore
-                        .then(cookiesToDelete => cookiesToDelete.map(cookieToDelete => this.session.cookies.deleteCookieByApi(cookieToDelete.domain, cookieToDelete.path, cookieToDelete.key)))
+                    cookiesPromises.push(
+                        this._getDeletingCookiePromiseByName(name)
                     );
                 }
             }
@@ -929,9 +972,9 @@ export default class TestRun extends AsyncEventEmitter {
         const names = command.names as string[];
         const urls  = command.urls as string[];
 
-        const cookiesPromise = this._createGetCookiesResultPromise(cookies, names, urls);
+        const internalCookies = await this._getCookies(cookies, names, urls);
 
-        return await cookiesPromise;
+        return this._prepareCookies(internalCookies);
     }
 
     public async _enqueueSetCookies (command: CommandBase): Promise<void> {
@@ -940,9 +983,7 @@ export default class TestRun extends AsyncEventEmitter {
         const nameValueObjects = command.nameValueObjects as Record<string, string>[];
         const url              = command.url as string;
 
-        const cookiesPromise = this._createSetCookiesResultPromise(cookies, nameValueObjects, url);
-
-        await cookiesPromise;
+        await this._setCookies(cookies, nameValueObjects, url);
     }
 
     public async _enqueueDeleteCookies (command: CommandBase): Promise<void> {
@@ -951,9 +992,7 @@ export default class TestRun extends AsyncEventEmitter {
         const names = command.names as string[];
         const urls  = command.urls as string[];
 
-        const cookiesPromise = this._createDeleteCookiesResultPromise(cookies, names, urls);
-
-        await cookiesPromise;
+        await this._deleteCookies(cookies, names, urls);
     }
 
     private async _enqueueSetBreakpointCommand (callsite: CallsiteRecord | undefined, error?: string): Promise<void> {
