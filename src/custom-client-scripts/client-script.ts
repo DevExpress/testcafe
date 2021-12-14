@@ -61,7 +61,7 @@ export default class ClientScript {
             this.url     = path || this.url;
         }
         catch (e) {
-            throw new GeneralError(RUNTIME_ERRORS.cannotLoadClientScriptFromPath, path);
+            throw new GeneralError(RUNTIME_ERRORS.cannotLoadClientScriptFromPath, path, e.message);
         }
     }
 

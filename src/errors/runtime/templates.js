@@ -98,7 +98,7 @@ export default {
     [RUNTIME_ERRORS.clientScriptInitializerIsNotSpecified]:            'Initialize your client script with one of the following: a JavaScript script, a JavaScript file path, or the name of a JavaScript module.',
     [RUNTIME_ERRORS.clientScriptBasePathIsNotSpecified]:               'Specify the base path for the client script file.',
     [RUNTIME_ERRORS.clientScriptInitializerMultipleContentSources]:    'Client scripts can only have one initializer: JavaScript code, a JavaScript file path, or the name of a JavaScript module.',
-    [RUNTIME_ERRORS.cannotLoadClientScriptFromPath]:                   'Cannot load a client script from {path}.',
+    [RUNTIME_ERRORS.cannotLoadClientScriptFromPath]:                   'Cannot load a client script from {path}.\n{errorMessage}',
     [RUNTIME_ERRORS.clientScriptModuleEntryPointPathCalculationError]: 'A client script tried to load a JavaScript module that TestCafe cannot locate:\n\n{errorMessage}.',
     [RUNTIME_ERRORS.methodIsNotAvailableForAnIPCHost]:                 'This method cannot be called on a service host.',
     [RUNTIME_ERRORS.tooLargeIPCPayload]:                               'The specified payload is too large to form an IPC packet.',
