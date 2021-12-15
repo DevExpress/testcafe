@@ -3,7 +3,7 @@ import browserTools from 'testcafe-browser-tools';
 import OS from 'os-family';
 import { dirname } from 'path';
 import makeDir from 'make-dir';
-import BrowserConnection, { BrowserCloseData } from '../connection';
+import BrowserConnection, { BrowserClosingInfo } from '../connection';
 import delay from '../../utils/delay';
 import {
     GET_IS_SERVICE_WORKER_ENABLED,
@@ -322,7 +322,7 @@ export default class BrowserProvider {
             await this._ensureBrowserWindowParameters(browserId);
     }
 
-    public async closeBrowser (browserId: string, data: BrowserCloseData): Promise<void> {
+    public async closeBrowser (browserId: string, data: BrowserClosingInfo): Promise<void> {
         const canUseDefaultWindowActions = await this.canUseDefaultWindowActions(browserId);
         const customActionsInfo          = await this.hasCustomActionForBrowser(browserId);
         const hasCustomCloseBrowser      = customActionsInfo.hasCloseBrowser;

@@ -73,7 +73,7 @@ export default {
         this._setUserAgentMetaInfoForEmulatingDevice(browserId, runtimeInfo.config);
     },
 
-    async closeBrowser (browserId, data = {}) {
+    async closeBrowser (browserId, closingInfo = {}) {
         const runtimeInfo = this.openedBrowsers[browserId];
 
         if (runtimeInfo.browserClient.isHeadlessTab())
@@ -84,7 +84,7 @@ export default {
         if (OS.mac || runtimeInfo.config.headless)
             await stopLocalChrome(runtimeInfo);
 
-        if (runtimeInfo.tempProfileDir && !data.isRestarting)
+        if (runtimeInfo.tempProfileDir && !closingInfo.isRestarting)
             await runtimeInfo.tempProfileDir.dispose();
 
         delete this.openedBrowsers[browserId];

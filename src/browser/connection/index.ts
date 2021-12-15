@@ -59,7 +59,7 @@ interface ProviderMetaInfoOptions {
     appendToUserAgent?: boolean;
 }
 
-export interface BrowserCloseData {
+export interface BrowserClosingInfo {
     isRestarting?: boolean;
 }
 
@@ -217,7 +217,7 @@ export default class BrowserConnection extends EventEmitter {
         }
     }
 
-    private async _closeBrowser (data: BrowserCloseData = {}): Promise<void> {
+    private async _closeBrowser (data: BrowserClosingInfo = {}): Promise<void> {
         if (!this.idle)
             await promisifyEvent(this, 'idle');
 
