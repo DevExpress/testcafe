@@ -822,6 +822,17 @@ export default class Driver extends serviceUtils.EventEmitter {
             this._onChildWindowOpened({ window: wnd, windowId: msg.windowId });
     }
 
+    _handleStopInternalFromFrame (msg, wnd) {
+        sendConfirmationMessage({
+            requestMsgId: msg.id,
+            window:       wnd,
+        });
+
+        this.contextStorage.setItem(this.EXECUTING_IN_IFRAME_FLAG, false);
+
+        this._stopInternal();
+    }
+
     _initChildDriverListening () {
         messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
             const msg    = e.message;
@@ -836,6 +847,9 @@ export default class Driver extends serviceUtils.EventEmitter {
                     break;
                 case MESSAGE_TYPE.childWindowIsLoadedInIFrame:
                     this._handleChildWindowIsLoadedInIFrame(msg, window);
+                    break;
+                case MESSAGE_TYPE.stopInternalFromFrame:
+                    this._handleStopInternalFromFrame(msg, window);
                     break;
                 case MESSAGE_TYPE.setAsMaster:
                     this._handleSetAsMasterMessage(msg, window);

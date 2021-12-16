@@ -152,6 +152,10 @@ describe('Multiple windows', () => {
         return runTests('testcafe-fixtures/i6680.js');
     });
 
+    it('Should not hang if switching to a window from iframe', () => {
+        return runTests('testcafe-fixtures/i6085.js');
+    });
+
     describe('API', () => {
         it('Open child window', () => {
             return runTests('testcafe-fixtures/api/api-test.js', 'Open child window', { only: 'chrome' });
