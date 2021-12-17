@@ -1,5 +1,6 @@
-const { expect } = require('chai');
-const config     = require('../../../../config');
+const { expect }                     = require('chai');
+const config                         = require('../../../../config');
+const { errorInEachBrowserContains } = require('../../../../assertion-helper');
 
 
 // NOTE: we set selectorTimeout to a large value in some tests to wait for
@@ -100,6 +101,14 @@ if (config.currentEnvironmentName !== config.testingEnvironmentNames.osXDesktopA
                         expect(errs[0]).contains('- Error while restoring configuration after Role switch -');
                         expect(errs[0]).contains('The iframe in which the test is currently operating does not exist anymore.');
                         expect(errs[0]).contains('> 29 |        .useRole(Role.anonymous());');
+                    });
+            });
+
+            it('Should fail if an error occurred while switching to clean run (GH-5278)', function () {
+                return runTests('./testcafe-fixtures/error-on-switching-to-clean-run-test.js', null, { shouldFail: true })
+                    .catch(function (errs) {
+                        errorInEachBrowserContains(errs, 'Error in Role initializer - Failed to load the page at "https://non-existing-url.com/"', 0);
+                        errorInEachBrowserContains(errs, 'Error in Role initializer - Failed to load the page at "https://non-existing-url.com/"', 1);
                     });
             });
         });
