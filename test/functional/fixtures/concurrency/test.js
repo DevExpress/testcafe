@@ -115,9 +115,9 @@ if (config.useLocalBrowsers) {
         }
 
         it('Should run tests concurrently with Role', function () {
-            return run('chrome:headless', 2, './testcafe-fixtures/role-test.js')
+            return run('chrome:headless --no-sandbox', 2, './testcafe-fixtures/role-test.js')
                 .then(() => {
-                    expect(timeline.getData()).eql(['test started', 'test started', 'short finished', 'long finished']);
+                    expect(timeline.getData()).eql(['/fixtures/concurrency/pages/first-page.html', '/fixtures/concurrency/pages/second-page.html']);
                 });
         });
 

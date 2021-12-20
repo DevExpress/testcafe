@@ -1,50 +1,33 @@
-/* eslint-disable no-shadow */
-import {
-    ClientFunction, Role, Selector, t,
-} from 'testcafe';
+import { Role } from 'testcafe';
+import timeline from '../timeline';
 
-const setAuthCookie = ClientFunction(auth => {
-    return new Promise(resolve => {
-        document.cookie = `demo_auth=${auth}; path=/`;
-        resolve();
-    });
+const DEMO_ROLE = Role('http://localhost:3000/fixtures/concurrency/pages/index.html', async () => {
 });
 
-const roleWrapper = USER => {
-    return Role(
-        'https://en.wikipedia.org/',
-        async () => {
-            await setAuthCookie(USER.auth);
-            await t.eval(() => window.location.reload());
-            await t.expect(Selector('.mp-topbanner').exists).notOk();
-        },
-        t,
-        { preserveUrl: false, USER },
-    );
-};
-
-const DEMO_ROLE = roleWrapper({ auth: '123456' });
-
 fixture`F1`
-    .page('https://en.wikipedia.org/wiki/United_States')
+    .page('http://localhost:3000/fixtures/concurrency/pages/first-page.html')
     .beforeEach(async t => {
-        await t.useRole(DEMO_ROLE).wait(1000);
+        await t.useRole(DEMO_ROLE);
+    })
+    .after(() => {
+        timeline.save();
+        timeline.clear();
     });
 
 test('T1', async t => {
     const location = await t.eval(() => window.location.pathname);
 
-    await t.expect(location).eql('/wiki/United_States');
+    timeline.add(location);
 });
 
 fixture`F2`
-    .page('https://en.wikipedia.org/wiki/Canada')
+    .page('http://localhost:3000/fixtures/concurrency/pages/second-page.html')
     .beforeEach(async t => {
-        await t.useRole(DEMO_ROLE).wait(1000);
+        await t.useRole(DEMO_ROLE);
     });
 
 test('T2', async t => {
     const location = await t.eval(() => window.location.pathname);
 
-    await t.expect(location).eql('/wiki/Canada');
+    timeline.add(location);
 });
