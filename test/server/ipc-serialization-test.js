@@ -10,7 +10,7 @@ describe('IPC serialization', () => {
         const role = new Role('https://example.com', initFn, opts);
 
         role.phase         = RolePhase.pendingInitialization;
-        role.redirectUrl   = 'https://redirect-url.com';
+        role.redirectUrls   = { 1: 'https://redirect-url.com' };
         role.stateSnapshot = { cookie: 'key=value' };
         role.initErr       = new Error();
 
@@ -22,7 +22,7 @@ describe('IPC serialization', () => {
         expect(role.loginUrl).eql(deserializedRole.loginUrl);
         expect(role._initFn).eql(deserializedRole._initFn);
         expect(role.opts).deep.equal(deserializedRole.opts);
-        expect(role.redirectUrl).eql(deserializedRole.redirectUrl);
+        expect(role.redirectUrls).eql(deserializedRole.redirectUrls);
         expect(role.stateSnapshot).eql(deserializedRole.stateSnapshot);
         expect(role.initErr).eql(deserializedRole.initErr);
     });
