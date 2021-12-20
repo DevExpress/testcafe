@@ -114,6 +114,13 @@ if (config.useLocalBrowsers) {
             });
         }
 
+        it('Should run tests concurrently with Role', function () {
+            return run('chrome:headless', 2, './testcafe-fixtures/role-test.js')
+                .then(() => {
+                    expect(timeline.getData()).eql(['test started', 'test started', 'short finished', 'long finished']);
+                });
+        });
+
         it('Should report fixture start correctly if second fixture finishes before first', function () {
             return run('chrome:headless --no-sandbox', 2, ['./testcafe-fixtures/multifixture-test-a.js', './testcafe-fixtures/multifixture-test-b.js'], customReporter)
                 .then(failedCount => {
