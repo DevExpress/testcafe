@@ -84,7 +84,7 @@ export default class TestRunBookmark {
             await this.testRun.executeCommand(new SwitchToMainWindowCommand() as CommandBase);
 
         if (!this.role.opts.preserveUrl)
-            await this.role.setCurrentUrlAsRedirectUrl(this.testRun);
+            await this.role.setCurrentUrlAsRedirectUrls(this.testRun);
     }
 
     private async _restoreDialogHandler (): Promise<void> {
@@ -158,7 +158,8 @@ export default class TestRunBookmark {
 
             const preserveUrl = this.role.opts.preserveUrl;
 
-            await this._restorePage(this.role.redirectUrl as string, stateSnapshot);
+            if (this.role.redirectUrls)
+                await this._restorePage(this.role.redirectUrls[this.testRun.test.id], stateSnapshot);
 
             if (!preserveUrl)
                 await this._restoreWorkingFrame();

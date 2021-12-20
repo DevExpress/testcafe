@@ -6,11 +6,15 @@ import nanoid from 'nanoid';
 import TestRun from '../test-run';
 import TestCafeErrorList from '../errors/error-list';
 
+interface RedirectUrls {
+    [testId: string]: string;
+}
+
 export default class Role extends EventEmitter {
     public id: string;
     public phase: RolePhase;
     public loginUrl: string | null;
-    public redirectUrl: string | null;
+    public redirectUrls: RedirectUrls | null;
     public _initFn: Function | null;
     public opts: RoleOptions;
     public initErr: null | Error | TestCafeErrorList;
@@ -26,7 +30,7 @@ export default class Role extends EventEmitter {
         this.loginUrl      = loginUrl;
         this._initFn       = initFn;
         this.opts          = options;
-        this.redirectUrl   = null;
+        this.redirectUrls  = null;
         this.stateSnapshot = StateSnapshot.empty();
         this.initErr       = null;
     }
@@ -85,7 +89,7 @@ export default class Role extends EventEmitter {
         await this._storeStateSnapshot(testRun);
 
         if (this.opts.preserveUrl)
-            await this.setCurrentUrlAsRedirectUrl(testRun);
+            await this.setCurrentUrlAsRedirectUrls(testRun);
 
         this.phase = RolePhase.initialized;
 
@@ -98,13 +102,16 @@ export default class Role extends EventEmitter {
         this.emit('initialized');
     }
 
-    public async setCurrentUrlAsRedirectUrl (testRun: TestRun): Promise<void> {
-        this.redirectUrl = await testRun.getCurrentUrl();
+    public async setCurrentUrlAsRedirectUrls (testRun: TestRun): Promise<void> {
+        if (!this.redirectUrls)
+            this.redirectUrls = {};
+
+        this.redirectUrls[testRun.test.id] = await testRun.getCurrentUrl();
 
         await testRun.compilerService?.updateRoleProperty({
             roleId: this.id,
-            name:   'redirectUrl',
-            value:  this.redirectUrl,
+            name:   'redirectUrls',
+            value:  this.redirectUrls,
         });
     }
 
@@ -118,7 +125,7 @@ export default class Role extends EventEmitter {
 
         role.id            = serializedRole.id;
         role.phase         = serializedRole.phase;
-        role.redirectUrl   = serializedRole.redirectUrl;
+        role.redirectUrls  = serializedRole.redirectUrls;
         role.stateSnapshot = serializedRole.stateSnapshot;
         role.initErr       = serializedRole.initErr;
 
