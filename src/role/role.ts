@@ -6,7 +6,7 @@ import nanoid from 'nanoid';
 import TestRun from '../test-run';
 import TestCafeErrorList from '../errors/error-list';
 
-interface RedirectUrls {
+interface RedirectUrl {
     [testId: string]: string;
 }
 
@@ -14,7 +14,7 @@ export default class Role extends EventEmitter {
     public id: string;
     public phase: RolePhase;
     public loginUrl: string | null;
-    public redirectUrls: RedirectUrls | null;
+    public redirectUrl: RedirectUrl | string | null;
     public _initFn: Function | null;
     public opts: RoleOptions;
     public initErr: null | Error | TestCafeErrorList;
@@ -30,7 +30,7 @@ export default class Role extends EventEmitter {
         this.loginUrl      = loginUrl;
         this._initFn       = initFn;
         this.opts          = options;
-        this.redirectUrls  = null;
+        this.redirectUrl   = null;
         this.stateSnapshot = StateSnapshot.empty();
         this.initErr       = null;
     }
@@ -89,7 +89,7 @@ export default class Role extends EventEmitter {
         await this._storeStateSnapshot(testRun);
 
         if (this.opts.preserveUrl)
-            await this.setCurrentUrlAsRedirectUrls(testRun);
+            await this.setCurrentUrlAsRedirectUrl(testRun);
 
         this.phase = RolePhase.initialized;
 
@@ -102,16 +102,21 @@ export default class Role extends EventEmitter {
         this.emit('initialized');
     }
 
-    public async setCurrentUrlAsRedirectUrls (testRun: TestRun): Promise<void> {
-        if (!this.redirectUrls)
-            this.redirectUrls = {};
+    public async setCurrentUrlAsRedirectUrl (testRun: TestRun): Promise<void> {
+        const currentUrl = await testRun.getCurrentUrl();
 
-        this.redirectUrls[testRun.test.id] = await testRun.getCurrentUrl();
+        if (!this.redirectUrl)
+            this.redirectUrl = {};
+
+        if (this.opts.preserveUrl)
+            this.redirectUrl = currentUrl;
+        else if (typeof this.redirectUrl === 'object')
+            this.redirectUrl[testRun.test.id] = currentUrl;
 
         await testRun.compilerService?.updateRoleProperty({
             roleId: this.id,
-            name:   'redirectUrls',
-            value:  this.redirectUrls,
+            name:   'redirectUrl',
+            value:  this.redirectUrl,
         });
     }
 
@@ -125,7 +130,7 @@ export default class Role extends EventEmitter {
 
         role.id            = serializedRole.id;
         role.phase         = serializedRole.phase;
-        role.redirectUrls  = serializedRole.redirectUrls;
+        role.redirectUrl   = serializedRole.redirectUrl;
         role.stateSnapshot = serializedRole.stateSnapshot;
         role.initErr       = serializedRole.initErr;
 
