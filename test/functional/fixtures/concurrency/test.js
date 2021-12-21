@@ -114,12 +114,14 @@ if (config.useLocalBrowsers) {
             });
         }
 
-        it('Should run tests concurrently with Role', function () {
-            return run('chrome:headless --no-sandbox', 2, './testcafe-fixtures/role-test.js')
-                .then(() => {
-                    expect(timeline.getData()).eql(['/fixtures/concurrency/pages/first-page.html', '/fixtures/concurrency/pages/second-page.html']);
-                });
-        });
+        if (!config.proxyless) {
+            it('Should run tests concurrently with Role', function () {
+                return run('chrome:headless --no-sandbox', 2, './testcafe-fixtures/role-test.js')
+                    .then(() => {
+                        expect(timeline.getData()).eql(['/fixtures/concurrency/pages/first-page.html', '/fixtures/concurrency/pages/second-page.html']);
+                    });
+            });
+        }
 
         it('Should report fixture start correctly if second fixture finishes before first', function () {
             return run('chrome:headless --no-sandbox', 2, ['./testcafe-fixtures/multifixture-test-a.js', './testcafe-fixtures/multifixture-test-b.js'], customReporter)
