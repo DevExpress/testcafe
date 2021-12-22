@@ -3,7 +3,7 @@ const { expect }         = require('chai');
 const isCI               = require('is-ci');
 const config             = require('../../config');
 const { createReporter } = require('../../utils/reporter');
-const timeline           = require('./timeline');
+const testInfo           = require('./test-info');
 
 
 if (config.useLocalBrowsers) {
@@ -82,20 +82,20 @@ if (config.useLocalBrowsers) {
         });
 
         afterEach(() => {
-            timeline.delete();
+            testInfo.delete();
         });
 
         it('Should run tests sequentially if concurrency = 1', function () {
             return run('chrome:headless --no-sandbox', 1, './testcafe-fixtures/sequential-test.js')
                 .then(() => {
-                    expect(timeline.getData()).eql(['long started', 'long finished', 'short started', 'short finished']);
+                    expect(testInfo.getData()).eql(['long started', 'long finished', 'short started', 'short finished']);
                 });
         });
 
         it('Should run tests concurrently if concurrency > 1', function () {
             return run('chrome:headless --no-sandbox', 2, './testcafe-fixtures/concurrent-test.js')
                 .then(() => {
-                    expect(timeline.getData()).eql(['test started', 'test started', 'short finished', 'long finished']);
+                    expect(testInfo.getData()).eql(['test started', 'test started', 'short finished', 'long finished']);
                 });
         });
 
@@ -104,7 +104,7 @@ if (config.useLocalBrowsers) {
             it('Should run tests concurrently in different browser kinds', function () {
                 return run(['chrome:headless --no-sandbox', 'chrome:headless --no-sandbox --user-agent="TestAgent"'], 2, './testcafe-fixtures/multibrowser-concurrent-test.js')
                     .then(() => {
-                        const timelineData = timeline.getData();
+                        const timelineData = testInfo.getData();
 
                         expect(Object.keys(timelineData).length).gt(1);
 
@@ -118,7 +118,7 @@ if (config.useLocalBrowsers) {
             it('Should run tests concurrently with Role', function () {
                 return run('chrome:headless --no-sandbox', 2, './testcafe-fixtures/role-test.js')
                     .then(() => {
-                        expect(timeline.getData()).eql(['/fixtures/concurrency/pages/first-page.html', '/fixtures/concurrency/pages/second-page.html']);
+                        expect(testInfo.getData()).eql(['/fixtures/concurrency/pages/first-page.html', '/fixtures/concurrency/pages/second-page.html']);
                     });
             });
         }
