@@ -6,7 +6,7 @@ import nanoid from 'nanoid';
 import TestRun from '../test-run';
 import TestCafeErrorList from '../errors/error-list';
 
-interface RedirectUrl {
+export interface RedirectUrl {
     [testId: string]: string;
 }
 
@@ -105,13 +105,12 @@ export default class Role extends EventEmitter {
     public async setCurrentUrlAsRedirectUrl (testRun: TestRun): Promise<void> {
         const currentUrl = await testRun.getCurrentUrl();
 
-        if (!this.redirectUrl)
-            this.redirectUrl = {};
-
         if (this.opts.preserveUrl)
             this.redirectUrl = currentUrl;
-        else if (typeof this.redirectUrl === 'object')
-            this.redirectUrl[testRun.test.id] = currentUrl;
+        else {
+            this.redirectUrl = this.redirectUrl || {};
+            (this.redirectUrl as RedirectUrl)[testRun.test.id] = currentUrl;
+        }
 
         await testRun.compilerService?.updateRoleProperty({
             roleId: this.id,
