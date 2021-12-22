@@ -1,0 +1,21 @@
+{
+    "fixtures": [
+        {
+            "name": "coded-step-eval",
+            "pageUrl": "about:blank",
+            "tests": [
+                {
+                    "name": "New Test",
+                    "commands": [
+                        {
+                            "type": "execute-async-expression",
+                            "studio": {},
+                            "callsite": "0",
+                            "expression": "await t.eval(() => {\r\n    console.log(123);\r\n});"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -31,6 +31,9 @@ describe('[Raw API] Code steps', function () {
             });
     });
 
+    it('Eval (GH-4562)', function () {
+        return runTests('./testcafe-fixtures/eval.testcafe');
+    });
 
     it('Errors on page', function () {
         return runTests('./testcafe-fixtures/code-steps.testcafe', 'Errors on page', { shouldFail: true })

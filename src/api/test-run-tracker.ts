@@ -48,6 +48,10 @@ class TestRunTracker extends EventEmitter {
         return frames;
     }
 
+    public getMarkedFnName (testRunId: string): string {
+        return `$$testcafe_test_run$$${testRunId}$$`;
+    }
+
     public ensureEnabled (): void {
         if (!this.enabled) {
             global.setTimeout   = this._createContextSwitchingFunctionHook(global.setTimeout, 1);
@@ -64,7 +68,7 @@ class TestRunTracker extends EventEmitter {
 
     public addTrackingMarkerToFunction (testRunId: string, fn: Function): Function {
         const markerFactoryBody = `
-            return function $$testcafe_test_run$$${testRunId}$$ () {
+            return function ${this.getMarkedFnName(testRunId)} () {
                 switch (arguments.length) {
                     case 0: return fn.call(this);
                     case 1: return fn.call(this, arguments[0]);
