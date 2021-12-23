@@ -1,6 +1,7 @@
-import { isAbsolute, extname } from 'path';
+import { extname, isAbsolute } from 'path';
 import debug from 'debug';
 import JSON5 from 'json5';
+
 import {
     castArray,
     cloneDeep,
@@ -8,7 +9,7 @@ import {
     mergeWith,
 } from 'lodash';
 
-import { stat, readFile } from '../utils/promisified-functions';
+import { readFile, stat } from '../utils/promisified-functions';
 import Option from './option';
 import OptionSource from './option-source';
 import resolvePathRelativelyCwd from '../utils/resolve-path-relatively-cwd';
@@ -268,6 +269,9 @@ export default class Configuration {
     }
 
     protected _addOverriddenOptionIfNecessary (value1: OptionValue, value2: OptionValue, source: OptionSource, optionName: string): void {
+        if (source === OptionSource.Default)
+            return;
+
         if (value1 === void 0 || value2 === void 0 || value1 === value2 || source !== OptionSource.Configuration)
             return;
 
