@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.18.1 (2021-12-23)
+
+### macOS Bug Fix
+
+TestCafe fails to launch Safari after the v1.18.0 update.
+
 ## v1.18.0 (2021-12-22)
 
 TestCafe v1.18.0 includes a new experimental Selector debugging capability, important improvements for macOS users and a number of routine bug fixes.
