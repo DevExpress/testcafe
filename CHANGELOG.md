@@ -1,5 +1,52 @@
 # Changelog
 
+## v1.18.1 (2021-12-23)
+
+### macOS Bug Fix
+
+TestCafe fails to launch Safari after the v1.18.0 update.
+
+## v1.18.0 (2021-12-22)
+
+TestCafe v1.18.0 includes a new experimental Selector debugging capability, important improvements for macOS users and a number of routine bug fixes.
+
+If you run TestCafe on macOS, follow the [Upgrade Guide](https://testcafe.io/403664/release-notes/framework/2021-12-22-testcafe-v1-18-0-released#upgrade-instructions) to make sure your upgrade goes smoothly.
+
+## New Debugging Capabilities (Experimental)
+
+If you launch TestCafe with the `--experimental-debug` flag, you can debug Selectors and Client Functions in the Watch panel of a Node.js debugger.
+
+## macOS improvements
+
+### TestCafe Browser Tools on Apple Silicon
+
+The TestCafe Browser Tools package is a communication layer that automates browsers on behalf of TestCafe. Both the TestCafe framework and TestCafe Studio include the TestCafe Browser Tools binary.
+
+Earlier versions of TestCafe Browser Tools were optimized for the x86-64 architecture. [Apple Silicon Macs](https://support.apple.com/en-gb/HT211814/) ran those binaries through the [Rosetta 2 translation layer](https://developer.apple.com/documentation/apple-silicon/about-the-rosetta-translation-environment/). Rosetta 2 took up additional space and prevented TestCafe from taking full advantage of the processor.
+
+TestCafe v1.18.0 includes a **Universal** TestCafe Browser Tools binary that runs natively on both x64 Macs **and** Apple Silicon Macs.
+
+Follow the [Upgrade Instructions](https://testcafe.io/403664/release-notes/framework/2021-12-22-testcafe-v1-18-0-released#upgrade-instructions) to make sure your version of TestCafe Browser Tools is up to date.
+
+### TestCafe Browser Tools macOS Permission Fix
+
+The TestCafe Browser Tools binary requires special privileges to automate browsers and take screenshots. Security improvements in recent versions of macOS made these privileges harder to obtain.
+
+Prior to TestCafe v1.18.0, each installation of TestCafe and TestCafe Studio included a TestCafe Browser Tools binary. macOS users with multiple sets of TestCafe Browser Tools had to go through a lengthy process to obtain the necessary permissions.
+
+TestCafe v1.18.0 and TestCafe Studio v1.7 address this issue. Beginning with this version, all TestCafe installations share a single TestCafe Browser Tools binary. TestCafe stores this binary in the user's Home directory, inside the hidden `~/.testcafe-browser-tools` folder.
+
+Follow the [Upgrade Instructions](https://testcafe.io/403664/release-notes/framework/2021-12-22-testcafe-v1-18-0-released#upgrade-instructions) to reset TestCafe Browser Tools' permissions and enable the new binary.
+
+## Bug Fixes
+
+* TestCafe immediately closes new windows ([#6680](https://github.com/DevExpress/testcafe/issues/6680))
+* Tests fail with the `TypeError: Invalid value used as weak map key.` error ([#6563](https://github.com/DevExpress/testcafe/issues/6563))
+* The latest version of the TestCafe Docker image cannot connect to Chrome and Chromium ([#6436](https://github.com/DevExpress/testcafe/issues/6436))
+* TestCafe loses test error call stack and outputs the following message instead: `"Uncaught object "[object Object]"` (Issue [#6624](https://github.com/DevExpress/testcafe/issues/6624). Discovered by [@danieltroger](https://github.com/DevExpress/testcafe/issues/6624#issuecomment-975918371), PR by [@rob4629](https://github.com/DevExpress/testcafe/pull/6719).)
+* Lack of definitions for two new timeout options results in TypeScript compilation errors ([#6713](https://github.com/DevExpress/testcafe/issues/6713))
+* TypeScript filter functions erroneously require a Promise return value ([#6705](https://github.com/DevExpress/testcafe/issues/6705))
+
 ## v1.17.1 (2021-11-11)
 
 ### Bug Fixes
