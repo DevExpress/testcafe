@@ -8,7 +8,6 @@ test('Paren shouldn\'t be visible', async t => {
 
     await t
         .expect(svg.exists).ok()
-        .debug()
         .expect(svg.visible).notOk();
 });
 
