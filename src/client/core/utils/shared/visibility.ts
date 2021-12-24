@@ -30,8 +30,14 @@ export function isElementVisible (el: Node): boolean {
         return optionVisibleIndex >= topVisibleIndex && optionVisibleIndex <= bottomVisibleIndex;
     }
 
-    if (adapter.dom.isSVGElement(el))
-        return adapter.style.get(el, 'visibility') !== 'hidden' && adapter.style.get(el, 'display') !== 'none';
+    if (adapter.dom.isSVGElement(el)) {
+        if (adapter.style.get(el, 'visibility') === 'hidden' || adapter.style.get(el, 'display') === 'none')
+            return false;
+
+        const parent = adapter.dom.findParent(el);
+
+        return parent ? isElementVisible(parent) : true;
+    }
 
     return hasDimensions(el as HTMLElement) && adapter.style.get(el, 'visibility') !== 'hidden';
 }
