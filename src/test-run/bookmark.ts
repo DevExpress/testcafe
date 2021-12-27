@@ -13,7 +13,7 @@ import {
 import { CurrentIframeNotFoundError, CurrentIframeIsNotLoadedError } from '../errors/test-run';
 import TestRun from './index';
 import { ExecuteClientFunctionCommand, ExecuteSelectorCommand } from './commands/observation';
-import Role from '../role/role';
+import Role, { RedirectUrl } from '../role/role';
 import { DEFAULT_SPEED_VALUE } from '../configuration/default-values';
 import BrowserConsoleMessages from './browser-console-messages';
 import { CommandBase } from './commands/base';
@@ -158,7 +158,11 @@ export default class TestRunBookmark {
 
             const preserveUrl = this.role.opts.preserveUrl;
 
-            await this._restorePage(this.role.redirectUrl as string, stateSnapshot);
+            const redirectUrl = preserveUrl
+                ? this.role.redirectUrl as string
+                : (this.role.redirectUrl as RedirectUrl)[this.testRun.test.id];
+
+            await this._restorePage(redirectUrl, stateSnapshot);
 
             if (!preserveUrl)
                 await this._restoreWorkingFrame();

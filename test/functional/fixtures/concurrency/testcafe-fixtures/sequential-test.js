@@ -1,24 +1,24 @@
-import timeline from '../timeline';
+import testInfo from '../test-info';
 
 fixture `Sequential`
     .page`../pages/index.html`
     .after(() => {
-        timeline.save();
-        timeline.clear();
+        testInfo.save();
+        testInfo.clear();
     });
 
 test('Long test', async t => {
-    timeline.add('long started');
+    testInfo.add('long started');
 
     await t.wait(10000);
 
-    timeline.add('long finished');
+    testInfo.add('long finished');
 });
 
 test('Short test', async t => {
-    timeline.add('short started');
+    testInfo.add('short started');
 
     await t.wait(1000);
 
-    timeline.add('short finished');
+    testInfo.add('short finished');
 });

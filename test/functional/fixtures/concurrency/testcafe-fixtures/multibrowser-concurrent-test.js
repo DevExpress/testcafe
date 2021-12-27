@@ -1,4 +1,4 @@
-import timeline from '../timeline';
+import testInfo from '../test-info';
 import { ClientFunction } from 'testcafe';
 
 const getUserAgent = ClientFunction(() => navigator.userAgent);
@@ -13,9 +13,9 @@ fixture `Concurrent`
             data[t.ctx.userAgent] = [];
     })
     .after(() => {
-        timeline.setData(data);
-        timeline.save();
-        timeline.clear();
+        testInfo.setData(data);
+        testInfo.save();
+        testInfo.clear();
     });
 
 test('Long test', async t => {

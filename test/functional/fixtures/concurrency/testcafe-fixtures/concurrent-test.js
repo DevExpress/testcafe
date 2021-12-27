@@ -1,24 +1,24 @@
-import timeline from '../timeline';
+import testInfo from '../test-info';
 
 fixture `Concurrent`
     .page`../pages/index.html`
     .after(() => {
-        timeline.save();
-        timeline.clear();
+        testInfo.save();
+        testInfo.clear();
     });
 
 test('Long test', async t => {
-    timeline.add('test started');
+    testInfo.add('test started');
 
     await t.wait(10000);
 
-    timeline.add('long finished');
+    testInfo.add('long finished');
 });
 
 test('Short test', async t => {
-    timeline.add('test started');
+    testInfo.add('test started');
 
     await t.wait(1000);
 
-    timeline.add('short finished');
+    testInfo.add('short finished');
 });
