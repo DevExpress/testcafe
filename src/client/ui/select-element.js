@@ -144,7 +144,7 @@ function createChildren (children, parent) {
 export function expandOptionList (select) {
     const selectChildren = select.children;
 
-    if (!selectChildren.length)
+    if (!selectChildren.length || select.disabled)
         return;
 
     //NOTE: check is option list expanded
