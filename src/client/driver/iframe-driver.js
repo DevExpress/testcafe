@@ -10,9 +10,13 @@ import Driver from './driver';
 import ContextStorage from './storage';
 import DriverStatus from './status';
 import ParentIframeDriverLink from './driver-link/iframe/parent';
-import { ChildWindowIsOpenedInFrameMessage, TYPE as MESSAGE_TYPE } from './driver-link/messages';
 import IframeNativeDialogTracker from './native-dialog-tracker/iframe';
 
+import {
+    ChildWindowIsOpenedInFrameMessage,
+    StopInternalFromFrameMessage,
+    TYPE as MESSAGE_TYPE,
+} from './driver-link/messages';
 
 const messageSandbox = eventSandbox.message;
 
@@ -38,6 +42,10 @@ export default class IframeDriver extends Driver {
     // to start waiting for the new page is loaded
     _onChildWindowOpened () {
         messageSandbox.sendServiceMsg(new ChildWindowIsOpenedInFrameMessage(), window.top);
+    }
+
+    _stopInternal () {
+        messageSandbox.sendServiceMsg(new StopInternalFromFrameMessage(), window.top);
     }
 
     // Messaging between drivers

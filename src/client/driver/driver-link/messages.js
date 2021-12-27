@@ -17,6 +17,7 @@ export const TYPE = {
     restoreChildLink:            'driver|restore-child-link',
     childWindowIsLoadedInIFrame: 'driver|child-window-is-loaded-in-iframe',
     childWindowIsOpenedInIFrame: 'driver|child-window-is-opened-in-iframe',
+    stopInternalFromFrame:       'driver|stop-internal-from-iframe',
     hasPendingActionFlags:       'driver|has-pending-action-flags',
 };
 
@@ -147,6 +148,12 @@ export class ChildWindowIsLoadedInFrameMessage extends InterDriverMessage {
 export class ChildWindowIsOpenedInFrameMessage extends InterDriverMessage {
     constructor () {
         super(TYPE.childWindowIsOpenedInIFrame);
+    }
+}
+
+export class StopInternalFromFrameMessage extends InterDriverMessage {
+    constructor () {
+        super(TYPE.stopInternalFromFrame);
     }
 }
 
