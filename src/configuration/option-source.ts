@@ -1,4 +1,5 @@
 enum OptionSource {
+    Default = 'Default',
     Configuration = 'Configuration',
     Input = 'Input'
 }

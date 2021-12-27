@@ -12,18 +12,20 @@ import resolvePathRelativelyCwd from '../utils/resolve-path-relatively-cwd';
 import {
     DEFAULT_APP_INIT_DELAY,
     DEFAULT_CONCURRENCY_VALUE,
+    DEFAULT_DEVELOPMENT_MODE,
+    DEFAULT_DISABLE_HTTP2,
+    DEFAULT_FILTER_FN,
+    DEFAULT_PROXYLESS,
+    DEFAULT_RETRY_TEST_PAGES,
+    DEFAULT_SCREENSHOT_THUMBNAILS,
+    DEFAULT_SOURCE_DIRECTORIES,
     DEFAULT_SPEED_VALUE,
     DEFAULT_TIMEOUT,
-    DEFAULT_SOURCE_DIRECTORIES,
-    DEFAULT_DEVELOPMENT_MODE,
-    DEFAULT_RETRY_TEST_PAGES,
-    DEFAULT_DISABLE_HTTP2,
-    DEFAULT_PROXYLESS,
-    DEFAULT_SCREENSHOT_THUMBNAILS,
     getDefaultCompilerOptions,
 } from './default-values';
 
 import OptionSource from './option-source';
+
 import {
     Dictionary,
     FilterOption,
@@ -162,8 +164,8 @@ export default class TestCafeConfiguration extends Configuration {
         return result;
     }
 
-    private _prepareFlag (name: string): void {
-        const option = this._ensureOption(name, void 0, OptionSource.Configuration);
+    private _prepareFlag (name: string, source = OptionSource.Configuration): void {
+        const option = this._ensureOption(name, void 0, source);
 
         option.value = !!option.value;
     }
@@ -173,7 +175,7 @@ export default class TestCafeConfiguration extends Configuration {
     }
 
     private _prepareInitFlags (): void {
-        OPTION_INIT_FLAG_NAMES.forEach(name => this._prepareFlag(name));
+        OPTION_INIT_FLAG_NAMES.forEach(name => this._prepareFlag(name, OptionSource.Default));
     }
 
     private async _normalizeOptionsAfterLoad (): Promise<void> {
@@ -187,7 +189,7 @@ export default class TestCafeConfiguration extends Configuration {
     }
 
     private _prepareFilterFn (): void {
-        const filterOption = this._ensureOption(OPTION_NAMES.filter, null, OptionSource.Configuration);
+        const filterOption = this._ensureOption(OPTION_NAMES.filter, DEFAULT_FILTER_FN, OptionSource.Default);
 
         if (!filterOption.value)
             return;
@@ -200,7 +202,8 @@ export default class TestCafeConfiguration extends Configuration {
         if (filterOptionValue.fixtureGrep)
             filterOptionValue.fixtureGrep = getGrepOptions(OPTION_NAMES.filterFixtureGrep, filterOptionValue.fixtureGrep as string);
 
-        filterOption.value = getFilterFn(filterOption.value) as Function;
+        filterOption.value  = getFilterFn(filterOption.value) as Function;
+        filterOption.source = OptionSource.Configuration;
     }
 
     private _ensureScreenshotOptions (): void {
