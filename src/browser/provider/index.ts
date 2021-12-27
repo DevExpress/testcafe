@@ -442,4 +442,8 @@ export default class BrowserProvider {
     public setActiveWindowId (browserId: string, val: string): void {
         this.plugin.setActiveWindowId(browserId, val);
     }
+
+    public async closeBrowserChildWindow (browserId: string): Promise<void> {
+        await this.plugin.closeBrowserChildWindow(browserId);
+    }
 }

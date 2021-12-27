@@ -153,4 +153,8 @@ export default class BrowserProviderPluginHost {
     getConfig (value) {
         return value;
     }
+
+    closeBrowserChildWindow (/*browserId*/) {
+        return Promise.resolve();
+    }
 }

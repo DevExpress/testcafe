@@ -100,6 +100,7 @@ export default class BrowserConnection extends EventEmitter {
     private readonly heartbeatUrl: string;
     private readonly statusUrl: string;
     public readonly activeWindowIdUrl: string;
+    public readonly closeWindowUrl: string;
     private statusDoneUrl: string;
     private readonly debugLogger: debug.Debugger;
 
@@ -156,6 +157,7 @@ export default class BrowserConnection extends EventEmitter {
         this.statusRelativeUrl     = `/browser/status/${this.id}`;
         this.statusDoneRelativeUrl = `/browser/status-done/${this.id}`;
         this.activeWindowIdUrl     = `/browser/active-window-id/${this.id}`;
+        this.closeWindowUrl        = `/browser/close-window/${this.id}`;
 
         this.heartbeatUrl  = `${gateway.domain}${this.heartbeatRelativeUrl}`;
         this.statusUrl     = `${gateway.domain}${this.statusRelativeUrl}`;

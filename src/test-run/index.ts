@@ -542,6 +542,7 @@ export default class TestRun extends AsyncEventEmitter {
             browserStatusRelativeUrl:     JSON.stringify(this.browserConnection.statusRelativeUrl),
             browserStatusDoneRelativeUrl: JSON.stringify(this.browserConnection.statusDoneRelativeUrl),
             browserActiveWindowIdUrl:     JSON.stringify(this.browserConnection.activeWindowIdUrl),
+            browserCloseWindowUrl:        JSON.stringify(this.browserConnection.closeWindowUrl),
             userAgent:                    JSON.stringify(this.browserConnection.userAgent),
             testName:                     JSON.stringify(this.test.name),
             fixtureName:                  JSON.stringify((this.test.fixture as Fixture).name),

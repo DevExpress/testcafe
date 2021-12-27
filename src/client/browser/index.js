@@ -172,3 +172,10 @@ export function setActiveWindowId (activeWindowIdUrl, createXHR, windowId) {
         data:   JSON.stringify({ windowId }), //eslint-disable-line no-restricted-globals
     });
 }
+
+export function closeWindow (closeWindowUrl, createXHR, windowId) {
+    return sendXHR(closeWindowUrl, createXHR, {
+        method: 'POST',
+        data:   JSON.stringify({ windowId }), //eslint-disable-line no-restricted-globals
+    });
+}

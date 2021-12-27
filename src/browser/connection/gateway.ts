@@ -64,6 +64,8 @@ export default class BrowserConnectionGateway {
         this._dispatch('/browser/init-script/{id}', proxy, BrowserConnectionGateway._onInitScriptResponse, 'POST');
         this._dispatch('/browser/active-window-id/{id}', proxy, BrowserConnectionGateway._onGetActiveWindowIdRequest);
         this._dispatch('/browser/active-window-id/{id}', proxy, BrowserConnectionGateway._onSetActiveWindowIdRequest, 'POST');
+        this._dispatch('/browser/close-window/{id}', proxy, BrowserConnectionGateway._onCloseWindowRequest, 'POST');
+
 
         proxy.GET(SERVICE_ROUTES.connect, (req: IncomingMessage, res: ServerResponse) => this._connectNextRemoteBrowser(req, res));
         proxy.GET(SERVICE_ROUTES.connectWithTrailingSlash, (req: IncomingMessage, res: ServerResponse) => this._connectNextRemoteBrowser(req, res));
@@ -181,6 +183,15 @@ export default class BrowserConnectionGateway {
 
                 respondWithJSON(res);
             });
+        }
+    }
+
+    private static _onCloseWindowRequest (req: IncomingMessage, res: ServerResponse, connection: BrowserConnection): void {
+        if (BrowserConnectionGateway._ensureConnectionReady(res, connection)) {
+            connection.provider.closeBrowserChildWindow(connection.id)
+                .then(() => {
+                    respondWithJSON(res);
+                });
         }
     }
 
