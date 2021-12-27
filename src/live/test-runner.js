@@ -146,7 +146,7 @@ class LiveModeRunner extends Runner {
     }
 
     async _finishPreviousTestRuns () {
-        if (!this.configurationCache.tests) return;
+        if (!this.configurationCache?.tests) return;
 
         this.testRunController.run();
     }
@@ -155,6 +155,11 @@ class LiveModeRunner extends Runner {
         if (isFirstRun) {
             if (this.bootstrappingError)
                 return Promise.reject(this.bootstrappingError);
+
+            else if (!this.configurationCache) {
+                // NOTE: Such errors handled in process.on('unhandledRejection') handler.
+                return Promise.reject(null);
+            }
 
             return Promise.resolve();
         }
