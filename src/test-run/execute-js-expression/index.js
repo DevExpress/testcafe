@@ -16,9 +16,11 @@ import {
     ERROR_LINE_OFFSET,
 } from './constants';
 
+import TestRunTracker from '../../api/test-run-tracker';
+
 // NOTE: do not beautify this code since offsets for error lines and columns are coded here
-function wrapInAsync (expression) {
-    return '(async function() {\n' +
+function wrapInAsync (expression, testRunId) {
+    return `(async function ${TestRunTracker.getMarkedFnName(testRunId)} () {\n` +
            expression + ';\n' +
            '});';
 }
@@ -86,11 +88,12 @@ export async function executeAsyncJsExpression (expression, testRun, callsite, o
     if (!expression || !expression.length)
         return Promise.resolve();
 
-    const context      = getExecutionContext(testRun.controller);
-    const errorOptions = createErrorFormattingOptions(expression);
+    const context           = getExecutionContext(testRun.controller);
+    const errorOptions      = createErrorFormattingOptions(expression);
+    const wrappedExpression = wrapInAsync(expression, testRun.id);
 
     try {
-        return await runInContext(wrapInAsync(expression), context, errorOptions)();
+        return await runInContext(wrappedExpression, context, errorOptions)();
     }
     catch (err) {
         const { line, column } = getErrorLineColumn(err);
