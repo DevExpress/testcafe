@@ -53,7 +53,20 @@ export default class Role extends EventEmitter {
         };
     }
 
+    private async _setInitError (err: Error, testRun: TestRun): Promise<void> {
+        this.initErr = err;
+
+        await testRun?.compilerService?.updateRoleProperty({
+            roleId: this.id,
+            name:   'initErr',
+            value:  this.initErr,
+        });
+    }
+
     private async _executeInitFn (testRun: TestRun): Promise<void> {
+        if (this.initErr)
+            return;
+
         try {
             if (testRun.compilerService)
                 this._wrapTestFn(testRun);
@@ -66,21 +79,23 @@ export default class Role extends EventEmitter {
             await fn();
         }
         catch (err) {
-            this.initErr = err;
+            await this._setInitError(err, testRun);
+        }
+    }
 
-            await testRun?.compilerService?.updateRoleProperty({
-                roleId: this.id,
-                name:   'initErr',
-                value:  this.initErr,
-            });
+    private async _switchToCleanRun (testRun: TestRun): Promise<void> {
+        try {
+            await testRun.switchToCleanRun(this.loginUrl as string);
+        }
+        catch (err) {
+            await this._setInitError(err, testRun);
         }
     }
 
     public async initialize (testRun: TestRun): Promise<void> {
         this.phase = RolePhase.pendingInitialization;
 
-        await testRun.switchToCleanRun(this.loginUrl as string);
-
+        await this._switchToCleanRun(testRun);
         await this._executeInitFn(testRun);
         await this._storeStateSnapshot(testRun);
 
