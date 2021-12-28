@@ -26,20 +26,27 @@ function setAccessPrivileges (dir) {
 }
 
 module.exports = function runFunctionalTestViaCommandLine (publishRepository, packageInfo) {
+    console.log('before functional test in docker'); //eslint-disable-line
     tmp.setGracefulCleanup();
 
     const tmpDir   = tmp.dirSync();
     const testsDir = path.join(__dirname, '../../test/docker/testcafe-fixtures');
 
-    return copy(testsDir, tmpDir.name).then(() => {
-        const resultTmpDirPath = osFamily.win ? correctPathOnWindows(tmpDir.name) : tmpDir.name;
+    console.log('testsDir', testsDir);//eslint-disable-line
+    return copy(testsDir, tmpDir.name)
+        .then(() => {
+            const resultTmpDirPath = osFamily.win ? correctPathOnWindows(tmpDir.name) : tmpDir.name;
 
-        if (osFamily.linux)
-            setAccessPrivileges(resultTmpDirPath);
+            console.log('resultTmpDirPath', resultTmpDirPath);//eslint-disable-line
 
-        const cmd = `docker run -i -v ${resultTmpDirPath}:/tests -w /tests ${publishRepository}:${packageInfo.version} chromium:headless basic-test.js`;
+            if (osFamily.linux)
+                setAccessPrivileges(resultTmpDirPath);
 
-        childProcess.execSync(cmd, { stdio: 'inherit', env: process.env });
-    });
+            const cmd = `docker run -i -v ${resultTmpDirPath}:/tests -w /tests ${publishRepository}:${packageInfo.version} chromium:headless basic-test.js`;
+
+            console.log('before execute:', cmd);//eslint-disable-line
+            childProcess.execSync(cmd, { stdio: 'inherit', env: process.env });
+        })
+        .catch(err => console.log(err));//eslint-disable-line
 };
 
