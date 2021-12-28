@@ -46,16 +46,16 @@ const CLIENT_TESTS_DESKTOP_BROWSERS = [
         version:     '11.0',
     },
     {
-        platform:    'macOS 10.13',
+        platform:    'macOS 12',
         browserName: 'safari',
-        version:     '11.1',
+        version:     '15',
     },
     {
-        platform:    'OS X 10.11',
+        platform:    'macOS 12',
         browserName: 'chrome',
     },
     {
-        platform:    'OS X 10.11',
+        platform:    'macOS 12',
         browserName: 'firefox',
     },
 ];
@@ -73,7 +73,7 @@ const CLIENT_TESTS_MOBILE_BROWSERS = [
         // NOTE: https://github.com/DevExpress/testcafe/issues/471
         // problem with extra scroll reproduced only on saucelabs
         // virtual machines with ios device emulators
-        version:     '10.3',
+        version:     '14.5',
         deviceName:  'iPhone 7 Plus Simulator',
     },
 ];

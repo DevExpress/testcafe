@@ -1,5 +1,6 @@
-const hammerhead   = window.getTestCafeModule('hammerhead');
-const browserUtils = hammerhead.utils.browser;
+const hammerhead       = window.getTestCafeModule('hammerhead');
+const browserUtils     = hammerhead.utils.browser;
+const featureDetection = hammerhead.utils.featureDetection;
 
 const testCafeAutomation   = window.getTestCafeModule('testCafeAutomation');
 const ClickAutomation      = testCafeAutomation.Click;
@@ -16,6 +17,8 @@ const domUtils          = testCafeCore.domUtils;
 const textSelection     = testCafeCore.textSelection;
 const parseKeySequence  = testCafeCore.parseKeySequence;
 
+const isMobileSafari = browserUtils.isSafari && featureDetection.isTouchDevice;
+const nextTestDelay  = isMobileSafari ? 200 : 30;
 
 testCafeCore.preventRealEvents();
 
@@ -37,7 +40,7 @@ $(document).ready(function () {
     let seventhElementInnerHTML = null;
 
     const startNext = function () {
-        window.setTimeout(start, 30);
+        window.setTimeout(start, nextTestDelay);
     };
 
     const firstNotWhiteSpaceSymbolIndex = function (value) {

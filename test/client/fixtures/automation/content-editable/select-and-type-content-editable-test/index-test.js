@@ -1,5 +1,6 @@
-const hammerhead   = window.getTestCafeModule('hammerhead');
-const browserUtils = hammerhead.utils.browser;
+const hammerhead       = window.getTestCafeModule('hammerhead');
+const browserUtils     = hammerhead.utils.browser;
+const featureDetection = hammerhead.utils.featureDetection;
 
 const testCafeCore      = window.getTestCafeModule('testCafeCore');
 const textSelection     = testCafeCore.textSelection;
@@ -16,6 +17,8 @@ const TypeOptions = testCafeAutomation.TypeOptions;
 
 testCafeCore.preventRealEvents();
 
+const isMobileSafari = browserUtils.isSafari && featureDetection.isTouchDevice;
+const nextTestDelay  = browserUtils.isIE ? 30 : 200;
 
 $(document).ready(function () {
     //consts
@@ -34,9 +37,9 @@ $(document).ready(function () {
     $('body').css('height', 1500);
 
     const startNext = function () {
-        if (browserUtils.isIE) {
+        if (browserUtils.isIE || isMobileSafari) {
             removeTestElements();
-            window.setTimeout(start, 30);
+            window.setTimeout(start, nextTestDelay);
         }
         else
             start();
