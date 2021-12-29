@@ -452,7 +452,7 @@ gulp.task('docker-build', done => {
     done();
 });
 
-gulp.step('docker-server-test-run', (done) => {
+gulp.step('docker-server-test-run', done => {
     ensureDockerEnvironment();
 
     console.log('before executing docker build'); //eslint-disable-line
