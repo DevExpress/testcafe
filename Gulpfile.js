@@ -272,7 +272,7 @@ gulp.step('test-server-run', () => { // eslint-disable-line
 
     try {
         return gulp
-            .src('test/server/*-test.js', { read: false })
+            .src('test/server/*-1test.js', { read: false })
             .pipe(mocha({
                 timeout: getTimeout(4_000),
             }));
