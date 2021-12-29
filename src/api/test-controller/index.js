@@ -224,26 +224,23 @@ export default class TestController {
 
     [delegatedAPI(GetCookiesCommand.methodName)] (...args) {
         const callsite = getCallsiteForMethod(GetCookiesCommand.methodName);
+        const cmdArgs  = prepareAndValidateCookieArgumentsToGetOrDelete(callsite, ...args);
 
-        const commandArguments = prepareAndValidateCookieArgumentsToGetOrDelete(callsite, ...args);
-
-        return this._enqueueCommand(GetCookiesCommand, commandArguments);
+        return this._enqueueCommand(GetCookiesCommand, cmdArgs);
     }
 
     [delegatedAPI(SetCookiesCommand.methodName)] (...args) {
         const callsite = getCallsiteForMethod(SetCookiesCommand.methodName);
+        const cmdArgs  = prepareAndValidateCookieArgumentsToSet(callsite, ...args);
 
-        const commandArguments = prepareAndValidateCookieArgumentsToSet(callsite, ...args);
-
-        return this._enqueueCommand(SetCookiesCommand, commandArguments);
+        return this._enqueueCommand(SetCookiesCommand, cmdArgs);
     }
 
     [delegatedAPI(DeleteCookiesCommand.methodName)] (...args) {
         const callsite = getCallsiteForMethod(DeleteCookiesCommand.methodName);
+        const cmdArgs  = prepareAndValidateCookieArgumentsToGetOrDelete(callsite, ...args);
 
-        const comamndArguments = prepareAndValidateCookieArgumentsToGetOrDelete(callsite, ...args);
-
-        return this._enqueueCommand(DeleteCookiesCommand, comamndArguments);
+        return this._enqueueCommand(DeleteCookiesCommand, cmdArgs);
     }
 
     [delegatedAPI(ClickCommand.methodName)] (selector, options) {
