@@ -452,7 +452,7 @@ gulp.task('docker-build', done => {
     done();
 });
 
-gulp.step('docker-server-test-run', () => {
+gulp.step('docker-server-test-run', (done) => {
     ensureDockerEnvironment();
 
     console.log('before executing docker build'); //eslint-disable-line
@@ -464,6 +464,8 @@ gulp.step('docker-server-test-run', () => {
     console.log('before executing docker image rm');//eslint-disable-line
     childProcess.execSync('docker image rm docker-server-tests', { stdio: 'inherit', env: process.env });
     console.log('after executing docker image rm');//eslint-disable-line
+
+    done();
 });
 
 gulp.step('docker-functional-test-run', () => {
