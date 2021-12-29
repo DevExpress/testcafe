@@ -262,7 +262,7 @@ gulp.task('build', process.env.DEV_MODE === 'true' ? gulp.registry().get('fast-b
 // Test
 gulp.step('prepare-tests', gulp.registry().get(SKIP_BUILD ? 'lint' : 'build'));
 
-gulp.step('test-server-run', () => {
+gulp.step('test-server-run', () => { // eslint-disable-line
     const chai = require('chai');
 
     chai.use(require('chai-string'));
@@ -276,6 +276,9 @@ gulp.step('test-server-run', () => {
             .pipe(mocha({
                 timeout: getTimeout(4_000),
             }));
+    }
+    catch (err) {
+        console.log('!!!', err); //eslint-disable-line
     }
     finally {
         enterDomains(domains);
