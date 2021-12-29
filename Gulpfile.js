@@ -452,15 +452,18 @@ gulp.task('docker-build', done => {
     done();
 });
 
-gulp.step('docker-server-test-run', done => {
+gulp.step('docker-server-test-run', () => {
     ensureDockerEnvironment();
 
+    console.log('before executing docker build'); //eslint-disable-line
     childProcess.execSync(`docker build --no-cache --build-arg tag=${packageInfo.version} -t docker-server-tests -f test/docker/Dockerfile .`,
         { stdio: 'inherit', env: process.env });
 
-    childProcess.execSync('docker image rm docker-server-tests', { stdio: 'inherit', env: process.env });
+    console.log('after executing docker build');//eslint-disable-line
 
-    done();
+    console.log('before executing docker image rm');//eslint-disable-line
+    childProcess.execSync('docker image rm docker-server-tests', { stdio: 'inherit', env: process.env });
+    console.log('after executing docker image rm');//eslint-disable-line
 });
 
 gulp.step('docker-functional-test-run', () => {
