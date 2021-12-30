@@ -19,8 +19,14 @@ afterEach(function () {
     const activeRequestsString = activeRequests.toString();
 
     const activeHandlersString = activeHandles.map(handler => {
-        if (typeof handler.constructor === 'function')
-            return handler.constructor.name;
+        if (typeof handler.constructor === 'function') {
+            const handlerString = handler.constructor.name;
+
+            if (handlerString === 'Socket')
+                console.dir(handler); //eslint-disable-line
+
+            return handlerString;
+        }
 
         return handler.toString();
     });
