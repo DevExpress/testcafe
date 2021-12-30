@@ -62,11 +62,6 @@ describe('Warning log', () => {
     });
 
     it('Should copy messages to another instance', () => {
-        console.log('Display active handlers');// eslint-disable-line
-        console.log(process._getActiveRequests()); // eslint-disable-line
-        console.log(process._getActiveHandles()); // eslint-disable-line
-
-
         const firstLog  = new WarningLog();
         const secondLog = new WarningLog();
 

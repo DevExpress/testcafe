@@ -262,7 +262,7 @@ gulp.task('build', process.env.DEV_MODE === 'true' ? gulp.registry().get('fast-b
 // Test
 gulp.step('prepare-tests', gulp.registry().get(SKIP_BUILD ? 'lint' : 'build'));
 
-gulp.step('test-server-run', () => { // eslint-disable-line
+gulp.step('test-server-run', () => {
     const chai = require('chai');
 
     chai.use(require('chai-string'));
@@ -272,14 +272,13 @@ gulp.step('test-server-run', () => { // eslint-disable-line
 
     try {
         return gulp
-            .src('test/server/*-test.js', { read: false })
+            .src([
+                'test/server/helpers/setup.js',
+                'test/server/*-test.js',
+            ], { read: false })
             .pipe(mocha({
-                timeout:    getTimeout(4_000),
-                checkLeaks: true,
+                timeout: getTimeout(4_000),
             }));
-    }
-    catch (err) {
-        console.log('!!!', err); //eslint-disable-line
     }
     finally {
         enterDomains(domains);
@@ -459,15 +458,10 @@ gulp.task('docker-build', done => {
 gulp.step('docker-server-test-run', done => {
     ensureDockerEnvironment();
 
-    console.log('before executing docker build'); //eslint-disable-line
     childProcess.execSync(`docker build --no-cache --build-arg tag=${packageInfo.version} -t docker-server-tests -f test/docker/Dockerfile .`,
         { stdio: 'inherit', env: process.env });
 
-    console.log('after executing docker build');//eslint-disable-line
-
-    console.log('before executing docker image rm');//eslint-disable-line
     childProcess.execSync('docker image rm docker-server-tests', { stdio: 'inherit', env: process.env });
-    console.log('after executing docker image rm');//eslint-disable-line
 
     done();
 });
