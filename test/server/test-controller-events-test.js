@@ -153,7 +153,7 @@ const initializeReporter = (reporter) => {
     return new Reporter(reporter, messageBus);
 };
 
-describe.skip('TestController action events', () => {
+describe('TestController action events', () => {
     beforeEach(() => {
         messageBus = new MessageBus();
 
@@ -180,7 +180,7 @@ describe.skip('TestController action events', () => {
         testRunController._assignTestRunEvents(testRun);
     });
 
-    it('Actions list', async () => {
+    it.skip('Actions list', async () => {
         const startLog = [];
         const doneLog  = [];
 
