@@ -153,7 +153,7 @@ const initializeReporter = (reporter) => {
     return new Reporter(reporter, messageBus);
 };
 
-describe('TestController action events', () => {
+describe.skip('TestController action events', () => {
     beforeEach(() => {
         messageBus = new MessageBus();
 
