@@ -17,22 +17,19 @@ import {
 import { CallsiteRecord } from 'callsite-record';
 
 interface CookieArgumentsToGetOrDelete {
-    cookies: any[] | undefined;
-    names: string[] | undefined;
-    urls: string[] | undefined;
+    cookies?: any[];
+    names?: string[];
+    urls?: string[];
 }
 
 interface CookieArgumentsToSet {
-    cookies: any[] | undefined;
-    nameValueObjects: Record<string, string>[] | undefined;
-    url: string | undefined;
+    cookies?: any[];
+    nameValueObjects?: Record<string, string>[];
+    url?: string;
 }
 
 export function prepareAndValidateCookieArgumentsToGetOrDelete (callsite: CallsiteRecord, ...args: any[]): CookieArgumentsToGetOrDelete {
-    let cookies: any[] | undefined = void 0;
-
-    let names: string[] | undefined = void 0;
-    let urls: string[] | undefined  = void 0;
+    const result: CookieArgumentsToGetOrDelete = {};
 
     if (args.length === 0)
         return { cookies, names, urls };
@@ -78,10 +75,7 @@ export function prepareAndValidateCookieArgumentsToGetOrDelete (callsite: Callsi
 }
 
 export function prepareAndValidateCookieArgumentsToSet (callsite: CallsiteRecord, ...args: any[]): CookieArgumentsToSet {
-    let cookies: any[] | undefined = void 0;
-
-    let nameValueObjects: Record<string, string>[] | undefined = void 0;
-    let url: string | undefined                                = void 0;
+    const result: CookieArgumentsToSet = {};
 
     if (args.length === 0)
         throw new ActionRequiredSetCookieArgumentsAreMissedError(callsite);
