@@ -304,7 +304,7 @@ describe('TestController action events', () => {
         expect(log).eql(actionsKeys);
     });
 
-    it('Show only modified action options', async () => {
+    it.skip('Show only modified action options', async () => {
         const doneLog  = [];
 
         initializeReporter({
