@@ -53,9 +53,9 @@ describe('Browser connection', function () {
             });
     });
 
-    afterEach(function () {
+    afterEach(async function () {
         connection._forceIdle();
-        connection.close();
+        await connection.close();
     });
 
     it('Should fire "ready" event and redirect to idle page once established', function () {

@@ -1,13 +1,13 @@
-const { expect }   = require('chai');
+const { expect }  = require('chai');
 const ServiceHost = require('./data/ipc-proxy/host');
 
 
 describe('IPC Proxy', () => {
     let serviceHost = null;
 
-    afterEach(() => {
+    afterEach(async () => {
         if (serviceHost)
-            serviceHost.close();
+            await serviceHost.close();
     });
 
     it('Should call remote functions asynchronously', async () => {

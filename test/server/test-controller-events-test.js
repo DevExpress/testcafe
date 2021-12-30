@@ -153,7 +153,7 @@ const initializeReporter = (reporter) => {
     return new Reporter(reporter, messageBus);
 };
 
-describe('TestController action events', () => {
+describe('TestController action events', () => { //eslint-disable-line
     beforeEach(() => {
         messageBus = new MessageBus();
 
@@ -180,7 +180,7 @@ describe('TestController action events', () => {
         testRunController._assignTestRunEvents(testRun);
     });
 
-    it.skip('Actions list', async () => {
+    it('Actions list', async () => { // eslint-disable-line
         const startLog = [];
         const doneLog  = [];
 
@@ -304,7 +304,7 @@ describe('TestController action events', () => {
         expect(log).eql(actionsKeys);
     });
 
-    it.skip('Show only modified action options', async () => {
+    it('Show only modified action options', async () => {
         const doneLog  = [];
 
         initializeReporter({
