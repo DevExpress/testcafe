@@ -153,7 +153,7 @@ const initializeReporter = (reporter) => {
     return new Reporter(reporter, messageBus);
 };
 
-describe('TestController action events', () => { //eslint-disable-line
+describe('TestController action events', () => {
     beforeEach(() => {
         messageBus = new MessageBus();
 
