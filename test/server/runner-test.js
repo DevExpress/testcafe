@@ -69,10 +69,11 @@ describe('Runner', () => {
             });
     });
 
-    after(() => {
+    after(async () => {
         browserProviderPool.addProvider('remote', origRemoteBrowserProvider);
 
-        connection.close();
+        await connection.close();
+
         return testCafe.close();
     });
 
@@ -986,6 +987,8 @@ describe('Runner', () => {
 
                     this.status = BrowserConnectionStatus.opened;
                 }
+
+                async _runBrowser () { }
             }
 
             function setupBootstrapper () {
@@ -1527,7 +1530,7 @@ describe('Runner', () => {
                 });
         });
 
-        it('Should include hint about used concurrency factor if it\'s greater than 3', function () {
+        it("Should include hint about used concurrency factor if it's greater than 3", function () {
             return runner
                 .src('./test/server/data/test-suites/basic/testfile1.js')
                 .browsers(['warningProvider:browser-alias1'])

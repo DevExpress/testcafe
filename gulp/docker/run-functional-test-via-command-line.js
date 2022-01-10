@@ -31,15 +31,16 @@ module.exports = function runFunctionalTestViaCommandLine (publishRepository, pa
     const tmpDir   = tmp.dirSync();
     const testsDir = path.join(__dirname, '../../test/docker/testcafe-fixtures');
 
-    return copy(testsDir, tmpDir.name).then(() => {
-        const resultTmpDirPath = osFamily.win ? correctPathOnWindows(tmpDir.name) : tmpDir.name;
+    return copy(testsDir, tmpDir.name)
+        .then(() => {
+            const resultTmpDirPath = osFamily.win ? correctPathOnWindows(tmpDir.name) : tmpDir.name;
 
-        if (osFamily.linux)
-            setAccessPrivileges(resultTmpDirPath);
+            if (osFamily.linux)
+                setAccessPrivileges(resultTmpDirPath);
 
-        const cmd = `docker run -i -v ${resultTmpDirPath}:/tests -w /tests ${publishRepository}:${packageInfo.version} chromium:headless basic-test.js`;
+            const cmd = `docker run -i -v ${resultTmpDirPath}:/tests -w /tests ${publishRepository}:${packageInfo.version} chromium:headless basic-test.js`;
 
-        childProcess.execSync(cmd, { stdio: 'inherit', env: process.env });
-    });
+            childProcess.execSync(cmd, { stdio: 'inherit', env: process.env });
+        });
 };
 

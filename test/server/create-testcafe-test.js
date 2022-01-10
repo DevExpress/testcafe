@@ -35,6 +35,7 @@ describe('TestCafe factory function', function () {
         const promisedClose = testCafe ? testCafe.close() : Promise.resolve();
 
         testCafe = null;
+
         return promisedClose;
     });
 
@@ -50,6 +51,8 @@ describe('TestCafe factory function', function () {
                 expect(bcUrl.hostname).not.eql('undefined');
                 expect(bcUrl.hostname).not.eql('null');
                 expect(isNaN(port)).to.be.false;
+
+                return bc.close();
             });
     });
 
@@ -64,6 +67,8 @@ describe('TestCafe factory function', function () {
 
                 expect(bcUrl.hostname).eql('localhost');
                 expect(port).eql(1338);
+
+                return bc.close();
             });
     });
 
