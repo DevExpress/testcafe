@@ -987,6 +987,8 @@ describe('Runner', () => {
 
                     this.status = BrowserConnectionStatus.opened;
                 }
+
+                async _runBrowser () { }
             }
 
             function setupBootstrapper () {

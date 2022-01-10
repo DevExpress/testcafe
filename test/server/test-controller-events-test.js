@@ -180,7 +180,7 @@ describe('TestController action events', () => { //eslint-disable-line
         testRunController._assignTestRunEvents(testRun);
     });
 
-    it('Actions list', async () => { // eslint-disable-line
+    it('Actions list', async () => {
         const startLog = [];
         const doneLog  = [];
 
