@@ -31,7 +31,31 @@ describe('[API] Cookies', function () {
         return runTests('./testcafe-fixtures/cookies-test.js', 'Should set cookies (t.setCookies)');
     });
 
-    it('Should delete cookies (t.deleteCookies)', function () {
-        return runTests('./testcafe-fixtures/cookies-test.js', 'Should delete cookies (t.deleteCookies)');
+    it('Should delete all cookies', function () {
+        return runTests('./testcafe-fixtures/cookies-test.js', 'Should delete all cookies');
+    });
+    it('Should delete cookies by name', function () {
+        return runTests('./testcafe-fixtures/cookies-test.js', 'Should delete cookies by name');
+    });
+    it('Should delete cookies by names', function () {
+        return runTests('./testcafe-fixtures/cookies-test.js', 'Should delete cookies by names');
+    });
+    it('Should delete cookies by name and url', function () {
+        return runTests('./testcafe-fixtures/cookies-test.js', 'Should delete cookies by name and url');
+    });
+    it('Should delete cookies by names and url', function () {
+        return runTests('./testcafe-fixtures/cookies-test.js', 'Should delete cookies by names and url');
+    });
+    it('Should delete cookies by name and urls', function () {
+        return runTests('./testcafe-fixtures/cookies-test.js', 'Should delete cookies by name and urls');
+    });
+    it('Should delete cookies by names and urls', function () {
+        return runTests('./testcafe-fixtures/cookies-test.js', 'Should delete cookies by names and urls');
+    });
+    it('Should delete cookies by object with domain', function () {
+        return runTests('./testcafe-fixtures/cookies-test.js', 'Should delete cookies by object with domain and path');
+    });
+    it('Should delete cookies by objects', function () {
+        return runTests('./testcafe-fixtures/cookies-test.js', 'Should delete cookies by objects');
     });
 });
