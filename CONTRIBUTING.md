@@ -1,81 +1,151 @@
 # Contributing to TestCafe
 
-TestCafe would not be possible without active support from the community. We appreciate and encourage your contributions.
+### Table of Contents
 
-Review our contribution guidelines:
+-   [The TestCafe Community](#the-testcafe-community)
+-   [Build TestCafe from Source](#build-testcafe-from-source)
+    -   [Prerequisites](#prerequisites)
+    -   [Build TestCafe](#build-testcafe)
+-   [Test New Versions of TestCafe](#test-new-versions-of-testcafe)
+    -   [Report Bugs and Issues](#report-bugs-and-issues)
+        -   [Create a Minimal Working Example](#create-a-minimal-working-example)
+    -   [Ask for Community Support](#ask-for-community-support)
+-   [Contribute Code](#contribute-code)
 
-* [Code of Conduct](#code-of-conduct)
-* [General Discussion](#general-discussion)
-* [Reporting a Problem](#reporting-a-problem)
-* [Code Contribution](#code-contribution)
-* [Contribute to Documentation](#contribute-to-documentation)
-  * [Documentation for the Current Functionality](#documentation-for-the-current-functionality)
-  * [Documentation for New Features](#documentation-for-new-features)
+## The TestCafe Community
 
-## Code of Conduct
+TestCafe is maintained by a core team of developers at [Developer Express](https://devexpress.com). TestCafe is an [open-source](https://github.com/DevExpress/testcafe/blob/master/LICENSE) project, and would not be possible without active support from the community. We appreciate and encourage your contributions.
 
-TestCafe abides by the [Contributor Code of Conduct](CODE_OF_CONDUCT.md).
+The TestCafe team maintains a [project roadmap](https://testcafe.io/402949/roadmap). This roadmap contains a list of capabilities that we want to implement in the near future. We update the roadmap as we receive user feedback.
 
-## General Discussion
+GitHub activity helps the TestCafe team gauge what our users want the most. Submit a [GitHub issue](https://github.com/DevExpress/testcafe/issues) to share your ideas about the future of TestCafe. Add votes and comments to existing issues to help us prioritize our work.
 
-Join the TestCafe community on Stack Overflow: ask and answer [questions with the TestCafe tag](https://stackoverflow.com/questions/tagged/testcafe).
+TestCafe is proud to follow a set of ethical standards called the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md). This code of conduct helps us create a more open and welcoming environment. The TestCafe team expects both project maintainers and project contributors to adhere to these rules.
 
-## Reporting a Problem
+## Build TestCafe from Source
 
-If you run into a bug with TestCafe, please file an issue in the [GitHub repository](https://github.com/DevExpress/testcafe/issues).
-Search through the existing issues to see if the problem has already been reported or addressed.
+If you want to test the development version of TestCafe, or contribute code to the project, you need to know how to build the framework from [source](https://github.com/DevExpress/testcafe).
 
-When you create a new issue, the template text is automatically added to its body. Complete all the sections in this template to help us understand the problem you are describing. Missing information could delay processing time.
+#### Prerequisites
 
-## Code Contribution
+TestCafe is a [Node.js](https://nodejs.org/en/) application. It supports [all actively maintained](https://github.com/nodejs/Release#release-schedule) versions of the Node.js framework. The installation process requires the presence of the [node package manager](https://www.npmjs.com/) (npm) software utility.
 
-Follow the steps below when submitting your code.
+Run the following shell command to check if your operating system contains `node` and `npm`:
 
-1. Search the [list of issues](https://github.com/DevExpress/testcafe/issues) to see if there is an issue for the bug or feature you plan to work on. If none exists, create a new one.
+```sh
+node -v; npm -v
+```
 
-2. To address an already described issue, check the comment thread to make sure that nobody is working on it at the moment. Leave a comment saying that you are willing to fix this issue, and include details on how you plan to do this. Core team members may need to discuss the details of the proposed fix with you. After a green light from them,
-leave a comment confirming that you have began your work on said issue.
+If your system does not contain Node.js, download and install it from the [Node.js website](https://nodejs.org/en/).
 
-3. Install [Node.js](https://nodejs.org/en/), [Google Chrome](https://www.google.com/chrome/) and [Firefox](https://www.mozilla.org/en-US/firefox/new/) on your development machine.
+You also need [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) installed on your computer. Installation instructions depend on your operating system — consult the [Git website](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) for details.
 
-4. Fork TestCafe. Clone the fork to your machine and create a new branch. Name this branch with an issue number, for example, `gh852`, `gh853`.
+#### Build TestCafe
 
-    > To contribute to docs, follow the [Contribute to Documentation](#contribute-to-documentation) guide.
+1. [Clone](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) the [TestCafe repository](https://github.com/DevExpress/testcafe).
 
-5. Install dependencies. In the root directory of your local copy, run:
+2. Navigate to the root directory of the repository. To install dependencies, run the following shell command:
 
     ```sh
     npm install
     ```
 
-    or (for [Yarn](https://yarnpkg.com/) users):
-
+3. Run the following shell command to build the project:
     ```sh
-    yarn
+    npx gulp build
     ```
 
-6. Write code and commit your changes to the branch.
+You now have two options to install TestCafe:
 
-    You can build TestCafe and launch it manually:
+-   `npm link` is a useful option for testers and most other users. This command creates a [symbolic link](https://en.wikipedia.org/wiki/Symbolic_link) (symlink) that lets you use TestCafe while you make changes to its code.
+
+-   `npm pack` creates a package that you can install with `npm install package_name`.
+
+##### npm link
+
+1. From the root of the `testcafe` directory, run the following shell command:
 
     ```sh
-    gulp build
-    node bin/testcafe.js chrome ./tests
+    npm link
     ```
 
-    In this example, `chrome` is a [browser alias](https://testcafe.io/documentation/402639/reference/command-line-interface#browser-list) and `./tests` is a path to the [directory with tests](https://testcafe.io/documentation/402639/reference/command-line-interface#file-pathglob-pattern). You can use other [CLI arguments](https://testcafe.io/documentation/402639/reference/command-line-interface) as needed.
+2. Navigate to the directory that contains your test files and run the following shell command:
 
-    For additional guidance, see [Build Instructions](#build-instructions).
+    ```sh
+    npm link testcafe
+    ```
 
-    > If you run into dependency errors during a build, check that you have appropriate versions of dependencies installed. Clone TestCafe repository into an empty directory (or delete the `node_modules` directory) and install the dependencies.
+##### Install from a package
 
-7. Add regression tests to appropriate sections if you are fixing a bug. To find these sections, search for `Regression` in the code.
+1.  Run the following shell command to [package](https://docs.npmjs.com/cli/v7/commands/npm-pack) the framework:
 
-    For new functionality, add unit/functional tests.
+    ```sh
+    npm pack
+    ```
 
-8. Fetch upstream changes and rebase your branch onto `master`.
+    This command creates a `name-version.tgz` package in the `testcafe` folder.
 
-9. Run tests to check that everything works.
+2.  Run the following shell command to install the package globally. Replace the `path/to/package` part with the path to the package:
+
+    ```sh
+    npm install -g path/to/package
+    ```
+
+> [!NOTE]
+> The `/lib` directory stores build artifacts. Build tasks remove this folder before they run. To remove this directory manually, run the following command:
+>
+> ```sh
+> gulp clean
+> ```
+
+## Test New Versions of Testcafe
+
+Before we publish new versions of TestCafe [on npm](https://www.npmjs.com/package/testcafe), we thoroughly test them. We invite you to participate in this process.
+
+Please don't use the development version of TestCafe in production.
+
+### Report Bugs and Issues
+
+If you encounter a bug, check the [issue tracker](https://github.com/DevExpress/testcafe/issues) for an existing bug report. If no report for the issue exists, please file a new issue.
+
+When you create a new issue, GitHub displays an issue template. Complete all sections of the template to help us understand the problem you are describing. Missing information could increase ticket processing time.
+
+You are also welcome to [submit issues](https://github.com/DevExpress/testcafe/issues) relating to our [documentation](https://testcafe.io/documentation/402635/getting-started).
+
+#### Create a Minimal Working Example
+
+It is important to include a [Minimal Working Example](https://testcafe.io/402636/faq#how-to-create-a-minimal-working-example-when-you-submit-an-issue) (MWE) with your bug report. A good MWE ensures the issue is easy to reproduce and troubleshoot, while being as small and as simple as possible.
+
+A Minimal Working Example should:
+
+-   Be simple and easy to follow. Convoluted scenarios are hard to reproduce.
+-   Exclude code that does not help reproduce the issue. Remove actions that do not affect the outcome.
+-   Include a complete set of relevant data: the URL of the test page, the list of launch options, and the steps you follow to launch the tests.
+
+For further information, refer to our [MWE guide](https://testcafe.io/402636/faq#how-to-create-a-minimal-working-example-when-you-submit-an-issue).
+
+### Ask for Community Support
+
+If you need help with TestCafe, or want to help other users, join the TestCafe community on Stack Overflow. Ask and answer [questions with the TestCafe tag](https://stackoverflow.com/questions/tagged/testcafe).
+
+## Contribute Code
+
+TestCafe expects contributor pull requests to meet certain standards. Complete the following tasks before you submit a pull request:
+
+-   Include appropriate tests:
+
+    -   If your code contains a bug fix, include regression tests.
+    -   If your code introduces new capabilities, include unit tests and/or functional tests.
+
+-   Run the following shell commands to fetch upstream changes and rebase your branch onto `master`:
+
+    ```sh
+    git checkout master
+    git fetch upstream
+    git merge upstream/master
+    ```
+
+-   Run the following shell commands to test the changes:
 
     ```sh
     gulp test-server
@@ -83,47 +153,16 @@ leave a comment confirming that you have began your work on said issue.
     gulp test-client-local
     ```
 
-10. Push changes to your fork and open a pull request.
+-   Give the pull request a name that describes the changes you made.
 
-Before you submit your pull request, it has to satisfy the following conditions:
+-   If the pull request contains a bug fix, reference the issue that it [closes](https://github.blog/2013-05-14-closing-issues-via-pull-requests/) in the description.
 
-* The pull request name should describe the changes you implemented.
-* The pull request description should contain the [closes](https://github.com/blog/1506-closing-issues-via-pull-requests) directive with an appropriate issue number.
-* Run tests, all of which must pass before you continue.
-* Code must be linted without errors (see [Build Instructions](#build-instructions))
+-   The TestCafe package includes a linter and rules for that linter. Lint your code before you submit it.
 
-Please keep in mind that the team may **suspend or reject** pull requests that fail to meet these requirements.
+Please keep in mind that the team may **suspend or reject** pull requests. There are multiple reasons why this can happen:
 
-## Build Instructions
+-   Failure to meet [code contribution](#contribute-code) requirements.
+-   Poor quality code.
+-   Other [development priorities](https://testcafe.io/402949/roadmap) may take precedence.
 
-During development, run the fast build to save time:
-
-```sh
-gulp fast-build
-```
-
-Before you submit a pull request, lint your code. The `build` task runs `eslint` to lint your code:
-
-```sh
-gulp build
-```
-
-After the build, run `npm pack` to pack TestCafe as a `tgz` package in the current folder.
-
-```sh
-npm pack
-```
-
-To install this package with NPM, run:
-
-```sh
-npm install testcafe-x.y.z.tgz
-```
-
-Where `x.y.z` is the current TestCafe version, for example, `1.10.1`.
-
-The `/lib` directory stores build artifacts. Build tasks remove this folder before they run. To remove this directory manually, run:
-
-```sh
-gulp clean
-```
+Please also note that we do not merge pull requests until the changes are documented.
