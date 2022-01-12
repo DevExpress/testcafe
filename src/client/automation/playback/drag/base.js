@@ -80,10 +80,10 @@ export default class DragAutomationBase extends VisibleElementAutomation {
             skipDefaultDragBehavior: this.simulateDefaultBehavior === false,
         }, false);
 
-        const moveAutomation = new DragMoveAutomation(element, dragOptions);
-
-        return moveAutomation
-            .run()
+        return DragMoveAutomation.create(element, window, cursor, dragOptions)
+            .then(moveAutomation => {
+                return moveAutomation.run();
+            })
             .then(dragAndDropState => {
                 this.dragAndDropState = dragAndDropState;
 

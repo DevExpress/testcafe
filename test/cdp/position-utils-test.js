@@ -11,6 +11,7 @@ const {
     getIframePointRelativeToParentFrame,
     getOffsetPosition,
     getElementFromPoint,
+    getWindowPosition,
 } = require('../../lib/browser/provider/built-in/dedicated/chrome/cdp-client/utils/position-utils');
 
 describe('position utils', () => {
@@ -298,21 +299,28 @@ describe('position utils', () => {
     });
 
     it('getElementFromPoint', async () => {
-        expect((await getElementFromPoint(31, 26)).object.description).eql('div#target1');
-        expect((await getElementFromPoint(64, 26)).object.description).eql('div#target1');
-        expect((await getElementFromPoint(64, 69)).object.description).eql('div#target1');
-        expect((await getElementFromPoint(31, 69)).object.description).eql('div#target1');
+        expect((await getElementFromPoint({ x: 31, y: 26 })).object.description).eql('div#target1');
+        expect((await getElementFromPoint({ x: 64, y: 26 })).object.description).eql('div#target1');
+        expect((await getElementFromPoint({ x: 64, y: 69 })).object.description).eql('div#target1');
+        expect((await getElementFromPoint({ x: 31, y: 69 })).object.description).eql('div#target1');
 
-        expect((await getElementFromPoint(30, 25)).object.description).eql('html');
-        expect((await getElementFromPoint(65, 25)).object.description).eql('html');
-        expect((await getElementFromPoint(65, 70)).object.description).eql('html');
-        expect((await getElementFromPoint(30, 70)).object.description).eql('html');
+        expect((await getElementFromPoint({ x: 30, y: 25 })).object.description).eql('html');
+        expect((await getElementFromPoint({ x: 65, y: 25 })).object.description).eql('html');
+        expect((await getElementFromPoint({ x: 65, y: 70 })).object.description).eql('html');
+        expect((await getElementFromPoint({ x: 30, y: 70 })).object.description).eql('html');
 
-        expect((await getElementFromPoint(300, 299)).object.description).eql('html');
-        expect((await getElementFromPoint(301, 300)).object.description).eql('iframe');
-        expect((await getElementFromPoint(302, 301)).object.description).eql('iframe');
-        expect((await getElementFromPoint(303, 302)).object.description).eql('iframe');
+        expect((await getElementFromPoint({ x: 300, y: 299 })).object.description).eql('html');
+        expect((await getElementFromPoint({ x: 301, y: 300 })).object.description).eql('iframe');
+        expect((await getElementFromPoint({ x: 302, y: 301 })).object.description).eql('iframe');
+        expect((await getElementFromPoint({ x: 303, y: 302 })).object.description).eql('iframe');
 
-        expect((await getElementFromPoint(401, 32)).object.description).eql('h1');
+        expect((await getElementFromPoint({ x: 401, y: 32 })).object.description).eql('h1');
+    });
+
+    it('get window position', async () => {
+        const { x, y } = await getWindowPosition();
+
+        expect(x).gte(0);
+        expect(y).gte(0);
     });
 });

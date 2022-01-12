@@ -2,6 +2,7 @@ import hammerhead from '../deps/hammerhead';
 import * as styleUtils from './style';
 import * as domUtils from './dom';
 import * as shared from './shared/position';
+import AxisValues from '../../../shared/utils/values/axis-values';
 
 export { isElementVisible } from './shared/visibility';
 
@@ -147,4 +148,11 @@ export function getElementClientRectangle (el) {
 
 export function isInRectangle ({ x, y }, rectangle) {
     return x >= rectangle.left && x <= rectangle.right && y >= rectangle.top && y <= rectangle.bottom;
+}
+
+export function getWindowPosition () {
+    const x = window.screenLeft || window.screenX;
+    const y = window.screenTop || window.screenY;
+
+    return new AxisValues(x, y);
 }

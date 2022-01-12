@@ -64,11 +64,12 @@ export default class SelectBaseAutomation extends VisibleElementAutomation {
     }
 
     _move ({ element, offsetX, offsetY, speed }) {
-        const moveOptions    = new MoveOptions({ offsetX, offsetY, speed }, false);
-        const moveAutomation = new MoveAutomation(element, moveOptions);
+        const moveOptions = new MoveOptions({ offsetX, offsetY, speed }, false);
 
-        return moveAutomation
-            .run()
+        return MoveAutomation.create(element, window, cursor, moveOptions)
+            .then(moveAutomation => {
+                return moveAutomation.run();
+            })
             .then(() => delay(this.automationSettings.mouseActionStepDelay));
     }
 

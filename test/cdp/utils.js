@@ -6,6 +6,7 @@ const delay            = require('../../lib/utils/delay');
 const ExecutionContext = require('../../lib/browser/provider/built-in/dedicated/chrome/cdp-client/execution-context');
 const ChromeLauncher   = require('chrome-launcher');
 const clientsManager   = require('../../lib/browser/provider/built-in/dedicated/chrome/cdp-client/clients-manager');
+const { BrowserClient } = require('../../lib/browser/provider/built-in/dedicated/chrome/cdp-client');
 
 const page  = readFileSync(join(__dirname, './position-utils-test-page.html')).toString();
 const frame = readFileSync(join(__dirname, './position-utils-test-iframe.html')).toString();
@@ -72,6 +73,8 @@ async function before () {
     await client.Overlay.enable();
 
     ExecutionContext.initialize(client);
+
+    await BrowserClient._injectProxylessStuff(client);
 
     await client.Page.navigate({ url: 'http://localhost:3000' });
 

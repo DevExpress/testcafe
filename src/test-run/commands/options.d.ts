@@ -1,4 +1,4 @@
-interface Modifiers {
+export interface Modifiers {
     ctrl: boolean;
     alt: boolean;
     shift: boolean;

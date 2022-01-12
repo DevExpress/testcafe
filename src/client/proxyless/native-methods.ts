@@ -25,7 +25,7 @@ const nativeMethods: NativeMethods = {
     getAttribute:     window.Element.prototype.getAttribute,
     querySelector:    window.HTMLElement.prototype.querySelector,
     querySelectorAll: window.HTMLElement.prototype.querySelectorAll,
-    scrollTo:         window.Window.prototype.scrollTo,
+    scrollTo:         window.scrollTo,
 
     // @ts-ignore
     contentWindowGetter: window.Object.getOwnPropertyDescriptor(window.HTMLIFrameElement.prototype, 'contentWindow').get,
