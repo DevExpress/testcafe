@@ -166,3 +166,7 @@ Please keep in mind that the team may **suspend or reject** pull requests. There
 -   Other [development priorities](https://testcafe.io/402949/roadmap) may take precedence.
 
 Please also note that we do not merge pull requests until the changes are documented.
+
+## Contribute to Documentation
+
+If you find a bug in Testcafe [documentation](https://testcafe.io/documentation) or have any feedback about it, send us a note in a [Github issue](https://github.com/DevExpress/testcafe/issues/new). Please, don't forget to add `AREA: docs` label so that the appropriate team gets a new issue for review. 
