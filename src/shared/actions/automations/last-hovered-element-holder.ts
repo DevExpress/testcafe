@@ -1,11 +1,11 @@
-let lastHoveredElement = null;
+let lastHoveredElement: Element | null = null;
 
 export default {
     get () {
         return lastHoveredElement;
     },
 
-    set (element) {
+    set (element: Element) {
         lastHoveredElement = element;
     },
 };

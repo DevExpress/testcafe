@@ -38,7 +38,7 @@ export default class ElementsRetriever<T> {
                 }, this._ensureElementsStartTime);
             })
             .then(el => {
-                if (!adapter.isDomElement(el)) {
+                if (!adapter.dom.isDomElement(el)) {
                     const nodeType    = (el as unknown as { nodeType: number }).nodeType;
                     const nodeTypeStr = NODE_TYPE_DESCRIPTIONS[nodeType];
 

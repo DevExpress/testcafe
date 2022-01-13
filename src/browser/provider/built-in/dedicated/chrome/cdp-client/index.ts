@@ -184,9 +184,11 @@ export class BrowserClient {
         this._runtimeInfo.emulatedDevicePixelRatio = this._config.scaleFactor || this._runtimeInfo.originalDevicePixelRatio;
     }
 
-    private async _injectProxylessStuff (client: remoteChrome.ProtocolApi): Promise<void> {
+    private static async _injectProxylessStuff (client: remoteChrome.ProtocolApi): Promise<void> {
+        const script = read('../../../../../../../lib/client/proxyless/index.js') as string;
+
         await client.Page.addScriptToEvaluateOnNewDocument({
-            source: read('../../../../../../../lib/client/proxyless/index.js') as string,
+            source: script,
         });
     }
 
@@ -252,7 +254,7 @@ export class BrowserClient {
                 await this._setupClient(client);
 
                 if (this._proxyless) {
-                    await this._injectProxylessStuff(client);
+                    await BrowserClient._injectProxylessStuff(client);
                     ExecutionContext.initialize(client);
                     clientsManager.setClient(client);
                 }

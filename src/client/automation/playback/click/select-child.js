@@ -5,6 +5,7 @@ import MoveAutomation from '../move/move';
 import { MoveOptions } from '../../../../test-run/commands/options';
 import { getDefaultAutomationOffsets } from '../../utils/offsets';
 import AutomationSettings from '../../../../shared/actions/automations/settings';
+import cursor from '../../cursor';
 
 const Promise = hammerhead.Promise;
 
@@ -104,10 +105,10 @@ export default class SelectChildClickAutomation {
             modifiers: this.modifiers,
         }, false);
 
-        const moveAutomation = new MoveAutomation(element, moveOptions);
-
-        return moveAutomation
-            .run()
+        return MoveAutomation.create(element, window, cursor, moveOptions)
+            .then(moveAutomation => {
+                return moveAutomation.run();
+            })
             .then(() => delay(this.automationSettings.mouseActionStepDelay));
     }
 

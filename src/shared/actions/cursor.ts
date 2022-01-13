@@ -1,13 +1,9 @@
 import { adapter } from '../adapter';
 import { CursorUI } from './types';
 import AxisValues, { AxisValuesData } from '../utils/values/axis-values';
+import { SharedWindow } from '../types';
 
-
-interface Window {
-    parent: Window;
-}
-
-export default class Cursor<W extends Window> {
+export default class Cursor<W extends SharedWindow> {
     private _activeWindow: W;
     private _x: number;
     private _y: number;
@@ -51,7 +47,7 @@ export default class Cursor<W extends Window> {
         return new AxisValues(this._x, this._y);
     }
 
-    private move (point: AxisValuesData<number>): Promise<void> {
+    public move (point: AxisValuesData<number>): Promise<void> {
         this._x = point.x;
         this._y = point.y;
 

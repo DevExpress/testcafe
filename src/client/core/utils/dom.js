@@ -483,3 +483,27 @@ export function contains (element, target) {
 
     return !!findParent(target, true, node => node === element);
 }
+
+export function isNodeEqual (el1, el2) {
+    return el1 === el2;
+}
+
+export function getNodeText (el) {
+    return nativeMethods.nodeTextContentGetter.call(el);
+}
+
+export function getImgMapName (img) {
+    return img.useMap.substring(1);
+}
+
+export function getDocumentElement (win) {
+    return win.document.documentElement;
+}
+
+export function isDocumentElement (el) {
+    return el === document.documentElement;
+}
+
+export function isIframeWindow () {
+    return false;
+}

@@ -105,3 +105,35 @@ export async function getScrollingElement (node?: ServerNode): Promise<ServerNod
 
     return describeNode(client.DOM, result.objectId || '');
 }
+
+export function isDomElement (node: ServerNode): boolean {
+    return node.nodeType === 1;
+}
+
+export function isNodeEqual (el1: ServerNode, el2: ServerNode): boolean {
+    return el1.backendNodeId === el2.backendNodeId;
+}
+
+export async function getDocumentElement (win: ExecutionContext): Promise<ServerNode> {
+    const { Runtime, DOM } = clientsManager.getClient();
+
+    const { exceptionDetails, result: resultObj } = await Runtime.evaluate({
+        expression: 'document.documentElement',
+        contextId:  win.ctxId,
+    });
+
+    if (exceptionDetails)
+        throw exceptionDetails;
+
+    return describeNode(DOM, resultObj.value.objectId);
+}
+
+export async function isDocumentElement (el: ServerNode): Promise<boolean> {
+    const docEl = await getDocumentElement(ExecutionContext.current);
+
+    return isNodeEqual(el, docEl);
+}
+
+export async function isIframeWindow (): Promise<boolean> {
+    return false;
+}

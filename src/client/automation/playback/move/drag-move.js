@@ -3,9 +3,9 @@ import testCafeCore from '../../deps/testcafe-core';
 import getElementFromPoint from '../../get-element';
 import DragAndDropState from '../drag/drag-and-drop-state';
 import createEventSequence from './event-sequence/create-event-sequence';
-import lastHoveredElementHolder from '../last-hovered-element-holder';
+import lastHoveredElementHolder from '../../../../shared/actions/automations/last-hovered-element-holder';
 import MoveAutomation from './move';
-import cursor from '../../cursor';
+import AxisValues from '../../../../shared/utils/values/axis-values';
 
 const nativeMethods    = hammerhead.nativeMethods;
 const featureDetection = hammerhead.utils.featureDetection;
@@ -33,11 +33,17 @@ function findDraggableElement (element) {
 }
 
 export default class DragMoveAutomation extends MoveAutomation {
-    constructor (element, moveOptions) {
-        super(element, moveOptions);
+    constructor (element, offset, win, cursor, moveOptions) {
+        super(element, offset, win, cursor, moveOptions);
 
         this.dragElement      = null;
         this.dragAndDropState = new DragAndDropState();
+    }
+
+    static async create (el, win, cursor, moveOptions) {
+        const { element, offset } = await MoveAutomation.getTarget(el, win, new AxisValues(moveOptions.offsetX, moveOptions.offsetY));
+
+        return new DragMoveAutomation(element, offset, win, cursor, moveOptions);
     }
 
     _getCursorSpeed () {
@@ -45,13 +51,14 @@ export default class DragMoveAutomation extends MoveAutomation {
     }
 
     _getEventSequenceOptions (currPosition) {
-        const { eventOptions, eventSequenceOptions } = super._getEventSequenceOptions(currPosition);
+        return super._getEventSequenceOptions(currPosition)
+            .then(({ eventOptions, eventSequenceOptions }) => {
+                eventOptions.dataTransfer           = this.dragAndDropState.dataTransfer;
+                eventOptions.buttons                = eventUtils.BUTTONS_PARAMETER.leftButton;
+                eventSequenceOptions.holdLeftButton = true;
 
-        eventOptions.dataTransfer           = this.dragAndDropState.dataTransfer;
-        eventOptions.buttons                = eventUtils.BUTTONS_PARAMETER.leftButton;
-        eventSequenceOptions.holdLeftButton = true;
-
-        return { eventOptions, eventSequenceOptions };
+                return { eventOptions, eventSequenceOptions };
+            });
     }
 
     _getCorrectedTopElement (topElement) {
@@ -78,7 +85,7 @@ export default class DragMoveAutomation extends MoveAutomation {
     }
 
     run () {
-        return getElementFromPoint(cursor.getPosition())
+        return getElementFromPoint(this.cursor.getPosition())
             .then(topElement => {
                 this.dragElement = topElement;
 

@@ -5,6 +5,10 @@ import { getClient } from './clients-manager';
 import { initializeAdapter } from '../../../../../../shared/adapter';
 import { LeftTopValues } from '../../../../../../shared/utils/values/axis-values';
 import { ScrollResultProxyless } from '../../../../../../client/core/scroll';
+import * as domUtils from './utils/dom-utils';
+import * as positionUtils from './utils/position-utils';
+import * as styleUtils from './utils/style-utils';
+import * as eventUtils from './utils/event-utils';
 
 
 initializeAdapter({
@@ -21,8 +25,6 @@ initializeAdapter({
         objectKeys:   Object.keys,
         dateNow:      Date.now,
     },
-
-    isDomElement: () => false,
 
     scroll: async (el: ServerNode, opts: ScrollOptions) => {
         let currCxt = ExecutionContext.current as ExecutionContext | null;
@@ -60,4 +62,24 @@ initializeAdapter({
 
         return result as boolean;
     },
+
+    browser: { isChrome: true },
+
+    featureDetection: {
+        isTouchDevice: false,
+    },
+
+    createEventSequence: () => {
+        return {
+            run: () => {},
+        };
+    },
+
+    sendRequestToFrame: () => { },
+
+    getElementExceptUI: positionUtils.getElementFromPoint,
+    dom:                domUtils,
+    position:           positionUtils,
+    style:              styleUtils,
+    event:              eventUtils,
 });

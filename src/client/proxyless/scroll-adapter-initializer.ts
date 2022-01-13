@@ -7,7 +7,12 @@ initializeAdapter({
 
     controller: {
         waitForScroll (): Promise<any> {
-            return nativeMethods.Promise.resolve();
+            const result = nativeMethods.Promise.resolve();
+
+            // @ts-ignore
+            result.cancel = () => {};
+
+            return result;
         },
     },
 });

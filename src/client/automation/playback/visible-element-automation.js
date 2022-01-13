@@ -19,7 +19,7 @@ import AUTOMATION_ERROR_TYPES from '../../../shared/errors/automation-errors';
 import AutomationSettings from '../../../shared/actions/automations/settings';
 import MoveAutomation from './move/move';
 import { MoveOptions, ScrollOptions } from '../../../test-run/commands/options';
-import lastHoveredElementHolder from './last-hovered-element-holder';
+import lastHoveredElementHolder from '../../../shared/actions/automations/last-hovered-element-holder';
 import { MoveBehaviour } from './move/event-sequence/event-behaviors';
 import cursor from '../cursor';
 
@@ -53,9 +53,9 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
         return getElementFromPoint(eventArgs.point, expectedElement);
     }
 
-    _moveToElement () {
+    async _moveToElement () {
         const moveOptions    = new MoveOptions(extend({ skipScrolling: true }, this.options), false);
-        const moveAutomation = new MoveAutomation(this.element, moveOptions);
+        const moveAutomation = await MoveAutomation.create(this.element, window, cursor, moveOptions);
 
         return moveAutomation
             .run()
