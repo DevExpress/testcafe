@@ -11,6 +11,7 @@
         -   [Create a Minimal Working Example](#create-a-minimal-working-example)
     -   [Ask for Community Support](#ask-for-community-support)
 -   [Contribute Code](#contribute-code)
+-   [Contribute to Documentation](#contribute-to-documentation)
 
 ## The TestCafe Community
 
@@ -165,8 +166,16 @@ Please keep in mind that the team may **suspend or reject** pull requests. There
 -   Poor quality code.
 -   Other [development priorities](https://testcafe.io/402949/roadmap) may take precedence.
 
-Please also note that we do not merge pull requests until the changes are documented.
+Please also note that we do not merge pull requests until the changes are documented. You're welcome to document a new capability yourself. You should add your description as a pull request comment, and include links to Testcafe [documentation](https://testcafe.io/documentation) pages that need editing. While writing the documentation, please, follow the [guidelines](#guidelines).
 
 ## Contribute to Documentation
 
-If you find a bug in Testcafe [documentation](https://testcafe.io/documentation) or have any feedback about it, send us a note in a [Github issue](https://github.com/DevExpress/testcafe/issues/new). Please, don't forget to add `AREA: docs` label so that the appropriate team gets a new issue for review. 
+Testcafe [documentation](https://testcafe.io/documentation) is not open-source. If you find an inaccuracy in the docs, send us a note in a [Github issue](https://github.com/DevExpress/testcafe/issues/new). Please, don't forget to add `AREA: docs` label so that the appropriate team gets a new issue for review.
+
+#### Guidelines
+
+We follow a set of documentation guidelines and practices. The main idea is to make our docs easy to read. So, when submitting a new issue, please, make sure that:
+
+-   You don't use gerunds, passive voice and past tense
+-   Every sentence expresses a single idea
+-   You don't needlessly repeat the same piece of information
