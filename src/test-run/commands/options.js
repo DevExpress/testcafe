@@ -9,18 +9,27 @@ import {
     createIntegerValidator,
     createPositiveIntegerValidator,
     createSpeedValidator,
+    createStringValidator,
+    createExpiresValidator,
+    createMaxAgeValidator,
 } from './validations/factories';
 import {
     ActionIntegerOptionError,
     ActionPositiveIntegerOptionError,
     ActionBooleanOptionError,
     ActionSpeedOptionError,
+    ActionStringOptionError,
+    ActionExpiresOptionError,
+    ActionMaxAgeOptionError,
 } from '../../shared/errors';
 
 export const integerOption         = createIntegerValidator(ActionIntegerOptionError);
 export const positiveIntegerOption = createPositiveIntegerValidator(ActionPositiveIntegerOptionError);
 export const booleanOption         = createBooleanValidator(ActionBooleanOptionError);
 export const speedOption           = createSpeedValidator(ActionSpeedOptionError);
+export const stringOption          = createStringValidator(ActionStringOptionError);
+export const expiresOption         = createExpiresValidator(ActionExpiresOptionError);
+export const maxEdgeOption         = createMaxAgeValidator(ActionMaxAgeOptionError);
 
 
 // Actions
@@ -270,6 +279,39 @@ export class PressOptions extends ActionOptions {
     _getAssignableProperties () {
         return super._getAssignableProperties().concat([
             { name: 'confidential', type: booleanOption },
+        ]);
+    }
+}
+
+// Cookie
+export class CookieOptions extends ActionOptions {
+    constructor (obj, validate) {
+        super();
+
+        this.name     = '';
+        this.value    = '';
+        this.domain   = '';
+        this.path     = '/';
+        this.expires  = 'Infinity';
+        this.maxAge   = null;
+        this.secure   = false;
+        this.httpOnly = false;
+        this.sameSite = 'none';
+
+        this._assignFrom(obj, validate);
+    }
+
+    _getAssignableProperties () {
+        return super._getAssignableProperties().concat([
+            { name: 'name', type: stringOption },
+            { name: 'value', type: stringOption },
+            { name: 'domain', type: stringOption },
+            { name: 'path', type: stringOption },
+            { name: 'expires', type: expiresOption },
+            { name: 'maxAge', type: maxEdgeOption },
+            { name: 'secure', type: booleanOption },
+            { name: 'httpOnly', type: booleanOption },
+            { name: 'sameSite', type: stringOption },
         ]);
     }
 }

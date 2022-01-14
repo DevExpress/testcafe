@@ -98,6 +98,9 @@ export const TEST_RUN_ERRORS = {
     actionNameValueObjectsCookieArgumentError:             'E95',
     actionNoUrlForNameValueObjectsArgumentError:           'E96',
     actionUrlArgumentError:                                'E97',
+    actionStringOptionError:                               'E98',
+    actionExpiresOptionError:                              'E99',
+    actionMaxAgeOptionError:                               'E100',
 };
 
 export const RUNTIME_ERRORS = {

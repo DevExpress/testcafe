@@ -50,3 +50,29 @@ export function createSpeedValidator (ErrorCtor) {
             throw new ErrorCtor(name, val);
     };
 }
+
+export function createStringValidator (ErrorCtor) {
+    return (name, val) => {
+        const valType = typeof val;
+
+        if (valType !== 'string')
+            throw new ErrorCtor(name, valType);
+    };
+}
+
+export function createExpiresValidator (ErrorCtor) {
+    return (name, val) => {
+        if (val instanceof Date && val !== 'Infinity')
+            throw new ErrorCtor(name, typeof val);
+    };
+}
+
+export function createMaxAgeValidator (ErrorCtor) {
+    return (name, val) => {
+        const valType = typeof val;
+        const infinityStrings = ['Infinity', '-Infinity'];
+
+        if (valType !== 'number' || infinityStrings.includes(val))
+            throw new ErrorCtor(name, valType);
+    };
+}

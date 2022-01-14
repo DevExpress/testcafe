@@ -442,4 +442,16 @@ export default {
     [TEST_RUN_ERRORS.executionTimeoutExceeded]: err => {
         return `${err.scope} timeout of ${err.timeout}ms exceeded.`;
     },
+
+    [TEST_RUN_ERRORS.actionStringOptionError]: err => `
+        The "${err.optionName}" option is expected to be a string value, but it was ${err.actualValue}.
+    `,
+
+    [TEST_RUN_ERRORS.actionExpiresOptionError]: err => `
+        The "${err.optionName}" option is expected to be a Date or 'Infinity' value, but it was ${err.actualValue}.
+    `,
+
+    [TEST_RUN_ERRORS.actionMaxAgeOptionError]: err => `
+        The "${err.optionName}" option is expected to be a number, '-Infinity' or 'Infinity' value, but it was ${err.actualValue}.
+    `,
 };
