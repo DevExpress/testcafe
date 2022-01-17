@@ -143,6 +143,24 @@ export class ActionSpeedOptionError extends ActionOptionErrorBase {
     }
 }
 
+export class ActionStringOptionError extends ActionOptionErrorBase {
+    constructor (optionName, actualValue) {
+        super(TEST_RUN_ERRORS.actionStringOptionError, optionName, actualValue);
+    }
+}
+
+export class ActionExpiresOptionError extends ActionOptionErrorBase {
+    constructor (optionName, actualValue) {
+        super(TEST_RUN_ERRORS.actionExpiresOptionError, optionName, actualValue);
+    }
+}
+
+export class ActionMaxAgeOptionError extends ActionOptionErrorBase {
+    constructor (optionName, actualValue) {
+        super(TEST_RUN_ERRORS.actionMaxAgeOptionError, optionName, actualValue);
+    }
+}
+
 
 // Action execution errors
 //--------------------------------------------------------------------

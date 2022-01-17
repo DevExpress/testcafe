@@ -78,7 +78,6 @@ import { AssertionCommand } from '../../test-run/commands/assertion';
 import { getCallsiteId, getCallsiteStackFrameString } from '../../utils/callsite';
 
 import {
-    prepareAndValidateCookieArgumentsToGetOrDelete,
     prepareAndValidateCookieArgumentsToSet,
 } from '../../utils/prepare-and-validate-cookie-arguments';
 
