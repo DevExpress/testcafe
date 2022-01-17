@@ -70,7 +70,7 @@ export class ElementScreenshotOptions extends ActionOptions {
     public crop: CropOptions;
 }
 
-export class CookieOptions extends ActionOptions {
+export class CookieOptions {
     public name: string;
     public value: string;
     public domain: string;

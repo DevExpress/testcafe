@@ -284,25 +284,17 @@ export class PressOptions extends ActionOptions {
 }
 
 // Cookie
-export class CookieOptions extends ActionOptions {
+export class CookieOptions extends Assignable {
     constructor (obj, validate) {
         super();
 
         this.name     = '';
-        this.value    = '';
-        this.domain   = '';
-        this.path     = '/';
-        this.expires  = 'Infinity';
-        this.maxAge   = null;
-        this.secure   = false;
-        this.httpOnly = false;
-        this.sameSite = 'none';
 
         this._assignFrom(obj, validate);
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'name', type: stringOption },
             { name: 'value', type: stringOption },
             { name: 'domain', type: stringOption },
@@ -312,6 +304,6 @@ export class CookieOptions extends ActionOptions {
             { name: 'secure', type: booleanOption },
             { name: 'httpOnly', type: booleanOption },
             { name: 'sameSite', type: stringOption },
-        ]);
+        ];
     }
 }
