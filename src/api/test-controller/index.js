@@ -6,6 +6,7 @@ import {
     isNil as isNullOrUndefined,
     flattenDeep,
     noop,
+    castArray,
 } from 'lodash';
 
 import { getCallsiteForMethod } from '../../errors/get-callsite';
@@ -222,11 +223,28 @@ export default class TestController {
         return this._enqueueCommand(DispatchEventCommand, { selector, eventName, options, relatedTarget: options.relatedTarget });
     }
 
-    [delegatedAPI(GetCookiesCommand.methodName)] (...args) {
-        const callsite = getCallsiteForMethod(GetCookiesCommand.methodName);
-        const cmdArgs  = prepareAndValidateCookieArgumentsToGetOrDelete(callsite, ...args);
+    _getUrls (args) {
+        const [, urls] = args;
 
-        return this._enqueueCommand(GetCookiesCommand, cmdArgs);
+        if (typeof urls === 'string')
+            return castArray(urls);
+
+        return Array.isArray(urls) && typeof urls[0] === 'string' ? flattenDeep(urls) : [];
+    }
+
+    _getCookies (args) {
+        return flattenDeep(args).map(cookie => {
+            return typeof cookie === 'string'
+                ? { name: cookie }
+                : cookie;
+        });
+    }
+
+    [delegatedAPI(GetCookiesCommand.methodName)] (...args) {
+        const urls    = this._getUrls(args);
+        const cookies = this._getCookies(urls.length ? castArray(args[0]) : args);
+
+        return this._enqueueCommand(GetCookiesCommand, { cookies, urls });
     }
 
     [delegatedAPI(SetCookiesCommand.methodName)] (...args) {
@@ -237,10 +255,10 @@ export default class TestController {
     }
 
     [delegatedAPI(DeleteCookiesCommand.methodName)] (...args) {
-        const callsite = getCallsiteForMethod(DeleteCookiesCommand.methodName);
-        const cmdArgs  = prepareAndValidateCookieArgumentsToGetOrDelete(callsite, ...args);
+        const urls    = this._getUrls(args);
+        const cookies = this._getCookies(urls.length ? castArray(args[0]) : args);
 
-        return this._enqueueCommand(DeleteCookiesCommand, cmdArgs);
+        return this._enqueueCommand(DeleteCookiesCommand, { cookies, urls });
     }
 
     [delegatedAPI(ClickCommand.methodName)] (selector, options) {
