@@ -132,8 +132,8 @@ export default class MoveAutomation<E, W extends SharedWindow> {
             });
     }
 
-    private _runEventSequence (currentElement: Element, { eventOptions, eventSequenceOptions }: any): Promise<any> {
-        const eventSequence = adapter.createEventSequence(false, this.firstMovingStepOccured, eventSequenceOptions);
+    private async _runEventSequence (currentElement: Element, { eventOptions, eventSequenceOptions }: any): Promise<any> {
+        const eventSequence = await adapter.createEventSequence(false, this.firstMovingStepOccured, eventSequenceOptions);
 
         return eventSequence.run(
             currentElement,

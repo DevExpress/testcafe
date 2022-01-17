@@ -9,6 +9,7 @@ import * as domUtils from './utils/dom-utils';
 import * as positionUtils from './utils/position-utils';
 import * as styleUtils from './utils/style-utils';
 import * as eventUtils from './utils/event-utils';
+import createEventSequence from './utils/create-event-sequence';
 
 
 initializeAdapter({
@@ -69,11 +70,7 @@ initializeAdapter({
         isTouchDevice: false,
     },
 
-    createEventSequence: () => {
-        return {
-            run: () => {},
-        };
-    },
+    createEventSequence,
 
     sendRequestToFrame: () => { },
 

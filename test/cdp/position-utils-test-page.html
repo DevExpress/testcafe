@@ -9,7 +9,7 @@
         height: 100%;
     }
 
-    #target1, #target2, #target3, #target4, #target5 {
+    #target1, #target2, #target3, #target4, #target5, #target9, #target10 {
         width: 10px;
         height: 20px;
         border: 5px solid black;
@@ -61,6 +61,27 @@
         left: 400px;
     }
 
+    #target8 {
+        width: 300px;
+        height: 100px;
+        border: 5px solid black;
+        padding: 7px;
+        left: 600px;
+        position: absolute;
+        background-color: yellow;
+        margin: 6px;
+    }
+
+    #target9 {
+        left: 50px;
+        height: 100px;
+    }
+
+    #target10 {
+        left: 200px;
+        height: 100px;
+    }
+
     #scrollableDiv {
         position: absolute;
         left: 70px;
@@ -91,6 +112,11 @@
 <div id="target5"></div>
 <div id="target6"><div style="width: 500px; height: 500px;"></div></div>
 <div id="target7"></div>
+<div id="target8">
+    <div id="target9"></div>
+    <div id="target10"></div>
+</div>
+
 <iframe></iframe>
 
 <script type="text/javascript">
@@ -117,6 +143,32 @@
     shadowEl.innerHTML = 'h1';
 
     shadow.appendChild(shadowEl);
+
+    const el8  = document.querySelector('#target8');
+    const el9  = document.querySelector('#target9');
+    const el10 = document.querySelector('#target10');
+
+    window.moveLog = [];
+
+    function moveHandler (event) {
+        window.moveLog.push(event.type + ': ' + event.target.id);
+    }
+
+    el8.addEventListener('mouseenter', moveHandler);
+    el8.addEventListener('mousemove', moveHandler);
+    el8.addEventListener('mouseleave', moveHandler);
+    el8.addEventListener('mouseover', moveHandler);
+
+    el9.addEventListener('mouseenter', moveHandler);
+    el9.addEventListener('mousemove', moveHandler);
+    el9.addEventListener('mouseleave', moveHandler);
+    el9.addEventListener('mouseover', moveHandler);
+
+    el10.addEventListener('mouseenter', moveHandler);
+    el10.addEventListener('mousemove', moveHandler);
+    el10.addEventListener('mouseleave', moveHandler);
+    el10.addEventListener('mouseover', moveHandler);
 </script>
 </body>
 </html>
+
