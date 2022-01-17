@@ -232,19 +232,16 @@ export class ActionUnsupportedDeviceTypeError extends ActionArgumentErrorBase {
 }
 
 export class ActionCookieArgumentError extends TestRunErrorBase {
-    constructor (callsite) {
+    constructor () {
         super(TEST_RUN_ERRORS.actionCookieArgumentError);
-
-        this.callsite = callsite;
     }
 }
 
 export class ActionCookieArgumentsError extends TestRunErrorBase {
-    constructor (callsite, argumentPosition) {
+    constructor (argumentIndex) {
         super(TEST_RUN_ERRORS.actionCookieArgumentsError);
 
-        this.callsite         = callsite;
-        this.argumentPosition = argumentPosition;
+        this.argumentIndex = argumentIndex;
     }
 }
 
@@ -287,21 +284,16 @@ export class ActionNamesArrayCookieArgumentError extends TestRunErrorBase {
 }
 
 export class ActionUrlsCookieArgumentError extends TestRunErrorBase {
-    constructor (callsite, actualType) {
+    constructor () {
         super(TEST_RUN_ERRORS.actionUrlsCookieArgumentError);
-
-        this.callsite   = callsite;
-        this.actualType = actualType;
     }
 }
 
 export class ActionUrlsArrayCookieArgumentError extends TestRunErrorBase {
-    constructor (callsite, elementIndex, actualType) {
+    constructor (elementIndex) {
         super(TEST_RUN_ERRORS.actionUrlsArrayCookieArgumentError);
 
-        this.callsite     = callsite;
         this.elementIndex = elementIndex;
-        this.actualType   = actualType;
     }
 }
 
