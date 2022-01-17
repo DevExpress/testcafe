@@ -8,6 +8,7 @@ import {
     MouseOptions,
     PressOptions,
     TypeOptions,
+    CookieOptions,
 } from './options';
 
 import Role from '../../role/role';
@@ -231,9 +232,8 @@ export class ScrollIntoViewCommand extends ActionCommandBase {
 
 export class GetCookiesCommand extends ActionCommandBase {
     public constructor(obj: object, testRun: TestRun, validateProperties: boolean);
-    public names: string | string[];
-    public urls: string | string[];
-    public cookies: any;
+    public urls: string[];
+    public cookies: CookieOptions[];
 }
 
 export class SetCookiesCommand extends ActionCommandBase {
@@ -243,9 +243,8 @@ export class SetCookiesCommand extends ActionCommandBase {
     public cookies: any;
 }
 
-export class DeleteCookiesCommand extends CommandBase {
+export class DeleteCookiesCommand extends ActionCommandBase {
     public constructor(obj: object, testRun: TestRun, validateProperties: boolean);
-    public names: string | string[];
-    public urls: string | string[];
-    public cookies: any;
+    public urls: string[];
+    public cookies: CookieOptions[];
 }

@@ -71,6 +71,7 @@ export class ElementScreenshotOptions extends ActionOptions {
 }
 
 export class CookieOptions {
+    public constructor (obj: object, validate: boolean);
     public name: string;
     public value: string;
     public domain: string;

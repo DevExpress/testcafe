@@ -11,6 +11,7 @@ import {
     PressOptions,
     DragToElementOptions,
     OffsetOptions,
+    CookieOptions,
 } from './options';
 
 import { initSelector, initUploadSelector } from './validations/initializers';
@@ -30,6 +31,7 @@ import {
     actionRoleArgument,
     booleanArgument,
     functionArgument,
+    cookiesArgument, urlsArgument,
 } from './validations/argument';
 
 import { SetNativeDialogHandlerCodeWrongTypeError } from '../../errors/test-run';
@@ -95,6 +97,10 @@ function initDialogHandler (name, val, { skipVisibilityCheck, testRun }) {
         builder = new ClientFunctionBuilder(fn, options, { instantiation: methodName, execution: methodName });
 
     return builder.getCommand([]);
+}
+
+function initCookiesOption (name, val, initOptions, validate = true) {
+    return val.map(cookie => new CookieOptions(cookie, validate));
 }
 
 // Commands
@@ -662,9 +668,8 @@ export class GetCookiesCommand extends ActionCommandBase {
 
     _getAssignableProperties () {
         return [
-            { name: 'names', required: false },
-            { name: 'urls', required: false },
-            { name: 'cookies', required: false },
+            { name: 'urls', type: urlsArgument, required: false },
+            { name: 'cookies', type: cookiesArgument, init: initCookiesOption, required: false },
         ];
     }
 }
@@ -694,9 +699,8 @@ export class DeleteCookiesCommand extends ActionCommandBase {
 
     _getAssignableProperties () {
         return [
-            { name: 'names', required: false },
-            { name: 'urls', required: false },
-            { name: 'cookies', required: false },
+            { name: 'urls', type: urlsArgument, required: false },
+            { name: 'cookies', type: cookiesArgument, init: initCookiesOption, required: false },
         ];
     }
 }

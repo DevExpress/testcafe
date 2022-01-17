@@ -141,6 +141,43 @@ export function functionArgument (name, val) {
         throw new ActionFunctionArgumentError(name, val);
 }
 
+function isValidCookie (cookie) {
+    return !!cookie && (!!cookie.name || !!cookie.domain && !!cookie.path);
+}
+
+export function cookiesArgument (name, val) {
+    const cookiesLength = val.length;
+
+    for (const [i, value] of val.entries()) {
+        if (!isValidCookie(value)) {
+            throw cookiesLength === 1
+                ? new ActionCookieArgumentError()
+                : new ActionCookieArgumentsError(i);
+        }
+    }
+}
+
+function isValidUrl (url) {
+    try {
+        return new URL(url) && true;
+    }
+    catch {
+        return false;
+    }
+}
+
+export function urlsArgument (name, val) {
+    const cookiesLength = val.length;
+
+    for (const [i, value] of val.entries()) {
+        if (!isValidUrl(value)) {
+            throw cookiesLength === 1
+                ? new ActionUrlsCookieArgumentError()
+                : new ActionUrlsArrayCookieArgumentError(i);
+        }
+    }
+}
+
 function isValidCookieToGetOrDelete (target) {
     return !!target && (typeof target.name === 'string' || typeof target.domain === 'string');
 }
