@@ -1,5 +1,23 @@
 # Changelog
 
+## v1.18.2 (2022-01-18)
+
+### Bug Fixes
+
+* Tests with client scripts yield the "Cannot read property 'tests' of null" error ([#6305](https://github.com/DevExpress/testcafe/issues/6305))
+* TestCafe hangs after failing to initialize a Role ([#5278](https://github.com/DevExpress/testcafe/issues/5278))
+* Testcafe falsely detects filter directives in the configuration file ([#6620](https://github.com/DevExpress/testcafe/issues/6620))
+* Concurrent Chrome instances cannot reconnect to TestCafe after a restart ([#4554](https://github.com/DevExpress/testcafe/issues/4554))
+* TestCafe hangs if a user enters an iframe and then switches to a different browser window ([#6085](https://github.com/DevExpress/testcafe/issues/6085))
+* TestCafe opens incorrect URLs when you concurrently run multiple fixtures from the same test file ([#6041](https://github.com/DevExpress/testcafe/issues/6041))
+* TestCafe expands disabled `<select>` elements ([#5616](https://github.com/DevExpress/testcafe/issues/5616))
+* TestCafe does not load some cross-domain iframes ([#6633](https://github.com/DevExpress/testcafe/issues/6633))
+* TestCafe incorrectly sets the Document.referrer property in Chrome 89 ([#6144](https://github.com/DevExpress/testcafe/issues/6144))
+* Tests hang when the test page initiates a file download ([#5796](https://github.com/DevExpress/testcafe/issues/5796))
+* Requests fail because TestCafe incorrectly handles dynamic content security policy ([#6057](https://github.com/DevExpress/testcafe/issues/6057))
+* TestCafe triggers pointerdown event handlers twice ([#5891](https://github.com/DevExpress/testcafe/issues/5891))
+* TestCafe cannot trigger click event handlers for Angular buttons with the "disabled" attribute ([#5240](https://github.com/DevExpress/testcafe/issues/5240))
+
 ## v1.18.1 (2021-12-23)
 
 ### macOS Bug Fix
@@ -12,13 +30,13 @@ TestCafe v1.18.0 includes a new experimental Selector debugging capability, impo
 
 If you run TestCafe on macOS, follow the [Upgrade Guide](https://testcafe.io/403664/release-notes/framework/2021-12-22-testcafe-v1-18-0-released#upgrade-instructions) to make sure your upgrade goes smoothly.
 
-## New Debugging Capabilities (Experimental)
+### New Debugging Capabilities (Experimental)
 
 If you launch TestCafe with the `--experimental-debug` flag, you can debug Selectors and Client Functions in the Watch panel of a Node.js debugger.
 
-## macOS improvements
+### macOS improvements
 
-### TestCafe Browser Tools on Apple Silicon
+#### TestCafe Browser Tools on Apple Silicon
 
 The TestCafe Browser Tools package is a communication layer that automates browsers on behalf of TestCafe. Both the TestCafe framework and TestCafe Studio include the TestCafe Browser Tools binary.
 
@@ -28,7 +46,7 @@ TestCafe v1.18.0 includes a **Universal** TestCafe Browser Tools binary that run
 
 Follow the [Upgrade Instructions](https://testcafe.io/403664/release-notes/framework/2021-12-22-testcafe-v1-18-0-released#upgrade-instructions) to make sure your version of TestCafe Browser Tools is up to date.
 
-### TestCafe Browser Tools macOS Permission Fix
+#### TestCafe Browser Tools macOS Permission Fix
 
 The TestCafe Browser Tools binary requires special privileges to automate browsers and take screenshots. Security improvements in recent versions of macOS made these privileges harder to obtain.
 
@@ -38,7 +56,7 @@ TestCafe v1.18.0 and TestCafe Studio v1.7 address this issue. Beginning with thi
 
 Follow the [Upgrade Instructions](https://testcafe.io/403664/release-notes/framework/2021-12-22-testcafe-v1-18-0-released#upgrade-instructions) to reset TestCafe Browser Tools' permissions and enable the new binary.
 
-## Bug Fixes
+### Bug Fixes
 
 * TestCafe immediately closes new windows ([#6680](https://github.com/DevExpress/testcafe/issues/6680))
 * Tests fail with the `TypeError: Invalid value used as weak map key.` error ([#6563](https://github.com/DevExpress/testcafe/issues/6563))
