@@ -139,11 +139,11 @@ export default {
     `,
 
     [TEST_RUN_ERRORS.actionCookieArgumentError]: () => `
-        The "cookie" argument is expected to be a cookie-like object or a cookie-like object array.
+        The "cookie" is expected to be an object, a string or array of objects or strings.
     `,
 
     [TEST_RUN_ERRORS.actionCookieArgumentsError]: err => `
-        The "cookie" argument at position ${err.argumentPosition} is expected to be a cookie-like object or a cookie-like object array.
+        The "cookie" at number ${err.argumentIndex} is expected to be an object or a string.
     `,
 
     [TEST_RUN_ERRORS.actionCookieArrayArgumentError]: err => `
@@ -154,20 +154,12 @@ export default {
         The elements of the "cookie" argument at position ${err.argumentPosition} are expected to be cookie-like objects, but the element at index ${err.cookieElementIndex} wasn't.
     `,
 
-    [TEST_RUN_ERRORS.actionNamesCookieArgumentError]: err => `
-        The "names" argument is expected to be a string or a string array, but it was ${err.actualType}.
-    `,
-
-    [TEST_RUN_ERRORS.actionNamesArrayCookieArgumentError]: err => `
-        Elements of the "names" argument are expected to be non-empty strings, but the element at index ${err.elementIndex} was ${err.actualType}.
-    `,
-
-    [TEST_RUN_ERRORS.actionUrlsCookieArgumentError]: err => `
-        The "urls" argument is expected to be a string or a string array, but it was ${err.actualType}.
+    [TEST_RUN_ERRORS.actionUrlsCookieArgumentError]: () => `
+        The "urls" argument isn't valid.
     `,
 
     [TEST_RUN_ERRORS.actionUrlsArrayCookieArgumentError]: err => `
-        Elements of the "urls" argument are expected to be non-empty strings, but the element at index ${err.elementIndex} was ${err.actualType}.
+        Elements at index ${err.elementIndex} of the "urls" argument isn't valid.
     `,
 
     [TEST_RUN_ERRORS.actionNameValueObjectCookieArgumentError]: () => `

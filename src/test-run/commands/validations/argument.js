@@ -26,8 +26,6 @@ import {
     ActionCookieArgumentsError,
     ActionCookieArrayArgumentError,
     ActionCookieArrayArgumentsError,
-    ActionNamesCookieArgumentError,
-    ActionNamesArrayCookieArgumentError,
     ActionUrlsCookieArgumentError,
     ActionUrlsArrayCookieArgumentError,
     ActionNameValueObjectCookieArgumentError,
@@ -178,10 +176,6 @@ export function urlsArgument (name, val) {
     }
 }
 
-function isValidCookieToGetOrDelete (target) {
-    return !!target && (typeof target.name === 'string' || typeof target.domain === 'string');
-}
-
 function isValidCookieToSet (target) {
     return !!target && (typeof target.name === 'string' && typeof target.domain === 'string' && typeof target.path === 'string');
 }
@@ -225,50 +219,8 @@ function getCookieArgumentsValidationError (callsite, cookieArguments, validateF
     return null;
 }
 
-export function getCookieToGetOrDeleteArgumentsValidationError (callsite, cookieArguments) {
-    return getCookieArgumentsValidationError(callsite, cookieArguments, isValidCookieToGetOrDelete);
-}
-
 export function getCookieToSetArgumentsValidationError (callsite, cookieArguments) {
     return getCookieArgumentsValidationError(callsite, cookieArguments, isValidCookieToSet);
-}
-
-export function getNamesCookieArgumentValidationError (callsite, namesArgumentValue) {
-    if (Array.isArray(namesArgumentValue)) {
-        for (const [namesElementIndex, namesElement] of namesArgumentValue.entries()) {
-            const namesElementType = typeof namesElement;
-
-            if (namesElementType !== 'string')
-                return new ActionNamesArrayCookieArgumentError(callsite, namesElementIndex, namesElementType);
-        }
-    }
-    else {
-        const namesArgumentType = typeof namesArgumentValue;
-
-        if (namesArgumentType !== 'string')
-            return new ActionNamesCookieArgumentError(callsite, namesArgumentType);
-    }
-
-    return null;
-}
-
-export function getUrlsCookieArgumentValidationError (callsite, urlsArgumentValue) {
-    if (Array.isArray(urlsArgumentValue)) {
-        for (const [urlsElementIndex, urlsElement] of urlsArgumentValue.entries()) {
-            const urlsElementType = typeof urlsElement;
-
-            if (urlsElementType !== 'string')
-                return new ActionUrlsArrayCookieArgumentError(callsite, urlsElementIndex, urlsElementType);
-        }
-    }
-    else {
-        const urlsArgumentType = typeof urlsArgumentValue;
-
-        if (urlsArgumentType !== 'string')
-            return new ActionUrlsCookieArgumentError(callsite, urlsArgumentType);
-    }
-
-    return null;
 }
 
 export function getNameValueObjectsCookieArgumentValidationError (callsite, nameValueObjectsArgumentValue) {

@@ -264,25 +264,6 @@ export class ActionCookieArrayArgumentsError extends TestRunErrorBase {
     }
 }
 
-export class ActionNamesCookieArgumentError extends TestRunErrorBase {
-    constructor (callsite, actualType) {
-        super(TEST_RUN_ERRORS.actionNamesCookieArgumentError);
-
-        this.callsite   = callsite;
-        this.actualType = actualType;
-    }
-}
-
-export class ActionNamesArrayCookieArgumentError extends TestRunErrorBase {
-    constructor (callsite, elementIndex, actualType) {
-        super(TEST_RUN_ERRORS.actionNamesArrayCookieArgumentError);
-
-        this.callsite     = callsite;
-        this.elementIndex = elementIndex;
-        this.actualType   = actualType;
-    }
-}
-
 export class ActionUrlsCookieArgumentError extends TestRunErrorBase {
     constructor () {
         super(TEST_RUN_ERRORS.actionUrlsCookieArgumentError);
