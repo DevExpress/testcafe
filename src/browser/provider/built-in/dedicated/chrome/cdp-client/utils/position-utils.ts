@@ -77,7 +77,8 @@ export async function getElementFromPoint (point: AxisValuesData<number>): Promi
         return DOM.resolveNode({ backendNodeId });
     }
     catch {
-        //
+        // NOTE: TODO: for some reason this methods throws error for correct `point` values
+        // always throws error for negative values
     }
 
     return null;
