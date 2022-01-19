@@ -3,6 +3,11 @@ const COMPILER_SERVICE_TESTS_GLOB = 'test/functional/fixtures/compiler-service/t
 const LEGACY_TESTS_GLOB           = 'test/functional/legacy-fixtures/**/test.js';
 const BASIC_TESTS_GLOB            = 'test/functional/fixtures/**/test.js';
 
+const SCREENSHOT_TESTS_GLOB = [
+    'test/functional/fixtures/api/es-next/take-screenshot/test.js',
+    'test/functional/fixtures/screenshots-on-fails/test.js',
+];
+
 const TESTS_GLOB = [
     BASIC_TESTS_GLOB,
     `!${MULTIPLE_WINDOWS_TESTS_GLOB}`,
@@ -19,6 +24,7 @@ const DEBUG_GLOB_1 = [
 const DEBUG_GLOB_2 = [
     BASIC_TESTS_GLOB,
     ...DEBUG_GLOB_1.map(glob => `!${glob}`),
+    ...SCREENSHOT_TESTS_GLOB.map(glob => `!${glob}`),
 ];
 
 module.exports = {
@@ -29,4 +35,5 @@ module.exports = {
     COMPILER_SERVICE_TESTS_GLOB,
     DEBUG_GLOB_1,
     DEBUG_GLOB_2,
+    SCREENSHOT_TESTS_GLOB,
 };

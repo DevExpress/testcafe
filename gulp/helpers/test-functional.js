@@ -7,17 +7,13 @@ const chai           = require('chai');
 const {
     TESTS_GLOB,
     DEBUG_GLOB_1,
+    SCREENSHOT_TESTS_GLOB,
 } = require('../constants/functional-test-globs');
 
 chai.use(require('chai-string'));
 
 const RETRY_TEST_RUN_COUNT = 3;
 const SETUP_TESTS_GLOB     = 'test/functional/setup.js';
-
-const SCREENSHOT_TESTS_GLOB = [
-    'test/functional/fixtures/api/es-next/take-screenshot/test.js',
-    'test/functional/fixtures/screenshots-on-fails/test.js',
-];
 
 function shouldAddTakeScreenshotTestGlob (glob) {
     return [TESTS_GLOB, DEBUG_GLOB_1].includes(glob);
