@@ -49,7 +49,7 @@ export interface CoreUtilsAdapter {
         getMapContainer (el: Element | null): Element | null;
         getSelectParent (el: Element): HTMLSelectElement | null;
         getChildVisibleIndex (select: HTMLSelectElement, child: Node): number;
-        findParent (node: Node, includeSelf: boolean, predicate: (el: Node) => boolean): Node | null;
+        findParent (node: Node, includeSelf?: boolean, predicate?: (el: Node) => boolean): Node | null;
         isElementNode (el: Node): el is Element;
         isBodyElement (el: unknown): el is HTMLBodyElement;
         isHtmlElement (el: unknown): el is HTMLHtmlElement;
