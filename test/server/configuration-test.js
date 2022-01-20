@@ -4,7 +4,7 @@ const { cloneDeep, noop } = require('lodash');
 const { expect }    = require('chai');
 const fs            = require('fs');
 const tmp           = require('tmp');
-const nanoid        = require('nanoid');
+const { nanoid }    = require('nanoid');
 const del           = require('del');
 const pathUtil      = require('path');
 

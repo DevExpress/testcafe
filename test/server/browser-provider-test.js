@@ -1,6 +1,6 @@
 const expect                          = require('chai').expect;
 const { noop, stubFalse, pick, omit } = require('lodash');
-const nanoid                          = require('nanoid');
+const { nanoid }                      = require('nanoid');
 const { rmdirSync, statSync }         = require('fs');
 const { join, dirname }               = require('path');
 const proxyquire                      = require('proxyquire');

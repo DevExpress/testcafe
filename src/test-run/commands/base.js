@@ -1,4 +1,4 @@
-import nanoid from 'nanoid';
+import { nanoid } from 'nanoid';
 import Assignable from '../../utils/assignable';
 
 export class CommandBase extends Assignable {

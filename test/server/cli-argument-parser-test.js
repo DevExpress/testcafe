@@ -4,7 +4,7 @@ const fs                = require('fs');
 const tmp               = require('tmp');
 const { find }          = require('lodash');
 const CliArgumentParser = require('../../lib/cli/argument-parser');
-const nanoid            = require('nanoid');
+const { nanoid }        = require('nanoid');
 const runOptionNames    = require('../../lib/configuration/run-option-names');
 
 describe('CLI argument parser', function () {

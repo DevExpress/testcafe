@@ -6,7 +6,7 @@ import {
 
 import { readFileSync } from 'fs';
 import stripBom from 'strip-bom';
-import nanoid from 'nanoid';
+import { nanoid } from 'nanoid';
 import TestFileCompilerBase from './base';
 import TestFile from '../../api/structure/test-file';
 import Fixture from '../../api/structure/fixture';

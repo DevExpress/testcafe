@@ -4,7 +4,7 @@ import {
     chain,
 } from 'lodash';
 
-import nanoid from 'nanoid';
+import { nanoid } from 'nanoid';
 import { readSync as read } from 'read-file-relative';
 import promisifyEvent from 'promisify-event';
 import Mustache from 'mustache';
