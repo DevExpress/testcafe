@@ -166,16 +166,18 @@ Please keep in mind that the team may **suspend or reject** pull requests. There
 -   Poor quality code.
 -   Other [development priorities](https://testcafe.io/402949/roadmap) may take precedence.
 
-Please also note that we do not merge pull requests until the changes are documented. You're welcome to document a new capability yourself. You should add your description as a pull request comment, and include links to Testcafe [documentation](https://testcafe.io/documentation) pages that need editing. While writing the documentation, please, follow the [guidelines](#guidelines).
+We merge pull requests after the changes are documented. If you want to document a new capability, write a comment with your description to a pull request. Please, follow the [guidelines](#guidelines) during the writing. 
 
 ## Contribute to Documentation
 
-Testcafe [documentation](https://testcafe.io/documentation) is not open-source. If you find an inaccuracy in the docs, send us a note in a [Github issue](https://github.com/DevExpress/testcafe/issues/new). Please, don't forget to add `AREA: docs` label so that the appropriate team gets a new issue for review.
+Users can't submit documentation pull requests because TestCafe stores [documentation](https://testcafe.io/documentation) in the private repository. To notify the team of an inaccuracy in the docs, create a [Github issue](https://github.com/DevExpress/testcafe/issues/new) with the `AREA: docs` label.
 
 #### Guidelines
 
-We follow a set of documentation guidelines and practices. The main idea is to make our docs easy to read. So, when submitting a new issue, please, make sure that:
+TestCafe team adheres to a set of writing guidelines and practices that make our docs easy to read. When you submit a comment about a new capability or a new issue of an inaccuracy, please, follow the main rules:
 
 -   You don't use gerunds, passive voice and past tense
 -   Every sentence expresses a single idea
 -   You don't needlessly repeat the same piece of information
+
+When the suggestions satisfy the above rules, it helps TestCafe team to update the documentation quicker.
