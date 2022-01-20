@@ -68,7 +68,7 @@ export interface SharedAdapter {
         };
     };
 
-    createEventSequence: (dragAndDropEnabled: boolean, firstMovingStepOccured: boolean, options: any) => SharedFnResult<any>;
+    createEventSequence: (dragAndDropEnabled: boolean, firstMovingStepOccured: boolean, options: any) => any;
     sendRequestToFrame (msg: any, MOVE_RESPONSE_CMD: string, activeWindow: SharedWindow): SharedFnResult<any>;
 }
 

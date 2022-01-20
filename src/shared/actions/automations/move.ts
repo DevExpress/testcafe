@@ -132,8 +132,8 @@ export default class MoveAutomation<E, W extends SharedWindow> {
             });
     }
 
-    private _runEventSequence (currentElement: Element, { eventOptions, eventSequenceOptions }: any): Promise<any> {
-        const eventSequence = adapter.createEventSequence(false, this.firstMovingStepOccured, eventSequenceOptions);
+    private async _runEventSequence (currentElement: Element, { eventOptions, eventSequenceOptions }: any): Promise<any> {
+        const eventSequence = await adapter.createEventSequence(false, this.firstMovingStepOccured, eventSequenceOptions);
 
         return eventSequence.run(
             currentElement,
@@ -147,8 +147,9 @@ export default class MoveAutomation<E, W extends SharedWindow> {
     private _emulateEvents (currentElement: Element, currPosition: AxisValues<number>): Promise<void> {
         return this._getEventSequenceOptions(currPosition)
             .then(options => {
-                this._runEventSequence(currentElement, options);
-
+                return this._runEventSequence(currentElement, options);
+            })
+            .then(() => {
                 this.firstMovingStepOccured = true;
 
                 lastHoveredElementHolder.set(currentElement);

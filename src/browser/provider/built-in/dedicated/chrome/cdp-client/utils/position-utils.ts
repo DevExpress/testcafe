@@ -68,11 +68,20 @@ export async function getIframePointRelativeToParentFrame (iframePoint: AxisValu
     return new AxisValues<number>(left, top);
 }
 
-export async function getElementFromPoint (point: AxisValuesData<number>): Promise<Protocol.DOM.ResolveNodeResponse> {
-    const { DOM }           = clientsManager.getClient();
-    const { backendNodeId } = await DOM.getNodeForLocation({ x: point.x, y: point.y });
+export async function getElementFromPoint (point: AxisValuesData<number>): Promise<Protocol.DOM.ResolveNodeResponse | null> {
+    const { DOM } = clientsManager.getClient();
 
-    return DOM.resolveNode({ backendNodeId });
+    try {
+        const { backendNodeId } = await DOM.getNodeForLocation({ x: point.x, y: point.y });
+
+        return DOM.resolveNode({ backendNodeId });
+    }
+    catch {
+        // NOTE: TODO: for some reason this methods throws error for correct `point` values
+        // always throws error for negative values
+    }
+
+    return null;
 }
 
 export async function getWindowPosition (): Promise<AxisValues<number>> {
