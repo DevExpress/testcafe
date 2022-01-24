@@ -8,7 +8,7 @@ import delay from '../../../../../utils/delay';
 
 const browserStarter = new BrowserStarter();
 
-const LIST_TABS_TIMEOUT = 5000;
+const LIST_TABS_TIMEOUT = 10000;
 const LIST_TABS_DELAY   = 500;
 
 export async function start (pageUrl, { browserName, config, cdpPort, tempProfileDir, inDocker }) {
@@ -36,7 +36,7 @@ export async function startOnDocker (pageUrl, { browserName, config, cdpPort, te
     const timer         = new Timer(LIST_TABS_TIMEOUT);
 
     //NOTE: We should repeat getting 'List' after a while because we can get an error if the browser isn't ready.
-    while (error && !timer.expired) {
+    while ((error || !tabs.length) && !timer.expired) {
         await delay(LIST_TABS_DELAY);
 
         ({ tabs, error } = await tryListTabs(cdpPort));

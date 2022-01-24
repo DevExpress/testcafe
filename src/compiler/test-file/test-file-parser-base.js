@@ -16,6 +16,8 @@ function getLoc (loc) {
     // Since this is useless information, we remove it.
     delete locCopy.filename;
     delete locCopy.identifierName;
+    delete locCopy.start.index;
+    delete locCopy.end.index;
 
     return locCopy;
 }
