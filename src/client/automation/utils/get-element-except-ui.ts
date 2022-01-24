@@ -8,7 +8,7 @@ const positionUtils = testCafeCore.positionUtils;
 export default function getElementFromPoint (point: AxisValuesData<number>, underTopShadowUIElement = false): Promise<Element> {
     return testCafeUI.hide(underTopShadowUIElement)
         .then(() => {
-            const topElement = positionUtils.getElementFromPoint(point.x, point.y);
+            const topElement = positionUtils.getElementFromPoint(point);
 
             return testCafeUI.show(underTopShadowUIElement)
                 .then(() => topElement);

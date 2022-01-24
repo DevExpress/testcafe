@@ -149,9 +149,14 @@
     const el10 = document.querySelector('#target10');
 
     window.moveLog = [];
+    window.clickLog = [];
 
     function moveHandler (event) {
         window.moveLog.push(event.type + ': ' + event.target.id);
+    }
+
+    function clickHandler (event) {
+        window.clickLog.push(event.type + ': ' + event.target.id);
     }
 
     el8.addEventListener('mouseenter', moveHandler);
@@ -168,6 +173,10 @@
     el10.addEventListener('mousemove', moveHandler);
     el10.addEventListener('mouseleave', moveHandler);
     el10.addEventListener('mouseover', moveHandler);
+
+    el9.addEventListener('mousedown', clickHandler);
+    el9.addEventListener('mouseup', clickHandler);
+    el9.addEventListener('click', clickHandler);
 </script>
 </body>
 </html>

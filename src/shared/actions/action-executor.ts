@@ -103,12 +103,12 @@ export default class ActionExecutor<T> extends EventEmitter {
         handler.ensureElsProps(this._elements);
     }
 
-    private _ensureCommandOptions (): void {
+    private async _ensureCommandOptions (): Promise<void> {
         const opts = this._command.options;
 
         // @ts-ignore TODO
         if (this._elements.length && opts && 'offsetX' in opts && 'offsetY' in opts) { // @ts-ignore
-            const { offsetX, offsetY } = adapter.getOffsetOptions(this._elements[0], opts.offsetX, opts.offsetY);
+            const { offsetX, offsetY } = await adapter.getOffsetOptions(this._elements[0], opts.offsetX, opts.offsetY);
 
             // @ts-ignore TODO
             opts.offsetX = offsetX;
@@ -129,9 +129,8 @@ export default class ActionExecutor<T> extends EventEmitter {
     private _runAction (strictElementCheck: boolean): Promise<void> {
         return this._ensureCommandElements()
             .then(() => this._ensureCommandElementsProperties())
+            .then(() => this._ensureCommandOptions())
             .then(() => {
-                this._ensureCommandOptions();
-
                 const automation = this._createAutomation();
 
                 if (automation.TARGET_ELEMENT_FOUND_EVENT) {

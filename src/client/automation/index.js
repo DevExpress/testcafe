@@ -5,7 +5,7 @@ import hammerhead from './deps/hammerhead';
 import DispatchEventAutomation from './playback/dispatch-event';
 import SetScrollAutomation from './playback/set-scroll';
 import ScrollIntoViewAutomation from './playback/scroll-into-view';
-import ClickAutomation from './playback/click';
+import ClickAutomation from '../../shared/actions/automations/click';
 import SelectChildClickAutomation from './playback/click/select-child';
 import DblClickAutomation from './playback/dblclick';
 import DragToOffsetAutomation from './playback/drag/to-offset';
@@ -23,7 +23,7 @@ import {
     TypeOptions,
 } from '../../test-run/commands/options';
 import AutomationSettings from '../../shared/actions/automations/settings';
-import { getOffsetOptions } from './utils/offsets';
+import { getOffsetOptions } from '../../shared/actions/utils/offsets';
 import { getNextFocusableElement } from './playback/press/utils';
 import SHORTCUT_TYPE from './playback/press/shortcut-type';
 import { getSelectionCoordinatesByPosition } from './playback/select/utils';

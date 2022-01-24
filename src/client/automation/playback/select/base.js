@@ -1,6 +1,6 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
-import VisibleElementAutomation from '../visible-element-automation';
+import VisibleElementAutomation from '../../../../shared/actions/automations/visible-element-automation';
 import getElementFromPoint from '../../get-element';
 import * as selectUtils from './utils';
 import MoveAutomation from '../move/move';
@@ -23,7 +23,7 @@ const delay           = testCafeCore.delay;
 
 export default class SelectBaseAutomation extends VisibleElementAutomation {
     constructor (element, actionOptions) {
-        super(element, actionOptions);
+        super(element, window, cursor, actionOptions);
 
         this.absoluteStartPoint = null;
         this.absoluteEndPoint   = null;

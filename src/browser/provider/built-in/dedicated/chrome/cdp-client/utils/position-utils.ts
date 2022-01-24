@@ -2,17 +2,21 @@ import Protocol from 'devtools-protocol/types/protocol';
 import ExecutionContext from '../execution-context';
 import AxisValues, { AxisValuesData, LeftTopValues } from '../../../../../../../shared/utils/values/axis-values';
 import BoundaryValues, { BoundaryValuesData } from '../../../../../../../shared/utils/values/boundary-values';
-import { findIframeByWindow } from './dom-utils';
+import { findIframeByWindow, getIframeByElement } from './dom-utils';
 import * as clientsManager from '../clients-manager';
-import { ServerNode } from '../types';
+import { PositionDimensions, ServerNode } from '../types';
+import { describeNode } from './';
 
 import {
     getBoxModel,
-    getClientDimensions,
     getDocumentScroll,
     getElementPadding,
+    getElementDimensions,
     getProperties,
 } from './style-utils';
+
+import { ElementRectangle } from '../../../../../../../client/core/utils/shared/types';
+
 
 export async function getClientPosition (node: ServerNode): Promise<AxisValues<number>> {
     const boxModel = await getBoxModel(node);
@@ -27,7 +31,7 @@ export async function getOffsetPosition (node: ServerNode): Promise<LeftTopValue
     return { left: dimensions.left + left, top: dimensions.top + top };
 }
 
-export async function containsOffset (node: ServerNode, offsetX: number, offsetY: number): Promise<boolean> {
+export async function containsOffset (node: ServerNode, offsetX?: number, offsetY?: number): Promise<boolean> {
     const dimensions = await getClientDimensions(node);
     const properties = await getProperties(node, 'scrollWidth', 'scrollHeight');
 
@@ -68,13 +72,16 @@ export async function getIframePointRelativeToParentFrame (iframePoint: AxisValu
     return new AxisValues<number>(left, top);
 }
 
-export async function getElementFromPoint (point: AxisValuesData<number>): Promise<Protocol.DOM.ResolveNodeResponse | null> {
+export async function getElementFromPoint (point: AxisValuesData<number>): Promise<ServerNode | null> {
     const { DOM } = clientsManager.getClient();
 
     try {
         const { backendNodeId } = await DOM.getNodeForLocation({ x: point.x, y: point.y });
 
-        return DOM.resolveNode({ backendNodeId });
+        const result = await DOM.resolveNode({ backendNodeId });
+
+        if (result?.object.objectId)
+            return describeNode(DOM, result.object.objectId.toString());
     }
     catch {
         // NOTE: TODO: for some reason this methods throws error for correct `point` values
@@ -82,6 +89,33 @@ export async function getElementFromPoint (point: AxisValuesData<number>): Promi
     }
 
     return null;
+}
+
+export async function getElementRectangle (node: ServerNode): Promise<ElementRectangle> {
+    const dimensions = await getElementDimensions(node);
+
+    return {
+        height: dimensions.height,
+        left:   dimensions.left,
+        top:    dimensions.top,
+        width:  dimensions.width,
+    };
+}
+
+export async function getClientDimensions (node: ServerNode): Promise<PositionDimensions> {
+    const elementDimensions = await getElementDimensions(node);
+    const parentFrame       = await getIframeByElement(node);
+
+    if (parentFrame) {
+        const frameBoxModel = await getBoxModel(parentFrame);
+
+        elementDimensions.left   -= frameBoxModel.content[0];
+        elementDimensions.top    -= frameBoxModel.content[1];
+        elementDimensions.bottom -= frameBoxModel.content[1];
+        elementDimensions.right  -= frameBoxModel.content[0];
+    }
+
+    return elementDimensions;
 }
 
 export async function getWindowPosition (): Promise<AxisValues<number>> {
@@ -98,4 +132,9 @@ export async function getWindowPosition (): Promise<AxisValues<number>> {
     const { result } = await Runtime.evaluate(args);
 
     return result.value;
+}
+
+// TODO: implement
+export async function offsetToClientCoords (point: AxisValues<number>): Promise<AxisValues<number>> {
+    return point;
 }

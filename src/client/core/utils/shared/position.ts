@@ -1,7 +1,7 @@
 import adapter from './adapter/index';
 import BoundaryValues, { BoundaryValuesData } from '../../../../shared/utils/values/boundary-values';
 import Dimensions from '../../../../shared/utils/values/dimensions';
-import AxisValues from '../../../../shared/utils/values/axis-values';
+import AxisValues, { AxisValuesData } from '../../../../shared/utils/values/axis-values';
 
 export function getClientDimensions (target: Element): Dimensions {
     const isHtmlElement     = adapter.dom.isHtmlElement(target);
@@ -53,7 +53,7 @@ export function getClientDimensions (target: Element): Dimensions {
     return new Dimensions(elWidth, elHeight, elPosition, elBorders, elScroll, scrollbar);
 }
 
-export function getElementFromPoint (x: number, y: number): Element | null {
+export function getElementFromPoint ({ x, y }: AxisValuesData<number>): Element | null {
     // @ts-ignore
     const ieFn = document.getElementFromPoint;
     const func = ieFn || document.elementFromPoint;

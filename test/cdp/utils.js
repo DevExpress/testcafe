@@ -1,12 +1,14 @@
-const CDP              = require('chrome-remote-interface');
-const express          = require('express');
-const { readFileSync } = require('fs');
-const { join }         = require('path');
-const delay            = require('../../lib/utils/delay');
-const ExecutionContext = require('../../lib/browser/provider/built-in/dedicated/chrome/cdp-client/execution-context');
-const ChromeLauncher   = require('chrome-launcher');
-const clientsManager   = require('../../lib/browser/provider/built-in/dedicated/chrome/cdp-client/clients-manager');
+const CDP               = require('chrome-remote-interface');
+const express           = require('express');
+const { readFileSync }  = require('fs');
+const { join }          = require('path');
+const delay             = require('../../lib/utils/delay');
+const ExecutionContext  = require('../../lib/browser/provider/built-in/dedicated/chrome/cdp-client/execution-context');
+const ChromeLauncher    = require('chrome-launcher');
+const clientsManager    = require('../../lib/browser/provider/built-in/dedicated/chrome/cdp-client/clients-manager');
 const { BrowserClient } = require('../../lib/browser/provider/built-in/dedicated/chrome/cdp-client');
+const Cursor            = require('../../lib/shared/actions/cursor');
+const { CursorUICdp }   = require('../../lib/browser/provider/built-in/dedicated/chrome/cdp-client/utils/cursor');
 
 const page  = readFileSync(join(__dirname, './position-utils-test-page.html')).toString();
 const frame = readFileSync(join(__dirname, './position-utils-test-iframe.html')).toString();
@@ -112,6 +114,15 @@ async function getNode (args) {
     return node;
 }
 
+async function createCursor () {
+    const devicePixelRatio = await client.Runtime.evaluate({ expression: 'window.devicePixelRatio' });
+    const cursorUI         = new CursorUICdp(devicePixelRatio.result.value);
+
+    await cursorUI.show();
+
+    return new Cursor(ExecutionContext.current, cursorUI);
+}
+
 module.exports.createServer = createServer;
 module.exports.before       = before;
 module.exports.after        = after;
@@ -119,3 +130,4 @@ module.exports.beforeEach   = beforeEach;
 module.exports.setScroll    = setScroll;
 module.exports.getClient    = () => client;
 module.exports.getNode      = getNode;
+module.exports.createCursor = createCursor;

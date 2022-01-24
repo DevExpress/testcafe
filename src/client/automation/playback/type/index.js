@@ -1,13 +1,14 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import { ClickOptions } from '../../../../test-run/commands/options';
-import ClickAutomation from '../click';
+import ClickAutomation from '../../../../shared/actions/automations/click';
 import typeText from './type-text';
 import getKeyCode from '../../utils/get-key-code';
 import getKeyIdentifier from '../../utils/get-key-identifier';
-import { getDefaultAutomationOffsets } from '../../utils/offsets';
+import { getDefaultAutomationOffsets } from '../../../../shared/actions/utils/offsets';
 import AutomationSettings from '../../../../shared/actions/automations/settings';
 import getKeyProperties from '../../utils/get-key-properties';
+import cursor from '../../cursor';
 
 const Promise               = hammerhead.Promise;
 const extend                = hammerhead.utils.extend;
@@ -132,7 +133,7 @@ export default class TypeAutomation {
                 modifiers: this.modifiers,
             });
 
-            const clickAutomation = new ClickAutomation(this.element, clickOptions);
+            const clickAutomation = new ClickAutomation(this.element, window, cursor, clickOptions);
 
             return clickAutomation
                 .run(useStrictElementCheck)

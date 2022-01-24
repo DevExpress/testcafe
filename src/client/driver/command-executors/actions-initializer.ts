@@ -38,6 +38,7 @@ import {
 import COMMAND_TYPE from '../../../test-run/commands/type';
 import { ActionCommandBase } from '../../../test-run/commands/base';
 import { Automation } from '../../../shared/actions/types';
+import cursor from '../../automation/cursor';
 
 
 ActionExecutor.ACTIONS_HANDLERS[COMMAND_TYPE.dispatchEvent] = {
@@ -67,7 +68,7 @@ ActionExecutor.ACTIONS_HANDLERS[COMMAND_TYPE.click] = {
         if (/option|optgroup/.test(domUtils.getTagName(elements[0])))
             return new SelectChildClickAutomation(elements[0], command.options);
 
-        return new ClickAutomation(elements[0], command.options);
+        return new ClickAutomation(elements[0], window, cursor, command.options);
     },
 };
 
