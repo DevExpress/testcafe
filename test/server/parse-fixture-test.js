@@ -27,17 +27,6 @@ function Loc (lineStart, columnStart, lineEnd, columnEnd) {
     this.end   = { column: columnEnd, line: lineEnd };
 }
 
-function lazyEql (target, expected) {
-    Object.keys(expected).forEach(key => {
-        expect(target[key], `Target should have property '${key}'`).exist;
-
-        if (typeof expected[key] === 'object')
-            lazyEql(target[key], expected[key]);
-        else
-            expect(expected[key]).eql(target[key], `Target property '${key}' should be equal ${expected[key]}`);
-    });
-}
-
 function testFixtureParser (dir, expectedStructure, fileParser, codeParser) {
     const dirPath  = path.join(__dirname, dir);
     const fileList = fs.readdirSync(dirPath).sort();
@@ -49,8 +38,8 @@ function testFixtureParser (dir, expectedStructure, fileParser, codeParser) {
 
         return fileParser(filePath)
             .then(function (structure) {
-                lazyEql(structure, expected);
-                lazyEql(codeParser(fileContent), expected);
+                expect(structure).eql(expected);
+                expect(codeParser(fileContent)).eql(expected);
 
                 Object.values(structure).forEach(fixture => {
                     expect(fixture.loc).not.undefined;
