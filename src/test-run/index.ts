@@ -858,17 +858,9 @@ export default class TestRun extends AsyncEventEmitter {
 
     private _convertToInternalCookies (externalCookie: CookieOptions[]): InternalCookie[] {
         return externalCookie.map(cookie => {
-            const {
-                name, value, domain,
-                path, expires, maxAge,
-                secure, httpOnly, sameSite,
-            } = cookie;
+            const { name, ...rest } = cookie;
 
-            return {
-                key: name, value, domain,
-                path, expires, maxAge,
-                secure, httpOnly, sameSite,
-            };
+            return { key: name, ...rest };
         });
     }
 
