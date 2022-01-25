@@ -238,9 +238,9 @@ export class GetCookiesCommand extends ActionCommandBase {
 
 export class SetCookiesCommand extends ActionCommandBase {
     public constructor(obj: object, testRun: TestRun, validateProperties: boolean);
-    public nameValueObjects: Record<string, string> | Record<string, string>[];
+    public nameValueObjects: Record<string, string>[];
     public url: string;
-    public cookies: any;
+    public cookies: CookieOptions[];
 }
 
 export class DeleteCookiesCommand extends ActionCommandBase {

@@ -881,35 +881,15 @@ export default class TestRun extends AsyncEventEmitter {
         return flattenDeep(resultCookies);
     }
 
-    private _setCookies (cookies: any[], nameValueObjects: Record<string, string>[], url: string): Promise<void> {
-        const cookiesToSet = [];
+    private async _setCookies (cookies: InternalCookie[], url: string): Promise<void> {
+        const { hostname = '', pathname = '/' } = url ? new URL(url) : {};
 
-        if (cookies) {
-            for (const cookie of cookies as any) {
-                const cookieToSet = Object.assign({}, cookie);
-
-                // NOTE: tough-cookie uses "key" property for the cookie name
-                cookieToSet.key = cookieToSet.name;
-                delete cookieToSet.name;
-
-                cookiesToSet.push(cookieToSet);
-            }
-
-            return this.session.cookies.setCookiesByApi(cookiesToSet);
+        for (const cookie of cookies) {
+            if (!cookie.domain && !cookie.path)
+                Object.assign(cookie, { domain: hostname, path: pathname });
         }
 
-        for (const nameValueObject of nameValueObjects as any) {
-            // NOTE: tough-cookie uses "key" property for the cookie name
-            const key           = Object.keys(nameValueObject)[0];
-            const value         = nameValueObject[key];
-            const parsedPageUrl = new URL(url);
-            const domain        = parsedPageUrl.hostname;
-            const path          = parsedPageUrl.pathname;
-
-            cookiesToSet.push({ key, value, domain, path });
-        }
-
-        return this.session.cookies.setCookiesByApi(cookiesToSet);
+        return this.session.cookies.setCookiesByApi(cookies);
     }
 
     private async _deleteCookies (cookies: InternalCookie[], urls: string[]): Promise<InternalCookie[]> {

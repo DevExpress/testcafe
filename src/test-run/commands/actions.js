@@ -31,7 +31,8 @@ import {
     actionRoleArgument,
     booleanArgument,
     functionArgument,
-    cookiesArgument, urlsArgument,
+    cookiesArgument,
+    urlsArgument,
 } from './validations/argument';
 
 import { SetNativeDialogHandlerCodeWrongTypeError } from '../../errors/test-run';
@@ -684,8 +685,8 @@ export class SetCookiesCommand extends ActionCommandBase {
     _getAssignableProperties () {
         return [
             { name: 'nameValueObjects', required: false },
-            { name: 'url', required: false },
-            { name: 'cookies', required: false },
+            { name: 'url', type: urlArgument, required: false },
+            { name: 'cookies', type: cookiesArgument, init: initCookiesOption, required: false },
         ];
     }
 }

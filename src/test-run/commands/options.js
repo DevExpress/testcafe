@@ -288,8 +288,6 @@ export class CookieOptions extends Assignable {
     constructor (obj, validate) {
         super();
 
-        this.name     = '';
-
         this._assignFrom(obj, validate);
     }
 
