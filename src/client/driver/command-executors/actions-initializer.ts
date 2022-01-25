@@ -22,7 +22,8 @@ import { // @ts-ignore
     Press as PressAutomation, // @ts-ignore
     Upload as UploadAutomation, // @ts-ignore
     SetScroll as SetScrollAutomation, // @ts-ignore
-    ScrollIntoView as ScrollIntoViewAutomation,
+    ScrollIntoView as ScrollIntoViewAutomation, // @ts-ignore
+    cursor,
 } from '../deps/testcafe-automation';
 
 import {
@@ -38,7 +39,6 @@ import {
 import COMMAND_TYPE from '../../../test-run/commands/type';
 import { ActionCommandBase } from '../../../test-run/commands/base';
 import { Automation } from '../../../shared/actions/types';
-import cursor from '../../automation/cursor';
 
 
 ActionExecutor.ACTIONS_HANDLERS[COMMAND_TYPE.dispatchEvent] = {
