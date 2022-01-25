@@ -15,5 +15,5 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v2
-    - run: npm i --production
+    - run: npm i --legacy-peer-deps --package-lock-only
     - run: npm audit --production
