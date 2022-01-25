@@ -9,6 +9,7 @@ const MouseOptions       = testCafeAutomation.MouseOptions;
 const ClickAutomation    = testCafeAutomation.Click;
 const HoverAutomation    = testCafeAutomation.Hover;
 const getOffsetOptions   = testCafeAutomation.getOffsetOptions;
+const cursor             = testCafeAutomation.cursor;
 
 testCafeCore.preventRealEvents();
 
@@ -64,7 +65,7 @@ $(document).ready(function () {
             },
 
             clickSecondElementAndSimulateRealEvent: function (callback) {
-                const clickAutomation = new ClickAutomation(div2, new ClickOptions());
+                const clickAutomation = new ClickAutomation(div2, window, cursor, new ClickOptions());
 
                 clickAutomation
                     .run()

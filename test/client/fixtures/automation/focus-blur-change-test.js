@@ -16,6 +16,7 @@ const PressAutomation = testCafeAutomation.Press;
 
 const parseKeySequence = testCafeCore.parseKeySequence;
 const getOffsetOptions = testCafeAutomation.getOffsetOptions;
+const cursor           = testCafeAutomation.cursor;
 
 testCafeCore.preventRealEvents();
 
@@ -148,35 +149,39 @@ const getArrayDiff = function (a, b) {
 };
 
 const runClickAutomation = function (el, options) {
-    const offsets      = getOffsetOptions(el, options.offsetX, options.offsetY);
-    const clickOptions = new ClickOptions({
-        offsetX:  offsets.offsetX,
-        offsetY:  offsets.offsetY,
-        caretPos: options.caretPos,
+    return getOffsetOptions(el, options.offsetX, options.offsetY)
+        .then(offsets => {
+            const clickOptions = new ClickOptions({
+                offsetX:  offsets.offsetX,
+                offsetY:  offsets.offsetY,
+                caretPos: options.caretPos,
 
-        modifiers: {
-            ctrl:  options.ctrl,
-            alt:   options.ctrl,
-            shift: options.shift,
-            meta:  options.meta,
-        },
-    });
+                modifiers: {
+                    ctrl:  options.ctrl,
+                    alt:   options.ctrl,
+                    shift: options.shift,
+                    meta:  options.meta,
+                },
+            });
 
-    const clickAutomation = new ClickAutomation(el, clickOptions);
+            const clickAutomation = new ClickAutomation(el, window, cursor, clickOptions);
 
-    return clickAutomation.run();
+            return clickAutomation.run();
+        });
 };
 
 const runTypeAutomation = function (element, text) {
-    const offsets     = getOffsetOptions(element);
-    const typeOptions = new TypeOptions({
-        offsetX: offsets.offsetX,
-        offsetY: offsets.offsetY,
-    });
+    return getOffsetOptions(element)
+        .then(offsets => {
+            const typeOptions = new TypeOptions({
+                offsetX: offsets.offsetX,
+                offsetY: offsets.offsetY,
+            });
 
-    const typeAutomation = new TypeAutomation(element, text, typeOptions);
+            const typeAutomation = new TypeAutomation(element, text, typeOptions);
 
-    return typeAutomation.run();
+            return typeAutomation.run();
+        });
 };
 
 //tests

@@ -15,6 +15,7 @@ const PressAutomation      = testCafeAutomation.Press;
 
 const ClickOptions = testCafeAutomation.ClickOptions;
 const TypeOptions  = testCafeAutomation.TypeOptions;
+const cursor       = testCafeAutomation.cursor;
 
 testCafeCore.preventRealEvents();
 
@@ -344,7 +345,7 @@ $(document).ready(function () {
 
         bindMouseHandlersToSwappingElements($div1, $div2, 'mousedown', eventMonitorObject);
 
-        const click = new ClickAutomation($div1[0], new ClickOptions());
+        const click = new ClickAutomation($div1[0], window, cursor, new ClickOptions());
 
         click
             .run()
@@ -369,7 +370,7 @@ $(document).ready(function () {
 
         bindMouseHandlersToSwappingElements($div1, $div2, 'mouseup', eventMonitorObject);
 
-        const click = new ClickAutomation($div1[0], new ClickOptions());
+        const click = new ClickAutomation($div1[0], window, cursor, new ClickOptions());
 
         click
             .run()
@@ -394,7 +395,7 @@ $(document).ready(function () {
 
         bindMouseHandlersToSwappingElements($div1, $div2, 'click', eventMonitorObject);
 
-        const click = new ClickAutomation($div1[0], new ClickOptions());
+        const click = new ClickAutomation($div1[0], window, cursor, new ClickOptions());
 
         click
             .run()

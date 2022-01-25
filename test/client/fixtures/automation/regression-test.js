@@ -24,6 +24,7 @@ const TypeAutomation       = testCafeAutomation.Type;
 const SelectTextAutomation = testCafeAutomation.SelectText;
 const PressAutomation      = testCafeAutomation.Press;
 const getOffsetOptions     = testCafeAutomation.getOffsetOptions;
+const cursor               = testCafeAutomation.cursor;
 
 testCafeCore.preventRealEvents();
 
@@ -168,62 +169,68 @@ $(document).ready(function () {
     };
 
     const runClickAutomation = function (el, options, callback) {
-        const offsets      = getOffsetOptions(el, options.offsetX, options.offsetY);
-        const clickOptions = new ClickOptions({
-            offsetX:  offsets.offsetX,
-            offsetY:  offsets.offsetY,
-            caretPos: options.caretPos,
+        return getOffsetOptions(el, options.offsetX, options.offsetY)
+            .then(offsets => {
+                const clickOptions = new ClickOptions({
+                    offsetX:  offsets.offsetX,
+                    offsetY:  offsets.offsetY,
+                    caretPos: options.caretPos,
 
-            modifiers: {
-                ctrl:  options.ctrl,
-                alt:   options.ctrl,
-                shift: options.shift,
-                meta:  options.meta,
-            },
-        });
+                    modifiers: {
+                        ctrl:  options.ctrl,
+                        alt:   options.ctrl,
+                        shift: options.shift,
+                        meta:  options.meta,
+                    },
+                });
 
-        const clickAutomation = new ClickAutomation(el, clickOptions);
+                const clickAutomation = new ClickAutomation(el, window, cursor, clickOptions);
 
-        clickAutomation
-            .run()
-            .then(callback);
+                return clickAutomation
+                    .run()
+                    .then(callback);
+            });
     };
 
     const runDblClickAutomation = function (el, options, callback) {
-        const offsets      = getOffsetOptions(el, options.offsetX, options.offsetY);
-        const clickOptions = new ClickOptions({
-            offsetX:  offsets.offsetX,
-            offsetY:  offsets.offsetY,
-            caretPos: options.caretPos,
+        return getOffsetOptions(el, options.offsetX, options.offsetY)
+            .then(offsets => {
+                const clickOptions = new ClickOptions({
+                    offsetX:  offsets.offsetX,
+                    offsetY:  offsets.offsetY,
+                    caretPos: options.caretPos,
 
-            modifiers: {
-                ctrl:  options.ctrl,
-                alt:   options.ctrl,
-                shift: options.shift,
-                meta:  options.meta,
-            },
-        });
+                    modifiers: {
+                        ctrl:  options.ctrl,
+                        alt:   options.ctrl,
+                        shift: options.shift,
+                        meta:  options.meta,
+                    },
+                });
 
-        const dblClickAutomation = new DblClickAutomation(el, clickOptions);
+                const dblClickAutomation = new DblClickAutomation(el, clickOptions);
 
-        dblClickAutomation
-            .run()
-            .then(callback);
+                return dblClickAutomation
+                    .run()
+                    .then(callback);
+            });
     };
 
     const runTypeAutomation = function (element, text, options) {
-        const offsets     = getOffsetOptions(element);
-        const typeOptions = new TypeOptions({
-            caretPos: options.caretPos,
-            replace:  options.replace,
-            paste:    options.paste,
-            offsetX:  offsets.offsetX,
-            offsetY:  offsets.offsetY,
-        });
+        return getOffsetOptions(element)
+            .then(offsets => {
+                const typeOptions = new TypeOptions({
+                    caretPos: options.caretPos,
+                    replace:  options.replace,
+                    paste:    options.paste,
+                    offsetX:  offsets.offsetX,
+                    offsetY:  offsets.offsetY,
+                });
 
-        const typeAutomation = new TypeAutomation(element, text, typeOptions);
+                const typeAutomation = new TypeAutomation(element, text, typeOptions);
 
-        return typeAutomation.run();
+                return typeAutomation.run();
+            });
     };
 
     QUnit.testDone(function () {
@@ -673,10 +680,10 @@ $(document).ready(function () {
             addEventListener('contextmenu');
             addEventListener('dblclick');
 
-            const click    = new ClickAutomation(el, { offsetX: 5, offsetY: 5 });
+            const click    = new ClickAutomation(el, window, cursor, { offsetX: 5, offsetY: 5 });
             const rClick   = new RClickAutomation(el, { offsetX: 5, offsetY: 5 });
             const dblClick = new DblClickAutomation(el, { offsetX: 5, offsetY: 5 });
-            const mouseOut = new ClickAutomation(mouseOutEl, { offsetX: 5, offsetY: 5 });
+            const mouseOut = new ClickAutomation(mouseOutEl, window, cursor, { offsetX: 5, offsetY: 5 });
 
             click.run()
                 .then(function () {
