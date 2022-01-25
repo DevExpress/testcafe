@@ -170,7 +170,7 @@ $(document).ready(function () {
 
     const runClickAutomation = function (el, options, callback) {
         return getOffsetOptions(el, options.offsetX, options.offsetY)
-            .then(offsets => {
+            .then(function (offsets) {
                 const clickOptions = new ClickOptions({
                     offsetX:  offsets.offsetX,
                     offsetY:  offsets.offsetY,
@@ -194,7 +194,7 @@ $(document).ready(function () {
 
     const runDblClickAutomation = function (el, options, callback) {
         return getOffsetOptions(el, options.offsetX, options.offsetY)
-            .then(offsets => {
+            .then(function (offsets) {
                 const clickOptions = new ClickOptions({
                     offsetX:  offsets.offsetX,
                     offsetY:  offsets.offsetY,
@@ -218,7 +218,7 @@ $(document).ready(function () {
 
     const runTypeAutomation = function (element, text, options) {
         return getOffsetOptions(element)
-            .then(offsets => {
+            .then(function (offsets) {
                 const typeOptions = new TypeOptions({
                     caretPos: options.caretPos,
                     replace:  options.replace,

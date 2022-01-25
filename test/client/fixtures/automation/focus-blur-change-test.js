@@ -150,7 +150,7 @@ const getArrayDiff = function (a, b) {
 
 const runClickAutomation = function (el, options) {
     return getOffsetOptions(el, options.offsetX, options.offsetY)
-        .then(offsets => {
+        .then(function (offsets) {
             const clickOptions = new ClickOptions({
                 offsetX:  offsets.offsetX,
                 offsetY:  offsets.offsetY,
@@ -172,7 +172,7 @@ const runClickAutomation = function (el, options) {
 
 const runTypeAutomation = function (element, text) {
     return getOffsetOptions(element)
-        .then(offsets => {
+        .then(function (offsets) {
             const typeOptions = new TypeOptions({
                 offsetX: offsets.offsetX,
                 offsetY: offsets.offsetY,

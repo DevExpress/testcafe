@@ -219,7 +219,7 @@ $(document).ready(function () {
 
     const runClickAutomation = function (el, options, callback) {
         return getOffsetOptions(el, options.offsetX, options.offsetY)
-            .then(offsets => {
+            .then(function (offsets) {
                 const clickOptions = new ClickOptions({
                     offsetX:  offsets.offsetX,
                     offsetY:  offsets.offsetY,

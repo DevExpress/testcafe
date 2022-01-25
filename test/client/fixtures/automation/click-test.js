@@ -656,7 +656,7 @@ $(document).ready(function () {
         const el = $el[0];
 
         return getOffsetOptions($el[0], 20, 20)
-            .then(offsets => {
+            .then(function (offsets) {
                 const click   = new ClickAutomation($el[0], window, cursor, new ClickOptions({
                     offsetX: offsets.offsetX,
                     offsetY: offsets.offsetY,
@@ -689,7 +689,7 @@ $(document).ready(function () {
         const el = $el[0];
 
         return getOffsetOptions($el[0], -20, -20)
-            .then(offsets => {
+            .then(function (offsets) {
                 const click = new ClickAutomation($el[0], window, cursor, new ClickOptions({
                     offsetX: offsets.offsetX,
                     offsetY: offsets.offsetY,

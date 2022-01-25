@@ -122,7 +122,7 @@ $(document).ready(function () {
 
     const runDblClickAutomation = function (el, options, callback) {
         return getOffsetOptions(el, options.offsetX, options.offsetY)
-            .then(offsets => {
+            .then(function (offsets) {
                 const clickOptions = new ClickOptions();
 
                 clickOptions.offsetX  = offsets.offsetX;
@@ -409,7 +409,7 @@ $(document).ready(function () {
 
     const runClickAutomation = function (el, options, callback) {
         return getOffsetOptions(el, options.offsetX, options.offsetY)
-            .then(offsets => {
+            .then(function (offsets) {
                 const clickOptions = new ClickOptions();
 
                 clickOptions.offsetX  = offsets.offsetX;
