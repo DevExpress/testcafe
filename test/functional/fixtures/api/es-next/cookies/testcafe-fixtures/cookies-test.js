@@ -367,47 +367,182 @@ test('Should get cookies by objects', async t => {
     await t.expect(expectedCookies).eql(cookies);
 });
 
-fixture `Cookies API`;
+fixture`[API] Set Cookies`
+    .page('http://localhost:3000/fixtures/api/es-next/cookies/pages/index.html')
+    .afterEach(async t => {
+        await t.deleteCookies();
+    });
 
-test('Should set cookies (t.setCookies)', async t => {
-    const logger = RequestLogger(/fixtures\/api\/es-next\/cookies\/pages/, { logRequestHeaders: true });
-
-    await t.addRequestHooks(logger);
-
-    const cookiesThatShouldNotBeInRequestHeaders = [
-        { name: 'apiCookie13', value: 'value13', domain: 'some-another-domain.com', path: '/' },
-        { name: 'apiCookie14', value: 'value14', domain: 'some-another-domain.com', path: '/' },
+test('Should set cookies by object', async t => {
+    const expectedCookies = [
+        {
+            domain:   'some-another-domain.com',
+            expires:  'Infinity',
+            httpOnly: false,
+            maxAge:   null,
+            name:     'apiCookie13',
+            path:     '/',
+            sameSite: 'none',
+            secure:   false,
+            value:    'value13',
+        },
     ];
 
-    await t
-        .setCookies({ apiCookie1: 'value1' }, 'http://localhost')
-        .setCookies([
-            { 'apiCookie2': 'value2' }, { 'apiCookie3': 'value3' }, { 'apiCookie4': 'value4' },
-            { 'apiCookie5': 'value5' }, { 'apiCookie6': 'value6' }, { 'apiCookie7': 'value7' },
-            { 'apiCookie8': 'value8' }, { 'apiCookie9': 'value9' }, { 'apiCookie10': 'value10' },
-            { 'apiCookie11': 'value11' }, { 'apiCookie12': 'value12' },
-        ],
-        'http://localhost')
-        .setCookies(cookiesThatShouldNotBeInRequestHeaders);
+
+    await t.setCookies({ name: 'apiCookie13', value: 'value13', domain: 'some-another-domain.com', path: '/' });
 
     const cookies = await t.getCookies();
 
-    await t.deleteCookies();
+    await t.expect(cookies).eql(expectedCookies);
+});
 
-    await t
-        .setCookies(cookies[0])
-        .setCookies([cookies[1], cookies[2]])
-        .setCookies(cookies[3], cookies[4])
-        .setCookies(cookies[5], cookies[6], cookies[7])
-        .setCookies([cookies[8], cookies[9], cookies[10]], [cookies[11], cookies[12]], cookies[13]);
+test('Should set cookies by object with default url', async t => {
+    const expectedCookies = [
+        {
+            domain:   'localhost',
+            expires:  'Infinity',
+            httpOnly: false,
+            maxAge:   null,
+            name:     'apiCookie13',
+            path:     '/',
+            sameSite: 'none',
+            secure:   false,
+            value:    'value13',
+        },
+    ];
 
-    await t.navigateTo('http://localhost:3000/fixtures/api/es-next/cookies/pages/index.html');
 
-    await t
-        .expect(logger.requests[0].request.headers.cookie)
-        .eql('apiCookie1=value1; apiCookie2=value2; apiCookie3=value3; apiCookie4=value4; ' +
-            'apiCookie5=value5; apiCookie6=value6; apiCookie7=value7; apiCookie8=value8; ' +
-            'apiCookie9=value9; apiCookie10=value10; apiCookie11=value11; apiCookie12=value12');
+    await t.setCookies({ name: 'apiCookie13', value: 'value13' });
+
+    const cookies = await t.getCookies();
+
+    await t.expect(cookies).eql(expectedCookies);
+});
+
+test('Should set cookies by objects', async t => {
+    const expectedCookies = [
+        {
+            domain:   'some-another-domain.com',
+            expires:  'Infinity',
+            httpOnly: false,
+            maxAge:   null,
+            name:     'apiCookie13',
+            path:     '/',
+            sameSite: 'none',
+            secure:   false,
+            value:    'value13',
+        },
+        {
+            domain:   'some-another-domain.com',
+            expires:  'Infinity',
+            httpOnly: false,
+            maxAge:   null,
+            name:     'apiCookie14',
+            path:     '/',
+            sameSite: 'none',
+            secure:   false,
+            value:    'value14',
+        },
+    ];
+
+    await t.setCookies([
+        { name: 'apiCookie13', value: 'value13', domain: 'some-another-domain.com', path: '/' },
+        { name: 'apiCookie14', value: 'value14', domain: 'some-another-domain.com', path: '/' },
+    ]);
+
+    const cookies = await t.getCookies();
+
+    await t.expect(cookies).eql(expectedCookies);
+});
+
+test('Should set cookies by key-value', async t => {
+    const expectedCookies = [
+        {
+            domain:   'localhost',
+            expires:  'Infinity',
+            httpOnly: false,
+            maxAge:   null,
+            name:     'apiCookie1',
+            path:     '/',
+            sameSite: 'none',
+            secure:   false,
+            value:    'value1',
+        },
+    ];
+
+    await t.setCookies({ apiCookie1: 'value1' }, 'http://localhost');
+
+    const cookies = await t.getCookies();
+
+    await t.expect(cookies).eql(expectedCookies);
+});
+
+test('Should set cookies by key-value with default url', async t => {
+    const expectedCookies = [
+        {
+            domain:   'localhost',
+            expires:  'Infinity',
+            httpOnly: false,
+            maxAge:   null,
+            name:     'apiCookie1',
+            path:     '/',
+            sameSite: 'none',
+            secure:   false,
+            value:    'value1',
+        },
+    ];
+
+    await t.setCookies({ apiCookie1: 'value1' });
+
+    const cookies = await t.getCookies();
+
+    await t.expect(cookies).eql(expectedCookies);
+});
+
+test('Should set cookies by key-values', async t => {
+    const expectedCookies = [
+        {
+            domain:   'localhost',
+            expires:  'Infinity',
+            httpOnly: false,
+            maxAge:   null,
+            name:     'apiCookie2',
+            path:     '/',
+            sameSite: 'none',
+            secure:   false,
+            value:    'value2',
+        },
+        {
+            domain:   'localhost',
+            expires:  'Infinity',
+            httpOnly: false,
+            maxAge:   null,
+            name:     'apiCookie3',
+            path:     '/',
+            sameSite: 'none',
+            secure:   false,
+            value:    'value3',
+        },
+        {
+            domain:   'localhost',
+            expires:  'Infinity',
+            httpOnly: false,
+            maxAge:   null,
+            name:     'apiCookie4',
+            path:     '/',
+            sameSite: 'none',
+            secure:   false,
+            value:    'value4',
+        },
+    ];
+
+    await t.setCookies([
+        { 'apiCookie2': 'value2' }, { 'apiCookie3': 'value3' }, { 'apiCookie4': 'value4' },
+    ], 'http://localhost');
+
+    const cookies = await t.getCookies();
+
+    await t.expect(cookies).eql(expectedCookies);
 });
 
 fixture`[API] Delete Cookies`

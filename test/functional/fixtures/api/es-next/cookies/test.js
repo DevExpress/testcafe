@@ -27,8 +27,23 @@ describe('[API] Cookies', function () {
         return runTests('./testcafe-fixtures/cookies-test.js', 'Should get cookies by objects');
     });
 
-    it('Should set cookies (t.setCookies)', function () {
-        return runTests('./testcafe-fixtures/cookies-test.js', 'Should set cookies (t.setCookies)');
+    it('Should set cookies by object', function () {
+        return runTests('./testcafe-fixtures/cookies-test.js', 'Should set cookies by object');
+    });
+    it('Should set cookies by object with default url', function () {
+        return runTests('./testcafe-fixtures/cookies-test.js', 'Should set cookies by object with default url');
+    });
+    it('Should set cookies by objects', function () {
+        return runTests('./testcafe-fixtures/cookies-test.js', 'Should set cookies by objects');
+    });
+    it('Should set cookies by key-value', function () {
+        return runTests('./testcafe-fixtures/cookies-test.js', 'Should set cookies by key-value');
+    });
+    it('Should set cookies by key-value with default url', function () {
+        return runTests('./testcafe-fixtures/cookies-test.js', 'Should set cookies by key-value with default url');
+    });
+    it('Should set cookies by key-values', function () {
+        return runTests('./testcafe-fixtures/cookies-test.js', 'Should set cookies by key-values');
     });
 
     it('Should delete all cookies', function () {
