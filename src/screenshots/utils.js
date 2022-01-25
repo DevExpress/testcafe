@@ -6,7 +6,7 @@ import {
     constant,
 } from 'lodash';
 
-import generateId from 'nanoid/generate';
+import { customAlphabet } from 'nanoid';
 import {
     MARK_LENGTH,
     MARK_HEIGHT,
@@ -17,7 +17,7 @@ const ALPHABET = '01';
 
 export function generateScreenshotMark () {
     // NOTE: 32-bit id
-    const id = generateId(ALPHABET, MARK_LENGTH);
+    const id = customAlphabet(ALPHABET, MARK_LENGTH);
 
     // NOTE: array of RGB values
     const markSeed = flatten(map(id, bit => bit === '0' ? [0, 0, 0, 255] : [255, 255, 255, 255]));

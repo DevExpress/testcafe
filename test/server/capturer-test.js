@@ -1,5 +1,5 @@
 const { noop }                   = require('lodash');
-const nanoid                     = require('nanoid');
+const { nanoid }                 = require('nanoid');
 const { expect }                 = require('chai');
 const { resolve, dirname, join } = require('path');
 const { statSync }               = require('fs');
