@@ -4,8 +4,8 @@
 
 ### Bug Fixes
 
-* The `nanoid` package is compromised by CVE-2021-23566 ([#6826](https://github.com/DevExpress/testcafe/pull/6826))
-* The `Selector.visibility` property does not respect parent elements' visibility ([#3495](https://github.com/DevExpress/testcafe/issues/3495))
+* The `nanoid` package is vulnerable to CVE-2021-23566 ([#6826](https://github.com/DevExpress/testcafe/pull/6826))
+* The `Selector.visibility` property does not depend on the parent elements' visibility ([#3495](https://github.com/DevExpress/testcafe/issues/3495))
 
 ## v1.18.2 (2022-01-18)
 
