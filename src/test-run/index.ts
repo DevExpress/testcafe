@@ -937,16 +937,14 @@ export default class TestRun extends AsyncEventEmitter {
         return this._convertToExternalCookies(receivedCookies);
     }
 
-    public async _enqueueSetCookies (command: CommandBase): Promise<void> {
-        const cookies = command.cookies as any[];
+    public async _enqueueSetCookies (command: SetCookiesCommand): Promise<void> {
+        const cookies = this._convertToInternalCookies(command.cookies);
+        const url     = command.url || await this.getCurrentUrl();
 
-        const nameValueObjects = command.nameValueObjects as Record<string, string>[];
-        const url              = command.url as string;
-
-        await this._setCookies(cookies, nameValueObjects, url);
+        await this._setCookies(cookies, url);
     }
 
-    public async _enqueueDeleteCookies (command: GetCookiesCommand): Promise<void> {
+    public async _enqueueDeleteCookies (command: DeleteCookiesCommand): Promise<void> {
         const cookies = this._convertToInternalCookies(command.cookies);
         const urls    = command.urls;
 
