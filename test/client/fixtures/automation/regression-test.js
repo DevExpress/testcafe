@@ -184,7 +184,7 @@ $(document).ready(function () {
                     },
                 });
 
-                const clickAutomation = new ClickAutomation(el, window, cursor, clickOptions);
+                const clickAutomation = new ClickAutomation(el, clickOptions, window, cursor);
 
                 return clickAutomation
                     .run()
@@ -680,10 +680,10 @@ $(document).ready(function () {
             addEventListener('contextmenu');
             addEventListener('dblclick');
 
-            const click    = new ClickAutomation(el, window, cursor, { offsetX: 5, offsetY: 5 });
+            const click    = new ClickAutomation(el, { offsetX: 5, offsetY: 5 }, window, cursor);
             const rClick   = new RClickAutomation(el, { offsetX: 5, offsetY: 5 });
             const dblClick = new DblClickAutomation(el, { offsetX: 5, offsetY: 5 });
-            const mouseOut = new ClickAutomation(mouseOutEl, window, cursor, { offsetX: 5, offsetY: 5 });
+            const mouseOut = new ClickAutomation(mouseOutEl, { offsetX: 5, offsetY: 5 }, window, cursor);
 
             click.run()
                 .then(function () {

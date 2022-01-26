@@ -31,8 +31,8 @@ describe('MoveAutomation', () => {
 
         const moveOpts = new MoveOptions(moveOptions, false);
 
-        const move1 = await MoveAutomation.create(el1, ExecutionContext.current, cursor, moveOpts);
-        const move2 = await MoveAutomation.create(el2, ExecutionContext.current, cursor, moveOpts);
+        const move1 = await MoveAutomation.create(el1, moveOpts, ExecutionContext.current, cursor);
+        const move2 = await MoveAutomation.create(el2, moveOpts, ExecutionContext.current, cursor);
 
         await move1.run();
 

@@ -43,7 +43,7 @@ export default class MoveAutomation<E, W extends SharedWindow> {
     private skipDefaultDragBehavior: boolean;
     private firstMovingStepOccured: boolean;
 
-    protected constructor (el: E, offset: AxisValuesData<number>, win: W, cursor: Cursor<W>, moveOptions: MoveOptions) {
+    protected constructor (el: E, offset: AxisValuesData<number>, moveOptions: MoveOptions, win: W, cursor: Cursor<W>) {
         this.touchMode = adapter.featureDetection.isTouchDevice;
         this.moveEvent = this.touchMode ? 'touchmove' : 'mousemove';
 
@@ -68,7 +68,7 @@ export default class MoveAutomation<E, W extends SharedWindow> {
     public static async create<E, W extends SharedWindow> (el: E, win: W, cursor: Cursor<W>, moveOptions: MoveOptions): Promise<MoveAutomation<E, W>> {
         const { element, offset } = await MoveAutomation.getTarget(el, win, new AxisValues(moveOptions.offsetX, moveOptions.offsetY));
 
-        return new MoveAutomation(element, offset, win, cursor, moveOptions);
+        return new MoveAutomation(element, offset, moveOptions, win, cursor);
     }
 
     private static getTarget<E, W> (element: E, window: W, offset: AxisValuesData<number>): Promise<MoveAutomationTarget<E>> {

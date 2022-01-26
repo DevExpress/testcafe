@@ -230,7 +230,7 @@ $(document).ready(function () {
             offsetY: offsetY,
         });
 
-        const clickAutomation = new ClickAutomation($smallDiv[0], window, cursor, clickOptions);
+        const clickAutomation = new ClickAutomation($smallDiv[0], clickOptions, window, cursor);
 
         clickAutomation
             .run()

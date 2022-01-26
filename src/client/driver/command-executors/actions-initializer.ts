@@ -68,7 +68,7 @@ ActionExecutor.ACTIONS_HANDLERS[COMMAND_TYPE.click] = {
         if (/option|optgroup/.test(domUtils.getTagName(elements[0])))
             return new SelectChildClickAutomation(elements[0], command.options);
 
-        return new ClickAutomation(elements[0], window, cursor, command.options);
+        return new ClickAutomation(elements[0], command.options, window, cursor);
     },
 };
 

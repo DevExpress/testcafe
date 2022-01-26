@@ -345,7 +345,7 @@ $(document).ready(function () {
 
         bindMouseHandlersToSwappingElements($div1, $div2, 'mousedown', eventMonitorObject);
 
-        const click = new ClickAutomation($div1[0], window, cursor, new ClickOptions());
+        const click = new ClickAutomation($div1[0], new ClickOptions(), window, cursor);
 
         click
             .run()
@@ -370,7 +370,7 @@ $(document).ready(function () {
 
         bindMouseHandlersToSwappingElements($div1, $div2, 'mouseup', eventMonitorObject);
 
-        const click = new ClickAutomation($div1[0], window, cursor, new ClickOptions());
+        const click = new ClickAutomation($div1[0], new ClickOptions(), window, cursor);
 
         click
             .run()
@@ -395,7 +395,7 @@ $(document).ready(function () {
 
         bindMouseHandlersToSwappingElements($div1, $div2, 'click', eventMonitorObject);
 
-        const click = new ClickAutomation($div1[0], window, cursor, new ClickOptions());
+        const click = new ClickAutomation($div1[0], new ClickOptions(), window, cursor);
 
         click
             .run()

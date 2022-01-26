@@ -425,7 +425,7 @@ $(document).ready(function () {
 
                 const clickAutomation = /opt/i.test(el.tagName) ?
                     new SelectChildClickAutomation(el, clickOptions) :
-                    new ClickAutomation(el, window, cursor, clickOptions);
+                    new ClickAutomation(el, clickOptions, window, cursor);
 
                 return clickAutomation
                     .run()

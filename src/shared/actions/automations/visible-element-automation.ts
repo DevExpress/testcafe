@@ -85,7 +85,7 @@ export default class VisibleElementAutomation<E, W extends SharedWindow> extends
     protected automationSettings: AutomationSettings;
     private options: OffsetOptions;
 
-    protected constructor (element: E, win: W, cursor: Cursor<W>, offsetOptions: OffsetOptions) {
+    protected constructor (element: E, offsetOptions: OffsetOptions, win: W, cursor: Cursor<W>) {
         super();
 
         this.TARGET_ELEMENT_FOUND_EVENT = 'automation|target-element-found-event';

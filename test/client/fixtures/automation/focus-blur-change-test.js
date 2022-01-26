@@ -164,7 +164,7 @@ const runClickAutomation = function (el, options) {
                 },
             });
 
-            const clickAutomation = new ClickAutomation(el, window, cursor, clickOptions);
+            const clickAutomation = new ClickAutomation(el, clickOptions, window, cursor);
 
             return clickAutomation.run();
         });

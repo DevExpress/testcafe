@@ -18,7 +18,7 @@ describe('ClickAutomation', () => {
         const el = await utils.getNode('#target9');
         const cursor = await utils.createCursor();
 
-        const click = new ClickAutomation(el, ExecutionContext.current, cursor, options);
+        const click = new ClickAutomation(el, options, ExecutionContext.current, cursor);
 
         await click.run();
 

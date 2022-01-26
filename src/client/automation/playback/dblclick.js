@@ -41,7 +41,7 @@ export default class DblClickAutomation extends VisibleElementAutomation {
 
         clickOptions.speed = 1;
 
-        const clickAutomation = new ClickAutomation(this.element, window, cursor, clickOptions);
+        const clickAutomation = new ClickAutomation(this.element, clickOptions, window, cursor);
 
         clickAutomation.on(clickAutomation.TARGET_ELEMENT_FOUND_EVENT, e => this.emit(this.TARGET_ELEMENT_FOUND_EVENT, e));
 
@@ -64,7 +64,7 @@ export default class DblClickAutomation extends VisibleElementAutomation {
             speed:     1,
         });
 
-        const clickAutomation = new ClickAutomation(document.documentElement, window, cursor, clickOptions);
+        const clickAutomation = new ClickAutomation(document.documentElement, clickOptions, window, cursor);
 
         return clickAutomation.run()
             .then(clickEventArgs => {

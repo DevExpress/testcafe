@@ -260,7 +260,7 @@ $(document).ready(function () {
             shadowContainer.attachShadow({ mode: 'open' }).appendChild(input);
             input.focus();
 
-            const click = new ClickAutomation(input, window, cursor, {});
+            const click = new ClickAutomation(input, {}, window, cursor);
             const press = new PressAutomation(parseKeySequence('backspace').combinations, {});
 
             click.run()

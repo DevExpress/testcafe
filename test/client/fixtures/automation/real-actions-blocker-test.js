@@ -65,7 +65,7 @@ $(document).ready(function () {
             },
 
             clickSecondElementAndSimulateRealEvent: function (callback) {
-                const clickAutomation = new ClickAutomation(div2, window, cursor, new ClickOptions());
+                const clickAutomation = new ClickAutomation(div2, new ClickOptions(), window, cursor);
 
                 clickAutomation
                     .run()

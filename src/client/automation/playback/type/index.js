@@ -133,7 +133,7 @@ export default class TypeAutomation {
                 modifiers: this.modifiers,
             });
 
-            const clickAutomation = new ClickAutomation(this.element, window, cursor, clickOptions);
+            const clickAutomation = new ClickAutomation(this.element, clickOptions, window, cursor);
 
             return clickAutomation
                 .run(useStrictElementCheck)
