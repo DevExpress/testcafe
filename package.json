@@ -2,7 +2,7 @@
   "name": "testcafe",
   "description": "Automated browser testing for the modern web development stack.",
   "license": "MIT",
-  "version": "1.18.3-rc.1",
+  "version": "1.18.3",
   "author": {
     "name": "Developer Express Inc.",
     "url": "https://www.devexpress.com/"
@@ -83,7 +83,7 @@
     "bowser": "^2.8.1",
     "callsite": "^1.0.0",
     "callsite-record": "^4.0.0",
-    "chai": "^4.1.2",
+    "chai": "4.3.4",
     "chalk": "^2.3.0",
     "chrome-remote-interface": "^0.30.0",
     "coffeescript": "^2.3.1",
