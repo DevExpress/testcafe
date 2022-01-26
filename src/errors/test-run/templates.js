@@ -130,12 +130,8 @@ export default {
         Elements of the "${err.argumentName}" argument are expected to be non-empty strings, but the element at index ${err.elementIndex} was ${err.actualValue}.
     `,
 
-    [TEST_RUN_ERRORS.actionNoUrlForNameValueObjectsArgumentError]: () => `
-        The "url" argument is required if the "nameValueObjects" argument is specified.
-    `,
-
-    [TEST_RUN_ERRORS.actionRequiredSetCookieArgumentsAreMissedError]: () => `
-        Required arguments ("cookies" or a pair of "nameValueObjects" and "url") are missed.
+    [TEST_RUN_ERRORS.actionRequiredCookieArguments]: () => `
+        Cookies argument is required.
     `,
 
     [TEST_RUN_ERRORS.actionCookieArgumentError]: () => `
@@ -146,32 +142,12 @@ export default {
         The "cookie" at number ${err.argumentIndex} is expected to be an object or a string.
     `,
 
-    [TEST_RUN_ERRORS.actionCookieArrayArgumentError]: err => `
-        Elements of the "cookie" argument are expected to be cookie-like objects, but the element at index ${err.cookieElementIndex} wasn't.
-    `,
-
-    [TEST_RUN_ERRORS.actionCookieArrayArgumentsError]: err => `
-        The elements of the "cookie" argument at position ${err.argumentPosition} are expected to be cookie-like objects, but the element at index ${err.cookieElementIndex} wasn't.
-    `,
-
-    [TEST_RUN_ERRORS.actionUrlsCookieArgumentError]: () => `
+    [TEST_RUN_ERRORS.ActionUrlCookieArgumentError]: () => `
         The "urls" argument isn't valid.
     `,
 
-    [TEST_RUN_ERRORS.actionUrlsArrayCookieArgumentError]: err => `
+    [TEST_RUN_ERRORS.actionUrlsCookieArgumentError]: err => `
         Elements at index ${err.elementIndex} of the "urls" argument isn't valid.
-    `,
-
-    [TEST_RUN_ERRORS.actionNameValueObjectCookieArgumentError]: () => `
-        The "nameValueObjects" argument is expected to be a name-value object or a name-value object array.
-    `,
-
-    [TEST_RUN_ERRORS.actionNameValueObjectsCookieArgumentError]: err => `
-        Elements of the "nameValueObjects" argument are expected to be name-value objects, but the element at index ${err.elementIndex} wasn't.
-    `,
-
-    [TEST_RUN_ERRORS.actionUrlArgumentError]: err => `
-        The "${err.argumentName}" argument is expected to be an URL, but it was not a valid URL.
     `,
 
     [TEST_RUN_ERRORS.actionIntegerArgumentError]: err => `

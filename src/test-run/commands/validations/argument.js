@@ -24,15 +24,9 @@ import {
     ForbiddenCharactersInScreenshotPathError,
     ActionCookieArgumentError,
     ActionCookieArgumentsError,
-    ActionCookieArrayArgumentError,
-    ActionCookieArrayArgumentsError,
+    ActionUrlCookieArgumentError,
     ActionUrlsCookieArgumentError,
-    ActionUrlsArrayCookieArgumentError,
-    ActionNameValueObjectCookieArgumentError,
-    ActionNameValueObjectsCookieArgumentError,
-    ActionUrlTypeArgumentError,
-    ActionUrlArgumentError,
-    ActionRequiredSetCookieArgumentsAreMissedError,
+    ActionRequiredCookieArguments,
 } from '../../../errors/test-run';
 
 import { URL } from 'url';
@@ -159,7 +153,7 @@ export function cookiesArgument (name, val) {
 
 export function setCookiesArgument (name, val) {
     if (!val.length)
-        throw new ActionRequiredSetCookieArgumentsAreMissedError();
+        throw new ActionRequiredCookieArguments();
 
     cookiesArgument(name, val);
 }
@@ -179,86 +173,8 @@ export function urlsArgument (name, val) {
     for (const [i, value] of castVal.entries()) {
         if (!isValidUrl(value)) {
             throw castVal.length === 1
-                ? new ActionUrlsCookieArgumentError()
-                : new ActionUrlsArrayCookieArgumentError(i);
+                ? new ActionUrlCookieArgumentError()
+                : new ActionUrlsCookieArgumentError(i);
         }
     }
-}
-
-function isValidCookieToSet (target) {
-    return !!target && (typeof target.name === 'string' && typeof target.domain === 'string' && typeof target.path === 'string');
-}
-
-function isValidNameValueCookie (target) {
-    if (!target)
-        return false;
-
-    const targetEntries       = Object.keys(target);
-    const targetEntriesLength = targetEntries.length;
-
-    if (targetEntriesLength === 1) {
-        const cookieValueType = typeof targetEntries[0];
-
-        return cookieValueType === 'string';
-    }
-
-    return false;
-}
-
-function getCookieArgumentsValidationError (callsite, cookieArguments, validateFunction) {
-    const cookieArgumentsLength = cookieArguments.length;
-
-    for (const [cookieArgumentIndex, cookieArgument] of cookieArguments.entries()) {
-        if (Array.isArray(cookieArgument)) {
-            for (const [cookieElementIndex, cookieElement] of cookieArgument.entries()) {
-                if (!validateFunction(cookieElement)) {
-                    return cookieArgumentsLength === 1
-                        ? new ActionCookieArrayArgumentError(callsite, cookieElementIndex)
-                        : new ActionCookieArrayArgumentsError(callsite, cookieArgumentIndex, cookieElementIndex);
-                }
-            }
-        }
-        else if (!validateFunction(cookieArgument)) {
-            return cookieArgumentsLength === 1
-                ? new ActionCookieArgumentError(callsite)
-                : new ActionCookieArgumentsError(callsite, cookieArgumentIndex);
-        }
-    }
-
-    return null;
-}
-
-export function getCookieToSetArgumentsValidationError (callsite, cookieArguments) {
-    return getCookieArgumentsValidationError(callsite, cookieArguments, isValidCookieToSet);
-}
-
-export function getNameValueObjectsCookieArgumentValidationError (callsite, nameValueObjectsArgumentValue) {
-    if (Array.isArray(nameValueObjectsArgumentValue)) {
-        for (const [nameValueElementIndex, nameValueElement] of nameValueObjectsArgumentValue.entries()) {
-            if (!isValidNameValueCookie(nameValueElement))
-                return new ActionNameValueObjectsCookieArgumentError(callsite, nameValueElementIndex);
-        }
-    }
-    else if (!isValidNameValueCookie(nameValueObjectsArgumentValue))
-        return new ActionNameValueObjectCookieArgumentError(callsite, nameValueObjectsArgumentValue);
-
-    return null;
-}
-
-export function getUrlCookieArgumentValidationError (callsite, urlArgumentValue) {
-    const urlArgumentType = typeof urlArgumentValue;
-
-    if (urlArgumentType !== 'string')
-        return new ActionUrlTypeArgumentError(callsite, 'url', urlArgumentType);
-    else if (!urlArgumentValue.length)
-        return new ActionUrlTypeArgumentError(callsite, 'url', '""');
-
-    try {
-        new URL(urlArgumentValue); // eslint-disable-line no-new
-    }
-    catch {
-        return new ActionUrlArgumentError(callsite, 'url');
-    }
-
-    return null;
 }

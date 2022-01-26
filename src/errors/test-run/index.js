@@ -245,88 +245,23 @@ export class ActionCookieArgumentsError extends TestRunErrorBase {
     }
 }
 
-export class ActionCookieArrayArgumentError extends TestRunErrorBase {
-    constructor (callsite, cookieElementIndex) {
-        super(TEST_RUN_ERRORS.actionCookieArrayArgumentError);
-
-        this.callsite           = callsite;
-        this.cookieElementIndex = cookieElementIndex;
-    }
-}
-
-export class ActionCookieArrayArgumentsError extends TestRunErrorBase {
-    constructor (callsite, argumentPosition, cookieElementIndex) {
-        super(TEST_RUN_ERRORS.actionCookieArrayArgumentsError);
-
-        this.callsite           = callsite;
-        this.argumentPosition   = argumentPosition;
-        this.cookieElementIndex = cookieElementIndex;
+export class ActionUrlCookieArgumentError extends TestRunErrorBase {
+    constructor () {
+        super(TEST_RUN_ERRORS.ActionUrlCookieArgumentError);
     }
 }
 
 export class ActionUrlsCookieArgumentError extends TestRunErrorBase {
-    constructor () {
-        super(TEST_RUN_ERRORS.actionUrlsCookieArgumentError);
-    }
-}
-
-export class ActionUrlsArrayCookieArgumentError extends TestRunErrorBase {
     constructor (elementIndex) {
-        super(TEST_RUN_ERRORS.actionUrlsArrayCookieArgumentError);
+        super(TEST_RUN_ERRORS.actionUrlsCookieArgumentError);
 
         this.elementIndex = elementIndex;
     }
 }
 
-export class ActionNameValueObjectCookieArgumentError extends TestRunErrorBase {
-    constructor (callsite) {
-        super(TEST_RUN_ERRORS.actionNameValueObjectCookieArgumentError);
-
-        this.callsite = callsite;
-    }
-}
-
-export class ActionNameValueObjectsCookieArgumentError extends TestRunErrorBase {
-    constructor (callsite, nameValueElementIndex) {
-        super(TEST_RUN_ERRORS.actionNameValueObjectsCookieArgumentError);
-
-        this.callsite      = callsite;
-        this.elementIndex  = nameValueElementIndex;
-    }
-}
-
-export class ActionUrlTypeArgumentError extends TestRunErrorBase {
-    constructor (callsite, argumentName, actualValue) {
-        super(TEST_RUN_ERRORS.actionStringArgumentError);
-
-        this.callsite     = callsite;
-        this.argumentName = argumentName;
-        this.actualValue  = actualValue;
-    }
-}
-
-export class ActionUrlArgumentError extends TestRunErrorBase {
-    constructor (callsite, argumentName) {
-        super(TEST_RUN_ERRORS.actionUrlArgumentError);
-
-        this.callsite     = callsite;
-        this.argumentName = argumentName;
-    }
-}
-
-export class ActionNoUrlForNameValueObjectsArgumentError extends TestRunErrorBase {
-    constructor (callsite) {
-        super(TEST_RUN_ERRORS.actionNoUrlForNameValueObjectsArgumentError);
-
-        this.callsite = callsite;
-    }
-}
-
-export class ActionRequiredSetCookieArgumentsAreMissedError extends TestRunErrorBase {
-    constructor (callsite) {
-        super(TEST_RUN_ERRORS.actionRequiredSetCookieArgumentsAreMissedError);
-
-        this.callsite = callsite;
+export class ActionRequiredCookieArguments extends TestRunErrorBase {
+    constructor () {
+        super(TEST_RUN_ERRORS.actionRequiredCookieArguments);
     }
 }
 
