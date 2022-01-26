@@ -685,7 +685,7 @@ export class SetCookiesCommand extends ActionCommandBase {
 
     _getAssignableProperties () {
         return [
-            { name: 'url', type: urlArgument, required: false },
+            { name: 'url', type: urlsArgument, required: false },
             { name: 'cookies', type: setCookiesArgument, init: initCookiesOption, required: true },
         ];
     }

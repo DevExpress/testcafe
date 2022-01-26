@@ -38,6 +38,7 @@ import {
 import { URL } from 'url';
 import { assertPageUrl } from '../../../api/test-page-url';
 import checkFilePath from '../../../utils/check-file-path';
+import { castArray } from 'lodash';
 
 
 // Validators
@@ -173,11 +174,11 @@ function isValidUrl (url) {
 }
 
 export function urlsArgument (name, val) {
-    const cookiesLength = val.length;
+    const castVal = castArray(val);
 
-    for (const [i, value] of val.entries()) {
+    for (const [i, value] of castVal.entries()) {
         if (!isValidUrl(value)) {
-            throw cookiesLength === 1
+            throw castVal.length === 1
                 ? new ActionUrlsCookieArgumentError()
                 : new ActionUrlsArrayCookieArgumentError(i);
         }
