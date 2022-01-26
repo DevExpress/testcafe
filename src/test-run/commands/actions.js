@@ -32,6 +32,7 @@ import {
     booleanArgument,
     functionArgument,
     cookiesArgument,
+    setCookiesArgument,
     urlsArgument,
 } from './validations/argument';
 
@@ -684,9 +685,8 @@ export class SetCookiesCommand extends ActionCommandBase {
 
     _getAssignableProperties () {
         return [
-            { name: 'nameValueObjects', required: false },
             { name: 'url', type: urlArgument, required: false },
-            { name: 'cookies', type: cookiesArgument, init: initCookiesOption, required: false },
+            { name: 'cookies', type: setCookiesArgument, init: initCookiesOption, required: true },
         ];
     }
 }

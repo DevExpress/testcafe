@@ -32,6 +32,7 @@ import {
     ActionNameValueObjectsCookieArgumentError,
     ActionUrlTypeArgumentError,
     ActionUrlArgumentError,
+    ActionRequiredSetCookieArgumentsAreMissedError,
 } from '../../../errors/test-run';
 
 import { URL } from 'url';
@@ -153,6 +154,13 @@ export function cookiesArgument (name, val) {
                 : new ActionCookieArgumentsError(i);
         }
     }
+}
+
+export function setCookiesArgument (name, val) {
+    if (!val.length)
+        throw new ActionRequiredSetCookieArgumentsAreMissedError();
+
+    cookiesArgument(name, val);
 }
 
 function isValidUrl (url) {
