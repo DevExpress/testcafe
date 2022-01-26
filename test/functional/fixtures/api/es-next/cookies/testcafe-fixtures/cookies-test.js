@@ -1,6 +1,3 @@
-import { RequestLogger } from 'testcafe';
-
-
 fixture`[API] Get Cookies`
     .page('http://localhost:3000/fixtures/api/es-next/cookies/pages/index.html')
     .beforeEach(async t => {
@@ -404,7 +401,7 @@ test('Should set cookies by object with default url', async t => {
             httpOnly: false,
             maxAge:   null,
             name:     'apiCookie13',
-            path:     '/',
+            path:     '/fixtures/api/es-next/cookies/pages/index.html',
             sameSite: 'none',
             secure:   false,
             value:    'value13',
@@ -485,7 +482,7 @@ test('Should set cookies by key-value with default url', async t => {
             httpOnly: false,
             maxAge:   null,
             name:     'apiCookie1',
-            path:     '/',
+            path:     '/fixtures/api/es-next/cookies/pages/index.html',
             sameSite: 'none',
             secure:   false,
             value:    'value1',
