@@ -106,7 +106,7 @@ export default class VisibleElementAutomation<E, W extends SharedWindow> extends
 
     private async _moveToElement (): Promise<void> {
         const moveOptions    = new MoveOptions(adapter.utils.extend({ skipScrolling: true }, this.options), false);
-        const moveAutomation = await MoveAutomation.create(this.element, this.window, this.cursor, moveOptions);
+        const moveAutomation = await MoveAutomation.create(this.element, moveOptions, this.window, this.cursor);
 
         return moveAutomation
             .run()

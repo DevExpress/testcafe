@@ -15,7 +15,7 @@ const { domUtils, eventUtils, delay } = testCafeCore;
 
 export default class RClickAutomation extends VisibleElementAutomation {
     constructor (element, clickOptions) {
-        super(element, window, cursor, clickOptions);
+        super(element, clickOptions, window, cursor);
 
         this.modifiers = clickOptions.modifiers;
         this.caretPos  = clickOptions.caretPos;

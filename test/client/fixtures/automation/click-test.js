@@ -469,7 +469,7 @@ $(document).ready(function () {
                     new ClickOptions({
                         offsetX: 5,
                         offsetY: 5,
-                    }, window, cursor));
+                    }), window, cursor);
 
                 return restoreScrollClick.run();
             })

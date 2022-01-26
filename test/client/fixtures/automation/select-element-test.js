@@ -466,7 +466,9 @@ $(document).ready(function () {
             equal(select.selectedIndex, 0);
 
             runClickAutomation(option, {}, function () {
+
                 equal(select.selectedIndex, 2);
+
                 window.setTimeout(function () {
                     startNext();
                 }, 0);

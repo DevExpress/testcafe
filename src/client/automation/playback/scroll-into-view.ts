@@ -5,7 +5,7 @@ import cursor from '../cursor';
 
 export default class ScrollIntoViewAutomation extends VisibleElementAutomation<HTMLElement, SharedWindow> {
     public constructor (element: HTMLElement, offsetOptions: OffsetOptions) {
-        super(element, window, cursor, offsetOptions);
+        super(element, offsetOptions, window, cursor);
     }
 
     public run (useStrictElementCheck: boolean): Promise<unknown> {

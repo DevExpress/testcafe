@@ -13,7 +13,7 @@ describe('VisibleElementAutomation', () => {
         const el     = await utils.getNode('#target1');
         const cursor = await utils.createCursor();
 
-        const visibleAutomation = new VisibleElementAutomation(el, ExecutionContext.current, cursor, { });
+        const visibleAutomation = new VisibleElementAutomation(el, { }, ExecutionContext.current, cursor);
 
         await visibleAutomation._ensureElement(false, false, true);
     });

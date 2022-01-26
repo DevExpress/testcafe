@@ -65,7 +65,7 @@ export default class MoveAutomation<E, W extends SharedWindow> {
         this.firstMovingStepOccured  = false;
     }
 
-    public static async create<E, W extends SharedWindow> (el: E, win: W, cursor: Cursor<W>, moveOptions: MoveOptions): Promise<MoveAutomation<E, W>> {
+    public static async create<E, W extends SharedWindow> (el: E, moveOptions: MoveOptions, win: W, cursor: Cursor<W>): Promise<MoveAutomation<E, W>> {
         const { element, offset } = await MoveAutomation.getTarget(el, win, new AxisValues(moveOptions.offsetX, moveOptions.offsetY));
 
         return new MoveAutomation(element, offset, moveOptions, win, cursor);

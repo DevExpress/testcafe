@@ -51,7 +51,7 @@ describe('MoveAutomation', () => {
         const moveOpts = new MoveOptions(moveOptions, false);
         const cursor   = await utils.createCursor();
 
-        const move = await MoveAutomation.create(target, ExecutionContext.current, cursor, moveOpts);
+        const move = await MoveAutomation.create(target, moveOpts, ExecutionContext.current, cursor);
 
         await move.run();
 

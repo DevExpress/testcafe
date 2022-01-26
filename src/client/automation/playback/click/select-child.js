@@ -105,7 +105,7 @@ export default class SelectChildClickAutomation {
             modifiers: this.modifiers,
         }, false);
 
-        return MoveAutomation.create(element, window, cursor, moveOptions)
+        return MoveAutomation.create(element, moveOptions, window, cursor)
             .then(moveAutomation => {
                 return moveAutomation.run();
             })

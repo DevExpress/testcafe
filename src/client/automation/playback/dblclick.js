@@ -17,7 +17,7 @@ const FIRST_CLICK_DELAY = featureDetection.isTouchDevice ? 0 : 160;
 
 export default class DblClickAutomation extends VisibleElementAutomation {
     constructor (element, clickOptions) {
-        super(element, window, cursor, clickOptions);
+        super(element, clickOptions, window, cursor);
 
         this.modifiers = clickOptions.modifiers;
         this.caretPos  = clickOptions.caretPos;

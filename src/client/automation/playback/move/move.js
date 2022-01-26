@@ -58,7 +58,7 @@ function onMoveToIframeRequest (e) {
 
     if (cursor.getActiveWindow(window) !== iframeWin) {
         // const moveAutomation = new MoveAutomation(iframe, moveOptions);
-        MoveAutomation.create(iframe, window, cursor, moveOptions)
+        MoveAutomation.create(iframe, moveOptions, window, cursor)
             .then(moveAutomation => {
                 return moveAutomation.run();
             })
@@ -129,7 +129,7 @@ function onMoveOutRequest (e) {
         skipScrolling: true,
     }, false);
 
-    MoveAutomation.create(document.documentElement, window, cursor, moveOptions)
+    MoveAutomation.create(document.documentElement, moveOptions, window, cursor)
         .then(moveAutomation => {
             return moveAutomation.run();
         })

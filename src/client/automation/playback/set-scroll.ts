@@ -42,7 +42,7 @@ export default class SetScrollAutomation extends VisibleElementAutomation<HTMLEl
     private scrollTop: number;
 
     public constructor (element: HTMLElement, { x, y, position, byX, byY }: SetScrollAutomationOptions, offsetOptions: OffsetOptions) {
-        super(element, window, cursor, offsetOptions);
+        super(element, offsetOptions, window, cursor);
 
         if (position)
             [x, y] = calculatePosition(element, position);

@@ -23,7 +23,7 @@ const delay           = testCafeCore.delay;
 
 export default class SelectBaseAutomation extends VisibleElementAutomation {
     constructor (element, actionOptions) {
-        super(element, window, cursor, actionOptions);
+        super(element, actionOptions, window, cursor);
 
         this.absoluteStartPoint = null;
         this.absoluteEndPoint   = null;
@@ -66,7 +66,7 @@ export default class SelectBaseAutomation extends VisibleElementAutomation {
     _move ({ element, offsetX, offsetY, speed }) {
         const moveOptions = new MoveOptions({ offsetX, offsetY, speed }, false);
 
-        return MoveAutomation.create(element, window, cursor, moveOptions)
+        return MoveAutomation.create(element, moveOptions, window, cursor)
             .then(moveAutomation => {
                 return moveAutomation.run();
             })
