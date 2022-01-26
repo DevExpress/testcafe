@@ -28,5 +28,8 @@ initializeAdapter({
         click: {
             createMouseClickStrategy: () => new MouseClickStrategyEmpty(),
         },
+
+        _ensureWindowAndCursorForLegacyTests () {
+        },
     },
 });

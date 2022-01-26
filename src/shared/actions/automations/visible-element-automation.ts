@@ -96,6 +96,9 @@ export default class VisibleElementAutomation<E, W extends SharedWindow> extends
 
         this.window  = win;
         this.cursor  = cursor;
+
+        // NOTE: only for legacy API
+        adapter.automations._ensureWindowAndCursorForLegacyTests(this);
     }
 
     protected async _getElementForEvent (eventArgs: MouseEventArgs<E>): Promise<E | null> {

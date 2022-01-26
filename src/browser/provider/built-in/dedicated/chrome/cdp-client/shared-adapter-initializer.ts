@@ -93,5 +93,8 @@ initializeAdapter({
         click: {
             createMouseClickStrategy,
         },
+
+        _ensureWindowAndCursorForLegacyTests () {
+        },
     },
 });

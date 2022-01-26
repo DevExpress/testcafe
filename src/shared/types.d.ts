@@ -95,6 +95,8 @@ export interface SharedAdapter {
         click: {
             createMouseClickStrategy: (element: any, caretPos: number) => MouseClickStrategyBase<any>;
         };
+
+        _ensureWindowAndCursorForLegacyTests (automation: any): void;
     };
 }
 

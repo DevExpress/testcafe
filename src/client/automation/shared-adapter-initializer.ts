@@ -6,6 +6,7 @@ import getElementExceptUI from './utils/get-element-except-ui';
 import ensureMouseEventAfterScroll from './utils/ensure-mouse-event-after-scroll';
 import createEventSequence from './playback/move/event-sequence/create-event-sequence';
 import { createMouseClickStrategy } from './playback/click/browser-click-strategy';
+import cursor from './cursor';
 
 
 const { nativeMethods, Promise, utils: { browser, featureDetection, extend } } = hammerhead;
@@ -25,6 +26,11 @@ initializeAdapter({
     automations: {
         click: {
             createMouseClickStrategy,
+        },
+
+        _ensureWindowAndCursorForLegacyTests (automation) {
+            automation.window = automation.window || window;
+            automation.cursor = cursor;
         },
     },
 });
