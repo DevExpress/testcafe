@@ -23,6 +23,9 @@ import {
     ExecuteExpressionCommand,
     ExecuteAsyncExpressionCommand,
     RecorderCommand,
+    GetCookiesCommand,
+    SetCookiesCommand,
+    DeleteCookiesCommand,
 } from './actions';
 
 import { AssertionCommand } from './assertion';
@@ -128,6 +131,15 @@ function getCmdCtor (type) {
 
         case TYPE.recorder:
             return RecorderCommand;
+
+        case TYPE.getCookies:
+            return GetCookiesCommand;
+
+        case TYPE.setCookies:
+            return SetCookiesCommand;
+
+        case TYPE.deleteCookies:
+            return DeleteCookiesCommand;
 
         default:
             return null;
