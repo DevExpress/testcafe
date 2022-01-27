@@ -823,45 +823,58 @@ module.exports = [
     },
     {
         testRunId: 'test-run-id',
-        name: 'getCookies',
-        command: {
-            type: 'get-cookies',
+        name:      'getCookies',
+        command:   {
+            type:     'get-cookies',
             actionId: 'GetCookiesCommand',
-            names: ['cookieName'],
-            urls: ['https://domain.com'],
-            cookies: undefined
+            urls:     ['https://domain.com'],
+            cookies:  [
+                {
+                    name: 'cookieName',
+                },
+            ],
         },
-        test: { id: 'test-id', name: 'test-name', phase: 'initial' },
+        test:    { id: 'test-id', name: 'test-name', phase: 'initial' },
         fixture: { name: 'fixture-name', id: 'fixture-id' },
-        browser: { alias: 'test-browser', headless: false }
+        browser: { alias: 'test-browser', headless: false },
     },
     {
         testRunId: 'test-run-id',
-        name: 'setCookies',
-        command: {
-            type: 'set-cookies',
+        name:      'setCookies',
+        command:   {
+            type:     'set-cookies',
             actionId: 'SetCookiesCommand',
-            nameValueObjects: [{ cookieName: 'cookieValue' }],
-            url: 'https://domain.com',
-            cookies: undefined
+            url:      'https://domain.com',
+            cookies:  [
+                {
+                    name:  'cookieName',
+                    value: 'cookieValue',
+                },
+            ],
         },
-        test: { id: 'test-id', name: 'test-name', phase: 'initial' },
+        test:    { id: 'test-id', name: 'test-name', phase: 'initial' },
         fixture: { name: 'fixture-name', id: 'fixture-id' },
-        browser: { alias: 'test-browser', headless: false }
+        browser: { alias: 'test-browser', headless: false },
     },
     {
         testRunId: 'test-run-id',
-        name: 'deleteCookies',
-        command: {
-            type: 'delete-cookies',
+        name:      'deleteCookies',
+        command:   {
+            type:     'delete-cookies',
             actionId: 'DeleteCookiesCommand',
-            names: ['cookieName1', 'cookieName2'],
-            urls: ['https://domain.com'],
-            cookies: undefined
+            urls:     ['https://domain.com'],
+            cookies:  [
+                {
+                    name: 'cookieName1',
+                },
+                {
+                    name: 'cookieName2',
+                },
+            ],
         },
-        test: { id: 'test-id', name: 'test-name', phase: 'initial' },
+        test:    { id: 'test-id', name: 'test-name', phase: 'initial' },
         fixture: { name: 'fixture-name', id: 'fixture-id' },
-        browser: { alias: 'test-browser', headless: false }
-    }
+        browser: { alias: 'test-browser', headless: false },
+    },
 
 ];
