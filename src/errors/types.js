@@ -92,7 +92,7 @@ export const TEST_RUN_ERRORS = {
     actionUrlsCookieArgumentError:                         'E89',
     actionStringOptionError:                               'E90',
     actionExpiresOptionError:                              'E91',
-    actionMaxAgeOptionError:                               'E92',
+    actionNumberOptionError:                               'E92',
 };
 
 export const RUNTIME_ERRORS = {

@@ -1,5 +1,4 @@
-The "maxAge" option is expected to be a number, '-Infinity' or 'Infinity'
-value, but it was object.
+The "maxAge" option is expected to be a number, but it was object.
 
 Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>

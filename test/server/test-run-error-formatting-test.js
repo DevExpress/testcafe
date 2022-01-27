@@ -96,7 +96,7 @@ const {
     ActionRequiredCookieArguments,
     ActionStringOptionError,
     ActionExpiresOptionError,
-    ActionMaxAgeOptionError,
+    ActionNumberOptionError,
 } = require('../../lib/errors/test-run');
 
 const untestedErrorTypes = Object.keys(TEST_RUN_ERRORS).map(key => TEST_RUN_ERRORS[key]);
@@ -791,8 +791,8 @@ describe('Error formatting', () => {
             assertErrorMessage('action-expires-option-error', new ActionExpiresOptionError('expires', 'string'));
         });
 
-        it('Should format "actionMaxAgeOptionError"', () => {
-            assertErrorMessage('action-max-age-option-error', new ActionMaxAgeOptionError('maxAge', 'object'));
+        it('Should format "actionNumberOptionError"', () => {
+            assertErrorMessage('action-number-option-error', new ActionNumberOptionError('maxAge', 'object'));
         });
     });
 

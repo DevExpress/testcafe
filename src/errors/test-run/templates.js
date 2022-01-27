@@ -419,7 +419,7 @@ export default {
         The "${err.optionName}" option is expected to be a Date or 'Infinity' value, but it was ${err.actualValue}.
     `,
 
-    [TEST_RUN_ERRORS.actionMaxAgeOptionError]: err => `
-        The "${err.optionName}" option is expected to be a number, '-Infinity' or 'Infinity' value, but it was ${err.actualValue}.
+    [TEST_RUN_ERRORS.actionNumberOptionError]: err => `
+        The "${err.optionName}" option is expected to be a number, but it was ${err.actualValue}.
     `,
 };

@@ -155,9 +155,9 @@ export class ActionExpiresOptionError extends ActionOptionErrorBase {
     }
 }
 
-export class ActionMaxAgeOptionError extends ActionOptionErrorBase {
+export class ActionNumberOptionError extends ActionOptionErrorBase {
     constructor (optionName, actualValue) {
-        super(TEST_RUN_ERRORS.actionMaxAgeOptionError, optionName, actualValue);
+        super(TEST_RUN_ERRORS.actionNumberOptionError, optionName, actualValue);
     }
 }
 
