@@ -207,8 +207,8 @@ interface InternalCookie {
     value: string;
     domain: string;
     path: string;
-    expires: Date | 'Infinity';
-    maxAge: number | 'Infinity' | '-Infinity' | null;
+    expires: Date | number;
+    maxAge: number | null;
     secure: boolean;
     httpOnly: boolean;
     sameSite: string;

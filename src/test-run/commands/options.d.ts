@@ -77,7 +77,7 @@ export class CookieOptions {
     public domain: string;
     public path: string;
     public expires: Date | number;
-    public maxAge: number;
+    public maxAge: number | null;
     public secure: boolean;
     public httpOnly: boolean;
     public sameSite: string;
