@@ -1,5 +1,4 @@
-The "cookie" argument at position 0 is expected to be a cookie-like object or
-a cookie-like object array.
+The "cookie" at number 0 is expected to be an object or a string.
 
 Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>

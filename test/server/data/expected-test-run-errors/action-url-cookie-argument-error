@@ -1,5 +1,4 @@
-The elements of the "cookie" argument at position 0 are expected to be
-cookie-like objects, but the element at index 0 wasn't.
+The "urls" argument isn't valid.
 
 Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>

@@ -1,5 +1,4 @@
-Required arguments ("cookies" or a pair of "nameValueObjects" and "url") are
-missed.
+Cookies argument is required.
 
 Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>
