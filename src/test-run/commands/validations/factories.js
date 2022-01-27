@@ -62,7 +62,7 @@ export function createStringValidator (ErrorCtor) {
 
 export function createExpiresValidator (ErrorCtor) {
     return (name, val) => {
-        if (val instanceof Date && val !== 'Infinity')
+        if (!(val instanceof Date) && val !== 'Infinity')
             throw new ErrorCtor(name, typeof val);
     };
 }
@@ -72,7 +72,7 @@ export function createMaxAgeValidator (ErrorCtor) {
         const valType = typeof val;
         const infinityStrings = ['Infinity', '-Infinity'];
 
-        if (valType !== 'number' || infinityStrings.includes(val))
+        if (valType !== 'number' || !infinityStrings.includes(val))
             throw new ErrorCtor(name, valType);
     };
 }
