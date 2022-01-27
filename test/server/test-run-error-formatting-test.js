@@ -94,6 +94,9 @@ const {
     ActionUrlCookieArgumentError,
     ActionUrlsCookieArgumentError,
     ActionRequiredCookieArguments,
+    ActionStringOptionError,
+    ActionExpiresOptionError,
+    ActionMaxAgeOptionError,
 } = require('../../lib/errors/test-run');
 
 const untestedErrorTypes = Object.keys(TEST_RUN_ERRORS).map(key => TEST_RUN_ERRORS[key]);
@@ -768,16 +771,28 @@ describe('Error formatting', () => {
             assertErrorMessage('action-cookie-arguments-error', new ActionCookieArgumentsError(0));
         });
 
-        it('Should format "actionUrlsCookieArgumentError"', () => {
+        it('Should format "ActionUrlCookieArgumentError"', () => {
             assertErrorMessage('action-url-cookie-argument-error', new ActionUrlCookieArgumentError());
         });
 
-        it('Should format "actionUrlsArrayCookieArgumentError"', () => {
+        it('Should format "ActionUrlsCookieArgumentError"', () => {
             assertErrorMessage('action-urls-cookie-argument-error', new ActionUrlsCookieArgumentError(0));
         });
 
         it('Should format "actionRequiredSetCookieArgumentsAreMissedError"', () => {
             assertErrorMessage('action-required-cookie-arguments', new ActionRequiredCookieArguments());
+        });
+
+        it('Should format "actionStringOptionError"', () => {
+            assertErrorMessage('action-string-option-error', new ActionStringOptionError('name', 'object'));
+        });
+
+        it('Should format "actionExpiresOptionError"', () => {
+            assertErrorMessage('action-expires-option-error', new ActionExpiresOptionError('expires', 'string'));
+        });
+
+        it('Should format "actionMaxAgeOptionError"', () => {
+            assertErrorMessage('action-max-age-option-error', new ActionMaxAgeOptionError('maxAge', 'object'));
         });
     });
 
