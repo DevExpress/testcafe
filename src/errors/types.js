@@ -91,7 +91,7 @@ export const TEST_RUN_ERRORS = {
     ActionUrlCookieArgumentError:                          'E88',
     actionUrlsCookieArgumentError:                         'E89',
     actionStringOptionError:                               'E90',
-    actionExpiresOptionError:                              'E91',
+    actionDateOptionError:                                 'E91',
     actionNumberOptionError:                               'E92',
 };
 

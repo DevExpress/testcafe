@@ -95,7 +95,7 @@ const {
     ActionUrlsCookieArgumentError,
     ActionRequiredCookieArguments,
     ActionStringOptionError,
-    ActionExpiresOptionError,
+    ActionDateOptionError,
     ActionNumberOptionError,
 } = require('../../lib/errors/test-run');
 
@@ -788,7 +788,7 @@ describe('Error formatting', () => {
         });
 
         it('Should format "actionExpiresOptionError"', () => {
-            assertErrorMessage('action-expires-option-error', new ActionExpiresOptionError('expires', 'string'));
+            assertErrorMessage('action-date-option-error', new ActionDateOptionError('expires', 'string'));
         });
 
         it('Should format "actionNumberOptionError"', () => {

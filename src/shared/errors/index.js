@@ -149,9 +149,9 @@ export class ActionStringOptionError extends ActionOptionErrorBase {
     }
 }
 
-export class ActionExpiresOptionError extends ActionOptionErrorBase {
+export class ActionDateOptionError extends ActionOptionErrorBase {
     constructor (optionName, actualValue) {
-        super(TEST_RUN_ERRORS.actionExpiresOptionError, optionName, actualValue);
+        super(TEST_RUN_ERRORS.actionDateOptionError, optionName, actualValue);
     }
 }
 

@@ -76,8 +76,8 @@ export class CookieOptions {
     public value: string;
     public domain: string;
     public path: string;
-    public expires: Date | number;
-    public maxAge: number | null;
+    public expires: Date;
+    public maxAge: number | 'Infinity' | '-Infinity';
     public secure: boolean;
     public httpOnly: boolean;
     public sameSite: string;

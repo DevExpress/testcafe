@@ -60,18 +60,16 @@ export function createStringValidator (ErrorCtor) {
     };
 }
 
-export function createExpiresValidator (ErrorCtor) {
+export function createDateValidator (ErrorCtor) {
     return (name, val) => {
-        if (!(val instanceof Date) && val !== Infinity)
+        if (!(val instanceof Date))
             throw new ErrorCtor(name, val);
     };
 }
 
 export function createNumberValidator (ErrorCtor) {
     return (name, val) => {
-        const valType = typeof val;
-
-        if (valType !== 'number')
-            throw new ErrorCtor(name, valType);
+        if (isNaN(Number(val)))
+            throw new ErrorCtor(name, typeof val);
     };
 }

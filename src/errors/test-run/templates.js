@@ -415,8 +415,8 @@ export default {
         The "${err.optionName}" option is expected to be a string value, but it was ${err.actualValue}.
     `,
 
-    [TEST_RUN_ERRORS.actionExpiresOptionError]: err => `
-        The "${err.optionName}" option is expected to be a Date or 'Infinity' value, but it was ${err.actualValue}.
+    [TEST_RUN_ERRORS.actionDateOptionError]: err => `
+        The "${err.optionName}" option is expected to be a Date value, but it was ${err.actualValue}.
     `,
 
     [TEST_RUN_ERRORS.actionNumberOptionError]: err => `

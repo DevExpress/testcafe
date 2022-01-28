@@ -10,7 +10,7 @@ import {
     createPositiveIntegerValidator,
     createSpeedValidator,
     createStringValidator,
-    createExpiresValidator,
+    createDateValidator,
     createNumberValidator,
 } from './validations/factories';
 import {
@@ -19,7 +19,7 @@ import {
     ActionBooleanOptionError,
     ActionSpeedOptionError,
     ActionStringOptionError,
-    ActionExpiresOptionError,
+    ActionDateOptionError,
     ActionNumberOptionError,
 } from '../../shared/errors';
 
@@ -28,7 +28,7 @@ export const positiveIntegerOption = createPositiveIntegerValidator(ActionPositi
 export const booleanOption         = createBooleanValidator(ActionBooleanOptionError);
 export const speedOption           = createSpeedValidator(ActionSpeedOptionError);
 export const stringOption          = createStringValidator(ActionStringOptionError);
-export const expiresOption         = createExpiresValidator(ActionExpiresOptionError);
+export const dateOption            = createDateValidator(ActionDateOptionError);
 export const numberOption          = createNumberValidator(ActionNumberOptionError);
 
 
@@ -297,7 +297,7 @@ export class CookieOptions extends Assignable {
             { name: 'value', type: stringOption },
             { name: 'domain', type: stringOption },
             { name: 'path', type: stringOption },
-            { name: 'expires', type: expiresOption },
+            { name: 'expires', type: dateOption },
             { name: 'maxAge', type: numberOption },
             { name: 'secure', type: booleanOption },
             { name: 'httpOnly', type: booleanOption },
