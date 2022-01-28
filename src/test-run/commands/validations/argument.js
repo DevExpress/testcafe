@@ -136,7 +136,7 @@ export function functionArgument (name, val) {
 }
 
 function isValidCookie (cookie) {
-    return !!cookie && (!!cookie.name || !!cookie.domain && !!cookie.path);
+    return !!cookie && (typeof cookie === 'object' || typeof cookie === 'string');
 }
 
 export function cookiesArgument (name, val) {
