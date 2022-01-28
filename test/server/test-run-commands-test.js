@@ -1300,6 +1300,81 @@ describe('Test run commands', () => {
                 forceExecutionInTopWindowOnly: true,
             });
         });
+
+        it('Should create GetCookiesCommand from object', () => {
+            const commandObj = {
+                type: TYPE.getCookies,
+                urls: ['http://localhost/'],
+
+                cookies: [{
+                    'name': 'apiCookie1',
+                }],
+            };
+
+            const command = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type:     TYPE.getCookies,
+                actionId: TYPE.getCookies,
+                urls:     ['http://localhost/'],
+
+                cookies: [{
+                    'name': 'apiCookie1',
+                }],
+            });
+        });
+
+        it('Should create SetCookiesCommand from object', () => {
+            const commandObj = {
+                type: TYPE.setCookies,
+                url:  [],
+
+                cookies: [{
+                    name:   'apiCookie13',
+                    value:  'value13',
+                    domain: 'some-another-domain.com',
+                    path:   '/',
+                }],
+            };
+
+            const command = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type:     TYPE.setCookies,
+                actionId: TYPE.setCookies,
+                url:      [],
+
+                cookies: [{
+                    name:   'apiCookie13',
+                    value:  'value13',
+                    domain: 'some-another-domain.com',
+                    path:   '/',
+                }],
+            });
+        });
+
+        it('Should create DeleteCookiesCommand from object', () => {
+            const commandObj = {
+                type: TYPE.deleteCookies,
+                urls: ['http://localhost/'],
+
+                cookies: [{
+                    name: 'apiCookie13',
+                }],
+            };
+
+            const command = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type:     TYPE.deleteCookies,
+                actionId: TYPE.deleteCookies,
+                urls:     ['http://localhost/'],
+
+                cookies: [{
+                    name: 'apiCookie13',
+                }],
+            });
+        });
     });
 
     describe('Validation', function () {
@@ -3201,6 +3276,212 @@ describe('Test run commands', () => {
                     actualValue:     'number',
                     callsite:        null,
                 }
+            );
+        });
+
+        it('Should validate GetCookiesCommand', function () {
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:    TYPE.getCookies,
+                        cookies: [
+                            void 0,
+                        ],
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    code:            'E86',
+                    callsite:        null,
+                },
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:    TYPE.getCookies,
+                        cookies: [
+                            {
+                                name: 'name',
+                            },
+                            void 0,
+                        ],
+                    });
+                },
+                {
+                    index:           1,
+                    isTestCafeError: true,
+                    code:            'E87',
+                    callsite:        null,
+                },
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type: TYPE.getCookies,
+                        urls: ['url.url'],
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    code:            'E88',
+                    callsite:        null,
+                },
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type: TYPE.getCookies,
+                        urls: [
+                            'http://localhost/',
+                            'url.url',
+                        ],
+                    });
+                },
+                {
+                    index:           1,
+                    isTestCafeError: true,
+                    code:            'E89',
+                    callsite:        null,
+                },
+            );
+        });
+
+        it('Should validate SetCookiesCommand', function () {
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:    TYPE.setCookies,
+                        cookies: [],
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    code:            'E85',
+                    callsite:        null,
+                },
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:    TYPE.setCookies,
+                        cookies: [
+                            void 0,
+                        ],
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    code:            'E86',
+                    callsite:        null,
+                },
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:    TYPE.setCookies,
+                        cookies: [
+                            {
+                                name: 'name',
+                            },
+                            void 0,
+                        ],
+                    });
+                },
+                {
+                    index:           1,
+                    isTestCafeError: true,
+                    code:            'E87',
+                    callsite:        null,
+                },
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type: TYPE.setCookies,
+                        url:  ['url.url'],
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    code:            'E88',
+                    callsite:        null,
+                },
+            );
+        });
+
+        it('Should validate GetCookiesCommand', function () {
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:    TYPE.deleteCookies,
+                        cookies: [
+                            void 0,
+                        ],
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    code:            'E86',
+                    callsite:        null,
+                },
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:    TYPE.deleteCookies,
+                        cookies: [
+                            {
+                                name: 'name',
+                            },
+                            void 0,
+                        ],
+                    });
+                },
+                {
+                    index:           1,
+                    isTestCafeError: true,
+                    code:            'E87',
+                    callsite:        null,
+                },
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type: TYPE.deleteCookies,
+                        urls: ['url.url'],
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    code:            'E88',
+                    callsite:        null,
+                },
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type: TYPE.deleteCookies,
+                        urls: [
+                            'http://localhost/',
+                            'url.url',
+                        ],
+                    });
+                },
+                {
+                    index:           1,
+                    isTestCafeError: true,
+                    code:            'E89',
+                    callsite:        null,
+                },
             );
         });
     });
