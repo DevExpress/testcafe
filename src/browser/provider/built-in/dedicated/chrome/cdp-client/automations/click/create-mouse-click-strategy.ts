@@ -15,8 +15,8 @@ class CDPMouseClickStategy<E> extends MouseClickStrategyBase<E> {
 
         await Input.dispatchMouseEvent({
             type:       'mousePressed',
-            x:          options.point?.x || -1,
-            y:          options.point?.y || -1,
+            x:          options.point?.x ?? -1,
+            y:          options.point?.y ?? -1,
             button:     BUTTON,
             clickCount: CLICK_COUNT,
         });
@@ -27,8 +27,8 @@ class CDPMouseClickStategy<E> extends MouseClickStrategyBase<E> {
 
         await Input.dispatchMouseEvent({
             type:       'mouseReleased',
-            x:          options.point?.x || -1,
-            y:          options.point?.y || -1,
+            x:          options.point?.x ?? -1,
+            y:          options.point?.y ?? -1,
             button:     BUTTON,
             clickCount: CLICK_COUNT,
         });
