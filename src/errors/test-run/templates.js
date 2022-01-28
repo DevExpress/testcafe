@@ -139,7 +139,7 @@ export default {
     `,
 
     [TEST_RUN_ERRORS.actionCookieArgumentsError]: err => `
-        The "cookie" at number ${err.argumentIndex} is expected to be an object or a string.
+        The "cookie" at number ${err.index + 1} is expected to be an object or a string.
     `,
 
     [TEST_RUN_ERRORS.ActionUrlCookieArgumentError]: () => `
@@ -147,7 +147,7 @@ export default {
     `,
 
     [TEST_RUN_ERRORS.actionUrlsCookieArgumentError]: err => `
-        Elements at index ${err.elementIndex} of the "urls" argument isn't valid.
+        Elements at index ${err.index + 1} of the "urls" argument isn't valid.
     `,
 
     [TEST_RUN_ERRORS.actionIntegerArgumentError]: err => `

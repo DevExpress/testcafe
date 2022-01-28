@@ -1,4 +1,4 @@
-The "cookie" at number 0 is expected to be an object or a string.
+The "cookie" at number 1 is expected to be an object or a string.
 
 Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>

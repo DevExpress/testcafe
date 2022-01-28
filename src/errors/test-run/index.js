@@ -238,10 +238,10 @@ export class ActionCookieArgumentError extends TestRunErrorBase {
 }
 
 export class ActionCookieArgumentsError extends TestRunErrorBase {
-    constructor (argumentIndex) {
+    constructor (index) {
         super(TEST_RUN_ERRORS.actionCookieArgumentsError);
 
-        this.argumentIndex = argumentIndex;
+        this.index = index;
     }
 }
 
@@ -252,10 +252,10 @@ export class ActionUrlCookieArgumentError extends TestRunErrorBase {
 }
 
 export class ActionUrlsCookieArgumentError extends TestRunErrorBase {
-    constructor (elementIndex) {
+    constructor (index) {
         super(TEST_RUN_ERRORS.actionUrlsCookieArgumentError);
 
-        this.elementIndex = elementIndex;
+        this.index = index;
     }
 }
 
