@@ -2,8 +2,6 @@ import {
     pull,
     remove,
     chain,
-    flattenDeep,
-    castArray,
 } from 'lodash';
 
 import { nanoid } from 'nanoid';
@@ -50,7 +48,6 @@ import {
     ResponseEvent,
     RequestHookMethodError,
     StoragesSnapshot,
-    InternalCookie,
 } from 'testcafe-hammerhead';
 
 import * as INJECTABLES from '../assets/injectables';
@@ -783,157 +780,23 @@ export default class TestRun extends AsyncEventEmitter {
         return consoleMessageCopy[String(this.activeWindowId)];
     }
 
-    private async _findCookiesByApi (urls: { domain: string; path: string }[], key?: string): Promise<(InternalCookie | InternalCookie[])[]> {
-        return Promise.all(urls.map(async ({ domain, path }) => {
-            const cookies = key
-                ? await this.session.cookies.findCookie(domain, path, key)
-                : await this.session.cookies.findCookies(domain, path);
-
-            return cookies || [];
-        }));
-    }
-
-    private async _getCookiesByApi (cookie: InternalCookie, urls?: { domain: string; path: string }[]): Promise<InternalCookie[]> {
-        const {
-            key,
-            domain,
-            path,
-            ...filters
-        } = cookie;
-
-        const currentUrls                       = domain && path ? castArray({ domain, path }) : urls;
-        let receivedCookies: InternalCookie[];
-
-        if (currentUrls && currentUrls.length)
-            receivedCookies = flattenDeep(await this._findCookiesByApi(currentUrls, key));
-        else {
-            receivedCookies = flattenDeep(await this.session.cookies.getAllCookies());
-
-            Object.assign(filters, cookie);
-        }
-
-        return Object.keys(filters).length ? this._filterCookies(receivedCookies, filters) : receivedCookies;
-    }
-
-    private _filterCookies (cookies: InternalCookie[], filters: InternalCookie): InternalCookie[] {
-        const filterKeys = Object.keys(filters) as (keyof InternalCookie)[];
-
-        return cookies.filter(cookie => filterKeys.every(key => cookie[key] === filters[key]));
-    }
-
-    private async _deleteCookiesByApi (urls: { domain: string; path: string }[], key?: string): Promise<void[]> {
-        return Promise.all(urls.map(async ({ domain, path }) => {
-            return key
-                ? this.session.cookies.deleteCookie(domain, path, key)
-                : this.session.cookies.deleteCookies(domain, path);
-        }));
-    }
-
-    private _convertToExternalCookies (internalCookies: InternalCookie[]): Partial<CookieOptions>[] {
-        return internalCookies.map(cookie => {
-            const {
-                key, value, domain,
-                path, expires, maxAge,
-                secure, httpOnly, sameSite,
-            } = cookie;
-
-            return {
-                name: key, value, domain,
-                path, expires, maxAge,
-                secure, httpOnly, sameSite,
-            };
-        });
-    }
-
-    private _convertToInternalCookies (externalCookie: CookieOptions[]): InternalCookie[] {
-        return externalCookie.map(cookie => {
-            const { name, ...rest } = cookie;
-
-            return { key: name, ...rest };
-        });
-    }
-
-    private async _getCookies (cookies: InternalCookie[], urls: string[]): Promise<InternalCookie[]> {
-        if (!cookies.length)
-            return this.session.cookies.getAllCookies();
-
-        const resultCookies = [];
-        const parsedUrls    = urls.map(url => {
-            const { hostname, pathname } = new URL(url);
-
-            return { domain: hostname, path: pathname };
-        });
-
-        for (const cookie of cookies)
-            resultCookies.push(await this._getCookiesByApi(cookie, parsedUrls));
-
-        return flattenDeep(resultCookies);
-    }
-
-    private async _setCookies (cookies: InternalCookie[], url: string): Promise<void> {
-        const { hostname = '', pathname = '/' } = url ? new URL(url) : {};
-
-        for (const cookie of cookies) {
-            if (!cookie.domain && !cookie.path)
-                Object.assign(cookie, { domain: hostname, path: pathname });
-        }
-
-        return this.session.cookies.setCookies(cookies);
-    }
-
-    private async _deleteCookies (cookies: InternalCookie[], urls: string[]): Promise<void> {
-        if (!cookies.length)
-            await this.session.cookies.deleteAllCookies();
-
-        const parsedUrls    = urls.map(url => {
-            const { hostname, pathname } = new URL(url);
-
-            return { domain: hostname, path: pathname };
-        });
-
-        for (const cookie of cookies) {
-            const {
-                key,
-                domain,
-                path,
-                ...filters
-            } = cookie;
-
-            const currentUrls  = domain && path ? castArray({ domain, path }) : parsedUrls;
-
-            if (currentUrls.length && !Object.keys(filters).length)
-                await this._deleteCookiesByApi(currentUrls, key);
-            else {
-                const deletedCookies = await this._getCookiesByApi(cookie, parsedUrls);
-
-                for (const deletedCookie of deletedCookies) {
-                    if (deletedCookie.domain && deletedCookie.path && deletedCookie.key)
-                        await this.session.cookies.deleteCookie(deletedCookie.domain, deletedCookie.path, deletedCookie.key);
-                }
-            }
-        }
-    }
-
     public async _enqueueGetCookies (command: GetCookiesCommand): Promise<Partial<CookieOptions>[]> {
-        const cookies         = this._convertToInternalCookies(command.cookies);
-        const urls            = command.urls;
-        const receivedCookies = await this._getCookies(cookies, urls);
+        const { cookies, urls } = command;
 
-        return this._convertToExternalCookies(receivedCookies);
+        return this.session.cookies.getCookies(cookies, urls);
     }
 
     public async _enqueueSetCookies (command: SetCookiesCommand): Promise<void> {
-        const cookies = this._convertToInternalCookies(command.cookies);
+        const cookies = command.cookies;
         const url     = command.url || await this.getCurrentUrl();
 
-        await this._setCookies(cookies, url);
+        return this.session.cookies.setCookies(cookies, url);
     }
 
     public async _enqueueDeleteCookies (command: DeleteCookiesCommand): Promise<void> {
-        const cookies = this._convertToInternalCookies(command.cookies);
-        const urls    = command.urls;
+        const { cookies, urls } = command;
 
-        await this._deleteCookies(cookies, urls);
+        return this.session.cookies.deleteCookies(cookies, urls);
     }
 
     private async _enqueueSetBreakpointCommand (callsite: CallsiteRecord | undefined, error?: string): Promise<void> {
