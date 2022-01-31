@@ -218,49 +218,37 @@ export default class TestController {
         return this._enqueueCommand(DispatchEventCommand, { selector, eventName, options, relatedTarget: options.relatedTarget });
     }
 
-    _getUrls (args) {
-        const [, urls] = args;
+    _prepareCookieArguments (args, isSetCommand = false) {
+        const urlsArg = castArray(args[1]);
+        const urls    = Array.isArray(urlsArg) && typeof urlsArg[0] === 'string' ? urlsArg : [];
 
-        if (typeof urls === 'string')
-            return castArray(urls);
+        const cookiesArg = urls.length ? args[0] : args;
+        const cookies    = [];
 
-        return Array.isArray(urls) && typeof urls[0] === 'string' ? flattenDeep(urls) : [];
-    }
-
-    _normalizeCookies (cookies, isSetCommand = false) {
-        const normalizedCookies = [];
-
-        flattenDeep(castArray(cookies)).forEach(cookie => {
+        flattenDeep(castArray(cookiesArg)).forEach(cookie => {
             if (isSetCommand && !cookie.name && typeof cookie === 'object')
-                Object.entries(cookie).forEach(([name, value]) => normalizedCookies.push({ name, value }));
+                Object.entries(cookie).forEach(([name, value]) => cookies.push({ name, value }));
             else if (!isSetCommand && typeof cookie === 'string')
-                normalizedCookies.push({ name: cookie });
+                cookies.push({ name: cookie });
             else
-                normalizedCookies.push(cookie);
+                cookies.push(cookie);
         });
 
-        return normalizedCookies;
+        return { urls, cookies };
     }
 
     [delegatedAPI(GetCookiesCommand.methodName)] (...args) {
-        const urls    = this._getUrls(args);
-        const cookies = this._normalizeCookies(urls.length ? args[0] : args);
-
-        return this._enqueueCommand(GetCookiesCommand, { cookies, urls });
+        return this._enqueueCommand(GetCookiesCommand, this._prepareCookieArguments(args));
     }
 
     [delegatedAPI(SetCookiesCommand.methodName)] (...args) {
-        const urls    = this._getUrls(args);
-        const cookies = this._normalizeCookies(urls.length ? args[0] : args, true);
+        const { urls, cookies } = this._prepareCookieArguments(args, true);
 
         return this._enqueueCommand(SetCookiesCommand, { cookies, url: urls[0] });
     }
 
     [delegatedAPI(DeleteCookiesCommand.methodName)] (...args) {
-        const urls    = this._getUrls(args);
-        const cookies = this._normalizeCookies(urls.length ? args[0] : args);
-
-        return this._enqueueCommand(DeleteCookiesCommand, { cookies, urls });
+        return this._enqueueCommand(DeleteCookiesCommand, this._prepareCookieArguments(args));
     }
 
     [delegatedAPI(ClickCommand.methodName)] (selector, options) {
