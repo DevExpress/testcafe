@@ -38,6 +38,7 @@ export interface CoreUtilsAdapter {
         isIE?: boolean;
         isChrome?: boolean;
         isFirefox?: boolean;
+        isSafari?: boolean;
     };
 
     dom: {

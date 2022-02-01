@@ -8,12 +8,15 @@ const getInputEventCount  = ClientFunction(() => window.inputEvtCounter);
 
 const inputValuePair = {
     'date':           '2016-02-03',
-    'week':           '2016-W03',
     'month':          '2016-02',
     'datetime-local': '2016-02-03T01:00',
     'color':          '#003000',
     'time':           '23:00',
     'range':          '25',
+    // NOTE: There are strange behavior in mobile iOS devices (iphone, ipad):
+    // The setting values to other html5 inputs after the 'week' input causes
+    // native browser dialogs opening and raising additional 'input' event for last changed editor.
+    'week':           '2016-W03',
 };
 
 test.page('http://localhost:3000/fixtures/regression/gh-1327/pages/empty-input.html')
