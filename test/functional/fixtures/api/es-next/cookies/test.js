@@ -1,5 +1,4 @@
-/*eslint-disable*/
-describe.only('[API] Cookies', function () {
+describe('[API] Cookies', function () {
     it('Should get cookies by name', function () {
         return runTests('./testcafe-fixtures/cookies-test.js', 'Should get cookies by name');
     });
