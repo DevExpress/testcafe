@@ -24,6 +24,8 @@ const MouseOptions = testCafeAutomation.MouseOptions;
 const parseKeySequence = testCafeCore.parseKeySequence;
 const getOffsetOptions = testCafeAutomation.getOffsetOptions;
 
+const isMobileSafari = browserUtils.isSafari && featureDetection.isTouchDevice;
+const nextTestDelay  = browserUtils.isIE ? 30 : 200;
 
 $(document).ready(function () {
     //consts
@@ -163,9 +165,9 @@ $(document).ready(function () {
     };
 
     const startNext = function (ms) {
-        if (browserUtils.isIE) {
+        if (browserUtils.isIE || isMobileSafari) {
             removeTestElements();
-            window.setTimeout(start, ms || 30);
+            window.setTimeout(start, ms || nextTestDelay);
         }
         else
             start();

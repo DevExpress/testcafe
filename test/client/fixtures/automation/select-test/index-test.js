@@ -14,6 +14,8 @@ const domUtils      = testCafeCore.domUtils;
 const style         = testCafeCore.styleUtils;
 const textSelection = testCafeCore.textSelection;
 
+const isMobileSafari = browserUtils.isSafari && featureDetection.isTouchDevice;
+
 
 $(document).ready(function () {
     //constants
@@ -154,6 +156,13 @@ $(document).ready(function () {
         };
     }
 
+    const startNext = function () {
+        if (isMobileSafari)
+            window.setTimeout(start, 200);
+        else
+            start();
+    };
+
     $('body').css('height', '1500px');
 
     //NOTE: problem with window.top bodyMargin in IE9 if test 'runAll'
@@ -190,7 +199,8 @@ $(document).ready(function () {
                 ok(mouseupOnInput, 'select ended on input');
 
                 checkSelection($input[0], 0, 0);
-                start();
+
+                startNext();
             });
     });
 
@@ -208,7 +218,8 @@ $(document).ready(function () {
                 ok(mouseupOnTextarea, 'select ended on textarea');
 
                 checkSelection($textarea[0], 0, 0);
-                start();
+
+                startNext();
             });
     });
 
@@ -226,7 +237,8 @@ $(document).ready(function () {
                 ok(mouseupOnInput, 'select ended on input');
 
                 checkSelection($input[0], 3, 25);
-                start();
+
+                startNext();
             });
     });
 
@@ -247,7 +259,8 @@ $(document).ready(function () {
                 ok(mouseupOnTextarea, 'select ended on textarea');
 
                 checkSelection($textarea[0], 3, valueLength - 3);
-                start();
+
+                startNext();
             });
     });
 
@@ -287,7 +300,8 @@ $(document).ready(function () {
                     ok(style.getElementScroll(input).left > 0);
 
                 expect((checkScrollAfterSelect ? 9 : 7) - Number(window.DIRECTION_ALWAYS_IS_FORWARD));
-                start();
+
+                startNext();
             });
     });
 
@@ -330,7 +344,8 @@ $(document).ready(function () {
                     ok(style.getElementScroll(input).left < oldScroll);
 
                 expect((checkScrollAfterSelect ? 9 : 6) - Number(window.DIRECTION_ALWAYS_IS_FORWARD));
-                start();
+
+                startNext();
             });
     });
 
@@ -376,7 +391,8 @@ $(document).ready(function () {
                     ok(style.getElementScroll(textarea).top > 0);
 
                 expect((checkScrollAfterSelect ? 9 : 7) - Number(window.DIRECTION_ALWAYS_IS_FORWARD));
-                start();
+
+                startNext();
             });
     });
 
@@ -420,7 +436,8 @@ $(document).ready(function () {
                     ok(style.getElementScroll(textarea).top > 0);
 
                 expect((checkScrollAfterSelect ? 9 : 7) - Number(window.DIRECTION_ALWAYS_IS_FORWARD));
-                start();
+
+                startNext();
             });
     });
 
@@ -468,7 +485,8 @@ $(document).ready(function () {
                     ok(style.getElementScroll(textarea).top < oldScroll);
 
                 expect((checkScrollAfterSelect ? 9 : 6) - Number(window.DIRECTION_ALWAYS_IS_FORWARD));
-                start();
+
+                startNext();
             });
     });
 
@@ -516,7 +534,8 @@ $(document).ready(function () {
                     ok(style.getElementScroll(textarea).top < oldScroll);
 
                 expect((checkScrollAfterSelect ? 9 : 6) - Number(window.DIRECTION_ALWAYS_IS_FORWARD));
-                start();
+
+                startNext();
             });
     });
 

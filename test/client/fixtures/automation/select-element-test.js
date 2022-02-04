@@ -19,6 +19,9 @@ const getOffsetOptions           = testCafeAutomation.getOffsetOptions;
 const testCafeUI    = window.getTestCafeModule('testCafeUI');
 const selectElement = testCafeUI.selectElement;
 
+const isMobileSafari = browserUtils.isSafari && featureDetection.isTouchDevice;
+const nextTestDelay  = browserUtils.isIE ? 30 : 200;
+
 $(document).ready(function () {
     //consts
     const TEST_ELEMENT_CLASS = 'testElement';
@@ -169,9 +172,9 @@ $(document).ready(function () {
     $('body').css('height', 1500);
 
     const startNext = function () {
-        if (browserUtils.isIE) {
+        if (browserUtils.isIE || isMobileSafari) {
             removeTestElements();
-            window.setTimeout(start, 30);
+            window.setTimeout(start, nextTestDelay);
         }
         else
             start();
