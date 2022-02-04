@@ -24,9 +24,11 @@ import guardTimeExecution from '../../../../../../utils/guard-time-execution';
 import { CallsiteRecord } from 'callsite-record';
 import { ExecuteClientFunctionCommand, ExecuteSelectorCommand } from '../../../../../../test-run/commands/observation';
 import ClientFunctionExecutor from './client-function-executor';
-import { SwitchToIframeCommand } from '../../../../../../test-run/commands/actions';
+import { NavigateToCommand, SwitchToIframeCommand } from '../../../../../../test-run/commands/actions';
 import ExecutionContext from './execution-context';
 import * as clientsManager from './clients-manager';
+import COMMAND_TYPE from '../../../../../../test-run/commands/type';
+import { CommandBase } from '../../../../../../test-run/commands/base';
 
 const DEBUG_SCOPE = (id: string): string => `testcafe:browser:provider:built-in:chrome:browser-client:${id}`;
 const DOWNLOADS_DIR = path.join(os.homedir(), 'Downloads');
@@ -386,5 +388,41 @@ export class BrowserClient {
 
     public switchToMainWindow (): void {
         ExecutionContext.switchToMainWindow();
+    }
+
+    public async navigateTo (command: NavigateToCommand): Promise<object> {
+        const client = await this.getActiveClient();
+
+        if (!client)
+            throw new Error('Cannot get the active browser client');
+
+        const { Page } = client;
+
+        Page.navigate({ url: command.url });
+
+        return new Promise(resolve => {
+            const offEvent = Page.on('domContentEventFired', () => {
+                // @ts-ignore
+                offEvent();
+                resolve();
+            });
+        });
+    }
+
+    public async executeCommand (command: CommandBase, callsite: CallsiteRecord, opts: Dictionary<OptionValue>): Promise<unknown> {
+        if (command.type === COMMAND_TYPE.executeClientFunction)
+            return this.executeClientFunction(command as ExecuteClientFunctionCommand, callsite);
+        else if (command.type === COMMAND_TYPE.switchToIframe)
+            return this.switchToIframe(command as SwitchToIframeCommand, callsite, opts.selectorTimeout as number);
+        else if (command.type === COMMAND_TYPE.switchToMainWindow)
+            return this.switchToMainWindow();
+        else if (command.type === COMMAND_TYPE.executeSelector)
+            return this.executeSelector(command as ExecuteSelectorCommand, callsite, opts.selectorTimeout as number);
+        else if (command.type === COMMAND_TYPE.navigateTo)
+            return this.navigateTo(command as NavigateToCommand);
+        else if (command.type === COMMAND_TYPE.testDone)
+            return null;
+
+        throw new Error(`The "${command.type}" command is not supported currently in proxyless mode! ` + JSON.stringify(command));
     }
 }

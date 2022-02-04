@@ -62,6 +62,7 @@ export interface ClientFunctionAdapter {
     isProxyless: boolean;
     nativeMethods: NativeMethods;
     PromiseCtor: typeof Promise;
+    processScript (code: string): string;
     delay (ms: number): Promise<void>;
     isShadowRoot (el: Node): boolean;
     isDomElement (el: unknown): boolean;

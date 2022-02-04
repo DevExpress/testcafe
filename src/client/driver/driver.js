@@ -451,6 +451,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         const statusRequestOptions = {
             cmd:              TEST_RUN_MESSAGES.ready,
             status:           status,
+            source:           'driver',
             disableResending: true,
             allowRejecting:   true,
         };

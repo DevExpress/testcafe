@@ -9,6 +9,7 @@ const initializer: ClientFunctionAdapter = {
     isProxyless:   true,
     nativeMethods: nativeMethods,
     PromiseCtor:   nativeMethods.Promise,
+    processScript: (code: string) => code,
 
     // eslint-disable-next-line hammerhead/use-native-methods
     delay: (ms: number) => new nativeMethods.Promise(resolve => nativeMethods.setTimeout.call(window, resolve, ms)),

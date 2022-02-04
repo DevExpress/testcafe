@@ -27,5 +27,5 @@ export default function evalFunction (fnCode: string, __dependencies$: unknown):
         '"use strict"; return eval(fnCode)'
     );
 
-    return evaluator(fnCode, __dependencies$, adapter.PromiseCtor, RegExp);
+    return evaluator(adapter.processScript(fnCode), __dependencies$, adapter.PromiseCtor, RegExp);
 }

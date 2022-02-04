@@ -89,7 +89,7 @@ import ClientScript from '../custom-client-scripts/client-script';
 import BrowserConnection from '../browser/connection';
 import { Quarantine } from '../utils/get-options/quarantine';
 import RequestHook from '../api/request-hooks/hook';
-import DriverStatus from '../client/driver/status';
+import DriverStatus, { DriverStatusInitialData } from '../shared/driver-status';
 import { CommandBase, ActionCommandBase } from './commands/base.js';
 import Role from '../role/role';
 import { TestRunErrorBase } from '../shared/errors';
@@ -115,7 +115,6 @@ import addRenderedWarning from '../notifications/add-rendered-warning';
 import getBrowser from '../utils/get-browser';
 import AssertionExecutor from '../assertions/executor';
 import asyncFilter from '../utils/async-filter';
-import PROXYLESS_COMMANDS from './proxyless-commands-support';
 import Fixture from '../api/structure/fixture';
 import MessageBus from '../utils/message-bus';
 import executeFnWithTimeout from '../utils/execute-fn-with-timeout';
@@ -166,6 +165,7 @@ interface DriverTask {
 
 interface DriverMessage {
     status: DriverStatus;
+    source: 'proxyless' | 'driver';
 }
 
 interface RequestTimeout {
@@ -870,8 +870,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     private _handleDriverRequest (driverStatus: DriverStatus): CommandBase | null | string {
-        const isTestDone                 = this.currentDriverTask && this.currentDriverTask.command.type ===
-                                           COMMAND_TYPE.testDone;
+        const isTestDone                 = this.currentDriverTask?.command.type === COMMAND_TYPE.testDone;
         const pageError                  = this.pendingPageError || driverStatus.pageError;
         const currentTaskRejectedByError = pageError && this._handlePageErrorStatus(pageError);
 
@@ -899,7 +898,7 @@ export default class TestRun extends AsyncEventEmitter {
         if (!this.currentDriverTask)
             return null;
 
-        const command = this.currentDriverTask.command;
+        const { command } = this.currentDriverTask;
 
         if (command.type === COMMAND_TYPE.navigateTo && (command as any).stateSnapshot)
             this.session.useStateSnapshot(JSON.parse((command as any).stateSnapshot));
@@ -1116,17 +1115,6 @@ export default class TestRun extends AsyncEventEmitter {
         return result;
     }
 
-    private async _canExecuteCommandThroughCDP (command: CommandBase): Promise<boolean> {
-        if (!this.opts.proxyless || !PROXYLESS_COMMANDS.has(command.type))
-            return false;
-
-        const browserId         = this.browserConnection.id;
-        const customActionsInfo = await this.browserConnection.provider.hasCustomActionForBrowser(browserId);
-
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        return customActionsInfo[PROXYLESS_COMMANDS.get(command.type)!];
-    }
-
     public async _internalExecuteCommand (command: CommandBase, callsite?: CallsiteRecord | string): Promise<unknown> {
         this.debugLog.command(command);
 
@@ -1139,21 +1127,6 @@ export default class TestRun extends AsyncEventEmitter {
         this._adjustConfigurationWithCommand(command);
 
         await this._setBreakpointIfNecessary(command, callsite as CallsiteRecord);
-
-        if (await this._canExecuteCommandThroughCDP(command)) {
-            const browserId = this.browserConnection.id;
-
-            if (command.type === COMMAND_TYPE.executeClientFunction)
-                return this.browserConnection.provider.executeClientFunction(browserId, command, callsite);
-            else if (command.type === COMMAND_TYPE.switchToIframe)
-                // TODO: return the switchToIframe call result when any command will not need the switching through the proxy
-                /*return */this.browserConnection.provider.switchToIframe(browserId, command, callsite, this.opts.selectorTimeout);
-            else if (command.type === COMMAND_TYPE.switchToMainWindow)
-                // TODO: return the switchToMainWindow call result when any command will not need the switching through the proxy
-                /*return */this.browserConnection.provider.switchToMainWindow(browserId);
-            else if (command.type === COMMAND_TYPE.executeSelector)
-                return this.browserConnection.provider.executeSelector(browserId, command, callsite, this.opts.selectorTimeout);
-        }
 
         if (isScreenshotCommand(command)) {
             if (this.opts.disableScreenshots) {
@@ -1468,8 +1441,7 @@ export default class TestRun extends AsyncEventEmitter {
         return this.browserConnection.activeWindowId;
     }
 
-    // NOTE: this function is time-critical and must return ASAP to avoid client disconnection
-    private async [CLIENT_MESSAGES.ready] (msg: DriverMessage): Promise<unknown> {
+    private async _onDriverReadyMessage (msg: DriverMessage): Promise<unknown> {
         if (msg.status.isObservingFileDownloadingInNewWindow)
             return this._handleFileDownloadingInNewWindowRequest();
 
@@ -1500,6 +1472,38 @@ export default class TestRun extends AsyncEventEmitter {
         return new Promise((resolve, reject) => {
             this.pendingRequest = { resolve, reject, responseTimeout };
         });
+    }
+
+    private async _generateReadyMessageByProxyless (init: DriverStatusInitialData): Promise<void> {
+        const command = await this._onDriverReadyMessage({
+            status: new DriverStatus(init),
+            source: 'proxyless',
+        });
+
+        if (!command || typeof command !== 'object')
+            return;
+
+        const { callsite } = this.currentDriverTask;
+        const browserId    = this.browserConnection.id;
+
+        const data: DriverStatusInitialData = { isCommandResult: true };
+
+        try {
+            data.result = await this.browserConnection.provider.executeCommand(command, browserId, callsite, this.opts);
+        }
+        catch (e) {
+            data.executionError = e;
+        }
+
+        this._generateReadyMessageByProxyless(data);
+    }
+
+    // NOTE: this function is time-critical and must return ASAP to avoid client disconnection
+    private async [CLIENT_MESSAGES.ready] (msg: DriverMessage): Promise<unknown> {
+        if (this.opts.proxyless)
+            return this._generateReadyMessageByProxyless(msg.status);
+
+        return this._onDriverReadyMessage(msg);
     }
 
     private async [CLIENT_MESSAGES.readyForBrowserManipulation] (msg: DriverMessage): Promise<BrowserManipulationResult> {

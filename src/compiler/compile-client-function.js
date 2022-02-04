@@ -1,4 +1,3 @@
-import hammerhead from 'testcafe-hammerhead';
 import asyncToGenerator from '@babel/runtime/helpers/asyncToGenerator';
 import { noop } from 'lodash';
 import loadBabelLibs from './babel/load-libs';
@@ -87,7 +86,6 @@ export default function compileClientFunction (fnCode, dependencies, instantiati
 
     // NOTE: we need to recompile ES6 code for the browser if we are on newer versions of Node.
     fnCode = downgradeES(fnCode);
-    fnCode = hammerhead.processScript(fnCode, false);
 
     // NOTE: check compiled code for regenerator injection
     if (REGENERATOR_FOOTPRINTS_RE.test(fnCode))
