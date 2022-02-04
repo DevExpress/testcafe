@@ -969,7 +969,7 @@ $(document).ready(function () {
                 clicked = true;
             });
 
-        const click = new ClickAutomation($link[0], new ClickOptions(), window, cursor);
+            const click = new ClickAutomation($link[0], new ClickOptions(), window, cursor);
 
             click
                 .run()
@@ -992,7 +992,7 @@ $(document).ready(function () {
                 clicked = true;
             });
 
-        const click = new ClickAutomation($span[0], new ClickOptions(), window, cursor);
+            const click = new ClickAutomation($span[0], new ClickOptions(), window, cursor);
 
             click
                 .run()
