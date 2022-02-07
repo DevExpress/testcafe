@@ -150,6 +150,12 @@ test('Should set cookies by key-value', async t => {
     await t.expect(cookies).eql(expectedCookies);
 });
 
+test('Should set on the client', async (t) => {
+    await t.expect(await t.eval(() => document.cookie)).eql('');
+    await t.setCookies({ name: 'apiCookie13', value: 'value13' });
+    await t.expect(await t.eval(() => document.cookie)).eql('apiCookie13=value13');
+});
+
 fixture`[API] Delete Cookies`
     .page('http://localhost:3000/fixtures/api/es-next/cookies/pages/index.html')
     .beforeEach(async t => {
@@ -194,4 +200,10 @@ test('Should delete cookies by objects', async t => {
         .expect(currentCookies.some(c => c.name === 'apiCookie1')).notOk()
         .expect(currentCookies.some(c => c.name === 'apiCookie3')).notOk()
         .expect(currentCookies.some(c => c.name === 'apiCookie5')).notOk();
+});
+
+test('Should delete on the client', async t => {
+    await t.expect(await t.eval(() => document.cookie)).eql('apiCookie2=value2; apiCookie1=value1');
+    await t.deleteCookies({ domain: 'localhost', path: '/fixtures/api/es-next/cookies/pages/index.html' });
+    await t.expect(await t.eval(() => document.cookie)).eql('');
 });

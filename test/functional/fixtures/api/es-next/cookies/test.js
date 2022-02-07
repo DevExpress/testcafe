@@ -15,11 +15,19 @@ describe('[API] Cookies', function () {
         return runTests('./testcafe-fixtures/cookies-test.js', 'Should set cookies by key-value');
     });
 
+    it('Should set on the client', function () {
+        return runTests('./testcafe-fixtures/cookies-test.js', 'Should set on the client');
+    });
+
     it('Should delete cookies by names and url', function () {
         return runTests('./testcafe-fixtures/cookies-test.js', 'Should delete cookies by names and url');
     });
 
     it('Should delete cookies by objects', function () {
         return runTests('./testcafe-fixtures/cookies-test.js', 'Should delete cookies by objects');
+    });
+
+    it('Should delete on the client', function () {
+        return runTests('./testcafe-fixtures/cookies-test.js', 'Should delete on the client');
     });
 });
