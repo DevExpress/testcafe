@@ -179,7 +179,7 @@ TestCafe team adheres to a set of writing guidelines that make our docs easy to 
 -   Avoid gerunds, passive voice, and past tense.
 -   Avoid double negatives.
 -   Avoid ambiguity, weasel words, and jargon.
--   Avoid vague and confusing references between a pronoun and its antecedent.
+-   Avoid vague and confusing references between pronouns and their antecedents.
 -   Be descriptive rather than prescriptive.
 -   Keep your sentences short and simple. Make sure that each sentence only expresses a single idea.
 -   Do not needlessly repeat the same piece of information.
