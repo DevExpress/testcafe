@@ -166,18 +166,23 @@ Please keep in mind that the team may **suspend or reject** pull requests. There
 -   Poor quality code.
 -   Other [development priorities](https://testcafe.io/402949/roadmap) may take precedence.
 
-We merge pull requests after the changes are documented. If you want to document a new capability, write a comment with your description to a pull request. Please, follow the [guidelines](#guidelines) during the writing. 
+We merge pull requests after the changes are documented. If you want to document a new capability, add a comment with the description to the pull request. Review our [writing guidelines](#guidelines) before you proceed. 
 
 ## Contribute to Documentation
 
-Users can't submit documentation pull requests because TestCafe stores [documentation](https://testcafe.io/documentation) in the private repository. To notify the team of an inaccuracy in the docs, create a [Github issue](https://github.com/DevExpress/testcafe/issues/new) with the `AREA: docs` label.
+Users can't submit documentation pull requests because TestCafe stores [documentation](https://testcafe.io/documentation) in a private repository. To notify the team of an inaccuracy in the docs, create a [Github issue](https://github.com/DevExpress/testcafe/issues/new) with the `AREA: docs` label.
 
 #### Guidelines
 
-TestCafe team adheres to a set of writing guidelines and practices that make our docs easy to read. When you submit a comment about a new capability or a new issue of an inaccuracy, please, follow the main rules:
+TestCafe team adheres to a set of writing guidelines that make our docs easy to read. Follow these rules when you submit written content:
 
--   You don't use gerunds, passive voice and past tense
--   Every sentence expresses a single idea
--   You don't needlessly repeat the same piece of information
+-   Avoid gerunds, passive voice, and past tense.
+-   Avoid double negatives.
+-   Avoid ambiguity, weasel words, and jargon.
+-   Avoid vague and confusing references between a pronoun and its antecedent.
+-   Be descriptive rather than prescriptive.
+-   Keep your sentences short and simple. Make sure that each sentence only expresses a single idea.
+-   Do not needlessly repeat the same piece of information.
+-   If possible, include interactive examples (codes samples, screenshots, etc).
 
 When the suggestions satisfy the above rules, it helps TestCafe team to update the documentation quicker.
