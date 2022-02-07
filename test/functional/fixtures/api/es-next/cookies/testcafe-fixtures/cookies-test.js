@@ -156,8 +156,8 @@ fixture`[API] Delete Cookies`
         await t
             .setCookies([
                 { name: 'apiCookie1', value: 'value1', domain: 'domain1.com', path: '/' },
-                { name: 'apiCookie1', value: 'value1', domain: 'domain2.com', path: '/' },
-                { name: 'apiCookie2', value: 'value2', domain: 'domain2.com', path: '/' },
+                { name: 'apiCookie1', value: 'value1', domain: 'localhost', path: '/fixtures/api/es-next/cookies/pages/index.html' },
+                { name: 'apiCookie2', value: 'value2', domain: 'localhost', path: '/fixtures/api/es-next/cookies/pages/index.html' },
                 { name: 'apiCookie3', value: 'value3', domain: 'domain2.com', path: '/path-1' },
                 { name: 'apiCookie4', value: 'value4', domain: 'domain1.com', path: '/path-2' },
                 { name: 'apiCookie5', value: 'value5', domain: 'domain2.com', path: '/path-1' },
@@ -169,14 +169,14 @@ fixture`[API] Delete Cookies`
 
 test('Should delete cookies by names and url', async t => {
     await t.expect((await t.getCookies()).length).eql(6);
-    await t.deleteCookies(['apiCookie1', 'apiCookie2'], 'https://domain2.com/');
+    await t.deleteCookies(['apiCookie1', 'apiCookie2'], 'https://localhost/fixtures/api/es-next/cookies/pages/index.html');
 
     const currentCookies = await t.getCookies();
 
     await t
         .expect(currentCookies.length).eql(4)
-        .expect(currentCookies.some(c => c.name === 'apiCookie1' && c.domain === 'domain2.com')).notOk()
-        .expect(currentCookies.some(c => c.name === 'apiCookie2' && c.domain === 'domain2.com')).notOk()
+        .expect(currentCookies.some(c => c.name === 'apiCookie1' && c.domain === 'localhost')).notOk()
+        .expect(currentCookies.some(c => c.name === 'apiCookie2' && c.domain === 'localhost')).notOk()
         .expect(currentCookies.some(c => c.name === 'apiCookie1' && c.domain === 'domain1.com')).ok();
 });
 
@@ -184,13 +184,14 @@ test('Should delete cookies by objects', async t => {
     await t.expect((await t.getCookies()).length).eql(6);
     await t.deleteCookies(
         { name: 'apiCookie1' },
-        [{ domain: 'domain2.com', path: '/' }],
+        [{ domain: 'domain2.com', path: '/path-1' }],
     );
 
     const currentCookies = await t.getCookies();
 
     await t
-        .expect(currentCookies.length).eql(3)
+        .expect(currentCookies.length).eql(2)
         .expect(currentCookies.some(c => c.name === 'apiCookie1')).notOk()
-        .expect(currentCookies.some(c => c.name === 'apiCookie2')).notOk();
+        .expect(currentCookies.some(c => c.name === 'apiCookie3')).notOk()
+        .expect(currentCookies.some(c => c.name === 'apiCookie5')).notOk();
 });
