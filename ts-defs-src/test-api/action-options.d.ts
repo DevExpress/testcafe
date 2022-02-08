@@ -174,3 +174,42 @@ interface ResizeToFitDeviceOptions {
      */
     portraitOrientation?: boolean;
 }
+
+interface CookieOptions {
+    /**
+     * Specifies the name of the cookie.
+     */
+    name?: string;
+    /**
+     * Specifies the value of the cookie.
+     */
+    value?: string;
+    /**
+     * Specifies the domain which will be matched with the cookie.
+     */
+    domain?: string;
+    /**
+     * Specifies the path which will be matched with the cookie.
+     */
+    path?: string;
+    /**
+     * Specifies the cookie expiration date defines the time, when the cookie will be automatically deleted it.
+     */
+    expires?: Date;
+    /**
+     * Specifies the cookie’s expiration in seconds from the current moment.
+     */
+    maxAge?: number | 'Infinity' | '-Infinity';
+    /**
+     * Specifies that the cookie should be transferred only over HTTPS.
+     */
+    secure?: boolean;
+    /**
+     * Specifies that the JavaScript shouldn't have access to the cookie.
+     */
+    httpOnly?: boolean;
+    /**
+     * Forbids the browser to send the cookie with requests coming from outside the site. This helps to prevent XSRF attacks..
+     */
+    sameSite?: string;
+}

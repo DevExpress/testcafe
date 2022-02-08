@@ -485,6 +485,45 @@ interface TestController {
      * @param hooks - The set of RequestHook subclasses.
      */
     removeRequestHooks(...hooks: object[]): TestControllerPromise;
+    /**
+     * Returns cookies associated with the specified cookie objects. If there are no parameters, this method returns all cookies.
+     *
+     * @param cookies - The cookie objects.
+     */
+    getCookies(cookies?: CookieOptions | CookieOptions[]): Promise<CookieOptions[]>;
+    /**
+     * Returns cookies with the specified names and URL contexts.
+     *
+     * @param names - The cookie names.
+     * @param urls - The URL.
+     */
+    getCookies(names: string | string[], urls?: string | string[]): Promise<CookieOptions[]>;
+    /**
+     * Sets the specified cookie objects.
+     *
+     * @param cookies - The cookie objects.
+     */
+    setCookies(cookies?: CookieOptions | CookieOptions[]): TestControllerPromise;
+    /**
+     * Sets cookies' name-value pairs to the specified URL contexts.
+     *
+     * @param nameValueObjects - The cookies' name-value pairs.
+     * @param url - The URL.
+     */
+    setCookies(nameValueObjects: Record<string, string> | Record<string, string>[], url: string): TestControllerPromise;
+    /**
+     * Deletes cookies. If there are no parameters, this method deletes all cookies.
+     *
+     * @param cookies - The cookies.
+     */
+    deleteCookies(cookies?: CookieOptions | CookieOptions[]): TestControllerPromise;
+    /**
+     * Deletes cookies associated with the URL contexts. If there are no parameters, this method deletes all cookies.
+     *
+     * @param names - The cookie names.
+     * @param urls - The URL.
+     */
+    deleteCookies(names: string | string[], urls?: string | string[]): TestControllerPromise;
 }
 
 interface TestControllerPromise<T=any> extends TestController, Promise<T> {
