@@ -16,6 +16,7 @@ const SelectTextAutomation   = testCafeAutomation.SelectText;
 const TypeAutomation         = testCafeAutomation.Type;
 const PressAutomation        = testCafeAutomation.Press;
 const DragToOffsetAutomation = testCafeAutomation.DragToOffset;
+const cursor                 = testCafeAutomation.cursor;
 
 const ClickOptions = testCafeAutomation.ClickOptions;
 const TypeOptions  = testCafeAutomation.TypeOptions;
@@ -217,24 +218,25 @@ $(document).ready(function () {
     };
 
     const runClickAutomation = function (el, options, callback) {
-        const offsets      = getOffsetOptions(el, options.offsetX, options.offsetY);
-        const clickOptions = new ClickOptions({
-            offsetX:  offsets.offsetX,
-            offsetY:  offsets.offsetY,
-            caretPos: options.caretPos,
+        return getOffsetOptions(el, options.offsetX, options.offsetY)
+            .then(function (offsets) {
+                const clickOptions = new ClickOptions({
+                    offsetX:  offsets.offsetX,
+                    offsetY:  offsets.offsetY,
+                    caretPos: options.caretPos,
 
-            modifiers: {
-                ctrl:  options.ctrl,
-                alt:   options.ctrl,
-                shift: options.shift,
-                meta:  options.meta,
-            },
-        });
+                    modifiers: {
+                        ctrl:  options.ctrl,
+                        alt:   options.ctrl,
+                        shift: options.shift,
+                        meta:  options.meta,
+                    },
+                });
 
-        const clickAutomation = new ClickAutomation(el, clickOptions);
+                const clickAutomation = new ClickAutomation(el, clickOptions, window, cursor);
 
-        clickAutomation
-            .run()
+                return clickAutomation.run();
+            })
             .then(callback);
     };
 

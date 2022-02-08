@@ -1,6 +1,6 @@
 import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
-import VisibleElementAutomation from './visible-element-automation';
+import VisibleElementAutomation from '../../../shared/actions/automations/visible-element-automation';
 import { focusAndSetSelection, focusByRelatedElement } from '../utils/utils';
 import cursor from '../cursor';
 import nextTick from '../utils/next-tick';
@@ -15,7 +15,7 @@ const { domUtils, eventUtils, delay } = testCafeCore;
 
 export default class RClickAutomation extends VisibleElementAutomation {
     constructor (element, clickOptions) {
-        super(element, clickOptions);
+        super(element, clickOptions, window, cursor);
 
         this.modifiers = clickOptions.modifiers;
         this.caretPos  = clickOptions.caretPos;

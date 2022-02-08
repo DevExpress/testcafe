@@ -21,6 +21,14 @@ describe('dom utils', () => {
         expect(await isBodyElement(await utils.getNode('html'))).eql(false);
         expect(await isBodyElement(await utils.getNode('body'))).eql(true);
     });
+
+    it('parentNode', async () => {
+        // TODO
+    });
+
+    it('getParents', async () => {
+        // TODO
+    });
 });
 
 

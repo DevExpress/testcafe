@@ -1,8 +1,6 @@
 const { expect }       = require('chai');
 const utils            = require('./utils');
 const { MoveOptions }  = require('../../lib/test-run/commands/options');
-const Cursor           = require('../../lib/shared/actions/cursor');
-const { CursorUICdp }  = require('../../lib/browser/provider/built-in/dedicated/chrome/cdp-client/utils/cursor');
 const ExecutionContext = require('../../lib/browser/provider/built-in/dedicated/chrome/cdp-client/execution-context');
 const MoveAutomation   = require('../../lib/shared/actions/automations/move');
 
@@ -27,19 +25,14 @@ describe('MoveAutomation', () => {
     beforeEach(utils.beforeEach);
 
     it('basic', async () => {
-        const el1              = await utils.getNode('#target1');
-        const el2              = await utils.getNode('#target2');
-        const devicePixelRatio = await utils.getClient().Runtime.evaluate({ expression: 'window.devicePixelRatio' });
-        const cursorUI         = new CursorUICdp(devicePixelRatio.result.value);
-
-        await cursorUI.show();
+        const el1      = await utils.getNode('#target1');
+        const el2      = await utils.getNode('#target2');
+        const cursor   = await utils.createCursor();
 
         const moveOpts = new MoveOptions(moveOptions, false);
 
-        const cursor = new Cursor(ExecutionContext.current, cursorUI);
-
-        const move1 = await MoveAutomation.create(el1, ExecutionContext.current, cursor, moveOpts);
-        const move2 = await MoveAutomation.create(el2, ExecutionContext.current, cursor, moveOpts);
+        const move1 = await MoveAutomation.create(el1, moveOpts, ExecutionContext.current, cursor);
+        const move2 = await MoveAutomation.create(el2, moveOpts, ExecutionContext.current, cursor);
 
         await move1.run();
 
@@ -54,18 +47,11 @@ describe('MoveAutomation', () => {
     });
 
     it('events', async () => {
-        const target = await utils.getNode('#target10');
-
-        const devicePixelRatio = await utils.getClient().Runtime.evaluate({ expression: 'window.devicePixelRatio' });
-        const cursorUI         = new CursorUICdp(devicePixelRatio.result.value);
-
-        await cursorUI.show();
-
+        const target   = await utils.getNode('#target10');
         const moveOpts = new MoveOptions(moveOptions, false);
+        const cursor   = await utils.createCursor();
 
-        const cursor = new Cursor(ExecutionContext.current, cursorUI);
-
-        const move = await MoveAutomation.create(target, ExecutionContext.current, cursor, moveOpts);
+        const move = await MoveAutomation.create(target, moveOpts, ExecutionContext.current, cursor);
 
         await move.run();
 

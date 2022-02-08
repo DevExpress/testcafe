@@ -2,7 +2,7 @@ import { LeftTopValues } from '../../../../../../../shared/utils/values/axis-val
 import BoundaryValues, { BoundaryValuesData } from '../../../../../../../shared/utils/values/boundary-values';
 import { Dictionary } from '../../../../../../../configuration/interfaces';
 import Protocol from 'devtools-protocol/types/protocol';
-import { getScrollingElement, getIframeByElement } from './dom-utils';
+import { getScrollingElement } from './dom-utils';
 import ExecutionContext from '../execution-context';
 import * as clientsManager from '../clients-manager';
 import { ServerNode, PositionDimensions } from '../types';
@@ -61,7 +61,7 @@ export async function getBoxModel (node: ServerNode): Promise<Protocol.DOM.BoxMo
     return boxModel.model;
 }
 
-async function getElementDimensions (node: ServerNode): Promise<PositionDimensions> {
+export async function getElementDimensions (node: ServerNode): Promise<PositionDimensions> {
     // NOTE: for some reason this method call is required for CSS.getComputedStyleForNode
     // TODO: remove this line after the problem is clear
     await clientsManager.getClient().DOM.getDocument({ });
@@ -106,22 +106,6 @@ async function getElementDimensions (node: ServerNode): Promise<PositionDimensio
     };
 }
 
-export async function getClientDimensions (node: ServerNode): Promise<PositionDimensions> {
-    const elementDimensions = await getElementDimensions(node);
-    const parentFrame       = await getIframeByElement(node);
-
-    if (parentFrame) {
-        const frameBoxModel = await getBoxModel(parentFrame);
-
-        elementDimensions.left   -= frameBoxModel.content[0];
-        elementDimensions.top    -= frameBoxModel.content[1];
-        elementDimensions.bottom -= frameBoxModel.content[1];
-        elementDimensions.right  -= frameBoxModel.content[0];
-    }
-
-    return elementDimensions;
-}
-
 export async function getBordersWidth (node: ServerNode): Promise<BoundaryValuesData> {
     const dimensions = await getElementDimensions(node);
 
@@ -134,6 +118,12 @@ export async function getElementPadding (node: ServerNode): Promise<BoundaryValu
 
 export async function getElementScroll (node: ServerNode): Promise<LeftTopValues<number>> {
     return getScroll(node);
+}
+
+export async function hasScroll (node: ServerNode): Promise<boolean> {
+    const scroll = await getElementScroll(node);
+
+    return scroll.left > 0 || scroll.top > 0;
 }
 
 export async function getWindowDimensions (executionContext?: ExecutionContext): Promise<BoundaryValues> {

@@ -73,6 +73,10 @@ export async function findIframeByWindow (context: ExecutionContext): Promise<Se
     return null;
 }
 
+export function getTagName (node: ServerNode): string {
+    return node.nodeName.toLowerCase();
+}
+
 function hasTagName (node: ServerNode, tagName: string): boolean {
     return node.nodeName.toLowerCase() === tagName.toLowerCase();
 }
@@ -84,6 +88,11 @@ export function isHtmlElement (node: ServerNode): boolean {
 export function isBodyElement (node: ServerNode): boolean {
     return hasTagName(node, 'body');
 }
+
+export function isImgElement (node: ServerNode): boolean {
+    return hasTagName(node, 'img');
+}
+
 
 export async function getScrollingElement (node?: ServerNode): Promise<ServerNode> {
     const client = clientsManager.getClient();
@@ -125,7 +134,7 @@ export async function getDocumentElement (win: ExecutionContext): Promise<Server
     if (exceptionDetails)
         throw exceptionDetails;
 
-    return describeNode(DOM, resultObj.value.objectId);
+    return describeNode(DOM, resultObj.objectId as string);
 }
 
 export async function isDocumentElement (el: ServerNode): Promise<boolean> {
@@ -136,4 +145,106 @@ export async function isDocumentElement (el: ServerNode): Promise<boolean> {
 
 export async function isIframeWindow (): Promise<boolean> {
     return false;
+}
+
+export async function closest (el: ServerNode, selector: string): Promise<ServerNode | null> {
+    const { Runtime, DOM } = clientsManager.getClient();
+
+    const { exceptionDetails, result: resultObj } = await Runtime.callFunctionOn({
+        arguments:           [{ objectId: el.objectId }, { value: selector }],
+        functionDeclaration: `function (el, selector) {
+            debugger;
+            return window["%proxyless%"].nativeMethods.closest.call(el, selector);
+        }`,
+        executionContextId: ExecutionContext.getCurrentContextId(),
+    });
+
+    if (exceptionDetails)
+        throw exceptionDetails;
+
+    return resultObj.value ? describeNode(DOM, resultObj.value.objectId) : null;
+}
+
+export async function getNodeText (el: ServerNode): Promise<string> {
+    const { Runtime } = clientsManager.getClient();
+
+    const { exceptionDetails, result: resultObj } = await Runtime.callFunctionOn({
+        arguments:           [{ objectId: el.objectId }],
+        functionDeclaration: `function (el) {
+            return window["%proxyless%"].nativeMethods.nodeTextContentGetter.call(el);
+        }`,
+        executionContextId: ExecutionContext.getCurrentContextId(),
+    });
+
+    if (exceptionDetails)
+        throw exceptionDetails;
+
+    return resultObj.value;
+}
+
+export async function containsElement (el1: ServerNode, el2: ServerNode): Promise<boolean> {
+    const { Runtime } = clientsManager.getClient();
+
+    const { exceptionDetails, result: resultObj } = await Runtime.callFunctionOn({
+        arguments:           [{ objectId: el1.objectId }, { objectId: el2.objectId }],
+        functionDeclaration: `function (el1, el2) {
+            do {
+                if (el2.parentNode === el1)
+                    return true;
+            }
+            while(el2 = el2.parentNode);
+            return false;
+        }`,
+        executionContextId: ExecutionContext.getCurrentContextId(),
+    });
+
+    if (exceptionDetails)
+        throw exceptionDetails;
+
+    return resultObj.value;
+}
+
+export function getImgMapName (el: ServerNode): string {
+    if (!el.attributes)
+        return '';
+
+    const useMapIndex = el.attributes.indexOf('usemap');
+
+    if (useMapIndex === -1)
+        return '';
+
+    return el.attributes[useMapIndex + 1].substring(1);
+}
+
+export async function getParentNode ({ objectId }: ServerNode): Promise<ServerNode | null> {
+    const { Runtime, DOM } = clientsManager.getClient();
+
+    const parent = await Runtime.callFunctionOn({
+        functionDeclaration: `function () {
+            const el = this.assignedSlot || this;
+
+            return this.parentNode || el.host;
+        }`,
+        objectId,
+    });
+
+    if (parent.result.value !== null && parent.result.objectId)
+        return describeNode(DOM, parent.result.objectId || '');
+
+    return null;
+}
+
+export async function getParents (el: ServerNode): Promise<ServerNode[]> {
+    // TODO: check this method
+    const result = [];
+
+    let parent = await getParentNode(el);
+
+    while (parent) {
+        result.push(parent);
+
+        parent = await getParentNode(parent);
+    }
+
+    return result;
 }

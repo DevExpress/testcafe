@@ -1,6 +1,6 @@
 const { expect }              = require('chai');
 const ExecutionContext        = require('../../lib/browser/provider/built-in/dedicated/chrome/cdp-client/execution-context');
-const { getClientDimensions } = require('../../lib/browser/provider/built-in/dedicated/chrome/cdp-client/utils/style-utils');
+const { getClientDimensions } = require('../../lib/browser/provider/built-in/dedicated/chrome/cdp-client/utils/position-utils');
 
 const utils = require('./utils');
 
@@ -299,22 +299,27 @@ describe('position utils', () => {
     });
 
     it('getElementFromPoint', async () => {
-        expect((await getElementFromPoint({ x: 31, y: 26 })).object.description).eql('div#target1');
-        expect((await getElementFromPoint({ x: 64, y: 26 })).object.description).eql('div#target1');
-        expect((await getElementFromPoint({ x: 64, y: 69 })).object.description).eql('div#target1');
-        expect((await getElementFromPoint({ x: 31, y: 69 })).object.description).eql('div#target1');
+        const target1 = await utils.getNode('#target1');
+        const html    = await utils.getNode('html');
+        const iframe  = await utils.getNode('iframe');
+        const h1      = await utils.getNode({ expression: 'document.querySelector("#target7").shadowRoot.querySelector("h1")' });
 
-        expect((await getElementFromPoint({ x: 30, y: 25 })).object.description).eql('html');
-        expect((await getElementFromPoint({ x: 65, y: 25 })).object.description).eql('html');
-        expect((await getElementFromPoint({ x: 65, y: 70 })).object.description).eql('html');
-        expect((await getElementFromPoint({ x: 30, y: 70 })).object.description).eql('html');
+        expect((await getElementFromPoint({ x: 31, y: 26 })).backendNodeId).eql(target1.backendNodeId);
+        expect((await getElementFromPoint({ x: 64, y: 26 })).backendNodeId).eql(target1.backendNodeId);
+        expect((await getElementFromPoint({ x: 64, y: 69 })).backendNodeId).eql(target1.backendNodeId);
+        expect((await getElementFromPoint({ x: 31, y: 69 })).backendNodeId).eql(target1.backendNodeId);
 
-        expect((await getElementFromPoint({ x: 300, y: 299 })).object.description).eql('html');
-        expect((await getElementFromPoint({ x: 301, y: 300 })).object.description).eql('iframe');
-        expect((await getElementFromPoint({ x: 302, y: 301 })).object.description).eql('iframe');
-        expect((await getElementFromPoint({ x: 303, y: 302 })).object.description).eql('iframe');
+        expect((await getElementFromPoint({ x: 30, y: 25 })).backendNodeId).eql(html.backendNodeId);
+        expect((await getElementFromPoint({ x: 65, y: 25 })).backendNodeId).eql(html.backendNodeId);
+        expect((await getElementFromPoint({ x: 65, y: 70 })).backendNodeId).eql(html.backendNodeId);
+        expect((await getElementFromPoint({ x: 30, y: 70 })).backendNodeId).eql(html.backendNodeId);
 
-        expect((await getElementFromPoint({ x: 401, y: 32 })).object.description).eql('h1');
+        expect((await getElementFromPoint({ x: 300, y: 299 })).backendNodeId).eql(html.backendNodeId);
+        expect((await getElementFromPoint({ x: 301, y: 300 })).backendNodeId).eql(iframe.backendNodeId);
+        expect((await getElementFromPoint({ x: 302, y: 301 })).backendNodeId).eql(iframe.backendNodeId);
+        expect((await getElementFromPoint({ x: 303, y: 302 })).backendNodeId).eql(iframe.backendNodeId);
+
+        expect((await getElementFromPoint({ x: 401, y: 32 })).backendNodeId).eql(h1.backendNodeId);
     });
 
     it('get window position', async () => {

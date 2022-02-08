@@ -277,7 +277,7 @@ export default class ScrollAutomation {
     }
 
     private _isTargetElementObscuredInPoint (point: AxisValues<number>): boolean {
-        const elementInPoint = positionUtils.getElementFromPoint(point.x, point.y);
+        const elementInPoint = positionUtils.getElementFromPoint(point);
 
         if (!elementInPoint)
             return false;

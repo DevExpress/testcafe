@@ -6,7 +6,7 @@ import {
     delay,
 } from '../../deps/testcafe-core';
 import getElementFromPoint from '../../get-element';
-import VisibleElementAutomation from '../visible-element-automation';
+import VisibleElementAutomation from '../../../../shared/actions/automations/visible-element-automation';
 import DragMoveAutomation from '../move/drag-move';
 import { MoveOptions } from '../../../../test-run/commands/options';
 import cursor from '../../cursor';
@@ -22,7 +22,7 @@ const focusBlurSandbox = hammerhead.eventSandbox.focusBlur;
 
 export default class DragAutomationBase extends VisibleElementAutomation {
     constructor (element, mouseOptions) {
-        super(element, mouseOptions);
+        super(element, mouseOptions, window, cursor);
 
         this.modifiers = mouseOptions.modifiers;
         this.speed     = mouseOptions.speed;
@@ -66,8 +66,8 @@ export default class DragAutomationBase extends VisibleElementAutomation {
         throw new Error('Not implemented');
     }
 
-    _drag () {
-        const { element, offsets, endPoint } = this._getDestination();
+    async _drag () {
+        const { element, offsets, endPoint } = await this._getDestination();
 
         this.endPoint = endPoint;
 
@@ -80,7 +80,7 @@ export default class DragAutomationBase extends VisibleElementAutomation {
             skipDefaultDragBehavior: this.simulateDefaultBehavior === false,
         }, false);
 
-        return DragMoveAutomation.create(element, window, cursor, dragOptions)
+        return DragMoveAutomation.create(element, dragOptions, window, cursor)
             .then(moveAutomation => {
                 return moveAutomation.run();
             })

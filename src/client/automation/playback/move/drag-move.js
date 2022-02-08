@@ -33,17 +33,17 @@ function findDraggableElement (element) {
 }
 
 export default class DragMoveAutomation extends MoveAutomation {
-    constructor (element, offset, win, cursor, moveOptions) {
-        super(element, offset, win, cursor, moveOptions);
+    constructor (element, offset, moveOptions, win, cursor) {
+        super(element, offset, moveOptions, win, cursor);
 
         this.dragElement      = null;
         this.dragAndDropState = new DragAndDropState();
     }
 
-    static async create (el, win, cursor, moveOptions) {
+    static async create (el, moveOptions, win, cursor) {
         const { element, offset } = await MoveAutomation.getTarget(el, win, new AxisValues(moveOptions.offsetX, moveOptions.offsetY));
 
-        return new DragMoveAutomation(element, offset, win, cursor, moveOptions);
+        return new DragMoveAutomation(element, offset, moveOptions, win, cursor);
     }
 
     _getCursorSpeed () {

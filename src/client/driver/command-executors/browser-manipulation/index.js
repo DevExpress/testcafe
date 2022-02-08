@@ -130,9 +130,8 @@ class ManipulationExecutor {
                         throw error;
                     });
             })
+            .then(() => ensureCropOptions(this.element, this.command.options))
             .then(() => {
-                ensureCropOptions(this.element, this.command.options);
-
                 const { scrollTargetX, scrollTargetY, scrollToCenter } = this.command.options;
 
                 const scrollAutomation = new ScrollAutomation(this.element, new ScrollOptions({

@@ -14,8 +14,9 @@ function fromPoint (point/*: AxisValuesData<number>*/, underTopShadowUIElement) 
     let topElement = null;
 
     return testCafeUI.hide(underTopShadowUIElement)
-        .then(() => {
-            topElement = positionUtils.getElementFromPoint(point.x, point.y);
+        .then(() => positionUtils.getElementFromPoint(point))
+        .then(el => {
+            topElement = el;
 
             return testCafeUI.show(underTopShadowUIElement);
         })

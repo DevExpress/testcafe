@@ -6,6 +6,7 @@ const textSelection     = testCafeCore.textSelection;
 const testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
 const PressAutomation    = testCafeAutomation.Press;
 const ClickAutomation    = testCafeAutomation.Click;
+const cursor             = testCafeAutomation.cursor;
 
 testCafeCore.preventRealEvents();
 
@@ -259,7 +260,7 @@ $(document).ready(function () {
             shadowContainer.attachShadow({ mode: 'open' }).appendChild(input);
             input.focus();
 
-            const click = new ClickAutomation(input, {});
+            const click = new ClickAutomation(input, {}, window, cursor);
             const press = new PressAutomation(parseKeySequence('backspace').combinations, {});
 
             click.run()

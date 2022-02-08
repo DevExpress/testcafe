@@ -22,7 +22,8 @@ import { // @ts-ignore
     Press as PressAutomation, // @ts-ignore
     Upload as UploadAutomation, // @ts-ignore
     SetScroll as SetScrollAutomation, // @ts-ignore
-    ScrollIntoView as ScrollIntoViewAutomation,
+    ScrollIntoView as ScrollIntoViewAutomation, // @ts-ignore
+    cursor,
 } from '../deps/testcafe-automation';
 
 import {
@@ -67,7 +68,7 @@ ActionExecutor.ACTIONS_HANDLERS[COMMAND_TYPE.click] = {
         if (/option|optgroup/.test(domUtils.getTagName(elements[0])))
             return new SelectChildClickAutomation(elements[0], command.options);
 
-        return new ClickAutomation(elements[0], command.options);
+        return new ClickAutomation(elements[0], command.options, window, cursor);
     },
 };
 

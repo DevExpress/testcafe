@@ -10,6 +10,7 @@ import * as positionUtils from './utils/position-utils';
 import * as styleUtils from './utils/style-utils';
 import * as eventUtils from './utils/event-utils';
 import createEventSequence from './utils/create-event-sequence';
+import createMouseClickStrategy from './automations/click/create-mouse-click-strategy';
 
 
 initializeAdapter({
@@ -70,6 +71,12 @@ initializeAdapter({
         isTouchDevice: false,
     },
 
+    utils: {
+        extend (target: Record<string, any>, ...args): Record<string, any> {
+            return Object.assign(target, ...args);
+        },
+    },
+
     createEventSequence,
 
     sendRequestToFrame: () => { },
@@ -79,4 +86,15 @@ initializeAdapter({
     position:           positionUtils,
     style:              styleUtils,
     event:              eventUtils,
+
+    ensureMouseEventAfterScroll: () => Promise.resolve(),
+
+    automations: {
+        click: {
+            createMouseClickStrategy,
+        },
+
+        _ensureWindowAndCursorForLegacyTests () {
+        },
+    },
 });

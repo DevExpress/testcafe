@@ -15,6 +15,7 @@ const DblClickAutomation         = testCafeAutomation.DblClick;
 const ClickAutomation            = testCafeAutomation.Click;
 const SelectChildClickAutomation = testCafeAutomation.SelectChildClick;
 const getOffsetOptions           = testCafeAutomation.getOffsetOptions;
+const cursor                     = testCafeAutomation.cursor;
 
 const testCafeUI    = window.getTestCafeModule('testCafeUI');
 const selectElement = testCafeUI.selectElement;
@@ -120,25 +121,27 @@ $(document).ready(function () {
     };
 
     const runDblClickAutomation = function (el, options, callback) {
-        const clickOptions = new ClickOptions();
-        const offsets      = getOffsetOptions(el, options.offsetX, options.offsetY);
+        return getOffsetOptions(el, options.offsetX, options.offsetY)
+            .then(function (offsets) {
+                const clickOptions = new ClickOptions();
 
-        clickOptions.offsetX  = offsets.offsetX;
-        clickOptions.offsetY  = offsets.offsetY;
-        clickOptions.caretPos = options.caretPos;
+                clickOptions.offsetX  = offsets.offsetX;
+                clickOptions.offsetY  = offsets.offsetY;
+                clickOptions.caretPos = options.caretPos;
 
-        clickOptions.modifiers = {
-            ctrl:  options.ctrl,
-            alt:   options.ctrl,
-            shift: options.shift,
-            meta:  options.meta,
-        };
+                clickOptions.modifiers = {
+                    ctrl:  options.ctrl,
+                    alt:   options.ctrl,
+                    shift: options.shift,
+                    meta:  options.meta,
+                };
 
-        const dblClickAutomation = new DblClickAutomation(el, clickOptions);
+                const dblClickAutomation = new DblClickAutomation(el, clickOptions);
 
-        dblClickAutomation
-            .run()
-            .then(callback);
+                return dblClickAutomation
+                    .run()
+                    .then(callback);
+            });
     };
 
     const preventDefault = function (e) {
@@ -405,28 +408,30 @@ $(document).ready(function () {
     };
 
     const runClickAutomation = function (el, options, callback) {
-        const clickOptions = new ClickOptions();
-        const offsets      = getOffsetOptions(el, options.offsetX, options.offsetY);
+        return getOffsetOptions(el, options.offsetX, options.offsetY)
+            .then(function (offsets) {
+                const clickOptions = new ClickOptions();
 
-        clickOptions.offsetX  = offsets.offsetX;
-        clickOptions.offsetY  = offsets.offsetY;
-        clickOptions.caretPos = options.caretPos;
+                clickOptions.offsetX  = offsets.offsetX;
+                clickOptions.offsetY  = offsets.offsetY;
+                clickOptions.caretPos = options.caretPos;
 
-        clickOptions.modifiers = {
-            ctrl:  options.ctrl,
-            alt:   options.ctrl,
-            shift: options.shift,
-            meta:  options.meta,
-        };
+                clickOptions.modifiers = {
+                    ctrl:  options.ctrl,
+                    alt:   options.ctrl,
+                    shift: options.shift,
+                    meta:  options.meta,
+                };
 
-        const clickAutomation = /opt/i.test(el.tagName) ?
-            new SelectChildClickAutomation(el, clickOptions) :
-            new ClickAutomation(el, clickOptions);
+                const clickAutomation = /opt/i.test(el.tagName) ?
+                    new SelectChildClickAutomation(el, clickOptions) :
+                    new ClickAutomation(el, clickOptions, window, cursor);
 
-        clickAutomation
-            .run()
-            .then(function () {
-                callback();
+                return clickAutomation
+                    .run()
+                    .then(function () {
+                        callback();
+                    });
             });
     };
 
@@ -461,7 +466,9 @@ $(document).ready(function () {
             equal(select.selectedIndex, 0);
 
             runClickAutomation(option, {}, function () {
+
                 equal(select.selectedIndex, 2);
+
                 window.setTimeout(function () {
                     startNext();
                 }, 0);
