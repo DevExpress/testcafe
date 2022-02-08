@@ -184,5 +184,3 @@ The TestCafe team adheres to a set of writing guidelines that make our documenta
 -   Keep your sentences short and simple. Make sure that each sentence expresses only a single idea.
 -   Do not repeat the same piece of information.
 -   If possible, include interactive examples (codes samples, screenshots, etc.).
-
-When the suggestions satisfy the above rules, it helps the TestCafe team to update the documentation.
