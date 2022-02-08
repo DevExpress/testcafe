@@ -11,6 +11,7 @@
         -   [Create a Minimal Working Example](#create-a-minimal-working-example)
     -   [Ask for Community Support](#ask-for-community-support)
 -   [Contribute Code](#contribute-code)
+-   [Contribute to Documentation](#contribute-to-documentation)
 
 ## The TestCafe Community
 
@@ -28,7 +29,7 @@ If you want to test the development version of TestCafe, or contribute code to t
 
 #### Prerequisites
 
-TestCafe is a [Node.js](https://nodejs.org/en/) application. It supports [all actively maintained](https://github.com/nodejs/Release#release-schedule) versions of the Node.js framework. The installation process requires the presence of the [node package manager](https://www.npmjs.com/) (npm) software utility.
+TestCafe is a [Node.js](https://nodejs.org/en/) application. It supports [all actively maintained](https://github.com/nodejs/Release#release-schedule) versions of the Node.js framework. The installation process requires the [node package manager](https://www.npmjs.com/) (npm) software utility.
 
 Run the following shell command to check if your operating system contains `node` and `npm`:
 
@@ -165,4 +166,21 @@ Please keep in mind that the team may **suspend or reject** pull requests. There
 -   Poor quality code.
 -   Other [development priorities](https://testcafe.io/402949/roadmap) may take precedence.
 
-Please also note that we do not merge pull requests until the changes are documented.
+We merge pull requests after the changes are documented. If you want to document a new capability, add a comment with the description to the pull request. Review our [writing guidelines](#guidelines) before you proceed. 
+
+## Contribute to Documentation
+
+Users cannot submit documentation pull requests because TestCafe stores [documentation](https://testcafe.io/documentation) in a private repository. To notify the team of an inaccuracy in the documentation, create a [Github issue](https://github.com/DevExpress/testcafe/issues/new) with the `AREA: docs` label.
+
+#### Guidelines
+
+The TestCafe team adheres to a set of writing guidelines that make our documentation easy to read. Follow these rules when you submit written content:
+
+-   Avoid gerunds, passive voice, and past tense.
+-   Avoid double negatives.
+-   Avoid misleading or ambiguous words and jargon.
+-   Avoid vague and confusing references between pronouns and their antecedents.
+-   Be descriptive rather than prescriptive.
+-   Keep your sentences short and simple. Make sure that each sentence expresses only a single idea.
+-   Do not repeat the same piece of information.
+-   If possible, include interactive examples (codes samples, screenshots, etc.).
