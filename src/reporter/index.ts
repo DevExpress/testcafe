@@ -366,7 +366,7 @@ export default class Reporter {
                 const passed            = !errors.length;
                 const quarantineAttempt = index + 1;
 
-                result[quarantineAttempt] = { passed };
+                result[quarantineAttempt] = { passed, errors };
 
                 return result;
             }, {});

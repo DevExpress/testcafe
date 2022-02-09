@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>gh-6722</title>
+</head>
+<body>
+
+<input id="testInput"/>
+<button id="successButton" onclick="onSuccessButtonClick()">Success</button>
+<button id="failButton" onclick="onFailButtonClick()">Fail</button>
+
+<script>
+    function onSuccessButtonClick () {
+        const successInput = document.getElementById('testInput');
+
+        successInput.value = 'success';
+    }
+
+    function onFailButtonClick () {
+        const testInput = document.getElementById('testInput');
+        const isError   = testInput.value !== 'success'
+
+        if (isError)
+            throw Error(testInput.value)
+    }
+</script>
+</body>
+</html>
