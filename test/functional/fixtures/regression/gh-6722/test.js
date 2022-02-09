@@ -6,16 +6,16 @@ const ERROR_CODES = {
     server: 'E2',
 };
 
-const getCustomReporter = function (quarantine) {
+const getCustomReporter = function (attempts) {
     return {
-        name: () => {
+        name: function () {
             return {
-                reportTestDone: (name, testRunInfo) => {
-                    if (testRunInfo.quarantine)
-                        Object.assign(quarantine, testRunInfo.quarantine);
+                reportTestDone: function (name, { errs, quarantine }) {
+                    if (quarantine)
+                        Object.assign(attempts, quarantine);
 
-                    if (testRunInfo.errs)
-                        testRunInfo.errs.forEach(err => this.write(err));
+                    if (errs && errs.length > 0)
+                        throw new Error(name);
                 },
                 reportFixtureStart: () => {
                 },
@@ -77,8 +77,9 @@ describe('[Regression](GH-6722)', function () {
     });
 
     it('Should fail with two success and three fail attempts', function () {
-        const quarantine = {};
-        const reporter   = [getCustomReporter(quarantine)];
+        const quarantine        = {};
+        const reporter          = [getCustomReporter(quarantine)];
+        const SHOULD_FAIL_ERROR = 'Test should fail';
 
         return runTests('./testcafe-fixtures/index.js', 'Throw exceptions on three attempts', {
             quarantineMode: true,
@@ -86,8 +87,11 @@ describe('[Regression](GH-6722)', function () {
             skipJsErrors:   false,
             reporter,
         }).then(() => {
-            throw Error('Test should fail');
-        }).catch(() => {
+            throw new Error(SHOULD_FAIL_ERROR);
+        }).catch((err) => {
+            if (err && err.message === SHOULD_FAIL_ERROR)
+                throw new Error(SHOULD_FAIL_ERROR);
+
             expectAttempts(FAIL_RESULT_ATTEMPTS, quarantine);
         });
     });

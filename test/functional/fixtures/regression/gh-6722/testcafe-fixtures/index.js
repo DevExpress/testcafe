@@ -18,7 +18,7 @@ const failTestCounter    = {
 const processAttempt = async (attempts, testNumber, t) => {
     switch (attempts[testNumber]) {
         case EXCEPTION.Server:
-            throw Error(`Custom server exception on test #${ testNumber }`);
+            throw new Error(`Custom server exception on test #${ testNumber }`);
         case EXCEPTION.Client:
             await t
                 .typeText('#testInput', `Custom client exception on test #${ testNumber }`)
