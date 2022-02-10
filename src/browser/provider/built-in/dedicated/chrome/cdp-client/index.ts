@@ -28,8 +28,18 @@ import { NavigateToCommand, SwitchToIframeCommand } from '../../../../../../test
 import ExecutionContext from './execution-context';
 import * as clientsManager from './clients-manager';
 import COMMAND_TYPE from '../../../../../../test-run/commands/type';
-import { CommandBase } from '../../../../../../test-run/commands/base';
+import { ActionCommandBase, CommandBase } from '../../../../../../test-run/commands/base';
 import ConsoleCollector from './console-collector';
+import ActionExecutor from '../../../../../../shared/actions/action-executor';
+import BarriersComplex from '../../../../../../shared/barriers/complex-barrier';
+import ClientRequestEmitter from './barriers/emitters/client-request';
+import ScriptExecutionEmitter from './barriers/emitters/script-execution';
+import PageUnloadBarrier from './barriers/page-unload-barrier';
+import { AutomationErrorCtors } from '../../../../../../shared/types';
+import ClickAutomation from '../../../../../../shared/actions/automations/click';
+import Cursor from '../../../../../../shared/actions/cursor';
+import { CursorUICdp } from './utils/cursor';
+import { ServerNode } from './types';
 
 const DEBUG_SCOPE = (id: string): string => `testcafe:browser:provider:built-in:chrome:browser-client:${id}`;
 const DOWNLOADS_DIR = path.join(os.homedir(), 'Downloads');
@@ -42,6 +52,16 @@ interface ConsoleMessages {
     error: string[];
     info: string[];
 }
+
+ActionExecutor.ACTIONS_HANDLERS[COMMAND_TYPE.click] = {
+    create: (command, elements) => {
+        const cursorUI = new CursorUICdp();
+        const cursor   = new Cursor(ExecutionContext.current, cursorUI);
+
+        // @ts-ignore
+        return new ClickAutomation(elements[0], command.options, ExecutionContext.current, cursor);
+    },
+};
 
 export class BrowserClient {
     private _clients: Dictionary<remoteChrome.ProtocolApi> = {};
@@ -100,9 +120,10 @@ export class BrowserClient {
     }
 
     private async _createClient (): Promise<remoteChrome.ProtocolApi> {
-        const target                     = await this._getActiveTab();
-        const client                     = await remoteChrome({ target, port: this._runtimeInfo.cdpPort });
-        const { Page, Network, Runtime } = client;
+        const target = await this._getActiveTab();
+        const client = await remoteChrome({ target, port: this._runtimeInfo.cdpPort });
+
+        const { Page, Network, Runtime, DOM, CSS, Overlay } = client;
 
         this._clients[this._clientKey] = client;
 
@@ -113,6 +134,12 @@ export class BrowserClient {
 
         await Network.enable({});
         await Runtime.enable();
+
+        if (this._proxyless) {
+            await DOM.enable();
+            await CSS.enable();
+            await Overlay.enable();
+        }
 
         return client;
     }
@@ -427,6 +454,39 @@ export class BrowserClient {
         return { warn: warning, ...massages } as ConsoleMessages;
     }
 
+    private async executeAction (command: ActionCommandBase, callsite: CallsiteRecord, opts: Dictionary<OptionValue>): Promise<unknown> {
+        const client = await this.getActiveClient();
+
+        if (!client)
+            throw new Error('Cannot get the active browser client');
+
+        const executeSelectorCb = (selector: ExecuteSelectorCommand, errCtors: AutomationErrorCtors, startTime: number): Promise<ServerNode> => {
+            return this._clientFunctionExecutor.getNode({
+                DOM:      client.DOM,
+                Runtime:  client.Runtime,
+                command:  selector,
+                errCtors: {
+                    invisible: errCtors.invisible as string,
+                    notFound:  errCtors.notFound as string,
+                },
+
+                selectorTimeout: opts.selectorTimeout as number,
+                callsite, startTime,
+            });
+        };
+
+        const executor = new ActionExecutor(command, opts.selectorTimeout as number, opts.speed as number, executeSelectorCb);
+
+        const clientRequestEmitter   = new ClientRequestEmitter(client.Network, ExecutionContext.current.frameId);
+        const scriptExecutionEmitter = new ScriptExecutionEmitter(client.Network, ExecutionContext.current.frameId);
+        const pageUnloadBarrier      = new PageUnloadBarrier(client.Page, ExecutionContext.current.frameId);
+        const barriers               = new BarriersComplex(clientRequestEmitter, scriptExecutionEmitter, pageUnloadBarrier);
+
+        return executor.execute(barriers);
+        // TODO: client side behavior
+        // .then(elements => createReplicator(new SelectorElementActionTransform()).encode(elements));
+    }
+
     public async executeCommand (command: CommandBase, callsite: CallsiteRecord, opts: Dictionary<OptionValue>): Promise<unknown> {
         switch (command.type) {
             case COMMAND_TYPE.executeClientFunction:
@@ -443,6 +503,8 @@ export class BrowserClient {
                 return null;
             case COMMAND_TYPE.getBrowserConsoleMessages:
                 return null;
+            case COMMAND_TYPE.click:
+                return this.executeAction(command as ActionCommandBase, callsite, opts);
             default:
                 throw new Error(`The "${command.type}" command is not supported currently in proxyless mode! ` + JSON.stringify(command));
         }

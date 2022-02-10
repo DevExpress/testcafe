@@ -20,4 +20,7 @@ test('test', async t => {
     await t.expect(warn[0]).eql('warning');
     await t.expect(info.length).eql(1);
     await t.expect(info[0]).eql('this is the test page');
+
+    await t.click('button');
+    await t.expect(Selector('button').textContent).eql('~clicked~');
 });

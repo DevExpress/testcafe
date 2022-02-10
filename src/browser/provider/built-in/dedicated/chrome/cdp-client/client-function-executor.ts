@@ -35,6 +35,7 @@ interface SelectorSnapshotArgs {
     callsite: CallsiteRecord;
     selectorTimeout: number;
     errCtors: AutomationErrorCtors;
+    startTime?: number;
 }
 
 interface SelectorNodeArgs extends SelectorSnapshotArgs {
@@ -144,10 +145,10 @@ export default class ClientFunctionExecutor {
     }
 
     public async executeSelector <T extends SelectorSnapshotArgs | SelectorNodeArgs> (args: T): Promise<T extends SelectorNodeArgs ? string : object> {
-        const { Runtime, command, callsite, selectorTimeout, errCtors } = args;
+        const { Runtime, command, callsite, selectorTimeout, errCtors, startTime = Date.now() } = args;
 
         const returnNodeObjId = 'DOM' in args;
-        const expression      = `${PROXYLESS_SCRIPT}.executeSelectorCommand(${JSON.stringify(command)}, ${selectorTimeout}, ${Date.now()},
+        const expression      = `${PROXYLESS_SCRIPT}.executeSelectorCommand(${JSON.stringify(command)}, ${selectorTimeout}, ${startTime},
                                  ${returnNodeObjId}, ${JSON.stringify(errCtors)});`;
 
         const { result, exceptionDetails, error } = await this._evaluateScriptWithReloadPageIgnore(Runtime, expression);
