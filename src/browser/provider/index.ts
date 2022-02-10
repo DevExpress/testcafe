@@ -15,6 +15,7 @@ import { Dictionary } from '../../configuration/interfaces';
 import { WindowDimentionsInfo } from '../interfaces';
 import { CallsiteRecord } from 'callsite-record';
 import { CommandBase } from '../../test-run/commands/base';
+import { DriverStatusInitialData } from '../../shared/driver-status';
 
 const DEBUG_LOGGER = debug('testcafe:browser:provider');
 
@@ -403,8 +404,8 @@ export default class BrowserProvider {
             await this.plugin.takeScreenshot(browserId, screenshotPath, pageWidth, pageHeight, fullPage);
     }
 
-    public async executeCommand (command: CommandBase, browserId: string, callsite: CallsiteRecord, opts: Dictionary<OptionValue>): Promise<any> {
-        return this.plugin.executeCommand(command, browserId, callsite, opts);
+    public async executeCommand (command: CommandBase, browserId: string, windowId: string, callsite: CallsiteRecord, opts: Dictionary<OptionValue>): Promise<DriverStatusInitialData> {
+        return this.plugin.executeCommand(command, browserId, windowId, callsite, opts);
     }
 
     public async getVideoFrameData (browserId: string): Promise<any> {

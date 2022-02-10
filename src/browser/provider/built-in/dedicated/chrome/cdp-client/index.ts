@@ -29,11 +29,19 @@ import ExecutionContext from './execution-context';
 import * as clientsManager from './clients-manager';
 import COMMAND_TYPE from '../../../../../../test-run/commands/type';
 import { CommandBase } from '../../../../../../test-run/commands/base';
+import ConsoleCollector from './console-collector';
 
 const DEBUG_SCOPE = (id: string): string => `testcafe:browser:provider:built-in:chrome:browser-client:${id}`;
 const DOWNLOADS_DIR = path.join(os.homedir(), 'Downloads');
 
 const debugLog = debug('testcafe:browser:provider:built-in:dedicated:chrome');
+
+interface ConsoleMessages {
+    log: string[];
+    warn: string[];
+    error: string[];
+    info: string[];
+}
 
 export class BrowserClient {
     private _clients: Dictionary<remoteChrome.ProtocolApi> = {};
@@ -42,6 +50,7 @@ export class BrowserClient {
     private _parentTarget?: remoteChrome.TargetInfo;
     private readonly debugLogger: debug.Debugger;
     private readonly _clientFunctionExecutor: ClientFunctionExecutor;
+    private readonly _consoleCollector: ConsoleCollector;
 
     public constructor (runtimeInfo: RuntimeInfo, proxyless: boolean) {
         this._runtimeInfo = runtimeInfo;
@@ -49,6 +58,7 @@ export class BrowserClient {
         this._proxyless   = proxyless;
 
         this._clientFunctionExecutor = new ClientFunctionExecutor();
+        this._consoleCollector       = new ConsoleCollector(['log', 'warning', 'error', 'info']);
 
         runtimeInfo.browserClient = this;
     }
@@ -259,6 +269,7 @@ export class BrowserClient {
                     await BrowserClient._injectProxylessStuff(client);
                     ExecutionContext.initialize(client);
                     clientsManager.setClient(client);
+                    this._consoleCollector.initialize(client.Runtime);
                 }
             }
         }
@@ -409,20 +420,31 @@ export class BrowserClient {
         });
     }
 
-    public async executeCommand (command: CommandBase, callsite: CallsiteRecord, opts: Dictionary<OptionValue>): Promise<unknown> {
-        if (command.type === COMMAND_TYPE.executeClientFunction)
-            return this.executeClientFunction(command as ExecuteClientFunctionCommand, callsite);
-        else if (command.type === COMMAND_TYPE.switchToIframe)
-            return this.switchToIframe(command as SwitchToIframeCommand, callsite, opts.selectorTimeout as number);
-        else if (command.type === COMMAND_TYPE.switchToMainWindow)
-            return this.switchToMainWindow();
-        else if (command.type === COMMAND_TYPE.executeSelector)
-            return this.executeSelector(command as ExecuteSelectorCommand, callsite, opts.selectorTimeout as number);
-        else if (command.type === COMMAND_TYPE.navigateTo)
-            return this.navigateTo(command as NavigateToCommand);
-        else if (command.type === COMMAND_TYPE.testDone)
-            return null;
+    public readConsoleMessages (): ConsoleMessages {
+        const { warning, ...massages } = this._consoleCollector.read();
 
-        throw new Error(`The "${command.type}" command is not supported currently in proxyless mode! ` + JSON.stringify(command));
+        // eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion
+        return { warn: warning, ...massages } as ConsoleMessages;
+    }
+
+    public async executeCommand (command: CommandBase, callsite: CallsiteRecord, opts: Dictionary<OptionValue>): Promise<unknown> {
+        switch (command.type) {
+            case COMMAND_TYPE.executeClientFunction:
+                return this.executeClientFunction(command as ExecuteClientFunctionCommand, callsite);
+            case COMMAND_TYPE.switchToIframe:
+                return this.switchToIframe(command as SwitchToIframeCommand, callsite, opts.selectorTimeout as number);
+            case COMMAND_TYPE.switchToMainWindow:
+                return this.switchToMainWindow();
+            case COMMAND_TYPE.executeSelector:
+                return this.executeSelector(command as ExecuteSelectorCommand, callsite, opts.selectorTimeout as number);
+            case COMMAND_TYPE.navigateTo:
+                return this.navigateTo(command as NavigateToCommand);
+            case COMMAND_TYPE.testDone:
+                return null;
+            case COMMAND_TYPE.getBrowserConsoleMessages:
+                return null;
+            default:
+                throw new Error(`The "${command.type}" command is not supported currently in proxyless mode! ` + JSON.stringify(command));
+        }
     }
 }

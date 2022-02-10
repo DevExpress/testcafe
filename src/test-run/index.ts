@@ -1484,18 +1484,11 @@ export default class TestRun extends AsyncEventEmitter {
             return;
 
         const { callsite } = this.currentDriverTask;
+        const windowId     = this.activeWindowId;
         const browserId    = this.browserConnection.id;
+        const statusData   = await this.browserConnection.provider.executeCommand(command, browserId, windowId, callsite, this.opts);
 
-        const data: DriverStatusInitialData = { isCommandResult: true };
-
-        try {
-            data.result = await this.browserConnection.provider.executeCommand(command, browserId, callsite, this.opts);
-        }
-        catch (e) {
-            data.executionError = e;
-        }
-
-        this._generateReadyMessageByProxyless(data);
+        this._generateReadyMessageByProxyless(statusData);
     }
 
     // NOTE: this function is time-critical and must return ASAP to avoid client disconnection

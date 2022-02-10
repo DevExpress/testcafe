@@ -101,10 +101,22 @@ export default {
         await this.resizeWindow(browserId, maximumSize.width, maximumSize.height, maximumSize.width, maximumSize.height);
     },
 
-    async executeCommand (command, browserId, callsite, opts) {
+    async executeCommand (command, browserId, windowId, callsite, opts) {
         const runtimeInfo   = this.openedBrowsers[browserId];
         const browserClient = this._getBrowserProtocolClient(runtimeInfo);
+        const status        = { isCommandResult: true };
 
-        return browserClient.executeCommand(command, callsite, opts);
+        try {
+            status.result = await browserClient.executeCommand(command, callsite, opts);
+        }
+        catch (e) {
+            status.executionError = e;
+        }
+
+        status.consoleMessages = {
+            [windowId]: browserClient.readConsoleMessages(),
+        };
+
+        return status;
     },
 };
