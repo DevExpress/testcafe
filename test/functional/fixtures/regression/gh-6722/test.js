@@ -1,18 +1,13 @@
-const expect                                                       = require('chai').expect;
-const { EXCEPTION, SUCCESS_RESULT_ATTEMPTS, FAIL_RESULT_ATTEMPTS } = require('./constants');
+const expect                                                    = require('chai').expect;
+const { SUCCESS_RESULT_ATTEMPTS, FAIL_RESULT_ATTEMPTS, ERRORS } = require('./constants');
 
-const ERROR_CODES = {
-    client: 'E1',
-    server: 'E2',
-};
-
-const getCustomReporter = function (attempts) {
+const getCustomReporter = function (result) {
     return {
         name: function () {
             return {
-                reportTestDone: function (name, { errs, quarantine }) {
+                reportTestDone: function (name, { errs, quarantine, browsers }) {
                     if (quarantine)
-                        Object.assign(attempts, quarantine);
+                        Object.assign(result, { quarantine, browsers });
 
                     if (errs && errs.length > 0)
                         throw new Error(name);
@@ -35,50 +30,52 @@ const getCustomReporter = function (attempts) {
     };
 };
 
-const expectAttempts = (attempts, quarantine) => {
-    attempts.reduce((accumulator, attempt, index) => {
-        if (attempt === EXCEPTION.None)
-            return accumulator && expect(quarantine[index + 1].passed).to.equal(true);
+const expectAttempts = (attempts, { quarantine, browsers }) => {
+    return browsers.reduce((prevBrowserExpectResult, browser) => {
+        return attempts[browser.name].reduce((prevAttemptExpectResult, attempt, index) => {
+            const testRunId = browser.quarantineAttemptsTestRunIds[index];
 
-        const errorCode = ERROR_CODES[attempt];
+            if (attempt === ERRORS.None)
+                return prevAttemptExpectResult && expect(quarantine[testRunId].passed).to.equal(true);
 
-        return accumulator &&
-            expect(quarantine[index + 1].passed).to.equal(false) &&
-            expect(quarantine[index + 1].errors[0].code).to.equal(errorCode);
+            return prevAttemptExpectResult &&
+                expect(quarantine[testRunId].passed).to.equal(false) &&
+                expect(quarantine[testRunId].errors[0].code).to.equal(attempt);
+        }, true) && prevBrowserExpectResult;
     }, true);
 };
 
 describe('[Regression](GH-6722)', function () {
     it('Should success run with one success attempt', function () {
-        const quarantine = {};
-        const reporter   = [getCustomReporter(quarantine)];
+        const result   = {};
+        const reporter = [getCustomReporter(result)];
 
         return runTests('testcafe-fixtures/index.js', 'Paste text on button click', {
             reporter,
             skipJsErrors:   false,
             quarantineMode: true,
         }).then(() => {
-            expect(quarantine[1].passed).to.equal(true) &&
-            expect(quarantine[2]).to.be.undefined;
+            expect(result.quarantine[1].passed).to.equal(true) &&
+            expect(result.quarantine[2]).to.be.undefined;
         });
     });
 
     it('Should success run with three success and two fail attempts', function () {
-        const quarantine = {};
-        const reporter   = [getCustomReporter(quarantine)];
+        const result   = {};
+        const reporter = [getCustomReporter(result)];
 
         return runTests('./testcafe-fixtures/index.js', 'Throw exceptions on two attempts', {
             reporter,
             skipJsErrors:   false,
             quarantineMode: true,
         }).then(() => {
-            expectAttempts(SUCCESS_RESULT_ATTEMPTS, quarantine);
+            expectAttempts(SUCCESS_RESULT_ATTEMPTS, result);
         });
     });
 
     it('Should fail with two success and three fail attempts', function () {
-        const quarantine        = {};
-        const reporter          = [getCustomReporter(quarantine)];
+        const result            = {};
+        const reporter          = [getCustomReporter(result)];
         const SHOULD_FAIL_ERROR = 'Test should fail';
 
         return runTests('./testcafe-fixtures/index.js', 'Throw exceptions on three attempts', {
@@ -92,7 +89,7 @@ describe('[Regression](GH-6722)', function () {
             if (err && err.message === SHOULD_FAIL_ERROR)
                 throw new Error(SHOULD_FAIL_ERROR);
 
-            expectAttempts(FAIL_RESULT_ATTEMPTS, quarantine);
+            expectAttempts(FAIL_RESULT_ATTEMPTS, result);
         });
     });
 

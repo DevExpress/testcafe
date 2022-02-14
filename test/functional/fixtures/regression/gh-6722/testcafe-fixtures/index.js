@@ -1,5 +1,5 @@
 import { Selector } from 'testcafe';
-import { FAIL_RESULT_ATTEMPTS, SUCCESS_RESULT_ATTEMPTS, EXCEPTION } from '../constants';
+import { FAIL_RESULT_ATTEMPTS, SUCCESS_RESULT_ATTEMPTS, ERRORS } from '../constants';
 
 
 const successTestCounter = {
@@ -17,15 +17,15 @@ const failTestCounter    = {
 
 const processAttempt = async (attempts, testNumber, t) => {
     switch (attempts[testNumber]) {
-        case EXCEPTION.Server:
+        case ERRORS.Server:
             throw new Error(`Custom server exception on test #${ testNumber }`);
-        case EXCEPTION.Client:
+        case ERRORS.Client:
             await t
                 .typeText('#testInput', `Custom client exception on test #${ testNumber }`)
                 .click('#failButton')
                 .expect(Selector('#testInput').value).eql('success');
             break;
-        case EXCEPTION.None:
+        case ERRORS.None:
             await t
                 .click('#successButton')
                 .expect(Selector('#testInput').value).eql('success');
@@ -45,12 +45,12 @@ test(`Paste text on button click`, async t => {
 test(`Throw exceptions on two attempts`, async t => {
     successTestCounter[t.browser.name]++;
 
-    await processAttempt(SUCCESS_RESULT_ATTEMPTS, successTestCounter[t.browser.name], t);
+    await processAttempt(SUCCESS_RESULT_ATTEMPTS[t.browser.name], successTestCounter[t.browser.name], t);
 });
 
 
 test(`Throw exceptions on three attempts`, async t => {
     failTestCounter[t.browser.name]++;
 
-    await processAttempt(FAIL_RESULT_ATTEMPTS, failTestCounter[t.browser.name], t);
+    await processAttempt(FAIL_RESULT_ATTEMPTS[t.browser.name], failTestCounter[t.browser.name], t);
 });
