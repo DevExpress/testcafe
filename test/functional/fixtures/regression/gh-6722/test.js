@@ -70,6 +70,8 @@ describe('[Regression](GH-6722)', function () {
             quarantineMode: true,
         }).then(() => {
             expectAttempts(SUCCESS_RESULT_ATTEMPTS, result);
+        }).catch((err)=>{
+            throw new Error(err.message);
         });
     });
 
