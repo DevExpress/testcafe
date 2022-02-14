@@ -182,7 +182,10 @@ describe('Reporter', () => {
             errs:              [],
             warningLog:        { messages: [] },
             quarantine:        {
-                attempts: [['1', '2'], []],
+                attempts: [
+                    { testRunId: 'firstRunId', errors: ['1', '2'] },
+                    { testRunId: 'secondRunId', errors: [] },
+                ],
             },
             browser: browserMocks[0],
         },
@@ -279,7 +282,10 @@ describe('Reporter', () => {
             errs:              [],
             warningLog:        { messages: [] },
             quarantine:        {
-                attempts: [['1', '2'], []],
+                attempts: [
+                    { testRunId: 'firstRunId', errors: ['1', '2'] },
+                    { testRunId: 'secondRunId', errors: [] },
+                ],
             },
             browser: browserMocks[1],
         },
@@ -701,8 +707,10 @@ describe('Reporter', () => {
                         unstable:   true,
                         skipped:    false,
                         quarantine: {
-                            1: { passed: false },
-                            2: { passed: true },
+                            1:             { passed: false },
+                            2:             { passed: true },
+                            'firstRunId':  { passed: false, errors: ['1', '2'] },
+                            'secondRunId': { passed: true, errors: [] },
                         },
                         screenshotPath: '/screenshots/1445437598847',
                         screenshots:    [{
@@ -717,16 +725,24 @@ describe('Reporter', () => {
                         testId:   'idf1t1',
                         browsers: [
                             {
-                                alias:     'Chrome',
-                                userAgent: 'Chrome',
-                                headless:  false,
-                                testRunId: 'f1t1',
+                                alias:                        'Chrome',
+                                userAgent:                    'Chrome',
+                                headless:                     false,
+                                testRunId:                    'f1t1',
+                                quarantineAttemptsTestRunIds: [
+                                    'firstRunId',
+                                    'secondRunId',
+                                ],
                             },
                             {
-                                alias:     'Firefox',
-                                userAgent: 'Firefox',
-                                headless:  false,
-                                testRunId: 'f1t1ff',
+                                alias:                        'Firefox',
+                                userAgent:                    'Firefox',
+                                headless:                     false,
+                                testRunId:                    'f1t1ff',
+                                quarantineAttemptsTestRunIds: [
+                                    'firstRunId',
+                                    'secondRunId',
+                                ],
                             },
                         ],
                     },
