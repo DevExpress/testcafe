@@ -2,18 +2,8 @@ import { Selector } from 'testcafe';
 import { FAIL_RESULT_ATTEMPTS, SUCCESS_RESULT_ATTEMPTS, ERRORS } from '../constants';
 
 
-const successTestCounter = {
-    'Chrome':            -1,
-    'Firefox':           -1,
-    'Internet Explorer': -1,
-
-};
-const failTestCounter    = {
-    'Chrome':            -1,
-    'Firefox':           -1,
-    'Internet Explorer': -1,
-
-};
+const successTestCounter = {};
+const failTestCounter    = {};
 
 const processAttempt = async (attempts, testNumber, t) => {
     switch (attempts[testNumber]) {
@@ -43,14 +33,24 @@ test(`Paste text on button click`, async t => {
 });
 
 test(`Throw exceptions on two attempts`, async t => {
-    successTestCounter[t.browser.name]++;
+    if (!successTestCounter.hasOwnProperty(t.browser.alias))
+        successTestCounter[t.browser.alias] = -1;
 
-    await processAttempt(SUCCESS_RESULT_ATTEMPTS[t.browser.name], successTestCounter[t.browser.name], t);
+    successTestCounter[t.browser.alias]++;
+
+    const attempts = SUCCESS_RESULT_ATTEMPTS[t.browser.alias] ?? SUCCESS_RESULT_ATTEMPTS['default'];
+
+    await processAttempt(attempts, successTestCounter[t.browser.alias], t);
 });
 
 
 test(`Throw exceptions on three attempts`, async t => {
-    failTestCounter[t.browser.name]++;
+    if (!failTestCounter.hasOwnProperty(t.browser.alias))
+        failTestCounter[t.browser.alias] = -1;
 
-    await processAttempt(FAIL_RESULT_ATTEMPTS[t.browser.name], failTestCounter[t.browser.name], t);
+    failTestCounter[t.browser.alias]++;
+
+    const attempts = FAIL_RESULT_ATTEMPTS[t.browser.alias] ?? FAIL_RESULT_ATTEMPTS['default'];
+
+    await processAttempt(attempts, failTestCounter[t.browser.alias], t);
 });

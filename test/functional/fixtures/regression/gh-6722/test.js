@@ -10,7 +10,7 @@ const getCustomReporter = function (result) {
                         Object.assign(result, { quarantine, browsers });
 
                     if (errs && errs.length > 0)
-                        throw new Error(name);
+                        throw new Error(errs[0]);
                 },
                 reportFixtureStart: () => {
                 },
@@ -32,7 +32,9 @@ const getCustomReporter = function (result) {
 
 const expectAttempts = (attempts, { quarantine, browsers }) => {
     return browsers.reduce((prevBrowserExpectResult, browser) => {
-        return attempts[browser.name].reduce((prevAttemptExpectResult, attempt, index) => {
+        const browserAttempts = attempts[browser.alias] ?? attempts['default'];
+
+        return browserAttempts.reduce((prevAttemptExpectResult, attempt, index) => {
             const testRunId = browser.quarantineAttemptsTestRunIds[index];
 
             if (attempt === ERRORS.None)

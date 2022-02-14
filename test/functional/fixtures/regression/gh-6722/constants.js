@@ -4,48 +4,146 @@ const ERRORS = {
     None:   '',
 };
 const SUCCESS_RESULT_ATTEMPTS = {
-    'Chrome': [
+    'chrome': [
         ERRORS.Server,
         ERRORS.Client,
         ERRORS.None,
         ERRORS.None,
         ERRORS.None,
     ],
-    'Firefox': [
+    'chrome-osx': [
+        ERRORS.Server,
+        ERRORS.Client,
+        ERRORS.None,
+        ERRORS.None,
+        ERRORS.None,
+    ],
+    'firefox': [
         ERRORS.Server,
         ERRORS.None,
         ERRORS.Client,
         ERRORS.None,
         ERRORS.None,
     ],
-    'Internet Explorer': [
+    'firefox-osx': [
+        ERRORS.Server,
+        ERRORS.None,
+        ERRORS.Client,
+        ERRORS.None,
+        ERRORS.None,
+    ],
+    'safari': [
         ERRORS.Server,
         ERRORS.None,
         ERRORS.None,
         ERRORS.Client,
+        ERRORS.None,
+    ],
+    'edge': [
+        ERRORS.Server,
+        ERRORS.None,
+        ERRORS.Client,
+        ERRORS.None,
+        ERRORS.None,
+    ],
+    'ie': [
+        ERRORS.Server,
+        ERRORS.Client,
+        ERRORS.None,
+        ERRORS.None,
+        ERRORS.None,
+    ],
+    'ipad': [
+        ERRORS.Server,
+        ERRORS.None,
+        ERRORS.None,
+        ERRORS.Client,
+        ERRORS.None,
+    ],
+    'iphone': [
+        ERRORS.Server,
+        ERRORS.None,
+        ERRORS.Client,
+        ERRORS.None,
+        ERRORS.None,
+    ],
+    'default': [
+        ERRORS.Server,
+        ERRORS.None,
+        ERRORS.Client,
+        ERRORS.None,
         ERRORS.None,
     ],
 };
 const FAIL_RESULT_ATTEMPTS    = {
-    'Chrome': [
+    'chrome': [
+        ERRORS.Server,
         ERRORS.Client,
+        ERRORS.None,
+        ERRORS.None,
+        ERRORS.Server,
+    ],
+    'chrome-osx': [
         ERRORS.Server,
         ERRORS.None,
+        ERRORS.Client,
         ERRORS.None,
         ERRORS.Client,
     ],
-    'Firefox': [
+    'firefox': [
+        ERRORS.Server,
+        ERRORS.None,
         ERRORS.Client,
         ERRORS.None,
         ERRORS.Server,
+    ],
+    'firefox-osx': [
+        ERRORS.Server,
+        ERRORS.Client,
+        ERRORS.None,
+        ERRORS.None,
+        ERRORS.Server,
+    ],
+    'safari': [
+        ERRORS.Server,
+        ERRORS.None,
+        ERRORS.Client,
         ERRORS.None,
         ERRORS.Client,
     ],
-    'Internet Explorer': [
+    'edge': [
+        ERRORS.Server,
         ERRORS.Client,
         ERRORS.None,
         ERRORS.None,
         ERRORS.Server,
+    ],
+    'ie': [
+        ERRORS.Server,
+        ERRORS.None,
+        ERRORS.None,
+        ERRORS.Client,
+        ERRORS.Server,
+    ],
+    'ipad': [
+        ERRORS.Client,
+        ERRORS.None,
+        ERRORS.Client,
+        ERRORS.None,
+        ERRORS.Server,
+    ],
+    'iphone': [
+        ERRORS.Server,
+        ERRORS.None,
+        ERRORS.Client,
+        ERRORS.None,
+        ERRORS.Client,
+    ],
+    'default': [
+        ERRORS.Server,
+        ERRORS.None,
+        ERRORS.Client,
+        ERRORS.None,
         ERRORS.Client,
     ],
 };
