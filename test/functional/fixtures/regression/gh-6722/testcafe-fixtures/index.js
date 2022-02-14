@@ -38,7 +38,7 @@ test(`Throw exceptions on two attempts`, async t => {
 
     successTestCounter[t.browser.alias]++;
 
-    const attempts = SUCCESS_RESULT_ATTEMPTS[t.browser.alias] ?? SUCCESS_RESULT_ATTEMPTS['default'];
+    const attempts = typeof SUCCESS_RESULT_ATTEMPTS[t.browser.alias] !== 'undefined' ? SUCCESS_RESULT_ATTEMPTS[t.browser.alias] : SUCCESS_RESULT_ATTEMPTS['default'];
 
     await processAttempt(attempts, successTestCounter[t.browser.alias], t);
 });
@@ -50,7 +50,7 @@ test(`Throw exceptions on three attempts`, async t => {
 
     failTestCounter[t.browser.alias]++;
 
-    const attempts = FAIL_RESULT_ATTEMPTS[t.browser.alias] ?? FAIL_RESULT_ATTEMPTS['default'];
+    const attempts = typeof FAIL_RESULT_ATTEMPTS[t.browser.alias] !== 'undefined' ? FAIL_RESULT_ATTEMPTS[t.browser.alias] : FAIL_RESULT_ATTEMPTS['default'];
 
     await processAttempt(attempts, failTestCounter[t.browser.alias], t);
 });

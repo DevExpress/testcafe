@@ -32,7 +32,7 @@ const getCustomReporter = function (result) {
 
 const expectAttempts = (attempts, { quarantine, browsers }) => {
     return browsers.reduce((prevBrowserExpectResult, browser) => {
-        const browserAttempts = attempts[browser.alias] ?? attempts['default'];
+        const browserAttempts = typeof attempts[browser.alias] !== 'undefined' ? attempts[browser.alias] : attempts['default'];
 
         return browserAttempts.reduce((prevAttemptExpectResult, attempt, index) => {
             const testRunId = browser.quarantineAttemptsTestRunIds[index];
