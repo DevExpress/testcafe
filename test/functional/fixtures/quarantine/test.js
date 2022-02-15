@@ -3,7 +3,7 @@ const config             = require('../../config');
 const { createReporter } = require('../../utils/reporter');
 
 const getFailureCount = (results, testRunIds) => {
-    return Object.keys(results).filter(key => testRunIds.includes(key) && results[key].passed).length;
+    return Object.keys(results).filter(key => testRunIds.includes(key) && !results[key].passed).length;
 };
 
 const getPassCount = (results, testRunIds) => {
