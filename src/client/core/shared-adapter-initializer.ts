@@ -22,6 +22,7 @@ initializeAdapter({
     createEventSequence:         () => {},
     sendRequestToFrame:          () => Promise.resolve(),
     ensureMouseEventAfterScroll: () => Promise.resolve(),
+    nodeEquals:                  () => false,
 
     automations: {
         click: {

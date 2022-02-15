@@ -44,6 +44,8 @@ export default class MoveAutomation<E, W extends SharedWindow> {
     private firstMovingStepOccured: boolean;
 
     protected constructor (el: E, offset: AxisValuesData<number>, moveOptions: MoveOptions, win: W, cursor: Cursor<W>) {
+        // debugger;
+
         this.touchMode = adapter.featureDetection.isTouchDevice;
         this.moveEvent = this.touchMode ? 'touchmove' : 'mousemove';
 
@@ -281,7 +283,9 @@ export default class MoveAutomation<E, W extends SharedWindow> {
     }
 
     public run (): Promise<void> {
-        return this._scroll()
+        return Promise.resolve()
+            .then(() => this.cursor.show())
+            .then(() => this._scroll())
             .then(() => Promise.all([
                 this._getTargetClientPoint(),
                 adapter.style.getWindowDimensions(this.window),

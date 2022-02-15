@@ -98,6 +98,8 @@ export interface SharedAdapter {
 
         _ensureWindowAndCursorForLegacyTests (automation: any): void;
     };
+
+    nodeEquals (element: any, expectedElement: any): boolean;
 }
 
 export interface ClientRequestEmitter<R> {

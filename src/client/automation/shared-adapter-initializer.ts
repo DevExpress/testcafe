@@ -33,4 +33,6 @@ initializeAdapter({
             automation.cursor = cursor;
         },
     },
+
+    nodeEquals: (el, expectedElement) => el === expectedElement,
 });

@@ -76,7 +76,7 @@ export async function getElementFromPoint (point: AxisValuesData<number>): Promi
     const { DOM } = clientsManager.getClient();
 
     try {
-        const { backendNodeId } = await DOM.getNodeForLocation({ x: point.x, y: point.y });
+        const { backendNodeId } = await DOM.getNodeForLocation({ x: Math.round(point.x), y: Math.round(point.y) });
 
         const result = await DOM.resolveNode({ backendNodeId });
 

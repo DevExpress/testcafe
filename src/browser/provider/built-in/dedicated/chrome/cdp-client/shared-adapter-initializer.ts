@@ -99,4 +99,7 @@ initializeAdapter({
     },
 
     getOffsetOptions: () => ({ offsetX: 0, offsetY: 0 }),
+    nodeEquals (element: ServerNode, expectedElement: ServerNode): boolean {
+        return element.backendNodeId === expectedElement.backendNodeId;
+    },
 });

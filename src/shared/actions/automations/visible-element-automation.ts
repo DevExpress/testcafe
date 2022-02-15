@@ -170,7 +170,8 @@ export default class VisibleElementAutomation<E, W extends SharedWindow> extends
             });
         }
 
-        let isTarget = !expectedElement || element === expectedElement || element === this.element;
+
+        let isTarget = !expectedElement || adapter.nodeEquals(element, expectedElement) || adapter.nodeEquals(element, this.element);
 
         if (!isTarget) {
             // NOTE: perform an operation with searching in dom only if necessary

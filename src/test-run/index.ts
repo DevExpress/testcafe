@@ -1480,12 +1480,19 @@ export default class TestRun extends AsyncEventEmitter {
             source: 'proxyless',
         });
 
-        if (!command || typeof command !== 'object')
+        const windowId  = this.activeWindowId;
+        const browserId = this.browserConnection.id;
+
+        if (!command || typeof command !== 'object') {
+            const status          = await this.browserConnection.getStatus(true);
+            const navigateCommand = new actionCommands.NavigateToCommand(status);
+
+            await this.browserConnection.provider.executeCommand(navigateCommand, browserId, windowId, {}, this.opts);
+
             return;
+        }
 
         const { callsite } = this.currentDriverTask;
-        const windowId     = this.activeWindowId;
-        const browserId    = this.browserConnection.id;
         const statusData   = await this.browserConnection.provider.executeCommand(command, browserId, windowId, callsite, this.opts);
 
         this._generateReadyMessageByProxyless(statusData);
