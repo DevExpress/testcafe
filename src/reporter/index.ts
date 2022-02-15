@@ -367,10 +367,7 @@ export default class Reporter {
             testItem.videos = taskInfo.task.videos.getTestVideos(testItem.test.id);
 
         if (testRun.quarantine) {
-            if (!testItem.quarantine)
-                testItem.quarantine = {};
-
-            testItem.quarantine = testRun.quarantine.attempts.reduce((result: Record<string, object>, { errors }, index: number) => {
+            const testItemQuarantine = testRun.quarantine.attempts.reduce((result: Record<string, object>, { errors }, index: number) => {
                 const passed            = !errors.length;
                 const quarantineAttempt = index + 1;
 
@@ -378,7 +375,9 @@ export default class Reporter {
 
                 return result;
 
-            }, testItem.quarantine);
+            }, { });
+
+            Object.assign(testItem.quarantine, testItemQuarantine);
         }
 
         if (!testItem.testRunInfo) {
@@ -520,10 +519,9 @@ export default class Reporter {
         reportItem.warnings    = testRun.warningLog ? union(reportItem.warnings, testRun.warningLog.messages) : [];
 
         if (testRun.quarantine) {
-            if (!reportItem.quarantine)
-                reportItem.quarantine = {};
+            reportItem.quarantine = reportItem.quarantine || {};
 
-            reportItem.quarantine = testRun.quarantine.attempts.reduce((result: Record<string, object>, { errors, testRunId }) => {
+            const reportItemQuarantine = testRun.quarantine.attempts.reduce((result: Record<string, object>, { errors, testRunId }) => {
                 const passed = !errors.length;
 
                 if (!browser.quarantineAttemptsTestRunIds)
@@ -533,7 +531,9 @@ export default class Reporter {
                 result[testRunId] = { passed, errors };
 
                 return result;
-            }, reportItem.quarantine);
+            }, {});
+
+            Object.assign(reportItem.quarantine, reportItemQuarantine);
         }
 
         if (!reportItem.pendingRuns)

@@ -1,67 +1,42 @@
 const expect                                                    = require('chai').expect;
 const { SUCCESS_RESULT_ATTEMPTS, FAIL_RESULT_ATTEMPTS, ERRORS } = require('./constants');
+const { createReporter }                                        = require('../../../utils/reporter');
 
 const getCustomReporter = function (result) {
-    return {
-        name: function () {
-            return {
-                reportTestDone: function (name, { errs, quarantine, browsers }) {
-                    if (quarantine)
-                        Object.assign(result, { quarantine, browsers });
+    return createReporter({
+        reportTestDone: function (name, { errs, quarantine, browsers }) {
+            if (quarantine)
+                Object.assign(result, { quarantine, browsers });
 
-                    if (errs && errs.length > 0)
-                        throw new Error(errs[0]);
-                },
-                reportFixtureStart: () => {
-                },
-                reportTaskStart: () => {
-                },
-                reportTaskDone: () => {
-
-                },
-            };
+            if (errs && errs.length > 0)
+                throw new Error(errs[0]['message']);
         },
-        output: {
-            write: () => {
-            },
-            end: () => {
-            },
-        },
-    };
+    });
 };
 
 const expectAttempts = (attempts, { quarantine, browsers }) => {
-    return browsers.reduce((prevBrowserExpectResult, browser) => {
-        const browserAttempts = typeof attempts[browser.alias] !== 'undefined' ? attempts[browser.alias] : attempts['default'];
+    const attemptsCount        = attempts.length;
+    const successAttemptsCount = attempts.filter(attempt => attempt === ERRORS.None).length;
+    const failedAttemptsCount  = attempts.filter(attempt => attempt !== ERRORS.None).length;
+    const browsersCount        = browsers.length;
 
-        return browserAttempts.reduce((prevAttemptExpectResult, attempt, index) => {
-            const testRunId = browser.quarantineAttemptsTestRunIds[index];
+    const currentAttemptsCount        = Object.keys(quarantine).length;
+    const currentSuccessAttemptsCount = Object.values(quarantine).filter(attempt => attempt.passed).length;
+    const currentFailedAttemptsCount  = Object.values(quarantine).filter(attempt => !attempt.passed).length;
+    const currentTestRunIdsCount      = browsers.reduce((counter, browser) => counter + browser.quarantineAttemptsTestRunIds.length, 0);
 
-            if (attempt === ERRORS.None)
-                return prevAttemptExpectResult && expect(quarantine[testRunId].passed).to.equal(true);
+    // We have to add the number of attempts per browser as we also kept the old behavior. {1:{}, 2:{},  ... testRunId1:{}, testRunId2:{}, ...}
+    const expectedAttemptsCount        = attemptsCount * (browsersCount + 1);
+    const expectedSuccessAttemptsCount = successAttemptsCount * (browsersCount + 1);
+    const expectedFailedAttemptsCount  = failedAttemptsCount * (browsersCount + 1);
 
-            return prevAttemptExpectResult &&
-                expect(quarantine[testRunId].passed).to.equal(false) &&
-                expect(quarantine[testRunId].errors[0].code).to.equal(attempt);
-        }, true) && prevBrowserExpectResult;
-    }, true);
+    return expect(currentAttemptsCount).to.equal(expectedAttemptsCount) &&
+        expect(currentSuccessAttemptsCount).to.equal(expectedSuccessAttemptsCount) &&
+        expect(currentFailedAttemptsCount).to.equal(expectedFailedAttemptsCount) &&
+        expect(currentTestRunIdsCount).to.equal(attemptsCount * browsersCount);
 };
 
 describe('[Regression](GH-6722)', function () {
-    it('Should success run with one success attempt', function () {
-        const result   = {};
-        const reporter = [getCustomReporter(result)];
-
-        return runTests('testcafe-fixtures/index.js', 'Paste text on button click', {
-            reporter,
-            skipJsErrors:   false,
-            quarantineMode: true,
-        }).then(() => {
-            expect(result.quarantine[1].passed).to.equal(true) &&
-            expect(result.quarantine[2]).to.be.undefined;
-        });
-    });
-
     it('Should success run with three success and two fail attempts', function () {
         const result   = {};
         const reporter = [getCustomReporter(result)];

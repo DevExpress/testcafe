@@ -3,153 +3,40 @@ const ERRORS = {
     Server: 'E2',
     None:   '',
 };
-const SUCCESS_RESULT_ATTEMPTS = {
-    'chrome': [
-        ERRORS.Server,
-        ERRORS.Client,
-        ERRORS.None,
-        ERRORS.None,
-        ERRORS.None,
-    ],
-    'chrome-osx': [
-        ERRORS.Server,
-        ERRORS.Client,
-        ERRORS.None,
-        ERRORS.None,
-        ERRORS.None,
-    ],
-    'firefox': [
-        ERRORS.Server,
-        ERRORS.None,
-        ERRORS.Client,
-        ERRORS.None,
-        ERRORS.None,
-    ],
-    'firefox-osx': [
-        ERRORS.Server,
-        ERRORS.None,
-        ERRORS.Client,
-        ERRORS.None,
-        ERRORS.None,
-    ],
-    'safari': [
-        ERRORS.Server,
-        ERRORS.None,
-        ERRORS.None,
-        ERRORS.Client,
-        ERRORS.None,
-    ],
-    'edge': [
-        ERRORS.Server,
-        ERRORS.None,
-        ERRORS.Client,
-        ERRORS.None,
-        ERRORS.None,
-    ],
-    'ie': [
-        ERRORS.Server,
-        ERRORS.Client,
-        ERRORS.None,
-        ERRORS.None,
-        ERRORS.None,
-    ],
-    'ipad': [
-        ERRORS.Server,
-        ERRORS.None,
-        ERRORS.None,
-        ERRORS.Client,
-        ERRORS.None,
-    ],
-    'iphone': [
-        ERRORS.Server,
-        ERRORS.None,
-        ERRORS.Client,
-        ERRORS.None,
-        ERRORS.None,
-    ],
-    'default': [
-        ERRORS.Server,
-        ERRORS.None,
-        ERRORS.Client,
-        ERRORS.None,
-        ERRORS.None,
-    ],
-};
-const FAIL_RESULT_ATTEMPTS    = {
-    'chrome': [
-        ERRORS.Server,
-        ERRORS.Client,
-        ERRORS.None,
-        ERRORS.None,
-        ERRORS.Server,
-    ],
-    'chrome-osx': [
-        ERRORS.Server,
-        ERRORS.None,
-        ERRORS.Client,
-        ERRORS.None,
-        ERRORS.Client,
-    ],
-    'firefox': [
-        ERRORS.Server,
-        ERRORS.None,
-        ERRORS.Client,
-        ERRORS.None,
-        ERRORS.Server,
-    ],
-    'firefox-osx': [
-        ERRORS.Server,
-        ERRORS.Client,
-        ERRORS.None,
-        ERRORS.None,
-        ERRORS.Server,
-    ],
-    'safari': [
-        ERRORS.Server,
-        ERRORS.None,
-        ERRORS.Client,
-        ERRORS.None,
-        ERRORS.Client,
-    ],
-    'edge': [
-        ERRORS.Server,
-        ERRORS.Client,
-        ERRORS.None,
-        ERRORS.None,
-        ERRORS.Server,
-    ],
-    'ie': [
-        ERRORS.Server,
-        ERRORS.None,
-        ERRORS.None,
-        ERRORS.Client,
-        ERRORS.Server,
-    ],
-    'ipad': [
-        ERRORS.Client,
-        ERRORS.None,
-        ERRORS.Client,
-        ERRORS.None,
-        ERRORS.Server,
-    ],
-    'iphone': [
-        ERRORS.Server,
-        ERRORS.None,
-        ERRORS.Client,
-        ERRORS.None,
-        ERRORS.Client,
-    ],
-    'default': [
-        ERRORS.Server,
-        ERRORS.None,
-        ERRORS.Client,
-        ERRORS.None,
-        ERRORS.Client,
-    ],
+
+const SUCCESS_RESULT_ATTEMPTS = [
+    ERRORS.Server,
+    ERRORS.Client,
+    ERRORS.None,
+    ERRORS.None,
+    ERRORS.None,
+];
+
+const FAIL_RESULT_ATTEMPTS = [
+    ERRORS.Server,
+    ERRORS.Client,
+    ERRORS.None,
+    ERRORS.None,
+    ERRORS.Server,
+];
+
+const Counter = function () {
+    this.counters = {};
+
+    this.add = (alias) => {
+        if (!this.counters.hasOwnProperty(alias))
+            this.counters[alias] = -1;
+
+        this.counters[alias]++;
+    };
+    this.get = (alias) => {
+        return this.counters[alias];
+    };
 };
 
 module.exports = {
     ERRORS,
     SUCCESS_RESULT_ATTEMPTS,
     FAIL_RESULT_ATTEMPTS,
+    Counter,
 };
