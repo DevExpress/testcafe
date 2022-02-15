@@ -23,13 +23,13 @@ const FAIL_RESULT_ATTEMPTS = [
 const Counter = function () {
     this.counters = {};
 
-    this.add = (alias) => {
+    this.add = alias => {
         if (!this.counters.hasOwnProperty(alias))
             this.counters[alias] = -1;
 
         this.counters[alias]++;
     };
-    this.get = (alias) => {
+    this.get = alias => {
         return this.counters[alias];
     };
 };

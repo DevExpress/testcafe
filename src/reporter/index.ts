@@ -374,7 +374,6 @@ export default class Reporter {
                 result[quarantineAttempt] = { passed };
 
                 return result;
-
             }, { });
 
             Object.assign(testItem.quarantine, testItemQuarantine);
@@ -524,11 +523,10 @@ export default class Reporter {
             const reportItemQuarantine = testRun.quarantine.attempts.reduce((result: Record<string, object>, { errors, testRunId }) => {
                 const passed = !errors.length;
 
-                if (!browser.quarantineAttemptsTestRunIds)
-                    browser.quarantineAttemptsTestRunIds = [];
+                result[testRunId]                    = { passed, errors };
+                browser.quarantineAttemptsTestRunIds = browser.quarantineAttemptsTestRunIds || [];
 
                 browser.quarantineAttemptsTestRunIds.push(testRunId);
-                result[testRunId] = { passed, errors };
 
                 return result;
             }, {});

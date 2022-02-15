@@ -30,10 +30,10 @@ const expectAttempts = (attempts, { quarantine, browsers }) => {
     const expectedSuccessAttemptsCount = successAttemptsCount * (browsersCount + 1);
     const expectedFailedAttemptsCount  = failedAttemptsCount * (browsersCount + 1);
 
-    return expect(currentAttemptsCount).to.equal(expectedAttemptsCount) &&
-        expect(currentSuccessAttemptsCount).to.equal(expectedSuccessAttemptsCount) &&
-        expect(currentFailedAttemptsCount).to.equal(expectedFailedAttemptsCount) &&
-        expect(currentTestRunIdsCount).to.equal(attemptsCount * browsersCount);
+    expect(currentAttemptsCount).to.equal(expectedAttemptsCount);
+    expect(currentSuccessAttemptsCount).to.equal(expectedSuccessAttemptsCount);
+    expect(currentFailedAttemptsCount).to.equal(expectedFailedAttemptsCount);
+    expect(currentTestRunIdsCount).to.equal(attemptsCount * browsersCount);
 };
 
 describe('[Regression](GH-6722)', function () {
