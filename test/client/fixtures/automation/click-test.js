@@ -647,11 +647,13 @@ $(document).ready(function () {
             border: '0px',
         });
 
-        $el.click(function (e) {
-            eventPoint = { x: e.pageX, y: e.pageY };
-        });
-
         const el = $el[0];
+
+        const handler = function (e) {
+            eventPoint = { x: e.pageX, y: e.pageY };
+        };
+
+        el.addEventListener('click', handler);
 
         return getOffsetOptions($el[0], 20, 20)
             .then(function (offsets) {
@@ -663,6 +665,8 @@ $(document).ready(function () {
                 return click.run();
             })
             .then(function () {
+                el.removeEventListener('click', handler);
+
                 const expectedPoint = { x: el.offsetLeft + 20, y: el.offsetTop + 20 };
 
                 equal(JSON.stringify(eventPoint), JSON.stringify(expectedPoint));
@@ -680,11 +684,13 @@ $(document).ready(function () {
             border: '0px',
         });
 
-        $el.click(function (e) {
-            eventPoint = { x: e.pageX, y: e.pageY };
-        });
-
         const el = $el[0];
+
+        const handler = function (e) {
+            eventPoint = { x: e.pageX, y: e.pageY };
+        };
+
+        el.addEventListener('click', handler);
 
         return getOffsetOptions($el[0], -20, -20)
             .then(function (offsets) {
@@ -696,6 +702,8 @@ $(document).ready(function () {
                 return click.run();
             })
             .then(function () {
+                el.removeEventListener('click', handler);
+
                 const expectedPoint = {
                     x: el.offsetLeft + el.offsetWidth - 20,
                     y: el.offsetTop + el.offsetHeight - 20,
