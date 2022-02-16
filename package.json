@@ -2,7 +2,7 @@
   "name": "testcafe",
   "description": "Automated browser testing for the modern web development stack.",
   "license": "MIT",
-  "version": "1.18.3",
+  "version": "1.18.4-rc.1",
   "author": {
     "name": "Developer Express Inc.",
     "url": "https://www.devexpress.com/"
@@ -110,7 +110,7 @@
     "is-stream": "^2.0.0",
     "json5": "^2.1.0",
     "lodash": "^4.17.13",
-    "log-update-async-hook": "^2.0.2",
+    "log-update-async-hook": "^2.0.3",
     "make-dir": "^3.0.0",
     "mime-db": "^1.41.0",
     "moment": "^2.10.3",
