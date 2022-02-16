@@ -18,7 +18,7 @@ const processAttempt = async (attempts, testNumber, t) => {
     }
 };
 
-fixture`GH-1994 - The element that matches the specified selector is not visible`
+fixture`GH-6722 - Provide more information about errors for each test run in quarantine mode`
     .page`http://localhost:3000/fixtures/regression/gh-6722/pages/index.html`;
 
 test(`Throw exceptions on two attempts`, async t => {
