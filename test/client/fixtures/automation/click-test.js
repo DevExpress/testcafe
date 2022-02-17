@@ -1,6 +1,7 @@
 const hammerhead       = window.getTestCafeModule('hammerhead');
 const browserUtils     = hammerhead.utils.browser;
 const featureDetection = hammerhead.utils.featureDetection;
+const Promise          = hammerhead.Promise;
 
 const testCafeCore = window.getTestCafeModule('testCafeCore');
 const styleUtils   = testCafeCore.styleUtils;
@@ -647,11 +648,13 @@ $(document).ready(function () {
             border: '0px',
         });
 
-        $el.click(function (e) {
-            eventPoint = { x: e.pageX, y: e.pageY };
-        });
-
         const el = $el[0];
+
+        const handler = function (e) {
+            eventPoint = { x: e.pageX, y: e.pageY };
+        };
+
+        el.addEventListener('click', handler);
 
         return getOffsetOptions($el[0], 20, 20)
             .then(function (offsets) {
@@ -663,6 +666,8 @@ $(document).ready(function () {
                 return click.run();
             })
             .then(function () {
+                el.removeEventListener('click', handler);
+
                 const expectedPoint = { x: el.offsetLeft + 20, y: el.offsetTop + 20 };
 
                 equal(JSON.stringify(eventPoint), JSON.stringify(expectedPoint));
@@ -680,11 +685,13 @@ $(document).ready(function () {
             border: '0px',
         });
 
-        $el.click(function (e) {
-            eventPoint = { x: e.pageX, y: e.pageY };
-        });
-
         const el = $el[0];
+
+        const handler = function (e) {
+            eventPoint = { x: e.pageX, y: e.pageY };
+        };
+
+        el.addEventListener('click', handler);
 
         return getOffsetOptions($el[0], -20, -20)
             .then(function (offsets) {
@@ -696,6 +703,8 @@ $(document).ready(function () {
                 return click.run();
             })
             .then(function () {
+                el.removeEventListener('click', handler);
+
                 const expectedPoint = {
                     x: el.offsetLeft + el.offsetWidth - 20,
                     y: el.offsetTop + el.offsetHeight - 20,
@@ -738,12 +747,18 @@ $(document).ready(function () {
 
         textarea.value = '11';
 
-        textarea.focus();
+        const onTextAreaFocusPromise = new Promise(function (resolve) {
+            textarea.addEventListener('focus', resolve);
+        });
 
         const clickAutomation = new ClickAutomation(label, { }, window, cursor);
 
-        clickAutomation
-            .run()
+        textarea.focus();
+
+        onTextAreaFocusPromise
+            .then(function () {
+                return clickAutomation.run();
+            })
             .then(function () {
                 ok(changed, 'change');
                 ok(checkbox.checked, 'checked');
