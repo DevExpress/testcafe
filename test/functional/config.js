@@ -40,8 +40,7 @@ testingEnvironments[testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers] = {
             alias:       'chrome-osx',
         },
         {
-            // NOTE: Temporary not updated. Should be browserstack:firefox:OS X Monterey
-            browserName: 'browserstack:firefox@72:OS X High Sierra',
+            browserName: 'browserstack:firefox:OS X Monterey',
             alias:       'firefox-osx',
         },
         {
