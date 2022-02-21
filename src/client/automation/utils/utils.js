@@ -58,7 +58,7 @@ export function focusAndSetSelection (element, simulateFocus, caretPos) {
         // NOTE: Safari 13 blocks attempts to focus elements inside a third-party iframe before the user interacts with it
         // https://developer.apple.com/documentation/safari-release-notes/safari-13-release-notes
         // We can work around this restriction by focusing the <iframe> element beforehand
-        if (isIframeWindow(window))
+        if (browserUtils.isSafari && isIframeWindow(window))
             await sendRequestToFrame({ cmd: GET_IFRAME_REQUEST_CMD }, GET_IFRAME_RESPONSE_CMD, window.parent);
 
         const activeElement               = domUtils.getActiveElement();
