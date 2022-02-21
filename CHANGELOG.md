@@ -1,5 +1,18 @@
 # Changelog
 
+## v1.18.4
+
+### What’s Changed
+
+ * TestCafe does not display reporter output during initialization ([#6842](https://github.com/DevExpress/testcafe/issues/6842))
+ 
+ * TestCafe uses outdated automation scripts after cache expiration ([testcafe-hammerhead#2738](https://github.com/DevExpress/testcafe-hammerhead/issues/2738), [PR](https://github.com/DevExpress/testcafe-hammerhead/issues/2739) by @rr13k)
+
+ * The `Node.append` method causes the `Illegal invocation` error (PR [testcafe-hammerhead#2730](https://github.com/DevExpress/testcafe-hammerhead/pull/2730) by @danieltroger)
+ 
+ * Scripts in SVG documents cause the `Illegal invocation` error ([testcafe-hammerhead#2735](https://github.com/DevExpress/testcafe-hammerhead/issues/2735
+))
+ 
 ## v1.18.3 (2022-01-25)
 
 ### Bug Fixes
