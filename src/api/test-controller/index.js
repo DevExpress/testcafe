@@ -4,8 +4,9 @@ import {
     identity,
     assign,
     isNil as isNullOrUndefined,
-    flattenDeep as flatten,
+    flattenDeep,
     noop,
+    castArray,
 } from 'lodash';
 
 import { getCallsiteForMethod } from '../../errors/get-callsite';
@@ -49,6 +50,9 @@ import {
     ScrollIntoViewCommand,
     UseRoleCommand,
     DispatchEventCommand,
+    GetCookiesCommand,
+    SetCookiesCommand,
+    DeleteCookiesCommand,
 } from '../../test-run/commands/actions';
 
 import {
@@ -69,6 +73,7 @@ import {
     MultipleWindowsModeIsDisabledError,
     MultipleWindowsModeIsNotAvailableInRemoteBrowserError,
 } from '../../errors/test-run';
+
 import { AssertionCommand } from '../../test-run/commands/assertion';
 import { getCallsiteId, getCallsiteStackFrameString } from '../../utils/callsite';
 
@@ -211,6 +216,39 @@ export default class TestController {
 
     [delegatedAPI(DispatchEventCommand.methodName)] (selector, eventName, options = {}) {
         return this._enqueueCommand(DispatchEventCommand, { selector, eventName, options, relatedTarget: options.relatedTarget });
+    }
+
+    _prepareCookieArguments (args, isSetCommand = false) {
+        const urlsArg = castArray(args[1]);
+        const urls    = Array.isArray(urlsArg) && typeof urlsArg[0] === 'string' ? urlsArg : [];
+
+        const cookiesArg = urls.length ? args[0] : args;
+        const cookies    = [];
+
+        flattenDeep(castArray(cookiesArg)).forEach(cookie => {
+            if (isSetCommand && !cookie.name && typeof cookie === 'object')
+                Object.entries(cookie).forEach(([name, value]) => cookies.push({ name, value }));
+            else if (!isSetCommand && typeof cookie === 'string')
+                cookies.push({ name: cookie });
+            else
+                cookies.push(cookie);
+        });
+
+        return { urls, cookies };
+    }
+
+    [delegatedAPI(GetCookiesCommand.methodName)] (...args) {
+        return this._enqueueCommand(GetCookiesCommand, this._prepareCookieArguments(args));
+    }
+
+    [delegatedAPI(SetCookiesCommand.methodName)] (...args) {
+        const { urls, cookies } = this._prepareCookieArguments(args, true);
+
+        return this._enqueueCommand(SetCookiesCommand, { cookies, url: urls[0] });
+    }
+
+    [delegatedAPI(DeleteCookiesCommand.methodName)] (...args) {
+        return this._enqueueCommand(DeleteCookiesCommand, this._prepareCookieArguments(args));
     }
 
     [delegatedAPI(ClickCommand.methodName)] (selector, options) {
@@ -506,7 +544,7 @@ export default class TestController {
 
     _addRequestHooks$ (...hooks) {
         return this._enqueueTask('addRequestHooks', () => {
-            hooks = flatten(hooks);
+            hooks = flattenDeep(hooks);
 
             assertRequestHookType(hooks);
 
@@ -516,7 +554,7 @@ export default class TestController {
 
     _removeRequestHooks$ (...hooks) {
         return this._enqueueTask('removeRequestHooks', () => {
-            hooks = flatten(hooks);
+            hooks = flattenDeep(hooks);
 
             assertRequestHookType(hooks);
 

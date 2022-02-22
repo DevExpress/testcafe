@@ -130,6 +130,26 @@ export default {
         Elements of the "${err.argumentName}" argument are expected to be non-empty strings, but the element at index ${err.elementIndex} was ${err.actualValue}.
     `,
 
+    [TEST_RUN_ERRORS.actionRequiredCookieArguments]: () => `
+        Cookies argument is required.
+    `,
+
+    [TEST_RUN_ERRORS.actionCookieArgumentError]: () => `
+        The "cookie" is expected to be an object, a string or array of objects or strings.
+    `,
+
+    [TEST_RUN_ERRORS.actionCookieArgumentsError]: err => `
+        The "cookie" at number ${err.index + 1} is expected to be an object or a string.
+    `,
+
+    [TEST_RUN_ERRORS.ActionUrlCookieArgumentError]: () => `
+        The "urls" argument isn't valid.
+    `,
+
+    [TEST_RUN_ERRORS.actionUrlsCookieArgumentError]: err => `
+        Elements at index ${err.index + 1} of the "urls" argument isn't valid.
+    `,
+
     [TEST_RUN_ERRORS.actionIntegerArgumentError]: err => `
         The "${err.argumentName}" argument is expected to be an integer, but it was ${err.actualValue}.
     `,
@@ -390,4 +410,16 @@ export default {
     [TEST_RUN_ERRORS.executionTimeoutExceeded]: err => {
         return `${err.scope} timeout of ${err.timeout}ms exceeded.`;
     },
+
+    [TEST_RUN_ERRORS.actionStringOptionError]: err => `
+        The "${err.optionName}" option is expected to be a string value, but it was ${err.actualValue}.
+    `,
+
+    [TEST_RUN_ERRORS.actionDateOptionError]: err => `
+        The "${err.optionName}" option is expected to be a Date value, but it was ${err.actualValue}.
+    `,
+
+    [TEST_RUN_ERRORS.actionNumberOptionError]: err => `
+        The "${err.optionName}" option is expected to be a number, but it was ${err.actualValue}.
+    `,
 };

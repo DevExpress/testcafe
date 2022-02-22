@@ -10,6 +10,7 @@ const TypeOptions              = require('../../lib/test-run/commands/options').
 const ElementScreenshotOptions = require('../../lib/test-run/commands/options').ElementScreenshotOptions;
 const ResizeToFitDeviceOptions = require('../../lib/test-run/commands/options').ResizeToFitDeviceOptions;
 const AssertionOptions         = require('../../lib/test-run/commands/options').AssertionOptions;
+const CookieOptions            = require('../../lib/test-run/commands/options').CookieOptions;
 
 // NOTE: chai's throws doesn't perform deep comparison of error objects
 function assertThrow (fn, expectedErr) {
@@ -257,6 +258,32 @@ describe('Test run command options', function () {
             expect(JSON.parse(JSON.stringify(options))).eql({
                 timeout:               100,
                 allowUnawaitedPromise: false,
+            });
+        });
+
+        it('Should create CookieOptions from object', function () {
+            const options = new CookieOptions({
+                name:     'cookieName',
+                value:    'cookieValue',
+                domain:   'localhost',
+                path:     '/',
+                expires:  'Infinity',
+                maxAge:   'Infinity',
+                secure:   false,
+                httpOnly: true,
+                sameSite: 'none',
+            }, false);
+
+            expect(JSON.parse(JSON.stringify(options))).eql({
+                name:     'cookieName',
+                value:    'cookieValue',
+                domain:   'localhost',
+                path:     '/',
+                expires:  'Infinity',
+                maxAge:   'Infinity',
+                secure:   false,
+                httpOnly: true,
+                sameSite: 'none',
             });
         });
     });
@@ -507,6 +534,125 @@ describe('Test run command options', function () {
                     code:            'E10',
                     actualValue:     'string',
                     optionName:      'timeout',
+                    callsite:        null,
+                }
+            );
+        });
+
+        it('Should validate CookieOptions', function () {
+            assertThrow(
+                function () {
+                    return new CookieOptions({ name: false }, true);
+                },
+                {
+                    isTestCafeError: true,
+                    code:            'E90',
+                    actualValue:     'boolean',
+                    optionName:      'name',
+                    callsite:        null,
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return new CookieOptions({ value: {} }, true);
+                },
+                {
+                    isTestCafeError: true,
+                    code:            'E90',
+                    actualValue:     'object',
+                    optionName:      'value',
+                    callsite:        null,
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return new CookieOptions({ domain: 213 }, true);
+                },
+                {
+                    isTestCafeError: true,
+                    code:            'E90',
+                    actualValue:     'number',
+                    optionName:      'domain',
+                    callsite:        null,
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return new CookieOptions({ path: true }, true);
+                },
+                {
+                    isTestCafeError: true,
+                    code:            'E90',
+                    actualValue:     'boolean',
+                    optionName:      'path',
+                    callsite:        null,
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return new CookieOptions({ expires: -Infinity }, true);
+                },
+                {
+                    isTestCafeError: true,
+                    code:            'E91',
+                    actualValue:     -Infinity,
+                    optionName:      'expires',
+                    callsite:        null,
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return new CookieOptions({ maxAge: 'age' }, true);
+                },
+                {
+                    isTestCafeError: true,
+                    code:            'E92',
+                    actualValue:     'string',
+                    optionName:      'maxAge',
+                    callsite:        null,
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return new CookieOptions({ secure: 0 }, true);
+                },
+                {
+                    isTestCafeError: true,
+                    code:            'E11',
+                    actualValue:     'number',
+                    optionName:      'secure',
+                    callsite:        null,
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return new CookieOptions({ httpOnly: 'str' }, true);
+                },
+                {
+                    isTestCafeError: true,
+                    code:            'E11',
+                    actualValue:     'string',
+                    optionName:      'httpOnly',
+                    callsite:        null,
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return new CookieOptions({ sameSite: {} }, true);
+                },
+                {
+                    isTestCafeError: true,
+                    code:            'E90',
+                    actualValue:     'object',
+                    optionName:      'sameSite',
                     callsite:        null,
                 }
             );

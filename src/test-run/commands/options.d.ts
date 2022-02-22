@@ -69,3 +69,16 @@ export class ElementScreenshotOptions extends ActionOptions {
     public includePaddings: number;
     public crop: CropOptions;
 }
+
+export class CookieOptions {
+    public constructor (obj: object, validate: boolean);
+    public name: string;
+    public value: string;
+    public domain: string;
+    public path: string;
+    public expires: Date;
+    public maxAge: number | 'Infinity' | '-Infinity';
+    public secure: boolean;
+    public httpOnly: boolean;
+    public sameSite: string;
+}

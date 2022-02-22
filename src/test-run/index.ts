@@ -71,6 +71,9 @@ import {
     GetCurrentWindowsCommand,
     SwitchToWindowByPredicateCommand,
     SwitchToWindowCommand,
+    GetCookiesCommand,
+    SetCookiesCommand,
+    DeleteCookiesCommand,
 } from './commands/actions';
 
 import { RUNTIME_ERRORS, TEST_RUN_ERRORS } from '../errors/types';
@@ -119,6 +122,8 @@ import PROXYLESS_COMMANDS from './proxyless-commands-support';
 import Fixture from '../api/structure/fixture';
 import MessageBus from '../utils/message-bus';
 import executeFnWithTimeout from '../utils/execute-fn-with-timeout';
+import { URL } from 'url';
+import { CookieOptions } from './commands/options';
 
 const lazyRequire                 = require('import-lazy')(require);
 const ClientFunctionBuilder       = lazyRequire('../client-functions/client-function-builder');
@@ -775,6 +780,25 @@ export default class TestRun extends AsyncEventEmitter {
         return consoleMessageCopy[String(this.activeWindowId)];
     }
 
+    public async _enqueueGetCookies (command: GetCookiesCommand): Promise<Partial<CookieOptions>[]> {
+        const { cookies, urls } = command;
+
+        return this.session.cookies.getCookies(cookies, urls);
+    }
+
+    public async _enqueueSetCookies (command: SetCookiesCommand): Promise<void> {
+        const cookies = command.cookies;
+        const url     = command.url || await this.getCurrentUrl();
+
+        return this.session.cookies.setCookies(cookies, url);
+    }
+
+    public async _enqueueDeleteCookies (command: DeleteCookiesCommand): Promise<void> {
+        const { cookies, urls } = command;
+
+        return this.session.cookies.deleteCookies(cookies, urls);
+    }
+
     private async _enqueueSetBreakpointCommand (callsite: CallsiteRecord | undefined, error?: string): Promise<void> {
         if (this.debugLogger)
             this.debugLogger.showBreakpoint(this.session.id, this.browserConnection.userAgent, callsite, error);
@@ -1220,6 +1244,15 @@ export default class TestRun extends AsyncEventEmitter {
 
         if (command.type === COMMAND_TYPE.switchToWindowByPredicate)
             return this._switchToWindowByPredicate(command as SwitchToWindowByPredicateCommand);
+
+        if (command.type === COMMAND_TYPE.getCookies)
+            return this._enqueueGetCookies(command as GetCookiesCommand);
+
+        if (command.type === COMMAND_TYPE.setCookies)
+            return this._enqueueSetCookies(command as SetCookiesCommand);
+
+        if (command.type === COMMAND_TYPE.deleteCookies)
+            return this._enqueueDeleteCookies(command as DeleteCookiesCommand);
 
         return this._enqueueCommand(command, callsite as CallsiteRecord);
     }

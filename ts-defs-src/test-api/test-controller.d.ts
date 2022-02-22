@@ -474,15 +474,15 @@ interface TestController {
      */
     useRole(role: Role): TestControllerPromise;
     /**
-     * Attaches the hooks during a test run
+     * Attaches the hooks during a test run.
      *
-     * @param hooks - The set of RequestHook subclasses
+     * @param hooks - The set of RequestHook subclasses.
      */
     addRequestHooks(...hooks: object[]): TestControllerPromise;
     /**
-     * Detaches the hooks during a test run
+     * Detaches the hooks during a test run.
      *
-     * @param hooks - The set of RequestHook subclasses
+     * @param hooks - The set of RequestHook subclasses.
      */
     removeRequestHooks(...hooks: object[]): TestControllerPromise;
 }

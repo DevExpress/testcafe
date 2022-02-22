@@ -11,6 +11,7 @@ import {
     PressOptions,
     DragToElementOptions,
     OffsetOptions,
+    CookieOptions,
 } from './options';
 
 import { initSelector, initUploadSelector } from './validations/initializers';
@@ -30,6 +31,9 @@ import {
     actionRoleArgument,
     booleanArgument,
     functionArgument,
+    cookiesArgument,
+    setCookiesArgument,
+    urlsArgument,
 } from './validations/argument';
 
 import { SetNativeDialogHandlerCodeWrongTypeError } from '../../errors/test-run';
@@ -95,6 +99,10 @@ function initDialogHandler (name, val, { skipVisibilityCheck, testRun }) {
         builder = new ClientFunctionBuilder(fn, options, { instantiation: methodName, execution: methodName });
 
     return builder.getCommand([]);
+}
+
+function initCookiesOption (name, val, initOptions, validate = true) {
+    return val.map(cookie => new CookieOptions(cookie, validate));
 }
 
 // Commands
@@ -649,6 +657,51 @@ export class RecorderCommand extends ActionCommandBase {
         return [
             { name: 'subtype', type: nonEmptyStringArgument, required: true },
             { name: 'forceExecutionInTopWindowOnly', type: booleanArgument, defaultValue: false },
+        ];
+    }
+}
+
+export class GetCookiesCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.getCookies);
+
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.getCookies, validateProperties);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'urls', type: urlsArgument, required: false },
+            { name: 'cookies', type: cookiesArgument, init: initCookiesOption, required: false },
+        ];
+    }
+}
+
+export class SetCookiesCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.setCookies);
+
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.setCookies, validateProperties);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'url', type: urlsArgument, required: false },
+            { name: 'cookies', type: setCookiesArgument, init: initCookiesOption, required: true },
+        ];
+    }
+}
+
+export class DeleteCookiesCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.deleteCookies);
+
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.deleteCookies, validateProperties);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'urls', type: urlsArgument, required: false },
+            { name: 'cookies', type: cookiesArgument, init: initCookiesOption, required: false },
         ];
     }
 }

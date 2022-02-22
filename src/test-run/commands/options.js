@@ -9,18 +9,27 @@ import {
     createIntegerValidator,
     createPositiveIntegerValidator,
     createSpeedValidator,
+    createStringValidator,
+    createDateValidator,
+    createNumberValidator,
 } from './validations/factories';
 import {
     ActionIntegerOptionError,
     ActionPositiveIntegerOptionError,
     ActionBooleanOptionError,
     ActionSpeedOptionError,
+    ActionStringOptionError,
+    ActionDateOptionError,
+    ActionNumberOptionError,
 } from '../../shared/errors';
 
 export const integerOption         = createIntegerValidator(ActionIntegerOptionError);
 export const positiveIntegerOption = createPositiveIntegerValidator(ActionPositiveIntegerOptionError);
 export const booleanOption         = createBooleanValidator(ActionBooleanOptionError);
 export const speedOption           = createSpeedValidator(ActionSpeedOptionError);
+export const stringOption          = createStringValidator(ActionStringOptionError);
+export const dateOption            = createDateValidator(ActionDateOptionError);
+export const numberOption          = createNumberValidator(ActionNumberOptionError);
 
 
 // Actions
@@ -271,5 +280,28 @@ export class PressOptions extends ActionOptions {
         return super._getAssignableProperties().concat([
             { name: 'confidential', type: booleanOption },
         ]);
+    }
+}
+
+// Cookie
+export class CookieOptions extends Assignable {
+    constructor (obj, validate) {
+        super();
+
+        this._assignFrom(obj, validate);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'name', type: stringOption },
+            { name: 'value', type: stringOption },
+            { name: 'domain', type: stringOption },
+            { name: 'path', type: stringOption },
+            { name: 'expires', type: dateOption },
+            { name: 'maxAge', type: numberOption },
+            { name: 'secure', type: booleanOption },
+            { name: 'httpOnly', type: booleanOption },
+            { name: 'sameSite', type: stringOption },
+        ];
     }
 }

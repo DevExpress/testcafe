@@ -85,6 +85,14 @@ export const TEST_RUN_ERRORS = {
     cannotCloseWindowWithoutParent:                        'E82',
     cannotRestoreChildWindowError:                         'E83',
     executionTimeoutExceeded:                              'E84',
+    actionRequiredCookieArguments:                         'E85',
+    actionCookieArgumentError:                             'E86',
+    actionCookieArgumentsError:                            'E87',
+    ActionUrlCookieArgumentError:                          'E88',
+    actionUrlsCookieArgumentError:                         'E89',
+    actionStringOptionError:                               'E90',
+    actionDateOptionError:                                 'E91',
+    actionNumberOptionError:                               'E92',
 };
 
 export const RUNTIME_ERRORS = {

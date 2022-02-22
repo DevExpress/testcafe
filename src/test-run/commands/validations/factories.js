@@ -50,3 +50,26 @@ export function createSpeedValidator (ErrorCtor) {
             throw new ErrorCtor(name, val);
     };
 }
+
+export function createStringValidator (ErrorCtor) {
+    return (name, val) => {
+        const valType = typeof val;
+
+        if (valType !== 'string')
+            throw new ErrorCtor(name, valType);
+    };
+}
+
+export function createDateValidator (ErrorCtor) {
+    return (name, val) => {
+        if (!(val instanceof Date))
+            throw new ErrorCtor(name, val);
+    };
+}
+
+export function createNumberValidator (ErrorCtor) {
+    return (name, val) => {
+        if (isNaN(Number(val)))
+            throw new ErrorCtor(name, typeof val);
+    };
+}

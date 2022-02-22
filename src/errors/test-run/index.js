@@ -231,6 +231,40 @@ export class ActionUnsupportedDeviceTypeError extends ActionArgumentErrorBase {
     }
 }
 
+export class ActionCookieArgumentError extends TestRunErrorBase {
+    constructor () {
+        super(TEST_RUN_ERRORS.actionCookieArgumentError);
+    }
+}
+
+export class ActionCookieArgumentsError extends TestRunErrorBase {
+    constructor (index) {
+        super(TEST_RUN_ERRORS.actionCookieArgumentsError);
+
+        this.index = index;
+    }
+}
+
+export class ActionUrlCookieArgumentError extends TestRunErrorBase {
+    constructor () {
+        super(TEST_RUN_ERRORS.ActionUrlCookieArgumentError);
+    }
+}
+
+export class ActionUrlsCookieArgumentError extends TestRunErrorBase {
+    constructor (index) {
+        super(TEST_RUN_ERRORS.actionUrlsCookieArgumentError);
+
+        this.index = index;
+    }
+}
+
+export class ActionRequiredCookieArguments extends TestRunErrorBase {
+    constructor () {
+        super(TEST_RUN_ERRORS.actionRequiredCookieArguments);
+    }
+}
+
 
 // Action execution errors
 //--------------------------------------------------------------------

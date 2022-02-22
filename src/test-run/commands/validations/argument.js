@@ -22,10 +22,17 @@ import {
     ActionFunctionArgumentError,
     SetTestSpeedArgumentError,
     ForbiddenCharactersInScreenshotPathError,
+    ActionCookieArgumentError,
+    ActionCookieArgumentsError,
+    ActionUrlCookieArgumentError,
+    ActionUrlsCookieArgumentError,
+    ActionRequiredCookieArguments,
 } from '../../../errors/test-run';
 
+import { URL } from 'url';
 import { assertPageUrl } from '../../../api/test-page-url';
 import checkFilePath from '../../../utils/check-file-path';
+import { castArray } from 'lodash';
 
 
 // Validators
@@ -126,4 +133,48 @@ export function screenshotPathArgument (name, val) {
 export function functionArgument (name, val) {
     if (typeof val !== 'function')
         throw new ActionFunctionArgumentError(name, val);
+}
+
+function isValidCookie (cookie) {
+    return !!cookie && (typeof cookie === 'object' || typeof cookie === 'string');
+}
+
+export function cookiesArgument (name, val) {
+    const cookiesLength = val.length;
+
+    for (const [i, value] of val.entries()) {
+        if (!isValidCookie(value)) {
+            throw cookiesLength === 1
+                ? new ActionCookieArgumentError()
+                : new ActionCookieArgumentsError(i);
+        }
+    }
+}
+
+export function setCookiesArgument (name, val) {
+    if (!val.length)
+        throw new ActionRequiredCookieArguments();
+
+    cookiesArgument(name, val);
+}
+
+function isValidUrl (url) {
+    try {
+        return new URL(url) && true;
+    }
+    catch {
+        return false;
+    }
+}
+
+export function urlsArgument (name, val) {
+    const castVal = castArray(val);
+
+    for (const [i, value] of castVal.entries()) {
+        if (!isValidUrl(value)) {
+            throw castVal.length === 1
+                ? new ActionUrlCookieArgumentError()
+                : new ActionUrlsCookieArgumentError(i);
+        }
+    }
 }

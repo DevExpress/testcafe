@@ -89,6 +89,14 @@ const {
     MultipleWindowsModeIsNotAvailableInRemoteBrowserError,
     CannotRestoreChildWindowError,
     TimeoutError,
+    ActionCookieArgumentError,
+    ActionCookieArgumentsError,
+    ActionUrlCookieArgumentError,
+    ActionUrlsCookieArgumentError,
+    ActionRequiredCookieArguments,
+    ActionStringOptionError,
+    ActionDateOptionError,
+    ActionNumberOptionError,
 } = require('../../lib/errors/test-run');
 
 const untestedErrorTypes = Object.keys(TEST_RUN_ERRORS).map(key => TEST_RUN_ERRORS[key]);
@@ -753,6 +761,38 @@ describe('Error formatting', () => {
 
         it('Should format "executionTimeoutExceeded"', () => {
             assertErrorMessage('execution-timeout-exceeded', new TimeoutError(500, 'Scope'));
+        });
+
+        it('Should format "actionCookieArgumentError"', () => {
+            assertErrorMessage('action-cookie-argument-error', new ActionCookieArgumentError());
+        });
+
+        it('Should format "actionCookieArgumentsError"', () => {
+            assertErrorMessage('action-cookie-arguments-error', new ActionCookieArgumentsError(0));
+        });
+
+        it('Should format "ActionUrlCookieArgumentError"', () => {
+            assertErrorMessage('action-url-cookie-argument-error', new ActionUrlCookieArgumentError());
+        });
+
+        it('Should format "ActionUrlsCookieArgumentError"', () => {
+            assertErrorMessage('action-urls-cookie-argument-error', new ActionUrlsCookieArgumentError(0));
+        });
+
+        it('Should format "actionRequiredSetCookieArgumentsAreMissedError"', () => {
+            assertErrorMessage('action-required-cookie-arguments', new ActionRequiredCookieArguments());
+        });
+
+        it('Should format "actionStringOptionError"', () => {
+            assertErrorMessage('action-string-option-error', new ActionStringOptionError('name', 'object'));
+        });
+
+        it('Should format "actionExpiresOptionError"', () => {
+            assertErrorMessage('action-date-option-error', new ActionDateOptionError('expires', 'string'));
+        });
+
+        it('Should format "actionNumberOptionError"', () => {
+            assertErrorMessage('action-number-option-error', new ActionNumberOptionError('maxAge', 'object'));
         });
     });
 
