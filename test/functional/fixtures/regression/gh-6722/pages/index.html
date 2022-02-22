@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>gh-6722</title>
+</head>
+<body>
+
+<input id="testInput"/>
+<button id="failButton" onclick="onFailButtonClick()">Fail</button>
+
+<script>
+    function onFailButtonClick () {
+        const testInput = document.getElementById('testInput');
+
+        throw new Error(testInput.value);
+    }
+</script>
+</body>
+</html>

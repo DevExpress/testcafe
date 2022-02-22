@@ -2,20 +2,22 @@ const { expect }         = require('chai');
 const config             = require('../../config');
 const { createReporter } = require('../../utils/reporter');
 
-const getFailureCount = results => {
-    return Object.values(results).filter(value => value['passed'] === false);
+const getFailureCount = (results, testRunIds) => {
+    return Object.keys(results).filter(key => testRunIds.includes(key) && !results[key].passed).length;
 };
 
-const getPassCount = results => {
-    return Object.values(results).filter(value => value['passed'] === true);
+const getPassCount = (results, testRunIds) => {
+    return Object.keys(results).filter(key => testRunIds.includes(key) && results[key].passed).length;
 };
 
 const getReporter = function (scope) {
     return createReporter({
-        reportTestDone: (name, testRunInfo) => {
-            scope.unstable    = testRunInfo.unstable;
-            scope.failures    = getFailureCount(testRunInfo.quarantine).length;
-            scope.passes      = getPassCount(testRunInfo.quarantine).length;
+        reportTestDone: (name, { unstable, quarantine, browsers }) => {
+            const testRunIds = browsers[0].quarantineAttemptsTestRunIds;
+
+            scope.unstable    = unstable;
+            scope.failures    = getFailureCount(quarantine, testRunIds);
+            scope.passes      = getPassCount(quarantine, testRunIds);
         },
         reportTestStart: (name, meta, { testRunIds }) => {
             scope.testRunIds = testRunIds;

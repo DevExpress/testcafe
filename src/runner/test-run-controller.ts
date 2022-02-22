@@ -127,7 +127,7 @@ export default class TestRunController extends AsyncEventEmitter {
         const attempts       = (this._quarantine as Quarantine).attempts;
         const isFirstAttempt = this._isFirstQuarantineAttempt();
 
-        attempts.push(errors);
+        attempts.push({ testRunId: this.testRun.id, errors });
 
         return isFirstAttempt ? hasErrors : !(this._quarantine as Quarantine).isThresholdReached();
     }

@@ -57,25 +57,30 @@ interface AttemptResult {
     passedTimes: number;
 }
 
+interface QuarantineAttempt {
+    testRunId: string;
+    errors: TestRunErrorFormattableAdapter[];
+}
+
 export class Quarantine {
-    public attempts: TestRunErrorFormattableAdapter[][];
+    public attempts: QuarantineAttempt[];
     public attemptLimit: number;
     public successThreshold: number;
     public failureThreshold: number;
 
     public constructor () {
-        this.attempts = [];
-        this.attemptLimit = DEFAULT_ATTEMPT_LIMIT;
+        this.attempts         = [];
+        this.attemptLimit     = DEFAULT_ATTEMPT_LIMIT;
         this.successThreshold = DEFAULT_THRESHOLD;
         this.failureThreshold = DEFAULT_THRESHOLD;
     }
 
-    public getFailedAttempts (): TestRunErrorFormattableAdapter[][] {
-        return this.attempts.filter(errors => !!errors.length);
+    public getFailedAttempts (): QuarantineAttempt[] {
+        return this.attempts.filter(({ errors }) => !!errors.length);
     }
 
-    public getPassedAttempts (): TestRunErrorFormattableAdapter[][] {
-        return this.attempts.filter(errors => errors.length === 0);
+    public getPassedAttempts (): QuarantineAttempt[] {
+        return this.attempts.filter(({ errors }) => errors.length === 0);
     }
 
     public setCustomParameters (attemptLimit: number | undefined, successThreshold: number | undefined): void {

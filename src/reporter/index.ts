@@ -65,7 +65,12 @@ interface TestInfo {
     pendingStarts: number;
     pendingTestRunDonePromise: PendingPromise;
     pendingTestRunStartPromise: PendingPromise;
-    browsers: unknown[];
+    browsers: BrowserInfo[];
+}
+
+interface BrowserInfo extends Browser {
+    testRunId: string;
+    quarantineAttemptsTestRunIds?: string[];
 }
 
 interface TestRunInfo {
@@ -362,14 +367,16 @@ export default class Reporter {
             testItem.videos = taskInfo.task.videos.getTestVideos(testItem.test.id);
 
         if (testRun.quarantine) {
-            testItem.quarantine = testRun.quarantine.attempts.reduce((result: Record<string, object>, errors: TestRunErrorFormattableAdapter[], index: number) => {
+            const testItemQuarantine = testRun.quarantine.attempts.reduce((result: Record<string, object>, { errors }, index: number) => {
                 const passed            = !errors.length;
                 const quarantineAttempt = index + 1;
 
                 result[quarantineAttempt] = { passed };
 
                 return result;
-            }, {});
+            }, { });
+
+            Object.assign(testItem.quarantine, testItemQuarantine);
         }
 
         if (!testItem.testRunInfo) {
@@ -501,13 +508,31 @@ export default class Reporter {
 
         const reportItem                    = this._getTestItemForTestRun(this.taskInfo, testRun) as TestInfo;
         const isTestRunStoppedTaskExecution = !!testRun.errs.length && this.taskInfo.stopOnFirstFail;
+        const browser: BrowserInfo          = Object.assign({ testRunId: testRun.id }, testRun.browser);
+
+        reportItem.browsers.push(browser);
 
         reportItem.pendingRuns = isTestRunStoppedTaskExecution ? 0 : reportItem.pendingRuns - 1;
         reportItem.unstable    = reportItem.unstable || testRun.unstable;
         reportItem.errs        = reportItem.errs.concat(testRun.errs);
         reportItem.warnings    = testRun.warningLog ? union(reportItem.warnings, testRun.warningLog.messages) : [];
 
-        reportItem.browsers.push(Object.assign({ testRunId: testRun.id }, testRun.browser));
+        if (testRun.quarantine) {
+            reportItem.quarantine = reportItem.quarantine || {};
+
+            const reportItemQuarantine = testRun.quarantine.attempts.reduce((result: Record<string, object>, { errors, testRunId }) => {
+                const passed = !errors.length;
+
+                result[testRunId]                    = { passed, errors };
+                browser.quarantineAttemptsTestRunIds = browser.quarantineAttemptsTestRunIds || [];
+
+                browser.quarantineAttemptsTestRunIds.push(testRunId);
+
+                return result;
+            }, {});
+
+            Object.assign(reportItem.quarantine, reportItemQuarantine);
+        }
 
         if (!reportItem.pendingRuns)
             await this._resolveTestItem(this.taskInfo, reportItem, testRun);
