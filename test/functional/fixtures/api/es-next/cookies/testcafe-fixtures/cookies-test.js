@@ -203,7 +203,7 @@ test('Should delete cookies by objects', async t => {
 });
 
 test('Should delete on the client', async t => {
-    await t.expect(await t.eval(() => document.cookie)).eql('apiCookie2=value2; apiCookie1=value1');
+    await t.expect(await t.eval(() => document.cookie)).eql('apiCookie1=value1; apiCookie2=value2');
     await t.deleteCookies({ domain: 'localhost', path: '/fixtures/api/es-next/cookies/pages/index.html' });
     await t.expect(await t.eval(() => document.cookie)).eql('');
 });
