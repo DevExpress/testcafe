@@ -86,7 +86,7 @@ describe('Native dialogs handling', function () {
     describe('Dialogs appear after redirect', function () {
         it('Should handle prompt dialogs', function () {
             // NOTE: Temporary disable running on iPad
-            return runTests('./testcafe-fixtures/native-dialogs-test.js', 'Expected alert and prompt after redirect', { skip: ['ipad'] });
+            return runTests('./testcafe-fixtures/native-dialogs-test.js', 'Expected alert and prompt after redirect', { skip: 'ipad' });
         });
 
         it('Should fail when an unexpected prompt dialog appears after redirect', function () {
