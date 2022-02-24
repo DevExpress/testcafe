@@ -7,7 +7,7 @@ const ABSOLUTE_BASE_URL = `${__dirname}`;
 
 const INDEX1_RELATIVE_URL            = './pages/index1.html';
 const INDEX2_RELATIVE_URL            = './pages/index2.html';
-const INDEX1_WITH_UPDIR_RELATIVE_URL = './../gh-1932/pages/index1.html'
+const INDEX1_WITH_UPDIR_RELATIVE_URL = './../gh-1932/pages/index1.html';
 
 module.exports = {
     INDEX1_URL,

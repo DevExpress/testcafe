@@ -7,13 +7,13 @@ import RawTestFileCompiler from './test-file/formats/raw';
 import DevToolsTestFileCompiler from './test-file/formats/dev-tools/compiler';
 import CustomizableCompilers from '../configuration/customizable-compilers';
 
-function createTestFileCompilers (compilerOptions = {},{ isCompilerServiceMode, baseUrl }  = {}) {
+function createTestFileCompilers (compilerOptions = {}, { isCompilerServiceMode, baseUrl } = {}) {
     return [
         new LegacyTestFileCompiler(hammerhead.processScript),
         new EsNextTestFileCompiler({ isCompilerServiceMode, baseUrl }),
         new TypeScriptTestFileCompiler(compilerOptions[CustomizableCompilers.typescript], { isCompilerServiceMode, baseUrl }),
-        new CoffeeScriptTestFileCompiler({baseUrl}),
-        new RawTestFileCompiler({baseUrl}),
+        new CoffeeScriptTestFileCompiler({ baseUrl }),
+        new RawTestFileCompiler({ baseUrl }),
         new DevToolsTestFileCompiler(),
     ];
 }

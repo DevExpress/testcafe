@@ -1,4 +1,4 @@
-const { BASE_URL, INDEX1_URL, ABSOLUTE_BASE_URL } = require('./constants')
+const { BASE_URL, INDEX1_URL, ABSOLUTE_BASE_URL } = require('./constants');
 
 describe('[Regression](GH-1932)', function () {
     it('The baseUrl should be used as a pageUrl when Fixture and Test page methods are not called', function () {
@@ -28,7 +28,7 @@ describe('[Regression](GH-1932)', function () {
     });
     it('The pageUrl should be a combination of physical drive baseUrl and relative page url', function () {
         return runTests('./testcafe-fixtures/fixture3.js', 'Fixture relative url is used', {
-             baseUrl: ABSOLUTE_BASE_URL,
+            baseUrl: ABSOLUTE_BASE_URL,
         });
     });
     it('The pageUrl should be a combination of physical drive baseUrl and overwritten relative page url', function () {

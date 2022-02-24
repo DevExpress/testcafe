@@ -197,7 +197,7 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         if (this.isCompilerServiceMode)
             this._addExportAPIInCompilerServiceMode(testFile);
         else
-            addExportAPI(testFile, exportableLib, { baseUrl : this.baseUrl });
+            addExportAPI(testFile, exportableLib, { baseUrl: this.baseUrl });
     }
 
     _removeGlobalAPI () {

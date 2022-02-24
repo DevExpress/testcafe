@@ -94,7 +94,7 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
     private readonly _compilerPath: string;
     private readonly _customCompilerOptions?: object;
 
-    public constructor (compilerOptions?: TypeScriptCompilerOptions, { isCompilerServiceMode, baseUrl } : OptionalCompilerArguments = {}) {
+    public constructor (compilerOptions?: TypeScriptCompilerOptions, { isCompilerServiceMode, baseUrl }: OptionalCompilerArguments = {}) {
         super({ isCompilerServiceMode, baseUrl });
 
         // NOTE: At present, it's necessary create an instance TypeScriptTestFileCompiler

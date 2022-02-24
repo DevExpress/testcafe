@@ -1,5 +1,9 @@
 import BaseUnit from './base-unit';
-import { assertPageUrl, getUrl, prepareBaseUrl } from '../test-page-url';
+import {
+    assertPageUrl,
+    getUrl,
+    prepareBaseUrl,
+} from '../test-page-url';
 import handleTagArgs from '../../utils/handle-tag-args';
 import { delegateAPI, getDelegatedAPIList } from '../../utils/delegated-api';
 import { assertType, is } from '../../errors/runtime/type-assertions';

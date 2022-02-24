@@ -236,7 +236,7 @@ before(function () {
                     hooks,
                     testExecutionTimeout,
                     runExecutionTimeout,
-                    baseUrl
+                    baseUrl,
                 } = opts;
 
                 const actualBrowsers = browsersInfo.filter(browserInfo => {

@@ -18,7 +18,7 @@ export default class TestFileCompilerBase {
         if (!this.baseUrl)
             return;
 
-        assertBaseUrl(this.baseUrl, OPTION_NAMES.baseUrl)
+        assertBaseUrl(this.baseUrl, OPTION_NAMES.baseUrl);
 
         this.baseUrl = getUrl(this.baseUrl);
     }

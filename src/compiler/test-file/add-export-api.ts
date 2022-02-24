@@ -13,7 +13,7 @@ export default function (testFile: TestFile, exportableLibExports: any, {
     });
 
     Object.defineProperty(exportableLibExports, 'test', {
-        get:          () => {
+        get: () => {
             // NOTE: After wrapping the "import { test } from 'testcafe'" statement
             // in service functions of the 'esm' module
             // the 'test' directive executed a few times before the 'fixture' directive.

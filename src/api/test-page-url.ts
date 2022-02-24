@@ -49,7 +49,7 @@ export function getUrl (url: string, base?: URL): string {
     return ensureProtocol(url);
 }
 
-export function prepareBaseUrl(url: string): URL {
+export function prepareBaseUrl (url: string): URL {
     url = url.replace(/\/?$/, '/');
     return isAbsolute(url) ? pathToFileURL(url) : new URL(url);
 }
