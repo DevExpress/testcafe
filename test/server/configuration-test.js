@@ -91,6 +91,7 @@ describe('TestCafeConfiguration', function () {
                 'clientScripts': 'test-client-script.js',
                 'disableHttp2':  true,
                 'proxyless':     true,
+                'baseUrl':       'localhost:3000',
             });
         });
 
@@ -133,6 +134,7 @@ describe('TestCafeConfiguration', function () {
                             expect(testCafeConfiguration.getOption('clientScripts')).eql([ 'test-client-script.js' ]);
                             expect(testCafeConfiguration.getOption('disableHttp2')).to.be.true;
                             expect(testCafeConfiguration.getOption('proxyless')).to.be.true;
+                            expect(testCafeConfiguration.getOption('baseUrl')).eql('localhost:3000');
                         });
                 });
 

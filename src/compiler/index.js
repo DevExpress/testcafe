@@ -15,7 +15,7 @@ import { getTestFileCompilers, initTestFileCompilers } from './compilers';
 const SOURCE_CHUNK_LENGTH = 1000;
 
 export default class Compiler {
-    constructor (sources, compilerOptions, { isCompilerServiceMode, baseUrl } ) {
+    constructor (sources, compilerOptions, { isCompilerServiceMode, baseUrl } = {} ) {
         this.sources = sources;
 
         initTestFileCompilers(compilerOptions, { isCompilerServiceMode, baseUrl });

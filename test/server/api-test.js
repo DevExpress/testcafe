@@ -5,6 +5,7 @@ const resolve        = require('path').resolve;
 const assertAPIError = require('./helpers/assert-runtime-error').assertAPIError;
 const compile        = require('./helpers/compile');
 const OPTION_NAMES   = require('../../lib/configuration/option-names');
+//const Compiler       = require('../../lib/compiler');
 
 
 describe('API', function () {
@@ -375,6 +376,35 @@ describe('API', function () {
                     });
                 });
         });
+
+        it('Should set the page url for all fixture tests if the baseUrl is specified', () => {
+            const testfile = resolve('test/server/data/test-suites/fixture-without-page/testfile.js');
+
+            return compile(testfile, { }, { baseUrl: 'example.org' })
+                .then(function (compiled) {
+                    expect(compiled.fixtures[0].pageUrl).eql('http://example.org');
+                    expect(compiled.tests[0].pageUrl).eql('http://example.org');
+                    expect(compiled.tests[1].pageUrl).eql('http://example.org/index.html');
+                });
+        });
+
+        //TO DO: fix this test:
+        // it.only('Should raise an error if baseUrl is relative', () => {
+        //     const testfile = resolve('test/server/data/test-suites/fixture-without-page/testfile.js');
+        //     try {
+        //         new Compiler(testfile, {}, { baseUrl: './example.org' });
+        //     }
+        //     catch (err) {
+        //         return assertAPIError(err, {
+        //             stackTop: testfile,
+        //
+        //             message: 'Cannot prepare tests due to the following error:\n\n' +
+        //                          'The baseUrl argument is incorrect: "./example.org"',
+        //
+        //             code: 'E1071',
+        //         });
+        //     }
+        // });
     });
 
     describe('test', function () {
