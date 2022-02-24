@@ -9,9 +9,7 @@ import { RawCommandCallsiteRecord } from '../../../utils/raw-command-callsite-re
 
 export default class RawTestFileCompiler extends TestFileCompilerBase {
     constructor ({ baseUrl }) {
-        super();
-
-        this.baseUrl = baseUrl;
+        super({baseUrl});
     }
 
     static _createTestFn (commands) {

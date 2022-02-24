@@ -199,7 +199,7 @@ export default class CLIArgumentParser {
             .option('--disable-multiple-windows', 'disable multiple windows mode')
             .option('--disable-http2', 'disable the HTTP/2 proxy backend and force the proxy to use only HTTP/1.1 requests')
             .option('--cache', 'cache web assets between test runs')
-            .option('--baseUrl', 'set the base url for all tests')
+            .option('--baseUrl <url>', 'set the base url for all tests')
 
             // NOTE: these options will be handled by chalk internally
             .option('--color', 'force colors in command line')
@@ -440,13 +440,6 @@ export default class CLIArgumentParser {
         this.opts.providerName = typeof listBrowserOption === 'string' ? listBrowserOption : 'locally-installed';
     }
 
-    private _parseBaseUrl (): void {
-        if (!this.opts.baseUrl)
-            return;
-
-        this.opts.baseUrl = getUrl(this.opts.baseUrl);
-    }
-
     private static _prepareQuarantineOptions (argv: string[]): void {
         // NOTE: move the quarantine mode options to the end of the array to avoid the wrong quarantine mode CLI options parsing (GH-6231)
         const quarantineOptionIndex = argv.findIndex(
@@ -493,7 +486,6 @@ export default class CLIArgumentParser {
         this._parseBrowsersFromArgs();
         this._parseConcurrency();
         this._parseFileList();
-        this._parseBaseUrl();
 
         await this._parseFilteringOptions();
         await this._parseQuarantineOptions();

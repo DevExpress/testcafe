@@ -30,13 +30,12 @@ const Module = module.constructor;
 
 export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
     constructor ({ isCompilerServiceMode, baseUrl }) {
-        super();
+        super({ baseUrl });
 
         this.isCompilerServiceMode = isCompilerServiceMode;
         this.cache                 = Object.create(null);
         this.origRequireExtensions = Object.create(null);
         this.cachePrefix           = nanoid(7);
-        this.baseUrl               = baseUrl;
     }
 
     static _getNodeModulesLookupPath (filename) {

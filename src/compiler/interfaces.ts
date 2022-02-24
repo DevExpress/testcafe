@@ -4,7 +4,7 @@ export interface CompilerArguments {
     runnableConfigurationId: string;
 }
 
-export interface AdditionalCompilerArguments {
+export interface OptionalCompilerArguments {
     isCompilerServiceMode?: boolean;
     baseUrl?: string
 }
