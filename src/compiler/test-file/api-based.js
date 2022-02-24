@@ -29,13 +29,14 @@ const TESTCAFE_LIB_FOLDER_NAME = 'lib';
 const Module = module.constructor;
 
 export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
-    constructor (isCompilerServiceMode) {
+    constructor ({ isCompilerServiceMode, baseUrl }) {
         super();
 
         this.isCompilerServiceMode = isCompilerServiceMode;
         this.cache                 = Object.create(null);
         this.origRequireExtensions = Object.create(null);
         this.cachePrefix           = nanoid(7);
+        this.baseUrl               = baseUrl;
     }
 
     static _getNodeModulesLookupPath (filename) {
@@ -170,12 +171,12 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
 
     _addGlobalAPI (testFile) {
         Object.defineProperty(global, 'fixture', {
-            get:          () => new Fixture(testFile),
+            get:          () => new Fixture(testFile, this.baseUrl),
             configurable: true,
         });
 
         Object.defineProperty(global, 'test', {
-            get:          () => new Test(testFile),
+            get:          () => new Test(testFile, false, this.baseUrl),
             configurable: true,
         });
     }
@@ -188,7 +189,7 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
 
         delete require.cache[exportableLibPath];
 
-        global[TEST_FILE_TEMP_VARIABLE_NAME] = testFile;
+        global[TEST_FILE_TEMP_VARIABLE_NAME] = { testFile, baseUrl: this.baseUrl };
 
         require('../../api/exportable-lib');
     }
@@ -197,7 +198,7 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         if (this.isCompilerServiceMode)
             this._addExportAPIInCompilerServiceMode(testFile);
         else
-            addExportAPI(testFile, exportableLib);
+            addExportAPI(testFile, exportableLib, { baseUrl : this.baseUrl });
     }
 
     _removeGlobalAPI () {

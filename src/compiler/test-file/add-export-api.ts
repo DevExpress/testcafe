@@ -3,9 +3,9 @@ import Fixture from '../../api/structure/fixture';
 import Test from '../../api/structure/test';
 
 
-export default function (testFile: TestFile, exportableLibExports: any, isCompilerServiceMode = false): void {
+export default function (testFile: TestFile, exportableLibExports: any, { isCompilerServiceMode, baseUrl }: { isCompilerServiceMode?: boolean, baseUrl?: string } = { isCompilerServiceMode : false }): void {
     Object.defineProperty(exportableLibExports, 'fixture', {
-        get:          () => new Fixture(testFile),
+        get:          () => new Fixture(testFile, baseUrl),
         configurable: true,
     });
 
@@ -15,7 +15,7 @@ export default function (testFile: TestFile, exportableLibExports: any, isCompil
             // in service functions of the 'esm' module
             // the 'test' directive executed a few times before the 'fixture' directive.
             // We need to pass an additional flag to ensure correct 'Test' function loading.
-            return new Test(testFile, isCompilerServiceMode);
+            return new Test(testFile, isCompilerServiceMode, baseUrl);
         },
         configurable: true,
     });

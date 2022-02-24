@@ -54,6 +54,7 @@ enum OptionNames {
     v8Flags = 'v8Flags',
     hooks = 'hooks',
     dashboard = 'dashboard',
+    baseUrl = 'baseUrl',
 }
 
 export default OptionNames;

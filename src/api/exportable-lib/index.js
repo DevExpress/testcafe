@@ -73,10 +73,10 @@ const exportableLib = {
     },
 };
 
-const tempTestFile = global[TEST_FILE_TEMP_VARIABLE_NAME];
+if (global[TEST_FILE_TEMP_VARIABLE_NAME]) {
+    const { testFile, baseUrl } = global[TEST_FILE_TEMP_VARIABLE_NAME];
 
-if (tempTestFile) {
-    addExportAPI(tempTestFile, exportableLib, true);
+    addExportAPI(testFile, exportableLib, { isCompilerServiceMode: true, baseUrl });
 
     delete global[TEST_FILE_TEMP_VARIABLE_NAME];
 }

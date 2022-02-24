@@ -10,8 +10,8 @@ eval("");
 `;
 
 export default class ESNextTestFileCompiler extends APIBasedTestFileCompilerBase {
-    constructor (isCompilerServiceMode) {
-        super(isCompilerServiceMode);
+    constructor ({ isCompilerServiceMode, baseUrl }) {
+        super({ isCompilerServiceMode, baseUrl });
     }
 
     static getBabelOptions (filename, code, isCompilerServiceMode) {

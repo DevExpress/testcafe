@@ -321,8 +321,8 @@ class CompilerService implements CompilerProtocol {
         await Compiler.cleanUp();
     }
 
-    public async getTests ({ sourceList, compilerOptions, runnableConfigurationId }: CompilerArguments): Promise<Units> {
-        const compiler = new Compiler(sourceList, compilerOptions, true);
+    public async getTests ({ sourceList, compilerOptions, runnableConfigurationId }: CompilerArguments, baseUrl?:string): Promise<Units> {
+        const compiler = new Compiler(sourceList, compilerOptions, { isCompilerServiceMode:true, baseUrl });
 
         const tests   = await compiler.getTests();
         const units   = flattenTestStructure(tests);

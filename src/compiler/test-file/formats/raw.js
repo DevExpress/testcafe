@@ -8,6 +8,12 @@ import createCommandFromObject from '../../../test-run/commands/from-object';
 import { RawCommandCallsiteRecord } from '../../../utils/raw-command-callsite-record';
 
 export default class RawTestFileCompiler extends TestFileCompilerBase {
+    constructor ({ baseUrl }) {
+        super();
+
+        this.baseUrl = baseUrl;
+    }
+
     static _createTestFn (commands) {
         return async t => {
             for (let i = 0; i < commands.length; i++) {
@@ -48,8 +54,8 @@ export default class RawTestFileCompiler extends TestFileCompilerBase {
         /* eslint-enable no-unused-expressions */
     }
 
-    static _addTest (testFile, src) {
-        const test = new Test(testFile);
+    static _addTest (testFile, src, baseUrl) {
+        const test = new Test(testFile, false, baseUrl);
 
         test(src.name, RawTestFileCompiler._createTestFn(src.commands));
 
@@ -64,8 +70,8 @@ export default class RawTestFileCompiler extends TestFileCompilerBase {
         return test;
     }
 
-    static _addFixture (testFile, src) {
-        const fixture = new Fixture(testFile);
+    static _addFixture (testFile, src, baseUrl) {
+        const fixture = new Fixture(testFile, baseUrl);
 
         fixture(src.name);
 
@@ -77,7 +83,7 @@ export default class RawTestFileCompiler extends TestFileCompilerBase {
         if (src.afterEachCommands)
             fixture.afterEach(RawTestFileCompiler._createTestFn(src.afterEachCommands));
 
-        src.tests.forEach(testSrc => RawTestFileCompiler._addTest(testFile, testSrc));
+        src.tests.forEach(testSrc => RawTestFileCompiler._addTest(testFile, testSrc, baseUrl));
     }
 
     _hasTests () {
@@ -96,7 +102,7 @@ export default class RawTestFileCompiler extends TestFileCompilerBase {
         try {
             data = JSON.parse(code);
 
-            data.fixtures.forEach(fixtureSrc => RawTestFileCompiler._addFixture(testFile, fixtureSrc));
+            data.fixtures.forEach(fixtureSrc => RawTestFileCompiler._addFixture(testFile, fixtureSrc, this.baseUrl));
 
             return testFile.getTests();
         }

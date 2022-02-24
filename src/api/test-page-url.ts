@@ -49,6 +49,11 @@ export function getUrl (url: string, base?: URL): string {
     return ensureProtocol(url);
 }
 
+export function prepareBaseUrl(url: string): URL {
+    url = url.replace(/\/?$/, '/');
+    return isAbsolute(url) ? pathToFileURL(url) : new URL(url);
+}
+
 export function assertPageUrl (url: string, callsiteName: string): void {
     const protocol               = url.match(PROTOCOL_RE);
     const hasUnsupportedProtocol = protocol && !SUPPORTED_PROTOCOL_RE.test(url);

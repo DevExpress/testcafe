@@ -36,6 +36,8 @@ import { assertType, is } from '../errors/runtime/type-assertions';
 import { generateUniqueId } from 'testcafe-hammerhead';
 import assertRequestHookType from '../api/request-hooks/assert-type';
 import userVariables from '../api/user-variables';
+import Configuration from '../configuration/configuration-base';
+import OPTION_NAMES from '../configuration/option-names';
 
 const DEBUG_SCOPE = 'testcafe:bootstrapper';
 
@@ -95,6 +97,7 @@ export default class Bootstrapper {
     public compilerOptions?: CompilerOptions;
     public browserInitTimeout?: number;
     public hooks?: GlobalHooks;
+    public configuration: Configuration;
 
     private readonly compilerService?: CompilerService;
     private readonly debugLogger: debug.Debugger;
@@ -103,7 +106,7 @@ export default class Bootstrapper {
 
     private readonly TESTS_COMPILATION_UPPERBOUND: number;
 
-    public constructor ({ browserConnectionGateway, compilerService, messageBus }: BootstrapperInit) {
+    public constructor ({ browserConnectionGateway, compilerService, messageBus, configuration }: BootstrapperInit) {
         this.browserConnectionGateway = browserConnectionGateway;
         this.concurrency              = 1;
         this.sources                  = [];
@@ -121,6 +124,7 @@ export default class Bootstrapper {
         this.warningLog               = new WarningLog(null, WarningLog.createAddWarningCallback(messageBus));
         this.compilerService          = compilerService;
         this.messageBus               = messageBus;
+        this.configuration            = configuration;
 
         this.TESTS_COMPILATION_UPPERBOUND = 60;
     }
@@ -194,14 +198,16 @@ export default class Bootstrapper {
     }
 
     private async _compileTests ({ sourceList, compilerOptions, runnableConfigurationId }: CompilerArguments): Promise<Test[]> {
+        const baseUrl  = this.configuration.getOption(OPTION_NAMES.baseUrl) as string;
+
         if (this.compilerService) {
             await this.compilerService.init();
             await this.compilerService.setUserVariables(userVariables.value);
 
-            return this.compilerService.getTests({ sourceList, compilerOptions, runnableConfigurationId });
+            return this.compilerService.getTests({ sourceList, compilerOptions, runnableConfigurationId }, baseUrl);
         }
 
-        const compiler = new Compiler(sourceList, compilerOptions);
+        const compiler = new Compiler(sourceList, compilerOptions, { baseUrl, isCompilerServiceMode: false });
 
         return compiler.getTests();
     }

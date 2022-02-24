@@ -12,6 +12,7 @@ import FixtureHookController from './fixture-hook-controller';
 import Screenshots from '../screenshots';
 import Capturer from '../screenshots/capturer';
 import MessageBus from '../utils/message-bus';
+import Configuration from '../configuration/configuration-base';
 import TestRunHookController from './test-run-hook-controller';
 
 export interface ActionEventArg {
@@ -53,6 +54,7 @@ export interface BootstrapperInit {
     browserConnectionGateway: BrowserConnectionGateway;
     compilerService?: CompilerService;
     messageBus: MessageBus;
+    configuration: Configuration;
 }
 
 export interface BrowserJobInit {

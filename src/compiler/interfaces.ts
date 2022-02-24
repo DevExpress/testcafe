@@ -3,3 +3,8 @@ export interface CompilerArguments {
     compilerOptions?: CompilerOptions;
     runnableConfigurationId: string;
 }
+
+export interface AdditionalCompilerArguments {
+    isCompilerServiceMode?: boolean;
+    baseUrl?: string
+}
