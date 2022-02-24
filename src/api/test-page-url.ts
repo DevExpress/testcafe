@@ -63,6 +63,13 @@ export function assertPageUrl (url: string, callsiteName: string): void {
         throw new APIError(callsiteName, RUNTIME_ERRORS.unsupportedUrlProtocol, url, protocol && protocol[0]);
 }
 
+export function assertBaseUrl (url: string, callsiteName: string): void {
+    if (isRelative(url))
+        throw new APIError(callsiteName, RUNTIME_ERRORS.incorrectBaseUrl, url);
+
+    assertPageUrl(url, callsiteName);
+}
+
 export function assertRoleUrl (url: string, callsiteName: string): void {
     if (isRelative(url))
         throw new APIError(callsiteName, RUNTIME_ERRORS.roleInitializedWithRelativeUrl);
