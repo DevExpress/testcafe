@@ -180,7 +180,9 @@ jobs:
             tasks.push('test-server-docker.yml');
             tasks.push('test-server-lts.yml');
             tasks.push('test-server-stable.yml');
-            tasks.push('test-cdp.yml');
+            
+            // Temporary disable
+            // tasks.push('test-cdp.yml');
 
             await Promise.all(tasks.map(task => dispatchWorkflow(task)));
       - uses: actions/github-script@v3
