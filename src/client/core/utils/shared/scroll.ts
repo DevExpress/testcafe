@@ -32,7 +32,7 @@ function hasBodyScroll (el: HTMLBodyElement): boolean {
 
     let bodyScrollHeight = el.scrollHeight;
 
-    if (adapter.browser.isChrome || adapter.browser.isFirefox) {
+    if (adapter.browser.isChrome || adapter.browser.isFirefox || adapter.browser.isSafari) {
         const { top: bodyTop }     = el.getBoundingClientRect();
         const { top: documentTop } = documentElement.getBoundingClientRect();
 

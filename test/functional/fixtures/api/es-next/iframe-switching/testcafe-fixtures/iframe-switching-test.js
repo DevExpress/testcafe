@@ -121,7 +121,12 @@ test('Reload the main page from an iframe', async t => {
     await t
         .switchToIframe('#iframe')
         .click('#reload-top-page-btn')
+        // NOTE: Sometimes, in low-performance browsers (for example, Firefox 98 and latest on BrowserStack),
+        //  it's possible to click on the button before the target event handler is attached
+        // event handler does not have enough time to execute.
+        .wait(3000)
         .click('#btn')
+        .wait(3000)
         .switchToMainWindow();
 
     const iframeBtnClickCount = await getIframeBtnClickCount();

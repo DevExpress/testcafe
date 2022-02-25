@@ -32,19 +32,20 @@ testingEnvironments[testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers] = {
 
     browsers: [
         {
-            browserName: 'browserstack:safari@11.1:OS X High Sierra',
+            browserName: 'browserstack:safari@15.1:OS X Monterey',
             alias:       'safari',
         },
         {
-            browserName: 'browserstack:chrome@80:OS X High Sierra',
+            browserName: 'browserstack:chrome:OS X Monterey',
             alias:       'chrome-osx',
         },
         {
+            // NOTE: Temporary not updated. Should be browserstack:firefox:OS X Monterey
             browserName: 'browserstack:firefox@72:OS X High Sierra',
             alias:       'firefox-osx',
         },
         {
-            browserName: 'browserstack:edge:OS X High Sierra',
+            browserName: 'browserstack:edge:OS X Monterey',
             alias:       'edge',
         },
     ],
@@ -61,11 +62,11 @@ testingEnvironments[testingEnvironmentNames.mobileBrowsers] = {
 
     browsers: [
         {
-            browserName: 'browserstack:iPad Pro 12.9 2017@11',
+            browserName: 'browserstack:iPad 9th@15',
             alias:       'ipad',
         },
         {
-            browserName: 'browserstack:iPhone 7 Plus@10',
+            browserName: 'browserstack:iPhone 13 Pro@15',
             alias:       'iphone',
         },
     ],
