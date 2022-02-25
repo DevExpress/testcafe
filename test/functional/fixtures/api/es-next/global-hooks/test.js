@@ -2,6 +2,7 @@ const path                       = require('path');
 const createTestCafe             = require('../../../../../../lib');
 const config                     = require('../../../../config');
 const { createSimpleTestStream } = require('../../../../utils/stream');
+const { expect }                 = require('chai');
 
 let cafe = null;
 
@@ -88,4 +89,45 @@ if (isLocalChrome) {
             return runTestsLocal('Test2');
         });
     });
+
+    describe('[API] testRun global before/after hooks', () => {
+
+        before(async () => {
+            cafe = await createTestCafe({
+                configFile: path.resolve('./test/functional/fixtures/api/es-next/global-hooks/data/test-run-config.js'),
+            });
+        });
+
+        afterEach(function () {
+            cafe.close();
+        });
+
+        it('Should run hooks for all tests', async () => {
+            await runTestsLocal('');
+        });
+
+        it('Should fail all tests in fixture if testRun.before hooks fails', async () => {
+            return runTests('./testcafe-fixtures/test-run-test.js', null, {
+                shouldFail: true,
+                only:       'chrome',
+                hooks:      {
+                    testRun: {
+                        before: async () => {
+                            throw new Error('$$before$$');
+                        },
+                    },
+                },
+            }).catch(errs => {
+
+                expect(errs.length).eql(3);
+
+                errs.forEach(err => {
+                    expect(err).contains('Error in testRun.before hook');
+                    expect(err).contains('$$before$$');
+                });
+            });
+        });
+    });
+
 }
+

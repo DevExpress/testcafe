@@ -14,6 +14,7 @@ import { ActionEventArg, TestRunControllerInit } from './interfaces';
 import CompilerService from '../services/compiler/host';
 import { Quarantine } from '../utils/get-options/quarantine';
 import MessageBus from '../utils/message-bus';
+import TestRunHookController from './test-run-hook-controller';
 
 const DISCONNECT_THRESHOLD = 3;
 
@@ -33,6 +34,7 @@ export default class TestRunController extends AsyncEventEmitter {
     public done: boolean;
     private readonly compilerService?: CompilerService;
     private readonly _messageBus: MessageBus;
+    private readonly _testRunHook: TestRunHookController;
 
     public constructor ({
         test,
@@ -42,6 +44,7 @@ export default class TestRunController extends AsyncEventEmitter {
         warningLog,
         fixtureHookController,
         opts,
+        testRunHook,
         compilerService,
         messageBus,
     }: TestRunControllerInit) {
@@ -55,6 +58,7 @@ export default class TestRunController extends AsyncEventEmitter {
         this._screenshots           = screenshots;
         this._warningLog            = warningLog;
         this._fixtureHookController = fixtureHookController;
+        this._testRunHook           = testRunHook;
 
         this._testRunCtor = TestRunController._getTestRunCtor(test, opts);
 
@@ -170,6 +174,7 @@ export default class TestRunController extends AsyncEventEmitter {
         // NOTE: we should report test run completion in order they were completed in browser.
         // To keep a sequence after fixture hook execution we use completion queue.
         await this._fixtureHookController.runFixtureAfterHookIfNecessary(this.testRun);
+        await this._testRunHook.runTestRunAfterHookIfNecessary(this.testRun);
 
         this.done = true;
 
@@ -227,7 +232,8 @@ export default class TestRunController extends AsyncEventEmitter {
     public async start (connection: BrowserConnection, startRunExecutionTime?: Date): Promise<string | null> {
         const testRun = await this._createTestRun(connection, startRunExecutionTime);
 
-        const hookOk = await this._fixtureHookController.runFixtureBeforeHookIfNecessary(testRun);
+        const hookOk = await this._testRunHook.runTestRunBeforeHookIfNecessary(testRun)
+                       && await this._fixtureHookController.runFixtureBeforeHookIfNecessary(testRun);
 
         if (this.test.skip || !hookOk) {
             await this._emitTestRunStart();

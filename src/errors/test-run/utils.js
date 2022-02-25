@@ -5,6 +5,7 @@ import { TEST_RUN_ERRORS } from '../types';
 
 const SUBTITLES = {
     [TEST_RUN_PHASE.initial]:                 '',
+    [TEST_RUN_PHASE.inTestRunBeforeHook]:     '<span class="subtitle">Error in testRun.before hook</span>\n',
     [TEST_RUN_PHASE.inFixtureBeforeHook]:     '<span class="subtitle">Error in fixture.before hook</span>\n',
     [TEST_RUN_PHASE.inFixtureBeforeEachHook]: '<span class="subtitle">Error in fixture.beforeEach hook</span>\n',
     [TEST_RUN_PHASE.inTestBeforeHook]:        '<span class="subtitle">Error in test.before hook</span>\n',
@@ -12,6 +13,7 @@ const SUBTITLES = {
     [TEST_RUN_PHASE.inTestAfterHook]:         '<span class="subtitle">Error in test.after hook</span>\n',
     [TEST_RUN_PHASE.inFixtureAfterEachHook]:  '<span class="subtitle">Error in fixture.afterEach hook</span>\n',
     [TEST_RUN_PHASE.inFixtureAfterHook]:      '<span class="subtitle">Error in fixture.after hook</span>\n',
+    [TEST_RUN_PHASE.inTestRunAfterHook]:      '<span class="subtitle">Error in testRun.after hook</span>\n',
     [TEST_RUN_PHASE.inRoleInitializer]:       '<span class="subtitle">Error in Role initializer</span>\n',
     [TEST_RUN_PHASE.inBookmarkRestore]:       '<span class="subtitle">Error while restoring configuration after Role switch</span>\n',
 };
