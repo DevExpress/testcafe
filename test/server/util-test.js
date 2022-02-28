@@ -22,6 +22,7 @@ const { replaceLeadingSpacesWithNbsp } = require('../../lib/errors/test-run/util
 const createTempProfile                = require('../../lib/browser/provider/built-in/dedicated/chrome/create-temp-profile');
 const parseUserAgent                   = require('../../lib/utils/parse-user-agent');
 const diff                             = require('../../lib/utils/diff');
+const { generateScreenshotMark }       = require('../../lib/screenshots/utils');
 
 const {
     buildChromeArgs,
@@ -604,5 +605,14 @@ describe('Utils', () => {
 
             expect(preferences.profile.content_settings.exceptions.popups).to.be.undefined;
         });
+    });
+
+    it('generateScreenshotMark', () => {
+        const { markSeed } = generateScreenshotMark();
+
+        expect(markSeed.length).eql(128);
+
+        for (const markPixel of markSeed)
+            expect(markPixel === 0 || markPixel === 255).is.true;
     });
 });
