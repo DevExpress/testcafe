@@ -74,7 +74,7 @@ const CLIENT_TESTS_MOBILE_BROWSERS = [
         // problem with extra scroll reproduced only on saucelabs
         // virtual machines with ios device emulators
         version:     '15.0',
-        deviceName:  'iPhone 7 Plus Simulator',
+        deviceName:  'iPhone Simulator',
     },
 ];
 
