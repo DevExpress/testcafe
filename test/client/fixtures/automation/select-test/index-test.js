@@ -16,6 +16,7 @@ const textSelection = testCafeCore.textSelection;
 
 const isMobileSafari = browserUtils.isSafari && featureDetection.isTouchDevice;
 
+QUnit.config.testTimeout = 30000;
 
 $(document).ready(function () {
     //constants
