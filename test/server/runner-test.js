@@ -975,8 +975,9 @@ describe('Runner', () => {
                 stopServingConnection:  noop,
             };
             const compilerService          = {
-                init:     noop,
-                getTests: () => [new Test({ currentFixture: void 0 })],
+                init:             noop,
+                getTests:         () => [new Test({ currentFixture: void 0 })],
+                setUserVariables: noop,
             };
 
             let runnerLinux = null;

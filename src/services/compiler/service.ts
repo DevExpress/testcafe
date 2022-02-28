@@ -190,6 +190,7 @@ class CompilerService implements CompilerProtocol {
             this.getTests,
             this.runTestFn,
             this.cleanUp,
+            this.setUserVariables,
             this.setOptions,
             this.onRequestHookEvent,
             this.setMock,
@@ -296,7 +297,7 @@ class CompilerService implements CompilerProtocol {
         return this.state.roles.get(roleId) as Role;
     }
 
-    private _updateUserVariables (value: OptionValue): void {
+    public async setUserVariables (value: UserVariables | null): Promise<void> {
         userVariables.value = value;
     }
 
@@ -310,8 +311,6 @@ class CompilerService implements CompilerProtocol {
 
     public async setOptions ({ value }: SetOptionsArguments): Promise<void> {
         this.state.options = value;
-
-        this._updateUserVariables(value.userVariables);
     }
 
     public async ready (): Promise<void> {

@@ -396,6 +396,13 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
         await proxy.call(this.cleanUp);
     }
 
+    public async setUserVariables (userVariables: UserVariables | null): Promise<void> {
+        const { proxy } = await this._getRuntime();
+
+        await proxy.call(this.setUserVariables, userVariables);
+    }
+
+
     public async setOptions ({ value }: SetOptionsArguments): Promise<void> {
         const { proxy } = await this._getRuntime();
 

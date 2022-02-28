@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Mocked page</h1>
+<h2></h2>
+<button onclick="sendRequest()"></button>
+<script>
+    function sendRequest () {
+        fetch('http://dummy-url.com/get')
+            .then(res => {
+                return res.text();
+            })
+            .then(text => {
+                document.querySelector('h2').textContent = text;
+            });
+    }
+</script>
+</body>
+</html>
