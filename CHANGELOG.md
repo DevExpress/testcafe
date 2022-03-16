@@ -2,7 +2,7 @@
 
 ## v1.18.4
 
-### What’s Changed
+### Bug Fixes
 
  * TestCafe does not display reporter output during initialization ([#6842](https://github.com/DevExpress/testcafe/issues/6842))
  
