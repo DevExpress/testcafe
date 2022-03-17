@@ -1,7 +1,7 @@
 import tty, { WriteStream } from 'tty';
 import { Stream } from 'stream';
 
-const DEFAULT_VIEWPORT_WIDTH = 78;
+const DEFAULT_VIEWPORT_WIDTH = parseInt(process.env.TC_DEFAULT_VIEWPORT_WIDTH as string, 10) || 78;
 
 export default function (outStream: Stream): number {
     if (outStream === process.stdout && tty.isatty(1)) {
