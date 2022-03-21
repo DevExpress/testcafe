@@ -20,10 +20,13 @@ describe('Bootstrapper', () => {
             },
             setUserVariables: noop,
         };
+        const configuration = {
+            getOption: () => {},
+        };
         let bootstrapper = null;
 
         beforeEach(() => {
-            bootstrapper = new Bootstrapper({ browserConnectionGateway, compilerService });
+            bootstrapper = new Bootstrapper({ browserConnectionGateway, compilerService, configuration });
 
             bootstrapper.browserInitTimeout           = 100;
             bootstrapper.TESTS_COMPILATION_UPPERBOUND = 0;
