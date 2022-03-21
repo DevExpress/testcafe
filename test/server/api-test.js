@@ -5,7 +5,7 @@ const resolve        = require('path').resolve;
 const assertAPIError = require('./helpers/assert-runtime-error').assertAPIError;
 const compile        = require('./helpers/compile');
 const OPTION_NAMES   = require('../../lib/configuration/option-names');
-//const Compiler       = require('../../lib/compiler');
+const Compiler       = require('../../lib/compiler');
 
 
 describe('API', function () {
@@ -388,23 +388,37 @@ describe('API', function () {
                 });
         });
 
-        //TO DO: fix this test:
-        // it.only('Should raise an error if baseUrl is relative', () => {
-        //     const testfile = resolve('test/server/data/test-suites/fixture-without-page/testfile.js');
-        //     try {
-        //         new Compiler(testfile, {}, { baseUrl: './example.org' });
-        //     }
-        //     catch (err) {
-        //         return assertAPIError(err, {
-        //             stackTop: testfile,
-        //
-        //             message: 'Cannot prepare tests due to the following error:\n\n' +
-        //                          'The baseUrl argument is incorrect: "./example.org"',
-        //
-        //             code: 'E1071',
-        //         });
-        //     }
-        // });
+        it('Should raise an error if baseUrl is relative', () => {
+            const testfile = resolve('test/server/data/test-suites/fixture-without-page/testfile.js');
+            const createCompiler = () => new Compiler(testfile, {}, { baseUrl: './example.org' });
+
+
+            try {
+                createCompiler();
+
+                throw new Error('Promise rejection expected');
+            }
+            catch (err) {
+                return assertAPIError(err, {
+                    stackTop: __filename,
+
+                    message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'The URL specified in the baseUrl argument cannot be relative: "./example.org"',
+
+                    callsite: '    9 |            .join(\'|\');\n' +
+                              '   10 |\n' +
+                              '   11 |        this.supportedExtensionRe = new RegExp(`(${escapedExt})$`);\n' +
+                              '   12 |        this.baseUrl = baseUrl;\n' +
+                              '   13 |\n' +
+                              ' > 14 |        this._ensureBaseUrl();\n' +
+                              '   15 |    }\n' +
+                              '   16 |\n' +
+                              '   17 |    _ensureBaseUrl () {\n' +
+                              '   18 |        if (!this.baseUrl)\n' +
+                              '   19 |            return;',
+                });
+            }
+        });
     });
 
     describe('test', function () {
