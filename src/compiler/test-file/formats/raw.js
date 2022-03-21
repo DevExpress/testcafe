@@ -8,9 +8,6 @@ import createCommandFromObject from '../../../test-run/commands/from-object';
 import { RawCommandCallsiteRecord } from '../../../utils/raw-command-callsite-record';
 
 export default class RawTestFileCompiler extends TestFileCompilerBase {
-    constructor ({ baseUrl }) {
-        super({ baseUrl });
-    }
 
     static _createTestFn (commands) {
         return async t => {

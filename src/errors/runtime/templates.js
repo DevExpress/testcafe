@@ -55,7 +55,7 @@ export default {
     [RUNTIME_ERRORS.regeneratorInClientFunctionCode]:                    `{#instantiationCallsiteName} code, arguments or dependencies cannot contain generators or "async/await" syntax (use Promises instead).`,
     [RUNTIME_ERRORS.invalidClientFunctionTestRunBinding]:                'Cannot resolve the "boundTestRun" option because its value is not a test controller.',
     [RUNTIME_ERRORS.invalidValueType]:                                   '{smthg} ({actual}) is not of expected type ({type}).',
-    [RUNTIME_ERRORS.unsupportedUrlProtocol]:                             'The "{url}" test page URL includes an unsupported {protocol}:// protocol. TestCafe only supports http://, https:// and file:// protocols.',
+    [RUNTIME_ERRORS.unsupportedUrlProtocol]:                             'The "{url}" {what} includes an unsupported {protocol}:// protocol. TestCafe only supports http://, https:// and file:// protocols.',
     [RUNTIME_ERRORS.testControllerProxyCannotResolveTestRun]:            `Cannot implicitly resolve the test run in the context of which the test controller action should be executed. Use test function's 't' argument instead.`,
     [RUNTIME_ERRORS.timeLimitedPromiseTimeoutExpired]:                   'A Promise timed out.',
     [RUNTIME_ERRORS.cannotSetVideoOptionsWithoutBaseVideoPathSpecified]: 'You cannot manage advanced video parameters when the video recording capability is off. Specify the root storage folder for video content to enable video recording.',
@@ -130,5 +130,5 @@ export default {
     [BrowserConnectionErrorHint.RestErrorCauses]:         'The error can also be caused by network issues or remote device failure. Make sure that your network connection is stable and you can reach the remote device.',
     [RUNTIME_ERRORS.cannotFindTestcafeConfigurationFile]: 'Cannot locate a TestCafe configuration file at {filePath}. Either the file does not exist, or the path is invalid.',
     [RUNTIME_ERRORS.dashboardTokenInJSON]:                'Insecure token declaration: cannot declare a Dashboard token in a JSON configuration file. Use a JavaScript configuration file, or declare a Dashboard token with one of the following: the CLI, the Test Runner API, the TESTCAFE_DASHBOARD_TOKEN environment variable.',
-    [RUNTIME_ERRORS.incorrectBaseUrl]:                    'The baseUrl argument is incorrect: "{baseUrl}"', //TO DO: Change the error message.
+    [RUNTIME_ERRORS.relativeBaseUrl]:                     'The URL specified in the baseUrl argument cannot be relative: "{baseUrl}"',
 };

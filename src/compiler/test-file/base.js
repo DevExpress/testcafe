@@ -1,6 +1,6 @@
 import { escapeRegExp as escapeRe, flatten } from 'lodash';
 import { assertBaseUrl, getUrl } from '../../api/test-page-url';
-import OPTION_NAMES from '../../configuration/option-names';
+import { assertType, is } from '../../errors/runtime/type-assertions';
 
 export default class TestFileCompilerBase {
     constructor ({ baseUrl }) {
@@ -18,7 +18,8 @@ export default class TestFileCompilerBase {
         if (!this.baseUrl)
             return;
 
-        assertBaseUrl(this.baseUrl, OPTION_NAMES.baseUrl);
+        assertType(is.string, '_ensureBaseUrl', 'The base URL', this.baseUrl);
+        assertBaseUrl(this.baseUrl, '_ensureBaseUrl');
 
         this.baseUrl = getUrl(this.baseUrl);
     }

@@ -55,19 +55,23 @@ export function prepareBaseUrl (url: string): URL {
 }
 
 export function assertPageUrl (url: string, callsiteName: string): void {
+    assertProtocol(url, callsiteName, 'test page URL');
+}
+
+function assertProtocol (url: string, callsiteName: string, what: string): void {
     const protocol               = url.match(PROTOCOL_RE);
     const hasUnsupportedProtocol = protocol && !SUPPORTED_PROTOCOL_RE.test(url);
     const isWinAbsolutePath      = OS.win && WIN_ABSOLUTE_PATH_RE.test(url);
 
     if (hasUnsupportedProtocol && !isWinAbsolutePath && url !== SPECIAL_BLANK_PAGE)
-        throw new APIError(callsiteName, RUNTIME_ERRORS.unsupportedUrlProtocol, url, protocol && protocol[0]);
+        throw new APIError(callsiteName, RUNTIME_ERRORS.unsupportedUrlProtocol, url, what, protocol && protocol[0]);
 }
 
 export function assertBaseUrl (url: string, callsiteName: string): void {
     if (isRelative(url))
-        throw new APIError(callsiteName, RUNTIME_ERRORS.incorrectBaseUrl, url);
+        throw new APIError(callsiteName, RUNTIME_ERRORS.relativeBaseUrl, url);
 
-    assertPageUrl(url, callsiteName);
+    assertProtocol(url, callsiteName, 'base URL');
 }
 
 export function assertRoleUrl (url: string, callsiteName: string): void {
