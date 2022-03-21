@@ -1,11 +1,12 @@
-const expect         = require('chai').expect;
-const proxyquire     = require('proxyquire');
-const sinon          = require('sinon');
-const resolve        = require('path').resolve;
-const assertAPIError = require('./helpers/assert-runtime-error').assertAPIError;
-const compile        = require('./helpers/compile');
-const OPTION_NAMES   = require('../../lib/configuration/option-names');
-const Compiler       = require('../../lib/compiler');
+const expect              = require('chai').expect;
+const proxyquire          = require('proxyquire');
+const sinon               = require('sinon');
+const resolve             = require('path').resolve;
+const assertAPIError      = require('./helpers/assert-runtime-error').assertAPIError;
+const compile             = require('./helpers/compile');
+const OPTION_NAMES        = require('../../lib/configuration/option-names');
+const Compiler            = require('../../lib/compiler');
+const { RUNTIME_ERRORS }  = require('../../lib/errors/types');
 
 
 describe('API', function () {
@@ -388,10 +389,9 @@ describe('API', function () {
                 });
         });
 
-        it.only('Should raise an error if baseUrl is relative', () => {
+        it('Should raise an error if baseUrl is relative', () => {
             const testfile = resolve('test/server/data/test-suites/fixture-without-page/testfile.js');
             const createCompiler = () => new Compiler(testfile, {}, { baseUrl: './example.org' });
-
 
             try {
                 createCompiler();
@@ -399,31 +399,12 @@ describe('API', function () {
                 throw new Error('Promise rejection expected');
             }
             catch (err) {
-                console.log('Stack:');
-                console.log(err.stack);
-                console.log('Message:');
-                console.log(err.message);
-                console.log('Callsite:');
-                console.log(err.callsite);
+                const message = 'Cannot prepare tests due to the following error:\n\n' +
+                    'The URL specified in the baseUrl argument cannot be relative: "./example.org"';
+                const code = RUNTIME_ERRORS.relativeBaseUrl;
 
-                return assertAPIError(err, {
-                    stackTop: __filename,
-
-                    message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'The URL specified in the baseUrl argument cannot be relative: "./example.org"',
-
-                    callsite: '    9 |            .join(\'|\');\n' +
-                              '   10 |\n' +
-                              '   11 |        this.supportedExtensionRe = new RegExp(`(${escapedExt})$`);\n' +
-                              '   12 |        this.baseUrl = baseUrl;\n' +
-                              '   13 |\n' +
-                              ' > 14 |        this._ensureBaseUrl();\n' +
-                              '   15 |    }\n' +
-                              '   16 |\n' +
-                              '   17 |    _ensureBaseUrl () {\n' +
-                              '   18 |        if (!this.baseUrl)\n' +
-                              '   19 |            return;',
-                });
+                expect(err.message).eql(message);
+                expect(err.code).eql(code);
             }
         });
     });

@@ -54,6 +54,7 @@ gulpStep.install();
 ll
     .install()
     .tasks([
+        'lint',
         'check-licenses',
     ])
     .onlyInDebug([
@@ -256,10 +257,10 @@ gulp.step('package-content', buildTasks('ts-defs', 'server-scripts', 'client-scr
 
 gulp.task('fast-build', gulp.series('clean', 'package-content'));
 
-gulp.task('build', process.env.DEV_MODE === 'true' ? gulp.registry().get('fast-build') : buildTasks( 'fast-build'));
+gulp.task('build', process.env.DEV_MODE === 'true' ? gulp.registry().get('fast-build') : buildTasks('lint', 'fast-build'));
 
 // Test
-gulp.step('prepare-tests', gulp.registry().get('build'));
+gulp.step('prepare-tests', gulp.registry().get(SKIP_BUILD ? 'lint' : 'build'));
 
 gulp.step('test-server-run', () => {
     const chai = require('chai');
@@ -282,9 +283,9 @@ gulp.step('test-server-run', () => {
     }
 });
 
-gulp.step('test-server-bootstrap', gulp.series( 'test-server-run'));
+gulp.step('test-server-bootstrap', gulp.series('prepare-tests', 'test-server-run'));
 
-gulp.task('test-server', gulp.parallel('test-server-bootstrap'));
+gulp.task('test-server', gulp.parallel('check-licenses', 'test-server-bootstrap'));
 
 gulp.step('test-cdp-run', () => {
     return gulp
