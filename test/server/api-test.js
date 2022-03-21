@@ -388,7 +388,7 @@ describe('API', function () {
                 });
         });
 
-        it('Should raise an error if baseUrl is relative', () => {
+        it.only('Should raise an error if baseUrl is relative', () => {
             const testfile = resolve('test/server/data/test-suites/fixture-without-page/testfile.js');
             const createCompiler = () => new Compiler(testfile, {}, { baseUrl: './example.org' });
 
@@ -399,6 +399,13 @@ describe('API', function () {
                 throw new Error('Promise rejection expected');
             }
             catch (err) {
+                console.log('Stack:');
+                console.log(err.stack);
+                console.log('Message:');
+                console.log(err.message);
+                console.log('Callsite:');
+                console.log(err.callsite);
+
                 return assertAPIError(err, {
                     stackTop: __filename,
 
