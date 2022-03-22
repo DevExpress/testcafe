@@ -32,7 +32,7 @@ testingEnvironments[testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers] = {
 
     browsers: [
         {
-            browserName: 'browserstack:safari@15.1:OS X Monterey',
+            browserName: 'browserstack:safari',
             alias:       'safari',
         },
         {
