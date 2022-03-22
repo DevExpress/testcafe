@@ -9,14 +9,15 @@ export default class TestFileCompilerBase {
             .join('|');
 
         this.supportedExtensionRe = new RegExp(`(${escapedExt})$`);
-        this.baseUrl = baseUrl;
 
-        this._ensureBaseUrl();
+        this._ensureBaseUrl(baseUrl);
     }
 
-    _ensureBaseUrl () {
-        if (!this.baseUrl)
+    _ensureBaseUrl (url) {
+        if (!url)
             return;
+
+        this.baseUrl = url;
 
         assertType(is.string, '_ensureBaseUrl', 'The base URL', this.baseUrl);
         assertBaseUrl(this.baseUrl, '_ensureBaseUrl');

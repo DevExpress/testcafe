@@ -8,7 +8,7 @@ import {
 
 const getLocation = ClientFunction(() => window.location.href);
 
-fixture`GH-1932 - Global Start URL Option - 2`
+fixture`GH-1932 - Fixture with absolute page URL`
     .page`${INDEX1_URL}`;
 
 test(`Fixture page URL is used`, async t => {

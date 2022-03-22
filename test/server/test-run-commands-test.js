@@ -2557,7 +2557,7 @@ describe('Test run commands', () => {
                         url:  'mail://testcafe@devexpress.com',
                     });
                 },
-                'Cannot prepare tests due to the following error:\n\nThe "mail://testcafe@devexpress.com" test page URL includes an unsupported mail:// protocol. TestCafe only supports http://, https:// and file:// protocols.'
+                'Cannot prepare tests due to the following error:\n\nInvalid test page URL: "mail://testcafe@devexpress.com". TestCafe cannot execute the test because the test page URL includes the mail protocol. TestCafe supports the following protocols: http://, https:// and file://.'
             );
         });
 

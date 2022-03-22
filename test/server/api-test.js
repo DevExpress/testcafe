@@ -400,8 +400,26 @@ describe('API', function () {
             }
             catch (err) {
                 const message = 'Cannot prepare tests due to the following error:\n\n' +
-                    'The URL specified in the baseUrl argument cannot be relative: "./example.org"';
+                    'The value of the baseUrl argument cannot be relative: "./example.org"';
                 const code = RUNTIME_ERRORS.relativeBaseUrl;
+
+                expect(err.message).eql(message);
+                expect(err.code).eql(code);
+            }
+        });
+        it('Should raise an error if baseUrl contains unsupported protocol', () => {
+            const testfile = resolve('test/server/data/test-suites/fixture-without-page/testfile.js');
+            const createCompiler = () => new Compiler(testfile, {}, { baseUrl: 'mail://example.org' });
+
+            try {
+                createCompiler();
+
+                throw new Error('Promise rejection expected');
+            }
+            catch (err) {
+                const message = 'Cannot prepare tests due to the following error:\n\n' +
+                    'Invalid base URL: "mail://example.org". TestCafe cannot execute the test because the base URL includes the mail protocol. TestCafe supports the following protocols: http://, https:// and file://.';
+                const code = RUNTIME_ERRORS.unsupportedUrlProtocol;
 
                 expect(err.message).eql(message);
                 expect(err.code).eql(code);

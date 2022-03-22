@@ -1,16 +1,17 @@
 import { ClientFunction } from 'testcafe';
 import { pathToFileURL, URL } from 'url';
+import { join } from 'path';
 import {
-    ABSOLUTE_BASE_URL,
+    FILE_PROTOCOL_URL,
     INDEX1_RELATIVE_URL,
     INDEX2_RELATIVE_URL,
     INDEX1_WITH_UPDIR_RELATIVE_URL,
 } from '../constants';
 
 const getLocation = ClientFunction(() => window.location.href);
-const ABSOLUTE_BASE_PATH = pathToFileURL(ABSOLUTE_BASE_URL.replace(/\/?$/, '/'));
+const ABSOLUTE_BASE_PATH = pathToFileURL(join(FILE_PROTOCOL_URL, '/'));
 
-fixture`GH-1932 - Global Start URL Option - 3`
+fixture`GH-1932 - Fixture with relative page URL`
     .page`${ INDEX1_RELATIVE_URL }`;
 
 test(`Fixture relative url is used`, async t => {

@@ -3,6 +3,7 @@ import OS from 'os-family';
 import { APIError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
 import { SPECIAL_BLANK_PAGE } from 'testcafe-hammerhead';
+import { join } from 'path';
 
 const PROTOCOL_RE           = /^([\w-]+?)(?=:\/\/)/;
 const SUPPORTED_PROTOCOL_RE = /^(https?|file):/;
@@ -50,7 +51,7 @@ export function getUrl (url: string, base?: URL): string {
 }
 
 export function prepareBaseUrl (url: string): URL {
-    url = url.replace(/\/?$/, '/');
+    url = join(url, '/');
     return isAbsolute(url) ? pathToFileURL(url) : new URL(url);
 }
 
@@ -64,7 +65,7 @@ function assertProtocol (url: string, callsiteName: string, what: string): void 
     const isWinAbsolutePath      = OS.win && WIN_ABSOLUTE_PATH_RE.test(url);
 
     if (hasUnsupportedProtocol && !isWinAbsolutePath && url !== SPECIAL_BLANK_PAGE)
-        throw new APIError(callsiteName, RUNTIME_ERRORS.unsupportedUrlProtocol, url, what, protocol && protocol[0]);
+        throw new APIError(callsiteName, RUNTIME_ERRORS.unsupportedUrlProtocol, what, url, what, protocol && protocol[0]);
 }
 
 export function assertBaseUrl (url: string, callsiteName: string): void {
