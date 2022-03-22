@@ -1,26 +1,6 @@
 import adapter from './adapter/index';
-import AxisValues from '../../../../shared/utils/values/axis-values';
 
-
-const SCROLLABLE_OVERFLOW_STYLE_RE               = /auto|scroll/i;
-const DEFAULT_IE_SCROLLABLE_OVERFLOW_STYLE_VALUE = 'visible';
-
-function getScrollable (el: Element): AxisValues<boolean> {
-    const overflowX            = adapter.style.get(el, 'overflowX') as string;
-    const overflowY            = adapter.style.get(el, 'overflowY') as string;
-    let scrollableHorizontally = SCROLLABLE_OVERFLOW_STYLE_RE.test(overflowX);
-    let scrollableVertically   = SCROLLABLE_OVERFLOW_STYLE_RE.test(overflowY);
-
-    // IE11 and MS Edge bug: There are two properties: overflow-x and overflow-y.
-    // If one property is set so that the browser may show scrollbars (`auto` or `scroll`) and the second one is set to 'visible',
-    // then the second one will work as if it had the 'auto' value.
-    if (adapter.browser.isIE) {
-        scrollableHorizontally = scrollableHorizontally || scrollableVertically && overflowX === DEFAULT_IE_SCROLLABLE_OVERFLOW_STYLE_VALUE;
-        scrollableVertically   = scrollableVertically || scrollableHorizontally && overflowY === DEFAULT_IE_SCROLLABLE_OVERFLOW_STYLE_VALUE;
-    }
-
-    return new AxisValues(scrollableHorizontally, scrollableVertically);
-}
+const SCROLLABLE_OVERFLOW_STYLE_RE = /auto|scroll/i;
 
 function hasBodyScroll (el: HTMLBodyElement): boolean {
     const overflowX              = adapter.style.get(el, 'overflowX') as string;
@@ -79,13 +59,8 @@ export function hasScroll (el: Element): boolean {
     if (adapter.dom.isHtmlElement(el))
         return hasHTMLElementScroll(el);
 
-    const scrollable = getScrollable(el);
-
-    if (!scrollable.x && !scrollable.y)
-        return false;
-
-    const hasVerticalScroll   = scrollable.y && el.scrollHeight > el.clientHeight;
-    const hasHorizontalScroll = scrollable.x && el.scrollWidth > el.clientWidth;
+    const hasVerticalScroll   = el.scrollHeight > el.clientHeight;
+    const hasHorizontalScroll = el.scrollWidth > el.clientWidth;
 
     return hasHorizontalScroll || hasVerticalScroll;
 }
