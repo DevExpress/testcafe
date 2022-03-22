@@ -85,7 +85,8 @@ describe('Native dialogs handling', function () {
 
     describe('Dialogs appear after redirect', function () {
         it('Should handle prompt dialogs', function () {
-            // NOTE: Temporary disable running on iPad
+            // NOTE: Bug in Safari 15.2 in iPad (desktop and iPhone Safari 15.2 works correctly)
+            // Need to check in the next Safari version (15.3 and later)
             return runTests('./testcafe-fixtures/native-dialogs-test.js', 'Expected alert and prompt after redirect', { skip: 'ipad' });
         });
 
