@@ -338,7 +338,7 @@ $(document).ready(function () {
                 runPressAutomation('space', function () {
                     equal(clickRaisedCount, 2);
 
-                    start();
+                    done();
                 });
             });
         });
