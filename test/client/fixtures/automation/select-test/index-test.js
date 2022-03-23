@@ -352,7 +352,8 @@ $(document).ready(function () {
 
     module('scroll in textarea');
 
-    asyncTest('forward select and right direction (endPos more than startPos)', function () {
+    // TODO: fix it for iOS
+    (browserUtils.isIOS ? QUnit.skip : asyncTest)('forward select and right direction (endPos more than startPos)', function () {
         const textarea = $(TEXTAREA_SELECTOR)[0];
 
         let mousedown = false;
@@ -397,7 +398,8 @@ $(document).ready(function () {
             });
     });
 
-    asyncTest('forward select and left direction (endPos less than startPos)', function () {
+    // TODO: fix it for iOS
+    (browserUtils.isIOS ? QUnit.skip : asyncTest)('forward select and left direction (endPos less than startPos)', function () {
         const textarea = $(TEXTAREA_SELECTOR)[0];
 
         let mousedown = false;

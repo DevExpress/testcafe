@@ -224,7 +224,7 @@ $(document).ready(function () {
         checkSubmitRaisedOnEnterPress($form, $input, true);
     });
 
-    (browserUtils.isFirefox ? QUnit.skip : test)('one text input and one not-text input (type = "checkbox"), checkbox is focused', function () {
+    (browserUtils.isFirefox ? QUnit.skip : asyncTest)('one text input and one not-text input (type = "checkbox"), checkbox is focused', function () {
         const $form  = $('<form></form>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
         const $input = $('<input type="checkbox">').addClass(TEST_ELEMENT_CLASS).appendTo($form);
 

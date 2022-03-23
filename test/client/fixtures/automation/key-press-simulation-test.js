@@ -318,9 +318,7 @@ $(document).ready(function () {
     });
 
     // TODO: Fix this in the new Firefox
-    (browserUtils.isFirefox ? QUnit.skip : test)('B237084 - Client instance works incorrect after "enter" key has been pressed on the focused control', function (assert) {
-        const done = assert.async();
-
+    (browserUtils.isFirefox ? QUnit.skip : asyncTest)('B237084 - Client instance works incorrect after "enter" key has been pressed on the focused control', function () {
         let clickRaisedCount = 0;
 
         const $input = $('<input type="button">').addClass(TEST_ELEMENT_CLASS)
@@ -338,7 +336,7 @@ $(document).ready(function () {
                 runPressAutomation('space', function () {
                     equal(clickRaisedCount, 2);
 
-                    done();
+                    start();
                 });
             });
         });
