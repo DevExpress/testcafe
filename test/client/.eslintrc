@@ -18,8 +18,6 @@
   "globals": {
     /* Utils */
     "async": true,
-    "assert": true,
-    "skip": true,
     /* For more details on global variables see custom-setup.js file */
     "getProperty": true,
     "setProperty": true,
