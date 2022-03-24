@@ -25,10 +25,19 @@ export class MessageParser {
             if (!packet.header.head && this.packetQueue.length === 0)
                 throw new GeneralError(RUNTIME_ERRORS.unexpectedIPCTailPacket);
 
-            const packets = this.packetQueue.splice(0, this.packetQueue.length);
-            const data    = packet.header.head ? packet.data : MessageParser._concatPackets([...packets, packet]);
+            const packets     = this.packetQueue.splice(0, this.packetQueue.length);
+            const data        = packet.header.head ? packet.data : MessageParser._concatPackets([...packets, packet]);
+            const stringified = data.toString();
 
-            return replicator.decode(data.toString()) as object;
+            try {
+                return replicator.decode(stringified) as object;
+            }
+            catch (e) {
+                if (e instanceof Error)
+                    e.message += `\n${stringified}\n`;
+
+                throw e;
+            }
         }
 
         if (packet.header.head && this.packetQueue.length !== 0) {
