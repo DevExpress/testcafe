@@ -263,6 +263,6 @@ module.exports = {
     testVideosDir:      '___test-videos___',
 
     hasBrowser (alias) {
-        return this.browsers.some(browser => browser.alias.contains(alias));
+        return this.currentEnvironment.browsers.some(browser => browser.alias.contains(alias));
     },
 };
