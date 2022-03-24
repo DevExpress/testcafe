@@ -720,7 +720,8 @@ $(document).ready(function () {
             });
     });
 
-    asyncTest('click on label with custom focus/selection handlers bound to checkbox', function () {
+    // TODO: stabilize test on iOS
+    (browserUtils.isIOS ? QUnit.skip : asyncTest)('click on label with custom focus/selection handlers bound to checkbox', function () {
         let changed = false;
 
         const textarea = document.createElement('textarea');

@@ -544,7 +544,8 @@ $(document).ready(function () {
         }, 2000);
     });
 
-    asyncTest('B238560 - Change event is not raised during TestCafe test running', function () {
+    // TODO: stabilize test on iOS
+    (browserUtils.isIOS ? QUnit.skip : asyncTest)('B238560 - Change event is not raised during TestCafe test running', function () {
         const $input = $('<input type="checkbox" />').addClass(TEST_ELEMENT_CLASS).appendTo('body');
 
         let changeRaised = false;
