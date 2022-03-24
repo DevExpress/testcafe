@@ -26,6 +26,8 @@ $(document).ready(function () {
     const TEST_ELEMENT_CLASS       = 'testElement';
     const TEST_DIV_CONTAINER_CLASS = 'testContainer';
 
+    const isIOS = browserUtils.isIOS;
+
     //utils
     const addInputElement = function (type, id, x, y) {
         const elementString = ['<input type="', type, '" id="', id, '" value="', id, '" />'].join('');
@@ -245,8 +247,8 @@ $(document).ready(function () {
             });
     });
 
-    // TODO: Stabilize the test in Chrome with macOS
-    (browserUtils.isChrome && browserUtils.isMacPlatform ? QUnit.skip : asyncTest)('an active input should be blurred and a parent of a disabled input should be focused after a click on the disabled input', function () {
+    // TODO: Stabilize the test in Chrome with macOS and Windows
+    (browserUtils.isChrome && !browserUtils.isAndroid ? QUnit.skip : asyncTest)('an active input should be blurred and a parent of a disabled input should be focused after a click on the disabled input', function () {
         const activeInput         = document.createElement('input');
         const disabledInput       = document.createElement('input');
         const disabledInputParent = document.createElement('div');
@@ -481,7 +483,7 @@ $(document).ready(function () {
     });
 
     // TODO: stabilize test on iOS
-    (browserUtils.isIOS ? QUnit.skip : asyncTest)('focusing on click', function () {
+    (isIOS ? QUnit.skip : asyncTest)('focusing on click', function () {
         let focused = false;
 
         $el.css({ display: 'none' });
@@ -504,7 +506,7 @@ $(document).ready(function () {
     });
 
     // TODO: fix test timeout for iOS
-    (browserUtils.isIOS ? QUnit.skip : asyncTest)('double click in the same position', function () {
+    (isIOS ? QUnit.skip : asyncTest)('double click in the same position', function () {
         const el        = $el[0];
         let clicksCount = 0;
 
@@ -609,7 +611,7 @@ $(document).ready(function () {
     });
 
     // TODO: fix test timeout on iOS
-    (browserUtils.isIOS ? QUnit.skip : asyncTest)('click on outer element raises event for inner element', function () {
+    (isIOS ? QUnit.skip : asyncTest)('click on outer element raises event for inner element', function () {
         let divClicked = false;
         let btnClicked = false;
 
@@ -644,7 +646,7 @@ $(document).ready(function () {
     });
 
     // TODO: stabilize test on iOS
-    (browserUtils.isIOS ? QUnit.skip : asyncTest)('click with positive offsets', function () {
+    (isIOS ? QUnit.skip : asyncTest)('click with positive offsets', function () {
         let eventPoint = null;
 
         $el.css({
@@ -682,7 +684,7 @@ $(document).ready(function () {
     });
 
     // TODO: stabilize test on iOS
-    (browserUtils.isIOS ? QUnit.skip : asyncTest)('click with negative offsets', function () {
+    (isIOS ? QUnit.skip : asyncTest)('click with negative offsets', function () {
         let eventPoint = null;
 
         $el.css({
@@ -723,7 +725,7 @@ $(document).ready(function () {
     });
 
     // TODO: stabilize test on iOS
-    (browserUtils.isIOS ? QUnit.skip : asyncTest)('click on label with custom focus/selection handlers bound to checkbox', function () {
+    (isIOS ? QUnit.skip : asyncTest)('click on label with custom focus/selection handlers bound to checkbox', function () {
         let changed = false;
 
         const textarea = document.createElement('textarea');
