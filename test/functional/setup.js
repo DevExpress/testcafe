@@ -118,13 +118,12 @@ function waitUntilBrowsersConnected () {
     return Promise.all(browsersInfo.map(browserInfo => waitUtilBrowserConnectionOpened(browserInfo.connection)));
 }
 
-function closeRemoteBrowsers () {
+async function closeRemoteBrowsers () {
     const closeBrowserPromises = browserInstances.map(browser => connector.stopBrowser(isBrowserStack ? browser.id : browser));
 
-    return Promise.all(closeBrowserPromises)
-        .then(() => {
-            return connector.disconnect();
-        });
+    await Promise.all(closeBrowserPromises);
+
+    await connector.disconnect();
 }
 
 function closeLocalBrowsers () {
@@ -333,7 +332,7 @@ beforeEach(function () {
     global.currentTest = this.currentTest;
 });
 
-after(function () {
+after(async function () {
     this.timeout(60000);
 
     testCafe.close();
@@ -343,9 +342,15 @@ after(function () {
     delete global.runTests;
     delete global.testReport;
 
-    if (!USE_PROVIDER_POOL)
-        return closeRemoteBrowsers();
-
-    return closeLocalBrowsers();
+    if (!USE_PROVIDER_POOL) {
+        // TODO: we should determine the reason why Browserstack browser hangs at the end
+        // HACK: the timeout prevents tests from failing when we can't close Browserstack browsers
+        await Promise.race([
+            closeRemoteBrowsers(),
+            new Promise(resolve => setTimeout(resolve, 57000)),
+        ]);
+    }
+    else
+        await closeLocalBrowsers();
 });
 

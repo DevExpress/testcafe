@@ -261,4 +261,8 @@ module.exports = {
 
     testScreenshotsDir: '___test-screenshots___',
     testVideosDir:      '___test-videos___',
+
+    hasBrowser (alias) {
+        return this.browsers.some(browser => browser.alias.contains(alias));
+    },
 };

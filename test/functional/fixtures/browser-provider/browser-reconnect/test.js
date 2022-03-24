@@ -65,7 +65,7 @@ function run (pathToTest, filter, initializeConnection = initializeConnectionLow
 
 if (config.useLocalBrowsers && !config.proxyless) {
     // TODO: make tests stable for IE and Windows
-    (config.browsers.includes('ie') ? describe.skip : describe)('Browser reconnect', function () {
+    (config.hasBrowser('ie') ? describe.skip : describe)('Browser reconnect', function () {
         it('Should restart browser when it does not respond', function () {
             return run('./testcafe-fixtures/index-test.js', 'Should restart browser when it does not respond')
                 .then(() => {

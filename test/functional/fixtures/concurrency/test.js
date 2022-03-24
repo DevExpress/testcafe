@@ -115,7 +115,8 @@ if (config.useLocalBrowsers) {
         }
 
         if (!config.proxyless) {
-            it('Should run tests concurrently with Role', function () {
+            // TODO: stabilize test on Firefox
+            (config.hasBrowser('firefox') ? it.skip : it)('Should run tests concurrently with Role', function () {
                 return run('chrome:headless --no-sandbox', 2, './testcafe-fixtures/role-test.js')
                     .then(() => {
                         expect(testInfo.getData()).eql(['/fixtures/concurrency/pages/first-page.html', '/fixtures/concurrency/pages/second-page.html']);
