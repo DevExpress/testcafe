@@ -1,4 +1,8 @@
-describe('[API] .disableReloading/.enableReloading', () => {
+const config = require('../../../../config');
+
+
+// TODO: stabilize tests for Debug task
+(config.experimentalDebug ? describe.skip : describe)('[API] .disableReloading/.enableReloading', () => {
     it('Should reload test pages by default', () => {
         return runTests('./testcafe-fixtures/default-test.js');
     });
