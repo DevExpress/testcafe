@@ -642,7 +642,7 @@ $(document).ready(function () {
     });
 
     // TODO: stabilize test on iOS
-    (browserUtils.isIOS? QUnit.skip : asyncTest)('click with positive offsets', function () {
+    (browserUtils.isIOS ? QUnit.skip : asyncTest)('click with positive offsets', function () {
         let eventPoint = null;
 
         $el.css({
@@ -680,7 +680,7 @@ $(document).ready(function () {
     });
 
     // TODO: stabilize test on iOS
-    (browserUtils.isIOS? QUnit.skip : asyncTest)('click with negative offsets', function () {
+    (browserUtils.isIOS ? QUnit.skip : asyncTest)('click with negative offsets', function () {
         let eventPoint = null;
 
         $el.css({
