@@ -32,7 +32,7 @@ testingEnvironments[testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers] = {
 
     browsers: [
         {
-            browserName: 'browserstack:safari@15.1:OS X Monterey',
+            browserName: 'browserstack:safari',
             alias:       'safari',
         },
         {
@@ -40,8 +40,7 @@ testingEnvironments[testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers] = {
             alias:       'chrome-osx',
         },
         {
-            // NOTE: Temporary not updated. Should be browserstack:firefox:OS X Monterey
-            browserName: 'browserstack:firefox@72:OS X High Sierra',
+            browserName: 'browserstack:firefox:OS X Monterey',
             alias:       'firefox-osx',
         },
         {
@@ -262,4 +261,8 @@ module.exports = {
 
     testScreenshotsDir: '___test-screenshots___',
     testVideosDir:      '___test-videos___',
+
+    hasBrowser (alias) {
+        return this.currentEnvironment.browsers.some(browser => browser.alias.includes(alias));
+    },
 };

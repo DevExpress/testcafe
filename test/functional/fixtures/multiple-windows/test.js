@@ -338,7 +338,8 @@ describe('Multiple windows', () => {
         });
     });
 
-    describe('Emulation', () => {
+    // TODO: Stabilize test in the Debug mode
+    (config.experimentalDebug ? describe.skip : describe)('Emulation', () => {
         it('Should resize window when emulating device', async () => {
             return createTestCafe('127.0.0.1', 1335, 1336)
                 .then(tc => {
@@ -359,7 +360,8 @@ describe('Multiple windows', () => {
         });
     });
 
-    describe('Resize', () => {
+    // TODO: Stabilize test in the Debug mode
+    (config.experimentalDebug ? describe.skip : describe)('Resize', () => {
         function runTestsResize (browser) {
             return createTestCafe('127.0.0.1', 1335, 1336)
                 .then(tc => {

@@ -69,7 +69,8 @@ function createLiveModeRunner (tc, src, browsers = DEFAULT_BROWSERS) {
 const testingEnvironmentName = process.env.TESTING_ENVIRONMENT;
 
 if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
-    describe('Live Mode', () => {
+    // TODO: stabilize tests in IE
+    (config.hasBrowser('ie') ? describe.skip : describe)('Live Mode', () => {
         afterEach (() => {
             helper.clean();
         });

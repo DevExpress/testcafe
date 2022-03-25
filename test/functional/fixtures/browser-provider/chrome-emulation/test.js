@@ -8,7 +8,9 @@ const detectDisplay        = require('../../../../../lib/utils/detect-display');
 
 const isLinuxWithoutGUI = os.linux && !detectDisplay();
 
-if (config.useLocalBrowsers) {
+
+// TODO: separate tests to avoid shared browsers that consume additional resources
+if (config.useLocalBrowsers && config.hasBrowser('chrome')) {
     describe('Browser Provider - Chrome Emulation Mode', () => {
         describe('Should emulate touch event handlers', () => {
             async function checkTouchEmulation (browserAlias) {

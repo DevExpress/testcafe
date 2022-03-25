@@ -6,7 +6,9 @@ const browserProviderPool   = require('../../../../../lib/browser/provider/pool'
 const BrowserConnection     = require('../../../../../lib/browser/connection');
 const { noop }              = require('lodash');
 
-if (config.useLocalBrowsers) {
+
+// TODO: Refactor tests to avoid shared browsers
+if (config.useLocalBrowsers && !config.hasBrowser('ie')) {
     describe('Browser Provider - Job Results Reporting', function () {
         const BROWSER_OPENING_DELAY = 4000;
 
