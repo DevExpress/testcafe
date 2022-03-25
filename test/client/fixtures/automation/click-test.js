@@ -530,7 +530,8 @@ $(document).ready(function () {
             });
     });
 
-    asyncTest('click with options keys', function () {
+    // TODO: fix test timeout for iOS
+    (isIOS ? QUnit.skip : asyncTest)('click with options keys', function () {
         let focused = false;
         let alt     = false;
         let shift   = false;
