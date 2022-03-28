@@ -38,9 +38,7 @@ export default class Configuration {
         const result = Object.create(null);
 
         Object.entries(obj).forEach(([key, value]) => {
-            const option = new Option(key, value);
-
-            result[key] = option;
+            result[key] = new Option(key, value);
         });
 
         return result;
