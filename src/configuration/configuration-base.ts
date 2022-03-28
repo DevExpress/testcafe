@@ -38,9 +38,7 @@ export default class Configuration {
         const result = Object.create(null);
 
         Object.entries(obj).forEach(([key, value]) => {
-            const option = new Option(key, value);
-
-            result[key] = option;
+            result[key] = new Option(key, value);
         });
 
         return result;
@@ -129,8 +127,17 @@ export default class Configuration {
         return result;
     }
 
-    public clone (): Configuration {
-        return cloneDeep(this);
+    public clone (nonClonedOptions?: string | string[]): Configuration {
+        const configuration = cloneDeep(this);
+
+        if (nonClonedOptions) {
+            castArray(nonClonedOptions).forEach(key => {
+                if (configuration._options[key])
+                    configuration._options[key].value = this._options[key].value;
+            });
+        }
+
+        return configuration;
     }
 
     public get filePath (): string | undefined {
