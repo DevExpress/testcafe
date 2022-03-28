@@ -129,8 +129,17 @@ export default class Configuration {
         return result;
     }
 
-    public clone (): Configuration {
-        return cloneDeep(this);
+    public clone (nonClonedOptions?: string | string[]): Configuration {
+        const configuration = cloneDeep(this);
+
+        if (nonClonedOptions) {
+            castArray(nonClonedOptions).forEach(key => {
+                if (configuration._options[key])
+                    configuration._options[key].value = this._options[key].value;
+            });
+        }
+
+        return configuration;
     }
 
     public get filePath (): string | undefined {

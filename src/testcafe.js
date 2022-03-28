@@ -72,7 +72,7 @@ export default class TestCafe {
         const newRunner = new Ctor({
             proxy:                    this.proxy,
             browserConnectionGateway: this.browserConnectionGateway,
-            configuration:            this.configuration.clone(),
+            configuration:            this.configuration.clone(OPTION_NAMES.hooks),
             compilerService:          this.compilerService,
         });
 
