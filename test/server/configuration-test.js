@@ -477,6 +477,40 @@ describe('TestCafeConfiguration', function () {
                 });
             });
         });
+
+        describe('Clone', () => {
+            it('Should clone configuration', async () => {
+                const configuration = new TestCafeConfiguration();
+
+                await configuration.init({
+                    userVariables: {
+                        url: 'localhos',
+                    },
+                });
+
+                const clone = configuration.clone();
+
+                expect(configuration.getOption('userVariables')).not.equal(clone.getOption('userVariables'));
+            });
+
+            it('Should clone configuration except an "hooks" option', async () => {
+                const configuration = new TestCafeConfiguration();
+
+                await configuration.init({
+                    hooks: {
+                        request: 'request',
+                    },
+                    userVariables: {
+                        url: 'localhost',
+                    },
+                });
+
+                const clone = configuration.clone(OptionNames.hooks);
+
+                expect(configuration.getOption('userVariables')).not.equal(clone.getOption('userVariables'));
+                expect(configuration.getOption('hooks')).to.equal(clone.getOption('hooks'));
+            });
+        });
     });
 
     describe('Default values', function () {
