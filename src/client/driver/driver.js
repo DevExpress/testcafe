@@ -168,6 +168,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         this.browserStatusUrl           = communicationUrls.status;
         this.browserStatusDoneUrl       = communicationUrls.statusDone;
         this.browserActiveWindowId      = communicationUrls.activeWindowId;
+        this.browserCloseWindowUrl      = communicationUrls.closeWindow;
         this.userAgent                  = runInfo.userAgent;
         this.fixtureName                = runInfo.fixtureName;
         this.testName                   = runInfo.testName;
@@ -633,10 +634,16 @@ export default class Driver extends serviceUtils.EventEmitter {
         });
     }
 
-    _closeWindowAndWait (childWindowToClose, msg) {
+    async _closeWindowAndWait (childWindowToClose, msg) {
         const waitWindowForClose = this._createWaitForEventPromise(CHILD_WINDOW_CLOSED_EVENT, CHILD_WINDOW_CLOSED_EVENT_TIMEOUT);
 
         childWindowToClose.ignoreMasterSwitching = !msg.isCurrentWindow;
+
+        if (!this.closing) {
+            this.closing = true;
+
+            await browser.closeWindow(this.browserCloseWindowUrl, hammerhead.createNativeXHR, this.windowId);
+        }
 
         childWindowToClose.driverWindow.close();
 

@@ -156,6 +156,13 @@ describe('Multiple windows', () => {
         return runTests('testcafe-fixtures/i6085.js');
     });
 
+    it('Should not hang on close window whide video is recording', () => {
+        return runTests('testcafe-fixtures/i6037.js', '', {
+            only:         'chrome',
+            setVideoPath: true,
+        });
+    });
+
     describe('API', () => {
         it('Open child window', () => {
             return runTests('testcafe-fixtures/api/api-test.js', 'Open child window', { only: 'chrome' });

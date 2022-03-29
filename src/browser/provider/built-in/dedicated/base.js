@@ -128,4 +128,11 @@ export default {
 
         return browserClient.switchToMainWindow();
     },
+
+    async closeBrowserChildWindow (browserId) {
+        const runtimeInfo   = this.openedBrowsers[browserId];
+        const browserClient = this._getBrowserProtocolClient(runtimeInfo);
+
+        return browserClient.closeBrowserChildWindow();
+    },
 };

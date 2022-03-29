@@ -27,14 +27,25 @@ import ClientFunctionExecutor from './client-function-executor';
 import { SwitchToIframeCommand } from '../../../../../../test-run/commands/actions';
 import ExecutionContext from './execution-context';
 import * as clientsManager from './clients-manager';
+import delay from '../../../../../../utils/delay';
 
 const DEBUG_SCOPE = (id: string): string => `testcafe:browser:provider:built-in:chrome:browser-client:${id}`;
 const DOWNLOADS_DIR = path.join(os.homedir(), 'Downloads');
 
 const debugLog = debug('testcafe:browser:provider:built-in:dedicated:chrome');
 
+class ProtocolApiInfo {
+    public inactive: boolean;
+    public client: remoteChrome.ProtocolApi;
+
+    public constructor (client: remoteChrome.ProtocolApi) {
+        this.client   = client;
+        this.inactive = false;
+    }
+}
+
 export class BrowserClient {
-    private _clients: Dictionary<remoteChrome.ProtocolApi> = {};
+    private _clients: Dictionary<ProtocolApiInfo> = {};
     private _runtimeInfo: RuntimeInfo;
     private readonly _proxyless: boolean;
     private _parentTarget?: remoteChrome.TargetInfo;
@@ -92,7 +103,7 @@ export class BrowserClient {
         const client                     = await remoteChrome({ target, port: this._runtimeInfo.cdpPort });
         const { Page, Network, Runtime } = client;
 
-        this._clients[this._clientKey] = client;
+        this._clients[this._clientKey] = new ProtocolApiInfo(client);
 
         await guardTimeExecution(
             async () => await Page.enable(),
@@ -224,10 +235,20 @@ export class BrowserClient {
         return !!this._parentTarget && this._config.headless;
     }
 
+    public async setClientInactive (): Promise<void> {
+        // NOTE: ensure client exists
+        await this.getActiveClient();
+
+        const client = this._clients[this._clientKey];
+
+        if (client)
+            client.inactive = true;
+    }
+
     public async getActiveClient (): Promise<remoteChrome.ProtocolApi | void> {
         try {
             if (!this._clients[this._clientKey])
-                this._clients[this._clientKey] = await this._createClient();
+                await this._createClient();
         }
         catch (err) {
             debugLog(err);
@@ -235,7 +256,12 @@ export class BrowserClient {
             return void 0;
         }
 
-        return this._clients[this._clientKey];
+        const info = this._clients[this._clientKey];
+
+        if (info.inactive)
+            return void 0;
+
+        return info.client;
     }
 
     public async init (): Promise<void> {
@@ -273,8 +299,12 @@ export class BrowserClient {
 
         const client = await this.getActiveClient();
 
-        if (!client)
+        if (!client) {
+            // NOTE: required for https://github.com/DevExpress/testcafe/issues/6037
+            await delay(0);
+
             return Buffer.alloc(0);
+        }
 
         if (fullPage) {
             const { contentSize, visualViewport } = await client.Page.getLayoutMetrics();
@@ -386,5 +416,12 @@ export class BrowserClient {
 
     public switchToMainWindow (): void {
         ExecutionContext.switchToMainWindow();
+    }
+
+    public async closeBrowserChildWindow (): Promise<void> {
+        await this.setClientInactive();
+
+        // NOTE: delay browser window closing
+        await delay(100);
     }
 }
