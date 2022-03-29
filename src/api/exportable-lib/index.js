@@ -3,6 +3,7 @@ import TEST_FILE_TEMP_VARIABLE_NAME from '../../compiler/test-file/test-file-tem
 const lazyRequire           = require('import-lazy')(require);
 const ClientFunctionBuilder = lazyRequire('../../client-functions/client-function-builder');
 const SelectorBuilder       = lazyRequire('../../client-functions/selectors/selector-builder');
+const RequestBuilder        = lazyRequire('../../request/request-builder');
 const role                  = lazyRequire('../../role');
 const createRequestLogger   = lazyRequire('../request-hooks/request-logger');
 const createRequestMock     = lazyRequire('../request-hooks/request-mock/create-request-mock');
@@ -53,6 +54,12 @@ const exportableLib = {
     RequestLogger,
 
     RequestMock,
+
+    get Request () {
+        const builder = new RequestBuilder();
+
+        return builder.getFunction();
+    },
 
     get RequestHook () {
         if (!RequestHook)
