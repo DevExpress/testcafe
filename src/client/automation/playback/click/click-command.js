@@ -98,7 +98,8 @@ class LabelledCheckboxElementClickCommand extends LabelElementClickCommand {
     constructor (eventState, eventArgs) {
         super(eventState, eventArgs);
 
-        this.checkbox = this.input;
+        this.checkbox                           = this.input;
+        this.shouldPreventCheckedChangeInChrome = this._isClickableElementInsideLabel(eventArgs.element);
     }
 
     run () {
@@ -114,7 +115,10 @@ class LabelledCheckboxElementClickCommand extends LabelElementClickCommand {
 
         listeners.removeInternalEventBeforeListener(window, ['change'], onChange);
 
-        if (browserUtils.isChrome && !changed)
+        //NOTE: Two overlapping issues: https://github.com/DevExpress/testcafe/issues/3348 and https://github.com/DevExpress/testcafe/issues/6949
+        //When label contains <a href=any> or <button> element, clicking these elements will prevent checkbox from changing checked state.
+        //We should to leave the code for fixing .focus issue and add additional check for the clickable elements inside the label:
+        if (browserUtils.isChrome && !changed && !this.shouldPreventCheckedChangeInChrome)
             this._ensureCheckboxStateChanged();
     }
 
@@ -122,6 +126,13 @@ class LabelledCheckboxElementClickCommand extends LabelElementClickCommand {
         this.checkbox.checked = !this.checkbox.checked;
 
         eventSimulator.change(this.checkbox);
+    }
+
+    _isClickableElementInsideLabel (element) {
+        const isClickableLink = element.tagName === 'A' && element.getAttribute('href');
+        const isButton        = element.tagName === 'BUTTON';
+
+        return isClickableLink || isButton;
     }
 }
 
@@ -146,5 +157,3 @@ export default function (eventState, eventArgs) {
 
     return new ElementClickCommand(eventState, eventArgs);
 }
-
-
