@@ -1,7 +1,7 @@
 import { Request, RequestMock } from 'testcafe';
 
 const mock = RequestMock()
-    .onRequest({
+    .onRequestTo({
         url:    'https://devexpress.github.io/testcafe/example/data/json',
         method: 'GET',
     })
@@ -9,35 +9,35 @@ const mock = RequestMock()
         name:     'John Hearts',
         position: 'CTO',
     }, 200, { 'access-control-allow-origin': '*' })
-    .onRequest({
+    .onRequestTo({
         url:    'https://devexpress.github.io/testcafe/example/data/json',
         method: 'POST',
     })
     .respond({
         message: 'Data was posted',
     }, 200, { 'access-control-allow-origin': '*' })
-    .onRequest({
+    .onRequestTo({
         url:    'https://devexpress.github.io/testcafe/example/data/json',
         method: 'DELETE',
     })
     .respond({
         message: 'Data was deleted',
     }, 200, { 'access-control-allow-origin': '*' })
-    .onRequest({
+    .onRequestTo({
         url:    'https://devexpress.github.io/testcafe/example/data/json',
         method: 'PUT',
     })
     .respond({
         message: 'Data was putted',
     }, 200, { 'access-control-allow-origin': '*' })
-    .onRequest({
+    .onRequestTo({
         url:    'https://devexpress.github.io/testcafe/example/data/json',
         method: 'PATCH',
     })
     .respond({
         message: 'Data was patched',
     }, 200, { 'access-control-allow-origin': '*' })
-    .onRequest({
+    .onRequestTo({
         url:    'https://devexpress.github.io/testcafe/example/data/json',
         method: 'HEAD',
     })
@@ -47,19 +47,21 @@ fixture`Request`
     .requestHooks(mock);
 
 test('Should execute a GET request', async (t) => {
-    const expected = {
-        status:     200,
-        statusText: 'OK',
-        headers:    {},
-        body:       {
+    const {
+        status,
+        statusText,
+        headers,
+        body,
+    } = await Request('https://devexpress.github.io/testcafe/example/data/json');
+
+    await t
+        .expect(status).eql(200)
+        .expect(statusText).eql('OK')
+        .expect(headers).contains({ 'content-type': 'application/json' })
+        .expect(body).eql({
             name:     'John Hearts',
             position: 'CTO',
-        },
-    };
-
-    const data = await Request('https://devexpress.github.io/testcafe/example/data/json');
-
-    await t.expect(data.body).eql(expected);
+        });
 });
 
 test('Should execute a POST request', async (t) => {
