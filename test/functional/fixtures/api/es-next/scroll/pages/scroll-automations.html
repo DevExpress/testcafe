@@ -20,6 +20,13 @@
             border: 1px solid black;
         }
 
+        #hidden {
+            height: 500px;
+            width: 500px;
+            overflow: hidden;
+            border: 1px solid black;
+        }
+
         #scrollable-deferred {
             height: 500px;
             width: 500px;
@@ -41,6 +48,15 @@
             left: 700px;
             position: absolute;
         }
+
+        #hidden-target {
+            width: 1000px;
+            height: 1000px;
+            background-color: black;
+            top: 700px;
+            left: 700px;
+            position: absolute;
+        }
     </style>
 </head>
 <body>
@@ -48,6 +64,11 @@
     <div id="scrollable">
         <div style="height: 5000px; width: 5000px; position: relative;">
             <div id="target"></div>
+        </div>
+    </div>
+    <div id="hidden">
+        <div style="height: 5000px; width: 5000px; position: relative;">
+            <div id="hidden-target"></div>
         </div>
     </div>
 </div>
