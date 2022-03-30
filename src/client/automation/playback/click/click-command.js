@@ -115,9 +115,10 @@ class LabelledCheckboxElementClickCommand extends LabelElementClickCommand {
         listeners.removeInternalEventBeforeListener(window, ['change'], onChange);
 
         // NOTE: Two overlapping issues: https://github.com/DevExpress/testcafe/issues/3348 and https://github.com/DevExpress/testcafe/issues/6949
-        // When label contains <a href=any> or <button> element, clicking these elements will prevent checkbox from changing checked state.
+        // When label contains <a href=any> or <button> element, clicking these elements should prevent checkbox from changing checked state.
+        // Also, checkbox state should not be changed if it is disabled.
         // We should to leave the code for fixing .focus issue and add additional check for the clickable elements inside the label:
-        if (browserUtils.isChrome && !changed && !this._isClickableElementInsideLabel(this.targetElement))
+        if (browserUtils.isChrome && !changed && !this.checkbox.disabled && !this._isClickableElementInsideLabel(this.targetElement))
             this._ensureCheckboxStateChanged();
     }
 
