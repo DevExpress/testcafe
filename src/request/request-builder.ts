@@ -3,8 +3,16 @@ import testRunTracker from '../api/test-run-tracker';
 import TestRun from '../test-run';
 import TestRunProxy from '../services/compiler/test-run-proxy';
 import axios from 'axios';
+import ReExecutablePromise from '../utils/re-executable-promise';
 
 const REST_METHODS = ['get', 'post', 'delete', 'put', 'patch', 'head'];
+
+const DEFAULT_RESPONSE = {
+    status:     404,
+    statusText: 'Not Found',
+    headers:    {},
+    data:       {},
+};
 
 export default class RequestBuilder {
     private readonly _url: string;
@@ -27,35 +35,46 @@ export default class RequestBuilder {
         return this.getBoundTestRun() || testRunTracker.resolveContextTestRun();
     }
 
-    private async _request (url: string, options: any): Promise<any> {
-        const testRun = this._getTestRun();
+    private _executeRequest (url: string, options: any): ReExecutablePromise {
+        return ReExecutablePromise.fromFn(async () => {
+            const testRun = this._getTestRun();
 
-        if (!testRun || testRun instanceof TestRunProxy)
-            return null;
+            if (!testRun || testRun instanceof TestRunProxy)
+                return null;
 
-        const {
-            status,
-            statusText,
-            headers,
-            data: body,
-        } = await axios(testRun.session.getProxyUrl(url), options);
+            let result = DEFAULT_RESPONSE;
 
-        return { status, statusText, headers, body };
+            try {
+                result = await axios(testRun.session.getProxyUrl(url), options);
+            }
+            catch (e) {
+                result = e.response;
+            }
+
+            const {
+                status,
+                statusText,
+                headers,
+                data: body,
+            } = result;
+
+            return { status, statusText, headers, body };
+        });
     }
 
     private _decorateFunction (fn: any): void {
         fn[requestFunctionBuilder] = this;
 
         REST_METHODS.forEach(method => {
-            fn[method] = (url: string, options = {}) => this._request(url, { ...options, method });
+            fn[method] = (url: string, options = {}) => this._executeRequest(url, { ...options, method });
         });
     }
 
     public getFunction (): any {
         const builder = this;
 
-        const fn = async function (url: string, options: any): Promise<any> {
-            return builder._request(url, options);
+        const fn = function __$$request$$ (url: string, options: any): ReExecutablePromise {
+            return builder._executeRequest(url, options);
         };
 
         this._decorateFunction(fn);
