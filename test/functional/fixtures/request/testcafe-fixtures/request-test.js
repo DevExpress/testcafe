@@ -1,50 +1,14 @@
-import { Request, RequestMock } from 'testcafe';
-
-const mock = RequestMock()
-    .onRequestTo({
-        url:    'https://devexpress.github.io/testcafe/example/data/json',
-        method: 'GET',
-    })
-    .respond({
-        name:     'John Hearts',
-        position: 'CTO',
-    }, 200, { 'access-control-allow-origin': '*' })
-    .onRequestTo({
-        url:    'https://devexpress.github.io/testcafe/example/data/json',
-        method: 'POST',
-    })
-    .respond({
-        message: 'Data was posted',
-    }, 200, { 'access-control-allow-origin': '*' })
-    .onRequestTo({
-        url:    'https://devexpress.github.io/testcafe/example/data/json',
-        method: 'DELETE',
-    })
-    .respond({
-        message: 'Data was deleted',
-    }, 200, { 'access-control-allow-origin': '*' })
-    .onRequestTo({
-        url:    'https://devexpress.github.io/testcafe/example/data/json',
-        method: 'PUT',
-    })
-    .respond({
-        message: 'Data was putted',
-    }, 200, { 'access-control-allow-origin': '*' })
-    .onRequestTo({
-        url:    'https://devexpress.github.io/testcafe/example/data/json',
-        method: 'PATCH',
-    })
-    .respond({
-        message: 'Data was patched',
-    }, 200, { 'access-control-allow-origin': '*' })
-    .onRequestTo({
-        url:    'https://devexpress.github.io/testcafe/example/data/json',
-        method: 'HEAD',
-    })
-    .respond(null, 200, { 'access-control-allow-origin': '*' });
+import { Request } from 'testcafe';
+import Server from '../server';
 
 fixture`Request`
-    .requestHooks(mock);
+    .before((ctx) => {
+        ctx.serverPort = 1339;
+        ctx.server     = new Server(ctx.serverPort);
+    })
+    .after((ctx) => {
+        ctx.server.close();
+    });
 
 test('Should execute a GET request', async (t) => {
     const {
@@ -52,12 +16,12 @@ test('Should execute a GET request', async (t) => {
         statusText,
         headers,
         body,
-    } = await Request('https://devexpress.github.io/testcafe/example/data/json');
+    } = await Request(`http://localhost:${t.fixtureCtx.serverPort}/user`);
 
     await t
         .expect(status).eql(200)
         .expect(statusText).eql('OK')
-        .expect(headers).contains({ 'content-type': 'application/json' })
+        .expect(headers).contains({ 'content-type': 'application/json; charset=utf-8' })
         .expect(body).eql({
             name:     'John Hearts',
             position: 'CTO',
@@ -73,7 +37,7 @@ test('Should execute a POST request', async (t) => {
         },
     };
 
-    const data = await Request('https://devexpress.github.io/testcafe/example/data/json', options);
+    const data = await Request(`http://localhost:${t.fixtureCtx.serverPort}/user`, options);
 
     await t.expect(data.body).eql({
         message: 'Data was posted',
@@ -81,7 +45,7 @@ test('Should execute a POST request', async (t) => {
 });
 
 test('Should execute a request with method get', async (t) => {
-    const data = await Request.get('https://devexpress.github.io/testcafe/example/data/json');
+    const data = await Request.get(`http://localhost:${t.fixtureCtx.serverPort}/user`);
 
     await t.expect(data.body).eql({
         name:     'John Hearts',
@@ -97,7 +61,7 @@ test('Should execute a request with method post', async (t) => {
         },
     };
 
-    const data = await Request.post('https://devexpress.github.io/testcafe/example/data/json', options);
+    const data = await Request.post(`http://localhost:${t.fixtureCtx.serverPort}/user`, options);
 
     await t.expect(data.body).eql({
         message: 'Data was posted',
@@ -112,7 +76,7 @@ test('Should execute a request with method delete', async (t) => {
         },
     };
 
-    const data = await Request.delete('https://devexpress.github.io/testcafe/example/data/json', options);
+    const data = await Request.delete(`http://localhost:${t.fixtureCtx.serverPort}/user`, options);
 
     await t.expect(data.body).eql({
         message: 'Data was deleted',
@@ -127,7 +91,7 @@ test('Should execute a request with method put', async (t) => {
         },
     };
 
-    const data = await Request.put('https://devexpress.github.io/testcafe/example/data/json', options);
+    const data = await Request.put(`http://localhost:${t.fixtureCtx.serverPort}/user`, options);
 
     await t.expect(data.body).eql({
         message: 'Data was putted',
@@ -142,7 +106,7 @@ test('Should execute a request with method patch', async (t) => {
         },
     };
 
-    const data = await Request.patch('https://devexpress.github.io/testcafe/example/data/json', options);
+    const data = await Request.patch(`http://localhost:${t.fixtureCtx.serverPort}/user`, options);
 
     await t.expect(data.body).eql({
         message: 'Data was patched',
@@ -150,7 +114,7 @@ test('Should execute a request with method patch', async (t) => {
 });
 
 test('Should execute a request with method head', async (t) => {
-    const data = await Request.head('https://devexpress.github.io/testcafe/example/data/json');
+    const data = await Request.head(`http://localhost:${t.fixtureCtx.serverPort}/user`);
 
     await t
         .expect(data.headers).ok()

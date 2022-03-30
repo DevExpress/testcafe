@@ -30,8 +30,8 @@ describe('Request', () => {
     it('Should execute a request with method head', function () {
         return runTests('testcafe-fixtures/request-test.js', 'Should execute a request with method head');
     });
-    //
-    // it('Should execute a request in an assertion', function () {
-    //     return runTests('testcafe-fixtures/request-test.js', 'Should execute simple request');
-    // });
+
+    it('Should execute a request in an assertion', function () {
+        return runTests('testcafe-fixtures/request-test.js', 'Should execute a request in an assertion');
+    });
 });
