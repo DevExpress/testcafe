@@ -20,4 +20,8 @@ describe('[Regression](GH-6949)', () => {
     it('Should change checkbox state when clicking a DIV with onclick handler inside the checkbox label', () => {
         return runTests('./testcafe-fixtures/with-div.js', 'Click div inside checkbox label');
     });
+
+    it('Should NOT change checkbox state when clicking the label of the disabled checkbox', () => {
+        return runTests('./testcafe-fixtures/with-disabled-checkbox.js', 'Click disabled checkbox label');
+    });
 });
