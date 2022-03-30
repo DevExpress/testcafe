@@ -1,3 +1,4 @@
+/*eslint-disable*/
 import requestFunctionBuilder from './builder-symbol';
 import testRunTracker from '../api/test-run-tracker';
 import TestRun from '../test-run';
@@ -13,6 +14,13 @@ const DEFAULT_RESPONSE = {
     headers:    {},
     data:       {},
 };
+
+interface Response {
+    status: number;
+    statusText: string;
+    headers: object;
+    data: any;
+}
 
 export default class RequestBuilder {
     private readonly _url: string;
@@ -42,7 +50,7 @@ export default class RequestBuilder {
             if (!testRun || testRun instanceof TestRunProxy)
                 return null;
 
-            let result = DEFAULT_RESPONSE;
+            let result: Response;
 
             try {
                 result = await axios(testRun.session.getProxyUrl(url), options);
@@ -56,7 +64,7 @@ export default class RequestBuilder {
                 statusText,
                 headers,
                 data: body,
-            } = result;
+            } = result || DEFAULT_RESPONSE;
 
             return { status, statusText, headers, body };
         });
