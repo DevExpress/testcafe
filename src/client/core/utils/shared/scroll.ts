@@ -2,7 +2,7 @@ import adapter from './adapter/index';
 import AxisValues from '../../../../shared/utils/values/axis-values';
 
 
-const SCROLLABLE_OVERFLOW_STYLE_RE               = /auto|scroll/i;
+const SCROLLABLE_OVERFLOW_STYLE_RE               = /auto|scroll|hidden/i;
 const DEFAULT_IE_SCROLLABLE_OVERFLOW_STYLE_VALUE = 'visible';
 
 function getScrollable (el: Element): AxisValues<boolean> {
@@ -40,7 +40,7 @@ function hasBodyScroll (el: HTMLBodyElement): boolean {
     }
 
     return (scrollableHorizontally || scrollableVertically) &&
-        bodyScrollHeight > documentElement.scrollHeight;
+           bodyScrollHeight > documentElement.scrollHeight;
 }
 
 function hasHTMLElementScroll (el: HTMLHtmlElement): boolean {

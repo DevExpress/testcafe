@@ -23,9 +23,11 @@ fixture `Scroll/ScrollBy/ScrollIntoView`
 
 const selectorHTML               = Selector(() => document.scrollingElement || document.documentElement);
 const selectorScrollable         = Selector('#scrollable');
+const selectorHidden             = Selector('#hidden');
 const selectorScrollableDeferred = Selector('#scrollable-deferred');
 
-const target = Selector('#target');
+const target       = Selector('#target');
+const hiddenTarget = Selector('#hidden-target');
 
 async function assert (t, selector, expected) {
     const actual = await getScrollPosition(selector)();
@@ -179,6 +181,9 @@ test('scroll into view', async t => {
 
     await t.scrollIntoView(target, { offsetX: 1, offsetY: -1 });
     await t.expect(getScrollPosition(selectorScrollable)()).eql({ left: 652, top: 1248 });
+
+    await t.scrollIntoView(hiddenTarget);
+    await t.expect(getScrollPosition(selectorHidden)()).eql({ left: 749, top: 749 });
 });
 
 test('scroll/scrollby options', async t => {
