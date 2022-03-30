@@ -1,0 +1,17 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Release lock
+
+# Controls when the workflow will run
+on:
+  pull_request_target:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  lock:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: DevExpress/testcafe-build-system/actions/release-lock@main
+        with:
+          lock: ${{ secrets.RELEASE_LOCK }}
