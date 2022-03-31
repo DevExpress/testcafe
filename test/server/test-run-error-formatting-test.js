@@ -771,7 +771,7 @@ describe('Error formatting', () => {
             assertErrorMessage('action-cookie-arguments-error', new ActionCookieArgumentsError(0));
         });
 
-        it('Should format "ActionUrlCookieArgumentError"', () => {
+        it('Should format "actionUrlCookieArgumentError"', () => {
             assertErrorMessage('action-url-cookie-argument-error', new ActionUrlCookieArgumentError());
         });
 

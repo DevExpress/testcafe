@@ -142,7 +142,7 @@ export default {
         The "cookie" at number ${err.index + 1} is expected to be an object or a string.
     `,
 
-    [TEST_RUN_ERRORS.ActionUrlCookieArgumentError]: () => `
+    [TEST_RUN_ERRORS.actionUrlCookieArgumentError]: () => `
         The "urls" argument isn't valid.
     `,
 

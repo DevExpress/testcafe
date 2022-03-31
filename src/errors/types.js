@@ -88,7 +88,7 @@ export const TEST_RUN_ERRORS = {
     actionRequiredCookieArguments:                         'E85',
     actionCookieArgumentError:                             'E86',
     actionCookieArgumentsError:                            'E87',
-    ActionUrlCookieArgumentError:                          'E88',
+    actionUrlCookieArgumentError:                          'E88',
     actionUrlsCookieArgumentError:                         'E89',
     actionStringOptionError:                               'E90',
     actionDateOptionError:                                 'E91',

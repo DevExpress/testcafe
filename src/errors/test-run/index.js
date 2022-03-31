@@ -247,7 +247,7 @@ export class ActionCookieArgumentsError extends TestRunErrorBase {
 
 export class ActionUrlCookieArgumentError extends TestRunErrorBase {
     constructor () {
-        super(TEST_RUN_ERRORS.ActionUrlCookieArgumentError);
+        super(TEST_RUN_ERRORS.actionUrlCookieArgumentError);
     }
 }
 
