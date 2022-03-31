@@ -32,10 +32,14 @@ export default class Server {
 
     _setupRoutes () {
         this.app.get('/user', (req, res) => {
-            res.send({
-                name:     'John Hearts',
-                position: 'CTO',
-            });
+            res.send(data.getResult);
+        });
+        this.app.get('/user/loading', (req, res) => {
+            setTimeout(() => {
+                data.getLoadingResult = data.getResult;
+            }, 100);
+
+            res.send(data.getLoadingResult);
         });
         this.app.post('/user', (req, res) => {
             res.send(data.postResult);

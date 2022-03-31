@@ -122,7 +122,13 @@ test('Should execute a request with method head', async (t) => {
 });
 
 test('Should execute a request in an assertion', async (t) => {
-    await t.expect(Request.get('https://devexpress.github.io/testcafe/example/data/json')).eql({
+    await t.expect(Request.get(`http://localhost:${t.fixtureCtx.serverPort}/user`)).contains({
+        status: 200,
+    });
+});
+
+test('Should re-execute a request in an assertion', async (t) => {
+    await t.expect(Request.get(`http://localhost:${t.fixtureCtx.serverPort}/user/loading`).body).contains({
         name:     'John Hearts',
         position: 'CTO',
     });

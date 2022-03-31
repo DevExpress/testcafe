@@ -34,4 +34,8 @@ describe('Request', () => {
     it('Should execute a request in an assertion', function () {
         return runTests('testcafe-fixtures/request-test.js', 'Should execute a request in an assertion');
     });
+
+    it('Should re-execute a request in an assertion', function () {
+        return runTests('testcafe-fixtures/request-test.js', 'Should re-execute a request in an assertion');
+    });
 });
