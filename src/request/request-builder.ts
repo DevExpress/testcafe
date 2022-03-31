@@ -3,10 +3,11 @@ import requestFunctionBuilder from './builder-symbol';
 import testRunTracker from '../api/test-run-tracker';
 import TestRun from '../test-run';
 import TestRunProxy from '../services/compiler/test-run-proxy';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import ReExecutablePromise from '../utils/re-executable-promise';
 
 const REST_METHODS = ['get', 'post', 'delete', 'put', 'patch', 'head'];
+const REQUEST_GETTERS = ['status', 'statusText', 'headers', 'body'];
 
 const DEFAULT_RESPONSE = {
     status:     404,
@@ -19,7 +20,7 @@ interface Response {
     status: number;
     statusText: string;
     headers: object;
-    data: any;
+    body: any;
 }
 
 export default class RequestBuilder {
@@ -43,38 +44,54 @@ export default class RequestBuilder {
         return this.getBoundTestRun() || testRunTracker.resolveContextTestRun();
     }
 
-    private _executeRequest (url: string, options: any): ReExecutablePromise {
-        return ReExecutablePromise.fromFn(async () => {
-            const testRun = this._getTestRun();
+    private async _executeRequest(url: string, options: any): Promise<Response> {
+        const testRun = this._getTestRun();
 
-            if (!testRun || testRun instanceof TestRunProxy)
-                return null;
+        if (!testRun || testRun instanceof TestRunProxy)
+            throw new Error('TestRun doesn\'t exist');
 
-            let result: Response;
+        let result: AxiosResponse;
 
-            try {
-                result = await axios(testRun.session.getProxyUrl(url), options);
-            }
-            catch (e) {
-                result = e.response;
-            }
+        try {
+            result = await axios(testRun.session.getProxyUrl(url), options);
+        }
+        catch (e) {
+            result = e.response;
+        }
 
-            const {
-                status,
-                statusText,
-                headers,
-                data: body,
-            } = result || DEFAULT_RESPONSE;
+        const {
+                  status,
+                  statusText,
+                  headers,
+                  data: body,
+              } = result || DEFAULT_RESPONSE;
 
-            return { status, statusText, headers, body };
+        return { status, statusText, headers, body };
+    }
+
+    private _executeCommand (url: string, options: any): ReExecutablePromise {
+        const promise =  ReExecutablePromise.fromFn(async () => {
+            return this._executeRequest(url, options);
         });
+
+        REQUEST_GETTERS.forEach((getter) => {
+            Object.defineProperty(promise, getter, {
+                get: () => ReExecutablePromise.fromFn(async () => {
+                    const response = await this._executeRequest(url, options);
+
+                    return response[getter as keyof Response];
+                })
+            })
+        })
+
+        return promise;
     }
 
     private _decorateFunction (fn: any): void {
         fn[requestFunctionBuilder] = this;
 
         REST_METHODS.forEach(method => {
-            fn[method] = (url: string, options = {}) => this._executeRequest(url, { ...options, method });
+            fn[method] = (url: string, options = {}) => this._executeCommand(url, { ...options, method });
         });
     }
 
@@ -82,7 +99,7 @@ export default class RequestBuilder {
         const builder = this;
 
         const fn = function __$$request$$ (url: string, options: any): ReExecutablePromise {
-            return builder._executeRequest(url, options);
+            return builder._executeCommand(url, options);
         };
 
         this._decorateFunction(fn);
