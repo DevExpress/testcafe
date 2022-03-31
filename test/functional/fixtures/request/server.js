@@ -1,6 +1,27 @@
 const express = require('express');
 const http    = require('http');
 
+const data = {
+    getResult: {
+        name:     'John Hearts',
+        position: 'CTO',
+    },
+    getLoadingResult: {
+    },
+    postResult: {
+        message: 'Data was posted',
+    },
+    deleteResult: {
+        message: 'Data was deleted',
+    },
+    putResult: {
+        message: 'Data was putted',
+    },
+    patchResult: {
+        message: 'Data was patched',
+    },
+};
+
 export default class Server {
     constructor (port) {
         this.app       = express();
@@ -17,24 +38,16 @@ export default class Server {
             });
         });
         this.app.post('/user', (req, res) => {
-            res.send({
-                message: 'Data was posted',
-            });
+            res.send(data.postResult);
         });
         this.app.delete('/user', (req, res) => {
-            res.send({
-                message: 'Data was deleted',
-            });
+            res.send(data.deleteResult);
         });
         this.app.put('/user', (req, res) => {
-            res.send({
-                message: 'Data was putted',
-            });
+            res.send(data.putResult);
         });
         this.app.patch('/user', (req, res) => {
-            res.send({
-                message: 'Data was patched',
-            });
+            res.send(data.patchResult);
         });
         this.app.head('/user', (req, res) => {
             res.send();
