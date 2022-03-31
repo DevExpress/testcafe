@@ -4,6 +4,8 @@ on:
 
 jobs:
   release:
+    runs-on: ubuntu-latest
+
     steps:
       - uses: apexskier/github-release-commenter@v1
         with:
