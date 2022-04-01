@@ -4,19 +4,19 @@
 
 ### Bug Fixes
 
- * The t.scrollIntoView method causes the "Element is not visible" error when trying to scroll elements with the `overflow: hidden` CSS property ([#6601](https://github.com/DevExpress/testcafe/issues/6601))
+ * The t.scrollIntoView method causes the "Element is not visible" error when the target's `overflow` property is `hidden` ([#6601](https://github.com/DevExpress/testcafe/issues/6601))
  
- * TestCafe triggers click events for label elements even if if their linked child input elements are disabled ([#6949](https://github.com/DevExpress/testcafe/issues/6949))
+ * TestCafe triggers click events for label elements even when the input is disabled ([#6949](https://github.com/DevExpress/testcafe/issues/6949))
  
- * Testcase hangs after switching the current window between consecutive assertions ([#6037](https://github.com/DevExpress/testcafe/issues/6037))
+ * TestCafe hangs when you change the active window between two consecutive assertions ([#6037](https://github.com/DevExpress/testcafe/issues/6037))
  
- * TestCafe cannot take screenshots when running tests with the Lambda Test browser provider ([#6887](https://github.com/DevExpress/testcafe/issues/6887))
+ * TestCafe cannot take screenshots when using the LambdaTest browser provider ([#6887](https://github.com/DevExpress/testcafe/issues/6887))
  
- * The ""TypeError: window.location.toString is not a function" exception is raised when the test page's code calls the `Element.focus` method in the context of a removed `<iframe>`([testcafe-hammerhead#2178](https://github.com/DevExpress/testcafe-hammerhead/issues/2178))
+ * Pages that target a missing `<iframe>`([testcafe-hammerhead#2178](https://github.com/DevExpress/testcafe-hammerhead/issues/2178) element with the `Element.focus` method yield a ""TypeError: window.location.toString is not a function" error.
  
- * TestCafe causes errors on test pages that use the XMLHTTPRequest API to fetch resources from the `blob:` URLs ([testcafe-hammerhead#2634](https://github.com/DevExpress/testcafe-hammerhead/issues/2634))
+ * TestCafe causes errors when it encounters XMLHTTPRequest calls that fetch resources from `blob:` URLs ([testcafe-hammerhead#2634](https://github.com/DevExpress/testcafe-hammerhead/issues/2634))
  
- * Exceptions are thrown if test page code calls the `HTMLElement.removeAttributeNode` method(PR [testcafe-hammerhead#2742](https://github.com/DevExpress/testcafe-hammerhead/pull/2742) by @TrevorKarjanis)
+ * `HTMLElement.removeAttributeNode` method calls yield unjustified exceptions (PR [testcafe-hammerhead#2742](https://github.com/DevExpress/testcafe-hammerhead/pull/2742) by @TrevorKarjanis)
 
 ## v1.18.4 (2022-02-21)
 
