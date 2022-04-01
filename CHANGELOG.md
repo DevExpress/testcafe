@@ -1,6 +1,24 @@
 # Changelog
 
-## v1.18.4
+## v1.18.5 (2022-03-31)
+
+### Bug Fixes
+
+ * The t.scrollIntoView method causes the "Element is not visible" error when the target's `overflow` property is `hidden` ([#6601](https://github.com/DevExpress/testcafe/issues/6601))
+ 
+ * TestCafe triggers click events for label elements even when the input is disabled ([#6949](https://github.com/DevExpress/testcafe/issues/6949))
+ 
+ * TestCafe hangs when you change the active window between two consecutive assertions ([#6037](https://github.com/DevExpress/testcafe/issues/6037))
+ 
+ * TestCafe cannot take screenshots when using the LambdaTest browser provider ([#6887](https://github.com/DevExpress/testcafe/issues/6887))
+ 
+ * Pages that target a missing `<iframe>`([testcafe-hammerhead#2178](https://github.com/DevExpress/testcafe-hammerhead/issues/2178) element with the `Element.focus` method yield a ""TypeError: window.location.toString is not a function" error.
+ 
+ * TestCafe causes errors when it encounters XMLHTTPRequest calls that fetch resources from `blob:` URLs ([testcafe-hammerhead#2634](https://github.com/DevExpress/testcafe-hammerhead/issues/2634))
+ 
+ * `HTMLElement.removeAttributeNode` method calls yield unjustified exceptions (PR [testcafe-hammerhead#2742](https://github.com/DevExpress/testcafe-hammerhead/pull/2742) by @TrevorKarjanis)
+
+## v1.18.4 (2022-02-21)
 
 ### Bug Fixes
 
