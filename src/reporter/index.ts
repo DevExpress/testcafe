@@ -112,6 +112,8 @@ interface ReportWarningEventArguments {
     actionId?: string;
 }
 
+const DASHBOARD_PLUGIN_NAME = 'dashboard';
+
 export default class Reporter {
     public readonly plugin: ReporterPluginHost;
     public readonly messageBus: MessageBus;
@@ -600,6 +602,13 @@ export default class Reporter {
                 result,
             ],
         });
+
+        if (this.plugin.name !== DASHBOARD_PLUGIN_NAME) {
+            const dashboardAdMessage = 'We are proud to announce the TestCafe Dashboard (https://dashboard.testcafe.io/), our web-based test report aggregator for TestCafe users.';
+
+            this.plugin.newline();
+            this.plugin.write(this.plugin.chalk.bold(dashboardAdMessage));
+        }
 
         (this.taskInfo.pendingTaskDonePromise.resolve as Function)();
     }
