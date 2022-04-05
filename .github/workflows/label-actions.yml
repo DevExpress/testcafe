@@ -12,4 +12,4 @@ jobs:
     steps:
       - uses: dessant/label-actions@v2
         with:
-          github-token: ${{ secrets.ACTIVE_TOKEN }}
+          github-token: ${{ github.token }}
