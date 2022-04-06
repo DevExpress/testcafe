@@ -22,7 +22,7 @@ const data = {
     },
 };
 
-export default class Server {
+class Server {
     constructor (port) {
         this.app       = express();
         this.appServer = http.createServer(this.app).listen(port);
@@ -31,6 +31,12 @@ export default class Server {
     }
 
     _setupRoutes () {
+        this.app.post('/basicauth', (req, res) => {
+            res.send({
+                token: req.rawHeaders[req.rawHeaders.indexOf('Authorization') + 1],
+            });
+        });
+
         this.app.get('/user', (req, res) => {
             res.send(data.getResult);
         });
@@ -62,3 +68,5 @@ export default class Server {
         this.appServer.close();
     }
 }
+
+module.exports = Server;

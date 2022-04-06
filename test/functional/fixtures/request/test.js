@@ -38,4 +38,8 @@ describe('Request', () => {
     it('Should re-execute a request in an assertion', function () {
         return runTests('testcafe-fixtures/request-test.js', 'Should re-execute a request in an assertion');
     });
+
+    it('Should execute basic auth', function () {
+        return runTests('testcafe-fixtures/request-test.js', 'Should execute basic auth');
+    });
 });

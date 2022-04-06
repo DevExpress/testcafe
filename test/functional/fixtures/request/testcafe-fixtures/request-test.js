@@ -134,6 +134,19 @@ test('Should re-execute a request in an assertion', async (t) => {
     });
 });
 
+test('Should execute basic auth', async (t) => {
+    const options = {
+        auth: {
+            username: 'janedoe',
+            password: 's00pers3cret'
+        },
+    };
+
+    await t.expect(Request.post(`http://localhost:${t.fixtureCtx.serverPort}/basicauth`, options).body).eql({
+        token: 'Basic amFuZWRvZTpzMDBwZXJzM2NyZXQ=',
+    });
+});
+
 //TODO: added tests:
 // 1) Requests with params
 // 2) Requests with timeout
