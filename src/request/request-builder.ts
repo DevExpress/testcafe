@@ -44,13 +44,16 @@ export default class RequestBuilder {
         return this.getBoundTestRun() || testRunTracker.resolveContextTestRun();
     }
 
-    private async _executeRequest(url: string, options: any): Promise<Response> {
+    private async _executeRequest(url: string, options: any = {}): Promise<Response> {
         const testRun = this._getTestRun();
 
         if (!testRun || testRun instanceof TestRunProxy)
             throw new Error('TestRun doesn\'t exist');
 
         let result: AxiosResponse;
+
+        //NOTE: Additional header to recognize API requests in the hammerhead
+        options.headers = Object.assign({ 'is-request': true }, options?.headers);
 
         try {
             result = await axios(testRun.session.getProxyUrl(url), options);
