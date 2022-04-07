@@ -220,9 +220,7 @@ describe('Runner', () => {
         describe('._addDashboardReporterIfNeeded', () => {
             class DashboardConfigStorageMock extends DashboardConfigStorageBase {
                 async readOptions () {
-                    return Promise.resolve({
-                        token: 'bar',
-                    });
+                    return { token: 'bar' };
                 }
             }
 
