@@ -42,4 +42,12 @@ describe('Request', () => {
     it('Should execute basic auth', function () {
         return runTests('testcafe-fixtures/request-test.js', 'Should execute basic auth');
     });
+
+    it('Should execute bearer token auth', function () {
+        return runTests('testcafe-fixtures/request-test.js', 'Should execute bearer token auth');
+    });
+
+    it('Should execute API Key auth', function () {
+        return runTests('testcafe-fixtures/request-test.js', 'Should execute API Key auth');
+    });
 });

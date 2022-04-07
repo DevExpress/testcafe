@@ -31,10 +31,18 @@ class Server {
     }
 
     _setupRoutes () {
-        this.app.post('/basicauth', (req, res) => {
+        this.app.post('/auth/basic', (req, res) => {
             res.send({
                 token: req.rawHeaders[req.rawHeaders.indexOf('Authorization') + 1],
             });
+        });
+
+        this.app.post('/auth/bearer', (req, res) => {
+            res.send(req.rawHeaders[req.rawHeaders.indexOf('Authorization') + 1] ? 'authorized' : 'un-authorized');
+        });
+
+        this.app.post('/auth/key', (req, res) => {
+            res.send(req.rawHeaders[req.rawHeaders.indexOf('API-KEY') + 1] ? 'authorized' : 'un-authorized');
         });
 
         this.app.get('/user', (req, res) => {

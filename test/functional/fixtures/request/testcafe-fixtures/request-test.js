@@ -138,13 +138,33 @@ test('Should execute basic auth', async (t) => {
     const options = {
         auth: {
             username: 'janedoe',
-            password: 's00pers3cret'
+            password: 's00pers3cret',
         },
     };
 
-    await t.expect(Request.post(`http://localhost:${t.fixtureCtx.serverPort}/basicauth`, options).body).eql({
+    await t.expect(Request.post(`http://localhost:${t.fixtureCtx.serverPort}/auth/basic`, options).body).eql({
         token: 'Basic amFuZWRvZTpzMDBwZXJzM2NyZXQ=',
     });
+});
+
+test('Should execute bearer token auth', async (t) => {
+    const options = {
+        headers: {
+            Authorization: 'Bearer amFuZWRvZTpzMDBwZXJzM2NyZXQ=',
+        },
+    };
+
+    await t.expect(Request.post(`http://localhost:${t.fixtureCtx.serverPort}/auth/bearer`, options).body).eql('authorized');
+});
+
+test('Should execute API Key auth', async (t) => {
+    const options = {
+        headers: {
+            'API-KEY': 'amFuZWRvZTpzMDBwZXJzM2NyZXQ=',
+        },
+    };
+
+    await t.expect(Request.post(`http://localhost:${t.fixtureCtx.serverPort}/auth/key`, options).body).eql('authorized');
 });
 
 //TODO: added tests:
