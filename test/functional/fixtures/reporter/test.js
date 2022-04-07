@@ -1176,27 +1176,4 @@ describe('Reporter', () => {
                 del(pathReport);
             });
     });
-
-    it('Should show advertising of the Dashboard except running with dashboard reporter', function () {
-        const stream1 = createSimpleTestStream();
-        const stream2 = createSimpleTestStream();
-
-        return runTests('testcafe-fixtures/index-test.js', 'Simple test', {
-            only:     ['chrome'],
-            reporter: [
-                {
-                    name:   'json',
-                    output: stream1,
-                },
-                {
-                    name:   'dashboard',
-                    output: stream2,
-                },
-            ],
-        })
-            .then(() => {
-                expect(stream1.data).to.contains('We are proud to announce the TestCafe Dashboard (https://dashboard.testcafe.io/), our web-based test report aggregator for TestCafe users.');
-                expect(stream2.data).not.contains('We are proud to announce the TestCafe Dashboard (https://dashboard.testcafe.io/), our web-based test report aggregator for TestCafe users.');
-            });
-    });
 });

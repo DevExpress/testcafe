@@ -272,6 +272,8 @@ before(function () {
                 else
                     runner.reporter('json', stream);
 
+                runner._showAdvertisement = false;
+
                 return runner
                     .useProxy(proxy, proxyBypass)
                     .browsers(connections)
