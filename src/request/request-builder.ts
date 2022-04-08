@@ -1,13 +1,14 @@
-/*eslint-disable*/
-import requestFunctionBuilder from './builder-symbol';
 import testRunTracker from '../api/test-run-tracker';
-import TestRun from '../test-run';
 import TestRunProxy from '../services/compiler/test-run-proxy';
-import axios, { AxiosResponse } from 'axios';
+import axios, {
+    Method,
+    AxiosRequestConfig,
+    AxiosResponse,
+} from 'axios';
 import ReExecutablePromise from '../utils/re-executable-promise';
 
-const REST_METHODS = ['get', 'post', 'delete', 'put', 'patch', 'head'];
-const REQUEST_GETTERS = ['status', 'statusText', 'headers', 'body'];
+const REST_METHODS: Method[] = ['get', 'post', 'delete', 'put', 'patch', 'head'];
+const REQUEST_GETTERS        = ['status', 'statusText', 'headers', 'body'];
 
 const DEFAULT_RESPONSE = {
     status:     404,
@@ -16,36 +17,20 @@ const DEFAULT_RESPONSE = {
     data:       {},
 };
 
-interface Response {
+interface RequestOptions extends AxiosRequestConfig {
+    body?: unknown;
+}
+
+interface ResponseOptions {
     status: number;
     statusText: string;
     headers: object;
-    body: any;
+    body: unknown;
 }
 
 export default class RequestBuilder {
-    private readonly _url: string;
-    private readonly _options: any;
-
-    public constructor (url: string, options: any = {}) {
-        this._url = url;
-        this._options = options;
-    }
-
-    private getBoundTestRun (): TestRun | null {
-        // NOTE: `boundTestRun` can be either TestController or TestRun instance.
-        if (this._options.boundTestRun)
-            return this._options.boundTestRun.testRun || this._options.boundTestRun;
-
-        return null;
-    }
-
-    private _getTestRun (): TestRun | TestRunProxy | null {
-        return this.getBoundTestRun() || testRunTracker.resolveContextTestRun();
-    }
-
-    private async _executeRequest(url: string, options: any = {}): Promise<Response> {
-        const testRun = this._getTestRun();
+    private static async _executeRequest (url: string, options: RequestOptions = {}): Promise<ResponseOptions> {
+        const testRun = testRunTracker.resolveContextTestRun();
 
         if (!testRun || testRun instanceof TestRunProxy)
             throw new Error('TestRun doesn\'t exist');
@@ -54,6 +39,7 @@ export default class RequestBuilder {
 
         //NOTE: Additional header to recognize API requests in the hammerhead
         options.headers = Object.assign({ 'is-request': true }, options?.headers);
+        options.data = options.body;
 
         try {
             result = await axios(testRun.session.getProxyUrl(url), options);
@@ -63,45 +49,45 @@ export default class RequestBuilder {
         }
 
         const {
-                  status,
-                  statusText,
-                  headers,
-                  data: body,
-              } = result || DEFAULT_RESPONSE;
+            status,
+            statusText,
+            headers,
+            data: body,
+        } = result || DEFAULT_RESPONSE;
 
         return { status, statusText, headers, body };
     }
 
-    private _executeCommand (url: string, options: any): ReExecutablePromise {
-        const promise =  ReExecutablePromise.fromFn(async () => {
-            return this._executeRequest(url, options);
+    private _executeCommand (url: string, options: RequestOptions): ReExecutablePromise {
+        const promise = ReExecutablePromise.fromFn(async () => {
+            return RequestBuilder._executeRequest(url, options);
         });
 
-        REQUEST_GETTERS.forEach((getter) => {
+        REQUEST_GETTERS.forEach(getter => {
             Object.defineProperty(promise, getter, {
                 get: () => ReExecutablePromise.fromFn(async () => {
-                    const response = await this._executeRequest(url, options);
+                    const response = await RequestBuilder._executeRequest(url, options);
 
-                    return response[getter as keyof Response];
-                })
-            })
-        })
+                    return response[getter as keyof ResponseOptions];
+                }),
+            });
+        });
 
         return promise;
     }
 
-    private _decorateFunction (fn: any): void {
-        fn[requestFunctionBuilder] = this;
-
+    private _decorateFunction (fn: Function): void {
         REST_METHODS.forEach(method => {
-            fn[method] = (url: string, options = {}) => this._executeCommand(url, { ...options, method });
+            Object.defineProperty(fn, method, {
+                value: (url: string, options = {}) => this._executeCommand(url, { ...options, method }),
+            });
         });
     }
 
-    public getFunction (): any {
+    public getFunction (): Function {
         const builder = this;
 
-        const fn = function __$$request$$ (url: string, options: any): ReExecutablePromise {
+        const fn = function __$$request$$ (url: string, options: RequestOptions): ReExecutablePromise {
             return builder._executeCommand(url, options);
         };
 
