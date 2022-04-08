@@ -40,6 +40,10 @@ test('Should execute a POST request', async (t) => {
     const data = await Request(`http://localhost:${t.fixtureCtx.serverPort}/user`, options);
 
     await t.expect(data.body).eql({
+        data: {
+            name:     'John Hearts',
+            position: 'CTO',
+        },
         message: 'Data was posted',
     });
 });
@@ -64,6 +68,10 @@ test('Should execute a request with method post', async (t) => {
     const data = await Request.post(`http://localhost:${t.fixtureCtx.serverPort}/user`, options);
 
     await t.expect(data.body).eql({
+        data: {
+            name:     'John Hearts',
+            position: 'CTO',
+        },
         message: 'Data was posted',
     });
 });
@@ -79,6 +87,10 @@ test('Should execute a request with method delete', async (t) => {
     const data = await Request.delete(`http://localhost:${t.fixtureCtx.serverPort}/user`, options);
 
     await t.expect(data.body).eql({
+        data: {
+            name:     'John Hearts',
+            position: 'CTO',
+        },
         message: 'Data was deleted',
     });
 });
@@ -94,6 +106,10 @@ test('Should execute a request with method put', async (t) => {
     const data = await Request.put(`http://localhost:${t.fixtureCtx.serverPort}/user`, options);
 
     await t.expect(data.body).eql({
+        data: {
+            name:     'John Hearts',
+            position: 'CTO',
+        },
         message: 'Data was putted',
     });
 });
@@ -109,6 +125,10 @@ test('Should execute a request with method patch', async (t) => {
     const data = await Request.patch(`http://localhost:${t.fixtureCtx.serverPort}/user`, options);
 
     await t.expect(data.body).eql({
+        data: {
+            name:     'John Hearts',
+            position: 'CTO',
+        },
         message: 'Data was patched',
     });
 });

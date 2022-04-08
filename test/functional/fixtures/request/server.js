@@ -1,25 +1,31 @@
-const express = require('express');
-const http    = require('http');
+const express    = require('express');
+const bodyParser = require('body-parser');
+const http       = require('http');
 
-const data = {
+const responses = {
     getResult: {
         name:     'John Hearts',
         position: 'CTO',
     },
-    getLoadingResult: {
+    getLoadingResult: {},
+    handlePostResult: (data) => {
+        return {
+            message: 'Data was posted',
+            data,
+        };
     },
-    postResult: {
-        message: 'Data was posted',
-    },
-    deleteResult: {
+    handleDeleteResult: (data) => ({
         message: 'Data was deleted',
-    },
-    putResult: {
+        data,
+    }),
+    handlePutResult: (data) => ({
         message: 'Data was putted',
-    },
-    patchResult: {
+        data,
+    }),
+    handlePatchResult: (data) => ({
         message: 'Data was patched',
-    },
+        data,
+    }),
 };
 
 class Server {
@@ -27,6 +33,8 @@ class Server {
         this.app       = express();
         this.appServer = http.createServer(this.app).listen(port);
 
+        this.app.use(bodyParser.urlencoded({ extended: false }));
+        this.app.use(bodyParser.json());
         this._setupRoutes();
     }
 
@@ -46,26 +54,26 @@ class Server {
         });
 
         this.app.get('/user', (req, res) => {
-            res.send(data.getResult);
+            res.send(responses.getResult);
         });
         this.app.get('/user/loading', (req, res) => {
             setTimeout(() => {
-                data.getLoadingResult = data.getResult;
+                responses.getLoadingResult = responses.getResult;
             }, 100);
 
-            res.send(data.getLoadingResult);
+            res.send(responses.getLoadingResult);
         });
         this.app.post('/user', (req, res) => {
-            res.send(data.postResult);
+            res.send(responses.handlePostResult(req.body));
         });
         this.app.delete('/user', (req, res) => {
-            res.send(data.deleteResult);
+            res.send(responses.handleDeleteResult(req.body));
         });
         this.app.put('/user', (req, res) => {
-            res.send(data.putResult);
+            res.send(responses.handlePutResult(req.body));
         });
         this.app.patch('/user', (req, res) => {
-            res.send(data.patchResult);
+            res.send(responses.handlePatchResult(req.body));
         });
         this.app.head('/user', (req, res) => {
             res.send();
