@@ -73,6 +73,10 @@ const CLIENT_TESTS_MOBILE_BROWSERS = [
         // problem with extra scroll reproduced only on saucelabs
         // virtual machines with ios device emulators
         deviceName:  'iPhone Simulator',
+        // NOTE: Sauce Labs raises the 'Internal server error'
+        // on using iPhone Simulator with the latest version (15.4)
+        // So, we temporarily downgrade the version to 15.2
+        version:     '15.2',
     },
 ];
 

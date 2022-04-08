@@ -13,7 +13,6 @@ testCafeCore.preventRealEvents();
 QUnit.config.testTimeout = 15000;
 
 $(document).ready(function () {
-    //consts
     const TEST_ELEMENT_CLASS = 'testElement';
 
     let focusedElements          = [];
