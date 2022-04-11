@@ -1,11 +1,16 @@
 import testRunTracker from '../api/test-run-tracker';
 import TestRunProxy from '../services/compiler/test-run-proxy';
 import axios, {
-    Method,
     AxiosRequestConfig,
     AxiosResponse,
+    Method,
 } from 'axios';
 import ReExecutablePromise from '../utils/re-executable-promise';
+import { assertType, is } from '../errors/runtime/type-assertions';
+import { ClientFunctionAPIError } from '../errors/runtime';
+import { RUNTIME_ERRORS } from '../errors/types';
+import { getCallsiteForMethod } from '../errors/get-callsite';
+import TestRun from '../test-run';
 
 const REST_METHODS: Method[] = ['get', 'post', 'delete', 'put', 'patch', 'head'];
 const REQUEST_GETTERS        = ['status', 'statusText', 'headers', 'body'];
@@ -16,6 +21,8 @@ const DEFAULT_RESPONSE = {
     headers:    {},
     data:       {},
 };
+
+const DEFAULT_EXECUTION_CALLSITE_NAME = '__$$request$$';
 
 interface RequestOptions extends AxiosRequestConfig {
     body?: unknown;
@@ -28,18 +35,31 @@ interface ResponseOptions {
     body: unknown;
 }
 
+interface CallsiteNames {
+    instantiation: string;
+    execution: string;
+}
+
 export default class RequestBuilder {
-    private static async _executeRequest (url: string, options: RequestOptions = {}): Promise<ResponseOptions> {
-        const testRun = testRunTracker.resolveContextTestRun();
+    private callsiteNames: CallsiteNames;
 
-        if (!testRun || testRun instanceof TestRunProxy)
-            throw new Error('TestRun doesn\'t exist');
+    public constructor (callsiteNames: CallsiteNames) {
+        this.callsiteNames = {
+            instantiation: callsiteNames.instantiation,
+            execution:     callsiteNames.execution || DEFAULT_EXECUTION_CALLSITE_NAME,
+        };
+    }
 
+    private _getTestRun (): TestRun | TestRunProxy | null {
+        return testRunTracker.resolveContextTestRun();
+    }
+
+    private _validateOptions (options: RequestOptions): void {
+        assertType(is.string, this.callsiteNames.execution, 'The "url" argument', options.url);
+    }
+
+    private async _executeRequest (testRun: TestRun, url: string, options: RequestOptions): Promise<ResponseOptions> {
         let result: AxiosResponse;
-
-        //NOTE: Additional header to recognize API requests in the hammerhead
-        options.headers = Object.assign({ 'is-request': true }, options?.headers);
-        options.data = options.body;
 
         try {
             result = await axios(testRun.session.getProxyUrl(url), options);
@@ -58,15 +78,39 @@ export default class RequestBuilder {
         return { status, statusText, headers, body };
     }
 
-    private _executeCommand (url: string, options: RequestOptions): ReExecutablePromise {
+    private _executeCommand (url: string, options: RequestOptions = {}): ReExecutablePromise {
+        options.url = url;
+
+        //NOTE: Additional header to recognize API requests in the hammerhead
+        options.headers = Object.assign({ 'is-request': true }, options?.headers);
+        options.data    = options.body;
+        delete options.body;
+
+        this._validateOptions(options);
+
+        const testRun  = this._getTestRun();
+        const callsite = getCallsiteForMethod(this.callsiteNames.execution);
+
+        if (!testRun || testRun instanceof TestRunProxy) {
+            if (!testRun) {
+                const err = new ClientFunctionAPIError(this.callsiteNames.execution, this.callsiteNames.instantiation, RUNTIME_ERRORS.clientFunctionCannotResolveTestRun);
+
+                // NOTE: force callsite here, because more likely it will
+                // be impossible to resolve it by method name from a lazy promise.
+                err.callsite = callsite;
+
+                throw err;
+            }
+        }
+
         const promise = ReExecutablePromise.fromFn(async () => {
-            return RequestBuilder._executeRequest(url, options);
+            return this._executeRequest(testRun as TestRun, url, options);
         });
 
         REQUEST_GETTERS.forEach(getter => {
             Object.defineProperty(promise, getter, {
                 get: () => ReExecutablePromise.fromFn(async () => {
-                    const response = await RequestBuilder._executeRequest(url, options);
+                    const response = await this._executeRequest(testRun as TestRun, url, options);
 
                     return response[getter as keyof ResponseOptions];
                 }),

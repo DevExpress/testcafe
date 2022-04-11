@@ -56,7 +56,7 @@ const exportableLib = {
     RequestMock,
 
     get Request () {
-        const builder = new RequestBuilder();
+        const builder = new RequestBuilder({ instantiation: 'Request' });
 
         return builder.getFunction();
     },
