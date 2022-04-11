@@ -187,6 +187,10 @@ test('Should execute API Key auth', async (t) => {
     await t.expect(Request.post(`http://localhost:${t.fixtureCtx.serverPort}/auth/key`, options).body).eql('authorized');
 });
 
+test('Should rise an error if url is not string', async () => {
+    await Request(true);
+});
+
 //TODO: added tests:
 // 1) Requests with params
 // 2) Requests with timeout
@@ -194,6 +198,5 @@ test('Should execute API Key auth', async (t) => {
 // 4) Requests with maxRedirects
 // 5) Check bodies with the types: json, text, buffer, httpOutgoingMessage
 // 6) Requests with proxy
-// 7) Requests with auth
 // 8) Requests with relative paths
 // 9) Requests with the additional methods options

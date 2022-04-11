@@ -1,3 +1,5 @@
+const { expect } = require('chai');
+
 describe('Request', () => {
     it('Should execute GET request', function () {
         return runTests('testcafe-fixtures/request-test.js', 'Should execute a GET request');
@@ -49,5 +51,13 @@ describe('Request', () => {
 
     it('Should execute API Key auth', function () {
         return runTests('testcafe-fixtures/request-test.js', 'Should execute API Key auth');
+    });
+
+    it('Should rise an error if url is not string', function () {
+        return runTests('testcafe-fixtures/request-test.js', 'Should rise an error if url is not string', { shouldFail: true })
+            .catch(function (errs) {
+                expect(errs[0]).contains('The "url" argument (boolean) is not of expected type (string).');
+                expect(errs[0]).contains('> 192 |    await Request(true);');
+            });
     });
 });
