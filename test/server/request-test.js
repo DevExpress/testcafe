@@ -2,7 +2,7 @@ const exportableLib                               = require('../../lib/api/expor
 const { Request } = exportableLib;
 const { asyncAssertThrow }                             = require('./helpers/assert-runtime-error');
 
-describe('Request', () => {
+describe.skip('Request', () => {
     it('Should validate URL', function () {
         asyncAssertThrow(() => Request('invalid URL'), {
             isTestCafeError: true,
