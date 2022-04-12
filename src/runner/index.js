@@ -2,7 +2,7 @@ import { resolve as resolvePath, dirname } from 'path';
 import debug from 'debug';
 import promisifyEvent from 'promisify-event';
 import { EventEmitter } from 'events';
-import dashboardConfigStorage from './dashboard-config-storage';
+import DashboardConfigStorage from '../dashboard/config-storage';
 
 import {
     flattenDeep as flatten,
@@ -518,7 +518,7 @@ export default class Runner extends EventEmitter {
         const dashboardOptions = await this._getDashboardOptions();
         let reporterOptions    = this.configuration.getOption(OPTION_NAMES.reporter);
 
-        if (!dashboardOptions)
+        if (!dashboardOptions.sendReport)
             return;
 
         if (!reporterOptions)
@@ -551,15 +551,11 @@ export default class Runner extends EventEmitter {
     }
 
     async _loadDashboardOptionsFromStorage () {
-        const storage = this._getDashboardStorage();
+        const storage = new DashboardConfigStorage();
 
         await storage.load();
 
         return storage.options;
-    }
-
-    _getDashboardStorage () {
-        return dashboardConfigStorage;
     }
 
     async _prepareClientScripts (tests, clientScripts) {
@@ -755,8 +751,8 @@ export default class Runner extends EventEmitter {
 
         const runTaskPromise = Promise.resolve()
             .then(() => this._setConfigurationOptions())
-            .then(() => {
-                this._addDashboardReporterIfNeeded();
+            .then(async () => {
+                await this._addDashboardReporterIfNeeded();
                 this._addDashBoardAdvertisementIfNeeded();
             })
             .then(() => Reporter.getReporterPlugins(this.configuration.getOption(OPTION_NAMES.reporter)))
