@@ -753,7 +753,7 @@ describe('CLI argument parser', function () {
     });
 
     it('Should parse command line arguments', function () {
-        return parse('-r list -S -q -e --hostname myhost --proxy localhost:1234 --proxy-bypass localhost:5678 --qr-code --app run-app --speed 0.5 --debug-on-fail --disable-page-reloads --retry-test-pages --dev --sf --disable-page-caching --disable-http2 --proxyless ie test/server/data/file-list/file-1.js --dashboard token=qwe.rty,noVideoUpload=true')
+        return parse('-r list -S -q -e --hostname myhost --proxy localhost:1234 --proxy-bypass localhost:5678 --qr-code --app run-app --speed 0.5 --debug-on-fail --disable-page-reloads --retry-test-pages --dev --sf --disable-page-caching --disable-http2 --proxyless ie test/server/data/file-list/file-1.js --dashboard-options token=qwe.rty,noVideoUpload=true')
             .then(parser => {
                 expect(parser.opts.browsers).eql(['ie']);
                 expect(parser.opts.src).eql(['test/server/data/file-list/file-1.js']);
@@ -778,7 +778,7 @@ describe('CLI argument parser', function () {
                 expect(parser.opts.retryTestPages).to.be.ok;
                 expect(parser.opts.disableHttp2).to.be.ok;
                 expect(parser.opts.proxyless).to.be.ok;
-                expect(parser.opts.dashboard).eql({ token: 'qwe.rty', noVideoUpload: true });
+                expect(parser.opts.dashboardOptions).eql({ token: 'qwe.rty', noVideoUpload: true });
             });
     });
 
@@ -854,7 +854,7 @@ describe('CLI argument parser', function () {
             { long: '--cache' },
             { long: '--disable-http2' },
             { long: '--proxyless' },
-            { long: '--dashboard', short: '-D' },
+            { long: '--dashboard-options', short: '-D' },
         ];
 
         const parser  = new CliArgumentParser('');
@@ -927,12 +927,12 @@ describe('CLI argument parser', function () {
 
     describe('Dashboard options', () => {
         it('should parse dashboard arguments', async () => {
-            const parser = await parse('--dashboard token=12345,noVideoUpload=true,buildId=1');
+            const parser = await parse('--dashboard-options token=12345,noVideoUpload=true,buildId=1');
 
-            expect(parser.opts.dashboard).to.be.ok;
-            expect(parser.opts.dashboard.token).equal('12345');
-            expect(parser.opts.dashboard.buildId).equal('1');
-            expect(parser.opts.dashboard.noVideoUpload).equal(true);
+            expect(parser.opts.dashboardOptions).to.be.ok;
+            expect(parser.opts.dashboardOptions.token).equal('12345');
+            expect(parser.opts.dashboardOptions.buildId).equal('1');
+            expect(parser.opts.dashboardOptions.noVideoUpload).equal(true);
         });
     });
 });
