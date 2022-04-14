@@ -117,7 +117,7 @@ async function runTests (argParser) {
         .startApp(opts.app, opts.appInitDelay)
         .clientScripts(argParser.opts.clientScripts)
         .compilerOptions(argParser.opts.compilerOptions)
-        .dashboard(argParser.opts.dashboard);
+        .dashboard(argParser.opts.dashboardOptions);
 
     runner.once('done-bootstrapping', () => log.hideSpinner());
 
