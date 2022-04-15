@@ -30,6 +30,7 @@ const responses = {
 
 class Server {
     constructor (port) {
+        this.port      = port;
         this.app       = express();
         this.appServer = http.createServer(this.app).listen(port);
 
@@ -77,6 +78,9 @@ class Server {
         });
         this.app.head('/user', (req, res) => {
             res.send();
+        });
+        this.app.get('/', (req, res) => {
+            res.send(`Server is listening on the http://localhost:${this.port}/`);
         });
     }
 
