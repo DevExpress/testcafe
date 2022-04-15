@@ -41,7 +41,10 @@ function typeOf (value: unknown): string {
     return typeof value;
 }
 
-function transformBody (body: object, headers: OutgoingHttpHeaders): object | string {
+function transformBody (headers: OutgoingHttpHeaders, body?: object): Buffer {
+    if (!body)
+        return Buffer.from('');
+
     if (typeOf(body) === 'formdata' ||
         typeOf(body) === 'file' ||
         typeOf(body) === 'blob' ||
@@ -49,20 +52,20 @@ function transformBody (body: object, headers: OutgoingHttpHeaders): object | st
         isBuffer(body) ||
         isStream(body)
     )
-        return body;
+        return Buffer.from(body);
     else if (ArrayBuffer.isView(body))
-        return body.buffer;
+        return Buffer.from(body.buffer);
 
     else if (body instanceof URLSearchParams) {
         setContentTypeIfUnset(headers, `${CONTENT_TYPES.urlencoded};charset=utf-8`);
-        return body.toString();
+        return Buffer.from(body.toString());
     }
     else if (isObject(body) || headers && headers[HTTP_HEADERS.contentType] === CONTENT_TYPES.json) {
         setContentTypeIfUnset(headers, CONTENT_TYPES.json);
-        return JSON.stringify(body);
+        return Buffer.from(JSON.stringify(body));
     }
 
-    return body || '';
+    return body;
 }
 
 function prepareHeaders (headers: OutgoingHttpHeaders = {}): OutgoingHttpHeaders {
@@ -77,7 +80,7 @@ export function processRequestOptions (testRun: TestRun, options: ExternalReques
 
     options.headers = options.headers || {};
 
-    const body    = transformBody(options.body, options.headers);
+    const body    = transformBody(options.headers, options.body);
     const headers = prepareHeaders(options.headers) || {};
 
     return new RequestOptions(Object.assign(DEFAULT_OPTIONS, options, {
