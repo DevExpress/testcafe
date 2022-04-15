@@ -50,6 +50,7 @@ import { validateQuarantineOptions } from '../utils/get-options/quarantine';
 import logEntry from '../utils/log-entry';
 import MessageBus from '../utils/message-bus';
 import log from '../cli/log';
+import chalk from 'chalk';
 
 const DEBUG_LOGGER            = debug('testcafe:runner');
 const DASHBOARD_REPORTER_NAME = 'dashboard';
@@ -537,7 +538,7 @@ export default class Runner extends EventEmitter {
         const reporterOptions = this.configuration.getOption(OPTION_NAMES.reporter);
 
         if (!reporterOptions || castArray(reporterOptions).every(reporter => reporter.name !== DASHBOARD_REPORTER_NAME))
-            this._addAdvertisement('\nWe are proud to announce TestCafe Dashboard (https://dashboard.testcafe.io/), the ultimate web-based TestCafe report aggregator.\n');
+            this._addAdvertisement(`\n${chalk.bold.red('NEW')}: Try TestCafe Dashboard (https://dashboard.testcafe.io/) to eliminate unstable and failing tests.\n`);
     }
 
     async _getDashboardOptions () {

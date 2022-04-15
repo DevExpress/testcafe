@@ -262,7 +262,7 @@ describe('Runner', () => {
                 runner._addDashBoardAdvertisementIfNeeded();
                 await runner._messageBus.emit('done');
 
-                expect(consoleWrapper.messages.log).contains('We are proud to announce TestCafe Dashboard (https://dashboard.testcafe.io/), the ultimate web-based TestCafe report aggregator.');
+                expect(consoleWrapper.messages.log).contains('Try TestCafe Dashboard (https://dashboard.testcafe.io/) to eliminate unstable and failing tests.');
 
                 consoleWrapper.unwrap();
             });
@@ -274,7 +274,7 @@ describe('Runner', () => {
                 runner._addDashBoardAdvertisementIfNeeded();
                 await runner._messageBus.emit('done');
 
-                expect(consoleWrapper.messages.log).contains('We are proud to announce TestCafe Dashboard (https://dashboard.testcafe.io/), the ultimate web-based TestCafe report aggregator.');
+                expect(consoleWrapper.messages.log).contains('Try TestCafe Dashboard (https://dashboard.testcafe.io/) to eliminate unstable and failing tests.');
 
                 consoleWrapper.unwrap();
             });
