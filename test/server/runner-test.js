@@ -256,6 +256,17 @@ describe('Runner', () => {
                 expect(runner.configuration.getOption('reporter')[0]).to.deep.equal({ name: 'dashboard', options: { token: 'bar' } });
             });
 
+            it('Should add the dashboard advertisement if reporter is not added', async () => {
+                consoleWrapper.wrap();
+
+                runner._addDashBoardAdvertisementIfNeeded();
+                await runner._messageBus.emit('done');
+
+                expect(consoleWrapper.messages.log).contains('We are proud to announce TestCafe Dashboard (https://dashboard.testcafe.io/), the ultimate web-based TestCafe report aggregator.');
+
+                consoleWrapper.unwrap();
+            });
+
             it('Should add the dashboard advertisement if dashboard reporter is not added', async () => {
                 consoleWrapper.wrap();
 
