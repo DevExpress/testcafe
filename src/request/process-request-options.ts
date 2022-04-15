@@ -7,10 +7,11 @@ import { ExternalRequestOptions } from './interfaces';
 import { RequestOptions, generateUniqueId } from 'testcafe-hammerhead';
 import TestRun from '../test-run';
 import CONTENT_TYPES from '../assets/content-types';
+import HTTP_HEADERS from '../utils/http-headers'
 
-const DEFAULT_ACCEPT            = { 'Accept': `${CONTENT_TYPES.json}, ${CONTENT_TYPES.textPlain}, ${CONTENT_TYPES.all}` };
-const DEFAULT_CONTENT_TYPE      = { 'Content-Type': CONTENT_TYPES.urlencoded };
-const DEFAULT_IS_REQUEST        = { 'is-request': true };
+const DEFAULT_ACCEPT            = { [HTTP_HEADERS.accept]: `${CONTENT_TYPES.json}, ${CONTENT_TYPES.textPlain}, ${CONTENT_TYPES.all}` };
+const DEFAULT_CONTENT_TYPE      = { [HTTP_HEADERS.contentType]: CONTENT_TYPES.urlencoded };
+const DEFAULT_IS_REQUEST        = { [HTTP_HEADERS.isRequest]: true };
 const METHODS_WITH_CONTENT_TYPE = ['post', 'put', 'patch'];
 const DEFAULT_REQUEST_TIMEOUT   = 2 * 60 * 1000;
 const DEFAULT_REQUEST_METHOD    = 'GET';
@@ -26,8 +27,8 @@ const DEFAULT_OPTIONS           = {
 };
 
 function setContentTypeIfUnset (headers: OutgoingHttpHeaders, value: string): void {
-    if (!isUndefined(headers) && isUndefined(headers['Content-Type']))
-        headers['Content-Type'] = value;
+    if (!isUndefined(headers) && isUndefined(headers[HTTP_HEADERS.contentType]))
+        headers[HTTP_HEADERS.contentType] = value;
 }
 
 function typeOf (value: unknown): string {
@@ -53,10 +54,10 @@ function transformBody (body: any, headers: OutgoingHttpHeaders): any {
         return body.buffer;
 
     else if (body instanceof URLSearchParams) {
-        setContentTypeIfUnset(headers, 'application/x-www-form-urlencoded;charset=utf-8');
+        setContentTypeIfUnset(headers, `${CONTENT_TYPES.urlencoded};charset=utf-8`);
         return body.toString();
     }
-    else if (isObject(body) || headers && headers['Content-Type'] === CONTENT_TYPES.json) {
+    else if (isObject(body) || headers && headers[HTTP_HEADERS.contentType] === CONTENT_TYPES.json) {
         setContentTypeIfUnset(headers, CONTENT_TYPES.json);
         return JSON.stringify(body);
     }
