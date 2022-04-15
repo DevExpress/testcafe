@@ -7,7 +7,7 @@ import { ExternalRequestOptions } from './interfaces';
 import { RequestOptions, generateUniqueId } from 'testcafe-hammerhead';
 import TestRun from '../test-run';
 import CONTENT_TYPES from '../assets/content-types';
-import HTTP_HEADERS from '../utils/http-headers'
+import HTTP_HEADERS from '../utils/http-headers';
 
 const DEFAULT_ACCEPT            = { [HTTP_HEADERS.accept]: `${CONTENT_TYPES.json}, ${CONTENT_TYPES.textPlain}, ${CONTENT_TYPES.all}` };
 const DEFAULT_CONTENT_TYPE      = { [HTTP_HEADERS.contentType]: CONTENT_TYPES.urlencoded };
@@ -41,7 +41,7 @@ function typeOf (value: unknown): string {
     return typeof value;
 }
 
-function transformBody (body: any, headers: OutgoingHttpHeaders): any {
+function transformBody (body: object, headers: OutgoingHttpHeaders): object | string {
     if (typeOf(body) === 'formdata' ||
         typeOf(body) === 'file' ||
         typeOf(body) === 'blob' ||
