@@ -17,7 +17,7 @@ describe('Request', () => {
         return runTests('testcafe-fixtures/request-test.js', 'Should execute a request with method post');
     });
 
-    it('Should execute a request with method delete', function () {
+    it.skip('Should execute a request with method delete', function () {
         return runTests('testcafe-fixtures/request-test.js', 'Should execute a request with method delete');
     });
 
@@ -41,19 +41,19 @@ describe('Request', () => {
         return runTests('testcafe-fixtures/request-test.js', 'Should re-execute a request in an assertion');
     });
 
-    it('Should execute basic auth', function () {
+    it.skip('Should execute basic auth', function () {
         return runTests('testcafe-fixtures/request-test.js', 'Should execute basic auth');
     });
 
-    it('Should execute bearer token auth', function () {
+    it.skip('Should execute bearer token auth', function () {
         return runTests('testcafe-fixtures/request-test.js', 'Should execute bearer token auth');
     });
 
-    it('Should execute API Key auth', function () {
+    it.skip('Should execute API Key auth', function () {
         return runTests('testcafe-fixtures/request-test.js', 'Should execute API Key auth');
     });
 
-    it('Should rise an error if url is not string', function () {
+    it.skip('Should rise an error if url is not string', function () {
         return runTests('testcafe-fixtures/request-test.js', 'Should rise an error if url is not string', { shouldFail: true })
             .catch(function (errs) {
                 expect(errs[0]).contains('The "url" argument (boolean) is not of expected type (string).');
