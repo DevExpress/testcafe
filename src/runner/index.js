@@ -2,6 +2,7 @@ import { resolve as resolvePath, dirname } from 'path';
 import debug from 'debug';
 import promisifyEvent from 'promisify-event';
 import { EventEmitter } from 'events';
+import dashboardConfigStorage from './dashboard-config-storage';
 
 import {
     flattenDeep as flatten,
@@ -500,8 +501,8 @@ export default class Runner extends EventEmitter {
         this.bootstrapper.hooks                  = this.configuration.getOption(OPTION_NAMES.hooks);
     }
 
-    _addDashboardReporterIfNeeded () {
-        const dashboardOptions = this.configuration.getOption(OPTION_NAMES.dashboard);
+    async _addDashboardReporterIfNeeded () {
+        const dashboardOptions = await this._getDashboardOptions();
         let reporterOptions    = this.configuration.getOption(OPTION_NAMES.reporter);
 
         if (!dashboardOptions)
@@ -518,6 +519,27 @@ export default class Runner extends EventEmitter {
             dashboardReporter.options = dashboardOptions;
 
         this.configuration.mergeOptions({ [OPTION_NAMES.reporter]: reporterOptions });
+    }
+
+    async _getDashboardOptions () {
+        let options = this.configuration.getOption(OPTION_NAMES.dashboard);
+
+        if (!options)
+            options = await this._loadDashboardOptionsFromStorage();
+
+        return options;
+    }
+
+    async _loadDashboardOptionsFromStorage () {
+        const storage = this._getDashboardStorage();
+
+        await storage.load();
+
+        return storage.options;
+    }
+
+    _getDashboardStorage () {
+        return dashboardConfigStorage;
     }
 
     async _prepareClientScripts (tests, clientScripts) {

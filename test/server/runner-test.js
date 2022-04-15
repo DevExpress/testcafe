@@ -1,28 +1,28 @@
 /*eslint-disable no-console */
-
-const path                    = require('path');
-const { expect }              = require('chai');
-const fs                      = require('fs');
-const del                     = require('del');
-const request                 = require('request');
-const { times, uniqBy }       = require('lodash');
-const consoleWrapper          = require('./helpers/console-wrapper');
-const isAlpine                = require('./helpers/is-alpine');
-const createTestCafe          = require('../../lib/');
-const COMMAND                 = require('../../lib/browser/connection/command');
-const Task                    = require('../../lib/runner/task');
-const BrowserConnection       = require('../../lib/browser/connection');
-const browserProviderPool     = require('../../lib/browser/provider/pool');
-const delay                   = require('../../lib/utils/delay');
-const OptionNames             = require('../../lib/configuration/option-names');
-const { GeneralError }        = require('../../lib/errors/runtime');
-const { RUNTIME_ERRORS }      = require('../../lib/errors/types');
-const { createReporter }      = require('../functional/utils/reporter');
-const proxyquire              = require('proxyquire');
-const BrowserConnectionStatus = require('../../lib/browser/connection/status');
-const { noop }                = require('lodash');
-const Test                    = require('../../lib/api/structure/test');
-const TestCafeConfiguration   = require('../../lib/configuration/testcafe-configuration');
+const path                           = require('path');
+const { expect }                     = require('chai');
+const fs                             = require('fs');
+const del                            = require('del');
+const request                        = require('request');
+const { times, uniqBy }              = require('lodash');
+const consoleWrapper                 = require('./helpers/console-wrapper');
+const isAlpine                       = require('./helpers/is-alpine');
+const createTestCafe                 = require('../../lib/');
+const COMMAND                        = require('../../lib/browser/connection/command');
+const Task                           = require('../../lib/runner/task');
+const BrowserConnection              = require('../../lib/browser/connection');
+const browserProviderPool            = require('../../lib/browser/provider/pool');
+const delay                          = require('../../lib/utils/delay');
+const OptionNames                    = require('../../lib/configuration/option-names');
+const { GeneralError }               = require('../../lib/errors/runtime');
+const { RUNTIME_ERRORS }             = require('../../lib/errors/types');
+const { createReporter }             = require('../functional/utils/reporter');
+const proxyquire                     = require('proxyquire');
+const BrowserConnectionStatus        = require('../../lib/browser/connection/status');
+const { noop }                       = require('lodash');
+const Test                           = require('../../lib/api/structure/test');
+const TestCafeConfiguration          = require('../../lib/configuration/testcafe-configuration');
+const { DashboardConfigStorageBase } = require('../../lib/runner/dashboard-config-storage/base');
 
 const createConfigFile = (configPath, options) => {
     options = options || {};
@@ -218,16 +218,29 @@ describe('Runner', () => {
         });
 
         describe('._addDashboardReporterIfNeeded', () => {
+            class DashboardConfigStorageMock extends DashboardConfigStorageBase {
+                async readOptions () {
+                    return { token: 'bar' };
+                }
+            }
+
             let sourceReporter = null;
+            let storedGetDashboardStorageFn = null;
 
             beforeEach(() => {
                 sourceReporter = runner._options.reporter;
+
+                storedGetDashboardStorageFn = runner._getDashboardStorage;
+
+                runner._getDashboardStorage = () => new DashboardConfigStorageMock();
             });
 
             afterEach(() => {
                 runner._options.reporter = sourceReporter;
 
                 delete runner._options.dashboard;
+
+                runner._getDashboardStorage = storedGetDashboardStorageFn;
             });
 
             it('Should add the dashboard reporter if its options are specified', async () => {
@@ -236,6 +249,12 @@ describe('Runner', () => {
                 await runner._addDashboardReporterIfNeeded();
 
                 expect(runner.configuration.getOption('reporter')[0]).to.deep.equal({ name: 'dashboard', options: { token: 'foo' } });
+            });
+
+            it('Should add the dashboard reporter if its options are specified in configuration storage', async () => {
+                await runner._addDashboardReporterIfNeeded();
+
+                expect(runner.configuration.getOption('reporter')[0]).to.deep.equal({ name: 'dashboard', options: { token: 'bar' } });
             });
         });
     });
