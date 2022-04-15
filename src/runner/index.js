@@ -536,11 +536,8 @@ export default class Runner extends EventEmitter {
     _addDashBoardAdvertisementIfNeeded () {
         const reporterOptions = this.configuration.getOption(OPTION_NAMES.reporter);
 
-        if (!reporterOptions)
-            return;
-
-        if (castArray(reporterOptions).every(reporter => reporter.name !== DASHBOARD_REPORTER_NAME))
-            this._addAdvertisement('We are proud to announce the TestCafe Dashboard (https://dashboard.testcafe.io/), our web-based test report aggregator for TestCafe users.');
+        if (!reporterOptions || castArray(reporterOptions).every(reporter => reporter.name !== DASHBOARD_REPORTER_NAME))
+            this._addAdvertisement('\nWe are proud to announce TestCafe Dashboard (https://dashboard.testcafe.io/), the ultimate web-based TestCafe report aggregator.\n');
     }
 
     async _getDashboardOptions () {
@@ -757,8 +754,10 @@ export default class Runner extends EventEmitter {
 
         const runTaskPromise = Promise.resolve()
             .then(() => this._setConfigurationOptions())
-            .then(() => this._addDashboardReporterIfNeeded())
-            .then(() => this._addDashBoardAdvertisementIfNeeded())
+            .then(() => {
+                this._addDashboardReporterIfNeeded();
+                this._addDashBoardAdvertisementIfNeeded();
+            })
             .then(() => Reporter.getReporterPlugins(this.configuration.getOption(OPTION_NAMES.reporter)))
             .then(reporterPlugins => {
                 reporters = reporterPlugins.map(reporter => new Reporter(reporter.plugin, this._messageBus, reporter.outStream, reporter.name));

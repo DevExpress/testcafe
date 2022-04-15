@@ -274,7 +274,7 @@ describe('Runner', () => {
                 runner._addDashBoardAdvertisementIfNeeded();
                 await runner._messageBus.emit('done');
 
-                expect(consoleWrapper.messages.log).eql('We are proud to announce the TestCafe Dashboard (https://dashboard.testcafe.io/), our web-based test report aggregator for TestCafe users.');
+                expect(consoleWrapper.messages.log).contains('We are proud to announce TestCafe Dashboard (https://dashboard.testcafe.io/), the ultimate web-based TestCafe report aggregator.');
 
                 consoleWrapper.unwrap();
             });
