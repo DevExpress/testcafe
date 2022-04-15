@@ -8,5 +8,5 @@ export default {
     json:       'application/json',
     textHtml:   'text/html',
     textPlain:  'text/plain',
-    urlencoded: 'application/x-www-form-urlencoded'
+    urlencoded: 'application/x-www-form-urlencoded',
 };
