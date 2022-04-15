@@ -1,5 +1,5 @@
 export default {
-    accept:      'Accept',
-    contentType: 'Content-Type',
+    accept:      'accept',
+    contentType: 'content-type',
     isRequest:   'is-request',
 };
