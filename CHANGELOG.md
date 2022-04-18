@@ -1,5 +1,17 @@
 # Changelog
 
+## v1.18.6 (2022-04-18)
+
+### Bug Fixes
+
+ * Faulty processing of client-side option chains leads to test execution errors (testcafe-hammerhead#2714)
+
+ * Poor Brotli compression performance (testcafe-hammerhead#2714)
+
+ * User Roles break when navigating to a new URL in a new window (PR testcafe-hammerhead#2754)
+
+ * The t.maximizeWindow method doesn't maximise browser windows on macOS (testcafe-browser-tools/#222)
+
 ## v1.18.5 (2022-03-31)
 
 ### Bug Fixes
