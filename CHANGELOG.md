@@ -4,13 +4,13 @@
 
 ### Bug Fixes
 
- * Faulty processing of client-side option chains leads to test execution errors (testcafe-hammerhead#2714)
+ * Faulty processing of client-side option chains leads to test execution errors ([testcafe-hammerhead/#2714](https://github.com/DevExpress/testcafe-hammerhead/issues/2714))
 
- * Poor Brotli compression performance (testcafe-hammerhead#2714)
+ * Poor Brotli compression performance ([testcafe-hammerhead/#2743](https://github.com/DevExpress/testcafe-hammerhead/issues/2743))
 
- * User Roles break when navigating to a new URL in a new window (PR testcafe-hammerhead#2754)
+ * User Roles break when navigating to a new URL in a new window ([PR testcafe-hammerhead/#2754](https://github.com/DevExpress/testcafe-hammerhead/pull/2754))
 
- * The t.maximizeWindow method doesn't maximise browser windows on macOS (testcafe-browser-tools/#222)
+ * The t.maximizeWindow method doesn't maximise browser windows on macOS ([testcafe-browser-tools/#222](https://github.com/DevExpress/testcafe-browser-tools/issues/222))
 
 ## v1.18.5 (2022-03-31)
 
@@ -24,11 +24,11 @@
  
  * TestCafe cannot take screenshots when using the LambdaTest browser provider ([#6887](https://github.com/DevExpress/testcafe/issues/6887))
  
- * Pages that target a missing `<iframe>`([testcafe-hammerhead#2178](https://github.com/DevExpress/testcafe-hammerhead/issues/2178) element with the `Element.focus` method yield a ""TypeError: window.location.toString is not a function" error.
+ * Pages that target a missing `<iframe>`([testcafe-hammerhead/#2178](https://github.com/DevExpress/testcafe-hammerhead/issues/2178) element with the `Element.focus` method yield a ""TypeError: window.location.toString is not a function" error.
  
- * TestCafe causes errors when it encounters XMLHTTPRequest calls that fetch resources from `blob:` URLs ([testcafe-hammerhead#2634](https://github.com/DevExpress/testcafe-hammerhead/issues/2634))
+ * TestCafe causes errors when it encounters XMLHTTPRequest calls that fetch resources from `blob:` URLs ([testcafe-hammerhead/#2634](https://github.com/DevExpress/testcafe-hammerhead/issues/2634))
  
- * `HTMLElement.removeAttributeNode` method calls yield unjustified exceptions (PR [testcafe-hammerhead#2742](https://github.com/DevExpress/testcafe-hammerhead/pull/2742) by @TrevorKarjanis)
+ * `HTMLElement.removeAttributeNode` method calls yield unjustified exceptions ([PR testcafe-hammerhead/#2742](https://github.com/DevExpress/testcafe-hammerhead/pull/2742) by @TrevorKarjanis)
 
 ## v1.18.4 (2022-02-21)
 
@@ -36,11 +36,11 @@
 
  * TestCafe does not display reporter output during initialization ([#6842](https://github.com/DevExpress/testcafe/issues/6842))
  
- * TestCafe uses outdated automation scripts after cache expiration ([testcafe-hammerhead#2738](https://github.com/DevExpress/testcafe-hammerhead/issues/2738), [PR](https://github.com/DevExpress/testcafe-hammerhead/issues/2739) by @rr13k)
+ * TestCafe uses outdated automation scripts after cache expiration ([testcafe-hammerhead/#2738](https://github.com/DevExpress/testcafe-hammerhead/issues/2738), [PR](https://github.com/DevExpress/testcafe-hammerhead/issues/2739) by @rr13k)
 
- * The `Node.append` method causes the `Illegal invocation` error (PR [testcafe-hammerhead#2730](https://github.com/DevExpress/testcafe-hammerhead/pull/2730) by @danieltroger)
+ * The `Node.append` method causes the `Illegal invocation` error ([PR testcafe-hammerhead/#2730](https://github.com/DevExpress/testcafe-hammerhead/pull/2730) by @danieltroger)
  
- * Scripts in SVG documents cause the `Illegal invocation` error ([testcafe-hammerhead#2735](https://github.com/DevExpress/testcafe-hammerhead/issues/2735
+ * Scripts in SVG documents cause the `Illegal invocation` error ([testcafe-hammerhead/#2735](https://github.com/DevExpress/testcafe-hammerhead/issues/2735
 ))
  
 ## v1.18.3 (2022-01-25)
@@ -282,10 +282,10 @@ test('Type text', async t => {
 * TestCafe raises the blur event when you focus a non-focusable element ([#6236](https://github.com/DevExpress/testcafe/pull/6236)).
 * TestCafe test hangs when you click a link within a cross-domain iframe ([#6331](https://github.com/DevExpress/testcafe/pull/6331)).
 * TestCafe loads the Babel compiler libraries multiple times ([#6310](https://github.com/DevExpress/testcafe/pull/6310)). 
-* TestCafe incorrectly parses the meta refresh tags ([#2663](https://github.com/DevExpress/testcafe-hammerhead/pull/2663))
-* TestCafe incorrectly processes iframe elements with the "srcdoc" attribute ([#2647](https://github.com/DevExpress/testcafe-hammerhead/issues/2647)).
-* TestCafe incorrectly specifies the Referer HTTP request header if you use the "navigateTo" action ([#2607](https://github.com/DevExpress/testcafe-hammerhead/issues/2607)).
-* An error related to the [bug in Node.js](https://github.com/nodejs/node/issues/37849) occurs ([#2655](https://github.com/DevExpress/testcafe-hammerhead/pull/2655)). 
+* TestCafe incorrectly parses the meta refresh tags ([PR testcafe-hammerhead/#2663](https://github.com/DevExpress/testcafe-hammerhead/pull/2663))
+* TestCafe incorrectly processes iframe elements with the "srcdoc" attribute ([testcafe-hammerhead/#2647](https://github.com/DevExpress/testcafe-hammerhead/issues/2647)).
+* TestCafe incorrectly specifies the Referer HTTP request header if you use the "navigateTo" action ([testcafe-hammerhead/#2607](https://github.com/DevExpress/testcafe-hammerhead/issues/2607)).
+* An error related to the [bug in Node.js](https://github.com/nodejs/node/issues/37849) occurs ([testcafe-hammerhead/#2655](https://github.com/DevExpress/testcafe-hammerhead/pull/2655)). 
 
 ## v1.15.0 (2021-07-08)
 
@@ -358,7 +358,7 @@ TestCafe now has the capability to proxy non-HTML documents such as XML and text
 * Added a type definition for the `disableScreenshots` Runner option ([#5735](https://github.com/DevExpress/testcafe/issues/5735))
 * Fixed a multi-window mode bug that caused TestCafe to launch an empty browser window and then hang ([#6132](https://github.com/DevExpress/testcafe/issues/6132))
 * Fixed a bug that denied users access to iframes with `srcdoc` attributes ([#6033](https://github.com/DevExpress/testcafe/issues/6033))
-* Fixed a bug that interfered with the loading of Word Online documents in Firefox ([testcafe-hammerhead#2287](https://github.com/DevExpress/testcafe-hammerhead/issues/2287))
+* Fixed a bug that interfered with the loading of Word Online documents in Firefox ([testcafe-hammerhead/#2287](https://github.com/DevExpress/testcafe-hammerhead/issues/2287))
 
 ## v1.14.0 (2021-4-7)
 
