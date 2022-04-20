@@ -66,12 +66,12 @@ function error (err) {
 }
 
 async function runTests (argParser) {
-    const opts              = argParser.opts;
-    const port1             = opts.ports && opts.ports[0];
-    const port2             = opts.ports && opts.ports[1];
-    const proxy             = opts.proxy;
-    const proxyBypass       = opts.proxyBypass;
-    const configFile        = opts.configFile;
+    const opts        = argParser.opts;
+    const port1       = opts.ports && opts.ports[0];
+    const port2       = opts.ports && opts.ports[1];
+    const proxy       = opts.proxy;
+    const proxyBypass = opts.proxyBypass;
+    const configFile  = opts.configFile;
 
     log.showSpinner();
 
@@ -90,6 +90,7 @@ async function runTests (argParser) {
         configFile,
         disableHttp2,
         v8Flags,
+        fromCli: true,
     });
 
     const correctedBrowsersAndSources = await correctBrowsersAndSources(argParser, testCafe.configuration);
@@ -126,7 +127,6 @@ async function runTests (argParser) {
 
         failed = await runner.run(runOpts);
     }
-
     finally {
         showMessageOnExit = false;
         await testCafe.close();
@@ -149,10 +149,10 @@ async function listBrowsers (providerName) {
         if (providerName === 'locally-installed')
             console.log(browserNames.join('\n'));
         else
-            console.log(browserNames.map(browserName => `"${providerName}:${browserName}"`).join('\n'));
+            console.log(browserNames.map(browserName => `"${ providerName }:${ browserName }"`).join('\n'));
     }
     else
-        console.log(`"${providerName}"`);
+        console.log(`"${ providerName }"`);
 
     exit(0);
 }
