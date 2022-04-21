@@ -346,9 +346,21 @@ describe('TestCafeConfiguration', function () {
 
                     expect(testCafeConfiguration.getOption('jsConfig')).to.be.true;
                 });
+
+                it('Should raise an error if dashboardOptions.token is specified in JSON configuration file', async () => {
+                    createJSONTestCafeConfigurationFile({
+                        'dashboardOptions': {
+                            'token': 'secret',
+                        },
+                    });
+
+                    expect((async () => {
+                        await testCafeConfiguration.init();
+                    })()).be.rejectedWith(/The dashboard's token cannot be used in the JSON configuration file due to security reasons/);
+                });
             });
 
-            it('File doesn\'t exists', () => {
+            it("File doesn't exists", () => {
                 fs.unlinkSync(TestCafeConfiguration.FILENAMES[jsonConfigIndex]);
 
                 const defaultOptions = cloneDeep(testCafeConfiguration._options);
