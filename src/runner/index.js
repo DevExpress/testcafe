@@ -61,7 +61,7 @@ export default class Runner extends EventEmitter {
         this.bootstrapper        = this._createBootstrapper(browserConnectionGateway, compilerService, this._messageBus);
         this.pendingTaskPromises = [];
         this.configuration       = configuration;
-        this.isCli               = false;
+        this.isCli               = configuration._options && configuration._options.isCli;
         this.warningLog          = new WarningLog(null, WarningLog.createAddWarningCallback(this._messageBus));
         this.compilerService     = compilerService;
         this._options            = {};

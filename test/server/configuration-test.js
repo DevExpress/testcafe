@@ -1,12 +1,12 @@
 /*eslint-disable no-console */
 const { cloneDeep, noop } = require('lodash');
 
-const { expect }    = require('chai');
-const fs            = require('fs');
-const tmp           = require('tmp');
-const { nanoid }    = require('nanoid');
-const del           = require('del');
-const pathUtil      = require('path');
+const { expect } = require('chai');
+const fs         = require('fs');
+const tmp        = require('tmp');
+const { nanoid } = require('nanoid');
+const del        = require('del');
+const pathUtil   = require('path');
 
 const TestCafeConfiguration                   = require('../../lib/configuration/testcafe-configuration');
 const TypeScriptConfiguration                 = require('../../lib/configuration/typescript-configuration');
@@ -538,6 +538,43 @@ describe('TestCafeConfiguration', function () {
             await testInitWithMergeOption({ developmentMode: true });
 
             expect(testCafeConfiguration._overriddenOptions).eql([]);
+        });
+    });
+
+    describe('[RG-6618] Incorrect browser is specified in config file when running tests from CLI', () => {
+        let configuration;
+        const customConfigFile = 'custom2.testcaferc.json';
+
+        const options = {
+            'browsers': ['incorrectBrowser'],
+        };
+
+        before(async () => {
+            createJSONConfig(customConfigFile, options);
+        });
+
+        after(async () => {
+            await del(configuration.defaultPaths);
+        });
+
+        it('Should success create configuration with incorrect browser value', () => {
+            configuration = new TestCafeConfiguration(customConfigFile);
+
+            return configuration.init({ isCli: true })
+                .then(() => {
+                    expect(pathUtil.basename(configuration.filePath)).eql(customConfigFile);
+                    expect(configuration.getOption('browsers')).eql(options.browsers);
+                });
+        });
+
+        it('Should throw an error in case of incorrect browser was passed not from CLI', () => {
+            configuration = new TestCafeConfiguration(customConfigFile);
+
+            return configuration.init().then(() => {
+                throw new Error('Promise should be rejected');
+            }).catch(err => {
+                expect(err.message).eql('Cannot find the browser. "incorrectBrowser" is neither a known browser alias, nor a path to an executable file.');
+            });
         });
     });
 });
