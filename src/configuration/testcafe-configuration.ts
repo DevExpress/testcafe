@@ -94,7 +94,7 @@ export default class TestCafeConfiguration extends Configuration {
         this._isExplicitConfig = !!configFile;
     }
 
-    public async init (options?: object): Promise<void> {
+    public async init (options?: Dictionary<object>): Promise<void> {
         await super.init();
 
         const opts = await this._load();
@@ -108,12 +108,12 @@ export default class TestCafeConfiguration extends Configuration {
         await this.asyncMergeOptions(options);
     }
 
-    public async asyncMergeOptions (options?: object): Promise<void> {
+    public async asyncMergeOptions (options?: Dictionary<object>): Promise<void> {
         options = options || {};
 
         super.mergeOptions(options);
 
-        if (!this._options.fromCli && this._options.browsers)
+        if (!options.isCli && this._options.browsers)
             this._options.browsers.value = await this._getBrowserInfo();
     }
 

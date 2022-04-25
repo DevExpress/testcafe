@@ -79,6 +79,7 @@ async function runTests (argParser) {
 
     const testCafe = await createTestCafe({
         developmentMode: dev,
+        isCli:           true,
 
         hostname,
         port1,
@@ -90,7 +91,6 @@ async function runTests (argParser) {
         configFile,
         disableHttp2,
         v8Flags,
-        fromCli: true,
     });
 
     const correctedBrowsersAndSources = await correctBrowsersAndSources(argParser, testCafe.configuration);
@@ -102,8 +102,6 @@ async function runTests (argParser) {
     const runner = opts.live ? testCafe.createLiveModeRunner() : testCafe.createRunner();
 
     let failed = 0;
-
-    runner.isCli = true;
 
     runner
         .useProxy(proxy, proxyBypass)

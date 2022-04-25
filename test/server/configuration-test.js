@@ -877,7 +877,7 @@ describe('TypeScriptConfiguration', function () {
         it('Should success create configuration with incorrect browser value', () => {
             configuration = new TestCafeConfiguration(customConfigFile);
 
-            return configuration.init({ fromCli: true })
+            return configuration.init({ isCli: true })
                 .then(() => {
                     expect(pathUtil.basename(configuration.filePath)).eql(customConfigFile);
                     expect(configuration.getOption('browsers')).eql(options.browsers);
