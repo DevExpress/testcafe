@@ -108,12 +108,12 @@ export default class TestCafeConfiguration extends Configuration {
         await this.asyncMergeOptions(options);
     }
 
-    public async asyncMergeOptions (options?: any): Promise<void> {
+    public async asyncMergeOptions (options?: object): Promise<void> {
         options = options || {};
 
         super.mergeOptions(options);
 
-        if (!options.fromCli && this._options.browsers)
+        if (!this._options.fromCli && this._options.browsers)
             this._options.browsers.value = await this._getBrowserInfo();
     }
 
