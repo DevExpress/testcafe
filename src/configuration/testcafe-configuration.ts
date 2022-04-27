@@ -99,7 +99,7 @@ export default class TestCafeConfiguration extends Configuration {
 
         const opts = await this._load();
 
-        this._checkSecureDataInJSONConfiguration(opts);
+        this._checkUnsecureDataInJSONConfiguration(opts);
 
         if (opts) {
             this._options = Configuration._fromObj(opts);
@@ -166,7 +166,7 @@ export default class TestCafeConfiguration extends Configuration {
         return result;
     }
 
-    private _checkSecureDataInJSONConfiguration (opts: any): void {
+    private _checkUnsecureDataInJSONConfiguration (opts: any): void {
         if (!this._isJSONConfiguration())
             return;
 
