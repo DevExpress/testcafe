@@ -173,6 +173,7 @@
     "body-parser": "^1.17.1",
     "browserstack-connector": "^0.1.7",
     "caller": "^1.0.1",
+    "chai-as-promised": "^7.1.1",
     "chai-string": "^1.5.0",
     "chrome-launcher": "^0.15.0",
     "connect": "^3.4.0",

@@ -99,6 +99,8 @@ export default class TestCafeConfiguration extends Configuration {
 
         const opts = await this._load();
 
+        this._checkUnsecureDataInJSONConfiguration(opts);
+
         if (opts) {
             this._options = Configuration._fromObj(opts);
 
@@ -164,6 +166,13 @@ export default class TestCafeConfiguration extends Configuration {
         return result;
     }
 
+    private _checkUnsecureDataInJSONConfiguration (opts: any): void {
+        if (!this._isJSONConfiguration())
+            return;
+
+        if (opts?.dashboardOptions?.token)
+            throw new GeneralError(RUNTIME_ERRORS.dashboardTokenInJSON);
+    }
     private _prepareFlag (name: string, source = OptionSource.Configuration): void {
         const option = this._ensureOption(name, void 0, source);
 

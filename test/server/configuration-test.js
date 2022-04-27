@@ -346,9 +346,21 @@ describe('TestCafeConfiguration', function () {
 
                     expect(testCafeConfiguration.getOption('jsConfig')).to.be.true;
                 });
+
+                it('Should raise an error if dashboardOptions.token is specified in JSON configuration file', () => {
+                    createJSONTestCafeConfigurationFile({
+                        'dashboardOptions': {
+                            'token': 'secret',
+                        },
+                    });
+
+                    expect((async () => {
+                        await testCafeConfiguration.init();
+                    })()).be.rejectedWith(/Insecure token declaration: cannot declare a Dashboard token in a JSON configuration file/);
+                });
             });
 
-            it('File doesn\'t exists', () => {
+            it("File doesn't exists", () => {
                 fs.unlinkSync(TestCafeConfiguration.FILENAMES[jsonConfigIndex]);
 
                 const defaultOptions = cloneDeep(testCafeConfiguration._options);
@@ -371,7 +383,7 @@ describe('TestCafeConfiguration', function () {
                     message = err.message;
                 }
 
-                expect(message).eql(`"${nonExistingConfiguration.filePath}" is not a valid path to the TestCafe configuration file. Make sure the configuration file exists and you spell the path name correctly.`);
+                expect(message).contains(`Cannot locate a TestCafe configuration file at ${nonExistingConfiguration.filePath}`);
             });
         });
 

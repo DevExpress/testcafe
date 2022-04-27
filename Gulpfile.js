@@ -266,6 +266,7 @@ gulp.step('test-server-run', () => {
     const chai = require('chai');
 
     chai.use(require('chai-string'));
+    chai.use(require('chai-as-promised'));
 
     // HACK: We have to exit from all Gulp's error domains to avoid conflicts with error handling inside mocha tests
     const domains = exitDomains();
