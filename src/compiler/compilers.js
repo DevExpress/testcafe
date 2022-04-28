@@ -5,6 +5,7 @@ import TypeScriptTestFileCompiler from './test-file/formats/typescript/compiler'
 import CoffeeScriptTestFileCompiler from './test-file/formats/coffeescript/compiler';
 import RawTestFileCompiler from './test-file/formats/raw';
 import CustomizableCompilers from '../configuration/customizable-compilers';
+import DevToolsTestFileCompiler from './test-file/formats/dev-tools';
 
 function createTestFileCompilers (options = {}, isCompilerServiceMode) {
     return [
@@ -13,6 +14,7 @@ function createTestFileCompilers (options = {}, isCompilerServiceMode) {
         new TypeScriptTestFileCompiler(options[CustomizableCompilers.typescript], isCompilerServiceMode),
         new CoffeeScriptTestFileCompiler(),
         new RawTestFileCompiler(),
+        new DevToolsTestFileCompiler(),
     ];
 }
 

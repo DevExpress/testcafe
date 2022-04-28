@@ -1,0 +1,110 @@
+{
+  "title": "test1",
+  "steps": [
+    {
+      "type": "setViewport",
+      "width": 1280,
+      "height": 800,
+      "deviceScaleFactor": 1,
+      "isMobile": false,
+      "hasTouch": false,
+      "isLandscape": false
+    },
+    {
+      "type": "navigate",
+      "url": "https://devexpress.github.io/testcafe/example/",
+      "assertedEvents": [
+        {
+          "type": "navigation",
+          "url": "https://devexpress.github.io/testcafe/example/",
+          "title": "TestCafe Example Page"
+        }
+      ]
+    },
+    {
+      "type": "click",
+      "selectors": [
+        [
+          "aria/Your name:",
+          "aria/[role=\"textbox\"]"
+        ],
+        [
+          "[data-testid=name-input]"
+        ]
+      ],
+      "target": "main",
+      "offsetX": 89.39999389648438,
+      "offsetY": 3.399993896484375
+    },
+    {
+      "type": "change",
+      "value": "peter parker",
+      "selectors": [
+        [
+          "aria/Your name:",
+          "aria/[role=\"textbox\"]"
+        ],
+        [
+          "[data-testid=name-input]"
+        ]
+      ],
+      "target": "main"
+    },
+    {
+      "type": "click",
+      "selectors": [
+        [
+          "aria/Support for testing on remote devices"
+        ],
+        [
+          "[data-testid=remote-testing-checkbox]"
+        ]
+      ],
+      "target": "main",
+      "offsetX": 1.399993896484375,
+      "offsetY": 8.29998779296875
+    },
+    {
+      "type": "click",
+      "selectors": [
+        [
+          "aria/Re-using existing JavaScript code for testing"
+        ],
+        [
+          "[data-testid=reusing-js-code-checkbox]"
+        ]
+      ],
+      "target": "main",
+      "offsetX": 5.399993896484375,
+      "offsetY": 7.29998779296875
+    },
+    {
+      "type": "click",
+      "selectors": [
+        [
+          "aria/Windows"
+        ],
+        [
+          "[data-testid=windows-radio]"
+        ]
+      ],
+      "target": "main",
+      "offsetX": 6.39996337890625,
+      "offsetY": 3.5999908447265625
+    },
+    {
+      "type": "click",
+      "selectors": [
+        [
+          "aria/I have tried TestCafe"
+        ],
+        [
+          "[data-testid=tried-testcafe-checkbox]"
+        ]
+      ],
+      "target": "main",
+      "offsetX": 1.399993896484375,
+      "offsetY": 1
+    }
+  ]
+}
