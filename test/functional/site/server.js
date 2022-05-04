@@ -7,7 +7,8 @@ const multer                = require('multer');
 const Mustache              = require('mustache');
 const { readFile }          = require('../../../lib/utils/promisified-functions');
 const quarantineModeTracker = require('../quarantine-mode-tracker');
-const { parseUserAgent }        = require('../../../lib/utils/parse-user-agent');
+const { parseUserAgent }    = require('../../../lib/utils/parse-user-agent');
+const apiRouter             = require('./api.js');
 
 const storage = multer.memoryStorage();
 const upload  = multer({ storage: storage });
@@ -43,6 +44,8 @@ const Server = module.exports = function (port, basePath) {
     this.sockets   = [];
     this.basePath  = basePath;
 
+    this.app.use(bodyParser.json());
+
     this._setupRoutes();
 
     const handler = function (socket) {
@@ -57,6 +60,8 @@ const Server = module.exports = function (port, basePath) {
 
 Server.prototype._setupRoutes = function () {
     const server = this;
+
+    this.app.use('/api', apiRouter);
 
     this.app.get('/download', function (req, res) {
         const filePath = path.join(server.basePath, '../../package.json');
