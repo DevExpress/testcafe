@@ -510,7 +510,7 @@ interface TestController {
      * @param nameValueObjects - The cookies' name-value pairs.
      * @param url - The URL.
      */
-    setCookies(nameValueObjects: Record<string, string> | Record<string, string>[], url: string): TestControllerPromise;
+    setCookies(nameValueObjects: Record<string, string> | Record<string, string>[], url?: string): TestControllerPromise;
     /**
      * Deletes cookies. If there are no parameters, this method deletes all cookies.
      *
