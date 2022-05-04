@@ -628,11 +628,11 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     private async _runAfterHook (): Promise<boolean> {
-        if (this.test.globalAfterFn)
-            await this._executeTestFn(TestRunPhase.inTestAfterHook, this.test.globalAfterFn, this.executionTimeout);
-
         if (this.test.afterFn)
-            return await this._executeTestFn(TestRunPhase.inTestAfterHook, this.test.afterFn, this.executionTimeout);
+            await this._executeTestFn(TestRunPhase.inTestAfterHook, this.test.afterFn, this.executionTimeout);
+
+        if (this.test.globalAfterFn)
+            return await this._executeTestFn(TestRunPhase.inTestAfterHook, this.test.globalAfterFn, this.executionTimeout);
 
         if (this.test.fixture?.afterEachFn)
             return await this._executeTestFn(TestRunPhase.inFixtureAfterEachHook, this.test.fixture?.afterEachFn, this.executionTimeout);
