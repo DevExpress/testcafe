@@ -19,10 +19,6 @@ const DEFAULT_OPTIONS           = {
     isAjax:         true,
     requestId:      generateUniqueId(),
     isWebSocket:    false,
-    requestTimeout: {
-        ajax: DEFAULT_REQUEST_TIMEOUT,
-        page: 0,
-    },
 };
 
 function setContentTypeIfUnset (headers: OutgoingHttpHeaders, value: string): void {
@@ -121,6 +117,10 @@ export function processRequestOptions (testRun: TestRun, options: ExternalReques
         auth:     options.auth ? `${options.auth.username}:${options.auth.password}` : '',
         headers,
         body,
+        requestTimeout:        {
+            ajax: options.timeout || DEFAULT_REQUEST_TIMEOUT,
+            page: 0,
+        },
         externalProxySettings,
     }));
 }
