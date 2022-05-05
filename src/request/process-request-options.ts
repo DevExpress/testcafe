@@ -90,8 +90,7 @@ export function processRequestOptions (testRun: TestRun, options: ExternalReques
         host:     url.host,
         port:     url.port,
         path:     url.pathname,
-        //TODO: to research why there is string in th HH
-        auth:     '',
+        auth:     options.auth ? `${options.auth.username}:${options.auth.password}` : '',
         headers,
         body,
     }));
