@@ -1,4 +1,5 @@
-The "name" option is expected to be a string value, but it was object.
+The value of the "name" option belongs to an unsupported data type (object).
+The "name" option only accepts String values.
 
 Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>

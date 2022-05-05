@@ -1,4 +1,4 @@
-The "urls" argument isn't valid.
+Could not parse the url parameter. Check the value for formatting errors.
 
 Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>

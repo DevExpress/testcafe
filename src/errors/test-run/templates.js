@@ -131,23 +131,23 @@ export default {
     `,
 
     [TEST_RUN_ERRORS.actionRequiredCookieArguments]: () => `
-        Cookies argument is required.
+        The mandatory "cookies" argument is missing.
     `,
 
     [TEST_RUN_ERRORS.actionCookieArgumentError]: () => `
-        The "cookie" is expected to be an object, a string or array of objects or strings.
+        The value of the "cookies" argument does not belong to an acceptable data type: Object, String, or Array of objects or strings.
     `,
 
     [TEST_RUN_ERRORS.actionCookieArgumentsError]: err => `
-        The "cookie" at number ${err.index + 1} is expected to be an object or a string.
+        The value of the cookies number ${err.index + 1} does not belong to an acceptable data type: Object or String.
     `,
 
     [TEST_RUN_ERRORS.actionUrlCookieArgumentError]: () => `
-        The "urls" argument isn't valid.
+        Could not parse the url parameter. Check the value for formatting errors.
     `,
 
     [TEST_RUN_ERRORS.actionUrlsCookieArgumentError]: err => `
-        Elements at index ${err.index + 1} of the "urls" argument isn't valid.
+        Could not parse the urls value number ${err.index + 1}. Check the value for formatting errors.
     `,
 
     [TEST_RUN_ERRORS.actionIntegerArgumentError]: err => `
@@ -412,14 +412,14 @@ export default {
     },
 
     [TEST_RUN_ERRORS.actionStringOptionError]: err => `
-        The "${err.optionName}" option is expected to be a string value, but it was ${err.actualValue}.
+        The value of the "${err.optionName}" option belongs to an unsupported data type (${err.actualValue}). The "${err.optionName}" option only accepts String values.
     `,
 
     [TEST_RUN_ERRORS.actionDateOptionError]: err => `
-        The "${err.optionName}" option is expected to be a Date value, but it was ${err.actualValue}.
+        The value of the "${err.optionName}" option belongs to an unsupported data type (${err.actualValue}). The "${err.optionName}" option only accepts Date values.
     `,
 
     [TEST_RUN_ERRORS.actionNumberOptionError]: err => `
-        The "${err.optionName}" option is expected to be a number, but it was ${err.actualValue}.
+        The value of the "${err.optionName}" option belongs to an unsupported data type (${err.actualValue}). The "${err.optionName}" option only accepts Number values.
     `,
 };
