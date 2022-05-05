@@ -12,7 +12,7 @@ async function dispatchRequest (testRun: TestRun, options: ExternalRequestOption
     const requestOptions = processRequestOptions(testRun, options);
     const request        = new DestinationRequest(requestOptions);
     const dataWaiter     = new Promise<IncomingMessage | Error>(resolve => {
-        request.on('response', (err: IncomingMessage) => resolve(err));
+        request.on('response', (res: IncomingMessage) => resolve(res));
         request.on('error', (err: Error) => resolve(err));
     });
 
