@@ -1,10 +1,17 @@
 import { OutgoingHttpHeaders } from 'http';
 import {
-    isArrayBuffer, isBuffer, isObject, isUndefined,
+    isArrayBuffer,
+    isBuffer,
+    isObject,
+    isUndefined,
 } from 'lodash';
 import isStream from 'is-stream';
 import { AuthOptions, ExternalRequestOptions } from './interfaces';
-import { RequestOptions, generateUniqueId } from 'testcafe-hammerhead';
+import {
+    RequestOptions,
+    generateUniqueId,
+    Session,
+} from 'testcafe-hammerhead';
 import TestRun from '../test-run';
 import CONTENT_TYPES from '../assets/content-types';
 import HTTP_HEADERS from '../utils/http-headers';
@@ -77,8 +84,14 @@ function changeHeaderNamesToLowercase (headers: OutgoingHttpHeaders): OutgoingHt
     return lowerCaseHeaders;
 }
 
-function prepareHeaders (headers: OutgoingHttpHeaders = {}, options: ExternalRequestOptions): OutgoingHttpHeaders {
+function prepareHeaders (headers: OutgoingHttpHeaders = {}, body: Buffer, session: Session, options: ExternalRequestOptions): OutgoingHttpHeaders {
+    const { host, origin, href } = new URL(options.url);
+
     const preparedHeaders: OutgoingHttpHeaders = Object.assign(DEFAULT_ACCEPT, DEFAULT_IS_REQUEST, changeHeaderNamesToLowercase(headers));
+
+    preparedHeaders[HTTP_HEADERS.host] = host;
+    preparedHeaders[HTTP_HEADERS.origin] = origin;
+    preparedHeaders[HTTP_HEADERS.contentLength] = body.length;
 
     if (headers.method && METHODS_WITH_CONTENT_TYPE.includes(String(headers.method)))
         preparedHeaders[HTTP_HEADERS.contentType] = CONTENT_TYPES.urlencoded;
@@ -89,38 +102,45 @@ function prepareHeaders (headers: OutgoingHttpHeaders = {}, options: ExternalReq
     if (options.proxy?.auth)
         preparedHeaders[HTTP_HEADERS.proxyAuthorization] = getAuthString(options.proxy.auth);
 
+    if (options.withCredentials)
+        preparedHeaders[HTTP_HEADERS.cookie] = session.cookies.getHeader({ url: href, hostname: host }) || void 0;
+
     return preparedHeaders;
 }
 
 export function processRequestOptions (testRun: TestRun, options: ExternalRequestOptions): RequestOptions {
-    const url = new URL(options.url || '');
+    const url = new URL(options.url);
 
     options.headers = options.headers || {};
 
     const body    = transformBody(options.headers, options.body);
-    const headers = prepareHeaders(options.headers, options) || {};
+    const headers = prepareHeaders(options.headers, body, testRun.session, options);
 
     const externalProxySettings = options.proxy ? {
-        host:      options.proxy.host || '',
-        hostname:  options.proxy.host || '',
+        host:      options.proxy.host,
+        hostname:  options.proxy.host,
         port:      options.proxy.port.toString(),
         proxyAuth: options.proxy.auth ? options.proxy.auth.username + ':' + options.proxy.auth.password : '',
     } : void 0;
 
-    return new RequestOptions(Object.assign(DEFAULT_OPTIONS, options, {
-        url:      testRun.session.getProxyUrl(url.href),
-        protocol: url.protocol,
-        hostname: url.hostname,
-        host:     url.host,
-        port:     url.port,
-        path:     url.pathname,
-        auth:     options.auth ? `${options.auth.username}:${options.auth.password}` : '',
-        headers,
-        body,
+    return new RequestOptions(Object.assign(DEFAULT_OPTIONS, {
+        method:                options.method,
+        url:                   testRun.session.getProxyUrl(url.href),
+        protocol:              url.protocol,
+        hostname:              url.hostname,
+        host:                  url.host,
+        port:                  url.port,
+        path:                  url.pathname,
+        auth:                  options.auth ? `${options.auth.username}:${options.auth.password}` : void 0,
+        headers:               headers,
+        externalProxySettings: externalProxySettings,
+        credentials:           testRun.session.getAuthCredentials(),
+        body:                  body,
+        rawHeaders:            void 0,
         requestTimeout:        {
             ajax: options.timeout || DEFAULT_REQUEST_TIMEOUT,
             page: 0,
         },
-        externalProxySettings,
+        disableHttp2: testRun.session.isHttp2Disabled(),
     }));
 }
