@@ -15,7 +15,6 @@ import {
 import {
     RequestOptions,
     generateUniqueId,
-    Session,
 } from 'testcafe-hammerhead';
 import TestRun from '../test-run';
 import CONTENT_TYPES from '../assets/content-types';
@@ -89,8 +88,8 @@ function changeHeaderNamesToLowercase (headers: OutgoingHttpHeaders): OutgoingHt
     return lowerCaseHeaders;
 }
 
-function prepareHeaders (headers: OutgoingHttpHeaders = {}, body: Buffer, session: Session, options: ExternalRequestOptions): OutgoingHttpHeaders {
-    const { host, origin, href } = new URL(options.url);
+async function prepareHeaders (headers: OutgoingHttpHeaders, body: Buffer, testRun: TestRun, options: ExternalRequestOptions): Promise<OutgoingHttpHeaders> {
+    const { host, hostname, origin, href } = new URL(options.url);
 
     const preparedHeaders: OutgoingHttpHeaders = Object.assign(DEFAULT_ACCEPT, DEFAULT_IS_REQUEST, changeHeaderNamesToLowercase(headers));
 
@@ -107,8 +106,18 @@ function prepareHeaders (headers: OutgoingHttpHeaders = {}, body: Buffer, sessio
     if (options.proxy?.auth)
         preparedHeaders[HTTP_HEADERS.proxyAuthorization] = getAuthString(options.proxy.auth);
 
-    if (options.withCredentials)
-        preparedHeaders[HTTP_HEADERS.cookie] = session.cookies.getHeader({ url: href, hostname: host }) || void 0;
+    if (options.withCredentials) {
+        const currentPageUrl     = new URL(await testRun.getCurrentUrl());
+        const currentPageCookies = testRun.session.cookies.getHeader({
+            url:      currentPageUrl.href,
+            hostname: currentPageUrl.hostname,
+        });
+
+        const cookies = testRun.session.cookies.getHeader({ url: href, hostname });
+
+        if (cookies)
+            preparedHeaders[HTTP_HEADERS.cookie] = currentPageCookies || cookies;
+    }
 
     return preparedHeaders;
 }
@@ -137,13 +146,13 @@ function prepareSearchParams (url: string, params?: Params): string {
     return `${url}${(url.includes('?') ? '&' : '?')}${searchParams.toString()}`;
 }
 
-export function processRequestOptions (testRun: TestRun, options: ExternalRequestOptions): RequestOptions {
+export async function processRequestOptions (testRun: TestRun, options: ExternalRequestOptions): Promise<RequestOptions> {
     const url = new URL(options.url);
 
     options.headers = options.headers || {};
 
     const body    = transformBody(options.headers, options.body);
-    const headers = prepareHeaders(options.headers, body, testRun.session, options);
+    const headers = await prepareHeaders(options.headers, body, testRun, options);
     let auth      = options.auth;
 
     if (!auth && url.username && url.password) {
