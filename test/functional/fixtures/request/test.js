@@ -1,7 +1,6 @@
 const { expect } = require('chai');
 
-/*eslint-disable*/
-describe.only('Request', () => {
+describe('Request', () => {
     it('Should execute GET request', function () {
         return runTests('testcafe-fixtures/request-test.js', 'Should execute a GET request');
     });
@@ -18,7 +17,7 @@ describe.only('Request', () => {
         return runTests('testcafe-fixtures/request-test.js', 'Should execute a request with method post');
     });
 
-    it.skip('Should execute a request with method delete', function () {
+    it('Should execute a request with method delete', function () {
         return runTests('testcafe-fixtures/request-test.js', 'Should execute a request with method delete');
     });
 

@@ -1,14 +1,6 @@
 import { Request } from 'testcafe';
-import Server from '../server';
 
-fixture`Request`
-    .before((ctx) => {
-        ctx.serverPort = 1339;
-        ctx.server     = new Server(ctx.serverPort);
-    })
-    .after((ctx) => {
-        ctx.server.close();
-    });
+fixture`Request`;
 
 test('Should execute a GET request', async (t) => {
     const {
@@ -16,13 +8,13 @@ test('Should execute a GET request', async (t) => {
         statusText,
         headers,
         body,
-    } = await Request(`http://localhost:${t.fixtureCtx.serverPort}/user`);
+    } = await Request(`http://localhost:3000/api/data`);
 
     await t
         .expect(status).eql(200)
         .expect(statusText).eql('OK')
         .expect(headers).contains({ 'content-type': 'application/json; charset=utf-8' })
-        .expect(body).eql({
+        .expect(body.data).eql({
             name:     'John Hearts',
             position: 'CTO',
         });
@@ -37,7 +29,7 @@ test('Should execute a POST request', async (t) => {
         },
     };
 
-    const data = await Request(`http://localhost:${t.fixtureCtx.serverPort}/user`, options);
+    const data = await Request(`http://localhost:3000/api/data`, options);
 
     await t.expect(data.body).eql({
         data: {
@@ -49,9 +41,9 @@ test('Should execute a POST request', async (t) => {
 });
 
 test('Should execute a request with method get', async (t) => {
-    const data = await Request.get(`http://localhost:${t.fixtureCtx.serverPort}/user`);
+    const { body } = await Request.get(`http://localhost:3000/api/data`);
 
-    await t.expect(data.body).eql({
+    await t.expect(body.data).eql({
         name:     'John Hearts',
         position: 'CTO',
     });
@@ -65,7 +57,7 @@ test('Should execute a request with method post', async (t) => {
         },
     };
 
-    const data = await Request.post(`http://localhost:${t.fixtureCtx.serverPort}/user`, options);
+    const data = await Request.post(`http://localhost:3000/api/data`, options);
 
     await t.expect(data.body).eql({
         data: {
@@ -77,19 +69,11 @@ test('Should execute a request with method post', async (t) => {
 });
 
 test('Should execute a request with method delete', async (t) => {
-    const options = {
-        body: {
-            name:     'John Hearts',
-            position: 'CTO',
-        },
-    };
-
-    const data = await Request.delete(`http://localhost:${t.fixtureCtx.serverPort}/user`, options);
+    const data = await Request.delete(`http://localhost:3000/api/data/1`);
 
     await t.expect(data.body).eql({
         data: {
-            name:     'John Hearts',
-            position: 'CTO',
+            dataId: '1',
         },
         message: 'Data was deleted',
     });
@@ -103,7 +87,7 @@ test('Should execute a request with method put', async (t) => {
         },
     };
 
-    const data = await Request.put(`http://localhost:${t.fixtureCtx.serverPort}/user`, options);
+    const data = await Request.put(`http://localhost:3000/api/data`, options);
 
     await t.expect(data.body).eql({
         data: {
@@ -122,7 +106,7 @@ test('Should execute a request with method patch', async (t) => {
         },
     };
 
-    const data = await Request.patch(`http://localhost:${t.fixtureCtx.serverPort}/user`, options);
+    const data = await Request.patch(`http://localhost:3000/api/data`, options);
 
     await t.expect(data.body).eql({
         data: {
@@ -134,7 +118,7 @@ test('Should execute a request with method patch', async (t) => {
 });
 
 test('Should execute a request with method head', async (t) => {
-    const data = await Request.head(`http://localhost:${t.fixtureCtx.serverPort}/user`);
+    const data = await Request.head(`http://localhost:3000/api/data`);
 
     await t
         .expect(data.headers).ok()
@@ -142,13 +126,13 @@ test('Should execute a request with method head', async (t) => {
 });
 
 test('Should execute a request in an assertion', async (t) => {
-    await t.expect(Request.get(`http://localhost:${t.fixtureCtx.serverPort}/user`)).contains({
+    await t.expect(Request.get(`http://localhost:3000/api/data`)).contains({
         status: 200,
     });
 });
 
 test('Should re-execute a request in an assertion', async (t) => {
-    await t.expect(Request.get(`http://localhost:${t.fixtureCtx.serverPort}/user/loading`).body).contains({
+    await t.expect(Request.get(`http://localhost:3000/api/data/loading`).body).contains({
         name:     'John Hearts',
         position: 'CTO',
     });
@@ -162,7 +146,7 @@ test('Should execute basic auth', async (t) => {
         },
     };
 
-    await t.expect(Request.post(`http://localhost:${t.fixtureCtx.serverPort}/auth/basic`, options).body).eql({
+    await t.expect(Request.post(`http://localhost:3000/api/auth/basic`, options).body).eql({
         token: 'Basic amFuZWRvZTpzMDBwZXJzM2NyZXQ=',
     });
 });
@@ -174,7 +158,7 @@ test('Should execute bearer token auth', async (t) => {
         },
     };
 
-    await t.expect(Request.post(`http://localhost:${t.fixtureCtx.serverPort}/auth/bearer`, options).body).eql('authorized');
+    await t.expect(Request.post(`http://localhost:3000/api/auth/bearer`, options).body).eql('authorized');
 });
 
 test('Should execute API Key auth', async (t) => {
@@ -184,7 +168,7 @@ test('Should execute API Key auth', async (t) => {
         },
     };
 
-    await t.expect(Request.post(`http://localhost:${t.fixtureCtx.serverPort}/auth/key`, options).body).eql('authorized');
+    await t.expect(Request.post(`http://localhost:3000/api/auth/key`, options).body).eql('authorized');
 });
 
 test('Should rise an error if url is not string', async () => {
