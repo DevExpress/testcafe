@@ -115,6 +115,14 @@ export function processRequestOptions (testRun: TestRun, options: ExternalReques
 
     const body    = transformBody(options.headers, options.body);
     const headers = prepareHeaders(options.headers, body, testRun.session, options);
+    let auth      = options.auth;
+
+    if (!auth && url.username && url.password) {
+        auth = {
+            username: url.username,
+            password: url.password,
+        };
+    }
 
     const externalProxySettings = options.proxy ? {
         host:      options.proxy.host,
@@ -131,7 +139,7 @@ export function processRequestOptions (testRun: TestRun, options: ExternalReques
         host:                  url.host,
         port:                  url.port,
         path:                  url.pathname,
-        auth:                  options.auth ? `${options.auth.username}:${options.auth.password}` : void 0,
+        auth:                  auth ? `${auth.username}:${auth.password}` : void 0,
         headers:               headers,
         externalProxySettings: externalProxySettings,
         credentials:           testRun.session.getAuthCredentials(),
