@@ -14,6 +14,7 @@ async function dispatchRequest (testRun: TestRun, options: ExternalRequestOption
     const dataWaiter     = new Promise<IncomingMessage | Error>(resolve => {
         request.on('response', (res: IncomingMessage) => resolve(res));
         request.on('error', (err: Error) => resolve(err));
+        request.on('fatalError', (err: string) => resolve(new Error(err)));
     });
 
     const data = await dataWaiter;
