@@ -3,14 +3,13 @@ import {
     isArrayBuffer, isBuffer, isObject, isUndefined,
 } from 'lodash';
 import isStream from 'is-stream';
-import { ExternalRequestOptions } from './interfaces';
+import { AuthOptions, ExternalRequestOptions } from './interfaces';
 import { RequestOptions, generateUniqueId } from 'testcafe-hammerhead';
 import TestRun from '../test-run';
 import CONTENT_TYPES from '../assets/content-types';
 import HTTP_HEADERS from '../utils/http-headers';
 
 const DEFAULT_ACCEPT            = { [HTTP_HEADERS.accept]: `${CONTENT_TYPES.json}, ${CONTENT_TYPES.textPlain}, ${CONTENT_TYPES.all}` };
-const DEFAULT_CONTENT_TYPE      = { [HTTP_HEADERS.contentType]: CONTENT_TYPES.urlencoded };
 const DEFAULT_IS_REQUEST        = { [HTTP_HEADERS.isRequest]: true };
 const METHODS_WITH_CONTENT_TYPE = ['post', 'put', 'patch'];
 const DEFAULT_REQUEST_TIMEOUT   = 2 * 60 * 1000;
@@ -68,11 +67,33 @@ function transformBody (headers: OutgoingHttpHeaders, body?: object): Buffer {
     return body;
 }
 
-function prepareHeaders (headers: OutgoingHttpHeaders = {}): OutgoingHttpHeaders {
-    const contentType = headers.method && METHODS_WITH_CONTENT_TYPE.includes(String(headers.method))
-        ? DEFAULT_CONTENT_TYPE : {};
+function getAuthString (auth: AuthOptions): string {
+    return 'Basic ' + Buffer.from(auth.username + ':' + auth.password, 'utf8').toString('base64');
+}
 
-    return Object.assign(DEFAULT_ACCEPT, DEFAULT_IS_REQUEST, contentType, headers);
+function changeHeaderNamesToLowercase (headers: OutgoingHttpHeaders): OutgoingHttpHeaders {
+    const lowerCaseHeaders: OutgoingHttpHeaders = {};
+
+    Object.keys(headers).forEach(headerName => {
+        lowerCaseHeaders[headerName.toLowerCase()] = headers[headerName];
+    });
+
+    return lowerCaseHeaders;
+}
+
+function prepareHeaders (headers: OutgoingHttpHeaders = {}, options: ExternalRequestOptions): OutgoingHttpHeaders {
+    const preparedHeaders: OutgoingHttpHeaders = Object.assign(DEFAULT_ACCEPT, DEFAULT_IS_REQUEST, changeHeaderNamesToLowercase(headers));
+
+    if (headers.method && METHODS_WITH_CONTENT_TYPE.includes(String(headers.method)))
+        preparedHeaders[HTTP_HEADERS.contentType] = CONTENT_TYPES.urlencoded;
+
+    if (options.auth)
+        preparedHeaders[HTTP_HEADERS.authorization] = getAuthString(options.auth);
+
+    if (options.proxy?.auth)
+        preparedHeaders[HTTP_HEADERS.proxyAuthorization] = getAuthString(options.proxy.auth);
+
+    return preparedHeaders;
 }
 
 export function processRequestOptions (testRun: TestRun, options: ExternalRequestOptions): RequestOptions {
@@ -81,7 +102,14 @@ export function processRequestOptions (testRun: TestRun, options: ExternalReques
     options.headers = options.headers || {};
 
     const body    = transformBody(options.headers, options.body);
-    const headers = prepareHeaders(options.headers) || {};
+    const headers = prepareHeaders(options.headers, options) || {};
+
+    const externalProxySettings = options.proxy ? {
+        host:      options.proxy.host || '',
+        hostname:  options.proxy.host || '',
+        port:      options.proxy.port.toString(),
+        proxyAuth: options.proxy.auth ? options.proxy.auth.username + ':' + options.proxy.auth.password : '',
+    } : void 0;
 
     return new RequestOptions(Object.assign(DEFAULT_OPTIONS, options, {
         url:      testRun.session.getProxyUrl(url.href),
@@ -93,5 +121,6 @@ export function processRequestOptions (testRun: TestRun, options: ExternalReques
         auth:     options.auth ? `${options.auth.username}:${options.auth.password}` : '',
         headers,
         body,
+        externalProxySettings,
     }));
 }
