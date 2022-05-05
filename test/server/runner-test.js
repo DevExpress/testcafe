@@ -217,13 +217,12 @@ describe('Runner', () => {
             }
         });
 
-        describe('._addDashboardReporterIfNeeded', () => {
+        describe('Dashboard reporter', () => {
             class DashboardConfigStorageMock extends DashboardConfigStorageBase {
                 async readOptions () {
                     return { token: 'bar' };
                 }
             }
-
             let sourceReporter = null;
             let storedGetDashboardStorageFn = null;
 
@@ -255,6 +254,41 @@ describe('Runner', () => {
                 await runner._addDashboardReporterIfNeeded();
 
                 expect(runner.configuration.getOption('reporter')[0]).to.deep.equal({ name: 'dashboard', options: { token: 'bar' } });
+            });
+
+            it('Should add the dashboard advertisement if reporter is not added', async () => {
+                consoleWrapper.wrap();
+
+                runner._addDashBoardAdvertisementIfNeeded();
+                await runner._messageBus.emit('done');
+
+                expect(consoleWrapper.messages.log).contains('Try TestCafe Dashboard (https://dashboard.testcafe.io/) to eliminate unstable and failing tests.');
+
+                consoleWrapper.unwrap();
+            });
+
+            it('Should add the dashboard advertisement if dashboard reporter is not added', async () => {
+                consoleWrapper.wrap();
+
+                runner.configuration.mergeOptions({ reporter: { name: 'json' } });
+                runner._addDashBoardAdvertisementIfNeeded();
+                await runner._messageBus.emit('done');
+
+                expect(consoleWrapper.messages.log).contains('Try TestCafe Dashboard (https://dashboard.testcafe.io/) to eliminate unstable and failing tests.');
+
+                consoleWrapper.unwrap();
+            });
+
+            it('Should not add the dashboard advertisement if dashboard reporter is added', async () => {
+                consoleWrapper.wrap();
+
+                runner.configuration.mergeOptions({ reporter: [{ name: 'json' }, { name: 'dashboard' }] });
+                runner._addDashBoardAdvertisementIfNeeded();
+                await runner._messageBus.emit('done');
+
+                expect(consoleWrapper.messages.log).eql(null);
+
+                consoleWrapper.unwrap();
             });
         });
     });

@@ -134,7 +134,7 @@
     "source-map-support": "^0.5.16",
     "strip-bom": "^2.0.0",
     "testcafe-browser-tools": "2.0.23",
-    "testcafe-hammerhead": "24.5.18",
+    "testcafe-hammerhead": "24.5.19",
     "testcafe-legacy-api": "5.1.4",
     "testcafe-reporter-dashboard": "file:./testcafe-reporter-dashboard/testcafe-reporter-dashboard-0.2.6-rc.3.tgz",
     "testcafe-reporter-json": "^2.1.0",
