@@ -60,4 +60,59 @@ describe('Request', () => {
                 expect(errs[0]).contains('> 191 |    await Request(true);');
             });
     });
+
+    it('Should execute request with proxy', function () {
+        return runTests('testcafe-fixtures/request-test.js', 'Should execute request with proxy');
+    });
+
+    it('Should execute basic auth with proxy', function () {
+        return runTests('testcafe-fixtures/request-test.js', 'Should execute basic auth with proxy');
+    });
+
+    it('Should execute a request with params in the url', function () {
+        return runTests('testcafe-fixtures/request-test.js', 'Should execute a request with params in the url');
+    });
+
+    it('Should execute a request with params in the options', function () {
+        return runTests('testcafe-fixtures/request-test.js', 'Should execute a request with params in the options');
+    });
+
+    it('Should interrupt request by timeout', function () {
+        return runTests('testcafe-fixtures/request-test.js', 'Should interrupt request by timeout', { shouldFail: true })
+            .catch(function (errs) {
+                expect(errs[0]).contains('within the timeout period');
+            });
+    });
+
+    it('Should send request with credentials', function () {
+        return runTests('testcafe-fixtures/request-test.js', 'Should send request with credentials');
+    });
+
+    it('Should return parsed json', function () {
+        return runTests('testcafe-fixtures/request-test.js', 'Should return parsed json');
+    });
+
+    it('Should return text', function () {
+        return runTests('testcafe-fixtures/request-test.js', 'Should return text');
+    });
+
+    it('Should return buffer', function () {
+        return runTests('testcafe-fixtures/request-test.js', 'Should return buffer');
+    });
+
+    it('Should return httpIncomingMessage', function () {
+        return runTests('testcafe-fixtures/request-test.js', 'Should return httpIncomingMessage');
+    });
+
+    it('Should execute a request with url in the options', function () {
+        return runTests('testcafe-fixtures/request-test.js', 'Should execute a request with url in the options');
+    });
+
+    it('Url from the argument should be more priority then url in the options', function () {
+        return runTests('testcafe-fixtures/request-test.js', 'Url from the argument should be more priority then url in the options');
+    });
+
+    it('Should execute a request with relative url', function () {
+        return runTests('testcafe-fixtures/request-test.js', 'Should execute a request with relative url');
+    });
 });

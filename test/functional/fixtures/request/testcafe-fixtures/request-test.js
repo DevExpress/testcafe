@@ -1,4 +1,5 @@
 import { Request } from 'testcafe';
+import os from 'os';
 
 fixture`Request`;
 
@@ -175,12 +176,141 @@ test('Should rise an error if url is not string', async () => {
     await Request(true);
 });
 
+test('Should execute request with proxy', async (t) => {
+    const { body } = await Request.get(`http://localhost:3000/api/data`, {
+        proxy: {
+            host: os.hostname(),
+            port: '3005',
+        },
+    });
+
+    await t.expect(body.data).eql({
+        name:     'John Hearts',
+        position: 'CTO',
+    });
+});
+
+test('Should execute basic auth with proxy', async (t) => {
+    const options = {
+        proxy: {
+            host: os.hostname(),
+            port: '3005',
+            auth: {
+                username: 'janedoe',
+                password: 's00pers3cret',
+            },
+        },
+    };
+
+    await t.expect(Request.post(`http://localhost:3000/api/auth/proxy/basic`, options).body).eql({
+        token: 'Basic amFuZWRvZTpzMDBwZXJzM2NyZXQ=',
+    });
+});
+
+test('Should execute a request with params in the url', async (t) => {
+    const { body } = await Request.get(`http://localhost:3000/api/data?param1=value1`);
+
+    await t.expect(body.params).eql({
+        param1: 'value1',
+    });
+});
+
+test('Should execute a request with params in the options', async (t) => {
+    const { body } = await Request.get(`http://localhost:3000/api/data`, {
+        params: {
+            param1: 'value1',
+        },
+    });
+
+    await t.expect(body.params).eql({
+        param1: 'value1',
+    });
+});
+
+test('Should interrupt request by timeout', async (t) => {
+    const { body } = await Request.get(`http://localhost:3000/api/hanging`, {
+        timeout: 1000,
+    });
+
+    await t.expect(body).eql({
+        param1: 'value1',
+    });
+});
+
+test('Should send request with credentials', async (t) => {
+    await t.setCookies({ apiCookie1: 'value1' }, 'http://localhost');
+
+    const { body } = await Request.get(`http://localhost:3000/api/data`, {
+        withCredentials: true,
+    });
+
+    await t.expect(body.cookies).eql('apiCookie1=value1');
+});
+
+test('Should return parsed json', async (t) => {
+    const { body } = await Request.get(`http://localhost:3000/api/data`);
+
+    await t.expect(body.data).eql({
+        name:     'John Hearts',
+        position: 'CTO',
+    });
+});
+
+test('Should return text', async (t) => {
+    const { body } = await Request.get(`http://localhost:3000/api/data/text`);
+
+    await t.expect(body).eql('{"name":"John Hearts","position":"CTO"}');
+});
+
+test('Should return buffer', async (t) => {
+    const { body } = await Request.get(`http://localhost:3000/api/data/file`);
+
+    await t
+        .expect(Buffer.isBuffer(body)).ok()
+        .expect(body.toString()).eql('{"name":"John Hearts","position":"CTO"}');
+});
+
+test('Should return httpIncomingMessage', async (t) => {
+    const { body } = await Request.get(`http://localhost:3000/api/data`, {
+        processResponse: false,
+    });
+
+    await t.expect(body.constructor.name === 'IncomingMessage').ok();
+});
+
+test('Should execute a request with url in the options', async (t) => {
+    const { body } = await Request.get({
+        url: `http://localhost:3000/api/data`,
+    });
+
+    await t.expect(body.data).eql({
+        name:     'John Hearts',
+        position: 'CTO',
+    });
+});
+
+test('Url from the argument should be more priority then url in the options', async (t) => {
+    const { body } = await Request.get(`http://localhost:3000/api/data`, {
+        url: `http://localhost:3000/api/data/text`,
+    });
+
+    await t.expect(body.data).eql({
+        name:     'John Hearts',
+        position: 'CTO',
+    });
+});
+
+test.page('http://localhost:3000/fixtures/request/pages/index.html')
+('Should execute a request with relative url', async (t) => {
+    const { body } = await Request.get('/api/data');
+
+    await t.expect(body.data).eql({
+        name:     'John Hearts',
+        position: 'CTO',
+    });
+});
+
 //TODO: added tests:
-// 1) Requests with params
-// 2) Requests with timeout
-// 3) Requests withCredentials
-// 4) Requests with maxRedirects
-// 5) Check bodies with the types: json, text, buffer, httpOutgoingMessage
-// 6) Requests with proxy
-// 8) Requests with relative paths
-// 9) Requests with the additional methods options
+// - Requests with proxy
+// - set cookies to the client from server
+// - Requests with maxRedirects
