@@ -177,39 +177,39 @@ interface ResizeToFitDeviceOptions {
 
 interface CookieOptions {
     /**
-     * Specifies the name of the cookie.
+     * The name of the cookie.
      */
     name?: string;
     /**
-     * Specifies the value of the cookie.
+     * The value of the cookie.
      */
     value?: string;
     /**
-     * Specifies the domain which will be matched with the cookie.
+     * The domain attribute of the cookie.
      */
     domain?: string;
     /**
-     * Specifies the path which will be matched with the cookie.
+     * The path attribute of the cookie. The path must exist on the server to send the Cookie header.
      */
     path?: string;
     /**
-     * Specifies the cookie expiration date defines the time, when the cookie will be automatically deleted it.
+     * The date and time at which the cookie expires. The browser does not serve the cookie if the client clock is set to a point beyond the cookie expiration time.
      */
     expires?: Date;
     /**
-     * Specifies the cookie’s expiration in seconds from the current moment.
+     * Cookie expiration time in seconds, relative to the time the cookie is served.
      */
     maxAge?: number | 'Infinity' | '-Infinity';
     /**
-     * Specifies that the cookie should be transferred only over HTTPS.
+     * If the "secure" attribute is "true", the browser only serves the cookie over HTTPS.
      */
     secure?: boolean;
     /**
-     * Specifies that the JavaScript shouldn't have access to the cookie.
+     * Prohibits client-side scripts from accessing the cookie. Helps prevent XSS attacks.
      */
     httpOnly?: boolean;
     /**
-     * Forbids the browser to send the cookie with requests coming from outside the site. This helps to prevent XSRF attacks..
+     * Prohibits the browser from serving the cookie in response to cross-site requests. Helps prevent XSRF attacks.
      */
     sameSite?: string;
 }
