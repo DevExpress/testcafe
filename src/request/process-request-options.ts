@@ -1,12 +1,17 @@
 import { OutgoingHttpHeaders } from 'http';
 import {
+    castArray,
     isArrayBuffer,
     isBuffer,
     isObject,
     isUndefined,
 } from 'lodash';
 import isStream from 'is-stream';
-import { AuthOptions, ExternalRequestOptions } from './interfaces';
+import {
+    AuthOptions,
+    ExternalRequestOptions,
+    Params,
+} from './interfaces';
 import {
     RequestOptions,
     generateUniqueId,
@@ -108,6 +113,30 @@ function prepareHeaders (headers: OutgoingHttpHeaders = {}, body: Buffer, sessio
     return preparedHeaders;
 }
 
+function prepareSearchParams (url: string, params?: Params): string {
+    if (!params)
+        return url;
+
+    let searchParams: URLSearchParams;
+
+    if (params instanceof URLSearchParams)
+        searchParams = params;
+    else {
+        searchParams = new URLSearchParams();
+
+        for (const key in params) {
+            if (!params[key])
+                continue;
+
+            castArray(params[key]).forEach(v => {
+                searchParams.append(key, typeof v === 'object' ? JSON.stringify(v) : String(v));
+            });
+        }
+    }
+
+    return `${url}${(url.includes('?') ? '&' : '?')}${searchParams.toString()}`;
+}
+
 export function processRequestOptions (testRun: TestRun, options: ExternalRequestOptions): RequestOptions {
     const url = new URL(options.url);
 
@@ -138,7 +167,7 @@ export function processRequestOptions (testRun: TestRun, options: ExternalReques
         hostname:              url.hostname,
         host:                  url.host,
         port:                  url.port,
-        path:                  url.pathname,
+        path:                  prepareSearchParams(url.pathname + url.search, options.params),
         auth:                  auth ? `${auth.username}:${auth.password}` : void 0,
         headers:               headers,
         externalProxySettings: externalProxySettings,
