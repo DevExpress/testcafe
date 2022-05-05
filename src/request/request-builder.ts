@@ -41,10 +41,23 @@ export default class RequestBuilder {
         assertType(is.string, this.callsiteNames.execution, 'The "url" argument', options.url);
     }
 
-    private _executeCommand (url: string, options: ExternalRequestOptions = {}): ReExecutablePromise {
-        options.url = url || options.url;
+    private _prepareOptions (urlOpt: string | ExternalRequestOptions, options: Partial<ExternalRequestOptions>): ExternalRequestOptions {
+        if (typeof urlOpt === 'object')
+            return urlOpt;
 
-        this._validateOptions(options);
+        return {
+            ...options,
+            method: options.method || '',
+            url:    urlOpt || options.url || '',
+        };
+    }
+
+    private _executeCommand (url: string, options: Partial<ExternalRequestOptions> = {}): ReExecutablePromise {
+        const preparedOptions = this._prepareOptions(url, options);
+
+        this._validateOptions(preparedOptions);
+
+        this._validateOptions(preparedOptions);
 
         const testRun  = this._getTestRun();
         const callsite = getCallsiteForMethod(this.callsiteNames.execution);
@@ -62,13 +75,13 @@ export default class RequestBuilder {
         }
 
         const promise = ReExecutablePromise.fromFn(async () => {
-            return dispatchRequest(testRun as TestRun, options);
+            return dispatchRequest(testRun as TestRun, preparedOptions);
         });
 
         REQUEST_GETTERS.forEach(getter => {
             Object.defineProperty(promise, getter, {
                 get: () => ReExecutablePromise.fromFn(async () => {
-                    const response = await dispatchRequest(testRun as TestRun, options);
+                    const response = await dispatchRequest(testRun as TestRun, preparedOptions);
 
                     return response[getter as keyof ResponseOptions];
                 }),

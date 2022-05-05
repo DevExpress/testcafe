@@ -75,7 +75,7 @@ function prepareHeaders (headers: OutgoingHttpHeaders = {}): OutgoingHttpHeaders
     return Object.assign(DEFAULT_ACCEPT, DEFAULT_IS_REQUEST, contentType, headers);
 }
 
-export function processRequestOptions (testRun: TestRun, options: ExternalRequestOptions = {}): RequestOptions {
+export function processRequestOptions (testRun: TestRun, options: ExternalRequestOptions): RequestOptions {
     const url = new URL(options.url || '');
 
     options.headers = options.headers || {};
