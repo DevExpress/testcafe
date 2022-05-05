@@ -33,7 +33,7 @@ export async function processResponseData (response: IncomingMessage, needProces
         return data.toString('utf8');
 
     if ((response.headers[HTTP_HEADERS.contentType] as string).startsWith(CONTENT_TYPES.json))
-        return JSON.parse(data.toString('utf8'));
+        return data.length ? JSON.parse(data.toString('utf8')) : '';
 
     return data;
 }
