@@ -82,8 +82,8 @@ function changeHeaderNamesToLowercase (headers: OutgoingHttpHeaders): OutgoingHt
     return lowerCaseHeaders;
 }
 
-async function prepareHeaders (headers: OutgoingHttpHeaders, body: Buffer, testRun: TestRun, options: ExternalRequestOptions): Promise<OutgoingHttpHeaders> {
-    const { host, hostname, origin, href } = new URL(options.url);
+async function prepareHeaders (headers: OutgoingHttpHeaders, url: URL, body: Buffer, testRun: TestRun, options: ExternalRequestOptions): Promise<OutgoingHttpHeaders> {
+    const { host, hostname, origin, href } = url;
 
     const preparedHeaders: OutgoingHttpHeaders = Object.assign(DEFAULT_ACCEPT, DEFAULT_IS_REQUEST, changeHeaderNamesToLowercase(headers));
 
@@ -141,12 +141,13 @@ function prepareSearchParams (url: string, params?: Params): string {
 }
 
 export async function processRequestOptions (testRun: TestRun, options: ExternalRequestOptions): Promise<RequestOptions> {
-    const url = new URL(options.url);
+    const currentPageUrl = new URL(await testRun.getCurrentUrl());
+    const url            = new URL(options.url, currentPageUrl.origin || void 0);
 
     options.headers = options.headers || {};
 
     const body    = transformBody(options.headers, options.body);
-    const headers = await prepareHeaders(options.headers, body, testRun, options);
+    const headers = await prepareHeaders(options.headers, url, body, testRun, options);
     let auth      = options.auth;
 
     if (!auth && url.username && url.password) {
