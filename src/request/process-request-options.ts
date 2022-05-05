@@ -25,12 +25,6 @@ const DEFAULT_IS_REQUEST        = { [HTTP_HEADERS.isRequest]: true };
 const METHODS_WITH_CONTENT_TYPE = ['post', 'put', 'patch'];
 const DEFAULT_REQUEST_TIMEOUT   = 2 * 60 * 1000;
 const DEFAULT_REQUEST_METHOD    = 'GET';
-const DEFAULT_OPTIONS           = {
-    method:         DEFAULT_REQUEST_METHOD,
-    isAjax:         true,
-    requestId:      generateUniqueId(),
-    isWebSocket:    false,
-};
 
 function setContentTypeIfUnset (headers: OutgoingHttpHeaders, value: string): void {
     if (!isUndefined(headers) && isUndefined(headers[HTTP_HEADERS.contentType]))
@@ -169,8 +163,8 @@ export async function processRequestOptions (testRun: TestRun, options: External
         proxyAuth: options.proxy.auth ? options.proxy.auth.username + ':' + options.proxy.auth.password : '',
     } : void 0;
 
-    return new RequestOptions(Object.assign(DEFAULT_OPTIONS, {
-        method:                options.method,
+    return new RequestOptions({
+        method:                options.method || DEFAULT_REQUEST_METHOD,
         url:                   testRun.session.getProxyUrl(url.href),
         protocol:              url.protocol,
         hostname:              url.hostname,
@@ -188,5 +182,8 @@ export async function processRequestOptions (testRun: TestRun, options: External
             page: 0,
         },
         disableHttp2: testRun.session.isHttp2Disabled(),
-    }));
+        isAjax:       true,
+        requestId:    generateUniqueId(),
+        isWebSocket:  false,
+    });
 }

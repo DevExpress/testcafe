@@ -22,7 +22,7 @@ async function dispatchRequest (testRun: TestRun, options: ExternalRequestOption
     if (data instanceof Error)
         throw data;
 
-    const body = await processResponseData(data);
+    const body = await processResponseData(data, options.processResponse);
 
     return {
         status:     data.statusCode || DEFAULT_STATUS,
