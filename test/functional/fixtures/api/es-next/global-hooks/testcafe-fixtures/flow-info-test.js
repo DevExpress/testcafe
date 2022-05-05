@@ -2,19 +2,19 @@ import flowInfoStorage from '../utils/flow-info-storage.js';
 
 fixture ('Fixture')
     .before(async function () {
-        flowInfoStorage.add('localFixtureBefore');
+        flowInfoStorage.safeAdd('localFixtureBefore');
     })
     .after(async function () {
-        flowInfoStorage.add('localFixtureAfter');
+        flowInfoStorage.safeAdd('localFixtureAfter');
     });
 
 test
     .before(async function () {
-        flowInfoStorage.add('localTestBefore');
+        flowInfoStorage.safeAdd('localTestBefore');
     })
     .after(async function () {
-        flowInfoStorage.add('localTestAfter');
+        flowInfoStorage.safeAdd('localTestAfter');
     })
     ('Test', async () => {
-        flowInfoStorage.add('test body');
+        flowInfoStorage.safeAdd('test body');
     });

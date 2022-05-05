@@ -15,27 +15,26 @@ module.exports = {
     hooks: {
         fixture: {
             before: async () => {
-                flowInfoStorage.add('globalFixtureBefore');
+                flowInfoStorage.safeAdd('globalFixtureBefore');
             },
             after: async () => {
-                flowInfoStorage.add('globalFixtureAfter');
+                flowInfoStorage.safeAdd('globalFixtureAfter');
             },
         },
         test: {
             before: async () => {
-                flowInfoStorage.add('globalTestBefore');
+                flowInfoStorage.safeAdd('globalTestBefore');
             },
             after: async () => {
-                flowInfoStorage.add('globalTestAfter');
+                flowInfoStorage.safeAdd('globalTestAfter');
             },
         },
         testRun: {
             before: async () => {
-                flowInfoStorage.add('globalTestRunBefore');
+                flowInfoStorage.safeAdd('globalTestRunBefore');
             },
             after: async () => {
-                flowInfoStorage.add('globalTestRunAfter');
-                flowInfoStorage.save();
+                flowInfoStorage.safeAdd('globalTestRunAfter');
             },
         },
     },

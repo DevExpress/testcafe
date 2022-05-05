@@ -8,6 +8,10 @@ class FileStorage {
         this.data     = [];
     }
 
+    load () {
+        this.data = this.getData();
+    }
+
     add (val) {
         this.data.push(val);
     }
@@ -23,7 +27,7 @@ class FileStorage {
             return JSON.parse(dataStr);
         }
         catch (err) {
-            return null;
+            return [];
         }
     }
 
@@ -38,6 +42,12 @@ class FileStorage {
 
     save () {
         fs.writeFileSync(this.fullPath, JSON.stringify(this.data));
+    }
+
+    safeAdd (val) {
+        this.load();
+        this.add(val);
+        this.save();
     }
 }
 

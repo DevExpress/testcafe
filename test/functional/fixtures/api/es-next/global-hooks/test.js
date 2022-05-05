@@ -165,7 +165,7 @@ if (isLocalChrome) {
             });
         });
 
-        describe('Hooks execution glow', () => {
+        describe('Hooks execution flow', () => {
             before(async () => {
                 cafe = await createTestCafe({
                     configFile: path.resolve('./test/functional/fixtures/api/es-next/global-hooks/data/execution-flow-config.js'),
