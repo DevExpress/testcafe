@@ -142,7 +142,7 @@ function prepareSearchParams (url: string, params?: Params): string {
 
 export async function processRequestOptions (testRun: TestRun, options: ExternalRequestOptions): Promise<RequestOptions> {
     const currentPageUrl = new URL(await testRun.getCurrentUrl());
-    const url            = new URL(options.url, currentPageUrl.origin || void 0);
+    const url            = new URL(options.url, currentPageUrl.hostname ? currentPageUrl.origin : void 0);
 
     options.headers = options.headers || {};
 
