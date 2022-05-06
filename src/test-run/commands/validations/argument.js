@@ -146,7 +146,7 @@ export function cookiesArgument (name, val) {
         if (!isValidCookie(value)) {
             throw cookiesLength === 1
                 ? new ActionCookieArgumentError()
-                : new ActionCookieArgumentsError(i);
+                : new ActionCookieArgumentsError(i, value);
         }
     }
 }
@@ -174,7 +174,7 @@ export function urlsArgument (name, val) {
         if (!isValidUrl(value)) {
             throw castVal.length === 1
                 ? new ActionUrlCookieArgumentError()
-                : new ActionUrlsCookieArgumentError(i);
+                : new ActionUrlsCookieArgumentError(i, value);
         }
     }
 }

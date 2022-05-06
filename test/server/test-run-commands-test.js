@@ -3309,6 +3309,7 @@ describe('Test run commands', () => {
                     });
                 },
                 {
+                    actualValue:     void 0,
                     index:           1,
                     isTestCafeError: true,
                     code:            'E87',
@@ -3341,6 +3342,7 @@ describe('Test run commands', () => {
                     });
                 },
                 {
+                    actualValue:     'url.url',
                     index:           1,
                     isTestCafeError: true,
                     code:            'E89',
@@ -3393,6 +3395,7 @@ describe('Test run commands', () => {
                     });
                 },
                 {
+                    actualValue:     void 0,
                     index:           1,
                     isTestCafeError: true,
                     code:            'E87',
@@ -3415,7 +3418,7 @@ describe('Test run commands', () => {
             );
         });
 
-        it('Should validate GetCookiesCommand', function () {
+        it('Should validate DeleteCookiesCommand', function () {
             assertThrow(
                 function () {
                     return createCommand({
@@ -3446,6 +3449,7 @@ describe('Test run commands', () => {
                 },
                 {
                     index:           1,
+                    actualValue:     void 0,
                     isTestCafeError: true,
                     code:            'E87',
                     callsite:        null,
@@ -3478,6 +3482,7 @@ describe('Test run commands', () => {
                 },
                 {
                     index:           1,
+                    actualValue:     'url.url',
                     isTestCafeError: true,
                     code:            'E89',
                     callsite:        null,

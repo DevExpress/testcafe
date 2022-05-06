@@ -174,3 +174,42 @@ interface ResizeToFitDeviceOptions {
      */
     portraitOrientation?: boolean;
 }
+
+interface CookieOptions {
+    /**
+     * The name of the cookie.
+     */
+    name?: string;
+    /**
+     * The value of the cookie.
+     */
+    value?: string;
+    /**
+     * The domain attribute of the cookie.
+     */
+    domain?: string;
+    /**
+     * The path attribute of the cookie. The path must exist on the server to send the Cookie header.
+     */
+    path?: string;
+    /**
+     * The date and time at which the cookie expires. The browser does not serve the cookie if the client clock is set to a point beyond the cookie expiration time.
+     */
+    expires?: Date;
+    /**
+     * Cookie expiration time in seconds, relative to the time the cookie is served.
+     */
+    maxAge?: number | 'Infinity' | '-Infinity';
+    /**
+     * If the "secure" attribute is "true", the browser only serves the cookie over HTTPS.
+     */
+    secure?: boolean;
+    /**
+     * Prohibits client-side scripts from accessing the cookie. Helps prevent XSS attacks.
+     */
+    httpOnly?: boolean;
+    /**
+     * Prohibits the browser from serving the cookie in response to cross-site requests. Helps prevent XSRF attacks.
+     */
+    sameSite?: string;
+}

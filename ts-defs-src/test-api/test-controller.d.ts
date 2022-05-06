@@ -119,7 +119,7 @@ interface TestController {
      * @param options - The options which will be passed to EventConstructor.
      */
     dispatchEvent(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-                  eventName: string, options?: object): TestControllerPromise;
+        eventName: string, options?: object): TestControllerPromise;
     /**
      * Clicks a webpage element.
      *
@@ -127,7 +127,7 @@ interface TestController {
      * @param options - A set of options that provide additional parameters for the action.
      */
     click(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-          options?: ClickActionOptions): TestControllerPromise;
+        options?: ClickActionOptions): TestControllerPromise;
     /**
      * Right-clicks a webpage element.
      *
@@ -135,7 +135,7 @@ interface TestController {
      * @param options - A set of options that provide additional parameters for the action.
      */
     rightClick(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-               options?: ClickActionOptions): TestControllerPromise;
+        options?: ClickActionOptions): TestControllerPromise;
     /**
      * Double-clicks a webpage element.
      *
@@ -143,7 +143,7 @@ interface TestController {
      * @param options - A set of options that provide additional parameters for the action.
      */
     doubleClick(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-                options?: ClickActionOptions): TestControllerPromise;
+        options?: ClickActionOptions): TestControllerPromise;
     /**
      * Hovers the mouse pointer over a webpage element.
      *
@@ -151,8 +151,8 @@ interface TestController {
      * @param options - A set of options that provide additional parameters for the action.
      */
     hover(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-          options?: MouseActionOptions): TestControllerPromise;
-     /**
+        options?: MouseActionOptions): TestControllerPromise;
+    /**
      * Scrolls the document element to the { scrollLeft, scrollTop } position.
      *
      * @param scrollLeft - The position along the horizontal axis of the document.
@@ -176,7 +176,7 @@ interface TestController {
      * @param options - A set of options that provide additional parameters for the action.
      */
     scroll(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-         scrollLeft: number, scrollTop: number, options?: OffsetOptions): TestControllerPromise;
+        scrollLeft: number, scrollTop: number, options?: OffsetOptions): TestControllerPromise;
 
     /**
      * Scrolls the specified element to the predefined position.
@@ -186,7 +186,7 @@ interface TestController {
      * @param options - A set of options that provide additional parameters for the action.
      */
     scroll(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-         position: ScrollPosition, options?: OffsetOptions): TestControllerPromise;
+        position: ScrollPosition, options?: OffsetOptions): TestControllerPromise;
 
     /**
      * Scrolls the document element by the given offset.
@@ -204,7 +204,7 @@ interface TestController {
      * @param options - A set of options that provide additional parameters for the action.
      */
     scrollBy(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-         x: number, y: number, options?: OffsetOptions): TestControllerPromise;
+        x: number, y: number, options?: OffsetOptions): TestControllerPromise;
 
     /**
      * Scrolls the specified element into view.
@@ -212,7 +212,7 @@ interface TestController {
      * @param options - A set of options that provide additional parameters for the action.
      */
     scrollIntoView(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-         options?: OffsetOptions): TestControllerPromise;
+        options?: OffsetOptions): TestControllerPromise;
 
     /**
      * Drags an element by an offset.
@@ -223,9 +223,9 @@ interface TestController {
      * @param options - A set of options that provide additional parameters for the action.
      */
     drag(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-         dragOffsetX: number,
-         dragOffsetY: number,
-         options?: MouseActionOptions): TestControllerPromise;
+        dragOffsetX: number,
+        dragOffsetY: number,
+        options?: MouseActionOptions): TestControllerPromise;
     /**
      * Drags an element onto another one.
      *
@@ -234,8 +234,8 @@ interface TestController {
      * @param options - A set of options that provide additional parameters for the action.
      */
     dragToElement(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-                  destinationSelector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-                  options?: DragToElementOptions): TestControllerPromise;
+        destinationSelector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
+        options?: DragToElementOptions): TestControllerPromise;
     /**
      * Types the specified text into an input element.
      *
@@ -244,8 +244,8 @@ interface TestController {
      * @param options - A set of options that provide additional parameters for the action.
      */
     typeText(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-             text: string,
-             options?: TypeActionOptions): TestControllerPromise;
+        text: string,
+        options?: TypeActionOptions): TestControllerPromise;
     /**
      * Selects text in input elements.
      *
@@ -255,9 +255,9 @@ interface TestController {
      * @param options - A set of options that provide additional parameters for the action.
      */
     selectText(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-               startPos?: number,
-               endPos?: number,
-               options?: ActionOptions): TestControllerPromise;
+        startPos?: number,
+        endPos?: number,
+        options?: ActionOptions): TestControllerPromise;
     /**
      * Selects `<textarea>` content.
      *
@@ -269,11 +269,11 @@ interface TestController {
      * @param options
      */
     selectTextAreaContent(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-                          startLine?: number,
-                          startPos?: number,
-                          endLine?: number,
-                          endPos?: number,
-                          options?: ActionOptions): TestControllerPromise;
+        startLine?: number,
+        startPos?: number,
+        endLine?: number,
+        endPos?: number,
+        options?: ActionOptions): TestControllerPromise;
     /**
      * Performs selection within editable content
      *
@@ -282,8 +282,8 @@ interface TestController {
      * @param options - A set of options that provide additional parameters for the action.
      */
     selectEditableContent(startSelector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-                          endSelector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-                          options?: ActionOptions): TestControllerPromise;
+        endSelector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
+        options?: ActionOptions): TestControllerPromise;
     /**
      * Presses the specified keyboard keys.
      *
@@ -311,7 +311,7 @@ interface TestController {
      * @param filePath - The path to the uploaded file, or several such paths. Relative paths resolve from the folder with the test file.
      */
     setFilesToUpload(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-                     filePath: String | String[]): TestControllerPromise;
+        filePath: string | string[]): TestControllerPromise;
     /**
      * Removes all file paths from the specified file upload input.
      *
@@ -341,8 +341,8 @@ interface TestController {
      * If path doesn't have .png extension, it will be added automatically.
      */
     takeElementScreenshot(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-                          path?:    string,
-                          options?: TakeElementScreenshotOptions): TestControllerPromise;
+        path?: string,
+        options?: TakeElementScreenshotOptions): TestControllerPromise;
     /**
      * Sets the browser window size.
      *
@@ -435,7 +435,7 @@ interface TestController {
      * @param options - Handler options.
      */
     setNativeDialogHandler(fn: ((type: 'alert' | 'confirm' | 'beforeunload' | 'prompt', text: string, url: string) => any) | null,
-                           options?: ClientFunctionOptions): TestControllerPromise;
+        options?: ClientFunctionOptions): TestControllerPromise;
     /**
      * Returns a stack of history entries (i.e., an array in which the latest dialog has an index of 0). Each entry
      * corresponds to a certain native dialog that appears in the main window or in an `<iframe>`.
@@ -485,6 +485,45 @@ interface TestController {
      * @param hooks - The set of RequestHook subclasses.
      */
     removeRequestHooks(...hooks: object[]): TestControllerPromise;
+    /**
+     * Returns cookies from the specified cookie objects. If there are no parameters, the method returns all the cookies.
+     *
+     * @param cookies - cookie objects.
+     */
+    getCookies(cookies?: CookieOptions | CookieOptions[]): Promise<CookieOptions[]>;
+    /**
+     * Returns cookies with the specified names and URLs.
+     *
+     * @param names - Cookie names.
+     * @param urls - URLs.
+     */
+    getCookies(names: string | string[], urls?: string | string[]): Promise<CookieOptions[]>;
+    /**
+     * Creates cookies with the specified parameters.
+     *
+     * @param cookies - Cookie objects.
+     */
+    setCookies(cookies?: CookieOptions | CookieOptions[]): TestControllerPromise;
+    /**
+     * Assigns the specified URL to the specified cookie name-value pairs.
+     *
+     * @param nameValueObjects - Cookie name-value pairs (Objects).
+     * @param url - Cookie URL.
+     */
+    setCookies(nameValueObjects: Record<string, string> | Record<string, string>[], url?: string): TestControllerPromise;
+    /**
+     * Deletes cookies with the specified parameters. If there are no parameters, this method empties the browser's cookie storage.
+     *
+     * @param cookies - Cookies.
+     */
+    deleteCookies(cookies?: CookieOptions | CookieOptions[]): TestControllerPromise;
+    /**
+     * Deletes cookies associated with the specified URLs. If there are no parameters, this method empties the browser's cookie storage.
+     *
+     * @param names - Cookie names.
+     * @param urls - URLs.
+     */
+    deleteCookies(names: string | string[], urls?: string | string[]): TestControllerPromise;
 }
 
 interface TestControllerPromise<T=any> extends TestController, Promise<T> {
