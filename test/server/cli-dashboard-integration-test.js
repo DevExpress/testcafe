@@ -232,8 +232,13 @@ describe('Dashboard integration', () => {
             expect(console.log.firstCall.args[0]).eql(messages.REGISTRATION_ENTER_EMAIL_INVITATION);
             expect(console.log.secondCall.args[0]).eql(messages.REGISTRATION_EMAIL_SENT);
 
-            expect(console.log.thirdCall.args[0]).eql(chalk.green('Setup complete. View test results at https://dashboard.testcafe.io/runs/test-project.\n' +
-                'Learn how to set up multiple projects at https://testcafe.io/dashboard-alpha.'));
+            expect(console.log.thirdCall.args[0]).eql(
+                chalk.green('You have successfully configured the TestCafe Dashboard reporter.\n' +
+                    'The next time you launch TestCafe, the framework will share test run data with TestCafe Dashboard.\n' +
+                    'View test results at https://dashboard.testcafe.io/runs/test-project.\n' +
+                    'Run "testcafe dashboard off" to disable this behavior.\n' +
+                    'Learn more at https://testcafe.io/dashboard-alpha.')
+            );
 
             expect(sentEmail).eql(TEST_EMAIL);
             expect(sentToken).eql(TEST_TOKEN);
