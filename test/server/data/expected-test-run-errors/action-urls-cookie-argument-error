@@ -1,5 +1,4 @@
-Could not parse the urls value number 1. Check the value for formatting
-errors.
+Could not parse url number 1 (crash). Check the value for formatting errors.
 
 Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>

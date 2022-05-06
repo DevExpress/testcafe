@@ -1,5 +1,5 @@
 The value of the "expires" option belongs to an unsupported data type
-(string). The "expires" option only accepts Date values.
+(string). The "expires" option only accepts Date type values.
 
 Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>
