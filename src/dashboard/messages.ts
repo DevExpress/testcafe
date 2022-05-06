@@ -1,6 +1,6 @@
 export default {
     REGISTRATION_CANCELLED:                   'The setup process has been aborted.',
-    REGISTRATION_ENTER_EMAIL_INVITATION:      'Log into dashboard.testcafe.io to start the setup process.\nEnter your email to receive a login link.',
+    REGISTRATION_ENTER_EMAIL_INVITATION:      'Welcome to the TestCafe Dashboard setup wizard.\n This wizard requires an Internet connection.\n Enter your email address to receive a TestCafe Dashboard authentication link.\nIf you don't have a TestCafe Dashboard account, the link will prompt you to sign up.',
     REGISTRATION_EMAIL_SENDING_NETWORK_ERROR: 'Error: cannot request the log-in email. Please check your internet connection.',
     REGISTRATION_EMAIL_SENT:                  'Check your inbox for the TestCafe Dashboard log-in email. Follow the enclosed link to log into the application.\nCopy the project token and paste it here.',
     PROMPT_EMAIL_CAPTION:                     'Email:',
