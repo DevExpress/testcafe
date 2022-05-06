@@ -3,6 +3,7 @@ const createTestCafe             = require('../../../../../../lib');
 const config                     = require('../../../../config');
 const { createSimpleTestStream } = require('../../../../utils/stream');
 const { expect }                 = require('chai');
+const flowInfoStorage            = require('./utils/flow-info-storage');
 
 let cafe = null;
 
@@ -36,130 +37,165 @@ const runTestsLocal = (testName) => {
 const isLocalChrome = config.useLocalBrowsers && config.browsers.some(browser => browser.alias.includes('chrome'));
 
 if (isLocalChrome) {
-    describe('[API] fixture global before/after hooks', () => {
-        before(async () => {
-            cafe = await createTestCafe({
-                configFile: path.resolve('./test/functional/fixtures/api/es-next/global-hooks/data/fixture-config.js'),
+    describe('Global hooks', function () {
+        describe('[API] fixture global before/after hooks', () => {
+            before(async () => {
+                cafe = await createTestCafe({
+                    configFile: path.resolve('./test/functional/fixtures/api/es-next/global-hooks/data/fixture-config.js'),
+                });
+            });
+
+            after(function () {
+                cafe.close();
+            });
+
+            beforeEach(() => {
+                global.fixtureBefore = 0;
+                global.fixtureAfter  = 0;
+            });
+
+            afterEach(() => {
+                delete global.fixtureBefore;
+                delete global.fixtureAfter;
+            });
+
+            it('Should run hooks for all fixture', async () => {
+                return runTestsLocal('Test1');
+            });
+
+            it('Should run all hooks for fixture', async () => {
+                return runTestsLocal('Test2');
+            });
+
+            it('Should run hooks in the right order', async () => {
+                return runTestsLocal('Test3');
             });
         });
 
-        after(function () {
-            cafe.close();
-        });
+        describe('[API] test global before/after hooks', () => {
+            before(async () => {
+                cafe = await createTestCafe({
+                    configFile: path.resolve('./test/functional/fixtures/api/es-next/global-hooks/data/test-config.js'),
+                });
+            });
 
-        beforeEach(() => {
-            global.fixtureBefore = 0;
-            global.fixtureAfter  = 0;
-        });
+            after(function () {
+                cafe.close();
+            });
 
-        afterEach(() => {
-            delete global.fixtureBefore;
-            delete global.fixtureAfter;
-        });
+            it('Should run global hooks for all tests', () => {
+                return runTestsLocal('Test1');
+            });
 
-        it('Should run hooks for all fixture', async () => {
-            return runTestsLocal('Test1');
-        });
-
-        it('Should run all hooks for fixture', async () => {
-            return runTestsLocal('Test2');
-        });
-
-        it('Should run hooks in the right order', async () => {
-            return runTestsLocal('Test3');
-        });
-    });
-
-    describe('[API] test global before/after hooks', () => {
-        before(async () => {
-            cafe = await createTestCafe({
-                configFile: path.resolve('./test/functional/fixtures/api/es-next/global-hooks/data/test-config.js'),
+            it('Should run all hooks in the right order', () => {
+                return runTestsLocal('Test2');
             });
         });
 
-        after(function () {
-            cafe.close();
-        });
+        describe('[API] testRun global before/after hooks', () => {
 
-        it('Should run global hooks for all tests', () => {
-            return runTestsLocal('Test1');
-        });
-
-        it('Should run all hooks in the right order', () => {
-            return runTestsLocal('Test2');
-        });
-    });
-
-    describe('[API] testRun global before/after hooks', () => {
-
-        before(async () => {
-            cafe = await createTestCafe({
-                configFile: path.resolve('./test/functional/fixtures/api/es-next/global-hooks/data/test-run-config.js'),
+            before(async () => {
+                cafe = await createTestCafe({
+                    configFile: path.resolve('./test/functional/fixtures/api/es-next/global-hooks/data/test-run-config.js'),
+                });
             });
-        });
 
-        afterEach(function () {
-            cafe.close();
-        });
+            afterEach(function () {
+                cafe.close();
+            });
 
-        it('Should run hooks for all tests', async () => {
-            await runTestsLocal('');
-        });
+            it('Should run hooks for all tests', async () => {
+                await runTestsLocal('');
+            });
 
-        it('Should fail all tests in fixture if testRun.before hooks fails', async () => {
-            return runTests('./testcafe-fixtures/test-run-test.js', null, {
-                shouldFail: true,
-                only:       'chrome',
-                hooks:      {
-                    testRun: {
-                        before: async () => {
-                            throw new Error('$$before$$');
+            it('Should fail all tests in fixture if testRun.before hooks fails', async () => {
+                return runTests('./testcafe-fixtures/test-run-test.js', null, {
+                    shouldFail: true,
+                    only:       'chrome',
+                    hooks:      {
+                        testRun: {
+                            before: async () => {
+                                throw new Error('$$before$$');
+                            },
                         },
                     },
-                },
-            }).catch(errs => {
+                }).catch(errs => {
 
-                expect(errs.length).eql(3);
+                    expect(errs.length).eql(3);
 
-                errs.forEach(err => {
-                    expect(err).contains('Error in testRun.before hook');
-                    expect(err).contains('$$before$$');
+                    errs.forEach(err => {
+                        expect(err).contains('Error in testRun.before hook');
+                        expect(err).contains('$$before$$');
+                    });
                 });
             });
         });
-    });
 
+        describe('[API] Request Hooks', () => {
+            describe('RequestMock', () => {
+                before(async () => {
+                    cafe = await createTestCafe({
+                        configFile: path.resolve('./test/functional/fixtures/api/es-next/global-hooks/data/request-mock-config.js'),
+                    });
+                });
 
-    describe('[API] Request Hooks', () => {
-        describe('RequestMock', () => {
-            before(async () => {
-                cafe = await createTestCafe({
-                    configFile: path.resolve('./test/functional/fixtures/api/es-next/global-hooks/data/request-mock-config.js'),
+                after(function () {
+                    cafe.close();
+                });
+
+                it('Should mock requests', () => {
+                    return runTestsLocal('test');
                 });
             });
 
-            after(function () {
-                cafe.close();
-            });
+            describe('RequestLogger', () => {
+                before(async () => {
+                    cafe = await createTestCafe({
+                        configFile: path.resolve('./test/functional/fixtures/api/es-next/global-hooks/data/request-logger-config.js'),
+                    });
+                });
 
-            it('Should mock requests', () => {
-                return runTestsLocal('test');
+                after(function () {
+                    cafe.close();
+                });
+
+                it('Should log requests', () => {
+                    return runTestsLocal('test');
+                });
             });
         });
 
-        describe('RequestLogger', () => {
+        describe('Hooks execution flow', () => {
             before(async () => {
                 cafe = await createTestCafe({
-                    configFile: path.resolve('./test/functional/fixtures/api/es-next/global-hooks/data/request-logger-config.js'),
+                    configFile: path.resolve('./test/functional/fixtures/api/es-next/global-hooks/data/execution-flow-config.js'),
                 });
             });
 
-            after(function () {
-                cafe.close();
+            after(() => {
+                return cafe.close();
             });
 
-            it('Should log requests', () => {
-                return runTestsLocal('test');
+            afterEach(() => {
+                flowInfoStorage.delete();
+            });
+
+            it('Completed', async () => {
+                await runTestsLocal();
+
+                expect(flowInfoStorage.getData()).eql([
+                    'globalTestRunBefore',
+                    'globalFixtureBefore',
+                    'localFixtureBefore',
+                    'globalTestBefore',
+                    'localTestBefore',
+                    'test body',
+                    'localTestAfter',
+                    'globalTestAfter',
+                    'localFixtureAfter',
+                    'globalFixtureAfter',
+                    'globalTestRunAfter',
+                ]);
             });
         });
     });
