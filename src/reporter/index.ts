@@ -440,6 +440,7 @@ export default class Reporter {
 
         const taskProperties = {
             configuration: task.opts,
+            dashboardUrl:  task.opts.dashboardUrl,
         };
 
         await this.dispatchToPlugin({

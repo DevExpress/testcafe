@@ -775,7 +775,11 @@ export default class Runner extends EventEmitter {
             .then(async ({ browserSet, tests, testedApp, commonClientScripts, id }) => {
                 await this._prepareClientScripts(tests, commonClientScripts);
 
-                const resultOptions = this.configuration.getOptions();
+                const resultOptions = {
+                    ...this.configuration.getOptions(),
+
+                    dashboardUrl: reporters.find(r => r.plugin.name === 'dashboard')?.plugin.getReportUrl(),
+                };
 
                 await this.bootstrapper.compilerService?.setOptions({ value: resultOptions });
 
