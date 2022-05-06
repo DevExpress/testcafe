@@ -486,42 +486,42 @@ interface TestController {
      */
     removeRequestHooks(...hooks: object[]): TestControllerPromise;
     /**
-     * Returns cookies associated with the specified cookie objects. If there are no parameters, this method returns all cookies.
+     * Returns cookies from the specified cookie objects. If there are no parameters, the method returns all the cookies.
      *
-     * @param cookies - The cookie objects.
+     * @param cookies - cookie objects.
      */
     getCookies(cookies?: CookieOptions | CookieOptions[]): Promise<CookieOptions[]>;
     /**
-     * Returns cookies with the specified names and URL contexts.
+     * Returns cookies with the specified names and URLs.
      *
-     * @param names - The cookie names.
-     * @param urls - The URL.
+     * @param names - Cookie names.
+     * @param urls - URLs.
      */
     getCookies(names: string | string[], urls?: string | string[]): Promise<CookieOptions[]>;
     /**
-     * Sets the specified cookie objects.
+     * Creates cookies with the specified parameters.
      *
-     * @param cookies - The cookie objects.
+     * @param cookies - Cookie objects.
      */
     setCookies(cookies?: CookieOptions | CookieOptions[]): TestControllerPromise;
     /**
-     * Sets cookies' name-value pairs to the specified URL contexts.
+     * Assigns the specified URL to the specified cookie name-value pairs.
      *
-     * @param nameValueObjects - The cookies' name-value pairs.
-     * @param url - The URL.
+     * @param nameValueObjects - Cookie name-value pairs (Objects).
+     * @param url - Cookie URL.
      */
     setCookies(nameValueObjects: Record<string, string> | Record<string, string>[], url?: string): TestControllerPromise;
     /**
-     * Deletes cookies. If there are no parameters, this method deletes all cookies.
+     * Deletes cookies with the specified parameters. If there are no parameters, this method deletes all cookies.
      *
-     * @param cookies - The cookies.
+     * @param cookies - Cookies.
      */
     deleteCookies(cookies?: CookieOptions | CookieOptions[]): TestControllerPromise;
     /**
-     * Deletes cookies associated with the URL contexts. If there are no parameters, this method deletes all cookies.
+     * Deletes cookies associated with the specified URLs. If there are no parameters, this method deletes all cookies.
      *
-     * @param names - The cookie names.
-     * @param urls - The URL.
+     * @param names - Cookie names.
+     * @param urls - URLs.
      */
     deleteCookies(names: string | string[], urls?: string | string[]): TestControllerPromise;
 }
