@@ -57,8 +57,6 @@ export default class RequestBuilder {
 
         this._validateOptions(preparedOptions);
 
-        this._validateOptions(preparedOptions);
-
         const testRun  = this._getTestRun();
         const callsite = getCallsiteForMethod(this.callsiteNames.execution);
 
