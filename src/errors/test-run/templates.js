@@ -139,7 +139,7 @@ export default {
     `,
 
     [TEST_RUN_ERRORS.actionCookieArgumentsError]: err => `
-        The value of the cookies number ${err.index + 1} does not belong to an acceptable data type: Object or String.
+        The value of cookie number ${err.index + 1} (${err.actualValue}) does not belong to an acceptable data type: Object or String.
     `,
 
     [TEST_RUN_ERRORS.actionUrlCookieArgumentError]: () => `
@@ -147,7 +147,7 @@ export default {
     `,
 
     [TEST_RUN_ERRORS.actionUrlsCookieArgumentError]: err => `
-        Could not parse the urls value number ${err.index + 1}. Check the value for formatting errors.
+        Could not parse url number ${err.index + 1} (${err.actualValue}). Check the value for formatting errors.
     `,
 
     [TEST_RUN_ERRORS.actionIntegerArgumentError]: err => `
@@ -412,14 +412,14 @@ export default {
     },
 
     [TEST_RUN_ERRORS.actionStringOptionError]: err => `
-        The value of the "${err.optionName}" option belongs to an unsupported data type (${err.actualValue}). The "${err.optionName}" option only accepts String values.
+        The value of the "${err.optionName}" option belongs to an unsupported data type (${err.actualValue}). The "${err.optionName}" option only accepts String type values.
     `,
 
     [TEST_RUN_ERRORS.actionDateOptionError]: err => `
-        The value of the "${err.optionName}" option belongs to an unsupported data type (${err.actualValue}). The "${err.optionName}" option only accepts Date values.
+        The value of the "${err.optionName}" option belongs to an unsupported data type (${err.actualValue}). The "${err.optionName}" option only accepts Date type values.
     `,
 
     [TEST_RUN_ERRORS.actionNumberOptionError]: err => `
-        The value of the "${err.optionName}" option belongs to an unsupported data type (${err.actualValue}). The "${err.optionName}" option only accepts Number values.
+        The value of the "${err.optionName}" option belongs to an unsupported data type (${err.actualValue}). The "${err.optionName}" option only accepts Number type values.
     `,
 };
