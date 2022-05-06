@@ -23,7 +23,7 @@ const createTempProfile                = require('../../lib/browser/provider/bui
 const parseUserAgent                   = require('../../lib/utils/parse-user-agent');
 const diff                             = require('../../lib/utils/diff');
 const { generateScreenshotMark }       = require('../../lib/screenshots/utils');
-
+const getViewPortWidth                 = require('../../lib/utils/get-viewport-width');
 const {
     buildChromeArgs,
     IN_DOCKER_FLAGS,
@@ -614,5 +614,11 @@ describe('Utils', () => {
 
         for (const markPixel of markSeed)
             expect(markPixel === 0 || markPixel === 255).is.true;
+    });
+
+    it('getViewPortWidth', () => {
+        const nonTTYStreamMock = {};
+
+        expect(getViewPortWidth(nonTTYStreamMock)).eql(Infinity);
     });
 });
