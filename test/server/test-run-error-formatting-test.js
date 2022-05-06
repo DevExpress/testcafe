@@ -768,7 +768,7 @@ describe('Error formatting', () => {
         });
 
         it('Should format "actionCookieArgumentsError"', () => {
-            assertErrorMessage('action-cookie-arguments-error', new ActionCookieArgumentsError(0));
+            assertErrorMessage('action-cookie-arguments-error', new ActionCookieArgumentsError(0, false));
         });
 
         it('Should format "actionUrlCookieArgumentError"', () => {
@@ -776,7 +776,7 @@ describe('Error formatting', () => {
         });
 
         it('Should format "ActionUrlsCookieArgumentError"', () => {
-            assertErrorMessage('action-urls-cookie-argument-error', new ActionUrlsCookieArgumentError(0));
+            assertErrorMessage('action-urls-cookie-argument-error', new ActionUrlsCookieArgumentError(0, 'crash'));
         });
 
         it('Should format "actionRequiredSetCookieArgumentsAreMissedError"', () => {
