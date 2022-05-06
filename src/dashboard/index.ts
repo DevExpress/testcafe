@@ -77,8 +77,11 @@ async function registerInDashboard (): Promise<void> {
 
     await saveNewToken(token);
 
-    console.log(chalk.green(`Setup complete. View test results at ${getDefaultProjectLink(token)}.\n` +
-        `Learn how to set up multiple projects at ${DASHBOARD_DOCUMENTATION_URL}.`));
+    console.log(chalk.green(`You have successfully configured the TestCafe Dashboard reporter.\n` +
+    `The next time you launch TestCafe, the framework will share test run data with TestCafe Dashboard.\n` + 
+    `View test results at ${getDefaultProjectLink(token)}.\n`+
+    `Run "testcafe dashboard off" to disable this behavior.\n` +
+    `Learn more at ${DASHBOARD_DOCUMENTATION_URL}.`));
 }
 
 async function saveNewToken (token: string): Promise<void> {
