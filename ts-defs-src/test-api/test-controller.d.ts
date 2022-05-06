@@ -512,13 +512,13 @@ interface TestController {
      */
     setCookies(nameValueObjects: Record<string, string> | Record<string, string>[], url?: string): TestControllerPromise;
     /**
-     * Deletes cookies with the specified parameters. If there are no parameters, this method deletes all cookies.
+     * Deletes cookies with the specified parameters. If there are no parameters, this method empties the browser's cookie storage.
      *
      * @param cookies - Cookies.
      */
     deleteCookies(cookies?: CookieOptions | CookieOptions[]): TestControllerPromise;
     /**
-     * Deletes cookies associated with the specified URLs. If there are no parameters, this method deletes all cookies.
+     * Deletes cookies associated with the specified URLs. If there are no parameters, this method empties the browser's cookie storage.
      *
      * @param names - Cookie names.
      * @param urls - URLs.
