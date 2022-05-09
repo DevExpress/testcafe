@@ -1,5 +1,4 @@
-The value of cookie number 1 (false) does not belong to an acceptable data
-type: Object or String.
+The value of cookie number 1 (false) does not belong to an acceptable data type: Object or String.
 
 Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>
