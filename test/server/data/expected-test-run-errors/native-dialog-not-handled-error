@@ -1,6 +1,4 @@
-A native alert dialog was invoked on page "http://example.org", but no
-handler was set for it. Use the "setNativeDialogHandler" function to
-introduce a handler function for native dialogs.
+A native alert dialog was invoked on page "http://example.org", but no handler was set for it. Use the "setNativeDialogHandler" function to introduce a handler function for native dialogs.
 
 Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>

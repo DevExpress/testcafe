@@ -1,7 +1,6 @@
 Error at step "Step with <tag>":
 A target element <element> of the test-action action is not visible.
-If this element should appear when you are hovering over another element,
-make sure that you properly recorded the hover action.
+If this element should appear when you are hovering over another element, make sure that you properly recorded the hover action.
 
 Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>

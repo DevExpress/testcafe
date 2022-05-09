@@ -1,5 +1,4 @@
-Action options is expected to be an object, null or undefined but it was
-number.
+Action options is expected to be an object, null or undefined but it was number.
 
 Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>

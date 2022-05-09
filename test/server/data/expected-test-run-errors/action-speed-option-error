@@ -1,5 +1,4 @@
-The "speed" option is expected to be a number between 0.01 and 1, but it was
-object.
+The "speed" option is expected to be a number between 0.01 and 1, but it was object.
 
 Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>

@@ -1,5 +1,4 @@
-ClientFunction cannot return DOM elements. Use Selector functions for this
-purpose.
+ClientFunction cannot return DOM elements. Use Selector functions for this purpose.
 
 Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>

@@ -1,6 +1,4 @@
-Function that specifies a selector can only return a DOM node, an array of
-nodes, NodeList, HTMLCollection, null or undefined. Use ClientFunction to
-return other values.
+Function that specifies a selector can only return a DOM node, an array of nodes, NodeList, HTMLCollection, null or undefined. Use ClientFunction to return other values.
 
 Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>

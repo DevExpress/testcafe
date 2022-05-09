@@ -1,6 +1,5 @@
 Error at step "Step with <tag>":
-The selector within the inIFrame function returns more than one iframe
-element.
+The selector within the inIFrame function returns more than one iframe element.
 
 Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>

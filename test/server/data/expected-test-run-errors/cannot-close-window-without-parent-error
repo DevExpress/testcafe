@@ -1,6 +1,4 @@
-Cannot close the window because it does not have a parent. The parent window
-was closed or you are attempting to close the root browser window where tests
-were launched.
+Cannot close the window because it does not have a parent. The parent window was closed or you are attempting to close the root browser window where tests were launched.
 
 Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>

@@ -1,5 +1,4 @@
-Attempted to run assertions on a Promise object. Did you forget to await it?
-If not, pass "{ allowUnawaitedPromise: true }" to the assertion options.
+Attempted to run assertions on a Promise object. Did you forget to await it? If not, pass "{ allowUnawaitedPromise: true }" to the assertion options.
 
 Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>
