@@ -1176,4 +1176,13 @@ describe('Reporter', () => {
                 del(pathReport);
             });
     });
+
+    it('Should set options _hasTaskErrors to the runner if an error occurs', async () => {
+        try {
+            await runTests('testcafe-fixtures/index-test.js', 'Simple command err test', { only: ['chrome'], shouldFail: true });
+        }
+        catch (err) {
+            expect(testCafe.runner._hasTaskErrors).eql(true);
+        }
+    });
 });
