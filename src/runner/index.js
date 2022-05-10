@@ -54,6 +54,7 @@ import chalk from 'chalk';
 
 const DEBUG_LOGGER            = debug('testcafe:runner');
 const DASHBOARD_REPORTER_NAME = 'dashboard';
+const SPEC_REPORTER_NAME      = 'spec';
 
 export default class Runner extends EventEmitter {
     constructor ({ proxy, browserConnectionGateway, configuration, compilerService }) {
@@ -534,10 +535,11 @@ export default class Runner extends EventEmitter {
         this.configuration.mergeOptions({ [OPTION_NAMES.reporter]: reporterOptions });
     }
 
-    _addDashBoardAdvertisementIfNeeded () {
-        const reporterOptions = this.configuration.getOption(OPTION_NAMES.reporter);
+    async _addDashBoardAdvertisementIfNeeded () {
+        const dashboardOptions = await this._getDashboardOptions();
+        const reporterOptions  = this.configuration.getOption(OPTION_NAMES.reporter);
 
-        if (!reporterOptions || castArray(reporterOptions).every(reporter => reporter.name !== DASHBOARD_REPORTER_NAME))
+        if (!dashboardOptions?.token && (!reporterOptions || castArray(reporterOptions).every(reporter => reporter.name === SPEC_REPORTER_NAME)))
             this._addAdvertisement(`\n${chalk.bold.red('NEW')}: Try TestCafe Dashboard (https://dashboard.testcafe.io/) to eliminate unstable and failing tests.\n`);
     }
 
@@ -753,7 +755,7 @@ export default class Runner extends EventEmitter {
             .then(() => this._setConfigurationOptions())
             .then(async () => {
                 await this._addDashboardReporterIfNeeded();
-                this._addDashBoardAdvertisementIfNeeded();
+                await this._addDashBoardAdvertisementIfNeeded();
             })
             .then(() => Reporter.getReporterPlugins(this.configuration.getOption(OPTION_NAMES.reporter)))
             .then(reporterPlugins => {
