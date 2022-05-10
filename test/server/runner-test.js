@@ -245,7 +245,7 @@ describe('Runner', () => {
             it('Should add the dashboard advertisement if reporter is not added', async () => {
                 consoleWrapper.wrap();
 
-                runner._addDashBoardAdvertisementIfNeeded();
+                await runner._addDashBoardAdvertisementIfNeeded();
                 await runner._messageBus.emit('done');
 
                 expect(consoleWrapper.messages.log).contains('Try TestCafe Dashboard (https://dashboard.testcafe.io/) to eliminate unstable and failing tests.');
@@ -257,7 +257,7 @@ describe('Runner', () => {
                 consoleWrapper.wrap();
 
                 runner.configuration.mergeOptions({ reporter: { name: 'spec' } });
-                runner._addDashBoardAdvertisementIfNeeded();
+                await runner._addDashBoardAdvertisementIfNeeded();
                 await runner._messageBus.emit('done');
 
                 expect(consoleWrapper.messages.log).contains('Try TestCafe Dashboard (https://dashboard.testcafe.io/) to eliminate unstable and failing tests.');
@@ -269,7 +269,7 @@ describe('Runner', () => {
                 consoleWrapper.wrap();
 
                 runner.configuration.mergeOptions({ reporter: [{ name: 'json' }, { name: 'dashboard' }] });
-                runner._addDashBoardAdvertisementIfNeeded();
+                await runner._addDashBoardAdvertisementIfNeeded();
                 await runner._messageBus.emit('done');
 
                 expect(consoleWrapper.messages.log).eql(null);
@@ -281,7 +281,7 @@ describe('Runner', () => {
                 consoleWrapper.wrap();
 
                 runner.configuration.mergeOptions({ reporter: [{ name: 'spec' }, { name: 'json' }] });
-                runner._addDashBoardAdvertisementIfNeeded();
+                await runner._addDashBoardAdvertisementIfNeeded();
                 await runner._messageBus.emit('done');
 
                 expect(consoleWrapper.messages.log).eql(null);
