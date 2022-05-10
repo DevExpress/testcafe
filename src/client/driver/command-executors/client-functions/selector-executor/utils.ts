@@ -2,6 +2,9 @@ import adapter from '..//adapter/index';
 
 
 export function visible (el: Node): boolean {
+    if (adapter.isIframeElement(el))
+        return adapter.isIframeVisible(el);
+
     if (!adapter.isDomElement(el) && !adapter.isTextNode(el))
         return false;
 

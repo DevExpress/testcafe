@@ -1,6 +1,9 @@
 import adapter from './adapter/index';
 import { isNotVisibleNode, hasDimensions } from './style';
 
+export function isIframeVisible (el: Node): boolean {
+    return adapter.style.get(el, 'visibility') !== 'hidden';
+}
 
 export function isElementVisible (el: Node): boolean {
     if (adapter.dom.isTextNode(el))

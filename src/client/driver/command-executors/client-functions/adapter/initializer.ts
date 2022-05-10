@@ -25,6 +25,8 @@ const initializer: ClientFunctionAdapter = {
     getTagName:             domUtils.getTagName,
     isOptionElementVisible: selectElementUI.isOptionElementVisible,
     isElementVisible:       positionUtils.isElementVisible,
+    isIframeVisible:        positionUtils.isIframeVisible,
+    isIframeElement:        domUtils.isIframeElement,
     getActiveElement:       domUtils.getActiveElement,
 };
 

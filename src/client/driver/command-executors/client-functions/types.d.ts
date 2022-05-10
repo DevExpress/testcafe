@@ -70,5 +70,7 @@ export interface ClientFunctionAdapter {
     getTagName (el: Element): string;
     isOptionElementVisible (el: Node): boolean;
     isElementVisible (el: Node): boolean;
+    isIframeElement (el: Node): boolean;
+    isIframeVisible (el: Node): boolean;
     getActiveElement (): Node;
 }
