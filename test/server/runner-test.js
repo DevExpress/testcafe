@@ -280,6 +280,23 @@ describe('Runner', () => {
                 consoleWrapper.unwrap();
             });
 
+            it('Should not add the dashboard advertisement if dashboard option is added', async () => {
+                consoleWrapper.wrap();
+
+                runner._hasTaskErrors = true;
+                runner.configuration.mergeOptions({
+                    dashboard: TEST_DASHBOARD_SETTINGS,
+                });
+
+                await runner._addDashboardReporterIfNeeded();
+                await runner._addDashBoardAdvertisementIfNeeded();
+                await runner._messageBus.emit('done');
+
+                expect(consoleWrapper.messages.log).eql(null);
+
+                consoleWrapper.unwrap();
+            });
+
             it('Should not add the dashboard advertisement if added reporter different from spec', async () => {
                 consoleWrapper.wrap();
 
