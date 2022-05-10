@@ -253,10 +253,10 @@ describe('Runner', () => {
                 consoleWrapper.unwrap();
             });
 
-            it('Should add the dashboard advertisement if dashboard reporter is not added', async () => {
+            it('Should add the dashboard advertisement if added only spec reporter', async () => {
                 consoleWrapper.wrap();
 
-                runner.configuration.mergeOptions({ reporter: { name: 'json' } });
+                runner.configuration.mergeOptions({ reporter: { name: 'spec' } });
                 runner._addDashBoardAdvertisementIfNeeded();
                 await runner._messageBus.emit('done');
 
@@ -269,6 +269,18 @@ describe('Runner', () => {
                 consoleWrapper.wrap();
 
                 runner.configuration.mergeOptions({ reporter: [{ name: 'json' }, { name: 'dashboard' }] });
+                runner._addDashBoardAdvertisementIfNeeded();
+                await runner._messageBus.emit('done');
+
+                expect(consoleWrapper.messages.log).eql(null);
+
+                consoleWrapper.unwrap();
+            });
+
+            it('Should not add the dashboard advertisement if added reporter different from spec', async () => {
+                consoleWrapper.wrap();
+
+                runner.configuration.mergeOptions({ reporter: [{ name: 'spec' }, { name: 'json' }] });
                 runner._addDashBoardAdvertisementIfNeeded();
                 await runner._messageBus.emit('done');
 
