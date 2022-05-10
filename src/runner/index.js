@@ -542,10 +542,9 @@ export default class Runner extends EventEmitter {
     }
 
     async _addDashBoardAdvertisementIfNeeded () {
-        const dashboardOptions = await this._getDashboardOptions();
         const reporterOptions  = this.configuration.getOption(OPTION_NAMES.reporter);
 
-        if (!dashboardOptions?.token && (!reporterOptions || castArray(reporterOptions).every(reporter => reporter.name === SPEC_REPORTER_NAME)))
+        if (!reporterOptions || castArray(reporterOptions).every(reporter => reporter.name === SPEC_REPORTER_NAME))
             this._addDashboardAdvertisement(`\n${chalk.bold.red('NEW')}: Try TestCafe Dashboard (https://dashboard.testcafe.io/) to eliminate unstable and failing tests.\n`);
     }
 
