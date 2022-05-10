@@ -12,6 +12,7 @@ import {
     ResponseOptions,
 } from './interfaces';
 import dispatchRequest from './dispatchRequest';
+import validateOptions from './validate-request-options';
 
 const REST_METHODS: Method[] = ['get', 'post', 'delete', 'put', 'patch', 'head'];
 const REQUEST_GETTERS        = ['status', 'statusText', 'headers', 'body'];
@@ -54,7 +55,7 @@ export default class RequestBuilder {
     private _executeCommand (url: string, options: Partial<ExternalRequestOptions> = {}): ReExecutablePromise {
         const preparedOptions = this._prepareOptions(url, options);
 
-        this._validateOptions(preparedOptions);
+        validateOptions(preparedOptions, this.callsiteNames.execution);
 
         const testRun  = this._getTestRun();
         const callsite = getCallsiteForMethod(this.callsiteNames.execution);
