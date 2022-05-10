@@ -1740,4 +1740,445 @@ describe('API', function () {
             expect(configuration.getOption(OPTION_NAMES.proxyless)).be.true;
         });
     });
+
+    describe('Request', function () {
+        it('Should raise an error if the Request url argument is not a string or URL', async function () {
+            const testfile = resolve('test/server/data/test-suites/request-url-not-string-or-url/testfile.js');
+
+            try {
+                await compile(testfile);
+
+                throw new Error('Promise rejection expected');
+            }
+            catch (err) {
+                assertAPIError(err, {
+                    stackTop: testfile,
+
+                    message: 'Cannot prepare tests due to the following error:\n\n' +
+                             'The "url" argument (boolean) is not of expected type (string or an URL).',
+
+                    callsite: '   1 |import { fixture, Request } from \'testcafe\';\n' +
+                              '   2 |\n' +
+                              '   3 |fixture `Test`;\n' +
+                              '   4 |\n' +
+                              ' > 5 |Request(true);\n' +
+                              '   6 |\n' +
+                              '   7 |test(\'yo\', () => {\n' +
+                              '   8 |});\n' +
+                              '   9 |',
+                });
+            }
+        });
+
+        it('Should raise an error if method of the Request option argument is not string', async function () {
+            const testfile = resolve('test/server/data/test-suites/request-options-method-not-string/testfile.js');
+
+            try {
+                await compile(testfile);
+
+                throw new Error('Promise rejection expected');
+            }
+            catch (err) {
+                assertAPIError(err, {
+                    stackTop: testfile,
+
+                    message: 'Cannot prepare tests due to the following error:\n\n' +
+                             'The "method" argument (number) is not of expected type (string).',
+
+                    callsite: '    1 |import { fixture, Request } from \'testcafe\';\n' +
+                              '    2 |\n' +
+                              '    3 |fixture `Test`;\n' +
+                              '    4 |\n' +
+                              ' >  5 |Request(\'http://localhost\', {\n' +
+                              '    6 |    method: 1,\n' +
+                              '    7 |});\n' +
+                              '    8 |\n' +
+                              '    9 |test(\'yo\', () => {\n' +
+                              '   10 |});',
+                });
+            }
+        });
+
+        it('Should raise an error if headers of the Request option argument is not object', async function () {
+            const testfile = resolve('test/server/data/test-suites/request-options-headers-not-object/testfile.js');
+
+            try {
+                await compile(testfile);
+
+                throw new Error('Promise rejection expected');
+            }
+            catch (err) {
+                assertAPIError(err, {
+                    stackTop: testfile,
+
+                    message: 'Cannot prepare tests due to the following error:\n\n' +
+                             'The "headers" argument (number) is not of expected type (non-null object).',
+
+                    callsite: '    1 |import { fixture, Request } from \'testcafe\';\n' +
+                              '    2 |\n' +
+                              '    3 |fixture `Test`;\n' +
+                              '    4 |\n' +
+                              ' >  5 |Request(\'http://localhost\', {\n' +
+                              '    6 |    headers: 1,\n' +
+                              '    7 |});\n' +
+                              '    8 |\n' +
+                              '    9 |test(\'yo\', () => {\n' +
+                              '   10 |});',
+                });
+            }
+        });
+
+        it('Should raise an error if params of the Request option argument is not object', async function () {
+            const testfile = resolve('test/server/data/test-suites/request-options-params-not-object/testfile.js');
+
+            try {
+                await compile(testfile);
+
+                throw new Error('Promise rejection expected');
+            }
+            catch (err) {
+                assertAPIError(err, {
+                    stackTop: testfile,
+
+                    message: 'Cannot prepare tests due to the following error:\n\n' +
+                             'The "params" argument (number) is not of expected type (URLSearchParams or a non-null object).',
+
+                    callsite: '    1 |import { fixture, Request } from \'testcafe\';\n' +
+                              '    2 |\n' +
+                              '    3 |fixture `Test`;\n' +
+                              '    4 |\n' +
+                              ' >  5 |Request(\'http://localhost\', {\n' +
+                              '    6 |    params: 1,\n' +
+                              '    7 |});\n' +
+                              '    8 |\n' +
+                              '    9 |test(\'yo\', () => {\n' +
+                              '   10 |});',
+                });
+            }
+        });
+
+        it('Should raise an error if timeout of the Request option argument is not number', async function () {
+            const testfile = resolve('test/server/data/test-suites/request-options-timeout-not-number/testfile.js');
+
+            try {
+                await compile(testfile);
+
+                throw new Error('Promise rejection expected');
+            }
+            catch (err) {
+                assertAPIError(err, {
+                    stackTop: testfile,
+
+                    message: 'Cannot prepare tests due to the following error:\n\n' +
+                             'The "timeout" argument (string) is not of expected type (number).',
+
+                    callsite: '    1 |import { fixture, Request } from \'testcafe\';\n' +
+                              '    2 |\n' +
+                              '    3 |fixture `Test`;\n' +
+                              '    4 |\n' +
+                              ' >  5 |Request(\'http://localhost\', {\n' +
+                              '    6 |    timeout: \'one\',\n' +
+                              '    7 |});\n' +
+                              '    8 |\n' +
+                              '    9 |test(\'yo\', () => {\n' +
+                              '   10 |});',
+                });
+            }
+        });
+
+        it('Should raise an error if withCredentials of the Request option argument is not boolean', async function () {
+            const testfile = resolve('test/server/data/test-suites/request-options-with-credentials-not-boolean/testfile.js');
+
+            try {
+                await compile(testfile);
+
+                throw new Error('Promise rejection expected');
+            }
+            catch (err) {
+                assertAPIError(err, {
+                    stackTop: testfile,
+
+                    message: 'Cannot prepare tests due to the following error:\n\n' +
+                             'The "withCredentials" argument (string) is not of expected type (boolean).',
+
+                    callsite: '    1 |import { fixture, Request } from \'testcafe\';\n' +
+                              '    2 |\n' +
+                              '    3 |fixture `Test`;\n' +
+                              '    4 |\n' +
+                              ' >  5 |Request(\'http://localhost\', {\n' +
+                              '    6 |    withCredentials: \'one\',\n' +
+                              '    7 |});\n' +
+                              '    8 |\n' +
+                              '    9 |test(\'yo\', () => {\n' +
+                              '   10 |});',
+                });
+            }
+        });
+
+        it('Should raise an error if auth of the Request option argument is not object', async function () {
+            const testfile = resolve('test/server/data/test-suites/request-options-auth-not-object/testfile.js');
+
+            try {
+                await compile(testfile);
+
+                throw new Error('Promise rejection expected');
+            }
+            catch (err) {
+                assertAPIError(err, {
+                    stackTop: testfile,
+
+                    message: 'Cannot prepare tests due to the following error:\n\n' +
+                             'The "auth" argument (number) is not of expected type (non-null object).',
+
+                    callsite: '    1 |import { fixture, Request } from \'testcafe\';\n' +
+                              '    2 |\n' +
+                              '    3 |fixture `Test`;\n' +
+                              '    4 |\n' +
+                              ' >  5 |Request(\'http://localhost\', {\n' +
+                              '    6 |    auth: 1,\n' +
+                              '    7 |});\n' +
+                              '    8 |\n' +
+                              '    9 |test(\'yo\', () => {\n' +
+                              '   10 |});',
+                });
+            }
+        });
+
+        it('Should raise an error if maxRedirects of the Request option argument is not number', async function () {
+            const testfile = resolve('test/server/data/test-suites/request-options-max-redirects-not-boolean/testfile.js');
+
+            try {
+                await compile(testfile);
+
+                throw new Error('Promise rejection expected');
+            }
+            catch (err) {
+                assertAPIError(err, {
+                    stackTop: testfile,
+
+                    message: 'Cannot prepare tests due to the following error:\n\n' +
+                             'The "maxRedirects" argument (string) is not of expected type (number).',
+
+                    callsite: '    1 |import { fixture, Request } from \'testcafe\';\n' +
+                              '    2 |\n' +
+                              '    3 |fixture `Test`;\n' +
+                              '    4 |\n' +
+                              ' >  5 |Request(\'http://localhost\', {\n' +
+                              '    6 |    maxRedirects: \'one\',\n' +
+                              '    7 |});\n' +
+                              '    8 |\n' +
+                              '    9 |test(\'yo\', () => {\n' +
+                              '   10 |});',
+                });
+            }
+        });
+
+        it('Should raise an error if proxy of the Request option argument is not object', async function () {
+            const testfile = resolve('test/server/data/test-suites/request-options-proxy-not-object/testfile.js');
+
+            try {
+                await compile(testfile);
+
+                throw new Error('Promise rejection expected');
+            }
+            catch (err) {
+                assertAPIError(err, {
+                    stackTop: testfile,
+
+                    message: 'Cannot prepare tests due to the following error:\n\n' +
+                             'The "proxy" argument (number) is not of expected type (non-null object).',
+
+                    callsite: '    1 |import { fixture, Request } from \'testcafe\';\n' +
+                              '    2 |\n' +
+                              '    3 |fixture `Test`;\n' +
+                              '    4 |\n' +
+                              ' >  5 |Request(\'http://localhost\', {\n' +
+                              '    6 |    proxy: 1,\n' +
+                              '    7 |});\n' +
+                              '    8 |\n' +
+                              '    9 |test(\'yo\', () => {\n' +
+                              '   10 |});',
+                });
+            }
+        });
+
+        it('Should raise an error if processResponse of the Request option argument is not boolean', async function () {
+            const testfile = resolve('test/server/data/test-suites/request-options-process-response-not-boolean/testfile.js');
+
+            try {
+                await compile(testfile);
+
+                throw new Error('Promise rejection expected');
+            }
+            catch (err) {
+                assertAPIError(err, {
+                    stackTop: testfile,
+
+                    message: 'Cannot prepare tests due to the following error:\n\n' +
+                             'The "processResponse" argument (string) is not of expected type (boolean).',
+
+                    callsite: '    1 |import { fixture, Request } from \'testcafe\';\n' +
+                              '    2 |\n' +
+                              '    3 |fixture `Test`;\n' +
+                              '    4 |\n' +
+                              ' >  5 |Request(\'http://localhost\', {\n' +
+                              '    6 |    processResponse: \'one\',\n' +
+                              '    7 |});\n' +
+                              '    8 |\n' +
+                              '    9 |test(\'yo\', () => {\n' +
+                              '   10 |});',
+                });
+            }
+        });
+
+        describe('Auth options', function () {
+            it('Should raise an error if username of auth is not string', async function () {
+                const testfile = resolve('test/server/data/test-suites/request-options-auth-username-not-string/testfile.js');
+
+                try {
+                    await compile(testfile);
+
+                    throw new Error('Promise rejection expected');
+                }
+                catch (err) {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'The "auth.username" argument (number) is not of expected type (string).',
+
+                        callsite: '    1 |import { fixture, Request } from \'testcafe\';\n' +
+                                  '    2 |\n' +
+                                  '    3 |fixture `Test`;\n' +
+                                  '    4 |\n' +
+                                  ' >  5 |Request(\'http://localhost\', {\n' +
+                                  '    6 |    auth: {\n' +
+                                  '    7 |        username: 1,\n' +
+                                  '    8 |        password: \'password\',\n' +
+                                  '    9 |    },\n' +
+                                  '   10 |});\n',
+                    });
+                }
+            });
+
+            it('Should raise an error if password of auth is not string', async function () {
+                const testfile = resolve('test/server/data/test-suites/request-options-auth-password-not-string/testfile.js');
+
+                try {
+                    await compile(testfile);
+
+                    throw new Error('Promise rejection expected');
+                }
+                catch (err) {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'The "auth.password" argument (number) is not of expected type (string).',
+
+                        callsite: '    1 |import { fixture, Request } from \'testcafe\';\n' +
+                                  '    2 |\n' +
+                                  '    3 |fixture `Test`;\n' +
+                                  '    4 |\n' +
+                                  ' >  5 |Request(\'http://localhost\', {\n' +
+                                  '    6 |    auth: {\n' +
+                                  '    7 |        username: \'username\',\n' +
+                                  '    8 |        password: 1,\n' +
+                                  '    9 |    },\n' +
+                                  '   10 |});\n',
+                    });
+                }
+            });
+        });
+
+        describe('Proxy options', function () {
+            it('Should raise an error if protocol of proxy is not string', async function () {
+                const testfile = resolve('test/server/data/test-suites/request-options-proxy-protocol-not-string/testfile.js');
+
+                try {
+                    await compile(testfile);
+
+                    throw new Error('Promise rejection expected');
+                }
+                catch (err) {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'The "proxy.protocol" argument (number) is not of expected type (string).',
+
+                        callsite: '    1 |import { fixture, Request } from \'testcafe\';\n' +
+                                  '    2 |\n' +
+                                  '    3 |fixture `Test`;\n' +
+                                  '    4 |\n' +
+                                  ' >  5 |Request(\'http://localhost\', {\n' +
+                                  '    6 |    proxy: {\n' +
+                                  '    7 |        protocol: 1,\n' +
+                                  '    8 |        host:     \'host\',\n' +
+                                  '    9 |        port:     \'port\',\n' +
+                                  '   10 |    },\n',
+                    });
+                }
+            });
+
+            it('Should raise an error if protocol of proxy is not string', async function () {
+                const testfile = resolve('test/server/data/test-suites/request-options-proxy-host-not-string/testfile.js');
+
+                try {
+                    await compile(testfile);
+
+                    throw new Error('Promise rejection expected');
+                }
+                catch (err) {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'The "proxy.host" argument (number) is not of expected type (string).',
+
+                        callsite: '    1 |import { fixture, Request } from \'testcafe\';\n' +
+                                  '    2 |\n' +
+                                  '    3 |fixture `Test`;\n' +
+                                  '    4 |\n' +
+                                  ' >  5 |Request(\'http://localhost\', {\n' +
+                                  '    6 |    proxy: {\n' +
+                                  '    7 |        protocol: \'protocol\',\n' +
+                                  '    8 |        host:     1,\n' +
+                                  '    9 |        port:     \'port\',\n' +
+                                  '   10 |    },\n',
+                    });
+                }
+            });
+
+            it('Should raise an error if port of proxy is not string or number', async function () {
+                const testfile = resolve('test/server/data/test-suites/request-options-proxy-port-not-string-or-number/testfile.js');
+
+                try {
+                    await compile(testfile);
+
+                    throw new Error('Promise rejection expected');
+                }
+                catch (err) {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'The "proxy.port" argument (boolean) is not of expected type (number or a string).',
+
+                        callsite: '    1 |import { fixture, Request } from \'testcafe\';\n' +
+                                  '    2 |\n' +
+                                  '    3 |fixture `Test`;\n' +
+                                  '    4 |\n' +
+                                  ' >  5 |Request(\'http://localhost\', {\n' +
+                                  '    6 |    proxy: {\n' +
+                                  '    7 |        protocol: \'protocol\',\n' +
+                                  '    8 |        host:     \'host\',\n' +
+                                  '    9 |        port:     true,\n' +
+                                  '   10 |    },\n',
+                    });
+                }
+            });
+        });
+    });
+
 });

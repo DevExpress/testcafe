@@ -72,22 +72,8 @@ function assertThrow (fn, expectedErr) {
     expect(actualErr).eql(expectedErr);
 }
 
-async function asyncAssertThrow (fn, expectedErr) {
-    let actualErr = null;
-
-    try {
-        await fn();
-    }
-    catch (err) {
-        actualErr = err;
-    }
-
-    expect(actualErr).eql(expectedErr);
-}
-
 module.exports = {
-    assertError:      assertRuntimeError,
-    assertAPIError:   assertAPIError,
-    assertThrow:      assertThrow,
-    asyncAssertThrow: asyncAssertThrow,
+    assertError:    assertRuntimeError,
+    assertAPIError: assertAPIError,
+    assertThrow:    assertThrow,
 };
