@@ -33,7 +33,7 @@ jobs:
           
       - uses: actions/setup-node@v2
         with:
-          node-version: 12
+          node-version: 14
 
       - uses: actions/github-script@v3
         with:
