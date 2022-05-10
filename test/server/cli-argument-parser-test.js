@@ -15,7 +15,7 @@ describe('CLI argument parser', function () {
     function parse (args, cwd) {
         const parser = new CliArgumentParser(cwd);
 
-        args = ['node', 'index.js'].concat(typeof args === 'string' ? args.split(/\s+/) : args);
+        args = ['node', 'testcafe'].concat(typeof args === 'string' ? args.split(/\s+/) : args);
 
         return parser.parse(args)
             .then(function () {
@@ -791,7 +791,7 @@ describe('CLI argument parser', function () {
             });
     });
 
-    it('Should have static CLI', () => {
+    it('Should have static CLI for the main command', () => {
         const CHANGE_CLI_WARNING         = 'IMPORTANT: Please be sure what you want to change CLI if this test is failing!';
         const ADD_TO_RUN_OPTIONS_WARNING = 'Check that the added option is correctly passed from the command-line interface to the run options.' +
                                            'If the new option is not a run option just increase the "expectedOtherOptionsCount" value';
@@ -858,7 +858,7 @@ describe('CLI argument parser', function () {
         ];
 
         const parser  = new CliArgumentParser('');
-        const options = parser.program.options;
+        const options = parser.testCafeCommand.options;
 
         expect(options.length).eql(EXPECTED_OPTIONS.length, CHANGE_CLI_WARNING);
 
@@ -933,6 +933,25 @@ describe('CLI argument parser', function () {
             expect(parser.opts.dashboardOptions.token).equal('12345');
             expect(parser.opts.dashboardOptions.buildId).equal('1');
             expect(parser.opts.dashboardOptions.noVideoUpload).equal(true);
+        });
+
+        it('Should parse dashboard command', async () => {
+            const parser = await parse('dashboard');
+
+            expect(parser.isDashboardCommand).to.be.true;
+            expect(parser.sendReportState).eql(void 0);
+        });
+
+        it('Should parse dashboard command argument', async () => {
+            let parser = await parse('dashboard on');
+
+            expect(parser.isDashboardCommand).to.be.true;
+            expect(parser.sendReportState).eql('on');
+
+            parser = await parse('dashboard off');
+
+            expect(parser.isDashboardCommand).to.be.true;
+            expect(parser.sendReportState).eql('off');
         });
     });
 });

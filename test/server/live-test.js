@@ -282,6 +282,7 @@ describe('TestCafe Live', function () {
         return runTests(testFileWithSingleTestPath)
             .then(async () => {
                 runner.src(testFileWithSyntaxErrorPath);
+
                 await runner._setConfigurationOptions();
                 await runner._setBootstrapperOptions();
             })

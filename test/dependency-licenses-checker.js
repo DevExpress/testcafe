@@ -23,6 +23,7 @@ const PERMISSIVE_LICENSES = [
     'Public Domain',
     'WTFPL',
     'Apache-2.0',
+    '(AFL-2.1 OR BSD-3-Clause)',
 ];
 
 const INCOMPATIBLE_LICENSES_RE = /GPL/i;

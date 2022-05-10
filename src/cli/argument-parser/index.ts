@@ -1,12 +1,17 @@
 import { has, set } from 'lodash';
-import { Command, Option } from 'commander';
+
+import program, {
+    Command,
+    Option,
+    Argument,
+} from 'commander';
+
 import dedent from 'dedent';
-import { readSync as read } from 'read-file-relative';
-import { GeneralError } from '../errors/runtime';
-import { RUNTIME_ERRORS } from '../errors/types';
-import { assertType, is } from '../errors/runtime/type-assertions';
-import getViewPortWidth from '../utils/get-viewport-width';
-import { wordWrap, splitQuotedText } from '../utils/string';
+import { GeneralError } from '../../errors/runtime';
+import { RUNTIME_ERRORS } from '../../errors/types';
+import { assertType, is } from '../../errors/runtime/type-assertions';
+import getViewPortWidth from '../../utils/get-viewport-width';
+import { wordWrap, splitQuotedText } from '../../utils/string';
 import {
     getSSLOptions,
     getQuarantineOptions,
@@ -16,19 +21,22 @@ import {
     getGrepOptions,
     getCompilerOptions,
     getDashboardOptions,
-} from '../utils/get-options';
+} from '../../utils/get-options';
 
-import getFilterFn from '../utils/get-filter-fn';
-import SCREENSHOT_OPTION_NAMES from '../configuration/screenshot-option-names';
-import RUN_OPTION_NAMES from '../configuration/run-option-names';
+import getFilterFn from '../../utils/get-filter-fn';
+import SCREENSHOT_OPTION_NAMES from '../../configuration/screenshot-option-names';
+import RUN_OPTION_NAMES from '../../configuration/run-option-names';
 import {
     Dictionary,
     ReporterOption,
     RunnerRunOptions,
-} from '../configuration/interfaces';
-import QUARANTINE_OPTION_NAMES from '../configuration/quarantine-option-names';
-import { extractNodeProcessArguments } from './node-arguments-filter';
-
+} from '../../configuration/interfaces';
+import QUARANTINE_OPTION_NAMES from '../../configuration/quarantine-option-names';
+import { extractNodeProcessArguments } from '../node-arguments-filter';
+import getTestcafeVersion from '../../utils/get-testcafe-version';
+import { parsePortNumber, parseList } from './parse-utils';
+import COMMAND_NAMES from './command-names';
+import { SendReportState } from '../../dashboard/interfaces';
 
 const REMOTE_ALIAS_RE = /^remote(?::(\d*))?$/;
 
@@ -85,26 +93,57 @@ interface CommandLineOptions {
 }
 
 export default class CLIArgumentParser {
-    private readonly program: Command;
     private cwd: string;
     private remoteCount: number;
+    public isDashboardCommand: boolean;
+    public sendReportState: SendReportState;
     public opts: CommandLineOptions;
     public args: string[];
+    private readonly testCafeCommand: Command;
 
     public constructor (cwd?: string) {
-        this.program      = new Command('testcafe');
         this.cwd          = cwd || process.cwd();
         this.remoteCount  = 0;
         this.opts         = {};
         this.args         = [];
 
-        this._describeProgram();
+        this.isDashboardCommand = false;
+        this.testCafeCommand    = this._addTestCafeCommand();
+
+        this._patchHelpOutput(this.testCafeCommand);
+        this._addDashboardSubcommand();
+        CLIArgumentParser._setupRootCommand();
     }
 
-    private static _parsePortNumber (value: string): number {
-        assertType(is.nonNegativeNumberString, null, 'The port number', value);
+    private static _setupRootCommand (): void {
+        // NOTE: We are forced to set the name of the root command to 'testcafe'
+        // to avoid the automatic command name calculation using the executed file path.
+        // It's necessary to correct command description for nested commands.
+        (program as unknown as Command).name(COMMAND_NAMES.TestCafe);
+    }
 
-        return parseInt(value, 10);
+    private static _removeCommandIfExists (name: string): void {
+        // NOTE: Bug in the 'commander' module.
+        // It's possible to add a few commands with the same name.
+        // Also, removing is a better than conditionally adding
+        // because it allows avoiding the parsed option duplicates.
+        const index = (program as unknown as Command).commands.findIndex(cmd => cmd.name() === name);
+
+        if (index > -1)
+            (program as unknown as Command).commands.splice(index, 1);
+    }
+
+    private _addDashboardSubcommand (): void {
+        CLIArgumentParser._removeCommandIfExists(COMMAND_NAMES.Dashboard);
+
+        (program as unknown as Command)
+            .command(COMMAND_NAMES.Dashboard)
+            .description('Setup integration with TestCafe Dashboard.\nRun without arguments if you have no the default token or you want change it.')
+            .addArgument(new Argument('[state]', 'Turn on/off report sending to TestCafe Dashboard').choices(['on', 'off']))
+            .action(sendReportState => {
+                this.isDashboardCommand = true;
+                this.sendReportState    = sendReportState;
+            });
     }
 
     private static _getDescription (): string {
@@ -112,11 +151,12 @@ export default class CLIArgumentParser {
         return '\n' + wordWrap(DESCRIPTION, 2, getViewPortWidth(process.stdout));
     }
 
-    private _describeProgram (): void {
-        const version = JSON.parse(read('../../package.json') as string).version;
+    private _addTestCafeCommand (): Command {
+        CLIArgumentParser._removeCommandIfExists(COMMAND_NAMES.TestCafe);
 
-        this.program
-            .version(version, '-v, --version')
+        return (program as unknown as Command)
+            .command(COMMAND_NAMES.TestCafe, { isDefault: true })
+            .version(getTestcafeVersion(), '-v, --version')
             .usage('[options] <comma-separated-browser-list> <file-or-glob ...>')
             .description(CLIArgumentParser._getDescription())
 
@@ -163,7 +203,7 @@ export default class CLIArgumentParser {
             .option('--sf, --stop-on-first-fail', 'stop an entire test run if any test fails')
             .option('--config-file <path>', 'specify a custom path to the testcafe configuration file')
             .option('--ts-config-path <path>', 'use a custom TypeScript configuration file and specify its location')
-            .option('--cs, --client-scripts <paths>', 'inject scripts into tested pages', this._parseList, [])
+            .option('--cs, --client-scripts <paths>', 'inject scripts into tested pages', parseList, [])
             .option('--disable-page-caching', 'disable page caching during test execution')
             .option('--disable-page-reloads', 'disable page reloads between tests')
             .option('--retry-test-pages', 'retry network requests to test pages during test execution')
@@ -181,11 +221,24 @@ export default class CLIArgumentParser {
 
             // NOTE: temporary hide experimental options from --help command
             .addOption(new Option('--proxyless', 'experimental').hideHelp())
-            .addOption(new Option('--experimental-debug', 'enable experimental debug mode').hideHelp());
+            .addOption(new Option('--experimental-debug', 'enable experimental debug mode').hideHelp())
+            .action((opts: CommandLineOptions) => {
+                this.opts = opts;
+            });
     }
 
-    private _parseList (val: string): string[] {
-        return val.split(',');
+    private _patchHelpOutput (defaultSubCommand: Command): void {
+        // NOTE: In the future versions of the 'commander' module
+        // need to investigate how to remove this hack.
+        (program as unknown as Command).outputHelp = function () {
+            const storedParent = defaultSubCommand.parent;
+
+            defaultSubCommand.parent = null;
+
+            defaultSubCommand.outputHelp();
+
+            defaultSubCommand.parent = storedParent;
+        };
     }
 
     private _checkAndCountRemotes (browser: string): boolean {
@@ -310,7 +363,7 @@ export default class CLIArgumentParser {
         if (this.opts.ports) {
             const parsedPorts = (this.opts.ports as string) /* eslint-disable-line no-extra-parens */
                 .split(',')
-                .map(CLIArgumentParser._parsePortNumber);
+                .map(parsePortNumber);
 
             if (parsedPorts.length < 2)
                 throw new GeneralError(RUNTIME_ERRORS.portsOptionRequiresTwoNumbers);
@@ -320,7 +373,7 @@ export default class CLIArgumentParser {
     }
 
     private _parseBrowsersFromArgs (): void {
-        const browsersArg = this.program.args[0] || '';
+        const browsersArg = this.testCafeCommand.args[0] || '';
 
         this.opts.browsers = splitQuotedText(browsersArg, ',')
             .filter(browser => browser && this._checkAndCountRemotes(browser));
@@ -348,7 +401,7 @@ export default class CLIArgumentParser {
     }
 
     private _parseFileList (): void {
-        this.opts.src = this.program.args.slice(1);
+        this.opts.src = this.testCafeCommand.args.slice(1);
     }
 
     private async _parseScreenshotOptions (): Promise<void> {
@@ -421,10 +474,10 @@ export default class CLIArgumentParser {
 
         const { args, v8Flags } = extractNodeProcessArguments(argv);
 
-        this.program.parse(args);
+        (program as unknown as Command).parse(args);
 
-        this.args = this.program.args;
-        this.opts = Object.assign(this.program.opts(), { v8Flags });
+        this.args = (program as unknown as Command).args;
+        this.opts = Object.assign(this.opts, { v8Flags });
 
         this._parseListBrowsers();
 
