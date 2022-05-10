@@ -246,7 +246,7 @@ describe('Runner', () => {
                 consoleWrapper.wrap();
 
                 runner._hasTaskErrors = true;
-                await runner._addDashBoardAdvertisementIfNeeded();
+                runner._addDashBoardAdvertisementIfNeeded();
                 await runner._messageBus.emit('done');
 
                 expect(consoleWrapper.messages.log).contains('Try TestCafe Dashboard (https://dashboard.testcafe.io/) to eliminate unstable and failing tests.');
@@ -259,7 +259,7 @@ describe('Runner', () => {
 
                 runner._hasTaskErrors = true;
                 runner.configuration.mergeOptions({ reporter: { name: 'spec' } });
-                await runner._addDashBoardAdvertisementIfNeeded();
+                runner._addDashBoardAdvertisementIfNeeded();
                 await runner._messageBus.emit('done');
 
                 expect(consoleWrapper.messages.log).contains('Try TestCafe Dashboard (https://dashboard.testcafe.io/) to eliminate unstable and failing tests.');
@@ -272,7 +272,7 @@ describe('Runner', () => {
 
                 runner._hasTaskErrors = true;
                 runner.configuration.mergeOptions({ reporter: [{ name: 'json' }, { name: 'dashboard' }] });
-                await runner._addDashBoardAdvertisementIfNeeded();
+                runner._addDashBoardAdvertisementIfNeeded();
                 await runner._messageBus.emit('done');
 
                 expect(consoleWrapper.messages.log).eql(null);
@@ -289,7 +289,7 @@ describe('Runner', () => {
                 });
 
                 await runner._addDashboardReporterIfNeeded();
-                await runner._addDashBoardAdvertisementIfNeeded();
+                runner._addDashBoardAdvertisementIfNeeded();
                 await runner._messageBus.emit('done');
 
                 expect(consoleWrapper.messages.log).eql(null);
@@ -302,7 +302,7 @@ describe('Runner', () => {
 
                 runner._hasTaskErrors = true;
                 runner.configuration.mergeOptions({ reporter: [{ name: 'spec' }, { name: 'json' }] });
-                await runner._addDashBoardAdvertisementIfNeeded();
+                runner._addDashBoardAdvertisementIfNeeded();
                 await runner._messageBus.emit('done');
 
                 expect(consoleWrapper.messages.log).eql(null);
