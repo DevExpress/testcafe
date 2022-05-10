@@ -47,8 +47,7 @@ export default class RequestBuilder {
 
         return {
             ...options,
-            method: options.method || '',
-            url:    urlOpt || options.url || '',
+            url: urlOpt || options.url || '',
         };
     }
 

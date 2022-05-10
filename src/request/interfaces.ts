@@ -2,7 +2,6 @@ import { OutgoingHttpHeaders } from 'http';
 import { Dictionary } from '../configuration/interfaces';
 
 export type Method =
-    |''
     | 'get' | 'GET'
     | 'delete' | 'DELETE'
     | 'head' | 'HEAD'
@@ -21,15 +20,15 @@ export interface AuthOptions {
 
 export type Params = URLSearchParams | Dictionary<string | number | boolean>
 
-export interface Proxy {
-    protocol: string;
+export interface ProxyOptions {
+    protocol?: string;
     host: string;
-    port: number;
+    port: number | string;
     auth?: AuthOptions;
 }
 
 export interface ExternalRequestOptions {
-    url: string;
+    url: string | URL;
     method?: Method;
     headers?: OutgoingHttpHeaders;
     params?: Params;
@@ -38,7 +37,7 @@ export interface ExternalRequestOptions {
     withCredentials?: boolean;
     auth?: AuthOptions;
     maxRedirects?: number;
-    proxy?: Proxy;
+    proxy?: ProxyOptions;
     processResponse?: boolean;
 }
 
