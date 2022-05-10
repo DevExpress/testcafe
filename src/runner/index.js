@@ -541,7 +541,7 @@ export default class Runner extends EventEmitter {
         this.configuration.mergeOptions({ [OPTION_NAMES.reporter]: reporterOptions });
     }
 
-    async _addDashBoardAdvertisementIfNeeded () {
+    _addDashBoardAdvertisementIfNeeded () {
         const reporterOptions  = this.configuration.getOption(OPTION_NAMES.reporter);
 
         if (!reporterOptions || castArray(reporterOptions).every(reporter => reporter.name === SPEC_REPORTER_NAME))
