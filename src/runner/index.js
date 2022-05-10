@@ -69,6 +69,7 @@ export default class Runner extends EventEmitter {
         this.warningLog          = new WarningLog(null, WarningLog.createAddWarningCallback(this._messageBus));
         this.compilerService     = compilerService;
         this._options            = {};
+        this._hasTaskErrors      = false;
 
         //NOTE: This option created only for possibility to turn off advertisement for our tests.
         this._showAdvertisement = true;
@@ -97,9 +98,9 @@ export default class Runner extends EventEmitter {
         return testedApp ? testedApp.kill().catch(e => DEBUG_LOGGER(e)) : Promise.resolve();
     }
 
-    _addAdvertisement (message) {
+    _addDashboardAdvertisement (message) {
         this._messageBus.on('done', () => {
-            if (this._showAdvertisement)
+            if (this._showAdvertisement && this._hasTaskErrors)
                 log.write(message);
         });
     }
@@ -241,7 +242,12 @@ export default class Runner extends EventEmitter {
 
         if (!this.configuration.getOption(OPTION_NAMES.skipUncaughtErrors)) {
             this._messageBus.on('test-run-start', addRunningTest);
-            this._messageBus.on('test-run-done', removeRunningTest);
+            this._messageBus.on('test-run-done', ({ errs }) => {
+                if (errs.length)
+                    this._hasTaskErrors = true;
+
+                removeRunningTest();
+            });
         }
 
         this._messageBus.on('done', stopHandlingTestErrors);
@@ -540,7 +546,7 @@ export default class Runner extends EventEmitter {
         const reporterOptions  = this.configuration.getOption(OPTION_NAMES.reporter);
 
         if (!dashboardOptions?.token && (!reporterOptions || castArray(reporterOptions).every(reporter => reporter.name === SPEC_REPORTER_NAME)))
-            this._addAdvertisement(`\n${chalk.bold.red('NEW')}: Try TestCafe Dashboard (https://dashboard.testcafe.io/) to eliminate unstable and failing tests.\n`);
+            this._addDashboardAdvertisement(`\n${chalk.bold.red('NEW')}: Try TestCafe Dashboard (https://dashboard.testcafe.io/) to eliminate unstable and failing tests.\n`);
     }
 
     async _getDashboardOptions () {
