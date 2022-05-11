@@ -2,7 +2,7 @@ import adapter from './adapter/index';
 import { isNotVisibleNode, hasDimensions } from './style';
 
 export function isIframeVisible (el: Node): boolean {
-    return adapter.style.get(el, 'visibility') !== 'hidden';
+    return adapter.style.get(el, 'visibility') !== 'hidden' && adapter.style.get(el, 'display') !== 'none';
 }
 
 export function isElementVisible (el: Node): boolean {
