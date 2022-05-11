@@ -19,6 +19,8 @@ import {
 import TestRun from '../test-run';
 import CONTENT_TYPES from '../assets/content-types';
 import HTTP_HEADERS from '../utils/http-headers';
+import { RUNTIME_ERRORS } from '../errors/types';
+import { APIError } from '../errors/runtime';
 
 const DEFAULT_ACCEPT            = { [HTTP_HEADERS.accept]: `${CONTENT_TYPES.json}, ${CONTENT_TYPES.textPlain}, ${CONTENT_TYPES.all}` };
 const DEFAULT_IS_REQUEST        = { [HTTP_HEADERS.isRequest]: true };
@@ -116,6 +118,22 @@ async function prepareHeaders (headers: OutgoingHttpHeaders, url: URL, body: Buf
     return preparedHeaders;
 }
 
+async function prepareUrl (testRun: TestRun, url: string | URL, callsiteName: string): Promise<URL> {
+    const currentPageUrl = new URL(await testRun.getCurrentUrl());
+    let preparedUrl: URL;
+
+    try {
+        preparedUrl = url instanceof URL
+            ? url
+            : new URL(url, currentPageUrl.hostname ? currentPageUrl.origin : void 0);
+    }
+    catch (err) {
+        throw new APIError(callsiteName, RUNTIME_ERRORS.requestUrlError, url);
+    }
+
+    return preparedUrl;
+}
+
 function prepareSearchParams (url: string, params?: Params): string {
     if (!params)
         return url;
@@ -140,14 +158,10 @@ function prepareSearchParams (url: string, params?: Params): string {
     return `${url}${(url.includes('?') ? '&' : '?')}${searchParams.toString()}`;
 }
 
-export async function processRequestOptions (testRun: TestRun, options: ExternalRequestOptions): Promise<RequestOptions> {
-    const currentPageUrl = new URL(await testRun.getCurrentUrl());
-    const url            = options.url instanceof URL
-        ? options.url
-        : new URL(options.url, currentPageUrl.hostname ? currentPageUrl.origin : void 0);
-
+export async function processRequestOptions (testRun: TestRun, options: ExternalRequestOptions, callsite: string): Promise<RequestOptions> {
     options.headers = options.headers || {};
 
+    const url     = await prepareUrl(testRun, options.url, callsite);
     const body    = transformBody(options.headers, options.body);
     const headers = await prepareHeaders(options.headers, url, body, testRun, options);
     let auth      = options.auth;

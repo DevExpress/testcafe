@@ -1,7 +1,6 @@
 import testRunTracker from '../api/test-run-tracker';
 import TestRunProxy from '../services/compiler/test-run-proxy';
 import ReExecutablePromise from '../utils/re-executable-promise';
-import { assertType, is } from '../errors/runtime/type-assertions';
 import { ClientFunctionAPIError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
 import { getCallsiteForMethod } from '../errors/get-callsite';
@@ -14,8 +13,9 @@ import {
 import dispatchRequest from './dispatchRequest';
 import validateOptions from './validate-request-options';
 
-const REST_METHODS: Method[] = ['get', 'post', 'delete', 'put', 'patch', 'head'];
-const REQUEST_GETTERS        = ['status', 'statusText', 'headers', 'body'];
+export const REST_METHODS: Method[] = ['get', 'post', 'delete', 'put', 'patch', 'head'];
+
+const REQUEST_GETTERS = ['status', 'statusText', 'headers', 'body'];
 
 const DEFAULT_EXECUTION_CALLSITE_NAME = '__$$request$$';
 
@@ -36,10 +36,6 @@ export default class RequestBuilder {
 
     private _getTestRun (): TestRun | TestRunProxy | null {
         return testRunTracker.resolveContextTestRun();
-    }
-
-    private _validateOptions (options: ExternalRequestOptions): void {
-        assertType(is.string, this.callsiteNames.execution, 'The "url" argument', options.url);
     }
 
     private _prepareOptions (urlOpt: string | ExternalRequestOptions, options: Partial<ExternalRequestOptions>): ExternalRequestOptions {
@@ -73,13 +69,13 @@ export default class RequestBuilder {
         }
 
         const promise = ReExecutablePromise.fromFn(async () => {
-            return dispatchRequest(testRun as TestRun, preparedOptions);
+            return dispatchRequest(testRun as TestRun, preparedOptions, this.callsiteNames.execution);
         });
 
         REQUEST_GETTERS.forEach(getter => {
             Object.defineProperty(promise, getter, {
                 get: () => ReExecutablePromise.fromFn(async () => {
-                    const response = await dispatchRequest(testRun as TestRun, preparedOptions);
+                    const response = await dispatchRequest(testRun as TestRun, preparedOptions, this.callsiteNames.execution);
 
                     return response[getter as keyof ResponseOptions];
                 }),

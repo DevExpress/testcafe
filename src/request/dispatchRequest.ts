@@ -8,8 +8,8 @@ import { processResponseData } from './process-response-data';
 const DEFAULT_STATUS      = 404;
 const DEFAULT_STATUS_TEXT = 'Not found.';
 
-async function dispatchRequest (testRun: TestRun, options: ExternalRequestOptions): Promise<ResponseOptions> {
-    const requestOptions = await processRequestOptions(testRun, options);
+async function dispatchRequest (testRun: TestRun, options: ExternalRequestOptions, callsite: string): Promise<ResponseOptions> {
+    const requestOptions = await processRequestOptions(testRun, options, callsite);
     const request        = new DestinationRequest(requestOptions);
     const dataWaiter     = new Promise<IncomingMessage | Error>(resolve => {
         request.on('response', (res: IncomingMessage) => resolve(res));

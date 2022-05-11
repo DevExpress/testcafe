@@ -1,6 +1,8 @@
-/*eslint-disable*/
 import { assertType, is } from '../errors/runtime/type-assertions';
 import { Dictionary } from '../configuration/interfaces';
+import { APIError } from '../errors/runtime';
+import { RUNTIME_ERRORS } from '../errors/types';
+import { REST_METHODS } from './request-builder';
 
 const isURLSearchParams = {
     name:      'URLSearchParams',
@@ -58,6 +60,9 @@ function validateOptions (options: Dictionary<any>, callsiteName: string, assert
         if (assertion.options)
             validateOptions(optionValue, callsiteName, assertion.options, optionName);
     }
+
+    if (options.method && !REST_METHODS.includes(options.method.toLowerCase()))
+        throw new APIError(callsiteName, RUNTIME_ERRORS.requestMethodError, options.method);
 }
 
 export default validateOptions;
