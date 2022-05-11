@@ -28,7 +28,7 @@ const focusDocument = ClientFunction(() => {
 });
 
 test('Button click', async t => {
-    await t.switchToIframe(Selector(iframeSelector));
+    await t.switchToIframe(iframeSelector);
     await t.click(Selector('#button', { timeout: 200 }));
 
     throw new Error('Test rejection expected');
