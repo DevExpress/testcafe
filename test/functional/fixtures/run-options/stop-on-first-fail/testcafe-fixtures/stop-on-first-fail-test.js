@@ -7,7 +7,7 @@ let testRunCount = 0;
 const updateTestRunCount = () => {
     testRunCount++;
 
-    fs.writeFileSync('testRunCount.txt', testRunCount);
+    fs.writeFileSync('testRunCount.txt', testRunCount.toString());
 };
 
 test('test1', async () => {

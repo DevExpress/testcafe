@@ -242,9 +242,10 @@ describe('Runner', () => {
                 expect(runner.configuration.getOption('reporter')[0]).to.deep.equal({ name: 'dashboard', options: TEST_DASHBOARD_SETTINGS });
             });
 
-            it('Should add the dashboard advertisement if reporter is not added', async () => {
+            it('Should add the dashboard advertisement if error appeared and reporter is not set', async () => {
                 consoleWrapper.wrap();
 
+                runner._hasTaskErrors = true;
                 runner._addDashBoardAdvertisementIfNeeded();
                 await runner._messageBus.emit('done');
 
@@ -253,10 +254,11 @@ describe('Runner', () => {
                 consoleWrapper.unwrap();
             });
 
-            it('Should add the dashboard advertisement if dashboard reporter is not added', async () => {
+            it('Should add the dashboard advertisement if added only spec reporter', async () => {
                 consoleWrapper.wrap();
 
-                runner.configuration.mergeOptions({ reporter: { name: 'json' } });
+                runner._hasTaskErrors = true;
+                runner.configuration.mergeOptions({ reporter: { name: 'spec' } });
                 runner._addDashBoardAdvertisementIfNeeded();
                 await runner._messageBus.emit('done');
 
@@ -268,7 +270,38 @@ describe('Runner', () => {
             it('Should not add the dashboard advertisement if dashboard reporter is added', async () => {
                 consoleWrapper.wrap();
 
+                runner._hasTaskErrors = true;
                 runner.configuration.mergeOptions({ reporter: [{ name: 'json' }, { name: 'dashboard' }] });
+                runner._addDashBoardAdvertisementIfNeeded();
+                await runner._messageBus.emit('done');
+
+                expect(consoleWrapper.messages.log).eql(null);
+
+                consoleWrapper.unwrap();
+            });
+
+            it('Should not add the dashboard advertisement if dashboard option is added', async () => {
+                consoleWrapper.wrap();
+
+                runner._hasTaskErrors = true;
+                runner.configuration.mergeOptions({
+                    dashboard: TEST_DASHBOARD_SETTINGS,
+                });
+
+                await runner._addDashboardReporterIfNeeded();
+                runner._addDashBoardAdvertisementIfNeeded();
+                await runner._messageBus.emit('done');
+
+                expect(consoleWrapper.messages.log).eql(null);
+
+                consoleWrapper.unwrap();
+            });
+
+            it('Should not add the dashboard advertisement if added reporter different from spec', async () => {
+                consoleWrapper.wrap();
+
+                runner._hasTaskErrors = true;
+                runner.configuration.mergeOptions({ reporter: [{ name: 'spec' }, { name: 'json' }] });
                 runner._addDashBoardAdvertisementIfNeeded();
                 await runner._messageBus.emit('done');
 
