@@ -164,11 +164,32 @@ async function setSendReportState (state: SendReportState): Promise<void> {
     success(resultMessage);
 }
 
+async function tryToRegisterInDashboard (): Promise<void> {
+    console.log(messages.TOKEN_NO_DEFAULT_FOUND);
+
+    const { launchConfigurationWizard } = await prompts({
+        type:    'confirm',
+        name:    'launchConfigurationWizard',
+        message: 'Do you want to launch the configuration wizard?',
+    });
+
+    if (!launchConfigurationWizard) {
+        console.log(messages.REGISTRATION_CANCELLED);
+
+        return;
+    }
+
+    await registerInDashboard();
+}
+
 export default async function (sendReportState: SendReportState): Promise<void> {
-    await dashboardConfigStorage.load();
+    const storageExists = await dashboardConfigStorage.load();
 
     if (sendReportState !== void 0) {
-        await setSendReportState(sendReportState);
+        if (storageExists)
+            await setSendReportState(sendReportState);
+        else
+            await tryToRegisterInDashboard();
 
         return;
     }

@@ -23,8 +23,13 @@ export default class DashboardConfigStorage {
         this._storage = new SafeStorage<DashboardConfigOptions>();
     }
 
-    public async load (): Promise<void> {
-        this.options = await this._storage.tryLoad() || DEFAULT_DASHBOARD_OPTIONS;
+    public async load (): Promise<boolean> {
+        const result        = await this._storage.tryLoad<DashboardConfigOptions>();
+        const storageExists = result !== void 0;
+
+        this.options = result || DEFAULT_DASHBOARD_OPTIONS;
+
+        return storageExists;
     }
 
     public async save (): Promise<void> {

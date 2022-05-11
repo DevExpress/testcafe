@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 
 const { expect }            = require('chai');
-const { noop }              = require('lodash');
 const chalk                 = require('chalk');
 const { prompts }           = require('prompts');
 const sinon                 = require('sinon');
@@ -20,6 +19,7 @@ let routeForImitateNetworkError   = null;
 let sentEmail                     = null;
 let sentToken                     = null;
 let savedOptions                  = null;
+let storageExists                 = true;
 
 const TEST_SERVER_PORT = 4000;
 
@@ -38,6 +38,7 @@ function cleanUpFlagsAndRecordedData () {
     sentEmail                     = null;
     sentToken                     = null;
     savedOptions                  = null;
+    storageExists                 = true;
 }
 
 function stubPrompts ({ textValues = [], confirmValues = [] } = {}) {
@@ -55,7 +56,7 @@ const createDashboardIntegrationMock = () => {
 
     const configStorageMock = {
         options: {},
-        load:    noop,
+        load:    () => storageExists,
 
         save: () => {
             savedOptions = configStorageMock.options;
@@ -307,21 +308,54 @@ describe('Dashboard integration', () => {
     });
 
     describe('On/off', () => {
-        it('On', async function () {
-            await dashboardIntegration('on');
+        describe('Token exists', () => {
+            it('On', async () => {
+                await dashboardIntegration('on');
 
-            expect(savedOptions.sendReport).eql(true);
-            expect(console.log.callCount).eql(1);
-            expect(console.log.firstCall.args[0]).contains(messages.SEND_REPORT_STATE_ON);
+                expect(savedOptions.sendReport).eql(true);
+                expect(console.log.callCount).eql(1);
+                expect(console.log.firstCall.args[0]).eql(chalk.green(messages.SEND_REPORT_STATE_ON));
 
+            });
+
+            it('Off', async () => {
+                await dashboardIntegration('off');
+
+                expect(savedOptions.sendReport).eql(false);
+                expect(console.log.callCount).eql(1);
+                expect(console.log.firstCall.args[0]).eql(chalk.green(messages.SEND_REPORT_STATE_OFF));
+            });
         });
 
-        it('Off', async function () {
-            await dashboardIntegration('off');
+        describe('Token not exists', () => {
+            it('Cancel on launch the configuration wizard', async () => {
+                stubPrompts();
 
-            expect(savedOptions.sendReport).eql(false);
-            expect(console.log.callCount).eql(1);
-            expect(console.log.firstCall.args[0]).contains(messages.SEND_REPORT_STATE_OFF);
+                await dashboardIntegration('on');
+
+                expect(console.log.callCount).eql(2);
+                expect(console.log.firstCall.args[0]).eql(messages.TOKEN_NO_DEFAULT_FOUND);
+                expect(console.log.secondCall.args[0]).eql(messages.REGISTRATION_CANCELLED);
+            });
+
+            it('Full flow', async () => {
+                stubPrompts({ textValues: [TEST_EMAIL, TEST_TOKEN], confirmValues: [true, true] });
+
+                await dashboardIntegration('on');
+
+                expect(console.log.callCount).eql(4);
+                expect(console.log.firstCall.args[0]).eql(messages.TOKEN_NO_DEFAULT_FOUND);
+                expect(console.log.secondCall.args[0]).eql(messages.REGISTRATION_ENTER_EMAIL_INVITATION);
+                expect(console.log.thirdCall.args[0]).eql(messages.REGISTRATION_EMAIL_SENT);
+
+                expect(console.log.getCall(3).args[0]).eql(
+                    chalk.green('You have successfully configured the TestCafe Dashboard reporter.\n' +
+                        'The next time you launch TestCafe, the framework will share test run data with TestCafe Dashboard.\n' +
+                        'View test results at https://dashboard.testcafe.io/runs/test-project.\n' +
+                        'Run "testcafe dashboard off" to disable this behavior.\n' +
+                        'Learn more at https://testcafe.io/dashboard-alpha.')
+                );
+            });
         });
     });
 });
