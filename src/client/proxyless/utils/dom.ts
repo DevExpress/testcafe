@@ -214,6 +214,10 @@ export function isElementInIframe (el: Element | Document, currentDocument?: Doc
     return window.document !== doc;
 }
 
+export function isIframeElement (el: Element): boolean {
+    return el instanceof HTMLIFrameElement;
+}
+
 export function isWindow (el: Node | Window | Document): el is Window {
     return 'pageYOffset' in el;
 }

@@ -20,7 +20,7 @@ const initializer: ClientFunctionAdapter = {
     getTagName:       domUtils.getTagName,
     getActiveElement: domUtils.getActiveElement,
     isIframeVisible:  isIframeVisible,
-    isIframeElement:  domUtils.isElementInIframe,
+    isIframeElement:  domUtils.isIframeElement,
 
     isOptionElementVisible: styleUtils.isOptionElementVisible,
     isElementVisible:       isElementVisible,
