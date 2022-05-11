@@ -53,11 +53,10 @@ describe('Request', () => {
         return runTests('testcafe-fixtures/request-test.js', 'Should execute API Key auth');
     });
 
-    it('Should rise an error if url is not string', function () {
-        return runTests('testcafe-fixtures/request-test.js', 'Should rise an error if url is not string', { shouldFail: true })
+    it('Should rise an error if url is not valid', function () {
+        return runTests('testcafe-fixtures/request-test.js', 'Should rise an error if url is not valid', { shouldFail: true })
             .catch(function (errs) {
-                expect(errs[0]).contains('The "url" argument (boolean) is not of expected type (string).');
-                expect(/> \d* \| {4}await Request\(true\);/.test(errs[0])).ok;
+                expect(errs[0]).contains('Requested url isn\'t valid (crash).');
             });
     });
 

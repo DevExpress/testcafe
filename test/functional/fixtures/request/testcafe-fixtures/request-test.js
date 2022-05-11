@@ -172,8 +172,8 @@ test('Should execute API Key auth', async (t) => {
     await t.expect(Request.post(`http://localhost:3000/api/auth/key`, options).body).eql('authorized');
 });
 
-test('Should rise an error if url is not string', async () => {
-    await Request(true);
+test('Should rise an error if url is not valid', async () => {
+    await Request('crash');
 });
 
 test('Should execute request with proxy', async (t) => {
