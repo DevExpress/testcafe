@@ -1799,6 +1799,35 @@ describe('API', function () {
             }
         });
 
+        it('Should raise an error if method of the Request option argument is not supported', async function () {
+            const testfile = resolve('test/server/data/test-suites/request-options-method-not-supported/testfile.js');
+
+            try {
+                await compile(testfile);
+
+                throw new Error('Promise rejection expected');
+            }
+            catch (err) {
+                assertAPIError(err, {
+                    stackTop: testfile,
+
+                    message: 'Cannot prepare tests due to the following error:\n\n' +
+                             'Request support only methods: GET, POST, PUT, PATCH, DELETE, HEAD. Actual method: (TEST).',
+
+                    callsite: '    1 |import { fixture, Request } from \'testcafe\';\n' +
+                              '    2 |\n' +
+                              '    3 |fixture `Test`;\n' +
+                              '    4 |\n' +
+                              ' >  5 |Request(\'http://localhost\', {\n' +
+                              '    6 |    method: \'TEST\',\n' +
+                              '    7 |});\n' +
+                              '    8 |\n' +
+                              '    9 |test(\'yo\', () => {\n' +
+                              '   10 |});',
+                });
+            }
+        });
+
         it('Should raise an error if headers of the Request option argument is not object', async function () {
             const testfile = resolve('test/server/data/test-suites/request-options-headers-not-object/testfile.js');
 
