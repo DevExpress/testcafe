@@ -1,5 +1,7 @@
 import { SafeStorage } from 'testcafe-safe-storage';
 
+
+// TODO: make this properties required
 export interface DashboardConfigOptions {
     token?: string;
     sendReport?: boolean;
