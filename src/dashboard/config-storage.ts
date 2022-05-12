@@ -1,13 +1,17 @@
 import { SafeStorage } from 'testcafe-safe-storage';
 
+
+// TODO: make this properties required
 export interface DashboardConfigOptions {
     token?: string;
     sendReport?: boolean;
 }
 
 const DEFAULT_DASHBOARD_OPTIONS: DashboardConfigOptions = {
-    token:      '',
-    sendReport: false,
+    token: '',
+
+    // NOTE: we should send reports to the dashboard until it is disabled explicitly
+    sendReport: true,
 };
 
 export default class DashboardConfigStorage {

@@ -222,7 +222,7 @@ describe('Runner', () => {
                 sendReport: true,
             };
 
-            it("Should add the 'dashboard' reporter if its options are specified", async () => {
+            it('Should add the "dashboard" reporter if its options are specified', async () => {
                 runner.configuration.mergeOptions({
                     dashboard: TEST_DASHBOARD_SETTINGS,
                 });
@@ -230,6 +230,34 @@ describe('Runner', () => {
                 await runner._addDashboardReporterIfNeeded();
 
                 expect(runner.configuration.getOption('reporter')[0]).to.deep.equal({ name: 'dashboard', options: TEST_DASHBOARD_SETTINGS });
+            });
+
+            it('Should add the "dashboard" reporter if the "sendReport" option is undefined', async () => {
+                runner.configuration.mergeOptions({
+                    dashboard: {
+                        ...TEST_DASHBOARD_SETTINGS,
+
+                        sendReport: void 0,
+                    },
+                });
+
+                await runner._addDashboardReporterIfNeeded();
+
+                expect(runner.configuration.getOption('reporter')[0].name).to.deep.equal('dashboard');
+            });
+
+            it('Should not add the "dashboard" reporter if the "sendReport" option is false', async () => {
+                runner.configuration.mergeOptions({
+                    dashboard: {
+                        ...TEST_DASHBOARD_SETTINGS,
+
+                        sendReport: false,
+                    },
+                });
+
+                await runner._addDashboardReporterIfNeeded();
+
+                expect(runner.configuration.getOption('reporter')).to.be.undefined;
             });
 
             it("Should add the 'dashboard' reporter if its options are specified in configuration storage", async () => {
