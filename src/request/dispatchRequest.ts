@@ -11,17 +11,13 @@ const DEFAULT_STATUS_TEXT = 'Not found.';
 async function dispatchRequest (testRun: TestRun, options: ExternalRequestOptions, callsite: string): Promise<ResponseOptions> {
     const requestOptions = await processRequestOptions(testRun, options, callsite);
     const request        = new DestinationRequest(requestOptions);
-    const dataWaiter     = new Promise<IncomingMessage | Error>(resolve => {
+    const dataWaiter     = new Promise<IncomingMessage>((resolve, reject) => {
         request.on('response', (res: IncomingMessage) => resolve(res));
-        request.on('error', (err: Error) => resolve(err));
-        request.on('fatalError', (err: string) => resolve(new Error(err)));
+        request.on('error', (err: Error) => reject(err));
+        request.on('fatalError', (err: string) => reject(new Error(err)));
     });
 
     const data = await dataWaiter;
-
-    if (data instanceof Error)
-        throw data;
-
     const body = await processResponseData(data, options.processResponse);
 
     return {
