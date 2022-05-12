@@ -134,9 +134,5 @@ export default class SessionController extends Session {
 
         delete ACTIVE_SESSIONS_MAP[testRun.browserConnection.id];
     }
-
-    getProxyUrl (url) {
-        return super.getProxyUrl(url);
-    }
 }
 

@@ -118,8 +118,8 @@ async function prepareHeaders (headers: OutgoingHttpHeaders, url: URL, body: Buf
     return preparedHeaders;
 }
 
-async function prepareUrl (testRun: TestRun, url: string | URL, callsiteName: string): Promise<URL> {
-    const currentPageUrl = new URL(await testRun.getCurrentUrl());
+async function prepareUrl (testRun: TestRun, url: string | URL, origin: string, callsiteName: string): Promise<URL> {
+    const currentPageUrl = new URL(origin);
     let preparedUrl: URL;
 
     try {
@@ -161,7 +161,8 @@ function prepareSearchParams (url: string, params?: Params): string {
 export async function processRequestOptions (testRun: TestRun, options: ExternalRequestOptions, callsite: string): Promise<RequestOptions> {
     options.headers = options.headers || {};
 
-    const url     = await prepareUrl(testRun, options.url, callsite);
+    const origin  = await testRun.getCurrentUrl();
+    const url     = await prepareUrl(testRun, options.url, origin, callsite);
     const body    = transformBody(options.headers, options.body);
     const headers = await prepareHeaders(options.headers, url, body, testRun, options);
     let auth      = options.auth;
@@ -182,7 +183,7 @@ export async function processRequestOptions (testRun: TestRun, options: External
 
     return new RequestOptions({
         method:                options.method || DEFAULT_REQUEST_METHOD,
-        url:                   testRun.session.getProxyUrl(url.href),
+        url:                   testRun.session.getProxyUrl(url.href, origin),
         protocol:              url.protocol,
         hostname:              url.hostname,
         host:                  url.host,
