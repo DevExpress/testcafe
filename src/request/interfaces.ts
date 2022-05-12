@@ -32,7 +32,8 @@ export interface ExternalRequestOptions {
     timeout?: number;
     withCredentials?: boolean;
     auth?: AuthOptions;
-    maxRedirects?: number;
+    // NOTE: Isn't implemented
+    // maxRedirects?: number;
     proxy?: ProxyOptions;
     processResponse?: boolean;
 }

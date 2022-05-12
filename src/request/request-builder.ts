@@ -15,7 +15,7 @@ import validateOptions from './validate-request-options';
 
 export const REST_METHODS: Method[] = ['get', 'post', 'delete', 'put', 'patch', 'head'];
 
-const REQUEST_GETTERS = ['status', 'statusText', 'headers', 'body'];
+const REQUEST_GETTERS: (keyof ResponseOptions)[] = ['status', 'statusText', 'headers', 'body'];
 
 const DEFAULT_EXECUTION_CALLSITE_NAME = '__$$request$$';
 
@@ -77,7 +77,7 @@ export default class RequestBuilder {
                 get: () => ReExecutablePromise.fromFn(async () => {
                     const response = await dispatchRequest(testRun as TestRun, preparedOptions, this.callsiteNames.execution);
 
-                    return response[getter as keyof ResponseOptions];
+                    return response[getter];
                 }),
             });
         });
