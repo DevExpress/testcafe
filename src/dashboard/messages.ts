@@ -1,8 +1,9 @@
 export default {
     REGISTRATION_CANCELLED:                   'The setup process has been aborted.',
-    REGISTRATION_ENTER_EMAIL_INVITATION:      "Welcome to the TestCafe Dashboard setup wizard.\nThis wizard requires an Internet connection.\nEnter your email address to receive a TestCafe Dashboard authentication link.\nIf you don't have a TestCafe Dashboard account, the link will prompt you to sign up.",
+    REGISTRATION_ENTER_EMAIL_INVITATION:      "Welcome to the TestCafe Dashboard setup wizard. This wizard requires an Internet connection.\n\nEnter your email address to receive a TestCafe Dashboard authentication link.\nIf you don't have a TestCafe Dashboard account, the link will prompt you to sign up.\n\n",
     REGISTRATION_EMAIL_SENDING_NETWORK_ERROR: 'Error: cannot request the log-in email. Please check your internet connection.',
-    REGISTRATION_EMAIL_SENT:                  'Check your inbox for the TestCafe Dashboard log-in email. Follow the enclosed link to open the Token Setup page.\nProject tokens are unique authorization keys that let you upload data to Dashboard. Copy the project token and paste it here.',
+    REGISTRATION_EMAIL_SENT:                  'Check your inbox for the TestCafe Dashboard log-in email. Follow the enclosed link to open the Token Setup page.\n\nProject tokens are unique authorization keys that let you upload data to Dashboard. Copy the project token and paste it here.\n\n',
+    REGISTRATION_FINISHED:                    'You have successfully configured the TestCafe Dashboard reporter.\nThe next time you launch TestCafe, the framework will share test run data with TestCafe Dashboard.',
     PROMPT_EMAIL_CAPTION:                     'Email:',
     PROMPT_TOKEN_CAPTION:                     'Enter the project token:',
     PROMPT_INVALID_EMAIL:                     'Please enter a valid email address',

@@ -27,3 +27,9 @@ export interface ReporterPluginSource {
 export interface ReporterPluginFactory {
     (options?: Record<string, any>): ReporterPlugin;
 }
+
+export interface ReporterSymbols {
+    ok: string;
+    err: string;
+}
+
