@@ -237,7 +237,7 @@ describe('Runner', () => {
                     dashboard: {
                         ...TEST_DASHBOARD_SETTINGS,
 
-                        sendReport: void 0
+                        sendReport: void 0,
                     },
                 });
 
@@ -248,10 +248,10 @@ describe('Runner', () => {
 
             it('Should not add the "dashboard" reporter if the "sendReport" option is false', async () => {
                 runner.configuration.mergeOptions({
-                    dashboard: { 
+                    dashboard: {
                         ...TEST_DASHBOARD_SETTINGS,
-                        
-                        sendReport: false
+
+                        sendReport: false,
                     },
                 });
 
