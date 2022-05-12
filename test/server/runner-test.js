@@ -243,7 +243,7 @@ describe('Runner', () => {
 
                 await runner._addDashboardReporterIfNeeded();
 
-                expect(runner.configuration.getOption('reporter')[0]).to.deep.equal({ name: 'dashboard', options: TEST_DASHBOARD_SETTINGS });
+                expect(runner.configuration.getOption('reporter')[0].name).to.deep.equal('dashboard');
             });
 
             it('Should not add the "dashboard" reporter if the "sendReport" option is false', async () => {
@@ -257,7 +257,7 @@ describe('Runner', () => {
 
                 await runner._addDashboardReporterIfNeeded();
 
-                expect(runner.configuration.getOption('reporter')[0]).to.be.undefined;
+                expect(runner.configuration.getOption('reporter')).to.be.undefined;
             });
 
             it("Should add the 'dashboard' reporter if its options are specified in configuration storage", async () => {
