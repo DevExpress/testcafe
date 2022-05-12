@@ -9,7 +9,9 @@ export interface DashboardConfigOptions {
 
 const DEFAULT_DASHBOARD_OPTIONS: DashboardConfigOptions = {
     token:      '',
-    sendReport: false,
+
+    // NOTE: we should send reports to the dashboard until it is disabled explicitly
+    sendReport: true,
 };
 
 export default class DashboardConfigStorage {
