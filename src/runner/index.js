@@ -527,7 +527,7 @@ export default class Runner extends EventEmitter {
 
         // NOTE: we should send reports when sendReport is undefined
         // TODO: make this option binary instead of tri-state
-        if (dashboardOptions.sendReport === false)
+        if (!dashboardOptions.token || dashboardOptions.sendReport === false)
             return;
 
         if (!reporterOptions)
