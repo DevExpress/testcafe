@@ -965,6 +965,8 @@ export default class Driver extends serviceUtils.EventEmitter {
                 if (!domUtils.isIframeElement(iframe))
                     throw new ActionElementNotIframeError();
 
+                // NOTE: RG-4558 Previously we waited for iframe become visible when execute selector
+                // We need to add a timeout to be sure that iframe driver is initialized
                 const childLinkResponseTimeout = hasSpecificTimeout
                     ? commandSelectorTimeout
                     : Math.max(commandSelectorTimeout, WAIT_FOR_IFRAME_DRIVER_RESPONSE_TIMEOUT);
