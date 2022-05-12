@@ -11,7 +11,7 @@ export default {
     TOKEN_UPDATE_CANCELLED:                   'Process aborted. The default token has not been updated.',
     TOKEN_UPDATED:                            'The default TestCafe Dashboard token has been updated.',
     TOKEN_UPDATING_NOT_SEND_REPORT:           'You have previously disabled the TestCafe Dashboard reporter. The changes you make will not come into effect unless you turn the reporter back on. To turn the reporter on, run the `testcafe dashboard on` command.',
-    TOKEN_NO_DEFAULT_FOUND:                   'No default token found. You attempted to enable the Dashboard reporter but did not configure it.',
+    TOKEN_NO_DEFAULT_FOUND:                   'No default token found. You attempted to enable the Dashboard reporter but did not configure it.\n',
     SEND_REPORT_STATE_ON:                     'TestCafe Dashboard reporter enabled. From now on, this TestCafe installation will upload test report data to TestCafe Dashboard.',
     SEND_REPORT_STATE_OFF:                    'TestCafe Dashboard reporter disabled. From now on, this TestCafe installation will no longer upload test report data to TestCafe Dashboard.',
 };

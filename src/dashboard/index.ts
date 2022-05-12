@@ -171,6 +171,7 @@ async function tryToRegisterInDashboard (): Promise<void> {
         type:    'confirm',
         name:    'launchConfigurationWizard',
         message: 'Do you want to launch the configuration wizard?',
+        initial: true,
     });
 
     if (!launchConfigurationWizard) {
