@@ -165,7 +165,7 @@ async function setSendReportState (state: SendReportState): Promise<void> {
 }
 
 async function tryToRegisterInDashboard (): Promise<void> {
-    console.log(messages.TOKEN_NO_DEFAULT_FOUND);
+    info(messages.TOKEN_NO_DEFAULT_FOUND);
 
     const { launchConfigurationWizard } = await prompts({
         type:    'confirm',
@@ -174,7 +174,7 @@ async function tryToRegisterInDashboard (): Promise<void> {
     });
 
     if (!launchConfigurationWizard) {
-        console.log(messages.REGISTRATION_CANCELLED);
+        error(messages.REGISTRATION_CANCELLED);
 
         return;
     }

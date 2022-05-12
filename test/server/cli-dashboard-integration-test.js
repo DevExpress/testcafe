@@ -314,8 +314,7 @@ describe('Dashboard integration', () => {
 
                 expect(savedOptions.sendReport).eql(true);
                 expect(console.log.callCount).eql(1);
-                expect(console.log.firstCall.args[0]).eql(chalk.green(messages.SEND_REPORT_STATE_ON));
-
+                expect(console.log.firstCall.args[0]).contains(messages.SEND_REPORT_STATE_ON);
             });
 
             it('Off', async () => {
@@ -323,19 +322,23 @@ describe('Dashboard integration', () => {
 
                 expect(savedOptions.sendReport).eql(false);
                 expect(console.log.callCount).eql(1);
-                expect(console.log.firstCall.args[0]).eql(chalk.green(messages.SEND_REPORT_STATE_OFF));
+                expect(console.log.firstCall.args[0]).contains(messages.SEND_REPORT_STATE_OFF);
             });
         });
 
         describe('Token not exists', () => {
+            beforeEach(() => {
+                storageExists = false;
+            });
+
             it('Cancel on launch the configuration wizard', async () => {
                 stubPrompts();
 
                 await dashboardIntegration('on');
 
                 expect(console.log.callCount).eql(2);
-                expect(console.log.firstCall.args[0]).eql(messages.TOKEN_NO_DEFAULT_FOUND);
-                expect(console.log.secondCall.args[0]).eql(messages.REGISTRATION_CANCELLED);
+                expect(console.log.firstCall.args[0]).contains(messages.TOKEN_NO_DEFAULT_FOUND);
+                expect(console.log.secondCall.args[0]).contains(messages.REGISTRATION_CANCELLED);
             });
 
             it('Full flow', async () => {
@@ -343,18 +346,15 @@ describe('Dashboard integration', () => {
 
                 await dashboardIntegration('on');
 
-                expect(console.log.callCount).eql(4);
-                expect(console.log.firstCall.args[0]).eql(messages.TOKEN_NO_DEFAULT_FOUND);
-                expect(console.log.secondCall.args[0]).eql(messages.REGISTRATION_ENTER_EMAIL_INVITATION);
-                expect(console.log.thirdCall.args[0]).eql(messages.REGISTRATION_EMAIL_SENT);
-
-                expect(console.log.getCall(3).args[0]).eql(
-                    chalk.green('You have successfully configured the TestCafe Dashboard reporter.\n' +
-                        'The next time you launch TestCafe, the framework will share test run data with TestCafe Dashboard.\n' +
-                        'View test results at https://dashboard.testcafe.io/runs/test-project.\n' +
-                        'Run "testcafe dashboard off" to disable this behavior.\n' +
-                        'Learn more at https://testcafe.io/dashboard-alpha.')
-                );
+                expect(console.log.callCount).eql(6);
+                expect(console.log.firstCall.args[0]).contains(messages.TOKEN_NO_DEFAULT_FOUND);
+                expect(console.log.secondCall.args[0]).contains(messages.REGISTRATION_ENTER_EMAIL_INVITATION);
+                expect(console.log.thirdCall.args[0]).contains(messages.REGISTRATION_EMAIL_SENT);
+                expect(console.log.getCall(3).args[0]).contains(messages.REGISTRATION_FINISHED.split('\n')[0]);
+                expect(console.log.getCall(4).args[0]).contains('View test results at:\n');
+                expect(console.log.getCall(4).args[0]).contains(`${chalk.underline.blueBright('https://dashboard.testcafe.io/runs/test-project')}`);
+                expect(console.log.getCall(5).args[0]).contains(`Run ${chalk.black.bgWhiteBright('testcafe dashboard off')} to disable this behavior.`);
+                expect(console.log.getCall(5).args[0]).contains(`Learn more at:\n${chalk.underline.blueBright('https://testcafe.io/dashboard-alpha')}`);
             });
         });
     });
