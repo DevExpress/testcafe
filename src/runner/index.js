@@ -318,11 +318,12 @@ export default class Runner extends EventEmitter {
 
     async _validateBrowsers () {
         const browsers = this.configuration.getOption(OPTION_NAMES.browsers);
+        const disableScreenshots = this.configuration.getOption(OPTION_NAMES.disableScreenshots);
 
         if (!browsers || Array.isArray(browsers) && !browsers.length)
             throw new GeneralError(RUNTIME_ERRORS.browserNotSet);
 
-        if (OS.mac)
+        if (OS.mac && !disableScreenshots)
             await this._checkRequiredPermissions(browsers);
 
         if (OS.linux && !detectDisplay())
