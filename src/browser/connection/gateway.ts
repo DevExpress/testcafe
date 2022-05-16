@@ -99,14 +99,14 @@ export default class BrowserConnectionGateway {
     }
 
     // Route handlers
-    private static _onConnection (req: IncomingMessage, res: ServerResponse, connection: BrowserConnection): void {
+    private static async _onConnection (req: IncomingMessage, res: ServerResponse, connection: BrowserConnection): Promise<void> {
         if (connection.isReady())
             respond500(res, 'The connection is already established.');
 
         else {
             const userAgent = req.headers['user-agent'] as string;
 
-            connection.establish(userAgent);
+            await connection.establish(userAgent);
             redirect(res, connection.idleUrl);
         }
     }
