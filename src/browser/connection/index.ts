@@ -439,9 +439,9 @@ export default class BrowserConnection extends EventEmitter {
         this.emit(BrowserConnectionStatus.closed);
     }
 
-    public establish (userAgent: string): void {
-        this.status                      = BrowserConnectionStatus.ready;
-        this.browserInfo.parsedUserAgent = parseUserAgent(userAgent);
+    public async establish (userAgent: string): Promise<void> {
+        this.status  = BrowserConnectionStatus.ready;
+        this.browserInfo.parsedUserAgent = parseUserAgent(userAgent, await this.provider.getOSInfo(this.id));
 
         this._waitForHeartbeat();
         this.emit('ready');
