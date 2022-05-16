@@ -168,7 +168,7 @@ export class CommandFormatter {
         this._elements = Array.isArray(decoded) ? decoded : [decoded];
     }
 
-    private static _getModifiedOptions (commandOptions: object): Dictionary<object> | null {
+    private static _getModifiedOptions (commandOptions: object): Dictionary<object> {
         const constructor    = commandOptions.constructor as ObjectConstructor;
         const defaultOptions = new constructor();
 

@@ -27,7 +27,7 @@ function diff (source: Dictionary<object>, modified: Dictionary<object>, result:
     }
 }
 
-export default (source: Dictionary<object>, modified: Dictionary<object>): object => {
+export default (source: Dictionary<object>, modified: Dictionary<object>): Dictionary<object> => {
     const result = {};
 
     if (isObjectLike(source) && isObjectLike(modified))
