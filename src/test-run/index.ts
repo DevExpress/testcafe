@@ -253,7 +253,7 @@ export default class TestRun extends AsyncEventEmitter {
     private asyncJsExpressionCallsites: Map<string, CallsiteRecord>;
     public readonly browser: Browser;
     private readonly _messageBus?: MessageBus;
-    private _clientEnvironmentPrepared: boolean = false;
+    private _clientEnvironmentPrepared = false;
     public readonly startRunExecutionTime?: Date;
 
     public constructor ({ test, browserConnection, screenshotCapturer, globalWarningLog, opts, compilerService, messageBus, startRunExecutionTime }: TestRunInit) {

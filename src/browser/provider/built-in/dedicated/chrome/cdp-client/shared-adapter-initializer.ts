@@ -94,7 +94,7 @@ initializeAdapter({
             createMouseClickStrategy,
         },
 
-        _ensureWindowAndCursorForLegacyTests () {
+        _ensureWindowAndCursorForLegacyTests () { // eslint-disable-line no-empty-function
         },
     },
 });

@@ -17,9 +17,9 @@ export default class ClientFunctionNodeTransform implements Transform {
         return false;
     }
 
-    public toSerializable (): void {
+    public toSerializable (): void { // eslint-disable-line @typescript-eslint/no-empty-function
     }
 
-    public fromSerializable (): void {
+    public fromSerializable (): void { // eslint-disable-line @typescript-eslint/no-empty-function
     }
 }

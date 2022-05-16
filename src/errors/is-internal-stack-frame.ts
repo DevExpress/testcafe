@@ -31,7 +31,7 @@ const INTERNAL_INCLUDES_PATH_SEGMENTS = [
     TESTCAFE_HAMMERHEAD,
 ];
 
-function isInternalFile (filename: string = ''): boolean {
+function isInternalFile (filename = ''): boolean {
     return !filename ||
         !filename.includes(sep) ||
         INTERNAL_INCLUDES_PATH_SEGMENTS.some(pathSegment => filename.includes(pathSegment)) ||

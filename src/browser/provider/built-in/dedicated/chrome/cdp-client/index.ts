@@ -181,7 +181,7 @@ export class BrowserClient {
         });
     }
 
-    private async _evaluateRuntime (client: remoteChrome.ProtocolApi, expression: string, returnByValue: boolean = false): Promise<Protocol.Runtime.EvaluateResponse> {
+    private async _evaluateRuntime (client: remoteChrome.ProtocolApi, expression: string, returnByValue = false): Promise<Protocol.Runtime.EvaluateResponse> {
         return client.Runtime.evaluate({ expression, returnByValue });
     }
 

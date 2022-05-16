@@ -13,6 +13,6 @@ export default class SelectorElementActionTransform implements Transform {
         return new ElementActionSnapshot(node);
     }
 
-    public fromSerializable (): void {
+    public fromSerializable (): void { // eslint-disable-line @typescript-eslint/no-empty-function
     }
 }

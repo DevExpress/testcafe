@@ -39,6 +39,6 @@ export default class SelectorNodeTransform implements Transform {
         return snapshot;
     }
 
-    public fromSerializable (): void {
+    public fromSerializable (): void { // eslint-disable-line no-empty-function
     }
 }

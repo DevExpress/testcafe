@@ -8,7 +8,7 @@ function getFullPropertyPath (property: string, parentProperty: string): string 
     return property;
 }
 
-function diff (source: Dictionary<object>, modified: Dictionary<object>, result: Dictionary<object>, parentProperty: string = ''): void {
+function diff (source: Dictionary<object>, modified: Dictionary<object>, result: Dictionary<object>, parentProperty = ''): void {
     for (const property in source) {
         const fullPropertyPath = getFullPropertyPath(property, parentProperty);
 
@@ -27,7 +27,7 @@ function diff (source: Dictionary<object>, modified: Dictionary<object>, result:
     }
 }
 
-export default (source: Dictionary<object>, modified: Dictionary<object>) => {
+export default (source: Dictionary<object>, modified: Dictionary<object>): object => {
     const result = {};
 
     if (isObjectLike(source) && isObjectLike(modified))
