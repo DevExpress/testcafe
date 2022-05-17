@@ -73,6 +73,7 @@ export default class Task extends AsyncEventEmitter {
             pathPattern,
             fullPage,
             thumbnails,
+            messageBus,
         });
 
         this.fixtureHookController = new FixtureHookController(tests, browserConnectionGroups.length);

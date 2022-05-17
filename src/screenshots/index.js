@@ -4,9 +4,16 @@ import Capturer from './capturer';
 import PathPattern from '../utils/path-pattern';
 import getCommonPath from '../utils/get-common-path';
 import DEFAULT_SCREENSHOT_EXTENSION from './default-extension';
+import createSafeListener from '../utils/create-safe-listener';
+import debug from 'debug';
+import { EventEmitter } from 'events';
 
-export default class Screenshots {
-    constructor ({ enabled, path, pathPattern, fullPage, thumbnails }) {
+const DEBUG_LOGGER = debug('testcafe:screenshots');
+
+export default class Screenshots extends EventEmitter {
+    constructor ({ enabled, path, pathPattern, fullPage, thumbnails, messageBus }) {
+        super();
+
         this.enabled            = enabled;
         this.screenshotsPath    = path;
         this.screenshotsPattern = pathPattern;
@@ -14,6 +21,23 @@ export default class Screenshots {
         this.thumbnails         = thumbnails;
         this.testEntries        = [];
         this.now                = moment();
+
+        this._assignEventHandlers(messageBus);
+    }
+
+    _createSafeListener (listener) {
+        return createSafeListener(this, listener, DEBUG_LOGGER);
+    }
+
+    _assignEventHandlers (messageBus) {
+        messageBus.once('start', this._createSafeListener(this._onMessageBusStart));
+        messageBus.once('done', this._createSafeListener(this._onMessageBusDone));
+    }
+
+    async _onMessageBusStart () {
+    }
+
+    async _onMessageBusDone () {
     }
 
     _addTestEntry (test) {
