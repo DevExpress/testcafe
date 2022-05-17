@@ -14,6 +14,7 @@ import {
     readFile,
     readPngFile,
     stat,
+    writeFile,
     writePng,
 } from '../utils/promisified-functions';
 
@@ -171,7 +172,7 @@ export default class Capturer {
                 return;
 
             await makeDir(dirname(screenshotPath));
-            await writePng(screenshotPath, croppedImage ? croppedImage : image);
+            await writeFile(screenshotPath, screenshotData);
 
             if (thumbnails)
                 await generateThumbnail(screenshotPath, thumbnailPath);
