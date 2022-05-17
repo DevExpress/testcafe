@@ -1,7 +1,6 @@
 const expect             = require('chai').expect;
 const config             = require('../../config.js');
 const assertionHelper    = require('../../assertion-helper.js');
-const { isBuffer }       = require('lodash');
 const { createReporter } = require('../../utils/reporter');
 
 const SCREENSHOT_PATH_MESSAGE_TEXT       = 'Screenshot: ___test-screenshots___';
@@ -155,7 +154,7 @@ describe('Screenshots on fails', function () {
                 });
 
                 expect(assertionHelper.isScreenshotDirExists()).eql(true);
-                expect(isBuffer(testDoneScreenshots[0].screenshotData)).eql(true);
+                expect(Buffer.isBuffer(testDoneScreenshots[0].screenshotData)).eql(true);
                 expect(testDoneScreenshots[0].screenshotData.length).eql(6611);
             });
 
@@ -171,7 +170,7 @@ describe('Screenshots on fails', function () {
                 });
 
                 expect(assertionHelper.isScreenshotDirExists()).eql(false);
-                expect(isBuffer(testDoneScreenshots[0].screenshotData)).eql(true);
+                expect(Buffer.isBuffer(testDoneScreenshots[0].screenshotData)).eql(true);
                 expect(testDoneScreenshots[0].screenshotData.length).eql(6611);
                 delete testCafe.configuration._options.screenshots;
             });
