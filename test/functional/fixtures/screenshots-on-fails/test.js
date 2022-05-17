@@ -155,7 +155,7 @@ describe('Screenshots on fails', function () {
 
                 expect(assertionHelper.isScreenshotDirExists()).eql(true);
                 expect(Buffer.isBuffer(testDoneScreenshots[0].screenshotData)).eql(true);
-                expect(testDoneScreenshots[0].screenshotData.length).eql(6611);
+                expect(testDoneScreenshots[0].screenshotData.length).greaterThan(1000);
             });
 
             it("Shouldn't save screenshot data to the directory", async () => {
@@ -171,7 +171,7 @@ describe('Screenshots on fails', function () {
 
                 expect(assertionHelper.isScreenshotDirExists()).eql(false);
                 expect(Buffer.isBuffer(testDoneScreenshots[0].screenshotData)).eql(true);
-                expect(testDoneScreenshots[0].screenshotData.length).eql(6611);
+                expect(testDoneScreenshots[0].screenshotData.length).greaterThan(1000);
                 delete testCafe.configuration._options.screenshots;
             });
         });
