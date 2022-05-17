@@ -14,6 +14,7 @@ import {
 
 import TestRunVideoRecorder from './test-run-video-recorder';
 import { EventEmitter } from 'events';
+import createSafeListener from '../utils/create-safe-listener';
 
 const DEBUG_LOGGER = debug('testcafe:video-recorder');
 
@@ -45,16 +46,7 @@ export default class VideoRecorder extends EventEmitter {
     }
 
     _createSafeListener (listener) {
-        return async (...args) => {
-            try {
-                return await listener.apply(this, args);
-            }
-            catch (error) {
-                DEBUG_LOGGER(listener && listener.name, error);
-
-                return void 0;
-            }
-        };
+        return createSafeListener(this, listener, DEBUG_LOGGER);
     }
 
     _assignEventHandlers (browserJob) {
