@@ -187,10 +187,11 @@ export default class ReporterPluginHost {
     }
 
     // NOTE: It's an optional method
-    public async init (): Promise<void> {
+    public async init (): Promise<void> { // eslint-disable-line @typescript-eslint/no-empty-function
+        // Optional
     }
 
     // NOTE: It's an optional method
-    public async reportWarnings (/* warnings */): Promise<void> {
+    public async reportWarnings (/* warnings */): Promise<void> { // eslint-disable-line @typescript-eslint/no-empty-function
     }
 }

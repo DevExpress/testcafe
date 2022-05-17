@@ -7,9 +7,6 @@ interface ChromeCdpEventSequenceEventOptions {
 }
 
 class ChromeCdpEventSequence {
-    public constructor () {
-    }
-
     public async run (currentElement: ServerNode, prevElement: ServerNode, options: ChromeCdpEventSequenceEventOptions): Promise<void> {
         const { Input } = clientsManager.getClient();
 

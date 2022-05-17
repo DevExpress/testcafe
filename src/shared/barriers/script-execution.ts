@@ -42,7 +42,7 @@ export default class ScriptExecutionBarrier<S> {
         this._scripts.set(script, loadingTimeout);
     }
 
-    private _onScriptLoadedOrFailed (script: S, isTimeout: boolean = false): void {
+    private _onScriptLoadedOrFailed (script: S, isTimeout = false): void {
         if (!this._scripts.has(script))
             return;
 

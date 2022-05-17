@@ -20,7 +20,7 @@ interface RequestOptions {
 
 export class IPCProxy extends EventEmitter {
     private _transport: IPCTransport;
-    private _requestCounter: number = 0;
+    private _requestCounter = 0;
     private readonly _handlers: { [name: string]: Function };
     private _stopped: boolean;
 

@@ -55,7 +55,7 @@ function calculatePrettyUserAgent (browser: ParsedComponent, os: ParsedComponent
     return `${browser.name} ${browser.version} / ${os.name} ${os.version}`;
 }
 
-export default function parseUserAgent (userAgent: string = ''): ParsedUserAgent {
+export default function parseUserAgent (userAgent = ''): ParsedUserAgent {
     const parsedUserAgent = userAgent ? Bowser.parse(userAgent) : EMPTY_PARSED_USER_AGENT;
     const browser         = calculateBrowser(parsedUserAgent.browser);
     const os              = calculateOs(parsedUserAgent.os);

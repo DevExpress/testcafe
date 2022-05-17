@@ -93,10 +93,25 @@
     "linebreak-style": [2, "unix"],
     "no-duplicate-imports": 2,
     "comma-dangle": ["error", "always-multiline"],
+    "prefer-rest-params": 0,
+    "prefer-spread": 0,
     "@typescript-eslint/no-extra-parens": 2,
     "@typescript-eslint/no-use-before-define": [2, "nofunc"],
     "@typescript-eslint/no-var-requires": [0],
-    "@typescript-eslint/explicit-function-return-type": [2, { "allowExpressions": true }],
-    "@typescript-eslint/no-unused-vars": 2
-  }
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-unused-vars": 2,
+    "@typescript-eslint/no-empty-function": 0,
+    "@typescript-eslint/no-this-alias": 0
+  },
+  overrides: [
+    {
+      files: ["*.ts"],
+      rules: {
+        "@typescript-eslint/explicit-function-return-type": [2, { "allowExpressions": true }],
+        "@typescript-eslint/no-empty-function": 2,
+        "prefer-spread": 2,
+        "@typescript-eslint/ban-ts-ignore": 0
+      }
+    }
+  ]
 }

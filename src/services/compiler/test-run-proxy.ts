@@ -39,7 +39,7 @@ class TestRunProxy extends AsyncEventEmitter {
     public readonly observedCallsites: ObservedCallsitesStorage;
     public readonly warningLog: WarningLog;
     public fixtureCtx: object;
-    public debugging: boolean = false;
+    public debugging = false;
     private readonly dispatcher: TestRunDispatcherProtocol;
     public ctx: object;
     private readonly _options: Dictionary<OptionValue>;
