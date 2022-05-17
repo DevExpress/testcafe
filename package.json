@@ -152,7 +152,6 @@
     "unquote": "^1.1.1"
   },
   "devDependencies": {
-    "@belym.a.2105/broken-link-checker": "^0.7.9",
     "@ffmpeg-installer/ffmpeg": "^1.0.17",
     "@rollup/plugin-alias": "^3.1.1",
     "@rollup/plugin-commonjs": "^11.0.2",
