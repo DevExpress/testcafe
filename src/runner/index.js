@@ -9,6 +9,7 @@ import {
     pull as remove,
     isFunction,
     uniq,
+    castArray,
 } from 'lodash';
 
 import Bootstrapper from './bootstrapper';
@@ -345,7 +346,7 @@ export default class Runner extends EventEmitter {
     }
 
     _getScreenshotOptions () {
-        let { path, pathPattern } = this.configuration.getOption(OPTION_NAMES.screenshots) || {};
+        let { path, pathPattern, takeOnFails } = this.configuration.getOption(OPTION_NAMES.screenshots) || {};
 
         if (!path)
             path = this.configuration.getOption(OPTION_NAMES.screenshotPath);
@@ -353,7 +354,10 @@ export default class Runner extends EventEmitter {
         if (!pathPattern)
             pathPattern = this.configuration.getOption(OPTION_NAMES.screenshotPathPattern);
 
-        return { path, pathPattern };
+        if (!takeOnFails)
+            takeOnFails = false;
+
+        return { path, pathPattern, takeOnFails };
     }
 
     _validateScreenshotOptions () {
@@ -527,6 +531,14 @@ export default class Runner extends EventEmitter {
             dashboardReporter.options = dashboardOptions;
 
         this.configuration.mergeOptions({ [OPTION_NAMES.reporter]: reporterOptions });
+    }
+
+    _turnOnScreenshotsIfNeeded () {
+        const { takeOnFails } = this._getScreenshotOptions();
+        const reporterOptions = this.configuration.getOption(OPTION_NAMES.reporter);
+
+        if (!takeOnFails && reporterOptions && castArray(reporterOptions).some(reporter => reporter.name === DASHBOARD_REPORTER_NAME))
+            this.configuration.mergeOptions({ [OPTION_NAMES.screenshots]: { takeOnFails: true, autoTakeOnFails: true } });
     }
 
     async _getDashboardOptions () {
@@ -735,6 +747,7 @@ export default class Runner extends EventEmitter {
             .then(() => this._setConfigurationOptions())
             .then(async () => {
                 await this._addDashboardReporterIfNeeded();
+                await this._turnOnScreenshotsIfNeeded();
             })
             .then(() => Reporter.getReporterPlugins(this.configuration.getOption(OPTION_NAMES.reporter)))
             .then(reporterPlugins => {
