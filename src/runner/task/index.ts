@@ -65,7 +65,7 @@ export default class Task extends AsyncEventEmitter {
 
         this.warningLog.copyFrom(runnerWarningLog);
 
-        const { path, pathPattern, fullPage, thumbnails } = this.opts.screenshots as ScreenshotOptionValue;
+        const { path, pathPattern, fullPage, thumbnails, autoTakeOnFails } = this.opts.screenshots as ScreenshotOptionValue;
 
         this.screenshots = new Screenshots({
             enabled: !this.opts.disableScreenshots,
@@ -74,6 +74,7 @@ export default class Task extends AsyncEventEmitter {
             fullPage,
             thumbnails,
             messageBus,
+            autoTakeOnFails,
         });
 
         this.fixtureHookController = new FixtureHookController(tests, browserConnectionGroups.length);
