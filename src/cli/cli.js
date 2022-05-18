@@ -118,9 +118,6 @@ async function runTests (argParser) {
         .clientScripts(argParser.opts.clientScripts)
         .compilerOptions(argParser.opts.compilerOptions);
 
-    // NOTE: Temporarily hide dashboard-related stuff until the TestCafe Dashboard is released.
-    //.dashboard(argParser.opts.dashboardOptions);
-
     runner.once('done-bootstrapping', () => log.hideSpinner());
 
     try {

@@ -3,7 +3,6 @@ import { has, set } from 'lodash';
 import program, {
     Command,
     Option,
-    Argument,
 } from 'commander';
 
 import dedent from 'dedent';
@@ -111,8 +110,6 @@ export default class CLIArgumentParser {
         this.testCafeCommand    = this._addTestCafeCommand();
 
         this._patchHelpOutput(this.testCafeCommand);
-        // NOTE: Temporarily hide dashboard-related stuff until the TestCafe Dashboard is released.
-        // this._addDashboardSubcommand();
         CLIArgumentParser._setupRootCommand();
     }
 
@@ -132,19 +129,6 @@ export default class CLIArgumentParser {
 
         if (index > -1)
             (program as unknown as Command).commands.splice(index, 1);
-    }
-
-    private _addDashboardSubcommand (): void {
-        CLIArgumentParser._removeCommandIfExists(COMMAND_NAMES.Dashboard);
-
-        (program as unknown as Command)
-            .command(COMMAND_NAMES.Dashboard)
-            .description('Setup integration with TestCafe Dashboard.\nRun without arguments if you have no the default token or you want change it.')
-            .addArgument(new Argument('[state]', 'Turn on/off report sending to TestCafe Dashboard').choices(['on', 'off']))
-            .action(sendReportState => {
-                this.isDashboardCommand = true;
-                this.sendReportState    = sendReportState;
-            });
     }
 
     private static _getDescription (): string {
@@ -214,8 +198,7 @@ export default class CLIArgumentParser {
             .option('--disable-multiple-windows', 'disable multiple windows mode')
             .option('--disable-http2', 'disable the HTTP/2 proxy backend and force the proxy to use only HTTP/1.1 requests')
             .option('--cache', 'cache web assets between test runs')
-            // NOTE: Temporarily hide dashboard-related stuff until the TestCafe Dashboard is released.
-            // .option('-D, --dashboard-options <option=value[,...]>', 'specify Dashboard options')
+
             // NOTE: these options will be handled by chalk internally
             .option('--color', 'force colors in command line')
             .option('--no-color', 'disable colors in command line')

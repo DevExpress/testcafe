@@ -9,7 +9,6 @@ import {
     pull as remove,
     isFunction,
     uniq,
-    castArray,
 } from 'lodash';
 
 import Bootstrapper from './bootstrapper';
@@ -49,12 +48,9 @@ import detectDisplay from '../utils/detect-display';
 import { validateQuarantineOptions } from '../utils/get-options/quarantine';
 import logEntry from '../utils/log-entry';
 import MessageBus from '../utils/message-bus';
-import log from '../cli/log';
-import chalk from 'chalk';
 
 const DEBUG_LOGGER            = debug('testcafe:runner');
 const DASHBOARD_REPORTER_NAME = 'dashboard';
-const SPEC_REPORTER_NAME      = 'spec';
 
 export default class Runner extends EventEmitter {
     constructor ({ proxy, browserConnectionGateway, configuration, compilerService }) {
@@ -96,13 +92,6 @@ export default class Runner extends EventEmitter {
 
     _disposeTestedApp (testedApp) {
         return testedApp ? testedApp.kill().catch(e => DEBUG_LOGGER(e)) : Promise.resolve();
-    }
-
-    _addDashboardAdvertisement (message) {
-        this._messageBus.on('done', () => {
-            if (this._showAdvertisement && this._hasTaskErrors)
-                log.write(message);
-        });
     }
 
     async _disposeTaskAndRelatedAssets (task, browserSet, reporters, testedApp, runnableConfigurationId) {
@@ -543,13 +532,6 @@ export default class Runner extends EventEmitter {
         this.configuration.mergeOptions({ [OPTION_NAMES.reporter]: reporterOptions });
     }
 
-    _addDashBoardAdvertisementIfNeeded () {
-        const reporterOptions  = this.configuration.getOption(OPTION_NAMES.reporter);
-
-        if (!reporterOptions || castArray(reporterOptions).every(reporter => reporter.name === SPEC_REPORTER_NAME))
-            this._addDashboardAdvertisement(`\n${chalk.bold.red('NEW')}: Try TestCafe Dashboard (https://dashboard.testcafe.io/) to eliminate unstable and failing tests.\n`);
-    }
-
     async _getDashboardOptions () {
         let options = this.configuration.getOption(OPTION_NAMES.dashboard);
 
@@ -742,13 +724,6 @@ export default class Runner extends EventEmitter {
         return this;
     }
 
-    // NOTE: Temporarily hide dashboard-related stuff until the TestCafe Dashboard is released.
-    /*dashboard (opts) {
-        this._options[OPTION_NAMES.dashboard] = opts;
-
-        return this;
-    }*/
-
     run (options = {}) {
         let reporters;
 
@@ -763,9 +738,6 @@ export default class Runner extends EventEmitter {
             .then(() => this._setConfigurationOptions())
             .then(async () => {
                 await this._addDashboardReporterIfNeeded();
-
-                // NOTE: Temporarily hide the 'dashboard' command until the TestCafe Dashboard is released.
-                // await this._addDashBoardAdvertisementIfNeeded();
             })
             .then(() => Reporter.getReporterPlugins(this.configuration.getOption(OPTION_NAMES.reporter)))
             .then(reporterPlugins => {

@@ -778,9 +778,6 @@ describe('CLI argument parser', function () {
                 expect(parser.opts.retryTestPages).to.be.ok;
                 expect(parser.opts.disableHttp2).to.be.ok;
                 expect(parser.opts.proxyless).to.be.ok;
-
-                // NOTE: Temporarily hide dashboard-related stuff until the TestCafe Dashboard is released.
-                // expect(parser.opts.dashboardOptions).eql({ token: 'qwe.rty', noVideoUpload: true });
             });
     });
 
@@ -856,9 +853,6 @@ describe('CLI argument parser', function () {
             { long: '--cache' },
             { long: '--disable-http2' },
             { long: '--proxyless' },
-
-            // NOTE: Temporarily hide dashboard-related stuff until the TestCafe Dashboard is released.
-            // { long: '--dashboard-options', short: '-D' },
         ];
 
         const parser  = new CliArgumentParser('');
@@ -927,36 +921,5 @@ describe('CLI argument parser', function () {
                 expect(runOpts.disableMultipleWindows).eql(true);
                 expect(runOpts.browsers).to.be.undefined;
             });
-    });
-
-    // NOTE: Temporarily hide dashboard-related stuff until the TestCafe Dashboard is released.
-    describe.skip('Dashboard options', () => {
-        it('should parse dashboard arguments', async () => {
-            const parser = await parse('--dashboard-options token=12345,noVideoUpload=true,buildId=1');
-
-            expect(parser.opts.dashboardOptions).to.be.ok;
-            expect(parser.opts.dashboardOptions.token).equal('12345');
-            expect(parser.opts.dashboardOptions.buildId).equal('1');
-            expect(parser.opts.dashboardOptions.noVideoUpload).equal(true);
-        });
-
-        it('Should parse dashboard command', async () => {
-            const parser = await parse('dashboard');
-
-            expect(parser.isDashboardCommand).to.be.true;
-            expect(parser.sendReportState).eql(void 0);
-        });
-
-        it('Should parse dashboard command argument', async () => {
-            let parser = await parse('dashboard on');
-
-            expect(parser.isDashboardCommand).to.be.true;
-            expect(parser.sendReportState).eql('on');
-
-            parser = await parse('dashboard off');
-
-            expect(parser.isDashboardCommand).to.be.true;
-            expect(parser.sendReportState).eql('off');
-        });
     });
 });
