@@ -16,7 +16,7 @@ import selectorApiExecutionMode from '../selector-api-execution-mode';
 const VISIBLE_PROP_NAME       = 'visible';
 const SNAPSHOT_PROP_PRIMITIVE = `[object ${ReExecutablePromise.name}]`;
 
-const filterNodes = (new ClientFunctionBuilder((nodes, filter, querySelectorRoot, originNode, ...filterArgs) => {
+const filterNodes = new ClientFunctionBuilder((nodes, filter, querySelectorRoot, originNode, ...filterArgs) => {
     if (typeof filter === 'number') {
         const matchingNode = filter < 0 ? nodes[nodes.length + filter] : nodes[filter];
 
@@ -47,9 +47,9 @@ const filterNodes = (new ClientFunctionBuilder((nodes, filter, querySelectorRoot
     }
 
     return result;
-})).getFunction();
+}).getFunction();
 
-const expandSelectorResults = (new ClientFunctionBuilder((selector, populateDerivativeNodes) => {
+const expandSelectorResults = new ClientFunctionBuilder((selector, populateDerivativeNodes) => {
     const nodes = selector();
 
     if (!nodes.length)
@@ -70,7 +70,7 @@ const expandSelectorResults = (new ClientFunctionBuilder((selector, populateDeri
 
     return result;
 
-})).getFunction();
+}).getFunction();
 
 async function getSnapshot (getSelector, callsite, SelectorBuilder, getVisibleValueMode) {
     let node       = null;
@@ -245,13 +245,13 @@ export function addCustomMethods (obj, getSelector, SelectorBuilder, customMetho
             };
         }
         else {
-            obj[prop] = (new ClientFunctionBuilder((...args) => {
+            obj[prop] = new ClientFunctionBuilder((...args) => {
                 /* eslint-disable no-undef */
                 const node = selector();
 
                 return customMethod.apply(customMethod, [node].concat(args));
                 /* eslint-enable no-undef */
-            }, { dependencies }, callsiteNames)).getFunction();
+            }, { dependencies }, callsiteNames).getFunction();
         }
     });
 }
@@ -427,7 +427,7 @@ function convertFilterToClientFunctionIfNecessary (callsiteName, filter, depende
         const fn      = builder ? builder.fn : filter;
         const options = builder ? assign({}, builder.options, { dependencies }) : { dependencies };
 
-        return (new ClientFunctionBuilder(fn, options, { instantiation: callsiteName })).getFunction();
+        return new ClientFunctionBuilder(fn, options, { instantiation: callsiteName }).getFunction();
     }
 
     return filter;
