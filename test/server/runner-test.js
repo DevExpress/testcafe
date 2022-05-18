@@ -1328,8 +1328,6 @@ describe('Runner', () => {
             abortCalled        = false;
             taskActionCallback = taskDone;
 
-            runner._showAdvertisement = false;
-
             runner
                 .src('test/server/data/test-suites/basic/testfile2.js')
                 .reporter(createReporter());
@@ -1379,8 +1377,6 @@ describe('Runner', () => {
                     taskActionCallback = () => {
                         brokenConnection.emit('error', new Error('I have failed :('));
                     };
-
-                    runner._showAdvertisement = false;
 
                     return runner
                         .browsers(brokenConnection, 'mock:browser-alias')

@@ -67,9 +67,6 @@ export default class Runner extends EventEmitter {
         this._options            = {};
         this._hasTaskErrors      = false;
 
-        //NOTE: This option created only for possibility to turn off advertisement for our tests.
-        this._showAdvertisement = true;
-
         this.apiMethodWasCalled = new FlagList([
             OPTION_NAMES.src,
             OPTION_NAMES.browsers,
