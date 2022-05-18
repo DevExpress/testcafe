@@ -742,11 +742,12 @@ export default class Runner extends EventEmitter {
         return this;
     }
 
-    dashboard (opts) {
+    // NOTE: Temporarily hide dashboard related stuff until the TestCafe Dashboard is released.
+    /*dashboard (opts) {
         this._options[OPTION_NAMES.dashboard] = opts;
 
         return this;
-    }
+    }*/
 
     run (options = {}) {
         let reporters;
@@ -762,7 +763,9 @@ export default class Runner extends EventEmitter {
             .then(() => this._setConfigurationOptions())
             .then(async () => {
                 await this._addDashboardReporterIfNeeded();
-                await this._addDashBoardAdvertisementIfNeeded();
+
+                // NOTE: Temporarily hide the 'dashboard' command until the TestCafe Dashboard is released.
+                // await this._addDashBoardAdvertisementIfNeeded();
             })
             .then(() => Reporter.getReporterPlugins(this.configuration.getOption(OPTION_NAMES.reporter)))
             .then(reporterPlugins => {

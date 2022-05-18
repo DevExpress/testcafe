@@ -753,7 +753,7 @@ describe('CLI argument parser', function () {
     });
 
     it('Should parse command line arguments', function () {
-        return parse('-r list -S -q -e --hostname myhost --proxy localhost:1234 --proxy-bypass localhost:5678 --qr-code --app run-app --speed 0.5 --debug-on-fail --disable-page-reloads --retry-test-pages --dev --sf --disable-page-caching --disable-http2 --proxyless ie test/server/data/file-list/file-1.js --dashboard-options token=qwe.rty,noVideoUpload=true')
+        return parse('-r list -S -q -e --hostname myhost --proxy localhost:1234 --proxy-bypass localhost:5678 --qr-code --app run-app --speed 0.5 --debug-on-fail --disable-page-reloads --retry-test-pages --dev --sf --disable-page-caching --disable-http2 --proxyless ie test/server/data/file-list/file-1.js')
             .then(parser => {
                 expect(parser.opts.browsers).eql(['ie']);
                 expect(parser.opts.src).eql(['test/server/data/file-list/file-1.js']);
@@ -778,7 +778,9 @@ describe('CLI argument parser', function () {
                 expect(parser.opts.retryTestPages).to.be.ok;
                 expect(parser.opts.disableHttp2).to.be.ok;
                 expect(parser.opts.proxyless).to.be.ok;
-                expect(parser.opts.dashboardOptions).eql({ token: 'qwe.rty', noVideoUpload: true });
+
+                // NOTE: Temporarily hide dashboard related stuff until the TestCafe Dashboard is released.
+                // expect(parser.opts.dashboardOptions).eql({ token: 'qwe.rty', noVideoUpload: true });
             });
     });
 
@@ -854,7 +856,9 @@ describe('CLI argument parser', function () {
             { long: '--cache' },
             { long: '--disable-http2' },
             { long: '--proxyless' },
-            { long: '--dashboard-options', short: '-D' },
+
+            // NOTE: Temporarily hide dashboard related stuff until the TestCafe Dashboard is released.
+            // { long: '--dashboard-options', short: '-D' },
         ];
 
         const parser  = new CliArgumentParser('');
@@ -871,7 +875,7 @@ describe('CLI argument parser', function () {
         }
 
         const expectedRunOptionsCount   = 21;
-        const expectedOtherOptionsCount = 37;
+        const expectedOtherOptionsCount = 36;
         const otherOptionsCount         = options.length - expectedRunOptionsCount;
 
         expect(runOptionNames.length).eql(expectedRunOptionsCount, ADD_TO_RUN_OPTIONS_WARNING);
@@ -925,7 +929,8 @@ describe('CLI argument parser', function () {
             });
     });
 
-    describe('Dashboard options', () => {
+    // NOTE: Temporarily hide dashboard related stuff until the TestCafe Dashboard is released.
+    describe.skip('Dashboard options', () => {
         it('should parse dashboard arguments', async () => {
             const parser = await parse('--dashboard-options token=12345,noVideoUpload=true,buildId=1');
 

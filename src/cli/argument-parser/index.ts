@@ -111,7 +111,8 @@ export default class CLIArgumentParser {
         this.testCafeCommand    = this._addTestCafeCommand();
 
         this._patchHelpOutput(this.testCafeCommand);
-        this._addDashboardSubcommand();
+        // NOTE: Temporarily hide dashboard related stuff until the TestCafe Dashboard is released.
+        // this._addDashboardSubcommand();
         CLIArgumentParser._setupRootCommand();
     }
 
@@ -213,8 +214,8 @@ export default class CLIArgumentParser {
             .option('--disable-multiple-windows', 'disable multiple windows mode')
             .option('--disable-http2', 'disable the HTTP/2 proxy backend and force the proxy to use only HTTP/1.1 requests')
             .option('--cache', 'cache web assets between test runs')
-            .option('-D, --dashboard-options <option=value[,...]>', 'specify Dashboard options')
-
+            // NOTE: Temporarily hide dashboard related stuff until the TestCafe Dashboard is released.
+            // .option('-D, --dashboard-options <option=value[,...]>', 'specify Dashboard options')
             // NOTE: these options will be handled by chalk internally
             .option('--color', 'force colors in command line')
             .option('--no-color', 'disable colors in command line')
