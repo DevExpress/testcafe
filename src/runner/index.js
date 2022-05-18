@@ -742,7 +742,7 @@ export default class Runner extends EventEmitter {
         return this;
     }
 
-    // NOTE: Temporarily hide dashboard related stuff until the TestCafe Dashboard is released.
+    // NOTE: Temporarily hide dashboard-related stuff until the TestCafe Dashboard is released.
     /*dashboard (opts) {
         this._options[OPTION_NAMES.dashboard] = opts;
 

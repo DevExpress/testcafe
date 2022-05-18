@@ -779,7 +779,7 @@ describe('CLI argument parser', function () {
                 expect(parser.opts.disableHttp2).to.be.ok;
                 expect(parser.opts.proxyless).to.be.ok;
 
-                // NOTE: Temporarily hide dashboard related stuff until the TestCafe Dashboard is released.
+                // NOTE: Temporarily hide dashboard-related stuff until the TestCafe Dashboard is released.
                 // expect(parser.opts.dashboardOptions).eql({ token: 'qwe.rty', noVideoUpload: true });
             });
     });
@@ -857,7 +857,7 @@ describe('CLI argument parser', function () {
             { long: '--disable-http2' },
             { long: '--proxyless' },
 
-            // NOTE: Temporarily hide dashboard related stuff until the TestCafe Dashboard is released.
+            // NOTE: Temporarily hide dashboard-related stuff until the TestCafe Dashboard is released.
             // { long: '--dashboard-options', short: '-D' },
         ];
 
@@ -929,7 +929,7 @@ describe('CLI argument parser', function () {
             });
     });
 
-    // NOTE: Temporarily hide dashboard related stuff until the TestCafe Dashboard is released.
+    // NOTE: Temporarily hide dashboard-related stuff until the TestCafe Dashboard is released.
     describe.skip('Dashboard options', () => {
         it('should parse dashboard arguments', async () => {
             const parser = await parse('--dashboard-options token=12345,noVideoUpload=true,buildId=1');

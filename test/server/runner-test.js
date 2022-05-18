@@ -216,7 +216,7 @@ describe('Runner', () => {
             }
         });
 
-        // NOTE: Temporarily hide dashboard related stuff until the TestCafe Dashboard is released.
+        // NOTE: Temporarily hide dashboard-related stuff until the TestCafe Dashboard is released.
         describe.skip('._addDashboardReporterIfNeeded', () => {
             const TEST_DASHBOARD_SETTINGS = {
                 token:      'test-token',
