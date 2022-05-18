@@ -44,7 +44,7 @@ const setDoubleTimeout = function (callback, timeout) {
 
 const logMessage = function (text) {
     if (enableLogging)
-        ok(true, (new Date()).getSeconds() + ':' + (new Date()).getMilliseconds().toString() + ' ' + text);
+        ok(true, new Date().getSeconds() + ':' + new Date().getMilliseconds().toString() + ' ' + text);
 };
 
 const getBlurHandler = function () {
