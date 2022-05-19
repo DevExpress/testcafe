@@ -117,13 +117,14 @@ import './command-executors/actions-initializer';
 
 const settings = hammerhead.settings;
 
-const transport      = hammerhead.transport;
-const Promise        = hammerhead.Promise;
-const messageSandbox = hammerhead.eventSandbox.message;
-const storages       = hammerhead.storages;
-const nativeMethods  = hammerhead.nativeMethods;
-const DateCtor       = nativeMethods.date;
-const listeners      = hammerhead.eventSandbox.listeners;
+const transport       = hammerhead.transport;
+const Promise         = hammerhead.Promise;
+const messageSandbox  = hammerhead.eventSandbox.message;
+const storages        = hammerhead.storages;
+const nativeMethods   = hammerhead.nativeMethods;
+const DateCtor        = nativeMethods.date;
+const listeners       = hammerhead.eventSandbox.listeners;
+const getAjaxProxyUrl = hammerhead.getAjaxProxyUrl;
 
 const TEST_DONE_SENT_FLAG                  = 'testcafe|driver|test-done-sent-flag';
 const PENDING_STATUS                       = 'testcafe|driver|pending-status';
@@ -1193,6 +1194,13 @@ export default class Driver extends serviceUtils.EventEmitter {
             });
     }
 
+    _onGetAjaxProxyUrlCommand (command) {
+        this._onReady(new DriverStatus({
+            isCommandResult: true,
+            result:          getAjaxProxyUrl(command.url, command.opts),
+        }));
+    }
+
     _onExecuteClientFunctionCommand (command) {
         this.contextStorage.setItem(EXECUTING_CLIENT_FUNCTION_DESCRIPTOR, { instantiationCallsiteName: command.instantiationCallsiteName });
 
@@ -1654,6 +1662,10 @@ export default class Driver extends serviceUtils.EventEmitter {
 
         else if (command.type === COMMAND_TYPE.prepareClientEnvironmentInDebugMode)
             this._onPrepareClientEnvironmentInDebugMode(command);
+
+        else if (command.type === COMMAND_TYPE.getAjaxProxyUrl)
+            this._onGetAjaxProxyUrlCommand(command);
+
         else
             this._onActionCommand(command);
     }

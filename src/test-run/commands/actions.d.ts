@@ -247,3 +247,9 @@ export class DeleteCookiesCommand extends ActionCommandBase {
     public urls: string[];
     public cookies: CookieOptions[];
 }
+
+export class GetAjaxProxyUrlCommand extends ActionCommandBase {
+    public constructor(obj: object, testRun: TestRun, validateProperties: boolean);
+    public url: string;
+    public credentials: number;
+}

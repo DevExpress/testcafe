@@ -705,3 +705,19 @@ export class DeleteCookiesCommand extends ActionCommandBase {
         ];
     }
 }
+
+export class GetAjaxProxyUrlCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.getAjaxProxyUrl);
+
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.getAjaxProxyUrl, validateProperties);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'url', type: urlArgument, required: true },
+            { name: 'credentials', type: integerArgument, required: true },
+        ];
+    }
+}
+
