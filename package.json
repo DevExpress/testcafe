@@ -163,7 +163,6 @@
     "@types/debug": "^4.1.5",
     "@types/dedent": "^0.7.0",
     "@types/diff": "^4.0.2",
-    "@types/getos": "^3.0.1",
     "@types/json5": "0.0.30",
     "@types/mime-db": "^1.27.0",
     "@types/mustache": "^0.8.32",
