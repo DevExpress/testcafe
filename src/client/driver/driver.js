@@ -117,14 +117,14 @@ import './command-executors/actions-initializer';
 
 const settings = hammerhead.settings;
 
-const transport       = hammerhead.transport;
-const Promise         = hammerhead.Promise;
-const messageSandbox  = hammerhead.eventSandbox.message;
-const storages        = hammerhead.storages;
-const nativeMethods   = hammerhead.nativeMethods;
-const DateCtor        = nativeMethods.date;
-const listeners       = hammerhead.eventSandbox.listeners;
-const getAjaxProxyUrl = hammerhead.getAjaxProxyUrl;
+const transport      = hammerhead.transport;
+const Promise        = hammerhead.Promise;
+const messageSandbox = hammerhead.eventSandbox.message;
+const storages       = hammerhead.storages;
+const nativeMethods  = hammerhead.nativeMethods;
+const DateCtor       = nativeMethods.date;
+const listeners      = hammerhead.eventSandbox.listeners;
+const urlUtils       = hammerhead.utils.url;
 
 const TEST_DONE_SENT_FLAG                  = 'testcafe|driver|test-done-sent-flag';
 const PENDING_STATUS                       = 'testcafe|driver|pending-status';
@@ -1197,7 +1197,7 @@ export default class Driver extends serviceUtils.EventEmitter {
     _onGetAjaxProxyUrlCommand (command) {
         this._onReady(new DriverStatus({
             isCommandResult: true,
-            result:          getAjaxProxyUrl(command.url, command.opts),
+            result:          urlUtils.getAjaxProxyUrl(command.url, command.credentials),
         }));
     }
 
