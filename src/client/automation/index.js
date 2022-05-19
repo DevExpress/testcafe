@@ -31,6 +31,7 @@ import getElementFromPoint from './get-element';
 import calculateSelectTextArguments from './playback/select/calculate-select-text-arguments';
 import ERROR_TYPES from '../../shared/errors/automation-errors';
 import cursor from './cursor';
+import MoveAutomation from '../../shared/actions/automations/move';
 
 
 const exports = {};
@@ -65,6 +66,9 @@ exports.SHORTCUT_TYPE                = SHORTCUT_TYPE;
 exports.getSelectionCoordinatesByPosition = getSelectionCoordinatesByPosition;
 
 exports.getElementFromPoint = getElementFromPoint;
+
+// NOTE: for testing purposes
+exports.MoveAutomation = MoveAutomation;
 
 const nativeMethods    = hammerhead.nativeMethods;
 const evalIframeScript = hammerhead.EVENTS.evalIframeScript;

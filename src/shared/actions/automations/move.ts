@@ -95,8 +95,11 @@ export default class MoveAutomation<E, W extends SharedWindow> {
     private _getTargetClientPoint (): Promise<AxisValues<number>> {
         return adapter.PromiseCtor.resolve(adapter.style.getElementScroll(this.element))
             .then(scroll => {
-                if (adapter.dom.isHtmlElement(this.element))
-                    return AxisValues.create(this.offset).sub(AxisValues.create(scroll));
+                if (adapter.dom.isHtmlElement(this.element)) {
+                    return AxisValues.create(this.offset)
+                        .sub(AxisValues.create(scroll))
+                        .round(Math.round);
+                }
 
                 return adapter.PromiseCtor.resolve(adapter.position.getClientPosition(this.element))
                     .then(clientPosition => {
