@@ -38,13 +38,13 @@ export default class RequestBuilder {
         return testRunTracker.resolveContextTestRun();
     }
 
-    private _prepareOptions (urlOpt: string | ExternalRequestOptions, options: Partial<ExternalRequestOptions>): ExternalRequestOptions {
-        if (typeof urlOpt === 'object')
-            return urlOpt;
+    private _prepareOptions (urlOpts: string | ExternalRequestOptions, options: Partial<ExternalRequestOptions>): ExternalRequestOptions {
+        if (typeof urlOpts === 'object')
+            return urlOpts;
 
         return {
             ...options,
-            url: urlOpt || options.url || '',
+            url: urlOpts || options.url || '',
         };
     }
 

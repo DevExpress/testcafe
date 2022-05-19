@@ -9,6 +9,7 @@ import {
 import isStream from 'is-stream';
 import {
     AuthOptions,
+    Credentials,
     ExternalRequestOptions,
     Params,
 } from './interfaces';
@@ -21,6 +22,7 @@ import CONTENT_TYPES from '../assets/content-types';
 import HTTP_HEADERS from '../utils/http-headers';
 import { RUNTIME_ERRORS } from '../errors/types';
 import { APIError } from '../errors/runtime';
+import { GetAjaxProxyUrlCommand } from '../test-run/commands/actions';
 
 const DEFAULT_ACCEPT            = { [HTTP_HEADERS.accept]: `${CONTENT_TYPES.json}, ${CONTENT_TYPES.textPlain}, ${CONTENT_TYPES.all}` };
 const DEFAULT_IS_REQUEST        = { [HTTP_HEADERS.isRequest]: true };
@@ -118,8 +120,8 @@ async function prepareHeaders (headers: OutgoingHttpHeaders, url: URL, body: Buf
     return preparedHeaders;
 }
 
-async function prepareUrl (testRun: TestRun, url: string | URL, origin: string, callsiteName: string): Promise<URL> {
-    const currentPageUrl = new URL(origin);
+async function prepareUrl (testRun: TestRun, url: string | URL, callsiteName: string): Promise<URL> {
+    const currentPageUrl = new URL(await testRun.getCurrentUrl());
     let preparedUrl: URL;
 
     try {
@@ -161,11 +163,15 @@ function prepareSearchParams (url: string, params?: Params): string {
 export async function processRequestOptions (testRun: TestRun, options: ExternalRequestOptions, callsite: string): Promise<RequestOptions> {
     options.headers = options.headers || {};
 
-    const origin  = await testRun.getCurrentUrl();
-    const url     = await prepareUrl(testRun, options.url, origin, callsite);
-    const body    = transformBody(options.headers, options.body);
-    const headers = await prepareHeaders(options.headers, url, body, testRun, options);
-    let auth      = options.auth;
+    const url        = await prepareUrl(testRun, options.url, callsite);
+    const proxiedUrl = await testRun.executeCommand(new GetAjaxProxyUrlCommand({
+        url:         url.href,
+        credentials: options.withCredentials ? Credentials.include : Credentials.omit,
+    }, testRun, true)) as string;
+
+    const body       = transformBody(options.headers, options.body);
+    const headers    = await prepareHeaders(options.headers, url, body, testRun, options);
+    let auth         = options.auth;
 
     if (!auth && url.username && url.password) {
         auth = {
@@ -183,7 +189,7 @@ export async function processRequestOptions (testRun: TestRun, options: External
 
     return new RequestOptions({
         method:                options.method || DEFAULT_REQUEST_METHOD,
-        url:                   testRun.session.getProxyUrl(url.href, origin),
+        url:                   proxiedUrl,
         protocol:              url.protocol,
         hostname:              url.hostname,
         host:                  url.host,

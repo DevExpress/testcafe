@@ -1,6 +1,8 @@
 import { OutgoingHttpHeaders } from 'http';
 import { Dictionary } from '../configuration/interfaces';
 
+export enum Credentials { include, sameOrigin, omit, unknown } // eslint-disable-line no-shadow
+
 export type Method =
     | 'get' | 'GET'
     | 'delete' | 'DELETE'
