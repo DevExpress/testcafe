@@ -28,6 +28,12 @@ function RequestLogger (requestFilterRuleInit, logOptions) {
     return createRequestLogger(requestFilterRuleInit, logOptions);
 }
 
+function Request () {
+    const builder = new RequestBuilder({ instantiation: 'Request' });
+
+    return builder.getFunction();
+}
+
 function ClientFunction (fn, options) {
     const builder = new ClientFunctionBuilder(fn, options, { instantiation: 'ClientFunction' });
 
@@ -56,9 +62,7 @@ const exportableLib = {
     RequestMock,
 
     get Request () {
-        const builder = new RequestBuilder({ instantiation: 'Request' });
-
-        return builder.getFunction();
+        return Request();
     },
 
     get RequestHook () {
