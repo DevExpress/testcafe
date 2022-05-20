@@ -38,6 +38,7 @@ export interface ExternalRequestOptions {
     // maxRedirects?: number;
     proxy?: ProxyOptions;
     processResponse?: boolean;
+    isAjax?: boolean;
 }
 
 export interface ResponseOptions {

@@ -12,6 +12,7 @@ import {
     DragToElementOptions,
     OffsetOptions,
     CookieOptions,
+    GetProxyUrlOptions,
 } from './options';
 
 import { initSelector, initUploadSelector } from './validations/initializers';
@@ -103,6 +104,10 @@ function initDialogHandler (name, val, { skipVisibilityCheck, testRun }) {
 
 function initCookiesOption (name, val, initOptions, validate = true) {
     return val.map(cookie => new CookieOptions(cookie, validate));
+}
+
+function initGetProxyUrlOptions (name, val, initOptions, validate = true) {
+    return new GetProxyUrlOptions(val, validate);
 }
 
 // Commands
@@ -706,17 +711,17 @@ export class DeleteCookiesCommand extends ActionCommandBase {
     }
 }
 
-export class GetAjaxProxyUrlCommand extends ActionCommandBase {
-    static methodName = camelCase(TYPE.getAjaxProxyUrl);
+export class GetProxyUrlCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.getProxyUrl);
 
     constructor (obj, testRun, validateProperties) {
-        super(obj, testRun, TYPE.getAjaxProxyUrl, validateProperties);
+        super(obj, testRun, TYPE.getProxyUrl, validateProperties);
     }
 
     _getAssignableProperties () {
         return [
             { name: 'url', type: urlArgument, required: true },
-            { name: 'credentials', type: integerArgument, required: true },
+            { name: 'options', init: initGetProxyUrlOptions, required: false },
         ];
     }
 }

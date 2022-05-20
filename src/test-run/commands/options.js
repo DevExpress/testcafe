@@ -305,3 +305,19 @@ export class CookieOptions extends Assignable {
         ];
     }
 }
+
+// GetProxyUrl
+export class GetProxyUrlOptions extends Assignable {
+    constructor (obj, validate) {
+        super();
+
+        this._assignFrom(obj, validate);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'credentials', type: numberOption },
+            { name: 'isAjax', type: booleanOption },
+        ];
+    }
+}

@@ -9,6 +9,7 @@ import {
     PressOptions,
     TypeOptions,
     CookieOptions,
+    GetProxyUrlOptions,
 } from './options';
 
 import Role from '../../role/role';
@@ -248,8 +249,8 @@ export class DeleteCookiesCommand extends ActionCommandBase {
     public cookies: CookieOptions[];
 }
 
-export class GetAjaxProxyUrlCommand extends ActionCommandBase {
+export class GetProxyUrlCommand extends ActionCommandBase {
     public constructor(obj: object, testRun: TestRun, validateProperties: boolean);
     public url: string;
-    public credentials: number;
+    public options: GetProxyUrlOptions;
 }

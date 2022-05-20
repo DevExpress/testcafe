@@ -44,6 +44,7 @@ const requestOptionAssertions: Assertion[] = [
     { name: 'maxRedirects', types: is.number, options: null, required: false },
     { name: 'proxy', types: is.nonNullObject, options: proxyOptionAssertions, required: false },
     { name: 'processResponse', types: is.boolean, options: null, required: false },
+    { name: 'isAjax', types: is.boolean, options: null, required: false },
 ];
 
 

@@ -82,3 +82,10 @@ export class CookieOptions {
     public httpOnly: boolean;
     public sameSite: string;
 }
+
+// GetProxyUrl
+export class GetProxyUrlOptions {
+    public constructor (obj: object, validate: boolean);
+    public credentials: number;
+    public isAjax: boolean;
+}

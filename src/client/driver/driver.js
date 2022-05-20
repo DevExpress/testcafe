@@ -114,6 +114,7 @@ import SelectorElementActionTransform from './command-executors/client-functions
 import BarriersComplex from '../../shared/barriers/complex-barrier';
 import createErrorCtorCallback from '../../shared/errors/selector-error-ctor-callback';
 import './command-executors/actions-initializer';
+import executeGetProxyUrl from './command-executors/execute-get-proxy-url';
 
 const settings = hammerhead.settings;
 
@@ -124,7 +125,6 @@ const storages       = hammerhead.storages;
 const nativeMethods  = hammerhead.nativeMethods;
 const DateCtor       = nativeMethods.date;
 const listeners      = hammerhead.eventSandbox.listeners;
-const urlUtils       = hammerhead.utils.url;
 
 const TEST_DONE_SENT_FLAG                  = 'testcafe|driver|test-done-sent-flag';
 const PENDING_STATUS                       = 'testcafe|driver|pending-status';
@@ -1194,10 +1194,10 @@ export default class Driver extends serviceUtils.EventEmitter {
             });
     }
 
-    _onGetAjaxProxyUrlCommand (command) {
+    _onGetProxyUrlCommand (command) {
         this._onReady(new DriverStatus({
             isCommandResult: true,
-            result:          urlUtils.getAjaxProxyUrl(command.url, command.credentials),
+            result:          executeGetProxyUrl(command),
         }));
     }
 
@@ -1663,8 +1663,8 @@ export default class Driver extends serviceUtils.EventEmitter {
         else if (command.type === COMMAND_TYPE.prepareClientEnvironmentInDebugMode)
             this._onPrepareClientEnvironmentInDebugMode(command);
 
-        else if (command.type === COMMAND_TYPE.getAjaxProxyUrl)
-            this._onGetAjaxProxyUrlCommand(command);
+        else if (command.type === COMMAND_TYPE.getProxyUrl)
+            this._onGetProxyUrlCommand(command);
 
         else
             this._onActionCommand(command);

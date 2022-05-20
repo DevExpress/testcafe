@@ -27,7 +27,7 @@ import {
     SetCookiesCommand,
     DeleteCookiesCommand,
     ScrollCommand,
-    GetAjaxProxyUrlCommand,
+    GetProxyUrlCommand,
 } from './actions';
 
 import { AssertionCommand } from './assertion';
@@ -146,8 +146,8 @@ function getCmdCtor (type) {
         case TYPE.scroll:
             return ScrollCommand;
 
-        case TYPE.getAjaxProxyUrl:
-            return GetAjaxProxyUrlCommand;
+        case TYPE.getProxyUrl:
+            return GetProxyUrlCommand;
 
         default:
             return null;

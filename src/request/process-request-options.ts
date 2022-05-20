@@ -22,7 +22,7 @@ import CONTENT_TYPES from '../assets/content-types';
 import HTTP_HEADERS from '../utils/http-headers';
 import { RUNTIME_ERRORS } from '../errors/types';
 import { APIError } from '../errors/runtime';
-import { GetAjaxProxyUrlCommand } from '../test-run/commands/actions';
+import { GetProxyUrlCommand } from '../test-run/commands/actions';
 
 const DEFAULT_ACCEPT            = { [HTTP_HEADERS.accept]: `${CONTENT_TYPES.json}, ${CONTENT_TYPES.textPlain}, ${CONTENT_TYPES.all}` };
 const DEFAULT_IS_REQUEST        = { [HTTP_HEADERS.isRequest]: true };
@@ -164,9 +164,12 @@ export async function processRequestOptions (testRun: TestRun, options: External
     options.headers = options.headers || {};
 
     const url        = await prepareUrl(testRun, options.url, callsite);
-    const proxiedUrl = await testRun.executeCommand(new GetAjaxProxyUrlCommand({
-        url:         url.href,
-        credentials: options.withCredentials ? Credentials.include : Credentials.omit,
+    const proxiedUrl = await testRun.executeCommand(new GetProxyUrlCommand({
+        url:    url.href,
+        option: {
+            credentials: options.withCredentials ? Credentials.include : Credentials.omit,
+            isAjax:      options.isAjax,
+        },
     }, testRun, true)) as string;
 
     const body       = transformBody(options.headers, options.body);
