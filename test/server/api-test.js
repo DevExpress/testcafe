@@ -1944,35 +1944,6 @@ describe('API', function () {
             }
         });
 
-        it('Should raise an error if maxRedirects of the Request option argument is not number', async function () {
-            const testfile = resolve('test/server/data/test-suites/request/options/max-redirects-not-boolean/testfile.js');
-
-            try {
-                await compile(testfile);
-
-                throw new Error('Promise rejection expected');
-            }
-            catch (err) {
-                assertAPIError(err, {
-                    stackTop: testfile,
-
-                    message: 'Cannot prepare tests due to the following error:\n\n' +
-                             'The "maxRedirects" argument (string) is not of expected type (number).',
-
-                    callsite: '    1 |import { fixture, Request } from \'testcafe\';\n' +
-                              '    2 |\n' +
-                              '    3 |fixture `Test`;\n' +
-                              '    4 |\n' +
-                              ' >  5 |Request(\'http://localhost\', {\n' +
-                              '    6 |    maxRedirects: \'one\',\n' +
-                              '    7 |});\n' +
-                              '    8 |\n' +
-                              '    9 |test(\'yo\', () => {\n' +
-                              '   10 |});',
-                });
-            }
-        });
-
         it('Should raise an error if proxy of the Request option argument is not object', async function () {
             const testfile = resolve('test/server/data/test-suites/request/options/proxy-not-object/testfile.js');
 
