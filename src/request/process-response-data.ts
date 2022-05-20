@@ -1,32 +1,15 @@
-import { Stream } from 'stream';
 import { Buffer } from 'buffer';
 import { ResponseOptions } from './interfaces';
 import { IncomingMessage } from 'http';
 import HTTP_HEADERS from '../utils/http-headers';
 import CONTENT_TYPES from '../assets/content-types';
-
-function streamToBuffer (stream: Stream): Promise<Buffer> {
-    const chunks: Buffer[] = [];
-
-    return new Promise((resolve, reject) => {
-        stream.on('data', chunk => {
-            chunks.push(Buffer.from(chunk));
-        });
-        stream.on('error', err => {
-            reject(err);
-        });
-        stream.on('end', () => {
-            resolve(Buffer.concat(chunks));
-        });
-    });
-}
+import { utils } from 'testcafe-hammerhead';
 
 export async function processResponseData (response: IncomingMessage, needProcess = true): Promise<ResponseOptions | IncomingMessage | Buffer | string> {
-
     if (!needProcess)
         return response;
 
-    const data = await streamToBuffer(response);
+    const data = await utils.promisifyStream(response);
 
     if ((response.headers[HTTP_HEADERS.contentType] as string).startsWith(CONTENT_TYPES.textPlain) ||
         (response.headers[HTTP_HEADERS.contentType] as string).startsWith(CONTENT_TYPES.textHtml))
