@@ -20,18 +20,14 @@ function Role (loginUrl, initFn, options) {
     return role.createRole(loginUrl, initFn, options);
 }
 
+const Request = new RequestBuilder({ instantiation: 'Request' }).getFunction();
+
 function RequestMock () {
     return createRequestMock();
 }
 
 function RequestLogger (requestFilterRuleInit, logOptions) {
     return createRequestLogger(requestFilterRuleInit, logOptions);
-}
-
-function Request () {
-    const builder = new RequestBuilder({ instantiation: 'Request' });
-
-    return builder.getFunction();
 }
 
 function ClientFunction (fn, options) {
@@ -61,9 +57,7 @@ const exportableLib = {
 
     RequestMock,
 
-    get Request () {
-        return Request();
-    },
+    Request,
 
     get RequestHook () {
         if (!RequestHook)
