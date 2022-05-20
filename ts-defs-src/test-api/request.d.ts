@@ -66,6 +66,10 @@ interface RequestOptions {
      * Process response.
      */
     processResponse?: boolean;
+    /**
+     * Is ajax request.
+     */
+    isAjax?: boolean;
 }
 
 interface ResponseOptions {
