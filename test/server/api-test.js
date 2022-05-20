@@ -1743,7 +1743,7 @@ describe('API', function () {
 
     describe('Request', function () {
         it('Should raise an error if the Request url argument is not a string or URL', async function () {
-            const testfile = resolve('test/server/data/test-suites/request-url-not-string-or-url/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/request/url-not-string-or-url/testfile.js');
 
             try {
                 await compile(testfile);
@@ -1771,7 +1771,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if method of the Request option argument is not string', async function () {
-            const testfile = resolve('test/server/data/test-suites/request-options-method-not-string/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/request/options/method-not-string/testfile.js');
 
             try {
                 await compile(testfile);
@@ -1800,7 +1800,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if method of the Request option argument is not supported', async function () {
-            const testfile = resolve('test/server/data/test-suites/request-options-method-not-supported/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/request/options/method-not-supported/testfile.js');
 
             try {
                 await compile(testfile);
@@ -1829,7 +1829,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if headers of the Request option argument is not object', async function () {
-            const testfile = resolve('test/server/data/test-suites/request-options-headers-not-object/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/request/options/headers-not-object/testfile.js');
 
             try {
                 await compile(testfile);
@@ -1858,7 +1858,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if params of the Request option argument is not object', async function () {
-            const testfile = resolve('test/server/data/test-suites/request-options-params-not-object/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/request/options/params-not-object/testfile.js');
 
             try {
                 await compile(testfile);
@@ -1887,7 +1887,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if timeout of the Request option argument is not number', async function () {
-            const testfile = resolve('test/server/data/test-suites/request-options-timeout-not-number/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/request/options/timeout-not-number/testfile.js');
 
             try {
                 await compile(testfile);
@@ -1916,7 +1916,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if withCredentials of the Request option argument is not boolean', async function () {
-            const testfile = resolve('test/server/data/test-suites/request-options-with-credentials-not-boolean/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/request/options/with-credentials-not-boolean/testfile.js');
 
             try {
                 await compile(testfile);
@@ -1945,7 +1945,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if auth of the Request option argument is not object', async function () {
-            const testfile = resolve('test/server/data/test-suites/request-options-auth-not-object/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/request/options/auth-not-object/testfile.js');
 
             try {
                 await compile(testfile);
@@ -1974,7 +1974,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if maxRedirects of the Request option argument is not number', async function () {
-            const testfile = resolve('test/server/data/test-suites/request-options-max-redirects-not-boolean/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/request/options/max-redirects-not-boolean/testfile.js');
 
             try {
                 await compile(testfile);
@@ -2003,7 +2003,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if proxy of the Request option argument is not object', async function () {
-            const testfile = resolve('test/server/data/test-suites/request-options-proxy-not-object/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/request/options/proxy-not-object/testfile.js');
 
             try {
                 await compile(testfile);
@@ -2032,7 +2032,7 @@ describe('API', function () {
         });
 
         it('Should raise an error if processResponse of the Request option argument is not boolean', async function () {
-            const testfile = resolve('test/server/data/test-suites/request-options-process-response-not-boolean/testfile.js');
+            const testfile = resolve('test/server/data/test-suites/request/options/process-response-not-boolean/testfile.js');
 
             try {
                 await compile(testfile);
@@ -2062,7 +2062,7 @@ describe('API', function () {
 
         describe('Auth options', function () {
             it('Should raise an error if username of auth is not string', async function () {
-                const testfile = resolve('test/server/data/test-suites/request-options-auth-username-not-string/testfile.js');
+                const testfile = resolve('test/server/data/test-suites/request/options/auth-username-not-string/testfile.js');
 
                 try {
                     await compile(testfile);
@@ -2091,7 +2091,7 @@ describe('API', function () {
             });
 
             it('Should raise an error if password of auth is not string', async function () {
-                const testfile = resolve('test/server/data/test-suites/request-options-auth-password-not-string/testfile.js');
+                const testfile = resolve('test/server/data/test-suites/request/options/auth-password-not-string/testfile.js');
 
                 try {
                     await compile(testfile);
@@ -2122,7 +2122,7 @@ describe('API', function () {
 
         describe('Proxy options', function () {
             it('Should raise an error if protocol of proxy is not string', async function () {
-                const testfile = resolve('test/server/data/test-suites/request-options-proxy-protocol-not-string/testfile.js');
+                const testfile = resolve('test/server/data/test-suites/request/options/proxy-protocol-not-string/testfile.js');
 
                 try {
                     await compile(testfile);
@@ -2151,7 +2151,7 @@ describe('API', function () {
             });
 
             it('Should raise an error if protocol of proxy is not string', async function () {
-                const testfile = resolve('test/server/data/test-suites/request-options-proxy-host-not-string/testfile.js');
+                const testfile = resolve('test/server/data/test-suites/request/options/proxy-host-not-string/testfile.js');
 
                 try {
                     await compile(testfile);
@@ -2180,7 +2180,7 @@ describe('API', function () {
             });
 
             it('Should raise an error if port of proxy is not string or number', async function () {
-                const testfile = resolve('test/server/data/test-suites/request-options-proxy-port-not-string-or-number/testfile.js');
+                const testfile = resolve('test/server/data/test-suites/request/options/proxy-port-not-string-or-number/testfile.js');
 
                 try {
                     await compile(testfile);
