@@ -159,7 +159,7 @@ function prepareSearchParams (url: string, params?: Params): string {
     return `${url}${(url.includes('?') ? '&' : '?')}${searchParams.toString()}`;
 }
 
-export async function processRequestOptions (testRun: TestRun, options: ExternalRequestOptions, callsite: string): Promise<RequestOptions> {
+export async function createRequestOptions (testRun: TestRun, options: ExternalRequestOptions, callsite: string): Promise<RequestOptions> {
     options.headers = options.headers || {};
 
     const url        = await prepareUrl(testRun, options.url, callsite);

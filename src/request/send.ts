@@ -2,14 +2,14 @@ import TestRun from '../test-run';
 import { DestinationRequest } from 'testcafe-hammerhead';
 import { IncomingMessage } from 'http';
 import { ExternalRequestOptions, ResponseOptions } from './interfaces';
-import { processRequestOptions } from './process-request-options';
+import { createRequestOptions } from './create-request-options';
 import { processResponseData } from './process-response-data';
 
 const DEFAULT_STATUS      = 404;
 const DEFAULT_STATUS_TEXT = 'Not found.';
 
 async function send (testRun: TestRun, options: ExternalRequestOptions, callsite: string): Promise<ResponseOptions> {
-    const requestOptions = await processRequestOptions(testRun, options, callsite);
+    const requestOptions = await createRequestOptions(testRun, options, callsite);
     const request        = new DestinationRequest(requestOptions);
     const dataWaiter     = new Promise<IncomingMessage>((resolve, reject) => {
         request.on('response', (res: IncomingMessage) => resolve(res));
