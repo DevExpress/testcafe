@@ -167,5 +167,4 @@ export const RUNTIME_ERRORS = {
     cannotFindTestcafeConfigurationFile:                'E1070',
     dashboardTokenInJSON:                               'E1071',
     requestUrlError:                                    'E1072',
-    requestMethodError:                                 'E1073',
 };

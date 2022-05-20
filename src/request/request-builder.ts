@@ -5,15 +5,11 @@ import { ClientFunctionAPIError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
 import { getCallsiteForMethod } from '../errors/get-callsite';
 import TestRun from '../test-run';
-import {
-    ExternalRequestOptions,
-    Method,
-    ResponseOptions,
-} from './interfaces';
+import { ExternalRequestOptions, ResponseOptions } from './interfaces';
 import dispatchRequest from './dispatchRequest';
 import validateOptions from './validate-request-options';
 
-export const REST_METHODS: Method[] = ['get', 'post', 'delete', 'put', 'patch', 'head'];
+export const EXTENDED_METHODS = ['get', 'post', 'delete', 'put', 'patch', 'head'];
 
 const REQUEST_GETTERS: (keyof ResponseOptions)[] = ['status', 'statusText', 'headers', 'body'];
 
@@ -86,7 +82,7 @@ export default class RequestBuilder {
     }
 
     private _decorateFunction (fn: Function): void {
-        REST_METHODS.forEach(method => {
+        EXTENDED_METHODS.forEach(method => {
             Object.defineProperty(fn, method, {
                 value: (url: string, options: ExternalRequestOptions) => this._executeCommand(url, { ...options, method }),
             });

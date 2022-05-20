@@ -3,14 +3,6 @@ import { Dictionary } from '../configuration/interfaces';
 
 export enum Credentials { include, sameOrigin, omit, unknown } // eslint-disable-line no-shadow
 
-export type Method =
-    | 'get' | 'GET'
-    | 'delete' | 'DELETE'
-    | 'head' | 'HEAD'
-    | 'post' | 'POST'
-    | 'put' | 'PUT'
-    | 'patch' | 'PATCH';
-
 export interface AuthOptions {
     username: string;
     password: string;
@@ -27,7 +19,7 @@ export interface ProxyOptions {
 
 export interface ExternalRequestOptions {
     url: string | URL;
-    method?: Method;
+    method?: string;
     headers?: OutgoingHttpHeaders;
     params?: Params;
     body?: object;
