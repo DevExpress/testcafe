@@ -1741,7 +1741,8 @@ describe('API', function () {
         });
     });
 
-    describe('Request', function () {
+    /*eslint-disable*/
+    describe.only('Request', function () {
         it('Should raise an error if the Request url argument is not a string or URL', async function () {
             const testfile = resolve('test/server/data/test-suites/request/url-not-string-or-url/testfile.js');
 
@@ -2052,6 +2053,35 @@ describe('API', function () {
                               '    4 |\n' +
                               ' >  5 |Request(\'http://localhost\', {\n' +
                               '    6 |    processResponse: \'one\',\n' +
+                              '    7 |});\n' +
+                              '    8 |\n' +
+                              '    9 |test(\'yo\', () => {\n' +
+                              '   10 |});',
+                });
+            }
+        });
+
+        it('Should raise an error if isAjax of the Request option argument is not boolean', async function () {
+            const testfile = resolve('test/server/data/test-suites/request/options/is-ajax-not-boolean/testfile.js');
+
+            try {
+                await compile(testfile);
+
+                throw new Error('Promise rejection expected');
+            }
+            catch (err) {
+                assertAPIError(err, {
+                    stackTop: testfile,
+
+                    message: 'Cannot prepare tests due to the following error:\n\n' +
+                             'The "isAjax" argument (string) is not of expected type (boolean).',
+
+                    callsite: '    1 |import { fixture, Request } from \'testcafe\';\n' +
+                              '    2 |\n' +
+                              '    3 |fixture `Test`;\n' +
+                              '    4 |\n' +
+                              ' >  5 |Request(\'http://localhost\', {\n' +
+                              '    6 |    isAjax: \'one\',\n' +
                               '    7 |});\n' +
                               '    8 |\n' +
                               '    9 |test(\'yo\', () => {\n' +
