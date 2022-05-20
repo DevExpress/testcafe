@@ -61,7 +61,8 @@ test('Take screenshots with same path', async t => {
 
 test('Take screenshots for reporter', async t => {
     const ua            = await getUserAgent();
-    const safeUserAgent = sanitizeFilename(parseUserAgent(ua).prettyUserAgent).replace(/\s+/g, '_');
+    const osInfo        = await t.testRun.browserConnection.provider.getOSInfo(t.testRun.browserConnection.id);
+    const safeUserAgent = sanitizeFilename(parseUserAgent(ua, osInfo).prettyUserAgent).replace(/\s+/g, '_');
 
     quarantineScope[safeUserAgent] = quarantineScope[safeUserAgent] || {};
 
