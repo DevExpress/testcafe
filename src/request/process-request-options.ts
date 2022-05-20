@@ -27,7 +27,6 @@ import { GetProxyUrlCommand } from '../test-run/commands/actions';
 const DEFAULT_ACCEPT            = { [HTTP_HEADERS.accept]: `${CONTENT_TYPES.json}, ${CONTENT_TYPES.textPlain}, ${CONTENT_TYPES.all}` };
 const DEFAULT_IS_REQUEST        = { [HTTP_HEADERS.isRequest]: true };
 const METHODS_WITH_CONTENT_TYPE = ['post', 'put', 'patch'];
-const DEFAULT_REQUEST_TIMEOUT   = 2 * 60 * 1000;
 const DEFAULT_REQUEST_METHOD    = 'GET';
 
 function setContentTypeIfUnset (headers: OutgoingHttpHeaders, value: string): void {
@@ -205,8 +204,7 @@ export async function processRequestOptions (testRun: TestRun, options: External
         body:                  body,
         rawHeaders:            void 0,
         requestTimeout:        {
-            ajax: options.timeout || DEFAULT_REQUEST_TIMEOUT,
-            page: 0,
+            ajax: options.timeout,
         },
         disableHttp2: testRun.session.isHttp2Disabled(),
         isAjax:       true,
