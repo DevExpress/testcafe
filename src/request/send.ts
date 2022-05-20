@@ -8,7 +8,7 @@ import { processResponseData } from './process-response-data';
 const DEFAULT_STATUS      = 404;
 const DEFAULT_STATUS_TEXT = 'Not found.';
 
-async function dispatchRequest (testRun: TestRun, options: ExternalRequestOptions, callsite: string): Promise<ResponseOptions> {
+async function send (testRun: TestRun, options: ExternalRequestOptions, callsite: string): Promise<ResponseOptions> {
     const requestOptions = await processRequestOptions(testRun, options, callsite);
     const request        = new DestinationRequest(requestOptions);
     const dataWaiter     = new Promise<IncomingMessage>((resolve, reject) => {
@@ -28,4 +28,4 @@ async function dispatchRequest (testRun: TestRun, options: ExternalRequestOption
     };
 }
 
-export default dispatchRequest;
+export default send;

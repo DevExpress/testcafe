@@ -6,8 +6,8 @@ import { RUNTIME_ERRORS } from '../errors/types';
 import { getCallsiteForMethod } from '../errors/get-callsite';
 import TestRun from '../test-run';
 import { ExternalRequestOptions, ResponseOptions } from './interfaces';
-import dispatchRequest from './dispatchRequest';
-import validateOptions from './validate-request-options';
+import send from './send';
+import validateOptions from './validate-options';
 
 export const EXTENDED_METHODS = ['get', 'post', 'delete', 'put', 'patch', 'head'];
 
@@ -65,13 +65,13 @@ export default class RequestBuilder {
         }
 
         const promise = ReExecutablePromise.fromFn(async () => {
-            return dispatchRequest(testRun as TestRun, preparedOptions, this.callsiteNames.execution);
+            return send(testRun as TestRun, preparedOptions, this.callsiteNames.execution);
         });
 
         REQUEST_GETTERS.forEach(getter => {
             Object.defineProperty(promise, getter, {
                 get: () => ReExecutablePromise.fromFn(async () => {
-                    const response = await dispatchRequest(testRun as TestRun, preparedOptions, this.callsiteNames.execution);
+                    const response = await send(testRun as TestRun, preparedOptions, this.callsiteNames.execution);
 
                     return response[getter];
                 }),
