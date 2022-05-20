@@ -19,8 +19,10 @@ export function isElementVisible (el: Node): boolean {
     if (adapter.dom.isTextNode(el))
         return !isNotVisibleNode(el);
 
-    if (!adapter.dom.isContentEditableElement(el) && !adapter.dom.isSVGElement(el))
-        return !hiddenByRectangle(el as HTMLElement);
+    if (!adapter.dom.isContentEditableElement(el) && !adapter.dom.isSVGElement(el)) {
+        if (hiddenByRectangle(el as HTMLElement))
+            return false;
+    }
 
     if (adapter.dom.isMapElement(el)) {
         const mapContainer = adapter.dom.getMapContainer(adapter.dom.closest(el, 'map'));
