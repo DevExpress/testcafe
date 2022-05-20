@@ -1741,8 +1741,7 @@ describe('API', function () {
         });
     });
 
-    /*eslint-disable*/
-    describe.only('Request', function () {
+    describe('Request', function () {
         it('Should raise an error if the Request url argument is not a string or URL', async function () {
             const testfile = resolve('test/server/data/test-suites/request/url-not-string-or-url/testfile.js');
 
