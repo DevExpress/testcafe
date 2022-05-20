@@ -12,6 +12,7 @@
 // <reference path="../test-api/structure.d.ts" />
 // <reference path="../test-api/test-controller.d.ts" />
 // <reference path="../test-api/utility.d.ts" />
+// <reference path="../test-api/request.d.ts" />
 // {{/allowReferences}}
 // {{^allowReferences}}
 // {{>action-options.d.ts}}
@@ -26,4 +27,5 @@
 // {{>structure.d.ts}}
 // {{>test-controller.d.ts}}
 // {{>utility.d.ts}}
+// {{>request.d.ts}}
 // {{/allowReferences}}
