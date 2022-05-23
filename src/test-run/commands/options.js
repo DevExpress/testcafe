@@ -306,7 +306,6 @@ export class CookieOptions extends Assignable {
     }
 }
 
-// GetProxyUrl
 export class GetProxyUrlOptions extends Assignable {
     constructor (obj, validate) {
         super();

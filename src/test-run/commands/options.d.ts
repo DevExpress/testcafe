@@ -83,7 +83,6 @@ export class CookieOptions {
     public sameSite: string;
 }
 
-// GetProxyUrl
 export class GetProxyUrlOptions {
     public constructor (obj: object, validate: boolean);
     public credentials: number;
