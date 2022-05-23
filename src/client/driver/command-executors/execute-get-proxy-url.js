@@ -1,7 +1,6 @@
 import hammerhead from '../deps/hammerhead';
 
-const urlUtils       = hammerhead.utils.url;
-
+const urlUtils = hammerhead.utils.url;
 
 export default async function executeGetProxyUrl (command) {
     if (command.options.isAjax)
