@@ -119,8 +119,8 @@ async function prepareHeaders (headers: OutgoingHttpHeaders, url: URL, body: Buf
     return preparedHeaders;
 }
 
-async function prepareUrl (testRun: TestRun, url: string | URL, callsiteName: string): Promise<URL> {
-    const currentPageUrl = new URL(await testRun.getCurrentUrl());
+async function prepareUrl (currentUrl: string, testRun: TestRun, url: string | URL, callsiteName: string): Promise<URL> {
+    const currentPageUrl = new URL(currentUrl);
     let preparedUrl: URL;
 
     try {
@@ -159,10 +159,10 @@ function prepareSearchParams (url: string, params?: Params): string {
     return `${url}${url.includes('?') ? '&' : '?'}${searchParams.toString()}`;
 }
 
-export async function createRequestOptions (testRun: TestRun, options: ExternalRequestOptions, callsite: string): Promise<RequestOptions> {
+export async function createRequestOptions (currentUrl: string, testRun: TestRun, options: ExternalRequestOptions, callsite: string): Promise<RequestOptions> {
     options.headers = options.headers || {};
 
-    const url        = await prepareUrl(testRun, options.url, callsite);
+    const url        = await prepareUrl(currentUrl, testRun, options.url, callsite);
     const proxiedUrl = await testRun.executeCommand(new GetProxyUrlCommand({
         url:    url.href,
         option: {

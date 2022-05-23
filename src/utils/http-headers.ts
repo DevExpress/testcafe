@@ -8,4 +8,5 @@ export default {
     origin:             'origin',
     contentLength:      'content-length',
     cookie:             'cookie',
+    setCookie:          'set-cookie',
 };
