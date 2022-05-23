@@ -111,10 +111,16 @@ export default {
         await runtimeInfo.browserClient.resizeWindow({ width, height });
     },
 
+    async startCapturingVideo (browserId) {
+        const { browserClient } = this.openedBrowsers[browserId];
+
+        await browserClient.startCapturingVideo();
+    },
+
     async getVideoFrameData (browserId) {
         const { browserClient } = this.openedBrowsers[browserId];
 
-        return browserClient.getScreenshotData();
+        return browserClient.getVideoFrameData();
     },
 
     async hasCustomActionForBrowser (browserId) {

@@ -140,6 +140,9 @@ export default class BrowserProviderPluginHost {
         this.reportWarning(browserId, WARNING_MESSAGE.maximizeNotSupportedByBrowserProvider, this[name]);
     }
 
+    async startCapturingVideo (/*browserId*/) {
+    }
+
     async getVideoFrameData (browserId) {
         const browserAlias = BrowserConnection.getById(browserId).browserInfo.alias;
 

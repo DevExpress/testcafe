@@ -115,11 +115,17 @@ export default class VideoRecorder extends AsyncEmitter {
                     await this.emit('frame');
                     await this._addFrame(frame);
                 }
+                else
+                    await delay(50);
             }
             catch (error) {
                 this.debugLogger(error);
             }
         }
+    }
+
+    async _startCapturing () {
+        await this.connection.provider.startCapturingVideo(this.connection.id);
     }
 
     async init () {
@@ -162,6 +168,8 @@ export default class VideoRecorder extends AsyncEmitter {
     }
 
     async startCapturing () {
+        await this._startCapturing();
+
         this.capturingPromise = this._capture();
 
         await this.once('frame');
