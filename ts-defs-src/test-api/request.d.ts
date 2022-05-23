@@ -1,6 +1,8 @@
 // Request API
 //----------------------------------------------------------------------------------------------------------------------
 
+type IncomingMessage = import('http').IncomingMessage;
+
 type Method =
     | 'get' | 'GET'
     | 'delete' | 'DELETE'
@@ -24,6 +26,8 @@ interface ProxyOptions {
 }
 
 type RequestUrlOpts = string | URL | RequestOptions;
+
+type ResponseBody = IncomingMessage | Buffer | object | string;
 
 interface RequestOptions {
     /**
@@ -88,7 +92,7 @@ interface ResponseOptions {
     /**
      * Response body.
      */
-    body: unknown;
+    body: ResponseBody;
 }
 
 interface RequestAPI {
@@ -107,7 +111,7 @@ interface RequestAPI {
     /**
      * Response body.
      */
-    body: Promise<unknown>;
+    body: Promise<ResponseBody>;
 }
 
 

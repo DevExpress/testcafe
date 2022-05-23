@@ -1,11 +1,10 @@
-import { Buffer } from 'buffer';
-import { ResponseOptions } from './interfaces';
 import { IncomingMessage } from 'http';
 import HTTP_HEADERS from '../utils/http-headers';
 import CONTENT_TYPES from '../assets/content-types';
 import { utils } from 'testcafe-hammerhead';
+import { ResponseBody } from './interfaces';
 
-export async function processResponseData (response: IncomingMessage, needProcess = true): Promise<ResponseOptions | IncomingMessage | Buffer | string> {
+export async function processResponseData (response: IncomingMessage, needProcess = true): Promise<ResponseBody> {
     if (!needProcess)
         return response;
 

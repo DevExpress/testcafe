@@ -1,5 +1,6 @@
-import { OutgoingHttpHeaders } from 'http';
+import { IncomingMessage, OutgoingHttpHeaders } from 'http';
 import { Dictionary } from '../configuration/interfaces';
+import { Buffer } from 'buffer';
 
 export enum Credentials { include, sameOrigin, omit, unknown } // eslint-disable-line no-shadow
 
@@ -31,9 +32,11 @@ export interface ExternalRequestOptions {
     isAjax?: boolean;
 }
 
+export type ResponseBody = IncomingMessage | Buffer | object | string;
+
 export interface ResponseOptions {
     status: number;
     statusText: string;
     headers: object;
-    body: unknown;
+    body: ResponseBody;
 }
