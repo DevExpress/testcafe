@@ -272,7 +272,7 @@ test('Should return buffer', async (t) => {
 
 test('Should return httpIncomingMessage', async (t) => {
     const { body } = await Request.get(`http://localhost:3000/api/data`, {
-        processResponse: false,
+        rawResponse: false,
     });
 
     await t.expect(body.constructor.name === 'IncomingMessage').ok();

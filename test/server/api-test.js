@@ -1973,7 +1973,7 @@ describe('API', function () {
             }
         });
 
-        it('Should raise an error if processResponse of the Request option argument is not boolean', async function () {
+        it('Should raise an error if rawResponse of the Request option argument is not boolean', async function () {
             const testfile = resolve('test/server/data/test-suites/request/options/process-response-not-boolean/testfile.js');
 
             try {
@@ -1986,14 +1986,14 @@ describe('API', function () {
                     stackTop: testfile,
 
                     message: 'Cannot prepare tests due to the following error:\n\n' +
-                             'The "processResponse" argument (string) is not of expected type (boolean).',
+                             'The "rawResponse" argument (string) is not of expected type (boolean).',
 
                     callsite: '    1 |import { fixture, Request } from \'testcafe\';\n' +
                               '    2 |\n' +
                               '    3 |fixture `Test`;\n' +
                               '    4 |\n' +
                               ' >  5 |Request(\'http://localhost\', {\n' +
-                              '    6 |    processResponse: \'one\',\n' +
+                              '    6 |    rawResponse: \'one\',\n' +
                               '    7 |});\n' +
                               '    8 |\n' +
                               '    9 |test(\'yo\', () => {\n' +

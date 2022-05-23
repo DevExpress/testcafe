@@ -28,7 +28,7 @@ export interface ExternalRequestOptions {
     withCredentials?: boolean;
     auth?: AuthOptions;
     proxy?: ProxyOptions;
-    processResponse?: boolean;
+    rawResponse?: boolean;
     isAjax?: boolean;
 }
 

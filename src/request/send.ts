@@ -17,7 +17,7 @@ async function send (testRun: TestRun, options: ExternalRequestOptions, callsite
     });
 
     const data = await dataWaiter;
-    const body = await processResponseData(data, options.processResponse);
+    const body = await processResponseData(data, options.rawResponse);
 
     return {
         status:     data.statusCode,

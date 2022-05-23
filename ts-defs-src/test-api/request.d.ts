@@ -67,9 +67,9 @@ interface RequestOptions {
      */
     proxy?: ProxyOptions;
     /**
-     * Process response.
+     * Return raw response.
      */
-    processResponse?: boolean;
+    rawResponse?: boolean;
     /**
      * Is ajax request.
      */

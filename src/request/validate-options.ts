@@ -39,7 +39,7 @@ const requestOptionAssertions: Assertion[] = [
     { name: 'withCredentials', types: is.boolean, options: null, required: false },
     { name: 'auth', types: is.nonNullObject, options: authOptionAssertions, required: false },
     { name: 'proxy', types: is.nonNullObject, options: proxyOptionAssertions, required: false },
-    { name: 'processResponse', types: is.boolean, options: null, required: false },
+    { name: 'rawResponse', types: is.boolean, options: null, required: false },
     { name: 'isAjax', types: is.boolean, options: null, required: false },
 ];
 
