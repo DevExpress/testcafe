@@ -309,8 +309,3 @@ test.page('http://localhost:3000/fixtures/request/pages/index.html')
         position: 'CTO',
     });
 });
-
-//TODO: added tests:
-// - Requests with proxy
-// - set cookies to the client from server
-// - Requests with maxRedirects
