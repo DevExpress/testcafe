@@ -5,7 +5,7 @@ import { ExternalRequestOptions, ResponseOptions } from './interfaces';
 import { createRequestOptions } from './create-request-options';
 import { processResponseData } from './process-response-data';
 
-type StrictIncomingMessage = IncomingMessage & { statusCode: number, statusMessage: string };
+type StrictIncomingMessage = IncomingMessage & { statusCode: number; statusMessage: string };
 
 async function send (testRun: TestRun, options: ExternalRequestOptions, callsite: string): Promise<ResponseOptions> {
     const requestOptions = await createRequestOptions(testRun, options, callsite);

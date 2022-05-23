@@ -43,8 +43,7 @@ const requestOptionAssertions: Assertion[] = [
     { name: 'isAjax', types: is.boolean, options: null, required: false },
 ];
 
-
-function validateOptions (options: Dictionary<any>, callsiteName: string, assertions: Assertion[] = requestOptionAssertions, path: string = ''): void {
+function validateOptions (options: Dictionary<any>, callsiteName: string, assertions: Assertion[] = requestOptionAssertions, path = ''): void {
     for (const assertion of assertions) {
         const optionName = (path ? `${path}.` : '') + assertion.name;
         const optionValue = options[assertion.name];
