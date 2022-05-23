@@ -33,7 +33,7 @@ interface RequestOptions {
     /**
      *  Request url.
      */
-    url: string | URL;
+    url?: string | URL;
     /**
      * Request methods.
      */
