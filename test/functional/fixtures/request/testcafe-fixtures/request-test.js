@@ -247,6 +247,16 @@ test('Should send request with credentials', async (t) => {
     await t.expect(body.cookies).eql('apiCookie1=value1');
 });
 
+test.page('https://devexpress.github.io/testcafe/example/')
+('Should set cookies to the client from response', async (t) => {
+    await Request.get('http://localhost:3000/api/cookies');
+
+    const cookies = await t.getCookies({ domain: 'devexpress.github.io' });
+
+    await t.expect(cookies[0].name).eql('cookieName');
+    await t.expect(cookies[0].value).eql('cookieValue');
+});
+
 test('Should return parsed json', async (t) => {
     const { body } = await Request.get(`http://localhost:3000/api/data`);
 

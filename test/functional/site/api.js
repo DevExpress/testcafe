@@ -61,6 +61,11 @@ router.get('/data/loading', (req, res) => {
 
 router.get('/hanging', () => { });
 
+router.get('/cookies', (req, res) => {
+    res.cookie('cookieName', 'cookieValue');
+    res.send();
+});
+
 router.post('/auth/basic', (req, res) => {
     res.send({
         token: req.rawHeaders[req.rawHeaders.indexOf('authorization') + 1],

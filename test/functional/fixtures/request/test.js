@@ -87,6 +87,10 @@ describe('Request', () => {
         return runTests('testcafe-fixtures/request-test.js', 'Should send request with credentials');
     });
 
+    it('Should set cookies to the client from response', function () {
+        return runTests('testcafe-fixtures/request-test.js', 'Should set cookies to the client from response');
+    });
+
     it('Should return parsed json', function () {
         return runTests('testcafe-fixtures/request-test.js', 'Should return parsed json');
     });
