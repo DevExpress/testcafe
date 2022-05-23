@@ -19,7 +19,7 @@
     "url": "git+https://github.com/DevExpress/testcafe.git"
   },
   "engines": {
-    "node": ">=12.0.0"
+    "node": ">=14.0.0"
   },
   "main": "lib/index",
   "types": "ts-defs/index.d.ts",
@@ -111,7 +111,7 @@
     "is-stream": "^2.0.0",
     "json5": "^2.1.0",
     "lodash": "^4.17.13",
-    "log-update-async-hook": "^2.0.6",
+    "log-update-async-hook": "^2.0.7",
     "make-dir": "^3.0.0",
     "mime-db": "^1.41.0",
     "moment": "^2.29.3",
