@@ -10,6 +10,9 @@ export async function processResponseData (response: IncomingMessage, needProces
 
     const data = await utils.promisifyStream(response);
 
+    if (!response.headers[HTTP_HEADERS.contentType])
+        return data;
+
     if ((response.headers[HTTP_HEADERS.contentType] as string).startsWith(CONTENT_TYPES.textPlain) ||
         (response.headers[HTTP_HEADERS.contentType] as string).startsWith(CONTENT_TYPES.textHtml))
         return data.toString('utf8');
