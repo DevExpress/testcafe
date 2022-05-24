@@ -9,20 +9,18 @@ function hiddenUsingStyles (el: HTMLElement): boolean {
 function hiddenByRectangle (el: HTMLElement): boolean {
     const elementRectangle = adapter.position.getElementRectangle(el);
 
-    if (elementRectangle.width === 0 || elementRectangle.height === 0)
-        return true;
-
-    return elementRectangle.width === 0 || elementRectangle.height === 0;
+    return elementRectangle.width === 0 ||
+        elementRectangle.height === 0;
 }
 
 export function isElementVisible (el: Node): boolean {
     if (adapter.dom.isTextNode(el))
         return !isNotVisibleNode(el);
 
-    if (!adapter.dom.isContentEditableElement(el) && !adapter.dom.isSVGElement(el)) {
-        if (hiddenByRectangle(el as HTMLElement))
-            return false;
-    }
+    if (!adapter.dom.isContentEditableElement(el) &&
+        !adapter.dom.isSVGElement(el) &&
+        hiddenByRectangle(el as HTMLElement))
+        return false;
 
     if (adapter.dom.isMapElement(el)) {
         const mapContainer = adapter.dom.getMapContainer(adapter.dom.closest(el, 'map'));
