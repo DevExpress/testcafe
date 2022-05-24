@@ -170,7 +170,7 @@ export default class TestCafeConfiguration extends Configuration {
         if (!this._isJSONConfiguration())
             return;
 
-        if (opts?.dashboardOptions?.token)
+        if (opts?.[OPTION_NAMES.dashboard]?.token)
             throw new GeneralError(RUNTIME_ERRORS.dashboardTokenInJSON);
     }
     private _prepareFlag (name: string, source = OptionSource.Configuration): void {
