@@ -207,9 +207,10 @@ export async function createRequestOptions (currentUrl: string, testRun: TestRun
         rawHeaders:            void 0,
         requestTimeout:        {
             ajax: options.timeout,
+            page: options.timeout,
         },
         disableHttp2: testRun.session.isHttp2Disabled(),
-        isAjax:       true,
+        isAjax:       options.isAjax || false,
         requestId:    generateUniqueId(),
         isWebSocket:  false,
     });
