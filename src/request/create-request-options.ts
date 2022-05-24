@@ -61,10 +61,12 @@ function transformBody (headers: OutgoingHttpHeaders, body?: object): Buffer {
 
     else if (body instanceof URLSearchParams) {
         setContentTypeIfNotExists(headers, `${CONTENT_TYPES.urlencoded};charset=utf-8`);
+
         return Buffer.from(body.toString());
     }
     else if (isObject(body) || headers && headers[HTTP_HEADERS.contentType] === CONTENT_TYPES.json) {
         setContentTypeIfNotExists(headers, CONTENT_TYPES.json);
+
         return Buffer.from(JSON.stringify(body));
     }
 
