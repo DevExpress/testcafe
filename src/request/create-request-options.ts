@@ -129,7 +129,7 @@ async function prepareUrl (currentUrl: string, testRun: TestRun, url: string | U
             : new URL(url, currentPageUrl.hostname ? currentPageUrl.origin : void 0);
     }
     catch (err) {
-        throw new APIError(callsiteName, RUNTIME_ERRORS.requestUrlError, url);
+        throw new APIError(callsiteName, RUNTIME_ERRORS.requestUrlInvalidValueError, url);
     }
 
     return preparedUrl;

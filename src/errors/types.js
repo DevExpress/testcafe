@@ -166,5 +166,5 @@ export const RUNTIME_ERRORS = {
     cannotSetConcurrencyWithCDPPort:                    'E1069',
     cannotFindTestcafeConfigurationFile:                'E1070',
     dashboardTokenInJSON:                               'E1071',
-    requestUrlError:                                    'E1072',
+    requestUrlInvalidValueError:                        'E1072',
 };
