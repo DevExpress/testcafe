@@ -29,7 +29,7 @@ const DEFAULT_IS_REQUEST        = { [HTTP_HEADERS.isRequest]: true };
 const METHODS_WITH_CONTENT_TYPE = ['post', 'put', 'patch'];
 const DEFAULT_REQUEST_METHOD    = 'GET';
 
-function setContentTypeIfUnset (headers: OutgoingHttpHeaders, value: string): void {
+function setContentTypeIfNotExists (headers: OutgoingHttpHeaders, value: string): void {
     if (!isUndefined(headers) && isUndefined(headers[HTTP_HEADERS.contentType]))
         headers[HTTP_HEADERS.contentType] = value;
 }
@@ -60,11 +60,11 @@ function transformBody (headers: OutgoingHttpHeaders, body?: object): Buffer {
         return Buffer.from(body.buffer);
 
     else if (body instanceof URLSearchParams) {
-        setContentTypeIfUnset(headers, `${CONTENT_TYPES.urlencoded};charset=utf-8`);
+        setContentTypeIfNotExists(headers, `${CONTENT_TYPES.urlencoded};charset=utf-8`);
         return Buffer.from(body.toString());
     }
     else if (isObject(body) || headers && headers[HTTP_HEADERS.contentType] === CONTENT_TYPES.json) {
-        setContentTypeIfUnset(headers, CONTENT_TYPES.json);
+        setContentTypeIfNotExists(headers, CONTENT_TYPES.json);
         return Buffer.from(JSON.stringify(body));
     }
 
