@@ -39,7 +39,7 @@ function typeOf (value: unknown): string {
         return 'null';
 
     if (value && typeof value === 'object')
-        return value.toString().slice(8, -1).toLowerCase();
+        return value.constructor.name.toLowerCase();
 
     return typeof value;
 }
