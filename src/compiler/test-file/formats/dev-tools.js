@@ -29,6 +29,10 @@ class CommandTransformerBase {
         return result;
     }
 
+    _getCorrectSelector(step) {
+        return step.selectors[1] || step.selectors[0];
+    }
+
     _getAssignableProperties () {
         return ['type'];
     }
@@ -65,7 +69,7 @@ class ClickCommandTransformer extends CommandTransformerBase {
 
         this.selector = {
             type:  'js-expr',
-            value: `Selector('${step.selectors[1]}')`,
+            value: `Selector('${this._getCorrectSelector(step)}')`,
         };
 
         this.options = {
@@ -79,23 +83,56 @@ class ClickCommandTransformer extends CommandTransformerBase {
     }
 }
 
-class TypeTextCommandTransformer extends CommandTransformerBase {
+class ExecuteExpressionCommandTransformerBase extends CommandTransformerBase {
     constructor (step, callsite) {
-        super(step, 'type-text', callsite);
-
-        this.selector = {
-            type:  'js-expr',
-            value: `Selector('${step.selectors[1]}')`,
-        };
-
-        this.text = step.value;
-        this.options = { paste: true, replace: true };
+        super(step, 'execute-async-expression', callsite);
     }
 
     _getAssignableProperties () {
-        return ['selector', 'text', 'options'];
+        return ['expression'];
     }
 }
+
+class KeyDownCommandTransformer extends ExecuteExpressionCommandTransformerBase {
+    constructor (step, callsite) {
+        super(step, callsite);
+
+        this.expression = `
+            await t.dispatchEvent(Selector(() => document.activeElement), 'keydown', { key: '${step.key}'});
+            await t.dispatchEvent(Selector(() => document.activeElement), 'keypress', { key: '${step.key}'});
+        `;
+    }
+}
+
+class KeyUpCommandTransformer extends ExecuteExpressionCommandTransformerBase {
+    constructor (step, callsite) {
+        super(step, callsite);
+
+        this.expression = `
+            await t.dispatchEvent(Selector(() => document.activeElement), 'keyup', { key: '${step.key}'});
+        `;
+    }
+}
+
+class ChangeCommandTransformer extends ExecuteExpressionCommandTransformerBase {
+    constructor (step, callsite) {
+        super(step, callsite);
+
+        this.expression = `
+            const selector = Selector('${this._getCorrectSelector(step)}');
+            const { tagName } = await selector();
+            
+            if (tagName === 'input' || tagName === 'textarea')
+                await t.typeText(selector, '${step.value}');
+            else if (tagName === 'select') {
+                await t.click(selector.find('option').filter(option => {
+                    return option.value === '${step.value}';
+                }))
+            }
+        `;
+    }
+}
+
 
 class CommandTransformerFactory {
     static create (step, callsite) {
@@ -103,7 +140,9 @@ class CommandTransformerFactory {
             case 'navigate': return new NavigateCommandTransformer(step, callsite);
             case 'setViewport': return new SetViewportCommandTransformer(step, callsite);
             case 'click': return new ClickCommandTransformer(step, callsite);
-            case 'change': return new TypeTextCommandTransformer(step, callsite);
+            case 'change': return new ChangeCommandTransformer(step, callsite);
+            case 'keyDown': return new KeyDownCommandTransformer(step, callsite);
+            case 'keyUp': return new KeyUpCommandTransformer(step, callsite);
         }
 
         return null;
