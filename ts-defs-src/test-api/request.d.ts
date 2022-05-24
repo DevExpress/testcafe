@@ -3,14 +3,6 @@
 
 type IncomingMessage = import('http').IncomingMessage;
 
-type Method =
-    | 'get' | 'GET'
-    | 'delete' | 'DELETE'
-    | 'head' | 'HEAD'
-    | 'post' | 'POST'
-    | 'put' | 'PUT'
-    | 'patch' | 'PATCH';
-
 type Params = URLSearchParams | {[key: string]: string | number | boolean}
 
 interface AuthOptions {
@@ -37,7 +29,7 @@ interface RequestOptions {
     /**
      * Request methods.
      */
-    method?: Method;
+    method?: string;
     /**
      * Request headers.
      */
