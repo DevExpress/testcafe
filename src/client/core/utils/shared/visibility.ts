@@ -12,7 +12,7 @@ function hiddenByRectangle (el: HTMLElement): boolean {
     if (elementRectangle.width === 0 || elementRectangle.height === 0)
         return true;
 
-    return false;
+    return elementRectangle.width === 0 || elementRectangle.height === 0;
 }
 
 export function isElementVisible (el: Node): boolean {
