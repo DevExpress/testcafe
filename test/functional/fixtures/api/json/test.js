@@ -39,4 +39,8 @@ describe.only('[API] t.click()', function () {
     it('Should wait for an element', function () {
         return runTests('./testcafe-fixtures/wait-for-element-test.json', null, { only: 'chrome' });
     });
+
+    it('Should switch to iframe', function () {
+        return runTests('./testcafe-fixtures/iframe-test.json', null, { only: 'chrome' });
+    });
 });

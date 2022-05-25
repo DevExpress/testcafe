@@ -47,6 +47,12 @@ class CommandTransformerBase {
     }
 }
 
+export class SwitchToMainWindowCommandTransformer extends CommandTransformerBase {
+    constructor (step, callsite) {
+        super(step, TYPE.switchToMainWindow, callsite);
+    }
+}
+
 class SelectorCommandTransformerBase extends CommandTransformerBase {
     constructor (step, type, callsite) {
         super(step, type, callsite);
