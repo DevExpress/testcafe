@@ -204,14 +204,12 @@ export async function createRequestOptions (currentUrl: string, testRun: TestRun
         externalProxySettings: externalProxySettings,
         credentials:           testRun.session.getAuthCredentials(),
         body:                  body,
-        rawHeaders:            void 0,
         requestTimeout:        {
             ajax: options.timeout,
             page: options.timeout,
         },
         disableHttp2: testRun.session.isHttp2Disabled(),
-        isAjax:       options.isAjax || false,
+        isAjax:       options.isAjax,
         requestId:    generateUniqueId(),
-        isWebSocket:  false,
     });
 }
