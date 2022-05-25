@@ -1,9 +1,11 @@
-const expect             = require('chai').expect;
+const { expect }         = require('chai');
 const path               = require('path');
 const { uniq }           = require('lodash');
 const config             = require('../../config');
 const assertionHelper    = require('../../assertion-helper.js');
 const { createReporter } = require('../../utils/reporter');
+const ffprobe            = require('@ffprobe-installer/ffprobe');
+const childProcess       = require('child_process');
 
 function customReporter (errs, videos) {
     return createReporter({
@@ -31,6 +33,13 @@ function checkVideoPaths (videoLog, videoPaths) {
 
     for (let i = 0; i < loggedPaths.length; i++)
         expect(path.relative(actualPaths[i], loggedPaths[i])).eql('');
+}
+
+function getVideoDuration (videoPath) {
+    const command = `${ffprobe.path} -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 ${videoPath}`;
+    const result  = childProcess.execSync(command);
+
+    return Math.ceil(parseFloat(result.toString()));
 }
 
 const BROWSERS_SUPPORTING_VIDEO_RECORDING     = ['chrome', 'firefox'];
@@ -200,6 +209,21 @@ if (config.useLocalBrowsers) {
                     expect(testReport.warnings).eql(['The "${TEST_INDEX}" path pattern placeholder cannot be applied to the recorded video.' +
                                                      '\n\n' +
                                                      'The placeholder was replaced with an empty string.']);
+                });
+        });
+
+        it('Should record a correct video for test with only "wait action"', () => {
+            return runTests('./testcafe-fixtures/only-wait.js', '', {
+                only:         'chrome',
+                setVideoPath: true,
+            })
+                .then(assertionHelper.getVideoFilesList)
+                .then(videoFiles => {
+                    expect(videoFiles.length).to.equal(1);
+
+                    const duration = getVideoDuration(videoFiles[0]);
+
+                    expect(duration).eql(10);
                 });
         });
     });

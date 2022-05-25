@@ -64,7 +64,8 @@ export class BrowserClient {
     private _parentTarget?: remoteChrome.TargetInfo;
     private readonly debugLogger: debug.Debugger;
     private readonly _clientFunctionExecutor: ClientFunctionExecutor;
-    private readonly videoFramesBuffer: VideoFrameData[];
+    private readonly _videoFramesBuffer: VideoFrameData[];
+    private _lastFrame: VideoFrameData | null;
 
     public constructor (runtimeInfo: RuntimeInfo, proxyless: boolean) {
         this._runtimeInfo = runtimeInfo;
@@ -75,7 +76,8 @@ export class BrowserClient {
 
         runtimeInfo.browserClient = this;
 
-        this.videoFramesBuffer = [];
+        this._videoFramesBuffer = [];
+        this._lastFrame         = null;
     }
 
     private get _clientKey (): string {
@@ -448,7 +450,7 @@ export class BrowserClient {
             return;
 
         client.Page.on('screencastFrame', (event: ScreencastFrameEvent) => {
-            this.videoFramesBuffer.push({
+            this._videoFramesBuffer.push({
                 data:      event.data,
                 sessionId: event.sessionId,
             });
@@ -458,15 +460,18 @@ export class BrowserClient {
     }
 
     public async getVideoFrameData (): Promise<Buffer | null> {
-        const currentVideoFrame = this.videoFramesBuffer.shift();
+        const currentVideoFrame = this._videoFramesBuffer.shift() || this._lastFrame;
 
         if (!currentVideoFrame)
             return null;
 
+        if (this._videoFramesBuffer.length === 0)
+            this._lastFrame = currentVideoFrame;
+
         const client = await this.getActiveClient();
 
         if (!client)
-            return Buffer.alloc(0);
+            return null;
 
         await client.Page.screencastFrameAck({ sessionId: currentVideoFrame.sessionId });
 
