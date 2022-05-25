@@ -223,7 +223,7 @@ if (config.useLocalBrowsers) {
 
                     const duration = getVideoDuration(videoFiles[0]);
 
-                    expect(duration).eql(10);
+                    expect(duration).gte(10);
                 });
         });
     });
