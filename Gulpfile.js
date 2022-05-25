@@ -371,7 +371,7 @@ gulp.step('test-functional-local-run', () => {
     return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localBrowsers);
 });
 
-gulp.task('test-functional-local', gulp.series('prepare-tests', 'test-functional-local-run'));
+gulp.task('test-functional-local', gulp.series('test-functional-local-run'));
 
 gulp.step('test-functional-local-ie-run', () => {
     return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localBrowsersIE);
@@ -386,10 +386,10 @@ gulp.step('test-functional-local-chrome-firefox-run', () => {
 gulp.task('test-functional-local-chrome-firefox', gulp.series('prepare-tests', 'test-functional-local-chrome-firefox-run'));
 
 gulp.step('test-functional-local-headless-chrome-run', () => {
-    return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localHeadlessChrome);
+    return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localChrome);
 });
 
-gulp.task('test-functional-local-headless-chrome', gulp.series('prepare-tests', 'test-functional-local-headless-chrome-run'));
+gulp.task('test-functional-local-headless-chrome', gulp.series('test-functional-local-headless-chrome-run'));
 
 gulp.step('test-functional-local-headless-firefox-run', () => {
     return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localHeadlessFirefox);

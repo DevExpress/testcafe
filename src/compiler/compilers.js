@@ -4,8 +4,8 @@ import EsNextTestFileCompiler from './test-file/formats/es-next/compiler';
 import TypeScriptTestFileCompiler from './test-file/formats/typescript/compiler';
 import CoffeeScriptTestFileCompiler from './test-file/formats/coffeescript/compiler';
 import RawTestFileCompiler from './test-file/formats/raw';
+import DevToolsTestFileCompiler from './test-file/formats/dev-tools/compiler';
 import CustomizableCompilers from '../configuration/customizable-compilers';
-import DevToolsTestFileCompiler from './test-file/formats/dev-tools';
 
 function createTestFileCompilers (options = {}, isCompilerServiceMode) {
     return [

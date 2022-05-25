@@ -6,37 +6,66 @@
 </head>
 <body>
 
-<input id="targetRecreate" value="input" style="visibility: hidden;"/>
-<input id="targetRemove" value="input" style="visibility: hidden;"/>
+
+
+<input type="text" id="inp" />
+
+<select name="cars" id="cars">
+    <option>Volvo</option>
+    <option>Saab</option>
+    <option>Mercedes</option>
+    <option value="audi-kekeke">Audi</option>
+</select>
+
+<select name="cars" id="cars2" multiple>
+    <option value="volvo">Volvo</option>
+    <option value="saab">Saab</option>
+    <option value="mercedes">Mercedes</option>
+    <option value="audi">Audi</option>
+</select>
+
+<div id="logger"></div>
 
 <script>
 
-    function inputRecreate() {
-        const input = document.getElementById('targetRecreate');
-        const parent = input.parentNode;
-
-        parent.removeChild(input);
-
-        const newInput = document.createElement('input');
-
-        newInput.id = 'targetRecreate';
-        newInput.value = 'new input recreate';
-
-        document.body.appendChild(newInput);
-    }
-    
-    function  inputRemove() {
-        const input = document.getElementById('targetRemove');
-        const parent = input.parentNode;
-
-        parent.removeChild(input);
+    function handler (event) {
+        logger.innerHTML += event.type + ' ' + event.key + '<br/>';
     }
 
-    window.setTimeout(function () {
-        inputRecreate();
-        inputRemove();
-    }, 500);
+    // inp.addEventListener('keydown', handler);
+    // inp.addEventListener('keypress', handler);
+    // inp.addEventListener('keyup', handler);
+    //
+    // document.addEventListener('keydown', handler);
+    // document.addEventListener('keypress', handler);
+    // document.addEventListener('keyup', handler);
 
+    inp.addEventListener('change', handler);
+    inp.addEventListener('input', handler);
+    inp.addEventListener('beforeinput', handler);
+
+    cars.addEventListener('change', handler);
+    cars.addEventListener('input', handler);
+    cars.addEventListener('beforeinput', handler);
 </script>
+
+<div id="scrollable" style="overflow: auto; height: 300px">
+    <div style="height: 4000px">
+
+    </div>
+</div>
+<div id="scrollable2" style="overflow: auto; height: 300px">
+    <div style="height: 4000px">
+
+    </div>
+</div>
+
+
+
+<div style="height: 4000px">
+
+</div>
+
+
 </body>
 </html>

@@ -105,6 +105,31 @@
       "target": "main",
       "offsetX": 1.399993896484375,
       "offsetY": 1
+    },
+    {
+      "type": "click",
+      "selectors": [
+        [
+          "aria/Your name:",
+          "aria/[role=\"textbox\"]"
+        ],
+        [
+          "[data-testid=name-input]"
+        ]
+      ],
+      "target": "main",
+      "offsetX": 89.39999389648438,
+      "offsetY": 3.399993896484375
+    },
+    {
+      "type": "keyDown",
+      "target": "main",
+      "key": "k"
+    },
+    {
+      "type": "keyUp",
+      "key": "k",
+      "target": "main"
     }
   ]
 }
