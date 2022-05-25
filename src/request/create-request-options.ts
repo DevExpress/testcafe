@@ -119,6 +119,9 @@ async function prepareHeaders (headers: OutgoingHttpHeaders, url: URL, body: Buf
             preparedHeaders[HTTP_HEADERS.cookie] = currentPageCookies || cookies;
     }
 
+    //NOTE: Additional header to recognize API requests in the hammerhead
+    preparedHeaders[HTTP_HEADERS.isApiRequest] = 'true';
+
     return preparedHeaders;
 }
 

@@ -9,4 +9,5 @@ export default {
     contentLength:      'content-length',
     cookie:             'cookie',
     setCookie:          'set-cookie',
+    isApiRequest:       'is-api-request',
 };
