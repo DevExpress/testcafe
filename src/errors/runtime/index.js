@@ -141,3 +141,9 @@ export class BrowserConnectionError extends GeneralError {
         super(RUNTIME_ERRORS.browserConnectionError, ...args);
     }
 }
+
+export class RequestRuntimeError extends APIError {
+    constructor (methodName, message) {
+        super(methodName, RUNTIME_ERRORS.requestRuntimeError, message);
+    }
+}
