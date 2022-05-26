@@ -108,7 +108,7 @@ interface CompilerHostInitOptions {
 }
 
 export default class CompilerHost extends AsyncEventEmitter implements CompilerProtocol {
-    private runtime: Promise<RuntimeResources|undefined>;
+    private runtime: Promise<RuntimeResources | undefined>;
     private cdp: cdp.ProtocolApi & EventEmitter | undefined;
     private readonly developmentMode: boolean;
     private readonly v8Flags: string[];
@@ -174,7 +174,7 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
                 includeCommandLineAPI: true,
             });
 
-            await this.cdp.Debugger.resume();
+            await this.cdp.Debugger.resume({ terminateOnResume: false });
         });
 
         testRunTracker.on(DEBUG_ACTION.step, async () => {
@@ -191,7 +191,7 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
                 includeCommandLineAPI: true,
             });
 
-            await this.cdp.Debugger.resume();
+            await this.cdp.Debugger.resume({ terminateOnResume: false });
         });
 
         // NOTE: need to step out from the source code until breakpoint is set in the code of test
@@ -202,7 +202,7 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
 
             if (this.cdp) {
                 if (args.reason === INITIAL_DEBUGGER_BREAK_ON_START)
-                    return this.cdp.Debugger.resume();
+                    return this.cdp.Debugger.resume({ terminateOnResume: false });
 
                 if (callFrames[0].url.includes(INTERNAL_FILES_URL))
                     return this.cdp.Debugger.stepOut();
@@ -246,14 +246,14 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
             args = this.v8Flags.filter(flag => !INSPECT_RE.test(flag));
 
         // TODO: debugging: refactor to a separate debug info parsing unit
-        const inspectBrkFlag = `--inspect-brk=127.0.0.1:${port}`;
+        const inspectBrkFlag = `--inspect-brk=127.0.0.1:${ port }`;
 
         args.push(inspectBrkFlag, SERVICE_PATH);
 
         return args;
     }
 
-    private async _init (runtime: Promise<RuntimeResources|undefined>): Promise<RuntimeResources|undefined> {
+    private async _init (runtime: Promise<RuntimeResources | undefined>): Promise<RuntimeResources | undefined> {
         const resolvedRuntime = await runtime;
 
         if (resolvedRuntime)
