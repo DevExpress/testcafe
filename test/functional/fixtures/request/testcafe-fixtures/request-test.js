@@ -319,3 +319,8 @@ test.page('http://localhost:3000/fixtures/request/pages/index.html')
         position: 'CTO',
     });
 });
+
+test('Should rise request runtime error', async (t) => {
+    await Request.get(`https://localhost1:3007/api/data`);
+});
+

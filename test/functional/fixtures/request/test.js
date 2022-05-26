@@ -118,4 +118,12 @@ describe('Request', () => {
     it('Should execute a request with relative url', function () {
         return runTests('testcafe-fixtures/request-test.js', 'Should execute a request with relative url');
     });
+
+    it('Should rise request runtime error', function () {
+        return runTests('testcafe-fixtures/request-test.js', 'Should rise request runtime error', { shouldFail: true })
+            .catch(function (errs) {
+                expect(errs[0]).contains('Requested was interrupted with error:');
+                expect(/>.*\|.*await Request\.get/.test(errs[0])).ok;
+            });
+    });
 });
