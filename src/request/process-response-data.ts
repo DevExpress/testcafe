@@ -1,14 +1,14 @@
 import { IncomingMessage } from 'http';
 import HTTP_HEADERS from '../utils/http-headers';
 import CONTENT_TYPES from '../assets/content-types';
-import { utils } from 'testcafe-hammerhead';
+import { promisifyStream } from 'testcafe-hammerhead';
 import { ResponseBody } from './interfaces';
 
 export async function processResponseData (response: IncomingMessage, rawResponse = false): Promise<ResponseBody> {
     if (rawResponse)
         return response;
 
-    const data = await utils.promisifyStream(response);
+    const data = await promisifyStream(response);
 
     if (!response.headers[HTTP_HEADERS.contentType])
         return data;

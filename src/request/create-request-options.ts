@@ -15,7 +15,7 @@ import {
 } from './interfaces';
 import {
     RequestOptions,
-    generateUniqueId,
+    parseProxyUrl,
 } from 'testcafe-hammerhead';
 import TestRun from '../test-run';
 import CONTENT_TYPES from '../assets/content-types';
@@ -161,21 +161,22 @@ function prepareSearchParams (url: string, params?: Params): string {
     return `${url}${url.includes('?') ? '&' : '?'}${searchParams.toString()}`;
 }
 
+function getProxyUrl (testRun: TestRun, url: string, withCredentials?: boolean): Promise<string> {
+    return testRun.executeCommand(new GetProxyUrlCommand({
+        url:     url,
+        options: { credentials: withCredentials ? Credentials.include : Credentials.omit },
+    }, testRun, true)) as Promise<string>;
+}
+
 export async function createRequestOptions (currentUrl: string, testRun: TestRun, options: ExternalRequestOptions, callsite: string): Promise<RequestOptions> {
     options.headers = options.headers || {};
 
-    const url        = await prepareUrl(currentUrl, testRun, options.url, callsite);
-    const proxiedUrl = await testRun.executeCommand(new GetProxyUrlCommand({
-        url:    url.href,
-        option: {
-            credentials: options.withCredentials ? Credentials.include : Credentials.omit,
-            isAjax:      options.isAjax,
-        },
-    }, testRun, true)) as string;
-
-    const body       = transformBody(options.headers, options.body);
-    const headers    = await prepareHeaders(options.headers, url, body, testRun, options);
-    let auth         = options.auth;
+    const url         = await prepareUrl(currentUrl, testRun, options.url, callsite);
+    const body        = transformBody(options.headers, options.body);
+    const headers     = await prepareHeaders(options.headers, url, body, testRun, options);
+    const proxyUrl    = await getProxyUrl(testRun, url.href, options.withCredentials);
+    const proxyUrlObj = parseProxyUrl(proxyUrl);
+    let auth          = options.auth;
 
     if (!auth && url.username && url.password) {
         auth = {
@@ -188,28 +189,26 @@ export async function createRequestOptions (currentUrl: string, testRun: TestRun
         host:      options.proxy.host,
         hostname:  options.proxy.host,
         port:      options.proxy.port.toString(),
-        proxyAuth: options.proxy.auth ? options.proxy.auth.username + ':' + options.proxy.auth.password : '',
+        proxyAuth: options.proxy.auth ? `${options.proxy.auth.username}:${options.proxy.auth.password}` : void 0,
     } : void 0;
 
     return new RequestOptions({
         method:                options.method || DEFAULT_REQUEST_METHOD,
-        url:                   proxiedUrl,
+        url:                   proxyUrl,
         protocol:              url.protocol,
-        hostname:              url.hostname,
-        host:                  url.host,
-        port:                  url.port,
-        path:                  prepareSearchParams(url.pathname + url.search, options.params),
+        hostname:              proxyUrlObj.proxy.hostname,
+        host:                  proxyUrlObj.proxy.hostname,
+        port:                  proxyUrlObj.proxy.port,
+        path:                  prepareSearchParams(proxyUrlObj.partAfterHost + url.search, options.params),
         auth:                  auth ? `${auth.username}:${auth.password}` : void 0,
         headers:               headers,
         externalProxySettings: externalProxySettings,
         credentials:           testRun.session.getAuthCredentials(),
         body:                  body,
+        disableHttp2:          testRun.session.isHttp2Disabled(),
         requestTimeout:        {
             ajax: options.timeout,
             page: options.timeout,
         },
-        disableHttp2: testRun.session.isHttp2Disabled(),
-        isAjax:       options.isAjax,
-        requestId:    generateUniqueId(),
     });
 }
