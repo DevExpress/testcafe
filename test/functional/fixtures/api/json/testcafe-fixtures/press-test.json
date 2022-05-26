@@ -1,0 +1,77 @@
+{
+  "title": "Press key",
+  "steps": [
+    {
+      "type": "setViewport",
+      "width": 1536,
+      "height": 721,
+      "deviceScaleFactor": 1,
+      "isMobile": false,
+      "hasTouch": false,
+      "isLandscape": false
+    },
+    {
+      "type": "navigate",
+      "url": "http://localhost:3000/fixtures/api/json/pages/index.html",
+      "assertedEvents": [
+        {
+          "type": "navigation",
+          "url": "http://localhost:3000/fixtures/api/json/pages/index.html",
+          "title": "Title"
+        }
+      ]
+    },
+    {
+      "type": "click",
+      "selectors": [
+        [
+          "aria/focusable div 1"
+        ],
+        [
+          "#focusable1"
+        ]
+      ],
+      "target": "main",
+      "offsetX": 41,
+      "offsetY": 9.199996948242188
+    },
+    {
+      "type": "keyDown",
+      "target": "main",
+      "key": "q"
+    },
+    {
+      "type": "keyUp",
+      "key": "q",
+      "target": "main"
+    },
+    {
+      "type": "click",
+      "selectors": [
+        [
+          "aria/focusable div 2"
+        ],
+        [
+          "#focusable2"
+        ]
+      ],
+      "target": "main",
+      "offsetX": 56,
+      "offsetY": 9
+    },
+    {
+      "type": "keyDown",
+      "target": "main",
+      "key": "w"
+    },
+    {
+      "type": "keyUp",
+      "key": "w",
+      "target": "main"
+    },
+    {
+      "type": "waitForExpression",
+      "expression": "document.querySelector('#status').innerText === 'keydown focusable1 q\\nkeypress focusable1 q\\nkeyup focusable1 q\\nkeydown focusable2 w\\nkeypress focusable2 w\\nkeyup focusable2 w\\n'"
+    }
+  ]
+}

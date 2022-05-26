@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #statusBtn {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        #focusable1, #focusable2 {
+            height: 30px;
+        }
+
+        #scrollable {
+            height: 100px;
+            overflow: auto;
+        }
+
+        #height {
+            position: absolute;
+            top: 5000px;
+            width: 10px;
+            height: 10px;
+        }
+    </style>
+</head>
+<body>
+<input id="statusBtn" type="button" value="click">
+<br/><br/>
+<div id="status"></div>
+<input type="text" id="input" />
+<select id="select">
+    <option value="1">One</option>
+    <option>Two</option>
+    <option value="3">Three</option>
+</select>
+<button onclick="alert('test')">alert</button>
+<div id="focusable1" tabindex="1">focusable div 1</div>
+<div id="focusable2" tabindex="2">focusable div 2</div>
+<div id="scrollable">
+    <div style="height: 3000px;"></div>
+</div>
+<div class="waitForElement1">waitForElement1</div>
+<div class="waitForElement2">waitForElement2</div>
+<div class="waitForElement2">waitForElement2</div>
+<iframe src="http://localhost:3000/fixtures/api/json/pages/iframe1.html"></iframe>
+<iframe name="iframe1" src="http://localhost:3000/fixtures/api/json/pages/iframe1.html"></iframe>
+<a target="_blank" href="http://example.com">open child window</a>
+<div id="shadowContainer"></div>
+
+<div id="height"></div>
+<script>
+    const status = document.querySelector('#status');
+
+    function clickListener (event) {
+        status.textContent = 'click ' + event.clientX + ' ' + event.clientY;
+    }
+
+    function pressListener (event) {
+        status.innerHTML += event.type + ' ' + event.target.id + ' ' + event.key + '<br/>';
+    }
+
+    document.querySelector('#statusBtn').addEventListener('click', clickListener);
+    document.querySelector('#focusable1').addEventListener('keydown', pressListener);
+    document.querySelector('#focusable1').addEventListener('keypress', pressListener);
+    document.querySelector('#focusable1').addEventListener('keyup', pressListener);
+    document.querySelector('#focusable2').addEventListener('keydown', pressListener);
+    document.querySelector('#focusable2').addEventListener('keypress', pressListener);
+    document.querySelector('#focusable2').addEventListener('keyup', pressListener);
+
+    const shadowContainer = document.querySelector('#shadowContainer');
+    const nestedShadowContainer = document.createElement('div');
+
+    shadowContainer.attachShadow({mode: 'open'});
+    nestedShadowContainer.attachShadow({mode: 'open'});
+
+    const shadowBtn = document.createElement('button');
+    const child     = document.createElement('div');
+
+    shadowBtn.id        = 'shadowBtn'
+    shadowBtn.innerHTML = 'shadow button';
+    child.innerHTML     = 'child<br/><br/>';
+
+    nestedShadowContainer.shadowRoot.appendChild(child);
+    nestedShadowContainer.shadowRoot.appendChild(shadowBtn);
+
+    shadowContainer.shadowRoot.appendChild(nestedShadowContainer);
+
+    shadowBtn.addEventListener('click', () => {
+        throw new Error('shadow button clicked');
+    });
+</script>
+</body>
+</html>

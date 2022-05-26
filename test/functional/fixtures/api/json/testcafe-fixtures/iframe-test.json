@@ -1,0 +1,131 @@
+{
+  "title": "Iframe",
+  "steps": [
+    {
+      "type": "setViewport",
+      "width": 1519,
+      "height": 721,
+      "deviceScaleFactor": 1,
+      "isMobile": false,
+      "hasTouch": false,
+      "isLandscape": false
+    },
+    {
+      "type": "navigate",
+      "url": "http://localhost:3000/fixtures/api/json/pages/index.html",
+      "assertedEvents": [
+        {
+          "type": "navigation",
+          "url": "http://localhost:3000/fixtures/api/json/pages/index.html",
+          "title": "Title"
+        }
+      ]
+    },
+    {
+      "type": "click",
+      "selectors": [
+        [
+          "aria/IFrame 1"
+        ],
+        [
+          "#btnIFrame1"
+        ]
+      ],
+      "frame": [
+        0
+      ],
+      "target": "main",
+      "offsetX": 59,
+      "offsetY": 17
+    },
+    {
+      "type": "click",
+      "selectors": [
+        [
+          "aria/IFrame 2"
+        ],
+        [
+          "#btnIFrame2"
+        ]
+      ],
+      "frame": [
+        0,
+        0
+      ],
+      "target": "main",
+      "offsetX": 60,
+      "offsetY": 8
+    },
+    {
+      "type": "click",
+      "selectors": [
+        [
+          "aria/IFrame 3"
+        ],
+        [
+          "#btnIFrame3"
+        ]
+      ],
+      "frame": [
+        0,
+        1
+      ],
+      "target": "main",
+      "offsetX": 52,
+      "offsetY": 17
+    },
+    {
+      "type": "click",
+      "selectors": [
+        [
+          "aria/IFrame 1"
+        ],
+        [
+          "#btnIFrame1"
+        ]
+      ],
+      "frame": [
+        1
+      ],
+      "target": "main",
+      "offsetX": 41,
+      "offsetY": 12
+    },
+    {
+      "type": "click",
+      "selectors": [
+        [
+          "aria/IFrame 2"
+        ],
+        [
+          "#btnIFrame2"
+        ]
+      ],
+      "frame": [
+        1,
+        0
+      ],
+      "target": "main",
+      "offsetX": 32,
+      "offsetY": 16
+    },
+    {
+      "type": "click",
+      "selectors": [
+        [
+          "aria/IFrame 3"
+        ],
+        [
+          "#btnIFrame3"
+        ]
+      ],
+      "frame": [
+        1,
+        1
+      ],
+      "target": "main",
+      "offsetX": 48,
+      "offsetY": 6
+    }
+  ]
+}
