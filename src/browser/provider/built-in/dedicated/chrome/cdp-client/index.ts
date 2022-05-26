@@ -200,15 +200,15 @@ export class BrowserClient {
     public async resizeWindow (newDimensions: Size): Promise<void> {
         const { browserId, config, viewportSize, providerMethods, emulatedDevicePixelRatio } = this._runtimeInfo;
 
-        const currentWidth = viewportSize.width;
+        const currentWidth  = viewportSize.width;
         const currentHeight = viewportSize.height;
-        const newWidth = newDimensions.width || currentWidth;
-        const newHeight = newDimensions.height || currentHeight;
+        const newWidth      = newDimensions.width || currentWidth;
+        const newHeight     = newDimensions.height || currentHeight;
 
         if (!config.headless)
             await providerMethods.resizeLocalBrowserWindow(browserId, newWidth, newHeight, currentWidth, currentHeight);
 
-        viewportSize.width = newWidth;
+        viewportSize.width  = newWidth;
         viewportSize.height = newHeight;
 
         const client = await this.getActiveClient();
@@ -280,10 +280,7 @@ export class BrowserClient {
     }
 
     public async getScreenshotData (fullPage?: boolean): Promise<Buffer> {
-        let viewportWidth  = 0;
-        let viewportHeight = 0;
-
-        const { config, emulatedDevicePixelRatio } = this._runtimeInfo;
+        let clip: Protocol.Page.Viewport | undefined = void 0;
 
         const client = await this.getActiveClient();
 
@@ -295,36 +292,20 @@ export class BrowserClient {
         }
 
         if (fullPage) {
-            const { contentSize, visualViewport } = await client.Page.getLayoutMetrics();
+            const metrics           = await client.Page.getLayoutMetrics();
+            const { width, height } = metrics.cssContentSize || metrics.contentSize;
 
-            await this._setDeviceMetricsOverride(
-                client,
-                Math.ceil(contentSize.width),
-                Math.ceil(contentSize.height),
-                emulatedDevicePixelRatio,
-                config.mobile);
-
-            viewportWidth = visualViewport.clientWidth;
-            viewportHeight = visualViewport.clientHeight;
+            clip = { x: 0, y: 0, width, height, scale: 1 };
         }
 
-        const screenshotData = await client.Page.captureScreenshot({});
+        const result = await client.Page.captureScreenshot({
+            clip,
+            captureBeyondViewport: true,
+        });
 
-        if (fullPage) {
-            if (config.emulation) {
-                await this._setDeviceMetricsOverride(
-                    client,
-                    config.width || viewportWidth,
-                    config.height || viewportHeight,
-                    emulatedDevicePixelRatio,
-                    config.mobile);
-            }
-            else
-                await client.Emulation.clearDeviceMetricsOverride();
-        }
-
-        return Buffer.from(screenshotData.data, 'base64');
+        return Buffer.from(result.data, 'base64');
     }
+
 
     public async closeTab (): Promise<void> {
         if (this._parentTarget)
@@ -341,7 +322,7 @@ export class BrowserClient {
 
         const windowDimensions = windowDimensionsQueryResult.result.value;
 
-        this._runtimeInfo.viewportSize.width = windowDimensions.outerWidth;
+        this._runtimeInfo.viewportSize.width  = windowDimensions.outerWidth;
         this._runtimeInfo.viewportSize.height = windowDimensions.outerHeight;
     }
 
