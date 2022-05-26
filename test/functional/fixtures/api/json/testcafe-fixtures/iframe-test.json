@@ -25,10 +25,27 @@
       "type": "click",
       "selectors": [
         [
-          "aria/click"
+          "aria/IFrame 1"
         ],
         [
-          "#statusBtn"
+          "#btnIFrame1"
+        ]
+      ],
+      "frame": [
+        0
+      ],
+      "target": "main",
+      "offsetX": 59,
+      "offsetY": 17
+    },
+    {
+      "type": "click",
+      "selectors": [
+        [
+          "aria/IFrame 2"
+        ],
+        [
+          "#btnIFrame2"
         ]
       ],
       "frame": [
@@ -36,24 +53,78 @@
         0
       ],
       "target": "main",
-      "offsetX": 22,
-      "offsetY": 11
+      "offsetX": 60,
+      "offsetY": 8
     },
     {
       "type": "click",
       "selectors": [
         [
-          "aria/click"
+          "aria/IFrame 3"
         ],
         [
-          "#statusBtn"
+          "#btnIFrame3"
+        ]
+      ],
+      "frame": [
+        0,
+        1
+      ],
+      "target": "main",
+      "offsetX": 52,
+      "offsetY": 17
+    },
+    {
+      "type": "click",
+      "selectors": [
+        [
+          "aria/IFrame 1"
+        ],
+        [
+          "#btnIFrame1"
         ]
       ],
       "frame": [
         1
       ],
       "target": "main",
-      "offsetX": 21,
+      "offsetX": 41,
+      "offsetY": 12
+    },
+    {
+      "type": "click",
+      "selectors": [
+        [
+          "aria/IFrame 2"
+        ],
+        [
+          "#btnIFrame2"
+        ]
+      ],
+      "frame": [
+        1,
+        0
+      ],
+      "target": "main",
+      "offsetX": 32,
+      "offsetY": 16
+    },
+    {
+      "type": "click",
+      "selectors": [
+        [
+          "aria/IFrame 3"
+        ],
+        [
+          "#btnIFrame3"
+        ]
+      ],
+      "frame": [
+        1,
+        1
+      ],
+      "target": "main",
+      "offsetX": 48,
       "offsetY": 6
     }
   ]

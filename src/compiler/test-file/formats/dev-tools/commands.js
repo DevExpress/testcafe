@@ -44,6 +44,7 @@ class CommandTransformerBase {
     }
 
     _getAssignableProperties () {
+        return [];
     }
 }
 
@@ -71,6 +72,19 @@ class SelectorCommandTransformerBase extends CommandTransformerBase {
         return ['selector'];
     }
 }
+
+export class SwitchToIframeCommandTransformer extends SelectorCommandTransformerBase {
+    constructor (frame, callsite) {
+        super(frame, TYPE.switchToIframe, callsite);
+    }
+
+    _getCorrectSelector (frame) {
+        console.log('_getCorrectSelector: ' + frame);
+        return `Selector(() => { debugger; return window.frames[${frame}].frameElement; })`;
+    }
+}
+
+
 
 class NavigateCommandTransformer extends CommandTransformerBase {
     constructor (step, callsite) {

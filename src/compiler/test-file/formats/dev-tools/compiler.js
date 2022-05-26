@@ -1,6 +1,5 @@
 import RawTestFileCompiler from '../raw';
-import { CommandTransformerFactory, SwitchToMainWindowCommandTransformer } from './commands';
-import { SwitchToParentWindowCommand } from "../../../../test-run/commands/actions";
+import { CommandTransformerFactory, SwitchToIframeCommandTransformer, SwitchToMainWindowCommandTransformer } from './commands';
 
 const TEST_BASE = JSON.stringify({
     fixtures: [
@@ -54,10 +53,14 @@ export default class DevToolsTestFileCompiler extends RawTestFileCompiler {
     }
 
     _onBeforeCommandExecute (step) {
-        this._test.commands.push();
+        if (!step.frame)
+            return;
+
+        for (const frame of step.frame)
+            this._test.commands.push(new SwitchToIframeCommandTransformer(frame).transform());
     }
 
     _onAfterCommandExecute (step) {
-        this._test.commands.push(new SwitchToMainWindowCommandTransformer(step));
+        this._test.commands.push(new SwitchToMainWindowCommandTransformer(step).transform());
     }
 }
