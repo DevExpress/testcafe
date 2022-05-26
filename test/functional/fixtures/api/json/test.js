@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 
-describe.only('[API] t.click()', function () {
+describe('[API] DevTools Compiler', function () {
     it('Should make click on a button', function () {
         return runTests('./testcafe-fixtures/click-test.json', null, { only: 'chrome' });
     });
@@ -42,5 +42,15 @@ describe.only('[API] t.click()', function () {
 
     it('Should switch to iframe', function () {
         return runTests('./testcafe-fixtures/iframe-test.json', null, { only: 'chrome' });
+    });
+
+    it('Should click inside shadow DOM', function () {
+        return runTests('./testcafe-fixtures/shadow-dom-test.json', null, {
+            only:       'chrome',
+            shouldFail: true,
+        })
+            .catch(errs => {
+                expect(errs[0]).contains('shadow button clicked');
+            });
     });
 });

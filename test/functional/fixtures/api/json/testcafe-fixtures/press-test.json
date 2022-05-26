@@ -1,5 +1,5 @@
 {
-  "title": "test",
+  "title": "Press key",
   "steps": [
     {
       "type": "setViewport",

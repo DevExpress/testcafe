@@ -1,5 +1,10 @@
 import RawTestFileCompiler from '../raw';
-import { CommandTransformerFactory, SwitchToIframeCommandTransformer, SwitchToMainWindowCommandTransformer } from './commands';
+
+import {
+    CommandTransformerFactory,
+    SwitchToIframeCommandTransformer,
+    SwitchToMainWindowCommandTransformer,
+} from './commands';
 
 const TEST_BASE = JSON.stringify({
     fixtures: [
@@ -20,8 +25,12 @@ export default class DevToolsTestFileCompiler extends RawTestFileCompiler {
         return true;
     }
 
+    get _fixture () {
+        return this.raw.fixtures[0];
+    }
+
     get _test () {
-        return this.raw.fixtures[0].tests[0];
+        return this._fixture.tests[0];
     }
 
     getSupportedExtension () {
@@ -36,6 +45,9 @@ export default class DevToolsTestFileCompiler extends RawTestFileCompiler {
 
     _preProcess (code) {
         const parsedCode = JSON.parse(code);
+
+        this._fixture.name = parsedCode.title;
+        this._test.name    = parsedCode.title;
 
         parsedCode.steps.forEach((step, i) => this._processStep(step, i));
 

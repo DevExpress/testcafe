@@ -48,9 +48,9 @@
 <div class="waitForElement2">waitForElement2</div>
 <iframe src="http://localhost:3000/fixtures/api/json/pages/iframe1.html"></iframe>
 <iframe name="iframe1" src="http://localhost:3000/fixtures/api/json/pages/iframe1.html"></iframe>
-<iframe name="iframe2" src="https://devexpress.github.io/testcafe/example/"></iframe>
-<iframe name="iframe3" src="http://localhost:3000/fixtures/api/json/pages/iframe1.html"></iframe>
 <a target="_blank" href="http://example.com">open child window</a>
+<div id="shadowContainer"></div>
+
 <div id="height"></div>
 <script>
     const status = document.querySelector('#status');
@@ -70,6 +70,28 @@
     document.querySelector('#focusable2').addEventListener('keydown', pressListener);
     document.querySelector('#focusable2').addEventListener('keypress', pressListener);
     document.querySelector('#focusable2').addEventListener('keyup', pressListener);
+
+    const shadowContainer = document.querySelector('#shadowContainer');
+    const nestedShadowContainer = document.createElement('div');
+
+    shadowContainer.attachShadow({mode: 'open'});
+    nestedShadowContainer.attachShadow({mode: 'open'});
+
+    const shadowBtn = document.createElement('button');
+    const child     = document.createElement('div');
+
+    shadowBtn.id        = 'shadowBtn'
+    shadowBtn.innerHTML = 'shadow button';
+    child.innerHTML     = 'child<br/><br/>';
+
+    nestedShadowContainer.shadowRoot.appendChild(child);
+    nestedShadowContainer.shadowRoot.appendChild(shadowBtn);
+
+    shadowContainer.shadowRoot.appendChild(nestedShadowContainer);
+
+    shadowBtn.addEventListener('click', () => {
+        throw new Error('shadow button clicked');
+    });
 </script>
 </body>
 </html>

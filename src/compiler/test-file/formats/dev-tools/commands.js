@@ -11,8 +11,7 @@ const DEVTOOLS_COMMAND_TYPE = {
     waitForExpression: 'waitForExpression',
     waitForElement:    'waitForElement',
     close:             'close',
-}
-
+};
 
 class CommandTransformerBase {
     constructor (step, type, callsite) {
@@ -33,14 +32,19 @@ class CommandTransformerBase {
         if (!step.selectors || !step.selectors.length)
             return null;
 
-        const selector = step.selectors[1] || step.selectors[0];
+        let selector = step.selectors[1] || step.selectors[0];
+
+        if (Array.isArray(selector))
+            selector = `Selector("${selector.join('").shadowRoot().find("')}")`;
+        else
+            selector = `Selector('${selector}')`;
 
         let timeoutStr = '';
 
         if (step.timeout)
             timeoutStr += `, { timeout: ${step.timeout} }`;
 
-        return `Selector('${selector}'${timeoutStr})`;
+        return `Selector(${selector}${timeoutStr})`;
     }
 
     _getAssignableProperties () {
@@ -79,12 +83,9 @@ export class SwitchToIframeCommandTransformer extends SelectorCommandTransformer
     }
 
     _getCorrectSelector (frame) {
-        console.log('_getCorrectSelector: ' + frame);
-        return `Selector(() => { debugger; return window.frames[${frame}].frameElement; })`;
+        return `Selector(() => { return window.frames[${frame}].frameElement; })`;
     }
 }
-
-
 
 class NavigateCommandTransformer extends CommandTransformerBase {
     constructor (step, callsite) {
@@ -186,7 +187,7 @@ class ChangeCommandTransformer extends ExecuteExpressionCommandTransformerBase {
         this.expression = `
             const selector = ${this._getCorrectSelector(step)};
             const { tagName } = await selector();
-            
+
             if (tagName === 'input' || tagName === 'textarea')
                 await t.typeText(selector, '${step.value}');
             else if (tagName === 'select') {
@@ -206,7 +207,7 @@ class WaitForExpressionCommandTransformer extends ExecuteExpressionCommandTransf
             const fn = ClientFunction(() => {
                 return ${step.expression}
             });
-            
+
             await t.expect(fn()).eql(true);
         `;
     }
@@ -218,7 +219,7 @@ class WaitForElementCommandTransformer extends ExecuteExpressionCommandTransform
 
         this.expression = `
             const selector = ${this._getCorrectSelector(step)};
-                       
+
             await t.expect(selector.count).${this._getOperatorMethodName(step.operator)}(${step.count || 1});
         `;
     }

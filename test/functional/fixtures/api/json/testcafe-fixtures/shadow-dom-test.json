@@ -1,9 +1,9 @@
 {
-  "title": "Click failure",
+  "title": "Shadow DOM",
   "steps": [
     {
       "type": "setViewport",
-      "width": 1536,
+      "width": 1519,
       "height": 721,
       "deviceScaleFactor": 1,
       "isMobile": false,
@@ -26,13 +26,17 @@
       "timeout": 100,
       "selectors": [
         [
-          "aria/click"
+          "aria/shadow button"
         ],
         [
-          "#nonExistingElement"
+          "#shadowContainer",
+          "div",
+          "#shadowBtn"
         ]
       ],
-      "target": "main"
+      "target": "main",
+      "offsetX": 52,
+      "offsetY": 17.399993896484375
     }
   ]
 }

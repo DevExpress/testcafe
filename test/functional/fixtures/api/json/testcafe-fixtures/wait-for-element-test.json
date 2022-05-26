@@ -1,5 +1,5 @@
 {
-  "title": "test",
+  "title": "Wait for element",
   "steps": [
     {
       "type": "setViewport",
