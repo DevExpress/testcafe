@@ -316,7 +316,6 @@ export class GetProxyUrlOptions extends Assignable {
     _getAssignableProperties () {
         return [
             { name: 'credentials', type: numberOption },
-            { name: 'isAjax', type: booleanOption },
         ];
     }
 }

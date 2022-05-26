@@ -29,7 +29,6 @@ export interface ExternalRequestOptions {
     auth?: AuthOptions;
     proxy?: ProxyOptions;
     rawResponse?: boolean;
-    isAjax?: boolean;
 }
 
 export type ResponseBody = IncomingMessage | Buffer | object | string;

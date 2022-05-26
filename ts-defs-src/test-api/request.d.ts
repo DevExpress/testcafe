@@ -62,10 +62,6 @@ interface RequestOptions {
      * Return raw response.
      */
     rawResponse?: boolean;
-    /**
-     * Is ajax request.
-     */
-    isAjax?: boolean;
 }
 
 interface ResponseOptions {

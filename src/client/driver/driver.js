@@ -114,7 +114,6 @@ import SelectorElementActionTransform from './command-executors/client-functions
 import BarriersComplex from '../../shared/barriers/complex-barrier';
 import createErrorCtorCallback from '../../shared/errors/selector-error-ctor-callback';
 import './command-executors/actions-initializer';
-import executeGetProxyUrl from './command-executors/execute-get-proxy-url';
 
 const settings = hammerhead.settings;
 
@@ -125,6 +124,7 @@ const storages       = hammerhead.storages;
 const nativeMethods  = hammerhead.nativeMethods;
 const DateCtor       = nativeMethods.date;
 const listeners      = hammerhead.eventSandbox.listeners;
+const urlUtils       = hammerhead.utils.url;
 
 const TEST_DONE_SENT_FLAG                  = 'testcafe|driver|test-done-sent-flag';
 const PENDING_STATUS                       = 'testcafe|driver|pending-status';
@@ -1197,7 +1197,7 @@ export default class Driver extends serviceUtils.EventEmitter {
     _onGetProxyUrlCommand (command) {
         this._onReady(new DriverStatus({
             isCommandResult: true,
-            result:          executeGetProxyUrl(command),
+            result:          urlUtils.getProxyUrl(command.url, command.options),
         }));
     }
 
