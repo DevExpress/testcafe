@@ -1,5 +1,69 @@
 # Changelog
 
+## TestCafe v1.19.0 released
+
+TestCafe v1.19.0 introduces three major capabilities: a [Cookie Management API](#cookie-management), suite-wide [test hooks](#global-test-hooks), and suite-wide [request hooks](#global-request-hooks).
+
+### New Capabilities
+
+#### Cookie Management
+
+Previous versions of TestCafe lacked dedicated cookie management methods. Users had to write custom [client functions](https://testcafe.io/documentation/402832/guides/basic-guides/obtain-client-side-info) to add and remove cookies. This technique was complicated and, at times, limiting. Some cookie manipulation actions --- such as HTTP-only cookie management --- were very hard to integrate into the test suite.
+
+The latest version of the framework includes a proper set of cookie management tools that can handle a wide variety of tasks. Learn more about the new methods in our documentation: [deleteCookies](https://testcafe.io/documentation/403874/reference/test-api/testcontroller/deletecookies), [getCookies](https://testcafe.io/documentation/403873/reference/test-api/testcontroller/getcookies), [setCookies](https://testcafe.io/documentation/403872/reference/test-api/testcontroller/setcookies).
+
+```ts
+fixture('[API] Delete Cookies')
+   .page('https://devexpress.github.io/testcafe/example/');
+
+test('Should delete all the cookies with the specified url', async t => {
+   // Set a cookie for the examples page.
+   await t.setCookies({ name: 'apiCookie1', value: 'value1' });
+
+   // Set a cookie for the 'thank you' page.
+   await t.setCookies({
+       name:  'apiCookie2',
+       value: 'value2',
+   }, 'https://devexpress.github.io/testcafe/example/thank-you.html');
+
+   // Check the cookies.
+   let cookies = await t.getCookies();
+
+   await t
+       .expect(cookies.length).eql(2)
+       .expect(cookies[0]).contains({ name: 'apiCookie1', path: '/testcafe/example/' })
+       .expect(cookies[1]).contains({ name: 'apiCookie2', path: '/testcafe/example/thank-you.html' });
+
+    // Delete cookies from the 'thank you' page.
+    await t.deleteCookies({ domain: 'devexpress.github.io', path: '/testcafe/example/thank-you.html' });
+
+    // Check the cookies.
+    cookies = await t.getCookies();
+
+    await t
+        .expect(cookies.length).eql(1)
+        .expect(cookies[0]).contains({ name: 'apiCookie1', path: '/testcafe/example/' });
+});
+```
+
+#### Global Test Hooks
+
+Many TestCafe users employ test hooks --- functions that run before and after tests and fixtures. In TestCafe v1.19.0 and higher, you can attach hooks to *test runs*, as well as apply test hooks to your *entire suite*. This capability requires the use of a JavaScript configuration file.
+
+Learn more about hooks from our newly updated [hook guide](https://testcafe.io/documentation/403435/guides/advanced-guides/hooks).
+
+#### Global Request Hooks
+
+Request hooks are functions that intercept HTTP requests and mock HTTP responses. Earlier versions of TestCafe let you attach request hooks to one test or fixture at a time. You can now define **global** request hooks and attach them to multiple tests or fixtures in your suite.
+
+Read the [Request Hooks guide](https://testcafe.io/documentation/402842/guides/advanced-guides/intercept-http-requests) to learn more.
+
+ ### Bug Fixes
+
+ * TestCafe ignores CLI browser arguments when they conflict with the configuration file ([#6618](https://github.com/DevExpress/testcafe/issues/6618))
+ * The outdated `moment.js` dependency contains a critical vulnerability (PR [#6996](https://github.com/DevExpress/testcafe/pull/6996) by [@vergilfromadyen](https://github.com/vergilfromadyen))
+ * TestCafe proxy doesn't always serve cookies with the `secure` attribute ([testcafe-hammerhead/#2715](https://github.com/DevExpress/testcafe-hammerhead/issues/2715))
+
 ## v1.18.6 (2022-04-18)
 
 ### Bug Fixes
