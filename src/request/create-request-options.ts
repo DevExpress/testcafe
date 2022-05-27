@@ -23,6 +23,7 @@ import HTTP_HEADERS from '../utils/http-headers';
 import { RUNTIME_ERRORS } from '../errors/types';
 import { APIError } from '../errors/runtime';
 import { GetProxyUrlCommand } from '../test-run/commands/actions';
+import { CallsiteRecord } from 'callsite-record';
 
 const DEFAULT_ACCEPT            = { [HTTP_HEADERS.accept]: `${CONTENT_TYPES.json}, ${CONTENT_TYPES.textPlain}, ${CONTENT_TYPES.all}` };
 const DEFAULT_IS_REQUEST        = { [HTTP_HEADERS.isRequest]: true };
@@ -121,7 +122,7 @@ async function prepareHeaders (headers: OutgoingHttpHeaders, url: URL, body: Buf
     return preparedHeaders;
 }
 
-async function prepareUrl (currentUrl: string, testRun: TestRun, url: string | URL, callsiteName: string): Promise<URL> {
+async function prepareUrl (currentUrl: string, testRun: TestRun, url: string | URL, callsite: CallsiteRecord | null): Promise<URL> {
     const currentPageUrl = new URL(currentUrl);
     let preparedUrl: URL;
 
@@ -130,8 +131,8 @@ async function prepareUrl (currentUrl: string, testRun: TestRun, url: string | U
             ? url
             : new URL(url, currentPageUrl.hostname ? currentPageUrl.origin : void 0);
     }
-    catch (err) {
-        throw new APIError(callsiteName, RUNTIME_ERRORS.requestUrlInvalidValueError, url);
+    catch (e) {
+        throw new APIError(callsite, RUNTIME_ERRORS.requestUrlInvalidValueError, url);
     }
 
     return preparedUrl;
@@ -168,7 +169,7 @@ function getProxyUrl (testRun: TestRun, url: string, withCredentials?: boolean):
     }, testRun, true)) as Promise<string>;
 }
 
-export async function createRequestOptions (currentUrl: string, testRun: TestRun, options: ExternalRequestOptions, callsite: string): Promise<RequestOptions> {
+export async function createRequestOptions (currentUrl: string, testRun: TestRun, options: ExternalRequestOptions, callsite: CallsiteRecord | null): Promise<RequestOptions> {
     options.headers = options.headers || {};
 
     const url         = await prepareUrl(currentUrl, testRun, options.url, callsite);

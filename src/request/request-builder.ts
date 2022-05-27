@@ -13,7 +13,10 @@ export const EXTENDED_METHODS = ['get', 'post', 'delete', 'put', 'patch', 'head'
 
 const REQUEST_GETTERS: (keyof ResponseOptions)[] = ['status', 'statusText', 'headers', 'body'];
 
-const DEFAULT_EXECUTION_CALLSITE_NAME = '__$$request$$';
+const DEFAULT_CALLSITE_NAMES = {
+    instantiation: 'Request',
+    execution:     '__$$request$$',
+};
 
 interface CallsiteNames {
     instantiation: string;
@@ -23,11 +26,8 @@ interface CallsiteNames {
 export default class RequestBuilder {
     private callsiteNames: CallsiteNames;
 
-    public constructor (callsiteNames: CallsiteNames) {
-        this.callsiteNames = {
-            instantiation: callsiteNames.instantiation,
-            execution:     callsiteNames.execution || DEFAULT_EXECUTION_CALLSITE_NAME,
-        };
+    public constructor () {
+        this.callsiteNames = DEFAULT_CALLSITE_NAMES;
     }
 
     private _getTestRun (): TestRun | TestRunProxy | null {
@@ -44,34 +44,25 @@ export default class RequestBuilder {
         };
     }
 
-    private _executeCommand (url: string, options: Partial<ExternalRequestOptions> = {}): ReExecutablePromise {
+    private _executeCommand (url: string, options: Partial<ExternalRequestOptions> = {}, callsiteName = this.callsiteNames.execution): ReExecutablePromise {
         const preparedOptions = this._prepareOptions(url, options);
 
         validateOptions(preparedOptions, this.callsiteNames.execution);
 
         const testRun  = this._getTestRun();
-        const callsite = getCallsiteForMethod(this.callsiteNames.execution);
+        const callsite = getCallsiteForMethod(callsiteName);
 
-        if (!testRun || testRun instanceof TestRunProxy) {
-            if (!testRun) {
-                const err = new ClientFunctionAPIError(this.callsiteNames.execution, this.callsiteNames.instantiation, RUNTIME_ERRORS.clientFunctionCannotResolveTestRun);
-
-                // NOTE: force callsite here, because more likely it will
-                // be impossible to resolve it by method name from a lazy promise.
-                err.callsite = callsite;
-
-                throw err;
-            }
-        }
+        if (!testRun || testRun instanceof TestRunProxy)
+            throw new ClientFunctionAPIError(callsite, this.callsiteNames.instantiation, RUNTIME_ERRORS.clientFunctionCannotResolveTestRun);
 
         const promise = ReExecutablePromise.fromFn(async () => {
-            return send(testRun as TestRun, preparedOptions, this.callsiteNames.execution);
+            return send(testRun as TestRun, preparedOptions, callsite);
         });
 
         REQUEST_GETTERS.forEach(getter => {
             Object.defineProperty(promise, getter, {
                 get: () => ReExecutablePromise.fromFn(async () => {
-                    const response = await send(testRun as TestRun, preparedOptions, this.callsiteNames.execution);
+                    const response = await send(testRun as TestRun, preparedOptions, callsite);
 
                     return response[getter];
                 }),
@@ -84,17 +75,21 @@ export default class RequestBuilder {
     private _decorateFunction (fn: Function): void {
         EXTENDED_METHODS.forEach(method => {
             Object.defineProperty(fn, method, {
-                value: (url: string, options: ExternalRequestOptions) => this._executeCommand(url, { ...options, method }),
+                value: this._createFunction({ method }),
             });
         });
     }
 
-    public getFunction (): Function {
+    private _createFunction (bindOptions?: Partial<ExternalRequestOptions>): Function {
         const builder = this;
 
-        const fn = function __$$request$$ (url: string, options: ExternalRequestOptions): ReExecutablePromise {
-            return builder._executeCommand(url, options);
+        return function __$$request$$ (url: string, options: ExternalRequestOptions): ReExecutablePromise {
+            return builder._executeCommand(url, Object.assign({}, options, bindOptions || {}));
         };
+    }
+
+    public getFunction (): Function {
+        const fn = this._createFunction();
 
         this._decorateFunction(fn);
 

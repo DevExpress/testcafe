@@ -20,7 +20,7 @@ function Role (loginUrl, initFn, options) {
     return role.createRole(loginUrl, initFn, options);
 }
 
-const Request = new RequestBuilder({ instantiation: 'Request' }).getFunction();
+const Request = new RequestBuilder().getFunction();
 
 function RequestMock () {
     return createRequestMock();

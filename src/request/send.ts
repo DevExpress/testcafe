@@ -6,10 +6,11 @@ import { createRequestOptions } from './create-request-options';
 import { processResponseData } from './process-response-data';
 import HTTP_HEADERS from '../utils/http-headers';
 import { RequestRuntimeError } from '../errors/runtime';
+import { CallsiteRecord } from 'callsite-record';
 
 type StrictIncomingMessage = IncomingMessage & { statusCode: number; statusMessage: string };
 
-async function send (testRun: TestRun, options: ExternalRequestOptions, callsite: string): Promise<ResponseOptions> {
+async function send (testRun: TestRun, options: ExternalRequestOptions, callsite: CallsiteRecord | null): Promise<ResponseOptions> {
     const currentUrl     = await testRun.getCurrentUrl();
     const requestOptions = await createRequestOptions(currentUrl, testRun, options, callsite);
     const request        = new DestinationRequest(requestOptions);
