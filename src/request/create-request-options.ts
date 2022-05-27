@@ -16,6 +16,7 @@ import {
 import {
     RequestOptions,
     parseProxyUrl,
+    RequestOptionsParams,
 } from 'testcafe-hammerhead';
 import TestRun from '../test-run';
 import CONTENT_TYPES from '../assets/content-types';
@@ -189,30 +190,38 @@ export async function createRequestOptions (currentUrl: string, testRun: TestRun
         };
     }
 
-    const externalProxySettings = options.proxy ? {
-        host:      options.proxy.host,
-        hostname:  options.proxy.host,
-        port:      options.proxy.port.toString(),
-        proxyAuth: options.proxy.auth ? `${options.proxy.auth.username}:${options.proxy.auth.password}` : void 0,
-    } : void 0;
-
-    return new RequestOptions({
-        method:                options.method || DEFAULT_REQUEST_METHOD,
-        url:                   proxyUrl,
-        protocol:              url.protocol,
-        hostname:              proxyUrlObj.proxy.hostname,
-        host:                  proxyUrlObj.proxy.hostname,
-        port:                  proxyUrlObj.proxy.port,
-        path:                  prepareSearchParams(proxyUrlObj.partAfterHost, options.params),
-        auth:                  auth ? `${auth.username}:${auth.password}` : void 0,
-        headers:               headers,
-        externalProxySettings: externalProxySettings,
-        credentials:           testRun.session.getAuthCredentials(),
-        body:                  body,
-        disableHttp2:          testRun.session.isHttp2Disabled(),
-        requestTimeout:        {
+    const requestParams: RequestOptionsParams = {
+        method:         options.method || DEFAULT_REQUEST_METHOD,
+        url:            proxyUrl,
+        protocol:       url.protocol,
+        hostname:       proxyUrlObj.proxy.hostname,
+        host:           proxyUrlObj.proxy.hostname,
+        port:           proxyUrlObj.proxy.port,
+        path:           prepareSearchParams(proxyUrlObj.partAfterHost, options.params),
+        auth:           auth ? `${auth.username}:${auth.password}` : void 0,
+        headers:        headers,
+        credentials:    testRun.session.getAuthCredentials(),
+        body:           body,
+        disableHttp2:   testRun.session.isHttp2Disabled(),
+        requestTimeout: {
             ajax: options.timeout,
             page: options.timeout,
         },
-    });
+    };
+
+    if (options.proxy) {
+        requestParams.externalProxySettings = {
+            host:      options.proxy.host,
+            hostname:  options.proxy.host,
+            port:      options.proxy.port.toString(),
+            proxyAuth: options.proxy.auth ? `${options.proxy.auth.username}:${options.proxy.auth.password}` : void 0,
+        };
+
+        requestParams.host     = url.host;
+        requestParams.hostname = url.hostname;
+        requestParams.port     = url.port;
+        requestParams.path     = prepareSearchParams(url.pathname + url.search, options.params);
+    }
+
+    return new RequestOptions(requestParams);
 }
