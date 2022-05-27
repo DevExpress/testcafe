@@ -320,7 +320,7 @@ test.page('http://localhost:3000/fixtures/request/pages/index.html')
     });
 });
 
-test('Should rise request runtime error', async (t) => {
+test('Should rise request runtime error', async () => {
     await Request.get(`https://localhost1:3007/api/data`);
 });
 
