@@ -379,7 +379,10 @@ describe('TestCafe Live', function () {
         this.timeout(6000);
 
         runner = new RunnerMock(testCafe, {})
+            .src(testFileWithSingleTestPath)
             .browsers('remote');
+
+        let catched = false;
 
         const promise = runner.run();
 
@@ -387,8 +390,12 @@ describe('TestCafe Live', function () {
             runner.run();
         }
         catch (err) {
+            catched = true;
+
             expect(err.message.indexOf('Cannot launch the same live mode instance of the TestCafe test runner multiple times') > -1).to.be.true;
         }
+
+        expect(catched).eql(true);
 
         return promise;
     });
