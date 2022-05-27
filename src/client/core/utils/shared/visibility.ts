@@ -1,17 +1,26 @@
 import adapter from './adapter/index';
 import { isNotVisibleNode, hasDimensions } from './style';
 
+function hiddenUsingStyles (el: HTMLElement): boolean {
+    return adapter.style.get(el, 'visibility') === 'hidden' ||
+        adapter.style.get(el, 'display') === 'none';
+}
+
+function hiddenByRectangle (el: HTMLElement): boolean {
+    const elementRectangle = adapter.position.getElementRectangle(el);
+
+    return elementRectangle.width === 0 ||
+        elementRectangle.height === 0;
+}
 
 export function isElementVisible (el: Node): boolean {
     if (adapter.dom.isTextNode(el))
         return !isNotVisibleNode(el);
 
-    if (!adapter.dom.isContentEditableElement(el)) {
-        const elementRectangle = adapter.position.getElementRectangle(el);
-
-        if (elementRectangle.width === 0 || elementRectangle.height === 0)
-            return false;
-    }
+    if (!adapter.dom.isContentEditableElement(el) &&
+        !adapter.dom.isSVGElement(el) &&
+        hiddenByRectangle(el as HTMLElement))
+        return false;
 
     if (adapter.dom.isMapElement(el)) {
         const mapContainer = adapter.dom.getMapContainer(adapter.dom.closest(el, 'map'));
@@ -31,13 +40,15 @@ export function isElementVisible (el: Node): boolean {
     }
 
     if (adapter.dom.isSVGElement(el)) {
-        if (adapter.style.get(el, 'visibility') === 'hidden' || adapter.style.get(el, 'display') === 'none')
-            return false;
+        const hiddenParent = adapter.dom.findParent(el, true, (parent: Node) => {
+            return hiddenUsingStyles(parent as unknown as HTMLElement);
+        });
 
-        const parent = adapter.dom.findParent(el);
+        if (!hiddenParent)
+            return !hiddenByRectangle(el as unknown as HTMLElement);
 
-        return parent ? isElementVisible(parent) : true;
+        return false;
     }
 
-    return hasDimensions(el as HTMLElement) && adapter.style.get(el, 'visibility') !== 'hidden';
+    return hasDimensions(el as HTMLElement) && !hiddenUsingStyles(el as unknown as HTMLElement);
 }

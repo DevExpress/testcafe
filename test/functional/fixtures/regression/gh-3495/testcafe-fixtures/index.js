@@ -3,15 +3,15 @@ import { Selector } from 'testcafe';
 fixture`Fixture`
     .page('../pages/index.html');
 
-test('Paren shouldn\'t be visible', async t => {
-    const svg = Selector('#parent');
+test("Parent shouldn't be visible", async t => {
+    const svgParent = Selector('#parent');
 
     await t
-        .expect(svg.exists).ok()
-        .expect(svg.visible).notOk();
+        .expect(svgParent.exists).ok()
+        .expect(svgParent.visible).notOk();
 });
 
-test('Child shouldn\'t be visible', async t => {
+test("Child shouldn't be visible", async t => {
     const svg = Selector('#child');
 
     await t
