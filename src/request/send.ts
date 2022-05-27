@@ -7,6 +7,7 @@ import { processResponseData } from './process-response-data';
 import HTTP_HEADERS from '../utils/http-headers';
 import { RequestRuntimeError } from '../errors/runtime';
 import { CallsiteRecord } from 'callsite-record';
+import { castArray } from 'lodash';
 
 type StrictIncomingMessage = IncomingMessage & { statusCode: number; statusMessage: string };
 
@@ -20,7 +21,7 @@ async function send (testRun: TestRun, options: ExternalRequestOptions, callsite
         request.on('fatalError', (message: string) => resolve(message));
     });
 
-    const data      = await dataWaiter;
+    const data = await dataWaiter;
 
     if (typeof data === 'string')
         throw new RequestRuntimeError(callsite, data);
@@ -28,7 +29,7 @@ async function send (testRun: TestRun, options: ExternalRequestOptions, callsite
     const setCookie = data.headers[HTTP_HEADERS.setCookie];
 
     if (setCookie)
-        testRun.session.cookies.setByServer(currentUrl, setCookie);
+        testRun.session.cookies.copySyncCookies(castArray(setCookie).join(';'), currentUrl);
 
     const body = await processResponseData(data, options.rawResponse);
 

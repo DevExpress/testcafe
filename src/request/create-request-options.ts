@@ -203,7 +203,7 @@ export async function createRequestOptions (currentUrl: string, testRun: TestRun
         hostname:              proxyUrlObj.proxy.hostname,
         host:                  proxyUrlObj.proxy.hostname,
         port:                  proxyUrlObj.proxy.port,
-        path:                  prepareSearchParams(proxyUrlObj.partAfterHost + url.search, options.params),
+        path:                  prepareSearchParams(proxyUrlObj.partAfterHost, options.params),
         auth:                  auth ? `${auth.username}:${auth.password}` : void 0,
         headers:               headers,
         externalProxySettings: externalProxySettings,
