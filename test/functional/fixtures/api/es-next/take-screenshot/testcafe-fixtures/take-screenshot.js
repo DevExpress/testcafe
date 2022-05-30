@@ -1,5 +1,5 @@
 import { ClientFunction } from 'testcafe';
-import parseUserAgent from '../../../../../../../lib/utils/parse-user-agent';
+import { parseUserAgent } from '../../../../../../../lib/utils/parse-user-agent';
 import { saveWindowState, restoreWindowState } from '../../../../../window-helpers';
 import quarantineScope from './quarantineScope';
 import sanitizeFilename from 'sanitize-filename';
@@ -60,7 +60,8 @@ test('Take screenshots with same path', async t => {
 });
 
 test('Take screenshots for reporter', async t => {
-    const safeUserAgent = sanitizeFilename(t.browser.prettyUserAgent).replace(/\s+/g, '_');
+    const ua            = await getUserAgent();
+    const safeUserAgent = sanitizeFilename(parseUserAgent(ua).prettyUserAgent).replace(/\s+/g, '_');
 
     quarantineScope[safeUserAgent] = quarantineScope[safeUserAgent] || {};
 

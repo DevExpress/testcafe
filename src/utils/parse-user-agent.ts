@@ -4,6 +4,7 @@ const DEFAULT_NAME            = 'Other';
 const DEFAULT_VERSION         = '0.0';
 const DEFAULT_PLATFORM_TYPE   = DEFAULT_NAME.toLowerCase();
 const EMPTY_PARSED_USER_AGENT = Bowser.parse(' ');
+const META_INFO_REGEX = /\([^(|^)]*\)/;
 
 interface ParsedComponent {
     name: string;
@@ -51,14 +52,23 @@ function calculateEngine (engineDetails: Bowser.Parser.EngineDetails): ParsedCom
     };
 }
 
-function calculatePrettyUserAgent (browser: ParsedComponent, os: ParsedComponent): string {
+export function calculatePrettyUserAgent (browser: ParsedComponent, os: ParsedComponent): string {
     return `${browser.name} ${browser.version} / ${os.name} ${os.version}`;
 }
 
-export default function parseUserAgent (userAgent = '', osInfo?: ParsedComponent): ParsedUserAgent {
+export function extractMetaInfo (prettyUserAgent: string): string {
+    const parenthesisExpressions = prettyUserAgent.match(META_INFO_REGEX);
+
+    if (!parenthesisExpressions || !parenthesisExpressions.length)
+        return '';
+
+    return parenthesisExpressions[parenthesisExpressions.length - 1].replace(/[\(\)]/, '');
+}
+
+export function parseUserAgent (userAgent = ''): ParsedUserAgent {
     const parsedUserAgent = userAgent ? Bowser.parse(userAgent) : EMPTY_PARSED_USER_AGENT;
     const browser         = calculateBrowser(parsedUserAgent.browser);
-    const os              = osInfo || calculateOs(parsedUserAgent.os);
+    const os              = calculateOs(parsedUserAgent.os);
     const engine          = calculateEngine(parsedUserAgent.engine);
     const prettyUserAgent = calculatePrettyUserAgent(browser, os);
 

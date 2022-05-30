@@ -3,7 +3,7 @@ import timeLimit from 'time-limit-promise';
 import { EventEmitter } from 'events';
 import Mustache from 'mustache';
 import { pull as remove } from 'lodash';
-import parseUserAgent, { ParsedUserAgent } from '../../utils/parse-user-agent';
+import { ParsedUserAgent, parseUserAgent } from '../../utils/parse-user-agent';
 import { readSync as read } from 'read-file-relative';
 import promisifyEvent from 'promisify-event';
 import { nanoid } from 'nanoid';
@@ -176,7 +176,7 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     public set messageBus (messageBus: MessageBus) {
-        this._messageBus = messageBus;
+        this._messageBus         = messageBus;
         this.warningLog.callback = WarningLog.createAddWarningCallback(this._messageBus);
     }
 
@@ -439,9 +439,9 @@ export default class BrowserConnection extends EventEmitter {
         this.emit(BrowserConnectionStatus.closed);
     }
 
-    public async establish (userAgent: string): Promise<void> {
-        this.status  = BrowserConnectionStatus.ready;
-        this.browserInfo.parsedUserAgent = parseUserAgent(userAgent, await this.provider.getOSInfo(this.id));
+    public establish (userAgent: string): void {
+        this.status                      = BrowserConnectionStatus.ready;
+        this.browserInfo.parsedUserAgent = parseUserAgent(userAgent);
 
         this._waitForHeartbeat();
         this.emit('ready');

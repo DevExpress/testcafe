@@ -30,7 +30,8 @@ import makeDir from 'make-dir';
 import path from 'path';
 import fs from 'fs';
 import MessageBus from '../utils/message-bus';
-
+import BrowserConnection from '../browser/connection';
+import { calculatePrettyUserAgent, extractMetaInfo } from '../utils/parse-user-agent';
 
 interface PendingPromise {
     resolve: Function | null;
@@ -422,6 +423,23 @@ export default class Reporter {
         });
     }
 
+    private async calculateBrowserConnectionInfo (connection: BrowserConnection): Promise<string> {
+        const osInfo = await connection.provider.getOSInfo(connection.id);
+
+        if (!osInfo)
+            return connection.userAgent;
+
+        const { name, version } = connection.browserInfo.parsedUserAgent;
+        let prettyUserAgent   = calculatePrettyUserAgent({ name, version }, osInfo);
+
+        const metaInfo = connection.browserInfo.userAgentProviderMetaInfo || extractMetaInfo(connection.browserInfo.parsedUserAgent.prettyUserAgent);
+
+        if (metaInfo)
+            prettyUserAgent += ` (${ connection.browserInfo.userAgentProviderMetaInfo })`;
+
+        return prettyUserAgent;
+    }
+
     private async _onceTaskStartHandler (task: Task): Promise<void> {
         this.taskInfo = {
             task:                   task,
@@ -434,9 +452,9 @@ export default class Reporter {
             pendingTaskDonePromise: Reporter._createPendingPromise(),
         };
 
-        const startTime  = task.startTime;
-        const userAgents = task.browserConnectionGroups.map(group => group[0].userAgent);
-        const first      = this.taskInfo.testQueue[0];
+        const startTime              = task.startTime;
+        const browserConnectionsInfo = await Promise.all(task.browserConnectionGroups.map(async group => await this.calculateBrowserConnectionInfo(group[0])));
+        const first                  = this.taskInfo.testQueue[0];
 
         const taskProperties = {
             configuration: task.opts,
@@ -448,7 +466,7 @@ export default class Reporter {
             initialObject: task,
             args:          [
                 startTime,
-                userAgents,
+                browserConnectionsInfo,
                 this.taskInfo.testCount,
                 task.testStructure,
                 taskProperties,

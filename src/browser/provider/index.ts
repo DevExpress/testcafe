@@ -318,10 +318,7 @@ export default class BrowserProvider {
         if (await this.isLocalBrowser(browserId))
             return await getLocalOSInfo();
 
-        if (this.plugin.providerName === 'browserstack')
-            return await this.plugin.getOSInfo(browserId);
-
-        return null;
+        return await this.plugin.getOSInfo(browserId);
     }
 
     public async openBrowser (browserId: string, pageUrl: string, browserOption: unknown, disableMultipleWindows: boolean, proxyless: boolean): Promise<void> {
