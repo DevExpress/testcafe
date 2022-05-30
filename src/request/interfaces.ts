@@ -23,7 +23,7 @@ export interface ExternalRequestOptions {
     method?: string;
     headers?: OutgoingHttpHeaders;
     params?: Params;
-    body?: object;
+    body?: any;
     timeout?: number;
     withCredentials?: boolean;
     auth?: AuthOptions;

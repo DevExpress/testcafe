@@ -41,7 +41,7 @@ interface RequestOptions {
     /**
      * Request body.
      */
-    body?: object;
+    body?: any;
     /**
      * Request timeout.
      */
