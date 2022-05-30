@@ -72,7 +72,7 @@ describe('[API] t.ctx', () => {
                 const browsers = [];
 
                 Object.keys(errs).forEach(browser => {
-                    const dataJson = errs[browser][1].match(/###(.+)###/)[1];
+                    const dataJson = errs[browser][0].match(/###(.+)###/)[1];
                     const data     = JSON.parse(dataJson);
 
                     // NOTE: check context assignment

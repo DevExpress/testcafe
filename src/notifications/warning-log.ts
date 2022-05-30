@@ -44,7 +44,7 @@ export default class WarningLog {
         args = [message].concat(args);
 
         // @ts-ignore
-        message = renderTemplate.apply(null, args);
+        message = renderTemplate.apply(null, args); // eslint-disable-line prefer-spread
 
         this.addPlainMessage({ message, actionId });
 

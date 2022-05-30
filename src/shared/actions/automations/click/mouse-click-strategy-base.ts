@@ -1,9 +1,6 @@
 import { MouseEventArgs } from '../visible-element-automation';
 
 export abstract class MouseClickStrategyBase<E> {
-    public constructor () {
-    }
-
     public abstract mousedown (eventArgs: MouseEventArgs<E>): Promise<void>;
 
     public abstract mouseup (element: E, eventArgs: MouseEventArgs<E>): Promise<MouseEventArgs<E>>;

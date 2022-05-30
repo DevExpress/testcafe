@@ -180,8 +180,44 @@ if (isLocalChrome) {
                 flowInfoStorage.delete();
             });
 
-            it('Completed', async () => {
-                await runTestsLocal();
+            it('Test with local hooks', async () => {
+                await runTestsLocal('Test with local hooks');
+
+                expect(flowInfoStorage.getData()).eql([
+                    'globalTestRunBefore',
+                    'globalFixtureBefore',
+                    'localFixtureBefore',
+                    'globalTestBefore',
+                    'localTestBefore',
+                    'test body',
+                    'localTestAfter',
+                    'globalTestAfter',
+                    'localFixtureAfter',
+                    'globalFixtureAfter',
+                    'globalTestRunAfter',
+                ]);
+            });
+
+            it('Test with each hooks', async () => {
+                await runTestsLocal('Test with each hooks');
+
+                expect(flowInfoStorage.getData()).eql([
+                    'globalTestRunBefore',
+                    'globalFixtureBefore',
+                    'localFixtureBefore',
+                    'globalTestBefore',
+                    'eachTestBefore',
+                    'test body',
+                    'eachTestAfter',
+                    'globalTestAfter',
+                    'localFixtureAfter',
+                    'globalFixtureAfter',
+                    'globalTestRunAfter',
+                ]);
+            });
+
+            it('Test with all hooks', async () => {
+                await runTestsLocal('Test with all hooks');
 
                 expect(flowInfoStorage.getData()).eql([
                     'globalTestRunBefore',

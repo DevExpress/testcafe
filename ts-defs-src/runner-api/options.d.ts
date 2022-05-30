@@ -188,6 +188,11 @@ interface ProxyOptions {
     bypassRules?: string | string [];
 }
 
+interface QuarantineModeOptions {
+    attemptLimit?: number;
+    successThreshold?: number;
+}
+
 interface RunOptions {
     /**
      * Defines whether to continue running a test after a JavaScript error occurs on a page (`true`), or consider such a test failed (`false`).
@@ -200,7 +205,7 @@ interface RunOptions {
     /**
      * Defines whether to enable quarantine mode and (optionally) what settings to use.
      */
-    quarantineMode: boolean | Record<string, string>;
+    quarantineMode: boolean | QuarantineModeOptions;
     /**
      * Specifies if tests run in the debug mode. If this option is enabled, test execution is paused before the first action or assertion allowing you to invoke the developer tools and debug. In the debug mode, you can execute the test step-by-step to reproduce its incorrect behavior. You can also use the Unlock Page switch in the footer to unlock the tested page and interact with its elements.
      */

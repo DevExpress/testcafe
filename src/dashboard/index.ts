@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 import prompts from 'prompts';
 import chalk from 'chalk';
 import DashboardConnector from './connector';
@@ -9,13 +7,20 @@ import getDefaultProjectLink from './get-default-project-link';
 import DashboardConfigStorage from '../dashboard/config-storage';
 import { SendReportState } from './interfaces';
 
+import {
+    info,
+    warning,
+    error,
+    success,
+} from './formatting';
+
 const DASHBOARD_DOCUMENTATION_URL = 'https://testcafe.io/dashboard-alpha';
 
 const dashboardConnector     = new DashboardConnector();
 const dashboardConfigStorage = new DashboardConfigStorage();
 
 async function registerInDashboard (): Promise<void> {
-    console.log(messages.REGISTRATION_ENTER_EMAIL_INVITATION);
+    info(messages.REGISTRATION_ENTER_EMAIL_INVITATION);
 
     const { email } = await prompts({
         type:     'text',
@@ -30,7 +35,7 @@ async function registerInDashboard (): Promise<void> {
     });
 
     if (!email) {
-        console.log(messages.REGISTRATION_CANCELLED);
+        error(messages.REGISTRATION_CANCELLED);
 
         return;
     }
@@ -42,12 +47,12 @@ async function registerInDashboard (): Promise<void> {
             ? sendEmailResult.errorMessage
             : messages.REGISTRATION_EMAIL_SENDING_NETWORK_ERROR;
 
-        console.log(chalk.red(sendEmailErrorMessage));
+        error(sendEmailErrorMessage);
 
         return;
     }
 
-    console.log(messages.REGISTRATION_EMAIL_SENT);
+    info(messages.REGISTRATION_EMAIL_SENT);
 
     const { token } = await prompts({
         type:    'text',
@@ -56,7 +61,7 @@ async function registerInDashboard (): Promise<void> {
     });
 
     if (!token) {
-        console.log(messages.REGISTRATION_CANCELLED);
+        error(messages.REGISTRATION_CANCELLED);
 
         return;
     }
@@ -68,7 +73,7 @@ async function registerInDashboard (): Promise<void> {
             ? validationResult.errorMessage
             : messages.TOKEN_VALIDATION_NETWORK_ERROR;
 
-        console.log(chalk.red(validationResultErrorMessage));
+        error(validationResultErrorMessage);
 
         return;
     }
@@ -77,12 +82,16 @@ async function registerInDashboard (): Promise<void> {
 
     await saveNewToken(token);
 
-    console.log(
-        chalk.green('You have successfully configured the TestCafe Dashboard reporter.\n' +
-        'The next time you launch TestCafe, the framework will share test run data with TestCafe Dashboard.\n' +
-        `View test results at ${getDefaultProjectLink(token)}.\n` +
-        'Run "testcafe dashboard off" to disable this behavior.\n' +
-        `Learn more at ${DASHBOARD_DOCUMENTATION_URL}.`)
+    success(messages.REGISTRATION_FINISHED);
+
+    info(
+        'View test results at:\n' +
+        `${chalk.underline.blueBright(getDefaultProjectLink(token))}`
+    );
+
+    info(
+        `Run ${chalk.black.bgWhiteBright('testcafe dashboard off')} to disable this behavior.` +
+        `Learn more at:\n${chalk.underline.blueBright(DASHBOARD_DOCUMENTATION_URL)}`
     );
 }
 
@@ -94,7 +103,10 @@ async function saveNewToken (token: string): Promise<void> {
 
 async function updateDefaultToken (): Promise<void> {
     if (!dashboardConfigStorage.options.sendReport)
-        console.log(messages.TOKEN_UPDATING_NOT_SEND_REPORT);
+        warning(messages.TOKEN_UPDATING_NOT_SEND_REPORT);
+
+    // NOTE: for the formatting reason
+    info('');
 
     const { doYouWantToUpdateDefaultToken } = await prompts({
         type:    'confirm',
@@ -103,10 +115,13 @@ async function updateDefaultToken (): Promise<void> {
     });
 
     if (!doYouWantToUpdateDefaultToken) {
-        console.log(messages.TOKEN_UPDATE_CANCELLED);
+        error(messages.TOKEN_UPDATE_CANCELLED);
 
         return;
     }
+
+    // NOTE: for the formatting reason
+    info('');
 
     const { newToken } = await prompts({
         type:    'text',
@@ -115,7 +130,7 @@ async function updateDefaultToken (): Promise<void> {
     });
 
     if (!newToken) {
-        console.log(messages.TOKEN_UPDATE_CANCELLED);
+        error(messages.TOKEN_UPDATE_CANCELLED);
 
         return;
     }
@@ -127,14 +142,14 @@ async function updateDefaultToken (): Promise<void> {
             ? validationResult.errorMessage
             : messages.TOKEN_VALIDATION_NETWORK_ERROR;
 
-        console.log(chalk.red(validationResultErrorMessage));
+        error(validationResultErrorMessage);
 
         return;
     }
 
     await saveNewToken(newToken);
 
-    console.log(chalk.green(messages.TOKEN_UPDATED));
+    success(messages.TOKEN_UPDATED);
 }
 
 async function setSendReportState (state: SendReportState): Promise<void> {
@@ -146,14 +161,36 @@ async function setSendReportState (state: SendReportState): Promise<void> {
 
     const resultMessage = sendReportAsBoolean ? messages.SEND_REPORT_STATE_ON : messages.SEND_REPORT_STATE_OFF;
 
-    console.log(chalk.green(resultMessage));
+    success(resultMessage);
+}
+
+async function tryToRegisterInDashboard (): Promise<void> {
+    info(messages.TOKEN_NO_DEFAULT_FOUND);
+
+    const { launchConfigurationWizard } = await prompts({
+        type:    'confirm',
+        name:    'launchConfigurationWizard',
+        message: 'Do you want to launch the configuration wizard?',
+        initial: true,
+    });
+
+    if (!launchConfigurationWizard) {
+        error(messages.REGISTRATION_CANCELLED);
+
+        return;
+    }
+
+    await registerInDashboard();
 }
 
 export default async function (sendReportState: SendReportState): Promise<void> {
-    await dashboardConfigStorage.load();
+    const storageExists = await dashboardConfigStorage.load();
 
     if (sendReportState !== void 0) {
-        await setSendReportState(sendReportState);
+        if (storageExists)
+            await setSendReportState(sendReportState);
+        else
+            await tryToRegisterInDashboard();
 
         return;
     }

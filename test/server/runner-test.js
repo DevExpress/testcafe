@@ -215,68 +215,6 @@ describe('Runner', () => {
                 expect(e.message).eql("Specify a file name or a writable stream as the reporter's output target.");
             }
         });
-
-        describe('._addDashboardReporterIfNeeded', () => {
-            const TEST_DASHBOARD_SETTINGS = {
-                token:      'test-token',
-                sendReport: true,
-            };
-
-            it("Should add the 'dashboard' reporter if its options are specified", async () => {
-                runner.configuration.mergeOptions({
-                    dashboard: TEST_DASHBOARD_SETTINGS,
-                });
-
-                await runner._addDashboardReporterIfNeeded();
-
-                expect(runner.configuration.getOption('reporter')[0]).to.deep.equal({ name: 'dashboard', options: TEST_DASHBOARD_SETTINGS });
-            });
-
-            it("Should add the 'dashboard' reporter if its options are specified in configuration storage", async () => {
-                runner._loadDashboardOptionsFromStorage = () => {
-                    return TEST_DASHBOARD_SETTINGS;
-                };
-
-                await runner._addDashboardReporterIfNeeded();
-
-                expect(runner.configuration.getOption('reporter')[0]).to.deep.equal({ name: 'dashboard', options: TEST_DASHBOARD_SETTINGS });
-            });
-
-            it('Should add the dashboard advertisement if reporter is not added', async () => {
-                consoleWrapper.wrap();
-
-                runner._addDashBoardAdvertisementIfNeeded();
-                await runner._messageBus.emit('done');
-
-                expect(consoleWrapper.messages.log).contains('Try TestCafe Dashboard (https://dashboard.testcafe.io/) to eliminate unstable and failing tests.');
-
-                consoleWrapper.unwrap();
-            });
-
-            it('Should add the dashboard advertisement if dashboard reporter is not added', async () => {
-                consoleWrapper.wrap();
-
-                runner.configuration.mergeOptions({ reporter: { name: 'json' } });
-                runner._addDashBoardAdvertisementIfNeeded();
-                await runner._messageBus.emit('done');
-
-                expect(consoleWrapper.messages.log).contains('Try TestCafe Dashboard (https://dashboard.testcafe.io/) to eliminate unstable and failing tests.');
-
-                consoleWrapper.unwrap();
-            });
-
-            it('Should not add the dashboard advertisement if dashboard reporter is added', async () => {
-                consoleWrapper.wrap();
-
-                runner.configuration.mergeOptions({ reporter: [{ name: 'json' }, { name: 'dashboard' }] });
-                runner._addDashBoardAdvertisementIfNeeded();
-                await runner._messageBus.emit('done');
-
-                expect(consoleWrapper.messages.log).eql(null);
-
-                consoleWrapper.unwrap();
-            });
-        });
     });
 
     describe('.screenshots()', () => {
@@ -1390,8 +1328,6 @@ describe('Runner', () => {
             abortCalled        = false;
             taskActionCallback = taskDone;
 
-            runner._showAdvertisement = false;
-
             runner
                 .src('test/server/data/test-suites/basic/testfile2.js')
                 .reporter(createReporter());
@@ -1441,8 +1377,6 @@ describe('Runner', () => {
                     taskActionCallback = () => {
                         brokenConnection.emit('error', new Error('I have failed :('));
                     };
-
-                    runner._showAdvertisement = false;
 
                     return runner
                         .browsers(brokenConnection, 'mock:browser-alias')

@@ -207,7 +207,7 @@ export default class VisibleElementAutomation<E, W extends SharedWindow> extends
         return state;
     }
 
-    protected _ensureElement (useStrictElementCheck: boolean, skipCheckAfterMoving: boolean = false, skipMoving: boolean = false): Promise<ElementStateArgsBase<E>> {
+    protected _ensureElement (useStrictElementCheck: boolean, skipCheckAfterMoving = false, skipMoving = false): Promise<ElementStateArgsBase<E>> {
         return this
             ._wrapAction(() => this._scrollToElement())
             .then(state => VisibleElementAutomation._checkElementState(state, useStrictElementCheck))

@@ -899,11 +899,11 @@ $(document).ready(function () {
         const waitUntilCssApply = function () {
             if ($input[0].getBoundingClientRect().width > 0) {
                 const timeout      = 2;
-                const startSeconds = (new Date()).getSeconds();
+                const startSeconds = new Date().getSeconds();
                 const endSeconds   = (startSeconds + timeout) % 60;
 
                 while ($input[0].getBoundingClientRect().width > 0) {
-                    if ((new Date()).getSeconds() > endSeconds)
+                    if (new Date().getSeconds() > endSeconds)
                         break;
                 }
             }

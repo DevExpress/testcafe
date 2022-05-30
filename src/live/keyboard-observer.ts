@@ -9,7 +9,7 @@ let instance: LiveModeKeyboardEventObserver;
 
 export default class LiveModeKeyboardEventObserver {
     private controllers: LiveModeController[] = [];
-    private lockKeyPress: boolean = false;
+    private lockKeyPress = false;
 
     public constructor () {
         if (!instance) {
