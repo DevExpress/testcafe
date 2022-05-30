@@ -22,6 +22,7 @@ import BrowserConnectionGateway from './gateway';
 import BrowserJob from '../../runner/browser-job';
 import WarningLog from '../../notifications/warning-log';
 import BrowserProvider from '../provider';
+import { OSInfo } from 'get-os-info';
 
 import {
     BROWSER_RESTART_TIMEOUT,
@@ -108,7 +109,7 @@ export default class BrowserConnection extends EventEmitter {
     public readonly closeWindowUrl: string;
     private statusDoneUrl: string;
     private readonly debugLogger: debug.Debugger;
-    private _connectionInfo = '';
+    private osInfo: OSInfo | null = null;
 
     public readonly warningLog: WarningLog;
     private _messageBus?: MessageBus;
@@ -304,7 +305,7 @@ export default class BrowserConnection extends EventEmitter {
             }, this.BROWSER_RESTART_TIMEOUT);
         });
 
-        return Promise.race([ restartPromise, timeoutPromise ])
+        return Promise.race([restartPromise, timeoutPromise])
             .then(() => {
                 clearTimeout(timeout as NodeJS.Timeout);
 
@@ -372,17 +373,6 @@ export default class BrowserConnection extends EventEmitter {
         this.warningLog.clear();
     }
 
-    private async calculateConnectionInfo (): Promise<string> {
-        const osInfo = await this.provider.getOSInfo(this.id);
-
-        if (!osInfo)
-            return this.userAgent;
-
-        const { name, version } = this.browserInfo.parsedUserAgent;
-
-        return calculatePrettyUserAgent({ name, version }, osInfo);
-    }
-
     public setProviderMetaInfo (str: string, options?: ProviderMetaInfoOptions): void {
         const appendToUserAgent = options?.appendToUserAgent as boolean;
 
@@ -410,9 +400,12 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     public get connectionInfo (): string {
-        let connectionInfo = this._connectionInfo;
+        if (!this.osInfo)
+            return this.userAgent;
 
-        const metaInfo = this.browserInfo.userAgentProviderMetaInfo || extractMetaInfo(this.browserInfo.parsedUserAgent.prettyUserAgent);
+        const { name, version } = this.browserInfo.parsedUserAgent;
+        let connectionInfo      = calculatePrettyUserAgent({ name, version }, this.osInfo);
+        const metaInfo          = this.browserInfo.userAgentProviderMetaInfo || extractMetaInfo(this.browserInfo.parsedUserAgent.prettyUserAgent);
 
         if (metaInfo)
             connectionInfo += ` (${ metaInfo })`;
@@ -470,7 +463,7 @@ export default class BrowserConnection extends EventEmitter {
     public async establish (userAgent: string): Promise<void> {
         this.status                      = BrowserConnectionStatus.ready;
         this.browserInfo.parsedUserAgent = parseUserAgent(userAgent);
-        this._connectionInfo             = await this.calculateConnectionInfo();
+        this.osInfo                      = await this.provider.getOSInfo(this.id);
 
         this._waitForHeartbeat();
         this.emit('ready');
