@@ -28,8 +28,15 @@ describe('Reporter', () => {
     ];
 
     const browserConnectionMocks = [
-        { userAgent: 'Chrome' },
-        { userAgent: 'Firefox' },
+        {
+            userAgent:      'Chrome',
+            connectionInfo: 'Chrome',
+
+        },
+        {
+            userAgent:      'Firefox',
+            connectionInfo: 'Firefox',
+        },
     ];
 
     const fixtureMocks = [
