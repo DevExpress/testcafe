@@ -62,7 +62,7 @@ export function extractMetaInfo (prettyUserAgent: string): string {
     if (!parenthesisExpressions || !parenthesisExpressions.length)
         return '';
 
-    return parenthesisExpressions[parenthesisExpressions.length - 1].replace(/[\(\)]/, '');
+    return parenthesisExpressions[parenthesisExpressions.length - 1].replace(/[()]/, '');
 }
 
 export function parseUserAgent (userAgent = ''): ParsedUserAgent {
