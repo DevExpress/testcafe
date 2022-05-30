@@ -14,7 +14,7 @@ import {
     success,
 } from './formatting';
 
-const DASHBOARD_DOCUMENTATION_URL = 'https://testcafe.io/dashboard-alpha';
+import DASHBOARD_DOCUMENTATION_URL from './documentation-url';
 
 const dashboardConnector     = new DashboardConnector();
 const dashboardConfigStorage = new DashboardConfigStorage();
