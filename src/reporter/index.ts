@@ -435,7 +435,7 @@ export default class Reporter {
         const metaInfo = connection.browserInfo.userAgentProviderMetaInfo || extractMetaInfo(connection.browserInfo.parsedUserAgent.prettyUserAgent);
 
         if (metaInfo)
-            prettyUserAgent += ` (${ connection.browserInfo.userAgentProviderMetaInfo })`;
+            prettyUserAgent += ` (${ metaInfo })`;
 
         return prettyUserAgent;
     }
