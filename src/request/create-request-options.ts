@@ -89,7 +89,7 @@ function changeHeaderNamesToLowercase (headers: OutgoingHttpHeaders): OutgoingHt
     return lowerCaseHeaders;
 }
 
-async function prepareHeaders (headers: OutgoingHttpHeaders, url: URL, body: Buffer, testRun: TestRun, options: ExternalRequestOptions): Promise<OutgoingHttpHeaders> {
+async function prepareHeaders (headers: OutgoingHttpHeaders, currentPageUrl: URL, url: URL, body: Buffer, testRun: TestRun, options: ExternalRequestOptions): Promise<OutgoingHttpHeaders> {
     const { host, hostname, origin, href } = url;
 
     const preparedHeaders: OutgoingHttpHeaders = Object.assign(DEFAULT_ACCEPT, DEFAULT_IS_REQUEST, changeHeaderNamesToLowercase(headers));
@@ -108,7 +108,6 @@ async function prepareHeaders (headers: OutgoingHttpHeaders, url: URL, body: Buf
         preparedHeaders[HTTP_HEADERS.proxyAuthorization] = getAuthString(options.proxy.auth);
 
     if (options.withCredentials) {
-        const currentPageUrl     = new URL(await testRun.getCurrentUrl());
         const currentPageCookies = testRun.session.cookies.getHeader({
             url:      currentPageUrl.href,
             hostname: currentPageUrl.hostname,
@@ -126,8 +125,7 @@ async function prepareHeaders (headers: OutgoingHttpHeaders, url: URL, body: Buf
     return preparedHeaders;
 }
 
-async function prepareUrl (currentUrl: string, testRun: TestRun, url: string | URL, callsite: CallsiteRecord | null): Promise<URL> {
-    const currentPageUrl = new URL(currentUrl);
+async function prepareUrl (testRun: TestRun, currentPageUrl: URL, url: string | URL, callsite: CallsiteRecord | null): Promise<URL> {
     let preparedUrl: URL;
 
     try {
@@ -173,15 +171,16 @@ function getProxyUrl (testRun: TestRun, url: string, withCredentials?: boolean):
     }, testRun, true)) as Promise<string>;
 }
 
-export async function createRequestOptions (currentUrl: string, testRun: TestRun, options: ExternalRequestOptions, callsite: CallsiteRecord | null): Promise<RequestOptions> {
+export async function createRequestOptions (currentPageUrlStr: string, testRun: TestRun, options: ExternalRequestOptions, callsite: CallsiteRecord | null): Promise<RequestOptions> {
     options.headers = options.headers || {};
 
-    const url         = await prepareUrl(currentUrl, testRun, options.url, callsite);
-    const body        = transformBody(options.headers, options.body);
-    const headers     = await prepareHeaders(options.headers, url, body, testRun, options);
-    const proxyUrl    = await getProxyUrl(testRun, url.href, options.withCredentials);
-    const proxyUrlObj = parseProxyUrl(proxyUrl);
-    let auth          = options.auth;
+    const currentPageUrl = new URL(currentPageUrlStr);
+    const url            = await prepareUrl(testRun, currentPageUrl, options.url, callsite);
+    const body           = transformBody(options.headers, options.body);
+    const headers        = await prepareHeaders(options.headers, currentPageUrl, url, body, testRun, options);
+    const proxyUrl       = await getProxyUrl(testRun, url.href, options.withCredentials);
+    const proxyUrlObj    = parseProxyUrl(proxyUrl);
+    let auth             = options.auth;
 
     if (!auth && url.username && url.password) {
         auth = {

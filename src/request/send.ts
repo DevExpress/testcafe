@@ -12,8 +12,8 @@ import { castArray } from 'lodash';
 type StrictIncomingMessage = IncomingMessage & { statusCode: number; statusMessage: string };
 
 async function send (testRun: TestRun, options: ExternalRequestOptions, callsite: CallsiteRecord | null): Promise<ResponseOptions> {
-    const currentUrl     = await testRun.getCurrentUrl();
-    const requestOptions = await createRequestOptions(currentUrl, testRun, options, callsite);
+    const currentPageUrl = await testRun.getCurrentUrl();
+    const requestOptions = await createRequestOptions(currentPageUrl, testRun, options, callsite);
     const request        = new DestinationRequest(requestOptions);
     const dataWaiter     = new Promise<StrictIncomingMessage | string>(resolve => {
         request.on('response', (res: StrictIncomingMessage) => resolve(res));
@@ -29,7 +29,7 @@ async function send (testRun: TestRun, options: ExternalRequestOptions, callsite
     const setCookie = data.headers[HTTP_HEADERS.setCookie];
 
     if (setCookie)
-        testRun.session.cookies.copySyncCookies(castArray(setCookie).join(';'), currentUrl);
+        testRun.session.cookies.copySyncCookies(castArray(setCookie).join(';'), currentPageUrl);
 
     const body = await processResponseData(data, options.rawResponse);
 
