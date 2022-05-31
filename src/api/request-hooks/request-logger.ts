@@ -6,7 +6,7 @@ import {
 } from 'testcafe-hammerhead';
 
 import RequestHook from './hook';
-import parseUserAgent from '../../utils/parse-user-agent';
+import { parseUserAgent } from '../../utils/parse-user-agent';
 import testRunTracker from '../test-run-tracker';
 import ReExecutablePromise from '../../utils/re-executable-promise';
 import { APIError } from '../../errors/runtime';

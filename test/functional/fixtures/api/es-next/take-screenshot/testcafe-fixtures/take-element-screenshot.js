@@ -1,5 +1,5 @@
 import { ClientFunction } from 'testcafe';
-import parseUserAgent from '../../../../../../../lib/utils/parse-user-agent';
+import { parseUserAgent } from '../../../../../../../lib/utils/parse-user-agent';
 import { saveWindowState, restoreWindowState } from '../../../../../window-helpers';
 
 

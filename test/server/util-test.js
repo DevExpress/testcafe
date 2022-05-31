@@ -20,7 +20,7 @@ const getFilterFn                      = require('../../lib/utils/get-filter-fn'
 const prepareReporters                 = require('../../lib/utils/prepare-reporters');
 const { replaceLeadingSpacesWithNbsp } = require('../../lib/errors/test-run/utils');
 const createTempProfile                = require('../../lib/browser/provider/built-in/dedicated/chrome/create-temp-profile');
-const parseUserAgent                   = require('../../lib/utils/parse-user-agent');
+const { parseUserAgent }                   = require('../../lib/utils/parse-user-agent');
 const diff                             = require('../../lib/utils/diff');
 const { generateScreenshotMark }       = require('../../lib/screenshots/utils');
 

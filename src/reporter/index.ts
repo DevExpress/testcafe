@@ -31,7 +31,6 @@ import path from 'path';
 import fs from 'fs';
 import MessageBus from '../utils/message-bus';
 
-
 interface PendingPromise {
     resolve: Function | null;
     then: Function;
@@ -422,6 +421,7 @@ export default class Reporter {
         });
     }
 
+
     private async _onceTaskStartHandler (task: Task): Promise<void> {
         this.taskInfo = {
             task:                   task,
@@ -434,9 +434,9 @@ export default class Reporter {
             pendingTaskDonePromise: Reporter._createPendingPromise(),
         };
 
-        const startTime  = task.startTime;
-        const userAgents = task.browserConnectionGroups.map(group => group[0].userAgent);
-        const first      = this.taskInfo.testQueue[0];
+        const startTime              = task.startTime;
+        const browserConnectionsInfo = task.browserConnectionGroups.map(group => group[0].connectionInfo);
+        const first                  = this.taskInfo.testQueue[0];
 
         const taskProperties = {
             configuration: task.opts,
@@ -448,7 +448,7 @@ export default class Reporter {
             initialObject: task,
             args:          [
                 startTime,
-                userAgents,
+                browserConnectionsInfo,
                 this.taskInfo.testCount,
                 task.testStructure,
                 taskProperties,

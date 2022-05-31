@@ -7,7 +7,7 @@ const multer                = require('multer');
 const Mustache              = require('mustache');
 const { readFile }          = require('../../../lib/utils/promisified-functions');
 const quarantineModeTracker = require('../quarantine-mode-tracker');
-const parseUserAgent        = require('../../../lib/utils/parse-user-agent');
+const { parseUserAgent }        = require('../../../lib/utils/parse-user-agent');
 
 const storage = multer.memoryStorage();
 const upload  = multer({ storage: storage });

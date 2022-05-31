@@ -16,6 +16,7 @@ import { WindowDimentionsInfo } from '../interfaces';
 import { CallsiteRecord } from 'callsite-record';
 import { ExecuteClientFunctionCommand, ExecuteSelectorCommand } from '../../test-run/commands/observation';
 import { SwitchToIframeCommand } from '../../test-run/commands/actions';
+import getLocalOSInfo, { OSInfo } from 'get-os-info';
 
 const DEBUG_LOGGER = debug('testcafe:browser:provider');
 
@@ -311,6 +312,13 @@ export default class BrowserProvider {
 
     public isHeadlessBrowser (browserId?: string, browserName?: string): Promise<boolean> {
         return this.plugin.isHeadlessBrowser(browserId, browserName);
+    }
+
+    public async getOSInfo (browserId: string): Promise<OSInfo | null> {
+        if (await this.isLocalBrowser(browserId))
+            return await getLocalOSInfo();
+
+        return await this.plugin.getOSInfo(browserId);
     }
 
     public async openBrowser (browserId: string, pageUrl: string, browserOption: unknown, disableMultipleWindows: boolean, proxyless: boolean): Promise<void> {

@@ -6,7 +6,7 @@ const { isFunction }  = require('lodash');
 const del             = require('del');
 const config          = require('./config.js');
 const { readPngFile } = require('../../lib/utils/promisified-functions');
-const parseUserAgent  = require('../../lib/utils/parse-user-agent');
+const { parseUserAgent }  = require('../../lib/utils/parse-user-agent');
 
 
 const SCREENSHOTS_PATH               = config.testScreenshotsDir;

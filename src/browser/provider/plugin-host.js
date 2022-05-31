@@ -157,4 +157,8 @@ export default class BrowserProviderPluginHost {
     async closeBrowserChildWindow (/*browserId*/) {
         return Promise.resolve();
     }
+
+    async getOSInfo (/*browserId*/) {
+        return null;
+    }
 }

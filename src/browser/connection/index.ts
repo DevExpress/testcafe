@@ -3,7 +3,12 @@ import timeLimit from 'time-limit-promise';
 import { EventEmitter } from 'events';
 import Mustache from 'mustache';
 import { pull as remove } from 'lodash';
-import parseUserAgent, { ParsedUserAgent } from '../../utils/parse-user-agent';
+import {
+    calculatePrettyUserAgent,
+    extractMetaInfo,
+    ParsedUserAgent,
+    parseUserAgent,
+} from '../../utils/parse-user-agent';
 import { readSync as read } from 'read-file-relative';
 import promisifyEvent from 'promisify-event';
 import { nanoid } from 'nanoid';
@@ -17,6 +22,7 @@ import BrowserConnectionGateway from './gateway';
 import BrowserJob from '../../runner/browser-job';
 import WarningLog from '../../notifications/warning-log';
 import BrowserProvider from '../provider';
+import { OSInfo } from 'get-os-info';
 
 import {
     BROWSER_RESTART_TIMEOUT,
@@ -103,6 +109,7 @@ export default class BrowserConnection extends EventEmitter {
     public readonly closeWindowUrl: string;
     private statusDoneUrl: string;
     private readonly debugLogger: debug.Debugger;
+    private osInfo: OSInfo | null = null;
 
     public readonly warningLog: WarningLog;
     private _messageBus?: MessageBus;
@@ -176,7 +183,7 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     public set messageBus (messageBus: MessageBus) {
-        this._messageBus = messageBus;
+        this._messageBus         = messageBus;
         this.warningLog.callback = WarningLog.createAddWarningCallback(this._messageBus);
     }
 
@@ -298,7 +305,7 @@ export default class BrowserConnection extends EventEmitter {
             }, this.BROWSER_RESTART_TIMEOUT);
         });
 
-        return Promise.race([ restartPromise, timeoutPromise ])
+        return Promise.race([restartPromise, timeoutPromise])
             .then(() => {
                 clearTimeout(timeout as NodeJS.Timeout);
 
@@ -392,6 +399,20 @@ export default class BrowserConnection extends EventEmitter {
         return userAgent;
     }
 
+    public get connectionInfo (): string {
+        if (!this.osInfo)
+            return this.userAgent;
+
+        const { name, version } = this.browserInfo.parsedUserAgent;
+        let connectionInfo      = calculatePrettyUserAgent({ name, version }, this.osInfo);
+        const metaInfo          = this.browserInfo.userAgentProviderMetaInfo || extractMetaInfo(this.browserInfo.parsedUserAgent.prettyUserAgent);
+
+        if (metaInfo)
+            connectionInfo += ` (${ metaInfo })`;
+
+        return connectionInfo;
+    }
+
     public get retryTestPages (): boolean {
         return this.browserConnectionGateway.retryTestPages;
     }
@@ -439,9 +460,10 @@ export default class BrowserConnection extends EventEmitter {
         this.emit(BrowserConnectionStatus.closed);
     }
 
-    public establish (userAgent: string): void {
+    public async establish (userAgent: string): Promise<void> {
         this.status                      = BrowserConnectionStatus.ready;
         this.browserInfo.parsedUserAgent = parseUserAgent(userAgent);
+        this.osInfo                      = await this.provider.getOSInfo(this.id);
 
         this._waitForHeartbeat();
         this.emit('ready');
@@ -461,7 +483,7 @@ export default class BrowserConnection extends EventEmitter {
 
     public renderIdlePage (): string {
         return Mustache.render(IDLE_PAGE_TEMPLATE as string, {
-            userAgent:      this.userAgent,
+            userAgent:      this.connectionInfo,
             statusUrl:      this.statusUrl,
             heartbeatUrl:   this.heartbeatUrl,
             initScriptUrl:  this.initScriptUrl,
