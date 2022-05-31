@@ -29,6 +29,9 @@ import ExecutionContext from './execution-context';
 import * as clientsManager from './clients-manager';
 import delay from '../../../../../../utils/delay';
 
+import StartScreencastRequest = Protocol.Page.StartScreencastRequest;
+import ScreencastFrameEvent = Protocol.Page.ScreencastFrameEvent;
+
 const DEBUG_SCOPE = (id: string): string => `testcafe:browser:provider:built-in:chrome:browser-client:${id}`;
 const DOWNLOADS_DIR = path.join(os.homedir(), 'Downloads');
 
@@ -44,13 +47,25 @@ class ProtocolApiInfo {
     }
 }
 
+const SCREENCAST_OPTIONS = {
+    format:        'jpeg',
+    everyNthFrame: 1,
+};
+
+interface VideoFrameData {
+    data: string;
+    sessionId: number;
+}
+
 export class BrowserClient {
     private _clients: Dictionary<ProtocolApiInfo> = {};
-    private _runtimeInfo: RuntimeInfo;
+    private readonly _runtimeInfo: RuntimeInfo;
     private readonly _proxyless: boolean;
     private _parentTarget?: remoteChrome.TargetInfo;
     private readonly debugLogger: debug.Debugger;
     private readonly _clientFunctionExecutor: ClientFunctionExecutor;
+    private readonly _videoFramesBuffer: VideoFrameData[];
+    private _lastFrame: VideoFrameData | null;
 
     public constructor (runtimeInfo: RuntimeInfo, proxyless: boolean) {
         this._runtimeInfo = runtimeInfo;
@@ -60,6 +75,9 @@ export class BrowserClient {
         this._clientFunctionExecutor = new ClientFunctionExecutor();
 
         runtimeInfo.browserClient = this;
+
+        this._videoFramesBuffer = [];
+        this._lastFrame         = null;
     }
 
     private get _clientKey (): string {
@@ -423,5 +441,40 @@ export class BrowserClient {
 
         // NOTE: delay browser window closing
         await delay(100);
+    }
+
+    public async startCapturingVideo (): Promise<void> {
+        const client = await this.getActiveClient();
+
+        if (!client)
+            return;
+
+        client.Page.on('screencastFrame', (event: ScreencastFrameEvent) => {
+            this._videoFramesBuffer.push({
+                data:      event.data,
+                sessionId: event.sessionId,
+            });
+        });
+
+        await client.Page.startScreencast(SCREENCAST_OPTIONS as StartScreencastRequest);
+    }
+
+    public async getVideoFrameData (): Promise<Buffer | null> {
+        const currentVideoFrame = this._videoFramesBuffer.shift() || this._lastFrame;
+
+        if (!currentVideoFrame)
+            return null;
+
+        if (this._videoFramesBuffer.length === 0)
+            this._lastFrame = currentVideoFrame;
+
+        const client = await this.getActiveClient();
+
+        if (!client)
+            return null;
+
+        await client.Page.screencastFrameAck({ sessionId: currentVideoFrame.sessionId });
+
+        return Buffer.from(currentVideoFrame.data, 'base64');
     }
 }
