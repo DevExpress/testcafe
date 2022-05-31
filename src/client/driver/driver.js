@@ -102,7 +102,11 @@ import ChildWindowDriverLink from './driver-link/window/child';
 import ParentWindowDriverLink from './driver-link/window/parent';
 import sendConfirmationMessage from './driver-link/send-confirmation-message';
 import DriverRole from './role';
-import { CHECK_CHILD_WINDOW_CLOSED_INTERVAL, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT } from './driver-link/timeouts';
+import {
+    CHECK_CHILD_WINDOW_CLOSED_INTERVAL,
+    WAIT_FOR_IFRAME_DRIVER_RESPONSE_TIMEOUT,
+    WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT,
+} from './driver-link/timeouts';
 import sendMessageToDriver from './driver-link/send-message-to-driver';
 import getExecutorResultDriverStatus from './command-executors/get-executor-result-driver-status';
 import SelectorExecutor from './command-executors/client-functions/selector-executor';
@@ -961,8 +965,14 @@ export default class Driver extends serviceUtils.EventEmitter {
                 if (!domUtils.isIframeElement(iframe))
                     throw new ActionElementNotIframeError();
 
+                // NOTE: RG-4558 Previously we waited for iframe become visible when execute selector
+                // We need to add a timeout to be sure that iframe driver is initialized
+                const childLinkResponseTimeout = hasSpecificTimeout
+                    ? commandSelectorTimeout
+                    : Math.max(commandSelectorTimeout, WAIT_FOR_IFRAME_DRIVER_RESPONSE_TIMEOUT);
+
                 return this._ensureChildIframeDriverLink(nativeMethods.contentWindowGetter.call(iframe),
-                    iframeErrorCtors.NotLoadedError, commandSelectorTimeout);
+                    iframeErrorCtors.NotLoadedError, childLinkResponseTimeout);
             })
             .then(childDriverLink => {
                 childDriverLink.availabilityTimeout = commandSelectorTimeout;

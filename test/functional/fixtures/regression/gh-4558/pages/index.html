@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        iframe {
+            border: none !important;
+        }
+    </style>
+    <script>
+        function showNativeDialog(text){
+            alert(text)
+        }
+    </script>
+</head>
+<body>
+<iframe id="invisibleIframe" src="iframePage.html" style="width: 0px; height: 0px;"></iframe>
+<iframe id="hiddenIframe" src="iframePage.html" style="visibility: hidden"></iframe>
+</body>
+</html>

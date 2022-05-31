@@ -4,7 +4,7 @@ import * as domUtils from './dom';
 import * as shared from './shared/position';
 import AxisValues from '../../../shared/utils/values/axis-values';
 
-export { isElementVisible } from './shared/visibility';
+export { isElementVisible, isIframeVisible } from './shared/visibility';
 
 export const getElementRectangle  = hammerhead.utils.position.getElementRectangle;
 export const getOffsetPosition    = hammerhead.utils.position.getOffsetPosition;

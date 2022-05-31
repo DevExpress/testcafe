@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        function setSpanText (text = 'OK') {
+            document.querySelector('#result').innerHTML = text;
+        }
+
+        function showDialog (type) {
+            switch (type) {
+                case 'confirm':
+                    return setSpanText(confirm('confirm') ? 'CONFIRM' : 'FAIL');
+                case 'prompt':
+                    return setSpanText(prompt('test'));
+                case 'alert':
+                    return alert('test');
+            }
+        }
+
+        function logToConsole (text){
+            console.log(text);
+        }
+
+        document.addEventListener('keydown', function () {
+            setSpanText();
+        })
+
+        function onUploadChange () {
+            const files = document.getElementById('upload').files;
+            setSpanText(files && files.length ? 'ADD' : 'CLEAR');
+        }
+
+    </script>
+</head>
+<body style="overflow-y: scroll; height: 2000px;">
+
+<input id="focusInput"/>
+
+<input id="upload" type="file" onchange="onUploadChange()"/>
+
+<span id="result"></span>
+
+<button id="button" onclick="setSpanText()">OK</button>
+
+<iframe id="iframe2" src="innerIframePage.html" style="width: 0px; height: 0px"></iframe>
+</body>
+</html>
