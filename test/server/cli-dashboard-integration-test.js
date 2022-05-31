@@ -1,16 +1,17 @@
 /* eslint-disable no-console */
 
-const { expect }            = require('chai');
-const chalk                 = require('chalk');
-const { prompts }           = require('prompts');
-const sinon                 = require('sinon');
-const proxyquire            = require('proxyquire');
-const messages              = require('../../lib/dashboard/messages');
-const https                 = require('https');
-const express               = require('express');
-const bodyParser            = require('body-parser');
-const selfSignedSertificate = require('openssl-self-signed-certificate');
-const DashboardConnector    = require('../../lib/dashboard/connector');
+const { expect }                  = require('chai');
+const chalk                       = require('chalk');
+const { prompts }                 = require('prompts');
+const sinon                       = require('sinon');
+const proxyquire                  = require('proxyquire');
+const messages                    = require('../../lib/dashboard/messages');
+const https                       = require('https');
+const express                     = require('express');
+const bodyParser                  = require('body-parser');
+const selfSignedSertificate       = require('openssl-self-signed-certificate');
+const DashboardConnector          = require('../../lib/dashboard/connector');
+const DASHBOARD_DOCUMENTATION_URL = require('../../lib/dashboard/documentation-url');
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
@@ -236,7 +237,7 @@ describe('Dashboard integration', () => {
             expect(console.log.getCall(3).args[0]).contains('View test results at:\n');
             expect(console.log.getCall(3).args[0]).contains(`${chalk.underline.blueBright('https://dashboard.testcafe.io/runs/test-project')}`);
             expect(console.log.getCall(4).args[0]).contains(`Run ${chalk.black.bgWhiteBright('testcafe dashboard off')} to disable this behavior.`);
-            expect(console.log.getCall(4).args[0]).contains(`Learn more at:\n${chalk.underline.blueBright('https://testcafe.io/dashboard-alpha')}`);
+            expect(console.log.getCall(4).args[0]).contains(`Learn more at:\n${chalk.underline.blueBright(DASHBOARD_DOCUMENTATION_URL)}`);
             expect(sentEmail).eql(TEST_EMAIL);
             expect(sentToken).eql(TEST_TOKEN);
         });
@@ -354,7 +355,7 @@ describe('Dashboard integration', () => {
                 expect(console.log.getCall(4).args[0]).contains('View test results at:\n');
                 expect(console.log.getCall(4).args[0]).contains(`${chalk.underline.blueBright('https://dashboard.testcafe.io/runs/test-project')}`);
                 expect(console.log.getCall(5).args[0]).contains(`Run ${chalk.black.bgWhiteBright('testcafe dashboard off')} to disable this behavior.`);
-                expect(console.log.getCall(5).args[0]).contains(`Learn more at:\n${chalk.underline.blueBright('https://testcafe.io/dashboard-alpha')}`);
+                expect(console.log.getCall(5).args[0]).contains(`Learn more at:\n${chalk.underline.blueBright(DASHBOARD_DOCUMENTATION_URL)}`);
             });
         });
     });
