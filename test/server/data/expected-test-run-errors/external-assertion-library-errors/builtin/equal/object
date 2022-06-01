@@ -1,5 +1,4 @@
-AssertionError: expected { Object (first) } to deeply equal { Object (first)
-}
+AssertionError: expected { Object (first) } to deeply equal { Object (first) }
 
 + expected - actual
 

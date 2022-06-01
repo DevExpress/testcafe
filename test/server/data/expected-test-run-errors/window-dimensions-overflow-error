@@ -1,5 +1,4 @@
-Unable to resize the window because the specified size exceeds the screen
-size. On macOS, a window cannot be larger than the screen.
+Unable to resize the window because the specified size exceeds the screen size. On macOS, a window cannot be larger than the screen.
 
 Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>

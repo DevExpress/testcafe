@@ -1,5 +1,4 @@
-Unable to capture an element image because the resulting image width is zero
-or negative.
+Unable to capture an element image because the resulting image width is zero or negative.
 
 Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>

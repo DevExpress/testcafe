@@ -1,6 +1,4 @@
-The element that matches the specified "startSelector" is expected to have
-the contentEditable attribute enabled or the entire document should be in
-design mode.
+The element that matches the specified "startSelector" is expected to have the contentEditable attribute enabled or the entire document should be in design mode.
 
 Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>

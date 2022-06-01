@@ -1,7 +1,7 @@
 import tty, { WriteStream } from 'tty';
 import { Stream } from 'stream';
 
-const DEFAULT_VIEWPORT_WIDTH = 78;
+const DEFAULT_VIEWPORT_WIDTH_TTY = 78;
 
 export default function (outStream: Stream): number {
     if (outStream === process.stdout && tty.isatty(1)) {
@@ -9,8 +9,8 @@ export default function (outStream: Stream): number {
             process.stdout.getWindowSize()[0] :
             (tty as unknown as WriteStream).getWindowSize()[1];
 
-        return Math.max(detectedViewportWidth, DEFAULT_VIEWPORT_WIDTH);
+        return Math.max(detectedViewportWidth, DEFAULT_VIEWPORT_WIDTH_TTY);
     }
 
-    return DEFAULT_VIEWPORT_WIDTH;
+    return Infinity;
 }

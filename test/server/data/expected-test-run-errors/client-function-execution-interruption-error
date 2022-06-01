@@ -1,5 +1,4 @@
-eval execution was interrupted by page unload. This problem may appear if you
-trigger page navigation from eval code.
+eval execution was interrupted by page unload. This problem may appear if you trigger page navigation from eval code.
 
 Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>

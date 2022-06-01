@@ -1,5 +1,4 @@
-Cannot find the parent window. Make sure that the tested window was opened
-from another window.
+Cannot find the parent window. Make sure that the tested window was opened from another window.
 
 Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>

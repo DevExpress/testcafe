@@ -1,5 +1,4 @@
-Unable to scroll to the specified point because a point with the specified
-scrollTargetX property is not located inside the element's cropping region.
+Unable to scroll to the specified point because a point with the specified scrollTargetX property is not located inside the element's cropping region.
 
 Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>

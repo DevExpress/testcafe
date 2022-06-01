@@ -2,9 +2,7 @@ An unhandled error occurred in the custom script:
 
 Cannot prepare tests due to the following error:
 
-Cannot initialize a Selector because Selector is undefined, and not one of
-the following: a CSS selector string, a Selector object, a node snapshot, a
-function, or a Promise returned by a Selector.
+Cannot initialize a Selector because Selector is undefined, and not one of the following: a CSS selector string, a Selector object, a node snapshot, a function, or a Promise returned by a Selector.
 
 const s = Selector();
 

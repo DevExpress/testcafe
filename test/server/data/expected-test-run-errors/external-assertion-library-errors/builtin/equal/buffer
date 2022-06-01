@@ -1,5 +1,4 @@
-AssertionError: expected <Buffer 74 65 73 74> to deeply equal <Buffer 01 02
-03>
+AssertionError: expected <Buffer 74 65 73 74> to deeply equal <Buffer 01 02 03>
 
 + expected - actual
 

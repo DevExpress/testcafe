@@ -1,7 +1,6 @@
-Cannot obtain information about the node because the specified selector does
-not match any node in the DOM tree.
+Cannot obtain information about the node because the specified selector does not match any node in the DOM tree.
 
-   | Lorem ipsum dolor sit amet, consectetur adipiscing el...)
+   | Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
  > |   one
    |   two
    |   three
