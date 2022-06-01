@@ -215,6 +215,25 @@ describe('Runner', () => {
                 expect(e.message).eql("Specify a file name or a writable stream as the reporter's output target.");
             }
         });
+
+        describe('Dashboard', () => {
+            const TEST_DASHBOARD_SETTINGS = {
+                token:      'test-token',
+                sendReport: true,
+            };
+
+            it('Should turn on screenshots flags autoTakeOnFails and takeOnFails', async () => {
+                runner._loadDashboardOptionsFromStorage = () => {
+                    return TEST_DASHBOARD_SETTINGS;
+                };
+
+                await runner._addDashboardReporterIfNeeded();
+                await runner._turnOnScreenshotsIfNeeded();
+
+                expect(runner.configuration.getOption('screenshots').autoTakeOnFails).to.equal(true);
+                expect(runner.configuration.getOption('screenshots').takeOnFails).to.equal(true);
+            });
+        });
     });
 
     describe('.screenshots()', () => {
@@ -332,6 +351,7 @@ describe('Runner', () => {
             expect(runner._getScreenshotOptions()).eql({
                 path:        'path1',
                 pathPattern: 'pattern1',
+                takeOnFails: false,
             });
         });
 
@@ -347,6 +367,7 @@ describe('Runner', () => {
             expect(runner._getScreenshotOptions()).eql({
                 path:        'path2',
                 pathPattern: 'pattern2',
+                takeOnFails: false,
             });
         });
 

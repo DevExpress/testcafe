@@ -11,17 +11,20 @@ import WARNING_MESSAGE from '../notifications/warning-message';
 import escapeUserAgent from '../utils/escape-user-agent';
 import correctFilePath from '../utils/correct-file-path';
 import {
+    readFile,
     readPngFile,
     stat,
+    writeFile,
     writePng,
 } from '../utils/promisified-functions';
 
 import DEFAULT_SCREENSHOT_EXTENSION from './default-extension';
+import makeDir from 'make-dir';
 
 
 export default class Capturer {
     // TODO: refactor to use dictionary
-    constructor (baseScreenshotsPath, testEntry, connection, pathPattern, fullPage, thumbnails, warningLog) {
+    constructor (baseScreenshotsPath, testEntry, connection, pathPattern, fullPage, thumbnails, warningLog, tempDirectoryPath, autoTakeOnFails) {
         this.enabled             = !!baseScreenshotsPath;
         this.baseScreenshotsPath = baseScreenshotsPath;
         this.testEntry           = testEntry;
@@ -31,6 +34,8 @@ export default class Capturer {
         this.pathPattern         = pathPattern;
         this.fullPage            = fullPage;
         this.thumbnails          = thumbnails;
+        this.tempDirectoryPath   = tempDirectoryPath;
+        this.autoTakeOnFails     = autoTakeOnFails;
     }
 
     static _getDimensionWithoutScrollbar (fullDimension, documentDimension, bodyDimension) {
@@ -126,6 +131,8 @@ export default class Capturer {
 
         const screenshotPath = customPath ? this._getCustomScreenshotPath(customPath) : this._getScreenshotPath(forError);
         const thumbnailPath  = this._getThumbnailPath(screenshotPath);
+        const tempPath       = screenshotPath.replace(this.baseScreenshotsPath, this.tempDirectoryPath);
+        let screenshotData;
 
         if (isInQueue(screenshotPath))
             this.warningLog.addWarning(WARNING_MESSAGE.screenshotRewritingError, screenshotPath);
@@ -136,7 +143,7 @@ export default class Capturer {
             const { width: pageWidth, height: pageHeight } = clientAreaDimensions || {};
 
             const takeScreenshotOptions = {
-                filePath: screenshotPath,
+                filePath: tempPath,
                 pageWidth,
                 pageHeight,
                 fullPage,
@@ -144,20 +151,28 @@ export default class Capturer {
 
             await this._takeScreenshot(takeScreenshotOptions);
 
-            if (!await Capturer._isScreenshotCaptured(screenshotPath))
+            if (!await Capturer._isScreenshotCaptured(tempPath))
                 return;
 
-            const image = await readPngFile(screenshotPath);
+            const image = await readPngFile(tempPath);
 
             const croppedImage = await cropScreenshot(image, {
                 markSeed,
                 clientAreaDimensions,
-                path:           screenshotPath,
+                path:           tempPath,
                 cropDimensions: Capturer._getCropDimensions(cropDimensions, pageDimensions),
             });
 
             if (croppedImage)
-                await writePng(screenshotPath, croppedImage);
+                await writePng(tempPath, croppedImage);
+
+            screenshotData = await readFile(tempPath);
+
+            if (forError && this.autoTakeOnFails)
+                return;
+
+            await makeDir(dirname(screenshotPath));
+            await writeFile(screenshotPath, screenshotData);
 
             if (thumbnails)
                 await generateThumbnail(screenshotPath, thumbnailPath);
@@ -171,6 +186,7 @@ export default class Capturer {
         const screenshot = {
             testRunId,
             screenshotPath,
+            screenshotData,
             thumbnailPath,
             userAgent,
             quarantineAttempt,

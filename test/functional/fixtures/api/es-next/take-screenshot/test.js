@@ -21,6 +21,7 @@ const getReporter = function (scope) {
 
     function prepareScreenshot (screenshot, quarantine) {
         screenshot.screenshotPath  = patchScreenshotPath(screenshot.screenshotPath);
+        screenshot.screenshotData  = Buffer.isBuffer(screenshot.screenshotData);
         screenshot.thumbnailPath   = patchScreenshotPath(screenshot.thumbnailPath);
         screenshot.isPassedAttempt = quarantine[screenshot.quarantineAttempt].passed;
         screenshot.testRunId       = scope.testRunIds.includes(screenshot.testRunId);
@@ -245,6 +246,7 @@ describe('[API] t.takeScreenshot()', function () {
                         return {
                             testRunId:         true,
                             screenshotPath,
+                            screenshotData:    true,
                             thumbnailPath,
                             takenOnFail,
                             quarantineAttempt: attempt,

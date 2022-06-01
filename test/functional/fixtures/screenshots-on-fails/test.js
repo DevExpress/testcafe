@@ -1,6 +1,7 @@
-const expect          = require('chai').expect;
-const config          = require('../../config.js');
-const assertionHelper = require('../../assertion-helper.js');
+const expect             = require('chai').expect;
+const config             = require('../../config.js');
+const assertionHelper    = require('../../assertion-helper.js');
+const { createReporter } = require('../../utils/reporter');
 
 const SCREENSHOT_PATH_MESSAGE_TEXT       = 'Screenshot: ___test-screenshots___';
 const REPORT_SCREENSHOT_PATH_TEXT_RE     = /___test-screenshots___[\\/]\d{4,4}-\d{2,2}-\d{2,2}_\d{2,2}-\d{2,2}-\d{2,2}[\\/]test-1/;
@@ -127,6 +128,52 @@ describe('Screenshots on fails', function () {
                         'or set the "disableScreenshots" option to "false" in the API or configuration file.',
                     ]);
                 });
+        });
+
+        describe('Send screenshot data to the method reportTestDone every time', () => {
+            let testDoneScreenshots;
+
+            const customReporter = createReporter({
+                reportTestDone: (name, testRunInfo) => {
+                    testDoneScreenshots = testRunInfo.screenshots;
+                },
+            });
+
+            beforeEach(() => {
+                testDoneScreenshots = null;
+            });
+
+            it('Should save screenshot data to the property screenshotData', async () => {
+                await runTests('testcafe-fixtures/screenshots-on-fails.js', 'Screenshot on the ensureElement method fail', {
+                    only:               'chrome',
+                    shouldFail:         true,
+                    screenshotsOnFails: true,
+                    setScreenshotPath:  true,
+                    selectorTimeout:    0,
+                    reporter:           customReporter,
+                });
+
+                expect(assertionHelper.isScreenshotDirExists()).eql(true);
+                expect(Buffer.isBuffer(testDoneScreenshots[0].screenshotData)).eql(true);
+                expect(testDoneScreenshots[0].screenshotData.length).greaterThan(1000);
+            });
+
+            it("Shouldn't save screenshot data to the directory", async () => {
+                testCafe.configuration.mergeOptions({ screenshots: { autoTakeOnFails: true } });
+                await runTests('testcafe-fixtures/screenshots-on-fails.js', 'Screenshot on the ensureElement method fail', {
+                    only:               'chrome',
+                    shouldFail:         true,
+                    screenshotsOnFails: true,
+                    setScreenshotPath:  true,
+                    selectorTimeout:    0,
+                    reporter:           customReporter,
+                });
+
+                expect(assertionHelper.isScreenshotDirExists()).eql(false);
+                expect(Buffer.isBuffer(testDoneScreenshots[0].screenshotData)).eql(true);
+                expect(testDoneScreenshots[0].screenshotData.length).greaterThan(1000);
+                delete testCafe.configuration._options.screenshots;
+            });
         });
 
         it('Should crop screenshots to a page viewport area', function () {

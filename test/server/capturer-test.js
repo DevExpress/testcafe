@@ -23,6 +23,8 @@ class ScreenshotsMock extends Screenshots {
         super(options);
     }
 
+    _assignEventHandlers () {}
+
     createCapturerFor (test, testIndex, quarantine, connection, warningLog) {
         this.capturer = super.createCapturerFor(test, testIndex, quarantine, connection, warningLog);
 
@@ -98,6 +100,7 @@ describe('Capturer', () => {
         expect(screenshots.capturer.testEntry.screenshots[0]).eql({
             testRunId:         'test-run-id',
             screenshotPath:    join(process.cwd(), 'screenshot.png'),
+            screenshotData:    void 0,
             thumbnailPath:     join(process.cwd(), 'thumbnails', 'screenshot.png'),
             userAgent:         'user-agent',
             quarantineAttempt: 1,

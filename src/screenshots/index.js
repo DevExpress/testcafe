@@ -4,9 +4,19 @@ import Capturer from './capturer';
 import PathPattern from '../utils/path-pattern';
 import getCommonPath from '../utils/get-common-path';
 import DEFAULT_SCREENSHOT_EXTENSION from './default-extension';
+import TempDirectory from '../utils/temp-directory';
+import createSafeListener from '../utils/create-safe-listener';
+import debug from 'debug';
+import { EventEmitter } from 'events';
 
-export default class Screenshots {
-    constructor ({ enabled, path, pathPattern, fullPage, thumbnails }) {
+const DEBUG_LOGGER = debug('testcafe:screenshots');
+
+const TEMP_DIR_PREFIX = 'screenshots';
+
+export default class Screenshots extends EventEmitter {
+    constructor ({ enabled, path, pathPattern, fullPage, thumbnails, autoTakeOnFails, messageBus }) {
+        super();
+
         this.enabled            = enabled;
         this.screenshotsPath    = path;
         this.screenshotsPattern = pathPattern;
@@ -14,6 +24,27 @@ export default class Screenshots {
         this.thumbnails         = thumbnails;
         this.testEntries        = [];
         this.now                = moment();
+        this.tempDirectory      = new TempDirectory(TEMP_DIR_PREFIX);
+        this.autoTakeOnFails    = autoTakeOnFails;
+
+        this._assignEventHandlers(messageBus);
+    }
+
+    _createSafeListener (listener) {
+        return createSafeListener(this, listener, DEBUG_LOGGER);
+    }
+
+    _assignEventHandlers (messageBus) {
+        messageBus.once('start', this._createSafeListener(this._onMessageBusStart));
+        messageBus.once('done', this._createSafeListener(this._onMessageBusDone));
+    }
+
+    async _onMessageBusStart () {
+        await this.tempDirectory.init();
+    }
+
+    async _onMessageBusDone () {
+        await this.tempDirectory.dispose();
     }
 
     _addTestEntry (test) {
@@ -67,7 +98,7 @@ export default class Screenshots {
             parsedUserAgent:   connection.browserInfo.parsedUserAgent,
         });
 
-        return new Capturer(this.screenshotsPath, testEntry, connection, pathPattern, this.fullPage, this.thumbnails, warningLog);
+        return new Capturer(this.screenshotsPath, testEntry, connection, pathPattern, this.fullPage, this.thumbnails, warningLog, this.tempDirectory.path, this.autoTakeOnFails);
     }
 
     addTestRun (test, testRun) {
