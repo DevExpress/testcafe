@@ -1,13 +1,15 @@
 import testRunTracker from '../api/test-run-tracker';
-import TestRunProxy from '../services/compiler/test-run-proxy';
 import ReExecutablePromise from '../utils/re-executable-promise';
 import { ClientFunctionAPIError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
 import { getCallsiteForMethod } from '../errors/get-callsite';
-import TestRun from '../test-run';
 import { ExternalRequestOptions, ResponseOptions } from './interfaces';
 import send from './send';
 import validateOptions from './validate-options';
+
+const lazyRequire  = require('import-lazy')(require);
+const TestRunProxy = lazyRequire('../services/compiler/test-run-proxy');
+const TestRun      = lazyRequire('../test-run');
 
 export const EXTENDED_METHODS = ['get', 'post', 'delete', 'put', 'patch', 'head'];
 
@@ -30,7 +32,7 @@ export default class RequestBuilder {
         this.callsiteNames = DEFAULT_CALLSITE_NAMES;
     }
 
-    private _getTestRun (): TestRun | TestRunProxy | null {
+    private _getTestRun (): typeof TestRun | typeof TestRunProxy | null {
         return testRunTracker.resolveContextTestRun();
     }
 
@@ -56,13 +58,13 @@ export default class RequestBuilder {
             throw new ClientFunctionAPIError(callsite, this.callsiteNames.instantiation, RUNTIME_ERRORS.clientFunctionCannotResolveTestRun);
 
         const promise = ReExecutablePromise.fromFn(async () => {
-            return send(testRun as TestRun, preparedOptions, callsite);
+            return send(testRun, preparedOptions, callsite);
         });
 
         REQUEST_GETTERS.forEach(getter => {
             Object.defineProperty(promise, getter, {
                 get: () => ReExecutablePromise.fromFn(async () => {
-                    const response = await send(testRun as TestRun, preparedOptions, callsite);
+                    const response = await send(testRun, preparedOptions, callsite);
 
                     return response[getter];
                 }),
