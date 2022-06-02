@@ -29,7 +29,7 @@ export const RequestHook: RequestHookConstructor;
  * @param urlOpts - request url or options.
  * @param options - options.
  */
-export const Request: RequestFactory;
+export const request: RequestFactory;
 
 
 /**

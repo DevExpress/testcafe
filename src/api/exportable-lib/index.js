@@ -20,7 +20,7 @@ function Role (loginUrl, initFn, options) {
     return role.createRole(loginUrl, initFn, options);
 }
 
-const Request = new RequestBuilder().getFunction();
+const request = new RequestBuilder().getFunction();
 
 function RequestMock () {
     return createRequestMock();
@@ -57,7 +57,7 @@ const exportableLib = {
 
     RequestMock,
 
-    Request,
+    request,
 
     get RequestHook () {
         if (!RequestHook)
