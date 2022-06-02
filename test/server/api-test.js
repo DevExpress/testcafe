@@ -1741,8 +1741,8 @@ describe('API', function () {
         });
     });
 
-    describe('Request', function () {
-        it('Should raise an error if the Request url argument is not a string or URL', async function () {
+    describe('request', function () {
+        it('Should raise an error if the request url argument is not a string or URL', async function () {
             const testfile = resolve('test/server/data/test-suites/request/url-not-string-or-url/testfile.js');
 
             try {
@@ -1757,11 +1757,11 @@ describe('API', function () {
                     message: 'Cannot prepare tests due to the following error:\n\n' +
                              'The "url" argument (boolean) is not of expected type (string or an URL).',
 
-                    callsite: '   1 |import { fixture, Request } from \'testcafe\';\n' +
+                    callsite: '   1 |import { fixture, request } from \'testcafe\';\n' +
                               '   2 |\n' +
                               '   3 |fixture `Test`;\n' +
                               '   4 |\n' +
-                              ' > 5 |Request(true);\n' +
+                              ' > 5 |request(true);\n' +
                               '   6 |\n' +
                               '   7 |test(\'yo\', () => {\n' +
                               '   8 |});\n' +
@@ -1770,7 +1770,7 @@ describe('API', function () {
             }
         });
 
-        it('Should raise an error if method of the Request option argument is not string', async function () {
+        it('Should raise an error if method of the request option argument is not string', async function () {
             const testfile = resolve('test/server/data/test-suites/request/options/method-not-string/testfile.js');
 
             try {
@@ -1785,11 +1785,11 @@ describe('API', function () {
                     message: 'Cannot prepare tests due to the following error:\n\n' +
                              'The "method" argument (number) is not of expected type (string).',
 
-                    callsite: '    1 |import { fixture, Request } from \'testcafe\';\n' +
+                    callsite: '    1 |import { fixture, request } from \'testcafe\';\n' +
                               '    2 |\n' +
                               '    3 |fixture `Test`;\n' +
                               '    4 |\n' +
-                              ' >  5 |Request(\'http://localhost\', {\n' +
+                              ' >  5 |request(\'http://localhost\', {\n' +
                               '    6 |    method: 1,\n' +
                               '    7 |});\n' +
                               '    8 |\n' +
@@ -1799,7 +1799,7 @@ describe('API', function () {
             }
         });
 
-        it('Should raise an error if headers of the Request option argument is not object', async function () {
+        it('Should raise an error if headers of the request option argument is not object', async function () {
             const testfile = resolve('test/server/data/test-suites/request/options/headers-not-object/testfile.js');
 
             try {
@@ -1814,11 +1814,11 @@ describe('API', function () {
                     message: 'Cannot prepare tests due to the following error:\n\n' +
                              'The "headers" argument (number) is not of expected type (non-null object).',
 
-                    callsite: '    1 |import { fixture, Request } from \'testcafe\';\n' +
+                    callsite: '    1 |import { fixture, request } from \'testcafe\';\n' +
                               '    2 |\n' +
                               '    3 |fixture `Test`;\n' +
                               '    4 |\n' +
-                              ' >  5 |Request(\'http://localhost\', {\n' +
+                              ' >  5 |request(\'http://localhost\', {\n' +
                               '    6 |    headers: 1,\n' +
                               '    7 |});\n' +
                               '    8 |\n' +
@@ -1828,7 +1828,7 @@ describe('API', function () {
             }
         });
 
-        it('Should raise an error if params of the Request option argument is not object', async function () {
+        it('Should raise an error if params of the request option argument is not object', async function () {
             const testfile = resolve('test/server/data/test-suites/request/options/params-not-object/testfile.js');
 
             try {
@@ -1843,11 +1843,11 @@ describe('API', function () {
                     message: 'Cannot prepare tests due to the following error:\n\n' +
                              'The "params" argument (number) is not of expected type (URLSearchParams or a non-null object).',
 
-                    callsite: '    1 |import { fixture, Request } from \'testcafe\';\n' +
+                    callsite: '    1 |import { fixture, request } from \'testcafe\';\n' +
                               '    2 |\n' +
                               '    3 |fixture `Test`;\n' +
                               '    4 |\n' +
-                              ' >  5 |Request(\'http://localhost\', {\n' +
+                              ' >  5 |request(\'http://localhost\', {\n' +
                               '    6 |    params: 1,\n' +
                               '    7 |});\n' +
                               '    8 |\n' +
@@ -1857,7 +1857,7 @@ describe('API', function () {
             }
         });
 
-        it('Should raise an error if timeout of the Request option argument is not number', async function () {
+        it('Should raise an error if timeout of the request option argument is not number', async function () {
             const testfile = resolve('test/server/data/test-suites/request/options/timeout-not-number/testfile.js');
 
             try {
@@ -1872,11 +1872,11 @@ describe('API', function () {
                     message: 'Cannot prepare tests due to the following error:\n\n' +
                              'The "timeout" argument (string) is not of expected type (number).',
 
-                    callsite: '    1 |import { fixture, Request } from \'testcafe\';\n' +
+                    callsite: '    1 |import { fixture, request } from \'testcafe\';\n' +
                               '    2 |\n' +
                               '    3 |fixture `Test`;\n' +
                               '    4 |\n' +
-                              ' >  5 |Request(\'http://localhost\', {\n' +
+                              ' >  5 |request(\'http://localhost\', {\n' +
                               '    6 |    timeout: \'one\',\n' +
                               '    7 |});\n' +
                               '    8 |\n' +
@@ -1886,7 +1886,7 @@ describe('API', function () {
             }
         });
 
-        it('Should raise an error if withCredentials of the Request option argument is not boolean', async function () {
+        it('Should raise an error if withCredentials of the request option argument is not boolean', async function () {
             const testfile = resolve('test/server/data/test-suites/request/options/with-credentials-not-boolean/testfile.js');
 
             try {
@@ -1901,11 +1901,11 @@ describe('API', function () {
                     message: 'Cannot prepare tests due to the following error:\n\n' +
                              'The "withCredentials" argument (string) is not of expected type (boolean).',
 
-                    callsite: '    1 |import { fixture, Request } from \'testcafe\';\n' +
+                    callsite: '    1 |import { fixture, request } from \'testcafe\';\n' +
                               '    2 |\n' +
                               '    3 |fixture `Test`;\n' +
                               '    4 |\n' +
-                              ' >  5 |Request(\'http://localhost\', {\n' +
+                              ' >  5 |request(\'http://localhost\', {\n' +
                               '    6 |    withCredentials: \'one\',\n' +
                               '    7 |});\n' +
                               '    8 |\n' +
@@ -1915,7 +1915,7 @@ describe('API', function () {
             }
         });
 
-        it('Should raise an error if auth of the Request option argument is not object', async function () {
+        it('Should raise an error if auth of the request option argument is not object', async function () {
             const testfile = resolve('test/server/data/test-suites/request/options/auth-not-object/testfile.js');
 
             try {
@@ -1930,11 +1930,11 @@ describe('API', function () {
                     message: 'Cannot prepare tests due to the following error:\n\n' +
                              'The "auth" argument (number) is not of expected type (non-null object).',
 
-                    callsite: '    1 |import { fixture, Request } from \'testcafe\';\n' +
+                    callsite: '    1 |import { fixture, request } from \'testcafe\';\n' +
                               '    2 |\n' +
                               '    3 |fixture `Test`;\n' +
                               '    4 |\n' +
-                              ' >  5 |Request(\'http://localhost\', {\n' +
+                              ' >  5 |request(\'http://localhost\', {\n' +
                               '    6 |    auth: 1,\n' +
                               '    7 |});\n' +
                               '    8 |\n' +
@@ -1944,7 +1944,7 @@ describe('API', function () {
             }
         });
 
-        it('Should raise an error if proxy of the Request option argument is not object', async function () {
+        it('Should raise an error if proxy of the request option argument is not object', async function () {
             const testfile = resolve('test/server/data/test-suites/request/options/proxy-not-object/testfile.js');
 
             try {
@@ -1959,11 +1959,11 @@ describe('API', function () {
                     message: 'Cannot prepare tests due to the following error:\n\n' +
                              'The "proxy" argument (number) is not of expected type (non-null object).',
 
-                    callsite: '    1 |import { fixture, Request } from \'testcafe\';\n' +
+                    callsite: '    1 |import { fixture, request } from \'testcafe\';\n' +
                               '    2 |\n' +
                               '    3 |fixture `Test`;\n' +
                               '    4 |\n' +
-                              ' >  5 |Request(\'http://localhost\', {\n' +
+                              ' >  5 |request(\'http://localhost\', {\n' +
                               '    6 |    proxy: 1,\n' +
                               '    7 |});\n' +
                               '    8 |\n' +
@@ -1973,7 +1973,7 @@ describe('API', function () {
             }
         });
 
-        it('Should raise an error if rawResponse of the Request option argument is not boolean', async function () {
+        it('Should raise an error if rawResponse of the request option argument is not boolean', async function () {
             const testfile = resolve('test/server/data/test-suites/request/options/process-response-not-boolean/testfile.js');
 
             try {
@@ -1988,11 +1988,11 @@ describe('API', function () {
                     message: 'Cannot prepare tests due to the following error:\n\n' +
                              'The "rawResponse" argument (string) is not of expected type (boolean).',
 
-                    callsite: '    1 |import { fixture, Request } from \'testcafe\';\n' +
+                    callsite: '    1 |import { fixture, request } from \'testcafe\';\n' +
                               '    2 |\n' +
                               '    3 |fixture `Test`;\n' +
                               '    4 |\n' +
-                              ' >  5 |Request(\'http://localhost\', {\n' +
+                              ' >  5 |request(\'http://localhost\', {\n' +
                               '    6 |    rawResponse: \'one\',\n' +
                               '    7 |});\n' +
                               '    8 |\n' +
@@ -2002,7 +2002,7 @@ describe('API', function () {
             }
         });
 
-        it('Should raise an error if isAjax of the Request option argument is not boolean', async function () {
+        it('Should raise an error if isAjax of the request option argument is not boolean', async function () {
             const testfile = resolve('test/server/data/test-suites/request/options/is-ajax-not-boolean/testfile.js');
 
             try {
@@ -2017,11 +2017,11 @@ describe('API', function () {
                     message: 'Cannot prepare tests due to the following error:\n\n' +
                              'The "isAjax" argument (string) is not of expected type (boolean).',
 
-                    callsite: '    1 |import { fixture, Request } from \'testcafe\';\n' +
+                    callsite: '    1 |import { fixture, request } from \'testcafe\';\n' +
                               '    2 |\n' +
                               '    3 |fixture `Test`;\n' +
                               '    4 |\n' +
-                              ' >  5 |Request(\'http://localhost\', {\n' +
+                              ' >  5 |request(\'http://localhost\', {\n' +
                               '    6 |    isAjax: \'one\',\n' +
                               '    7 |});\n' +
                               '    8 |\n' +
@@ -2047,11 +2047,11 @@ describe('API', function () {
                         message: 'Cannot prepare tests due to the following error:\n\n' +
                                  'The "auth.username" argument (number) is not of expected type (string).',
 
-                        callsite: '    1 |import { fixture, Request } from \'testcafe\';\n' +
+                        callsite: '    1 |import { fixture, request } from \'testcafe\';\n' +
                                   '    2 |\n' +
                                   '    3 |fixture `Test`;\n' +
                                   '    4 |\n' +
-                                  ' >  5 |Request(\'http://localhost\', {\n' +
+                                  ' >  5 |request(\'http://localhost\', {\n' +
                                   '    6 |    auth: {\n' +
                                   '    7 |        username: 1,\n' +
                                   '    8 |        password: \'password\',\n' +
@@ -2076,11 +2076,11 @@ describe('API', function () {
                         message: 'Cannot prepare tests due to the following error:\n\n' +
                                  'The "auth.password" argument (number) is not of expected type (string).',
 
-                        callsite: '    1 |import { fixture, Request } from \'testcafe\';\n' +
+                        callsite: '    1 |import { fixture, request } from \'testcafe\';\n' +
                                   '    2 |\n' +
                                   '    3 |fixture `Test`;\n' +
                                   '    4 |\n' +
-                                  ' >  5 |Request(\'http://localhost\', {\n' +
+                                  ' >  5 |request(\'http://localhost\', {\n' +
                                   '    6 |    auth: {\n' +
                                   '    7 |        username: \'username\',\n' +
                                   '    8 |        password: 1,\n' +
@@ -2107,11 +2107,11 @@ describe('API', function () {
                         message: 'Cannot prepare tests due to the following error:\n\n' +
                                  'The "proxy.protocol" argument (number) is not of expected type (string).',
 
-                        callsite: '    1 |import { fixture, Request } from \'testcafe\';\n' +
+                        callsite: '    1 |import { fixture, request } from \'testcafe\';\n' +
                                   '    2 |\n' +
                                   '    3 |fixture `Test`;\n' +
                                   '    4 |\n' +
-                                  ' >  5 |Request(\'http://localhost\', {\n' +
+                                  ' >  5 |request(\'http://localhost\', {\n' +
                                   '    6 |    proxy: {\n' +
                                   '    7 |        protocol: 1,\n' +
                                   '    8 |        host:     \'host\',\n' +
@@ -2136,11 +2136,11 @@ describe('API', function () {
                         message: 'Cannot prepare tests due to the following error:\n\n' +
                                  'The "proxy.host" argument (number) is not of expected type (string).',
 
-                        callsite: '    1 |import { fixture, Request } from \'testcafe\';\n' +
+                        callsite: '    1 |import { fixture, request } from \'testcafe\';\n' +
                                   '    2 |\n' +
                                   '    3 |fixture `Test`;\n' +
                                   '    4 |\n' +
-                                  ' >  5 |Request(\'http://localhost\', {\n' +
+                                  ' >  5 |request(\'http://localhost\', {\n' +
                                   '    6 |    proxy: {\n' +
                                   '    7 |        protocol: \'protocol\',\n' +
                                   '    8 |        host:     1,\n' +
@@ -2165,11 +2165,11 @@ describe('API', function () {
                         message: 'Cannot prepare tests due to the following error:\n\n' +
                                  'The "proxy.port" argument (boolean) is not of expected type (number or a string).',
 
-                        callsite: '    1 |import { fixture, Request } from \'testcafe\';\n' +
+                        callsite: '    1 |import { fixture, request } from \'testcafe\';\n' +
                                   '    2 |\n' +
                                   '    3 |fixture `Test`;\n' +
                                   '    4 |\n' +
-                                  ' >  5 |Request(\'http://localhost\', {\n' +
+                                  ' >  5 |request(\'http://localhost\', {\n' +
                                   '    6 |    proxy: {\n' +
                                   '    7 |        protocol: \'protocol\',\n' +
                                   '    8 |        host:     \'host\',\n' +

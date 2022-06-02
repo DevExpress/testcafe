@@ -1,8 +1,8 @@
-import { fixture, Request } from 'testcafe';
+import { fixture, request } from 'testcafe';
 
 fixture `Test`;
 
-Request(true);
+request(true);
 
 test('yo', () => {
 });
