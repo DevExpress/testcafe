@@ -5,7 +5,6 @@
 /// <reference path="../test-api/role.d.ts" />
 /// <reference path="../test-api/test-controller.d.ts" />
 /// <reference path="../test-api/structure.d.ts" />
-/// <reference path="../test-api/request.d.ts" />
 // {{/allowReferences}}
 
 // {{>selectors-exports.d.ts}}
@@ -22,15 +21,6 @@ export const RequestLogger: RequestLoggerFactory;
 
 /** The RequestHook class used to create a custom HTTP request hook **/
 export const RequestHook: RequestHookConstructor;
-
-/**
- * Execute a request
- *
- * @param urlOpts - request url or options.
- * @param options - options.
- */
-export const request: RequestFactory;
-
 
 /**
  * Creates a user role.
