@@ -1,4 +1,4 @@
-import { Request } from 'testcafe';
+import { request } from 'testcafe';
 import os from 'os';
 
 fixture`Request`;
@@ -9,7 +9,7 @@ test('Should execute a GET request', async (t) => {
         statusText,
         headers,
         body,
-    } = await Request(`http://localhost:3000/api/data`);
+    } = await request(`http://localhost:3000/api/data`);
 
     await t
         .expect(status).eql(200)
@@ -30,7 +30,7 @@ test('Should execute a POST request', async (t) => {
         },
     };
 
-    const data = await Request(`http://localhost:3000/api/data`, options);
+    const data = await request(`http://localhost:3000/api/data`, options);
 
     await t.expect(data.body).eql({
         data: {
@@ -42,7 +42,7 @@ test('Should execute a POST request', async (t) => {
 });
 
 test('Should execute a request with method get', async (t) => {
-    const { body } = await Request.get(`http://localhost:3000/api/data`);
+    const { body } = await request.get(`http://localhost:3000/api/data`);
 
     await t.expect(body.data).eql({
         name:     'John Hearts',
@@ -58,7 +58,7 @@ test('Should execute a request with method post', async (t) => {
         },
     };
 
-    const data = await Request.post(`http://localhost:3000/api/data`, options);
+    const data = await request.post(`http://localhost:3000/api/data`, options);
 
     await t.expect(data.body).eql({
         data: {
@@ -70,7 +70,7 @@ test('Should execute a request with method post', async (t) => {
 });
 
 test('Should execute a request with method delete', async (t) => {
-    const data = await Request.delete(`http://localhost:3000/api/data/1`);
+    const data = await request.delete(`http://localhost:3000/api/data/1`);
 
     await t.expect(data.body).eql({
         data: {
@@ -88,7 +88,7 @@ test('Should execute a request with method put', async (t) => {
         },
     };
 
-    const data = await Request.put(`http://localhost:3000/api/data`, options);
+    const data = await request.put(`http://localhost:3000/api/data`, options);
 
     await t.expect(data.body).eql({
         data: {
@@ -107,7 +107,7 @@ test('Should execute a request with method patch', async (t) => {
         },
     };
 
-    const data = await Request.patch(`http://localhost:3000/api/data`, options);
+    const data = await request.patch(`http://localhost:3000/api/data`, options);
 
     await t.expect(data.body).eql({
         data: {
@@ -119,7 +119,7 @@ test('Should execute a request with method patch', async (t) => {
 });
 
 test('Should execute a request with method head', async (t) => {
-    const data = await Request.head(`http://localhost:3000/api/data`);
+    const data = await request.head(`http://localhost:3000/api/data`);
 
     await t
         .expect(data.headers).ok()
@@ -127,13 +127,13 @@ test('Should execute a request with method head', async (t) => {
 });
 
 test('Should execute a request in an assertion', async (t) => {
-    await t.expect(Request.get(`http://localhost:3000/api/data`)).contains({
+    await t.expect(request.get(`http://localhost:3000/api/data`)).contains({
         status: 200,
     });
 });
 
 test('Should re-execute a request in an assertion', async (t) => {
-    await t.expect(Request.get(`http://localhost:3000/api/data/loading`).body).contains({
+    await t.expect(request.get(`http://localhost:3000/api/data/loading`).body).contains({
         name:     'John Hearts',
         position: 'CTO',
     });
@@ -147,7 +147,7 @@ test('Should execute basic auth', async (t) => {
         },
     };
 
-    await t.expect(Request.post(`http://localhost:3000/api/auth/basic`, options).body).eql({
+    await t.expect(request.post(`http://localhost:3000/api/auth/basic`, options).body).eql({
         token: 'Basic amFuZWRvZTpzMDBwZXJzM2NyZXQ=',
     });
 });
@@ -159,7 +159,7 @@ test('Should execute bearer token auth', async (t) => {
         },
     };
 
-    await t.expect(Request.post(`http://localhost:3000/api/auth/bearer`, options).body).eql('authorized');
+    await t.expect(request.post(`http://localhost:3000/api/auth/bearer`, options).body).eql('authorized');
 });
 
 test('Should execute API Key auth', async (t) => {
@@ -169,15 +169,15 @@ test('Should execute API Key auth', async (t) => {
         },
     };
 
-    await t.expect(Request.post(`http://localhost:3000/api/auth/key`, options).body).eql('authorized');
+    await t.expect(request.post(`http://localhost:3000/api/auth/key`, options).body).eql('authorized');
 });
 
 test('Should rise an error if url is not valid', async () => {
-    await Request('crash');
+    await request('crash');
 });
 
 test('Should execute request with proxy', async (t) => {
-    const { body } = await Request.get(`http://localhost:3000/api/data`, {
+    const { body } = await request.get(`http://localhost:3000/api/data`, {
         proxy: {
             host: os.hostname(),
             port: '3005',
@@ -202,13 +202,13 @@ test('Should execute basic auth with proxy', async (t) => {
         },
     };
 
-    await t.expect(Request.post(`http://localhost:3000/api/auth/proxy/basic`, options).body).eql({
+    await t.expect(request.post(`http://localhost:3000/api/auth/proxy/basic`, options).body).eql({
         token: 'Basic amFuZWRvZTpzMDBwZXJzM2NyZXQ=',
     });
 });
 
 test('Should execute a request with params in the url', async (t) => {
-    const { body } = await Request.get(`http://localhost:3000/api/data?param1=value1`);
+    const { body } = await request.get(`http://localhost:3000/api/data?param1=value1`);
 
     await t.expect(body.params).eql({
         param1: 'value1',
@@ -216,7 +216,7 @@ test('Should execute a request with params in the url', async (t) => {
 });
 
 test('Should execute a request with params in the options', async (t) => {
-    const { body } = await Request.get(`http://localhost:3000/api/data`, {
+    const { body } = await request.get(`http://localhost:3000/api/data`, {
         params: {
             param1: 'value1',
         },
@@ -228,7 +228,7 @@ test('Should execute a request with params in the options', async (t) => {
 });
 
 test('Should interrupt request by timeout', async (t) => {
-    const { body } = await Request.get(`http://localhost:3000/api/hanging`, {
+    const { body } = await request.get(`http://localhost:3000/api/hanging`, {
         timeout: 1000,
     });
 
@@ -240,7 +240,7 @@ test('Should interrupt request by timeout', async (t) => {
 test('Should send request with credentials', async (t) => {
     await t.setCookies({ apiCookie1: 'value1' }, 'http://localhost');
 
-    const { body } = await Request.get(`http://localhost:3000/api/data`, {
+    const { body } = await request.get(`http://localhost:3000/api/data`, {
         withCredentials: true,
     });
 
@@ -249,7 +249,7 @@ test('Should send request with credentials', async (t) => {
 
 test.page('https://devexpress.github.io/testcafe/example/')
 ('Should set cookies to the client from response', async (t) => {
-    await Request.get('http://localhost:3000/api/cookies');
+    await request.get('http://localhost:3000/api/cookies');
 
     const cookies       = await t.getCookies({ domain: 'devexpress.github.io' });
     const clientCookies = await t.eval(() => document.cookie);
@@ -260,7 +260,7 @@ test.page('https://devexpress.github.io/testcafe/example/')
 });
 
 test('Should return parsed json', async (t) => {
-    const { body } = await Request.get(`http://localhost:3000/api/data`);
+    const { body } = await request.get(`http://localhost:3000/api/data`);
 
     await t.expect(body.data).eql({
         name:     'John Hearts',
@@ -269,13 +269,13 @@ test('Should return parsed json', async (t) => {
 });
 
 test('Should return text', async (t) => {
-    const { body } = await Request.get(`http://localhost:3000/api/data/text`);
+    const { body } = await request.get(`http://localhost:3000/api/data/text`);
 
     await t.expect(body).eql('{"name":"John Hearts","position":"CTO"}');
 });
 
 test('Should return buffer', async (t) => {
-    const { body } = await Request.get(`http://localhost:3000/api/data/file`);
+    const { body } = await request.get(`http://localhost:3000/api/data/file`);
 
     await t
         .expect(Buffer.isBuffer(body)).ok()
@@ -283,7 +283,7 @@ test('Should return buffer', async (t) => {
 });
 
 test('Should return httpIncomingMessage', async (t) => {
-    const { body } = await Request.get(`http://localhost:3000/api/data`, {
+    const { body } = await request.get(`http://localhost:3000/api/data`, {
         rawResponse: true,
     });
 
@@ -291,7 +291,7 @@ test('Should return httpIncomingMessage', async (t) => {
 });
 
 test('Should execute a request with url in the options', async (t) => {
-    const { body } = await Request.get({
+    const { body } = await request.get({
         url: `http://localhost:3000/api/data`,
     });
 
@@ -302,7 +302,7 @@ test('Should execute a request with url in the options', async (t) => {
 });
 
 test('Url from the argument should be more priority then url in the options', async (t) => {
-    const { body } = await Request.get(`http://localhost:3000/api/data`, {
+    const { body } = await request.get(`http://localhost:3000/api/data`, {
         url: `http://localhost:3000/api/data/text`,
     });
 
@@ -314,7 +314,7 @@ test('Url from the argument should be more priority then url in the options', as
 
 test.page('http://localhost:3000/fixtures/request/pages/index.html')
 ('Should execute a request with relative url', async (t) => {
-    const { body } = await Request.get('/api/data');
+    const { body } = await request.get('/api/data');
 
     await t.expect(body.data).eql({
         name:     'John Hearts',
@@ -323,6 +323,6 @@ test.page('http://localhost:3000/fixtures/request/pages/index.html')
 });
 
 test('Should rise request runtime error', async () => {
-    await Request.get(`https://localhost1:3007/api/data`);
+    await request.get(`https://localhost1:3007/api/data`);
 });
 
