@@ -168,4 +168,5 @@ export const RUNTIME_ERRORS = {
     dashboardTokenInJSON:                               'E1071',
     requestUrlInvalidValueError:                        'E1072',
     requestRuntimeError:                                'E1073',
+    requestCannotResolveTestRun:                        'E1074',
 };

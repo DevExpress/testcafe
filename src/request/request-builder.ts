@@ -55,7 +55,7 @@ export default class RequestBuilder {
         const callsite = getCallsiteForMethod(callsiteName);
 
         if (!testRun || testRun instanceof TestRunProxy)
-            throw new ClientFunctionAPIError(callsite, this.callsiteNames.instantiation, RUNTIME_ERRORS.clientFunctionCannotResolveTestRun);
+            throw new ClientFunctionAPIError(callsite, this.callsiteNames.instantiation, RUNTIME_ERRORS.requestCannotResolveTestRun);
 
         const promise = ReExecutablePromise.fromFn(async () => {
             return send(testRun, preparedOptions, callsite);
