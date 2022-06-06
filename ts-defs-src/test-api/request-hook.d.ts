@@ -84,8 +84,8 @@ interface RequestData {
      */
     headers: Record<string, string>;
     /**
-     * The response body. Logged if the `logResponseBody` option is set to `true`.
-     * A [Buffer](https://nodejs.org/api/buffer.html) or string depending on the `stringifyResponseBody` option.
+     * The request body. Logged if the `logRequestBody` option is set to `true`.
+     * A [Buffer](https://nodejs.org/api/buffer.html) or string depending on the `stringifyRequestBody` option.
      */
     body: string | Buffer;
     /**
@@ -100,12 +100,11 @@ interface ResponseData {
      */
     statusCode: number;
     /**
-     * Response headers in the property-value form. Logged if the `logResponseHeaders` option is set to true.
+     * Response headers in the property-value form. Logged if the `logResponseHeaders` option is set to `true`.
      */
     headers: Record<string, string>;
     /**
-     * The response body.
-     * Logged if the `logResponseBody` option is set to true.
+     * The response body. Logged if the `logResponseBody` option is set to `true`.
      * A [Buffer](https://nodejs.org/api/buffer.html) or string depending on the `stringifyResponseBody` option.
      */
     body: string | Buffer;
