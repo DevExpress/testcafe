@@ -1,4 +1,5 @@
 const { expect } = require('chai');
+const config = require('../../config');
 
 describe('Request', () => {
     it('Should execute GET request', function () {
@@ -89,9 +90,11 @@ describe('Request', () => {
         return runTests('testcafe-fixtures/request-test.js', 'Should send request with credentials');
     });
 
-    it('Should set cookies to the client from response', function () {
-        return runTests('testcafe-fixtures/request-test.js', 'Should set cookies to the client from response');
-    });
+    if (!config.proxyless) {
+        it('Should set cookies to the client from response', function () {
+            return runTests('testcafe-fixtures/request-test.js', 'Should set cookies to the client from response');
+        });
+    }
 
     it('Should return parsed json', function () {
         return runTests('testcafe-fixtures/request-test.js', 'Should return parsed json');
