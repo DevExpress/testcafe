@@ -1,0 +1,61 @@
+{
+  "title": "Wait for element",
+  "steps": [
+    {
+      "type": "setViewport",
+      "width": 1519,
+      "height": 721,
+      "deviceScaleFactor": 1,
+      "isMobile": false,
+      "hasTouch": false,
+      "isLandscape": false
+    },
+    {
+      "type": "navigate",
+      "url": "http://localhost:3000/fixtures/api/json/pages/index.html",
+      "assertedEvents": [
+        {
+          "type": "navigation",
+          "url": "http://localhost:3000/fixtures/api/json/pages/index.html",
+          "title": "Title"
+        }
+      ]
+    },
+    {
+      "type": "waitForElement",
+      "selectors": [
+        ".waitForElement1"
+      ]
+    },
+    {
+      "type": "waitForElement",
+      "selectors": [
+        ".waitForElement1"
+      ],
+      "operator": "==",
+      "count": 1
+    },
+    {
+      "type": "waitForElement",
+      "selectors": [
+        ".waitForElement2"
+      ]
+    },
+    {
+      "type": "waitForElement",
+      "selectors": [
+        ".waitForElement2"
+      ],
+      "operator": ">=",
+      "count": 2
+    },
+    {
+      "type": "waitForElement",
+      "selectors": [
+        ".waitForElement2"
+      ],
+      "operator": "<=",
+      "count": 100
+    }
+  ]
+}

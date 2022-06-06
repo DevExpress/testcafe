@@ -26,6 +26,7 @@ import {
     GetCookiesCommand,
     SetCookiesCommand,
     DeleteCookiesCommand,
+    ScrollCommand,
 } from './actions';
 
 import { AssertionCommand } from './assertion';
@@ -140,6 +141,9 @@ function getCmdCtor (type) {
 
         case TYPE.deleteCookies:
             return DeleteCookiesCommand;
+
+        case TYPE.scroll:
+            return ScrollCommand;
 
         default:
             return null;

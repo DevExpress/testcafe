@@ -1,0 +1,104 @@
+{
+  "title": "Change select",
+  "steps": [
+    {
+      "type": "setViewport",
+      "width": 1536,
+      "height": 721,
+      "deviceScaleFactor": 1,
+      "isMobile": false,
+      "hasTouch": false,
+      "isLandscape": false
+    },
+    {
+      "type": "navigate",
+      "url": "http://localhost:3000/fixtures/api/json/pages/index.html",
+      "assertedEvents": [
+        {
+          "type": "navigation",
+          "url": "http://localhost:3000/fixtures/api/json/pages/index.html",
+          "title": "Title"
+        }
+      ]
+    },
+    {
+      "type": "click",
+      "selectors": [
+        [
+          "#select"
+        ]
+      ],
+      "target": "main",
+      "offsetX": 15.599990844726562,
+      "offsetY": 8
+    },
+    {
+      "type": "change",
+      "value": "Two",
+      "selectors": [
+        [
+          "#select"
+        ]
+      ],
+      "target": "main"
+    },
+    {
+      "type": "waitForExpression",
+      "timeout": 1000,
+      "expression": "document.querySelector('#select').value === 'Two'"
+    },
+    {
+      "type": "click",
+      "selectors": [
+        [
+          "#select"
+        ]
+      ],
+      "target": "main",
+      "offsetX": 41.59999084472656,
+      "offsetY": 6
+    },
+    {
+      "type": "change",
+      "value": "3",
+      "selectors": [
+        [
+          "#select"
+        ]
+      ],
+      "target": "main"
+    },
+    {
+      "type": "waitForExpression",
+      "timeout": 1000,
+      "expression": "document.querySelector('#select').value === '3'"
+
+    },
+    {
+      "type": "click",
+      "selectors": [
+        [
+          "#select"
+        ]
+      ],
+      "target": "main",
+      "offsetX": 37.59999084472656,
+      "offsetY": 15
+    },
+    {
+      "type": "change",
+      "value": "1",
+      "selectors": [
+        [
+          "#select"
+        ]
+      ],
+      "target": "main"
+    },
+    {
+      "type": "waitForExpression",
+      "timeout": 1000,
+      "expression": "document.querySelector('#select').value === '1'"
+    }
+  ]
+}
