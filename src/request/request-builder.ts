@@ -16,7 +16,7 @@ export const EXTENDED_METHODS = ['get', 'post', 'delete', 'put', 'patch', 'head'
 const REQUEST_GETTERS: (keyof ResponseOptions)[] = ['status', 'statusText', 'headers', 'body'];
 
 const DEFAULT_CALLSITE_NAMES = {
-    instantiation: 'Request',
+    instantiation: 'request',
     execution:     '__$$request$$',
 };
 
