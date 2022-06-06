@@ -78,13 +78,15 @@ describe('Request', () => {
         return runTests('testcafe-fixtures/request-test.js', 'Should execute a request with params in the options');
     });
 
-    it('Should interrupt request by timeout', function () {
-        return runTests('testcafe-fixtures/request-test.js', 'Should interrupt request by timeout', { shouldFail: true })
-            .catch(function (errs) {
-                expect(errs[0]).contains('within the timeout period');
-                expect(/>.*\|.*await request\.get/.test(errs[0])).ok;
-            });
-    });
+    if (config.useLocalBrowsers) {
+        it('Should interrupt request by timeout', function () {
+            return runTests('testcafe-fixtures/request-test.js', 'Should interrupt request by timeout', { shouldFail: true })
+                .catch(function (errs) {
+                    expect(errs[0]).contains('within the timeout period');
+                    expect(/>.*\|.*await request\.get/.test(errs[0])).ok;
+                });
+        });
+    }
 
     it('Should send request with credentials', function () {
         return runTests('testcafe-fixtures/request-test.js', 'Should send request with credentials');
@@ -124,11 +126,13 @@ describe('Request', () => {
         return runTests('testcafe-fixtures/request-test.js', 'Should execute a request with relative url');
     });
 
-    it('Should rise request runtime error', function () {
-        return runTests('testcafe-fixtures/request-test.js', 'Should rise request runtime error', { shouldFail: true })
-            .catch(function (errs) {
-                expect(errs[0]).contains('Requested was interrupted with error:');
-                expect(/>.*\|.*await request\.get/.test(errs[0])).ok;
-            });
-    });
+    if (config.useLocalBrowsers) {
+        it('Should rise request runtime error', function () {
+            return runTests('testcafe-fixtures/request-test.js', 'Should rise request runtime error', { shouldFail: true })
+                .catch(function (errs) {
+                    expect(errs[0]).contains('Requested was interrupted with error:');
+                    expect(/>.*\|.*await request\.get/.test(errs[0])).ok;
+                });
+        });
+    }
 });
