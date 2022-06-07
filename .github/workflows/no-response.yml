@@ -16,3 +16,12 @@ jobs:
       - uses: lee-dohm/no-response@v0.5.0
         with:
           token: ${{ github.token }}
+          daysUntilClose: 10
+          responseRequiredLabel: "STATE: Need clarification"
+          closeComment: >
+            This issue was automatically closed because there was no response
+            to our request for more information from the original author.
+            Currently, we don't have enough information to take action.
+            Please reach out to us if you find the necessary information
+            and are able to share it. We are also eager to know if you resolved
+            the issue on your own and can share your findings with everyone.
