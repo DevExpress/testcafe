@@ -246,8 +246,6 @@ describe('Runner', () => {
                 });
 
                 it('Should add dashboard reporter options from environment', async () => {
-
-
                     await runner._addDashboardReporterIfNeeded();
 
                     const reporter = runner.configuration.getOption('reporter')[0];
