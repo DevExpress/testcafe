@@ -1,4 +1,4 @@
-import { DasboardOptions } from './interfaces';
+import { DasboardReporterOptions } from './interfaces';
 
 function parseBooleanVariable (value: string | undefined): boolean {
     return value === 'false' || value === '0' ? false : !!value;
@@ -12,7 +12,7 @@ function parseNumber (value: string | undefined): number | null {
     return parsed;
 }
 
-export default function getOptionsFromEnv (): DasboardOptions {
+export default function getEnvReporterOptions (): DasboardReporterOptions {
     return {
         url:                process.env.TESTCAFE_DASHBOARD_URL || 'https://dashboard.testcafe.io',
         token:              process.env.TESTCAFE_DASHBOARD_TOKEN,

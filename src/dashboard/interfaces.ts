@@ -5,7 +5,7 @@ export interface DashboardAuthenticationToken {
 
 export type SendReportState = undefined | 'on' | 'off';
 
-export interface DasboardOptions {
+export interface DasboardReporterOptions {
     url?: string;
     token?: string;
     buildId?: string;
