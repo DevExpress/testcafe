@@ -49,6 +49,7 @@ import detectDisplay from '../utils/detect-display';
 import { validateQuarantineOptions } from '../utils/get-options/quarantine';
 import logEntry from '../utils/log-entry';
 import MessageBus from '../utils/message-bus';
+import getEnvOptions from '../dashboard/get-env-options';
 
 const DEBUG_LOGGER            = debug('testcafe:runner');
 const DASHBOARD_REPORTER_NAME = 'dashboard';
@@ -547,6 +548,8 @@ export default class Runner extends EventEmitter {
         if (!options)
             options = await this._loadDashboardOptionsFromStorage();
 
+        this._mergeEnvDashboardOptions(options);
+
         return options;
     }
 
@@ -556,6 +559,15 @@ export default class Runner extends EventEmitter {
         await storage.load();
 
         return storage.options;
+    }
+
+    _mergeEnvDashboardOptions (options) {
+        const envDashboardOptions = getEnvOptions();
+
+        for (const key in envDashboardOptions) {
+            if (envDashboardOptions[key])
+                options[key] = envDashboardOptions[key];
+        }
     }
 
     async _prepareClientScripts (tests, clientScripts) {
