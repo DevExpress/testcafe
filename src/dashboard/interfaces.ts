@@ -5,7 +5,8 @@ export interface DashboardAuthenticationToken {
 
 export type SendReportState = undefined | 'on' | 'off';
 
-export interface DasboardReporterOptions {
+// TODO: make token and sendReport properties required
+export interface DasboardOptions {
     url?: string;
     token?: string;
     buildId?: string;
@@ -14,4 +15,5 @@ export interface DasboardReporterOptions {
     isLogEnabled?: boolean;
     requestRetryCount?: number;
     responseTimeout?: number;
+    sendReport?: boolean;
 }
