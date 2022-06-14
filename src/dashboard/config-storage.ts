@@ -21,7 +21,7 @@ export default class DashboardConfigStorage {
         const result        = await this._storage.tryLoad<DasboardOptions>();
         const storageExists = result !== void 0;
 
-        this.options = result || DEFAULT_DASHBOARD_OPTIONS;
+        this.options = result || { ...DEFAULT_DASHBOARD_OPTIONS };
 
         return storageExists;
     }
