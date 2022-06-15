@@ -85,19 +85,19 @@ interface ResponseOptions {
 
 interface RequestAPI {
     /**
-     * Response status.
+     * Promise that returns response status.
      */
     status: Promise<number>;
     /**
-     * Response status text.
+     * Promise that returns response status text.
      */
     statusText: Promise<string>;
     /**
-     * Response headers.
+     * Promise that returns response headers.
      */
     headers: Promise<object>;
     /**
-     * Response body.
+     * Promise that returns response body.
      */
     body: Promise<ResponseBody>;
 }
