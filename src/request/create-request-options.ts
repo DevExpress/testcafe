@@ -27,7 +27,6 @@ import { GetProxyUrlCommand } from '../test-run/commands/actions';
 import { CallsiteRecord } from 'callsite-record';
 
 const DEFAULT_ACCEPT            = { [HTTP_HEADERS.accept]: `${CONTENT_TYPES.json}, ${CONTENT_TYPES.textPlain}, ${CONTENT_TYPES.all}` };
-const DEFAULT_IS_REQUEST        = { [HTTP_HEADERS.isRequest]: true };
 const METHODS_WITH_CONTENT_TYPE = ['post', 'put', 'patch'];
 const DEFAULT_REQUEST_METHOD    = 'GET';
 
@@ -92,7 +91,7 @@ function changeHeaderNamesToLowercase (headers: OutgoingHttpHeaders): OutgoingHt
 async function prepareHeaders (headers: OutgoingHttpHeaders, currentPageUrl: URL, url: URL, body: Buffer, testRun: TestRun, options: ExternalRequestOptions): Promise<OutgoingHttpHeaders> {
     const { host, hostname, origin, href } = url;
 
-    const preparedHeaders: OutgoingHttpHeaders = Object.assign(DEFAULT_ACCEPT, DEFAULT_IS_REQUEST, changeHeaderNamesToLowercase(headers));
+    const preparedHeaders: OutgoingHttpHeaders = Object.assign(DEFAULT_ACCEPT, changeHeaderNamesToLowercase(headers));
 
     preparedHeaders[HTTP_HEADERS.host] = host;
     preparedHeaders[HTTP_HEADERS.origin] = origin;
