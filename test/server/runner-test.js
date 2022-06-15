@@ -222,6 +222,62 @@ describe('Runner', () => {
                 sendReport: true,
             };
 
+            describe('Environment options', () => {
+                before(() => {
+                    process.env.TESTCAFE_DASHBOARD_URL                  = 'test-url';
+                    process.env.TESTCAFE_DASHBOARD_TOKEN                = 'test-token';
+                    process.env.TESTCAFE_DASHBOARD_BUILD_ID             = 'test-id';
+                    process.env.TESTCAFE_DASHBOARD_ENABLE_LOG           = 'false';
+                    process.env.TESTCAFE_DASHBOARD_NO_SCREENSHOT_UPLOAD = '0';
+                    process.env.TESTCAFE_DASHBOARD_NO_VIDEO_UPLOAD      = '1';
+                    process.env.TESTCAFE_DASHBOARD_RESPONSE_TIMEOUT     = '1000';
+                    process.env.TESTCAFE_DASHBOARD_REQUEST_RETRY_COUNT  = '5';
+                });
+
+                after(() => {
+                    delete process.env.TESTCAFE_DASHBOARD_URL;
+                    delete process.env.TESTCAFE_DASHBOARD_TOKEN;
+                    delete process.env.TESTCAFE_DASHBOARD_BUILD_ID;
+                    delete process.env.TESTCAFE_DASHBOARD_ENABLE_LOG;
+                    delete process.env.TESTCAFE_DASHBOARD_NO_SCREENSHOT_UPLOAD;
+                    delete process.env.TESTCAFE_DASHBOARD_NO_VIDEO_UPLOAD;
+                    delete process.env.TESTCAFE_DASHBOARD_RESPONSE_TIMEOUT;
+                    delete process.env.TESTCAFE_DASHBOARD_REQUEST_RETRY_COUNT;
+                });
+
+                it('Should add dashboard reporter options from environment', async () => {
+                    await runner._addDashboardReporterIfNeeded();
+
+                    const reporter = runner.configuration.getOption('reporter')[0];
+
+                    expect(reporter.name).to.equal('dashboard');
+                    expect(reporter.options).to.contains({
+                        token:             'test-token',
+                        sendReport:        true,
+                        url:               'test-url',
+                        buildId:           'test-id',
+                        noVideoUpload:     true,
+                        responseTimeout:   1000,
+                        requestRetryCount: 5,
+                    });
+                });
+
+                it('Should recover config options', async () => {
+                    process.env.TESTCAFE_DASHBOARD_TOKEN = 'test-token';
+
+                    runner.configuration.mergeOptions({ dashboard: { token: 'config-token ' } });
+
+                    await runner._addDashboardReporterIfNeeded();
+
+                    const reporter = runner.configuration.getOption('reporter')[0];
+
+                    expect(reporter.name).to.equal('dashboard');
+                    expect(reporter.options).to.contains({
+                        token: 'test-token',
+                    });
+                });
+            });
+
             it('Should turn on screenshots flags autoTakeOnFails and takeOnFails', async () => {
                 runner._loadDashboardOptionsFromStorage = () => {
                     return TEST_DASHBOARD_SETTINGS;
