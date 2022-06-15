@@ -29,6 +29,7 @@ import { CallsiteRecord } from 'callsite-record';
 const DEFAULT_ACCEPT            = { [HTTP_HEADERS.accept]: `${CONTENT_TYPES.json}, ${CONTENT_TYPES.textPlain}, ${CONTENT_TYPES.all}` };
 const METHODS_WITH_CONTENT_TYPE = ['post', 'put', 'patch'];
 const DEFAULT_REQUEST_METHOD    = 'GET';
+const DEFAULT_PROTOCOL          = 'http:';
 
 function setContentTypeIfNotExists (headers: OutgoingHttpHeaders, value: string): void {
     if (!isUndefined(headers) && isUndefined(headers[HTTP_HEADERS.contentType]))
@@ -191,7 +192,7 @@ export async function createRequestOptions (currentPageUrlStr: string, testRun: 
     const requestParams: RequestOptionsParams = {
         method:         options.method || DEFAULT_REQUEST_METHOD,
         url:            proxyUrl,
-        protocol:       url.protocol,
+        protocol:       DEFAULT_PROTOCOL,
         hostname:       proxyUrlObj.proxy.hostname,
         host:           proxyUrlObj.proxy.hostname,
         port:           proxyUrlObj.proxy.port,
@@ -215,6 +216,7 @@ export async function createRequestOptions (currentPageUrlStr: string, testRun: 
             proxyAuth: options.proxy.auth ? `${options.proxy.auth.username}:${options.proxy.auth.password}` : void 0,
         };
 
+        requestParams.protocol = url.protocol;
         requestParams.host     = url.host;
         requestParams.hostname = url.hostname;
         requestParams.port     = url.port;
