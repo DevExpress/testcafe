@@ -249,6 +249,12 @@ export class DeleteCookiesCommand extends ActionCommandBase {
     public cookies: CookieOptions[];
 }
 
+export class RequestCommand extends ActionCommandBase {
+    public constructor(obj: object, testRun: TestRun, validateProperties: boolean);
+    public url: string | URL;
+    public options: RequestOptions;
+}
+
 export class GetProxyUrlCommand extends ActionCommandBase {
     public constructor(obj: object, testRun: TestRun, validateProperties: boolean);
     public url: string;

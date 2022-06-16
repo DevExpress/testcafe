@@ -27,6 +27,7 @@ import {
     ActionUrlCookieArgumentError,
     ActionUrlsCookieArgumentError,
     ActionRequiredCookieArguments,
+    ActionUrlArgumentError,
 } from '../../../errors/test-run';
 
 import { URL } from 'url';
@@ -82,7 +83,7 @@ export function nullableStringArgument (argument, val) {
         throw new ActionNullableStringArgumentError(argument, type);
 }
 
-export function urlArgument (name, val) {
+export function pageUrlArgument (name, val) {
     nonEmptyStringArgument(name, val);
 
     assertPageUrl(val.trim(), 'navigateTo');
@@ -177,4 +178,9 @@ export function urlsArgument (name, val) {
                 : new ActionUrlsCookieArgumentError(i, value);
         }
     }
+}
+
+export function urlArgument (name, val) {
+    if (!isValidUrl(val))
+        throw new ActionUrlArgumentError(name, val);
 }

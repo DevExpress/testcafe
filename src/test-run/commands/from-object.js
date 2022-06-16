@@ -27,6 +27,7 @@ import {
     SetCookiesCommand,
     DeleteCookiesCommand,
     ScrollCommand,
+    RequestCommand,
     GetProxyUrlCommand,
 } from './actions';
 
@@ -145,6 +146,9 @@ function getCmdCtor (type) {
 
         case TYPE.scroll:
             return ScrollCommand;
+
+        case TYPE.request:
+            return RequestCommand;
 
         case TYPE.getProxyUrl:
             return GetProxyUrlCommand;

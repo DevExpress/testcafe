@@ -93,6 +93,10 @@ export const TEST_RUN_ERRORS = {
     actionStringOptionError:                               'E90',
     actionDateOptionError:                                 'E91',
     actionNumberOptionError:                               'E92',
+    actionUrlOptionError:                                  'E93',
+    actionUrlSearchParamsOptionError:                      'E94',
+    actionObjectOptionError:                               'E95',
+    actionUrlArgumentError:                                'E95',
 };
 
 export const RUNTIME_ERRORS = {

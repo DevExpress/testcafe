@@ -12,6 +12,9 @@ import {
     createStringValidator,
     createDateValidator,
     createNumberValidator,
+    createUrlValidator,
+    createUrlSearchParamsValidator,
+    createObjectValidator,
 } from './validations/factories';
 import {
     ActionIntegerOptionError,
@@ -21,6 +24,9 @@ import {
     ActionStringOptionError,
     ActionDateOptionError,
     ActionNumberOptionError,
+    ActionUrlOptionError,
+    ActionUrlSearchParamsOptionError,
+    ActionObjectOptionError,
 } from '../../shared/errors';
 
 export const integerOption         = createIntegerValidator(ActionIntegerOptionError);
@@ -30,6 +36,9 @@ export const speedOption           = createSpeedValidator(ActionSpeedOptionError
 export const stringOption          = createStringValidator(ActionStringOptionError);
 export const dateOption            = createDateValidator(ActionDateOptionError);
 export const numberOption          = createNumberValidator(ActionNumberOptionError);
+export const urlOption             = createUrlValidator(ActionUrlOptionError);
+export const urlSearchParamsOption = createUrlSearchParamsValidator(ActionUrlSearchParamsOptionError);
+export const objectOption          = createObjectValidator(ActionObjectOptionError);
 
 
 // Actions
@@ -306,6 +315,60 @@ export class CookieOptions extends Assignable {
     }
 }
 
+export class RequestAuthOptions extends Assignable {
+    constructor (obj, validate) {
+        super();
+
+        this._assignFrom(obj, validate);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'username', type: stringOption, required: true },
+            { name: 'password', type: stringOption },
+        ];
+    }
+}
+
+export class RequestProxyOptions extends Assignable {
+    constructor (obj, validate) {
+        super();
+
+        this._assignFrom(obj, validate);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'protocol', type: stringOption },
+            { name: 'host', type: stringOption, required: true },
+            { name: 'port', type: numberOption, required: true },
+            { name: 'auth', type: objectOption, init: initRequestAuthOption },
+        ];
+    }
+}
+
+export class RequestOptions extends Assignable {
+    constructor (obj, validate) {
+        super();
+
+        this._assignFrom(obj, validate);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'url', type: urlOption },
+            { name: 'method', type: stringOption },
+            { name: 'headers', type: objectOption },
+            { name: 'params', type: urlSearchParamsOption },
+            { name: 'timeout', type: numberOption },
+            { name: 'withCredentials', type: booleanOption },
+            { name: 'auth', type: objectOption, init: initRequestAuthOption },
+            { name: 'proxy', type: objectOption, init: initRequestProxyOptions },
+            { name: 'rawResponse', type: booleanOption },
+        ];
+    }
+}
+
 export class GetProxyUrlOptions extends Assignable {
     constructor (obj, validate) {
         super();
@@ -318,4 +381,13 @@ export class GetProxyUrlOptions extends Assignable {
             { name: 'credentials', type: numberOption },
         ];
     }
+}
+
+// Initializers
+function initRequestAuthOption (name, val, initOptions, validate = true) {
+    return new RequestAuthOptions(val, validate);
+}
+
+function initRequestProxyOptions (name, val, initOptions, validate = true) {
+    return new RequestProxyOptions(val, validate);
 }
