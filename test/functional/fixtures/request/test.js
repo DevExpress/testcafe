@@ -59,7 +59,7 @@ if (!config.experimentalDebug) {
             return runTests('testcafe-fixtures/request-test.js', 'Should rise an error if url is not valid', { shouldFail: true })
                 .catch(function (errs) {
                     expect(errs[0]).contains('Requested url isn\'t valid (crash).');
-                    expect(/await request\('crash'\)/.test(errs[0])).ok;
+                    expect(/await t.request\('crash'\)/.test(errs[0])).ok;
                 });
         });
 
@@ -84,7 +84,7 @@ if (!config.experimentalDebug) {
                 return runTests('testcafe-fixtures/request-test.js', 'Should interrupt request by timeout', { shouldFail: true })
                     .catch(function (errs) {
                         expect(errs[0]).contains('within the timeout period');
-                        expect(/>.*\|.*await request\.get/.test(errs[0])).ok;
+                        expect(/>.*\|.*await t.request\.get/.test(errs[0])).ok;
                     });
             });
         }
@@ -132,7 +132,7 @@ if (!config.experimentalDebug) {
                 return runTests('testcafe-fixtures/request-test.js', 'Should rise request runtime error', { shouldFail: true })
                     .catch(function (errs) {
                         expect(errs[0]).contains('Requested was interrupted with error:');
-                        expect(/>.*\|.*await request\.get/.test(errs[0])).ok;
+                        expect(/>.*\|.*await t.request\.get/.test(errs[0])).ok;
                     });
             });
         }
