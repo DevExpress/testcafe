@@ -89,8 +89,8 @@ if (!config.experimentalDebug) {
             });
         }
 
-        it('Should send request with credentials', function () {
-            return runTests('testcafe-fixtures/request-test.js', 'Should send request with credentials');
+        it('Should send request with cookies', function () {
+            return runTests('testcafe-fixtures/request-test.js', 'Should send request with cookies');
         });
 
         if (!config.proxyless) {
