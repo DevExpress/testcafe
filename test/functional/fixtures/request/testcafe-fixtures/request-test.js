@@ -322,6 +322,11 @@ test.page('http://localhost:3000/fixtures/request/pages/index.html')
 });
 
 test('Should rise request runtime error', async (t) => {
-    await t.request.get(`https://localhost1:3007/api/data`);
+    await t.request.get(`https://localhost1:3007/api/data`, {
+        proxy: {
+            host: 'localhost1',
+            port: '3005',
+        },
+    });
 });
 
