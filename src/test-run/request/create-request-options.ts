@@ -17,6 +17,7 @@ import {
     RequestOptions,
     parseProxyUrl,
     RequestOptionsParams,
+    sameOriginCheck,
 } from 'testcafe-hammerhead';
 import TestRun from '../index';
 import CONTENT_TYPES from '../../assets/content-types';
@@ -90,9 +91,11 @@ function changeHeaderNamesToLowercase (headers: OutgoingHttpHeaders): OutgoingHt
 }
 
 async function prepareHeaders (headers: OutgoingHttpHeaders, currentPageUrl: URL, url: URL, body: Buffer, testRun: TestRun, options: ExternalRequestOptions): Promise<OutgoingHttpHeaders> {
-    const { host, hostname, origin, href } = url;
+    const { host, origin, href } = url;
 
     const preparedHeaders: OutgoingHttpHeaders = Object.assign(DEFAULT_ACCEPT, changeHeaderNamesToLowercase(headers));
+
+    const sameOrigin = sameOriginCheck(currentPageUrl.href, href);
 
     preparedHeaders[HTTP_HEADERS.host] = host;
     preparedHeaders[HTTP_HEADERS.origin] = origin;
@@ -107,16 +110,14 @@ async function prepareHeaders (headers: OutgoingHttpHeaders, currentPageUrl: URL
     if (options.proxy?.auth)
         preparedHeaders[HTTP_HEADERS.proxyAuthorization] = getAuthString(options.proxy.auth);
 
-    if (options.withCredentials) {
+    if (sameOrigin || options.withCredentials && !sameOrigin) {
         const currentPageCookies = testRun.session.cookies.getHeader({
             url:      currentPageUrl.href,
             hostname: currentPageUrl.hostname,
         });
 
-        const cookies = testRun.session.cookies.getHeader({ url: href, hostname });
-
-        if (cookies)
-            preparedHeaders[HTTP_HEADERS.cookie] = currentPageCookies || cookies;
+        if (currentPageCookies)
+            preparedHeaders[HTTP_HEADERS.cookie] = currentPageCookies;
     }
 
     //NOTE: Additional header to recognize API requests in the hammerhead

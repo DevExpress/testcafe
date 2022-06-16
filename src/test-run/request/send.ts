@@ -1,5 +1,5 @@
 import TestRun from '../index';
-import { DestinationRequest } from 'testcafe-hammerhead';
+import { DestinationRequest, sameOriginCheck } from 'testcafe-hammerhead';
 import { IncomingMessage } from 'http';
 import { ExternalRequestOptions, ResponseOptions } from './interfaces';
 import { createRequestOptions } from './create-request-options';
@@ -27,8 +27,9 @@ async function send (testRun: TestRun, options: ExternalRequestOptions, callsite
         throw new RequestRuntimeError(callsite, data);
 
     const setCookie = data.headers[HTTP_HEADERS.setCookie];
+    const sameOrigin = sameOriginCheck(currentPageUrl, requestOptions.url);
 
-    if (setCookie)
+    if (setCookie && (sameOrigin || options.withCredentials && !sameOrigin) )
         testRun.session.cookies.copySyncCookies(castArray(setCookie).join(';'), currentPageUrl);
 
     const body = await processResponseData(data, options.rawResponse);
