@@ -247,6 +247,17 @@ test('Should send request with credentials', async (t) => {
 });
 
 test.page('https://devexpress.github.io/testcafe/example/')
+('Should not set cookies to the client from response', async (t) => {
+    await t.request.get('http://localhost:3000/api/cookies');
+
+    const cookies       = await t.getCookies({ domain: 'devexpress.github.io' });
+    const clientCookies = await t.eval(() => document.cookie);
+
+    await t.expect(cookies.length).notOk();
+    await t.expect(clientCookies).eql('');
+});
+
+test.page('https://devexpress.github.io/testcafe/example/')
 ('Should set cookies to the client from response', async (t) => {
     await t.request.get('http://localhost:3000/api/cookies');
 
