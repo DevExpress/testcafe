@@ -1,11 +1,11 @@
-import TestRun from '../test-run';
+import TestRun from '../index';
 import { DestinationRequest } from 'testcafe-hammerhead';
 import { IncomingMessage } from 'http';
 import { ExternalRequestOptions, ResponseOptions } from './interfaces';
 import { createRequestOptions } from './create-request-options';
 import { processResponseData } from './process-response-data';
-import HTTP_HEADERS from '../utils/http-headers';
-import { RequestRuntimeError } from '../errors/runtime';
+import HTTP_HEADERS from '../../utils/http-headers';
+import { RequestRuntimeError } from '../../errors/runtime';
 import { CallsiteRecord } from 'callsite-record';
 import { castArray } from 'lodash';
 

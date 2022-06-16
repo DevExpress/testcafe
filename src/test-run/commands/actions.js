@@ -719,6 +719,8 @@ export class DeleteCookiesCommand extends ActionCommandBase {
 
 export class RequestCommand extends ActionCommandBase {
     static methodName = camelCase(TYPE.request);
+    static extendedMethods = ['get', 'post', 'delete', 'put', 'patch', 'head'];
+    static resultGetters = ['status', 'statusText', 'headers', 'body'];
 
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.request, validateProperties);

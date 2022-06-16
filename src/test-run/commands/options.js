@@ -360,6 +360,7 @@ export class RequestOptions extends Assignable {
             { name: 'method', type: stringOption },
             { name: 'headers', type: objectOption },
             { name: 'params', type: urlSearchParamsOption },
+            { name: 'body' },
             { name: 'timeout', type: numberOption },
             { name: 'withCredentials', type: booleanOption },
             { name: 'auth', type: objectOption, init: initRequestAuthOption },

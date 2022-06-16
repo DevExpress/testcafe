@@ -181,6 +181,8 @@ export function urlsArgument (name, val) {
 }
 
 export function urlArgument (name, val) {
-    if (!isValidUrl(val))
-        throw new ActionUrlArgumentError(name, val);
+    const valType = typeof val;
+
+    if (valType !== 'string' && !(val instanceof URL))
+        throw new ActionUrlArgumentError(name, valType);
 }

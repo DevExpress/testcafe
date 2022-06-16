@@ -53,6 +53,7 @@ import {
     GetCookiesCommand,
     SetCookiesCommand,
     DeleteCookiesCommand,
+    RequestCommand,
 } from '../../test-run/commands/actions';
 
 import {
@@ -76,13 +77,15 @@ import {
 
 import { AssertionCommand } from '../../test-run/commands/assertion';
 import { getCallsiteId, getCallsiteStackFrameString } from '../../utils/callsite';
+import ReExecutablePromise from '../../utils/re-executable-promise';
+import sendRequest from '../../test-run/request/send';
 
 const originalThen = Promise.resolve().then;
 
 let inDebug = false;
 
-function delegatedAPI (methodName) {
-    return `_${methodName}$`;
+function delegatedAPI (methodName, accessor = '') {
+    return `_${methodName}$${accessor}`;
 }
 
 export default class TestController {
@@ -249,6 +252,62 @@ export default class TestController {
 
     [delegatedAPI(DeleteCookiesCommand.methodName)] (...args) {
         return this._enqueueCommand(DeleteCookiesCommand, this._prepareCookieArguments(args));
+    }
+
+    _prepareRequestArguments (bindOptions, ...args) {
+        const [url, options] = typeof args[0] === 'object' ? [args[0].url, args[0]] : args;
+
+        return {
+            url,
+            options: Object.assign({}, options, bindOptions),
+        };
+    }
+
+    _createRequestFunction (bindOptions = {}) {
+        const controller = this;
+        const callsite = getCallsiteForMethod(RequestCommand.methodName);
+
+        return function (...args) {
+            const cmdArgs  = controller._prepareRequestArguments(bindOptions, ...args);
+            const command  = controller._createCommand(RequestCommand, cmdArgs, callsite);
+
+            const options = {
+                ...command.options,
+                url: command.url || command.options.url || '',
+            };
+
+            const promise = ReExecutablePromise.fromFn(async () => {
+                return sendRequest(controller.testRun, options, callsite);
+            });
+
+            RequestCommand.resultGetters.forEach(getter => {
+                Object.defineProperty(promise, getter, {
+                    get: () => ReExecutablePromise.fromFn(async () => {
+                        const response = await sendRequest(controller.testRun, options, callsite);
+
+                        return response[getter];
+                    }),
+                });
+            });
+
+            return promise;
+        };
+    }
+
+    _decorateRequestFunction (fn) {
+        RequestCommand.extendedMethods.forEach(method => {
+            Object.defineProperty(fn, method, {
+                value: this._createRequestFunction({ method }),
+            });
+        });
+    }
+
+    [delegatedAPI(RequestCommand.methodName, 'getter')] () {
+        const fn = this._createRequestFunction();
+
+        this._decorateRequestFunction(fn);
+
+        return fn;
     }
 
     [delegatedAPI(ClickCommand.methodName)] (selector, options) {

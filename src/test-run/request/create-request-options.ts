@@ -18,12 +18,12 @@ import {
     parseProxyUrl,
     RequestOptionsParams,
 } from 'testcafe-hammerhead';
-import TestRun from '../test-run';
-import CONTENT_TYPES from '../assets/content-types';
-import HTTP_HEADERS from '../utils/http-headers';
-import { RUNTIME_ERRORS } from '../errors/types';
-import { APIError } from '../errors/runtime';
-import { GetProxyUrlCommand } from '../test-run/commands/actions';
+import TestRun from '../index';
+import CONTENT_TYPES from '../../assets/content-types';
+import HTTP_HEADERS from '../../utils/http-headers';
+import { RUNTIME_ERRORS } from '../../errors/types';
+import { APIError } from '../../errors/runtime';
+import { GetProxyUrlCommand } from '../commands/actions';
 import { CallsiteRecord } from 'callsite-record';
 
 const DEFAULT_ACCEPT            = { [HTTP_HEADERS.accept]: `${CONTENT_TYPES.json}, ${CONTENT_TYPES.textPlain}, ${CONTENT_TYPES.all}` };

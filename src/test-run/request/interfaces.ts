@@ -1,5 +1,5 @@
 import { IncomingMessage, OutgoingHttpHeaders } from 'http';
-import { Dictionary } from '../configuration/interfaces';
+import { Dictionary } from '../../configuration/interfaces';
 import { Buffer } from 'buffer';
 
 export enum Credentials { include, sameOrigin, omit, unknown }

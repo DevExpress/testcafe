@@ -1,6 +1,6 @@
 import { IncomingMessage } from 'http';
-import HTTP_HEADERS from '../utils/http-headers';
-import CONTENT_TYPES from '../assets/content-types';
+import HTTP_HEADERS from '../../utils/http-headers';
+import CONTENT_TYPES from '../../assets/content-types';
 import { promisifyStream } from 'testcafe-hammerhead';
 import { ResponseBody } from './interfaces';
 

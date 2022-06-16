@@ -89,6 +89,7 @@ export class RequestOptions {
     public method: string;
     public headers: object;
     public params: object;
+    public body: any;
     public timeout: number;
     public withCredentials: boolean;
     public auth: RequestAuthOptions;
