@@ -5,15 +5,17 @@ export class ChangeCommandTransformer extends ExecuteExpressionCommandTransforme
     constructor (step: DevToolsRecorderStep, callsite: number) {
         super(step, callsite);
 
+        const value = this._escapeSpecialCharacters(step.value);
+
         this.expression = `
             const selector = ${this._getCorrectSelector(step)};
             const { tagName } = await selector();
 
             if (tagName === 'input' || tagName === 'textarea')
-                await t.typeText(selector, '${step.value}');
+                await t.typeText(selector, '${value}');
             else if (tagName === 'select') {
                 await t.click(selector.find('option').filter(option => {
-                    return option.value === '${step.value}';
+                    return option.value === '${value}';
                 }))
             }
         `;
