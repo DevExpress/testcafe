@@ -1,8 +1,8 @@
 const { expect } = require('chai');
-const config = require('../../config');
+const config     = require('../../config');
 
-if (!config.experimentalDebug) {
-    describe('Request', () => {
+describe('Request', () => {
+    if (!config.experimentalDebug) {
         it('Should execute GET request', function () {
             return runTests('testcafe-fixtures/request-test.js', 'Should execute a GET request');
         });
@@ -140,5 +140,13 @@ if (!config.experimentalDebug) {
                     });
             });
         }
-    });
-}
+    }
+    if (config.experimentalDebug) {
+        it('Should rise error if the test run in context is not existed', function () {
+            return runTests('testcafe-fixtures/request-test.js', 'Should execute a GET request', { shouldFail: true })
+                .catch(function (errs) {
+                    expect(errs[0]).contains('\'request\' cannot implicitly resolve the test run in context of which it should be executed. Note that you cannot execute \'request\' in the experimental debug mode.');
+                });
+        });
+    }
+});
