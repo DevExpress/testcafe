@@ -6,6 +6,7 @@
 /// <reference path="client-script.d.ts" />
 /// <reference path="role.d.ts" />
 /// <reference path="selector.d.ts" />
+/// <reference path="request.d.ts" />
 // {{/allowReferences}}
 
 interface NativeDialogHistoryItem {
@@ -524,6 +525,14 @@ interface TestController {
      * @param urls - URLs.
      */
     deleteCookies(names: string | string[], urls?: string | string[]): TestControllerPromise;
+
+    /**
+     * Execute a request
+     *
+     * @param urlOpts - request url or options.
+     * @param options - options.
+     */
+    request: Request;
 }
 
 interface TestControllerPromise<T=any> extends TestController, Promise<T> {

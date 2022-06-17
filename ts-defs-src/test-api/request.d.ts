@@ -83,7 +83,7 @@ interface ResponseOptions {
     body: ResponseBody;
 }
 
-interface RequestAPI {
+interface ResponseAPI {
     /**
      * Promise that returns response status.
      */
@@ -103,9 +103,9 @@ interface RequestAPI {
 }
 
 
-type RequestPromise = RequestAPI | Promise<ResponseOptions>
+type RequestPromise = ResponseAPI | Promise<ResponseOptions>
 
-interface RequestFactory {
+interface Request {
     /**
      * Request
      *
