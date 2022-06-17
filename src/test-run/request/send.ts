@@ -8,6 +8,7 @@ import HTTP_HEADERS from '../../utils/http-headers';
 import { RequestRuntimeError } from '../../errors/runtime';
 import { CallsiteRecord } from 'callsite-record';
 import { castArray } from 'lodash';
+import { RUNTIME_ERRORS } from '../../errors/types';
 
 type StrictIncomingMessage = IncomingMessage & { statusCode: number; statusMessage: string };
 
@@ -24,7 +25,7 @@ async function send (testRun: TestRun, options: ExternalRequestOptions, callsite
     const data = await dataWaiter;
 
     if (typeof data === 'string')
-        throw new RequestRuntimeError(callsite, data);
+        throw new RequestRuntimeError(callsite, RUNTIME_ERRORS.requestRuntimeError, data);
 
     const setCookie = data.headers[HTTP_HEADERS.setCookie];
     const sameOrigin = sameOriginCheck(currentPageUrl, requestOptions.url);

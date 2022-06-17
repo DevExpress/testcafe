@@ -79,6 +79,8 @@ import { AssertionCommand } from '../../test-run/commands/assertion';
 import { getCallsiteId, getCallsiteStackFrameString } from '../../utils/callsite';
 import ReExecutablePromise from '../../utils/re-executable-promise';
 import sendRequest from '../../test-run/request/send';
+import { RequestRuntimeError } from '../../errors/runtime';
+import { RUNTIME_ERRORS } from '../../errors/types';
 
 const originalThen = Promise.resolve().then;
 
@@ -266,6 +268,9 @@ export default class TestController {
     _createRequestFunction (bindOptions = {}) {
         const controller = this;
         const callsite = getCallsiteForMethod(RequestCommand.methodName);
+
+        if (!controller.testRun || controller.testRun instanceof TestRunProxy)
+            throw new RequestRuntimeError(callsite, RUNTIME_ERRORS.requestCannotResolveTestRun);
 
         return function (...args) {
             const cmdArgs  = controller._prepareRequestArguments(bindOptions, ...args);

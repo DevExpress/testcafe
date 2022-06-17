@@ -147,7 +147,7 @@ export class BrowserConnectionError extends GeneralError {
 }
 
 export class RequestRuntimeError extends APIError {
-    constructor (methodName, message) {
-        super(methodName, RUNTIME_ERRORS.requestRuntimeError, message);
+    constructor (methodName, code, ...args) {
+        super(methodName, code, ...args);
     }
 }
