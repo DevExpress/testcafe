@@ -97,6 +97,10 @@ const {
     ActionStringOptionError,
     ActionDateOptionError,
     ActionNumberOptionError,
+    ActionUrlOptionError,
+    ActionUrlSearchParamsOptionError,
+    ActionObjectOptionError,
+    ActionUrlArgumentError,
 } = require('../../lib/errors/test-run');
 
 const untestedErrorTypes = Object.keys(TEST_RUN_ERRORS).map(key => TEST_RUN_ERRORS[key]);
@@ -793,6 +797,22 @@ describe('Error formatting', () => {
 
         it('Should format "actionNumberOptionError"', () => {
             assertErrorMessage('action-number-option-error', new ActionNumberOptionError('maxAge', 'object'));
+        });
+
+        it('Should format "actionUrlOptionError"', () => {
+            assertErrorMessage('action-url-option-error', new ActionUrlOptionError('url', 'object'));
+        });
+
+        it('Should format "actionUrlSearchParamsOptionError"', () => {
+            assertErrorMessage('action-url-search-params-option-error', new ActionUrlSearchParamsOptionError('params', 'number'));
+        });
+
+        it('Should format "actionObjectOptionError"', () => {
+            assertErrorMessage('action-object-option-error', new ActionObjectOptionError('headers', 'number'));
+        });
+
+        it('Should format "actionUrlArgumentError"', () => {
+            assertErrorMessage('action-url-argument-error', new ActionUrlArgumentError('url', 'object'));
         });
     });
 
