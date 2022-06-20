@@ -29,12 +29,12 @@
           "#textarea"
         ]
       ],
-      "value": "peter\\parker"
+      "value": "peter\nparker"
     },
     {
       "type": "waitForExpression",
       "timeout": 1000,
-      "expression": "document.querySelector('#textarea').value === 'peter\nparker'"
+      "expression": "document.querySelector('#textarea').value === 'peter\\nparker'"
     }
   ]
 }

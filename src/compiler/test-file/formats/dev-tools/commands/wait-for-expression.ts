@@ -5,11 +5,9 @@ export class WaitForExpressionCommandTransformer extends ExecuteExpressionComman
     constructor (step: DevToolsRecorderStep, callsite: number) {
         super(step, callsite);
 
-        const expression = this._escapeSpecialCharacters(step.expression);
-
         this.expression = `
             const fn = ClientFunction(() => {
-                return ${expression}
+                return ${step.expression}
             });
 
             await t.expect(fn()).eql(true);

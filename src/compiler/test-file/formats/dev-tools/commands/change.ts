@@ -12,7 +12,7 @@ export class ChangeCommandTransformer extends ExecuteExpressionCommandTransforme
             const { tagName } = await selector();
 
             if (tagName === 'input' || tagName === 'textarea')
-                await t.typeText(selector, '${value}');
+                await t.typeText(selector, '${value}', { replace: true });
             else if (tagName === 'select') {
                 await t.click(selector.find('option').filter(option => {
                     return option.value === '${value}';
