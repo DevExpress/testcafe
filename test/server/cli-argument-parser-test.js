@@ -753,7 +753,7 @@ describe('CLI argument parser', function () {
     });
 
     it('Should parse command line arguments', function () {
-        return parse('-r list -S -q -e --hostname myhost --baseUrl localhost:3000 --proxy localhost:1234 --proxy-bypass localhost:5678 --qr-code --app run-app --speed 0.5 --debug-on-fail --disable-page-reloads --retry-test-pages --dev --sf --disable-page-caching --disable-http2 --proxyless ie test/server/data/file-list/file-1.js')
+        return parse('-r list -S -q -e --hostname myhost --base-url localhost:3000 --proxy localhost:1234 --proxy-bypass localhost:5678 --qr-code --app run-app --speed 0.5 --debug-on-fail --disable-page-reloads --retry-test-pages --dev --sf --disable-page-caching --disable-http2 --proxyless ie test/server/data/file-list/file-1.js')
             .then(parser => {
                 expect(parser.opts.browsers).eql(['ie']);
                 expect(parser.opts.src).eql(['test/server/data/file-list/file-1.js']);
@@ -854,7 +854,7 @@ describe('CLI argument parser', function () {
             { long: '--cache' },
             { long: '--disable-http2' },
             { long: '--proxyless' },
-            { long: '--baseUrl' },
+            { long: '--base-url' },
         ];
 
         const parser  = new CliArgumentParser('');
@@ -898,7 +898,7 @@ describe('CLI argument parser', function () {
             '--disable-page-reloads',
             '--disable-screenshots',
             '--disable-multiple-windows',
-            '--baseUrl localhost:3000',
+            '--base-url localhost:3000',
         ].join(' ');
 
         return parse(argumentsString)

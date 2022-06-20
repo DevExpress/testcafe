@@ -199,7 +199,7 @@ export default class CLIArgumentParser {
             .option('--disable-multiple-windows', 'disable multiple windows mode')
             .option('--disable-http2', 'disable the HTTP/2 proxy backend and force the proxy to use only HTTP/1.1 requests')
             .option('--cache', 'cache web assets between test runs')
-            .option('--baseUrl <url>', 'set the base url for all tests')
+            .option('--base-url <url>', 'set the base url for all tests')
 
             // NOTE: these options will be handled by chalk internally
             .option('--color', 'force colors in command line')

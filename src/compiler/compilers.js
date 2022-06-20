@@ -14,7 +14,7 @@ function createTestFileCompilers (compilerOptions = {}, { isCompilerServiceMode,
         new TypeScriptTestFileCompiler(compilerOptions[CustomizableCompilers.typescript], { isCompilerServiceMode, baseUrl }),
         new CoffeeScriptTestFileCompiler({ baseUrl }),
         new RawTestFileCompiler({ baseUrl }),
-        new DevToolsTestFileCompiler(),
+        new DevToolsTestFileCompiler({ baseUrl }),
     ];
 }
 
