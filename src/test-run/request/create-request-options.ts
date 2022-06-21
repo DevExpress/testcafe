@@ -47,7 +47,7 @@ function typeOf (value: unknown): string {
     return typeof value;
 }
 
-function transformBody (headers: OutgoingHttpHeaders, body?: object): Buffer {
+function transformBody (headers: OutgoingHttpHeaders, body?: any): Buffer {
     if (!body)
         return Buffer.from('');
 
@@ -72,6 +72,8 @@ function transformBody (headers: OutgoingHttpHeaders, body?: object): Buffer {
 
         return Buffer.from(JSON.stringify(body));
     }
+    else if (typeof body === 'string')
+        setContentTypeIfNotExists(headers, CONTENT_TYPES.textPlain);
 
     return body;
 }
