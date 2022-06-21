@@ -131,7 +131,7 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
         try {
             return require(this._compilerPath);
         }
-        catch (err) {
+        catch (err: any) {
             throw new GeneralError(RUNTIME_ERRORS.typeScriptCompilerLoadingError, err.message);
         }
     }

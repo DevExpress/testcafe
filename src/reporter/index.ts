@@ -388,7 +388,7 @@ export default class Reporter {
                 return result;
             }, { });
 
-            Object.assign(testItem.quarantine, testItemQuarantine);
+            Object.assign(testItem.quarantine as object, testItemQuarantine);
         }
 
         if (!testItem.testRunInfo) {

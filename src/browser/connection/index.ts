@@ -217,7 +217,7 @@ export default class BrowserConnection extends EventEmitter {
             this.status = BrowserConnectionStatus.opened;
             this.emit('opened');
         }
-        catch (err) {
+        catch (err: any) {
             this.emit('error', new GeneralError(
                 RUNTIME_ERRORS.unableToOpenBrowser,
                 this.browserInfo.providerName + ':' + this.browserInfo.browserName,
@@ -295,7 +295,7 @@ export default class BrowserConnection extends EventEmitter {
             .catch(err => this.debugLogger(err))
             .then(() => this._runBrowser());
 
-        const timeoutPromise = new Promise(resolve => {
+        const timeoutPromise = new Promise<void>(resolve => {
             resolveTimeout = resolve;
 
             timeout = setTimeout(() => {

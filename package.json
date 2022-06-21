@@ -149,7 +149,7 @@
     "time-limit-promise": "^1.0.2",
     "tmp": "0.0.28",
     "tree-kill": "^1.2.2",
-    "typescript": "^3.3.3",
+    "typescript": "^4.7.4",
     "unquote": "^1.1.1"
   },
   "devDependencies": {
@@ -222,7 +222,7 @@
     "recursive-copy": "^2.0.5",
     "request": "^2.58.0",
     "rollup": "2.16.1",
-    "rollup-plugin-typescript2": "^0.26.0",
+    "rollup-plugin-typescript2": "^0.32.1",
     "run-sequence": "^1.2.2",
     "saucelabs-connector": "^1.0.0",
     "serve-static": "^1.10.0",
@@ -230,7 +230,7 @@
     "stack-chain": "^2.0.0",
     "strip-ansi": "^3.0.0",
     "testcafe-browser-provider-browserstack": "^1.14.0-alpha.1",
-    "tslib": "^1.11.1",
+    "tslib": "^2.4.0",
     "uglify-js": "~3.10.4"
   }
 }

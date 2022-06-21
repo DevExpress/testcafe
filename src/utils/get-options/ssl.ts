@@ -32,7 +32,7 @@ export default async function (optionString: string): Promise<Dictionary<string 
             try {
                 await stat(value);
             }
-            catch (error) {
+            catch (error: any) {
                 DEBUG_LOGGER(renderTemplate(WARNING_MESSAGES.cannotFindSSLCertFile, value, key, error.stack));
 
                 return value;
@@ -41,7 +41,7 @@ export default async function (optionString: string): Promise<Dictionary<string 
             try {
                 return await readFile(value);
             }
-            catch (error) {
+            catch (error: any) {
                 throw new GeneralError(RUNTIME_ERRORS.cannotReadSSLCertFile, key, value, error.stack);
             }
         },

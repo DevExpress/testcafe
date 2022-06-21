@@ -192,7 +192,7 @@ export default class Configuration {
 
             return true;
         }
-        catch (error) {
+        catch (error: any) {
             DEBUG_LOGGER(renderTemplate(WARNING_MESSAGES.cannotFindConfigurationFile, filePath, error.stack));
 
             return false;
@@ -218,7 +218,7 @@ export default class Configuration {
 
                 return require(filePath);
             }
-            catch (error) {
+            catch (error: any) {
                 Configuration._showWarningForError(error, WARNING_MESSAGES.cannotReadConfigFile, filePath);
             }
         }
@@ -230,7 +230,7 @@ export default class Configuration {
         try {
             return await readFile(filePath);
         }
-        catch (error) {
+        catch (error: any) {
             Configuration._showWarningForError(error, WARNING_MESSAGES.cannotReadConfigFile, filePath);
         }
 
@@ -241,7 +241,7 @@ export default class Configuration {
         try {
             return JSON5.parse(configurationFileContent.toString());
         }
-        catch (error) {
+        catch (error: any) {
             Configuration._showWarningForError(error, WARNING_MESSAGES.cannotParseConfigFile, filePath);
         }
 

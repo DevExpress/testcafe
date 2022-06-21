@@ -100,7 +100,7 @@ export default class BrowserSet extends EventEmitter {
 
             return browserSet;
         }
-        catch (e) {
+        catch (e: any) {
             const finalError = e.code === RUNTIME_ERRORS.cannotEstablishBrowserConnection
                 ? browserSet.createBrowserConnectionError(e)
                 : e;

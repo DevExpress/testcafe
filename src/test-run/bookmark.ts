@@ -120,7 +120,7 @@ export default class TestRunBookmark {
             try {
                 await this.testRun.executeCommand(switchWorkingFrameCommand as CommandBase);
             }
-            catch (err) {
+            catch (err: any) {
                 if (err.code === TEST_RUN_ERRORS.actionElementNotFoundError)
                     throw new CurrentIframeNotFoundError();
 
@@ -167,7 +167,7 @@ export default class TestRunBookmark {
             if (!preserveUrl)
                 await this._restoreWorkingFrame();
         }
-        catch (err) {
+        catch (err: any) {
             err.callsite = callsite;
 
             throw err;
