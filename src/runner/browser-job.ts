@@ -20,10 +20,10 @@ interface BrowserJobResultInfo {
     data?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
-enum StartStatus { none, starting, started }
+enum BrowserJobStatus { initialized, starting, started }
 
 export default class BrowserJob extends AsyncEventEmitter {
-    private _startStatus: StartStatus;
+    private _status: BrowserJobStatus;
     private _startTime: Date;
     private _total: number;
     private _passed: number;
@@ -55,7 +55,7 @@ export default class BrowserJob extends AsyncEventEmitter {
     }: BrowserJobInit) {
         super();
 
-        this._startStatus = StartStatus.none;
+        this._status = BrowserJobStatus.initialized;
         this._startTime = new Date();
 
         this._total                = 0;
@@ -174,7 +174,7 @@ export default class BrowserJob extends AsyncEventEmitter {
     private async _isNextTestRunAvailable (testRunController: TestRunController): Promise<boolean> {
         // NOTE: event task start is currently executing,
         // so test run is temporary blocked
-        if (this._startStatus === StartStatus.starting)
+        if (this._status === BrowserJobStatus.starting)
             return false;
 
         // NOTE: before hook for test run fixture is currently
@@ -220,13 +220,13 @@ export default class BrowserJob extends AsyncEventEmitter {
             this._testRunControllerQueue.shift();
             this._addToCompletionQueue(testRunController);
 
-            if (this._startStatus === StartStatus.none) {
-                this._startStatus = StartStatus.starting;
+            if (this._status === BrowserJobStatus.initialized) {
+                this._status = BrowserJobStatus.starting;
                 this._startTime   = new Date();
 
                 await this.emit('start', this._startTime);
 
-                this._startStatus = StartStatus.started;
+                this._status = BrowserJobStatus.started;
             }
 
             const testRunUrl = await testRunController.start(connection, this._startTime);
