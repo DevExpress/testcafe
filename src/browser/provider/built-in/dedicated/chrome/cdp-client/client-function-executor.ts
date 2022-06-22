@@ -80,7 +80,6 @@ export default class ClientFunctionExecutor {
             break;
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion
         return { result, exceptionDetails, error } as EvaluateScriptResult;
     }
 

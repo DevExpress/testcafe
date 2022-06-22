@@ -5,7 +5,6 @@ import TestCafeErrorList from '../../../errors/error-list';
 
 export type ExternalError = Error | TestCafeErrorList;
 
-/* eslint-disable @typescript-eslint/interface-name-prefix */
 export enum IPCPacketType {
     request,
     response
@@ -54,8 +53,6 @@ export interface IPCTransport extends EventEmitter {
     readSync(): IPCResponsePacket;
     writeSync(packet: IPCPacket): void;
 }
-/* eslint-enable @typescript-eslint/interface-name-prefix */
-
 
 export function isTestCafeErrorList (err: ExternalError): err is TestCafeErrorList {
     return (err as TestCafeErrorList).name === TestCafeErrorList.name;

@@ -757,7 +757,7 @@ export default class TestRun extends AsyncEventEmitter {
         if (this.pendingRequest)
             this._resolvePendingRequest(command);
 
-        return new Promise(async (resolve, reject) => {
+        return new Promise(async (resolve, reject) => { // eslint-disable-line no-async-promise-executor
             this.addingDriverTasksCount--;
             this.driverTaskQueue.push({ command, resolve, reject, callsite });
 
@@ -1265,9 +1265,6 @@ export default class TestRun extends AsyncEventEmitter {
 
             try {
                 return await fn();
-            }
-            catch (err) {
-                throw err;
             }
             finally {
                 // @ts-ignore

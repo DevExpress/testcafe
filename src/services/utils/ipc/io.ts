@@ -68,7 +68,7 @@ export class AsyncWriter {
 
     private _writeBuffers (buffers: Buffer[]): Promise<void> {
         this.batchPromise = this.batchPromise
-            .catch(() => {})
+            .catch(() => {}) // eslint-disable-line @typescript-eslint/no-empty-function
             .then(async () => {
                 for (const buffer of buffers)
                     await this._write(buffer);
