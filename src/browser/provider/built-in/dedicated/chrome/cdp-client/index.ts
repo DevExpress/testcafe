@@ -300,12 +300,11 @@ export class BrowserClient {
 
         const result = await client.Page.captureScreenshot({
             clip,
-            captureBeyondViewport: true,
+            captureBeyondViewport: fullPage,
         });
 
         return Buffer.from(result.data, 'base64');
     }
-
 
     public async closeTab (): Promise<void> {
         if (this._parentTarget)
