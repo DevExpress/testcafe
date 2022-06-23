@@ -25,7 +25,7 @@ async function send (testRun: TestRun, options: ExternalRequestOptions, callsite
     const data = await dataWaiter;
 
     if (typeof data === 'string')
-        throw new RequestRuntimeError(callsite, RUNTIME_ERRORS.requestRuntimeError, data);
+        throw new RequestRuntimeError(callsite, RUNTIME_ERRORS.requestRuntimeError, data.replace(/<.*?>/g, ''));
 
     const setCookie = data.headers[HTTP_HEADERS.setCookie];
     const sameOrigin = sameOriginCheck(currentPageUrl, requestOptions.url);

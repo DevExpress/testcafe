@@ -132,5 +132,5 @@ export default {
     [RUNTIME_ERRORS.cannotFindTestcafeConfigurationFile]: 'Cannot locate a TestCafe configuration file at {filePath}. Either the file does not exist, or the path is invalid.',
     [RUNTIME_ERRORS.dashboardTokenInJSON]:                'Insecure token declaration: cannot declare a Dashboard token in a JSON configuration file. Use a JavaScript configuration file, or declare a Dashboard token with one of the following: the CLI, the Test Runner API, the TESTCAFE_DASHBOARD_TOKEN environment variable.',
     [RUNTIME_ERRORS.requestUrlInvalidValueError]:         'Requested url isn\'t valid ({actualValue}).',
-    [RUNTIME_ERRORS.requestRuntimeError]:                 'Requested was interrupted with error:\n{message}.',
+    [RUNTIME_ERRORS.requestRuntimeError]:                 'Requested was interrupted with error:\n{message}',
 };
