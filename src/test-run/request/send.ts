@@ -13,7 +13,7 @@ import { RUNTIME_ERRORS } from '../../errors/types';
 type StrictIncomingMessage = IncomingMessage & { statusCode: number; statusMessage: string };
 
 async function send (testRun: TestRun, options: ExternalRequestOptions, callsite: CallsiteRecord | null): Promise<ResponseOptions> {
-    const currentPageUrl = await testRun.getCurrentUrl();
+    const currentPageUrl = new URL(await testRun.getCurrentUrl());
     const requestOptions = await createRequestOptions(currentPageUrl, testRun, options, callsite);
     const request        = new DestinationRequest(requestOptions);
     const dataWaiter     = new Promise<StrictIncomingMessage | string>(resolve => {
@@ -27,11 +27,11 @@ async function send (testRun: TestRun, options: ExternalRequestOptions, callsite
     if (typeof data === 'string')
         throw new RequestRuntimeError(callsite, RUNTIME_ERRORS.requestRuntimeError, data.replace(/<.*?>/g, ''));
 
-    const setCookie = data.headers[HTTP_HEADERS.setCookie];
-    const sameOrigin = sameOriginCheck(currentPageUrl, requestOptions.url);
+    const setCookie  = data.headers[HTTP_HEADERS.setCookie];
+    const sameOrigin = !currentPageUrl.host || sameOriginCheck(currentPageUrl.href, requestOptions.url);
 
-    if (setCookie && (sameOrigin || options.withCredentials && !sameOrigin) )
-        testRun.session.cookies.copySyncCookies(castArray(setCookie).join(';'), currentPageUrl);
+    if (setCookie && (sameOrigin || options.withCredentials) )
+        testRun.session.cookies.copySyncCookies(castArray(setCookie).join(';'), currentPageUrl.href);
 
     const body = await processResponseData(data, options.rawResponse);
 

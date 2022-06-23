@@ -92,12 +92,11 @@ function changeHeaderNamesToLowercase (headers: OutgoingHttpHeaders): OutgoingHt
     return lowerCaseHeaders;
 }
 
-async function prepareHeaders (headers: OutgoingHttpHeaders, currentPageUrl: URL, url: URL, body: Buffer, testRun: TestRun, options: ExternalRequestOptions): Promise<OutgoingHttpHeaders> {
-    const { host, origin, href } = url;
+async function prepareHeaders (headers: OutgoingHttpHeaders, currentPageUrl: URL, url: URL, body: Buffer, testRun: TestRun, withCredentials: boolean, options: ExternalRequestOptions): Promise<OutgoingHttpHeaders> {
+    const { host, origin } = url;
 
     const preparedHeaders: OutgoingHttpHeaders = Object.assign({}, DEFAULT_ACCEPT, changeHeaderNamesToLowercase(headers));
 
-    const sameOrigin = sameOriginCheck(currentPageUrl.href, href);
 
     preparedHeaders[HTTP_HEADERS.host] = host;
     preparedHeaders[HTTP_HEADERS.origin] = origin;
@@ -106,13 +105,13 @@ async function prepareHeaders (headers: OutgoingHttpHeaders, currentPageUrl: URL
     if (headers.method && METHODS_WITH_CONTENT_TYPE.includes(String(headers.method)))
         preparedHeaders[HTTP_HEADERS.contentType] = CONTENT_TYPES.urlencoded;
 
-    if (options.auth)
+    if (options.auth && withCredentials)
         preparedHeaders[HTTP_HEADERS.authorization] = getAuthString(options.auth);
 
     if (options.proxy?.auth)
         preparedHeaders[HTTP_HEADERS.proxyAuthorization] = getAuthString(options.proxy.auth);
 
-    if (sameOrigin || options.withCredentials && !sameOrigin) {
+    if (withCredentials) {
         const currentPageCookies = testRun.session.cookies.getHeader({
             url:      currentPageUrl.href,
             hostname: currentPageUrl.hostname,
@@ -174,16 +173,16 @@ function getProxyUrl (testRun: TestRun, url: string, withCredentials?: boolean):
     }, testRun, true)) as Promise<string>;
 }
 
-export async function createRequestOptions (currentPageUrlStr: string, testRun: TestRun, options: ExternalRequestOptions, callsite: CallsiteRecord | null): Promise<RequestOptions> {
+export async function createRequestOptions (currentPageUrl: URL, testRun: TestRun, options: ExternalRequestOptions, callsite: CallsiteRecord | null): Promise<RequestOptions> {
     options.headers = options.headers || {};
 
-    const currentPageUrl = new URL(currentPageUrlStr);
-    const url            = await prepareUrl(testRun, currentPageUrl, options.url, callsite);
-    const body           = transformBody(options.headers, options.body);
-    const headers        = await prepareHeaders(options.headers, currentPageUrl, url, body, testRun, options);
-    const proxyUrl       = await getProxyUrl(testRun, url.href, options.withCredentials);
-    const proxyUrlObj    = parseProxyUrl(proxyUrl);
-    let auth             = options.auth;
+    const url             = await prepareUrl(testRun, currentPageUrl, options.url, callsite);
+    const withCredentials = !currentPageUrl.host || sameOriginCheck(currentPageUrl.href, url.href) || options.withCredentials || false;
+    const body            = transformBody(options.headers, options.body);
+    const headers         = await prepareHeaders(options.headers, currentPageUrl, url, body, testRun, withCredentials, options);
+    const proxyUrl        = await getProxyUrl(testRun, url.href, withCredentials);
+    const proxyUrlObj     = parseProxyUrl(proxyUrl);
+    let auth              = options.auth;
 
     if (!auth && url.username && url.password) {
         auth = {
@@ -200,9 +199,9 @@ export async function createRequestOptions (currentPageUrlStr: string, testRun: 
         host:           proxyUrlObj.proxy.hostname,
         port:           proxyUrlObj.proxy.port,
         path:           prepareSearchParams(proxyUrlObj.partAfterHost, options.params),
-        auth:           auth ? `${auth.username}:${auth.password}` : void 0,
+        auth:           auth && withCredentials ? `${auth.username}:${auth.password}` : void 0,
         headers:        headers,
-        credentials:    testRun.session.getAuthCredentials(),
+        credentials:    withCredentials ? testRun.session.getAuthCredentials() : void 0,
         body:           body,
         disableHttp2:   testRun.session.isHttp2Disabled(),
         requestTimeout: {
