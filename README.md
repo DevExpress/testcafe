@@ -314,8 +314,8 @@ TestCafe developers and community members made these plugins:
 
 * **Cucumber Support**<br/>
   Create and run tests that use the Cucumber syntax.
-  * [gherkin-testcafe](https://github.com/kiwigrid/gherkin-testcafe) (by [@kiwigrid](https://github.com/kiwigrid)) - run your Cucumber tests with TestCafe as a backend. Requires [CucumberJS](https://github.com/cucumber/cucumber-js).
-  * [testcafe-cucumber-steps](https://github.com/Marketionist/testcafe-cucumber-steps) (by [@Marketionist](https://github.com/Marketionist)) - provides predefined Cucumber steps for [gherkin-testcafe](https://github.com/kiwigrid/gherkin-testcafe).
+  * [gherkin-testcafe](https://github.com/Arthy000/gherkin-testcafe) (by [@kiwigrid](https://github.com/kiwigrid), now maintained by [@Arthy000](https://github.com/Arthy000)) - run your Cucumber tests with TestCafe as a backend. Requires [CucumberJS](https://github.com/cucumber/cucumber-js).
+  * [testcafe-cucumber-steps](https://github.com/Marketionist/testcafe-cucumber-steps) (by [@Marketionist](https://github.com/Marketionist)) - provides predefined Cucumber steps for [gherkin-testcafe](https://github.com/Arthy000/gherkin-testcafe).
 
 ## Different Versions of TestCafe
 
