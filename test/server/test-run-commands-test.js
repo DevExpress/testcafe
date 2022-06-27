@@ -69,8 +69,11 @@ function assertErrorMessage (fn, expectedErrMessage) {
     expect(actualErr.message).eql(expectedErrMessage);
 }
 
-function makeSelector (str, skipVisibilityCheck) {
-    const builder = new SelectorBuilder(str, { visibilityCheck: !skipVisibilityCheck }, { instantiation: 'Selector' });
+function makeSelector (str, skipVisibilityCheck, needError, separatedErrors) {
+    const builder = new SelectorBuilder(str, {
+        visibilityCheck: !skipVisibilityCheck,
+        needError, separatedErrors,
+    }, { instantiation: 'Selector' });
     const command = builder.getCommand([]);
 
     command.actionId = 'child-command-selector';
@@ -565,7 +568,7 @@ describe('Test run commands', () => {
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.typeText,
                 actionId: TYPE.typeText,
-                selector: makeSelector('#yo'),
+                selector: makeSelector('#yo', false, true, true),
                 text:     'testText',
 
                 options: {
@@ -598,7 +601,7 @@ describe('Test run commands', () => {
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.typeText,
                 actionId: TYPE.typeText,
-                selector: makeSelector('#yo'),
+                selector: makeSelector('#yo', false, true, true),
                 text:     'testText',
 
                 options: {
