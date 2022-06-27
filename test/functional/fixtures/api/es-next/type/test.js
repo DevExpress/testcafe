@@ -43,4 +43,18 @@ describe('[API] t.typeText()', function () {
                 expect(errs[0]).to.contains('> 19 |    await t.typeText(NaN, \'a\');');
             });
     });
+
+    it('Should not get selector the second time if the error was raised in the first.', function () {
+        return runTests('./testcafe-fixtures/type-test.js', 'Not found selector', {
+            shouldFail: true,
+            only:       'chrome',
+        })
+            .catch(function (errs) {
+                expect(testReport.durationMs).lessThan(1100);
+                expect(errs[0]).to.contains(
+                    'The specified selector does not match any element in the DOM tree.'
+                );
+                expect(errs[0]).to.contains('> 31 |    await t.typeText(\'#not-found\', \'a\');');
+            });
+    });
 });
