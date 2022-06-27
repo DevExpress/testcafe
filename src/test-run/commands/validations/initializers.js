@@ -11,6 +11,13 @@ export function initUploadSelector (name, val, initOptions) {
     return initSelector(name, val, initOptions);
 }
 
+export function initTypeSelector (name, val, initOptions) {
+    initOptions.needError       = true;
+    initOptions.separatedErrors = true;
+
+    return initSelector(name, val, initOptions);
+}
+
 export function initSelector (name, val, { testRun, ...options }) {
     if (val instanceof ExecuteSelectorCommand)
         return val;

@@ -14,7 +14,11 @@ import {
     CookieOptions,
 } from './options';
 
-import { initSelector, initUploadSelector } from './validations/initializers';
+import {
+    initSelector,
+    initTypeSelector,
+    initUploadSelector,
+} from './validations/initializers';
 import { executeJsExpression } from '../execute-js-expression';
 import { isJSExpression } from './utils';
 
@@ -217,7 +221,7 @@ export class TypeTextCommand extends ActionCommandBase {
 
     _getAssignableProperties () {
         return [
-            { name: 'selector', init: initSelector, required: true },
+            { name: 'selector', init: initTypeSelector, required: true },
             { name: 'text', type: nonEmptyStringArgument, required: true },
             { name: 'options', type: actionOptions, init: initTypeOptions, required: true },
         ];
