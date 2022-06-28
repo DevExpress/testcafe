@@ -19,7 +19,7 @@ describe('Request Hooks', () => {
             return runTests('./testcafe-fixtures/request-mock/async-response-function.js', null, { only: 'chrome' });
         });
 
-        it.only("Handle error in 'respond' function (GH-6703)", () => {
+        it("Handle error in 'respond' function (GH-6703)", () => {
             return runTests('./testcafe-fixtures/request-mock/respond-error.js', null, { only: 'chrome', shouldFail: true })
                 .catch(() => {
                     expect(testReport.errs.length).eql(1);
