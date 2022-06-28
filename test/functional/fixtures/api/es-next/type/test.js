@@ -1,3 +1,4 @@
+const config = require('../../../../config');
 const expect = require('chai').expect;
 
 // NOTE: we run tests in chrome only, because we mainly test server API functionality.
@@ -44,17 +45,19 @@ describe('[API] t.typeText()', function () {
             });
     });
 
-    it('Should not get selector the second time if the error was raised in the first.', function () {
-        return runTests('./testcafe-fixtures/type-test.js', 'Not found selector', {
-            shouldFail: true,
-            only:       'chrome',
-        })
-            .catch(function (errs) {
-                expect(testReport.durationMs).lessThan(1100);
-                expect(errs[0]).to.contains(
-                    'The specified selector does not match any element in the DOM tree.'
-                );
-                expect(errs[0]).to.contains('> 31 |    await t.typeText(\'#not-found\', \'a\');');
-            });
-    });
+    if (!config.proxyless) {
+        it('Should not get selector the second time if the error was raised in the first.', function () {
+            return runTests('./testcafe-fixtures/type-test.js', 'Not found selector', {
+                shouldFail: true,
+                only:       'chrome',
+            })
+                .catch(function (errs) {
+                    expect(testReport.durationMs).lessThan(1100);
+                    expect(errs[0]).to.contains(
+                        'The specified selector does not match any element in the DOM tree.'
+                    );
+                    expect(errs[0]).to.contains('> 31 |    await t.typeText(\'#not-found\', \'a\');');
+                });
+        });
+    }
 });
