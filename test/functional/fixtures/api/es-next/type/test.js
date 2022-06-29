@@ -46,13 +46,14 @@ describe('[API] t.typeText()', function () {
     });
 
     if (!config.proxyless) {
-        it('Should not get selector the second time if the error was raised in the first.', function () {
+        it('Should not execute selector twice for non-existing element due to "confidential" option (GH-6623)', function () {
             return runTests('./testcafe-fixtures/type-test.js', 'Not found selector', {
-                shouldFail: true,
-                only:       'chrome',
+                shouldFail:      true,
+                only:            'chrome',
+                selectorTimeout: 3000,
             })
                 .catch(function (errs) {
-                    expect(testReport.durationMs).lessThan(1100);
+                    expect(testReport.durationMs).lessThan(6000);
                     expect(errs[0]).to.contains(
                         'The specified selector does not match any element in the DOM tree.'
                     );

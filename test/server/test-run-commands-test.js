@@ -69,10 +69,10 @@ function assertErrorMessage (fn, expectedErrMessage) {
     expect(actualErr.message).eql(expectedErrMessage);
 }
 
-function makeSelector (str, skipVisibilityCheck, needError, separatedErrors) {
+function makeSelector (str, skipVisibilityCheck, needError, strictError) {
     const builder = new SelectorBuilder(str, {
         visibilityCheck: !skipVisibilityCheck,
-        needError, separatedErrors,
+        needError, strictError,
     }, { instantiation: 'Selector' });
     const command = builder.getCommand([]);
 

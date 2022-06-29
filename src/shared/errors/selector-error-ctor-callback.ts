@@ -2,21 +2,21 @@ import { AutomationErrorCtor } from '../types';
 import { FnInfo, SelectorErrorCb } from '../../client/driver/command-executors/client-functions/types';
 import * as Errors from './index';
 
-export function createInvisibleErrorCtor (elementName?: string): AutomationErrorCtor | string {
+export function getInvisibleErrorCtor (elementName?: string): AutomationErrorCtor | string {
     return !elementName ? 'ActionElementIsInvisibleError' : {
         name:     'ActionAdditionalElementIsInvisibleError',
         firstArg: elementName,
     };
 }
 
-export function createNotFoundErrorCtor (elementName?: string): AutomationErrorCtor | string {
+export function getNotFoundErrorCtor (elementName?: string): AutomationErrorCtor | string {
     return !elementName ? 'ActionElementNotFoundError' : {
         name:     'ActionAdditionalElementNotFoundError',
         firstArg: elementName,
     };
 }
 
-export function createCannotObtainInfoErrorCtor (): AutomationErrorCtor | string {
+export function getCannotObtainInfoErrorCtor (): AutomationErrorCtor | string {
     return 'CannotObtainInfoForElementSpecifiedBySelectorError';
 }
 

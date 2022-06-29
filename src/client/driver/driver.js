@@ -112,9 +112,9 @@ import SelectorExecutor from './command-executors/client-functions/selector-exec
 import SelectorElementActionTransform from './command-executors/client-functions/replicator/transforms/selector-element-action-transform';
 import BarriersComplex from '../../shared/barriers/complex-barrier';
 import createErrorCtorCallback, {
-    createCannotObtainInfoErrorCtor,
-    createInvisibleErrorCtor,
-    createNotFoundErrorCtor,
+    getCannotObtainInfoErrorCtor,
+    getInvisibleErrorCtor,
+    getNotFoundErrorCtor,
 } from '../../shared/errors/selector-error-ctor-callback';
 import './command-executors/actions-initializer';
 
@@ -1210,9 +1210,9 @@ export default class Driver extends serviceUtils.EventEmitter {
 
     _onExecuteSelectorCommand (command) {
         const startTime                   = this.contextStorage.getItem(SELECTOR_EXECUTION_START_TIME) || new DateCtor();
-        const elementNotFoundOrNotVisible = createErrorCtorCallback(createCannotObtainInfoErrorCtor());
-        const elementNotFound             = command.separatedErrors ? createErrorCtorCallback(createNotFoundErrorCtor()) : elementNotFoundOrNotVisible;
-        const elementIsInvisible          = command.separatedErrors ? createErrorCtorCallback(createInvisibleErrorCtor()) : elementNotFoundOrNotVisible;
+        const elementNotFoundOrNotVisible = createErrorCtorCallback(getCannotObtainInfoErrorCtor());
+        const elementNotFound             = command.strictError ? createErrorCtorCallback(getNotFoundErrorCtor()) : elementNotFoundOrNotVisible;
+        const elementIsInvisible          = command.strictError ? createErrorCtorCallback(getInvisibleErrorCtor()) : elementNotFoundOrNotVisible;
 
         getExecuteSelectorResultDriverStatus(command,
             this.selectorTimeout,

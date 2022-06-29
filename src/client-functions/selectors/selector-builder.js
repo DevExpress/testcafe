@@ -156,7 +156,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
             apiFnChain:                this.options.apiFnChain,
             visibilityCheck:           !!this.options.visibilityCheck,
             timeout:                   this.options.timeout,
-            separatedErrors:           this.options.separatedErrors,
+            strictError:               this.options.strictError,
         });
     }
 

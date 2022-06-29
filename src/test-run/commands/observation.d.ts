@@ -21,7 +21,7 @@ export class ExecuteSelectorCommand extends ExecuteClientFunctionCommandBase {
     public apiFnChain: string[];
     public needError: boolean;
     public index: number;
-    public separatedErrors: boolean;
+    public strictError: boolean;
 }
 
 export class WaitCommand extends ActionCommandBase {

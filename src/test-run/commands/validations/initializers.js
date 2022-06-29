@@ -12,8 +12,8 @@ export function initUploadSelector (name, val, initOptions) {
 }
 
 export function initTypeSelector (name, val, initOptions) {
-    initOptions.needError       = true;
-    initOptions.separatedErrors = true;
+    initOptions.needError   = true;
+    initOptions.strictError = true;
 
     return initSelector(name, val, initOptions);
 }
