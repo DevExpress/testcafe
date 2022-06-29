@@ -8,7 +8,7 @@ const errorInEachBrowserContains = require('../../../../assertion-helper.js').er
 (config.experimentalDebug ? describe.skip : describe)('[API] Resize window actions', function () {
     if (config.useLocalBrowsers) {
         describe('t.resizeWindow', function () {
-            it('Should resize the window', function () {
+            it.only('Should resize the window', function () {
                 return runTests('./testcafe-fixtures/resize-window-test.js', 'Resize the window');
             });
 
@@ -38,7 +38,7 @@ const errorInEachBrowserContains = require('../../../../assertion-helper.js').er
                 return runTests('./testcafe-fixtures/resize-window-test.js', 'Resize the window to fit a device');
             });
 
-            it('Should resize the window to fit a device with portrait orientation', function () {
+            it.only('Should resize the window to fit a device with portrait orientation', function () {
                 return runTests('./testcafe-fixtures/resize-window-test.js', 'Resize the window to fit a device with portrait orientation');
             });
 
