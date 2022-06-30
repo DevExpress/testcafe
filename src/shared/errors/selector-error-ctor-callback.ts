@@ -2,6 +2,23 @@ import { AutomationErrorCtor } from '../types';
 import { FnInfo, SelectorErrorCb } from '../../client/driver/command-executors/client-functions/types';
 import * as Errors from './index';
 
+export function getInvisibleErrorCtor (elementName?: string): AutomationErrorCtor | string {
+    return !elementName ? 'ActionElementIsInvisibleError' : {
+        name:     'ActionAdditionalElementIsInvisibleError',
+        firstArg: elementName,
+    };
+}
+
+export function getNotFoundErrorCtor (elementName?: string): AutomationErrorCtor | string {
+    return !elementName ? 'ActionElementNotFoundError' : {
+        name:     'ActionAdditionalElementNotFoundError',
+        firstArg: elementName,
+    };
+}
+
+export function getCannotObtainInfoErrorCtor (): AutomationErrorCtor | string {
+    return 'CannotObtainInfoForElementSpecifiedBySelectorError';
+}
 
 export default function createErrorCtorCallback (errCtor: AutomationErrorCtor | string): SelectorErrorCb {
     // @ts-ignore

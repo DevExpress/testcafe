@@ -6,6 +6,7 @@ import {
     ActionSelectorMatchesWrongNodeTypeError,
     ActionAdditionalSelectorMatchesWrongNodeTypeError,
 } from '../../shared/errors';
+import { getInvisibleErrorCtor, getNotFoundErrorCtor } from '../errors/selector-error-ctor-callback';
 
 
 export default class ElementsRetriever<T> {
@@ -27,14 +28,8 @@ export default class ElementsRetriever<T> {
         this._ensureElementsPromise = this._ensureElementsPromise
             .then(() => {
                 return this._executeSelectorFn(selector, {
-                    invisible: !elementName ? 'ActionElementIsInvisibleError' : {
-                        name:     'ActionAdditionalElementIsInvisibleError',
-                        firstArg: elementName,
-                    },
-                    notFound: !elementName ? 'ActionElementNotFoundError' : {
-                        name:     'ActionAdditionalElementNotFoundError',
-                        firstArg: elementName,
-                    },
+                    invisible: getInvisibleErrorCtor(elementName),
+                    notFound:  getNotFoundErrorCtor(elementName),
                 }, this._ensureElementsStartTime);
             })
             .then(el => {

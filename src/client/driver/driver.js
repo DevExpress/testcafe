@@ -50,7 +50,6 @@ import {
     CurrentIframeIsNotLoadedError,
     CurrentIframeNotFoundError,
     CurrentIframeIsInvisibleError,
-    CannotObtainInfoForElementSpecifiedBySelectorError,
     UncaughtErrorInCustomClientScriptCode,
     UncaughtErrorInCustomClientScriptLoadedFromModule,
     ChildWindowIsNotLoadedError,
@@ -112,7 +111,11 @@ import getExecutorResultDriverStatus from './command-executors/get-executor-resu
 import SelectorExecutor from './command-executors/client-functions/selector-executor';
 import SelectorElementActionTransform from './command-executors/client-functions/replicator/transforms/selector-element-action-transform';
 import BarriersComplex from '../../shared/barriers/complex-barrier';
-import createErrorCtorCallback from '../../shared/errors/selector-error-ctor-callback';
+import createErrorCtorCallback, {
+    getCannotObtainInfoErrorCtor,
+    getInvisibleErrorCtor,
+    getNotFoundErrorCtor,
+} from '../../shared/errors/selector-error-ctor-callback';
 import './command-executors/actions-initializer';
 
 const settings = hammerhead.settings;
@@ -1207,14 +1210,15 @@ export default class Driver extends serviceUtils.EventEmitter {
 
     _onExecuteSelectorCommand (command) {
         const startTime                   = this.contextStorage.getItem(SELECTOR_EXECUTION_START_TIME) || new DateCtor();
-        const elementNotFoundOrNotVisible = fn => new CannotObtainInfoForElementSpecifiedBySelectorError(null, fn);
-        const createError                 = command.needError ? elementNotFoundOrNotVisible : null;
+        const elementNotFoundOrNotVisible = createErrorCtorCallback(getCannotObtainInfoErrorCtor());
+        const elementNotFound             = command.strictError ? createErrorCtorCallback(getNotFoundErrorCtor()) : elementNotFoundOrNotVisible;
+        const elementIsInvisible          = command.strictError ? createErrorCtorCallback(getInvisibleErrorCtor()) : elementNotFoundOrNotVisible;
 
         getExecuteSelectorResultDriverStatus(command,
             this.selectorTimeout,
             startTime,
-            createError,
-            createError,
+            command.needError ? elementNotFound : null,
+            command.needError ? elementIsInvisible : null,
             this.statusBar)
             .then(driverStatus => {
                 this.contextStorage.setItem(SELECTOR_EXECUTION_START_TIME, null);

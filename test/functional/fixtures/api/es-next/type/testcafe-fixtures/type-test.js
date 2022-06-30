@@ -26,3 +26,7 @@ test('Incorrect action text', async t => {
 test('Incorrect action options', async t => {
     await t.typeText('#input', 'a', { replace: null, paste: null });
 });
+
+test('Not found selector', async t => {
+    await t.typeText('#not-found', 'a');
+});

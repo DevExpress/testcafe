@@ -1044,12 +1044,12 @@ export default class TestRun extends AsyncEventEmitter {
             command.generateScreenshotMark();
     }
 
-    public async _adjustCommandOptionsAndEnvironment (command: CommandBase): Promise<void> {
+    public async _adjustCommandOptionsAndEnvironment (command: CommandBase, callsite: CallsiteRecord): Promise<void> {
         if ((command as any).options?.confidential !== void 0)
             return;
 
         if (command.type === COMMAND_TYPE.typeText) {
-            const result = await this._internalExecuteCommand((command as any).selector);
+            const result = await this._internalExecuteCommand((command as any).selector, callsite);
 
             if (!result)
                 return;
@@ -1095,14 +1095,21 @@ export default class TestRun extends AsyncEventEmitter {
         let error        = null;
         let result       = null;
 
-        await this._adjustCommandOptionsAndEnvironment(command);
-
-        await this.emitActionEvent('action-start', actionArgs);
-
         const start = new Date().getTime();
 
         try {
-            result = await this._internalExecuteCommand(command, callsite);
+            await this._adjustCommandOptionsAndEnvironment(command, callsite);
+        }
+        catch (err) {
+            error = err;
+        }
+
+        await this.emitActionEvent('action-start', actionArgs);
+
+
+        try {
+            if (!error)
+                result = await this._internalExecuteCommand(command, callsite);
         }
         catch (err) {
             if (this.phase === TestRunPhase.pendingFinalization && err instanceof ExternalAssertionLibraryError)
