@@ -26,6 +26,8 @@ export type DevToolsRecorderStep = {
     offsetX?: number;
     offsetY?: number;
     operator?: string;
+    value?: string;
+    expression?: string;
 }
 
 export const DEVTOOLS_COMMAND_TYPE = {

@@ -20,6 +20,12 @@ export class CommandTransformerBase {
         return result;
     }
 
+    _escapeSpecialCharacters (value: string | undefined): string {
+        const stringifiedValue = JSON.stringify(value);
+
+        return stringifiedValue.substr(1, stringifiedValue.length - 2);
+    }
+
     _getCorrectSelector (step: DevToolsRecorderStep): string | null {
         const selectors = step.selectors as string[];
 

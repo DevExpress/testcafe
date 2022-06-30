@@ -1,5 +1,5 @@
 {
-  "title": "Change input",
+  "title": "Change textarea",
   "steps": [
     {
       "type": "setViewport",
@@ -23,28 +23,18 @@
     },
     {
       "type": "change",
-      "value": "peter parker",
+      "target": "main",
       "selectors": [
         [
-          "#input"
+          "#textarea"
         ]
       ],
-      "target": "main"
-    },
-    {
-      "type": "change",
-      "value": "peter parker",
-      "selectors": [
-        [
-          "#input"
-        ]
-      ],
-      "target": "main"
+      "value": "peter\nparker"
     },
     {
       "type": "waitForExpression",
       "timeout": 1000,
-      "expression": "document.querySelector('#input').value === 'peter parker'"
+      "expression": "document.querySelector('#textarea').value === 'peter\\nparker'"
     }
   ]
 }
