@@ -16,4 +16,17 @@ describe('[Raw API] TestController', () => {
                 );
             });
     });
+
+    it('Should produce correct callsites with assertions for chained calls in raw test', () => {
+        return runTests('./testcafe-fixtures/test-controller-test.testcafe', 'Chaining callsites with assertions', {
+            shouldFail: true,
+            only:       'chrome',
+        })
+            .catch(errs => {
+                expect(errs[0]).to.contains(
+                    ' > 1 |Assertion (Selector(\'.some-div\').exists) ok ()' +
+                    ' 2 |Assertion (Selector(\'.some-div\').innerText) ok (innerText)'
+                );
+            });
+    });
 });

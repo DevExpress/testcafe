@@ -36,6 +36,45 @@
                             "id":"3"
                         }
                     ]
+                },
+                {
+                    "name": "Chaining callsites with assertions",
+                    "commands": [
+                        {
+                            "id":"0",
+                            "type": "assertion",
+                            "studio": {
+                                "assertionMode": "checkElement",
+                                "selectorPostfix": ".exists"
+                            },
+                            "callsite": "0",
+                            "assertionType": "ok",
+                            "actual": {
+                                "type": "js-expr",
+                                "value": "Selector('.some-div').exists"
+                            },
+                            "options": {}
+                        },
+                        {
+                            "id":"0",
+                            "type": "assertion",
+                            "studio": {
+                                "assertionMode": "checkElement",
+                                "selectorPostfix": ".exists"
+                            },
+                            "callsite": "0",
+                            "assertionType": "ok",
+                            "actual": {
+                                "type": "js-expr",
+                                "value": "Selector('.some-div').innerText"
+                            },
+                            "expected": {
+                                "type": "js-expr",
+                                "value": "innerText"
+                            },
+                            "options": {}
+                        }
+                    ]
                 }
             ]
         }
