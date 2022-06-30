@@ -10,7 +10,6 @@ import remoteChrome from 'chrome-remote-interface';
 import debug from 'debug';
 import { GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from '../../../../utils/client-functions';
 import WARNING_MESSAGE from '../../../../../../notifications/warning-message';
-import * as SharedErrors from '../../../../../../shared/errors';
 
 import {
     Config,
@@ -21,10 +20,7 @@ import {
 import prettyTime from 'pretty-hrtime';
 import { CheckedCDPMethod, ELAPSED_TIME_UPPERBOUNDS } from '../elapsed-upperbounds';
 import guardTimeExecution from '../../../../../../utils/guard-time-execution';
-import { CallsiteRecord } from 'callsite-record';
-import { ExecuteClientFunctionCommand, ExecuteSelectorCommand } from '../../../../../../test-run/commands/observation';
 import ClientFunctionExecutor from './client-function-executor';
-import { SwitchToIframeCommand } from '../../../../../../test-run/commands/actions';
 import ExecutionContext from './execution-context';
 import * as clientsManager from './clients-manager';
 import delay from '../../../../../../utils/delay';
@@ -373,67 +369,6 @@ export class BrowserClient {
 
         this._runtimeInfo.viewportSize.width = windowDimensions.outerWidth;
         this._runtimeInfo.viewportSize.height = windowDimensions.outerHeight;
-    }
-
-    public async executeClientFunction (command: ExecuteClientFunctionCommand, callsite: CallsiteRecord): Promise<object> {
-        const client = await this.getActiveClient();
-
-        if (!client)
-            throw new Error('Cannot get the active browser client');
-
-        return this._clientFunctionExecutor.executeClientFunction(client.Runtime, command, callsite);
-    }
-
-    public async executeSelector (command: ExecuteSelectorCommand, callsite: CallsiteRecord, selectorTimeout: number): Promise<object> {
-        const client = await this.getActiveClient();
-
-        if (!client)
-            throw new Error('Cannot get the active browser client');
-
-        return this._clientFunctionExecutor.executeSelector({
-            Runtime:  client.Runtime,
-            errCtors: {
-                notFound:  SharedErrors.CannotObtainInfoForElementSpecifiedBySelectorError.name,
-                invisible: SharedErrors.CannotObtainInfoForElementSpecifiedBySelectorError.name,
-            },
-
-            command, callsite, selectorTimeout,
-        });
-    }
-
-    public async switchToIframe (command: SwitchToIframeCommand, callsite: CallsiteRecord, selectorTimeout: number): Promise<void> {
-        const client = await this.getActiveClient();
-
-        if (!client)
-            return;
-
-        const selector = command.selector;
-
-        if (typeof selector.timeout === 'number')
-            selectorTimeout = selector.timeout;
-
-        selector.needError = true;
-
-        const node = await this._clientFunctionExecutor.getNode({
-            DOM:      client.DOM,
-            Runtime:  client.Runtime,
-            command:  selector,
-            errCtors: {
-                notFound:  SharedErrors.ActionElementNotFoundError.name,
-                invisible: SharedErrors.ActionElementIsInvisibleError.name,
-            },
-
-            callsite, selectorTimeout,
-        });
-
-        if (!node.frameId)
-            throw new SharedErrors.ActionElementNotIframeError(callsite);
-
-        ExecutionContext.switchToIframe(node.frameId);
-    }
-
-    public switchToMainWindow (): void {
-        ExecutionContext.switchToMainWindow();
     }
 
     public async closeBrowserChildWindow (): Promise<void> {

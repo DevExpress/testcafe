@@ -13,9 +13,6 @@ import {
 import WARNING_MESSAGE from '../../notifications/warning-message';
 import { Dictionary } from '../../configuration/interfaces';
 import { WindowDimentionsInfo } from '../interfaces';
-import { CallsiteRecord } from 'callsite-record';
-import { ExecuteClientFunctionCommand, ExecuteSelectorCommand } from '../../test-run/commands/observation';
-import { SwitchToIframeCommand } from '../../test-run/commands/actions';
 import getLocalOSInfo, { OSInfo } from 'get-os-info';
 
 const DEBUG_LOGGER = debug('testcafe:browser:provider');
@@ -410,22 +407,6 @@ export default class BrowserProvider {
             await this._takeLocalBrowserScreenshot(browserId, screenshotPath);
         else
             await this.plugin.takeScreenshot(browserId, screenshotPath, pageWidth, pageHeight, fullPage);
-    }
-
-    public async executeClientFunction (browserId: string, command: ExecuteClientFunctionCommand, callsite: CallsiteRecord): Promise<any> {
-        return this.plugin.executeClientFunction(browserId, command, callsite);
-    }
-
-    public async executeSelector (browserId: string, command: ExecuteSelectorCommand, callsite: CallsiteRecord, selectorTimeout: number): Promise<any> {
-        return this.plugin.executeSelector({ browserId, command, callsite, selectorTimeout });
-    }
-
-    public async switchToIframe (browserId: string, command: SwitchToIframeCommand, callsite: CallsiteRecord, selectorTimeout: number): Promise<void> {
-        return this.plugin.switchToIframe({ browserId, command, callsite, selectorTimeout });
-    }
-
-    public switchToMainWindow (browserId: string): Promise<void> {
-        return this.plugin.switchToMainWindow(browserId);
     }
 
     public async getVideoFrameData (browserId: string): Promise<any> {
