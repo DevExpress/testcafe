@@ -4,7 +4,7 @@ import DriverStatus from '../status';
 export default function getExecutorResultDriverStatus (executor: ClientFunctionExecutor): Promise<DriverStatus> {
     return executor
         .getResult()
-        .then(result => new DriverStatus({
+        .then((result: any) => new DriverStatus({
             isCommandResult: true,
             result:          executor.encodeResult(result),
         }))
