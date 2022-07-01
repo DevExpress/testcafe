@@ -20,7 +20,6 @@ import {
 import prettyTime from 'pretty-hrtime';
 import { CheckedCDPMethod, ELAPSED_TIME_UPPERBOUNDS } from '../elapsed-upperbounds';
 import guardTimeExecution from '../../../../../../utils/guard-time-execution';
-import ClientFunctionExecutor from './client-function-executor';
 import ExecutionContext from './execution-context';
 import * as clientsManager from './clients-manager';
 import delay from '../../../../../../utils/delay';
@@ -59,7 +58,6 @@ export class BrowserClient {
     private readonly _proxyless: boolean;
     private _parentTarget?: remoteChrome.TargetInfo;
     private readonly debugLogger: debug.Debugger;
-    private readonly _clientFunctionExecutor: ClientFunctionExecutor;
     private readonly _videoFramesBuffer: VideoFrameData[];
     private _lastFrame: VideoFrameData | null;
 
@@ -67,8 +65,6 @@ export class BrowserClient {
         this._runtimeInfo = runtimeInfo;
         this.debugLogger  = debug(DEBUG_SCOPE(runtimeInfo.browserId));
         this._proxyless   = proxyless;
-
-        this._clientFunctionExecutor = new ClientFunctionExecutor();
 
         runtimeInfo.browserClient = this;
 

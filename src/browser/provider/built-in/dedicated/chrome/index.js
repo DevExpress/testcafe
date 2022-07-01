@@ -135,10 +135,6 @@ export default {
             hasChromelessScreenshots:       !!client,
             hasGetVideoFrameData:           !!client,
             hasCanResizeWindowToDimensions: false,
-            hasExecuteClientFunction:       !!client,
-            hasSwitchToIframe:              !!client,
-            hasSwitchToMainWindow:          !!client,
-            hasExecuteSelector:             !!client,
         };
     },
 

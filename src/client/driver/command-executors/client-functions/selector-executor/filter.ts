@@ -6,7 +6,8 @@ import {
     castToArray,
 } from './utils';
 import { APIInfo, FilterOptions } from '../types';
-import adapter from '../adapter/index';
+// @ts-ignore
+import { nativeMethods } from '../../../deps/hammerhead';
 
 
 const SELECTOR_FILTER_ERROR = {
@@ -78,8 +79,8 @@ class SelectorFilter {
         if (searchResult === null || searchResult === void 0)
             return [];
 
-        else if (searchResult instanceof adapter.nativeMethods.Node)
-            return [searchResult];
+        else if (searchResult instanceof nativeMethods.Node)
+            return [searchResult as Node];
 
         else if (isArrayOfNodes(searchResult))
             return searchResult;
