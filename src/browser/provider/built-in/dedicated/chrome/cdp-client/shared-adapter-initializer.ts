@@ -23,11 +23,11 @@ initializeAdapter({
         dateNow:      Date.now,
     },
 
-    createEventSequence: (dragAndDropEnabled: boolean, firstMovingStepOccured: boolean, options: any) => {
-      return true;
+    createEventSequence: (dragAndDropEnabled: boolean, firstMovingStepOccured: boolean, options: any) => { // eslint-disable-line
+        return true;
     },
 
-    scroll: async (el: ServerNode, opts: ScrollOptions) => {
+    scroll: async (el: ServerNode, opts: ScrollOptions) => { // eslint-disable-line
         return true;
     },
 

@@ -1,14 +1,14 @@
 import { ServerNode } from '../types';
 
-export async function getIframeByElement ({ objectId }: ServerNode): Promise<ServerNode | null> {
+export async function getIframeByElement ({ objectId }: ServerNode): Promise<ServerNode | null> { // eslint-disable-line
     return null;
 }
 
-export async function getIFrameByIndex (objectId: string | undefined, index: number): Promise<ServerNode | null> {
+export async function getIFrameByIndex (objectId: string | undefined, index: number): Promise<ServerNode | null> { // eslint-disable-line
     return null;
 }
 
-export async function findIframeByWindow (context: any): Promise<ServerNode | null> {
+export async function findIframeByWindow (context: any): Promise<ServerNode | null> { // eslint-disable-line
     return null;
 }
 
@@ -33,7 +33,7 @@ export function isImgElement (node: ServerNode): boolean {
 }
 
 
-export async function getScrollingElement (node?: ServerNode): Promise<ServerNode> {
+export async function getScrollingElement (node?: ServerNode): Promise<ServerNode> { // eslint-disable-line
     return {} as ServerNode;
 }
 
@@ -45,7 +45,7 @@ export function isNodeEqual (el1: ServerNode, el2: ServerNode): boolean {
     return el1.backendNodeId === el2.backendNodeId;
 }
 
-export async function getDocumentElement (win: any): Promise<ServerNode> {
+export async function getDocumentElement (win: any): Promise<ServerNode> { // eslint-disable-line
     return {} as ServerNode;
 }
 
@@ -59,15 +59,15 @@ export async function isIframeWindow (): Promise<boolean> {
     return false;
 }
 
-export async function closest (el: ServerNode, selector: string): Promise<ServerNode | null> {
+export async function closest (el: ServerNode, selector: string): Promise<ServerNode | null> { // eslint-disable-line
     return null;
 }
 
-export async function getNodeText (el: ServerNode): Promise<string> {
+export async function getNodeText (el: ServerNode): Promise<string> { // eslint-disable-line
     return '';
 }
 
-export async function containsElement (el1: ServerNode, el2: ServerNode): Promise<boolean> {
+export async function containsElement (el1: ServerNode, el2: ServerNode): Promise<boolean> { // eslint-disable-line
     return true;
 }
 
@@ -83,7 +83,7 @@ export function getImgMapName (el: ServerNode): string {
     return el.attributes[useMapIndex + 1].substring(1);
 }
 
-export async function getParentNode ({ objectId }: ServerNode): Promise<ServerNode | null> {
+export async function getParentNode ({ objectId }: ServerNode): Promise<ServerNode | null> { // eslint-disable-line
     return null;
 }
 

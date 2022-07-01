@@ -68,7 +68,7 @@ export async function getIframePointRelativeToParentFrame (iframePoint: AxisValu
     return new AxisValues<number>(left, top);
 }
 
-export async function getElementFromPoint (point: AxisValuesData<number>): Promise<ServerNode | null> {
+export async function getElementFromPoint (point: AxisValuesData<number>): Promise<ServerNode | null> { // eslint-disable-line
     return null;
 }
 

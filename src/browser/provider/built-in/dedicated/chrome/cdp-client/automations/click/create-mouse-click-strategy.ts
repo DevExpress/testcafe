@@ -6,10 +6,10 @@ class CDPMouseClickStategy<E> extends MouseClickStrategyBase<E> {
         super();
     }
 
-    public async mousedown (options: MouseEventArgs<E>): Promise<void> {
+    public async mousedown (options: MouseEventArgs<E>): Promise<void> { // eslint-disable-line
     }
 
-    public async mouseup (element: E, options: MouseEventArgs<E>): Promise<MouseEventArgs<E>> {
+    public async mouseup (element: E, options: MouseEventArgs<E>): Promise<MouseEventArgs<E>> { // eslint-disable-line
         return options;
     }
 }

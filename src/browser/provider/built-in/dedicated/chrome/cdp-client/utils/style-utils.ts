@@ -5,17 +5,17 @@ import Protocol from 'devtools-protocol/types/protocol';
 import { getScrollingElement } from './dom-utils';
 import { ServerNode, PositionDimensions } from '../types';
 
-async function getPadding (node: ServerNode): Promise<BoundaryValuesData> {
+async function getPadding (node: ServerNode): Promise<BoundaryValuesData> { // eslint-disable-line
     return new BoundaryValues(0, 0, 0, 0);
 }
 
-export async function getStyleProperties (nodeId: number, ...names: string[]): Promise<Dictionary<string>> {
+export async function getStyleProperties (nodeId: number, ...names: string[]): Promise<Dictionary<string>> { // eslint-disable-line
     const properties: Dictionary<string> = { };
 
     return properties;
 }
 
-export async function getProperties (node: ServerNode, ...names: string[]): Promise<Dictionary<string>> {
+export async function getProperties (node: ServerNode, ...names: string[]): Promise<Dictionary<string>> { // eslint-disable-line
     const properties: Dictionary<string> = { };
 
     return properties;
@@ -27,11 +27,11 @@ export async function getScroll (node: ServerNode): Promise<LeftTopValues<number
     return { left: Number(scrollLeft), top: Number(scrollTop) };
 }
 
-export async function getBoxModel (node: ServerNode): Promise<Protocol.DOM.BoxModel> {
+export async function getBoxModel (node: ServerNode): Promise<Protocol.DOM.BoxModel> { // eslint-disable-line
     return {} as Protocol.DOM.BoxModel;
 }
 
-export async function getElementDimensions (node: ServerNode): Promise<PositionDimensions> {
+export async function getElementDimensions (node: ServerNode): Promise<PositionDimensions> { // eslint-disable-line
     return {} as PositionDimensions;
 }
 
@@ -55,7 +55,7 @@ export async function hasScroll (node: ServerNode): Promise<boolean> {
     return scroll.left > 0 || scroll.top > 0;
 }
 
-export async function getWindowDimensions (executionContext?: any): Promise<BoundaryValues> {
+export async function getWindowDimensions (executionContext?: any): Promise<BoundaryValues> { // eslint-disable-line
     return new BoundaryValues(0, 0, 0, 0);
 }
 
