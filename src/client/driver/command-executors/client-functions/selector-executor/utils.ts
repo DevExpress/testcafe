@@ -15,7 +15,7 @@ export function visible (el: Node): boolean {
     if (domUtils.isOptionElement(el) || domUtils.getTagName(el as Element) === 'optgroup')
         return isOptionElementVisible(el);
 
-    return domUtils.isElementVisible(el);
+    return utils.style.isElementVisible(el);
 }
 
 export function isNodeCollection (obj: unknown): obj is HTMLCollection | NodeList {
