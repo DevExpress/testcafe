@@ -1,7 +1,6 @@
 // NOTE: Initializer should be the first
 import './shared-adapter-initializer';
 
-import { readSync as read } from 'read-file-relative';
 import { Dictionary } from '../../../../../../configuration/interfaces';
 import Protocol from 'devtools-protocol';
 import path from 'path';
@@ -20,7 +19,6 @@ import {
 import prettyTime from 'pretty-hrtime';
 import { CheckedCDPMethod, ELAPSED_TIME_UPPERBOUNDS } from '../elapsed-upperbounds';
 import guardTimeExecution from '../../../../../../utils/guard-time-execution';
-import ExecutionContext from './execution-context';
 import delay from '../../../../../../utils/delay';
 
 import StartScreencastRequest = Protocol.Page.StartScreencastRequest;
@@ -279,10 +277,6 @@ export class BrowserClient {
             if (client) {
                 await this._calculateEmulatedDevicePixelRatio(client);
                 await this._setupClient(client);
-
-                if (this._proxyless) {
-                    ExecutionContext.initialize(client);
-                }
             }
         }
         catch (e) {

@@ -3,7 +3,6 @@ import BoundaryValues, { BoundaryValuesData } from '../../../../../../../shared/
 import { Dictionary } from '../../../../../../../configuration/interfaces';
 import Protocol from 'devtools-protocol/types/protocol';
 import { getScrollingElement } from './dom-utils';
-import ExecutionContext from '../execution-context';
 import { ServerNode, PositionDimensions } from '../types';
 
 async function getPadding (node: ServerNode): Promise<BoundaryValuesData> {
@@ -56,7 +55,7 @@ export async function hasScroll (node: ServerNode): Promise<boolean> {
     return scroll.left > 0 || scroll.top > 0;
 }
 
-export async function getWindowDimensions (executionContext?: ExecutionContext): Promise<BoundaryValues> {
+export async function getWindowDimensions (executionContext?: any): Promise<BoundaryValues> {
     return new BoundaryValues(0, 0, 0, 0);
 }
 

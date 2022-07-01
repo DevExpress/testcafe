@@ -1,5 +1,3 @@
-import Protocol from 'devtools-protocol/types/protocol';
-import ExecutionContext from '../execution-context';
 import { ServerNode } from '../types';
 
 export async function getIframeByElement ({ objectId }: ServerNode): Promise<ServerNode | null> {
@@ -10,7 +8,7 @@ export async function getIFrameByIndex (objectId: string | undefined, index: num
     return null;
 }
 
-export async function findIframeByWindow (context: ExecutionContext): Promise<ServerNode | null> {
+export async function findIframeByWindow (context: any): Promise<ServerNode | null> {
     return null;
 }
 
@@ -47,12 +45,12 @@ export function isNodeEqual (el1: ServerNode, el2: ServerNode): boolean {
     return el1.backendNodeId === el2.backendNodeId;
 }
 
-export async function getDocumentElement (win: ExecutionContext): Promise<ServerNode> {
+export async function getDocumentElement (win: any): Promise<ServerNode> {
     return {} as ServerNode;
 }
 
 export async function isDocumentElement (el: ServerNode): Promise<boolean> {
-    const docEl = await getDocumentElement(ExecutionContext.current);
+    const docEl = await getDocumentElement(null);
 
     return isNodeEqual(el, docEl);
 }

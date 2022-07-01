@@ -1,5 +1,3 @@
-import Protocol from 'devtools-protocol/types/protocol';
-import ExecutionContext from '../execution-context';
 import AxisValues, { AxisValuesData, LeftTopValues } from '../../../../../../../shared/utils/values/axis-values';
 import BoundaryValues, { BoundaryValuesData } from '../../../../../../../shared/utils/values/boundary-values';
 import { findIframeByWindow, getIframeByElement } from './dom-utils';
@@ -55,7 +53,7 @@ export async function getIframeClientCoordinates (node: ServerNode): Promise<Bou
     return new BoundaryValues(top, right, bottom, left);
 }
 
-export async function getIframePointRelativeToParentFrame (iframePoint: AxisValues<number>, context: ExecutionContext): Promise<AxisValues<number> | null> {
+export async function getIframePointRelativeToParentFrame (iframePoint: AxisValues<number>, context: any): Promise<AxisValues<number> | null> {
     const iframe = await findIframeByWindow(context);
 
     if (!iframe)

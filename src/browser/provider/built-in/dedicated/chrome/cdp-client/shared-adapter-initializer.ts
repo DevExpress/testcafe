@@ -5,7 +5,6 @@ import * as domUtils from './utils/dom-utils';
 import * as positionUtils from './utils/position-utils';
 import * as styleUtils from './utils/style-utils';
 import * as eventUtils from './utils/event-utils';
-import createEventSequence from './utils/create-event-sequence';
 import createMouseClickStrategy from './automations/click/create-mouse-click-strategy';
 
 
@@ -24,6 +23,10 @@ initializeAdapter({
         dateNow:      Date.now,
     },
 
+    createEventSequence: (dragAndDropEnabled: boolean, firstMovingStepOccured: boolean, options: any) => {
+      return true;
+    },
+
     scroll: async (el: ServerNode, opts: ScrollOptions) => {
         return true;
     },
@@ -39,8 +42,6 @@ initializeAdapter({
             return Object.assign(target, ...args);
         },
     },
-
-    createEventSequence,
 
     sendRequestToFrame: () => { },
 
