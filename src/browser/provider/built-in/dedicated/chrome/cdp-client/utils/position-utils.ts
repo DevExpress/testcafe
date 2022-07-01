@@ -3,9 +3,7 @@ import ExecutionContext from '../execution-context';
 import AxisValues, { AxisValuesData, LeftTopValues } from '../../../../../../../shared/utils/values/axis-values';
 import BoundaryValues, { BoundaryValuesData } from '../../../../../../../shared/utils/values/boundary-values';
 import { findIframeByWindow, getIframeByElement } from './dom-utils';
-import * as clientsManager from '../clients-manager';
 import { PositionDimensions, ServerNode } from '../types';
-import { describeNode } from './';
 
 import {
     getBoxModel,
@@ -73,21 +71,6 @@ export async function getIframePointRelativeToParentFrame (iframePoint: AxisValu
 }
 
 export async function getElementFromPoint (point: AxisValuesData<number>): Promise<ServerNode | null> {
-    const { DOM } = clientsManager.getClient();
-
-    try {
-        const { backendNodeId } = await DOM.getNodeForLocation({ x: point.x, y: point.y });
-
-        const result = await DOM.resolveNode({ backendNodeId });
-
-        if (result?.object.objectId)
-            return describeNode(DOM, result.object.objectId.toString());
-    }
-    catch {
-        // NOTE: TODO: for some reason this methods throws error for correct `point` values
-        // always throws error for negative values
-    }
-
     return null;
 }
 
@@ -119,19 +102,7 @@ export async function getClientDimensions (node: ServerNode): Promise<PositionDi
 }
 
 export async function getWindowPosition (): Promise<AxisValues<number>> {
-    const { Runtime } = clientsManager.getClient();
-
-    const args: Protocol.Runtime.EvaluateRequest = {
-        expression: `({
-            x: window.screenLeft || window.screenX,
-            y: window.screenTop || window.screenY
-        })`,
-        returnByValue: true,
-    };
-
-    const { result } = await Runtime.evaluate(args);
-
-    return result.value;
+    return {} as AxisValues<number>;
 }
 
 // TODO: implement

@@ -1,6 +1,5 @@
 import Protocol from 'devtools-protocol/types/protocol';
 import ProtocolProxyApi from 'devtools-protocol/types/protocol-proxy-api';
-import * as clientsManager from '../clients-manager';
 import AxisValues, { AxisValuesData } from '../../../../../../../shared/utils/values/axis-values';
 import { CursorUI } from '../../../../../../../shared/actions/types';
 
@@ -47,11 +46,11 @@ export class CursorUICdp implements CursorUI {
     }
 
     private get overlay (): ProtocolProxyApi.OverlayApi {
-        return clientsManager.getClient().Overlay;
+        return {} as ProtocolProxyApi.OverlayApi;
     }
 
     private get DOM (): ProtocolProxyApi.DOMApi {
-        return clientsManager.getClient().DOM;
+        return {} as ProtocolProxyApi.DOMApi;
     }
 
     public isVisible (): boolean {

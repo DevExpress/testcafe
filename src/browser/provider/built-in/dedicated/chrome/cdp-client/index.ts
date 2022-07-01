@@ -21,7 +21,6 @@ import prettyTime from 'pretty-hrtime';
 import { CheckedCDPMethod, ELAPSED_TIME_UPPERBOUNDS } from '../elapsed-upperbounds';
 import guardTimeExecution from '../../../../../../utils/guard-time-execution';
 import ExecutionContext from './execution-context';
-import * as clientsManager from './clients-manager';
 import delay from '../../../../../../utils/delay';
 
 import StartScreencastRequest = Protocol.Page.StartScreencastRequest;
@@ -205,14 +204,6 @@ export class BrowserClient {
         this._runtimeInfo.emulatedDevicePixelRatio = this._config.scaleFactor || this._runtimeInfo.originalDevicePixelRatio;
     }
 
-    private static async _injectProxylessStuff (client: remoteChrome.ProtocolApi): Promise<void> {
-        const script = read('../../../../../../../lib/client/proxyless/index.js') as string;
-
-        await client.Page.addScriptToEvaluateOnNewDocument({
-            source: script,
-        });
-    }
-
     public async resizeWindow (newDimensions: Size): Promise<void> {
         const { browserId, config, viewportSize, providerMethods, emulatedDevicePixelRatio } = this._runtimeInfo;
 
@@ -290,9 +281,7 @@ export class BrowserClient {
                 await this._setupClient(client);
 
                 if (this._proxyless) {
-                    await BrowserClient._injectProxylessStuff(client);
                     ExecutionContext.initialize(client);
-                    clientsManager.setClient(client);
                 }
             }
         }
