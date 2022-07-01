@@ -123,7 +123,7 @@ export default class Capturer {
         await this.provider.takeScreenshot(this.browserId, filePath, pageWidth, pageHeight, fullPage);
     }
 
-    async _capture (forError, { pageDimensions, cropDimensions, markSeed, customPath, fullPage, thumbnails } = {}) {
+    async _capture (forError, { actionId, failedActionId, pageDimensions, cropDimensions, markSeed, customPath, fullPage, thumbnails } = {}) {
         if (!this.enabled)
             return null;
 
@@ -191,6 +191,7 @@ export default class Capturer {
             userAgent,
             quarantineAttempt,
             takenOnFail,
+            actionId: failedActionId || actionId,
         };
 
         this.testEntry.screenshots.push(screenshot);

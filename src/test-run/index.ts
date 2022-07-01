@@ -1124,7 +1124,7 @@ export default class TestRun extends AsyncEventEmitter {
             // if error is TestCafeErrorList we do not need to create an adapter,
             // since error is already was processed in role initializer
             if (!(error instanceof TestCafeErrorList)) {
-                await this._makeScreenshotOnFail();
+                await this._makeScreenshotOnFail(command.actionId);
 
                 errorAdapter = this._createErrorAdapter(processTestFnError(error));
             }
@@ -1251,11 +1251,11 @@ export default class TestRun extends AsyncEventEmitter {
         return new actionCommands.CloseChildWindowOnFileDownloading();
     }
 
-    public async _makeScreenshotOnFail (): Promise<void> {
+    public async _makeScreenshotOnFail (failedActionId?: string): Promise<void> {
         const { screenshots } = this.opts;
 
         if (!this.errScreenshotPath && (screenshots as ScreenshotOptionValue)?.takeOnFails)
-            this.errScreenshotPath = await this._internalExecuteCommand(new browserManipulationCommands.TakeScreenshotOnFailCommand()) as string;
+            this.errScreenshotPath = await this._internalExecuteCommand(new browserManipulationCommands.TakeScreenshotOnFailCommand({ failedActionId })) as string;
     }
 
     private _decorateWithFlag (fn: Function, flagName: string, value: boolean): () => Promise<void> {
