@@ -1,6 +1,6 @@
 import { adapter } from '../adapter';
 import EventEmitter from '../utils/event-emitter';
-import ComplexBarrier from '../barriers/complex-barrier';
+import ComplexBarrier from '../../client/driver/barriers/complex-barrier';
 import delay from '../utils/delay';
 import { whilst } from '../utils/promise';
 import { ActionCommandBase } from '../../test-run/commands/base';

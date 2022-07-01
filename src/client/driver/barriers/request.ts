@@ -1,6 +1,7 @@
-import { adapter } from '../adapter';
-import delay from '../../utils/delay';
-import { NativeMethods, ClientRequestEmitter } from '../types';
+import delay from '../../core/utils/delay';
+import { NativeMethods, ClientRequestEmitter } from '../../../shared/types';
+// @ts-ignore
+import { nativeMethods, Promise } from '../deps/hammerhead';
 
 
 interface Delays {
@@ -75,7 +76,7 @@ export default class RequestBarrier<R> {
 
     private _finishWaiting (): void {
         if (this._watchdog) {
-            const clearTimeout = adapter.nativeMethods.clearTimeout;
+            const clearTimeout = nativeMethods.clearTimeout;
 
             clearTimeout(this._watchdog);
 
@@ -89,7 +90,7 @@ export default class RequestBarrier<R> {
 
     public wait (isPageLoad?: boolean): Promise<void> {
         return delay(isPageLoad ? this._delays.pageInitialRequestsCollection : this._delays.requestsCollection)
-            .then(() => new adapter.PromiseCtor((resolve: () => void) => {
+            .then(() => new Promise((resolve: () => void) => {
                 this._collectingReqs = false;
                 this._waitResolve    = resolve;
 
@@ -99,7 +100,7 @@ export default class RequestBarrier<R> {
                     return;
                 }
 
-                const setTimeout = adapter.nativeMethods.setTimeout;
+                const setTimeout = nativeMethods.setTimeout;
 
                 this._watchdog = setTimeout(() => this._finishWaiting(), RequestBarrier.TIMEOUT);
             }));

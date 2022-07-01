@@ -110,7 +110,7 @@ import sendMessageToDriver from './driver-link/send-message-to-driver';
 import getExecutorResultDriverStatus from './command-executors/get-executor-result-driver-status';
 import SelectorExecutor from './command-executors/client-functions/selector-executor';
 import SelectorElementActionTransform from './command-executors/client-functions/replicator/transforms/selector-element-action-transform';
-import BarriersComplex from '../../shared/barriers/complex-barrier';
+import BarriersComplex from './barriers/complex-barrier';
 import createErrorCtorCallback, {
     getCannotObtainInfoErrorCtor,
     getInvisibleErrorCtor,
