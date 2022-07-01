@@ -4,7 +4,8 @@ import {
     ELEMENT_ACTION_SNAPSHOT_PROPERTIES,
 } from '../../../../../client-functions/selectors/snapshot-properties';
 import { Dictionary } from '../../../../../configuration/interfaces';
-import adapter from '../adapter/index';
+// @ts-ignore
+import { utils } from '../../../deps/hammerhead';
 
 
 const nodeSnapshotPropertyInitializers = {
@@ -61,8 +62,8 @@ export class NodeSnapshot extends BaseSnapshot {
 // Element
 const elementSnapshotPropertyInitializers = {
     tagName: (element: Element) => element.tagName.toLowerCase(),
-    visible: (element: Element) => adapter.isElementVisible(element),
-    focused: (element: Element) => adapter.getActiveElement() === element,
+    visible: (element: Element) => utils.style.isElementVisible(element),
+    focused: (element: Element) => utils.dom.getActiveElement() === element,
 
     attributes: (element: Element) => {
         // eslint-disable-next-line no-restricted-properties
