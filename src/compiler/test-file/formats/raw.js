@@ -11,16 +11,22 @@ export default class RawTestFileCompiler extends TestFileCompilerBase {
     static _createTestFn (commands) {
         return async t => {
             for (let i = 0; i < commands.length; i++) {
-                const callsite = commands[i]?.id ? new RawCommandCallsiteRecord(commands[i].id, commands) : commands[i]?.callsite;
+                const {
+                    actionId: initActionId,
+                    callsite: initCallsite,
+                    ...commandObj
+                } = commands[i];
+                const actionId = initActionId || parseInt(initCallsite, 10);
+                const callsite = actionId ? new RawCommandCallsiteRecord(actionId, commands) : initCallsite || initActionId;
 
                 try {
-                    const command = createCommandFromObject(commands[i], t.testRun);
+                    const command = createCommandFromObject(commandObj, t.testRun);
 
                     await t.testRun.executeCommand(command, callsite);
                 }
                 catch (err) {
                     err.callsite  = callsite;
-                    err.commandId = commands[i]?.id;
+                    err.actionId  = initActionId;
                     throw err;
                 }
             }

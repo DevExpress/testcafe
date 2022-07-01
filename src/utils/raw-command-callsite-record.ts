@@ -84,12 +84,12 @@ export const renderers = {
 };
 
 export class RawCommandCallsiteRecord {
-    public readonly id: number;
+    public readonly actionId: number;
     private readonly _list: Command[];
 
-    public constructor (id: number, list: Command[]) {
-        this.id   = id;
-        this._list = list;
+    public constructor (actionId: number, list: Command[]) {
+        this.actionId = actionId;
+        this._list    = list;
     }
 
     public renderSync (opts: RenderOptions): string {
@@ -102,7 +102,7 @@ export class RawCommandCallsiteRecord {
         if (!codeFrame)
             return '';
 
-        const baseId = this._list.findIndex(item => item.id === this.id);
+        const baseId = this._list.findIndex(item => item.actionId === this.actionId);
 
         if (baseId < 0)
             return '';
