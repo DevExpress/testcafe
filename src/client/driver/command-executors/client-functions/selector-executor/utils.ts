@@ -3,7 +3,7 @@ import { nativeMethods, utils } from '../../../deps/hammerhead';
 // @ts-ignore
 import { domUtils, positionUtils } from '../../../deps/testcafe-core';
 // @ts-ignore
-import { isOptionElementVisible } from '../../../deps/testcafe-ui';
+import { selectElement } from '../../../deps/testcafe-ui';
 
 export function visible (el: Node): boolean {
     if (domUtils.isIframeElement(el))
@@ -13,7 +13,7 @@ export function visible (el: Node): boolean {
         return false;
 
     if (domUtils.isOptionElement(el) || domUtils.getTagName(el as Element) === 'optgroup')
-        return isOptionElementVisible(el);
+        return selectElement.isOptionElementVisible(el);
 
     return utils.style.isElementVisible(el);
 }
