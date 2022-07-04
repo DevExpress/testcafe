@@ -336,10 +336,7 @@ export default class Reporter {
                 ],
             });
 
-            if (!nextReportItem)
-                continue;
-
-            if (nextReportItem.fixture === currentFixture)
+            if (!nextReportItem || nextReportItem.fixture === currentFixture)
                 continue;
 
             await this.dispatchToPlugin({
