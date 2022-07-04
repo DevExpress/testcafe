@@ -5,6 +5,7 @@ import { domUtils, positionUtils } from '../../../deps/testcafe-core';
 // @ts-ignore
 import { selectElement } from '../../../deps/testcafe-ui';
 
+
 export function visible (el: Node): boolean {
     if (domUtils.isIframeElement(el))
         return positionUtils.isIframeVisible(el);
@@ -15,7 +16,7 @@ export function visible (el: Node): boolean {
     if (domUtils.isOptionElement(el) || domUtils.getTagName(el as Element) === 'optgroup')
         return selectElement.isOptionElementVisible(el);
 
-    return utils.style.isElementVisible(el);
+    return positionUtils.isElementVisible(el);
 }
 
 export function isNodeCollection (obj: unknown): obj is HTMLCollection | NodeList {
