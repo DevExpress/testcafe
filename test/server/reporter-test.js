@@ -761,6 +761,9 @@ describe('Reporter', () => {
                             id:   'fid1',
                             name: 'fixture1',
                             path: './file1.js',
+                            meta: {
+                                run: 'run-001',
+                            },
                         },
                     },
                     {
@@ -851,6 +854,9 @@ describe('Reporter', () => {
                             id:   'fid1',
                             name: 'fixture1',
                             path: './file1.js',
+                            meta: {
+                                run: 'run-001',
+                            },
                         },
                     },
                     {
@@ -913,6 +919,9 @@ describe('Reporter', () => {
                             id:   'fid1',
                             name: 'fixture1',
                             path: './file1.js',
+                            meta: {
+                                run: 'run-001',
+                            },
                         },
                     },
                     {
@@ -985,6 +994,9 @@ describe('Reporter', () => {
                             id:   'fid2',
                             name: 'fixture2',
                             path: './file1.js',
+                            meta: {
+                                run: 'run-002',
+                            },
                         },
                     },
                     {
@@ -1047,6 +1059,9 @@ describe('Reporter', () => {
                             id:   'fid2',
                             name: 'fixture2',
                             path: './file1.js',
+                            meta: {
+                                run: 'run-002',
+                            },
                         },
                     },
                     {
@@ -1123,6 +1138,7 @@ describe('Reporter', () => {
                             id:   'fid3',
                             name: 'fixture3',
                             path: './file2.js',
+                            meta: null,
                         },
                     },
                     {
@@ -1185,6 +1201,7 @@ describe('Reporter', () => {
                             id:   'fid3',
                             name: 'fixture3',
                             path: './file2.js',
+                            meta: null,
                         },
                     },
                     {
@@ -1247,6 +1264,7 @@ describe('Reporter', () => {
                             id:   'fid3',
                             name: 'fixture3',
                             path: './file2.js',
+                            meta: null,
                         },
                     },
                     {

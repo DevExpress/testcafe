@@ -31,6 +31,7 @@ import path from 'path';
 import fs from 'fs';
 import MessageBus from '../utils/message-bus';
 import BrowserConnection from '../browser/connection';
+import { Dictionary } from '../configuration/interfaces';
 
 interface PendingPromise {
     resolve: Function | null;
@@ -72,6 +73,7 @@ interface FixtureInfo {
     id: string;
     name: string | null;
     path: string;
+    meta: Dictionary<string>;
 }
 
 interface BrowserRunInfo extends Browser {
@@ -312,6 +314,7 @@ export default class Reporter {
                 id:   reportItem.fixture.id,
                 name: reportItem.fixture.name,
                 path: reportItem.fixture.path,
+                meta: reportItem.fixture.meta,
             },
         };
     }
