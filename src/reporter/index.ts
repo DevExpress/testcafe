@@ -68,6 +68,12 @@ interface TestInfo {
     browsers: BrowserRunInfo[];
 }
 
+interface FixtureInfo {
+    id: string;
+    name: string | null;
+    path: string;
+}
+
 interface BrowserRunInfo extends Browser {
     testRunId: string;
     quarantineAttemptsTestRunIds?: string[];
@@ -85,6 +91,7 @@ interface TestRunInfo {
     skipped: boolean;
     browsers: unknown[];
     testId: string;
+    fixture: FixtureInfo;
 }
 
 interface PluginMethodArguments {
@@ -301,6 +308,11 @@ export default class Reporter {
             skipped:        reportItem.test.skip,
             browsers:       reportItem.browsers,
             testId:         reportItem.test.id,
+            fixture:        {
+                id:   reportItem.fixture.id,
+                name: reportItem.fixture.name,
+                path: reportItem.fixture.path,
+            },
         };
     }
 
