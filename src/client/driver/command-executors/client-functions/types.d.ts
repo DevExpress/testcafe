@@ -58,19 +58,3 @@ export interface NativeMethods {
     scrollTo: Window['scrollTo'];
 }
 
-export interface ClientFunctionAdapter {
-    isProxyless: boolean;
-    nativeMethods: NativeMethods;
-    PromiseCtor: typeof Promise;
-    delay (ms: number): Promise<void>;
-    isShadowRoot (el: Node): boolean;
-    isDomElement (el: unknown): boolean;
-    isTextNode (el: unknown): boolean;
-    isOptionElement (el: unknown): boolean;
-    getTagName (el: Element): string;
-    isOptionElementVisible (el: Node): boolean;
-    isElementVisible (el: Node): boolean;
-    isIframeElement (el: Node): boolean;
-    isIframeVisible (el: Node): boolean;
-    getActiveElement (): Node;
-}

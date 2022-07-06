@@ -1,7 +1,8 @@
-import { adapter } from '../adapter/index';
 import RequestBarrier from './request';
 import ScriptExecutionBarrier from './script-execution';
-import { ClientRequestEmitter, ScriptExecutionEmitter } from '../types';
+import { ClientRequestEmitter, ScriptExecutionEmitter } from '../../../shared/types';
+// @ts-ignore
+import { Promise } from '../deps/hammerhead';
 
 
 interface PageUnloadBarrier {
@@ -24,7 +25,7 @@ export default class BarriersComplex<R, S> {
     }
 
     public wait (): Promise<void> {
-        return adapter.PromiseCtor.all([
+        return Promise.all([
             // NOTE: script can be added by xhr-request, so we should run
             // script execution barrier waiting after request barrier resolved
             this._requestBarrier.wait()

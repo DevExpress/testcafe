@@ -1,7 +1,7 @@
-import { adapter } from '../adapter';
-import delay from '../utils/delay';
-import { ScriptExecutionEmitter, NativeMethods } from '../types';
-
+import delay from '../../core/utils/delay';
+import { ScriptExecutionEmitter, NativeMethods } from '../../../shared/types';
+// @ts-ignore
+import { nativeMethods, Promise } from '../deps/hammerhead';
 
 type TimeoutLabel = ReturnType<NativeMethods['setTimeout']>;
 
@@ -35,7 +35,7 @@ export default class ScriptExecutionBarrier<S> {
     }
 
     private _onScriptElementAdded (script: S): void {
-        const setTimeout     = adapter.nativeMethods.setTimeout;
+        const setTimeout     = nativeMethods.setTimeout;
         const timeoutFn      = (): void => this._onScriptLoadedOrFailed(script, true);
         const loadingTimeout = setTimeout(timeoutFn, ScriptExecutionBarrier.LOADING_TIMEOUT);
 
@@ -47,7 +47,7 @@ export default class ScriptExecutionBarrier<S> {
             return;
 
         if (!isTimeout) {
-            const clearTimeout = adapter.nativeMethods.clearTimeout;
+            const clearTimeout = nativeMethods.clearTimeout;
 
             clearTimeout(this._scripts.get(script) as TimeoutLabel);
         }
@@ -66,7 +66,7 @@ export default class ScriptExecutionBarrier<S> {
 
     private _finishWaiting (): void {
         if (this._watchdog) {
-            const clearTimeout = adapter.nativeMethods.clearTimeout;
+            const clearTimeout = nativeMethods.clearTimeout;
 
             clearTimeout(this._watchdog);
 
@@ -81,7 +81,7 @@ export default class ScriptExecutionBarrier<S> {
     }
 
     public wait (): Promise<void> {
-        return new adapter.PromiseCtor((resolve: () => void) => {
+        return new Promise((resolve: () => void) => {
             this._waitResolve = resolve;
 
             if (!this._scripts.size) {
@@ -90,7 +90,7 @@ export default class ScriptExecutionBarrier<S> {
                 return;
             }
 
-            const setTimeout = adapter.nativeMethods.setTimeout;
+            const setTimeout = nativeMethods.setTimeout;
 
             this._watchdog = setTimeout(() => this._finishWaiting(), ScriptExecutionBarrier.TIMEOUT);
         });

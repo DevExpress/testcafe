@@ -6,7 +6,9 @@ import { UncaughtErrorInClientFunctionCode } from '../../../../shared/errors/ind
 import Replicator from 'replicator';
 import { ExecuteClientFunctionCommand, ExecuteClientFunctionCommandBase } from '../../../../test-run/commands/observation';
 import { Dictionary } from '../../../../configuration/interfaces';
-import adapter from './adapter/index';
+// @ts-ignore
+import { Promise } from '../../deps/hammerhead';
+
 
 export default class ClientFunctionExecutor<
     C extends ExecuteClientFunctionCommandBase = ExecuteClientFunctionCommand,
@@ -26,14 +28,14 @@ export default class ClientFunctionExecutor<
     }
 
     public getResult (): Promise<unknown> {
-        return adapter.PromiseCtor.resolve()
+        return Promise.resolve()
             .then(() => {
                 const args = this.replicator.decode(this.command.args) as unknown[];
 
                 return this._executeFn(args);
             })
-            .catch(err => {
-                if (!err.isTestCafeError && !adapter.isProxyless)
+            .catch((err: any) => {
+                if (!err.isTestCafeError)
                     err = new UncaughtErrorInClientFunctionCode(this.command.instantiationCallsiteName, err);
 
                 throw err;

@@ -1,7 +1,6 @@
 // NOTE: Initializer should be the first
 import './shared-adapter-initializer';
 
-import { readSync as read } from 'read-file-relative';
 import { Dictionary } from '../../../../../../configuration/interfaces';
 import Protocol from 'devtools-protocol';
 import path from 'path';
@@ -20,9 +19,6 @@ import {
 import prettyTime from 'pretty-hrtime';
 import { CheckedCDPMethod, ELAPSED_TIME_UPPERBOUNDS } from '../elapsed-upperbounds';
 import guardTimeExecution from '../../../../../../utils/guard-time-execution';
-import ClientFunctionExecutor from './client-function-executor';
-import ExecutionContext from './execution-context';
-import * as clientsManager from './clients-manager';
 import delay from '../../../../../../utils/delay';
 
 import StartScreencastRequest = Protocol.Page.StartScreencastRequest;
@@ -59,7 +55,6 @@ export class BrowserClient {
     private readonly _proxyless: boolean;
     private _parentTarget?: remoteChrome.TargetInfo;
     private readonly debugLogger: debug.Debugger;
-    private readonly _clientFunctionExecutor: ClientFunctionExecutor;
     private readonly _videoFramesBuffer: VideoFrameData[];
     private _lastFrame: VideoFrameData | null;
 
@@ -67,8 +62,6 @@ export class BrowserClient {
         this._runtimeInfo = runtimeInfo;
         this.debugLogger  = debug(DEBUG_SCOPE(runtimeInfo.browserId));
         this._proxyless   = proxyless;
-
-        this._clientFunctionExecutor = new ClientFunctionExecutor();
 
         runtimeInfo.browserClient = this;
 
@@ -209,14 +202,6 @@ export class BrowserClient {
         this._runtimeInfo.emulatedDevicePixelRatio = this._config.scaleFactor || this._runtimeInfo.originalDevicePixelRatio;
     }
 
-    private static async _injectProxylessStuff (client: remoteChrome.ProtocolApi): Promise<void> {
-        const script = read('../../../../../../../lib/client/proxyless/index.js') as string;
-
-        await client.Page.addScriptToEvaluateOnNewDocument({
-            source: script,
-        });
-    }
-
     public async resizeWindow (newDimensions: Size): Promise<void> {
         const { browserId, config, viewportSize, providerMethods, emulatedDevicePixelRatio } = this._runtimeInfo;
 
@@ -292,12 +277,6 @@ export class BrowserClient {
             if (client) {
                 await this._calculateEmulatedDevicePixelRatio(client);
                 await this._setupClient(client);
-
-                if (this._proxyless) {
-                    await BrowserClient._injectProxylessStuff(client);
-                    ExecutionContext.initialize(client);
-                    clientsManager.setClient(client);
-                }
             }
         }
         catch (e) {

@@ -10,10 +10,17 @@ import {
 } from '../types';
 import selectorFilter from './filter';
 import Replicator from 'replicator';
-import adapter from '../adapter/index';
 import { visible } from './utils';
 import CHECK_ELEMENT_DELAY from './check-element-delay';
-
+import {
+    // @ts-ignore
+    nativeMethods,
+    // @ts-ignore
+    Promise,
+    // @ts-ignore
+    utils,
+} from '../../../deps/hammerhead';
+import delay from '../../../../core/utils/delay';
 
 export default class SelectorExecutor extends ClientFunctionExecutor<ExecuteSelectorCommand, SelectorDependencies> {
     private readonly createNotFoundError: SelectorErrorCb | null;
@@ -36,7 +43,7 @@ export default class SelectorExecutor extends ClientFunctionExecutor<ExecuteSele
         this.dependencies.selectorFilter = selectorFilter;
 
         if (startTime) {
-            const elapsed = adapter.nativeMethods.dateNow() - startTime;
+            const elapsed = nativeMethods.dateNow() - startTime;
 
             this.timeout = Math.max(this.timeout - elapsed, 0);
         }
@@ -66,19 +73,19 @@ export default class SelectorExecutor extends ClientFunctionExecutor<ExecuteSele
     }
 
     private _validateElement (args: unknown[], startTime: number): Promise<Node | null> {
-        return adapter.PromiseCtor.resolve()
+        return Promise.resolve()
             .then(() => super._executeFn(args))
             .then((el: unknown) => {
                 const element          = el as Node | undefined;
                 const isElementExists  = !!element;
                 const isElementVisible = !this.command.visibilityCheck || element && visible(element);
-                const isTimeout        = adapter.nativeMethods.dateNow() - startTime >= this.timeout;
+                const isTimeout        = nativeMethods.dateNow() - startTime >= this.timeout;
 
-                if (isElementExists && (isElementVisible || adapter.isShadowRoot(element as Node)))
+                if (isElementExists && (isElementVisible || utils.dom.isShadowRoot(element as Node)))
                     return element as Node;
 
                 if (!isTimeout)
-                    return adapter.delay(CHECK_ELEMENT_DELAY).then(() => this._validateElement(args, startTime));
+                    return delay(CHECK_ELEMENT_DELAY).then(() => this._validateElement(args, startTime));
 
                 const createTimeoutError = this.getVisibleValueMode ? null : this._getTimeoutError(isElementExists);
 
@@ -93,6 +100,6 @@ export default class SelectorExecutor extends ClientFunctionExecutor<ExecuteSele
         if (this.counterMode)
             return super._executeFn(args) as Promise<number>;
 
-        return this._validateElement(args, adapter.nativeMethods.dateNow());
+        return this._validateElement(args, nativeMethods.dateNow());
     }
 }

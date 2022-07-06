@@ -101,13 +101,6 @@ export default {
         await this.resizeWindow(browserId, maximumSize.width, maximumSize.height, maximumSize.width, maximumSize.height);
     },
 
-    async executeSelector ({ browserId, command, callsite, selectorTimeout }) {
-        const runtimeInfo   = this.openedBrowsers[browserId];
-        const browserClient = this._getBrowserProtocolClient(runtimeInfo);
-
-        return browserClient.executeSelector(command, callsite, selectorTimeout);
-    },
-
     async closeBrowserChildWindow (browserId) {
         const runtimeInfo   = this.openedBrowsers[browserId];
         const browserClient = this._getBrowserProtocolClient(runtimeInfo);

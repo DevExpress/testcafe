@@ -1,8 +1,9 @@
 import { Transform } from 'replicator';
 import { CustomDOMProperties } from '../../types';
 import { ElementSnapshot, NodeSnapshot } from '../../selector-executor/node-snapshots';
-import adapter from '../../adapter/index';
 import { UncaughtErrorInCustomDOMPropertyCode } from '../../../../../../shared/errors/index';
+// @ts-ignore
+import { nativeMethods } from '../../../../deps/hammerhead';
 
 export default class SelectorNodeTransform implements Transform {
     public readonly type = 'Node';
@@ -15,7 +16,7 @@ export default class SelectorNodeTransform implements Transform {
     }
 
     private _extend (snapshot: NodeSnapshot | ElementSnapshot, node: Node): void {
-        const props = adapter.nativeMethods.objectKeys(this._customDOMProperties);
+        const props = nativeMethods.objectKeys(this._customDOMProperties);
 
         for (const prop of props) {
             try {
@@ -28,7 +29,7 @@ export default class SelectorNodeTransform implements Transform {
     }
 
     public shouldTransform (type: string, val: unknown): boolean {
-        return val instanceof adapter.nativeMethods.Node;
+        return val instanceof nativeMethods.Node;
     }
 
     public toSerializable (node: Element): NodeSnapshot | ElementSnapshot {

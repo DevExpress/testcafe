@@ -5,9 +5,9 @@ import './shared-adapter-initializer';
 import hammerhead from './deps/hammerhead';
 
 import KEY_MAPS from './utils/key-maps';
-import RequestBarrier from '../../shared/barriers/request';
+import RequestBarrier from '../driver/barriers/request';
 import ClientRequestEmitter from './barriers/emitters/client-request';
-import ScriptExecutionBarrier from '../../shared/barriers/script-execution';
+import ScriptExecutionBarrier from '../driver/barriers/script-execution';
 import ScriptExecutionEmitter from './barriers/emitters/script-execution';
 import * as pageUnloadBarrier from './barriers/page-unload-barrier';
 import { preventRealEvents, disableRealEventsPreventing } from './prevent-real-events';
