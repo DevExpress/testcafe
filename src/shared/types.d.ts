@@ -29,9 +29,6 @@ export interface SharedAdapter {
     getElementExceptUI: (point: AxisValuesData<number>, underTopShadowUIElement?: boolean) => Promise<any>;
 
     dom: {
-        isBodyElement: (el: any) => boolean;
-        isDomElement: (el: any) => boolean;
-        getDocumentElement: (win: any) => SharedFnResult<any>;
         findIframeByWindow: (win: any) => SharedFnResult<any>;
         isDocumentElement: (el: any) => SharedFnResult<boolean>;
         isIframeWindow (win: any): SharedFnResult<boolean | null>;

@@ -91,7 +91,7 @@ export default class MoveAutomation<E, W extends SharedWindow> {
                 if (!containsOffset) {
                     return Promise.all([
                         getAutomationPoint(element, offset),
-                        adapter.dom.getDocumentElement(window),
+                        domUtils.getDocumentElement(window),
                     ])
                         .then(([point, docEl]:[any, HTMLElement]) => ({ element: docEl, offset: point }));
                 }
@@ -115,7 +115,7 @@ export default class MoveAutomation<E, W extends SharedWindow> {
 
                 return Promise.resolve(adapter.position.getClientPosition(this.element))
                     .then((clientPosition: any) => {
-                        const isDocumentBody = adapter.dom.isBodyElement(this.element);
+                        const isDocumentBody = domUtils.isBodyElement(this.element);
                         // @ts-ignore
                         const clientPoint = AxisValues.create(clientPosition).add(this.offset);
 

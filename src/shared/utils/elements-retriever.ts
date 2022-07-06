@@ -1,4 +1,3 @@
-import { adapter } from '../adapter';
 import { ExecuteSelectorCommand } from '../../test-run/commands/observation';
 import { ExecuteSelectorFn } from '../types';
 import NODE_TYPE_DESCRIPTIONS from '../utils/node-type-descriptions';
@@ -9,6 +8,8 @@ import {
 import { getInvisibleErrorCtor, getNotFoundErrorCtor } from '../errors/selector-error-ctor-callback';
 // @ts-ignore
 import { nativeMethods, Promise } from '../../client/driver/deps/hammerhead';
+// @ts-ignore
+import { domUtils } from '../../client/driver/deps/testcafe-core';
 
 export default class ElementsRetriever<T> {
     private readonly _globalSelectorTimeout: number;
@@ -34,7 +35,7 @@ export default class ElementsRetriever<T> {
                 }, this._ensureElementsStartTime);
             })
             .then((el: T) => {
-                if (!adapter.dom.isDomElement(el)) {
+                if (!domUtils.isDomElement(el)) {
                     const nodeType    = (el as unknown as { nodeType: number }).nodeType;
                     const nodeTypeStr = NODE_TYPE_DESCRIPTIONS[nodeType];
 
