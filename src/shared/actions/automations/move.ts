@@ -8,8 +8,18 @@ import {
     ScrollOptions,
 } from '../../../test-run/commands/options';
 import lastHoveredElementHolder from './last-hovered-element-holder';
+
+import {
+    // @ts-ignore
+    nativeMethods,
+    // @ts-ignore
+    Promise,
+    // @ts-ignore
+    utils,
+} from '../../../client/driver/deps/hammerhead';
+
 // @ts-ignore
-import { nativeMethods, Promise } from '../../../client/driver/deps/hammerhead';
+import { domUtils } from '../../../client/automation/deps/testcafe-core';
 
 const MOVE_REQUEST_CMD  = 'automation|move|request';
 const MOVE_RESPONSE_CMD = 'automation|move|response';
@@ -46,7 +56,7 @@ export default class MoveAutomation<E, W extends SharedWindow> {
     private firstMovingStepOccured: boolean;
 
     protected constructor (el: E, offset: AxisValuesData<number>, moveOptions: MoveOptions, win: W, cursor: Cursor<W>) {
-        this.touchMode = adapter.featureDetection.isTouchDevice;
+        this.touchMode = utils.featureDetection.isTouchDevice;
         this.moveEvent = this.touchMode ? 'touchmove' : 'mousemove';
 
         this.automationSettings = new AutomationSettings(moveOptions.speed);
@@ -97,7 +107,7 @@ export default class MoveAutomation<E, W extends SharedWindow> {
     private _getTargetClientPoint (): Promise<AxisValues<number>> {
         return Promise.resolve(adapter.style.getElementScroll(this.element))
             .then((scroll: any) => {
-                if (adapter.dom.isHtmlElement(this.element)) {
+                if (domUtils.isHtmlElement(this.element)) {
                     return AxisValues.create(this.offset)
                         .sub(AxisValues.create(scroll))
                         .round(Math.round);

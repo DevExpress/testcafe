@@ -9,13 +9,12 @@ import { createMouseClickStrategy } from './playback/click/browser-click-strateg
 import cursor from './cursor';
 
 
-const { utils: { featureDetection } } = hammerhead;
 const { domUtils: dom, positionUtils: position, ScrollAutomation, styleUtils: style, eventUtils: event } = testCafeCore;
 
 initializeAdapter({
     scroll:             (el: any, scrollOptions: ScrollOptions) => new ScrollAutomation(el, scrollOptions).run(),
     getElementExceptUI: getElementExceptUI,
-    dom, position, style, event, featureDetection,
+    dom, position, style, event,
     createEventSequence,
     sendRequestToFrame: testCafeCore.sendRequestToFrame,
     ensureMouseEventAfterScroll,

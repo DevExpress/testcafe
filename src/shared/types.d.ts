@@ -28,12 +28,7 @@ export interface SharedAdapter {
 
     getElementExceptUI: (point: AxisValuesData<number>, underTopShadowUIElement?: boolean) => Promise<any>;
 
-    featureDetection: {
-        isTouchDevice: boolean;
-    };
-
     dom: {
-        isHtmlElement: (el: any) => boolean;
         isBodyElement: (el: any) => boolean;
         isDomElement: (el: any) => boolean;
         getDocumentElement: (win: any) => SharedFnResult<any>;

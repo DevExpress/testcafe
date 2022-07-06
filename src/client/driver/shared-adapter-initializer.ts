@@ -4,7 +4,7 @@ import testCafeCore from './deps/testcafe-core';
 import { initializeAdapter } from '../../shared/adapter/index';
 import { MouseClickStrategyEmpty } from '../../shared/actions/automations/click/mouse-click-strategy-base';
 
-const { Promise, utils: { featureDetection } } = hammerhead;
+const { Promise } = hammerhead;
 const { domUtils: dom, positionUtils: position, styleUtils: style, eventUtils: event } = testCafeCore;
 const { getOffsetOptions } = testCafeAutomation;
 
@@ -12,7 +12,7 @@ const { getOffsetOptions } = testCafeAutomation;
 initializeAdapter({
     getOffsetOptions: getOffsetOptions,
 
-    dom, position, style, event, featureDetection,
+    dom, position, style, event,
 
     // NOTE: this functions are unnecessary in the driver
     getElementExceptUI:          () => Promise.resolve(),
