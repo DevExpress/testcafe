@@ -7,12 +7,11 @@ import * as style from './utils/style';
 import * as event from './utils/event';
 import { MouseClickStrategyEmpty } from '../../shared/actions/automations/click/mouse-click-strategy-base';
 
-const { Promise, utils: { browser, featureDetection, extend } } = hammerhead;
+const { Promise, utils: { featureDetection } } = hammerhead;
 
 
 initializeAdapter({
-    dom, position, style, event, browser, featureDetection,
-    utils:                       { extend },
+    dom, position, style, event, featureDetection,
     // NOTE: this functions are unnecessary in the core
     getElementExceptUI:          () => Promise.resolve(),
     scroll:                      () => Promise.resolve(),

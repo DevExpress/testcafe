@@ -28,11 +28,6 @@ export interface SharedAdapter {
 
     getElementExceptUI: (point: AxisValuesData<number>, underTopShadowUIElement?: boolean) => Promise<any>;
 
-    browser: {
-        isChrome?: boolean;
-        isFirefox?: boolean;
-    };
-
     featureDetection: {
         isTouchDevice: boolean;
     };
@@ -65,10 +60,6 @@ export interface SharedAdapter {
         getClientDimensions (el: any): SharedFnResult<Dimensions>;
         getElementRectangle (el: any): SharedFnResult<ElementRectangle>;
         offsetToClientCoords (point: AxisValuesData<number>): SharedFnResult<AxisValues<number>>;
-    };
-
-    utils: {
-        extend (target: Record<string, any>, ...args: Record<string, any>[]): Record<string, any>;
     };
 
     style: {

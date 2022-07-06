@@ -3,7 +3,7 @@ import isIframeWindow from './utils/is-window-iframe';
 import { AxisValuesData } from '../utils/values/axis-values';
 import { SharedWindow } from '../types';
 // @ts-ignore
-import { Promise } from '../../client/driver/deps/hammerhead';
+import { Promise, utils } from '../../client/driver/deps/hammerhead';
 
 function ensureImageMap<E> (imgElement: E, areaElement: E): Promise<E> {
     return Promise.resolve(adapter.dom.closest(areaElement, 'map'))
@@ -36,7 +36,7 @@ function correctTopElementByExpectedElement<E> (topElement: E, expectedElement?:
     // Firefox returns the <img> element. We should accomplish this for Firefox as well.
     const isImageMapArea = adapter.dom.getTagName(expectedElement) === 'area' && adapter.dom.isImgElement(topElement);
 
-    if (adapter.browser.isFirefox && isImageMapArea)
+    if (utils.browser.isFirefox && isImageMapArea)
         return ensureImageMap(topElement, expectedElement);
 
     // NOTE: try to find a multi-line link by its rectangle (T163678)

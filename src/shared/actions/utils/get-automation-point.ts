@@ -1,7 +1,7 @@
 import { adapter } from '../../adapter';
 import AxisValues, { AxisValuesData } from '../../utils/values/axis-values';
 // @ts-ignore
-import { Promise } from '../../../client/core/deps/hammerhead';
+import { Promise, utils } from '../../../client/core/deps/hammerhead';
 
 export default function getAutomationPoint<E> (element: E, offset: AxisValuesData<number>): Promise<AxisValues<number>> {
     return Promise.resolve(adapter.dom.isDocumentElement(element))
@@ -9,7 +9,7 @@ export default function getAutomationPoint<E> (element: E, offset: AxisValuesDat
             if (isDocEl)
                 return new AxisValues(0, 0);
 
-            const roundFn = adapter.browser.isFirefox ? Math.ceil : Math.round;
+            const roundFn = utils.browser.isFirefox ? Math.ceil : Math.round;
 
             return Promise.resolve(adapter.position.getOffsetPosition(element, roundFn))
                 .then((elementOffset: any) => AxisValues.create(elementOffset));
