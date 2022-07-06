@@ -21,6 +21,8 @@ import {
 
 // @ts-ignore
 import { utils } from '../../../client/core/deps/hammerhead';
+// @ts-ignore
+import * as domUtils from '../../../client/core/utils/dom';
 
 interface ElementStateArgsBase<E> {
     element: E | null;
@@ -236,7 +238,7 @@ export default class VisibleElementAutomation<E, W extends SharedWindow> extends
     }
 
     private async _contains (parent: E, child: E): Promise<boolean> {
-        const parents = await adapter.dom.getParents(child);
+        const parents = await domUtils.getParents(child);
 
         for (const el of parents) {
             if (el === parent)

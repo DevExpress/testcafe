@@ -259,7 +259,7 @@ export default class MoveAutomation<E, W extends SharedWindow> {
         return Promise.resolve()
             .then(() => {
                 if (activeWindow.parent === this.window) {
-                    return Promise.resolve(adapter.dom.findIframeByWindow(activeWindow))
+                    return Promise.resolve(domUtils.findIframeByWindow(activeWindow))
                         .then((frame: any) => {
                             iframe = frame;
 
@@ -289,7 +289,7 @@ export default class MoveAutomation<E, W extends SharedWindow> {
             .then((message: any) => {
                 this.cursor.setActiveWindow(this.window);
 
-                if (iframeUnderCursor || adapter.dom.isIframeWindow(this.window))
+                if (iframeUnderCursor || domUtils.isIframeWindow(this.window))
                     return this.cursor.move(message);
 
                 return void 0;

@@ -28,20 +28,6 @@ export interface SharedAdapter {
 
     getElementExceptUI: (point: AxisValuesData<number>, underTopShadowUIElement?: boolean) => Promise<any>;
 
-    dom: {
-        findIframeByWindow: (win: any) => SharedFnResult<any>;
-        isDocumentElement: (el: any) => SharedFnResult<boolean>;
-        isIframeWindow (win: any): SharedFnResult<boolean | null>;
-        getTagName: (el: any) => string;
-        isImgElement: (el: any) => boolean;
-        isNodeEqual: (el1: any, el2: any) => boolean;
-        closest: (el: any, selector: string) => SharedFnResult<any | null>;
-        containsElement: (el1: any, el2: any) => SharedFnResult<boolean>;
-        getNodeText: (el: any) => SharedFnResult<string>;
-        getImgMapName: (el: any) => string;
-        getParents: (el: any) => SharedFnResult<any[]> ;
-    };
-
     position: {
         getElementFromPoint: (point: AxisValuesData<number>) => SharedFnResult<any>;
         containsOffset: (el: any, offsetX?: number, offsetY?: number) => SharedFnResult<boolean>;

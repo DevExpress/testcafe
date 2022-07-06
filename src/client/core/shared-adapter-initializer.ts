@@ -1,7 +1,6 @@
 // @ts-ignore
 import hammerhead from './deps/hammerhead';
 import { initializeAdapter } from '../../shared/adapter/index';
-import * as dom from './utils/dom';
 import * as position from './utils/position';
 import * as style from './utils/style';
 import * as event from './utils/event';
@@ -11,7 +10,7 @@ const { Promise } = hammerhead;
 
 
 initializeAdapter({
-    dom, position, style, event,
+    position, style, event,
     // NOTE: this functions are unnecessary in the core
     getElementExceptUI:          () => Promise.resolve(),
     scroll:                      () => Promise.resolve(),

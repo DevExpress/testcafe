@@ -4,28 +4,30 @@ import { AxisValuesData } from '../utils/values/axis-values';
 import { SharedWindow } from '../types';
 // @ts-ignore
 import { Promise, utils } from '../../client/driver/deps/hammerhead';
+// @ts-ignore
+import * as domUtils from '../../client/core/utils/dom';
 
 function ensureImageMap<E> (imgElement: E, areaElement: E): Promise<E> {
-    return Promise.resolve(adapter.dom.closest(areaElement, 'map'))
+    return Promise.resolve(domUtils.closest(areaElement, 'map'))
         .then((mapElement: HTMLMapElement) => {
-            return mapElement && mapElement.name === adapter.dom.getImgMapName(imgElement) ? areaElement : imgElement;
+            return mapElement && mapElement.name === domUtils.getImgMapName(imgElement) ? areaElement : imgElement;
         });
 }
 
 function findElementOrNonEmptyChildFromPoint<E> (point: AxisValuesData<number>, element?: E): Promise<E | null> {
     return Promise.resolve(adapter.position.getElementFromPoint(point))
         .then((topElement: HTMLElement) => {
-            return Promise.resolve(adapter.dom.containsElement(element, topElement))
-                .then((containsEl: HTMLElement) => containsEl && adapter.dom.getNodeText(topElement))
-                .then((isNonEmptyChild: HTMLElement) => isNonEmptyChild || topElement && adapter.dom.isNodeEqual(topElement, element) ? topElement : null);
+            return Promise.resolve(domUtils.containsElement(element, topElement))
+                .then((containsEl: HTMLElement) => containsEl && domUtils.getNodeText(topElement))
+                .then((isNonEmptyChild: HTMLElement) => isNonEmptyChild || topElement && domUtils.isNodeEqual(topElement, element) ? topElement : null);
         });
 }
 
 function correctTopElementByExpectedElement<E> (topElement: E, expectedElement?: E): Promise<E> | E {
-    if (!expectedElement || !topElement || adapter.dom.isNodeEqual(topElement, expectedElement))
+    if (!expectedElement || !topElement || domUtils.isNodeEqual(topElement, expectedElement))
         return topElement;
 
-    const isTREFElement = adapter.dom.getTagName(expectedElement) === 'tref';
+    const isTREFElement = domUtils.getTagName(expectedElement) === 'tref';
 
     // NOTE: 'document.elementFromPoint' can't find these types of elements
     if (isTREFElement)
@@ -34,21 +36,21 @@ function correctTopElementByExpectedElement<E> (topElement: E, expectedElement?:
     // NOTE: T299665 - Incorrect click automation for images with an associated map element in Firefox
     // All browsers return the <area> element from document.getElementFromPoint, but
     // Firefox returns the <img> element. We should accomplish this for Firefox as well.
-    const isImageMapArea = adapter.dom.getTagName(expectedElement) === 'area' && adapter.dom.isImgElement(topElement);
+    const isImageMapArea = domUtils.getTagName(expectedElement) === 'area' && domUtils.isImgElement(topElement);
 
     if (utils.browser.isFirefox && isImageMapArea)
         return ensureImageMap(topElement, expectedElement);
 
     // NOTE: try to find a multi-line link by its rectangle (T163678)
-    return Promise.resolve(adapter.dom.closest(expectedElement, 'a'))
+    return Promise.resolve(domUtils.closest(expectedElement, 'a'))
         .then((anchor: any) => !!anchor)
         .then((isLinkOrChildExpected: boolean) => {
             if (!isLinkOrChildExpected)
                 return false;
 
-            return Promise.resolve(adapter.dom.containsElement(expectedElement, topElement))
-                .then((containsElement: HTMLElement) => containsElement && adapter.dom.getNodeText(topElement))
-                .then((isTopElementChildOfLink: HTMLElement) => !isTopElementChildOfLink && adapter.dom.getNodeText(expectedElement));
+            return Promise.resolve(domUtils.containsElement(expectedElement, topElement))
+                .then((containsElement: HTMLElement) => containsElement && domUtils.getNodeText(topElement))
+                .then((isTopElementChildOfLink: HTMLElement) => !isTopElementChildOfLink && domUtils.getNodeText(expectedElement));
         })
         .then((shouldSearchForMultilineLink: boolean) => {
             if (!shouldSearchForMultilineLink)

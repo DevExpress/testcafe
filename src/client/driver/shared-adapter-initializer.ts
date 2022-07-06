@@ -5,14 +5,14 @@ import { initializeAdapter } from '../../shared/adapter/index';
 import { MouseClickStrategyEmpty } from '../../shared/actions/automations/click/mouse-click-strategy-base';
 
 const { Promise } = hammerhead;
-const { domUtils: dom, positionUtils: position, styleUtils: style, eventUtils: event } = testCafeCore;
+const { positionUtils: position, styleUtils: style, eventUtils: event } = testCafeCore;
 const { getOffsetOptions } = testCafeAutomation;
 
 
 initializeAdapter({
     getOffsetOptions: getOffsetOptions,
 
-    dom, position, style, event,
+    position, style, event,
 
     // NOTE: this functions are unnecessary in the driver
     getElementExceptUI:          () => Promise.resolve(),

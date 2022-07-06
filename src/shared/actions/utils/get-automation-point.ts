@@ -2,9 +2,11 @@ import { adapter } from '../../adapter';
 import AxisValues, { AxisValuesData } from '../../utils/values/axis-values';
 // @ts-ignore
 import { Promise, utils } from '../../../client/core/deps/hammerhead';
+// @ts-ignore
+import * as domUtils from '../../../client/core/utils/dom';
 
 export default function getAutomationPoint<E> (element: E, offset: AxisValuesData<number>): Promise<AxisValues<number>> {
-    return Promise.resolve(adapter.dom.isDocumentElement(element))
+    return Promise.resolve(domUtils.isDocumentElement(element))
         .then((isDocEl: boolean) => {
             if (isDocEl)
                 return new AxisValues(0, 0);
