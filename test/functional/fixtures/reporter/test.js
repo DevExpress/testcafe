@@ -1114,6 +1114,7 @@ describe('Reporter', () => {
             const screenshots = {};
 
             await runTests('./testcafe-fixtures/index-test.js', 'Take a screenshot on action and on error', {
+                only:               'chrome',
                 reporter:           customReporter(actionIds, screenshots),
                 screenshotsOnFails: true,
             });
