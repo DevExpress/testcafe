@@ -1,7 +1,7 @@
 import { adapter } from '../../adapter';
 import AxisValues from '../../utils/values/axis-values';
 // @ts-ignore
-import { Promise } from '../../client/driver/deps/hammerhead';
+import { Promise } from '../../../client/driver/deps/hammerhead';
 
 export default async function getDevicePoint (clientPoint: AxisValues<number>): Promise<AxisValues<number> | null> {
     if (!clientPoint)
