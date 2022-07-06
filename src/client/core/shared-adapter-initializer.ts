@@ -11,8 +11,7 @@ const { nativeMethods, Promise, utils: { browser, featureDetection, extend } } =
 
 
 initializeAdapter({
-    PromiseCtor:   Promise,
-    nativeMethods: nativeMethods,
+    PromiseCtor: Promise,
 
     dom, position, style, event, browser, featureDetection,
     utils:                       { extend },

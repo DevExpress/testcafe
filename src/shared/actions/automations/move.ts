@@ -8,6 +8,8 @@ import {
     ScrollOptions,
 } from '../../../test-run/commands/options';
 import lastHoveredElementHolder from './last-hovered-element-holder';
+// @ts-ignore
+import { nativeMethods } from '../../../client/driver/deps/hammerhead';
 
 const MOVE_REQUEST_CMD  = 'automation|move|request';
 const MOVE_RESPONSE_CMD = 'automation|move|response';
@@ -182,7 +184,7 @@ export default class MoveAutomation<E, W extends SharedWindow> {
     private _move (endPoint: AxisValues<number>): Promise<void> {
         const startPoint = this.cursor.getPosition();
         const distance   = AxisValues.create(endPoint).sub(startPoint);
-        const startTime  = adapter.nativeMethods.dateNow();
+        const startTime  = nativeMethods.dateNow();
         const movingTime = Math.max(Math.max(Math.abs(distance.x), Math.abs(distance.y)) / this.cursorSpeed, this.minMovingTime);
         let currPosition = AxisValues.create(startPoint);
         let isFirstStep  = true;
@@ -202,7 +204,7 @@ export default class MoveAutomation<E, W extends SharedWindow> {
                 });
             }
             else {
-                const progress = Math.min((adapter.nativeMethods.dateNow() - startTime) / movingTime, 1);
+                const progress = Math.min((nativeMethods.dateNow() - startTime) / movingTime, 1);
 
                 currPosition = AxisValues.create(distance).mul(progress).add(startPoint).round(Math.floor);
             }

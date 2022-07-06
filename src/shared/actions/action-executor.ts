@@ -10,7 +10,8 @@ import { ActionElementIsInvisibleError } from '../../shared/errors';
 import { ExecuteSelectorFn } from '../types';
 import ElementsRetriever from '../utils/elements-retriever';
 import { Automation, AutomationHandler } from './types';
-
+// @ts-ignore
+import { nativeMethods } from '../../client/driver/deps/hammerhead';
 
 const MAX_DELAY_AFTER_EXECUTION             = 2000;
 const CHECK_ELEMENT_IN_AUTOMATIONS_INTERVAL = 250;
@@ -59,7 +60,7 @@ export default class ActionExecutor<T> extends EventEmitter {
     }
 
     private _isExecutionTimeoutExpired (): boolean {
-        return adapter.nativeMethods.dateNow() - this._executionStartTime >= this._commandSelectorTimeout;
+        return nativeMethods.dateNow() - this._executionStartTime >= this._commandSelectorTimeout;
     }
 
     private _ensureCommandArguments (): void {
@@ -175,7 +176,7 @@ export default class ActionExecutor<T> extends EventEmitter {
     }
 
     public execute (barriers: ComplexBarrier<any, any>): Promise<T[]> {
-        this._executionStartTime = adapter.nativeMethods.dateNow();
+        this._executionStartTime = nativeMethods.dateNow();
 
         try {
             // TODO: I think that this check is unnecessary here. It checks only a key sequence of the pressKey command.

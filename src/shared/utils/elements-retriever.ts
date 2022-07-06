@@ -7,7 +7,8 @@ import {
     ActionAdditionalSelectorMatchesWrongNodeTypeError,
 } from '../../shared/errors';
 import { getInvisibleErrorCtor, getNotFoundErrorCtor } from '../errors/selector-error-ctor-callback';
-
+// @ts-ignore
+import { nativeMethods } from '../../client/driver/deps/hammerhead';
 
 export default class ElementsRetriever<T> {
     private readonly _globalSelectorTimeout: number;
@@ -18,7 +19,7 @@ export default class ElementsRetriever<T> {
 
     public constructor (globalSelectorTimeout: number, executeSelectorFn: ExecuteSelectorFn<T>) {
         this._globalSelectorTimeout   = globalSelectorTimeout;
-        this._ensureElementsStartTime = adapter.nativeMethods.dateNow();
+        this._ensureElementsStartTime = nativeMethods.dateNow();
         this._ensureElementsPromise   = adapter.PromiseCtor.resolve();
         this._executeSelectorFn       = executeSelectorFn;
         this._elements                = [];

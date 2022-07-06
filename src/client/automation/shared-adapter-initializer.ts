@@ -14,7 +14,6 @@ const { domUtils: dom, positionUtils: position, ScrollAutomation, styleUtils: st
 
 initializeAdapter({
     PromiseCtor:        Promise,
-    nativeMethods:      nativeMethods,
     scroll:             (el: any, scrollOptions: ScrollOptions) => new ScrollAutomation(el, scrollOptions).run(),
     getElementExceptUI: getElementExceptUI,
     dom, position, style, event, browser, featureDetection,

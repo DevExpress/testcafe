@@ -11,7 +11,6 @@ const { getOffsetOptions } = testCafeAutomation;
 
 initializeAdapter({
     PromiseCtor:      Promise,
-    nativeMethods:    nativeMethods,
     getOffsetOptions: getOffsetOptions,
 
     dom, position, style, event, browser, featureDetection,
