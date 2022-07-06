@@ -33,7 +33,7 @@ export default class ElementsRetriever<T> {
                     notFound:  getNotFoundErrorCtor(elementName),
                 }, this._ensureElementsStartTime);
             })
-            .then((el: HTMLElement) => {
+            .then((el: T) => {
                 if (!adapter.dom.isDomElement(el)) {
                     const nodeType    = (el as unknown as { nodeType: number }).nodeType;
                     const nodeTypeStr = NODE_TYPE_DESCRIPTIONS[nodeType];
