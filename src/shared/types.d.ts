@@ -23,7 +23,6 @@ export interface NativeMethods {
 type SharedFnResult<T> = T | Promise<T>;
 
 export interface SharedAdapter {
-    PromiseCtor: typeof Promise;
     getOffsetOptions?: (el: any, offsetX: number, offsetY: number) => { offsetX: number; offsetY: number };
     scroll: (el: any, scrollOptions: ScrollOptions) => Promise<boolean>;
 

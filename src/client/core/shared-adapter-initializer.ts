@@ -7,12 +7,10 @@ import * as style from './utils/style';
 import * as event from './utils/event';
 import { MouseClickStrategyEmpty } from '../../shared/actions/automations/click/mouse-click-strategy-base';
 
-const { nativeMethods, Promise, utils: { browser, featureDetection, extend } } = hammerhead;
+const { Promise, utils: { browser, featureDetection, extend } } = hammerhead;
 
 
 initializeAdapter({
-    PromiseCtor: Promise,
-
     dom, position, style, event, browser, featureDetection,
     utils:                       { extend },
     // NOTE: this functions are unnecessary in the core

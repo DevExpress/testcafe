@@ -8,7 +8,7 @@ import {
 } from '../../shared/errors';
 import { getInvisibleErrorCtor, getNotFoundErrorCtor } from '../errors/selector-error-ctor-callback';
 // @ts-ignore
-import { nativeMethods } from '../../client/driver/deps/hammerhead';
+import { nativeMethods, Promise } from '../../client/driver/deps/hammerhead';
 
 export default class ElementsRetriever<T> {
     private readonly _globalSelectorTimeout: number;
@@ -20,7 +20,7 @@ export default class ElementsRetriever<T> {
     public constructor (globalSelectorTimeout: number, executeSelectorFn: ExecuteSelectorFn<T>) {
         this._globalSelectorTimeout   = globalSelectorTimeout;
         this._ensureElementsStartTime = nativeMethods.dateNow();
-        this._ensureElementsPromise   = adapter.PromiseCtor.resolve();
+        this._ensureElementsPromise   = Promise.resolve();
         this._executeSelectorFn       = executeSelectorFn;
         this._elements                = [];
     }
@@ -33,7 +33,7 @@ export default class ElementsRetriever<T> {
                     notFound:  getNotFoundErrorCtor(elementName),
                 }, this._ensureElementsStartTime);
             })
-            .then(el => {
+            .then((el: HTMLElement) => {
                 if (!adapter.dom.isDomElement(el)) {
                     const nodeType    = (el as unknown as { nodeType: number }).nodeType;
                     const nodeTypeStr = NODE_TYPE_DESCRIPTIONS[nodeType];
