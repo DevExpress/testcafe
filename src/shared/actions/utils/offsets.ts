@@ -1,4 +1,4 @@
-import { adapter } from '../../adapter';
+import * as positionUtils from '../../../client/core/utils/position';
 
 function calcOffset (size: number): number {
     const offset = size / 2;
@@ -7,7 +7,7 @@ function calcOffset (size: number): number {
 }
 
 export async function getDefaultAutomationOffsets (element: any): Promise<{ offsetX: number; offsetY: number }> {
-    const rect    = await adapter.position.getElementRectangle(element);
+    const rect    = await positionUtils.getElementRectangle(element);
 
     const offsetX = calcOffset(rect.width);
     const offsetY = calcOffset(rect.height);
@@ -24,7 +24,7 @@ export async function getOffsetOptions (element: any, offsetX?: number, offsetY?
     if (offsetX > 0 && offsetY > 0)
         return { offsetX, offsetY };
 
-    const dimensions = await adapter.position.getClientDimensions(element);
+    const dimensions = await positionUtils.getClientDimensions(element);
     const width      = Math.round(Math.max(element.scrollWidth, dimensions.width));
     const height     = Math.round(Math.max(element.scrollHeight, dimensions.height));
     const maxX       = dimensions.scrollbar.right + dimensions.border.left + dimensions.border.right + width;

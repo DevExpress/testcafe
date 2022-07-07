@@ -226,7 +226,7 @@ export default class ScrollAutomation {
         return this._setScroll(this._element, scroll);
     }
 
-    private _scrollParents (): Promise<ScrollResultProxyless | boolean> {
+    private _scrollParents (): Promise<boolean | Dictionary<any>> {
         const parents        = getScrollableParents(this._element);
         let currentChild     = this._element;
         const scrollLeft     = utilsAdapter.style.getScrollLeft(currentChild);
@@ -257,7 +257,7 @@ export default class ScrollAutomation {
         };
 
         if (!utilsAdapter.sendRequestToFrame)
-            return scrollParentsPromise.then(() => state as ScrollResultProxyless);
+            return scrollParentsPromise.then(() => state);
 
         return scrollParentsPromise
             .then(() => {
@@ -287,7 +287,7 @@ export default class ScrollAutomation {
         return !!fixedElement && !fixedElement.contains(this._element);
     }
 
-    public run (): Promise<ScrollResultProxyless | boolean> {
+    public run (): Promise<boolean | Dictionary<any>> {
         return this._scrollElement()
             .then(() => this._scrollParents());
     }

@@ -1,5 +1,3 @@
-import { adapter } from '../../adapter';
-
 import nextTick from '../../utils/next-tick';
 import AutomationSettings from './settings';
 import {
@@ -18,18 +16,23 @@ import {
     utils,
 } from '../../../client/driver/deps/hammerhead';
 
-// @ts-ignore
-import { domUtils } from '../../../client/automation/deps/testcafe-core';
-
-const MOVE_REQUEST_CMD  = 'automation|move|request';
-const MOVE_RESPONSE_CMD = 'automation|move|response';
-
+import * as domUtils from '../../../client/core/utils/dom';
+import * as styleUtils from '../../../client/core/utils/style';
+import * as positionUtils from '../../../client/core/utils/position';
+import * as eventUtils from '../../../client/core/utils/event';
+import ScrollAutomation from '../../../client/core/scroll';
+import getElementExceptUI from '../../../client/automation/utils/get-element-except-ui';
 import getAutomationPoint from '../utils/get-automation-point';
 import AxisValues, { AxisValuesData } from '../../utils/values/axis-values';
 import { SharedWindow } from '../../types';
 import Cursor from '../cursor';
 import { whilst } from '../../utils/promise';
 import getDevicePoint from '../utils/get-device-point';
+import createEventSequence from '../../../client/automation/playback/move/event-sequence/create-event-sequence';
+import sendRequestToFrame from '../../../client/core/utils/send-request-to-frame';
+
+const MOVE_REQUEST_CMD  = 'automation|move|request';
+const MOVE_RESPONSE_CMD = 'automation|move|response';
 
 interface MoveAutomationTarget<E> {
     element: E;
@@ -37,25 +40,22 @@ interface MoveAutomationTarget<E> {
 }
 
 export default class MoveAutomation<E, W extends SharedWindow> {
-    private touchMode: boolean;
-    private moveEvent: string;
-
+    private readonly touchMode: boolean;
+    private readonly moveEvent: string;
     private automationSettings: AutomationSettings;
-
-    private element: E;
-    private window: W;
-    private offset: AxisValuesData<number>;
+    private readonly element: Element;
+    private readonly window: W;
+    private readonly offset: AxisValuesData<number>;
     private cursor: Cursor<W>;
-    private speed: number;
-    private cursorSpeed: number;
-
-    private minMovingTime: number;
-    private modifiers: Modifiers;
-    private skipScrolling: boolean;
+    private readonly speed: number;
+    private readonly cursorSpeed: number;
+    private readonly minMovingTime: number;
+    private readonly modifiers: Modifiers;
+    private readonly skipScrolling: boolean;
     private skipDefaultDragBehavior: boolean;
     private firstMovingStepOccured: boolean;
 
-    protected constructor (el: E, offset: AxisValuesData<number>, moveOptions: MoveOptions, win: W, cursor: Cursor<W>) {
+    protected constructor (el: Element, offset: AxisValuesData<number>, moveOptions: MoveOptions, win: W, cursor: Cursor<W>) {
         this.touchMode = utils.featureDetection.isTouchDevice;
         this.moveEvent = this.touchMode ? 'touchmove' : 'mousemove';
 
@@ -86,7 +86,7 @@ export default class MoveAutomation<E, W extends SharedWindow> {
     private static getTarget<E, W> (element: E, window: W, offset: AxisValuesData<number>): Promise<MoveAutomationTarget<E>> {
         // NOTE: if the target point (considering offsets) is out of
         // the element change the target element to the document element
-        return Promise.resolve(adapter.position.containsOffset(element, offset.x, offset.y))
+        return Promise.resolve(positionUtils.containsOffset(element, offset.x, offset.y))
             .then((containsOffset: boolean) => {
                 if (!containsOffset) {
                     return Promise.all([
@@ -105,7 +105,7 @@ export default class MoveAutomation<E, W extends SharedWindow> {
     }
 
     private _getTargetClientPoint (): Promise<AxisValues<number>> {
-        return Promise.resolve(adapter.style.getElementScroll(this.element))
+        return Promise.resolve(styleUtils.getElementScroll(this.element))
             .then((scroll: any) => {
                 if (domUtils.isHtmlElement(this.element)) {
                     return AxisValues.create(this.offset)
@@ -113,7 +113,7 @@ export default class MoveAutomation<E, W extends SharedWindow> {
                         .round(Math.round);
                 }
 
-                return Promise.resolve(adapter.position.getClientPosition(this.element))
+                return Promise.resolve(positionUtils.getClientPosition(this.element))
                     .then((clientPosition: any) => {
                         const isDocumentBody = domUtils.isBodyElement(this.element);
                         // @ts-ignore
@@ -128,7 +128,7 @@ export default class MoveAutomation<E, W extends SharedWindow> {
     }
 
     private _getEventSequenceOptions (currPosition: AxisValues<number>): Promise<any> {
-        const button = adapter.event.BUTTONS_PARAMETER.noButton;
+        const button = eventUtils.BUTTONS_PARAMETER.noButton;
 
         return getDevicePoint(currPosition)
             .then((devicePoint: any) => {
@@ -149,7 +149,7 @@ export default class MoveAutomation<E, W extends SharedWindow> {
     }
 
     private async _runEventSequence (currentElement: Element, { eventOptions, eventSequenceOptions }: any): Promise<any> {
-        const eventSequence = await adapter.createEventSequence(false, this.firstMovingStepOccured, eventSequenceOptions);
+        const eventSequence = await createEventSequence(false, this.firstMovingStepOccured, eventSequenceOptions);
 
         return eventSequence.run(
             currentElement,
@@ -174,7 +174,7 @@ export default class MoveAutomation<E, W extends SharedWindow> {
 
     private _movingStep (currPosition: AxisValues<number>): Promise<void> {
         return this.cursor.move(currPosition)
-            .then(() => adapter.getElementExceptUI(this.cursor.getPosition()))
+            .then(() => getElementExceptUI(this.cursor.getPosition()))
             // NOTE: in touch mode, events are simulated for the element for which mousedown was simulated (GH-372)
             .then((topElement: HTMLElement) => {
                 const currentElement = this._getCorrectedTopElement(topElement);
@@ -232,9 +232,10 @@ export default class MoveAutomation<E, W extends SharedWindow> {
         if (this.skipScrolling)
             return Promise.resolve(false);
 
-        const scrollOptions = new ScrollOptions({ offsetX: this.offset.x, offsetY: this.offset.y }, false);
+        const scrollOptions    = new ScrollOptions({ offsetX: this.offset.x, offsetY: this.offset.y }, false);
+        const scrollAutomation = new ScrollAutomation(this.element, scrollOptions);
 
-        return adapter.scroll(this.element, scrollOptions);
+        return scrollAutomation.run();
     }
 
     private _moveToCurrentFrame (endPoint: AxisValues<number>): Promise<void> {
@@ -263,7 +264,7 @@ export default class MoveAutomation<E, W extends SharedWindow> {
                         .then((frame: any) => {
                             iframe = frame;
 
-                            return Promise.resolve(adapter.position.getIframeClientCoordinates(frame))
+                            return Promise.resolve(positionUtils.getIframeClientCoordinates(frame))
                                 .then((rect: any) => {
                                     msg.left   = rect.left;
                                     msg.top    = rect.top;
@@ -276,7 +277,7 @@ export default class MoveAutomation<E, W extends SharedWindow> {
                 return void 0;
             })
             .then(() => {
-                return adapter.getElementExceptUI(this.cursor.getPosition());
+                return getElementExceptUI(this.cursor.getPosition());
             })
             .then((topElement: any) => {
                 iframeUnderCursor = topElement === iframe;
@@ -284,12 +285,12 @@ export default class MoveAutomation<E, W extends SharedWindow> {
                 if (activeWindow.parent === this.window)
                     msg.iframeUnderCursor = iframeUnderCursor;
 
-                return adapter.sendRequestToFrame(msg, MOVE_RESPONSE_CMD, activeWindow);
+                return sendRequestToFrame(msg, MOVE_RESPONSE_CMD, activeWindow);
             })
             .then((message: any) => {
                 this.cursor.setActiveWindow(this.window);
 
-                if (iframeUnderCursor || domUtils.isIframeWindow(this.window))
+                if (iframeUnderCursor || utils.dom.isIframeWindow(this.window))
                     return this.cursor.move(message);
 
                 return void 0;
@@ -300,7 +301,7 @@ export default class MoveAutomation<E, W extends SharedWindow> {
         return this._scroll()
             .then(() => Promise.all([
                 this._getTargetClientPoint(),
-                adapter.style.getWindowDimensions(this.window),
+                styleUtils.getWindowDimensions(this.window),
             ]))
             .then(([endPoint, boundary]: [any, any]) => {
                 if (!boundary.contains(endPoint))

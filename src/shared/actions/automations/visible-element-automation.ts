@@ -21,8 +21,11 @@ import {
 
 // @ts-ignore
 import { utils } from '../../../client/core/deps/hammerhead';
-// @ts-ignore
 import * as domUtils from '../../../client/core/utils/dom';
+import * as positionUtils from '../../../client/core/utils/position';
+import ScrollAutomation from '../../../client/core/scroll';
+import { Dictionary } from '../../../configuration/interfaces';
+import ensureMouseEventAfterScroll from '../../../client/automation/utils/ensure-mouse-event-after-scroll';
 
 interface ElementStateArgsBase<E> {
     element: E | null;
@@ -83,14 +86,14 @@ export interface MouseEventArgs<E> {
 }
 
 export default class VisibleElementAutomation<E, W extends SharedWindow> extends SharedEventEmitter {
-    protected element: E;
-    private window: W;
+    protected element: Element;
+    private readonly window: W;
     protected cursor: Cursor<W>
-    private TARGET_ELEMENT_FOUND_EVENT: string;
+    private readonly TARGET_ELEMENT_FOUND_EVENT: string;
     protected automationSettings: AutomationSettings;
-    private options: OffsetOptions;
+    private readonly options: OffsetOptions;
 
-    protected constructor (element: E, offsetOptions: OffsetOptions, win: W, cursor: Cursor<W>) {
+    protected constructor (element: Element, offsetOptions: OffsetOptions, win: W, cursor: Cursor<W>) {
         super();
 
         this.TARGET_ELEMENT_FOUND_EVENT = 'automation|target-element-found-event';
@@ -107,7 +110,7 @@ export default class VisibleElementAutomation<E, W extends SharedWindow> extends
     }
 
     protected async _getElementForEvent (eventArgs: MouseEventArgs<E>): Promise<E | null> {
-        const expectedElement = await adapter.position.containsOffset(this.element, this.options.offsetX, this.options.offsetY) ? this.element : null;
+        const expectedElement = await positionUtils.containsOffset(this.element, this.options.offsetX, this.options.offsetY) ? this.element : null;
 
         return getElementFromPoint(eventArgs.point as AxisValuesData<number>, this.window, expectedElement);
     }
@@ -124,16 +127,17 @@ export default class VisibleElementAutomation<E, W extends SharedWindow> extends
     private _scrollToElement (): Promise<boolean> {
         let wasScrolled        = false;
         const scrollOptions    = new ScrollOptions(this.options, false);
+        const scrollAutomation = new ScrollAutomation(this.element, scrollOptions);
 
-        return adapter.scroll(this.element, scrollOptions)
-            .then(scrollWasPerformed => {
-                wasScrolled = scrollWasPerformed;
+        return scrollAutomation.run()
+            .then((scrollWasPerformed: boolean | Dictionary<any>) => {
+                wasScrolled = !!scrollWasPerformed;
 
                 return delay(this.automationSettings.mouseActionStepDelay);
             })
             .then(() => getElementFromPoint(this.cursor.getPosition(), this.window))
-            .then(currentElement => {
-                return adapter.ensureMouseEventAfterScroll(currentElement, this.element, wasScrolled);
+            .then((currentElement: Element) => {
+                return ensureMouseEventAfterScroll(currentElement, this.element, wasScrolled);
             })
             .then(() => {
                 return wasScrolled;
@@ -154,14 +158,14 @@ export default class VisibleElementAutomation<E, W extends SharedWindow> extends
     private async _wrapAction (action: () => Promise<unknown>): Promise<ElementState<E>> {
         const { offsetX: x, offsetY: y } = await this._getElementOffset();
         const screenPointBeforeAction    = await getAutomationPoint(this.element, { x, y });
-        const clientPositionBeforeAction = await adapter.position.getClientPosition(this.element);
+        const clientPositionBeforeAction = await positionUtils.getClientPosition(this.element);
 
         await action();
 
         const screenPointAfterAction    = await getAutomationPoint(this.element, { x, y });
-        const clientPositionAfterAction = await adapter.position.getClientPosition(this.element);
+        const clientPositionAfterAction = await positionUtils.getClientPosition(this.element);
         const clientPoint               = await screenPointToClient(this.element, screenPointAfterAction);
-        const expectedElement           = await adapter.position.containsOffset(this.element, x, y) ? this.element : null;
+        const expectedElement           = await positionUtils.containsOffset(this.element, x, y) ? this.element : null;
 
         const element = await getElementFromPoint(clientPoint, this.window, expectedElement);
 
@@ -237,7 +241,7 @@ export default class VisibleElementAutomation<E, W extends SharedWindow> extends
             });
     }
 
-    private async _contains (parent: E, child: E): Promise<boolean> {
+    private async _contains (parent: Element, child: Element): Promise<boolean> {
         const parents = await domUtils.getParents(child);
 
         for (const el of parents) {
