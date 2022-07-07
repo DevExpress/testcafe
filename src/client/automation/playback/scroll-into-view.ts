@@ -3,7 +3,7 @@ import { OffsetOptions } from '../../../test-run/commands/options';
 import { SharedWindow } from '../../../shared/types';
 import cursor from '../cursor';
 
-export default class ScrollIntoViewAutomation extends VisibleElementAutomation<HTMLElement, SharedWindow> {
+export default class ScrollIntoViewAutomation extends VisibleElementAutomation<SharedWindow> {
     public constructor (element: HTMLElement, offsetOptions: OffsetOptions) {
         super(element, offsetOptions, window, cursor);
     }

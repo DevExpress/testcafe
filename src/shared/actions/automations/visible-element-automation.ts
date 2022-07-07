@@ -86,14 +86,14 @@ export interface MouseEventArgs<E> {
 }
 
 export default class VisibleElementAutomation<Window extends SharedWindow> extends SharedEventEmitter {
-    protected element: Element;
+    protected element: HTMLElement;
     public window: Window;
     public cursor: Cursor<Window>
     private readonly TARGET_ELEMENT_FOUND_EVENT: string;
     protected automationSettings: AutomationSettings;
     private readonly options: OffsetOptions;
 
-    protected constructor (element: Element, offsetOptions: OffsetOptions, win: Window, cursor: Cursor<Window>) {
+    protected constructor (element: HTMLElement, offsetOptions: OffsetOptions, win: Window, cursor: Cursor<Window>) {
         super();
 
         this.TARGET_ELEMENT_FOUND_EVENT = 'automation|target-element-found-event';

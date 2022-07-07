@@ -21,7 +21,7 @@ export default class ClickAutomation<W extends SharedWindow> extends VisibleElem
     private modifiers: Modifiers;
     public strategy: MouseClickStrategy;
 
-    protected constructor (element: Element, clickOptions: ClickOptions, win: W, cursor: Cursor<W>) {
+    protected constructor (element: HTMLElement, clickOptions: ClickOptions, win: W, cursor: Cursor<W>) {
         super(element, clickOptions, win, cursor);
 
         this.modifiers = clickOptions.modifiers;
