@@ -7,7 +7,7 @@ import { utils } from '../../../../client/automation/deps/hammerhead';
 import { createMouseClickStrategy } from '../../../../client/automation/playback/click/browser-click-strategy';
 import { MouseClickStrategy } from '../../../../client/automation/playback/click/browser-click-strategy';
 
-export interface MouseClickEventState<Element> {
+export interface MouseClickEventState {
     mousedownPrevented: boolean;
     blurRaised: boolean;
     simulateDefaultBehavior: boolean;

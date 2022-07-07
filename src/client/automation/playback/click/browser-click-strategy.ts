@@ -53,7 +53,7 @@ export class MouseClickStrategy {
     public element: Element;
     public caretPos: number;
     public mouseDownElement: Element | null;
-    public eventState: MouseClickEventState<Element>;
+    public eventState: MouseClickEventState;
 
     public constructor (element: Element, caretPos: number) {
         this.element                      = element;

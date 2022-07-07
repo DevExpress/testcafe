@@ -1,7 +1,7 @@
 import hammerhead from '../deps/hammerhead';
 import VisibleElementAutomation from '../visible-element-automation';
 import { OffsetOptions } from '../../../test-run/commands/options';
-import cursor from '../cursor/cursor';
+import cursor from '../cursor/index';
 
 
 const Promise = hammerhead.Promise;

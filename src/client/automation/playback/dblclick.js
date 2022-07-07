@@ -4,7 +4,7 @@ import { ClickOptions } from '../../../test-run/commands/options';
 import VisibleElementAutomation from '../visible-element-automation';
 import ClickAutomation from '../../../shared/actions/automations/click';
 import AutomationSettings from '../../../shared/actions/automations/settings';
-import cursor from '../cursor/cursor';
+import cursor from '../cursor/index';
 
 const featureDetection = hammerhead.utils.featureDetection;
 const browserUtils     = hammerhead.utils.browser;
