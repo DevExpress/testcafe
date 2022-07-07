@@ -8,7 +8,7 @@ import getKeyIdentifier from '../../utils/get-key-identifier';
 import { getDefaultAutomationOffsets } from '../../../../shared/actions/utils/offsets';
 import AutomationSettings from '../../../../shared/actions/automations/settings';
 import getKeyProperties from '../../utils/get-key-properties';
-import cursor from '../../cursor';
+import cursor from '../../cursor/cursor';
 
 const Promise               = hammerhead.Promise;
 const extend                = hammerhead.utils.extend;

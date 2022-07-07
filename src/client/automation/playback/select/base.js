@@ -1,11 +1,11 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
-import VisibleElementAutomation from '../../../../shared/actions/automations/visible-element-automation';
+import VisibleElementAutomation from '../../visible-element-automation';
 import getElementFromPoint from '../../get-element';
 import * as selectUtils from './utils';
 import MoveAutomation from '../move/move';
 import { MoveOptions } from '../../../../test-run/commands/options';
-import cursor from '../../cursor';
+import cursor from '../../cursor/cursor';
 import AUTOMATION_ERROR_TYPES from '../../../../shared/errors/automation-errors';
 
 const Promise          = hammerhead.Promise;

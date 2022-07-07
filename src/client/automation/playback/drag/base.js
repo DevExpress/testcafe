@@ -6,10 +6,10 @@ import {
     delay,
 } from '../../deps/testcafe-core';
 import getElementFromPoint from '../../get-element';
-import VisibleElementAutomation from '../../../../shared/actions/automations/visible-element-automation';
+import VisibleElementAutomation from '../../visible-element-automation';
 import DragMoveAutomation from '../move/drag-move';
 import { MoveOptions } from '../../../../test-run/commands/options';
-import cursor from '../../cursor';
+import cursor from '../../cursor/cursor';
 
 const MIN_MOVING_TIME = 25;
 

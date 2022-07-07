@@ -1,26 +1,25 @@
-import { CursorUI } from './types';
-import AxisValues, { AxisValuesData } from '../utils/values/axis-values';
-import { SharedWindow } from '../types';
+import { CursorUI } from '../../../shared/actions/types';
+import AxisValues, { AxisValuesData } from '../../../shared/utils/values/axis-values';
 // @ts-ignore
-import { Promise } from '../../client/driver/deps/hammerhead';
+import { Promise } from '../../driver/deps/hammerhead';
 
-export default class Cursor<W extends SharedWindow> {
-    private _activeWindow: W;
+export default class Cursor {
+    private _activeWindow: Window;
     private _x: number;
     private _y: number;
     private readonly _ui: CursorUI;
 
-    public constructor (activeWin: W, ui: CursorUI) {
+    public constructor (activeWin: Window, ui: CursorUI) {
         this._ui = ui;
 
-        // NOTE: the default position should be outside of the page (GH-794)
+        // NOTE: the default position should be outside the page (GH-794)
         this._x = -1;
         this._y = -1;
 
         this._activeWindow = activeWin;
     }
 
-    private _ensureActiveWindow (win: W): void {
+    private _ensureActiveWindow (win: Window): void {
         if (this._activeWindow === win || this._activeWindow === win.parent)
             return;
 
@@ -28,17 +27,17 @@ export default class Cursor<W extends SharedWindow> {
             this._activeWindow = win;
     }
 
-    public isActive (currWin: W): boolean {
+    public isActive (currWin: Window): boolean {
         this._ensureActiveWindow(currWin);
 
         return this._activeWindow === currWin;
     }
 
-    public setActiveWindow (win: W): void {
+    public setActiveWindow (win: Window): void {
         this._activeWindow = win;
     }
 
-    public getActiveWindow (currWin: W): W {
+    public getActiveWindow (currWin: Window): Window {
         this._ensureActiveWindow(currWin);
 
         return this._activeWindow;

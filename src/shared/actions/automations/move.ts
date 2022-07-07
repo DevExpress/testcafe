@@ -24,8 +24,7 @@ import ScrollAutomation from '../../../client/core/scroll';
 import getElementExceptUI from '../../../client/automation/utils/get-element-except-ui';
 import getAutomationPoint from '../utils/get-automation-point';
 import AxisValues, { AxisValuesData } from '../../utils/values/axis-values';
-import { SharedWindow } from '../../types';
-import Cursor from '../cursor';
+import Cursor from '../../../client/automation/cursor/cursor';
 import { whilst } from '../../utils/promise';
 import getDevicePoint from '../utils/get-device-point';
 import createEventSequence from '../../../client/automation/playback/move/event-sequence/create-event-sequence';
@@ -39,14 +38,14 @@ interface MoveAutomationTarget<E> {
     offset: AxisValuesData<number>;
 }
 
-export default class MoveAutomation<E, W extends SharedWindow> {
+export default class MoveAutomation<E> {
     private readonly touchMode: boolean;
     private readonly moveEvent: string;
     private automationSettings: AutomationSettings;
     private readonly element: Element;
-    private readonly window: W;
+    private readonly window: Window;
     private readonly offset: AxisValuesData<number>;
-    private cursor: Cursor<W>;
+    private cursor: Cursor;
     private readonly speed: number;
     private readonly cursorSpeed: number;
     private readonly minMovingTime: number;
@@ -55,7 +54,7 @@ export default class MoveAutomation<E, W extends SharedWindow> {
     private skipDefaultDragBehavior: boolean;
     private firstMovingStepOccured: boolean;
 
-    protected constructor (el: Element, offset: AxisValuesData<number>, moveOptions: MoveOptions, win: W, cursor: Cursor<W>) {
+    protected constructor (el: Element, offset: AxisValuesData<number>, moveOptions: MoveOptions, win: Window, cursor: Cursor) {
         this.touchMode = utils.featureDetection.isTouchDevice;
         this.moveEvent = this.touchMode ? 'touchmove' : 'mousemove';
 
@@ -77,7 +76,7 @@ export default class MoveAutomation<E, W extends SharedWindow> {
         this.firstMovingStepOccured  = false;
     }
 
-    public static async create<E, W extends SharedWindow> (el: E, moveOptions: MoveOptions, win: W, cursor: Cursor<W>): Promise<MoveAutomation<E, W>> {
+    public static async create<E> (el: E, moveOptions: MoveOptions, win: Window, cursor: Cursor): Promise<MoveAutomation<E>> {
         const { element, offset } = await MoveAutomation.getTarget(el, win, new AxisValues(moveOptions.offsetX, moveOptions.offsetY));
 
         return new MoveAutomation(element, offset, moveOptions, win, cursor);

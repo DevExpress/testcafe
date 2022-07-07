@@ -39,6 +39,3 @@ interface AutomationErrorCtors {
 
 export type ExecuteSelectorFn<T> = (selector: ExecuteSelectorCommand, errCtors: AutomationErrorCtors, startTime: number) => Promise<T>;
 
-export interface SharedWindow {
-    parent: SharedWindow | null;
-}

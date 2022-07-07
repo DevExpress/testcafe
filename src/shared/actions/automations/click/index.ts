@@ -1,6 +1,5 @@
-import VisibleElementAutomation, { MouseEventArgs } from '../visible-element-automation';
-import { SharedWindow } from '../../../types';
-import Cursor from '../../cursor';
+import VisibleElementAutomation, { MouseEventArgs } from '../../../../client/automation/visible-element-automation';
+import Cursor from '../../../../client/automation/cursor/cursor';
 import { ClickOptions, Modifiers } from '../../../../test-run/commands/options';
 import delay from '../../../utils/delay';
 // @ts-ignore
@@ -17,11 +16,11 @@ export interface MouseClickEventState<Element> {
     touchEndCancelled: boolean;
 }
 
-export default class ClickAutomation<W extends SharedWindow> extends VisibleElementAutomation<W> {
+export default class ClickAutomation extends VisibleElementAutomation {
     private modifiers: Modifiers;
     public strategy: MouseClickStrategy;
 
-    protected constructor (element: HTMLElement, clickOptions: ClickOptions, win: W, cursor: Cursor<W>) {
+    protected constructor (element: HTMLElement, clickOptions: ClickOptions, win: Window, cursor: Cursor) {
         super(element, clickOptions, win, cursor);
 
         this.modifiers = clickOptions.modifiers;

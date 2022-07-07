@@ -1,6 +1,5 @@
 import isIframeWindow from './utils/is-window-iframe';
 import { AxisValuesData } from '../utils/values/axis-values';
-import { SharedWindow } from '../types';
 // @ts-ignore
 import { Promise, utils } from '../../client/driver/deps/hammerhead';
 import * as domUtils from '../../client/core/utils/dom';
@@ -63,7 +62,7 @@ function correctTopElementByExpectedElement (topElement: Element, expectedElemen
         });
 }
 
-export default function getElementFromPoint<Element, W extends SharedWindow> (point: AxisValuesData<number>, win: W, expectedEl?: Element): Promise<Element> {
+export default function getElementFromPoint<Element> (point: AxisValuesData<number>, win: Window, expectedEl?: Element): Promise<Element> {
     return getElementExceptUI(point)
         // @ts-ignore
         .then((topElement: Element) => {

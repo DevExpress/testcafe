@@ -1,9 +1,8 @@
-import VisibleElementAutomation from '../../../shared/actions/automations/visible-element-automation';
+import VisibleElementAutomation from '../visible-element-automation';
 import { OffsetOptions } from '../../../test-run/commands/options';
-import { SharedWindow } from '../../../shared/types';
-import cursor from '../cursor';
+import cursor from '../cursor/cursor';
 
-export default class ScrollIntoViewAutomation extends VisibleElementAutomation<SharedWindow> {
+export default class ScrollIntoViewAutomation extends VisibleElementAutomation {
     public constructor (element: HTMLElement, offsetOptions: OffsetOptions) {
         super(element, offsetOptions, window, cursor);
     }

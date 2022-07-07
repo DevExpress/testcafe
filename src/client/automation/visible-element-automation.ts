@@ -1,53 +1,52 @@
-import getAutomationPoint from '../utils/get-automation-point';
-import screenPointToClient from '../utils/screen-point-to-client';
-import getDevicePoint from '../utils/get-device-point';
-import { getOffsetOptions } from '../utils/offsets';
-import getElementFromPoint from '../../../shared/actions/get-element';
-import AUTOMATION_ERROR_TYPES from '../../../shared/errors/automation-errors';
-import AutomationSettings from '../../../shared/actions/automations/settings';
-import MoveAutomation from './move';
-import { SharedWindow } from '../../types';
-import AxisValues, { AxisValuesData } from '../../utils/values/axis-values';
-import Cursor from '../cursor';
-import delay from '../../utils/delay';
-import SharedEventEmitter from '../../../shared/utils/event-emitter';
+import getAutomationPoint from '../../shared/actions/utils/get-automation-point';
+import screenPointToClient from '../../shared/actions/utils/screen-point-to-client';
+import getDevicePoint from '../../shared/actions/utils/get-device-point';
+import { getOffsetOptions } from '../../shared/actions/utils/offsets';
+import getElementFromPoint from '../../shared/actions/get-element';
+import AUTOMATION_ERROR_TYPES from '../../shared/errors/automation-errors';
+import AutomationSettings from '../../shared/actions/automations/settings';
+import MoveAutomation from '../../shared/actions/automations/move';
+import AxisValues, { AxisValuesData } from '../../shared/utils/values/axis-values';
+import Cursor from './cursor/cursor';
+import delay from '../../shared/utils/delay';
+import SharedEventEmitter from '../../shared/utils/event-emitter';
 
 import {
     MoveOptions,
     ScrollOptions,
     OffsetOptions,
-} from '../../../test-run/commands/options';
+} from '../../test-run/commands/options';
 
 // @ts-ignore
-import { utils } from '../../../client/core/deps/hammerhead';
-import * as domUtils from '../../../client/core/utils/dom';
-import * as positionUtils from '../../../client/core/utils/position';
-import ScrollAutomation from '../../../client/core/scroll';
-import { Dictionary } from '../../../configuration/interfaces';
-import ensureMouseEventAfterScroll from '../../../client/automation/utils/ensure-mouse-event-after-scroll';
+import { utils } from '../core/deps/hammerhead';
+import * as domUtils from '../core/utils/dom';
+import * as positionUtils from '../core/utils/position';
+import ScrollAutomation from '../core/scroll/index';
+import { Dictionary } from '../../configuration/interfaces';
+import ensureMouseEventAfterScroll from './utils/ensure-mouse-event-after-scroll';
 
 
-interface ElementStateArgsBase<E> {
-    element: E | null;
+interface ElementStateArgsBase {
+    element: HTMLElement | null;
     clientPoint: AxisValues<number> | null;
     screenPoint: AxisValues<number> | null;
     devicePoint?: AxisValues<number> | null;
 }
 
-interface ElementStateArgs<E> extends ElementStateArgsBase<E> {
+interface ElementStateArgs extends ElementStateArgsBase {
     isTarget: boolean;
     inMoving: boolean;
 }
 
-class ElementState<E> implements ElementStateArgs<E> {
-    public element: E | null;
+class ElementState implements ElementStateArgs {
+    public element: HTMLElement | null;
     public clientPoint: AxisValues<number> | null;
     public screenPoint: AxisValues<number> | null;
     public devicePoint: AxisValues<number> | null;
     public isTarget: boolean;
     public inMoving: boolean;
 
-    protected constructor ({ element = null, clientPoint = null, screenPoint = null, isTarget = false, inMoving = false, devicePoint = null }: ElementStateArgs<E>) {
+    protected constructor ({ element = null, clientPoint = null, screenPoint = null, isTarget = false, inMoving = false, devicePoint = null }: ElementStateArgs) {
         this.element     = element;
         this.clientPoint = clientPoint;
         this.screenPoint = screenPoint;
@@ -56,13 +55,13 @@ class ElementState<E> implements ElementStateArgs<E> {
         this.inMoving    = inMoving;
     }
 
-    public static async create<E> ({ element, clientPoint, screenPoint, isTarget, inMoving }: ElementStateArgs<E>): Promise<ElementState<E>> {
+    public static async create ({ element, clientPoint, screenPoint, isTarget, inMoving }: ElementStateArgs): Promise<ElementState> {
         let devicePoint = null;
 
         if (clientPoint)
             devicePoint = await getDevicePoint(clientPoint);
 
-        const state = new ElementState<E>({ element, clientPoint, screenPoint, isTarget, inMoving, devicePoint });
+        const state = new ElementState({ element, clientPoint, screenPoint, isTarget, inMoving, devicePoint });
 
         return state;
     }
@@ -85,15 +84,15 @@ export interface MouseEventArgs<E> {
     } | null;
 }
 
-export default class VisibleElementAutomation<Window extends SharedWindow> extends SharedEventEmitter {
+export default class VisibleElementAutomation extends SharedEventEmitter {
     protected element: HTMLElement;
     public window: Window;
-    public cursor: Cursor<Window>
+    public cursor: Cursor;
     private readonly TARGET_ELEMENT_FOUND_EVENT: string;
     protected automationSettings: AutomationSettings;
     private readonly options: OffsetOptions;
 
-    protected constructor (element: HTMLElement, offsetOptions: OffsetOptions, win: Window, cursor: Cursor<Window>) {
+    protected constructor (element: HTMLElement, offsetOptions: OffsetOptions, win: Window, cursor: Cursor) {
         super();
 
         this.TARGET_ELEMENT_FOUND_EVENT = 'automation|target-element-found-event';
@@ -109,7 +108,7 @@ export default class VisibleElementAutomation<Window extends SharedWindow> exten
         this._ensureWindowAndCursorForLegacyTests(this);
     }
 
-    private _ensureWindowAndCursorForLegacyTests (automation: VisibleElementAutomation<Window>): void {
+    private _ensureWindowAndCursorForLegacyTests (automation: VisibleElementAutomation): void {
         automation.window = automation.window || window; // eslint-disable-line no-undef
         automation.cursor = this.cursor;
     }
@@ -160,7 +159,7 @@ export default class VisibleElementAutomation<Window extends SharedWindow> exten
         return { offsetX, offsetY };
     }
 
-    private async _wrapAction (action: () => Promise<unknown>): Promise<ElementState<Element>> {
+    private async _wrapAction (action: () => Promise<unknown>): Promise<ElementState> {
         const { offsetX: x, offsetY: y } = await this._getElementOffset();
         const screenPointBeforeAction    = await getAutomationPoint(this.element, { x, y });
         const clientPositionBeforeAction = await positionUtils.getClientPosition(this.element);
@@ -175,7 +174,7 @@ export default class VisibleElementAutomation<Window extends SharedWindow> exten
         const element = await getElementFromPoint(clientPoint, this.window, expectedElement);
 
         if (!element) {
-            return ElementState.create<Element>({
+            return ElementState.create({
                 element:     null,
                 clientPoint: null,
                 screenPoint: null,
@@ -211,7 +210,7 @@ export default class VisibleElementAutomation<Window extends SharedWindow> exten
         });
     }
 
-    private static _checkElementState<E> (state: ElementState<E>, useStrictElementCheck: boolean): ElementState<E> {
+    private static _checkElementState<E> (state: ElementState, useStrictElementCheck: boolean): ElementState {
         if (!state.element)
             throw new Error(AUTOMATION_ERROR_TYPES.elementIsInvisibleError);
 
@@ -221,7 +220,7 @@ export default class VisibleElementAutomation<Window extends SharedWindow> exten
         return state;
     }
 
-    protected _ensureElement (useStrictElementCheck: boolean, skipCheckAfterMoving = false, skipMoving = false): Promise<ElementStateArgsBase<Element>> {
+    protected _ensureElement (useStrictElementCheck: boolean, skipCheckAfterMoving = false, skipMoving = false): Promise<ElementStateArgsBase> {
         return this
             ._wrapAction(() => this._scrollToElement())
             .then(state => VisibleElementAutomation._checkElementState(state, useStrictElementCheck))

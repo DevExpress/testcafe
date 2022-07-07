@@ -4,7 +4,7 @@ import { focusAndSetSelection } from '../../utils/utils';
 import nextTick from '../../utils/next-tick';
 import createClickCommand from './click-command';
 
-import { MouseEventArgs } from '../../../../shared/actions/automations/visible-element-automation';
+import { MouseEventArgs } from '../../visible-element-automation';
 import { MouseClickEventState } from '../../../../shared/actions/automations/click/index';
 
 // @ts-ignore
