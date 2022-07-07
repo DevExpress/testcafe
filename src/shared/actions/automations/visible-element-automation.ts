@@ -25,7 +25,7 @@ import * as positionUtils from '../../../client/core/utils/position';
 import ScrollAutomation from '../../../client/core/scroll';
 import { Dictionary } from '../../../configuration/interfaces';
 import ensureMouseEventAfterScroll from '../../../client/automation/utils/ensure-mouse-event-after-scroll';
-import cursor from '../../../client/automation/cursor';
+
 
 interface ElementStateArgsBase<E> {
     element: E | null;
@@ -109,10 +109,9 @@ export default class VisibleElementAutomation<E, Window extends SharedWindow> ex
         this._ensureWindowAndCursorForLegacyTests(this);
     }
 
-    private _ensureWindowAndCursorForLegacyTests (automation: VisibleElementAutomation<E, Window>) {
-        automation.window = automation.window || window;
-        // @ts-ignore
-        automation.cursor = cursor;
+    private _ensureWindowAndCursorForLegacyTests (automation: VisibleElementAutomation<E, Window>): void {
+        automation.window = automation.window || window; // eslint-disable-line no-undef
+        automation.cursor = this.cursor;
     }
 
     protected async _getElementForEvent (eventArgs: MouseEventArgs<Element>): Promise<Element | null> {
