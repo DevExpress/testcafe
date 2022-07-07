@@ -1,10 +1,10 @@
-import ActionExecutor from '../../../shared/actions/action-executor';
+import ActionExecutor from './index';
 
 import { // @ts-ignore
     domUtils, // @ts-ignore
     contentEditable, // @ts-ignore
     parseKeySequence,
-} from '../deps/testcafe-core';
+} from '../../deps/testcafe-core';
 
 import { // @ts-ignore
     calculateSelectTextArguments, // @ts-ignore
@@ -24,7 +24,7 @@ import { // @ts-ignore
     SetScroll as SetScrollAutomation, // @ts-ignore
     ScrollIntoView as ScrollIntoViewAutomation, // @ts-ignore
     cursor,
-} from '../deps/testcafe-automation';
+} from '../../deps/testcafe-automation';
 
 import {
     ActionIncorrectKeysError,
@@ -34,11 +34,11 @@ import {
     ActionRootContainerNotFoundError,
     ActionElementNotTextAreaError,
     ActionElementIsNotFileInputError,
-} from '../../../shared/errors/index';
+} from '../../../../shared/errors';
 
-import COMMAND_TYPE from '../../../test-run/commands/type';
-import { ActionCommandBase } from '../../../test-run/commands/base';
-import { Automation } from '../../../shared/actions/types';
+import COMMAND_TYPE from '../../../../test-run/commands/type';
+import { ActionCommandBase } from '../../../../test-run/commands/base';
+import { Automation } from '../../../../shared/actions/types';
 
 
 ActionExecutor.ACTIONS_HANDLERS[COMMAND_TYPE.dispatchEvent] = {

@@ -1,22 +1,22 @@
-import EventEmitter from '../utils/event-emitter';
-import ComplexBarrier from '../../client/driver/barriers/complex-barrier';
-import delay from '../utils/delay';
-import { whilst } from '../utils/promise';
-import { ActionCommandBase } from '../../test-run/commands/base';
-import { Dictionary } from '../../configuration/interfaces';
-import AUTOMATION_ERROR_TYPES from '../errors/automation-errors';
-import { ActionElementIsInvisibleError } from '../../shared/errors';
-import { ExecuteSelectorFn } from '../types';
-import ElementsRetriever from '../utils/elements-retriever';
-import { Automation, AutomationHandler } from './types';
+import EventEmitter from '../../../../shared/utils/event-emitter';
+import ComplexBarrier from '../../barriers/complex-barrier';
+import delay from '../../../../shared/utils/delay';
+import { whilst } from '../../../../shared/utils/promise';
+import { ActionCommandBase } from '../../../../test-run/commands/base';
+import { Dictionary } from '../../../../configuration/interfaces';
+import AUTOMATION_ERROR_TYPES from '../../../../shared/errors/automation-errors';
+import { ActionElementIsInvisibleError } from '../../../../shared/errors';
+import { ExecuteSelectorFn } from '../../../../shared/types';
+import ElementsRetriever from '../../../../shared/utils/elements-retriever';
+import { Automation, AutomationHandler } from '../../../../shared/actions/types';
 // @ts-ignore
-import { nativeMethods, Promise } from '../../client/driver/deps/hammerhead';
-import { getOffsetOptions } from '../actions/utils/offsets';
+import { nativeMethods, Promise } from '../../deps/hammerhead';
+import { getOffsetOptions } from '../../../../shared/actions/utils/offsets';
 
 const MAX_DELAY_AFTER_EXECUTION             = 2000;
 const CHECK_ELEMENT_IN_AUTOMATIONS_INTERVAL = 250;
 
-export default class ActionExecutor<T> extends EventEmitter {
+export default class ActionExecutor extends EventEmitter {
     public static readonly EXECUTION_STARTED_EVENT = 'execution-started';
     public static readonly WAITING_FOR_ELEMENT_EVENT = 'waiting-for-elements';
     public static readonly ACTIONS_HANDLERS: Dictionary<AutomationHandler> = {};
@@ -24,12 +24,12 @@ export default class ActionExecutor<T> extends EventEmitter {
     private readonly _command: ActionCommandBase;
     private readonly _globalSelectorTimeout: number;
     private readonly _commandSelectorTimeout: number;
-    private readonly _executeSelectorFn: ExecuteSelectorFn<T>;
-    private _elements: T[];
+    private readonly _executeSelectorFn: ExecuteSelectorFn<Element>;
+    private _elements: Element[];
     private _executionStartTime: number;
-    private _targetElement: T | null;
+    private _targetElement: Element | null;
 
-    public constructor (command: ActionCommandBase, globalSelectorTimeout: number, testSpeed: number, executeSelectorFn: ExecuteSelectorFn<T>) {
+    public constructor (command: ActionCommandBase, globalSelectorTimeout: number, testSpeed: number, executeSelectorFn: ExecuteSelectorFn<Element>) {
         super();
 
         this._command       = command;
@@ -90,7 +90,7 @@ export default class ActionExecutor<T> extends EventEmitter {
         }
 
         return elsRetriever.getElements()
-            .then((elements: T[]) => {
+            .then((elements: Element[]) => {
                 this._elements = elements;
             });
     }
@@ -175,7 +175,7 @@ export default class ActionExecutor<T> extends EventEmitter {
         });
     }
 
-    public execute (barriers: ComplexBarrier<any, any>): Promise<T[]> {
+    public execute (barriers: ComplexBarrier<any, any>): Promise<Element[]> {
         this._executionStartTime = nativeMethods.dateNow();
 
         try {
