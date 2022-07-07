@@ -116,13 +116,13 @@ if (config.useLocalBrowsers) {
             const reporter    = createReporter({
                 reportTaskStart: (_, userAgents) => {
                     scope.userAgents = userAgents;
-                }
+                },
             });
 
             return run('chrome:headless', concurrency, './testcafe-fixtures/concurrent-test.js', reporter)
-                .then(()=>{
+                .then(() => {
                     expect(scope.userAgents.length).eql(concurrency);
-                })
+                });
         });
 
         // TODO: this test doesn't work on CI due to big resource demands
