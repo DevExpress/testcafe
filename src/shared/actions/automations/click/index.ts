@@ -1,5 +1,3 @@
-import { adapter } from '../../../adapter';
-
 import VisibleElementAutomation, { MouseEventArgs } from '../visible-element-automation';
 import { SharedWindow } from '../../../types';
 import Cursor from '../../cursor';
@@ -8,6 +6,7 @@ import delay from '../../../utils/delay';
 import { MouseClickStrategyBase } from './mouse-click-strategy-base';
 // @ts-ignore
 import { utils } from '../../../../client/automation/deps/hammerhead';
+import { createMouseClickStrategy } from '../../../../client/automation/playback/click/browser-click-strategy';
 
 export interface MouseClickEventState<E> {
     mousedownPrevented: boolean;
@@ -20,25 +19,25 @@ export interface MouseClickEventState<E> {
 
 export default class ClickAutomation<E, W extends SharedWindow> extends VisibleElementAutomation<E, W> {
     private modifiers: Modifiers;
-    public strategy: MouseClickStrategyBase<E>;
+    public strategy: MouseClickStrategyBase<Element>;
 
     protected constructor (element: Element, clickOptions: ClickOptions, win: W, cursor: Cursor<W>) {
         super(element, clickOptions, win, cursor);
 
         this.modifiers = clickOptions.modifiers;
-        this.strategy = adapter.automations.click.createMouseClickStrategy(this.element, clickOptions.caretPos);
+        this.strategy = createMouseClickStrategy(this.element, clickOptions.caretPos);
     }
 
-    private _mousedown (eventArgs: MouseEventArgs<E>): Promise<void> {
+    private _mousedown (eventArgs: MouseEventArgs<Element>): Promise<void> {
         return this.strategy.mousedown(eventArgs);
     }
 
-    private _mouseup (element: E, eventArgs: MouseEventArgs<E>): Promise<MouseEventArgs<E>> {
+    private _mouseup (element: Element, eventArgs: MouseEventArgs<Element>): Promise<MouseEventArgs<Element>> {
         return this.strategy.mouseup(element, eventArgs);
     }
 
-    private run (useStrictElementCheck: boolean): Promise<MouseEventArgs<E> | null> {
-        let eventArgs: MouseEventArgs<E>;
+    private run (useStrictElementCheck: boolean): Promise<MouseEventArgs<Element> | null> {
+        let eventArgs: MouseEventArgs<Element>;
 
         return this
             ._ensureElement(useStrictElementCheck)
@@ -53,7 +52,7 @@ export default class ClickAutomation<E, W extends SharedWindow> extends VisibleE
                         screenX: devicePoint?.x,
                         screenY: devicePoint?.y,
                     }, this.modifiers),
-                } as unknown as MouseEventArgs<E>;
+                } as unknown as MouseEventArgs<Element>;
 
 
                 // NOTE: we should raise mouseup event with 'mouseActionStepDelay' after we trigger

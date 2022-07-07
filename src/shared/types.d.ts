@@ -1,7 +1,6 @@
 /* global globalThis */
 
 import { ExecuteSelectorCommand } from '../test-run/commands/observation';
-import { MouseClickStrategyBase } from './actions/automations/click/mouse-click-strategy-base';
 
 export interface NativeMethods {
     setTimeout: typeof globalThis.setTimeout;
@@ -15,14 +14,8 @@ export interface NativeMethods {
     dateNow: DateConstructor['now'];
 }
 
-type SharedFnResult<T> = T | Promise<T>;
-
 export interface SharedAdapter {
     automations: {
-        click: {
-            createMouseClickStrategy: (element: any, caretPos: number) => MouseClickStrategyBase<any>;
-        };
-
         _ensureWindowAndCursorForLegacyTests (automation: any): void;
     };
 }

@@ -109,7 +109,7 @@ export default class VisibleElementAutomation<E, W extends SharedWindow> extends
         adapter.automations._ensureWindowAndCursorForLegacyTests(this);
     }
 
-    protected async _getElementForEvent (eventArgs: MouseEventArgs<E>): Promise<E | null> {
+    protected async _getElementForEvent (eventArgs: MouseEventArgs<Element>): Promise<Element | null> {
         const expectedElement = await positionUtils.containsOffset(this.element, this.options.offsetX, this.options.offsetY) ? this.element : null;
 
         return getElementFromPoint(eventArgs.point as AxisValuesData<number>, this.window, expectedElement);
@@ -155,7 +155,7 @@ export default class VisibleElementAutomation<E, W extends SharedWindow> extends
         return { offsetX, offsetY };
     }
 
-    private async _wrapAction (action: () => Promise<unknown>): Promise<ElementState<E>> {
+    private async _wrapAction (action: () => Promise<unknown>): Promise<ElementState<Element>> {
         const { offsetX: x, offsetY: y } = await this._getElementOffset();
         const screenPointBeforeAction    = await getAutomationPoint(this.element, { x, y });
         const clientPositionBeforeAction = await positionUtils.getClientPosition(this.element);
@@ -170,7 +170,7 @@ export default class VisibleElementAutomation<E, W extends SharedWindow> extends
         const element = await getElementFromPoint(clientPoint, this.window, expectedElement);
 
         if (!element) {
-            return ElementState.create<E>({
+            return ElementState.create<Element>({
                 element:     null,
                 clientPoint: null,
                 screenPoint: null,
@@ -216,7 +216,7 @@ export default class VisibleElementAutomation<E, W extends SharedWindow> extends
         return state;
     }
 
-    protected _ensureElement (useStrictElementCheck: boolean, skipCheckAfterMoving = false, skipMoving = false): Promise<ElementStateArgsBase<E>> {
+    protected _ensureElement (useStrictElementCheck: boolean, skipCheckAfterMoving = false, skipMoving = false): Promise<ElementStateArgsBase<Element>> {
         return this
             ._wrapAction(() => this._scrollToElement())
             .then(state => VisibleElementAutomation._checkElementState(state, useStrictElementCheck))
