@@ -14,12 +14,6 @@ export interface NativeMethods {
     dateNow: DateConstructor['now'];
 }
 
-export interface SharedAdapter {
-    automations: {
-        _ensureWindowAndCursorForLegacyTests (automation: any): void;
-    };
-}
-
 export interface ClientRequestEmitter<R> {
     onRequestSend: (fn: (req: R) => void) => void;
     onRequestCompleted: (fn: (req: R) => void) => void;

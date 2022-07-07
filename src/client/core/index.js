@@ -1,7 +1,5 @@
 // NOTE: Initializer should be the first
 import './scroll/adapter/initializer';
-import './shared-adapter-initializer';
-
 import hammerhead from './deps/hammerhead';
 
 import KEY_MAPS from './utils/key-maps';

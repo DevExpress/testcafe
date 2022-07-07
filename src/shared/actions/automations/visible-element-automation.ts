@@ -1,4 +1,3 @@
-import { adapter } from '../../adapter';
 import getAutomationPoint from '../utils/get-automation-point';
 import screenPointToClient from '../utils/screen-point-to-client';
 import getDevicePoint from '../utils/get-device-point';
@@ -26,6 +25,7 @@ import * as positionUtils from '../../../client/core/utils/position';
 import ScrollAutomation from '../../../client/core/scroll';
 import { Dictionary } from '../../../configuration/interfaces';
 import ensureMouseEventAfterScroll from '../../../client/automation/utils/ensure-mouse-event-after-scroll';
+import cursor from '../../../client/automation/cursor';
 
 interface ElementStateArgsBase<E> {
     element: E | null;
@@ -85,15 +85,15 @@ export interface MouseEventArgs<E> {
     } | null;
 }
 
-export default class VisibleElementAutomation<E, W extends SharedWindow> extends SharedEventEmitter {
+export default class VisibleElementAutomation<E, Window extends SharedWindow> extends SharedEventEmitter {
     protected element: Element;
-    private readonly window: W;
-    protected cursor: Cursor<W>
+    public window: Window;
+    public cursor: Cursor<Window>
     private readonly TARGET_ELEMENT_FOUND_EVENT: string;
     protected automationSettings: AutomationSettings;
     private readonly options: OffsetOptions;
 
-    protected constructor (element: Element, offsetOptions: OffsetOptions, win: W, cursor: Cursor<W>) {
+    protected constructor (element: Element, offsetOptions: OffsetOptions, win: Window, cursor: Cursor<Window>) {
         super();
 
         this.TARGET_ELEMENT_FOUND_EVENT = 'automation|target-element-found-event';
@@ -106,7 +106,13 @@ export default class VisibleElementAutomation<E, W extends SharedWindow> extends
         this.cursor  = cursor;
 
         // NOTE: only for legacy API
-        adapter.automations._ensureWindowAndCursorForLegacyTests(this);
+        this._ensureWindowAndCursorForLegacyTests(this);
+    }
+
+    private _ensureWindowAndCursorForLegacyTests (automation: VisibleElementAutomation<E, Window>) {
+        automation.window = automation.window || window;
+        // @ts-ignore
+        automation.cursor = cursor;
     }
 
     protected async _getElementForEvent (eventArgs: MouseEventArgs<Element>): Promise<Element | null> {

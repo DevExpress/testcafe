@@ -1,6 +1,3 @@
-// NOTE: Initializer should be the first
-import './shared-adapter-initializer';
-
 import hammerhead from './deps/hammerhead';
 import DispatchEventAutomation from './playback/dispatch-event';
 import SetScrollAutomation from './playback/set-scroll';

@@ -1,4 +1,3 @@
-import { adapter } from '../adapter';
 import EventEmitter from '../utils/event-emitter';
 import ComplexBarrier from '../../client/driver/barriers/complex-barrier';
 import delay from '../utils/delay';
@@ -12,6 +11,7 @@ import ElementsRetriever from '../utils/elements-retriever';
 import { Automation, AutomationHandler } from './types';
 // @ts-ignore
 import { nativeMethods, Promise } from '../../client/driver/deps/hammerhead';
+import { getOffsetOptions } from '../actions/utils/offsets';
 
 const MAX_DELAY_AFTER_EXECUTION             = 2000;
 const CHECK_ELEMENT_IN_AUTOMATIONS_INTERVAL = 250;
@@ -109,7 +109,7 @@ export default class ActionExecutor<T> extends EventEmitter {
 
         // @ts-ignore TODO
         if (this._elements.length && opts && 'offsetX' in opts && 'offsetY' in opts) { // @ts-ignore
-            const { offsetX, offsetY } = await adapter.getOffsetOptions(this._elements[0], opts.offsetX, opts.offsetY);
+            const { offsetX, offsetY } = await getOffsetOptions(this._elements[0], opts.offsetX, opts.offsetY);
 
             // @ts-ignore TODO
             opts.offsetX = offsetX;
