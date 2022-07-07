@@ -93,7 +93,7 @@ export default class MoveAutomation<E, W extends SharedWindow> {
                         getAutomationPoint(element, offset),
                         domUtils.getDocumentElement(window),
                     ])
-                        .then(([point, docEl]:[any, HTMLElement]) => ({ element: docEl, offset: point }));
+                        .then(([point, docEl]: [any, HTMLElement]) => ({ element: docEl, offset: point }));
                 }
 
                 return { element, offset };

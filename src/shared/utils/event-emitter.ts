@@ -31,7 +31,7 @@ export default class EventEmitter {
         const listeners = this._eventsListeners[evt];
 
         if (listeners)
-            this._eventsListeners[evt] = nativeMethods.arrayFilter.call(listeners, ((item: Listener) => item !== listener));
+            this._eventsListeners[evt] = nativeMethods.arrayFilter.call(listeners, (item: Listener) => item !== listener);
     }
 
     public offAll (evt?: string): void {
