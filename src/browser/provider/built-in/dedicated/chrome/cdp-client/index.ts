@@ -1,6 +1,3 @@
-// NOTE: Initializer should be the first
-import './shared-adapter-initializer';
-
 import { Dictionary } from '../../../../../../configuration/interfaces';
 import Protocol from 'devtools-protocol';
 import path from 'path';

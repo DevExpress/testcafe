@@ -1,21 +1,16 @@
 // @ts-ignore
 import hammerhead from './deps/hammerhead';
 import { initializeAdapter } from '../../shared/adapter/index';
-import * as dom from './utils/dom';
 import * as position from './utils/position';
 import * as style from './utils/style';
 import * as event from './utils/event';
 import { MouseClickStrategyEmpty } from '../../shared/actions/automations/click/mouse-click-strategy-base';
 
-const { nativeMethods, Promise, utils: { browser, featureDetection, extend } } = hammerhead;
+const { Promise } = hammerhead;
 
 
 initializeAdapter({
-    PromiseCtor:   Promise,
-    nativeMethods: nativeMethods,
-
-    dom, position, style, event, browser, featureDetection,
-    utils:                       { extend },
+    position, style, event,
     // NOTE: this functions are unnecessary in the core
     getElementExceptUI:          () => Promise.resolve(),
     scroll:                      () => Promise.resolve(),

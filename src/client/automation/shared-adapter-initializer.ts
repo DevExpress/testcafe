@@ -1,4 +1,3 @@
-import hammerhead from './deps/hammerhead';
 import testCafeCore from './deps/testcafe-core';
 import { initializeAdapter } from '../../shared/adapter/index';
 import { ScrollOptions } from '../../test-run/commands/options';
@@ -9,16 +8,12 @@ import { createMouseClickStrategy } from './playback/click/browser-click-strateg
 import cursor from './cursor';
 
 
-const { nativeMethods, Promise, utils: { browser, featureDetection, extend } } = hammerhead;
-const { domUtils: dom, positionUtils: position, ScrollAutomation, styleUtils: style, eventUtils: event } = testCafeCore;
+const { positionUtils: position, ScrollAutomation, styleUtils: style, eventUtils: event } = testCafeCore;
 
 initializeAdapter({
-    PromiseCtor:        Promise,
-    nativeMethods:      nativeMethods,
     scroll:             (el: any, scrollOptions: ScrollOptions) => new ScrollAutomation(el, scrollOptions).run(),
     getElementExceptUI: getElementExceptUI,
-    dom, position, style, event, browser, featureDetection,
-    utils:              { extend },
+    position, style, event,
     createEventSequence,
     sendRequestToFrame: testCafeCore.sendRequestToFrame,
     ensureMouseEventAfterScroll,

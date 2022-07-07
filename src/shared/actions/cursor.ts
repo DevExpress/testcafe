@@ -1,7 +1,8 @@
-import { adapter } from '../adapter';
 import { CursorUI } from './types';
 import AxisValues, { AxisValuesData } from '../utils/values/axis-values';
 import { SharedWindow } from '../types';
+// @ts-ignore
+import { Promise } from '../../client/driver/deps/hammerhead';
 
 export default class Cursor<W extends SharedWindow> {
     private _activeWindow: W;
@@ -58,14 +59,14 @@ export default class Cursor<W extends SharedWindow> {
         if (this._ui.hide)
             return this._ui.hide();
 
-        return adapter.PromiseCtor.resolve();
+        return Promise.resolve();
     }
 
     public show (): Promise<void> {
         if (this._ui.show)
             return this._ui.show();
 
-        return adapter.PromiseCtor.resolve();
+        return Promise.resolve();
     }
 
     public leftButtonDown (): Promise<void> {

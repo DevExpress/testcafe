@@ -6,6 +6,8 @@ import Cursor from '../../cursor';
 import { ClickOptions, Modifiers } from '../../../../test-run/commands/options';
 import delay from '../../../utils/delay';
 import { MouseClickStrategyBase } from './mouse-click-strategy-base';
+// @ts-ignore
+import { utils } from '../../../../client/automation/deps/hammerhead';
 
 export interface MouseClickEventState<E> {
     mousedownPrevented: boolean;
@@ -45,7 +47,7 @@ export default class ClickAutomation<E, W extends SharedWindow> extends VisibleE
                     point:       clientPoint,
                     screenPoint: screenPoint,
                     element:     element,
-                    options:     adapter.utils.extend({
+                    options:     utils.extend({
                         clientX: clientPoint?.x,
                         clientY: clientPoint?.y,
                         screenX: devicePoint?.x,

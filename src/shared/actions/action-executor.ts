@@ -10,7 +10,8 @@ import { ActionElementIsInvisibleError } from '../../shared/errors';
 import { ExecuteSelectorFn } from '../types';
 import ElementsRetriever from '../utils/elements-retriever';
 import { Automation, AutomationHandler } from './types';
-
+// @ts-ignore
+import { nativeMethods, Promise } from '../../client/driver/deps/hammerhead';
 
 const MAX_DELAY_AFTER_EXECUTION             = 2000;
 const CHECK_ELEMENT_IN_AUTOMATIONS_INTERVAL = 250;
@@ -52,14 +53,14 @@ export default class ActionExecutor<T> extends EventEmitter {
     private _delayAfterExecution (): Promise<void> {
         // @ts-ignore TODO
         if (!this._command.options || this._command.options.speed === 1)
-            return adapter.PromiseCtor.resolve();
+            return Promise.resolve();
 
         // @ts-ignore TODO
         return delay((1 - this._command.options.speed) * MAX_DELAY_AFTER_EXECUTION);
     }
 
     private _isExecutionTimeoutExpired (): boolean {
-        return adapter.nativeMethods.dateNow() - this._executionStartTime >= this._commandSelectorTimeout;
+        return nativeMethods.dateNow() - this._executionStartTime >= this._commandSelectorTimeout;
     }
 
     private _ensureCommandArguments (): void {
@@ -89,7 +90,7 @@ export default class ActionExecutor<T> extends EventEmitter {
         }
 
         return elsRetriever.getElements()
-            .then(elements => {
+            .then((elements: T[]) => {
                 this._elements = elements;
             });
     }
@@ -156,7 +157,7 @@ export default class ActionExecutor<T> extends EventEmitter {
                 .then(() => {
                     actionFinished = true;
                 })
-                .catch(err => {
+                .catch((err: any) => {
                     if (!this._isExecutionTimeoutExpired())
                         return delay(CHECK_ELEMENT_IN_AUTOMATIONS_INTERVAL);
 
@@ -165,7 +166,7 @@ export default class ActionExecutor<T> extends EventEmitter {
                         // visible we click on the point where the element is located.
                         strictElementCheck = false;
 
-                        return adapter.PromiseCtor.resolve();
+                        return Promise.resolve();
                     }
 
                     throw err.message === AUTOMATION_ERROR_TYPES.elementIsInvisibleError ?
@@ -175,7 +176,7 @@ export default class ActionExecutor<T> extends EventEmitter {
     }
 
     public execute (barriers: ComplexBarrier<any, any>): Promise<T[]> {
-        this._executionStartTime = adapter.nativeMethods.dateNow();
+        this._executionStartTime = nativeMethods.dateNow();
 
         try {
             // TODO: I think that this check is unnecessary here. It checks only a key sequence of the pressKey command.
@@ -183,7 +184,7 @@ export default class ActionExecutor<T> extends EventEmitter {
             this._ensureCommandArguments();
         }
         catch (err) {
-            return adapter.PromiseCtor.reject(err);
+            return Promise.reject(err);
         }
 
         this.emit(ActionExecutor.WAITING_FOR_ELEMENT_EVENT, this._commandSelectorTimeout);
