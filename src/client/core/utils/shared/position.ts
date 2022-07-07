@@ -1,15 +1,17 @@
-import adapter from './adapter/index';
 import BoundaryValues, { BoundaryValuesData } from '../../../../shared/utils/values/boundary-values';
 import Dimensions from '../../../../shared/utils/values/dimensions';
 import AxisValues, { AxisValuesData } from '../../../../shared/utils/values/axis-values';
+import * as domUtils from '../dom';
+import * as styleUtils from '../style';
+import * as positionUtils from '../position';
 
 export function getClientDimensions (target: Element): Dimensions {
-    const isHtmlElement     = adapter.dom.isHtmlElement(target);
+    const isHtmlElement     = domUtils.isHtmlElement(target);
     const body              = isHtmlElement ? target.getElementsByTagName('body')[0] : null;
     const elementRect       = target.getBoundingClientRect();
-    const elBorders         = BoundaryValues.create(adapter.style.getBordersWidth(target));
-    const elScroll          = adapter.style.getElementScroll(target);
-    const isElementInIframe = adapter.dom.isElementInIframe(target);
+    const elBorders         = BoundaryValues.create(styleUtils.getBordersWidth(target));
+    const elScroll          = styleUtils.getElementScroll(target);
+    const isElementInIframe = domUtils.isElementInIframe(target);
     const isCompatMode      = target.ownerDocument.compatMode === 'BackCompat';
     const elPosition        = isHtmlElement ? new AxisValues(0, 0) : AxisValues.create(elementRect);
 
@@ -28,12 +30,12 @@ export function getClientDimensions (target: Element): Dimensions {
     }
 
     if (isElementInIframe) {
-        const iframeElement = adapter.dom.getIframeByElement(target);
+        const iframeElement = domUtils.getIframeByElement(target);
 
         if (iframeElement) {
-            const iframeOffset  = adapter.position.getOffsetPosition(iframeElement);
-            const clientOffset  = adapter.position.offsetToClientCoords(AxisValues.create(iframeOffset));
-            const iframeBorders = adapter.style.getBordersWidth(iframeElement);
+            const iframeOffset  = positionUtils.getOffsetPosition(iframeElement);
+            const clientOffset  = positionUtils.offsetToClientCoords(AxisValues.create(iframeOffset));
+            const iframeBorders = styleUtils.getBordersWidth(iframeElement);
 
             elPosition.add(clientOffset).add(AxisValues.create(iframeBorders));
 
@@ -42,12 +44,12 @@ export function getClientDimensions (target: Element): Dimensions {
         }
     }
 
-    const hasRightScrollbar  = !isHtmlElement && adapter.style.getInnerWidth(target) !== target.clientWidth;
-    const hasBottomScrollbar = !isHtmlElement && adapter.style.getInnerHeight(target) !== target.clientHeight;
+    const hasRightScrollbar  = !isHtmlElement && styleUtils.getInnerWidth(target) !== target.clientWidth;
+    const hasBottomScrollbar = !isHtmlElement && styleUtils.getInnerHeight(target) !== target.clientHeight;
 
     const scrollbar = {
-        right:  hasRightScrollbar ? adapter.dom.getScrollbarSize() : 0,
-        bottom: hasBottomScrollbar ? adapter.dom.getScrollbarSize() : 0,
+        right:  hasRightScrollbar ? domUtils.getScrollbarSize() : 0,
+        bottom: hasBottomScrollbar ? domUtils.getScrollbarSize() : 0,
     };
 
     return new Dimensions(elWidth, elHeight, elPosition, elBorders, elScroll, scrollbar);

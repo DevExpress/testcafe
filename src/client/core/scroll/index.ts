@@ -1,4 +1,3 @@
-import utilsAdapter from '../utils/shared/adapter/index';
 import scrollAdapter from './adapter/index';
 import { hasScroll, getScrollableParents } from '../utils/shared/scroll';
 import * as positionUtils from '../utils/shared/position';
@@ -9,7 +8,9 @@ import AxisValues, { LeftTopValues } from '../../../shared/utils/values/axis-val
 import Dimensions from '../../../shared/utils/values/dimensions';
 import { Dictionary } from '../../../configuration/interfaces';
 import { ScrollOptions } from '../../../test-run/commands/options';
-
+import * as domUtils from '../utils/dom';
+import * as styleUtils from '../utils/style';
+import sendRequestToFrame from '../utils/send-request-to-frame';
 
 const DEFAULT_MAX_SCROLL_MARGIN   = 50;
 const SCROLL_MARGIN_INCREASE_STEP = 20;
@@ -37,16 +38,16 @@ export default class ScrollAutomation {
     }
 
     private static _isScrollValuesChanged (scrollElement: Element | Document, originalScroll: LeftTopValues<number>): boolean {
-        return utilsAdapter.style.getScrollLeft(scrollElement) !== originalScroll.left ||
-            utilsAdapter.style.getScrollTop(scrollElement) !== originalScroll.top;
+        return styleUtils.getScrollLeft(scrollElement) !== originalScroll.left ||
+            styleUtils.getScrollTop(scrollElement) !== originalScroll.top;
     }
 
     private _setScroll (element: Element, { left, top }: LeftTopValues<number>): Promise<void> {
-        const scrollElement = utilsAdapter.dom.isHtmlElement(element) ? utilsAdapter.dom.findDocument(element) : element;
+        const scrollElement = domUtils.isHtmlElement(element) ? domUtils.findDocument(element) : element;
 
         const originalScroll = {
-            left: utilsAdapter.style.getScrollLeft(scrollElement),
-            top:  utilsAdapter.style.getScrollTop(scrollElement),
+            left: styleUtils.getScrollLeft(scrollElement),
+            top:  styleUtils.getScrollTop(scrollElement),
         };
 
         left = Math.max(left, 0);
@@ -54,8 +55,8 @@ export default class ScrollAutomation {
 
         let scrollPromise = scrollAdapter.controller.waitForScroll(scrollElement);
 
-        utilsAdapter.style.setScrollLeft(scrollElement, left);
-        utilsAdapter.style.setScrollTop(scrollElement, top);
+        styleUtils.setScrollLeft(scrollElement, left);
+        styleUtils.setScrollTop(scrollElement, top);
 
         if (!ScrollAutomation._isScrollValuesChanged(scrollElement, originalScroll)) {
             // @ts-ignore
@@ -180,8 +181,8 @@ export default class ScrollAutomation {
     private _scrollToChild (parent: Element, child: Element, offsets: AxisValues<number>): Promise<void> {
         const parentDimensions = positionUtils.getClientDimensions(parent);
         const childDimensions  = positionUtils.getClientDimensions(child);
-        const windowWidth      = utilsAdapter.style.getInnerWidth(window);
-        const windowHeight     = utilsAdapter.style.getInnerHeight(window);
+        const windowWidth      = styleUtils.getInnerWidth(window);
+        const windowHeight     = styleUtils.getInnerHeight(window);
 
         let scrollPos  = parentDimensions.scroll;
         let needScroll = !this._isChildFullyVisible(parentDimensions, childDimensions, offsets);
@@ -221,8 +222,8 @@ export default class ScrollAutomation {
     private _scrollParents (): Promise<boolean | Dictionary<any>> {
         const parents        = getScrollableParents(this._element);
         let currentChild     = this._element;
-        const scrollLeft     = utilsAdapter.style.getScrollLeft(currentChild);
-        const scrollTop      = utilsAdapter.style.getScrollTop(currentChild);
+        const scrollLeft     = styleUtils.getScrollLeft(currentChild);
+        const scrollTop      = styleUtils.getScrollTop(currentChild);
         const currentOffset  = AxisValues.create(this._offsets).sub(new AxisValues(scrollLeft, scrollTop).round());
         let childDimensions  = null;
         let parentDimensions = null;
@@ -248,7 +249,7 @@ export default class ScrollAutomation {
             maxScrollMargin:    this._maxScrollMargin,
         };
 
-        if (!utilsAdapter.sendRequestToFrame)
+        if (!sendRequestToFrame)
             return scrollParentsPromise.then(() => state);
 
         return scrollParentsPromise
@@ -259,13 +260,13 @@ export default class ScrollAutomation {
                 state.cmd = ScrollAutomation.SCROLL_REQUEST_CMD;
 
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, consistent-return
-                return utilsAdapter.sendRequestToFrame!(state, ScrollAutomation.SCROLL_RESPONSE_CMD, window.parent);
+                return sendRequestToFrame!(state, ScrollAutomation.SCROLL_RESPONSE_CMD, window.parent);
             })
             .then(() => this._scrollWasPerformed);
     }
 
     private static _getFixedAncestorOrSelf (element: Element): Node | null {
-        return utilsAdapter.dom.findParent(element, true, isFixedElement);
+        return domUtils.findParent(element, true, isFixedElement);
     }
 
     private _isTargetElementObscuredInPoint (point: AxisValues<number>): boolean {

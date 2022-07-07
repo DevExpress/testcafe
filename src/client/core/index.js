@@ -35,11 +35,6 @@ import * as browser from '../browser';
 
 import selectorTextFilter from '../../client-functions/selectors/selector-text-filter';
 import selectorAttributeFilter from '../../client-functions/selectors/selector-attribute-filter';
-import { initializeAdapter as initializeUtilsAdapter } from './utils/shared/adapter/index';
-import utilsAdapterInitializer from './utils/shared/adapter/initializer';
-
-
-initializeUtilsAdapter(utilsAdapterInitializer);
 
 const exports = {};
 

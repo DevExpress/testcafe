@@ -1,14 +1,15 @@
-import adapter from './adapter/index';
 import AxisValues from '../../../../shared/utils/values/axis-values';
 // @ts-ignore
-import { utils } from '../../deps/hammerhead';
+import { utils, nativeMethods } from '../../deps/hammerhead';
+import * as domUtils from '../dom';
+import * as styleUtils from '../style';
 
 const SCROLLABLE_OVERFLOW_STYLE_RE               = /auto|scroll|hidden/i;
 const DEFAULT_IE_SCROLLABLE_OVERFLOW_STYLE_VALUE = 'visible';
 
 function getScrollable (el: Element): AxisValues<boolean> {
-    const overflowX            = adapter.style.get(el, 'overflowX') as string;
-    const overflowY            = adapter.style.get(el, 'overflowY') as string;
+    const overflowX            = styleUtils.get(el, 'overflowX') as string;
+    const overflowY            = styleUtils.get(el, 'overflowY') as string;
     let scrollableHorizontally = SCROLLABLE_OVERFLOW_STYLE_RE.test(overflowX);
     let scrollableVertically   = SCROLLABLE_OVERFLOW_STYLE_RE.test(overflowY);
 
@@ -24,12 +25,12 @@ function getScrollable (el: Element): AxisValues<boolean> {
 }
 
 function hasBodyScroll (el: HTMLBodyElement): boolean {
-    const overflowX              = adapter.style.get(el, 'overflowX') as string;
-    const overflowY              = adapter.style.get(el, 'overflowY') as string;
+    const overflowX              = styleUtils.get(el, 'overflowX') as string;
+    const overflowY              = styleUtils.get(el, 'overflowY') as string;
     const scrollableHorizontally = SCROLLABLE_OVERFLOW_STYLE_RE.test(overflowX);
     const scrollableVertically   = SCROLLABLE_OVERFLOW_STYLE_RE.test(overflowY);
 
-    const documentElement = adapter.dom.findDocument(el).documentElement;
+    const documentElement = domUtils.findDocument(el).documentElement;
 
     let bodyScrollHeight = el.scrollHeight;
 
@@ -45,8 +46,8 @@ function hasBodyScroll (el: HTMLBodyElement): boolean {
 }
 
 function hasHTMLElementScroll (el: HTMLHtmlElement): boolean {
-    const overflowX = adapter.style.get(el, 'overflowX') as string;
-    const overflowY = adapter.style.get(el, 'overflowY') as string;
+    const overflowX = styleUtils.get(el, 'overflowX') as string;
+    const overflowY = styleUtils.get(el, 'overflowY') as string;
 
     //T303226
     if (overflowX === 'hidden' && overflowY === 'hidden')
@@ -74,11 +75,11 @@ function hasHTMLElementScroll (el: HTMLHtmlElement): boolean {
 }
 
 export function hasScroll (el: Element): boolean {
-    if (adapter.dom.isBodyElement(el))
-        return hasBodyScroll(el);
+    if (domUtils.isBodyElement(el))
+        return hasBodyScroll(el as HTMLBodyElement);
 
-    if (adapter.dom.isHtmlElement(el))
-        return hasHTMLElementScroll(el);
+    if (domUtils.isHtmlElement(el))
+        return hasHTMLElementScroll(el as HTMLHtmlElement);
 
     const scrollable = getScrollable(el);
 
@@ -92,17 +93,17 @@ export function hasScroll (el: Element): boolean {
 }
 
 export function getScrollableParents (element: Element): Element[] {
-    const parentsArray = adapter.dom.getParents(element);
+    const parentsArray = domUtils.getParents(element);
 
-    if (adapter.dom.isElementInIframe(element)) {
-        const iframe = adapter.dom.getIframeByElement(element);
+    if (domUtils.isElementInIframe(element)) {
+        const iframe = domUtils.getIframeByElement(element);
 
         if (iframe) {
-            const iFrameParents = adapter.dom.getParents(iframe);
+            const iFrameParents = domUtils.getParents(iframe);
 
             parentsArray.concat(iFrameParents);
         }
     }
 
-    return adapter.nativeMethods.arrayFilter.call(parentsArray, hasScroll);
+    return nativeMethods.arrayFilter.call(parentsArray, hasScroll);
 }

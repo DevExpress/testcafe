@@ -1,18 +1,19 @@
-import adapter from './adapter/index';
+import * as domUtils from '../dom';
+import * as styleUtils from '../style';
 
 
 const isVisibilityHiddenNode = function (node: Node): boolean {
-    return !!adapter.dom.findParent(node, true, (ancestor: Node) =>
-        adapter.dom.isElementNode(ancestor) && adapter.style.get(ancestor, 'visibility') === 'hidden');
+    return !!domUtils.findParent(node, true, (ancestor: Node) =>
+        domUtils.isElementNode(ancestor) && styleUtils.get(ancestor, 'visibility') === 'hidden');
 };
 
 const isHiddenNode = function (node: Node): boolean {
-    return !!adapter.dom.findParent(node, true, (ancestor: Node) =>
-        adapter.dom.isElementNode(ancestor) && adapter.style.get(ancestor, 'display') === 'none');
+    return !!domUtils.findParent(node, true, (ancestor: Node) =>
+        domUtils.isElementNode(ancestor) && styleUtils.get(ancestor, 'display') === 'none');
 };
 
 export function isNotVisibleNode (node: Node): boolean {
-    return !adapter.dom.isRenderedNode(node) || isHiddenNode(node) || isVisibilityHiddenNode(node);
+    return !domUtils.isRenderedNode(node) || isHiddenNode(node) || isVisibilityHiddenNode(node);
 }
 
 export function hasDimensions (el: HTMLElement): boolean {
@@ -21,5 +22,5 @@ export function hasDimensions (el: HTMLElement): boolean {
 }
 
 export function isFixedElement (node: Node): boolean {
-    return adapter.dom.isElementNode(node) && adapter.style.get(node, 'position') === 'fixed';
+    return domUtils.isElementNode(node) && styleUtils.get(node, 'position') === 'fixed';
 }
