@@ -11,14 +11,6 @@ import { Dictionary } from '../../../configuration/interfaces';
 import { ScrollOptions } from '../../../test-run/commands/options';
 
 
-export interface ScrollResultProxyless {
-    scrollWasPerformed: boolean;
-    offsetX: number;
-    offsetY: number;
-    maxScrollMargin: LeftTopValues<number>;
-}
-
-
 const DEFAULT_MAX_SCROLL_MARGIN   = 50;
 const SCROLL_MARGIN_INCREASE_STEP = 20;
 

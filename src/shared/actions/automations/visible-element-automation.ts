@@ -85,7 +85,7 @@ export interface MouseEventArgs<E> {
     } | null;
 }
 
-export default class VisibleElementAutomation<E, Window extends SharedWindow> extends SharedEventEmitter {
+export default class VisibleElementAutomation<Window extends SharedWindow> extends SharedEventEmitter {
     protected element: Element;
     public window: Window;
     public cursor: Cursor<Window>
@@ -109,7 +109,7 @@ export default class VisibleElementAutomation<E, Window extends SharedWindow> ex
         this._ensureWindowAndCursorForLegacyTests(this);
     }
 
-    private _ensureWindowAndCursorForLegacyTests (automation: VisibleElementAutomation<E, Window>): void {
+    private _ensureWindowAndCursorForLegacyTests (automation: VisibleElementAutomation<Window>): void {
         automation.window = automation.window || window; // eslint-disable-line no-undef
         automation.cursor = this.cursor;
     }

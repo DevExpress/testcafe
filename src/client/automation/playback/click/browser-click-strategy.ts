@@ -6,7 +6,6 @@ import createClickCommand from './click-command';
 
 import { MouseEventArgs } from '../../../../shared/actions/automations/visible-element-automation';
 import { MouseClickEventState } from '../../../../shared/actions/automations/click/index';
-import { MouseClickStrategyBase } from '../../../../shared/actions/automations/click/mouse-click-strategy-base';
 
 // @ts-ignore
 const Promise = hammerhead.Promise;
@@ -48,17 +47,15 @@ function _getElementForClick<E> (mouseDownElement: E, topElement: E, mouseDownEl
     return arrayUtils.equals(mouseDownElementParentNodes, topElementParentNodes) ? mouseDownElement : null;
 }
 
-export class MouseClickStrategy<E> extends MouseClickStrategyBase<E> {
-    public targetElementParentNodes: E[];
-    public activeElementBeforeMouseDown: E | null;
-    public element: E;
+export class MouseClickStrategy {
+    public targetElementParentNodes: Element[];
+    public activeElementBeforeMouseDown: Element | null;
+    public element: Element;
     public caretPos: number;
-    public mouseDownElement: E | null;
-    public eventState: MouseClickEventState<E>;
+    public mouseDownElement: Element | null;
+    public eventState: MouseClickEventState<Element>;
 
-    public constructor (element: E, caretPos: number) {
-        super();
-
+    public constructor (element: Element, caretPos: number) {
         this.element                      = element;
         this.caretPos                     = caretPos;
         this.targetElementParentNodes     = [];
@@ -75,7 +72,7 @@ export class MouseClickStrategy<E> extends MouseClickStrategyBase<E> {
         };
     }
 
-    public mousedown (eventArgs: MouseEventArgs<E>): Promise<void> {
+    public mousedown (eventArgs: MouseEventArgs<Element>): Promise<void> {
         this.targetElementParentNodes = domUtils.getParents(eventArgs.element);
         this.mouseDownElement = eventArgs.element;
 
@@ -105,7 +102,7 @@ export class MouseClickStrategy<E> extends MouseClickStrategyBase<E> {
             .then(() => this._focus(eventArgs));
     }
 
-    public mouseup (element: E, eventArgs: MouseEventArgs<E>): Promise<MouseEventArgs<E>> {
+    public mouseup (element: Element, eventArgs: MouseEventArgs<Element>): Promise<MouseEventArgs<Element>> {
         eventArgs.element = element;
 
         this.eventState.clickElement = _getElementForClick(this.mouseDownElement, element, this.targetElementParentNodes);
@@ -130,7 +127,7 @@ export class MouseClickStrategy<E> extends MouseClickStrategyBase<E> {
         return this._click(eventArgs);
     }
 
-    public async _click (eventArgs: MouseEventArgs<E>): hammerhead.Promise<MouseEventArgs<E>> {
+    public async _click (eventArgs: MouseEventArgs<Element>): hammerhead.Promise<MouseEventArgs<Element>> {
         const clickCommand = createClickCommand(this.eventState, eventArgs);
 
         if (!this._isTouchEventWasCancelled())
@@ -156,7 +153,7 @@ export class MouseClickStrategy<E> extends MouseClickStrategyBase<E> {
         eventUtils.bind(this.element, 'mousedown', onmousedown);
     }
 
-    private _bindBlurHandler (element: E): void {
+    private _bindBlurHandler (element: Element): void {
         const onblur = (): void => {
             this.eventState.blurRaised = true;
             eventUtils.unbind(element, 'blur', onblur, true);
@@ -165,7 +162,7 @@ export class MouseClickStrategy<E> extends MouseClickStrategyBase<E> {
         eventUtils.bind(element, 'blur', onblur, true);
     }
 
-    private _ensureActiveElementBlur (element: E): Promise<void> {
+    private _ensureActiveElementBlur (element: Element): Promise<void> {
         // NOTE: In some cases, mousedown may lead to active element change (browsers raise blur).
         // We simulate the blur event if the active element was changed after the mousedown, and
         // the blur event does not get raised automatically (B239273, B253520)
@@ -195,7 +192,7 @@ export class MouseClickStrategy<E> extends MouseClickStrategyBase<E> {
         });
     }
 
-    private _focus (eventArgs: MouseEventArgs<E>): Promise<void> {
+    private _focus (eventArgs: MouseEventArgs<Element>): Promise<void> {
         if (this.eventState.simulateDefaultBehavior === false)
             return Promise.resolve();
 
@@ -210,7 +207,7 @@ export class MouseClickStrategy<E> extends MouseClickStrategyBase<E> {
         return focusAndSetSelection(elementForFocus, simulateFocus, this.caretPos);
     }
 
-    private _raiseTouchEvents (eventArgs: MouseEventArgs<E>): void {
+    private _raiseTouchEvents (eventArgs: MouseEventArgs<Element>): void {
         if (featureDetection.isTouchDevice) {
             this.eventState.touchStartCancelled = !eventSimulator.touchstart(eventArgs.element, eventArgs.options);
             this.eventState.touchEndCancelled   = !eventSimulator.touchend(eventArgs.element, eventArgs.options);
@@ -218,6 +215,6 @@ export class MouseClickStrategy<E> extends MouseClickStrategyBase<E> {
     }
 }
 
-export function createMouseClickStrategy (element: Element, caretPos: number): MouseClickStrategy<Element> {
-    return new MouseClickStrategy<Element>(element, caretPos);
+export function createMouseClickStrategy (element: Element, caretPos: number): MouseClickStrategy {
+    return new MouseClickStrategy(element, caretPos);
 }

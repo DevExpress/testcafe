@@ -3,23 +3,23 @@ import { SharedWindow } from '../../../types';
 import Cursor from '../../cursor';
 import { ClickOptions, Modifiers } from '../../../../test-run/commands/options';
 import delay from '../../../utils/delay';
-import { MouseClickStrategyBase } from './mouse-click-strategy-base';
 // @ts-ignore
 import { utils } from '../../../../client/automation/deps/hammerhead';
 import { createMouseClickStrategy } from '../../../../client/automation/playback/click/browser-click-strategy';
+import { MouseClickStrategy } from '../../../../client/automation/playback/click/browser-click-strategy';
 
-export interface MouseClickEventState<E> {
+export interface MouseClickEventState<Element> {
     mousedownPrevented: boolean;
     blurRaised: boolean;
     simulateDefaultBehavior: boolean;
-    clickElement: E | null;
+    clickElement: Element | null;
     touchStartCancelled: boolean;
     touchEndCancelled: boolean;
 }
 
-export default class ClickAutomation<E, W extends SharedWindow> extends VisibleElementAutomation<E, W> {
+export default class ClickAutomation<W extends SharedWindow> extends VisibleElementAutomation<W> {
     private modifiers: Modifiers;
-    public strategy: MouseClickStrategyBase<Element>;
+    public strategy: MouseClickStrategy;
 
     protected constructor (element: Element, clickOptions: ClickOptions, win: W, cursor: Cursor<W>) {
         super(element, clickOptions, win, cursor);
