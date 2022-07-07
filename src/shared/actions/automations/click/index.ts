@@ -4,8 +4,7 @@ import { ClickOptions, Modifiers } from '../../../../test-run/commands/options';
 import delay from '../../../utils/delay';
 // @ts-ignore
 import { utils } from '../../../../client/automation/deps/hammerhead';
-import { createMouseClickStrategy } from '../../../../client/automation/playback/click/browser-click-strategy';
-import { MouseClickStrategy } from '../../../../client/automation/playback/click/browser-click-strategy';
+import { createMouseClickStrategy, MouseClickStrategy } from '../../../../client/automation/playback/click/browser-click-strategy';
 
 export interface MouseClickEventState {
     mousedownPrevented: boolean;
