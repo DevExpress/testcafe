@@ -115,7 +115,7 @@
     "log-update-async-hook": "^2.0.7",
     "make-dir": "^3.0.0",
     "mime-db": "^1.41.0",
-    "moment": "^2.29.3",
+    "moment": "^2.29.4",
     "moment-duration-format-commonjs": "^1.0.0",
     "mustache": "^2.1.2",
     "nanoid": "^3.1.31",
