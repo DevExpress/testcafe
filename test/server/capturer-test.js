@@ -95,10 +95,14 @@ describe('Capturer', () => {
             },
         });
 
-        await screenshots.capturer._capture(false, { customPath: 'screenshot.png' });
+        await screenshots.capturer._capture(false, {
+            actionId:   'action-id',
+            customPath: 'screenshot.png',
+        });
 
         expect(screenshots.capturer.testEntry.screenshots[0]).eql({
             testRunId:         'test-run-id',
+            actionId:          'action-id',
             screenshotPath:    join(process.cwd(), 'screenshot.png'),
             screenshotData:    void 0,
             thumbnailPath:     join(process.cwd(), 'thumbnails', 'screenshot.png'),

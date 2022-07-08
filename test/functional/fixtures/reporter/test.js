@@ -1094,6 +1094,39 @@ describe('Reporter', () => {
                     return assertionHelper.removeScreenshotDir('screenshots');
                 });
         });
+
+        it('Should put actionId on screenshot information', async () => {
+            function customReporter (actionIds, screenshots) {
+                return createReporter({
+                    reportTestActionDone: async (name, { command }) => {
+                        actionIds.push(command.actionId);
+                    },
+
+                    reportTestDone: async (name, testRunInfo) => {
+                        testRunInfo.screenshots.forEach((screenshot) => {
+                            screenshots[screenshot.actionId] = screenshot.screenshotPath;
+                        });
+                    },
+                });
+            }
+
+            const actionIds = [];
+            const screenshots = {};
+
+            await runTests('./testcafe-fixtures/index-test.js', 'Take a screenshot on action and on error', {
+                only:               'chrome',
+                reporter:           customReporter(actionIds, screenshots),
+                screenshotsOnFails: true,
+            });
+
+            expect(actionIds.length).eql(2);
+            actionIds.forEach(actionId => {
+                expect(screenshots[actionId]).is.not.empty;
+            });
+
+            assertionHelper.removeScreenshotDir('screenshots');
+        });
+
     });
 
     it('Should call the "init" method of reporters if it\'s defined', function () {
