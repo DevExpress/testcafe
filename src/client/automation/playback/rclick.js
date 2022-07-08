@@ -2,7 +2,7 @@ import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
 import VisibleElementAutomation from '../visible-element-automation';
 import { focusAndSetSelection, focusByRelatedElement } from '../utils/utils';
-import cursor from '../cursor/cursor';
+import cursor from '../cursor';
 import nextTick from '../utils/next-tick';
 
 const Promise = hammerhead.Promise;

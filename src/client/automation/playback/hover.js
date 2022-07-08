@@ -1,5 +1,5 @@
 import VisibleElementAutomation from '../visible-element-automation';
-import cursor from '../cursor/cursor';
+import cursor from '../cursor';
 
 
 export default class HoverAutomation extends VisibleElementAutomation {

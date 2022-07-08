@@ -9,7 +9,7 @@ import getElementFromPoint from '../../get-element';
 import VisibleElementAutomation from '../../visible-element-automation';
 import DragMoveAutomation from '../move/drag-move';
 import { MoveOptions } from '../../../../test-run/commands/options';
-import cursor from '../../cursor/cursor';
+import cursor from '../../cursor';
 
 const MIN_MOVING_TIME = 25;
 

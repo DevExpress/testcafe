@@ -1,7 +1,7 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import { MoveOptions } from '../../../../test-run/commands/options';
-import cursor from '../../cursor/cursor';
+import cursor from '../../cursor';
 
 
 import getLineRectIntersection from '../../../../shared/utils/get-line-rect-intersection';

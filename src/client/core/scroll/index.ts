@@ -1,4 +1,3 @@
-import scrollAdapter from './adapter/index';
 import { hasScroll, getScrollableParents } from '../utils/shared/scroll';
 import * as positionUtils from '../utils/shared/position';
 import * as promiseUtils from '../../../shared/utils/promise';
@@ -11,6 +10,9 @@ import { ScrollOptions } from '../../../test-run/commands/options';
 import * as domUtils from '../utils/dom';
 import * as styleUtils from '../utils/style';
 import sendRequestToFrame from '../utils/send-request-to-frame';
+// @ts-ignore
+import { Promise } from '../deps/hammerhead';
+import scrollController from './controller';
 
 const DEFAULT_MAX_SCROLL_MARGIN   = 50;
 const SCROLL_MARGIN_INCREASE_STEP = 20;
@@ -53,7 +55,7 @@ export default class ScrollAutomation {
         left = Math.max(left, 0);
         top  = Math.max(top, 0);
 
-        let scrollPromise = scrollAdapter.controller.waitForScroll(scrollElement);
+        let scrollPromise = scrollController.waitForScroll(scrollElement);
 
         styleUtils.setScrollLeft(scrollElement, left);
         styleUtils.setScrollTop(scrollElement, top);
@@ -62,7 +64,7 @@ export default class ScrollAutomation {
             // @ts-ignore
             scrollPromise.cancel();
 
-            return scrollAdapter.PromiseCtor.resolve();
+            return Promise.resolve();
         }
 
         scrollPromise = scrollPromise.then(() => {
@@ -211,7 +213,7 @@ export default class ScrollAutomation {
 
     private _scrollElement (): Promise<void> {
         if (!hasScroll(this._element))
-            return scrollAdapter.PromiseCtor.resolve();
+            return Promise.resolve();
 
         const elementDimensions = positionUtils.getClientDimensions(this._element);
         const scroll = this._getScrollToPoint(elementDimensions, this._offsets, this._maxScrollMargin);

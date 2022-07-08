@@ -27,7 +27,7 @@ import { getSelectionCoordinatesByPosition } from './playback/select/utils';
 import getElementFromPoint from './get-element';
 import calculateSelectTextArguments from './playback/select/calculate-select-text-arguments';
 import ERROR_TYPES from '../../shared/errors/automation-errors';
-import cursor from './cursor/cursor';
+import cursor from './cursor';
 import MoveAutomation from '../../shared/actions/automations/move';
 
 

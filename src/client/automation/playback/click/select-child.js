@@ -5,7 +5,7 @@ import MoveAutomation from '../move/move';
 import { MoveOptions } from '../../../../test-run/commands/options';
 import { getDefaultAutomationOffsets } from '../../../../shared/actions/utils/offsets';
 import AutomationSettings from '../../../../shared/actions/automations/settings';
-import cursor from '../../cursor/cursor';
+import cursor from '../../cursor';
 
 const Promise = hammerhead.Promise;
 
