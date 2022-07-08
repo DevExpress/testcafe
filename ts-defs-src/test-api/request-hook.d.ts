@@ -150,14 +150,14 @@ interface RequestMock {
      * Specifies requests to intercept
      * @param filter - Specifies which requests should be mocked with a response that follows in the `respond` method.
      */
-    onRequestTo(filter: string | RegExp | object | ((req: RequestOptions) => boolean)): RequestMock;
+    onRequestTo(filter: string | RegExp | object | ((req: RequestMockOptions) => boolean)): RequestMock;
     /**
      * Specifies the mocked response.
      * @param body - The mocked response body.
      * @param statusCode - The response status code.
      * @param headers - Custom headers added to the response in the property-value form.
      */
-    respond(body?: object | string | ((req: RequestOptions, res: ResponseMock) => Promise<void> | void), statusCode?: number, headers?: Record<string, string>): RequestMock;
+    respond(body?: object | string | ((req: RequestMockOptions, res: ResponseMock) => Promise<void> | void), statusCode?: number, headers?: Record<string, string>): RequestMock;
 }
 
 interface RequestMockFactory {
@@ -167,7 +167,7 @@ interface RequestMockFactory {
 /**
  * {@link https://devexpress.github.io/testcafe/documentation/reference/test-api/requestmock/respond.html#requestoptions See documentation}.
  */
-interface RequestOptions {
+interface RequestMockOptions {
     /** The request headers in the property-value form. */
     headers: Record<string, string>;
     /** The request body. */

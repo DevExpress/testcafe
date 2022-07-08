@@ -127,6 +127,7 @@ const storages       = hammerhead.storages;
 const nativeMethods  = hammerhead.nativeMethods;
 const DateCtor       = nativeMethods.date;
 const listeners      = hammerhead.eventSandbox.listeners;
+const urlUtils       = hammerhead.utils.url;
 
 const TEST_DONE_SENT_FLAG                  = 'testcafe|driver|test-done-sent-flag';
 const PENDING_STATUS                       = 'testcafe|driver|pending-status';
@@ -1196,6 +1197,13 @@ export default class Driver extends serviceUtils.EventEmitter {
             });
     }
 
+    _onGetProxyUrlCommand (command) {
+        this._onReady(new DriverStatus({
+            isCommandResult: true,
+            result:          urlUtils.getProxyUrl(command.url, command.options),
+        }));
+    }
+
     _onExecuteClientFunctionCommand (command) {
         this.contextStorage.setItem(EXECUTING_CLIENT_FUNCTION_DESCRIPTOR, { instantiationCallsiteName: command.instantiationCallsiteName });
 
@@ -1658,6 +1666,10 @@ export default class Driver extends serviceUtils.EventEmitter {
 
         else if (command.type === COMMAND_TYPE.prepareClientEnvironmentInDebugMode)
             this._onPrepareClientEnvironmentInDebugMode(command);
+
+        else if (command.type === COMMAND_TYPE.getProxyUrl)
+            this._onGetProxyUrlCommand(command);
+
         else
             this._onActionCommand(command);
     }

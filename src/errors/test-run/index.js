@@ -267,6 +267,15 @@ export class ActionRequiredCookieArguments extends TestRunErrorBase {
     }
 }
 
+export class ActionUrlArgumentError extends TestRunErrorBase {
+    constructor (argumentName, actualValue) {
+        super(TEST_RUN_ERRORS.actionUrlArgumentError);
+
+        this.argumentName = argumentName;
+        this.actualValue  = actualValue;
+    }
+}
+
 
 // Action execution errors
 //--------------------------------------------------------------------

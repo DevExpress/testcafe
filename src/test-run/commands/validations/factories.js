@@ -73,3 +73,30 @@ export function createNumberValidator (ErrorCtor) {
             throw new ErrorCtor(name, typeof val);
     };
 }
+
+export function createUrlValidator (ErrorCtor) {
+    return (name, val) => {
+        const valType = typeof val;
+
+        if (valType !== 'string' && !(val instanceof URL))
+            throw new ErrorCtor(name, valType);
+    };
+}
+
+export function createUrlSearchParamsValidator (ErrorCtor) {
+    return (name, val) => {
+        const valType = typeof val;
+
+        if (valType !== 'object' && !(val instanceof URLSearchParams))
+            throw new ErrorCtor(name, valType);
+    };
+}
+
+export function createObjectValidator (ErrorCtor) {
+    return (name, val) => {
+        const valType = typeof val;
+
+        if (valType !== 'object')
+            throw new ErrorCtor(name, valType);
+    };
+}

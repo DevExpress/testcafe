@@ -422,4 +422,20 @@ export default {
     [TEST_RUN_ERRORS.actionNumberOptionError]: err => `
         The value of the "${err.optionName}" option belongs to an unsupported data type (${err.actualValue}). The "${err.optionName}" option only accepts Number type values.
     `,
+
+    [TEST_RUN_ERRORS.actionUrlOptionError]: err => `
+        The value of the "${err.optionName}" option belongs to an unsupported data type (${err.actualValue}). The "${err.optionName}" option only accepts string or URL types values.
+    `,
+
+    [TEST_RUN_ERRORS.actionUrlSearchParamsOptionError]: err => `
+        The value of the "${err.optionName}" option belongs to an unsupported data type (${err.actualValue}). The "${err.optionName}" option only accepts object or URLSearchParams types values.
+    `,
+
+    [TEST_RUN_ERRORS.actionObjectOptionError]: err => `
+        The value of the "${err.optionName}" option belongs to an unsupported data type (${err.actualValue}). The "${err.optionName}" option only accepts object types values.
+    `,
+
+    [TEST_RUN_ERRORS.actionUrlArgumentError]: err => `
+        The "${err.argumentName}" argument is expected to be an URL or a string, but it was ${err.actualValue}.
+    `,
 };

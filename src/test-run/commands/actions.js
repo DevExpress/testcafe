@@ -12,6 +12,8 @@ import {
     DragToElementOptions,
     OffsetOptions,
     CookieOptions,
+    GetProxyUrlOptions,
+    RequestOptions,
 } from './options';
 
 import {
@@ -29,7 +31,7 @@ import {
     stringArgument,
     nonEmptyStringArgument,
     nullableStringArgument,
-    urlArgument,
+    pageUrlArgument,
     stringOrStringArrayArgument,
     setSpeedArgument,
     actionRoleArgument,
@@ -38,6 +40,7 @@ import {
     cookiesArgument,
     setCookiesArgument,
     urlsArgument,
+    urlArgument,
 } from './validations/argument';
 
 import { SetNativeDialogHandlerCodeWrongTypeError } from '../../errors/test-run';
@@ -107,6 +110,14 @@ function initDialogHandler (name, val, { skipVisibilityCheck, testRun }) {
 
 function initCookiesOption (name, val, initOptions, validate = true) {
     return val.map(cookie => new CookieOptions(cookie, validate));
+}
+
+function initRequestOption (name, val, initOptions, validate = true) {
+    return new RequestOptions(val, validate);
+}
+
+function initGetProxyUrlOptions (name, val, initOptions, validate = true) {
+    return new GetProxyUrlOptions(val, validate);
 }
 
 // Commands
@@ -387,7 +398,7 @@ export class NavigateToCommand extends ActionCommandBase {
 
     _getAssignableProperties () {
         return [
-            { name: 'url', type: urlArgument, required: true },
+            { name: 'url', type: pageUrlArgument, required: true },
             { name: 'stateSnapshot', type: nullableStringArgument, defaultValue: null },
             { name: 'forceReload', type: booleanArgument, defaultValue: false },
         ];
@@ -455,7 +466,7 @@ export class OpenWindowCommand extends ActionCommandBase {
 
     _getAssignableProperties () {
         return [
-            { name: 'url', type: urlArgument },
+            { name: 'url', type: pageUrlArgument },
         ];
     }
 }
@@ -709,3 +720,36 @@ export class DeleteCookiesCommand extends ActionCommandBase {
         ];
     }
 }
+
+export class RequestCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.request);
+    static extendedMethods = ['get', 'post', 'delete', 'put', 'patch', 'head'];
+    static resultGetters = ['status', 'statusText', 'headers', 'body'];
+
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.request, validateProperties);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'url', type: urlArgument, required: false },
+            { name: 'options', type: actionOptions, init: initRequestOption, required: false },
+        ];
+    }
+}
+
+export class GetProxyUrlCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.getProxyUrl);
+
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.getProxyUrl, validateProperties);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'url', type: urlArgument, required: true },
+            { name: 'options', init: initGetProxyUrlOptions, required: false },
+        ];
+    }
+}
+

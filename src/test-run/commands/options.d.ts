@@ -82,3 +82,36 @@ export class CookieOptions {
     public httpOnly: boolean;
     public sameSite: string;
 }
+
+export class RequestOptions {
+    public constructor (obj: object, validate: boolean);
+    public url: string | URL;
+    public method: string;
+    public headers: object;
+    public params: object;
+    public body: any;
+    public timeout: number;
+    public withCredentials: boolean;
+    public auth: RequestAuthOptions;
+    public proxy: RequestProxyOptions;
+    public rawResponse: boolean;
+}
+
+export class RequestAuthOptions {
+    public constructor (obj: object, validate: boolean);
+    public username: string;
+    public password: string;
+}
+
+export class RequestProxyOptions {
+    public constructor (obj: object, validate: boolean);
+    public protocol: string;
+    public host: string;
+    public port: number;
+    public auth: RequestAuthOptions;
+}
+
+export class GetProxyUrlOptions {
+    public constructor (obj: object, validate: boolean);
+    public credentials: number;
+}

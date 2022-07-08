@@ -45,6 +45,7 @@ import {
     GetCookiesCommand,
     SetCookiesCommand,
     DeleteCookiesCommand,
+    RequestCommand,
 } from '../../../../../test-run/commands/actions';
 
 import { AssertionCommand } from '../../../../../test-run/commands/assertion';
@@ -107,6 +108,7 @@ const COMMAND_CONSTRUCTORS = new Map<string, CommandConstructor>([
     [CommandType.getCookies, GetCookiesCommand],
     [CommandType.setCookies, SetCookiesCommand],
     [CommandType.deleteCookies, DeleteCookiesCommand],
+    [CommandType.request, RequestCommand],
 ]);
 
 export default COMMAND_CONSTRUCTORS;
