@@ -7,41 +7,52 @@ interface Command {
         type: string;
         value: string;
     };
+    actual?: {
+        type: string;
+        value: string;
+    };
+    expected?: {
+        type: string;
+        value: string;
+    };
     type: string;
     assertionType?: string;
     [key: string]: unknown;
 }
 
 export class Render {
-    public static codeFrame (str: string): string {
-        return str;
-    }
-    public static commandLine (num: number, command: Command, base: boolean): string {
+    public static getCommandStr (command: Command): string {
         const {
             type,
             assertionType,
             selector,
+            actual,
+            expected,
         } = command;
 
+        const mainStr = `${upperFirst(camelCase(type))} (${(assertionType ? actual?.value : selector?.value) || ''})`;
+        const subStr  = assertionType ? ` ${assertionType} (${expected?.value || ''})` : '';
+
+        return `${mainStr}${subStr}`;
+    }
+    public static codeFrame (str: string): string {
+        return str;
+    }
+    public static commandLine (num: number, command: Command, base: boolean): string {
         let commandNum = `${base ? ' > ' : '   '}${num} `;
 
         if (base)
             commandNum = chalk.bgRed(commandNum);
 
-        return `${commandNum}|${upperFirst(camelCase(assertionType || type))} ${selector ? `(${selector.value})` : ''}\n`;
+        return `${commandNum}|${Render.getCommandStr(command)}\n`;
     }
 }
 
 export class NoColorRender extends Render {
     public static commandLine (num: number, command: Command, base: boolean): string {
-        const {
-            type,
-            assertionType,
-            selector,
-        } = command;
         const commandNum = `${base ? ' > ' : '   '}${num} `;
 
-        return `${commandNum}|${upperFirst(camelCase(assertionType || type))} ${selector ? `(${selector.value})` : ''}\n`;
+        return `${commandNum}|${Render.getCommandStr(command)}\n`;
     }
 }
 
@@ -51,16 +62,11 @@ export class HtmlRender extends Render {
     }
 
     public static commandLine (num: number, command: Command, base: boolean): string {
-        const {
-            type,
-            assertionType,
-            selector,
-        } = command;
         const numClass  = base ? 'code-line-num-base' : 'code-line-num';
 
         return `<div class="code-line">` +
             `<div class="${numClass}">${num}</div>` +
-            `<div class="code-line-src">${upperFirst(camelCase(assertionType || type))} ${selector ? `(${selector.value})` : ''}</div>` +
+            `<div class="code-line-src">${Render.getCommandStr(command)}</div>` +
             `</div>`;
     }
 }
@@ -78,12 +84,12 @@ export const renderers = {
 };
 
 export class RawCommandCallsiteRecord {
-    public readonly id: number;
+    public readonly actionId: number;
     private readonly _list: Command[];
 
-    public constructor (id: number, list: Command[]) {
-        this.id   = id;
-        this._list = list;
+    public constructor (actionId: number, list: Command[]) {
+        this.actionId = actionId;
+        this._list    = list;
     }
 
     public renderSync (opts: RenderOptions): string {
@@ -96,7 +102,7 @@ export class RawCommandCallsiteRecord {
         if (!codeFrame)
             return '';
 
-        const baseId = this._list.findIndex(item => item.id === this.id);
+        const baseId = this._list.findIndex(item => item.actionId === this.actionId);
 
         if (baseId < 0)
             return '';
