@@ -31,6 +31,7 @@ import path from 'path';
 import fs from 'fs';
 import MessageBus from '../utils/message-bus';
 import BrowserConnection from '../browser/connection';
+import { Dictionary } from '../configuration/interfaces';
 
 interface PendingPromise {
     resolve: Function | null;
@@ -68,6 +69,13 @@ interface TestInfo {
     browsers: BrowserRunInfo[];
 }
 
+interface FixtureInfo {
+    id: string;
+    name: string | null;
+    path: string;
+    meta: Dictionary<string>;
+}
+
 interface BrowserRunInfo extends Browser {
     testRunId: string;
     quarantineAttemptsTestRunIds?: string[];
@@ -85,6 +93,7 @@ interface TestRunInfo {
     skipped: boolean;
     browsers: unknown[];
     testId: string;
+    fixture: FixtureInfo;
 }
 
 interface PluginMethodArguments {
@@ -301,6 +310,12 @@ export default class Reporter {
             skipped:        reportItem.test.skip,
             browsers:       reportItem.browsers,
             testId:         reportItem.test.id,
+            fixture:        {
+                id:   reportItem.fixture.id,
+                name: reportItem.fixture.name,
+                path: reportItem.fixture.path,
+                meta: reportItem.fixture.meta,
+            },
         };
     }
 
@@ -336,10 +351,7 @@ export default class Reporter {
                 ],
             });
 
-            if (!nextReportItem)
-                continue;
-
-            if (nextReportItem.fixture === currentFixture)
+            if (!nextReportItem || nextReportItem.fixture === currentFixture)
                 continue;
 
             await this.dispatchToPlugin({

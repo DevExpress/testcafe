@@ -757,6 +757,14 @@ describe('Reporter', () => {
                                 ],
                             },
                         ],
+                        fixture: {
+                            id:   'fid1',
+                            name: 'fixture1',
+                            path: './file1.js',
+                            meta: {
+                                run: 'run-001',
+                            },
+                        },
                     },
                     {
                         run: 'run-001',
@@ -842,6 +850,14 @@ describe('Reporter', () => {
                                 testRunId: 'f1t2ff',
                             },
                         ],
+                        fixture: {
+                            id:   'fid1',
+                            name: 'fixture1',
+                            path: './file1.js',
+                            meta: {
+                                run: 'run-001',
+                            },
+                        },
                     },
                     {
                         run: 'run-001',
@@ -899,6 +915,14 @@ describe('Reporter', () => {
                                 testRunId: 'f1t3ff',
                             },
                         ],
+                        fixture: {
+                            id:   'fid1',
+                            name: 'fixture1',
+                            path: './file1.js',
+                            meta: {
+                                run: 'run-001',
+                            },
+                        },
                     },
                     {
                         run: 'run-001',
@@ -966,6 +990,14 @@ describe('Reporter', () => {
                                 testRunId: 'f2t1ff',
                             },
                         ],
+                        fixture: {
+                            id:   'fid2',
+                            name: 'fixture2',
+                            path: './file1.js',
+                            meta: {
+                                run: 'run-002',
+                            },
+                        },
                     },
                     {
                         run: 'run-001',
@@ -1023,6 +1055,14 @@ describe('Reporter', () => {
                                 testRunId: 'f2t2ff',
                             },
                         ],
+                        fixture: {
+                            id:   'fid2',
+                            name: 'fixture2',
+                            path: './file1.js',
+                            meta: {
+                                run: 'run-002',
+                            },
+                        },
                     },
                     {
                         run: 'run-001',
@@ -1094,6 +1134,12 @@ describe('Reporter', () => {
                                 testRunId: 'f3t1ff',
                             },
                         ],
+                        fixture: {
+                            id:   'fid3',
+                            name: 'fixture3',
+                            path: './file2.js',
+                            meta: null,
+                        },
                     },
                     {
                         run: 'run-001',
@@ -1151,6 +1197,12 @@ describe('Reporter', () => {
                                 testRunId: 'f3t2ff',
                             },
                         ],
+                        fixture: {
+                            id:   'fid3',
+                            name: 'fixture3',
+                            path: './file2.js',
+                            meta: null,
+                        },
                     },
                     {
                         run: 'run-001',
@@ -1208,6 +1260,12 @@ describe('Reporter', () => {
                                 testRunId: 'f3t3ff',
                             },
                         ],
+                        fixture: {
+                            id:   'fid3',
+                            name: 'fixture3',
+                            path: './file2.js',
+                            meta: null,
+                        },
                     },
                     {
                         run: 'run-001',
