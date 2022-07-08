@@ -56,6 +56,7 @@ export class ExecuteSelectorCommand extends ExecuteClientFunctionCommandBase {
             { name: 'apiFnChain' },
             { name: 'needError' },
             { name: 'index', defaultValue: 0 },
+            { name: 'strictError' },
         ]);
     }
 }

@@ -4,18 +4,15 @@ import testCafeCore from './deps/testcafe-core';
 import { initializeAdapter } from '../../shared/adapter/index';
 import { MouseClickStrategyEmpty } from '../../shared/actions/automations/click/mouse-click-strategy-base';
 
-const { nativeMethods, Promise, utils: { browser, featureDetection, extend } } = hammerhead;
-const { domUtils: dom, positionUtils: position, styleUtils: style, eventUtils: event } = testCafeCore;
+const { Promise } = hammerhead;
+const { positionUtils: position, styleUtils: style, eventUtils: event } = testCafeCore;
 const { getOffsetOptions } = testCafeAutomation;
 
 
 initializeAdapter({
-    PromiseCtor:      Promise,
-    nativeMethods:    nativeMethods,
     getOffsetOptions: getOffsetOptions,
 
-    dom, position, style, event, browser, featureDetection,
-    utils: { extend },
+    position, style, event,
 
     // NOTE: this functions are unnecessary in the driver
     getElementExceptUI:          () => Promise.resolve(),

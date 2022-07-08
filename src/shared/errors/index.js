@@ -161,6 +161,24 @@ export class ActionNumberOptionError extends ActionOptionErrorBase {
     }
 }
 
+export class ActionUrlOptionError extends ActionOptionErrorBase {
+    constructor (optionName, actualValue) {
+        super(TEST_RUN_ERRORS.actionUrlOptionError, optionName, actualValue);
+    }
+}
+
+export class ActionUrlSearchParamsOptionError extends ActionOptionErrorBase {
+    constructor (optionName, actualValue) {
+        super(TEST_RUN_ERRORS.actionUrlSearchParamsOptionError, optionName, actualValue);
+    }
+}
+
+export class ActionObjectOptionError extends ActionOptionErrorBase {
+    constructor (optionName, actualValue) {
+        super(TEST_RUN_ERRORS.actionObjectOptionError, optionName, actualValue);
+    }
+}
+
 
 // Action execution errors
 //--------------------------------------------------------------------

@@ -1,3 +1,4 @@
+const config = require('../../../../config');
 const expect = require('chai').expect;
 
 // NOTE: we run tests in chrome only, because we mainly test server API functionality.
@@ -43,4 +44,21 @@ describe('[API] t.typeText()', function () {
                 expect(errs[0]).to.contains('> 19 |    await t.typeText(NaN, \'a\');');
             });
     });
+
+    if (!config.proxyless) {
+        it('Should not execute selector twice for non-existing element due to "confidential" option (GH-6623)', function () {
+            return runTests('./testcafe-fixtures/type-test.js', 'Not found selector', {
+                shouldFail:      true,
+                only:            'chrome',
+                selectorTimeout: 3000,
+            })
+                .catch(function (errs) {
+                    expect(testReport.durationMs).lessThan(6000);
+                    expect(errs[0]).to.contains(
+                        'The specified selector does not match any element in the DOM tree.'
+                    );
+                    expect(errs[0]).to.contains('> 31 |    await t.typeText(\'#not-found\', \'a\');');
+                });
+        });
+    }
 });

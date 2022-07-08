@@ -93,6 +93,10 @@ export const TEST_RUN_ERRORS = {
     actionStringOptionError:                               'E90',
     actionDateOptionError:                                 'E91',
     actionNumberOptionError:                               'E92',
+    actionUrlOptionError:                                  'E93',
+    actionUrlSearchParamsOptionError:                      'E94',
+    actionObjectOptionError:                               'E95',
+    actionUrlArgumentError:                                'E96',
 };
 
 export const RUNTIME_ERRORS = {
@@ -167,4 +171,7 @@ export const RUNTIME_ERRORS = {
     cannotFindTestcafeConfigurationFile:                'E1070',
     dashboardTokenInJSON:                               'E1071',
     relativeBaseUrl:                                    'E1072',
+    requestUrlInvalidValueError:                        'E1072',
+    requestRuntimeError:                                'E1073',
+    requestCannotResolveTestRun:                        'E1074',
 };

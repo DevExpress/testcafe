@@ -201,9 +201,9 @@ describe('TestController action events', () => {
 
         await messageBus.emit('start', task);
 
-        // eval and expect has their functional tests
+        // eval, expect and request has their functional tests
         // addRequestHooks/removeRequestHooks are not logged
-        const exceptions = ['eval', 'expect', 'addRequestHooks', 'removeRequestHooks'];
+        const exceptions = ['eval', 'expect', 'addRequestHooks', 'removeRequestHooks', 'request'];
 
         const props = TestController.API_LIST
             .filter(prop => !prop.accessor)

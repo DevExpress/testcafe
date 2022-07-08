@@ -10,6 +10,7 @@ import {
     isFunction,
     uniq,
     castArray,
+    merge,
 } from 'lodash';
 
 import Bootstrapper from './bootstrapper';
@@ -544,14 +545,11 @@ export default class Runner extends EventEmitter {
     }
 
     async _getDashboardOptions () {
-        let options = this.configuration.getOption(OPTION_NAMES.dashboard);
+        const storageOptions = await this._loadDashboardOptionsFromStorage();
+        const configOptions  = this.configuration.getOption(OPTION_NAMES.dashboard);
+        const envOptions     = getEnvOptions();
 
-        if (!options)
-            options = await this._loadDashboardOptionsFromStorage();
-
-        this._mergeEnvDashboardOptions(options);
-
-        return options;
+        return merge({}, storageOptions, configOptions, envOptions);
     }
 
     async _loadDashboardOptionsFromStorage () {
@@ -560,15 +558,6 @@ export default class Runner extends EventEmitter {
         await storage.load();
 
         return storage.options;
-    }
-
-    _mergeEnvDashboardOptions (options) {
-        const envDashboardOptions = getEnvOptions();
-
-        for (const key in envDashboardOptions) {
-            if (envDashboardOptions[key])
-                options[key] = envDashboardOptions[key];
-        }
     }
 
     async _prepareClientScripts (tests, clientScripts) {

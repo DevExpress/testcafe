@@ -66,4 +66,6 @@ export default {
     getCookies:                          'get-cookies',
     setCookies:                          'set-cookies',
     deleteCookies:                       'delete-cookies',
+    getProxyUrl:                         'get-proxy-url',
+    request:                             'request',
 };

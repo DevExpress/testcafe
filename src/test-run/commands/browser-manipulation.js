@@ -9,6 +9,7 @@ import {
     screenshotPathArgument,
     resizeWindowDeviceArgument,
     actionOptions,
+    stringArgument,
 } from './validations/argument';
 
 import { generateScreenshotMark } from '../../screenshots/utils';
@@ -78,6 +79,7 @@ export class TakeScreenshotOnFailCommand extends TakeScreenshotBaseCommand {
     _getAssignableProperties () {
         return [
             { name: 'fullPage', type: booleanArgument, defaultValue: false },
+            { name: 'failedActionId', type: stringArgument },
         ];
     }
 }

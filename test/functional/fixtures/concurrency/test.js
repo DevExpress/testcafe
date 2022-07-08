@@ -77,6 +77,17 @@ if (config.useLocalBrowsers) {
             },
         });
 
+        const slowReporter = createReporter({
+            reportTaskStart: async function () {
+                await new Promise(resolve => setTimeout(() => resolve(), 100));
+                this.write('Task start').newline();
+            },
+
+            reportTestStart: async function () {
+                this.write('Test start').newline();
+            },
+        });
+
         beforeEach(function () {
             data = '';
         });
@@ -96,6 +107,21 @@ if (config.useLocalBrowsers) {
             return run('chrome:headless --no-sandbox', 2, './testcafe-fixtures/concurrent-test.js')
                 .then(() => {
                     expect(testInfo.getData()).eql(['test started', 'test started', 'short finished', 'long finished']);
+                });
+        });
+
+        it('Report TaskStart event handler should contain links to all opened browsers', async () => {
+            const concurrency = 2;
+            const scope       = {};
+            const reporter    = createReporter({
+                reportTaskStart: (_, userAgents) => {
+                    scope.userAgents = userAgents;
+                },
+            });
+
+            return run('chrome:headless', concurrency, './testcafe-fixtures/concurrent-test.js', reporter)
+                .then(() => {
+                    expect(scope.userAgents.length).eql(concurrency);
                 });
         });
 
@@ -133,6 +159,19 @@ if (config.useLocalBrowsers) {
                         'Test Long test done',
                         'Fixture Multifixture B started',
                         'Test Short test done',
+                        '',
+                    ]);
+                });
+        });
+
+        it('Should not start any test before report task start finishes', function () {
+            return run('chrome:headless --no-sandbox', 2, './testcafe-fixtures/concurrent-test.js', slowReporter)
+                .then(failedCount => {
+                    expect(failedCount).eql(0);
+                    expect(data.split('\n')).eql([
+                        'Task start',
+                        'Test start',
+                        'Test start',
                         '',
                     ]);
                 });

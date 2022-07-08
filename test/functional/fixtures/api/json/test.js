@@ -24,6 +24,10 @@ describe('[API] DevTools Compiler', function () {
         return runTests('./testcafe-fixtures/change-input-test.json', null, { only: 'chrome' });
     });
 
+    it('Should type text into a textarea', function () {
+        return runTests('./testcafe-fixtures/change-textarea-test.json', null, { only: 'chrome' });
+    });
+
     it('Should choose an option inside of a select', function () {
         return runTests('./testcafe-fixtures/change-select-test.json', null, { only: 'chrome' });
     });

@@ -82,6 +82,7 @@ export default class BrowserManipulationQueue {
             case COMMAND_TYPE.takeScreenshotOnFail:
                 return await this._takeScreenshot(() => this.screenshotCapturer.captureError({
                     actionId:       command.actionId,
+                    failedActionId: command.failedActionId,
                     pageDimensions: driverMsg.pageDimensions,
                     markSeed:       command.markSeed,
                     fullPage:       command.fullPage,

@@ -19,6 +19,11 @@ import {
     OffsetOptions,
 } from '../../../test-run/commands/options';
 
+// @ts-ignore
+import { utils } from '../../../client/core/deps/hammerhead';
+// @ts-ignore
+import * as domUtils from '../../../client/core/utils/dom';
+
 interface ElementStateArgsBase<E> {
     element: E | null;
     clientPoint: AxisValues<number> | null;
@@ -108,7 +113,7 @@ export default class VisibleElementAutomation<E, W extends SharedWindow> extends
     }
 
     private async _moveToElement (): Promise<void> {
-        const moveOptions    = new MoveOptions(adapter.utils.extend({ skipScrolling: true }, this.options), false);
+        const moveOptions    = new MoveOptions(utils.extend({ skipScrolling: true }, this.options), false);
         const moveAutomation = await MoveAutomation.create(this.element, moveOptions, this.window, this.cursor);
 
         return moveAutomation
@@ -233,7 +238,7 @@ export default class VisibleElementAutomation<E, W extends SharedWindow> extends
     }
 
     private async _contains (parent: E, child: E): Promise<boolean> {
-        const parents = await adapter.dom.getParents(child);
+        const parents = await domUtils.getParents(child);
 
         for (const el of parents) {
             if (el === parent)

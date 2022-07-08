@@ -1,5 +1,6 @@
-import { adapter } from '../adapter';
 import { Dictionary } from '../../configuration/interfaces';
+// @ts-ignore
+import { nativeMethods } from '../../client/driver/deps/hammerhead';
 
 
 type Listener = (...args: any[]) => void;
@@ -30,7 +31,7 @@ export default class EventEmitter {
         const listeners = this._eventsListeners[evt];
 
         if (listeners)
-            this._eventsListeners[evt] = adapter.nativeMethods.arrayFilter.call(listeners, item => item !== listener);
+            this._eventsListeners[evt] = nativeMethods.arrayFilter.call(listeners, (item: Listener) => item !== listener);
     }
 
     public offAll (evt?: string): void {

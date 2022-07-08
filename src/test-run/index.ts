@@ -118,7 +118,6 @@ import addRenderedWarning from '../notifications/add-rendered-warning';
 import getBrowser from '../utils/get-browser';
 import AssertionExecutor from '../assertions/executor';
 import asyncFilter from '../utils/async-filter';
-import PROXYLESS_COMMANDS from './proxyless-commands-support';
 import Fixture from '../api/structure/fixture';
 import MessageBus from '../utils/message-bus';
 import executeFnWithTimeout from '../utils/execute-fn-with-timeout';
@@ -1044,12 +1043,12 @@ export default class TestRun extends AsyncEventEmitter {
             command.generateScreenshotMark();
     }
 
-    public async _adjustCommandOptionsAndEnvironment (command: CommandBase): Promise<void> {
+    public async _adjustCommandOptionsAndEnvironment (command: CommandBase, callsite: CallsiteRecord): Promise<void> {
         if ((command as any).options?.confidential !== void 0)
             return;
 
         if (command.type === COMMAND_TYPE.typeText) {
-            const result = await this._internalExecuteCommand((command as any).selector);
+            const result = await this._internalExecuteCommand((command as any).selector, callsite);
 
             if (!result)
                 return;
@@ -1095,14 +1094,21 @@ export default class TestRun extends AsyncEventEmitter {
         let error        = null;
         let result       = null;
 
-        await this._adjustCommandOptionsAndEnvironment(command);
-
-        await this.emitActionEvent('action-start', actionArgs);
-
         const start = new Date().getTime();
 
         try {
-            result = await this._internalExecuteCommand(command, callsite);
+            await this._adjustCommandOptionsAndEnvironment(command, callsite);
+        }
+        catch (err) {
+            error = err;
+        }
+
+        await this.emitActionEvent('action-start', actionArgs);
+
+
+        try {
+            if (!error)
+                result = await this._internalExecuteCommand(command, callsite);
         }
         catch (err) {
             if (this.phase === TestRunPhase.pendingFinalization && err instanceof ExternalAssertionLibraryError)
@@ -1118,7 +1124,7 @@ export default class TestRun extends AsyncEventEmitter {
             // if error is TestCafeErrorList we do not need to create an adapter,
             // since error is already was processed in role initializer
             if (!(error instanceof TestCafeErrorList)) {
-                await this._makeScreenshotOnFail();
+                await this._makeScreenshotOnFail(command.actionId);
 
                 errorAdapter = this._createErrorAdapter(processTestFnError(error));
             }
@@ -1140,17 +1146,6 @@ export default class TestRun extends AsyncEventEmitter {
         return result;
     }
 
-    private async _canExecuteCommandThroughCDP (command: CommandBase): Promise<boolean> {
-        if (!this.opts.proxyless || !PROXYLESS_COMMANDS.has(command.type))
-            return false;
-
-        const browserId         = this.browserConnection.id;
-        const customActionsInfo = await this.browserConnection.provider.hasCustomActionForBrowser(browserId);
-
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        return customActionsInfo[PROXYLESS_COMMANDS.get(command.type)!];
-    }
-
     public async _internalExecuteCommand (command: CommandBase, callsite?: CallsiteRecord | string): Promise<unknown> {
         this.debugLog.command(command);
 
@@ -1163,21 +1158,6 @@ export default class TestRun extends AsyncEventEmitter {
         this._adjustConfigurationWithCommand(command);
 
         await this._setBreakpointIfNecessary(command, callsite as CallsiteRecord);
-
-        if (await this._canExecuteCommandThroughCDP(command)) {
-            const browserId = this.browserConnection.id;
-
-            if (command.type === COMMAND_TYPE.executeClientFunction)
-                return this.browserConnection.provider.executeClientFunction(browserId, command, callsite);
-            else if (command.type === COMMAND_TYPE.switchToIframe)
-                // TODO: return the switchToIframe call result when any command will not need the switching through the proxy
-                /*return */this.browserConnection.provider.switchToIframe(browserId, command, callsite, this.opts.selectorTimeout);
-            else if (command.type === COMMAND_TYPE.switchToMainWindow)
-                // TODO: return the switchToMainWindow call result when any command will not need the switching through the proxy
-                /*return */this.browserConnection.provider.switchToMainWindow(browserId);
-            else if (command.type === COMMAND_TYPE.executeSelector)
-                return this.browserConnection.provider.executeSelector(browserId, command, callsite, this.opts.selectorTimeout);
-        }
 
         if (isScreenshotCommand(command)) {
             if (this.opts.disableScreenshots) {
@@ -1271,11 +1251,11 @@ export default class TestRun extends AsyncEventEmitter {
         return new actionCommands.CloseChildWindowOnFileDownloading();
     }
 
-    public async _makeScreenshotOnFail (): Promise<void> {
+    public async _makeScreenshotOnFail (failedActionId?: string): Promise<void> {
         const { screenshots } = this.opts;
 
         if (!this.errScreenshotPath && (screenshots as ScreenshotOptionValue)?.takeOnFails)
-            this.errScreenshotPath = await this._internalExecuteCommand(new browserManipulationCommands.TakeScreenshotOnFailCommand()) as string;
+            this.errScreenshotPath = await this._internalExecuteCommand(new browserManipulationCommands.TakeScreenshotOnFailCommand({ failedActionId })) as string;
     }
 
     private _decorateWithFlag (fn: Function, flagName: string, value: boolean): () => Promise<void> {

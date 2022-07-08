@@ -49,7 +49,7 @@ export class TestCompilationError extends Error {
 }
 
 export class APIError extends Error {
-    constructor (methodName, code, ...args) {
+    constructor (callsite, code, ...args) {
         let template = TEMPLATES[code];
 
         template = APIError._prepareTemplateAndArgsIfNecessary(template, args);
@@ -62,7 +62,11 @@ export class APIError extends Error {
 
         // NOTE: `rawMessage` is used in error substitution if it occurs in test run.
         this.rawMessage = rawMessage;
-        this.callsite   = getCallsiteForMethod(methodName);
+
+        if (typeof callsite === 'object')
+            this.callsite = callsite;
+        else
+            this.callsite   = getCallsiteForMethod(callsite);
 
         // NOTE: We need property getters here because callsite can be replaced by an external code.
         // See https://github.com/DevExpress/testcafe/blob/v1.0.0/src/compiler/test-file/formats/raw.js#L22
@@ -139,5 +143,11 @@ export class TimeoutError extends GeneralError {
 export class BrowserConnectionError extends GeneralError {
     constructor (...args) {
         super(RUNTIME_ERRORS.browserConnectionError, ...args);
+    }
+}
+
+export class RequestRuntimeError extends APIError {
+    constructor (methodName, code, ...args) {
+        super(methodName, code, ...args);
     }
 }

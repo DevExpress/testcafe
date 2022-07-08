@@ -69,8 +69,11 @@ function assertErrorMessage (fn, expectedErrMessage) {
     expect(actualErr.message).eql(expectedErrMessage);
 }
 
-function makeSelector (str, skipVisibilityCheck) {
-    const builder = new SelectorBuilder(str, { visibilityCheck: !skipVisibilityCheck }, { instantiation: 'Selector' });
+function makeSelector (str, skipVisibilityCheck, needError, strictError) {
+    const builder = new SelectorBuilder(str, {
+        visibilityCheck: !skipVisibilityCheck,
+        needError, strictError,
+    }, { instantiation: 'Selector' });
     const command = builder.getCommand([]);
 
     command.actionId = 'child-command-selector';
@@ -565,7 +568,7 @@ describe('Test run commands', () => {
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.typeText,
                 actionId: TYPE.typeText,
-                selector: makeSelector('#yo'),
+                selector: makeSelector('#yo', false, true, true),
                 text:     'testText',
 
                 options: {
@@ -598,7 +601,7 @@ describe('Test run commands', () => {
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:     TYPE.typeText,
                 actionId: TYPE.typeText,
-                selector: makeSelector('#yo'),
+                selector: makeSelector('#yo', false, true, true),
                 text:     'testText',
 
                 options: {
@@ -1373,6 +1376,29 @@ describe('Test run commands', () => {
                 cookies: [{
                     name: 'apiCookie13',
                 }],
+            });
+        });
+
+        it('Should create RequestCommand from object', () => {
+            const commandObj = {
+                type: TYPE.request,
+                url:  'http://localhost/',
+
+                options: {
+                    method: 'GET',
+                },
+            };
+
+            const command = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type:     TYPE.request,
+                actionId: TYPE.request,
+                url:      'http://localhost/',
+
+                options: {
+                    method: 'GET',
+                },
             });
         });
     });
@@ -3485,6 +3511,272 @@ describe('Test run commands', () => {
                     actualValue:     'url.url',
                     isTestCafeError: true,
                     code:            'E89',
+                    callsite:        null,
+                },
+            );
+        });
+
+        it('Should validate RequestCommand', function () {
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type: TYPE.request,
+                        url:  true,
+                    });
+                },
+                {
+                    actualValue:     'boolean',
+                    argumentName:    'url',
+                    isTestCafeError: true,
+                    code:            'E96',
+                    callsite:        null,
+                },
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:    TYPE.request,
+                        options: {
+                            method: true,
+                        },
+                    });
+                },
+                {
+                    optionName:      'method',
+                    actualValue:     'boolean',
+                    isTestCafeError: true,
+                    code:            'E90',
+                    callsite:        null,
+                },
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:    TYPE.request,
+                        options: {
+                            headers: true,
+                        },
+                    });
+                },
+                {
+                    optionName:      'headers',
+                    actualValue:     'boolean',
+                    isTestCafeError: true,
+                    code:            'E95',
+                    callsite:        null,
+                },
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:    TYPE.request,
+                        options: {
+                            params: true,
+                        },
+                    });
+                },
+                {
+                    optionName:      'params',
+                    actualValue:     'boolean',
+                    isTestCafeError: true,
+                    code:            'E94',
+                    callsite:        null,
+                },
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:    TYPE.request,
+                        options: {
+                            timeout: 'true',
+                        },
+                    });
+                },
+                {
+                    optionName:      'timeout',
+                    actualValue:     'string',
+                    isTestCafeError: true,
+                    code:            'E92',
+                    callsite:        null,
+                },
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:    TYPE.request,
+                        options: {
+                            withCredentials: 'true',
+                        },
+                    });
+                },
+                {
+                    optionName:      'withCredentials',
+                    actualValue:     'string',
+                    isTestCafeError: true,
+                    code:            'E11',
+                    callsite:        null,
+                },
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:    TYPE.request,
+                        options: {
+                            auth: true,
+                        },
+                    });
+                },
+                {
+                    optionName:      'auth',
+                    actualValue:     'boolean',
+                    isTestCafeError: true,
+                    code:            'E95',
+                    callsite:        null,
+                },
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:    TYPE.request,
+                        options: {
+                            auth: {
+                                username: true,
+                                password: 'password',
+                            },
+                        },
+                    });
+                },
+                {
+                    optionName:      'username',
+                    actualValue:     'boolean',
+                    isTestCafeError: true,
+                    code:            'E90',
+                    callsite:        null,
+                },
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:    TYPE.request,
+                        options: {
+                            auth: {
+                                username: 'username',
+                                password: true,
+                            },
+                        },
+                    });
+                },
+                {
+                    optionName:      'password',
+                    actualValue:     'boolean',
+                    isTestCafeError: true,
+                    code:            'E90',
+                    callsite:        null,
+                },
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:    TYPE.request,
+                        options: {
+                            proxy: true,
+                        },
+                    });
+                },
+                {
+                    optionName:      'proxy',
+                    actualValue:     'boolean',
+                    isTestCafeError: true,
+                    code:            'E95',
+                    callsite:        null,
+                },
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:    TYPE.request,
+                        options: {
+                            proxy: {
+                                protocol: true,
+                            },
+                        },
+                    });
+                },
+                {
+                    optionName:      'protocol',
+                    actualValue:     'boolean',
+                    isTestCafeError: true,
+                    code:            'E90',
+                    callsite:        null,
+                },
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:    TYPE.request,
+                        options: {
+                            proxy: {
+                                host: true,
+                                port: 3000,
+                            },
+                        },
+                    });
+                },
+                {
+                    optionName:      'host',
+                    actualValue:     'boolean',
+                    isTestCafeError: true,
+                    code:            'E90',
+                    callsite:        null,
+                },
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:    TYPE.request,
+                        options: {
+                            proxy: {
+                                host: 'localhost',
+                                port: {},
+                            },
+                        },
+                    });
+                },
+                {
+                    optionName:      'port',
+                    actualValue:     'object',
+                    isTestCafeError: true,
+                    code:            'E92',
+                    callsite:        null,
+                },
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:    TYPE.request,
+                        options: {
+                            rawResponse: 'true',
+                        },
+                    });
+                },
+                {
+                    optionName:      'rawResponse',
+                    actualValue:     'string',
+                    isTestCafeError: true,
+                    code:            'E11',
                     callsite:        null,
                 },
             );

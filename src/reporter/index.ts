@@ -30,6 +30,7 @@ import makeDir from 'make-dir';
 import path from 'path';
 import fs from 'fs';
 import MessageBus from '../utils/message-bus';
+import BrowserConnection from '../browser/connection';
 
 interface PendingPromise {
     resolve: Function | null;
@@ -64,10 +65,10 @@ interface TestInfo {
     pendingStarts: number;
     pendingTestRunDonePromise: PendingPromise;
     pendingTestRunStartPromise: PendingPromise;
-    browsers: BrowserInfo[];
+    browsers: BrowserRunInfo[];
 }
 
-interface BrowserInfo extends Browser {
+interface BrowserRunInfo extends Browser {
     testRunId: string;
     quarantineAttemptsTestRunIds?: string[];
 }
@@ -435,7 +436,9 @@ export default class Reporter {
         };
 
         const startTime              = task.startTime;
-        const browserConnectionsInfo = task.browserConnectionGroups.map(group => group[0].connectionInfo);
+        const browserConnectionsInfo = ([] as BrowserConnection[])
+            .concat(...task.browserConnectionGroups)
+            .map(connection => connection.connectionInfo);
         const first                  = this.taskInfo.testQueue[0];
 
         const taskProperties = {
@@ -484,7 +487,12 @@ export default class Reporter {
         if (!testItem.pendingStarts) {
             // @ts-ignore
             if (this.plugin.reportTestStart) {
-                const testStartInfo = { testRunIds: testItem.testRunIds, testId: testItem.test.id, startTime: new Date(testItem.startTime) };
+                const testStartInfo = {
+                    testRunIds: testItem.testRunIds,
+                    testId:     testItem.test.id,
+                    startTime:  new Date(testItem.startTime),
+                    skipped:    testItem.test.skip,
+                };
 
                 await this.dispatchToPlugin({
                     method:        ReporterPluginMethod.reportTestStart as string,
@@ -509,7 +517,7 @@ export default class Reporter {
 
         const reportItem                    = this._getTestItemForTestRun(this.taskInfo, testRun) as TestInfo;
         const isTestRunStoppedTaskExecution = !!testRun.errs.length && this.taskInfo.stopOnFirstFail;
-        const browser: BrowserInfo          = Object.assign({ testRunId: testRun.id }, testRun.browser);
+        const browser: BrowserRunInfo       = Object.assign({ testRunId: testRun.id }, testRun.browser);
 
         reportItem.browsers.push(browser);
 

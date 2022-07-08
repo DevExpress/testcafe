@@ -32,6 +32,16 @@
       "target": "main"
     },
     {
+      "type": "change",
+      "value": "peter parker",
+      "selectors": [
+        [
+          "#input"
+        ]
+      ],
+      "target": "main"
+    },
+    {
       "type": "waitForExpression",
       "timeout": 1000,
       "expression": "document.querySelector('#input').value === 'peter parker'"

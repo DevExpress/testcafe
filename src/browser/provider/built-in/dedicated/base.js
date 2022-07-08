@@ -101,34 +101,6 @@ export default {
         await this.resizeWindow(browserId, maximumSize.width, maximumSize.height, maximumSize.width, maximumSize.height);
     },
 
-    async executeClientFunction (browserId, command, callsite) {
-        const runtimeInfo   = this.openedBrowsers[browserId];
-        const browserClient = this._getBrowserProtocolClient(runtimeInfo);
-
-        return browserClient.executeClientFunction(command, callsite);
-    },
-
-    async executeSelector ({ browserId, command, callsite, selectorTimeout }) {
-        const runtimeInfo   = this.openedBrowsers[browserId];
-        const browserClient = this._getBrowserProtocolClient(runtimeInfo);
-
-        return browserClient.executeSelector(command, callsite, selectorTimeout);
-    },
-
-    async switchToIframe ({ browserId, command, callsite, selectorTimeout }) {
-        const runtimeInfo   = this.openedBrowsers[browserId];
-        const browserClient = this._getBrowserProtocolClient(runtimeInfo);
-
-        return browserClient.switchToIframe(command, callsite, selectorTimeout);
-    },
-
-    async switchToMainWindow (browserId) {
-        const runtimeInfo   = this.openedBrowsers[browserId];
-        const browserClient = this._getBrowserProtocolClient(runtimeInfo);
-
-        return browserClient.switchToMainWindow();
-    },
-
     async closeBrowserChildWindow (browserId) {
         const runtimeInfo   = this.openedBrowsers[browserId];
         const browserClient = this._getBrowserProtocolClient(runtimeInfo);
