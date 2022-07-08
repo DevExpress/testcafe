@@ -110,6 +110,21 @@ if (config.useLocalBrowsers) {
                 });
         });
 
+        it('Report TaskStart event handler should contain links to all opened browsers', async () => {
+            const concurrency = 2;
+            const scope       = {};
+            const reporter    = createReporter({
+                reportTaskStart: (_, userAgents) => {
+                    scope.userAgents = userAgents;
+                },
+            });
+
+            return run('chrome:headless', concurrency, './testcafe-fixtures/concurrent-test.js', reporter)
+                .then(() => {
+                    expect(scope.userAgents.length).eql(concurrency);
+                });
+        });
+
         // TODO: this test doesn't work on CI due to big resource demands
         if (!isCI) {
             it('Should run tests concurrently in different browser kinds', function () {
