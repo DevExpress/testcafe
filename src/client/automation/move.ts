@@ -82,7 +82,7 @@ export default class MoveAutomation {
         return new MoveAutomation(element, offset, moveOptions, win, cursor);
     }
 
-    private static getTarget<E, W> (element: E, window: W, offset: AxisValuesData<number>): Promise<MoveAutomationTarget> {
+    private static getTarget (element: HTMLElement, window: Window, offset: AxisValuesData<number>): Promise<MoveAutomationTarget> {
         // NOTE: if the target point (considering offsets) is out of
         // the element change the target element to the document element
         return Promise.resolve(positionUtils.containsOffset(element, offset.x, offset.y))
