@@ -72,7 +72,7 @@ export class MouseClickStrategy {
         };
     }
 
-    public mousedown (eventArgs: MouseEventArgs<Element>): Promise<void> {
+    public mousedown (eventArgs: MouseEventArgs): Promise<void> {
         this.targetElementParentNodes = domUtils.getParents(eventArgs.element);
         this.mouseDownElement = eventArgs.element;
 
@@ -102,7 +102,7 @@ export class MouseClickStrategy {
             .then(() => this._focus(eventArgs));
     }
 
-    public mouseup (element: Element, eventArgs: MouseEventArgs<Element>): Promise<MouseEventArgs<Element>> {
+    public mouseup (element: HTMLElement, eventArgs: MouseEventArgs): Promise<MouseEventArgs> {
         eventArgs.element = element;
 
         this.eventState.clickElement = _getElementForClick(this.mouseDownElement, element, this.targetElementParentNodes);
@@ -127,7 +127,7 @@ export class MouseClickStrategy {
         return this._click(eventArgs);
     }
 
-    public async _click (eventArgs: MouseEventArgs<Element>): hammerhead.Promise<MouseEventArgs<Element>> {
+    public async _click (eventArgs: MouseEventArgs): hammerhead.Promise<MouseEventArgs> {
         const clickCommand = createClickCommand(this.eventState, eventArgs);
 
         if (!this._isTouchEventWasCancelled())
@@ -192,7 +192,7 @@ export class MouseClickStrategy {
         });
     }
 
-    private _focus (eventArgs: MouseEventArgs<Element>): Promise<void> {
+    private _focus (eventArgs: MouseEventArgs): Promise<void> {
         if (this.eventState.simulateDefaultBehavior === false)
             return Promise.resolve();
 
@@ -207,7 +207,7 @@ export class MouseClickStrategy {
         return focusAndSetSelection(elementForFocus, simulateFocus, this.caretPos);
     }
 
-    private _raiseTouchEvents (eventArgs: MouseEventArgs<Element>): void {
+    private _raiseTouchEvents (eventArgs: MouseEventArgs): void {
         if (featureDetection.isTouchDevice) {
             this.eventState.touchStartCancelled = !eventSimulator.touchstart(eventArgs.element, eventArgs.options);
             this.eventState.touchEndCancelled   = !eventSimulator.touchend(eventArgs.element, eventArgs.options);
