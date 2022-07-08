@@ -30,7 +30,7 @@ export default class ClickAutomation extends VisibleElementAutomation {
         return this.strategy.mousedown(eventArgs);
     }
 
-    private _mouseup (element: Element, eventArgs: MouseEventArgs): Promise<MouseEventArgs> {
+    private _mouseup (element: HTMLElement, eventArgs: MouseEventArgs): Promise<MouseEventArgs> {
         return this.strategy.mouseup(element, eventArgs);
     }
 
