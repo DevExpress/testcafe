@@ -8,6 +8,7 @@ import AutomationSettings from './settings';
 import MoveAutomation from './move';
 import AxisValues, { AxisValuesData } from '../../shared/utils/values/axis-values';
 import Cursor from './cursor/cursor';
+import cursor from './cursor';
 import delay from '../../shared/utils/delay';
 import SharedEventEmitter from '../../shared/utils/event-emitter';
 
@@ -110,7 +111,7 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
 
     private _ensureWindowAndCursorForLegacyTests (automation: VisibleElementAutomation): void {
         automation.window = automation.window || window; // eslint-disable-line no-undef
-        automation.cursor = this.cursor;
+        automation.cursor = cursor;
     }
 
     protected async _getElementForEvent (eventArgs: MouseEventArgs<Element>): Promise<Element | null> {
