@@ -26,16 +26,16 @@ export default class ClickAutomation extends VisibleElementAutomation {
         this.strategy = createMouseClickStrategy(this.element, clickOptions.caretPos);
     }
 
-    private _mousedown (eventArgs: MouseEventArgs<Element>): Promise<void> {
+    private _mousedown (eventArgs: MouseEventArgs): Promise<void> {
         return this.strategy.mousedown(eventArgs);
     }
 
-    private _mouseup (element: Element, eventArgs: MouseEventArgs<Element>): Promise<MouseEventArgs<Element>> {
+    private _mouseup (element: Element, eventArgs: MouseEventArgs): Promise<MouseEventArgs> {
         return this.strategy.mouseup(element, eventArgs);
     }
 
-    private run (useStrictElementCheck: boolean): Promise<MouseEventArgs<Element> | null> {
-        let eventArgs: MouseEventArgs<Element>;
+    private run (useStrictElementCheck: boolean): Promise<MouseEventArgs | null> {
+        let eventArgs: MouseEventArgs;
 
         return this
             ._ensureElement(useStrictElementCheck)
@@ -50,7 +50,7 @@ export default class ClickAutomation extends VisibleElementAutomation {
                         screenX: devicePoint?.x,
                         screenY: devicePoint?.y,
                     }, this.modifiers),
-                } as unknown as MouseEventArgs<Element>;
+                } as unknown as MouseEventArgs;
 
 
                 // NOTE: we should raise mouseup event with 'mouseActionStepDelay' after we trigger
