@@ -9,7 +9,7 @@ describe('[Regression](GH-965)', function () {
                 shouldFail: true,
             })
                 .catch(function (errs) {
-                    expect(errs[0]).contains('httpss://example.com" test page URL includes an unsupported httpss:// protocol. TestCafe only supports http://, https:// and file:// protocols.');
+                    expect(errs[0]).contains('Invalid test page URL: "httpss://example.com". TestCafe cannot execute the test because the test page URL includes the httpss protocol. TestCafe supports the following protocols: http://, https:// and file://.');
                     expect(errs[0]).contains('> 4 |    await t.navigateTo(\'httpss://example.com\');');
                 });
         });
@@ -20,7 +20,7 @@ describe('[Regression](GH-965)', function () {
                 shouldFail: true,
             })
                 .catch(function (err) {
-                    expect(err.message).contains('httpss://example.com" test page URL includes an unsupported httpss:// protocol. TestCafe only supports http://, https:// and file:// protocols.');
+                    expect(err.message).contains('Invalid test page URL: "httpss://example.com". TestCafe cannot execute the test because the test page URL includes the httpss protocol. TestCafe supports the following protocols: http://, https:// and file://.');
                     expect(err.stack).contains('> 4 |    .page `httpss://example.com`');
                 });
         });

@@ -173,4 +173,5 @@ export const RUNTIME_ERRORS = {
     requestUrlInvalidValueError:                        'E1072',
     requestRuntimeError:                                'E1073',
     requestCannotResolveTestRun:                        'E1074',
+    relativeBaseUrl:                                    'E1075',
 };

@@ -31,6 +31,7 @@ import TypeScript, {
 } from 'typescript';
 
 import { Dictionary, TypeScriptCompilerOptions } from '../../../../configuration/interfaces';
+import { OptionalCompilerArguments } from '../../../interfaces';
 
 declare type TypeScriptInstance = typeof TypeScript;
 
@@ -93,8 +94,8 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
     private readonly _compilerPath: string;
     private readonly _customCompilerOptions?: object;
 
-    public constructor (compilerOptions?: TypeScriptCompilerOptions, isCompilerServiceMode?: boolean) {
-        super(isCompilerServiceMode);
+    public constructor (compilerOptions?: TypeScriptCompilerOptions, { isCompilerServiceMode, baseUrl }: OptionalCompilerArguments = {}) {
+        super({ isCompilerServiceMode, baseUrl });
 
         // NOTE: At present, it's necessary create an instance TypeScriptTestFileCompiler
         // to collect a list of supported test file extensions.

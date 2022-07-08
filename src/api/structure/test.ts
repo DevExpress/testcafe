@@ -29,12 +29,12 @@ export default class Test extends TestingUnit {
     private readonly _isCompilerService: boolean;
     public readonly esmRuntime: string;
 
-    public constructor (testFile: TestFile, isCompilerServiceMode = false) {
+    public constructor (testFile: TestFile, isCompilerServiceMode = false, baseUrl?: string) {
         // NOTE: 'fixture' directive can be missing
         const fixture = testFile.currentFixture as Fixture;
         const pageUrl = fixture?.pageUrl || SPECIAL_BLANK_PAGE;
 
-        super(testFile, UnitType.test, pageUrl);
+        super(testFile, UnitType.test, pageUrl, baseUrl);
 
         this.fixture        = null;
         this.fn             = null;

@@ -23,8 +23,10 @@ export default class Fixture extends TestingUnit {
     public globalBeforeFn: Function | null;
     public globalAfterFn: Function | null;
 
-    public constructor (testFile: TestFile) {
-        super(testFile, UnitType.fixture, SPECIAL_BLANK_PAGE);
+    public constructor (testFile: TestFile, baseUrl?: string) {
+        const pageUrl = baseUrl || SPECIAL_BLANK_PAGE;
+
+        super(testFile, UnitType.fixture, pageUrl, baseUrl);
 
         this.path           = testFile.filename;
         this.beforeEachFn   = null;

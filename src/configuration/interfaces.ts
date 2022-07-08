@@ -33,6 +33,7 @@ export interface RunnerRunOptions {
     ajaxRequestTimeout?: number;
     retryTestPages?: boolean;
     hooks?: GlobalHooks;
+    baseUrl?: string;
 }
 
 export interface GetOptionConfiguration {

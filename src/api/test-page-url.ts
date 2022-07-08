@@ -3,6 +3,7 @@ import OS from 'os-family';
 import { APIError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
 import { SPECIAL_BLANK_PAGE } from 'testcafe-hammerhead';
+import { join } from 'path';
 
 const PROTOCOL_RE           = /^([\w-]+?)(?=:\/\/)/;
 const SUPPORTED_PROTOCOL_RE = /^(https?|file):/;
@@ -49,13 +50,29 @@ export function getUrl (url: string, base?: URL): string {
     return ensureProtocol(url);
 }
 
+export function prepareBaseUrl (url: string): URL {
+    url = join(url, '/');
+    return isAbsolute(url) ? pathToFileURL(url) : new URL(url);
+}
+
 export function assertPageUrl (url: string, callsiteName: string): void {
+    assertProtocol(url, callsiteName, 'test page URL');
+}
+
+function assertProtocol (url: string, callsiteName: string, what: string): void {
     const protocol               = url.match(PROTOCOL_RE);
     const hasUnsupportedProtocol = protocol && !SUPPORTED_PROTOCOL_RE.test(url);
     const isWinAbsolutePath      = OS.win && WIN_ABSOLUTE_PATH_RE.test(url);
 
     if (hasUnsupportedProtocol && !isWinAbsolutePath && url !== SPECIAL_BLANK_PAGE)
-        throw new APIError(callsiteName, RUNTIME_ERRORS.unsupportedUrlProtocol, url, protocol && protocol[0]);
+        throw new APIError(callsiteName, RUNTIME_ERRORS.unsupportedUrlProtocol, what, url, what, protocol && protocol[0]);
+}
+
+export function assertBaseUrl (url: string, callsiteName: string): void {
+    if (isRelative(url))
+        throw new APIError(callsiteName, RUNTIME_ERRORS.relativeBaseUrl, url);
+
+    assertProtocol(url, callsiteName, 'base URL');
 }
 
 export function assertRoleUrl (url: string, callsiteName: string): void {

@@ -61,7 +61,7 @@ export default class Runner extends EventEmitter {
 
         this._messageBus         = new MessageBus();
         this.proxy               = proxy;
-        this.bootstrapper        = this._createBootstrapper(browserConnectionGateway, compilerService, this._messageBus);
+        this.bootstrapper        = this._createBootstrapper(browserConnectionGateway, compilerService, this._messageBus, configuration);
         this.pendingTaskPromises = [];
         this.configuration       = configuration;
         this.isCli               = configuration._options && configuration._options.isCli;
@@ -78,8 +78,8 @@ export default class Runner extends EventEmitter {
         ]);
     }
 
-    _createBootstrapper (browserConnectionGateway, compilerService, messageBus) {
-        return new Bootstrapper({ browserConnectionGateway, compilerService, messageBus });
+    _createBootstrapper (browserConnectionGateway, compilerService, messageBus, configuration) {
+        return new Bootstrapper({ browserConnectionGateway, compilerService, messageBus, configuration });
     }
 
     _disposeBrowserSet (browserSet) {
@@ -511,6 +511,7 @@ export default class Runner extends EventEmitter {
         this.bootstrapper.compilerOptions        = this.configuration.getOption(OPTION_NAMES.compilerOptions);
         this.bootstrapper.browserInitTimeout     = this.configuration.getOption(OPTION_NAMES.browserInitTimeout);
         this.bootstrapper.hooks                  = this.configuration.getOption(OPTION_NAMES.hooks);
+        this.bootstrapper.configuration          = this.configuration;
     }
 
     async _addDashboardReporterIfNeeded () {

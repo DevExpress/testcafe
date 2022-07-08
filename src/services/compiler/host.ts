@@ -372,10 +372,10 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
             .executeCommand(command, callsite);
     }
 
-    public async getTests ({ sourceList, compilerOptions, runnableConfigurationId }: CompilerArguments): Promise<Test[]> {
+    public async getTests ({ sourceList, compilerOptions, runnableConfigurationId }: CompilerArguments, baseUrl?: string): Promise<Test[]> {
         const { proxy } = await this._getRuntime();
 
-        const units = await proxy.call(this.getTests, { sourceList, compilerOptions, runnableConfigurationId });
+        const units = await proxy.call(this.getTests, { sourceList, compilerOptions, runnableConfigurationId }, baseUrl);
 
         return restoreTestStructure(
             units,

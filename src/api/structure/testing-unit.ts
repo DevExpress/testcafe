@@ -1,6 +1,9 @@
-import { pathToFileURL } from 'url';
 import BaseUnit from './base-unit';
-import { assertPageUrl, getUrl } from '../test-page-url';
+import {
+    assertPageUrl,
+    getUrl,
+    prepareBaseUrl,
+} from '../test-page-url';
 import handleTagArgs from '../../utils/handle-tag-args';
 import { delegateAPI, getDelegatedAPIList } from '../../utils/delegated-api';
 import { assertType, is } from '../../errors/runtime/type-assertions';
@@ -12,11 +15,13 @@ import ClientScriptInit from '../../custom-client-scripts/client-script-init';
 import TestFile from './test-file';
 import { AuthCredentials, Metadata } from './interfaces';
 import { Dictionary } from '../../configuration/interfaces';
+import { dirname } from 'path';
 
 export default abstract class TestingUnit extends BaseUnit {
     public readonly testFile: TestFile;
     public name: string | null;
     public pageUrl: string;
+    public baseUrl: string | undefined;
     public authCredentials: null | AuthCredentials;
     public meta: Metadata;
     public only: boolean;
@@ -28,13 +33,14 @@ export default abstract class TestingUnit extends BaseUnit {
     public apiMethodWasCalled: FlagList;
     public apiOrigin: Function;
 
-    protected constructor (testFile: TestFile, unitType: UnitType, pageUrl: string) {
+    protected constructor (testFile: TestFile, unitType: UnitType, pageUrl: string, baseUrl?: string) {
         super(unitType);
 
         this.testFile = testFile;
 
         this.name            = null;
         this.pageUrl         = pageUrl;
+        this.baseUrl         = baseUrl;
         this.authCredentials = null;
         this.meta            = {};
         this.only            = false;
@@ -85,11 +91,14 @@ export default abstract class TestingUnit extends BaseUnit {
 
     private _page$ (url: string, ...rest: unknown[]): Function {
         this.pageUrl = handleTagArgs(url, rest);
+        this.baseUrl = this.baseUrl || dirname(this.testFile.filename);
+
+        const base = prepareBaseUrl(this.baseUrl);
 
         assertType(is.string, 'page', 'The page URL', this.pageUrl);
         assertPageUrl(this.pageUrl, 'page');
 
-        this.pageUrl = getUrl(this.pageUrl, pathToFileURL(this.testFile.filename));
+        this.pageUrl = getUrl(this.pageUrl, base);
 
         return this.apiOrigin;
     }

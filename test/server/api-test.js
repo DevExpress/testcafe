@@ -1,10 +1,12 @@
-const expect         = require('chai').expect;
-const proxyquire     = require('proxyquire');
-const sinon          = require('sinon');
-const resolve        = require('path').resolve;
-const assertAPIError = require('./helpers/assert-runtime-error').assertAPIError;
-const compile        = require('./helpers/compile');
-const OPTION_NAMES   = require('../../lib/configuration/option-names');
+const expect              = require('chai').expect;
+const proxyquire          = require('proxyquire');
+const sinon               = require('sinon');
+const resolve             = require('path').resolve;
+const assertAPIError      = require('./helpers/assert-runtime-error').assertAPIError;
+const compile             = require('./helpers/compile');
+const OPTION_NAMES        = require('../../lib/configuration/option-names');
+const Compiler            = require('../../lib/compiler');
+const { RUNTIME_ERRORS }  = require('../../lib/errors/types');
 
 
 describe('API', function () {
@@ -374,6 +376,54 @@ describe('API', function () {
                                   '   6 |',
                     });
                 });
+        });
+
+        it('Should set the page url for all fixture tests if the baseUrl is specified', () => {
+            const testfile = resolve('test/server/data/test-suites/fixture-without-page/testfile.js');
+
+            return compile(testfile, { }, { baseUrl: 'example.org' })
+                .then(function (compiled) {
+                    expect(compiled.fixtures[0].pageUrl).eql('http://example.org');
+                    expect(compiled.tests[0].pageUrl).eql('http://example.org');
+                    expect(compiled.tests[1].pageUrl).eql('http://example.org/index.html');
+                });
+        });
+
+        it('Should raise an error if baseUrl is relative', () => {
+            const testfile = resolve('test/server/data/test-suites/fixture-without-page/testfile.js');
+            const createCompiler = () => new Compiler(testfile, {}, { baseUrl: './example.org' });
+
+            try {
+                createCompiler();
+
+                throw new Error('Promise rejection expected');
+            }
+            catch (err) {
+                const message = 'Cannot prepare tests due to the following error:\n\n' +
+                    'The value of the baseUrl argument cannot be relative: "./example.org"';
+                const code = RUNTIME_ERRORS.relativeBaseUrl;
+
+                expect(err.message).eql(message);
+                expect(err.code).eql(code);
+            }
+        });
+        it('Should raise an error if baseUrl contains unsupported protocol', () => {
+            const testfile = resolve('test/server/data/test-suites/fixture-without-page/testfile.js');
+            const createCompiler = () => new Compiler(testfile, {}, { baseUrl: 'mail://example.org' });
+
+            try {
+                createCompiler();
+
+                throw new Error('Promise rejection expected');
+            }
+            catch (err) {
+                const message = 'Cannot prepare tests due to the following error:\n\n' +
+                    'Invalid base URL: "mail://example.org". TestCafe cannot execute the test because the base URL includes the mail protocol. TestCafe supports the following protocols: http://, https:// and file://.';
+                const code = RUNTIME_ERRORS.unsupportedUrlProtocol;
+
+                expect(err.message).eql(message);
+                expect(err.code).eql(code);
+            }
         });
     });
 

@@ -2,10 +2,10 @@ const { sortBy, castArray } = require('lodash');
 const { resolve }           = require('path');
 const Compiler              = require('../../../lib/compiler');
 
-module.exports = function compile (sources, options) {
+module.exports = function compile (sources, compilerOptions, optionalCompilerArgs) {
     sources = castArray(sources).map(filename => resolve(filename));
 
-    const compiler = new Compiler(sources, options);
+    const compiler = new Compiler(sources, compilerOptions, optionalCompilerArgs );
 
     return compiler.getTests()
         .then(tests => {
