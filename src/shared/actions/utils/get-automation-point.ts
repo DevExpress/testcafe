@@ -4,7 +4,7 @@ import { Promise, utils } from '../../../client/core/deps/hammerhead';
 import * as domUtils from '../../../client/core/utils/dom';
 import * as positionUtils from '../../../client/core/utils/position';
 
-export default function getAutomationPoint<E> (element: E, offset: AxisValuesData<number>): Promise<AxisValues<number>> {
+export default function getAutomationPoint (element: HTMLElement, offset: AxisValuesData<number>): Promise<AxisValues<number>> {
     return Promise.resolve(domUtils.isDocumentElement(element))
         .then((isDocEl: boolean) => {
             if (isDocEl)

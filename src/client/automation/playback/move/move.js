@@ -6,10 +6,10 @@ import cursor from '../../cursor';
 
 import getLineRectIntersection from '../../../../shared/utils/get-line-rect-intersection';
 
-import lastHoveredElementHolder from '../../../../shared/actions/automations/last-hovered-element-holder';
+import lastHoveredElementHolder from '../../last-hovered-element-holder';
 import AxisValues from '../../../../shared/utils/values/axis-values';
 
-import MoveAutomation from '../../../../shared/actions/automations/move';
+import MoveAutomation from '../../move';
 
 const eventSimulator   = hammerhead.eventSandbox.eventSimulator;
 const messageSandbox   = hammerhead.eventSandbox.message;

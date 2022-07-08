@@ -1,10 +1,10 @@
-import nextTick from '../../utils/next-tick';
+import nextTick from '../core/utils/next-tick';
 import AutomationSettings from './settings';
 import {
     Modifiers,
     MoveOptions,
     ScrollOptions,
-} from '../../../test-run/commands/options';
+} from '../../test-run/commands/options';
 import lastHoveredElementHolder from './last-hovered-element-holder';
 
 import {
@@ -14,31 +14,31 @@ import {
     Promise,
     // @ts-ignore
     utils,
-} from '../../../client/driver/deps/hammerhead';
+} from '../driver/deps/hammerhead';
 
-import * as domUtils from '../../../client/core/utils/dom';
-import * as styleUtils from '../../../client/core/utils/style';
-import * as positionUtils from '../../../client/core/utils/position';
-import * as eventUtils from '../../../client/core/utils/event';
-import ScrollAutomation from '../../../client/core/scroll';
-import getElementExceptUI from '../../../client/automation/utils/get-element-except-ui';
-import getAutomationPoint from '../utils/get-automation-point';
-import AxisValues, { AxisValuesData } from '../../utils/values/axis-values';
-import Cursor from '../../../client/automation/cursor/cursor';
-import { whilst } from '../../utils/promise';
-import getDevicePoint from '../utils/get-device-point';
-import createEventSequence from '../../../client/automation/playback/move/event-sequence/create-event-sequence';
-import sendRequestToFrame from '../../../client/core/utils/send-request-to-frame';
+import * as domUtils from '../core/utils/dom';
+import * as styleUtils from '../core/utils/style';
+import * as positionUtils from '../core/utils/position';
+import * as eventUtils from '../core/utils/event';
+import ScrollAutomation from '../core/scroll';
+import getElementExceptUI from './utils/get-element-except-ui';
+import getAutomationPoint from '../../shared/actions/utils/get-automation-point';
+import AxisValues, { AxisValuesData } from '../../shared/utils/values/axis-values';
+import Cursor from './cursor/cursor';
+import { whilst } from '../../shared/utils/promise';
+import getDevicePoint from '../../shared/actions/utils/get-device-point';
+import createEventSequence from './playback/move/event-sequence/create-event-sequence';
+import sendRequestToFrame from '../core/utils/send-request-to-frame';
 
 const MOVE_REQUEST_CMD  = 'automation|move|request';
 const MOVE_RESPONSE_CMD = 'automation|move|response';
 
-interface MoveAutomationTarget<E> {
-    element: E;
+interface MoveAutomationTarget {
+    element: HTMLElement;
     offset: AxisValuesData<number>;
 }
 
-export default class MoveAutomation<E> {
+export default class MoveAutomation {
     private readonly touchMode: boolean;
     private readonly moveEvent: string;
     private automationSettings: AutomationSettings;
@@ -76,13 +76,13 @@ export default class MoveAutomation<E> {
         this.firstMovingStepOccured  = false;
     }
 
-    public static async create<E> (el: E, moveOptions: MoveOptions, win: Window, cursor: Cursor): Promise<MoveAutomation<E>> {
+    public static async create (el: HTMLElement, moveOptions: MoveOptions, win: Window, cursor: Cursor): Promise<MoveAutomation> {
         const { element, offset } = await MoveAutomation.getTarget(el, win, new AxisValues(moveOptions.offsetX, moveOptions.offsetY));
 
         return new MoveAutomation(element, offset, moveOptions, win, cursor);
     }
 
-    private static getTarget<E, W> (element: E, window: W, offset: AxisValuesData<number>): Promise<MoveAutomationTarget<E>> {
+    private static getTarget<E, W> (element: E, window: W, offset: AxisValuesData<number>): Promise<MoveAutomationTarget> {
         // NOTE: if the target point (considering offsets) is out of
         // the element change the target element to the document element
         return Promise.resolve(positionUtils.containsOffset(element, offset.x, offset.y))

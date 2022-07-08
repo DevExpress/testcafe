@@ -5,7 +5,7 @@ import nextTick from '../../utils/next-tick';
 import createClickCommand from './click-command';
 
 import { MouseEventArgs } from '../../visible-element-automation';
-import { MouseClickEventState } from '../../../../shared/actions/automations/click/index';
+import { MouseClickEventState } from './index';
 
 // @ts-ignore
 const Promise = hammerhead.Promise;

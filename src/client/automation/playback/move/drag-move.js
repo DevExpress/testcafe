@@ -3,7 +3,7 @@ import testCafeCore from '../../deps/testcafe-core';
 import getElementFromPoint from '../../get-element';
 import DragAndDropState from '../drag/drag-and-drop-state';
 import createEventSequence from './event-sequence/create-event-sequence';
-import lastHoveredElementHolder from '../../../../shared/actions/automations/last-hovered-element-holder';
+import lastHoveredElementHolder from '../../last-hovered-element-holder';
 import MoveAutomation from './move';
 import AxisValues from '../../../../shared/utils/values/axis-values';
 

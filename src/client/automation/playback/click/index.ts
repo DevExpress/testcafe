@@ -1,10 +1,10 @@
-import VisibleElementAutomation, { MouseEventArgs } from '../../../../client/automation/visible-element-automation';
-import Cursor from '../../../../client/automation/cursor/cursor';
+import VisibleElementAutomation, { MouseEventArgs } from '../../visible-element-automation';
+import Cursor from '../../cursor/cursor';
 import { ClickOptions, Modifiers } from '../../../../test-run/commands/options';
-import delay from '../../../utils/delay';
+import delay from '../../../core/utils/delay';
 // @ts-ignore
-import { utils } from '../../../../client/automation/deps/hammerhead';
-import { createMouseClickStrategy, MouseClickStrategy } from '../../../../client/automation/playback/click/browser-click-strategy';
+import { utils, Promise } from '../../deps/hammerhead';
+import { createMouseClickStrategy, MouseClickStrategy } from './browser-click-strategy';
 
 export interface MouseClickEventState {
     mousedownPrevented: boolean;
