@@ -6,14 +6,14 @@ import * as domUtils from '../../client/core/utils/dom';
 import * as positionUtils from '../../client/core/utils/position';
 import getElementExceptUI from '../../client/automation/utils/get-element-except-ui';
 
-function ensureImageMap (imgElement: Element, areaElement: Element): Promise<Element> {
+function ensureImageMap (imgElement: Element, areaElement: Element): Promise<HTMLElement> {
     return Promise.resolve(domUtils.closest(areaElement, 'map'))
         .then((mapElement: HTMLMapElement) => {
             return mapElement && mapElement.name === domUtils.getImgMapName(imgElement) ? areaElement : imgElement;
         });
 }
 
-function findElementOrNonEmptyChildFromPoint (point: AxisValuesData<number>, element?: Element): Promise<Element | null> {
+function findElementOrNonEmptyChildFromPoint (point: AxisValuesData<number>, element?: HTMLElement): Promise<HTMLElement | null> {
     return Promise.resolve(positionUtils.getElementFromPoint(point))
         .then((topElement: HTMLElement) => {
             return Promise.resolve(domUtils.containsElement(element, topElement))
@@ -22,7 +22,7 @@ function findElementOrNonEmptyChildFromPoint (point: AxisValuesData<number>, ele
         });
 }
 
-function correctTopElementByExpectedElement (topElement: Element, expectedElement?: Element): Promise<Element> | Element {
+function correctTopElementByExpectedElement (topElement: Element, expectedElement?: HTMLElement): Promise<HTMLElement> | HTMLElement {
     if (!expectedElement || !topElement || domUtils.isNodeEqual(topElement, expectedElement))
         return topElement;
 
@@ -62,7 +62,7 @@ function correctTopElementByExpectedElement (topElement: Element, expectedElemen
         });
 }
 
-export default function getElementFromPoint<Element> (point: AxisValuesData<number>, win: Window, expectedEl?: Element): Promise<Element> {
+export default function getElementFromPoint (point: AxisValuesData<number>, win: Window, expectedEl?: HTMLElement): Promise<HTMLElement> {
     return getElementExceptUI(point)
         // @ts-ignore
         .then((topElement: Element) => {

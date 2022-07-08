@@ -8,7 +8,7 @@ import AutomationSettings from './settings';
 import MoveAutomation from './move';
 import AxisValues, { AxisValuesData } from '../../shared/utils/values/axis-values';
 import Cursor from './cursor/cursor';
-import cursor from './cursor';
+import cursorInstance from './cursor';
 import delay from '../../shared/utils/delay';
 import SharedEventEmitter from '../../shared/utils/event-emitter';
 
@@ -68,10 +68,10 @@ class ElementState implements ElementStateArgs {
     }
 }
 
-export interface MouseEventArgs<E> {
+export interface MouseEventArgs {
     point: AxisValuesData<number> | null;
     screenPoint: AxisValuesData<number> | null;
-    element: E | null;
+    element: HTMLElement | null;
     options: {
         clientX: number;
         clientY: number;
@@ -111,13 +111,13 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
 
     private _ensureWindowAndCursorForLegacyTests (automation: VisibleElementAutomation): void {
         automation.window = automation.window || window; // eslint-disable-line no-undef
-        automation.cursor = cursor;
+        automation.cursor = cursorInstance;
     }
 
-    protected async _getElementForEvent (eventArgs: MouseEventArgs<Element>): Promise<Element | null> {
-        const expectedElement = await positionUtils.containsOffset(this.element, this.options.offsetX, this.options.offsetY) ? this.element : null;
+    protected async _getElementForEvent (eventArgs: MouseEventArgs): Promise<HTMLElement | null> {
+        const expectedElement = positionUtils.containsOffset(this.element, this.options.offsetX, this.options.offsetY) ? this.element : null;
 
-        return getElementFromPoint(eventArgs.point as AxisValuesData<number>, this.window, expectedElement);
+        return getElementFromPoint(eventArgs.point as AxisValuesData<number>, this.window, expectedElement as HTMLElement);
     }
 
     private async _moveToElement (): Promise<void> {
@@ -172,7 +172,7 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
         const clientPoint               = await screenPointToClient(this.element, screenPointAfterAction);
         const expectedElement           = await positionUtils.containsOffset(this.element, x, y) ? this.element : null;
 
-        const element = await getElementFromPoint(clientPoint, this.window, expectedElement);
+        const element = await getElementFromPoint(clientPoint, this.window, expectedElement as HTMLElement);
 
         if (!element) {
             return ElementState.create({

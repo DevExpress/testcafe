@@ -3,7 +3,7 @@ import { getCallsiteForError } from './get-callsite';
 import { APIError } from './runtime';
 import TestCafeErrorList from './error-list';
 import INTERNAL_MODULES_PREFIX from './internal-modules-prefix';
-import NODE_MODULES from '../shared/node-modules-folder-name';
+import NODE_MODULES from '../utils/node-modules-folder-name';
 
 import {
     UncaughtErrorInTestCode,

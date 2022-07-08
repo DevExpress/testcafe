@@ -1,5 +1,5 @@
 import { Graph } from 'graphlib';
-import NODE_MODULES from '../../shared/node-modules-folder-name';
+import NODE_MODULES from '../../utils/node-modules-folder-name';
 
 export default class ModulesGraph {
     constructor () {
