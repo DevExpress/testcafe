@@ -390,8 +390,16 @@ export function isTopWindow (win) {
     }
 }
 
-export function findIframeByWindow (iframeWindow, iframeDestinationWindow) {
-    const iframes = (iframeDestinationWindow || window).document.getElementsByTagName('iframe');
+export function findIframeByWindow (iframeWindow) {
+    const iframes = [];
+
+    document.querySelectorAll('*').forEach(elem => {
+        if (elem.tagName === 'IFRAME')
+            iframes.push(elem);
+
+        if (!browserUtils.isIE && elem.shadowRoot)
+            elem.shadowRoot.querySelectorAll('iframe').forEach(iframe => iframes.push(iframe));
+    });
 
     for (let i = 0; i < iframes.length; i++) {
         if (nativeMethods.contentWindowGetter.call(iframes[i]) === iframeWindow)
