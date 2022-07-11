@@ -1,7 +1,6 @@
-import { isNotVisibleNode, hasDimensions } from './style';
-import * as domUtils from '../dom';
-import * as styleUtils from '../style';
-import * as positionUtils from '../position';
+import * as domUtils from './dom';
+import * as styleUtils from './style';
+import * as positionUtils from './position';
 
 export function isIframeVisible (el: Node): boolean {
     return !hiddenUsingStyles(el as HTMLElement);
@@ -21,7 +20,7 @@ function hiddenByRectangle (el: HTMLElement): boolean {
 
 export function isElementVisible (el: Node): boolean {
     if (domUtils.isTextNode(el))
-        return !isNotVisibleNode(el);
+        return !styleUtils.isNotVisibleNode(el);
 
     if (!domUtils.isContentEditableElement(el) &&
         !domUtils.isSVGElement(el) &&
@@ -56,5 +55,5 @@ export function isElementVisible (el: Node): boolean {
         return false;
     }
 
-    return hasDimensions(el as HTMLElement) && !hiddenUsingStyles(el as unknown as HTMLElement);
+    return styleUtils.hasDimensions(el as HTMLElement) && !hiddenUsingStyles(el as unknown as HTMLElement);
 }

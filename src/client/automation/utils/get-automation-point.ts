@@ -1,8 +1,8 @@
-import AxisValues, { AxisValuesData } from '../../utils/values/axis-values';
+import AxisValues, { AxisValuesData } from '../../core/utils/values/axis-values';
 // @ts-ignore
-import { Promise, utils } from '../../../client/core/deps/hammerhead';
-import * as domUtils from '../../../client/core/utils/dom';
-import * as positionUtils from '../../../client/core/utils/position';
+import { Promise, utils } from '../../core/deps/hammerhead';
+import * as domUtils from '../../core/utils/dom';
+import * as positionUtils from '../../core/utils/position';
 
 export default function getAutomationPoint (element: HTMLElement, offset: AxisValuesData<number>): Promise<AxisValues<number>> {
     return Promise.resolve(domUtils.isDocumentElement(element))

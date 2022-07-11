@@ -1,24 +1,24 @@
-import { ExecuteSelectorCommand } from '../../test-run/commands/observation';
-import { ExecuteSelectorFn } from '../types';
-import NODE_TYPE_DESCRIPTIONS from '../utils/node-type-descriptions';
+import { ExecuteSelectorCommand } from '../../../../test-run/commands/observation';
+import { ExecuteSelectorFn } from '../../../../shared/types';
+import NODE_TYPE_DESCRIPTIONS from '../../node-type-descriptions';
 import {
     ActionSelectorMatchesWrongNodeTypeError,
     ActionAdditionalSelectorMatchesWrongNodeTypeError,
-} from '../../shared/errors';
-import { getInvisibleErrorCtor, getNotFoundErrorCtor } from '../errors/selector-error-ctor-callback';
+} from '../../../../shared/errors';
+import { getInvisibleErrorCtor, getNotFoundErrorCtor } from '../../../../shared/errors/selector-error-ctor-callback';
 // @ts-ignore
-import { nativeMethods, Promise } from '../../client/driver/deps/hammerhead';
+import { nativeMethods, Promise } from '../../deps/hammerhead';
 // @ts-ignore
-import { domUtils } from '../../client/driver/deps/testcafe-core';
+import { domUtils } from '../../deps/testcafe-core';
 
-export default class ElementsRetriever<T> {
+export default class ElementsRetriever {
     private readonly _globalSelectorTimeout: number;
     private readonly _ensureElementsStartTime: number;
-    private readonly _executeSelectorFn: ExecuteSelectorFn<T>;
-    private readonly _elements: T[];
+    private readonly _executeSelectorFn: ExecuteSelectorFn<HTMLElement>;
+    private readonly _elements: HTMLElement[];
     private _ensureElementsPromise: Promise<void>;
 
-    public constructor (globalSelectorTimeout: number, executeSelectorFn: ExecuteSelectorFn<T>) {
+    public constructor (globalSelectorTimeout: number, executeSelectorFn: ExecuteSelectorFn<HTMLElement>) {
         this._globalSelectorTimeout   = globalSelectorTimeout;
         this._ensureElementsStartTime = nativeMethods.dateNow();
         this._ensureElementsPromise   = Promise.resolve();
@@ -34,7 +34,7 @@ export default class ElementsRetriever<T> {
                     notFound:  getNotFoundErrorCtor(elementName),
                 }, this._ensureElementsStartTime);
             })
-            .then((el: T) => {
+            .then((el: HTMLElement) => {
                 if (!domUtils.isDomElement(el)) {
                     const nodeType    = (el as unknown as { nodeType: number }).nodeType;
                     const nodeTypeStr = NODE_TYPE_DESCRIPTIONS[nodeType];
@@ -50,7 +50,7 @@ export default class ElementsRetriever<T> {
 
     }
 
-    public getElements (): Promise<T[]> {
+    public getElements (): Promise<HTMLElement[]> {
         return this._ensureElementsPromise.then(() => this._elements);
     }
 }

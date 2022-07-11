@@ -1,6 +1,6 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
-import { getLineYByXCoord } from '../../../../shared/utils/position';
+import { getLineYByXCoord } from '../../../core/utils/get-line-by';
 
 const shadowUI      = hammerhead.shadowUI;
 const nativeMethods = hammerhead.nativeMethods;

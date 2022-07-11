@@ -1,5 +1,5 @@
 import lastHoveredElementHolder from '../last-hovered-element-holder';
-import getDevicePoint from '../../../shared/actions/utils/get-device-point';
+import getDevicePoint from './get-device-point';
 import testCafeCore from '../deps/testcafe-core';
 import hammerhead from '../deps/hammerhead';
 import { MoveBehaviour } from '../playback/move/event-sequence/event-behaviors';

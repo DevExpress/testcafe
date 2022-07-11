@@ -1,7 +1,7 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import { focusAndSetSelection } from '../../utils/utils';
-import nextTick from '../../utils/next-tick';
+import nextTick from '../../../core/utils/next-tick';
 import createClickCommand from './click-command';
 
 import { MouseEventArgs } from '../../visible-element-automation';

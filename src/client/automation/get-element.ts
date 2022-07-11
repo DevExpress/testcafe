@@ -1,10 +1,9 @@
-import isIframeWindow from './utils/is-window-iframe';
-import { AxisValuesData } from '../utils/values/axis-values';
+import { AxisValuesData } from '../core/utils/values/axis-values';
 // @ts-ignore
-import { Promise, utils } from '../../client/driver/deps/hammerhead';
-import * as domUtils from '../../client/core/utils/dom';
-import * as positionUtils from '../../client/core/utils/position';
-import getElementExceptUI from '../../client/automation/utils/get-element-except-ui';
+import { Promise, utils } from '../driver/deps/hammerhead';
+import * as domUtils from '../core/utils/dom';
+import * as positionUtils from '../core/utils/position';
+import getElementExceptUI from './utils/get-element-except-ui';
 
 function ensureImageMap (imgElement: Element, areaElement: Element): Promise<HTMLElement> {
     return Promise.resolve(domUtils.closest(areaElement, 'map'))
@@ -62,19 +61,17 @@ function correctTopElementByExpectedElement (topElement: Element, expectedElemen
         });
 }
 
-export default function getElementFromPoint (point: AxisValuesData<number>, win: Window, expectedEl?: HTMLElement): Promise<HTMLElement> {
+export default function getElementFromPoint (point: AxisValuesData<number>, win?: Window, expectedEl?: HTMLElement): Promise<HTMLElement> {
     return getElementExceptUI(point)
-        // @ts-ignore
-        .then((topElement: Element) => {
+        .then((topElement: HTMLElement) => {
             // NOTE: when trying to get an element by elementFromPoint in iframe and the target
             // element is under any of shadow-ui elements, you will get null (only in IE).
             // In this case, you should hide a top window's shadow-ui root to obtain an element.
             let resChain = Promise.resolve(topElement);
 
-            if (!topElement && isIframeWindow(win) && point.x > 0 && point.y > 0)
+            if (!topElement && utils.dom.isIframeWindow(win) && point.x > 0 && point.y > 0)
                 resChain = resChain.then(() => getElementExceptUI(point, true));
 
-            // @ts-ignore
-            return resChain.then((element: Element) => correctTopElementByExpectedElement(element, expectedEl));
+            return resChain.then((element: HTMLElement) => correctTopElementByExpectedElement(element, expectedEl));
         });
 }

@@ -218,25 +218,25 @@ $(document).ready(function () {
     };
 
     const runClickAutomation = function (el, options, callback) {
-        return getOffsetOptions(el, options.offsetX, options.offsetY)
-            .then(function (offsets) {
-                const clickOptions = new ClickOptions({
-                    offsetX:  offsets.offsetX,
-                    offsetY:  offsets.offsetY,
-                    caretPos: options.caretPos,
+        const offsets = getOffsetOptions(el, options.offsetX, options.offsetY);
 
-                    modifiers: {
-                        ctrl:  options.ctrl,
-                        alt:   options.ctrl,
-                        shift: options.shift,
-                        meta:  options.meta,
-                    },
-                });
+        const clickOptions = new ClickOptions({
+            offsetX:  offsets.offsetX,
+            offsetY:  offsets.offsetY,
+            caretPos: options.caretPos,
 
-                const clickAutomation = new ClickAutomation(el, clickOptions, window, cursor);
+            modifiers: {
+                ctrl:  options.ctrl,
+                alt:   options.ctrl,
+                shift: options.shift,
+                meta:  options.meta,
+            },
+        });
 
-                return clickAutomation.run();
-            })
+        const clickAutomation = new ClickAutomation(el, clickOptions, window, cursor);
+
+        clickAutomation
+            .run()
             .then(callback);
     };
 
@@ -302,6 +302,7 @@ $(document).ready(function () {
             .then(function () {
                 equal(clickCount, 2);
                 equal(dblclickCount, 1);
+
                 startNext();
             });
     });
@@ -613,6 +614,7 @@ $(document).ready(function () {
     });
 
     module('Regression');
+
     asyncTest('T191234 - Press Enter key on a textbox element doesn\'t raise report\'s element updating during test running', function () {
         const input       = createTextInput()[0];
         const keys        = 'enter';

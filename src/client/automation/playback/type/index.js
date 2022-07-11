@@ -5,7 +5,7 @@ import ClickAutomation from '../click';
 import typeText from './type-text';
 import getKeyCode from '../../utils/get-key-code';
 import getKeyIdentifier from '../../utils/get-key-identifier';
-import { getDefaultAutomationOffsets } from '../../../../shared/actions/utils/offsets';
+import { getDefaultAutomationOffsets } from '../../../core/utils/offsets';
 import AutomationSettings from '../../settings';
 import getKeyProperties from '../../utils/get-key-properties';
 import cursor from '../../cursor';

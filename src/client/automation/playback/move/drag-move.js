@@ -5,7 +5,7 @@ import DragAndDropState from '../drag/drag-and-drop-state';
 import createEventSequence from './event-sequence/create-event-sequence';
 import lastHoveredElementHolder from '../../last-hovered-element-holder';
 import MoveAutomation from './move';
-import AxisValues from '../../../../shared/utils/values/axis-values';
+import AxisValues from '../../../core/utils/values/axis-values';
 
 const nativeMethods    = hammerhead.nativeMethods;
 const featureDetection = hammerhead.utils.featureDetection;
@@ -51,14 +51,13 @@ export default class DragMoveAutomation extends MoveAutomation {
     }
 
     _getEventSequenceOptions (currPosition) {
-        return super._getEventSequenceOptions(currPosition)
-            .then(({ eventOptions, eventSequenceOptions }) => {
-                eventOptions.dataTransfer           = this.dragAndDropState.dataTransfer;
-                eventOptions.buttons                = eventUtils.BUTTONS_PARAMETER.leftButton;
-                eventSequenceOptions.holdLeftButton = true;
+        const { eventOptions, eventSequenceOptions } = super._getEventSequenceOptions(currPosition);
 
-                return { eventOptions, eventSequenceOptions };
-            });
+        eventOptions.dataTransfer           = this.dragAndDropState.dataTransfer;
+        eventOptions.buttons                = eventUtils.BUTTONS_PARAMETER.leftButton;
+        eventSequenceOptions.holdLeftButton = true;
+
+        return { eventOptions, eventSequenceOptions };
     }
 
     _getCorrectedTopElement (topElement) {

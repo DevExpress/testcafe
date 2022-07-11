@@ -1,5 +1,5 @@
-import { CursorUI } from '../../../shared/actions/types';
-import AxisValues, { AxisValuesData } from '../../../shared/utils/values/axis-values';
+import { CursorUI } from '../types';
+import AxisValues, { AxisValuesData } from '../../core/utils/values/axis-values';
 // @ts-ignore
 import { Promise } from '../../driver/deps/hammerhead';
 

@@ -38,7 +38,7 @@ import {
 
 import COMMAND_TYPE from '../../../../test-run/commands/type';
 import { ActionCommandBase } from '../../../../test-run/commands/base';
-import { Automation } from '../../../../shared/actions/types';
+import { Automation } from '../../../automation/types';
 
 
 ActionExecutor.ACTIONS_HANDLERS[COMMAND_TYPE.dispatchEvent] = {

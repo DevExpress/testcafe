@@ -22,11 +22,11 @@ import * as positionUtils from '../core/utils/position';
 import * as eventUtils from '../core/utils/event';
 import ScrollAutomation from '../core/scroll';
 import getElementExceptUI from './utils/get-element-except-ui';
-import getAutomationPoint from '../../shared/actions/utils/get-automation-point';
-import AxisValues, { AxisValuesData } from '../../shared/utils/values/axis-values';
+import getAutomationPoint from './utils/get-automation-point';
+import AxisValues, { AxisValuesData } from '../core/utils/values/axis-values';
 import Cursor from './cursor/cursor';
-import { whilst } from '../../shared/utils/promise';
-import getDevicePoint from '../../shared/actions/utils/get-device-point';
+import { whilst } from '../core/utils/promise';
+import getDevicePoint from './utils/get-device-point';
 import createEventSequence from './playback/move/event-sequence/create-event-sequence';
 import sendRequestToFrame from '../core/utils/send-request-to-frame';
 
@@ -42,7 +42,7 @@ export default class MoveAutomation {
     private readonly touchMode: boolean;
     private readonly moveEvent: string;
     private automationSettings: AutomationSettings;
-    private readonly element: Element;
+    private readonly element: HTMLElement;
     private readonly window: Window;
     private readonly offset: AxisValuesData<number>;
     private cursor: Cursor;
@@ -54,7 +54,7 @@ export default class MoveAutomation {
     private skipDefaultDragBehavior: boolean;
     private firstMovingStepOccured: boolean;
 
-    protected constructor (el: Element, offset: AxisValuesData<number>, moveOptions: MoveOptions, win: Window, cursor: Cursor) {
+    protected constructor (el: HTMLElement, offset: AxisValuesData<number>, moveOptions: MoveOptions, win: Window, cursor: Cursor) {
         this.touchMode = utils.featureDetection.isTouchDevice;
         this.moveEvent = this.touchMode ? 'touchmove' : 'mousemove';
 
@@ -126,29 +126,27 @@ export default class MoveAutomation {
             });
     }
 
-    private _getEventSequenceOptions (currPosition: AxisValues<number>): Promise<any> {
-        const button = eventUtils.BUTTONS_PARAMETER.noButton;
+    protected _getEventSequenceOptions (currPosition: AxisValues<number>): Promise<any> {
+        const button      = eventUtils.BUTTONS_PARAMETER.noButton;
+        const devicePoint = getDevicePoint(currPosition);
 
-        return getDevicePoint(currPosition)
-            .then((devicePoint: any) => {
-                const eventOptions = {
-                    clientX: currPosition.x,
-                    clientY: currPosition.y,
-                    screenX: devicePoint?.x,
-                    screenY: devicePoint?.y,
-                    buttons: button,
-                    ctrl:    this.modifiers.ctrl,
-                    alt:     this.modifiers.alt,
-                    shift:   this.modifiers.shift,
-                    meta:    this.modifiers.meta,
-                };
+        const eventOptions = {
+            clientX: currPosition.x,
+            clientY: currPosition.y,
+            screenX: devicePoint?.x,
+            screenY: devicePoint?.y,
+            buttons: button,
+            ctrl:    this.modifiers.ctrl,
+            alt:     this.modifiers.alt,
+            shift:   this.modifiers.shift,
+            meta:    this.modifiers.meta,
+        };
 
-                return { eventOptions, eventSequenceOptions: { moveEvent: this.moveEvent } };
-            });
+        return { eventOptions, eventSequenceOptions: { moveEvent: this.moveEvent } };
     }
 
-    private async _runEventSequence (currentElement: Element, { eventOptions, eventSequenceOptions }: any): Promise<any> {
-        const eventSequence = await createEventSequence(false, this.firstMovingStepOccured, eventSequenceOptions);
+    private _runEventSequence (currentElement: Element, { eventOptions, eventSequenceOptions }: any): Promise<any> {
+        const eventSequence = createEventSequence(false, this.firstMovingStepOccured, eventSequenceOptions);
 
         return eventSequence.run(
             currentElement,
@@ -160,15 +158,12 @@ export default class MoveAutomation {
     }
 
     private _emulateEvents (currentElement: Element, currPosition: AxisValues<number>): Promise<void> {
-        return this._getEventSequenceOptions(currPosition)
-            .then((options: any) => {
-                return this._runEventSequence(currentElement, options);
-            })
-            .then(() => {
-                this.firstMovingStepOccured = true;
+        const options = this._getEventSequenceOptions(currPosition);
 
-                lastHoveredElementHolder.set(currentElement);
-            });
+        this._runEventSequence(currentElement, options);
+        this.firstMovingStepOccured = true;
+
+        lastHoveredElementHolder.set(currentElement);
     }
 
     private _movingStep (currPosition: AxisValues<number>): Promise<void> {

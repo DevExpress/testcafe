@@ -1,6 +1,6 @@
-import { Dictionary } from '../../configuration/interfaces';
+import { Dictionary } from '../../../configuration/interfaces';
 // @ts-ignore
-import { nativeMethods } from '../../client/driver/deps/hammerhead';
+import { nativeMethods } from '../../driver/deps/hammerhead';
 
 
 type Listener = (...args: any[]) => void;

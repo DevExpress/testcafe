@@ -149,39 +149,37 @@ const getArrayDiff = function (a, b) {
 };
 
 const runClickAutomation = function (el, options) {
-    return getOffsetOptions(el, options.offsetX, options.offsetY)
-        .then(function (offsets) {
-            const clickOptions = new ClickOptions({
-                offsetX:  offsets.offsetX,
-                offsetY:  offsets.offsetY,
-                caretPos: options.caretPos,
+    const offsets = getOffsetOptions(el, options.offsetX, options.offsetY);
 
-                modifiers: {
-                    ctrl:  options.ctrl,
-                    alt:   options.ctrl,
-                    shift: options.shift,
-                    meta:  options.meta,
-                },
-            });
+    const clickOptions = new ClickOptions({
+        offsetX:  offsets.offsetX,
+        offsetY:  offsets.offsetY,
+        caretPos: options.caretPos,
 
-            const clickAutomation = new ClickAutomation(el, clickOptions, window, cursor);
+        modifiers: {
+            ctrl:  options.ctrl,
+            alt:   options.ctrl,
+            shift: options.shift,
+            meta:  options.meta,
+        },
+    });
 
-            return clickAutomation.run();
-        });
+    const clickAutomation = new ClickAutomation(el, clickOptions, window, cursor);
+
+    return clickAutomation.run();
 };
 
 const runTypeAutomation = function (element, text) {
-    return getOffsetOptions(element)
-        .then(function (offsets) {
-            const typeOptions = new TypeOptions({
-                offsetX: offsets.offsetX,
-                offsetY: offsets.offsetY,
-            });
+    const offsets = getOffsetOptions(element);
 
-            const typeAutomation = new TypeAutomation(element, text, typeOptions);
+    const typeOptions = new TypeOptions({
+        offsetX: offsets.offsetX,
+        offsetY: offsets.offsetY,
+    });
 
-            return typeAutomation.run();
-        });
+    const typeAutomation = new TypeAutomation(element, text, typeOptions);
+
+    return typeAutomation.run();
 };
 
 //tests

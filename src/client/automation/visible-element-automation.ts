@@ -1,16 +1,16 @@
-import getAutomationPoint from '../../shared/actions/utils/get-automation-point';
-import screenPointToClient from '../../shared/actions/utils/screen-point-to-client';
-import getDevicePoint from '../../shared/actions/utils/get-device-point';
-import { getOffsetOptions } from '../../shared/actions/utils/offsets';
-import getElementFromPoint from '../../shared/actions/get-element';
+import getAutomationPoint from './utils/get-automation-point';
+import screenPointToClient from './utils/screen-point-to-client';
+import getDevicePoint from './utils/get-device-point';
+import { getOffsetOptions } from '../core/utils/offsets';
+import getElementFromPoint from './get-element';
 import AUTOMATION_ERROR_TYPES from '../../shared/errors/automation-errors';
 import AutomationSettings from './settings';
 import MoveAutomation from './move';
-import AxisValues, { AxisValuesData } from '../../shared/utils/values/axis-values';
+import AxisValues, { AxisValuesData } from '../core/utils/values/axis-values';
 import Cursor from './cursor/cursor';
 import cursorInstance from './cursor';
-import delay from '../../shared/utils/delay';
-import SharedEventEmitter from '../../shared/utils/event-emitter';
+import delay from '../core/utils/delay';
+import SharedEventEmitter from '../core/utils/event-emitter';
 
 import {
     MoveOptions,
@@ -149,8 +149,8 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
             });
     }
 
-    private async _getElementOffset (): Promise<{ offsetX: number; offsetY: number }> {
-        const defaultOffsets = await getOffsetOptions(this.element);
+    private _getElementOffset (): { offsetX: number; offsetY: number } {
+        const defaultOffsets = getOffsetOptions(this.element);
 
         let { offsetX, offsetY } = this.options;
 
@@ -161,7 +161,7 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
     }
 
     private async _wrapAction (action: () => Promise<unknown>): Promise<ElementState> {
-        const { offsetX: x, offsetY: y } = await this._getElementOffset();
+        const { offsetX: x, offsetY: y } = this._getElementOffset();
         const screenPointBeforeAction    = await getAutomationPoint(this.element, { x, y });
         const clientPositionBeforeAction = await positionUtils.getClientPosition(this.element);
 

@@ -1,10 +1,9 @@
-import { hasScroll, getScrollableParents } from '../utils/shared/scroll';
-import * as positionUtils from '../utils/shared/position';
-import * as promiseUtils from '../../../shared/utils/promise';
-import { isFixedElement } from '../utils/shared/style';
+import { hasScroll, getScrollableParents } from '../utils/scroll';
+import * as positionUtils from '../utils/position';
+import * as promiseUtils from '../../core/utils/promise';
 import isIframeWindow from '../../../utils/is-window-in-iframe';
-import AxisValues, { LeftTopValues } from '../../../shared/utils/values/axis-values';
-import Dimensions from '../../../shared/utils/values/dimensions';
+import AxisValues, { LeftTopValues } from '../utils/values/axis-values';
+import Dimensions from '../utils/values/dimensions';
 import { Dictionary } from '../../../configuration/interfaces';
 import { ScrollOptions } from '../../../test-run/commands/options';
 import * as domUtils from '../utils/dom';
@@ -21,14 +20,14 @@ export default class ScrollAutomation {
     public static readonly SCROLL_REQUEST_CMD = 'automation|scroll|request';
     public static readonly SCROLL_RESPONSE_CMD = 'automation|scroll|response';
 
-    private readonly _element: Element;
+    private readonly _element: HTMLElement;
     private readonly _offsets: AxisValues<number>;
     private readonly _skipParentFrames: boolean;
     private readonly _scrollToCenter: boolean;
     private _maxScrollMargin: LeftTopValues<number>;
     private _scrollWasPerformed: boolean;
 
-    public constructor (element: Element, scrollOptions: ScrollOptions, maxScrollMargin?: LeftTopValues<number>) {
+    public constructor (element: HTMLElement, scrollOptions: ScrollOptions, maxScrollMargin?: LeftTopValues<number>) {
         this._element          = element;
         this._offsets          = new AxisValues(scrollOptions.offsetX, scrollOptions.offsetY);
         this._scrollToCenter   = !!scrollOptions.scrollToCenter;
@@ -180,7 +179,7 @@ export default class ScrollAutomation {
                left === parentDimensions.scroll.left && top === parentDimensions.scroll.top;
     }
 
-    private _scrollToChild (parent: Element, child: Element, offsets: AxisValues<number>): Promise<void> {
+    private _scrollToChild (parent: HTMLElement, child: HTMLElement, offsets: AxisValues<number>): Promise<void> {
         const parentDimensions = positionUtils.getClientDimensions(parent);
         const childDimensions  = positionUtils.getClientDimensions(child);
         const windowWidth      = styleUtils.getInnerWidth(window);
@@ -230,7 +229,7 @@ export default class ScrollAutomation {
         let childDimensions  = null;
         let parentDimensions = null;
 
-        const scrollParentsPromise = promiseUtils.times(parents.length, i => {
+        const scrollParentsPromise = promiseUtils.times(parents.length, (i: number) => {
             return this._scrollToChild(parents[i], currentChild, currentOffset)
                 .then(() => {
                     childDimensions  = positionUtils.getClientDimensions(currentChild);
@@ -268,7 +267,7 @@ export default class ScrollAutomation {
     }
 
     private static _getFixedAncestorOrSelf (element: Element): Node | null {
-        return domUtils.findParent(element, true, isFixedElement);
+        return domUtils.findParent(element, true, styleUtils.isFixedElement);
     }
 
     private _isTargetElementObscuredInPoint (point: AxisValues<number>): boolean {

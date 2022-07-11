@@ -15,7 +15,7 @@ import * as domUtils from './utils/dom';
 import * as contentEditable from './utils/content-editable';
 import * as positionUtils from './utils/position';
 import * as styleUtils from './utils/style';
-import * as scrollUtils from './utils/shared/scroll';
+import * as scrollUtils from './utils/scroll';
 import * as eventUtils from './utils/event';
 import * as arrayUtils from './utils/array';
 import * as promiseUtils from './utils/promise';

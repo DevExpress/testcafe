@@ -122,27 +122,26 @@ $(document).ready(function () {
     };
 
     const runDblClickAutomation = function (el, options, callback) {
-        return getOffsetOptions(el, options.offsetX, options.offsetY)
-            .then(function (offsets) {
-                const clickOptions = new ClickOptions();
+        const offsets = getOffsetOptions(el, options.offsetX, options.offsetY);
 
-                clickOptions.offsetX  = offsets.offsetX;
-                clickOptions.offsetY  = offsets.offsetY;
-                clickOptions.caretPos = options.caretPos;
+        const clickOptions = new ClickOptions();
 
-                clickOptions.modifiers = {
-                    ctrl:  options.ctrl,
-                    alt:   options.ctrl,
-                    shift: options.shift,
-                    meta:  options.meta,
-                };
+        clickOptions.offsetX  = offsets.offsetX;
+        clickOptions.offsetY  = offsets.offsetY;
+        clickOptions.caretPos = options.caretPos;
 
-                const dblClickAutomation = new DblClickAutomation(el, clickOptions);
+        clickOptions.modifiers = {
+            ctrl:  options.ctrl,
+            alt:   options.ctrl,
+            shift: options.shift,
+            meta:  options.meta,
+        };
 
-                return dblClickAutomation
-                    .run()
-                    .then(callback);
-            });
+        const dblClickAutomation = new DblClickAutomation(el, clickOptions);
+
+        return dblClickAutomation
+            .run()
+            .then(callback);
     };
 
     const preventDefault = function (e) {
@@ -409,30 +408,29 @@ $(document).ready(function () {
     };
 
     const runClickAutomation = function (el, options, callback) {
-        return getOffsetOptions(el, options.offsetX, options.offsetY)
-            .then(function (offsets) {
-                const clickOptions = new ClickOptions();
+        const offsets = getOffsetOptions(el, options.offsetX, options.offsetY);
 
-                clickOptions.offsetX  = offsets.offsetX;
-                clickOptions.offsetY  = offsets.offsetY;
-                clickOptions.caretPos = options.caretPos;
+        const clickOptions = new ClickOptions();
 
-                clickOptions.modifiers = {
-                    ctrl:  options.ctrl,
-                    alt:   options.ctrl,
-                    shift: options.shift,
-                    meta:  options.meta,
-                };
+        clickOptions.offsetX  = offsets.offsetX;
+        clickOptions.offsetY  = offsets.offsetY;
+        clickOptions.caretPos = options.caretPos;
 
-                const clickAutomation = /opt/i.test(el.tagName) ?
-                    new SelectChildClickAutomation(el, clickOptions) :
-                    new ClickAutomation(el, clickOptions, window, cursor);
+        clickOptions.modifiers = {
+            ctrl:  options.ctrl,
+            alt:   options.ctrl,
+            shift: options.shift,
+            meta:  options.meta,
+        };
 
-                return clickAutomation
-                    .run()
-                    .then(function () {
-                        callback();
-                    });
+        const clickAutomation = /opt/i.test(el.tagName) ?
+            new SelectChildClickAutomation(el, clickOptions) :
+            new ClickAutomation(el, clickOptions, window, cursor);
+
+        return clickAutomation
+            .run()
+            .then(function () {
+                callback();
             });
     };
 

@@ -4,10 +4,10 @@ import { MoveOptions } from '../../../../test-run/commands/options';
 import cursor from '../../cursor';
 
 
-import getLineRectIntersection from '../../../../shared/utils/get-line-rect-intersection';
+import getLineRectIntersection from './get-line-rect-intersection';
 
 import lastHoveredElementHolder from '../../last-hovered-element-holder';
-import AxisValues from '../../../../shared/utils/values/axis-values';
+import AxisValues from '../../../core/utils/values/axis-values';
 
 import MoveAutomation from '../../move';
 

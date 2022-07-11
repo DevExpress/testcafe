@@ -20,7 +20,7 @@ import {
     TypeOptions,
 } from '../../test-run/commands/options';
 import AutomationSettings from './settings';
-import { getOffsetOptions } from '../../shared/actions/utils/offsets';
+import { getOffsetOptions } from '../core/utils/offsets';
 import { getNextFocusableElement } from './playback/press/utils';
 import SHORTCUT_TYPE from './playback/press/shortcut-type';
 import { getSelectionCoordinatesByPosition } from './playback/select/utils';

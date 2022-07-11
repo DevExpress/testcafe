@@ -1,6 +1,6 @@
 import { ActionCommandBase } from '../../test-run/commands/base';
-import EventEmitter from '../utils/event-emitter';
-import { AxisValuesData } from '../utils/values/axis-values';
+import EventEmitter from '../core/utils/event-emitter';
+import { AxisValuesData } from '../core/utils/values/axis-values';
 
 export interface AutomationHandler {
     create: (cmd: ActionCommandBase, elements: any[]) => Automation;

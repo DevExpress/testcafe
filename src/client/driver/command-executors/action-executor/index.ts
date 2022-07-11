@@ -1,17 +1,17 @@
-import EventEmitter from '../../../../shared/utils/event-emitter';
+import EventEmitter from '../../../core/utils/event-emitter';
 import ComplexBarrier from '../../barriers/complex-barrier';
-import delay from '../../../../shared/utils/delay';
-import { whilst } from '../../../../shared/utils/promise';
+import delay from '../../../core/utils/delay';
+import { whilst } from '../../../core/utils/promise';
 import { ActionCommandBase } from '../../../../test-run/commands/base';
 import { Dictionary } from '../../../../configuration/interfaces';
 import AUTOMATION_ERROR_TYPES from '../../../../shared/errors/automation-errors';
 import { ActionElementIsInvisibleError } from '../../../../shared/errors';
 import { ExecuteSelectorFn } from '../../../../shared/types';
-import ElementsRetriever from '../../../../shared/utils/elements-retriever';
-import { Automation, AutomationHandler } from '../../../../shared/actions/types';
+import ElementsRetriever from './elements-retriever';
+import { Automation, AutomationHandler } from '../../../automation/types';
 // @ts-ignore
 import { nativeMethods, Promise } from '../../deps/hammerhead';
-import { getOffsetOptions } from '../../../../shared/actions/utils/offsets';
+import { getOffsetOptions } from '../../../core/utils/offsets';
 
 const MAX_DELAY_AFTER_EXECUTION             = 2000;
 const CHECK_ELEMENT_IN_AUTOMATIONS_INTERVAL = 250;
@@ -24,12 +24,12 @@ export default class ActionExecutor extends EventEmitter {
     private readonly _command: ActionCommandBase;
     private readonly _globalSelectorTimeout: number;
     private readonly _commandSelectorTimeout: number;
-    private readonly _executeSelectorFn: ExecuteSelectorFn<Element>;
-    private _elements: Element[];
+    private readonly _executeSelectorFn: ExecuteSelectorFn<HTMLElement>;
+    private _elements: HTMLElement[];
     private _executionStartTime: number;
-    private _targetElement: Element | null;
+    private _targetElement: HTMLElement | null;
 
-    public constructor (command: ActionCommandBase, globalSelectorTimeout: number, testSpeed: number, executeSelectorFn: ExecuteSelectorFn<Element>) {
+    public constructor (command: ActionCommandBase, globalSelectorTimeout: number, testSpeed: number, executeSelectorFn: ExecuteSelectorFn<HTMLElement>) {
         super();
 
         this._command       = command;
@@ -90,7 +90,7 @@ export default class ActionExecutor extends EventEmitter {
         }
 
         return elsRetriever.getElements()
-            .then((elements: Element[]) => {
+            .then((elements: HTMLElement[]) => {
                 this._elements = elements;
             });
     }
@@ -109,7 +109,7 @@ export default class ActionExecutor extends EventEmitter {
 
         // @ts-ignore TODO
         if (this._elements.length && opts && 'offsetX' in opts && 'offsetY' in opts) { // @ts-ignore
-            const { offsetX, offsetY } = await getOffsetOptions(this._elements[0], opts.offsetX, opts.offsetY);
+            const { offsetX, offsetY } = getOffsetOptions(this._elements[0], opts.offsetX, opts.offsetY);
 
             // @ts-ignore TODO
             opts.offsetX = offsetX;

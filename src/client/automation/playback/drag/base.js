@@ -66,21 +66,22 @@ export default class DragAutomationBase extends VisibleElementAutomation {
         throw new Error('Not implemented');
     }
 
-    async _drag () {
-        const { element, offsets, endPoint } = await this._getDestination();
+    _drag () {
+        return this._getDestination()
+            .then(({ element, offsets, endPoint }) => {
+                this.endPoint = endPoint;
 
-        this.endPoint = endPoint;
+                const dragOptions = new MoveOptions({
+                    offsetX:                 offsets.offsetX,
+                    offsetY:                 offsets.offsetY,
+                    modifiers:               this.modifiers,
+                    speed:                   this.speed,
+                    minMovingTime:           MIN_MOVING_TIME,
+                    skipDefaultDragBehavior: this.simulateDefaultBehavior === false,
+                }, false);
 
-        const dragOptions = new MoveOptions({
-            offsetX:                 offsets.offsetX,
-            offsetY:                 offsets.offsetY,
-            modifiers:               this.modifiers,
-            speed:                   this.speed,
-            minMovingTime:           MIN_MOVING_TIME,
-            skipDefaultDragBehavior: this.simulateDefaultBehavior === false,
-        }, false);
-
-        return DragMoveAutomation.create(element, dragOptions, window, cursor)
+                return DragMoveAutomation.create(element, dragOptions, window, cursor);
+            })
             .then(moveAutomation => {
                 return moveAutomation.run();
             })

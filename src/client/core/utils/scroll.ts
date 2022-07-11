@@ -1,8 +1,8 @@
-import AxisValues from '../../../../shared/utils/values/axis-values';
+import AxisValues from './values/axis-values';
 // @ts-ignore
-import { utils, nativeMethods } from '../../deps/hammerhead';
-import * as domUtils from '../dom';
-import * as styleUtils from '../style';
+import { utils, nativeMethods } from '../deps/hammerhead';
+import * as domUtils from './dom';
+import * as styleUtils from './style';
 
 const SCROLLABLE_OVERFLOW_STYLE_RE               = /auto|scroll|hidden/i;
 const DEFAULT_IE_SCROLLABLE_OVERFLOW_STYLE_VALUE = 'visible';
@@ -92,7 +92,7 @@ export function hasScroll (el: Element): boolean {
     return hasHorizontalScroll || hasVerticalScroll;
 }
 
-export function getScrollableParents (element: Element): Element[] {
+export function getScrollableParents (element: HTMLElement): HTMLElement[] {
     const parentsArray = domUtils.getParents(element);
 
     if (domUtils.isElementInIframe(element)) {
