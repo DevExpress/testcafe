@@ -320,7 +320,10 @@ $(document).ready(function () {
         dragAutomation
             .run()
             .then(function () {
-                deepEqual(position.findCenter($draggable[0]), pointTo);
+                deepEqual(
+                    JSON.stringify(position.findCenter($draggable[0])),
+                    JSON.stringify(pointTo));
+
                 startNext();
             });
     });
