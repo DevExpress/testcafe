@@ -23,6 +23,10 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
         return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click on element in a nested iframe', DEFAULT_RUN_OPTIONS);
     });
 
+    it('Should switch context between a shadow iframe and the main window', function () {
+        return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click on an element in a shadow iframe and return to the main window', DEFAULT_RUN_OPTIONS);
+    });
+
     it('Should wait while a target iframe is loaded', function () {
         return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click in a slowly loading iframe', DEFAULT_RUN_OPTIONS);
     });

@@ -52,6 +52,20 @@ test('Click on element in a nested iframe', async t => {
     expect(iframeBtnClickCount).eql(1);
 });
 
+test('Click on an element in a shadow iframe and return to the main window', async t => {
+    await t
+        .switchToIframe(() => document.querySelector('#shadow-element').shadowRoot.querySelector('iframe'))
+        .click('#btn')
+        .switchToMainWindow()
+        .click('#btn');
+
+    const btnClickCount       = await getBtnClickCount();
+    const iframeBtnClickCount = await getIframeBtnClickCount();
+
+    expect(btnClickCount).eql(1);
+    expect(iframeBtnClickCount).eql(1);
+});
+
 test('Switch to a non-existent iframe', async t => {
     await t.switchToIframe('#non-existent');
 });
