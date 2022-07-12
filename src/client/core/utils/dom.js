@@ -397,7 +397,7 @@ export function findIframeByWindow (iframeWindow) {
         if (elem.tagName === 'IFRAME')
             iframes.push(elem);
 
-        if (!browserUtils.isIE && elem.shadowRoot)
+        if (elem.shadowRoot)
             elem.shadowRoot.querySelectorAll('iframe').forEach(iframe => iframes.push(iframe));
     });
 
