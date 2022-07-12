@@ -5,6 +5,8 @@
     <title>Title</title>
 </head>
 <body>
+<button id="btn">button</button>
+
 <div id="shadow-element"></div>
 
 <script>
@@ -20,6 +22,10 @@
     shadowIframe.height = '300px';
 
     shadowRoot.appendChild(shadowIframe);
+
+    document.getElementById('btn').addEventListener('click', function () {
+        window.btnClickCount = (window.btnClickCount || 0) + 1;
+    });
 </script>
 </body>
 </html>
