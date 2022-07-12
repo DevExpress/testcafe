@@ -4,7 +4,7 @@ import { nativeMethods, utils } from '../../../deps/hammerhead';
 import { domUtils } from '../../../deps/testcafe-core';
 // @ts-ignore
 import { selectElement } from '../../../deps/testcafe-ui';
-import { isElementVisible, isIframeVisible } from '../../../../core/utils/visibility';
+import { isElementVisible, isIframeVisible } from '../../../../core/utils/position';
 
 
 export function visible (el: Node): boolean {

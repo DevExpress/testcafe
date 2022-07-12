@@ -6,7 +6,7 @@ import {
 import { Dictionary } from '../../../../../configuration/interfaces';
 // @ts-ignore
 import { utils } from '../../../deps/hammerhead';
-import { isElementVisible } from '../../../../core/utils/visibility';
+import { isElementVisible } from '../../../../core/utils/position';
 
 
 const nodeSnapshotPropertyInitializers = {
