@@ -69,7 +69,7 @@ export default function getElementFromPoint (point: AxisValuesData<number>, win?
             // In this case, you should hide a top window's shadow-ui root to obtain an element.
             let resChain = Promise.resolve(topElement);
 
-            if (!topElement && utils.dom.isIframeWindow(win) && point.x > 0 && point.y > 0)
+            if (!topElement && utils.dom.isIframeWindow(win || window) && point.x > 0 && point.y > 0)
                 resChain = resChain.then(() => getElementExceptUI(point, true));
 
             return resChain.then((element: HTMLElement) => correctTopElementByExpectedElement(element, expectedEl));
