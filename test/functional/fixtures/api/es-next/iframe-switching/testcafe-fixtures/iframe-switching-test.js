@@ -52,7 +52,8 @@ test('Click on element in a nested iframe', async t => {
     expect(iframeBtnClickCount).eql(1);
 });
 
-test('Click on an element in a shadow iframe and return to the main window', async t => {
+test.page`http://localhost:3000/fixtures/api/es-next/iframe-switching/pages/shadow.html`
+('Click on an element in a shadow iframe and return to the main window', async t => {
     await t
         .switchToIframe(() => document.querySelector('#shadow-element').shadowRoot.querySelector('iframe'))
         .click('#btn')

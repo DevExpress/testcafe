@@ -15,22 +15,6 @@
 <iframe id="iframe" src="iframe.html" width="500px" height="300px"></iframe>
 <iframe id="invisible-iframe" style="visibility: hidden;"></iframe>
 <iframe name="long" id="slowly-loading-iframe" src="iframe.html?delay=1000" height="300px"></iframe>
-<div id="shadow-element"></div>
-
-<script>
-    const shadowElement = document.getElementById('shadow-element');
-
-    shadowElement.attachShadow({mode: 'open'});
-
-    const shadowRoot   = shadowElement.shadowRoot;
-    const shadowIframe = document.createElement('iframe');
-
-    shadowIframe.src    = 'iframe.html';
-    shadowIframe.width  = '500px';
-    shadowIframe.height = '300px';
-
-    shadowRoot.appendChild(shadowIframe);
-</script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
