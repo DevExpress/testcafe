@@ -10,6 +10,7 @@ const getElementStyleProperty = hammerhead.utils.style.get;
 
 export const getActiveElement                       = hammerhead.utils.dom.getActiveElement;
 export const findDocument                           = hammerhead.utils.dom.findDocument;
+export const find                                   = hammerhead.utils.dom.find;
 export const isElementInDocument                    = hammerhead.utils.dom.isElementInDocument;
 export const isElementInIframe                      = hammerhead.utils.dom.isElementInIframe;
 export const getIframeByElement                     = hammerhead.utils.dom.getIframeByElement;
@@ -393,12 +394,12 @@ export function isTopWindow (win) {
 export function findIframeByWindow (iframeWindow) {
     const iframes = [];
 
-    document.querySelectorAll('*').forEach(elem => {
+    find(document, '*', elem => {
         if (elem.tagName === 'IFRAME')
             iframes.push(elem);
 
         if (elem.shadowRoot)
-            elem.shadowRoot.querySelectorAll('iframe').forEach(iframe => iframes.push(iframe));
+            find(elem.shadowRoot, 'iframe', iframe => iframes.push(iframe));
     });
 
     for (let i = 0; i < iframes.length; i++) {
