@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Iframe</title>
 </head>
 <body>
 <button id="btn">button</button>
@@ -17,14 +17,14 @@
     const shadowRoot   = shadowElement.shadowRoot;
     const shadowIframe = document.createElement('iframe');
 
-    shadowIframe.src    = 'shadow-iframe.html';
+    shadowIframe.src    = 'nested-iframe.html';
     shadowIframe.width  = '500px';
     shadowIframe.height = '300px';
 
     shadowRoot.appendChild(shadowIframe);
 
     document.getElementById('btn').addEventListener('click', function () {
-        window.btnClickCount = (window.btnClickCount || 0) + 1;
+        window.top.iframeBtnClickCount = (window.top.iframeBtnClickCount || 0) + 1;
     });
 </script>
 </body>
