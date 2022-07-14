@@ -2,7 +2,7 @@
 
 ## v1.20.0 (2022-07-14) 
 
-> [!IMPORTANT]
+> :warning:
 > Warning: [Impending breaking change](#coming-in-testcafe-20-typescript-4).
 > TestCafe v1.20 is the final version of the framework to support TypeScript 3.
 > The next update will abandon TypeScript 3 in favor of TypeScript 4.
