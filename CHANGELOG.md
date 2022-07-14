@@ -1,6 +1,91 @@
 # Changelog
 
-## TestCafe v1.19.0 released
+## v1.20.0 (2022-07-14) 
+
+> [!IMPORTANT]
+> Warning: [Impending breaking change](#coming-in-testcafe-20-typescript-4).
+> TestCafe v1.20 is the final version of the framework to support TypeScript 3.
+> The next update will abandon TypeScript 3 in favor of TypeScript 4.
+
+TestCafe v1.20.0 includes two major capabilities: an [API testing toolkit](#api-testing) and the ability to set a [global test page URL](#global-starting-url). Additionally, TestCafe 1.20.0 introduces experimental support for [Chrome User Flow Replays](#experimental-chrome-user-flow-replays), as well as a number of under-the-hood improvements.
+
+### API Testing
+
+TestCafe v1.20.0 includes a comprehensive set of server-side API testing tools. You can add dedicated API tests to your test suite, or include API testing methods in existing functional tests.
+
+The new [Request](https://testcafe.io/documentation/403981/reference/test-api/testcontroller/request) test action executes an HTTP request and returns the server's response.
+ 
+```js
+const responseBody = await t.request(`http://localhost:3000/helloworld`).body;
+ 
+t.expect(responseBody).contains('Hello World') // true
+```
+
+Read the [API Testing Guide](https://testcafe.io/documentation/403971/guides/intermediate-guides/api-testing) for a full overview of the framework's API testing capabilities.
+
+### Global starting URL
+
+You can now define a [single starting URL](https://testcafe.io/documentation/402638/reference/configuration-file#baseurl) for all the tests in your test suite.
+
+Declare the `baseUrl` in one of the following three ways:
+
+* The [configuration file property](https://testcafe.io/documentation/402638/reference/configuration-file#baseurl)
+* The [command line option](https://testcafe.io/documentation/402639/reference/command-line-interface#--base-url)
+* The [Test Runner API option](https://testcafe.io/documentation/402655/reference/testcafe-api/runner/run)
+
+Once you define a `baseUrl`, you can omit fixture and test URLs entirely, or define them relative to your `baseUrl`:
+
+```json
+    "baseUrl": "https://devexpress.github.io/testcafe"
+```
+
+```js
+fixture`Test structure`
+    .page`./example`; // starts at https://devexpress.github.io/testcafe/example
+```
+
+### Experimental: Chrome User Flow Replays
+
+TestCafe v1.20.0 introduces **experimental, limited** support for [Google Chrome user flow recordings](https://developer.chrome.com/docs/devtools/recorder/). 
+
+Record page actions in Google Chrome and export the recording as a JSON file. TestCafe will play the recording back just like it would a generate a test report 
+
+Read the [User Flow Recordings](https://testcafe.io/documentation/403998/guides/experimental-capabilities/chrome-replay-support) guide to learn more.
+
+### Coming in TestCafe 2.0: TypeScript 4
+
+The next version of TestCafe will adopt TypeScript 4 and lose compatibility with TypeScript 3.X.
+
+To [indicate the breaking change](https://semver.org), we will increment the framework's major version number - from 1 to 2.
+
+TestCafe 2.0 will be released later this month.
+
+### Improvements
+
+* Better Google Chrome video capture
+
+    TestCafe v1.20.0 uses the [Screen Capture API](https://developer.mozilla.org/en-US/docs/Web/API/Screen_Capture_API/Using_Screen_Capture) to record videos of Google Chrome test runs. This results in a significantly better test recording framerate and image quality.
+
+    ![Screen capture comparison GIF](https://testcafe.io/images/release-notes/1-20-0-chrome-capture-sample-15fps.gif)
+
+
+### Bug Fixes
+
+* When the `t.typeText` action raises an error, TestCafe mistakenly awaits the target element for the second time ([#6623](https://github.com/DevExpress/testcafe/issues/6623))
+
+* Concurrent test runs do not always generate concurrent test run reports ([#7062](https://github.com/DevExpress/testcafe/issues/7062))
+
+* TestCafe doesn't properly handle errors raised inside the `requestMock` function ([#6703](https://github.com/DevExpress/testcafe/issues/6703))
+
+* The default terminal viewport width is too low for non-tty terminals  (Issue [#5919](https://github.com/DevExpress/testcafe/issues/5919), [PR #6930](https://github.com/DevExpress/testcafe/pull/6930) by @PayBas)
+
+* TestCafe cannot switch to an invisible iframe ([#4558](https://github.com/DevExpress/testcafe/issues/4558))
+
+* Update incorrect TypeScript definitions ([PR #7069](https://github.com/DevExpress/testcafe/pull/7069) by @karolnowinsky)
+
+* Some SVGs don't meet the visibility criteria ([#6998](https://github.com/DevExpress/testcafe/issues/6998))
+
+## v1.19.0 (2022-05-26)
 
 TestCafe v1.19.0 introduces three major capabilities: a [Cookie Management API](#cookie-management), suite-wide [test hooks](#global-test-hooks), and suite-wide [request hooks](#global-request-hooks).
 
@@ -61,7 +146,9 @@ Read the [Request Hooks guide](https://testcafe.io/documentation/402842/guides/a
  ### Bug Fixes
 
  * TestCafe ignores CLI browser arguments when they conflict with the configuration file ([#6618](https://github.com/DevExpress/testcafe/issues/6618))
+
  * The outdated `moment.js` dependency contains a critical vulnerability (PR [#6996](https://github.com/DevExpress/testcafe/pull/6996) by [@vergilfromadyen](https://github.com/vergilfromadyen))
+
  * TestCafe proxy doesn't always serve cookies with the `secure` attribute ([testcafe-hammerhead/#2715](https://github.com/DevExpress/testcafe-hammerhead/issues/2715))
 
 ## v1.18.6 (2022-04-18)
