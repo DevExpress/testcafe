@@ -13,8 +13,8 @@ export default class DragToOffsetAutomation extends DragAutomationBase {
         this.dragOffsetY = offsetY;
     }
 
-    _getDestination () {
-        const startPoint = getAutomationPoint(this.element, this.offsetX, this.offsetY);
+    async _getDestination () {
+        const startPoint = await getAutomationPoint(this.element, { x: this.offsetX, y: this.offsetY });
         const maxX       = styleUtils.getWidth(document);
         const maxY       = styleUtils.getHeight(document);
 

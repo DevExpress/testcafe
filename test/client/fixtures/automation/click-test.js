@@ -664,15 +664,14 @@ $(document).ready(function () {
 
         el.addEventListener('click', handler);
 
-        return getOffsetOptions($el[0], 20, 20)
-            .then(function (offsets) {
-                const click   = new ClickAutomation($el[0], new ClickOptions({
-                    offsetX: offsets.offsetX,
-                    offsetY: offsets.offsetY,
-                }), window, cursor);
+        const offsets = getOffsetOptions($el[0], 20, 20);
 
-                return click.run();
-            })
+        const click = new ClickAutomation($el[0], new ClickOptions({
+            offsetX: offsets.offsetX,
+            offsetY: offsets.offsetY,
+        }), window, cursor);
+
+        click.run()
             .then(function () {
                 el.removeEventListener('click', handler);
 
@@ -702,15 +701,14 @@ $(document).ready(function () {
 
         el.addEventListener('click', handler);
 
-        return getOffsetOptions($el[0], -20, -20)
-            .then(function (offsets) {
-                const click = new ClickAutomation($el[0], new ClickOptions({
-                    offsetX: offsets.offsetX,
-                    offsetY: offsets.offsetY,
-                }), window, cursor);
+        const offsets = getOffsetOptions($el[0], -20, -20);
 
-                return click.run();
-            })
+        const click = new ClickAutomation($el[0], new ClickOptions({
+            offsetX: offsets.offsetX,
+            offsetY: offsets.offsetY,
+        }), window, cursor);
+
+        click.run()
             .then(function () {
                 el.removeEventListener('click', handler);
 

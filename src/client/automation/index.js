@@ -1,11 +1,8 @@
-// NOTE: Initializer should be the first
-import './shared-adapter-initializer';
-
 import hammerhead from './deps/hammerhead';
 import DispatchEventAutomation from './playback/dispatch-event';
 import SetScrollAutomation from './playback/set-scroll';
 import ScrollIntoViewAutomation from './playback/scroll-into-view';
-import ClickAutomation from '../../shared/actions/automations/click';
+import ClickAutomation from './playback/click';
 import SelectChildClickAutomation from './playback/click/select-child';
 import DblClickAutomation from './playback/dblclick';
 import DragToOffsetAutomation from './playback/drag/to-offset';
@@ -22,8 +19,8 @@ import {
     ClickOptions,
     TypeOptions,
 } from '../../test-run/commands/options';
-import AutomationSettings from '../../shared/actions/automations/settings';
-import { getOffsetOptions } from '../../shared/actions/utils/offsets';
+import AutomationSettings from './settings';
+import { getOffsetOptions } from '../core/utils/offsets';
 import { getNextFocusableElement } from './playback/press/utils';
 import SHORTCUT_TYPE from './playback/press/shortcut-type';
 import { getSelectionCoordinatesByPosition } from './playback/select/utils';
@@ -31,7 +28,7 @@ import getElementFromPoint from './get-element';
 import calculateSelectTextArguments from './playback/select/calculate-select-text-arguments';
 import ERROR_TYPES from '../../shared/errors/automation-errors';
 import cursor from './cursor';
-import MoveAutomation from '../../shared/actions/automations/move';
+import MoveAutomation from './move';
 
 
 const exports = {};

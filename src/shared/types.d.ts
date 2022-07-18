@@ -1,12 +1,6 @@
 /* global globalThis */
 
 import { ExecuteSelectorCommand } from '../test-run/commands/observation';
-import { ScrollOptions } from '../test-run/commands/options';
-import AxisValues, { AxisValuesData, LeftTopValues } from './utils/values/axis-values';
-import BoundaryValues, { BoundaryValuesData } from './utils/values/boundary-values';
-import { ElementRectangle } from '../client/core/utils/shared/types';
-import Dimensions from './utils/values/dimensions';
-import { MouseClickStrategyBase } from './actions/automations/click/mouse-click-strategy-base';
 
 export interface NativeMethods {
     setTimeout: typeof globalThis.setTimeout;
@@ -18,53 +12,6 @@ export interface NativeMethods {
     objectAssign: ObjectConstructor['assign'];
     objectKeys: ObjectConstructor['keys'];
     dateNow: DateConstructor['now'];
-}
-
-type SharedFnResult<T> = T | Promise<T>;
-
-export interface SharedAdapter {
-    getOffsetOptions?: (el: any, offsetX: number, offsetY: number) => { offsetX: number; offsetY: number };
-    scroll: (el: any, scrollOptions: ScrollOptions) => Promise<boolean>;
-
-    getElementExceptUI: (point: AxisValuesData<number>, underTopShadowUIElement?: boolean) => Promise<any>;
-
-    position: {
-        getElementFromPoint: (point: AxisValuesData<number>) => SharedFnResult<any>;
-        containsOffset: (el: any, offsetX?: number, offsetY?: number) => SharedFnResult<boolean>;
-        getIframeClientCoordinates: (el: any) => SharedFnResult<BoundaryValuesData>;
-        getClientPosition: (el: any) => SharedFnResult<AxisValues<number>>;
-        getOffsetPosition: (el: any, roundFn?: (n: number) => number) => SharedFnResult<LeftTopValues<number>>;
-        getWindowPosition: () => SharedFnResult<AxisValues<number>>;
-        getClientDimensions (el: any): SharedFnResult<Dimensions>;
-        getElementRectangle (el: any): SharedFnResult<ElementRectangle>;
-        offsetToClientCoords (point: AxisValuesData<number>): SharedFnResult<AxisValues<number>>;
-    };
-
-    style: {
-        getWindowDimensions: (win: any) => SharedFnResult<BoundaryValues>;
-        getElementScroll: (el: any) => SharedFnResult<LeftTopValues<number>>;
-        hasScroll: (el: any) => SharedFnResult<boolean>;
-    };
-
-    event: {
-        BUTTONS_PARAMETER: {
-            noButton: number;
-            leftButton: number;
-            rightButton: number;
-        };
-    };
-
-    createEventSequence: (dragAndDropEnabled: boolean, firstMovingStepOccured: boolean, options: any) => any;
-    sendRequestToFrame (msg: any, MOVE_RESPONSE_CMD: string, activeWindow: SharedWindow): SharedFnResult<any>;
-    ensureMouseEventAfterScroll: (currentElement: any, element: any, wasScrolled: boolean) => SharedFnResult<any>;
-
-    automations: {
-        click: {
-            createMouseClickStrategy: (element: any, caretPos: number) => MouseClickStrategyBase<any>;
-        };
-
-        _ensureWindowAndCursorForLegacyTests (automation: any): void;
-    };
 }
 
 export interface ClientRequestEmitter<R> {
@@ -92,6 +39,3 @@ interface AutomationErrorCtors {
 
 export type ExecuteSelectorFn<T> = (selector: ExecuteSelectorCommand, errCtors: AutomationErrorCtors, startTime: number) => Promise<T>;
 
-export interface SharedWindow {
-    parent: SharedWindow | null;
-}

@@ -1,6 +1,6 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
-import nextTick from '../../utils/next-tick';
+import nextTick from '../../../core/utils/next-tick';
 
 const browserUtils   = hammerhead.utils.browser;
 const eventSandbox   = hammerhead.sandbox.event;

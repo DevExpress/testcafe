@@ -1,9 +1,6 @@
 import hammerhead from '../deps/hammerhead';
-import BoundaryValues from '../../../shared/utils/values/boundary-values';
-
-export * from './shared/style';
-export { hasScroll } from './shared/scroll';
-
+import BoundaryValues from './values/boundary-values';
+import * as domUtils from './dom';
 
 const styleUtils = hammerhead.utils.style;
 
@@ -56,4 +53,27 @@ export function getViewportDimensions () {
 
 export function getWindowDimensions (window) {
     return new BoundaryValues(0, getWidth(window), getHeight(window), 0);
+}
+
+function isVisibilityHiddenNode (node) {
+    return !!domUtils.findParent(node, true, ancestor =>
+        domUtils.isElementNode(ancestor) && styleUtils.get(ancestor, 'visibility') === 'hidden');
+}
+
+function isHiddenNode (node) {
+    return !!domUtils.findParent(node, true, ancestor =>
+        domUtils.isElementNode(ancestor) && styleUtils.get(ancestor, 'display') === 'none');
+}
+
+export function isNotVisibleNode (node) {
+    return !domUtils.isRenderedNode(node) || isHiddenNode(node) || isVisibilityHiddenNode(node);
+}
+
+export function hasDimensions (el) {
+    //NOTE: it's like jquery ':visible' selector (http://blog.jquery.com/2009/02/20/jquery-1-3-2-released/)
+    return el && !(el.offsetHeight <= 0 && el.offsetWidth <= 0);
+}
+
+export function isFixedElement (node) {
+    return domUtils.isElementNode(node) && styleUtils.get(node, 'position') === 'fixed';
 }

@@ -1,5 +1,5 @@
 import hammerhead from '../deps/hammerhead';
-import SharedEventEmitter from '../../../shared/utils/event-emitter';
+import SharedEventEmitter from './event-emitter';
 
 
 export const EventEmitter = SharedEventEmitter;

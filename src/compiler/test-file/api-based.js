@@ -13,7 +13,7 @@ import Fixture from '../../api/structure/fixture';
 import Test from '../../api/structure/test';
 import { TestCompilationError, APIError } from '../../errors/runtime';
 import stackCleaningHook from '../../errors/stack-cleaning-hook';
-import NODE_MODULES from '../../shared/node-modules-folder-name';
+import NODE_MODULES from '../../utils/node-modules-folder-name';
 import cacheProxy from './cache-proxy';
 import exportableLib from '../../api/exportable-lib';
 import TEST_FILE_TEMP_VARIABLE_NAME from './test-file-temp-variable-name';

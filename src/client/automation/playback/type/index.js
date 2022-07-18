@@ -1,12 +1,12 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import { ClickOptions } from '../../../../test-run/commands/options';
-import ClickAutomation from '../../../../shared/actions/automations/click';
+import ClickAutomation from '../click';
 import typeText from './type-text';
 import getKeyCode from '../../utils/get-key-code';
 import getKeyIdentifier from '../../utils/get-key-identifier';
-import { getDefaultAutomationOffsets } from '../../../../shared/actions/utils/offsets';
-import AutomationSettings from '../../../../shared/actions/automations/settings';
+import { getDefaultAutomationOffsets } from '../../../core/utils/offsets';
+import AutomationSettings from '../../settings';
 import getKeyProperties from '../../utils/get-key-properties';
 import cursor from '../../cursor';
 

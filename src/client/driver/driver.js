@@ -86,8 +86,7 @@ import ChildIframeDriverLink from './driver-link/iframe/child';
 
 import createReplicator from './command-executors/client-functions/replicator/index';
 import SelectorNodeTransform from './command-executors/client-functions/replicator/transforms/selector-node-transform';
-
-import ActionExecutor from '../../shared/actions/action-executor';
+import ActionExecutor from './command-executors/action-executor';
 import executeManipulationCommand from './command-executors/browser-manipulation';
 import executeNavigateToCommand from './command-executors/execute-navigate-to';
 import {
@@ -116,7 +115,7 @@ import createErrorCtorCallback, {
     getInvisibleErrorCtor,
     getNotFoundErrorCtor,
 } from '../../shared/errors/selector-error-ctor-callback';
-import './command-executors/actions-initializer';
+import './command-executors/action-executor/actions-initializer';
 
 const settings = hammerhead.settings;
 

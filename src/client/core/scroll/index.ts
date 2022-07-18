@@ -1,23 +1,17 @@
-import utilsAdapter from '../utils/shared/adapter/index';
-import scrollAdapter from './adapter/index';
-import { hasScroll, getScrollableParents } from '../utils/shared/scroll';
-import * as positionUtils from '../utils/shared/position';
-import * as promiseUtils from '../../../shared/utils/promise';
-import { isFixedElement } from '../utils/shared/style';
+import { hasScroll, getScrollableParents } from '../utils/scroll';
+import * as positionUtils from '../utils/position';
+import * as promiseUtils from '../../core/utils/promise';
 import isIframeWindow from '../../../utils/is-window-in-iframe';
-import AxisValues, { LeftTopValues } from '../../../shared/utils/values/axis-values';
-import Dimensions from '../../../shared/utils/values/dimensions';
+import AxisValues, { LeftTopValues } from '../utils/values/axis-values';
+import Dimensions from '../utils/values/dimensions';
 import { Dictionary } from '../../../configuration/interfaces';
 import { ScrollOptions } from '../../../test-run/commands/options';
-
-
-export interface ScrollResultProxyless {
-    scrollWasPerformed: boolean;
-    offsetX: number;
-    offsetY: number;
-    maxScrollMargin: LeftTopValues<number>;
-}
-
+import * as domUtils from '../utils/dom';
+import * as styleUtils from '../utils/style';
+import sendRequestToFrame from '../utils/send-request-to-frame';
+// @ts-ignore
+import { Promise } from '../deps/hammerhead';
+import scrollController from './controller';
 
 const DEFAULT_MAX_SCROLL_MARGIN   = 50;
 const SCROLL_MARGIN_INCREASE_STEP = 20;
@@ -26,14 +20,14 @@ export default class ScrollAutomation {
     public static readonly SCROLL_REQUEST_CMD = 'automation|scroll|request';
     public static readonly SCROLL_RESPONSE_CMD = 'automation|scroll|response';
 
-    private readonly _element: Element;
+    private readonly _element: HTMLElement;
     private readonly _offsets: AxisValues<number>;
     private readonly _skipParentFrames: boolean;
     private readonly _scrollToCenter: boolean;
     private _maxScrollMargin: LeftTopValues<number>;
     private _scrollWasPerformed: boolean;
 
-    public constructor (element: Element, scrollOptions: ScrollOptions, maxScrollMargin?: LeftTopValues<number>) {
+    public constructor (element: HTMLElement, scrollOptions: ScrollOptions, maxScrollMargin?: LeftTopValues<number>) {
         this._element          = element;
         this._offsets          = new AxisValues(scrollOptions.offsetX, scrollOptions.offsetY);
         this._scrollToCenter   = !!scrollOptions.scrollToCenter;
@@ -45,31 +39,31 @@ export default class ScrollAutomation {
     }
 
     private static _isScrollValuesChanged (scrollElement: Element | Document, originalScroll: LeftTopValues<number>): boolean {
-        return utilsAdapter.style.getScrollLeft(scrollElement) !== originalScroll.left ||
-            utilsAdapter.style.getScrollTop(scrollElement) !== originalScroll.top;
+        return styleUtils.getScrollLeft(scrollElement) !== originalScroll.left ||
+            styleUtils.getScrollTop(scrollElement) !== originalScroll.top;
     }
 
     private _setScroll (element: Element, { left, top }: LeftTopValues<number>): Promise<void> {
-        const scrollElement = utilsAdapter.dom.isHtmlElement(element) ? utilsAdapter.dom.findDocument(element) : element;
+        const scrollElement = domUtils.isHtmlElement(element) ? domUtils.findDocument(element) : element;
 
         const originalScroll = {
-            left: utilsAdapter.style.getScrollLeft(scrollElement),
-            top:  utilsAdapter.style.getScrollTop(scrollElement),
+            left: styleUtils.getScrollLeft(scrollElement),
+            top:  styleUtils.getScrollTop(scrollElement),
         };
 
         left = Math.max(left, 0);
         top  = Math.max(top, 0);
 
-        let scrollPromise = scrollAdapter.controller.waitForScroll(scrollElement);
+        let scrollPromise = scrollController.waitForScroll(scrollElement);
 
-        utilsAdapter.style.setScrollLeft(scrollElement, left);
-        utilsAdapter.style.setScrollTop(scrollElement, top);
+        styleUtils.setScrollLeft(scrollElement, left);
+        styleUtils.setScrollTop(scrollElement, top);
 
         if (!ScrollAutomation._isScrollValuesChanged(scrollElement, originalScroll)) {
             // @ts-ignore
             scrollPromise.cancel();
 
-            return scrollAdapter.PromiseCtor.resolve();
+            return Promise.resolve();
         }
 
         scrollPromise = scrollPromise.then(() => {
@@ -185,11 +179,11 @@ export default class ScrollAutomation {
                left === parentDimensions.scroll.left && top === parentDimensions.scroll.top;
     }
 
-    private _scrollToChild (parent: Element, child: Element, offsets: AxisValues<number>): Promise<void> {
+    private _scrollToChild (parent: HTMLElement, child: HTMLElement, offsets: AxisValues<number>): Promise<void> {
         const parentDimensions = positionUtils.getClientDimensions(parent);
         const childDimensions  = positionUtils.getClientDimensions(child);
-        const windowWidth      = utilsAdapter.style.getInnerWidth(window);
-        const windowHeight     = utilsAdapter.style.getInnerHeight(window);
+        const windowWidth      = styleUtils.getInnerWidth(window);
+        const windowHeight     = styleUtils.getInnerHeight(window);
 
         let scrollPos  = parentDimensions.scroll;
         let needScroll = !this._isChildFullyVisible(parentDimensions, childDimensions, offsets);
@@ -218,7 +212,7 @@ export default class ScrollAutomation {
 
     private _scrollElement (): Promise<void> {
         if (!hasScroll(this._element))
-            return scrollAdapter.PromiseCtor.resolve();
+            return Promise.resolve();
 
         const elementDimensions = positionUtils.getClientDimensions(this._element);
         const scroll = this._getScrollToPoint(elementDimensions, this._offsets, this._maxScrollMargin);
@@ -226,16 +220,16 @@ export default class ScrollAutomation {
         return this._setScroll(this._element, scroll);
     }
 
-    private _scrollParents (): Promise<ScrollResultProxyless | boolean> {
+    private _scrollParents (): Promise<boolean | Dictionary<any>> {
         const parents        = getScrollableParents(this._element);
         let currentChild     = this._element;
-        const scrollLeft     = utilsAdapter.style.getScrollLeft(currentChild);
-        const scrollTop      = utilsAdapter.style.getScrollTop(currentChild);
+        const scrollLeft     = styleUtils.getScrollLeft(currentChild);
+        const scrollTop      = styleUtils.getScrollTop(currentChild);
         const currentOffset  = AxisValues.create(this._offsets).sub(new AxisValues(scrollLeft, scrollTop).round());
         let childDimensions  = null;
         let parentDimensions = null;
 
-        const scrollParentsPromise = promiseUtils.times(parents.length, i => {
+        const scrollParentsPromise = promiseUtils.times(parents.length, (i: number) => {
             return this._scrollToChild(parents[i], currentChild, currentOffset)
                 .then(() => {
                     childDimensions  = positionUtils.getClientDimensions(currentChild);
@@ -256,8 +250,8 @@ export default class ScrollAutomation {
             maxScrollMargin:    this._maxScrollMargin,
         };
 
-        if (!utilsAdapter.sendRequestToFrame)
-            return scrollParentsPromise.then(() => state as ScrollResultProxyless);
+        if (!sendRequestToFrame)
+            return scrollParentsPromise.then(() => state);
 
         return scrollParentsPromise
             .then(() => {
@@ -267,13 +261,13 @@ export default class ScrollAutomation {
                 state.cmd = ScrollAutomation.SCROLL_REQUEST_CMD;
 
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, consistent-return
-                return utilsAdapter.sendRequestToFrame!(state, ScrollAutomation.SCROLL_RESPONSE_CMD, window.parent);
+                return sendRequestToFrame!(state, ScrollAutomation.SCROLL_RESPONSE_CMD, window.parent);
             })
             .then(() => this._scrollWasPerformed);
     }
 
     private static _getFixedAncestorOrSelf (element: Element): Node | null {
-        return utilsAdapter.dom.findParent(element, true, isFixedElement);
+        return domUtils.findParent(element, true, styleUtils.isFixedElement);
     }
 
     private _isTargetElementObscuredInPoint (point: AxisValues<number>): boolean {
@@ -287,7 +281,7 @@ export default class ScrollAutomation {
         return !!fixedElement && !fixedElement.contains(this._element);
     }
 
-    public run (): Promise<ScrollResultProxyless | boolean> {
+    public run (): Promise<boolean | Dictionary<any>> {
         return this._scrollElement()
             .then(() => this._scrollParents());
     }

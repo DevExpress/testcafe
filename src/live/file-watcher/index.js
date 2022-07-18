@@ -1,7 +1,7 @@
 import EventEmitter from 'events';
 import fs from 'fs';
 import ModulesGraph from './modules-graph';
-import NODE_MODULES from '../../shared/node-modules-folder-name';
+import NODE_MODULES from '../../utils/node-modules-folder-name';
 import toPosixPath from '../../utils/to-posix-path';
 
 const WATCH_LOCKED_TIMEOUT = 700;

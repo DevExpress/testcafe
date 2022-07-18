@@ -1,5 +1,3 @@
-// NOTE: Initializer should be the first
-import './shared-adapter-initializer';
 import hammerhead from './deps/hammerhead';
 import Driver from './driver';
 import IframeDriver from './iframe-driver';

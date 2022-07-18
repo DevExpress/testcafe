@@ -169,68 +169,65 @@ $(document).ready(function () {
     };
 
     const runClickAutomation = function (el, options, callback) {
-        return getOffsetOptions(el, options.offsetX, options.offsetY)
-            .then(function (offsets) {
-                const clickOptions = new ClickOptions({
-                    offsetX:  offsets.offsetX,
-                    offsetY:  offsets.offsetY,
-                    caretPos: options.caretPos,
+        const offsets = getOffsetOptions(el, options.offsetX, options.offsetY);
 
-                    modifiers: {
-                        ctrl:  options.ctrl,
-                        alt:   options.ctrl,
-                        shift: options.shift,
-                        meta:  options.meta,
-                    },
-                });
+        const clickOptions = new ClickOptions({
+            offsetX:  offsets.offsetX,
+            offsetY:  offsets.offsetY,
+            caretPos: options.caretPos,
 
-                const clickAutomation = new ClickAutomation(el, clickOptions, window, cursor);
+            modifiers: {
+                ctrl:  options.ctrl,
+                alt:   options.ctrl,
+                shift: options.shift,
+                meta:  options.meta,
+            },
+        });
 
-                return clickAutomation
-                    .run()
-                    .then(callback);
-            });
+        const clickAutomation = new ClickAutomation(el, clickOptions, window, cursor);
+
+        return clickAutomation
+            .run()
+            .then(callback);
     };
 
     const runDblClickAutomation = function (el, options, callback) {
-        return getOffsetOptions(el, options.offsetX, options.offsetY)
-            .then(function (offsets) {
-                const clickOptions = new ClickOptions({
-                    offsetX:  offsets.offsetX,
-                    offsetY:  offsets.offsetY,
-                    caretPos: options.caretPos,
+        const offsets = getOffsetOptions(el, options.offsetX, options.offsetY);
 
-                    modifiers: {
-                        ctrl:  options.ctrl,
-                        alt:   options.ctrl,
-                        shift: options.shift,
-                        meta:  options.meta,
-                    },
-                });
+        const clickOptions = new ClickOptions({
+            offsetX:  offsets.offsetX,
+            offsetY:  offsets.offsetY,
+            caretPos: options.caretPos,
 
-                const dblClickAutomation = new DblClickAutomation(el, clickOptions);
+            modifiers: {
+                ctrl:  options.ctrl,
+                alt:   options.ctrl,
+                shift: options.shift,
+                meta:  options.meta,
+            },
+        });
 
-                return dblClickAutomation
-                    .run()
-                    .then(callback);
-            });
+        const dblClickAutomation = new DblClickAutomation(el, clickOptions);
+
+        return dblClickAutomation
+            .run()
+            .then(callback);
     };
 
     const runTypeAutomation = function (element, text, options) {
-        return getOffsetOptions(element)
-            .then(function (offsets) {
-                const typeOptions = new TypeOptions({
-                    caretPos: options.caretPos,
-                    replace:  options.replace,
-                    paste:    options.paste,
-                    offsetX:  offsets.offsetX,
-                    offsetY:  offsets.offsetY,
-                });
+        const offsets = getOffsetOptions(element);
 
-                const typeAutomation = new TypeAutomation(element, text, typeOptions);
+        const typeOptions = new TypeOptions({
+            caretPos: options.caretPos,
+            replace:  options.replace,
+            paste:    options.paste,
+            offsetX:  offsets.offsetX,
+            offsetY:  offsets.offsetY,
+        });
 
-                return typeAutomation.run();
-            });
+        const typeAutomation = new TypeAutomation(element, text, typeOptions);
+
+        return typeAutomation.run();
     };
 
     QUnit.testDone(function () {

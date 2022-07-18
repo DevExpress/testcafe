@@ -1,14 +1,15 @@
 // @ts-ignore
 import { nativeMethods, utils } from '../../../deps/hammerhead';
 // @ts-ignore
-import { domUtils, positionUtils } from '../../../deps/testcafe-core';
+import { domUtils } from '../../../deps/testcafe-core';
 // @ts-ignore
 import { selectElement } from '../../../deps/testcafe-ui';
+import { isElementVisible, isIframeVisible } from '../../../../core/utils/position';
 
 
 export function visible (el: Node): boolean {
     if (domUtils.isIframeElement(el))
-        return positionUtils.isIframeVisible(el);
+        return isIframeVisible(el);
 
     if (!utils.dom.isDomElement(el) && !utils.dom.isTextNode(el))
         return false;
@@ -16,7 +17,7 @@ export function visible (el: Node): boolean {
     if (domUtils.isOptionElement(el) || domUtils.getTagName(el as Element) === 'optgroup')
         return selectElement.isOptionElementVisible(el);
 
-    return positionUtils.isElementVisible(el);
+    return isElementVisible(el);
 }
 
 export function isNodeCollection (obj: unknown): obj is HTMLCollection | NodeList {

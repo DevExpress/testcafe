@@ -1,5 +1,5 @@
 const testCafeCore = window.getTestCafeModule('testCafeCore');
-const styleUtils   = testCafeCore.styleUtils;
+const scrollUtils  = testCafeCore.scrollUtils;
 
 test('hasScroll (GH-2511)', function () {
     const div      = document.createElement('div');
@@ -11,11 +11,11 @@ test('hasScroll (GH-2511)', function () {
 
     // Vertical scroll
     div.setAttribute('style', 'width: 200px; height: 20px; overflow-x: auto; border: 1px solid black;');
-    ok(styleUtils.hasScroll(div), 'vertical scroll');
+    ok(scrollUtils.hasScroll(div), 'vertical scroll');
 
     // Horizontal scroll
     div.setAttribute('style', 'width: 50px; height: 150px; overflow-y: auto; border: 1px solid black;');
-    ok(styleUtils.hasScroll(div), 'horizontal scroll');
+    ok(scrollUtils.hasScroll(div), 'horizontal scroll');
 
     div.parentNode.removeChild(div);
 });

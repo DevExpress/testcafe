@@ -504,6 +504,3 @@ export function isDocumentElement (el) {
     return el === document.documentElement;
 }
 
-export function isIframeWindow () {
-    return false;
-}

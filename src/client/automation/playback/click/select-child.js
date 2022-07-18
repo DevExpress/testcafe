@@ -3,8 +3,8 @@ import testCafeCore from '../../deps/testcafe-core';
 import testCafeUI from '../../deps/testcafe-ui';
 import MoveAutomation from '../move/move';
 import { MoveOptions } from '../../../../test-run/commands/options';
-import { getDefaultAutomationOffsets } from '../../../../shared/actions/utils/offsets';
-import AutomationSettings from '../../../../shared/actions/automations/settings';
+import { getDefaultAutomationOffsets } from '../../../core/utils/offsets';
+import AutomationSettings from '../../settings';
 import cursor from '../../cursor';
 
 const Promise = hammerhead.Promise;

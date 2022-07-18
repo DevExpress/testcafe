@@ -1,10 +1,10 @@
 import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
 import { ClickOptions } from '../../../test-run/commands/options';
-import VisibleElementAutomation from '../../../shared/actions/automations/visible-element-automation';
-import ClickAutomation from '../../../shared/actions/automations/click';
-import AutomationSettings from '../../../shared/actions/automations/settings';
-import cursor from '../cursor';
+import VisibleElementAutomation from '../visible-element-automation';
+import ClickAutomation from './click';
+import AutomationSettings from '../settings';
+import cursor from '../cursor/index';
 
 const featureDetection = hammerhead.utils.featureDetection;
 const browserUtils     = hammerhead.utils.browser;
