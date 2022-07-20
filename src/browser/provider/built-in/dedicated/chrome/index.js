@@ -44,6 +44,13 @@ export default {
         this.setUserAgentMetaInfo(browserId, metaInfo, options);
     },
 
+    async _setupProxyless (browserId, browserClient) {
+        const requestsInterceptor = new RequestsInterceptor(browserId);
+        const cdpClient           = await browserClient.getActiveClient();
+
+        await requestsInterceptor.setup(cdpClient);
+    },
+
     async openBrowser (browserId, pageUrl, config, disableMultipleWindows, proxyless) {
         const parsedPageUrl = parseUrl(pageUrl);
         const runtimeInfo   = await this._createRunTimeInfo(parsedPageUrl.hostname, config, disableMultipleWindows);
@@ -81,12 +88,8 @@ export default {
 
         this._setUserAgentMetaInfoForEmulatingDevice(browserId, runtimeInfo.config);
 
-        if (proxyless) {
-            const requestsInterceptor = new RequestsInterceptor(browserId);
-            const cdpClient           = await browserClient.getActiveClient();
-
-            await requestsInterceptor.setup(cdpClient);
-        }
+        if (proxyless)
+            await this._setupProxyless(browserId, browserClient);
     },
 
     async closeBrowser (browserId, closingInfo = {}) {
