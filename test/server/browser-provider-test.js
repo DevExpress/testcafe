@@ -16,13 +16,10 @@ const WARNING_MESSAGE                 = require('../../lib/notifications/warning
 const BrowserProviderPluginHost       = require('../../lib/browser/provider/plugin-host');
 const WarningLog                      = require('../../lib/notifications/warning-log');
 
+const { browserConnectionGatewayMock } = require('./helpers/mocks');
+
 class BrowserConnectionMock extends BrowserConnection {
     constructor () {
-        const browserConnectionGatewayMock = {
-            startServingConnection: noop,
-            stopServingConnection:  noop,
-        };
-
         const providerMock = {
             openBrowser:    noop,
             isLocalBrowser: noop,

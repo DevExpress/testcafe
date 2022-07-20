@@ -35,6 +35,7 @@ import BrowserConnectionTracker from './browser-connection-tracker';
 import TestRun from '../../test-run';
 // @ts-ignore
 import { TestRun as LegacyTestRun } from 'testcafe-legacy-api';
+import { Proxy } from 'testcafe-hammerhead';
 
 const getBrowserConnectionDebugScope = (id: string): string => `testcafe:browser:connection:${id}`;
 
@@ -155,7 +156,7 @@ export default class BrowserConnection extends EventEmitter {
         this.disableMultipleWindows = disableMultipleWindows;
         this.proxyless              = proxyless;
 
-        this._buildCommunicationUrls(gateway);
+        this._buildCommunicationUrls(gateway.proxy);
         this._setEventHandlers();
 
         BrowserConnectionTracker.add(this);
@@ -168,16 +169,16 @@ export default class BrowserConnection extends EventEmitter {
         process.nextTick(() => this._runBrowser());
     }
 
-    private _buildCommunicationUrls (gateway: BrowserConnectionGateway): void {
-        this.url               = gateway.proxy.resolveRelativeServiceUrl(`/browser/connect/${this.id}`);
-        this.idleUrl           = gateway.proxy.resolveRelativeServiceUrl(`/browser/idle/${this.id}`);
-        this.forcedIdleUrl     = gateway.proxy.resolveRelativeServiceUrl(`/browser/idle-forced/${this.id}`);
-        this.initScriptUrl     = gateway.proxy.resolveRelativeServiceUrl(`/browser/init-script/${this.id}`);
-        this.activeWindowIdUrl = gateway.proxy.resolveRelativeServiceUrl(`/browser/active-window-id/${this.id}`);
-        this.closeWindowUrl    = gateway.proxy.resolveRelativeServiceUrl(`/browser/close-window/${this.id}`);
-        this.heartbeatUrl      = gateway.proxy.resolveRelativeServiceUrl(`/browser/heartbeat/${this.id}`);
-        this.statusUrl         = gateway.proxy.resolveRelativeServiceUrl(`/browser/status/${this.id}`);
-        this.statusDoneUrl     = gateway.proxy.resolveRelativeServiceUrl(`/browser/status-done/${this.id}`);
+    private _buildCommunicationUrls (proxy: Proxy): void {
+        this.url               = proxy.resolveRelativeServiceUrl(`/browser/connect/${this.id}`);
+        this.idleUrl           = proxy.resolveRelativeServiceUrl(`/browser/idle/${this.id}`);
+        this.forcedIdleUrl     = proxy.resolveRelativeServiceUrl(`/browser/idle-forced/${this.id}`);
+        this.initScriptUrl     = proxy.resolveRelativeServiceUrl(`/browser/init-script/${this.id}`);
+        this.activeWindowIdUrl = proxy.resolveRelativeServiceUrl(`/browser/active-window-id/${this.id}`);
+        this.closeWindowUrl    = proxy.resolveRelativeServiceUrl(`/browser/close-window/${this.id}`);
+        this.heartbeatUrl      = proxy.resolveRelativeServiceUrl(`/browser/heartbeat/${this.id}`);
+        this.statusUrl         = proxy.resolveRelativeServiceUrl(`/browser/status/${this.id}`);
+        this.statusDoneUrl     = proxy.resolveRelativeServiceUrl(`/browser/status-done/${this.id}`);
 
     }
 

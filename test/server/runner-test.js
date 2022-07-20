@@ -23,6 +23,8 @@ const { noop }                = require('lodash');
 const Test                    = require('../../lib/api/structure/test');
 const TestCafeConfiguration   = require('../../lib/configuration/testcafe-configuration');
 
+const { browserConnectionGatewayMock } = require('./helpers/mocks');
+
 const createConfigFile = (configPath, options) => {
     options = options || {};
     fs.writeFileSync(configPath, JSON.stringify(options));
@@ -1067,11 +1069,6 @@ describe('Runner', () => {
         });
 
         describe('On Linux without a graphics subsystem', () => {
-
-            const browserConnectionGateway = {
-                startServingConnection: noop,
-                stopServingConnection:  noop,
-            };
             const compilerService          = {
                 init:             noop,
                 getTests:         () => [new Test({ currentFixture: void 0 })],
@@ -1082,6 +1079,9 @@ describe('Runner', () => {
 
             class BrowserConnectionMock extends BrowserConnection {
                 constructor (...args) {
+                    if (!args[0])
+                        args[0] = browserConnectionGatewayMock;
+
                     super(...args);
 
                     this.status = BrowserConnectionStatus.opened;
@@ -1095,7 +1095,7 @@ describe('Runner', () => {
                     '../browser/connection': BrowserConnectionMock,
                 });
 
-                return new BootstrapperMock({ browserConnectionGateway, compilerService });
+                return new BootstrapperMock({ browserConnectionGatewayMock, compilerService });
             }
 
             function createMockRunner () {
@@ -1106,7 +1106,7 @@ describe('Runner', () => {
 
                 const runnerLocal = new RunnerMock({
                     proxy:                    testCafe.proxy,
-                    browserConnectionGateway: browserConnectionGateway,
+                    browserConnectionGateway: browserConnectionGatewayMock,
                     configuration:            testCafe.configuration.clone(),
                     compilerService:          compilerService,
                 });
@@ -1172,7 +1172,7 @@ describe('Runner', () => {
                     await runnerLinux._validateRunOptions();
                     await runnerLinux._createRunnableConfiguration();
                 }
-                catch {
+                catch (e) {
                     isErrorThrown = true;
                 }
 
@@ -1184,7 +1184,7 @@ describe('Runner', () => {
                 let isErrorThrown = false;
 
                 try {
-                    await runnerLinux.browsers([new BrowserConnection(browserConnectionGateway, browserInfo)]);
+                    await runnerLinux.browsers([new BrowserConnection(browserConnectionGatewayMock, browserInfo)]);
                     await runnerLinux._setConfigurationOptions();
                     await runnerLinux._setBootstrapperOptions();
                     await runnerLinux._validateRunOptions();
