@@ -3,9 +3,13 @@ import Protocol from 'devtools-protocol';
 import RequestPausedEvent = Protocol.Fetch.RequestPausedEvent;
 import RequestPattern = Protocol.Fetch.RequestPattern;
 import GetResponseBodyResponse = Protocol.Fetch.GetResponseBodyResponse;
-import { injectResources, PageInjectableResources } from 'testcafe-hammerhead';
+import {
+    injectResources,
+    PageInjectableResources,
+    INJECTABLE_SCRIPTS as HAMMERHEAD_INJECTABLE_SCRIPTS,
+} from 'testcafe-hammerhead';
 import BrowserConnection from '../../../../connection';
-import { SCRIPTS } from '../../../../../assets/injectables';
+import { SCRIPTS, TESTCAFE_UI_STYLES } from '../../../../../assets/injectables';
 
 const HTTP_STATUS_OK = 200;
 
@@ -25,25 +29,21 @@ export default class RequestsInterceptor {
     private async _prepareInjectableResources (): Promise<PageInjectableResources> {
         const browserConnection = BrowserConnection.getById(this._browserId) as BrowserConnection;
         const proxy             = browserConnection.browserConnectionGateway.proxy;
-
-        const payloadScript = await browserConnection.currentJob.currentTestRun.getPayloadScript();
+        const payloadScript     = await browserConnection.currentJob.currentTestRun.getPayloadScript();
 
         const injectableResources = {
             stylesheets: [
-                '/testcafe-ui-styles.css',
+                TESTCAFE_UI_STYLES,
             ],
             scripts: [
-                '/hammerhead.js',
+                ...HAMMERHEAD_INJECTABLE_SCRIPTS,
                 ...SCRIPTS,
             ],
             embeddedScripts: [payloadScript],
         };
 
-        for (let i = 0; i < injectableResources.scripts.length; i++)
-            injectableResources.scripts[i] = proxy.resolveRelativeServiceUrl(injectableResources.scripts[i]);
-
-        for (let j = 0; j < injectableResources.stylesheets.length; j++)
-            injectableResources.stylesheets[j] = proxy.resolveRelativeServiceUrl(injectableResources.stylesheets[j]);
+        injectableResources.scripts     = injectableResources.scripts.map(proxy.resolveRelativeServiceUrl);
+        injectableResources.stylesheets = injectableResources.stylesheets.map(proxy.resolveRelativeServiceUrl);
 
         return injectableResources;
     }
