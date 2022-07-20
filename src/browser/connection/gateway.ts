@@ -18,16 +18,15 @@ import SERVICE_ROUTES from './service-routes';
 export default class BrowserConnectionGateway {
     private _connections: Dictionary<BrowserConnection> = {};
     private _remotesQueue: RemotesQueue;
-    public readonly domain: string;
     public readonly connectUrl: string;
     public retryTestPages: boolean;
+    public readonly proxy: Proxy;
 
     public constructor (proxy: Proxy, options: { retryTestPages: boolean }) {
         this._remotesQueue   = new RemotesQueue();
-        // @ts-ignore Need to improve typings of the 'testcafe-hammerhead' module
-        this.domain          = (proxy as any).server1Info.domain;
-        this.connectUrl      = `${this.domain}/browser/connect`;
+        this.connectUrl      = proxy.resolveRelativeServiceUrl('/browser/connect');
         this.retryTestPages  = options.retryTestPages;
+        this.proxy           = proxy;
 
         this._registerRoutes(proxy);
     }

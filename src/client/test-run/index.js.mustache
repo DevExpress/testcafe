@@ -2,12 +2,6 @@
     if (window !== window.top)
         return;
 
-    var origin = location.origin;
-
-    // NOTE: location.origin doesn't exist in IE11 on Windows 10.10240 LTSB
-    if (!origin)
-        origin = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
-
     var testRunId                  = {{{testRunId}}};
     var browserId                  = {{{browserId}}};
     var selectorTimeout            = {{{selectorTimeout}}};
@@ -15,17 +9,18 @@
     var childWindowReadyTimeout    = {{{childWindowReadyTimeout}}};
     var retryTestPages             = {{{retryTestPages}}};
     var speed                      = {{{speed}}};
-    var browserHeartbeatUrl        = origin + {{{browserHeartbeatRelativeUrl}}};
-    var browserStatusUrl           = origin + {{{browserStatusRelativeUrl}}};
-    var browserStatusDoneUrl       = origin + {{{browserStatusDoneRelativeUrl}}};
-    var browserActiveWindowIdUrl   = origin + {{{browserActiveWindowIdUrl}}};
-    var browserCloseWindowUrl      = origin + {{{browserCloseWindowUrl}}};
+    var browserHeartbeatUrl        = {{{browserHeartbeatUrl}}};
+    var browserStatusUrl           = {{{browserStatusUrl}}};
+    var browserStatusDoneUrl       = {{{browserStatusDoneUrl}}};
+    var browserActiveWindowIdUrl   = {{{browserActiveWindowIdUrl}}};
+    var browserCloseWindowUrl      = {{{browserCloseWindowUrl}}};
     var skipJsErrors               = {{{skipJsErrors}}};
     var dialogHandler              = {{{dialogHandler}}};
     var userAgent                  = {{{userAgent}}};
     var fixtureName                = {{{fixtureName}}};
     var testName                   = {{{testName}}};
     var canUseDefaultWindowActions = {{{canUseDefaultWindowActions}}};
+    var proxyless                  = {{{proxyless}}};
 
     var ClientDriver = window['%testCafeDriver%'];
     var driver       = new ClientDriver(testRunId,
@@ -39,7 +34,8 @@
             dialogHandler:              dialogHandler,
             retryTestPages:             retryTestPages,
             speed:                      speed,
-            canUseDefaultWindowActions: canUseDefaultWindowActions
+            canUseDefaultWindowActions: canUseDefaultWindowActions,
+            proxyless:                  proxyless
         }
     );
 

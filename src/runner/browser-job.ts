@@ -14,6 +14,9 @@ import CompilerService from '../services/compiler/host';
 import { BrowserJobInit } from './interfaces';
 import MessageBus from '../utils/message-bus';
 import TestRunHookController from './test-run-hook-controller';
+import TestRun from '../test-run';
+// @ts-ignore
+import { TestRun as LegacyTestRun } from 'testcafe-legacy-api';
 
 interface BrowserJobResultInfo {
     status: BrowserJobResult;
@@ -205,6 +208,10 @@ export default class BrowserJob extends AsyncEventEmitter {
     // API
     public get hasQueuedTestRuns (): boolean {
         return !!this._testRunControllerQueue.length;
+    }
+
+    public get currentTestRun (): LegacyTestRun | TestRun | null {
+        return this._completionQueue.length ? this._completionQueue[0].testRun : null;
     }
 
     public async popNextTestRunUrl (connection: BrowserConnection): Promise<string | null> {

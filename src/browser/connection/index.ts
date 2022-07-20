@@ -17,7 +17,6 @@ import BrowserConnectionStatus from './status';
 import HeartbeatStatus from './heartbeat-status';
 import { GeneralError, TimeoutError } from '../../errors/runtime';
 import { RUNTIME_ERRORS } from '../../errors/types';
-import { Dictionary } from '../../configuration/interfaces';
 import BrowserConnectionGateway from './gateway';
 import BrowserJob from '../../runner/browser-job';
 import WarningLog from '../../notifications/warning-log';
@@ -32,11 +31,15 @@ import {
     REMOTE_BROWSER_INIT_TIMEOUT,
 } from '../../utils/browser-connection-timeouts';
 import MessageBus from '../../utils/message-bus';
+import BrowserConnectionTracker from './browser-connection-tracker';
+import TestRun from '../../test-run';
+// @ts-ignore
+import { TestRun as LegacyTestRun } from 'testcafe-legacy-api';
 
 const getBrowserConnectionDebugScope = (id: string): string => `testcafe:browser:connection:${id}`;
 
-const IDLE_PAGE_TEMPLATE                         = read('../../client/browser/idle-page/index.html.mustache');
-const connections: Dictionary<BrowserConnection> = {};
+const IDLE_PAGE_TEMPLATE = read('../../client/browser/idle-page/index.html.mustache');
+
 
 interface DisconnectionPromise<T> extends Promise<T> {
     resolve: Function;
@@ -83,31 +86,28 @@ export default class BrowserConnection extends EventEmitter {
     public permanent: boolean;
     public previousActiveWindowId: string | null;
     private readonly disableMultipleWindows: boolean;
-    private readonly proxyless: boolean;
+    public readonly proxyless: boolean;
     private readonly HEARTBEAT_TIMEOUT: number;
     private readonly BROWSER_CLOSE_TIMEOUT: number;
     private readonly BROWSER_RESTART_TIMEOUT: number;
     public readonly id: string;
     private readonly jobQueue: BrowserJob[];
     private readonly initScriptsQueue: InitScriptTask[];
-    private browserConnectionGateway: BrowserConnectionGateway;
+    public browserConnectionGateway: BrowserConnectionGateway;
     private disconnectionPromise: DisconnectionPromise<void> | null;
     private testRunAborted: boolean;
     public status: BrowserConnectionStatus;
     private heartbeatTimeout: NodeJS.Timeout | null;
     private pendingTestRunUrl: string | null;
-    public readonly url: string;
-    public readonly idleUrl: string;
-    private forcedIdleUrl: string;
-    private readonly initScriptUrl: string;
-    public readonly heartbeatRelativeUrl: string;
-    public readonly statusRelativeUrl: string;
-    public readonly statusDoneRelativeUrl: string;
-    private readonly heartbeatUrl: string;
-    private readonly statusUrl: string;
-    public readonly activeWindowIdUrl: string;
-    public readonly closeWindowUrl: string;
-    private statusDoneUrl: string;
+    public url = '';
+    public idleUrl = '';
+    private forcedIdleUrl = '';
+    private initScriptUrl = '';
+    public heartbeatUrl = '';
+    public statusUrl = '';
+    public activeWindowIdUrl = '';
+    public closeWindowUrl = '';
+    public statusDoneUrl = '';
     private readonly debugLogger: debug.Debugger;
     private osInfo: OSInfo | null = null;
 
@@ -155,24 +155,10 @@ export default class BrowserConnection extends EventEmitter {
         this.disableMultipleWindows = disableMultipleWindows;
         this.proxyless              = proxyless;
 
-        this.url           = `${gateway.domain}/browser/connect/${this.id}`;
-        this.idleUrl       = `${gateway.domain}/browser/idle/${this.id}`;
-        this.forcedIdleUrl = `${gateway.domain}/browser/idle-forced/${this.id}`;
-        this.initScriptUrl = `${gateway.domain}/browser/init-script/${this.id}`;
-
-        this.heartbeatRelativeUrl  = `/browser/heartbeat/${this.id}`;
-        this.statusRelativeUrl     = `/browser/status/${this.id}`;
-        this.statusDoneRelativeUrl = `/browser/status-done/${this.id}`;
-        this.activeWindowIdUrl     = `/browser/active-window-id/${this.id}`;
-        this.closeWindowUrl        = `/browser/close-window/${this.id}`;
-
-        this.heartbeatUrl  = `${gateway.domain}${this.heartbeatRelativeUrl}`;
-        this.statusUrl     = `${gateway.domain}${this.statusRelativeUrl}`;
-        this.statusDoneUrl = `${gateway.domain}${this.statusDoneRelativeUrl}`;
-
+        this._buildCommunicationUrls(gateway);
         this._setEventHandlers();
 
-        connections[this.id] = this;
+        BrowserConnectionTracker.add(this);
 
         this.previousActiveWindowId = null;
 
@@ -180,6 +166,19 @@ export default class BrowserConnection extends EventEmitter {
 
         // NOTE: Give a caller time to assign event listeners
         process.nextTick(() => this._runBrowser());
+    }
+
+    private _buildCommunicationUrls (gateway: BrowserConnectionGateway): void {
+        this.url               = gateway.proxy.resolveRelativeServiceUrl(`/browser/connect/${this.id}`);
+        this.idleUrl           = gateway.proxy.resolveRelativeServiceUrl(`/browser/idle/${this.id}`);
+        this.forcedIdleUrl     = gateway.proxy.resolveRelativeServiceUrl(`/browser/idle-forced/${this.id}`);
+        this.initScriptUrl     = gateway.proxy.resolveRelativeServiceUrl(`/browser/init-script/${this.id}`);
+        this.activeWindowIdUrl = gateway.proxy.resolveRelativeServiceUrl(`/browser/active-window-id/${this.id}`);
+        this.closeWindowUrl    = gateway.proxy.resolveRelativeServiceUrl(`/browser/close-window/${this.id}`);
+        this.heartbeatUrl      = gateway.proxy.resolveRelativeServiceUrl(`/browser/heartbeat/${this.id}`);
+        this.statusUrl         = gateway.proxy.resolveRelativeServiceUrl(`/browser/status/${this.id}`);
+        this.statusDoneUrl     = gateway.proxy.resolveRelativeServiceUrl(`/browser/status-done/${this.id}`);
+
     }
 
     public set messageBus (messageBus: MessageBus) {
@@ -278,8 +277,12 @@ export default class BrowserConnection extends EventEmitter {
         return this.hasQueuedJobs ? await this.currentJob.popNextTestRunUrl(this) : null;
     }
 
+    public getCurrentTestRun (): LegacyTestRun | TestRun | null {
+        return this.currentJob ? this.currentJob.currentTestRun : null;
+    }
+
     public static getById (id: string): BrowserConnection | null {
-        return connections[id] || null;
+        return BrowserConnectionTracker.activeBrowserConnections[id] || null;
     }
 
     private async _restartBrowser (): Promise<void> {
@@ -454,7 +457,7 @@ export default class BrowserConnection extends EventEmitter {
         if (this.heartbeatTimeout)
             clearTimeout(this.heartbeatTimeout);
 
-        delete connections[this.id];
+        BrowserConnectionTracker.remove(this);
 
         this.status = BrowserConnectionStatus.closed;
         this.emit(BrowserConnectionStatus.closed);
