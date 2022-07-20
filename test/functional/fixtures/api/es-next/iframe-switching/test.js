@@ -23,6 +23,20 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
         return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click on element in a nested iframe', DEFAULT_RUN_OPTIONS);
     });
 
+    it('Should switch context between a shadow iframe and the main window', function () {
+        return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click on an element in a shadow iframe and return to the main window', {
+            ...DEFAULT_RUN_OPTIONS,
+            skip: ['ie', 'edge'],
+        });
+    });
+
+    it('Should switch context between a nested shadow iframe and the main window', function () {
+        return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click on element in a nested shadow iframe', {
+            ...DEFAULT_RUN_OPTIONS,
+            skip: ['ie', 'edge'],
+        });
+    });
+
     it('Should wait while a target iframe is loaded', function () {
         return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click in a slowly loading iframe', DEFAULT_RUN_OPTIONS);
     });
@@ -64,7 +78,7 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
                     expect(errs[0]).to.contains(
                         'The specified selector does not match any element in the DOM tree.' +
                         '  > | Selector(\'#non-existent\')');
-                    expect(errs[0]).to.contains("> 56 |    await t.switchToIframe('#non-existent');");
+                    expect(/> *\d* *\| *await t\.switchToIframe\('#non-existent'\);/.test(errs[0])).ok;
                 });
         });
 
@@ -81,7 +95,7 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
             return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Try to switch to an incorrect element', { shouldFail: true })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('The action element is expected to be an <iframe>.');
-                    expect(errs[0]).to.contains("> 74 |    await t.switchToIframe('body');");
+                    expect(/> *\d* *\| *await t\.switchToIframe\('body'\);/.test(errs[0])).ok;
                 });
         });
 
@@ -92,7 +106,7 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('Content of the iframe to which you are switching did not load.');
-                    expect(errs[0]).to.contains("> 189 |        .switchToIframe('#too-slowly-loading-iframe')");
+                    expect(/> *\d* *\| *\.switchToIframe\('#too-slowly-loading-iframe'\)/.test(errs[0])).ok;
                 });
         });
 
@@ -100,7 +114,7 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
             return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click in a removed iframe', DEFAULT_FAILED_RUN_OPTIONS)
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('The iframe in which the test is currently operating does not exist anymore.');
-                    expect(errs[0]).to.contains("> 93 |        .click('#btn');");
+                    expect(/> *\d* *\| *\.click\('#btn'\);/.test(errs[0])).ok;
                 });
         });
 
@@ -108,7 +122,7 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
             return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click in an invisible iframe', DEFAULT_FAILED_RUN_OPTIONS)
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('The iframe in which the test is currently operating is not visible anymore.');
-                    expect(errs[0]).to.contains("> 201 |        .click('#btn');");
+                    expect(/> *\d* *\| *\.click\('#btn'\);/.test(errs[0])).ok;
                 });
         });
 
@@ -122,7 +136,7 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('Content of the iframe in which the test is currently operating did not load.');
-                    expect(errs[0]).to.contains("> 209 |        .click('#second-page-btn');");
+                    expect(/> *\d* *\| *\.click\('#second-page-btn'\);/.test(errs[0])).ok;
                 });
         });
     });

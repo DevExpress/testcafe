@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<button id="btn">button</button>
+
+<div id="shadow-element"></div>
+
+<script>
+    const shadowElement = document.getElementById('shadow-element');
+
+    shadowElement.attachShadow({mode: 'open'});
+
+    const shadowRoot   = shadowElement.shadowRoot;
+    const shadowIframe = document.createElement('iframe');
+
+    shadowIframe.src    = 'shadow-iframe.html';
+    shadowIframe.width  = '500px';
+    shadowIframe.height = '300px';
+
+    shadowRoot.appendChild(shadowIframe);
+
+    document.getElementById('btn').addEventListener('click', function () {
+        window.btnClickCount = (window.btnClickCount || 0) + 1;
+    });
+</script>
+</body>
+</html>
