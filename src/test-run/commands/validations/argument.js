@@ -28,6 +28,8 @@ import {
     ActionUrlsCookieArgumentError,
     ActionRequiredCookieArguments,
     ActionUrlArgumentError,
+    ActionSkipJsErrorsArgumentTypeError,
+    ActionSkipJsErrorsDependenciesArgumentTypeError,
 } from '../../../errors/test-run';
 
 import { URL } from 'url';
@@ -185,4 +187,18 @@ export function urlArgument (name, val) {
 
     if (valType !== 'string' && !(val instanceof URL))
         throw new ActionUrlArgumentError(name, valType);
+}
+
+export function skipJsErrorOptionsOrBoolean (name, val) {
+    const valType = typeof val;
+
+    if (valType !== 'object' && valType !== 'boolean')
+        throw new ActionSkipJsErrorsArgumentTypeError(name, valType);
+}
+
+export function callbackFunctionWithPossibleDependencies (name, val) {
+    const { dependencies } = val;
+
+    if (dependencies && typeof dependencies !== "object")
+        throw new ActionSkipJsErrorsDependenciesArgumentTypeError('dependencies', typeof dependencies);
 }

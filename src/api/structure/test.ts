@@ -61,8 +61,9 @@ export default class Test extends TestingUnit {
         if (!this.fixture)
             return;
 
-        this.requestHooks  = this.fixture.requestHooks.slice();
-        this.clientScripts = this.fixture.clientScripts.slice();
+        this.requestHooks        = this.fixture.requestHooks.slice();
+        this.clientScripts       = this.fixture.clientScripts.slice();
+        this.skipJsErrorsOptions = this.fixture.skipJsErrorsOptions;
     }
 
     protected _add (name: string, fn: Function): Function {
@@ -73,8 +74,8 @@ export default class Test extends TestingUnit {
         assertType(is.function, 'apiOrigin', 'The test body', fn);
         assertType(is.nonNullObject, 'apiOrigin', `The fixture of '${name}' test`, this.fixture);
 
-        this.name          = name;
-        this.fn            = wrapTestFunction(fn);
+        this.name = name;
+        this.fn   = wrapTestFunction(fn);
 
         if (!this.testFile.collectedTests.includes(this))
             this.testFile.collectedTests.push(this);

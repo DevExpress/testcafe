@@ -54,6 +54,7 @@ import {
     SetCookiesCommand,
     DeleteCookiesCommand,
     RequestCommand,
+    SkipJsErrorsCommand,
 } from '../../test-run/commands/actions';
 
 import {
@@ -94,9 +95,9 @@ export default class TestController {
     constructor (testRun) {
         this._executionContext = null;
 
-        this.testRun               = testRun;
-        this.executionChain        = Promise.resolve();
-        this.warningLog            = testRun.warningLog;
+        this.testRun        = testRun;
+        this.executionChain = Promise.resolve();
+        this.warningLog     = testRun.warningLog;
 
         this._addTestControllerToExecutionChain();
     }
@@ -104,6 +105,7 @@ export default class TestController {
     _addTestControllerToExecutionChain () {
         this.executionChain._testController = this;
     }
+
     // NOTE: we track missing `awaits` by exposing a special custom Promise to user code.
     // Action or assertion is awaited if:
     // a)someone used `await` so Promise's `then` function executed
@@ -604,6 +606,13 @@ export default class TestController {
 
     [delegatedAPI(UseRoleCommand.methodName)] (role) {
         return this._enqueueCommand(UseRoleCommand, { role });
+    }
+
+    [delegatedAPI(SkipJsErrorsCommand.methodName)] (optionsOrFunction, dependencies) {
+        if (typeof optionsOrFunction === 'function')
+            return this._enqueueCommand(SkipJsErrorsCommand, { errorHandler: { fn: optionsOrFunction, dependencies } });
+        else
+            return this._enqueueCommand(SkipJsErrorsCommand, { optionsOrFunction })
     }
 
     _addRequestHooks$ (...hooks) {

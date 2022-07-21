@@ -14,8 +14,10 @@ import RequestHook from '../request-hooks/hook';
 import ClientScriptInit from '../../custom-client-scripts/client-script-init';
 import TestFile from './test-file';
 import { AuthCredentials, Metadata } from './interfaces';
-import { Dictionary } from '../../configuration/interfaces';
+import { Dictionary, SkipJsErrorsOptions } from '../../configuration/interfaces';
 import { dirname } from 'path';
+import { ExecuteClientFunctionCommand } from "../../test-run/commands/observation";
+import ClientFunctionBuilder from "../../client-functions/client-function-builder";
 
 export default abstract class TestingUnit extends BaseUnit {
     public readonly testFile: TestFile;
@@ -32,21 +34,23 @@ export default abstract class TestingUnit extends BaseUnit {
     public disablePageCaching: boolean;
     public apiMethodWasCalled: FlagList;
     public apiOrigin: Function;
+    public skipJsErrorsOptions: boolean | SkipJsErrorsOptions | ExecuteClientFunctionCommand;
 
     protected constructor (testFile: TestFile, unitType: UnitType, pageUrl: string, baseUrl?: string) {
         super(unitType);
 
         this.testFile = testFile;
 
-        this.name            = null;
-        this.pageUrl         = pageUrl;
-        this.baseUrl         = baseUrl;
-        this.authCredentials = null;
-        this.meta            = {};
-        this.only            = false;
-        this.skip            = false;
-        this.requestHooks    = [];
-        this.clientScripts   = [];
+        this.name                = null;
+        this.pageUrl             = pageUrl;
+        this.baseUrl             = baseUrl;
+        this.authCredentials     = null;
+        this.meta                = {};
+        this.only                = false;
+        this.skip                = false;
+        this.requestHooks        = [];
+        this.clientScripts       = [];
+        this.skipJsErrorsOptions = false;
 
         this.disablePageReloads = void 0;
         this.disablePageCaching = false;
@@ -99,6 +103,31 @@ export default abstract class TestingUnit extends BaseUnit {
         assertPageUrl(this.pageUrl, 'page');
 
         this.pageUrl = getUrl(this.pageUrl, base);
+
+        return this.apiOrigin;
+    }
+
+    private _skipJsErrors$ (optionsOrFunction: boolean | SkipJsErrorsOptions | ((opts:SkipJsErrorsOptions) => boolean), dependencies: {[key:string]:any}): Function {
+        assertType([is.boolean, is.nonNullObject, is.function], 'skipJsErrors', 'The skipJsErrors arg', optionsOrFunction);
+
+        if (dependencies !== void 0)
+            assertType(is.nonNullObject,'skipJsErrors', 'The skipJsErrors dependencies arg', dependencies);
+
+
+        if (typeof optionsOrFunction === 'boolean' || typeof optionsOrFunction === 'object')
+            this.skipJsErrorsOptions = optionsOrFunction;
+
+        else if (typeof optionsOrFunction === 'function') {
+            const fn         = optionsOrFunction;
+            const methodName = 'skipJsErrors handler';
+            const clientFn   = fn;
+            const options    = { dependencies };
+
+            this.skipJsErrorsOptions = new ClientFunctionBuilder(clientFn, options, {
+                instantiation: methodName,
+                execution: methodName
+            }).getCommand([]);
+        }
 
         return this.apiOrigin;
     }

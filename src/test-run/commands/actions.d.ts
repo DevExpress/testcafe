@@ -14,6 +14,7 @@ import {
 
 import Role from '../../role/role';
 import TestRun from '../index';
+import { SkipJsErrorsCallback, SkipJsErrorsOptions } from "../../configuration/interfaces";
 
 
 export class SetNativeDialogHandlerCommand extends ActionCommandBase {
@@ -259,4 +260,11 @@ export class GetProxyUrlCommand extends ActionCommandBase {
     public constructor(obj: object, testRun: TestRun, validateProperties: boolean);
     public url: string;
     public options: GetProxyUrlOptions;
+}
+
+
+export class SkipJsErrorsCommand extends ActionCommandBase {
+    public constructor (obj: object, testRun: TestRun, validateProperties: boolean);
+    public options: SkipJsErrorsOptions | SkipJsErrorsCallback | boolean;
+    public dependencies?: { [key: string]: any };
 }

@@ -384,6 +384,22 @@ export class GetProxyUrlOptions extends Assignable {
     }
 }
 
+export class SkipJsErrorsOptions extends Assignable {
+    constructor (obj, validate) {
+        super();
+
+        this._assignFrom(obj, validate);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'stack', type: stringOption, required: false },
+            { name: 'message', type: stringOption, required: false },
+            { name: 'pageUrl', type: stringOption, required: false },
+        ];
+    }
+}
+
 // Initializers
 function initRequestAuthOption (name, val, initOptions, validate = true) {
     return new RequestAuthOptions(val, validate);

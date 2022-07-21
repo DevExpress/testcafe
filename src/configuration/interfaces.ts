@@ -12,8 +12,16 @@ export interface Dictionary<T> {
     [key: string]: T;
 }
 
+export interface SkipJsErrorsOptions {
+    stack?: string;
+    message?: string;
+    pageUrl?: string;
+}
+
+export type SkipJsErrorsCallback = ({ stack, pageUrl, message }: SkipJsErrorsOptions) => boolean;
+
 export interface RunnerRunOptions {
-    skipJsErrors?: boolean;
+    skipJsErrors?: boolean | SkipJsErrorsOptions | SkipJsErrorsCallback;
     skipUncaughtErrors?: boolean;
     debugMode?: boolean;
     debugOnFail?: boolean;

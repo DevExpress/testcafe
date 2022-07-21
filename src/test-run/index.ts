@@ -549,7 +549,7 @@ export default class TestRun extends AsyncEventEmitter {
             selectorTimeout:              this.opts.selectorTimeout,
             pageLoadTimeout:              this.pageLoadTimeout,
             childWindowReadyTimeout:      CHILD_WINDOW_READY_TIMEOUT,
-            skipJsErrors:                 this.opts.skipJsErrors,
+            skipJsErrors:                 JSON.stringify(this.test.skipJsErrorsOptions || this.opts.skipJsErrors),
             retryTestPages:               this.opts.retryTestPages,
             speed:                        this.speed,
             dialogHandler:                JSON.stringify(this.activeDialogHandler),

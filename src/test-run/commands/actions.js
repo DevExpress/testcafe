@@ -14,6 +14,7 @@ import {
     CookieOptions,
     GetProxyUrlOptions,
     RequestOptions,
+    SkipJsErrorsOptions,
 } from './options';
 
 import {
@@ -41,11 +42,14 @@ import {
     setCookiesArgument,
     urlsArgument,
     urlArgument,
+    skipJsErrorOptionsOrBoolean,
+    callbackFunctionWithPossibleDependencies,
 } from './validations/argument';
 
 import { SetNativeDialogHandlerCodeWrongTypeError } from '../../errors/test-run';
 import { ExecuteClientFunctionCommand } from './observation';
-import { camelCase } from 'lodash';
+import { assign, camelCase } from 'lodash';
+import clientFunctionBuilderSymbol from "../../client-functions/builder-symbol";
 
 
 // Initializers
@@ -118,6 +122,23 @@ function initRequestOption (name, val, initOptions, validate = true) {
 
 function initGetProxyUrlOptions (name, val, initOptions, validate = true) {
     return new GetProxyUrlOptions(val, validate);
+}
+
+function initSkipJsErrorsOptions (name, val, { testRun }, validate = true) {
+    if (typeof val === 'object')
+        return new SkipJsErrorsOptions(val, validate);
+
+    return val;
+}
+
+function initSkipJsErrorsCallback (name, val, { testRun }, validate = true) {
+    const { fn, dependencies } = val;
+    const methodName = 'skipJsErrors handler';
+    const builder  = fn[clientFunctionBuilderSymbol];
+    const clientFn = builder ? builder.fn : fn;
+    const options  = builder ? assign({}, builder.options, { dependencies }) : { dependencies };
+
+    return new ClientFunctionBuilder(clientFn, options, { instantiation: methodName, execution: methodName }).getCommand();
 }
 
 // Commands
@@ -722,9 +743,9 @@ export class DeleteCookiesCommand extends ActionCommandBase {
 }
 
 export class RequestCommand extends ActionCommandBase {
-    static methodName = camelCase(TYPE.request);
+    static methodName      = camelCase(TYPE.request);
     static extendedMethods = ['get', 'post', 'delete', 'put', 'patch', 'head'];
-    static resultGetters = ['status', 'statusText', 'headers', 'body'];
+    static resultGetters   = ['status', 'statusText', 'headers', 'body'];
 
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.request, validateProperties);
@@ -749,6 +770,26 @@ export class GetProxyUrlCommand extends ActionCommandBase {
         return [
             { name: 'url', type: urlArgument, required: true },
             { name: 'options', init: initGetProxyUrlOptions, required: false },
+        ];
+    }
+}
+
+export class SkipJsErrorsCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.skipJsErrors);
+
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.skipJsErrors, validateProperties);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'options', type: skipJsErrorOptionsOrBoolean, init: initSkipJsErrorsOptions, required: false },
+            {
+                name:     'errorHandler',
+                type:     callbackFunctionWithPossibleDependencies,
+                init:     initSkipJsErrorsCallback,
+                required: false
+            },
         ];
     }
 }

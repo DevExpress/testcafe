@@ -1,4 +1,3 @@
-
 // {{#allowReferences}}
 /// <reference path="action-options.d.ts" />
 /// <reference path="assertions.d.ts" />
@@ -7,6 +6,7 @@
 /// <reference path="role.d.ts" />
 /// <reference path="selector.d.ts" />
 /// <reference path="request.d.ts" />
+/// <reference path="skip-js-errors-options.d.ts" />
 // {{/allowReferences}}
 
 interface NativeDialogHistoryItem {
@@ -533,6 +533,21 @@ interface TestController {
      * @param options - options.
      */
     request: Request;
+
+    /**
+     * Set skipJsErrors options
+     *
+     * @param options - options or boolean.
+     */
+    skipJsErrors (options: boolean | SkipJsErrorsOptions): TestControllerPromise;
+
+    /**
+     * Set skipJsErrors handler
+     *
+     * @param fn - A callback function that will be called for each client error.
+     * @param dependencies - Any objects or variables used in the context of the function.
+     */
+    skipJsErrors (fn: (options: SkipJsErrorsOptions) => boolean, dependencies?: { [key: string]: any }): TestControllerPromise;
 }
 
 interface TestControllerPromise<T=any> extends TestController, Promise<T> {

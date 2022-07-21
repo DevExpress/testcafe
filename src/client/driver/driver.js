@@ -116,6 +116,7 @@ import createErrorCtorCallback, {
     getNotFoundErrorCtor,
 } from '../../shared/errors/selector-error-ctor-callback';
 import './command-executors/action-executor/actions-initializer';
+import { shouldSkipJsError } from "./process-skip-js-errors";
 
 const settings = hammerhead.settings;
 
@@ -277,11 +278,24 @@ export default class Driver extends serviceUtils.EventEmitter {
     }
 
     // Error handling
-    _onJsError (err) {
+    async _onJsError (err) {
         // NOTE: we should not send any message to the server if we've
         // sent the 'test-done' message but haven't got the response.
-        if (this.skipJsErrors || this.contextStorage.getItem(TEST_DONE_SENT_FLAG))
+        if (this.contextStorage.getItem(TEST_DONE_SENT_FLAG))
             return Promise.resolve();
+
+        if (this.skipJsErrors) {
+            try {
+                if (await shouldSkipJsError(this.skipJsErrors, err))
+                    return Promise.resolve();
+            }
+            catch (e) {
+                if (!this.contextStorage.getItem(PENDING_PAGE_ERROR))
+                    this.contextStorage.setItem(PENDING_PAGE_ERROR, e);
+
+                return null;
+            }
+        }
 
         const error = new UncaughtErrorOnPage(err.stack, err.pageUrl);
 
@@ -1205,6 +1219,12 @@ export default class Driver extends serviceUtils.EventEmitter {
         }));
     }
 
+    _onSkipJsErrorsCommand (command) {
+        this.skipJsErrors = command.options || command.errorHandler;
+
+        this._onReady(new DriverStatus({ isCommandResult: true }));
+    }
+
     _onExecuteClientFunctionCommand (command) {
         this.contextStorage.setItem(EXECUTING_CLIENT_FUNCTION_DESCRIPTOR, { instantiationCallsiteName: command.instantiationCallsiteName });
 
@@ -1675,6 +1695,9 @@ export default class Driver extends serviceUtils.EventEmitter {
 
         else if (command.type === COMMAND_TYPE.getProxyUrl)
             this._onGetProxyUrlCommand(command);
+
+        else if (command.type === COMMAND_TYPE.skipJsErrors)
+            this._onSkipJsErrorsCommand(command);
 
         else
             this._onActionCommand(command);

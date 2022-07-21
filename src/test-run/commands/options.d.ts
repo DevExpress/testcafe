@@ -115,3 +115,10 @@ export class GetProxyUrlOptions {
     public constructor (obj: object, validate: boolean);
     public credentials: number;
 }
+
+export class SkipJsErrorsOptions {
+    public constructor (obj: object, validate: boolean);
+    public stack?: string;
+    public message?: string;
+    public pageUrl?: string;
+}
