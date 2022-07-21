@@ -109,6 +109,9 @@ export default class BrowserConnection extends EventEmitter {
     public activeWindowIdUrl = '';
     public closeWindowUrl = '';
     public statusDoneUrl = '';
+    public heartbeatRelativeUrl = '';
+    public statusRelativeUrl = '';
+    public statusDoneRelativeUrl = '';
     private readonly debugLogger: debug.Debugger;
     private osInfo: OSInfo | null = null;
 
@@ -174,11 +177,16 @@ export default class BrowserConnection extends EventEmitter {
         this.idleUrl           = proxy.resolveRelativeServiceUrl(`/browser/idle/${this.id}`);
         this.forcedIdleUrl     = proxy.resolveRelativeServiceUrl(`/browser/idle-forced/${this.id}`);
         this.initScriptUrl     = proxy.resolveRelativeServiceUrl(`/browser/init-script/${this.id}`);
-        this.activeWindowIdUrl = proxy.resolveRelativeServiceUrl(`/browser/active-window-id/${this.id}`);
-        this.closeWindowUrl    = proxy.resolveRelativeServiceUrl(`/browser/close-window/${this.id}`);
-        this.heartbeatUrl      = proxy.resolveRelativeServiceUrl(`/browser/heartbeat/${this.id}`);
-        this.statusUrl         = proxy.resolveRelativeServiceUrl(`/browser/status/${this.id}`);
-        this.statusDoneUrl     = proxy.resolveRelativeServiceUrl(`/browser/status-done/${this.id}`);
+
+        this.heartbeatRelativeUrl  = `/browser/heartbeat/${this.id}`;
+        this.statusRelativeUrl     = `/browser/status/${this.id}`;
+        this.statusDoneRelativeUrl = `/browser/status-done/${this.id}`;
+        this.activeWindowIdUrl     = `/browser/active-window-id/${this.id}`;
+        this.closeWindowUrl        = `/browser/close-window/${this.id}`;
+
+        this.heartbeatUrl      = proxy.resolveRelativeServiceUrl(this.heartbeatRelativeUrl);
+        this.statusUrl         = proxy.resolveRelativeServiceUrl(this.statusRelativeUrl);
+        this.statusDoneUrl     = proxy.resolveRelativeServiceUrl(this.statusDoneRelativeUrl);
 
     }
 
