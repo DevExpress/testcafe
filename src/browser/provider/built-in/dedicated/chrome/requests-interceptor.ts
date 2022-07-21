@@ -29,7 +29,16 @@ export default class RequestsInterceptor {
     private async _prepareInjectableResources (): Promise<PageInjectableResources> {
         const browserConnection = BrowserConnection.getById(this._browserId) as BrowserConnection;
         const proxy             = browserConnection.browserConnectionGateway.proxy;
-        const payloadScript     = await browserConnection.currentJob.currentTestRun.getPayloadScript();
+        const windowId          = browserConnection.activeWindowId;
+
+        const taskScript = await browserConnection.currentJob.currentTestRun.session.getTaskScript({
+            referer:     '',
+            cookieUrl:   '',
+            isIframe:    false,
+            withPayload: true,
+            serverInfo:  proxy.server1Info,
+            windowId,
+        });
 
         const injectableResources = {
             stylesheets: [
@@ -39,7 +48,7 @@ export default class RequestsInterceptor {
                 ...HAMMERHEAD_INJECTABLE_SCRIPTS,
                 ...SCRIPTS,
             ],
-            embeddedScripts: [payloadScript],
+            embeddedScripts: [taskScript],
         };
 
         injectableResources.scripts     = injectableResources.scripts.map(script => proxy.resolveRelativeServiceUrl(script));
