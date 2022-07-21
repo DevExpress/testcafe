@@ -42,8 +42,8 @@ export default class RequestsInterceptor {
             embeddedScripts: [payloadScript],
         };
 
-        injectableResources.scripts     = injectableResources.scripts.map(proxy.resolveRelativeServiceUrl);
-        injectableResources.stylesheets = injectableResources.stylesheets.map(proxy.resolveRelativeServiceUrl);
+        injectableResources.scripts     = injectableResources.scripts.map(script => proxy.resolveRelativeServiceUrl(script));
+        injectableResources.stylesheets = injectableResources.stylesheets.map(style => proxy.resolveRelativeServiceUrl(style));
 
         return injectableResources;
     }
