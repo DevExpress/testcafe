@@ -57,4 +57,14 @@ describe('[API] DevTools Compiler', function () {
                 expect(errs[0]).contains('shadow button clicked');
             });
     });
+
+    it('JSON without tests', function () {
+        return runTests('./testcafe-fixtures/json-without-test.json', null, {
+            only:       'chrome',
+            shouldFail: true,
+        })
+            .catch(err => {
+                expect(err.message).contains('Source files do not contain valid \'fixture\' and \'test\' declarations.');
+            });
+    });
 });
