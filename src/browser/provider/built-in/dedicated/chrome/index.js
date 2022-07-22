@@ -10,6 +10,7 @@ import {
 } from './local-chrome';
 import { GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from '../../../utils/client-functions';
 import { BrowserClient } from './cdp-client';
+import RequestsInterceptor from './requests-interceptor';
 
 const MIN_AVAILABLE_DIMENSION = 50;
 
@@ -43,6 +44,13 @@ export default {
         this.setUserAgentMetaInfo(browserId, metaInfo, options);
     },
 
+    async _setupProxyless (browserId, browserClient) {
+        const requestsInterceptor = new RequestsInterceptor(browserId);
+        const cdpClient           = await browserClient.getActiveClient();
+
+        await requestsInterceptor.setup(cdpClient);
+    },
+
     async openBrowser (browserId, pageUrl, config, disableMultipleWindows, proxyless) {
         const parsedPageUrl = parseUrl(pageUrl);
         const runtimeInfo   = await this._createRunTimeInfo(parsedPageUrl.hostname, config, disableMultipleWindows);
@@ -70,7 +78,7 @@ export default {
         if (!disableMultipleWindows)
             runtimeInfo.activeWindowId = this.calculateWindowId();
 
-        const browserClient = new BrowserClient(runtimeInfo, proxyless);
+        const browserClient = new BrowserClient(runtimeInfo);
 
         this.openedBrowsers[browserId] = runtimeInfo;
 
@@ -79,6 +87,9 @@ export default {
         await this._ensureWindowIsExpanded(browserId, runtimeInfo.viewportSize);
 
         this._setUserAgentMetaInfoForEmulatingDevice(browserId, runtimeInfo.config);
+
+        if (proxyless)
+            await this._setupProxyless(browserId, browserClient);
     },
 
     async closeBrowser (browserId, closingInfo = {}) {

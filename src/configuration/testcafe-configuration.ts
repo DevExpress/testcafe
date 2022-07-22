@@ -74,6 +74,7 @@ interface TestCafeAdditionalStartOptions {
     developmentMode: boolean;
     cache: boolean;
     disableHttp2: boolean;
+    proxyless: boolean;
 }
 
 interface TestCafeStartOptions {
@@ -160,6 +161,7 @@ export default class TestCafeConfiguration extends Configuration {
                 retryTestPages:  this.getOption(OPTION_NAMES.retryTestPages) as boolean,
                 cache:           this.getOption(OPTION_NAMES.cache) as boolean,
                 disableHttp2:    this.getOption(OPTION_NAMES.disableHttp2) as boolean,
+                proxyless:       this.getOption(OPTION_NAMES.proxyless) as boolean,
             },
         };
 

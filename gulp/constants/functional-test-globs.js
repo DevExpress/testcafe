@@ -27,6 +27,8 @@ const DEBUG_GLOB_2 = [
     ...SCREENSHOT_TESTS_GLOB.map(glob => `!${glob}`),
 ];
 
+const PROXYLESS_TESTS_GLOB = [];
+
 module.exports = {
     TESTS_GLOB,
     LEGACY_TESTS_GLOB,
@@ -36,4 +38,5 @@ module.exports = {
     DEBUG_GLOB_1,
     DEBUG_GLOB_2,
     SCREENSHOT_TESTS_GLOB,
+    PROXYLESS_TESTS_GLOB,
 };

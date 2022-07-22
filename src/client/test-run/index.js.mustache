@@ -26,6 +26,7 @@
     var fixtureName                = {{{fixtureName}}};
     var testName                   = {{{testName}}};
     var canUseDefaultWindowActions = {{{canUseDefaultWindowActions}}};
+    var proxyless                  = {{{proxyless}}};
 
     var ClientDriver = window['%testCafeDriver%'];
     var driver       = new ClientDriver(testRunId,
@@ -39,7 +40,8 @@
             dialogHandler:              dialogHandler,
             retryTestPages:             retryTestPages,
             speed:                      speed,
-            canUseDefaultWindowActions: canUseDefaultWindowActions
+            canUseDefaultWindowActions: canUseDefaultWindowActions,
+            proxyless:                  proxyless
         }
     );
 

@@ -553,6 +553,7 @@ export default class TestRun extends AsyncEventEmitter {
             speed:                        this.speed,
             dialogHandler:                JSON.stringify(this.activeDialogHandler),
             canUseDefaultWindowActions:   JSON.stringify(await this.browserConnection.canUseDefaultWindowActions()),
+            proxyless:                    JSON.stringify(this.opts.proxyless),
         });
     }
 

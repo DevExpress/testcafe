@@ -49,16 +49,14 @@ interface VideoFrameData {
 export class BrowserClient {
     private _clients: Dictionary<ProtocolApiInfo> = {};
     private readonly _runtimeInfo: RuntimeInfo;
-    private readonly _proxyless: boolean;
     private _parentTarget?: remoteChrome.TargetInfo;
     private readonly debugLogger: debug.Debugger;
     private readonly _videoFramesBuffer: VideoFrameData[];
     private _lastFrame: VideoFrameData | null;
 
-    public constructor (runtimeInfo: RuntimeInfo, proxyless: boolean) {
+    public constructor (runtimeInfo: RuntimeInfo) {
         this._runtimeInfo = runtimeInfo;
         this.debugLogger  = debug(DEBUG_SCOPE(runtimeInfo.browserId));
-        this._proxyless   = proxyless;
 
         runtimeInfo.browserClient = this;
 

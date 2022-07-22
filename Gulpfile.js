@@ -36,6 +36,7 @@ const {
     MULTIPLE_WINDOWS_TESTS_GLOB,
     DEBUG_GLOB_1,
     DEBUG_GLOB_2,
+    PROXYLESS_TESTS_GLOB,
 } = require('./gulp/constants/functional-test-globs');
 
 const {
@@ -424,7 +425,7 @@ gulp.task('test-functional-local-debug-1', gulp.series('prepare-tests', 'test-fu
 gulp.task('test-functional-local-debug-2', gulp.series('prepare-tests', 'test-functional-local-debug-run-2'));
 
 gulp.step('test-functional-local-proxyless-run', () => {
-    return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localHeadlessChrome, { isProxyless: true });
+    return testFunctional(PROXYLESS_TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localHeadlessChrome, { isProxyless: true });
 });
 
 gulp.task('test-functional-local-proxyless', gulp.series('prepare-tests', 'test-functional-local-proxyless-run'));
