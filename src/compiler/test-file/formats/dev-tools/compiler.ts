@@ -47,14 +47,22 @@ export default class DevToolsTestFileCompiler extends RawTestFileCompiler {
     compile (code: string, filename: string): Test[] {
         this.raw = JSON.parse(TEST_BASE);
 
-        return super.compile(this._preProcess(code), filename);
+        const preprocessedCode = this._preProcess(code);
+
+        if (!preprocessedCode)
+            return [];
+
+        return super.compile(preprocessedCode, filename);
     }
 
-    _preProcess (code: string): string {
+    _preProcess (code: string): string | null {
         const parsedCode = JSON.parse(code);
 
         this._fixture.name = parsedCode.title;
         this._test.name    = parsedCode.title;
+
+        if (!parsedCode.steps)
+            return null;
 
         parsedCode.steps.forEach((step: DevToolsRecorderStep, i: number) => this._processStep(step, i));
 
