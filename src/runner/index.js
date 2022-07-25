@@ -312,6 +312,9 @@ export default class Runner extends EventEmitter {
     async _validateSkipJsErrorsOption () {
         const skipJsErrors = this.configuration.getOption(OPTION_NAMES.skipJsErrors);
 
+        if (!skipJsErrors)
+            return;
+
         if (isSkipJsErrorsCallback(skipJsErrors)) {
             const id = generateUniqueId();
 
@@ -320,7 +323,6 @@ export default class Runner extends EventEmitter {
 
             return;
         }
-
 
         const options = await getSkipJsErrorsOptions('skipJsErrors', skipJsErrors);
 
@@ -616,7 +618,7 @@ export default class Runner extends EventEmitter {
             errors.UnableToAccessScreenRecordingAPIError,
             {
                 interactive: hasLocalBrowsers && !isCI,
-            }
+            },
         );
 
         if (!error)
@@ -639,7 +641,7 @@ export default class Runner extends EventEmitter {
             if (isLocalBrowser && !isHeadlessBrowser) {
                 throw new GeneralError(
                     RUNTIME_ERRORS.cannotRunLocalNonHeadlessBrowserWithoutDisplay,
-                    browserInfo.alias
+                    browserInfo.alias,
                 );
             }
         }
