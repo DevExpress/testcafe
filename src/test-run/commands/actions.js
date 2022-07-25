@@ -43,13 +43,13 @@ import {
     urlsArgument,
     urlArgument,
     skipJsErrorOptionsOrBoolean,
-    callbackFunctionWithPossibleDependencies,
+    skipJsErrorsCallbackFunction,
 } from './validations/argument';
 
 import { SetNativeDialogHandlerCodeWrongTypeError } from '../../errors/test-run';
 import { ExecuteClientFunctionCommand } from './observation';
-import { assign, camelCase } from 'lodash';
-import clientFunctionBuilderSymbol from "../../client-functions/builder-symbol";
+import { camelCase } from 'lodash';
+import { createSkipJsErrorsClientFunction } from '../../utils/skip-js-errorrs';
 
 
 // Initializers
@@ -124,21 +124,15 @@ function initGetProxyUrlOptions (name, val, initOptions, validate = true) {
     return new GetProxyUrlOptions(val, validate);
 }
 
-function initSkipJsErrorsOptions (name, val, { testRun }, validate = true) {
+function initSkipJsErrorsOptions (name, val, initOptions, validate = true) {
     if (typeof val === 'object')
         return new SkipJsErrorsOptions(val, validate);
 
     return val;
 }
 
-function initSkipJsErrorsCallback (name, val, { testRun }, validate = true) {
-    const { fn, dependencies } = val;
-    const methodName = 'skipJsErrors handler';
-    const builder  = fn[clientFunctionBuilderSymbol];
-    const clientFn = builder ? builder.fn : fn;
-    const options  = builder ? assign({}, builder.options, { dependencies }) : { dependencies };
-
-    return new ClientFunctionBuilder(clientFn, options, { instantiation: methodName, execution: methodName }).getCommand();
+function initSkipJsErrorsCallback (name, val) {
+    return createSkipJsErrorsClientFunction(val, val.lateErrorCallsiteId);
 }
 
 // Commands
@@ -743,9 +737,9 @@ export class DeleteCookiesCommand extends ActionCommandBase {
 }
 
 export class RequestCommand extends ActionCommandBase {
-    static methodName      = camelCase(TYPE.request);
+    static methodName = camelCase(TYPE.request);
     static extendedMethods = ['get', 'post', 'delete', 'put', 'patch', 'head'];
-    static resultGetters   = ['status', 'statusText', 'headers', 'body'];
+    static resultGetters = ['status', 'statusText', 'headers', 'body'];
 
     constructor (obj, testRun, validateProperties) {
         super(obj, testRun, TYPE.request, validateProperties);
@@ -786,9 +780,9 @@ export class SkipJsErrorsCommand extends ActionCommandBase {
             { name: 'options', type: skipJsErrorOptionsOrBoolean, init: initSkipJsErrorsOptions, required: false },
             {
                 name:     'errorHandler',
-                type:     callbackFunctionWithPossibleDependencies,
+                type:     skipJsErrorsCallbackFunction,
                 init:     initSkipJsErrorsCallback,
-                required: false
+                required: false,
             },
         ];
     }

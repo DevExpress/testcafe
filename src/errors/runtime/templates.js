@@ -134,4 +134,5 @@ export default {
     [RUNTIME_ERRORS.relativeBaseUrl]:                     'The value of the baseUrl argument cannot be relative: "{baseUrl}"',
     [RUNTIME_ERRORS.requestUrlInvalidValueError]:         'Requested url isn\'t valid ({actualValue}).',
     [RUNTIME_ERRORS.requestRuntimeError]:                 'Requested was interrupted with error:\n{message}',
+    [RUNTIME_ERRORS.invalidSkipJsErrorsOption]:           'The "{optionName}" option does not exist. The only "message", "stack" and "pageUrl" options can be used to configure skipJsErrors',
 };

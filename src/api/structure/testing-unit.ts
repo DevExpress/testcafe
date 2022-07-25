@@ -16,8 +16,11 @@ import TestFile from './test-file';
 import { AuthCredentials, Metadata } from './interfaces';
 import { Dictionary, SkipJsErrorsOptions } from '../../configuration/interfaces';
 import { dirname } from 'path';
-import { ExecuteClientFunctionCommand } from "../../test-run/commands/observation";
-import ClientFunctionBuilder from "../../client-functions/client-function-builder";
+import { ExecuteClientFunctionCommand } from '../../test-run/commands/observation';
+import { createSkipJsErrorsClientFunction } from '../../utils/skip-js-errorrs';
+import { getCallsiteForMethod } from '../../errors/get-callsite';
+import { CallsiteRecord } from 'callsite-record';
+import { generateUniqueId } from 'testcafe-hammerhead';
 
 export default abstract class TestingUnit extends BaseUnit {
     public readonly testFile: TestFile;
@@ -34,7 +37,8 @@ export default abstract class TestingUnit extends BaseUnit {
     public disablePageCaching: boolean;
     public apiMethodWasCalled: FlagList;
     public apiOrigin: Function;
-    public skipJsErrorsOptions: boolean | SkipJsErrorsOptions | ExecuteClientFunctionCommand;
+    public skipJsErrorsOptions?: boolean | SkipJsErrorsOptions | ExecuteClientFunctionCommand;
+    public lateErrorsCallsites: Dictionary<CallsiteRecord | string | null>;
 
     protected constructor (testFile: TestFile, unitType: UnitType, pageUrl: string, baseUrl?: string) {
         super(unitType);
@@ -50,7 +54,7 @@ export default abstract class TestingUnit extends BaseUnit {
         this.skip                = false;
         this.requestHooks        = [];
         this.clientScripts       = [];
-        this.skipJsErrorsOptions = false;
+        this.lateErrorsCallsites = {};
 
         this.disablePageReloads = void 0;
         this.disablePageCaching = false;
@@ -107,26 +111,22 @@ export default abstract class TestingUnit extends BaseUnit {
         return this.apiOrigin;
     }
 
-    private _skipJsErrors$ (optionsOrFunction: boolean | SkipJsErrorsOptions | ((opts:SkipJsErrorsOptions) => boolean), dependencies: {[key:string]:any}): Function {
+    private _skipJsErrors$ (optionsOrFunction: boolean | SkipJsErrorsOptions | ((opts: SkipJsErrorsOptions) => boolean), dependencies: { [key: string]: any }): Function {
         assertType([is.boolean, is.nonNullObject, is.function], 'skipJsErrors', 'The skipJsErrors arg', optionsOrFunction);
 
         if (dependencies !== void 0)
-            assertType(is.nonNullObject,'skipJsErrors', 'The skipJsErrors dependencies arg', dependencies);
-
+            assertType(is.nonNullObject, 'skipJsErrors', 'The skipJsErrors dependencies arg', dependencies);
 
         if (typeof optionsOrFunction === 'boolean' || typeof optionsOrFunction === 'object')
             this.skipJsErrorsOptions = optionsOrFunction;
 
         else if (typeof optionsOrFunction === 'function') {
-            const fn         = optionsOrFunction;
-            const methodName = 'skipJsErrors handler';
-            const clientFn   = fn;
-            const options    = { dependencies };
+            const callsite = getCallsiteForMethod('skipJsErrors');
+            const id       = generateUniqueId();
 
-            this.skipJsErrorsOptions = new ClientFunctionBuilder(clientFn, options, {
-                instantiation: methodName,
-                execution: methodName
-            }).getCommand([]);
+            this.lateErrorsCallsites[id] = callsite;
+
+            this.skipJsErrorsOptions = createSkipJsErrorsClientFunction({ fn: optionsOrFunction, dependencies }, id);
         }
 
         return this.apiOrigin;

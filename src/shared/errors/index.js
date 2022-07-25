@@ -87,6 +87,14 @@ export class UncaughtErrorInClientFunctionCode extends TestRunErrorBase {
     }
 }
 
+export class UncaughtLateErrorInClientFunctionCode extends UncaughtErrorInClientFunctionCode {
+    constructor (instantiationCallsiteName, err, callsiteId) {
+        super(instantiationCallsiteName, err);
+
+        this.callsiteId = callsiteId;
+    }
+}
+
 export class UncaughtErrorInCustomDOMPropertyCode extends TestRunErrorBase {
     constructor (instantiationCallsiteName, err, prop, callsite) {
         super(TEST_RUN_ERRORS.uncaughtErrorInCustomDOMPropertyCode, callsite);

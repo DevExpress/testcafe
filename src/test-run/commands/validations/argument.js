@@ -196,9 +196,9 @@ export function skipJsErrorOptionsOrBoolean (name, val) {
         throw new ActionSkipJsErrorsArgumentTypeError(name, valType);
 }
 
-export function callbackFunctionWithPossibleDependencies (name, val) {
+export function skipJsErrorsCallbackFunction (name, val) {
     const { dependencies } = val;
 
-    if (dependencies && typeof dependencies !== "object")
+    if (dependencies && typeof dependencies !== 'object')
         throw new ActionSkipJsErrorsDependenciesArgumentTypeError('dependencies', typeof dependencies);
 }

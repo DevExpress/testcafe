@@ -5,7 +5,7 @@ export interface FilterOption {
 
 export interface ReporterOption {
     name: string;
-    output? : string | Buffer;
+    output?: string | Buffer;
 }
 
 export interface Dictionary<T> {
@@ -18,7 +18,10 @@ export interface SkipJsErrorsOptions {
     pageUrl?: string;
 }
 
-export type SkipJsErrorsCallback = ({ stack, pageUrl, message }: SkipJsErrorsOptions) => boolean;
+export interface SkipJsErrorsCallback {
+    fn: (opts: SkipJsErrorsOptions) => boolean;
+    dependencies: Dictionary<unknown>;
+}
 
 export interface RunnerRunOptions {
     skipJsErrors?: boolean | SkipJsErrorsOptions | SkipJsErrorsCallback;

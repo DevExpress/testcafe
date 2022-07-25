@@ -534,6 +534,10 @@ export default class TestRun extends AsyncEventEmitter {
         this.fileDownloadingHandled               = false;
         this.resolveWaitForFileDownloadingPromise = null;
 
+        const skipJsErrors = this.test.skipJsErrorsOptions !== void 0
+            ? this.test.skipJsErrorsOptions
+            : this.opts.skipJsErrors || false;
+
         return Mustache.render(TEST_RUN_TEMPLATE, {
             testRunId:                    JSON.stringify(this.session.id),
             browserId:                    JSON.stringify(this.browserConnection.id),
@@ -549,7 +553,7 @@ export default class TestRun extends AsyncEventEmitter {
             selectorTimeout:              this.opts.selectorTimeout,
             pageLoadTimeout:              this.pageLoadTimeout,
             childWindowReadyTimeout:      CHILD_WINDOW_READY_TIMEOUT,
-            skipJsErrors:                 JSON.stringify(this.test.skipJsErrorsOptions || this.opts.skipJsErrors),
+            skipJsErrors:                 JSON.stringify(skipJsErrors),
             retryTestPages:               this.opts.retryTestPages,
             speed:                        this.speed,
             dialogHandler:                JSON.stringify(this.activeDialogHandler),
@@ -1123,6 +1127,9 @@ export default class TestRun extends AsyncEventEmitter {
         const duration = new Date().getTime() - start;
 
         if (error) {
+            if (error.callsiteId)
+                error.callsite = this.findLateErrorCallsite(error.callsiteId) || error.callsite;
+
             // NOTE: check if error is TestCafeErrorList is specific for the `useRole` action
             // if error is TestCafeErrorList we do not need to create an adapter,
             // since error is already was processed in role initializer
@@ -1543,5 +1550,9 @@ export default class TestRun extends AsyncEventEmitter {
             else
                 this.resolveWaitForFileDownloadingPromise = resolve;
         });
+    }
+
+    private findLateErrorCallsite (lateErrorCallsiteId: string): CallsiteRecord | string | null {
+        return this.test.lateErrorsCallsites[lateErrorCallsiteId] || null;
     }
 }

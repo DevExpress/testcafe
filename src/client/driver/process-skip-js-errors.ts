@@ -1,6 +1,6 @@
-import { SkipJsErrorsOptions } from "../../configuration/interfaces";
-import ClientFunctionExecutor from "./command-executors/client-functions/client-function-executor";
-import { isClientFunctionCommand } from "../../test-run/commands/utils";
+import { SkipJsErrorsOptions } from '../../configuration/interfaces';
+import ClientFunctionExecutor from './command-executors/client-functions/client-function-executor';
+import { isClientFunctionCommand } from '../../test-run/commands/utils';
 
 export async function shouldSkipJsError (options: SkipJsErrorsOptions | boolean, err: any): Promise<boolean> {
     if (typeof options === 'boolean')
@@ -27,10 +27,10 @@ function processJsErrorsOptions (options: SkipJsErrorsOptions, err: any): boolea
 
 async function processJsErrorsFunction (processingFunction: any, err: any): Promise<boolean> {
     const opts: SkipJsErrorsOptions = {
-        stack: err.stack,
+        stack:   err.stack,
         pageUrl: err.pageUrl,
-        message: err.msg
-    }
+        message: err.msg,
+    };
 
     processingFunction.args = [[opts]];
 

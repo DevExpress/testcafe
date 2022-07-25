@@ -12,6 +12,7 @@ import {
     castArray,
     merge,
 } from 'lodash';
+import { generateUniqueId } from 'testcafe-hammerhead';
 
 import Bootstrapper from './bootstrapper';
 import Reporter from '../reporter';
@@ -51,6 +52,9 @@ import { validateQuarantineOptions } from '../utils/get-options/quarantine';
 import logEntry from '../utils/log-entry';
 import MessageBus from '../utils/message-bus';
 import getEnvOptions from '../dashboard/get-env-options';
+import { createSkipJsErrorsClientFunction, isSkipJsErrorsCallback } from '../utils/skip-js-errorrs';
+import { getCallsiteForMethod } from '../errors/get-callsite';
+import { getSkipJsErrorsOptions } from '../utils/get-options';
 
 const DEBUG_LOGGER            = debug('testcafe:runner');
 const DASHBOARD_REPORTER_NAME = 'dashboard';
@@ -305,6 +309,24 @@ export default class Runner extends EventEmitter {
             throw new GeneralError(RUNTIME_ERRORS.cannotSetConcurrencyWithCDPPort);
     }
 
+    async _validateSkipJsErrorsOption () {
+        const skipJsErrors = this.configuration.getOption(OPTION_NAMES.skipJsErrors);
+
+        if (isSkipJsErrorsCallback(skipJsErrors)) {
+            const id = generateUniqueId();
+
+            this._skipJsErrorsCallsiteId = id;
+            this.configuration.mergeOptions({ skipJsErrors: createSkipJsErrorsClientFunction(skipJsErrors, id) });
+
+            return;
+        }
+
+
+        const options = await getSkipJsErrorsOptions('skipJsErrors', skipJsErrors);
+
+        this.configuration.mergeOptions({ skipJsErrors: options });
+    }
+
     async _validateBrowsers () {
         const browsers = this.configuration.getOption(OPTION_NAMES.browsers);
 
@@ -473,6 +495,7 @@ export default class Runner extends EventEmitter {
         this._validateQuarantineOptions();
         this._validateConcurrencyOption();
         await this._validateBrowsers();
+        await this._validateSkipJsErrorsOption();
     }
 
     _createRunnableConfiguration () {
@@ -743,7 +766,8 @@ export default class Runner extends EventEmitter {
 
         const messageBusErrorPromise = promisifyEvent(this._messageBus, 'error');
 
-        this._options = Object.assign(this._options, options);
+        this._options          = Object.assign(this._options, options);
+        this.runMethodCallsite = getCallsiteForMethod('run');
 
         const runTaskPromise = Promise.resolve()
             .then(() => this._setConfigurationOptions())
@@ -774,6 +798,11 @@ export default class Runner extends EventEmitter {
                 };
 
                 await this.bootstrapper.compilerService?.setOptions({ value: resultOptions });
+
+                tests.map(t => {
+                    if (this._skipJsErrorsCallsiteId)
+                        t.lateErrorsCallsites[this._skipJsErrorsCallsiteId] = this.runMethodCallsite;
+                });
 
                 return this._runTask({
                     reporters,

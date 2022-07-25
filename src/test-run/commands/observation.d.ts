@@ -8,6 +8,7 @@ declare class ExecuteClientFunctionCommandBase extends CommandBase {
     public args: string[];
     public dependencies: string[];
     public esmRuntime: string;
+    public lateErrorCallsiteId?: string
 }
 
 export class ExecuteClientFunctionCommand extends ExecuteClientFunctionCommandBase {

@@ -116,7 +116,7 @@ import createErrorCtorCallback, {
     getNotFoundErrorCtor,
 } from '../../shared/errors/selector-error-ctor-callback';
 import './command-executors/action-executor/actions-initializer';
-import { shouldSkipJsError } from "./process-skip-js-errors";
+import { shouldSkipJsError } from './process-skip-js-errors';
 
 const settings = hammerhead.settings;
 

@@ -17,6 +17,12 @@ interface QuarantineOptionValue {
     successThreshold?: number;
 }
 
+interface SkipJsErrorsOptionValue {
+    message?: string;
+    stack?: string;
+    pageUrl?: string;
+}
+
 interface TestingEntryHooks {
     before?: Function;
     after?: Function;
@@ -30,4 +36,4 @@ interface GlobalHooks {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-type OptionValue = undefined | null | string | boolean | number | string[] | Function | { [key: string]: any } | ScreenshotOptionValue | QuarantineOptionValue | CompilerOptions | GlobalHooks;
+type OptionValue = undefined | null | string | boolean | number | string[] | Function | { [key: string]: any } | ScreenshotOptionValue | QuarantineOptionValue | CompilerOptions | GlobalHooks | SkipJsErrorsOptionValue;

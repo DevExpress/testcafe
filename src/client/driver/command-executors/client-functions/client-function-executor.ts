@@ -2,7 +2,7 @@ import createReplicator from './replicator/index';
 import FunctionTransform from './replicator/transforms/function-transform';
 import ClientFunctionNodeTransform from './replicator/transforms/client-function-node-transform';
 import evalFunction from './eval-function';
-import { UncaughtErrorInClientFunctionCode } from '../../../../shared/errors/index';
+import { UncaughtErrorInClientFunctionCode, UncaughtLateErrorInClientFunctionCode } from '../../../../shared/errors/index';
 import Replicator from 'replicator';
 import { ExecuteClientFunctionCommand, ExecuteClientFunctionCommandBase } from '../../../../test-run/commands/observation';
 import { Dictionary } from '../../../../configuration/interfaces';
@@ -35,8 +35,11 @@ export default class ClientFunctionExecutor<
                 return this._executeFn(args);
             })
             .catch((err: any) => {
-                if (!err.isTestCafeError)
-                    err = new UncaughtErrorInClientFunctionCode(this.command.instantiationCallsiteName, err);
+                if (!err.isTestCafeError) {
+                    err = this.command.lateErrorCallsiteId
+                        ? new UncaughtLateErrorInClientFunctionCode(this.command.instantiationCallsiteName, err, this.command.lateErrorCallsiteId)
+                        : new UncaughtErrorInClientFunctionCode(this.command.instantiationCallsiteName, err);
+                }
 
                 throw err;
             });
