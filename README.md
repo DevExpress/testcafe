@@ -299,6 +299,7 @@ TestCafe developers and community members made these plugins:
   * [Slack](https://github.com/Shafied/testcafe-reporter-slack) (by [@Shafied](https://github.com/Shafied))
   * [NUnit](https://github.com/AndreyBelym/testcafe-reporter-nunit) (by [@AndreyBelym](https://github.com/AndreyBelym))
   * [TimeCafe](https://github.com/jimthedev/timecafe) (by [@jimthedev](https://github.com/jimthedev))
+  * [Tesults](https://github.com/tesults/testcafe-reporter-tesults) (by [@Tesults](https://github.com/tesults))
 
 * **GitHub Action**<br/>
   Run TestCafe tests in GitHub Actions workflows.
