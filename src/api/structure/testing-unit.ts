@@ -38,6 +38,8 @@ export default abstract class TestingUnit extends BaseUnit {
     public apiMethodWasCalled: FlagList;
     public apiOrigin: Function;
     public skipJsErrorsOptions?: boolean | SkipJsErrorsOptions | ExecuteClientFunctionCommand;
+
+    // TO-DO: Change the callsite storage mechanism
     public lateErrorsCallsites: Dictionary<CallsiteRecord | string | null>;
 
     protected constructor (testFile: TestFile, unitType: UnitType, pageUrl: string, baseUrl?: string) {
