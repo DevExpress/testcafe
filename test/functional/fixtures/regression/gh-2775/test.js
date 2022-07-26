@@ -44,6 +44,7 @@ describe('[Regression](GH-2775)', () => {
             return runTests('./testcafe-fixtures/test-controller.js', 'Should fail due to error in callback function', { shouldFail: true })
                 .catch(([erInfo]) => {
                     expect(erInfo).to.contain(CALLBACK_FUNC_ERROR);
+                    expect(erInfo).to.contain(' > 62 |    await t.skipJsErrors(({ message }) => message === CLIENT_ERROR_MESSAGE);');
                 });
         });
     });
@@ -65,6 +66,7 @@ describe('[Regression](GH-2775)', () => {
             return runTests('./testcafe-fixtures/fixture-and-test.js', 'Should fail due to errors in callback function', { shouldFail: true })
                 .catch(([erInfo]) => {
                     expect(erInfo).to.contain(CALLBACK_FUNC_ERROR);
+                    expect(erInfo).to.contain(' > 32 |}).skipJsErrors(({ message }) => message === CLIENT_ERROR_MESSAGE);');
                 });
         });
 
@@ -134,6 +136,7 @@ describe('[Regression](GH-2775)', () => {
             })
                 .catch(([erInfo]) => {
                     expect(erInfo).to.contain(CALLBACK_FUNC_ERROR);
+                    expect(erInfo).to.contain(' > 289 |                    .run({');
                 });
         });
 

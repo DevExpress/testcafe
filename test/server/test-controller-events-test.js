@@ -146,6 +146,7 @@ const actions = {
     getCookies:                ['cookieName', 'https://domain.com'],
     setCookies:                [{ cookieName: 'cookieValue' }, 'https://domain.com'],
     deleteCookies:             [['cookieName1', 'cookieName2'], 'https://domain.com'],
+    skipJsErrors:              [true],
 };
 
 let testController = null;
