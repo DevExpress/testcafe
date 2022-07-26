@@ -174,7 +174,7 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
                 includeCommandLineAPI: true,
             });
 
-            await this.cdp.Debugger.resume();
+            await this.cdp.Debugger.resume({ terminateOnResume: false });
         });
 
         testRunTracker.on(DEBUG_ACTION.step, async () => {
@@ -191,7 +191,7 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
                 includeCommandLineAPI: true,
             });
 
-            await this.cdp.Debugger.resume();
+            await this.cdp.Debugger.resume({ terminateOnResume: false });
         });
 
         // NOTE: need to step out from the source code until breakpoint is set in the code of test
@@ -202,7 +202,7 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
 
             if (this.cdp) {
                 if (args.reason === INITIAL_DEBUGGER_BREAK_ON_START)
-                    return this.cdp.Debugger.resume();
+                    return this.cdp.Debugger.resume({ terminateOnResume: false });
 
                 if (callFrames[0].url.includes(INTERNAL_FILES_URL))
                     return this.cdp.Debugger.stepOut();

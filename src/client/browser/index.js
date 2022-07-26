@@ -108,10 +108,28 @@ export function redirect (command) {
     document.location = command.url;
 }
 
-async function getStatus (statusUrl, createXHR, { manualRedirect } = {}) {
-    const result = await sendXHR(statusUrl, createXHR);
+function proxylessCheckRedirecting (result, idlePageUrl) {
+    const shouldStayOnIdle = result.cmd === COMMAND.idle
+        && result.url === idlePageUrl
+        && isCurrentLocation(idlePageUrl);
 
-    const redirecting = (result.cmd === COMMAND.run || result.cmd === COMMAND.idle) && !isCurrentLocation(result.url);
+    const shouldGoToIdle = result.cmd === COMMAND.idle
+        && result.url === idlePageUrl
+        && !isCurrentLocation(result.url);
+
+    return !shouldStayOnIdle
+        || result.cmd === COMMAND.run
+        || shouldGoToIdle;
+}
+
+function regularCheckRedirecting (result) {
+    return (result.cmd === COMMAND.run || result.cmd === COMMAND.idle)
+        && !isCurrentLocation(result.url);
+}
+
+async function getStatus ({ statusUrl, idlePageUrl }, createXHR, { manualRedirect, proxyless } = {}) {
+    const result      = await sendXHR(statusUrl, createXHR);
+    const redirecting = proxyless ? proxylessCheckRedirecting(result, idlePageUrl) : regularCheckRedirecting(result);
 
     if (redirecting && !manualRedirect)
         redirect(result);

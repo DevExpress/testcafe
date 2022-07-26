@@ -174,6 +174,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         this.heartbeatUrl               = communicationUrls.heartbeat;
         this.browserStatusUrl           = communicationUrls.status;
         this.browserStatusDoneUrl       = communicationUrls.statusDone;
+        this.browserIdleUrl             = communicationUrls.idle;
         this.browserActiveWindowId      = communicationUrls.activeWindowId;
         this.browserCloseWindowUrl      = communicationUrls.closeWindow;
         this.userAgent                  = runInfo.userAgent;
@@ -186,6 +187,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         this.skipJsErrors               = options.skipJsErrors;
         this.dialogHandler              = options.dialogHandler;
         this.canUseDefaultWindowActions = options.canUseDefaultWindowActions;
+        this.proxyless                  = options.proxyless;
         this.isFirstPageLoad            = settings.get().isFirstPageLoad;
 
         this.customCommandHandlers = {};
@@ -1441,8 +1443,13 @@ export default class Driver extends serviceUtils.EventEmitter {
     }
 
     _checkStatus () {
+        const urls = {
+            statusUrl:   this.browserStatusDoneUrl,
+            idlePageUrl: this.browserIdleUrl,
+        };
+
         return browser
-            .checkStatus(this.browserStatusDoneUrl, hammerhead.createNativeXHR, { manualRedirect: true })
+            .checkStatus(urls, hammerhead.createNativeXHR, { manualRedirect: true, proxyless: this.proxyless })
             .then(({ command, redirecting }) => {
                 const isSessionChange = redirecting && command.url.indexOf(this.testRunId) < 0;
 

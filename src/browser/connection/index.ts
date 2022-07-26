@@ -31,7 +31,7 @@ import {
     REMOTE_BROWSER_INIT_TIMEOUT,
 } from '../../utils/browser-connection-timeouts';
 import MessageBus from '../../utils/message-bus';
-import BrowserConnectionTracker from './browser-connection-tracker';
+import BrowserConnectionTracker from './tracker';
 import TestRun from '../../test-run';
 // @ts-ignore
 import { TestRun as LegacyTestRun } from 'testcafe-legacy-api';
@@ -112,6 +112,7 @@ export default class BrowserConnection extends EventEmitter {
     public heartbeatRelativeUrl = '';
     public statusRelativeUrl = '';
     public statusDoneRelativeUrl = '';
+    public idleRelativeUrl = '';
     private readonly debugLogger: debug.Debugger;
     private osInfo: OSInfo | null = null;
 
@@ -174,20 +175,20 @@ export default class BrowserConnection extends EventEmitter {
 
     private _buildCommunicationUrls (proxy: Proxy): void {
         this.url               = proxy.resolveRelativeServiceUrl(`/browser/connect/${this.id}`);
-        this.idleUrl           = proxy.resolveRelativeServiceUrl(`/browser/idle/${this.id}`);
         this.forcedIdleUrl     = proxy.resolveRelativeServiceUrl(`/browser/idle-forced/${this.id}`);
         this.initScriptUrl     = proxy.resolveRelativeServiceUrl(`/browser/init-script/${this.id}`);
 
         this.heartbeatRelativeUrl  = `/browser/heartbeat/${this.id}`;
         this.statusRelativeUrl     = `/browser/status/${this.id}`;
         this.statusDoneRelativeUrl = `/browser/status-done/${this.id}`;
+        this.idleRelativeUrl = `/browser/idle/${this.id}`;
         this.activeWindowIdUrl     = `/browser/active-window-id/${this.id}`;
         this.closeWindowUrl        = `/browser/close-window/${this.id}`;
 
+        this.idleUrl           = proxy.resolveRelativeServiceUrl(this.idleRelativeUrl);
         this.heartbeatUrl      = proxy.resolveRelativeServiceUrl(this.heartbeatRelativeUrl);
         this.statusUrl         = proxy.resolveRelativeServiceUrl(this.statusRelativeUrl);
         this.statusDoneUrl     = proxy.resolveRelativeServiceUrl(this.statusDoneRelativeUrl);
-
     }
 
     public set messageBus (messageBus: MessageBus) {
@@ -500,6 +501,8 @@ export default class BrowserConnection extends EventEmitter {
             heartbeatUrl:   this.heartbeatUrl,
             initScriptUrl:  this.initScriptUrl,
             retryTestPages: !!this.browserConnectionGateway.retryTestPages,
+            idlePageUrl:    this.idleUrl,
+            proxyless:      this.proxyless,
         });
     }
 
