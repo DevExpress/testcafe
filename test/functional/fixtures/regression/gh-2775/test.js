@@ -3,7 +3,7 @@ const config                                                         = require('
 const expect                                                         = require('chai').expect;
 
 // TODO: fix tests for Debug task
-(config.experimentalDebug ? describe.skip : describe)('[Regression](GH-2775)', () => {
+(config.experimentalDebug ? describe.skip : describe.only)('[Regression](GH-2775)', () => {
     describe('TestController command', () => {
         it('Should skip JS errors with boolean param', async () => {
             return runTests('./testcafe-fixtures/test-controller.js', 'Should skip JS errors with boolean param');
@@ -23,30 +23,42 @@ const expect                                                         = require('
 
         it('Should fail due to incorrect message option', async () => {
             return runTests('./testcafe-fixtures/test-controller.js', 'Should fail due to incorrect message option', { shouldFail: true })
-                .catch(([erInfo]) => {
-                    expect(erInfo).to.contain(CLIENT_ERROR_MESSAGE);
+                .catch(errs => {
+                    if (!Array.isArray(errs))
+                        errs = [errs];
+
+                    expect(errs[0]).to.contain(CLIENT_ERROR_MESSAGE);
                 });
         });
 
         it('Should fail if at least one option is incorrect', async () => {
             return runTests('./testcafe-fixtures/test-controller.js', 'Should fail if at least one option is incorrect', { shouldFail: true })
-                .catch(([erInfo]) => {
-                    expect(erInfo).to.contain(CLIENT_ERROR_MESSAGE);
+                .catch(errs => {
+                    if (!Array.isArray(errs))
+                        errs = [errs];
+
+                    expect(errs[0]).to.contain(CLIENT_ERROR_MESSAGE);
                 });
         });
 
         it('Should fail with callback function', async () => {
             return runTests('./testcafe-fixtures/test-controller.js', 'Should fail with callback function', { shouldFail: true })
-                .catch(([erInfo]) => {
-                    expect(erInfo).to.contain(CLIENT_ERROR_MESSAGE);
+                .catch(errs => {
+                    if (!Array.isArray(errs))
+                        errs = [errs];
+
+                    expect(errs[0]).to.contain(CLIENT_ERROR_MESSAGE);
                 });
         });
 
         it('Should fail due to error in callback function', async () => {
             return runTests('./testcafe-fixtures/test-controller.js', 'Should fail due to error in callback function', { shouldFail: true })
-                .catch(([erInfo]) => {
-                    expect(erInfo).to.contain(CALLBACK_FUNC_ERROR);
-                    expect(erInfo).to.contain(' > 62 |    await t.skipJsErrors(({ message }) => message === CLIENT_ERROR_MESSAGE);');
+                .catch(errs => {
+                    if (!Array.isArray(errs))
+                        errs = [errs];
+
+                    expect(errs[0]).to.contain(CALLBACK_FUNC_ERROR);
+                    expect(errs[0]).to.contain(' > 62 |    await t.skipJsErrors(({ message }) => message === CLIENT_ERROR_MESSAGE);');
                 });
         });
     });
@@ -66,23 +78,32 @@ const expect                                                         = require('
 
         it('Should fail due to errors in callback function', () => {
             return runTests('./testcafe-fixtures/fixture-and-test.js', 'Should fail due to errors in callback function', { shouldFail: true })
-                .catch(([erInfo]) => {
-                    expect(erInfo).to.contain(CALLBACK_FUNC_ERROR);
-                    expect(erInfo).to.contain(' > 32 |}).skipJsErrors(({ message }) => message === CLIENT_ERROR_MESSAGE);');
+                .catch(errs => {
+                    if (!Array.isArray(errs))
+                        errs = [errs];
+
+                    expect(errs[0]).to.contain(CALLBACK_FUNC_ERROR);
+                    expect(errs[0]).to.contain(' > 32 |}).skipJsErrors(({ message }) => message === CLIENT_ERROR_MESSAGE);');
                 });
         });
 
         it('Should fail due to TestController value override', () => {
             return runTests('./testcafe-fixtures/fixture-and-test.js', 'Should fail due to TestController value override', { shouldFail: true })
-                .catch(([erInfo]) => {
-                    expect(erInfo).to.contain(CLIENT_ERROR_MESSAGE);
+                .catch(errs => {
+                    if (!Array.isArray(errs))
+                        errs = [errs];
+
+                    expect(errs[0]).to.contain(CLIENT_ERROR_MESSAGE);
                 });
         });
 
         it('Should fail with test callback function', () => {
             return runTests('./testcafe-fixtures/fixture-and-test.js', 'Should fail with test callback function', { shouldFail: true })
-                .catch(([erInfo]) => {
-                    expect(erInfo).to.contain(CLIENT_ERROR_MESSAGE);
+                .catch(errs => {
+                    if (!Array.isArray(errs))
+                        errs = [errs];
+
+                    expect(errs[0]).to.contain(CLIENT_ERROR_MESSAGE);
                 });
         });
     });
@@ -113,8 +134,11 @@ const expect                                                         = require('
             };
 
             return runTests('./testcafe-fixtures/runner.js', 'Throw client error', { skipJsErrors, shouldFail: true })
-                .catch(([erInfo]) => {
-                    expect(erInfo).to.contain(CLIENT_ERROR_MESSAGE);
+                .catch(errs => {
+                    if (!Array.isArray(errs))
+                        errs = [errs];
+
+                    expect(errs[0]).to.contain(CLIENT_ERROR_MESSAGE);
                 });
         });
 
@@ -136,9 +160,12 @@ const expect                                                         = require('
                 skipJsErrors,
                 shouldFail: true,
             })
-                .catch(([erInfo]) => {
-                    expect(erInfo).to.contain(CALLBACK_FUNC_ERROR);
-                    expect(erInfo).to.contain(' > 289 |                    .run({');
+                .catch(errs => {
+                    if (!Array.isArray(errs))
+                        errs = [errs];
+
+                    expect(errs[0]).to.contain(CALLBACK_FUNC_ERROR);
+                    expect(errs[0]).to.contain(' > 289 |                    .run({');
                 });
         });
 

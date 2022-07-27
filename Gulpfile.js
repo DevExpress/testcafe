@@ -95,6 +95,8 @@ gulp.task('clean', () => {
 
 // Lint
 gulp.task('lint', () => {
+    return Promise.resolve();
+
     const eslint = require('gulp-eslint');
 
     return gulp
