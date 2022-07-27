@@ -51,8 +51,9 @@ export class BrowserClient {
     private readonly _runtimeInfo: RuntimeInfo;
     private _parentTarget?: remoteChrome.TargetInfo;
     private readonly debugLogger: debug.Debugger;
-    private readonly _videoFramesBuffer: VideoFrameData[];
+    private _videoFramesBuffer: VideoFrameData[];
     private _lastFrame: VideoFrameData | null;
+    private _screencastFrameListenerAttached = false;
 
     public constructor (runtimeInfo: RuntimeInfo) {
         this._runtimeInfo = runtimeInfo;
@@ -358,14 +359,30 @@ export class BrowserClient {
         if (!client)
             return;
 
-        client.Page.on('screencastFrame', (event: ScreencastFrameEvent) => {
-            this._videoFramesBuffer.push({
-                data:      event.data,
-                sessionId: event.sessionId,
+        if (!this._screencastFrameListenerAttached) {
+            client.Page.on('screencastFrame', (event: ScreencastFrameEvent) => {
+                this._videoFramesBuffer.push({
+                    data:      event.data,
+                    sessionId: event.sessionId,
+                });
             });
-        });
+
+            this._screencastFrameListenerAttached = true;
+        }
 
         await client.Page.startScreencast(SCREENCAST_OPTIONS as StartScreencastRequest);
+    }
+
+    public async stopCapturingVideo (): Promise<void> {
+        const client = await this.getActiveClient();
+
+        if (!client)
+            return;
+
+        await client.Page.stopScreencast();
+
+        this._lastFrame         = null;
+        this._videoFramesBuffer = [];
     }
 
     public async getVideoFrameData (): Promise<Buffer | null> {

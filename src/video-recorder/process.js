@@ -130,6 +130,10 @@ export default class VideoRecorder extends AsyncEmitter {
         await this.connection.provider.startCapturingVideo(this.connection.id);
     }
 
+    async _stopCapturing () {
+        await this.connection.provider.stopCapturingVideo(this.connection.id);
+    }
+
     async init () {
         this.ffmpegProcess = spawn(this.ffmpegPath, this.optionsList, { stdio: 'pipe' });
 
@@ -183,6 +187,7 @@ export default class VideoRecorder extends AsyncEmitter {
 
         this.closed = true;
 
+        await this._stopCapturing();
         await this.capturingPromise;
         await this.dispose();
     }

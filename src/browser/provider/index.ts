@@ -417,6 +417,10 @@ export default class BrowserProvider {
         await this.plugin.startCapturingVideo(browserId);
     }
 
+    public async stopCapturingVideo (browserId: string): Promise<void> {
+        await this.plugin.stopCapturingVideo(browserId);
+    }
+
     public async hasCustomActionForBrowser (browserId: string): Promise<any> {
         return this.plugin.hasCustomActionForBrowser(browserId);
     }
