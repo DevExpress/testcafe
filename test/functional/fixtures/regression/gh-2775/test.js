@@ -3,7 +3,7 @@ const config                                                         = require('
 const expect                                                         = require('chai').expect;
 
 // TODO: fix tests for Debug task
-(config.experimentalDebug ? describe.skip : describe.only)('[Regression](GH-2775)', () => {
+describe.only('[Regression](GH-2775)', () => {
     describe('TestController command', () => {
         it('Should skip JS errors with boolean param', async () => {
             return runTests('./testcafe-fixtures/test-controller.js', 'Should skip JS errors with boolean param');
