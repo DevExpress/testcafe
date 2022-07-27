@@ -55,6 +55,7 @@ import getEnvOptions from '../dashboard/get-env-options';
 import { createSkipJsErrorsClientFunction, isSkipJsErrorsCallback } from '../utils/skip-js-errorrs';
 import { getCallsiteForMethod } from '../errors/get-callsite';
 import { getSkipJsErrorsOptions } from '../utils/get-options';
+import { isLegacyTest } from '../custom-client-scripts/routing';
 
 const DEBUG_LOGGER            = debug('testcafe:runner');
 const DASHBOARD_REPORTER_NAME = 'dashboard';
@@ -802,7 +803,7 @@ export default class Runner extends EventEmitter {
                 await this.bootstrapper.compilerService?.setOptions({ value: resultOptions });
 
                 tests.map(t => {
-                    if (this._skipJsErrorsCallsiteId)
+                    if (!isLegacyTest(t) && this._skipJsErrorsCallsiteId)
                         t.lateErrorsCallsites[this._skipJsErrorsCallsiteId] = this.runMethodCallsite;
                 });
 
