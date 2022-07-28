@@ -2,7 +2,7 @@ var expect = require('chai').expect;
 
 
 describe('[Legacy API] act.click()', function () {
-    it.only('Should fail if the first argument is invisible', function () {
+    it('Should fail if the first argument is invisible', function () {
         return runTests('testcafe-fixtures/click.test.js', 'Should fail if the first argument is invisible', { shouldFail: true })
             .catch(function (errs) {
                 var expectedError = [

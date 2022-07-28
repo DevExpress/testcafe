@@ -123,7 +123,6 @@ import MessageBus from '../utils/message-bus';
 import executeFnWithTimeout from '../utils/execute-fn-with-timeout';
 import { URL } from 'url';
 import { CookieOptions } from './commands/options';
-import { isLegacyTest } from '../custom-client-scripts/routing';
 
 const lazyRequire                 = require('import-lazy')(require);
 const ClientFunctionBuilder       = lazyRequire('../client-functions/client-function-builder');
@@ -535,7 +534,7 @@ export default class TestRun extends AsyncEventEmitter {
         this.fileDownloadingHandled               = false;
         this.resolveWaitForFileDownloadingPromise = null;
 
-        const skipJsErrors = isLegacyTest(this.test) ? false : this.test.skipJsErrorsOptions !== void 0
+        const skipJsErrors = this.test.skipJsErrorsOptions !== void 0
             ? this.test.skipJsErrorsOptions
             : this.opts.skipJsErrors || false;
 
@@ -1554,6 +1553,6 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     private findLateErrorCallsite (lateErrorCallsiteId: string): CallsiteRecord | string | null {
-        return !isLegacyTest(this.test) && this.test.lateErrorsCallsites[lateErrorCallsiteId] || null;
+        return this.test.lateErrorsCallsites[lateErrorCallsiteId] || null;
     }
 }

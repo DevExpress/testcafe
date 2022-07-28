@@ -227,6 +227,13 @@ export default class TestCafeConfiguration extends Configuration {
             screenshots.thumbnails = DEFAULT_SCREENSHOT_THUMBNAILS;
     }
 
+    private _ensureSkipJsOptions (): void {
+        const option = this._ensureOption(OPTION_NAMES.skipJsErrors, void 0, OptionSource.Configuration);
+
+        if (option.value === void 0)
+            option.value = !!option.value;
+    }
+
     private _prepareReporters (): void {
         const reporterOption = this._options[OPTION_NAMES.reporter];
 
@@ -261,6 +268,7 @@ export default class TestCafeConfiguration extends Configuration {
         this._ensureOptionWithValue(OPTION_NAMES.proxyless, DEFAULT_PROXYLESS, OptionSource.Configuration);
 
         this._ensureScreenshotOptions();
+        this._ensureSkipJsOptions();
     }
 
     private _prepareCompilerOptions (): void {
