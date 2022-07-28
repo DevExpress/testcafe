@@ -128,6 +128,12 @@ export default {
         await browserClient.startCapturingVideo();
     },
 
+    async stopCapturingVideo (browserId) {
+        const { browserClient } = this.openedBrowsers[browserId];
+
+        await browserClient.stopCapturingVideo();
+    },
+
     async getVideoFrameData (browserId) {
         const { browserClient } = this.openedBrowsers[browserId];
 

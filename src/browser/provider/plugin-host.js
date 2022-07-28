@@ -143,6 +143,9 @@ export default class BrowserProviderPluginHost {
     async startCapturingVideo (/*browserId*/) {
     }
 
+    async stopCapturingVideo (/*browserId*/) {
+    }
+
     async getVideoFrameData (browserId) {
         const browserAlias = BrowserConnection.getById(browserId).browserInfo.alias;
 
