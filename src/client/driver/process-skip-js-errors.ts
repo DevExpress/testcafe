@@ -15,7 +15,7 @@ export async function shouldSkipJsError (options: SkipJsErrorsOptions | boolean,
     return false;
 }
 
-function processJsErrorsOptions (options: SkipJsErrorsOptions, err: any): boolean {
+export function processJsErrorsOptions (options: SkipJsErrorsOptions, err: any): boolean {
     const { stack = '', pageUrl = '', message = '' } = options;
 
     const stackRegex   = new RegExp(stack);

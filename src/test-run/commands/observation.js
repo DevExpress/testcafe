@@ -30,7 +30,6 @@ export class ExecuteClientFunctionCommandBase extends ActionCommandBase {
             { name: 'args', defaultValue: [] },
             { name: 'dependencies', defaultValue: [] },
             { name: 'esmRuntime', defaultValue: null },
-            { name: 'lateErrorCallsiteId', defaultValue: null, required: false },
         ];
     }
 }

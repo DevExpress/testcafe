@@ -415,6 +415,10 @@ export default {
         The value of the "${err.optionName}" option belongs to an unsupported data type (${err.actualValue}). The "${err.optionName}" option only accepts String type values.
     `,
 
+    [TEST_RUN_ERRORS.actionStringOrRegexOptionError]: err => `
+        The value of the "${err.optionName}" option belongs to an unsupported data type (${err.actualValue}). The "${err.optionName}" option only accepts String or Regex type values.
+    `,
+
     [TEST_RUN_ERRORS.actionDateOptionError]: err => `
         The value of the "${err.optionName}" option belongs to an unsupported data type (${err.actualValue}). The "${err.optionName}" option only accepts Date type values.
     `,

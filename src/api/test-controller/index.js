@@ -70,7 +70,6 @@ import assertRequestHookType from '../request-hooks/assert-type';
 import { createExecutionContext as createContext } from './execution-context';
 import { isSelector } from '../../client-functions/types';
 import TestRunProxy from '../../services/compiler/test-run-proxy';
-import { generateUniqueId } from 'testcafe-hammerhead';
 
 import {
     MultipleWindowsModeIsDisabledError,
@@ -611,15 +610,9 @@ export default class TestController {
 
     [delegatedAPI(SkipJsErrorsCommand.methodName)] (optionsOrFunction, dependencies) {
         if (typeof optionsOrFunction === 'function') {
-            const callsite = getCallsiteForMethod('skipJsErrors');
-            const id       = generateUniqueId();
-
-            this.testRun.test.lateErrorsCallsites[id] = callsite;
-
             return this._enqueueCommand(SkipJsErrorsCommand, {
                 errorHandler: {
-                    fn:                  optionsOrFunction,
-                    lateErrorCallsiteId: id,
+                    fn: optionsOrFunction,
                     dependencies,
                 },
             });

@@ -18,11 +18,11 @@ export async function getSkipJsErrorsOptions (optionName: string, options: strin
         return options;
 
     const parsedOptions = await baseGetOptions(options, {
-        async onOptionParsed (key: string, value: string) {
+        async onOptionParsed (key: string, value: string | RegExp) {
             if (!key || !value)
                 throw new GeneralError(RUNTIME_ERRORS.optionValueIsNotValidKeyValue, optionName);
 
-            return value;
+            return value instanceof RegExp ? value.source : value;
         },
     });
 

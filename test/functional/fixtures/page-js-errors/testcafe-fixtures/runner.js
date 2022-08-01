@@ -1,7 +1,7 @@
 const { CLIENT_ERROR_MESSAGE, CLIENT_PAGE_URL } = require('../constants');
 
 fixture`Runner run options`
-    .page('http://localhost:3000/fixtures/regression/gh-2775/pages/index.html');
+    .page('http://localhost:3000/fixtures/page-js-errors/pages/skip-js-errors.html');
 
 
 test('Throw client error', async t => {

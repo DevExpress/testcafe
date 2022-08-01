@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+</head>
+<body>
+<script>
+    function onClick () {
+        throw new Error('Custom client error');
+    }
+</script>
+<a href="error-on-load.html" id="link">Go to page with an error</a>
+<button onclick="onClick()">Error</button>
+</body>
+</html>

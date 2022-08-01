@@ -97,6 +97,7 @@ export const TEST_RUN_ERRORS = {
     actionUrlSearchParamsOptionError:                      'E94',
     actionObjectOptionError:                               'E95',
     actionUrlArgumentError:                                'E96',
+    actionStringOrRegexOptionError:                        'E97',
 };
 
 export const RUNTIME_ERRORS = {

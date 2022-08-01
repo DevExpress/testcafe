@@ -15,6 +15,7 @@ import {
     createUrlValidator,
     createUrlSearchParamsValidator,
     createObjectValidator,
+    createStringOrRegexValidator,
 } from './validations/factories';
 import {
     ActionIntegerOptionError,
@@ -27,6 +28,7 @@ import {
     ActionUrlOptionError,
     ActionUrlSearchParamsOptionError,
     ActionObjectOptionError,
+    ActionStringOrRegexOptionError,
 } from '../../shared/errors';
 
 export const integerOption         = createIntegerValidator(ActionIntegerOptionError);
@@ -34,6 +36,7 @@ export const positiveIntegerOption = createPositiveIntegerValidator(ActionPositi
 export const booleanOption         = createBooleanValidator(ActionBooleanOptionError);
 export const speedOption           = createSpeedValidator(ActionSpeedOptionError);
 export const stringOption          = createStringValidator(ActionStringOptionError);
+export const stringOrRegexOption   = createStringOrRegexValidator(ActionStringOrRegexOptionError);
 export const dateOption            = createDateValidator(ActionDateOptionError);
 export const numberOption          = createNumberValidator(ActionNumberOptionError);
 export const urlOption             = createUrlValidator(ActionUrlOptionError);
@@ -393,9 +396,9 @@ export class SkipJsErrorsOptions extends Assignable {
 
     _getAssignableProperties () {
         return [
-            { name: 'stack', type: stringOption, required: false },
-            { name: 'message', type: stringOption, required: false },
-            { name: 'pageUrl', type: stringOption, required: false },
+            { name: 'stack', type: stringOrRegexOption, init: initStringOrRegexOption, required: false },
+            { name: 'message', type: stringOrRegexOption, init: initStringOrRegexOption, required: false },
+            { name: 'pageUrl', type: stringOrRegexOption, init: initStringOrRegexOption, required: false },
         ];
     }
 }
@@ -407,4 +410,11 @@ function initRequestAuthOption (name, val, initOptions, validate = true) {
 
 function initRequestProxyOptions (name, val, initOptions, validate = true) {
     return new RequestProxyOptions(val, validate);
+}
+
+function initStringOrRegexOption (name, val) {
+    if (val instanceof RegExp)
+        return val.source;
+
+    return val;
 }

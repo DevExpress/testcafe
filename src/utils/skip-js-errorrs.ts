@@ -6,12 +6,12 @@ export function isSkipJsErrorsCallback (obj: unknown): obj is SkipJsErrorsCallba
     return obj && typeof obj === 'object' && 'fn' in obj;
 }
 
-export function createSkipJsErrorsClientFunction ({ fn, dependencies }: SkipJsErrorsCallback, lateErrorCallsiteId: string): ExecuteClientFunctionCommand {
+export function createSkipJsErrorsClientFunction ({ fn, dependencies }: SkipJsErrorsCallback): ExecuteClientFunctionCommand {
     const methodName = 'skipJsErrors handler';
     const options    = { dependencies };
 
     return new ClientFunctionBuilder(fn, options, {
         instantiation: methodName,
         execution:     methodName,
-    }, lateErrorCallsiteId).getCommand([]);
+    }).getCommand([]);
 }

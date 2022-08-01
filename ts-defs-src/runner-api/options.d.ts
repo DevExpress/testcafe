@@ -195,9 +195,9 @@ interface QuarantineModeOptions {
 
 
 interface SkipJsErrorsOptions {
-    message?: string;
-    stack?: string;
-    pageUrl?: string;
+    message?: string | RegExp;
+    stack?: string | RegExp;
+    pageUrl?: string | RegExp;
 }
 
 interface SkipJsErrorsCallback {

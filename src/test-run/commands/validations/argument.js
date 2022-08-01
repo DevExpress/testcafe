@@ -192,7 +192,7 @@ export function urlArgument (name, val) {
 export function skipJsErrorOptionsOrBoolean (name, val) {
     const valType = typeof val;
 
-    if (valType !== 'object' && valType !== 'boolean')
+    if (valType !== 'undefined' && valType !== 'object' && valType !== 'boolean')
         throw new ActionSkipJsErrorsArgumentTypeError(name, valType);
 }
 

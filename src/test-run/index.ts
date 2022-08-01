@@ -529,14 +529,18 @@ export default class TestRun extends AsyncEventEmitter {
             this.test.requestHooks.forEach(hook => this._initRequestHook(hook));
     }
 
+    private _prepareSkipJSErrorsOption (): boolean | ExecuteClientFunctionCommand | SkipJsErrorsOptions {
+        return this.test.skipJsErrorsOptions !== void 0
+            ? this.test.skipJsErrorsOptions
+            : this.opts.skipJsErrors as SkipJsErrorsOptions || false;
+    }
+
     // Hammerhead payload
     public async getPayloadScript (): Promise<string> {
         this.fileDownloadingHandled               = false;
         this.resolveWaitForFileDownloadingPromise = null;
 
-        const skipJsErrors = this.test.skipJsErrorsOptions !== void 0
-            ? this.test.skipJsErrorsOptions
-            : this.opts.skipJsErrors || false;
+        const skipJsErrors = this._prepareSkipJSErrorsOption();
 
         return Mustache.render(TEST_RUN_TEMPLATE, {
             testRunId:                    JSON.stringify(this.session.id),
@@ -1127,10 +1131,7 @@ export default class TestRun extends AsyncEventEmitter {
         const duration = new Date().getTime() - start;
 
         if (error) {
-            if (error.callsiteId)
-                error.callsite = this.findLateErrorCallsite(error.callsiteId) || error.callsite;
-
-            // NOTE: check if error is TestCafeErrorList is specific for the `useRole` action
+            // NOTE: check if error is TestCafeErrorList is specific for the `usfeRole` action
             // if error is TestCafeErrorList we do not need to create an adapter,
             // since error is already was processed in role initializer
             if (!(error instanceof TestCafeErrorList)) {
@@ -1550,9 +1551,5 @@ export default class TestRun extends AsyncEventEmitter {
             else
                 this.resolveWaitForFileDownloadingPromise = resolve;
         });
-    }
-
-    private findLateErrorCallsite (lateErrorCallsiteId: string): CallsiteRecord | string | null {
-        return this.test.lateErrorsCallsites[lateErrorCallsiteId] || null;
     }
 }

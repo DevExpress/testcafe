@@ -87,14 +87,6 @@ export class UncaughtErrorInClientFunctionCode extends TestRunErrorBase {
     }
 }
 
-export class UncaughtLateErrorInClientFunctionCode extends UncaughtErrorInClientFunctionCode {
-    constructor (instantiationCallsiteName, err, callsiteId) {
-        super(instantiationCallsiteName, err);
-
-        this.callsiteId = callsiteId;
-    }
-}
-
 export class UncaughtErrorInCustomDOMPropertyCode extends TestRunErrorBase {
     constructor (instantiationCallsiteName, err, prop, callsite) {
         super(TEST_RUN_ERRORS.uncaughtErrorInCustomDOMPropertyCode, callsite);
@@ -154,6 +146,11 @@ export class ActionSpeedOptionError extends ActionOptionErrorBase {
 export class ActionStringOptionError extends ActionOptionErrorBase {
     constructor (optionName, actualValue) {
         super(TEST_RUN_ERRORS.actionStringOptionError, optionName, actualValue);
+    }
+}
+export class ActionStringOrRegexOptionError extends ActionOptionErrorBase {
+    constructor (optionName, actualValue) {
+        super(TEST_RUN_ERRORS.actionStringOrRegexOptionError, optionName, actualValue);
     }
 }
 

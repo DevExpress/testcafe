@@ -282,12 +282,12 @@ export default class Driver extends serviceUtils.EventEmitter {
         // NOTE: we should not send any message to the server if we've
         // sent the 'test-done' message but haven't got the response.
         if (this.contextStorage.getItem(TEST_DONE_SENT_FLAG))
-            return Promise.resolve();
+            return null;
 
         if (this.skipJsErrors) {
             try {
                 if (await shouldSkipJsError(this.skipJsErrors, err))
-                    return Promise.resolve();
+                    return null;
             }
             catch (e) {
                 if (!this.contextStorage.getItem(PENDING_PAGE_ERROR))

@@ -18,7 +18,7 @@ import dedent from 'dedent';
 const DEFAULT_EXECUTION_CALLSITE_NAME = '__$$clientFunction$$';
 
 export default class ClientFunctionBuilder {
-    constructor (fn, options, callsiteNames = {}, lateErrorCallsiteId) {
+    constructor (fn, options, callsiteNames = {}) {
         this.callsiteNames = {
             instantiation: callsiteNames.instantiation,
             execution:     callsiteNames.execution || DEFAULT_EXECUTION_CALLSITE_NAME,
@@ -29,7 +29,6 @@ export default class ClientFunctionBuilder {
 
         this._validateOptions(options);
 
-        this.lateErrorCallsiteId = lateErrorCallsiteId || null;
         this.fn             = fn;
         this.options        = options;
         this.compiledFnCode = this._getCompiledFnCode();
@@ -127,7 +126,6 @@ export default class ClientFunctionBuilder {
             fnCode:                    this.compiledFnCode,
             args:                      encodedArgs,
             dependencies:              encodedDependencies,
-            lateErrorCallsiteId:       this.lateErrorCallsiteId,
         }, this._getTestRun());
     }
 

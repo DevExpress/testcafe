@@ -125,6 +125,9 @@ function initGetProxyUrlOptions (name, val, initOptions, validate = true) {
 }
 
 function initSkipJsErrorsOptions (name, val, initOptions, validate = true) {
+    if (val === void 0)
+        return true;
+
     if (typeof val === 'object')
         return new SkipJsErrorsOptions(val, validate);
 
@@ -132,7 +135,7 @@ function initSkipJsErrorsOptions (name, val, initOptions, validate = true) {
 }
 
 function initSkipJsErrorsCallback (name, val) {
-    return createSkipJsErrorsClientFunction(val, val.lateErrorCallsiteId);
+    return createSkipJsErrorsClientFunction(val);
 }
 
 // Commands
