@@ -127,6 +127,53 @@ export function containsOffset (el: HTMLElement, offsetX?: number, offsetY?: num
            (typeof offsetY === 'undefined' || offsetY >= 0 && maxY >= offsetY);
 }
 
+export function getEventAbsoluteCoordinates (ev: MouseEvent): AxisValues<number> {
+    const el              = ev.target || ev.srcElement;
+    const pageCoordinates = getEventPageCoordinates(ev);
+    const curDocument     = domUtils.findDocument(el);
+    let xOffset         = 0;
+    let yOffset         = 0;
+
+    if (domUtils.isElementInIframe(curDocument.documentElement)) {
+        const currentIframe = domUtils.getIframeByElement(curDocument);
+
+        if (currentIframe) {
+            const iframeOffset  = getOffsetPosition(currentIframe);
+            const iframeBorders = styleUtils.getBordersWidth(currentIframe);
+
+            xOffset = iframeOffset.left + iframeBorders.left;
+            yOffset = iframeOffset.top + iframeBorders.top;
+        }
+    }
+
+    return new AxisValues(pageCoordinates.x + xOffset, pageCoordinates.y + yOffset);
+}
+
+export function getEventPageCoordinates (ev: MouseEvent): AxisValues<number> {
+    const curCoordObject = /^touch/.test(ev.type) && (ev as unknown as TouchEvent).targetTouches ? (ev as unknown as TouchEvent).targetTouches[0] || (ev as unknown as TouchEvent).changedTouches[0] : ev;
+
+    const bothPageCoordinatesAreZero      = curCoordObject.pageX === 0 && curCoordObject.pageY === 0;
+    const notBothClientCoordinatesAreZero = curCoordObject.clientX !== 0 || curCoordObject.clientY !== 0;
+
+    if ((curCoordObject.pageX === null || bothPageCoordinatesAreZero && notBothClientCoordinatesAreZero) &&
+        curCoordObject.clientX !== null) {
+        const currentDocument = domUtils.findDocument(ev.target || ev.srcElement);
+        const html            = currentDocument.documentElement;
+        const body            = currentDocument.body;
+
+        return new AxisValues<number>(
+            Math.round(curCoordObject.clientX + (html && html.scrollLeft || body && body.scrollLeft || 0) -
+                (html.clientLeft || 0)),
+            Math.round(curCoordObject.clientY + (html && html.scrollTop || body && body.scrollTop || 0) -
+                (html.clientTop || 0))
+        );
+    }
+    return new AxisValues<number>(
+        Math.round(curCoordObject.pageX),
+        Math.round(curCoordObject.pageY)
+    );
+}
+
 export function getIframePointRelativeToParentFrame (pos: AxisValues<number>, iframeWin: Window): AxisValues<number> {
     const iframe        = domUtils.findIframeByWindow(iframeWin);
     const iframeOffset  = getOffsetPosition(iframe);
