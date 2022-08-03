@@ -72,6 +72,7 @@ function initBrowsersInfo () {
 }
 
 function openRemoteBrowsers () {
+    console.log('Opening remote browsers...');// eslint-disable-line no-console
     const Connector = REMOTE_CONNECTORS_MAP[browserProvider];
 
     connector = new Connector(environment[browserProvider].username, environment[browserProvider].accessKey,
@@ -115,6 +116,7 @@ function waitUtilBrowserConnectionOpened (connection) {
 }
 
 function waitUntilBrowsersConnected () {
+    console.log('Waiting until browsers are connected...');// eslint-disable-line no-console
     return Promise.all(browsersInfo.map(browserInfo => waitUtilBrowserConnectionOpened(browserInfo.connection)));
 }
 
