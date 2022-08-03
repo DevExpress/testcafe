@@ -79,7 +79,7 @@ $(document).ready(function () {
         const iframeDocument = iframe.contentDocument;
         const link           = iframeDocument.createElement('a');
 
-        link.href        = '/xhr-test/750';
+        link.href        = '/xhr-test/650';
         link.textContent = 'link';
         iframeDocument.body.appendChild(link);
 

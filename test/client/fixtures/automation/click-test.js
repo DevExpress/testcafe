@@ -1161,9 +1161,11 @@ $(document).ready(function () {
                 .then(function () {
                     ok($area.data('clicked'), 'area element was clicked');
                     notOk($img.data('clicked'), 'img element was not clicked');
+
                     startNext();
                 });
-        }, TEST_RESULT_TIMEOUT);
+            // This test under Firefox MacOS takes a little more time.
+        }, TEST_RESULT_TIMEOUT + 200);
     });
 
     module('touch devices test');
