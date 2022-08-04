@@ -26,6 +26,10 @@ describe('Request Hooks', () => {
                     expect(testReport.errs[0]).contains('Error in the "respond" method');
                 });
         });
+
+        it('Should not raise an error if response has 500 status code (GH-7213)', () => {
+            return runTests('./testcafe-fixtures/request-mock/500-status-code.js', null, { only: 'chrome' });
+        });
     });
 
     describe('RequestLogger', () => {
