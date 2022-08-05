@@ -69,3 +69,19 @@ test('Should fail due to error in callback function', async t => {
     await t.skipJsErrors(({ message }) => message === CLIENT_ERROR_MESSAGE)
         .click('button');
 });
+
+test('Should skip JS errors, with async callback function', async t => {
+    const asyncFunc = ({ message }) =>
+        new Promise(resolve => setTimeout(() => resolve(message.includes(CLIENT_ERROR_MESSAGE)), 3000));
+
+    await t.skipJsErrors(asyncFunc, { CLIENT_ERROR_MESSAGE })
+        .click('button');
+});
+
+test('Should fail if async callback function does not satisfy the error message', async t => {
+    const asyncFunc = ({ message }) =>
+        new Promise(resolve => setTimeout(() => resolve(message.includes('incorrect message')), 3000));
+
+    await t.skipJsErrors(asyncFunc, { CLIENT_ERROR_MESSAGE })
+        .click('button');
+});

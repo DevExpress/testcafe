@@ -90,6 +90,10 @@ export default {
         ${err.instantiationCallsiteName} execution was interrupted by page unload. This problem may appear if you trigger page navigation from ${err.instantiationCallsiteName} code.
     `,
 
+    [TEST_RUN_ERRORS.clientFunctionExecutionTimeoutError]: err => `
+        ${err.instantiationCallsiteName} execution was interrupted by timeout.
+    `,
+
     [TEST_RUN_ERRORS.uncaughtNonErrorObjectInTestCode]: err => `
         Uncaught ${err.objType} "${escapeHtml(err.objStr)}" was thrown. Throw Error instead.
     `,

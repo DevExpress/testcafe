@@ -7,7 +7,7 @@ export async function shouldSkipJsError (options: SkipJsErrorsOptions | boolean,
         return options;
 
     if (typeof options === 'object' && isClientFunctionCommand(options))
-        return processJsErrorsFunction(options, err);
+        return await processJsErrorsFunction(options, err);
 
     if (typeof options === 'object')
         return processJsErrorsOptions(options, err);
@@ -25,7 +25,7 @@ export function processJsErrorsOptions (options: SkipJsErrorsOptions, err: any):
     return stackRegex.test(err.stack) && pageUrlRegex.test(err.pageUrl) && messageRegex.test(err.msg);
 }
 
-async function processJsErrorsFunction (processingFunction: any, err: any): Promise<boolean> {
+function processJsErrorsFunction (processingFunction: any, err: any): Promise<boolean> {
     const opts: SkipJsErrorsOptions = {
         stack:   err.stack,
         pageUrl: err.pageUrl,

@@ -79,12 +79,12 @@ const expectFailAttempt = (errors, expectedMessage) => {
     const errArray = castArray(errors);
 
     Object.values(errArray).forEach(err => {
-        expect(err).contains(expectedMessage);
+        expect(err.message || err).contains(expectedMessage);
     });
 };
 
 // TODO: fix tests for Debug task
-(experimentalDebug ? describe.skip : describe)('[Regression](GH-2775)', () => {
+(experimentalDebug ? describe.skip : describe)('[Regression](GH-2775) SkipJSErrors API', () => {
     describe('TestController command', () => {
         it('Should skip JS errors with boolean param', async () => {
             return runTests('./testcafe-fixtures/test-controller.js', 'Should skip JS errors with boolean param');
@@ -131,6 +131,17 @@ const expectFailAttempt = (errors, expectedMessage) => {
             return runTests('./testcafe-fixtures/test-controller.js', 'Should fail due to error in callback function', { shouldFail: true })
                 .catch(errs => {
                     expectFailAttempt(errs, CALLBACK_FUNC_ERROR);
+                });
+        });
+
+        it('Should skip JS errors with async callback function', async () => {
+            return runTests('./testcafe-fixtures/test-controller.js', 'Should skip JS errors, with async callback function');
+        });
+
+        it('Should fail if async callback function does not satisfy the error message', async () => {
+            return runTests('./testcafe-fixtures/test-controller.js', 'Should fail if async callback function does not satisfy the error message', { shouldFail: true })
+                .catch(errs => {
+                    expectFailAttempt(errs, CLIENT_ERROR_MESSAGE);
                 });
         });
     });
