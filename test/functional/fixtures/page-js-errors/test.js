@@ -76,10 +76,10 @@ describe('Should ignore an js-error on the page if the skipJsErrors option is se
 });
 
 const expectFailAttempt = (errors, expectedMessage) => {
-    const errArray = castArray(errors);
+    Object.values(errors).forEach(err => {
+        const error = castArray(err);
 
-    Object.values(errArray).forEach(err => {
-        expect(err.message || err).contains(expectedMessage);
+        expect(error[0].message || error[0]).contains(expectedMessage);
     });
 };
 
@@ -135,11 +135,14 @@ const expectFailAttempt = (errors, expectedMessage) => {
         });
 
         it('Should skip JS errors with async callback function', async () => {
-            return runTests('./testcafe-fixtures/test-controller.js', 'Should skip JS errors, with async callback function');
+            return runTests('./testcafe-fixtures/test-controller.js', 'Should skip JS errors, with async callback function', { skip: ['ie'] });
         });
 
         it('Should fail if async callback function does not satisfy the error message', async () => {
-            return runTests('./testcafe-fixtures/test-controller.js', 'Should fail if async callback function does not satisfy the error message', { shouldFail: true })
+            return runTests('./testcafe-fixtures/test-controller.js', 'Should fail if async callback function does not satisfy the error message', {
+                shouldFail: true,
+                skip:       ['ie'],
+            })
                 .catch(errs => {
                     expectFailAttempt(errs, CLIENT_ERROR_MESSAGE);
                 });
