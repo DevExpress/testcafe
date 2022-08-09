@@ -8,33 +8,36 @@ const createXHR = () => new XMLHttpRequest();
 const CHECK_STATUS_DELAY = 1000;
 
 class IdlePage {
-    constructor (statusUrl, heartbeatUrl, initScriptUrl, { retryTestPages } = {}) {
-        this.statusUrl       = statusUrl;
-        this.heartbeatUrl    = heartbeatUrl;
-        this.initScriptUrl   = initScriptUrl;
-        this.statusIndicator = new StatusIndicator();
+    constructor (communicationUrls, options) {
+        this.communicationUrls = communicationUrls;
+        this.options           = options;
 
-        this.retryTestPages = retryTestPages;
+        this.statusIndicator = new StatusIndicator();
 
         document.title = '[' + document.location.toString() + ']';
     }
 
     async _pollStatus () {
-        let { command } = await browser.checkStatus(this.statusUrl, createXHR);
+        const urls = {
+            statusUrl:   this.communicationUrls.statusUrl,
+            idlePageUrl: this.communicationUrls.idlePageUrl,
+        };
+
+        let { command } = await browser.checkStatus(urls, createXHR, { proxyless: this.options.proxyless });
 
         while (command.cmd === COMMAND.idle) {
             await browser.delay(CHECK_STATUS_DELAY);
 
-            ({ command } = await browser.checkStatus(this.statusUrl, createXHR));
+            ({ command } = await browser.checkStatus(urls, createXHR, { proxyless: this.options.proxyless }));
         }
     }
 
     async start () {
-        if (this.retryTestPages)
+        if (this.options.retryTestPages)
             await browser.enableRetryingTestPages();
 
-        browser.startHeartbeat(this.heartbeatUrl, createXHR);
-        browser.startInitScriptExecution(this.initScriptUrl, createXHR);
+        browser.startHeartbeat(this.communicationUrls.heartbeatUrl, createXHR);
+        browser.startInitScriptExecution(this.communicationUrls.initScriptUrl, createXHR);
 
         try {
             await this._pollStatus();

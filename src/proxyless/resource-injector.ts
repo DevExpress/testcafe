@@ -8,12 +8,18 @@ import {
     PageInjectableResources,
     INJECTABLE_SCRIPTS as HAMMERHEAD_INJECTABLE_SCRIPTS,
 } from 'testcafe-hammerhead';
-import BrowserConnection from '../../../../connection';
-import { SCRIPTS, TESTCAFE_UI_STYLES } from '../../../../../assets/injectables';
+import BrowserConnection from '../browser/connection';
+import { SCRIPTS, TESTCAFE_UI_STYLES } from '../assets/injectables';
 
 const HTTP_STATUS_OK = 200;
 
-export default class RequestsInterceptor {
+const ALL_DOCUMENT_RESPONSES = {
+    urlPattern:   '*',
+    resourceType: 'Document',
+    requestStage: 'Response',
+} as RequestPattern;
+
+export default class ResourceInjector {
     private readonly _browserId: string;
 
     public constructor (browserId: string) {
@@ -24,6 +30,13 @@ export default class RequestsInterceptor {
         return response.base64Encoded
             ? Buffer.from(response.body, 'base64').toString()
             : response.body;
+    }
+
+    private _isServicePage (url: string): boolean {
+        const browserConnection = BrowserConnection.getById(this._browserId) as BrowserConnection;
+        const proxy             = browserConnection.browserConnectionGateway.proxy;
+
+        return url.startsWith(proxy.server1Info.domain);
     }
 
     private async _prepareInjectableResources (): Promise<PageInjectableResources> {
@@ -57,14 +70,8 @@ export default class RequestsInterceptor {
         return injectableResources;
     }
 
-    public async setup (client: ProtocolApi): Promise<void> {
-        const fetchAllDocumentsPattern = {
-            urlPattern:   '*',
-            resourceType: 'Document',
-            requestStage: 'Response',
-        } as RequestPattern;
-
-        await client.Fetch.enable({ patterns: [fetchAllDocumentsPattern] });
+    private async _handleHTTPPages (client: ProtocolApi): Promise<void> {
+        await client.Fetch.enable({ patterns: [ALL_DOCUMENT_RESPONSES] });
 
         client.Fetch.on('requestPaused', async (params: RequestPausedEvent) => {
             const {
@@ -73,17 +80,25 @@ export default class RequestsInterceptor {
                 responseStatusCode,
             } = params;
 
-            const responseObj         = await client.Fetch.getResponseBody({ requestId });
-            const responseStr         = this._getResponseAsString(responseObj);
-            const injectableResources = await this._prepareInjectableResources();
-            const updatedResponseStr  = injectResources(responseStr, injectableResources);
+            if (this._isServicePage(params.request.url))
+                await client.Fetch.continueRequest({ requestId });
+            else {
+                const responseObj         = await client.Fetch.getResponseBody({ requestId });
+                const responseStr         = this._getResponseAsString(responseObj);
+                const injectableResources = await this._prepareInjectableResources();
+                const updatedResponseStr  = injectResources(responseStr, injectableResources);
 
-            await client.Fetch.fulfillRequest({
-                requestId,
-                responseCode:    responseStatusCode || HTTP_STATUS_OK,
-                responseHeaders: responseHeaders || [],
-                body:            Buffer.from(updatedResponseStr).toString('base64'),
-            });
+                await client.Fetch.fulfillRequest({
+                    requestId,
+                    responseCode:    responseStatusCode || HTTP_STATUS_OK,
+                    responseHeaders: responseHeaders || [],
+                    body:            Buffer.from(updatedResponseStr).toString('base64'),
+                });
+            }
         });
+    }
+
+    public async setup (client: ProtocolApi): Promise<void> {
+        await this._handleHTTPPages(client);
     }
 }

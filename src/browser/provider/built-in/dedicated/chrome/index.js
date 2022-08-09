@@ -10,7 +10,7 @@ import {
 } from './local-chrome';
 import { GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from '../../../utils/client-functions';
 import { BrowserClient } from './cdp-client';
-import RequestsInterceptor from './requests-interceptor';
+import ResourceInjector from '../../../../../proxyless/resource-injector';
 
 const MIN_AVAILABLE_DIMENSION = 50;
 
@@ -45,10 +45,10 @@ export default {
     },
 
     async _setupProxyless (browserId, browserClient) {
-        const requestsInterceptor = new RequestsInterceptor(browserId);
-        const cdpClient           = await browserClient.getActiveClient();
+        const resourceInjector = new ResourceInjector(browserId);
+        const cdpClient        = await browserClient.getActiveClient();
 
-        await requestsInterceptor.setup(cdpClient);
+        await resourceInjector.setup(cdpClient);
     },
 
     async openBrowser (browserId, pageUrl, config, disableMultipleWindows, proxyless) {

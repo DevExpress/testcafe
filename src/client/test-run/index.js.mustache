@@ -8,6 +8,11 @@
     if (!origin)
         origin = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
 
+    var proxyless = {{{proxyless}}};
+
+    if (proxyless)
+        origin = {{{domain}}};
+
     var testRunId                  = {{{testRunId}}};
     var browserId                  = {{{browserId}}};
     var selectorTimeout            = {{{selectorTimeout}}};
@@ -18,6 +23,7 @@
     var browserHeartbeatUrl        = origin + {{{browserHeartbeatRelativeUrl}}};
     var browserStatusUrl           = origin + {{{browserStatusRelativeUrl}}};
     var browserStatusDoneUrl       = origin + {{{browserStatusDoneRelativeUrl}}};
+    var browserIdleUrl             = origin + {{{browserIdleRelativeUrl}}};
     var browserActiveWindowIdUrl   = origin + {{{browserActiveWindowIdUrl}}};
     var browserCloseWindowUrl      = origin + {{{browserCloseWindowUrl}}};
     var skipJsErrors               = {{{skipJsErrors}}};
@@ -26,11 +32,10 @@
     var fixtureName                = {{{fixtureName}}};
     var testName                   = {{{testName}}};
     var canUseDefaultWindowActions = {{{canUseDefaultWindowActions}}};
-    var proxyless                  = {{{proxyless}}};
 
     var ClientDriver = window['%testCafeDriver%'];
     var driver       = new ClientDriver(testRunId,
-        { heartbeat: browserHeartbeatUrl, status: browserStatusUrl, statusDone: browserStatusDoneUrl, activeWindowId: browserActiveWindowIdUrl, closeWindow: browserCloseWindowUrl },
+        { heartbeat: browserHeartbeatUrl, status: browserStatusUrl, statusDone: browserStatusDoneUrl, idle: browserIdleUrl, activeWindowId: browserActiveWindowIdUrl, closeWindow: browserCloseWindowUrl },
         { userAgent: userAgent, fixtureName: fixtureName, testName: testName },
         {
             selectorTimeout:            selectorTimeout,

@@ -26,11 +26,15 @@ export default class TestCafe {
 
         const { hostname, port1, port2, options } = configuration.startOptions;
 
-        this.closed                   = false;
-        this.proxy                    = new hammerhead.Proxy(hostname, port1, port2, options);
-        this.browserConnectionGateway = new BrowserConnectionGateway(this.proxy, { retryTestPages: configuration.getOption(OPTION_NAMES.retryTestPages) });
-        this.runners                  = [];
-        this.configuration            = configuration;
+        this.closed        = false;
+        this.proxy         = new hammerhead.Proxy(hostname, port1, port2, options);
+        this.runners       = [];
+        this.configuration = configuration;
+
+        this.browserConnectionGateway = new BrowserConnectionGateway(this.proxy, {
+            retryTestPages: configuration.getOption(OPTION_NAMES.retryTestPages),
+            proxyless:      configuration.getOption(OPTION_NAMES.proxyless),
+        });
 
         if (configuration.getOption(OPTION_NAMES.experimentalDebug)) {
             const developmentMode = configuration.getOption(OPTION_NAMES.developmentMode);

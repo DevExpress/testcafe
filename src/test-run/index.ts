@@ -540,6 +540,7 @@ export default class TestRun extends AsyncEventEmitter {
             browserHeartbeatRelativeUrl:  JSON.stringify(this.browserConnection.heartbeatRelativeUrl),
             browserStatusRelativeUrl:     JSON.stringify(this.browserConnection.statusRelativeUrl),
             browserStatusDoneRelativeUrl: JSON.stringify(this.browserConnection.statusDoneRelativeUrl),
+            browserIdleRelativeUrl:       JSON.stringify(this.browserConnection.idleRelativeUrl),
             browserActiveWindowIdUrl:     JSON.stringify(this.browserConnection.activeWindowIdUrl),
             browserCloseWindowUrl:        JSON.stringify(this.browserConnection.closeWindowUrl),
             userAgent:                    JSON.stringify(this.browserConnection.userAgent),
@@ -554,6 +555,7 @@ export default class TestRun extends AsyncEventEmitter {
             dialogHandler:                JSON.stringify(this.activeDialogHandler),
             canUseDefaultWindowActions:   JSON.stringify(await this.browserConnection.canUseDefaultWindowActions()),
             proxyless:                    JSON.stringify(this.opts.proxyless),
+            domain:                       JSON.stringify(this.browserConnection.browserConnectionGateway.proxy.server1Info.domain),
         });
     }
 
