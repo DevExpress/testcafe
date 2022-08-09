@@ -3,13 +3,16 @@ import Protocol from 'devtools-protocol';
 import RequestPausedEvent = Protocol.Fetch.RequestPausedEvent;
 import RequestPattern = Protocol.Fetch.RequestPattern;
 import GetResponseBodyResponse = Protocol.Fetch.GetResponseBodyResponse;
+import FrameNavigatedEvent = Protocol.Page.FrameNavigatedEvent;
 import {
     injectResources,
     PageInjectableResources,
     INJECTABLE_SCRIPTS as HAMMERHEAD_INJECTABLE_SCRIPTS,
+    SPECIAL_BLANK_PAGE,
 } from 'testcafe-hammerhead';
 import BrowserConnection from '../browser/connection';
 import { SCRIPTS, TESTCAFE_UI_STYLES } from '../assets/injectables';
+import ABOUT_BLANK_PAGE_MARKUP from './about-blank-page-markup';
 
 const HTTP_STATUS_OK = 200;
 
@@ -98,7 +101,38 @@ export default class ResourceInjector {
         });
     }
 
+    private _topFrameNavigationToAboutBlank (event: FrameNavigatedEvent): boolean {
+        if (event.frame.url !== SPECIAL_BLANK_PAGE)
+            return false;
+
+        if (event.type !== 'Navigation')
+            return false;
+
+        if (event.frame.parentId)
+            return false;
+
+        return true;
+    }
+
+    private async _handleAboutBlankPage (client: ProtocolApi): Promise<void> {
+        await client.Page.enable();
+
+        client.Page.on('frameNavigated', async (params: FrameNavigatedEvent) => {
+            if (!this._topFrameNavigationToAboutBlank(params))
+                return;
+
+            const injectableResources = await this._prepareInjectableResources();
+            const html                = injectResources(ABOUT_BLANK_PAGE_MARKUP, injectableResources);
+
+            await client.Page.setDocumentContent({
+                frameId: params.frame.id,
+                html,
+            });
+        });
+    }
+
     public async setup (client: ProtocolApi): Promise<void> {
         await this._handleHTTPPages(client);
+        await this._handleAboutBlankPage(client);
     }
 }
