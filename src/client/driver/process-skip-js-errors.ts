@@ -17,13 +17,9 @@ export async function shouldSkipJsError (options: SkipJsErrorsOptions | boolean,
 }
 
 export function processJsErrorsOptions (options: SkipJsErrorsOptions, err: any): boolean {
-    const { stack = '', pageUrl = '', message = '' } = decodeSkipJsErrorsOptions(options);
+    const { stack, pageUrl, message } = decodeSkipJsErrorsOptions(options);
 
-    const stackRegex   = stack || new RegExp(stack);
-    const pageUrlRegex = pageUrl || new RegExp(pageUrl);
-    const messageRegex = message || new RegExp(message);
-
-    return stackRegex.test(err.stack) && pageUrlRegex.test(err.pageUrl) && messageRegex.test(err.msg);
+    return stack.test(err.stack) && pageUrl.test(err.pageUrl) && message.test(err.msg);
 }
 
 function processJsErrorsFunction (processingFunction: any, err: any): Promise<boolean> {
@@ -40,13 +36,13 @@ function processJsErrorsFunction (processingFunction: any, err: any): Promise<bo
     return executor.getResult();
 }
 
-export function decodeSkipJsErrorsOptions ({ message, pageUrl, stack }: SkipJsErrorsOptions): SkipJsErrorsOptions {
+export function decodeSkipJsErrorsOptions ({ message = '', pageUrl = '', stack = '' }: SkipJsErrorsOptions): Dictionary<RegExp> {
     const replicator                  = new Replicator();
     const options: Dictionary<RegExp> = {};
 
-    options.message = replicator.decode(message || '') as RegExp;
-    options.stack   = replicator.decode(stack || '') as RegExp;
-    options.pageUrl = replicator.decode(pageUrl || '') as RegExp;
+    options.message = message && replicator.decode(message) as RegExp || new RegExp('');
+    options.stack   = stack && replicator.decode(stack) as RegExp || new RegExp('');
+    options.pageUrl = pageUrl && replicator.decode(pageUrl) as RegExp || new RegExp('');
 
     return options;
 }
