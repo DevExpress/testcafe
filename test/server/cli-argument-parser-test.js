@@ -765,9 +765,9 @@ describe('CLI argument parser', function () {
                 expect(parser.opts.screenshots.fullPage).to.be.undefined;
                 expect(parser.opts.screenshots.pathPattern).to.be.undefined;
                 expect(parser.opts.quarantineMode).to.be.ok;
-                expect(parser.opts.skipJsErrors.message).eql('testMessage');
-                expect(parser.opts.skipJsErrors.stack).eql('testStack');
-                expect(parser.opts.skipJsErrors.pageUrl).eql('testPageUrl');
+                expect(parser.opts.skipJsErrors.message).eql(/testMessage/);
+                expect(parser.opts.skipJsErrors.stack).eql(/testStack/);
+                expect(parser.opts.skipJsErrors.pageUrl).eql(/testPageUrl/);
                 expect(parser.opts.dev).to.be.ok;
                 expect(parser.opts.speed).eql(0.5);
                 expect(parser.opts.qrCode).to.be.ok;
