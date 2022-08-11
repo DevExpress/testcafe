@@ -4,6 +4,7 @@ import RequestPausedEvent = Protocol.Fetch.RequestPausedEvent;
 import RequestPattern = Protocol.Fetch.RequestPattern;
 import GetResponseBodyResponse = Protocol.Fetch.GetResponseBodyResponse;
 import FrameNavigatedEvent = Protocol.Page.FrameNavigatedEvent;
+import HeaderEntry = Protocol.Fetch.HeaderEntry;
 import {
     injectResources,
     PageInjectableResources,
@@ -13,6 +14,7 @@ import {
 import BrowserConnection from '../browser/connection';
 import { SCRIPTS, TESTCAFE_UI_STYLES } from '../assets/injectables';
 import ABOUT_BLANK_PAGE_MARKUP from './about-blank-page-markup';
+import { remove } from 'lodash';
 
 const HTTP_STATUS_OK = 200;
 
@@ -21,6 +23,11 @@ const ALL_DOCUMENT_RESPONSES = {
     resourceType: 'Document',
     requestStage: 'Response',
 } as RequestPattern;
+
+const CONTENT_SECURITY_POLICY_HEADER_NAMES = [
+    'content-security-policy',
+    'content-security-policy-report-only',
+];
 
 export default class ResourceInjector {
     private readonly _browserId: string;
@@ -73,6 +80,15 @@ export default class ResourceInjector {
         return injectableResources;
     }
 
+    private _processResponseHeaders (headers: HeaderEntry[] | undefined): HeaderEntry[] {
+        if (!headers)
+            return [];
+
+        remove(headers, header => CONTENT_SECURITY_POLICY_HEADER_NAMES.includes(header.name));
+
+        return headers;
+    }
+
     private async _handleHTTPPages (client: ProtocolApi): Promise<void> {
         await client.Fetch.enable({ patterns: [ALL_DOCUMENT_RESPONSES] });
 
@@ -94,7 +110,7 @@ export default class ResourceInjector {
                 await client.Fetch.fulfillRequest({
                     requestId,
                     responseCode:    responseStatusCode || HTTP_STATUS_OK,
-                    responseHeaders: responseHeaders || [],
+                    responseHeaders: this._processResponseHeaders(responseHeaders),
                     body:            Buffer.from(updatedResponseStr).toString('base64'),
                 });
             }
