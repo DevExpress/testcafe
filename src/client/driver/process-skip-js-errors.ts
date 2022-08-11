@@ -1,6 +1,7 @@
-import { SkipJsErrorsOptions } from '../../configuration/interfaces';
+import { Dictionary, SkipJsErrorsOptions } from '../../configuration/interfaces';
 import ClientFunctionExecutor from './command-executors/client-functions/client-function-executor';
 import { isClientFunctionCommand } from '../../test-run/commands/utils';
+import Replicator from 'replicator';
 
 export async function shouldSkipJsError (options: SkipJsErrorsOptions | boolean, err: any): Promise<boolean> {
     if (typeof options === 'boolean')
@@ -16,11 +17,11 @@ export async function shouldSkipJsError (options: SkipJsErrorsOptions | boolean,
 }
 
 export function processJsErrorsOptions (options: SkipJsErrorsOptions, err: any): boolean {
-    const { stack = '', pageUrl = '', message = '' } = options;
+    const { stack = '', pageUrl = '', message = '' } = decodeSkipJsErrorsOptions(options);
 
-    const stackRegex   = new RegExp(stack);
-    const pageUrlRegex = new RegExp(pageUrl);
-    const messageRegex = new RegExp(message);
+    const stackRegex   = stack || new RegExp(stack);
+    const pageUrlRegex = pageUrl || new RegExp(pageUrl);
+    const messageRegex = message || new RegExp(message);
 
     return stackRegex.test(err.stack) && pageUrlRegex.test(err.pageUrl) && messageRegex.test(err.msg);
 }
@@ -37,4 +38,15 @@ function processJsErrorsFunction (processingFunction: any, err: any): Promise<bo
     const executor = new ClientFunctionExecutor(processingFunction);
 
     return executor.getResult();
+}
+
+export function decodeSkipJsErrorsOptions ({ message, pageUrl, stack }: SkipJsErrorsOptions): SkipJsErrorsOptions {
+    const replicator                  = new Replicator();
+    const options: Dictionary<RegExp> = {};
+
+    options.message = replicator.decode(message || '') as RegExp;
+    options.stack   = replicator.decode(stack || '') as RegExp;
+    options.pageUrl = replicator.decode(pageUrl || '') as RegExp;
+
+    return options;
 }

@@ -5,6 +5,7 @@
 
 /// <reference path="../test-api/client-script.d.ts" />
 /// <reference path="../test-api/action-options.d.ts" />
+/// <reference path="../test-api/skip-js-errors-options.d.ts" />
 // {{/allowReferences}}
 
 type TlsOptions = import('tls').TlsOptions;
@@ -193,15 +194,8 @@ interface QuarantineModeOptions {
     successThreshold?: number;
 }
 
-
-interface SkipJsErrorsOptions {
-    message?: string | RegExp;
-    stack?: string | RegExp;
-    pageUrl?: string | RegExp;
-}
-
 interface SkipJsErrorsCallback {
-    fn: (opts: SkipJsErrorsOptions) => boolean;
+    fn: SkipJsErrorsHandler;
     dependencies: { [key: string]: unknown };
 }
 

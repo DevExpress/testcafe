@@ -275,8 +275,8 @@ export default class TestController {
             throw new RequestRuntimeError(callsite, RUNTIME_ERRORS.requestCannotResolveTestRun);
 
         return function (...args) {
-            const cmdArgs  = controller._prepareRequestArguments(bindOptions, ...args);
-            const command  = controller._createCommand(RequestCommand, cmdArgs, callsite);
+            const cmdArgs = controller._prepareRequestArguments(bindOptions, ...args);
+            const command = controller._createCommand(RequestCommand, cmdArgs, callsite);
 
             const options = {
                 ...command.options,
@@ -608,17 +608,10 @@ export default class TestController {
         return this._enqueueCommand(UseRoleCommand, { role });
     }
 
-    [delegatedAPI(SkipJsErrorsCommand.methodName)] (optionsOrFunction, dependencies) {
-        if (typeof optionsOrFunction === 'function') {
-            return this._enqueueCommand(SkipJsErrorsCommand, {
-                errorHandler: {
-                    fn: optionsOrFunction,
-                    dependencies,
-                },
-            });
-        }
+    [delegatedAPI(SkipJsErrorsCommand.methodName)] (options, dependencies) {
+        const commandOptions = this._getSkipJSCommandOptions(options, dependencies);
 
-        return this._enqueueCommand(SkipJsErrorsCommand, { options: optionsOrFunction });
+        return this._enqueueCommand(SkipJsErrorsCommand, commandOptions);
     }
 
     _addRequestHooks$ (...hooks) {
@@ -670,6 +663,12 @@ export default class TestController {
 
     isCompilerServiceMode () {
         return this.testRun instanceof TestRunProxy;
+    }
+
+    _getSkipJSCommandOptions (options, dependencies) {
+        return typeof options === 'function'
+            ? { errorHandler: { fn: options, dependencies } }
+            : { options: options };
     }
 }
 

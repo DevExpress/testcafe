@@ -63,6 +63,7 @@ import {
     canSetDebuggerBreakpointBeforeCommand,
     isExecutableOnClientCommand,
     isResizeWindowCommand,
+    isClientFunctionCommand,
 } from './commands/utils';
 
 import {
@@ -123,6 +124,7 @@ import MessageBus from '../utils/message-bus';
 import executeFnWithTimeout from '../utils/execute-fn-with-timeout';
 import { URL } from 'url';
 import { CookieOptions } from './commands/options';
+import { encodeSkipJsErrorsOptions } from '../utils/skip-js-errorrs';
 
 const lazyRequire                 = require('import-lazy')(require);
 const ClientFunctionBuilder       = lazyRequire('../client-functions/client-function-builder');
@@ -530,9 +532,14 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     private _prepareSkipJSErrorsOption (): boolean | ExecuteClientFunctionCommand | SkipJsErrorsOptions {
-        return this.test.skipJsErrorsOptions !== void 0
+        const options = this.test.skipJsErrorsOptions !== void 0
             ? this.test.skipJsErrorsOptions
-            : this.opts.skipJsErrors as SkipJsErrorsOptions || false;
+            : this.opts.skipJsErrors as SkipJsErrorsOptions | ExecuteClientFunctionCommand | boolean || false;
+
+        if (typeof options === 'boolean' || isClientFunctionCommand(options))
+            return options;
+
+        return encodeSkipJsErrorsOptions(options as SkipJsErrorsOptions);
     }
 
     // Hammerhead payload
@@ -1131,7 +1138,7 @@ export default class TestRun extends AsyncEventEmitter {
         const duration = new Date().getTime() - start;
 
         if (error) {
-            // NOTE: check if error is TestCafeErrorList is specific for the `usfeRole` action
+            // NOTE: check if error is TestCafeErrorList is specific for the `useRole` action
             // if error is TestCafeErrorList we do not need to create an adapter,
             // since error is already was processed in role initializer
             if (!(error instanceof TestCafeErrorList)) {

@@ -49,7 +49,7 @@ import {
 import { SetNativeDialogHandlerCodeWrongTypeError } from '../../errors/test-run';
 import { ExecuteClientFunctionCommand } from './observation';
 import { camelCase } from 'lodash';
-import { createSkipJsErrorsClientFunction } from '../../utils/skip-js-errorrs';
+import { createSkipJsErrorsClientFunction, encodeSkipJsErrorsOptions } from '../../utils/skip-js-errorrs';
 
 
 // Initializers
@@ -128,8 +128,11 @@ function initSkipJsErrorsOptions (name, val, initOptions, validate = true) {
     if (val === void 0)
         return true;
 
-    if (typeof val === 'object')
-        return new SkipJsErrorsOptions(val, validate);
+    if (typeof val === 'object') {
+        const options = new SkipJsErrorsOptions(val, validate);
+
+        return encodeSkipJsErrorsOptions(options);
+    }
 
     return val;
 }

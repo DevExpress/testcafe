@@ -547,7 +547,7 @@ interface TestController {
      * @param fn - A callback function that will be called for each client error.
      * @param dependencies - Any objects or variables used in the context of the function.
      */
-    skipJsErrors (fn: (options: SkipJsErrorsOptions) => boolean, dependencies?: { [key: string]: any }): TestControllerPromise;
+    skipJsErrors (fn: SkipJsErrorsHandler, dependencies?: { [key: string]: any }): TestControllerPromise;
 }
 
 interface TestControllerPromise<T=any> extends TestController, Promise<T> {

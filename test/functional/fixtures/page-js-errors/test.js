@@ -6,10 +6,10 @@ const {
     CLIENT_PAGE_URL,
     CALLBACK_FUNC_ERROR,
     CLIENT_ERROR_REGEXP,
-    CLIENT_PAGE_URL_REGEXP,
 } = require('./constants');
 
-const experimentalDebug = !!process.env.EXPERIMENTAL_DEBUG;
+const { createReporter } = require('../../utils/reporter');
+const experimentalDebug  = !!process.env.EXPERIMENTAL_DEBUG;
 
 describe('Test should fail after js-error on the page', () => {
     it('if an error is raised before test done', () => {
@@ -84,17 +84,17 @@ const expectFailAttempt = (errors, expectedMessage) => {
 };
 
 // TODO: fix tests for Debug task
-(experimentalDebug ? describe.skip : describe)('[Regression](GH-2775) SkipJSErrors API', () => {
-    describe('TestController command', () => {
+(experimentalDebug ? describe.skip : describe)('Customize SkipJSErrors (GH-2775)', () => {
+    describe('TestController method', () => {
+        it('Should skip JS errors without param', async () => {
+            return runTests('./testcafe-fixtures/test-controller.js', 'Should skip JS errors without param');
+        });
+
         it('Should skip JS errors with boolean param', async () => {
             return runTests('./testcafe-fixtures/test-controller.js', 'Should skip JS errors with boolean param');
         });
 
-        it('Should skip JS errors with only message param', async () => {
-            return runTests('./testcafe-fixtures/test-controller.js', 'Should skip JS errors with only message param');
-        });
-
-        it('Should skip JS errors with multiple options', async () => {
+        it('Should skip JS errors with message and stack options', async () => {
             return runTests('./testcafe-fixtures/test-controller.js', 'Should skip JS errors with multiple options');
         });
 
@@ -102,25 +102,41 @@ const expectFailAttempt = (errors, expectedMessage) => {
             return runTests('./testcafe-fixtures/test-controller.js', 'Should skip JS errors with callback function');
         });
 
-        it('Should skip JS errors with regular expression in message', async () => {
-            return runTests('./testcafe-fixtures/test-controller.js', 'Should skip JS errors with regular expression in message');
+        it('Should skip JS errors with async callback function', async () => {
+            return runTests('./testcafe-fixtures/test-controller.js', 'Should skip JS errors, with async callback function', { skip: ['ie'] });
         });
 
-        it('Should fail if the regexp message option doesnt satisfy the client error message', async () => {
-            return runTests('./testcafe-fixtures/test-controller.js', 'Should fail if the regexp message option doesnt satisfy the client error message', { shouldFail: true })
+        it('Should skip first error and fail on second error when skipJsError method called twice', async () => {
+            const reporterContext = {
+                actionsFinished: 0,
+                errors:          [],
+            };
+            const reporter        = createReporter({
+                reportTestActionDone: () => {
+                    reporterContext.actionsFinished++;
+                },
+                reportTestDone: (name, testRunInfo) => {
+                    reporterContext.errors = testRunInfo.errs;
+                },
+            });
+
+            return runTests('./testcafe-fixtures/test-controller.js', 'Should correctly skip JS errors with multiple method calls', {
+                reporter: [reporter],
+            })
+                .then(() => {
+                    expect(reporterContext.actionsFinished).eql(4);
+                    expect(reporterContext.errors[0].code).eql('E1');
+                });
+        });
+
+        it('Should fail if message option doesn\'t satisfy the client error message', async () => {
+            return runTests('./testcafe-fixtures/test-controller.js', 'Should fail if message option doesn\'t satisfy the client error message', { shouldFail: true })
                 .catch(errs => {
                     expectFailAttempt(errs, CLIENT_ERROR_MESSAGE);
                 });
         });
 
-        it('Should fail if the message option doesnt satisfy the client error message', async () => {
-            return runTests('./testcafe-fixtures/test-controller.js', 'Should fail due to incorrect message option', { shouldFail: true })
-                .catch(errs => {
-                    expectFailAttempt(errs, CLIENT_ERROR_MESSAGE);
-                });
-        });
-
-        it('Should fail if callback function logic doesnt satisfy the client error message', async () => {
+        it('Should fail if callback function logic doesn\'t satisfy the client error message', async () => {
             return runTests('./testcafe-fixtures/test-controller.js', 'Should fail with callback function', { shouldFail: true })
                 .catch(errs => {
                     expectFailAttempt(errs, CLIENT_ERROR_MESSAGE);
@@ -133,155 +149,56 @@ const expectFailAttempt = (errors, expectedMessage) => {
                     expectFailAttempt(errs, CALLBACK_FUNC_ERROR);
                 });
         });
-
-        it('Should skip JS errors with async callback function', async () => {
-            return runTests('./testcafe-fixtures/test-controller.js', 'Should skip JS errors, with async callback function', { skip: ['ie'] });
-        });
-
-        it('Should fail if async callback function does not satisfy the error message', async () => {
-            return runTests('./testcafe-fixtures/test-controller.js', 'Should fail if async callback function does not satisfy the error message', {
-                shouldFail: true,
-                skip:       ['ie'],
-            })
-                .catch(errs => {
-                    expectFailAttempt(errs, CLIENT_ERROR_MESSAGE);
-                });
-        });
     });
 
     describe('Fixture and Test method', () => {
-        it('Should skip JS errors with callback function specified in fixture', () => {
+        it('Should skip JS errors with fixture.skipJsErrors', () => {
             return runTests('./testcafe-fixtures/fixture-and-test.js', 'Should skip JS errors with callback function specified in fixture');
         });
 
-        it('Should skip JS errors with callback function specified in test', () => {
+        it('Should skip JS errors with test.skipJsErrors', () => {
             return runTests('./testcafe-fixtures/fixture-and-test.js', 'Should skip JS errors with callback function specified in test');
-        });
-
-        it('Should skip JS errors with skipJsErrorsOptions object specified in test', () => {
-            return runTests('./testcafe-fixtures/fixture-and-test.js', 'Should skip JS errors with skipJsErrorsOptions object in test');
-        });
-
-        it('Should skip JS errors with regular expression in message', async () => {
-            return runTests('./testcafe-fixtures/fixture-and-test.js', 'Should skip JS errors with regular expression in message');
-        });
-
-        it('Should fail if the regexp message option doesnt satisfy the client error message', async () => {
-            return runTests('./testcafe-fixtures/fixture-and-test.js', 'Should fail if the regexp message option doesnt satisfy the client error message', { shouldFail: true })
-                .catch(errs => {
-                    expectFailAttempt(errs, CLIENT_ERROR_MESSAGE);
-                });
-        });
-
-        it('Should fail if error occurred in callback function', () => {
-            return runTests('./testcafe-fixtures/fixture-and-test.js', 'Should fail if error occurred in callback function', { shouldFail: true })
-                .catch(errs => {
-                    expectFailAttempt(errs, CALLBACK_FUNC_ERROR);
-                });
-        });
-
-        it('Should fail if test callback function logic doesnt satisfy the client error message', () => {
-            return runTests('./testcafe-fixtures/fixture-and-test.js', 'Should fail with test callback function', { shouldFail: true })
-                .catch(errs => {
-                    expectFailAttempt(errs, CLIENT_ERROR_MESSAGE);
-                });
         });
     });
 
-    describe('Runner run option', () => {
-        it('Should skip errors with SkipJsErrors options object specified in runner', () => {
+    describe('Runner option and method', () => {
+        it('Should skip errors with SkipJsErrors options object specified in run options', () => {
             const skipJsErrors = {
-                message: CLIENT_ERROR_MESSAGE,
+                message: CLIENT_ERROR_REGEXP,
                 pageUrl: CLIENT_PAGE_URL,
             };
 
             return runTests('./testcafe-fixtures/runner.js', 'Throw client error', { skipJsErrors });
         });
 
-        it('Should skip errors with SkipJsErrors callback function specified in runner', () => {
+        it('Should skip errors with SkipJsErrors callback function specified in run options', () => {
             const fn           = ({ message, pageUrl }) => message === CLIENT_ERROR_MESSAGE && pageUrl === CLIENT_PAGE_URL;
             const dependencies = { CLIENT_ERROR_MESSAGE, CLIENT_PAGE_URL };
             const skipJsErrors = { fn, dependencies };
 
             return runTests('./testcafe-fixtures/runner.js', 'Throw client error', { skipJsErrors });
         });
-
-        it('Should skip errors with SkipJsErrorsOptions regular expression specified in runner', () => {
-            const skipJsErrors = {
-                message: CLIENT_ERROR_REGEXP,
-                pageUrl: CLIENT_PAGE_URL_REGEXP,
-            };
-
-            return runTests('./testcafe-fixtures/runner.js', 'Throw client error', { skipJsErrors });
-        });
-
-
-        it('Should fail if test SkipJsErrorsOptions regular expression doesnt satisfy the client error message', () => {
-            const skipJsErrors = {
-                message: CLIENT_ERROR_REGEXP,
-                pageUrl: /incorrectRegularExpression/,
-            };
-
-            return runTests('./testcafe-fixtures/runner.js', 'Throw client error', { skipJsErrors, shouldFail: true })
-                .catch(errs => {
-                    expectFailAttempt(errs, CLIENT_ERROR_MESSAGE);
-                });
-        });
-
-        it('Should fail if test SkipJsErrorsOptions object doesnt satisfy the client error message', () => {
-            const skipJsErrors = {
-                message: CLIENT_ERROR_MESSAGE,
-                pageUrl: 'incorrectUrl',
-            };
-
-            return runTests('./testcafe-fixtures/runner.js', 'Throw client error', { skipJsErrors, shouldFail: true })
-                .catch(errs => {
-                    expectFailAttempt(errs, CLIENT_ERROR_MESSAGE);
-                });
-        });
-
-        it('Should fail if error occurred in callback function', () => {
-            const fn           = ({ message, pageUrl }) => message === CLIENT_ERROR_MESSAGE && pageUrl === CLIENT_PAGE_URL;
-            const dependencies = { CLIENT_PAGE_URL };
-            const skipJsErrors = { fn, dependencies };
-
-            return runTests('./testcafe-fixtures/runner.js', 'Throw client error', {
-                skipJsErrors,
-                shouldFail: true,
-            })
-                .catch(errs => {
-                    expectFailAttempt(errs, CALLBACK_FUNC_ERROR);
-                });
-        });
     });
 
     describe('Override skipJsErrors option', () => {
-        it('Should skip errors if incorrect runner options are overridden by correct test skipJsErrors callback', () => {
+        it('runner -> fixture', () => {
             const skipJsErrors = {
                 message: CLIENT_ERROR_MESSAGE,
                 pageUrl: 'incorrectUrl',
             };
 
-            return runTests('./testcafe-fixtures/runner.js', 'Should skip JS errors with callback function specified in test', { skipJsErrors });
+            return runTests('./testcafe-fixtures/fixture-and-test.js', 'Should skip JS errors with callback function specified in fixture', { skipJsErrors });
         });
 
-        it('Should fail if value specified in test is overridden to false in TestController', () => {
-            return runTests('./testcafe-fixtures/fixture-and-test.js', 'Should fail if value specified in test is overridden to false in TestController', { shouldFail: true })
+        it('fixture -> test', () => {
+            return runTests('./testcafe-fixtures/fixture-and-test.js', 'Should fail due to test skipJsErrors(false) method call', { shouldFail: true })
                 .catch(errs => {
                     expectFailAttempt(errs, CLIENT_ERROR_MESSAGE);
                 });
         });
 
-        it('Should fail if value specified in runner and test is overridden to false in TestController', () => {
-            const skipJsErrors = {
-                message: CLIENT_ERROR_MESSAGE,
-                pageUrl: CLIENT_PAGE_URL,
-            };
-
-            return runTests('./testcafe-fixtures/fixture-and-test.js', 'Should fail if value specified in test is overridden to false in TestController', {
-                shouldFail: true,
-                skipJsErrors,
-            })
+        it('test -> testController', () => {
+            return runTests('./testcafe-fixtures/fixture-and-test.js', 'Should fail if value specified in test is overridden to false in TestController', { shouldFail: true })
                 .catch(errs => {
                     expectFailAttempt(errs, CLIENT_ERROR_MESSAGE);
                 });

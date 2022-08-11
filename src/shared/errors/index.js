@@ -42,15 +42,6 @@ export class DomNodeClientFunctionResultError extends TestRunErrorBase {
     }
 }
 
-export class ClientFunctionExecutionTimeoutError extends TestRunErrorBase {
-    constructor (instantiationCallsiteName, callsite) {
-        super(TEST_RUN_ERRORS.clientFunctionExecutionTimeoutError, callsite);
-
-        this.instantiationCallsiteName = instantiationCallsiteName;
-    }
-}
-
-
 // Selector errors
 //--------------------------------------------------------------------
 export class SelectorErrorBase extends TestRunErrorBase {

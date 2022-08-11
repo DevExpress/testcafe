@@ -13,14 +13,14 @@ export interface Dictionary<T> {
 }
 
 export interface SkipJsErrorsOptions {
-    stack?: string;
-    message?: string;
-    pageUrl?: string;
+    stack?: string | RegExp;
+    message?: string | RegExp;
+    pageUrl?: string | RegExp;
 }
 
 export interface SkipJsErrorsCallback {
-    fn: (opts: SkipJsErrorsOptions) => boolean;
-    dependencies: Dictionary<unknown>;
+    fn: (opts: { message: string; stack: string; pageUrl: string }) => boolean;
+    dependencies: Dictionary<any>;
 }
 
 export interface RunnerRunOptions {

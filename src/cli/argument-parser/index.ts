@@ -92,7 +92,7 @@ interface CommandLineOptions {
     v8Flags?: string[];
     dashboardOptions?: string | Dictionary<string | boolean | number>;
     baseUrl?: string;
-    skipJsErrors?: boolean | Dictionary<string>;
+    skipJsErrors?: boolean | Dictionary<RegExp | string>;
 }
 
 export default class CLIArgumentParser {

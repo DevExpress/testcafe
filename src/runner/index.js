@@ -754,6 +754,18 @@ export default class Runner extends EventEmitter {
         return this;
     }
 
+    _getSkipJsErrorsOpts (options, dependencies) {
+        return typeof options === 'function'
+            ? { fn: options, dependencies }
+            : options;
+    }
+
+    skipJsErrors (opts, deps) {
+        this._options[OPTION_NAMES.skipJsErrors] = this._getSkipJsErrorsOpts(opts, deps);
+
+        return this;
+    }
+
     run (options = {}) {
         let reporters;
 

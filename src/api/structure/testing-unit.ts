@@ -42,15 +42,15 @@ export default abstract class TestingUnit extends BaseUnit {
 
         this.testFile = testFile;
 
-        this.name                = null;
-        this.pageUrl             = pageUrl;
-        this.baseUrl             = baseUrl;
-        this.authCredentials     = null;
-        this.meta                = {};
-        this.only                = false;
-        this.skip                = false;
-        this.requestHooks        = [];
-        this.clientScripts       = [];
+        this.name            = null;
+        this.pageUrl         = pageUrl;
+        this.baseUrl         = baseUrl;
+        this.authCredentials = null;
+        this.meta            = {};
+        this.only            = false;
+        this.skip            = false;
+        this.requestHooks    = [];
+        this.clientScripts   = [];
 
         this.disablePageReloads = void 0;
         this.disablePageCaching = false;
@@ -107,20 +107,20 @@ export default abstract class TestingUnit extends BaseUnit {
         return this.apiOrigin;
     }
 
-    private _skipJsErrors$ (optionsOrFunction: boolean | SkipJsErrorsOptions | ((opts: SkipJsErrorsOptions) => boolean) = true, dependencies: { [key: string]: any } = {}): Function {
-        assertType([ is.boolean, is.nonNullObject, is.function ], 'skipJsErrors', 'The skipJsErrors options argument', optionsOrFunction);
+    private _skipJsErrors$ (options: boolean | SkipJsErrorsOptions | ((opts: SkipJsErrorsOptions) => boolean) = true, dependencies: { [key: string]: any } = {}): Function {
+        assertType([ is.boolean, is.nonNullObject, is.function ], 'skipJsErrors', 'The skipJsErrors options argument', options);
         assertType(is.nonNullObject, 'skipJsErrors', 'The skipJsErrors dependencies argument', dependencies);
 
-        if (typeof optionsOrFunction === 'function')
-            this.skipJsErrorsOptions = createSkipJsErrorsClientFunction({ fn: optionsOrFunction, dependencies });
+        if (typeof options === 'function')
+            this.skipJsErrorsOptions = createSkipJsErrorsClientFunction({ fn: options, dependencies });
 
-        else if (typeof optionsOrFunction === 'boolean')
-            this.skipJsErrorsOptions = optionsOrFunction;
+        else if (typeof options === 'boolean')
+            this.skipJsErrorsOptions = options;
 
         else {
-            assertSkipJsErrorsOptions(optionsOrFunction, 'skipJsErrors');
+            assertSkipJsErrorsOptions(options, 'skipJsErrors');
 
-            this.skipJsErrorsOptions =  prepareSkipJsErrorsOptions(optionsOrFunction);
+            this.skipJsErrorsOptions = prepareSkipJsErrorsOptions(options);
         }
 
         return this.apiOrigin;

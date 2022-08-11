@@ -62,7 +62,6 @@ import {
     CannotCloseWindowWithoutParentError,
     WindowNotFoundError,
     CannotRestoreChildWindowError,
-    ClientFunctionExecutionTimeoutError,
 } from '../../shared/errors';
 
 
@@ -102,7 +101,6 @@ import ParentWindowDriverLink from './driver-link/window/parent';
 import sendConfirmationMessage from './driver-link/send-confirmation-message';
 import DriverRole from './role';
 import {
-    WAIT_SKIP_JS_ERRORS_FUNCTION_CALL_TIMEOUT,
     CHECK_CHILD_WINDOW_CLOSED_INTERVAL,
     WAIT_FOR_IFRAME_DRIVER_RESPONSE_TIMEOUT,
     WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT,
@@ -282,34 +280,32 @@ export default class Driver extends serviceUtils.EventEmitter {
     }
 
     // Error handling
-    _onJsError (err) {
+    async _onJsError (err) {
         // NOTE: we should not send any message to the server if we've
         // sent the 'test-done' message but haven't got the response.
         if (this.contextStorage.getItem(TEST_DONE_SENT_FLAG))
-            return null;
+            return;
 
         if (this.skipJsErrors) {
             this.contextStorage.setItem(EXECUTING_SKIP_JS_ERRORS_FUNCTION_FLAG, true);
 
-            return Promise.resolve()
-                .then(() => shouldSkipJsError(this.skipJsErrors, err))
-                .then(shouldSkip => {
-                    if (!shouldSkip)
-                        this._setUncaughtErrorOnPage(err);
-                })
-                .catch(e => {
-                    if (!this.contextStorage.getItem(PENDING_PAGE_ERROR))
-                        this.contextStorage.setItem(PENDING_PAGE_ERROR, e);
-                })
-                .then(() => {
-                    this.contextStorage.setItem(EXECUTING_SKIP_JS_ERRORS_FUNCTION_FLAG, false);
-                    this.emit(SKIP_JS_ERRORS_FUNCTION_EXECUTION_COMPLETE_EVENT);
-                });
+            try {
+                if (!await shouldSkipJsError(this.skipJsErrors, err))
+                    this._setUncaughtErrorOnPage(err);
+            }
+            catch (e) {
+                if (!this.contextStorage.getItem(PENDING_PAGE_ERROR))
+                    this.contextStorage.setItem(PENDING_PAGE_ERROR, e);
+            }
+            finally {
+                this.contextStorage.setItem(EXECUTING_SKIP_JS_ERRORS_FUNCTION_FLAG, false);
+                this.emit(SKIP_JS_ERRORS_FUNCTION_EXECUTION_COMPLETE_EVENT);
+            }
+
+            return;
         }
 
         this._setUncaughtErrorOnPage(err);
-
-        return null;
     }
 
     _setUncaughtErrorOnPage (err) {
@@ -1045,11 +1041,19 @@ export default class Driver extends serviceUtils.EventEmitter {
         return this._createWaitForEventPromise(STATUS_WITH_COMMAND_RESULT_EVENT, COMMAND_EXECUTION_MAX_TIMEOUT);
     }
 
-    _waitForSkipJsErrorFunctionCompletion () {
+    _waitForSkipJsErrorFunctionCompletion (driverStatus) {
         if (!this.contextStorage.getItem(EXECUTING_SKIP_JS_ERRORS_FUNCTION_FLAG))
-            return Promise.resolve();
+            return Promise.resolve(driverStatus);
 
-        return this._createWaitForEventPromise(SKIP_JS_ERRORS_FUNCTION_EXECUTION_COMPLETE_EVENT, WAIT_SKIP_JS_ERRORS_FUNCTION_CALL_TIMEOUT);
+        return new Promise(resolve => {
+            const eventHandler = () => {
+                this.off(SKIP_JS_ERRORS_FUNCTION_EXECUTION_COMPLETE_EVENT, eventHandler);
+
+                resolve(driverStatus);
+            };
+
+            this.on(SKIP_JS_ERRORS_FUNCTION_EXECUTION_COMPLETE_EVENT, eventHandler);
+        });
     }
 
     _waitForEmptyCommand () {
@@ -1195,27 +1199,13 @@ export default class Driver extends serviceUtils.EventEmitter {
                 result:          createReplicator(new SelectorElementActionTransform()).encode(elements),
             }))
             .catch(err => this.statusBar.hideWaitingElementStatus(false)
-                .then(() => new DriverStatus({ isCommandResult: true, executionError: err }))
+                .then(() => new DriverStatus({ isCommandResult: true, executionError: err })),
             )
+            .then(driverStatus => this._waitForSkipJsErrorFunctionCompletion(driverStatus))
             .then(driverStatus => {
-                if (this.contextStorage.getItem(EXECUTING_SKIP_JS_ERRORS_FUNCTION_FLAG)) {
-                    return this._waitForSkipJsErrorFunctionCompletion()
-                        .then(() => {
-                            if (this.contextStorage.getItem(EXECUTING_SKIP_JS_ERRORS_FUNCTION_FLAG))
-                                throw new ClientFunctionExecutionTimeoutError('SkipJsErrors handler');
-
-                            return this._onReady(driverStatus);
-                        })
-                        .catch(e => this._onReady(new DriverStatus({ isCommandResult: true, executionError: e })))
-                        .then(() => {
-                            this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, false);
-                            this.contextStorage.setItem(EXECUTING_SKIP_JS_ERRORS_FUNCTION_FLAG, false);
-                        });
-                }
-
                 this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, false);
-
-                return this._onReady(driverStatus);
+                this.contextStorage.setItem(EXECUTING_SKIP_JS_ERRORS_FUNCTION_FLAG, false);
+                this._onReady(driverStatus);
             });
     }
 

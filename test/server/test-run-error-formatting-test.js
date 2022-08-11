@@ -102,7 +102,7 @@ const {
     ActionObjectOptionError,
     ActionUrlArgumentError,
 }                                             = require('../../lib/errors/test-run');
-const { ActionStringOrRegexOptionError, ClientFunctionExecutionTimeoutError }      = require('../../lib/shared/errors');
+const { ActionStringOrRegexOptionError }      = require('../../lib/shared/errors');
 
 const untestedErrorTypes = Object.keys(TEST_RUN_ERRORS).map(key => TEST_RUN_ERRORS[key]);
 
@@ -818,10 +818,6 @@ describe('Error formatting', () => {
 
         it('Should format "actionStringOrRegexOptionError"', () => {
             assertErrorMessage('action-string-or-regex-argument-error', new ActionStringOrRegexOptionError('SkipJsErrorsOptions.message', 'object'));
-        });
-
-        it('Should format "ClientFunctionExecutionTimeoutError"', () => {
-            assertErrorMessage('client-function-execution-timeout-error', new ClientFunctionExecutionTimeoutError('SkipJsErrors handler'));
         });
     });
 
