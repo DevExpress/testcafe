@@ -124,7 +124,7 @@ const expectFailAttempt = (errors, expectedMessage) => {
                 reporter: [reporter],
             })
                 .then(() => {
-                    expect(reporterContext.actionsFinished).eql(4);
+                    expect(reporterContext.actionsFinished).eql(4 * reporterContext.errors.length);
                     expect(reporterContext.errors[0].code).eql('E1');
                 });
         });
