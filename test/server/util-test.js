@@ -18,12 +18,15 @@ const getCommonPath                    = require('../../lib/utils/get-common-pat
 const resolvePathRelativelyCwd         = require('../../lib/utils/resolve-path-relatively-cwd');
 const getFilterFn                      = require('../../lib/utils/get-filter-fn');
 const prepareReporters                 = require('../../lib/utils/prepare-reporters');
-const { replaceLeadingSpacesWithNbsp } = require('../../lib/errors/test-run/utils');
 const createTempProfile                = require('../../lib/browser/provider/built-in/dedicated/chrome/create-temp-profile');
-const { parseUserAgent }                   = require('../../lib/utils/parse-user-agent');
+const { parseUserAgent }               = require('../../lib/utils/parse-user-agent');
 const diff                             = require('../../lib/utils/diff');
 const { generateScreenshotMark }       = require('../../lib/screenshots/utils');
 const getViewPortWidth                 = require('../../lib/utils/get-viewport-width');
+const {
+    replaceLeadingSpacesWithNbsp,
+    markup,
+} = require('../../lib/errors/test-run/utils');
 const {
     buildChromeArgs,
     IN_DOCKER_FLAGS,
@@ -322,12 +325,36 @@ describe('Utils', () => {
         });
     });
 
-    it('Replace leading spaces with &nbsp', () => {
-        expect(replaceLeadingSpacesWithNbsp('test')).eql('test');
-        expect(replaceLeadingSpacesWithNbsp(' test')).eql('&nbsp;test');
-        expect(replaceLeadingSpacesWithNbsp('  test')).eql('&nbsp;&nbsp;test');
-        expect(replaceLeadingSpacesWithNbsp(' test1 test2 ')).eql('&nbsp;test1 test2 ');
-        expect(replaceLeadingSpacesWithNbsp('  test1\n test2 \r\ntest3 ')).eql('&nbsp;&nbsp;test1\n&nbsp;test2 \r\ntest3 ');
+    describe('Error utils', () => {
+        it('Markup should return correct value for error in "pendingFinalization" phase', () => {
+            const err = {
+                userAgent:       'Chrome 104.0.5112.81 / Windows 10',
+                screenshotPath:  '',
+                testRunId:       'UGqL1Nz7Z',
+                testRunPhase:    'pendingFinalization',
+                code:            'E53',
+                isTestCafeError: true,
+                callsite:        '0',
+                errMsg:          'AssertionError: expected false to be truthy',
+                diff:            false,
+                id:              '7fTLOzU',
+
+                getCallsiteMarkup: () => '0',
+            };
+            const msgMarkup      = '\n        AssertionError: expected false to be truthy\n\n        \n';
+            const expectedResult = '<div class="message">AssertionError: expected false to be truthy</div>\n\n' +
+                                   '<strong>Browser:</strong> <span class="user-agent">Chrome 104.0.5112.81 / Windows 10</span>\n\n0';
+
+            expect(markup(err, msgMarkup)).eql(expectedResult);
+        });
+
+        it('Replace leading spaces with &nbsp', () => {
+            expect(replaceLeadingSpacesWithNbsp('test')).eql('test');
+            expect(replaceLeadingSpacesWithNbsp(' test')).eql('&nbsp;test');
+            expect(replaceLeadingSpacesWithNbsp('  test')).eql('&nbsp;&nbsp;test');
+            expect(replaceLeadingSpacesWithNbsp(' test1 test2 ')).eql('&nbsp;test1 test2 ');
+            expect(replaceLeadingSpacesWithNbsp('  test1\n test2 \r\ntest3 ')).eql('&nbsp;&nbsp;test1\n&nbsp;test2 \r\ntest3 ');
+        });
     });
 
     it('Get common path', () => {
