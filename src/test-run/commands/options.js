@@ -30,7 +30,7 @@ import {
     ActionObjectOptionError,
     ActionStringOrRegexOptionError,
 } from '../../shared/errors';
-import makeRegExp from '../../utils/make-reg-exp';
+import { parseRegExpString } from '../../utils/make-reg-exp';
 
 export const integerOption         = createIntegerValidator(ActionIntegerOptionError);
 export const positiveIntegerOption = createPositiveIntegerValidator(ActionPositiveIntegerOptionError);
@@ -414,5 +414,5 @@ function initRequestProxyOptions (name, val, initOptions, validate = true) {
 }
 
 function initStringOrRegexOption (name, val) {
-    return makeRegExp(val);
+    return parseRegExpString(val);
 }
