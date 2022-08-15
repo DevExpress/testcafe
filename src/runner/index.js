@@ -51,8 +51,9 @@ import { validateQuarantineOptions } from '../utils/get-options/quarantine';
 import logEntry from '../utils/log-entry';
 import MessageBus from '../utils/message-bus';
 import getEnvOptions from '../dashboard/get-env-options';
-import { createSkipJsErrorsClientFunction, isSkipJsErrorsCallback } from '../utils/skip-js-errorrs';
-import { getSkipJsErrorsOptions } from '../utils/get-options';
+import { prepareSkipJsErrorsOptions, ensureSkipJsErrorsCallbackWrapped } from '../api/skip-js-errors';
+import { validateSkipJsErrorsOptions } from '../utils/get-options/skip-js-errors';
+import { isSkipJsErrorsOptionsObject } from '../utils/skip-js-errorrs';
 
 const DEBUG_LOGGER            = debug('testcafe:runner');
 const DASHBOARD_REPORTER_NAME = 'dashboard';
@@ -308,19 +309,17 @@ export default class Runner extends EventEmitter {
     }
 
     async _validateSkipJsErrorsOption () {
-        const skipJsErrors = this.configuration.getOption(OPTION_NAMES.skipJsErrors);
+        const skipJsErrorsOptions  = this.configuration.getOption(OPTION_NAMES.skipJsErrors);
 
-        if (!skipJsErrors)
+        if (!skipJsErrorsOptions)
             return;
 
-        if (isSkipJsErrorsCallback(skipJsErrors)) {
-            this.configuration.mergeOptions({ skipJsErrors: createSkipJsErrorsClientFunction(skipJsErrors) });
-            return;
-        }
+        const preparedOptions = prepareSkipJsErrorsOptions(skipJsErrorsOptions);
 
-        const options = await getSkipJsErrorsOptions(OPTION_NAMES.skipJsErrors, skipJsErrors);
+        if (isSkipJsErrorsOptionsObject(preparedOptions))
+            validateSkipJsErrorsOptions(preparedOptions, 'skipJsErrors', GeneralError);
 
-        this.configuration.mergeOptions({ skipJsErrors: options });
+        this.configuration.mergeOptions({ skipJsErrors: preparedOptions });
     }
 
     async _validateBrowsers () {
@@ -754,14 +753,8 @@ export default class Runner extends EventEmitter {
         return this;
     }
 
-    _getSkipJsErrorsOpts (options, dependencies) {
-        return typeof options === 'function'
-            ? { fn: options, dependencies }
-            : options;
-    }
-
     skipJsErrors (opts, deps) {
-        this._options[OPTION_NAMES.skipJsErrors] = this._getSkipJsErrorsOpts(opts, deps);
+        this._options[OPTION_NAMES.skipJsErrors] = ensureSkipJsErrorsCallbackWrapped(opts, deps);
 
         return this;
     }

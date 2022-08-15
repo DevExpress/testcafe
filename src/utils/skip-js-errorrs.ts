@@ -4,9 +4,14 @@ import {
 import ClientFunctionBuilder from '../client-functions/client-function-builder';
 import { ExecuteClientFunctionCommand } from '../test-run/commands/observation';
 import Replicator from 'replicator';
+import { isClientFunctionCommand } from '../test-run/commands/utils';
 
 export function isSkipJsErrorsCallback (obj: unknown): obj is SkipJsErrorsCallback {
     return obj && typeof obj === 'object' && 'fn' in obj;
+}
+
+export function isSkipJsErrorsOptionsObject (obj: unknown): obj is SkipJsErrorsOptions {
+    return obj && typeof obj === 'object' && !isSkipJsErrorsCallback(obj) && !isClientFunctionCommand(obj);
 }
 
 export function createSkipJsErrorsClientFunction ({ fn, dependencies }: SkipJsErrorsCallback): ExecuteClientFunctionCommand {

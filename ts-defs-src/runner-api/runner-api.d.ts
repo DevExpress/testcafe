@@ -168,12 +168,12 @@ interface Runner {
     /**
      * Specifies custom skipJsErrors options for all tests.
      */
-    skipJsErrors(options: boolean | SkipJsErrorsOptions): this;
+    skipJsErrors(options?: boolean | SkipJsErrorsOptions): this;
 
     /**
      * Specifies custom skipJsErrors handler for all tests.
      */
-    skipJsErrors(fn: SkipJsErrorsHandler, dependencies?: {[key:string]:any}): this;
+    skipJsErrors(fn: SkipJsErrorsHandler, dependencies?: {[key: string]: any}): this;
 
 }
 

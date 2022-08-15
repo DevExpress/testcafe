@@ -539,7 +539,7 @@ interface TestController {
      *
      * @param options - options or boolean.
      */
-    skipJsErrors (options: boolean | SkipJsErrorsOptions): TestControllerPromise;
+    skipJsErrors (options?: boolean | SkipJsErrorsOptions): TestControllerPromise;
 
     /**
      * Set skipJsErrors handler

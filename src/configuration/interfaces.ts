@@ -18,9 +18,11 @@ export interface SkipJsErrorsOptions {
     pageUrl?: string | RegExp;
 }
 
+export type SkipJsErrorsHandler = (opts: { message: string; stack: string; pageUrl: string }) => boolean;
+
 export interface SkipJsErrorsCallback {
-    fn: (opts: { message: string; stack: string; pageUrl: string }) => boolean;
-    dependencies: Dictionary<any>;
+    fn: SkipJsErrorsHandler;
+    dependencies?: Dictionary<any>;
 }
 
 export interface RunnerRunOptions {

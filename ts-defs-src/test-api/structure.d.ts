@@ -138,7 +138,7 @@ interface FixtureFn {
      *
      * @param options - boolean flag or SkipJsErrorsOptions.
      */
-    skipJsErrors (options: boolean | SkipJsErrorsOptions): this;
+    skipJsErrors (options?: boolean | SkipJsErrorsOptions): this;
 
     /**
      * Set skipJsError handler.
@@ -239,7 +239,7 @@ interface TestFn {
      *
      * @param options - boolean flag or SkipJsErrorsOptions.
      */
-    skipJsErrors (options: boolean | SkipJsErrorsOptions): this;
+    skipJsErrors (options?: boolean | SkipJsErrorsOptions): this;
 
     /**
      * Set skipJsError handler.
