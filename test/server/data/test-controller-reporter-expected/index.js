@@ -881,7 +881,6 @@ module.exports = [
         name:      "skipJsErrors",
         command:   {
             actionId:     "SkipJsErrorsCommand",
-            errorHandler: undefined,
             options:      true,
             type:         "skip-js-errors",
         },
