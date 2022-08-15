@@ -42,14 +42,17 @@ import {
     setCookiesArgument,
     urlsArgument,
     urlArgument,
-    skipJsErrorOptionsOrBoolean,
-    skipJsErrorsCallbackFunction,
+    skipJsErrorOptions,
 } from './validations/argument';
 
 import { SetNativeDialogHandlerCodeWrongTypeError } from '../../errors/test-run';
 import { ExecuteClientFunctionCommand } from './observation';
 import { camelCase } from 'lodash';
-import { createSkipJsErrorsClientFunction, encodeSkipJsErrorsOptions } from '../../utils/skip-js-errorrs';
+import {
+    createSkipJsErrorsClientFunction,
+    createSkipJsErrorsTemplateFunction, isSkipJsErrorsCallback,
+    isSkipJsErrorsOptionsObject,
+} from '../../utils/skip-js-errorrs';
 
 
 // Initializers
@@ -128,17 +131,15 @@ function initSkipJsErrorsOptions (name, val, initOptions, validate = true) {
     if (val === void 0)
         return true;
 
-    if (typeof val === 'object') {
+    if (isSkipJsErrorsOptionsObject(val)) {
         const options = new SkipJsErrorsOptions(val, validate);
 
-        return encodeSkipJsErrorsOptions(options);
+        return createSkipJsErrorsTemplateFunction(options);
     }
+    if (isSkipJsErrorsCallback(val))
+        return createSkipJsErrorsClientFunction(val);
 
     return val;
-}
-
-function initSkipJsErrorsCallback (name, val) {
-    return createSkipJsErrorsClientFunction(val);
 }
 
 // Commands
@@ -783,13 +784,7 @@ export class SkipJsErrorsCommand extends ActionCommandBase {
 
     _getAssignableProperties () {
         return [
-            { name: 'options', type: skipJsErrorOptionsOrBoolean, init: initSkipJsErrorsOptions, required: false },
-            {
-                name:     'errorHandler',
-                type:     skipJsErrorsCallbackFunction,
-                init:     initSkipJsErrorsCallback,
-                required: false,
-            },
+            { name: 'options', type: skipJsErrorOptions, init: initSkipJsErrorsOptions, required: false },
         ];
     }
 }

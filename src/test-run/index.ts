@@ -63,7 +63,6 @@ import {
     canSetDebuggerBreakpointBeforeCommand,
     isExecutableOnClientCommand,
     isResizeWindowCommand,
-    isClientFunctionCommand,
 } from './commands/utils';
 
 import {
@@ -124,7 +123,7 @@ import MessageBus from '../utils/message-bus';
 import executeFnWithTimeout from '../utils/execute-fn-with-timeout';
 import { URL } from 'url';
 import { CookieOptions } from './commands/options';
-import { encodeSkipJsErrorsOptions } from '../utils/skip-js-errorrs';
+import { createSkipJsErrorsTemplateFunction } from '../utils/skip-js-errorrs';
 
 const lazyRequire                 = require('import-lazy')(require);
 const ClientFunctionBuilder       = lazyRequire('../client-functions/client-function-builder');
@@ -531,15 +530,15 @@ export default class TestRun extends AsyncEventEmitter {
             this.test.requestHooks.forEach(hook => this._initRequestHook(hook));
     }
 
-    private _prepareSkipJSErrorsOption (): boolean | ExecuteClientFunctionCommand | SkipJsErrorsOptions {
+    private _prepareSkipJSErrorsOption (): boolean | ExecuteClientFunctionCommand {
         const options = this.test.skipJsErrorsOptions !== void 0
             ? this.test.skipJsErrorsOptions
             : this.opts.skipJsErrors as SkipJsErrorsOptions | ExecuteClientFunctionCommand | boolean || false;
 
-        if (typeof options === 'boolean' || isClientFunctionCommand(options))
+        if (typeof options === 'boolean' || options instanceof ExecuteClientFunctionCommand)
             return options;
 
-        return encodeSkipJsErrorsOptions(options as SkipJsErrorsOptions);
+        return createSkipJsErrorsTemplateFunction(options);
     }
 
     // Hammerhead payload

@@ -1,10 +1,10 @@
 import {
-    Dictionary, SkipJsErrorsCallback, SkipJsErrorsOptions,
+    SkipJsErrorsCallback, SkipJsErrorsHandler, SkipJsErrorsOptions,
 } from '../configuration/interfaces';
 import ClientFunctionBuilder from '../client-functions/client-function-builder';
 import { ExecuteClientFunctionCommand } from '../test-run/commands/observation';
-import Replicator from 'replicator';
 import { isClientFunctionCommand } from '../test-run/commands/utils';
+import { ensureSkipJsErrorsCallbackWrapped } from '../api/skip-js-errors';
 
 export function isSkipJsErrorsCallback (obj: unknown): obj is SkipJsErrorsCallback {
     return obj && typeof obj === 'object' && 'fn' in obj;
@@ -12,6 +12,24 @@ export function isSkipJsErrorsCallback (obj: unknown): obj is SkipJsErrorsCallba
 
 export function isSkipJsErrorsOptionsObject (obj: unknown): obj is SkipJsErrorsOptions {
     return obj && typeof obj === 'object' && !isSkipJsErrorsCallback(obj) && !isClientFunctionCommand(obj);
+}
+
+export function createSkipJsErrorsTemplateFunction (deps: SkipJsErrorsOptions): ExecuteClientFunctionCommand {
+    const skipJsErrorObjectParametersFunction = `
+                let { stack, pageUrl, message } = deps;
+                
+                stack   = stack || new RegExp('');
+                pageUrl = pageUrl || new RegExp('');
+                message = message || new RegExp('');
+
+                return stack.test(err.stack) && pageUrl.test(err.pageUrl) && message.test(err.message);
+        `;
+
+    const func = new Function('err', skipJsErrorObjectParametersFunction) as SkipJsErrorsHandler;
+
+    const callbackWrapper = ensureSkipJsErrorsCallbackWrapped(func, { deps }) as SkipJsErrorsCallback;
+
+    return createSkipJsErrorsClientFunction(callbackWrapper);
 }
 
 export function createSkipJsErrorsClientFunction ({ fn, dependencies }: SkipJsErrorsCallback): ExecuteClientFunctionCommand {
@@ -22,16 +40,4 @@ export function createSkipJsErrorsClientFunction ({ fn, dependencies }: SkipJsEr
         instantiation: methodName,
         execution:     methodName,
     }).getCommand([]);
-}
-
-export function encodeSkipJsErrorsOptions (options: SkipJsErrorsOptions): Dictionary<string> {
-    const replicator = new Replicator();
-    const encoded    = Object.entries(options)
-        .reduce((prev: Dictionary<string>, [ key, value ]) => {
-            prev[key] = replicator.encode(value);
-
-            return prev;
-        }, {});
-
-    return encoded;
 }

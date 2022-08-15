@@ -82,6 +82,7 @@ import ReExecutablePromise from '../../utils/re-executable-promise';
 import sendRequest from '../../test-run/request/send';
 import { RequestRuntimeError } from '../../errors/runtime';
 import { RUNTIME_ERRORS } from '../../errors/types';
+import { ensureSkipJsErrorsCallbackWrapped } from '../skip-js-errors';
 
 const originalThen = Promise.resolve().then;
 
@@ -608,10 +609,10 @@ export default class TestController {
         return this._enqueueCommand(UseRoleCommand, { role });
     }
 
-    [delegatedAPI(SkipJsErrorsCommand.methodName)] (options, dependencies) {
-        const commandOptions = this._getSkipJSCommandOptions(options, dependencies);
+    [delegatedAPI(SkipJsErrorsCommand.methodName)] (opts, dependencies) {
+        const options = ensureSkipJsErrorsCallbackWrapped(opts, dependencies);
 
-        return this._enqueueCommand(SkipJsErrorsCommand, commandOptions);
+        return this._enqueueCommand(SkipJsErrorsCommand, { options });
     }
 
     _addRequestHooks$ (...hooks) {
@@ -665,11 +666,6 @@ export default class TestController {
         return this.testRun instanceof TestRunProxy;
     }
 
-    _getSkipJSCommandOptions (options, dependencies) {
-        return typeof options === 'function'
-            ? { errorHandler: { fn: options, dependencies } }
-            : { options: options };
-    }
 }
 
 TestController.API_LIST = getDelegatedAPIList(TestController.prototype);

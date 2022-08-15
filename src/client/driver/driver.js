@@ -1245,8 +1245,8 @@ export default class Driver extends serviceUtils.EventEmitter {
         }));
     }
 
-    _onSkipJsErrorsCommand (command) {
-        this.skipJsErrors = command.options || command.errorHandler;
+    _onSkipJsErrorsCommand ({ options }) {
+        this.skipJsErrors = options;
 
         this._onReady(new DriverStatus({ isCommandResult: true }));
     }

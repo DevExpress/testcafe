@@ -1,19 +1,13 @@
 import {
     Dictionary, SkipJsErrorsHandler, SkipJsErrorsOptions,
 } from '../../configuration/interfaces';
-import { validateSkipJsErrorsOptions } from '../../utils/get-options/skip-js-errors';
 import { parseRegExpString } from '../../utils/make-reg-exp';
-import { APIError } from '../../errors/runtime';
 import { ExecuteClientFunctionCommand } from '../../test-run/commands/observation';
 import {
-    createSkipJsErrorsClientFunction,
+    createSkipJsErrorsClientFunction, createSkipJsErrorsTemplateFunction,
     isSkipJsErrorsCallback,
     isSkipJsErrorsOptionsObject,
 } from '../../utils/skip-js-errorrs';
-
-export function assertSkipJsErrorsOptions (options: Dictionary<any>, callsiteName: string): void {
-    validateSkipJsErrorsOptions(options, callsiteName, APIError);
-}
 
 export function ensureSkipJsErrorsCallbackWrapped (options: boolean | SkipJsErrorsOptions | SkipJsErrorsHandler, dependencies: Dictionary<unknown> = {}): SkipJsErrorsOptions | SkipJsErrorsCallback | boolean {
     if (typeof options === 'function')
@@ -27,7 +21,7 @@ export function prepareSkipJsErrorsOptions (options: boolean | SkipJsErrorsOptio
         return createSkipJsErrorsClientFunction(options);
 
     if (isSkipJsErrorsOptionsObject(options))
-        return prepareOptions(options);
+        return createSkipJsErrorsTemplateFunction(prepareOptions(options));
 
     return options;
 }

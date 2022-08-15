@@ -36,6 +36,7 @@ import { URL } from 'url';
 import { assertPageUrl } from '../../../api/test-page-url';
 import checkFilePath from '../../../utils/check-file-path';
 import { castArray } from 'lodash';
+import { isClientFunctionCommand } from '../utils';
 
 
 // Validators
@@ -189,16 +190,12 @@ export function urlArgument (name, val) {
         throw new ActionUrlArgumentError(name, valType);
 }
 
-export function skipJsErrorOptionsOrBoolean (name, val) {
+export function skipJsErrorOptions (name, val) {
     const valType = typeof val;
 
     if (valType !== 'undefined' && valType !== 'object' && valType !== 'boolean')
         throw new ActionSkipJsErrorsArgumentTypeError(name, valType);
-}
 
-export function skipJsErrorsCallbackFunction (name, val) {
-    const { dependencies } = val;
-
-    if (dependencies && typeof dependencies !== 'object')
+    if (isClientFunctionCommand(val) && val.dependencies && typeof val.dependencies !== 'object')
         throw new ActionSkipJsErrorsDependenciesArgumentTypeError('dependencies', typeof dependencies);
 }

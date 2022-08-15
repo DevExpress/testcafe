@@ -18,10 +18,11 @@ import { Dictionary, SkipJsErrorsHandler } from '../../configuration/interfaces'
 import { dirname } from 'path';
 import { ExecuteClientFunctionCommand } from '../../test-run/commands/observation';
 import {
-    assertSkipJsErrorsOptions,
     prepareSkipJsErrorsOptions, ensureSkipJsErrorsCallbackWrapped,
 } from '../skip-js-errors';
 import { isSkipJsErrorsOptionsObject } from '../../utils/skip-js-errorrs';
+import { validateSkipJsErrorsOptionsObject } from '../../utils/get-options/skip-js-errors';
+import { APIError } from '../../errors/runtime';
 
 export default abstract class TestingUnit extends BaseUnit {
     public readonly testFile: TestFile;
@@ -119,7 +120,7 @@ export default abstract class TestingUnit extends BaseUnit {
         this.skipJsErrorsOptions = prepareSkipJsErrorsOptions(opts);
 
         if (isSkipJsErrorsOptionsObject(this.skipJsErrorsOptions))
-            assertSkipJsErrorsOptions(this.skipJsErrorsOptions, 'skipJsErrors');
+            validateSkipJsErrorsOptionsObject(this.skipJsErrorsOptions, 'skipJsErrors', APIError);
 
         return this.apiOrigin;
     }

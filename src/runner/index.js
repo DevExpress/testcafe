@@ -52,7 +52,7 @@ import logEntry from '../utils/log-entry';
 import MessageBus from '../utils/message-bus';
 import getEnvOptions from '../dashboard/get-env-options';
 import { prepareSkipJsErrorsOptions, ensureSkipJsErrorsCallbackWrapped } from '../api/skip-js-errors';
-import { validateSkipJsErrorsOptions } from '../utils/get-options/skip-js-errors';
+import { validateSkipJsErrorsOptionsObject } from '../utils/get-options/skip-js-errors';
 import { isSkipJsErrorsOptionsObject } from '../utils/skip-js-errorrs';
 
 const DEBUG_LOGGER            = debug('testcafe:runner');
@@ -317,7 +317,7 @@ export default class Runner extends EventEmitter {
         const preparedOptions = prepareSkipJsErrorsOptions(skipJsErrorsOptions);
 
         if (isSkipJsErrorsOptionsObject(preparedOptions))
-            validateSkipJsErrorsOptions(preparedOptions, 'skipJsErrors', GeneralError);
+            validateSkipJsErrorsOptionsObject(preparedOptions, 'skipJsErrors', GeneralError);
 
         this.configuration.mergeOptions({ skipJsErrors: preparedOptions });
     }
