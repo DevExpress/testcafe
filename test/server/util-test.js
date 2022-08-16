@@ -23,9 +23,11 @@ const { parseUserAgent }               = require('../../lib/utils/parse-user-age
 const diff                             = require('../../lib/utils/diff');
 const { generateScreenshotMark }       = require('../../lib/screenshots/utils');
 const getViewPortWidth                 = require('../../lib/utils/get-viewport-width');
+const TEST_RUN_PHASE                   = require('../../lib/test-run/phase');
 const {
     replaceLeadingSpacesWithNbsp,
     markup,
+    SUBTITLES,
 } = require('../../lib/errors/test-run/utils');
 const {
     buildChromeArgs,
@@ -346,6 +348,11 @@ describe('Utils', () => {
                                    '<strong>Browser:</strong> <span class="user-agent">Chrome 104.0.5112.81 / Windows 10</span>\n\n0';
 
             expect(markup(err, msgMarkup)).eql(expectedResult);
+        });
+
+        it('SUBTITLES should contains defenitions of all test run phases', () => {
+            for (const phase in TEST_RUN_PHASE)
+                expect(phase in SUBTITLES).to.be.ok;
         });
 
         it('Replace leading spaces with &nbsp', () => {
