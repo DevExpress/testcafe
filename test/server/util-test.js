@@ -350,7 +350,7 @@ describe('Utils', () => {
             expect(markup(err, msgMarkup)).eql(expectedResult);
         });
 
-        it('SUBTITLES should contains defenitions of all test run phases', () => {
+        it('SUBTITLES should contains definitions of all test run phases', () => {
             for (const phase in TEST_RUN_PHASE)
                 expect(phase in SUBTITLES).to.be.ok;
         });
