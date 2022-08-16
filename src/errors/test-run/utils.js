@@ -3,7 +3,7 @@ import { escape as escapeHtml, repeat } from 'lodash';
 import TEST_RUN_PHASE from '../../test-run/phase';
 import { TEST_RUN_ERRORS } from '../types';
 
-const SUBTITLES = {
+export const SUBTITLES = {
     [TEST_RUN_PHASE.initial]:                 '',
     [TEST_RUN_PHASE.inTestRunBeforeHook]:     '<span class="subtitle">Error in testRun.before hook</span>\n',
     [TEST_RUN_PHASE.inFixtureBeforeHook]:     '<span class="subtitle">Error in fixture.before hook</span>\n',
