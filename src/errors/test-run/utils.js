@@ -16,6 +16,7 @@ const SUBTITLES = {
     [TEST_RUN_PHASE.inTestRunAfterHook]:      '<span class="subtitle">Error in testRun.after hook</span>\n',
     [TEST_RUN_PHASE.inRoleInitializer]:       '<span class="subtitle">Error in Role initializer</span>\n',
     [TEST_RUN_PHASE.inBookmarkRestore]:       '<span class="subtitle">Error while restoring configuration after Role switch</span>\n',
+    [TEST_RUN_PHASE.pendingFinalization]:     '',
 };
 
 export function renderForbiddenCharsList (forbiddenCharsList) {
