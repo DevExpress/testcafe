@@ -118,7 +118,7 @@ export class GetProxyUrlOptions {
 
 export class SkipJsErrorsOptions {
     public constructor (obj: object, validate: boolean);
-    public stack?: string;
-    public message?: string;
-    public pageUrl?: string;
+    public stack?: string | RegExp;
+    public message?: string | RegExp;
+    public pageUrl?: string | RegExp;
 }
