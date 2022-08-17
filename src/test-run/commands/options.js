@@ -30,7 +30,6 @@ import {
     ActionObjectOptionError,
     ActionStringOrRegexOptionError,
 } from '../../shared/errors';
-import { parseRegExpString } from '../../utils/make-reg-exp';
 
 export const integerOption         = createIntegerValidator(ActionIntegerOptionError);
 export const positiveIntegerOption = createPositiveIntegerValidator(ActionPositiveIntegerOptionError);
@@ -397,9 +396,9 @@ export class SkipJsErrorsOptions extends Assignable {
 
     _getAssignableProperties () {
         return [
-            { name: 'stack', type: stringOrRegexOption, init: initStringOrRegexOption, required: false },
-            { name: 'message', type: stringOrRegexOption, init: initStringOrRegexOption, required: false },
-            { name: 'pageUrl', type: stringOrRegexOption, init: initStringOrRegexOption, required: false },
+            { name: 'stack', type: stringOrRegexOption, required: false },
+            { name: 'message', type: stringOrRegexOption, required: false },
+            { name: 'pageUrl', type: stringOrRegexOption, required: false },
         ];
     }
 }
@@ -411,8 +410,4 @@ function initRequestAuthOption (name, val, initOptions, validate = true) {
 
 function initRequestProxyOptions (name, val, initOptions, validate = true) {
     return new RequestProxyOptions(val, validate);
-}
-
-function initStringOrRegexOption (name, val) {
-    return parseRegExpString(val);
 }

@@ -123,7 +123,7 @@ import MessageBus from '../utils/message-bus';
 import executeFnWithTimeout from '../utils/execute-fn-with-timeout';
 import { URL } from 'url';
 import { CookieOptions } from './commands/options';
-import { createSkipJsErrorsTemplateFunction } from '../utils/skip-js-errorrs';
+import { prepareSkipJsErrorsOptions } from '../api/skip-js-errors';
 
 const lazyRequire                 = require('import-lazy')(require);
 const ClientFunctionBuilder       = lazyRequire('../client-functions/client-function-builder');
@@ -530,15 +530,12 @@ export default class TestRun extends AsyncEventEmitter {
             this.test.requestHooks.forEach(hook => this._initRequestHook(hook));
     }
 
-    private _prepareSkipJSErrorsOption (): boolean | ExecuteClientFunctionCommand {
+    private _prepareSkipJsErrorsOption (): boolean | ExecuteClientFunctionCommand {
         const options = this.test.skipJsErrorsOptions !== void 0
             ? this.test.skipJsErrorsOptions
-            : this.opts.skipJsErrors as SkipJsErrorsOptions | ExecuteClientFunctionCommand | boolean || false;
+            : this.opts.skipJsErrors as SkipJsErrorsOptions | boolean || false;
 
-        if (typeof options === 'boolean' || options instanceof ExecuteClientFunctionCommand)
-            return options;
-
-        return createSkipJsErrorsTemplateFunction(options);
+        return prepareSkipJsErrorsOptions(options);
     }
 
     // Hammerhead payload
@@ -546,7 +543,7 @@ export default class TestRun extends AsyncEventEmitter {
         this.fileDownloadingHandled               = false;
         this.resolveWaitForFileDownloadingPromise = null;
 
-        const skipJsErrors = this._prepareSkipJSErrorsOption();
+        const skipJsErrors = this._prepareSkipJsErrorsOption();
 
         return Mustache.render(TEST_RUN_TEMPLATE, {
             testRunId:                    JSON.stringify(this.session.id),

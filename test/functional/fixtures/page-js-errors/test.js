@@ -129,14 +129,14 @@ const expectFailAttempt = (errors, expectedMessage) => {
                 });
         });
 
-        it('Should fail if message option doesn\'t satisfy the client error message', async () => {
-            return runTests('./testcafe-fixtures/test-controller.js', 'Should fail if message option doesn\'t satisfy the client error message', { shouldFail: true })
+        it("Should fail if message option doesn't satisfy the client error message", async () => {
+            return runTests('./testcafe-fixtures/test-controller.js', "Should fail if message option doesn't satisfy the client error message", { shouldFail: true })
                 .catch(errs => {
                     expectFailAttempt(errs, CLIENT_ERROR_MESSAGE);
                 });
         });
 
-        it('Should fail if callback function logic doesn\'t satisfy the client error message', async () => {
+        it("Should fail if callback function logic doesn't satisfy the client error message", async () => {
             return runTests('./testcafe-fixtures/test-controller.js', 'Should fail with callback function', { shouldFail: true })
                 .catch(errs => {
                     expectFailAttempt(errs, CLIENT_ERROR_MESSAGE);

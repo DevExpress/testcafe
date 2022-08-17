@@ -51,9 +51,8 @@ import { validateQuarantineOptions } from '../utils/get-options/quarantine';
 import logEntry from '../utils/log-entry';
 import MessageBus from '../utils/message-bus';
 import getEnvOptions from '../dashboard/get-env-options';
-import { prepareSkipJsErrorsOptions, ensureSkipJsErrorsCallbackWrapped } from '../api/skip-js-errors';
+import { ensureSkipJsErrorsCallbackWrapped, isSkipJsErrorsOptionsObject } from '../api/skip-js-errors';
 import { validateSkipJsErrorsOptionsObject } from '../utils/get-options/skip-js-errors';
-import { isSkipJsErrorsOptionsObject } from '../utils/skip-js-errorrs';
 
 const DEBUG_LOGGER            = debug('testcafe:runner');
 const DASHBOARD_REPORTER_NAME = 'dashboard';
@@ -308,18 +307,14 @@ export default class Runner extends EventEmitter {
             throw new GeneralError(RUNTIME_ERRORS.cannotSetConcurrencyWithCDPPort);
     }
 
-    async _validateSkipJsErrorsOption () {
-        const skipJsErrorsOptions  = this.configuration.getOption(OPTION_NAMES.skipJsErrors);
+    _validateSkipJsErrorsOption () {
+        const skipJsErrorsOptions = this.configuration.getOption(OPTION_NAMES.skipJsErrors);
 
         if (!skipJsErrorsOptions)
             return;
 
-        const preparedOptions = prepareSkipJsErrorsOptions(skipJsErrorsOptions);
-
-        if (isSkipJsErrorsOptionsObject(preparedOptions))
-            validateSkipJsErrorsOptionsObject(preparedOptions, 'skipJsErrors', GeneralError);
-
-        this.configuration.mergeOptions({ skipJsErrors: preparedOptions });
+        if (isSkipJsErrorsOptionsObject(skipJsErrorsOptions))
+            validateSkipJsErrorsOptionsObject(skipJsErrorsOptions, 'skipJsErrors', GeneralError);
     }
 
     async _validateBrowsers () {
@@ -489,8 +484,8 @@ export default class Runner extends EventEmitter {
         this._validateRequestTimeoutOption(OPTION_NAMES.ajaxRequestTimeout);
         this._validateQuarantineOptions();
         this._validateConcurrencyOption();
+        this._validateSkipJsErrorsOption();
         await this._validateBrowsers();
-        await this._validateSkipJsErrorsOption();
     }
 
     _createRunnableConfiguration () {

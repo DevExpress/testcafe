@@ -449,7 +449,7 @@ export default class CLIArgumentParser {
     }
 
     private static _prepareBooleanOrObjectOption (argv: string[], optionNames: string[], subOptionsNames: string[]): void {
-        // NOTE: move all the boolOrObject options to the end of the array to avoid the wrong quarantine mode CLI options parsing (GH-6231)
+        // NOTE: move specific options to the end of the array to avoid the wrong parsing of options which can be represented in the boolean or object form (GH-6231)
         const optionIndex = argv.findIndex(
             el => optionNames.some(opt => el.startsWith(opt)));
 

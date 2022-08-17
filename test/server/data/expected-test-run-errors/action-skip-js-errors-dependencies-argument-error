@@ -1,4 +1,4 @@
-SkipJsErrors handler execution was interrupted by timeout.
+The skipJsErrors method dependencies argument is expected to be an object, but it was string.
 
 Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>

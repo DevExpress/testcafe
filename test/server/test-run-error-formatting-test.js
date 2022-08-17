@@ -101,6 +101,8 @@ const {
     ActionUrlSearchParamsOptionError,
     ActionObjectOptionError,
     ActionUrlArgumentError,
+    ActionSkipJsErrorsArgumentTypeError,
+    ActionSkipJsErrorsDependenciesArgumentTypeError,
 }                                             = require('../../lib/errors/test-run');
 const { ActionStringOrRegexOptionError }      = require('../../lib/shared/errors');
 
@@ -818,6 +820,14 @@ describe('Error formatting', () => {
 
         it('Should format "actionStringOrRegexOptionError"', () => {
             assertErrorMessage('action-string-or-regex-argument-error', new ActionStringOrRegexOptionError('SkipJsErrorsOptions.message', 'object'));
+        });
+
+        it('Should format "actionSkipJsErrorsArgumentTypeError"', () => {
+            assertErrorMessage('action-skip-js-errors-argument-error', new ActionSkipJsErrorsArgumentTypeError('options', 'string'));
+        });
+
+        it('Should format "actionSkipJsErrorsDependenciesArgumentTypeError"', () => {
+            assertErrorMessage('action-skip-js-errors-dependencies-argument-error', new ActionSkipJsErrorsDependenciesArgumentTypeError('dependencies', 'string'));
         });
     });
 

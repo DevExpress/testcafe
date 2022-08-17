@@ -753,7 +753,7 @@ describe('CLI argument parser', function () {
     });
 
     it('Should parse command line arguments', function () {
-        return parse('-r list -S -q -e message=testMessage,stack=testStack,pageUrl=testPageUrl --hostname myhost --base-url localhost:3000 --proxy localhost:1234 --proxy-bypass localhost:5678 --qr-code --app run-app --speed 0.5 --debug-on-fail --disable-page-reloads --retry-test-pages --dev --sf --disable-page-caching --disable-http2 --proxyless ie test/server/data/file-list/file-1.js')
+        return parse('-r list -S -q -e message=/testMessage/i,stack=testStack,pageUrl=testPageUrl --hostname myhost --base-url localhost:3000 --proxy localhost:1234 --proxy-bypass localhost:5678 --qr-code --app run-app --speed 0.5 --debug-on-fail --disable-page-reloads --retry-test-pages --dev --sf --disable-page-caching --disable-http2 --proxyless ie test/server/data/file-list/file-1.js')
             .then(parser => {
                 expect(parser.opts.browsers).eql(['ie']);
                 expect(parser.opts.src).eql(['test/server/data/file-list/file-1.js']);
@@ -765,9 +765,9 @@ describe('CLI argument parser', function () {
                 expect(parser.opts.screenshots.fullPage).to.be.undefined;
                 expect(parser.opts.screenshots.pathPattern).to.be.undefined;
                 expect(parser.opts.quarantineMode).to.be.ok;
-                expect(parser.opts.skipJsErrors.message).eql(/testMessage/);
-                expect(parser.opts.skipJsErrors.stack).eql(/testStack/);
-                expect(parser.opts.skipJsErrors.pageUrl).eql(/testPageUrl/);
+                expect(parser.opts.skipJsErrors.message).eql('/testMessage/i');
+                expect(parser.opts.skipJsErrors.stack).eql('testStack');
+                expect(parser.opts.skipJsErrors.pageUrl).eql('testPageUrl');
                 expect(parser.opts.dev).to.be.ok;
                 expect(parser.opts.speed).eql(0.5);
                 expect(parser.opts.qrCode).to.be.ok;

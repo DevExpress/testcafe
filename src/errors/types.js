@@ -98,6 +98,8 @@ export const TEST_RUN_ERRORS = {
     actionObjectOptionError:                               'E95',
     actionUrlArgumentError:                                'E96',
     actionStringOrRegexOptionError:                        'E97',
+    actionSkipJsErrorsArgumentError:                       'E98',
+    actionSkipJsErrorsDependenciesArgumentError:           'E99',
 };
 
 export const RUNTIME_ERRORS = {

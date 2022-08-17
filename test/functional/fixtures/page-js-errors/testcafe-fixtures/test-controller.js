@@ -29,7 +29,7 @@ test('Should fail with callback function', async t => {
         .click('button');
 });
 
-test('Should fail if message option doesn\'t satisfy the client error message', async t => {
+test("Should fail if message option doesn't satisfy the client error message", async t => {
     await t.skipJsErrors({
         message: /incorrect message/,
         pageUrl: CLIENT_PAGE_URL_REGEXP,

@@ -48,11 +48,7 @@ import {
 import { SetNativeDialogHandlerCodeWrongTypeError } from '../../errors/test-run';
 import { ExecuteClientFunctionCommand } from './observation';
 import { camelCase } from 'lodash';
-import {
-    createSkipJsErrorsClientFunction,
-    createSkipJsErrorsTemplateFunction, isSkipJsErrorsCallback,
-    isSkipJsErrorsOptionsObject,
-} from '../../utils/skip-js-errorrs';
+import { prepareSkipJsErrorsOptions, isSkipJsErrorsOptionsObject } from '../../api/skip-js-errors';
 
 
 // Initializers
@@ -112,7 +108,7 @@ function initDialogHandler (name, val, { skipVisibilityCheck, testRun }) {
     else
         builder = new ClientFunctionBuilder(fn, options, { instantiation: methodName, execution: methodName });
 
-    return builder.getCommand([]);
+    return builder.getCommand();
 }
 
 function initCookiesOption (name, val, initOptions, validate = true) {
@@ -131,15 +127,10 @@ function initSkipJsErrorsOptions (name, val, initOptions, validate = true) {
     if (val === void 0)
         return true;
 
-    if (isSkipJsErrorsOptionsObject(val)) {
-        const options = new SkipJsErrorsOptions(val, validate);
+    if (isSkipJsErrorsOptionsObject(val))
+        val = new SkipJsErrorsOptions(val, validate);
 
-        return createSkipJsErrorsTemplateFunction(options);
-    }
-    if (isSkipJsErrorsCallback(val))
-        return createSkipJsErrorsClientFunction(val);
-
-    return val;
+    return prepareSkipJsErrorsOptions(val);
 }
 
 // Commands

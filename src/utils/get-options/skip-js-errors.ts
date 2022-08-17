@@ -3,7 +3,6 @@ import SKIP_JS_ERRORS_OPTION_NAMES from '../../configuration/skip-js-errors-opti
 import { RUNTIME_ERRORS } from '../../errors/types';
 import { GeneralError } from '../../errors/runtime';
 import { Dictionary } from '../../configuration/interfaces';
-import { parseRegExpString } from '../make-reg-exp';
 
 function _isSkipJsOption (option: string): option is SKIP_JS_ERRORS_OPTION_NAMES {
     return Object.values(SKIP_JS_ERRORS_OPTION_NAMES).includes(option as SKIP_JS_ERRORS_OPTION_NAMES);
@@ -14,7 +13,7 @@ export function validateSkipJsErrorsOptionsObject (options: Dictionary<unknown> 
         throw new ErrorCtor(RUNTIME_ERRORS.invalidSkipJsErrorsOption, optionName);
 }
 
-export async function getSkipJsErrorsOptions (optionName: string, options: string | boolean | Dictionary<string | RegExp>): Promise<Dictionary<RegExp> | boolean> {
+export async function getSkipJsErrorsOptions (optionName: string, options: string | boolean | Dictionary<string | RegExp>): Promise<Dictionary<RegExp|string> | boolean> {
     if (typeof options === 'boolean')
         return options;
 
@@ -23,7 +22,7 @@ export async function getSkipJsErrorsOptions (optionName: string, options: strin
             if (!key || !value)
                 throw new GeneralError(RUNTIME_ERRORS.optionValueIsNotValidKeyValue, optionName);
 
-            return value instanceof RegExp ? value : parseRegExpString(value);
+            return value;
         },
     });
 

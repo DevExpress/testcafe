@@ -74,7 +74,7 @@ function makeSelector (str, skipVisibilityCheck, needError, strictError) {
         visibilityCheck: !skipVisibilityCheck,
         needError, strictError,
     }, { instantiation: 'Selector' });
-    const command = builder.getCommand([]);
+    const command = builder.getCommand();
 
     command.actionId = 'child-command-selector';
 

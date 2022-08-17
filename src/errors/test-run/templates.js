@@ -442,4 +442,12 @@ export default {
     [TEST_RUN_ERRORS.actionUrlArgumentError]: err => `
         The "${err.argumentName}" argument is expected to be an URL or a string, but it was ${err.actualValue}.
     `,
+
+    [TEST_RUN_ERRORS.actionSkipJsErrorsArgumentError]: err => `
+        The skipJsErrors method "${err.argumentName}" argument is expected to be a boolean, object or a function, but it was ${err.actualValue}.
+    `,
+
+    [TEST_RUN_ERRORS.actionSkipJsErrorsDependenciesArgumentError]: err => `
+        The skipJsErrors method dependencies argument is expected to be an object, but it was ${err.actualValue}.
+    `,
 };
