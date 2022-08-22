@@ -14,9 +14,11 @@ import RequestHook from '../request-hooks/hook';
 import ClientScriptInit from '../../custom-client-scripts/client-script-init';
 import TestFile from './test-file';
 import { AuthCredentials, Metadata } from './interfaces';
-import { Dictionary, SkipJsErrorsHandler } from '../../configuration/interfaces';
+import {
+    Dictionary, SkipJsErrorsCallback, SkipJsErrorsCallbackOptions,
+} from '../../configuration/interfaces';
 import { dirname } from 'path';
-import { ensureSkipJsErrorsCallbackWrapped, isSkipJsErrorsOptionsObject } from '../skip-js-errors';
+import { isSkipJsErrorsOptionsObject } from '../skip-js-errors';
 import { validateSkipJsErrorsOptionsObject } from '../../utils/get-options/skip-js-errors';
 import { APIError } from '../../errors/runtime';
 
@@ -35,7 +37,7 @@ export default abstract class TestingUnit extends BaseUnit {
     public disablePageCaching: boolean;
     public apiMethodWasCalled: FlagList;
     public apiOrigin: Function;
-    public skipJsErrorsOptions?: boolean | SkipJsErrorsOptions | SkipJsErrorsCallback;
+    public skipJsErrorsOptions?: boolean | SkipJsErrorsOptions | SkipJsErrorsCallback| SkipJsErrorsCallbackOptions;
 
     protected constructor (testFile: TestFile, unitType: UnitType, pageUrl: string, baseUrl?: string) {
         super(unitType);
@@ -107,11 +109,10 @@ export default abstract class TestingUnit extends BaseUnit {
         return this.apiOrigin;
     }
 
-    private _skipJsErrors$ (options: boolean | SkipJsErrorsOptions | SkipJsErrorsHandler = true, dependencies: { [key: string]: any } = {}): Function {
+    private _skipJsErrors$ (options: boolean | SkipJsErrorsOptions | SkipJsErrorsCallback | SkipJsErrorsCallbackOptions = true): Function {
         assertType([ is.boolean, is.nonNullObject, is.function ], 'skipJsErrors', 'The skipJsErrors options argument', options);
-        assertType(is.nonNullObject, 'skipJsErrors', 'The skipJsErrors dependencies argument', dependencies);
 
-        this.skipJsErrorsOptions = ensureSkipJsErrorsCallbackWrapped(options, dependencies);
+        this.skipJsErrorsOptions = options;
 
         if (isSkipJsErrorsOptionsObject(this.skipJsErrorsOptions))
             validateSkipJsErrorsOptionsObject(this.skipJsErrorsOptions, 'skipJsErrors', APIError);

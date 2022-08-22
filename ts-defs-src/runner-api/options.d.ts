@@ -194,16 +194,11 @@ interface QuarantineModeOptions {
     successThreshold?: number;
 }
 
-interface SkipJsErrorsCallback {
-    fn: SkipJsErrorsHandler;
-    dependencies: { [key: string]: unknown };
-}
-
 interface RunOptions {
     /**
      * Defines whether to continue running a test after a JavaScript error occurs on a page (`true`), or consider such a test failed (`false`).
      */
-    skipJsErrors: boolean | SkipJsErrorsOptions | SkipJsErrorsCallback;
+    skipJsErrors: boolean | SkipJsErrorsOptions | SkipJsErrorsCallbackOptions;
     /**
      * Defines whether to continue running a test after an uncaught error or unhandled promise rejection occurs on the server (`true`), or consider such a test failed (`false`).
      */

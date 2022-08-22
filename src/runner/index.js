@@ -51,7 +51,7 @@ import { validateQuarantineOptions } from '../utils/get-options/quarantine';
 import logEntry from '../utils/log-entry';
 import MessageBus from '../utils/message-bus';
 import getEnvOptions from '../dashboard/get-env-options';
-import { ensureSkipJsErrorsCallbackWrapped, isSkipJsErrorsOptionsObject } from '../api/skip-js-errors';
+import { isSkipJsErrorsOptionsObject } from '../api/skip-js-errors';
 import { validateSkipJsErrorsOptionsObject } from '../utils/get-options/skip-js-errors';
 
 const DEBUG_LOGGER            = debug('testcafe:runner');
@@ -744,12 +744,6 @@ export default class Runner extends EventEmitter {
 
     compilerOptions (opts) {
         this._options[OPTION_NAMES.compilerOptions] = opts;
-
-        return this;
-    }
-
-    skipJsErrors (opts, deps) {
-        this._options[OPTION_NAMES.skipJsErrors] = ensureSkipJsErrorsCallbackWrapped(opts, deps);
 
         return this;
     }

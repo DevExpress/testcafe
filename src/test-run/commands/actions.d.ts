@@ -265,5 +265,5 @@ export class GetProxyUrlCommand extends ActionCommandBase {
 
 export class SkipJsErrorsCommand extends ActionCommandBase {
     public constructor (obj: object, testRun: TestRun, validateProperties: boolean);
-    public options: SkipJsErrorsOptions | SkipJsErrorsCallback | boolean;
+    public options: SkipJsErrorsOptions | SkipJsErrorsCallbackOptions | boolean;
 }

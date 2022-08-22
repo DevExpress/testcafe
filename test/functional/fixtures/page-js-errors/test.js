@@ -5,7 +5,7 @@ const {
     CLIENT_ERROR_MESSAGE,
     CLIENT_PAGE_URL,
     CALLBACK_FUNC_ERROR,
-    CLIENT_ERROR_REGEXP,
+    CLIENT_ERROR_REGEXP, SKIP_JS_ERRORS_CALLBACK_OPTIONS,
 } = require('./constants');
 
 const { createReporter } = require('../../utils/reporter');
@@ -98,12 +98,12 @@ const expectFailAttempt = (errors, expectedMessage) => {
             return runTests('./testcafe-fixtures/test-controller.js', 'Should skip JS errors with multiple options');
         });
 
-        it('Should skip JS errors with callback function', async () => {
-            return runTests('./testcafe-fixtures/test-controller.js', 'Should skip JS errors with callback function');
+        it('Should skip JS errors with SkipJsErrorsCallbackOptions', async () => {
+            return runTests('./testcafe-fixtures/test-controller.js', 'Should skip JS errors with SkipJsErrorsCallbackOptions');
         });
 
-        it('Should skip JS errors with async callback function', async () => {
-            return runTests('./testcafe-fixtures/test-controller.js', 'Should skip JS errors, with async callback function', { skip: ['ie'] });
+        it('Should skip JS errors with callback function returning Promise', async () => {
+            return runTests('./testcafe-fixtures/test-controller.js', 'Should skip JS errors with callback function returning Promise', { skip: ['ie'] });
         });
 
         it('Should skip first error and fail on second error when skipJsError method called twice', async () => {
@@ -137,7 +137,7 @@ const expectFailAttempt = (errors, expectedMessage) => {
         });
 
         it("Should fail if callback function logic doesn't satisfy the client error message", async () => {
-            return runTests('./testcafe-fixtures/test-controller.js', 'Should fail with callback function', { shouldFail: true })
+            return runTests('./testcafe-fixtures/test-controller.js', 'Should fail with SkipJsErrorsCallbackOptions', { shouldFail: true })
                 .catch(errs => {
                     expectFailAttempt(errs, CLIENT_ERROR_MESSAGE);
                 });
@@ -171,10 +171,8 @@ const expectFailAttempt = (errors, expectedMessage) => {
             return runTests('./testcafe-fixtures/runner.js', 'Throw client error', { skipJsErrors });
         });
 
-        it('Should skip errors with SkipJsErrors callback function specified in run options', () => {
-            const fn           = ({ message, pageUrl }) => message === CLIENT_ERROR_MESSAGE && pageUrl === CLIENT_PAGE_URL;
-            const dependencies = { CLIENT_ERROR_MESSAGE, CLIENT_PAGE_URL };
-            const skipJsErrors = { fn, dependencies };
+        it('Should skip errors with SkipJsErrorsCallbackOptions specified in run options', () => {
+            const skipJsErrors = SKIP_JS_ERRORS_CALLBACK_OPTIONS;
 
             return runTests('./testcafe-fixtures/runner.js', 'Throw client error', { skipJsErrors });
         });

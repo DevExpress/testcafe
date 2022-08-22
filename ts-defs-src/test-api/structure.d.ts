@@ -146,7 +146,7 @@ interface FixtureFn {
      * @param fn - Callback function.
      * @param dependencies - Any objects or variables used in the context of the function.
      */
-    skipJsErrors (fn: (options: SkipJsErrorsOptions) => boolean, dependencies?: { [key: string]: any }): this;
+    skipJsErrors (options: SkipJsErrorsCallback | SkipJsErrorsCallbackOptions): this;
 }
 
 interface TestFn {
@@ -247,5 +247,5 @@ interface TestFn {
      * @param fn - Callback function.
      * @param dependencies - Any objects or variables used in the context of the function.
      */
-    skipJsErrors (fn: (options: SkipJsErrorsOptions) => boolean, dependencies?: { [key: string]: any }): this;
+    skipJsErrors (options: SkipJsErrorsCallback | SkipJsErrorsCallbackOptions): this;
 }

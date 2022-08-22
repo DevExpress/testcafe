@@ -5,6 +5,8 @@
 
 import { RUNTIME_ERRORS } from '../types';
 import BrowserConnectionErrorHint from '../../browser/connection/error-hints';
+import { getConcatenatedValuesString } from '../../utils/string';
+import SKIP_JS_ERRORS_OPTION_NAMES from '../../configuration/skip-js-errors-option-names';
 
 const DOCUMENTATION_LINKS = {
     TEST_SOURCE_PARAMETER: 'https://testcafe.io/documentation/402639/reference/command-line-interface#file-pathglob-pattern',
@@ -134,5 +136,5 @@ export default {
     [RUNTIME_ERRORS.relativeBaseUrl]:                     'The value of the baseUrl argument cannot be relative: "{baseUrl}"',
     [RUNTIME_ERRORS.requestUrlInvalidValueError]:         'Requested url isn\'t valid ({actualValue}).',
     [RUNTIME_ERRORS.requestRuntimeError]:                 'Requested was interrupted with error:\n{message}',
-    [RUNTIME_ERRORS.invalidSkipJsErrorsOption]:           'The "{optionName}" option does not exist. The only "message", "stack" and "pageUrl" options can be used to configure skipJsErrors',
+    [RUNTIME_ERRORS.invalidSkipJsErrorsOption]:           `The "{optionName}" option does not exist. The only ${getConcatenatedValuesString(Object.values(SKIP_JS_ERRORS_OPTION_NAMES))} options can be used to configure skipJsErrors`,
 };

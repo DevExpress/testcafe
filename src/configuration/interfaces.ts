@@ -18,15 +18,15 @@ export interface SkipJsErrorsOptions {
     pageUrl?: string | RegExp;
 }
 
-export type SkipJsErrorsHandler = (opts: { message: string; stack: string; pageUrl: string }) => boolean;
+export type SkipJsErrorsCallback = (opts?: { message: string; stack: string; pageUrl: string }) => boolean;
 
-export interface SkipJsErrorsCallback {
-    fn: SkipJsErrorsHandler;
+export interface SkipJsErrorsCallbackOptions {
+    fn: SkipJsErrorsCallback;
     dependencies?: Dictionary<any>;
 }
 
 export interface RunnerRunOptions {
-    skipJsErrors?: boolean | SkipJsErrorsOptions | SkipJsErrorsCallback;
+    skipJsErrors?: SkipJsErrorsOptionValue | SkipJsErrorsCallback | SkipJsErrorsCallbackOptions;
     skipUncaughtErrors?: boolean;
     debugMode?: boolean;
     debugOnFail?: boolean;

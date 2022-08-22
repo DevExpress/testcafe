@@ -164,17 +164,6 @@ interface Runner {
      * Specifies custom compiler options for built-in test file compilers.
      */
     compilerOptions(compilerOptions: CompilerOptions): this;
-
-    /**
-     * Specifies custom skipJsErrors options for all tests.
-     */
-    skipJsErrors(options?: boolean | SkipJsErrorsOptions): this;
-
-    /**
-     * Specifies custom skipJsErrors handler for all tests.
-     */
-    skipJsErrors(fn: SkipJsErrorsHandler, dependencies?: {[key: string]: any}): this;
-
 }
 
 interface TestCafeFactory {

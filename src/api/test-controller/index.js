@@ -82,7 +82,6 @@ import ReExecutablePromise from '../../utils/re-executable-promise';
 import sendRequest from '../../test-run/request/send';
 import { RequestRuntimeError } from '../../errors/runtime';
 import { RUNTIME_ERRORS } from '../../errors/types';
-import { ensureSkipJsErrorsCallbackWrapped } from '../skip-js-errors';
 
 const originalThen = Promise.resolve().then;
 
@@ -609,9 +608,7 @@ export default class TestController {
         return this._enqueueCommand(UseRoleCommand, { role });
     }
 
-    [delegatedAPI(SkipJsErrorsCommand.methodName)] (opts, dependencies) {
-        const options = ensureSkipJsErrorsCallbackWrapped(opts, dependencies);
-
+    [delegatedAPI(SkipJsErrorsCommand.methodName)] (options) {
         return this._enqueueCommand(SkipJsErrorsCommand, { options });
     }
 
