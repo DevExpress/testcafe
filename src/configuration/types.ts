@@ -1,5 +1,4 @@
 const RequestHook = require('../api/request-hooks/hook');
-const SkipJsErrorsOptions = require('./interfaces');
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 type TemplateArguments = any[];
@@ -18,7 +17,7 @@ interface QuarantineOptionValue {
     successThreshold?: number;
 }
 
-type SkipJsErrorsOptionValue = SkipJsErrorsOptions | boolean;
+type SkipJsErrorsOptionValue = SkipJsErrorsOptionsObject | boolean;
 
 interface TestingEntryHooks {
     before?: Function;

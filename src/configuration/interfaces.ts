@@ -12,7 +12,7 @@ export interface Dictionary<T> {
     [key: string]: T;
 }
 
-export interface SkipJsErrorsOptions {
+export interface SkipJsErrorsOptionsObject {
     stack?: string | RegExp;
     message?: string | RegExp;
     pageUrl?: string | RegExp;
@@ -20,13 +20,13 @@ export interface SkipJsErrorsOptions {
 
 export type SkipJsErrorsCallback = (opts?: { message: string; stack: string; pageUrl: string }) => boolean;
 
-export interface SkipJsErrorsCallbackOptions {
+export interface SkipJsErrorsCallbackWithOptionsObject {
     fn: SkipJsErrorsCallback;
     dependencies?: Dictionary<any>;
 }
 
 export interface RunnerRunOptions {
-    skipJsErrors?: SkipJsErrorsOptionValue | SkipJsErrorsCallback | SkipJsErrorsCallbackOptions;
+    skipJsErrors?: SkipJsErrorsOptionValue | SkipJsErrorsCallback | SkipJsErrorsCallbackWithOptionsObject;
     skipUncaughtErrors?: boolean;
     debugMode?: boolean;
     debugOnFail?: boolean;

@@ -8,7 +8,7 @@ function _isSkipJsOption (option: string): option is SKIP_JS_ERRORS_OPTION_NAMES
     return Object.values(SKIP_JS_ERRORS_OPTION_NAMES).includes(option as SKIP_JS_ERRORS_OPTION_NAMES);
 }
 
-export function validateSkipJsErrorsOptionsObject (options: Dictionary<unknown> | SkipJsErrorsOptions, optionName: string, ErrorCtor: any): void {
+export function validateSkipJsErrorsOptionsObject (options: Dictionary<unknown> | SkipJsErrorsOptionsObject, optionName: string, ErrorCtor: any): void {
     if (Object.keys(options).some(key => !_isSkipJsOption(key)))
         throw new ErrorCtor(RUNTIME_ERRORS.invalidSkipJsErrorsOption, optionName);
 }

@@ -1,13 +1,15 @@
 import escapeRegExp from 'lodash/escapeRegExp';
 
+const SPLIT_INPUT_AND_FLAGS_REG_EXP = /^\/(.*?)\/([gim]*)$/;
+
 export function parseRegExpString (regExp) {
     if (typeof regExp !== 'string')
         return regExp;
 
-    const containFlags = regExp.match(/^\/(.*?)\/([gim]*)$/);
+    const parsedRegExpWithFlags = regExp.match(SPLIT_INPUT_AND_FLAGS_REG_EXP);
 
-    if (containFlags)
-        return makeRegExp(containFlags[1], containFlags[2]);
+    if (parsedRegExpWithFlags)
+        return makeRegExp(parsedRegExpWithFlags[1], parsedRegExpWithFlags[2]);
 
     return makeRegExp(regExp);
 }

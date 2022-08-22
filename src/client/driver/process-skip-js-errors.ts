@@ -1,4 +1,4 @@
-import { SkipJsErrorsOptions } from '../../configuration/interfaces';
+import { SkipJsErrorsOptionsObject } from '../../configuration/interfaces';
 import ClientFunctionExecutor from './command-executors/client-functions/client-function-executor';
 import { isClientFunctionCommand } from '../../test-run/commands/utils';
 
@@ -10,7 +10,7 @@ export async function shouldSkipJsError (options: boolean, err: any): Promise<bo
 }
 
 function processJsErrorsFunction (processingFunction: any, err: any): Promise<boolean> {
-    const opts: SkipJsErrorsOptions = {
+    const opts: SkipJsErrorsOptionsObject = {
         stack:   err.stack,
         pageUrl: err.pageUrl,
         message: err.msg,

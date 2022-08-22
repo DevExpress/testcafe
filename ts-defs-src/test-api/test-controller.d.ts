@@ -535,18 +535,11 @@ interface TestController {
     request: Request;
 
     /**
-     * Set skipJsErrors options
+     * Set skipJsError options.
      *
-     * @param options - options or boolean.
+     * @param options - Boolean flag, options object or callback function that should be used to skip client errors.
      */
-    skipJsErrors (options?: boolean | SkipJsErrorsOptions): TestControllerPromise;
-
-    /**
-     * Set a handler function that will be called for each error.
-     *
-     * @param options - SkipJsErrorsCallbackOptions or SkipJsErrorsCallback.
-     */
-    skipJsErrors (options: SkipJsErrorsCallback | SkipJsErrorsCallbackOptions): TestControllerPromise;
+    skipJsErrors (options?: boolean | SkipJsErrorsOptionsObject | SkipJsErrorsCallback | SkipJsErrorsCallbackWithOptionsObject): this;
 }
 
 interface TestControllerPromise<T=any> extends TestController, Promise<T> {

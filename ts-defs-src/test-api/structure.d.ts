@@ -136,16 +136,9 @@ interface FixtureFn {
     /**
      * Set skipJsError options.
      *
-     * @param options - boolean flag or SkipJsErrorsOptions.
+     * @param options - Boolean flag, options object or callback function that should be used to skip client errors.
      */
-    skipJsErrors (options?: boolean | SkipJsErrorsOptions): this;
-
-    /**
-     * Set a handler function that will be called for each error.
-     *
-     * @param options - SkipJsErrorsCallbackOptions or SkipJsErrorsCallback.
-     */
-    skipJsErrors (options: SkipJsErrorsCallback | SkipJsErrorsCallbackOptions): this;
+    skipJsErrors (options?: boolean | SkipJsErrorsOptionsObject | SkipJsErrorsCallback | SkipJsErrorsCallbackWithOptionsObject): this;
 }
 
 interface TestFn {
@@ -236,14 +229,7 @@ interface TestFn {
     /**
      * Set skipJsError options.
      *
-     * @param options - boolean flag or SkipJsErrorsOptions.
+     * @param options - Boolean flag, options object or callback function that should be used to skip client errors.
      */
-    skipJsErrors (options?: boolean | SkipJsErrorsOptions): this;
-
-    /**
-     * Set a handler function that will be called for each error.
-     *
-     * @param options - SkipJsErrorsCallbackOptions or SkipJsErrorsCallback.
-     */
-    skipJsErrors (options: SkipJsErrorsCallback | SkipJsErrorsCallbackOptions): this;
+    skipJsErrors (options?: boolean | SkipJsErrorsOptionsObject | SkipJsErrorsCallback | SkipJsErrorsCallbackWithOptionsObject): this;
 }

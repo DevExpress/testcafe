@@ -3,12 +3,12 @@
 
 type SkipJsErrorsCallback = (opts?: {message: string; stack: string; pageUrl: string }) => boolean;
 
-interface SkipJsErrorsCallbackOptions {
+interface SkipJsErrorsCallbackWithOptionsObject {
     fn: SkipJsErrorsCallback;
     dependencies?: { [key: string]: any };
 }
 
-interface SkipJsErrorsOptions {
+interface SkipJsErrorsOptionsObject {
     message?: string | RegExp;
     stack?: string | RegExp;
     pageUrl?: string | RegExp;

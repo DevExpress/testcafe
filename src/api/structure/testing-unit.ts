@@ -15,7 +15,7 @@ import ClientScriptInit from '../../custom-client-scripts/client-script-init';
 import TestFile from './test-file';
 import { AuthCredentials, Metadata } from './interfaces';
 import {
-    Dictionary, SkipJsErrorsCallback, SkipJsErrorsCallbackOptions,
+    Dictionary, SkipJsErrorsCallback, SkipJsErrorsCallbackWithOptionsObject,
 } from '../../configuration/interfaces';
 import { dirname } from 'path';
 import { isSkipJsErrorsOptionsObject } from '../skip-js-errors';
@@ -37,7 +37,7 @@ export default abstract class TestingUnit extends BaseUnit {
     public disablePageCaching: boolean;
     public apiMethodWasCalled: FlagList;
     public apiOrigin: Function;
-    public skipJsErrorsOptions?: boolean | SkipJsErrorsOptions | SkipJsErrorsCallback| SkipJsErrorsCallbackOptions;
+    public skipJsErrorsOptions?: boolean | SkipJsErrorsOptionsObject | SkipJsErrorsCallback| SkipJsErrorsCallbackWithOptionsObject;
 
     protected constructor (testFile: TestFile, unitType: UnitType, pageUrl: string, baseUrl?: string) {
         super(unitType);
@@ -109,7 +109,7 @@ export default abstract class TestingUnit extends BaseUnit {
         return this.apiOrigin;
     }
 
-    private _skipJsErrors$ (options: boolean | SkipJsErrorsOptions | SkipJsErrorsCallback | SkipJsErrorsCallbackOptions = true): Function {
+    private _skipJsErrors$ (options: boolean | SkipJsErrorsOptionsObject | SkipJsErrorsCallback | SkipJsErrorsCallbackWithOptionsObject = true): Function {
         assertType([ is.boolean, is.nonNullObject, is.function ], 'skipJsErrors', 'The skipJsErrors options argument', options);
 
         this.skipJsErrorsOptions = options;

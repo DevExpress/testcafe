@@ -533,7 +533,7 @@ export default class TestRun extends AsyncEventEmitter {
     private _prepareSkipJsErrorsOption (): boolean | ExecuteClientFunctionCommand {
         const options = this.test.skipJsErrorsOptions !== void 0
             ? this.test.skipJsErrorsOptions
-            : this.opts.skipJsErrors as SkipJsErrorsOptions | boolean || false;
+            : this.opts.skipJsErrors as SkipJsErrorsOptionsObject | boolean || false;
 
         return prepareSkipJsErrorsOptions(options);
     }
