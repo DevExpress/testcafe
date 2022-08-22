@@ -141,10 +141,9 @@ interface FixtureFn {
     skipJsErrors (options?: boolean | SkipJsErrorsOptions): this;
 
     /**
-     * Set skipJsError handler.
+     * Set a handler function that will be called for each error.
      *
-     * @param fn - Callback function.
-     * @param dependencies - Any objects or variables used in the context of the function.
+     * @param options - SkipJsErrorsCallbackOptions or SkipJsErrorsCallback.
      */
     skipJsErrors (options: SkipJsErrorsCallback | SkipJsErrorsCallbackOptions): this;
 }
@@ -242,10 +241,9 @@ interface TestFn {
     skipJsErrors (options?: boolean | SkipJsErrorsOptions): this;
 
     /**
-     * Set skipJsError handler.
+     * Set a handler function that will be called for each error.
      *
-     * @param fn - Callback function.
-     * @param dependencies - Any objects or variables used in the context of the function.
+     * @param options - SkipJsErrorsCallbackOptions or SkipJsErrorsCallback.
      */
     skipJsErrors (options: SkipJsErrorsCallback | SkipJsErrorsCallbackOptions): this;
 }

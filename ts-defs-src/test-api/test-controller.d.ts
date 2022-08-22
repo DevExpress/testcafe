@@ -542,10 +542,9 @@ interface TestController {
     skipJsErrors (options?: boolean | SkipJsErrorsOptions): TestControllerPromise;
 
     /**
-     * Set skipJsErrors handler
+     * Set a handler function that will be called for each error.
      *
-     * @param fn - A callback function that will be called for each client error.
-     * @param dependencies - Any objects or variables used in the context of the function.
+     * @param options - SkipJsErrorsCallbackOptions or SkipJsErrorsCallback.
      */
     skipJsErrors (options: SkipJsErrorsCallback | SkipJsErrorsCallbackOptions): TestControllerPromise;
 }
