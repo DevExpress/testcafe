@@ -11,12 +11,12 @@ const SKIP_JS_ERRORS_OBJECT_FUNCTION = `
                 return stack.test(err.stack) && pageUrl.test(err.pageUrl) && message.test(err.message);
         `;
 
-export function isSkipJsErrorsCallbackOptions (obj: unknown): obj is SkipJsErrorsCallbackWithOptionsObject {
+export function isSkipJsErrorsCallbackWithOptionsObject (obj: unknown): obj is SkipJsErrorsCallbackWithOptionsObject {
     return obj && typeof obj === 'object' && 'fn' in obj;
 }
 
 export function isSkipJsErrorsOptionsObject (obj: unknown): obj is SkipJsErrorsOptionsObject {
-    return obj && typeof obj === 'object' && !isSkipJsErrorsCallbackOptions(obj);
+    return obj && typeof obj === 'object' && !isSkipJsErrorsCallbackWithOptionsObject(obj);
 }
 
 export function ensureSkipJsErrorsCallbackWrapped (options: boolean | SkipJsErrorsOptionsObject | SkipJsErrorsCallback | SkipJsErrorsCallbackWithOptionsObject, dependencies: Dictionary<any> = {}): SkipJsErrorsOptionsObject | SkipJsErrorsCallbackWithOptionsObject | boolean {
@@ -33,7 +33,7 @@ function wrapSkipJsErrorsCallback (options: SkipJsErrorsCallback, dependencies: 
 export function prepareSkipJsErrorsOptions (options: boolean | SkipJsErrorsOptionsObject | SkipJsErrorsCallback | SkipJsErrorsCallbackWithOptionsObject): boolean | ExecuteClientFunctionCommand {
     options = ensureSkipJsErrorsCallbackWrapped(options);
 
-    if (isSkipJsErrorsCallbackOptions(options))
+    if (isSkipJsErrorsCallbackWithOptionsObject(options))
         return createSkipJsErrorsCallbackFunction(options);
 
     if (isSkipJsErrorsOptionsObject(options))

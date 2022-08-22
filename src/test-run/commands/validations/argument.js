@@ -36,7 +36,7 @@ import { URL } from 'url';
 import { assertPageUrl } from '../../../api/test-page-url';
 import checkFilePath from '../../../utils/check-file-path';
 import { castArray } from 'lodash';
-import { isSkipJsErrorsCallbackOptions } from '../../../api/skip-js-errors';
+import { isSkipJsErrorsCallbackWithOptionsObject } from '../../../api/skip-js-errors';
 
 
 // Validators
@@ -196,6 +196,6 @@ export function skipJsErrorOptions (name, val) {
     if (valType !== 'undefined' && valType !== 'object' && valType !== 'boolean' && valType !== 'function')
         throw new ActionSkipJsErrorsArgumentTypeError(name, valType);
 
-    if (isSkipJsErrorsCallbackOptions(val) && val.dependencies && typeof val.dependencies !== 'object')
+    if (isSkipJsErrorsCallbackWithOptionsObject(val) && val.dependencies && typeof val.dependencies !== 'object')
         throw new ActionSkipJsErrorsDependenciesArgumentTypeError('dependencies', typeof dependencies);
 }
