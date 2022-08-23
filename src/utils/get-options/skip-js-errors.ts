@@ -8,9 +8,11 @@ function _isSkipJsOption (option: string): option is SKIP_JS_ERRORS_OPTION_NAMES
     return Object.values(SKIP_JS_ERRORS_OPTION_NAMES).includes(option as SKIP_JS_ERRORS_OPTION_NAMES);
 }
 
-export function validateSkipJsErrorsOptionsObject (options: Dictionary<unknown> | SkipJsErrorsOptionsObject, optionName: string, ErrorCtor: any): void {
-    if (Object.keys(options).some(key => !_isSkipJsOption(key)))
-        throw new ErrorCtor(RUNTIME_ERRORS.invalidSkipJsErrorsOption, optionName);
+export function validateSkipJsErrorsOptionsObject (options: Dictionary<unknown> | SkipJsErrorsOptionsObject, ErrorCtor: any): void {
+    for (const key in options) {
+        if (!_isSkipJsOption(key))
+            throw new ErrorCtor(RUNTIME_ERRORS.invalidSkipJsErrorsOption, key);
+    }
 }
 
 export async function getSkipJsErrorsOptions (optionName: string, options: string | boolean | Dictionary<string | RegExp>): Promise<Dictionary<RegExp|string> | boolean> {
@@ -26,7 +28,7 @@ export async function getSkipJsErrorsOptions (optionName: string, options: strin
         },
     });
 
-    validateSkipJsErrorsOptionsObject(parsedOptions, optionName, GeneralError);
+    validateSkipJsErrorsOptionsObject(parsedOptions, GeneralError);
 
     return parsedOptions;
 }

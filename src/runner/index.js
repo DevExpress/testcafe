@@ -314,7 +314,7 @@ export default class Runner extends EventEmitter {
             return;
 
         if (isSkipJsErrorsOptionsObject(skipJsErrorsOptions))
-            validateSkipJsErrorsOptionsObject(skipJsErrorsOptions, 'skipJsErrors', GeneralError);
+            validateSkipJsErrorsOptionsObject(skipJsErrorsOptions, GeneralError);
     }
 
     async _validateBrowsers () {
@@ -469,7 +469,7 @@ export default class Runner extends EventEmitter {
         const quarantineMode = this.configuration.getOption(OPTION_NAMES.quarantineMode);
 
         if (typeof quarantineMode === 'object')
-            validateQuarantineOptions(quarantineMode, OPTION_NAMES.quarantineMode);
+            validateQuarantineOptions(quarantineMode);
     }
 
     async _validateRunOptions () {

@@ -115,7 +115,7 @@ export default abstract class TestingUnit extends BaseUnit {
         this.skipJsErrorsOptions = options;
 
         if (isSkipJsErrorsOptionsObject(this.skipJsErrorsOptions))
-            validateSkipJsErrorsOptionsObject(this.skipJsErrorsOptions, 'skipJsErrors', APIError);
+            validateSkipJsErrorsOptionsObject(this.skipJsErrorsOptions, APIError);
 
         return this.apiOrigin;
     }
