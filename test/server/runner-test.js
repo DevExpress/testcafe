@@ -1234,7 +1234,7 @@ describe('Runner', () => {
             await checkQuarantineOptions({ quarantineMode: { attemptLimit: 1 } }, 'The "attemptLimit" parameter only accepts values of 2 and up.');
             await checkQuarantineOptions({ quarantineMode: { attemptLimit: 0 } }, 'The "attemptLimit" parameter only accepts values of 2 and up.');
             await checkQuarantineOptions({ quarantineMode: { successThreshold: 0 } }, 'The "successThreshold" parameter only accepts values of 1 and up.');
-            await checkQuarantineOptions({ quarantineMode: { test: '1' } }, 'The "quarantineMode" option does not exist. Specify "attemptLimit" and "successThreshold" to configure quarantine mode.');
+            await checkQuarantineOptions({ quarantineMode: { test: '1' } }, 'The "test" option does not exist. Specify "attemptLimit" and "successThreshold" to configure quarantine mode.');
 
             expect(errorCount).eql(6);
         });
