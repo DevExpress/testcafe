@@ -639,18 +639,17 @@ export default class TestRun extends AsyncEventEmitter {
             await this._executeTestFn(TestRunPhase.inTestAfterHook, this.test.globalAfterFn, this.executionTimeout);
     }
 
-    private async _finalizeTestRun (id: string): Promise<void> {
-        if (this.compilerService) {
-            const warnings = await this.compilerService.getWarningMessages({ testRunId: id });
+    private async _finalizeTestRunInCompilerService (id: string): Promise<void> {
+        if (!this.compilerService)
+            return;
 
-            warnings.forEach(warning => {
-                this.warningLog.addWarning(warning);
-            });
+        const warnings = await this.compilerService.getWarningMessages({ testRunId: id });
 
-            await this.compilerService.removeTestRunFromState({ testRunId: id });
-        }
+        warnings.forEach(warning => {
+            this.warningLog.addWarning(warning);
+        });
 
-        testRunTracker.removeActiveTestRun(id);
+        await this.compilerService.removeTestRunFromState({ testRunId: id });
     }
 
     public async start (): Promise<void> {
@@ -686,13 +685,15 @@ export default class TestRun extends AsyncEventEmitter {
 
         await this.emit('before-done');
 
+        await this._finalizeTestRunInCompilerService(this.session.id);
+
         await this._internalExecuteCommand(new serviceCommands.TestDoneCommand());
 
         this._addPendingPageErrorIfAny();
         this.session.clearRequestEventListeners();
         this.normalizeRequestHookErrors();
 
-        await this._finalizeTestRun(this.session.id);
+        testRunTracker.removeActiveTestRun(this.session.id);
 
         await this.emit('done');
     }
