@@ -1,4 +1,4 @@
-The skipJsErrors method dependencies argument is expected to be an object, but it was string.
+Cannot execute the skipJsErrors method. The value of the "dependencies" argument belongs to an unsupported type (string). The "dependencies" argument only supports the Object data type.
 
 Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>

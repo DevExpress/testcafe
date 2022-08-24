@@ -1,4 +1,4 @@
-The skipJsErrors method "options" argument is expected to be a boolean, object or a function, but it was string.
+Cannot execute the skipJsErrors method. The value of the "options" argument belongs to an unsupported type (string). The "options" supports the following data types: Boolean, Object, Function.
 
 Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>

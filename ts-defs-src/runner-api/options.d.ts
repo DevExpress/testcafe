@@ -196,9 +196,9 @@ interface QuarantineModeOptions {
 
 interface RunOptions {
     /**
-     * Defines whether to continue running a test after a JavaScript error occurs on a page (`true`), or consider such a test failed (`false`).
+     * Defines the framework's response to client-side JavaScript errors. If `false` (the default value), tests fail after the website yields a client-side error. If `true`, TestCafe ignores JavaScript errors. Additional options set custom error handling criteria.
      */
-    skipJsErrors: boolean | SkipJsErrorsOptionsObject | SkipJsErrorsCallbackWithOptionsObject;
+    skipJsErrors: boolean | SkipJsErrorsOptionsObject | SkipJsErrorsCallback | SkipJsErrorsCallbackWithOptionsObject;
     /**
      * Defines whether to continue running a test after an uncaught error or unhandled promise rejection occurs on the server (`true`), or consider such a test failed (`false`).
      */
