@@ -135,7 +135,7 @@ describe('Request', () => {
             it('Should rise request runtime error', function () {
                 return runTests('testcafe-fixtures/request-test.js', 'Should rise request runtime error', { shouldFail: true })
                     .catch(function (errs) {
-                        expect(errs[0]).contains('Requested was interrupted with error:');
+                        expect(errs[0]).contains('The request was interrupted by an error:');
                         expect(/>.*\|.*await t.request\.get/.test(errs[0])).ok;
                     });
             });
