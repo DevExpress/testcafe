@@ -157,7 +157,7 @@ export default class CLIArgumentParser {
             .option('-p, --screenshot-path-pattern <pattern>', 'use patterns to compose screenshot file names and paths: ${BROWSER}, ${BROWSER_VERSION}, ${OS}, etc.')
             .option('-q, --quarantine-mode [option=value,...]', 'enable quarantine mode and (optionally) modify quarantine mode settings')
             .option('-d, --debug-mode', 'execute test steps one by one pausing the test after each step')
-            .option('-e, --skip-js-errors [option=value,...]', 'specify options to make tests not fail when a JS error happens on a page')
+            .option('-e, --skip-js-errors [option=value,...]', 'ignore JavaScript errors that match the specified criteria')
             .option('-u, --skip-uncaught-errors', 'ignore uncaught errors and unhandled promise rejections, which occur during test execution')
             .option('-t, --test <name>', 'run only tests with the specified name')
             .option('-T, --test-grep <pattern>', 'run only tests matching the specified pattern')
@@ -449,7 +449,7 @@ export default class CLIArgumentParser {
     }
 
     private static _prepareBooleanOrObjectOption (argv: string[], optionNames: string[], subOptionsNames: string[]): void {
-        // NOTE: move specific options to the end of the array to avoid the wrong parsing of options which can be represented in the boolean or object form (GH-6231)
+        // NOTE: move options to the end of the array to correctly parse both Boolean and Object type arguments (GH-6231)
         const optionIndex = argv.findIndex(
             el => optionNames.some(opt => el.startsWith(opt)));
 

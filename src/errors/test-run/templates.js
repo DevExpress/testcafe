@@ -444,10 +444,10 @@ export default {
     `,
 
     [TEST_RUN_ERRORS.actionSkipJsErrorsArgumentError]: err => `
-        The skipJsErrors method "${err.argumentName}" argument is expected to be a boolean, object or a function, but it was ${err.actualValue}.
+        Cannot execute the skipJsErrors method. The value of the "${err.argumentName}" argument belongs to an unsupported type (${err.actualValue}). The "${err.argumentName}" supports the following data types: Boolean, Object, Function.
     `,
 
     [TEST_RUN_ERRORS.actionSkipJsErrorsDependenciesArgumentError]: err => `
-        The skipJsErrors method dependencies argument is expected to be an object, but it was ${err.actualValue}.
+        Cannot execute the skipJsErrors method. The value of the "dependencies" argument belongs to an unsupported type (${err.actualValue}). The "dependencies" argument only supports the Object data type.
     `,
 };

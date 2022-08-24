@@ -135,6 +135,6 @@ export default {
     [RUNTIME_ERRORS.dashboardTokenInJSON]:                'Insecure token declaration: cannot declare a Dashboard token in a JSON configuration file. Use a JavaScript configuration file, or declare a Dashboard token with one of the following: the CLI, the Test Runner API, the TESTCAFE_DASHBOARD_TOKEN environment variable.',
     [RUNTIME_ERRORS.relativeBaseUrl]:                     'The value of the baseUrl argument cannot be relative: "{baseUrl}"',
     [RUNTIME_ERRORS.requestUrlInvalidValueError]:         'Requested url isn\'t valid ({actualValue}).',
-    [RUNTIME_ERRORS.requestRuntimeError]:                 'Requested was interrupted with error:\n{message}',
-    [RUNTIME_ERRORS.invalidSkipJsErrorsOption]:           `The "{optionName}" option does not exist. The only ${getConcatenatedValuesString(Object.keys(SKIP_JS_ERRORS_OPTION_NAMES))} options can be used to configure skipJsErrors`,
+    [RUNTIME_ERRORS.requestRuntimeError]:                 'The request was interrupted by an error:\n{message}',
+    [RUNTIME_ERRORS.invalidSkipJsErrorsOption]:           `The "{optionName}" option does not exist. Use the following options to configure skipJsErrors: ${getConcatenatedValuesString(Object.keys(SKIP_JS_ERRORS_OPTION_NAMES))}`,
 };
