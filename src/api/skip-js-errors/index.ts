@@ -12,11 +12,11 @@ const SKIP_JS_ERRORS_OBJECT_FUNCTION = `
         `;
 
 export function isSkipJsErrorsCallbackWithOptionsObject (obj: unknown): obj is SkipJsErrorsCallbackWithOptionsObject {
-    return obj && typeof obj === 'object' && 'fn' in obj;
+    return !!obj && typeof obj === 'object' && 'fn' in obj;
 }
 
 export function isSkipJsErrorsOptionsObject (obj: unknown): obj is SkipJsErrorsOptionsObject {
-    return obj && typeof obj === 'object' && !isSkipJsErrorsCallbackWithOptionsObject(obj);
+    return !!obj && typeof obj === 'object' && !isSkipJsErrorsCallbackWithOptionsObject(obj);
 }
 
 export function ensureSkipJsErrorsCallbackWrapped (options: boolean | SkipJsErrorsOptionsObject | SkipJsErrorsCallback | SkipJsErrorsCallbackWithOptionsObject, dependencies: Dictionary<any> = {}): SkipJsErrorsOptionsObject | SkipJsErrorsCallbackWithOptionsObject | boolean {
