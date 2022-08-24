@@ -1018,7 +1018,7 @@ describe('Compiler', function () {
                         message: 'Cannot prepare tests due to the following error:\n\n' +
                                  'Error: TypeScript compilation failed.\n' +
                                  testfile + ' (6, 13): Property \'doSmthg\' does not exist on type \'TestController\'.\n' +
-                                 testfile + ' (9, 6): Argument of type \'123\' is not assignable to parameter of type \'string\'.\n' +
+                                 testfile + ' (9, 6): Argument of type \'number\' is not assignable to parameter of type \'string\'.\n' +
                                  testfile + ' (18, 5): Unable to resolve signature of property decorator when called as an expression.\n',
                     });
                 });

@@ -39,7 +39,7 @@ export interface NativeMethods {
     objectKeys: ObjectConstructor['keys'];
     objectAssign: ObjectConstructor['assign'];
     objectGetPrototypeOf: ObjectConstructor['getPrototypeOf'];
-    objectToString: Object['toString']; // eslint-disable-line @typescript-eslint/ban-types
+    objectToString: Object['toString']; // eslint-disable-line @typescript-eslint/ban-types, no-restricted-globals
     Promise: typeof Promise;
     dateNow: DateConstructor['now'];
     isArray: ArrayConstructor['isArray'];

@@ -102,7 +102,7 @@ export default class AssertionExecutor extends EventEmitter {
             await this.fn();
         }
 
-        catch (err) {
+        catch (err: any) {
             if (err.name === 'AssertionError' || err.constructor.name === 'AssertionError')
                 throw new ExternalAssertionLibraryError(err, this.callsite);
 

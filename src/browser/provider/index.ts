@@ -180,7 +180,7 @@ export default class BrowserProvider {
             try {
                 windowDescriptor = await this._findWindow(browserId);
             }
-            catch (err) {
+            catch (err: any) {
                 // NOTE: We can suppress the error here since we can just disable window manipulation functions
                 // when we cannot find a local window descriptor
                 DEBUG_LOGGER(err);

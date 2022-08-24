@@ -1,4 +1,3 @@
-/* global Symbol */
 import { assignIn } from 'lodash';
 import promisifyEvent from 'promisify-event';
 import BROWSER_JOB_RESULT from '../../runner/browser-job-result';

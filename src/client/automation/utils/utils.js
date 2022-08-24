@@ -54,7 +54,7 @@ function setCaretPosition (element, caretPos) {
 }
 
 export function focusAndSetSelection (element, simulateFocus, caretPos) {
-    return new Promise(async resolve => {
+    return new Promise(async resolve => { // eslint-disable-line no-async-promise-executor
         // NOTE: Safari 13 blocks attempts to focus elements inside a third-party iframe before the user interacts with it
         // https://developer.apple.com/documentation/safari-release-notes/safari-13-release-notes
         // We can work around this restriction by focusing the <iframe> element beforehand

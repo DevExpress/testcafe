@@ -51,7 +51,7 @@ export default class EventEmitter {
             try {
                 listeners[i].apply(this, args);
             }
-            catch (e) {
+            catch (e: any) {
                 // Hack for IE: after document.write calling IFrameSandbox event handlers
                 // rises 'Can't execute code from a freed script' exception because document has been
                 // recreated

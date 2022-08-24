@@ -50,7 +50,7 @@ export class IPCProxy extends EventEmitter {
         try {
             resultData = { result: await this._handlers[requestPacket.data.name](...requestPacket.data.args) };
         }
-        catch (error) {
+        catch (error: any) {
             resultData = { error };
         }
 

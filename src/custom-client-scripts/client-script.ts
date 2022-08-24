@@ -60,7 +60,7 @@ export default class ClientScript {
             this.content = this.content.toString();
             this.url     = path || this.url;
         }
-        catch (e) {
+        catch (e: any) {
             throw new GeneralError(RUNTIME_ERRORS.cannotLoadClientScriptFromPath, path, e.message);
         }
     }
@@ -71,7 +71,7 @@ export default class ClientScript {
         try {
             resolvedPath = require.resolve(name);
         }
-        catch (e) {
+        catch (e: any) {
             throw new GeneralError(RUNTIME_ERRORS.clientScriptModuleEntryPointPathCalculationError, e.message);
         }
 

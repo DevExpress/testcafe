@@ -67,7 +67,7 @@ export default class DashboardConnector {
                 isDashboardError: true,
             };
         }
-        catch (err) {
+        catch (err: any) {
             DEBUG_LOGGER(err);
 
             return {

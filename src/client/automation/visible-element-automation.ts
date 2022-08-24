@@ -211,7 +211,7 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
         });
     }
 
-    private static _checkElementState<E> (state: ElementState, useStrictElementCheck: boolean): ElementState {
+    private static _checkElementState (state: ElementState, useStrictElementCheck: boolean): ElementState {
         if (!state.element)
             throw new Error(AUTOMATION_ERROR_TYPES.elementIsInvisibleError);
 

@@ -602,7 +602,7 @@ export default class TestRun extends AsyncEventEmitter {
         try {
             await executeFnWithTimeout(fn, timeout, this);
         }
-        catch (err) {
+        catch (err: any) {
             await this._makeScreenshotOnFail();
 
             this.addError(err);
@@ -760,7 +760,7 @@ export default class TestRun extends AsyncEventEmitter {
         if (this.pendingRequest)
             this._resolvePendingRequest(command);
 
-        return new Promise(async (resolve, reject) => {
+        return new Promise(async (resolve, reject) => { // eslint-disable-line no-async-promise-executor
             this.addingDriverTasksCount--;
             this.driverTaskQueue.push({ command, resolve, reject, callsite });
 
@@ -1269,9 +1269,6 @@ export default class TestRun extends AsyncEventEmitter {
             try {
                 return await fn();
             }
-            catch (err) {
-                throw err;
-            }
             finally {
                 // @ts-ignore
                 this[flagName] = !value;
@@ -1421,7 +1418,7 @@ export default class TestRun extends AsyncEventEmitter {
 
                 return command.checkWindow(predicateData);
             }
-            catch (e) {
+            catch (e: any) {
                 throw new SwitchToWindowPredicateError(e.message);
             }
         });
@@ -1528,7 +1525,7 @@ export default class TestRun extends AsyncEventEmitter {
         try {
             result = await this.browserManipulationQueue.executePendingManipulation(msg, this._messageBus);
         }
-        catch (err) {
+        catch (err: any) {
             error = err;
         }
 

@@ -65,7 +65,7 @@ export default class TestedApp {
         try {
             await this._process;
         }
-        catch (err) {
+        catch (err: any) {
             if (this._killed)
                 return;
 

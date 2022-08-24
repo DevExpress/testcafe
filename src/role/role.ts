@@ -82,7 +82,7 @@ export default class Role extends EventEmitter {
 
             await fn();
         }
-        catch (err) {
+        catch (err: any) {
             await this._setInitError(err, testRun);
         }
     }
@@ -91,7 +91,7 @@ export default class Role extends EventEmitter {
         try {
             await testRun.switchToCleanRun(this.loginUrl as string);
         }
-        catch (err) {
+        catch (err: any) {
             await this._setInitError(err, testRun);
         }
     }
