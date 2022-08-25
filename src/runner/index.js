@@ -51,6 +51,8 @@ import { validateQuarantineOptions } from '../utils/get-options/quarantine';
 import logEntry from '../utils/log-entry';
 import MessageBus from '../utils/message-bus';
 import getEnvOptions from '../dashboard/get-env-options';
+import { isSkipJsErrorsOptionsObject } from '../api/skip-js-errors';
+import { validateSkipJsErrorsOptionsObject } from '../utils/get-options/skip-js-errors';
 
 const DEBUG_LOGGER            = debug('testcafe:runner');
 const DASHBOARD_REPORTER_NAME = 'dashboard';
@@ -305,6 +307,16 @@ export default class Runner extends EventEmitter {
             throw new GeneralError(RUNTIME_ERRORS.cannotSetConcurrencyWithCDPPort);
     }
 
+    _validateSkipJsErrorsOption () {
+        const skipJsErrorsOptions = this.configuration.getOption(OPTION_NAMES.skipJsErrors);
+
+        if (!skipJsErrorsOptions)
+            return;
+
+        if (isSkipJsErrorsOptionsObject(skipJsErrorsOptions))
+            validateSkipJsErrorsOptionsObject(skipJsErrorsOptions, GeneralError);
+    }
+
     async _validateBrowsers () {
         const browsers = this.configuration.getOption(OPTION_NAMES.browsers);
 
@@ -457,7 +469,7 @@ export default class Runner extends EventEmitter {
         const quarantineMode = this.configuration.getOption(OPTION_NAMES.quarantineMode);
 
         if (typeof quarantineMode === 'object')
-            validateQuarantineOptions(quarantineMode, OPTION_NAMES.quarantineMode);
+            validateQuarantineOptions(quarantineMode);
     }
 
     async _validateRunOptions () {
@@ -472,6 +484,7 @@ export default class Runner extends EventEmitter {
         this._validateRequestTimeoutOption(OPTION_NAMES.ajaxRequestTimeout);
         this._validateQuarantineOptions();
         this._validateConcurrencyOption();
+        this._validateSkipJsErrorsOption();
         await this._validateBrowsers();
     }
 
@@ -593,7 +606,7 @@ export default class Runner extends EventEmitter {
             errors.UnableToAccessScreenRecordingAPIError,
             {
                 interactive: hasLocalBrowsers && !isCI,
-            }
+            },
         );
 
         if (!error)
@@ -616,7 +629,7 @@ export default class Runner extends EventEmitter {
             if (isLocalBrowser && !isHeadlessBrowser) {
                 throw new GeneralError(
                     RUNTIME_ERRORS.cannotRunLocalNonHeadlessBrowserWithoutDisplay,
-                    browserInfo.alias
+                    browserInfo.alias,
                 );
             }
         }

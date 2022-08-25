@@ -116,6 +116,7 @@ import createErrorCtorCallback, {
     getNotFoundErrorCtor,
 } from '../../shared/errors/selector-error-ctor-callback';
 import './command-executors/action-executor/actions-initializer';
+import { shouldSkipJsError } from './process-skip-js-errors';
 
 const settings = hammerhead.settings;
 
@@ -128,17 +129,18 @@ const DateCtor       = nativeMethods.date;
 const listeners      = hammerhead.eventSandbox.listeners;
 const urlUtils       = hammerhead.utils.url;
 
-const TEST_DONE_SENT_FLAG                  = 'testcafe|driver|test-done-sent-flag';
-const PENDING_STATUS                       = 'testcafe|driver|pending-status';
-const EXECUTING_CLIENT_FUNCTION_DESCRIPTOR = 'testcafe|driver|executing-client-function-descriptor';
-const SELECTOR_EXECUTION_START_TIME        = 'testcafe|driver|selector-execution-start-time';
-const PENDING_PAGE_ERROR                   = 'testcafe|driver|pending-page-error';
-const ACTIVE_IFRAME_SELECTOR               = 'testcafe|driver|active-iframe-selector';
-const TEST_SPEED                           = 'testcafe|driver|test-speed';
-const ASSERTION_RETRIES_TIMEOUT            = 'testcafe|driver|assertion-retries-timeout';
-const ASSERTION_RETRIES_START_TIME         = 'testcafe|driver|assertion-retries-start-time';
-const CONSOLE_MESSAGES                     = 'testcafe|driver|console-messages';
-const PENDING_CHILD_WINDOW_COUNT           = 'testcafe|driver|pending-child-window-count';
+const TEST_DONE_SENT_FLAG                    = 'testcafe|driver|test-done-sent-flag';
+const PENDING_STATUS                         = 'testcafe|driver|pending-status';
+const EXECUTING_CLIENT_FUNCTION_DESCRIPTOR   = 'testcafe|driver|executing-client-function-descriptor';
+const EXECUTING_SKIP_JS_ERRORS_FUNCTION_FLAG = 'testcafe|driver|executing-skip-js-errors-function-flag';
+const SELECTOR_EXECUTION_START_TIME          = 'testcafe|driver|selector-execution-start-time';
+const PENDING_PAGE_ERROR                     = 'testcafe|driver|pending-page-error';
+const ACTIVE_IFRAME_SELECTOR                 = 'testcafe|driver|active-iframe-selector';
+const TEST_SPEED                             = 'testcafe|driver|test-speed';
+const ASSERTION_RETRIES_TIMEOUT              = 'testcafe|driver|assertion-retries-timeout';
+const ASSERTION_RETRIES_START_TIME           = 'testcafe|driver|assertion-retries-start-time';
+const CONSOLE_MESSAGES                       = 'testcafe|driver|console-messages';
+const PENDING_CHILD_WINDOW_COUNT             = 'testcafe|driver|pending-child-window-count';
 
 const ACTION_IFRAME_ERROR_CTORS = {
     NotLoadedError:   ActionIframeIsNotLoadedError,
@@ -157,9 +159,10 @@ const EMPTY_COMMAND_EVENT_WAIT_TIMEOUT  = 30 * 1000;
 const CHILD_WINDOW_CLOSED_EVENT_TIMEOUT = 2000;
 const RESTORE_CHILD_WINDOWS_TIMEOUT     = 30 * 1000;
 
-const STATUS_WITH_COMMAND_RESULT_EVENT = 'status-with-command-result-event';
-const EMPTY_COMMAND_EVENT              = 'empty-command-event';
-const CHILD_WINDOW_CLOSED_EVENT        = 'child-window-closed';
+const STATUS_WITH_COMMAND_RESULT_EVENT                 = 'status-with-command-result-event';
+const EMPTY_COMMAND_EVENT                              = 'empty-command-event';
+const CHILD_WINDOW_CLOSED_EVENT                        = 'child-window-closed';
+const SKIP_JS_ERRORS_FUNCTION_EXECUTION_COMPLETE_EVENT = 'skip-js-errors-function-execution-complete';
 
 export default class Driver extends serviceUtils.EventEmitter {
     constructor (testRunId, communicationUrls, runInfo, options) {
@@ -266,7 +269,7 @@ export default class Driver extends serviceUtils.EventEmitter {
 
     _hasPendingActionFlags (contextStorage) {
         return contextStorage.getItem(this.COMMAND_EXECUTING_FLAG) ||
-            contextStorage.getItem(this.EXECUTING_IN_IFRAME_FLAG);
+               contextStorage.getItem(this.EXECUTING_IN_IFRAME_FLAG);
     }
 
     _getCurrentWindowId () {
@@ -277,18 +280,39 @@ export default class Driver extends serviceUtils.EventEmitter {
     }
 
     // Error handling
-    _onJsError (err) {
+    async _onJsError (err) {
         // NOTE: we should not send any message to the server if we've
         // sent the 'test-done' message but haven't got the response.
-        if (this.skipJsErrors || this.contextStorage.getItem(TEST_DONE_SENT_FLAG))
-            return Promise.resolve();
+        if (this.contextStorage.getItem(TEST_DONE_SENT_FLAG))
+            return;
 
+        if (this.skipJsErrors) {
+            this.contextStorage.setItem(EXECUTING_SKIP_JS_ERRORS_FUNCTION_FLAG, true);
+
+            try {
+                if (!await shouldSkipJsError(this.skipJsErrors, err))
+                    this._setUncaughtErrorOnPage(err);
+            }
+            catch (e) {
+                if (!this.contextStorage.getItem(PENDING_PAGE_ERROR))
+                    this.contextStorage.setItem(PENDING_PAGE_ERROR, e);
+            }
+            finally {
+                this.contextStorage.setItem(EXECUTING_SKIP_JS_ERRORS_FUNCTION_FLAG, false);
+                this.emit(SKIP_JS_ERRORS_FUNCTION_EXECUTION_COMPLETE_EVENT);
+            }
+
+            return;
+        }
+
+        this._setUncaughtErrorOnPage(err);
+    }
+
+    _setUncaughtErrorOnPage (err) {
         const error = new UncaughtErrorOnPage(err.stack, err.pageUrl);
 
         if (!this.contextStorage.getItem(PENDING_PAGE_ERROR))
             this.contextStorage.setItem(PENDING_PAGE_ERROR, error);
-
-        return null;
     }
 
     _unlockPageAfterTestIsDone () {
@@ -1017,6 +1041,21 @@ export default class Driver extends serviceUtils.EventEmitter {
         return this._createWaitForEventPromise(STATUS_WITH_COMMAND_RESULT_EVENT, COMMAND_EXECUTION_MAX_TIMEOUT);
     }
 
+    _waitForSkipJsErrorFunctionCompletion (driverStatus) {
+        if (!this.contextStorage.getItem(EXECUTING_SKIP_JS_ERRORS_FUNCTION_FLAG))
+            return Promise.resolve(driverStatus);
+
+        return new Promise(resolve => {
+            const eventHandler = () => {
+                this.off(SKIP_JS_ERRORS_FUNCTION_EXECUTION_COMPLETE_EVENT, eventHandler);
+
+                resolve(driverStatus);
+            };
+
+            this.on(SKIP_JS_ERRORS_FUNCTION_EXECUTION_COMPLETE_EVENT, eventHandler);
+        });
+    }
+
     _waitForEmptyCommand () {
         return this._createWaitForEventPromise(EMPTY_COMMAND_EVENT, EMPTY_COMMAND_EVENT_WAIT_TIMEOUT);
     }
@@ -1160,12 +1199,13 @@ export default class Driver extends serviceUtils.EventEmitter {
                 result:          createReplicator(new SelectorElementActionTransform()).encode(elements),
             }))
             .catch(err => this.statusBar.hideWaitingElementStatus(false)
-                .then(() => new DriverStatus({ isCommandResult: true, executionError: err }))
+                .then(() => new DriverStatus({ isCommandResult: true, executionError: err })),
             )
+            .then(driverStatus => this._waitForSkipJsErrorFunctionCompletion(driverStatus))
             .then(driverStatus => {
                 this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, false);
-
-                return this._onReady(driverStatus);
+                this.contextStorage.setItem(EXECUTING_SKIP_JS_ERRORS_FUNCTION_FLAG, false);
+                this._onReady(driverStatus);
             });
     }
 
@@ -1203,6 +1243,12 @@ export default class Driver extends serviceUtils.EventEmitter {
             isCommandResult: true,
             result:          urlUtils.getProxyUrl(command.url, command.options),
         }));
+    }
+
+    _onSkipJsErrorsCommand ({ options }) {
+        this.skipJsErrors = options;
+
+        this._onReady(new DriverStatus({ isCommandResult: true }));
     }
 
     _onExecuteClientFunctionCommand (command) {
@@ -1675,6 +1721,9 @@ export default class Driver extends serviceUtils.EventEmitter {
 
         else if (command.type === COMMAND_TYPE.getProxyUrl)
             this._onGetProxyUrlCommand(command);
+
+        else if (command.type === COMMAND_TYPE.skipJsErrors)
+            this._onSkipJsErrorsCommand(command);
 
         else
             this._onActionCommand(command);

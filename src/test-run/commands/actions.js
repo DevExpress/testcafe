@@ -14,6 +14,7 @@ import {
     CookieOptions,
     GetProxyUrlOptions,
     RequestOptions,
+    SkipJsErrorsOptions,
 } from './options';
 
 import {
@@ -41,11 +42,13 @@ import {
     setCookiesArgument,
     urlsArgument,
     urlArgument,
+    skipJsErrorOptions,
 } from './validations/argument';
 
 import { SetNativeDialogHandlerCodeWrongTypeError } from '../../errors/test-run';
 import { ExecuteClientFunctionCommand } from './observation';
 import { camelCase } from 'lodash';
+import { prepareSkipJsErrorsOptions, isSkipJsErrorsOptionsObject } from '../../api/skip-js-errors';
 
 
 // Initializers
@@ -105,7 +108,7 @@ function initDialogHandler (name, val, { skipVisibilityCheck, testRun }) {
     else
         builder = new ClientFunctionBuilder(fn, options, { instantiation: methodName, execution: methodName });
 
-    return builder.getCommand([]);
+    return builder.getCommand();
 }
 
 function initCookiesOption (name, val, initOptions, validate = true) {
@@ -118,6 +121,16 @@ function initRequestOption (name, val, initOptions, validate = true) {
 
 function initGetProxyUrlOptions (name, val, initOptions, validate = true) {
     return new GetProxyUrlOptions(val, validate);
+}
+
+function initSkipJsErrorsOptions (name, val, initOptions, validate = true) {
+    if (val === void 0)
+        return true;
+
+    if (isSkipJsErrorsOptionsObject(val))
+        val = new SkipJsErrorsOptions(val, validate);
+
+    return prepareSkipJsErrorsOptions(val);
 }
 
 // Commands
@@ -749,6 +762,20 @@ export class GetProxyUrlCommand extends ActionCommandBase {
         return [
             { name: 'url', type: urlArgument, required: true },
             { name: 'options', init: initGetProxyUrlOptions, required: false },
+        ];
+    }
+}
+
+export class SkipJsErrorsCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.skipJsErrors);
+
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.skipJsErrors, validateProperties);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'options', type: skipJsErrorOptions, init: initSkipJsErrorsOptions, required: false },
         ];
     }
 }

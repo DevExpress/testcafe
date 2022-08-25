@@ -5,6 +5,8 @@
 
 import { RUNTIME_ERRORS } from '../types';
 import BrowserConnectionErrorHint from '../../browser/connection/error-hints';
+import { getConcatenatedValuesString } from '../../utils/string';
+import SKIP_JS_ERRORS_OPTION_NAMES from '../../configuration/skip-js-errors-option-names';
 
 const DOCUMENTATION_LINKS = {
     TEST_SOURCE_PARAMETER: 'https://testcafe.io/documentation/402639/reference/command-line-interface#file-pathglob-pattern',
@@ -133,5 +135,6 @@ export default {
     [RUNTIME_ERRORS.dashboardTokenInJSON]:                'Insecure token declaration: cannot declare a Dashboard token in a JSON configuration file. Use a JavaScript configuration file, or declare a Dashboard token with one of the following: the CLI, the Test Runner API, the TESTCAFE_DASHBOARD_TOKEN environment variable.',
     [RUNTIME_ERRORS.relativeBaseUrl]:                     'The value of the baseUrl argument cannot be relative: "{baseUrl}"',
     [RUNTIME_ERRORS.requestUrlInvalidValueError]:         'Requested url isn\'t valid ({actualValue}).',
-    [RUNTIME_ERRORS.requestRuntimeError]:                 'Requested was interrupted with error:\n{message}',
+    [RUNTIME_ERRORS.requestRuntimeError]:                 'The request was interrupted by an error:\n{message}',
+    [RUNTIME_ERRORS.invalidSkipJsErrorsOption]:           `The "{optionName}" option does not exist. Use the following options to configure skipJsErrors: ${getConcatenatedValuesString(Object.keys(SKIP_JS_ERRORS_OPTION_NAMES))}`,
 };

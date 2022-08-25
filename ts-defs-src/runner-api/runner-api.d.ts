@@ -72,8 +72,8 @@ interface Runner {
      * @param pathPattern - The pattern to compose screenshot files' relative path and name.
      */
     screenshots(
-        path:         ScreenshotsOptions['path'], 
-        takeOnFails?: ScreenshotsOptions['takeOnFails'], 
+        path:         ScreenshotsOptions['path'],
+        takeOnFails?: ScreenshotsOptions['takeOnFails'],
         pathPattern?: ScreenshotsOptions['pathPattern']
     ): this;
 
@@ -95,8 +95,8 @@ interface Runner {
      * @param encodingOptions - Video encoding options
      */
     video(
-        path: VideoConfigOptions['path'], 
-        options?: VideoConfigOptions['options'], 
+        path: VideoConfigOptions['path'],
+        options?: VideoConfigOptions['options'],
         encodingOptions?: VideoConfigOptions['encodingOptions']
     ): this;
 
@@ -172,7 +172,7 @@ interface TestCafeFactory {
     // NOTE: Positional arguments support is left only for backward compatibility.
     // It should be removed in future TestCafe versions.
     // All new APIs should be enabled trough the configuration object in the upper clause.
-    // Please do not add new APIs here. 
+    // Please do not add new APIs here.
     (
         hostname?: StartOptions['hostname'],
         port1?: StartOptions['port1'],

@@ -15,6 +15,7 @@ import {
     createUrlValidator,
     createUrlSearchParamsValidator,
     createObjectValidator,
+    createStringOrRegexValidator,
 } from './validations/factories';
 import {
     ActionIntegerOptionError,
@@ -27,6 +28,7 @@ import {
     ActionUrlOptionError,
     ActionUrlSearchParamsOptionError,
     ActionObjectOptionError,
+    ActionStringOrRegexOptionError,
 } from '../../shared/errors';
 
 export const integerOption         = createIntegerValidator(ActionIntegerOptionError);
@@ -34,6 +36,7 @@ export const positiveIntegerOption = createPositiveIntegerValidator(ActionPositi
 export const booleanOption         = createBooleanValidator(ActionBooleanOptionError);
 export const speedOption           = createSpeedValidator(ActionSpeedOptionError);
 export const stringOption          = createStringValidator(ActionStringOptionError);
+export const stringOrRegexOption   = createStringOrRegexValidator(ActionStringOrRegexOptionError);
 export const dateOption            = createDateValidator(ActionDateOptionError);
 export const numberOption          = createNumberValidator(ActionNumberOptionError);
 export const urlOption             = createUrlValidator(ActionUrlOptionError);
@@ -380,6 +383,22 @@ export class GetProxyUrlOptions extends Assignable {
     _getAssignableProperties () {
         return [
             { name: 'credentials', type: numberOption },
+        ];
+    }
+}
+
+export class SkipJsErrorsOptions extends Assignable {
+    constructor (obj, validate) {
+        super();
+
+        this._assignFrom(obj, validate);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'stack', type: stringOrRegexOption, required: false },
+            { name: 'message', type: stringOrRegexOption, required: false },
+            { name: 'pageUrl', type: stringOrRegexOption, required: false },
         ];
     }
 }

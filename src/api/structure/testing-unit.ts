@@ -14,8 +14,13 @@ import RequestHook from '../request-hooks/hook';
 import ClientScriptInit from '../../custom-client-scripts/client-script-init';
 import TestFile from './test-file';
 import { AuthCredentials, Metadata } from './interfaces';
-import { Dictionary } from '../../configuration/interfaces';
+import {
+    Dictionary, SkipJsErrorsCallback, SkipJsErrorsCallbackWithOptionsObject,
+} from '../../configuration/interfaces';
 import { dirname } from 'path';
+import { isSkipJsErrorsOptionsObject } from '../skip-js-errors';
+import { validateSkipJsErrorsOptionsObject } from '../../utils/get-options/skip-js-errors';
+import { APIError } from '../../errors/runtime';
 
 export default abstract class TestingUnit extends BaseUnit {
     public readonly testFile: TestFile;
@@ -32,6 +37,7 @@ export default abstract class TestingUnit extends BaseUnit {
     public disablePageCaching: boolean;
     public apiMethodWasCalled: FlagList;
     public apiOrigin: Function;
+    public skipJsErrorsOptions?: boolean | SkipJsErrorsOptionsObject | SkipJsErrorsCallback| SkipJsErrorsCallbackWithOptionsObject;
 
     protected constructor (testFile: TestFile, unitType: UnitType, pageUrl: string, baseUrl?: string) {
         super(unitType);
@@ -99,6 +105,17 @@ export default abstract class TestingUnit extends BaseUnit {
         assertPageUrl(this.pageUrl, 'page');
 
         this.pageUrl = getUrl(this.pageUrl, base);
+
+        return this.apiOrigin;
+    }
+
+    private _skipJsErrors$ (options: boolean | SkipJsErrorsOptionsObject | SkipJsErrorsCallback | SkipJsErrorsCallbackWithOptionsObject = true): Function {
+        assertType([ is.boolean, is.nonNullObject, is.function ], 'skipJsErrors', 'The skipJsErrors options argument', options);
+
+        this.skipJsErrorsOptions = options;
+
+        if (isSkipJsErrorsOptionsObject(this.skipJsErrorsOptions))
+            validateSkipJsErrorsOptionsObject(this.skipJsErrorsOptions, APIError);
 
         return this.apiOrigin;
     }

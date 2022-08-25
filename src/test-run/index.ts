@@ -123,6 +123,7 @@ import MessageBus from '../utils/message-bus';
 import executeFnWithTimeout from '../utils/execute-fn-with-timeout';
 import { URL } from 'url';
 import { CookieOptions } from './commands/options';
+import { prepareSkipJsErrorsOptions } from '../api/skip-js-errors';
 
 const lazyRequire                 = require('import-lazy')(require);
 const ClientFunctionBuilder       = lazyRequire('../client-functions/client-function-builder');
@@ -529,10 +530,20 @@ export default class TestRun extends AsyncEventEmitter {
             this.test.requestHooks.forEach(hook => this._initRequestHook(hook));
     }
 
+    private _prepareSkipJsErrorsOption (): boolean | ExecuteClientFunctionCommand {
+        const options = this.test.skipJsErrorsOptions !== void 0
+            ? this.test.skipJsErrorsOptions
+            : this.opts.skipJsErrors as SkipJsErrorsOptionsObject | boolean || false;
+
+        return prepareSkipJsErrorsOptions(options);
+    }
+
     // Hammerhead payload
     public async getPayloadScript (): Promise<string> {
         this.fileDownloadingHandled               = false;
         this.resolveWaitForFileDownloadingPromise = null;
+
+        const skipJsErrors = this._prepareSkipJsErrorsOption();
 
         return Mustache.render(TEST_RUN_TEMPLATE, {
             testRunId:                    JSON.stringify(this.session.id),
@@ -549,7 +560,7 @@ export default class TestRun extends AsyncEventEmitter {
             selectorTimeout:              this.opts.selectorTimeout,
             pageLoadTimeout:              this.pageLoadTimeout,
             childWindowReadyTimeout:      CHILD_WINDOW_READY_TIMEOUT,
-            skipJsErrors:                 this.opts.skipJsErrors,
+            skipJsErrors:                 JSON.stringify(skipJsErrors),
             retryTestPages:               this.opts.retryTestPages,
             speed:                        this.speed,
             dialogHandler:                JSON.stringify(this.activeDialogHandler),

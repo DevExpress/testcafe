@@ -12,7 +12,7 @@ export function isCommandRejectableByPageError (command) {
            && !isWindowSwitchingCommand(command);
 }
 
-function isClientFunctionCommand (command) {
+export function isClientFunctionCommand (command) {
     return command.type === TYPE.executeClientFunction ||
            command.type === TYPE.executeSelector;
 }

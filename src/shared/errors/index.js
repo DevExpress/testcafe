@@ -42,7 +42,6 @@ export class DomNodeClientFunctionResultError extends TestRunErrorBase {
     }
 }
 
-
 // Selector errors
 //--------------------------------------------------------------------
 export class SelectorErrorBase extends TestRunErrorBase {
@@ -146,6 +145,11 @@ export class ActionSpeedOptionError extends ActionOptionErrorBase {
 export class ActionStringOptionError extends ActionOptionErrorBase {
     constructor (optionName, actualValue) {
         super(TEST_RUN_ERRORS.actionStringOptionError, optionName, actualValue);
+    }
+}
+export class ActionStringOrRegexOptionError extends ActionOptionErrorBase {
+    constructor (optionName, actualValue) {
+        super(TEST_RUN_ERRORS.actionStringOrRegexOptionError, optionName, actualValue);
     }
 }
 

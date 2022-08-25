@@ -92,6 +92,7 @@ describe('TestCafeConfiguration', function () {
                 'disableHttp2':  true,
                 'proxyless':     true,
                 'baseUrl':       'localhost:3000',
+                'skipJsErrors':  { message: '/testRegex/i', stack: 'testRegex' },
             });
         });
 
@@ -135,6 +136,7 @@ describe('TestCafeConfiguration', function () {
                             expect(testCafeConfiguration.getOption('disableHttp2')).to.be.true;
                             expect(testCafeConfiguration.getOption('proxyless')).to.be.true;
                             expect(testCafeConfiguration.getOption('baseUrl')).eql('localhost:3000');
+                            expect(testCafeConfiguration.getOption('skipJsErrors')).to.be.deep.equal({ message: '/testRegex/i', stack: 'testRegex' });
                         });
                 });
 

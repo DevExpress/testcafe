@@ -415,6 +415,10 @@ export default {
         The value of the "${err.optionName}" option belongs to an unsupported data type (${err.actualValue}). The "${err.optionName}" option only accepts String type values.
     `,
 
+    [TEST_RUN_ERRORS.actionStringOrRegexOptionError]: err => `
+        The value of the "${err.optionName}" option belongs to an unsupported data type (${err.actualValue}). The "${err.optionName}" option only accepts String or Regex type values.
+    `,
+
     [TEST_RUN_ERRORS.actionDateOptionError]: err => `
         The value of the "${err.optionName}" option belongs to an unsupported data type (${err.actualValue}). The "${err.optionName}" option only accepts Date type values.
     `,
@@ -437,5 +441,13 @@ export default {
 
     [TEST_RUN_ERRORS.actionUrlArgumentError]: err => `
         The "${err.argumentName}" argument is expected to be an URL or a string, but it was ${err.actualValue}.
+    `,
+
+    [TEST_RUN_ERRORS.actionSkipJsErrorsArgumentError]: err => `
+        Cannot execute the skipJsErrors method. The value of the "${err.argumentName}" argument belongs to an unsupported type (${err.actualValue}). The "${err.argumentName}" supports the following data types: Boolean, Object, Function.
+    `,
+
+    [TEST_RUN_ERRORS.actionSkipJsErrorsDependenciesArgumentError]: err => `
+        Cannot execute the skipJsErrors method. The value of the "dependencies" argument belongs to an unsupported type (${err.actualValue}). The "dependencies" argument only supports the Object data type.
     `,
 };

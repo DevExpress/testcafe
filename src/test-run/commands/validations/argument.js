@@ -28,12 +28,15 @@ import {
     ActionUrlsCookieArgumentError,
     ActionRequiredCookieArguments,
     ActionUrlArgumentError,
+    ActionSkipJsErrorsArgumentTypeError,
+    ActionSkipJsErrorsDependenciesArgumentTypeError,
 } from '../../../errors/test-run';
 
 import { URL } from 'url';
 import { assertPageUrl } from '../../../api/test-page-url';
 import checkFilePath from '../../../utils/check-file-path';
 import { castArray } from 'lodash';
+import { isSkipJsErrorsCallbackWithOptionsObject } from '../../../api/skip-js-errors';
 
 
 // Validators
@@ -185,4 +188,14 @@ export function urlArgument (name, val) {
 
     if (valType !== 'string' && !(val instanceof URL))
         throw new ActionUrlArgumentError(name, valType);
+}
+
+export function skipJsErrorOptions (name, val) {
+    const valType = typeof val;
+
+    if (valType !== 'undefined' && valType !== 'object' && valType !== 'boolean' && valType !== 'function')
+        throw new ActionSkipJsErrorsArgumentTypeError(name, valType);
+
+    if (isSkipJsErrorsCallbackWithOptionsObject(val) && val.dependencies && typeof val.dependencies !== 'object')
+        throw new ActionSkipJsErrorsDependenciesArgumentTypeError('dependencies', typeof dependencies);
 }

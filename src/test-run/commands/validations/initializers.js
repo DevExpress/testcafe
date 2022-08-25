@@ -33,7 +33,7 @@ export function initSelector (name, val, { testRun, ...options }) {
             ...builderOptions,
         }, { instantiation: 'Selector' });
 
-        return builder.getCommand([]);
+        return builder.getCommand();
     }
     catch (err) {
         throw new ActionSelectorError(name, err, err instanceof APIError);
