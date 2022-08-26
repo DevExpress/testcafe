@@ -16,7 +16,7 @@ jobs:
       - run: git fetch --force --tags
       - uses: actions/setup-node@v2
         with:
-          node-version: 16
+          node-version: 14
           registry-url: 'https://registry.npmjs.org'
       - uses: docker/login-action@v1
         with:
