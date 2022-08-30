@@ -13,6 +13,7 @@ const EXTERNAL_LINKS = {
     createNewIssue:      'https://github.com/DevExpress/testcafe/issues/new?template=bug-report.md',
     troubleshootNetwork: 'https://go.devexpress.com/TestCafe_FAQ_ARequestHasFailed.aspx',
     viewportSizes:       'https://github.com/DevExpress/device-specs/blob/master/viewport-sizes.json',
+    skipJsErrorsRecipes: 'https://testcafe.io/documentation/404038/recipes/debugging/skip-javascript-errors',
 };
 
 export default {
@@ -44,7 +45,7 @@ export default {
     [TEST_RUN_ERRORS.uncaughtErrorOnPage]: err => `
         A JavaScript error occurred on ${formatUrl(err.pageDestUrl)}.
         Repeat test actions in the browser and check the console for errors.
-        Enable the “skipJsErrors” option to ignore JavaScript errors during test execution. Learn more: https://testcafe.io/documentation/404038/recipes/debugging/skip-javascript-errors
+        Enable the “skipJsErrors” option to ignore JavaScript errors during test execution. Learn more: ${formatUrl(EXTERNAL_LINKS.skipJsErrorsRecipes)}
         If the website only throws this error when you test it with TestCafe, please create a new issue at:
         ${formatUrl(EXTERNAL_LINKS.createNewIssue)}.
 
