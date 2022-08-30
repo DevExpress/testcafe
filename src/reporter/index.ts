@@ -32,6 +32,7 @@ import fs from 'fs';
 import MessageBus from '../utils/message-bus';
 import BrowserConnection from '../browser/connection';
 import { Dictionary } from '../configuration/interfaces';
+import debug from 'debug';
 
 interface PendingPromise {
     resolve: Function | null;
@@ -121,6 +122,8 @@ interface ReportWarningEventArguments {
     actionId?: string;
 }
 
+const debugLog = debug('testcafe:reporter');
+
 export default class Reporter {
     public readonly plugin: ReporterPluginHost;
     public readonly messageBus: MessageBus;
@@ -174,6 +177,9 @@ export default class Reporter {
                 method,
                 originalError,
             });
+
+            debugLog('Plugin error: %O', uncaughtError);
+            debugLog('Plugin error: initialObject: %O', initialObject);
 
             if (initialObject)
                 await initialObject.emit('error', uncaughtError);
