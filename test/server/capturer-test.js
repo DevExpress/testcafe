@@ -7,7 +7,7 @@ const Capturer                   = require('../../lib/screenshots/capturer');
 const TestRunController          = require('../../lib/runner/test-run-controller');
 const Screenshots                = require('../../lib/screenshots');
 const { PNG }                    = require('pngjs');
-const { writePng }               = require('../../lib/utils/promisified-functions');
+const { writePng, deleteFile }               = require('../../lib/utils/promisified-functions');
 const WarningLog                 = require('../../lib/notifications/warning-log');
 
 
@@ -115,8 +115,9 @@ describe('Capturer', () => {
         });
     });
 
-    it('Should throw warning if the crop fails', async () => {
+    it.only('Should throw warning if the crop fails', async () => {
         const warningLog = new WarningLog();
+        const customPath = 'screenshot.png';
 
         const screenshots = new ScreenshotsMock({
             enabled:     true,
@@ -164,11 +165,13 @@ describe('Capturer', () => {
         });
 
         await screenshots.capturer._capture(false, {
-            actionId:   'action-id',
-            customPath: 'screenshot.png',
-            markSeed:   Buffer.from([255, 255, 255, 255]),
+            actionId: 'action-id',
+            markSeed: Buffer.from([255, 255, 255, 255]),
+            customPath,
         });
 
         expect(warningLog.messages[0]).contain('Unable to locate the page area in the browser window screenshot at');
+
+        await deleteFile(customPath);
     });
 });
