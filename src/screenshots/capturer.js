@@ -5,7 +5,11 @@ import {
 } from 'path';
 
 import { generateThumbnail } from 'testcafe-browser-tools';
-import { cropScreenshot } from './crop';
+import {
+    cropScreenshot,
+    calculateMarkPosition,
+    markSeedToId,
+} from './crop';
 import { isInQueue, addToQueue } from '../utils/async-queue';
 import WARNING_MESSAGE from '../notifications/warning-message';
 import escapeUserAgent from '../utils/escape-user-agent';
@@ -156,15 +160,22 @@ export default class Capturer {
 
             const image = await readPngFile(tempPath);
 
-            const croppedImage = await cropScreenshot(image, {
-                markSeed,
-                clientAreaDimensions,
-                path:           tempPath,
-                cropDimensions: Capturer._getCropDimensions(cropDimensions, pageDimensions),
-            });
+            const markSeedPosition = markSeed ? calculateMarkPosition(image, markSeed) : null;
 
-            if (croppedImage)
-                await writePng(tempPath, croppedImage);
+            if (markSeed && !markSeedPosition)
+                this.warningLog.addWarning(WARNING_MESSAGE.screenshotMarkNotFound, tempPath, markSeedToId(markSeed));
+
+            if (markSeedPosition) {
+                const croppedImage = await cropScreenshot(image, {
+                    markSeedPosition,
+                    clientAreaDimensions,
+                    path:           tempPath,
+                    cropDimensions: Capturer._getCropDimensions(cropDimensions, pageDimensions),
+                });
+
+                if (croppedImage)
+                    await writePng(tempPath, croppedImage);
+            }
 
             screenshotData = await readFile(tempPath);
 
