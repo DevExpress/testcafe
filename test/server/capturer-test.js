@@ -115,7 +115,7 @@ describe('Capturer', () => {
         });
     });
 
-    it.only('Should throw warning if the crop fails', async () => {
+    it('Should throw warning if the crop fails', async () => {
         const warningLog = new WarningLog();
         const customPath = 'screenshot.png';
 
