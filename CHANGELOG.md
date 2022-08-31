@@ -1,5 +1,33 @@
 # Changelog
 
+## v2.0 (2022-08-31)
+
+### TypeScript update
+
+> :warning:
+> TestCafe 2.0 includes a breaking change.
+The framework’s built-in TypeScript compiler has been updated from version 3.9 to version 4.7. The vast majority of TestCafe users should not experience any issues during the upgrade. However, since TypeScript does not follow the semver versioning policy, even minor TypeScript updates contain breaking changes. Some TypeScript users may need to perform additional actions to ensure the compatibility of their test code.
+
+Read the [TestCafe 2.0 Migration Guide](https://testcafe.io/documentation/404017/recipes/migration/testcafe-2-0-migration-guide) to learn more.
+
+### Improvement: New ways to ignore JavaScript errors
+
+TestCafe v2.0 introduces new ways to ignore JavaScript errors during test runs.
+
+Two new methods allow you to ignore errors on a per-test or a per-fixture basis.
+
+* Use the [test.skipJsErrors](https://testcafe.io/documentation/404026/reference/test-api/test/skipjserrors) method to ignore JavaScript errors in specific tests.
+* Use the [fixture.skipJsErrors](https://testcafe.io/documentation/404025/reference/test-api/fixture/skipjserrors) method to ignore JavaScript errors for specific fixtures.
+* The [t.skipJsErrors](https://testcafe.io/documentation/404027/reference/test-api/testcontroller/skipjserrors) action lets you ignore JavaScript errors at specific points in the test.
+
+For each of the methods above, you can define the following options:
+
+* The pageUrl option filters errors by page URL.
+* The message option filters errors by message.
+* The stack option filters errors by call stack.
+
+Read the [Skip JavaScript Errors](https://testcafe.io/documentation/404038/recipes/debugging/skip-javascript-errors) recipe to learn more.
+
 ## v1.20.1 (2022-08-08)
 
 ### Bug Fixes
