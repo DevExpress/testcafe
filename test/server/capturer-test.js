@@ -6,8 +6,11 @@ const { statSync }               = require('fs');
 const Capturer                   = require('../../lib/screenshots/capturer');
 const TestRunController          = require('../../lib/runner/test-run-controller');
 const Screenshots                = require('../../lib/screenshots');
-const { PNG }                    = require('pngjs');
-const { writePng, deleteFile }               = require('../../lib/utils/promisified-functions');
+const {
+    writePng,
+    deleteFile,
+    readPng,
+}               = require('../../lib/utils/promisified-functions');
 const WarningLog                 = require('../../lib/notifications/warning-log');
 
 
@@ -115,9 +118,9 @@ describe('Capturer', () => {
         });
     });
 
-    it('Should throw warning if the crop fails', async () => {
+    it('Should not delete screenshot if unable to locate the page area', async () => {
         const warningLog = new WarningLog();
-        const customPath = 'screenshot.png';
+        const customPath = `${nanoid(7)}screenshot.png`;
 
         const screenshots = new ScreenshotsMock({
             enabled:     true,
@@ -127,14 +130,11 @@ describe('Capturer', () => {
         });
 
         const providerMock = {
-            takeScreenshot: (_, path) => {
-                const size = 1;
-                const pngImage = new PNG({ width: size, height: size });
-                const imageData = Buffer.from([100, 100, 100, 100]);
+            takeScreenshot: async (_, path) => {
+                const image = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M/wHwAEBgIApD5fRAAAAABJRU5ErkJggg==', 'base64');
+                const png   = await readPng(image);
 
-                imageData.copy(pngImage.data);
-
-                return writePng(path, pngImage);
+                await writePng(path, png);
             },
         };
 
