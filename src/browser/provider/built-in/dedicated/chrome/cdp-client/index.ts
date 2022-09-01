@@ -53,6 +53,7 @@ export class BrowserClient {
     private readonly debugLogger: debug.Debugger;
     private _videoFramesBuffer: VideoFrameData[];
     private _lastFrame: VideoFrameData | null;
+    private _prevFrame: VideoFrameData | null;
     private _screencastFrameListenerAttached = false;
 
     public constructor (runtimeInfo: RuntimeInfo) {
@@ -63,6 +64,7 @@ export class BrowserClient {
 
         this._videoFramesBuffer = [];
         this._lastFrame         = null;
+        this._prevFrame         = null;
     }
 
     private get _clientKey (): string {
@@ -383,10 +385,12 @@ export class BrowserClient {
 
         this._lastFrame         = null;
         this._videoFramesBuffer = [];
+        this._prevFrame         = null;
     }
 
     public async getVideoFrameData (): Promise<Buffer | null> {
-        const currentVideoFrame = this._videoFramesBuffer.shift() || this._lastFrame;
+        const lastFrameFromBuffer = this._videoFramesBuffer.shift();
+        const currentVideoFrame   = lastFrameFromBuffer || this._lastFrame;
 
         if (!currentVideoFrame)
             return null;
@@ -399,7 +403,10 @@ export class BrowserClient {
         if (!client)
             return null;
 
-        await client.Page.screencastFrameAck({ sessionId: currentVideoFrame.sessionId });
+        if (this._prevFrame !== currentVideoFrame)
+            await client.Page.screencastFrameAck({ sessionId: currentVideoFrame.sessionId });
+
+        this._prevFrame = currentVideoFrame;
 
         return Buffer.from(currentVideoFrame.data, 'base64');
     }
