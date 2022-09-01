@@ -2,11 +2,11 @@ import { DevToolsRecorderStep } from '../types';
 import TYPE from '../../../../../test-run/commands/type';
 import { SelectorCommandTransformerBase } from './selector-base';
 
-export class ClickCommandTransformer extends SelectorCommandTransformerBase {
+class ClickCommandTransformerBase extends SelectorCommandTransformerBase {
     private options: { offsetX?: number; offsetY?: number };
 
-    constructor (step: DevToolsRecorderStep, callsite: number) {
-        super(step, TYPE.click, callsite);
+    constructor (step: DevToolsRecorderStep, type: string, callsite: number) {
+        super(step, type, callsite);
 
         this.options = {};
 
@@ -19,5 +19,23 @@ export class ClickCommandTransformer extends SelectorCommandTransformerBase {
 
     _getAssignableProperties (): string[] {
         return super._getAssignableProperties().concat(['options']);
+    }
+}
+
+export class ClickCommandTransformer extends ClickCommandTransformerBase {
+    constructor (step: DevToolsRecorderStep, callsite: number) {
+        super(step, TYPE.click, callsite);
+    }
+}
+
+export class RightClickCommandTransformer extends ClickCommandTransformerBase {
+    constructor (step: DevToolsRecorderStep, callsite: number) {
+        super(step, TYPE.rightClick, callsite);
+    }
+}
+
+export class DoubleClickCommandTransformer extends ClickCommandTransformerBase {
+    constructor (step: DevToolsRecorderStep, callsite: number) {
+        super(step, TYPE.doubleClick, callsite);
     }
 }
