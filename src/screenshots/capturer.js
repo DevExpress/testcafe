@@ -165,17 +165,15 @@ export default class Capturer {
             if (markSeed && !markSeedPosition)
                 this.warningLog.addWarning(WARNING_MESSAGE.screenshotMarkNotFound, tempPath, markSeedToId(markSeed));
 
-            if (markSeedPosition) {
-                const croppedImage = await cropScreenshot(image, {
-                    markSeedPosition,
-                    clientAreaDimensions,
-                    path:           tempPath,
-                    cropDimensions: Capturer._getCropDimensions(cropDimensions, pageDimensions),
-                });
+            const croppedImage = await cropScreenshot(image, {
+                markSeedPosition,
+                clientAreaDimensions,
+                path:           tempPath,
+                cropDimensions: Capturer._getCropDimensions(cropDimensions, pageDimensions),
+            });
 
-                if (croppedImage)
-                    await writePng(tempPath, croppedImage);
-            }
+            if (croppedImage)
+                await writePng(tempPath, croppedImage);
 
             screenshotData = await readFile(tempPath);
 
