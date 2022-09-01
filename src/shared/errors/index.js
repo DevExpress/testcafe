@@ -183,6 +183,11 @@ export class ActionObjectOptionError extends ActionOptionErrorBase {
     }
 }
 
+export class ActionFunctionOptionError extends ActionOptionErrorBase {
+    constructor (optionName, actualValue) {
+        super(TEST_RUN_ERRORS.actionFunctionOptionError, optionName, actualValue);
+    }
+}
 
 // Action execution errors
 //--------------------------------------------------------------------

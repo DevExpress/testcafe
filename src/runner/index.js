@@ -51,8 +51,7 @@ import { validateQuarantineOptions } from '../utils/get-options/quarantine';
 import logEntry from '../utils/log-entry';
 import MessageBus from '../utils/message-bus';
 import getEnvOptions from '../dashboard/get-env-options';
-import { isSkipJsErrorsOptionsObject } from '../api/skip-js-errors';
-import { validateSkipJsErrorsOptionsObject } from '../utils/get-options/skip-js-errors';
+import { validateSkipJsErrorsOptionValue } from '../utils/get-options/skip-js-errors';
 
 const DEBUG_LOGGER            = debug('testcafe:runner');
 const DASHBOARD_REPORTER_NAME = 'dashboard';
@@ -313,8 +312,7 @@ export default class Runner extends EventEmitter {
         if (!skipJsErrorsOptions)
             return;
 
-        if (isSkipJsErrorsOptionsObject(skipJsErrorsOptions))
-            validateSkipJsErrorsOptionsObject(skipJsErrorsOptions, GeneralError);
+        validateSkipJsErrorsOptionValue(skipJsErrorsOptions, GeneralError);
     }
 
     async _validateBrowsers () {

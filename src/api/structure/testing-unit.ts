@@ -18,9 +18,8 @@ import {
     Dictionary, SkipJsErrorsCallback, SkipJsErrorsCallbackWithOptionsObject,
 } from '../../configuration/interfaces';
 import { dirname } from 'path';
-import { isSkipJsErrorsOptionsObject } from '../skip-js-errors';
-import { validateSkipJsErrorsOptionsObject } from '../../utils/get-options/skip-js-errors';
-import { APIError } from '../../errors/runtime';
+import { validateSkipJsErrorsOptionValue } from '../../utils/get-options/skip-js-errors';
+import { SkipJsErrorsArgumentApiError } from '../../errors/runtime';
 
 export default abstract class TestingUnit extends BaseUnit {
     public readonly testFile: TestFile;
@@ -114,8 +113,7 @@ export default abstract class TestingUnit extends BaseUnit {
 
         this.skipJsErrorsOptions = options;
 
-        if (isSkipJsErrorsOptionsObject(this.skipJsErrorsOptions))
-            validateSkipJsErrorsOptionsObject(this.skipJsErrorsOptions, APIError);
+        validateSkipJsErrorsOptionValue(this.skipJsErrorsOptions, SkipJsErrorsArgumentApiError);
 
         return this.apiOrigin;
     }

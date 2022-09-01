@@ -15,6 +15,7 @@ import {
     GetProxyUrlOptions,
     RequestOptions,
     SkipJsErrorsOptions,
+    SkipJsErrorsCallbackWithOptions,
 } from './options';
 
 import {
@@ -48,7 +49,9 @@ import {
 import { SetNativeDialogHandlerCodeWrongTypeError } from '../../errors/test-run';
 import { ExecuteClientFunctionCommand } from './observation';
 import { camelCase } from 'lodash';
-import { prepareSkipJsErrorsOptions, isSkipJsErrorsOptionsObject } from '../../api/skip-js-errors';
+import {
+    prepareSkipJsErrorsOptions, isSkipJsErrorsOptionsObject, isSkipJsErrorsCallbackWithOptionsObject,
+} from '../../api/skip-js-errors';
 
 
 // Initializers
@@ -127,7 +130,10 @@ function initSkipJsErrorsOptions (name, val, initOptions, validate = true) {
     if (val === void 0)
         return true;
 
-    if (isSkipJsErrorsOptionsObject(val))
+    if (isSkipJsErrorsCallbackWithOptionsObject(val))
+        val = new SkipJsErrorsCallbackWithOptions(val, validate);
+
+    else if (isSkipJsErrorsOptionsObject(val))
         val = new SkipJsErrorsOptions(val, validate);
 
     return prepareSkipJsErrorsOptions(val);

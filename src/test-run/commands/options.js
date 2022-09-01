@@ -16,6 +16,7 @@ import {
     createUrlSearchParamsValidator,
     createObjectValidator,
     createStringOrRegexValidator,
+    createFunctionValidator,
 } from './validations/factories';
 import {
     ActionIntegerOptionError,
@@ -29,6 +30,7 @@ import {
     ActionUrlSearchParamsOptionError,
     ActionObjectOptionError,
     ActionStringOrRegexOptionError,
+    ActionFunctionOptionError,
 } from '../../shared/errors';
 
 export const integerOption         = createIntegerValidator(ActionIntegerOptionError);
@@ -42,7 +44,7 @@ export const numberOption          = createNumberValidator(ActionNumberOptionErr
 export const urlOption             = createUrlValidator(ActionUrlOptionError);
 export const urlSearchParamsOption = createUrlSearchParamsValidator(ActionUrlSearchParamsOptionError);
 export const objectOption          = createObjectValidator(ActionObjectOptionError);
-
+export const functionOption        = createFunctionValidator(ActionFunctionOptionError);
 
 // Actions
 export class ActionOptions extends Assignable {
@@ -399,6 +401,20 @@ export class SkipJsErrorsOptions extends Assignable {
             { name: 'stack', type: stringOrRegexOption, required: false },
             { name: 'message', type: stringOrRegexOption, required: false },
             { name: 'pageUrl', type: stringOrRegexOption, required: false },
+        ];
+    }
+}
+export class SkipJsErrorsCallbackWithOptions extends Assignable {
+    constructor (obj, validate) {
+        super();
+
+        this._assignFrom(obj, validate);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'fn', type: functionOption, required: true },
+            { name: 'dependencies', type: objectOption, required: false },
         ];
     }
 }

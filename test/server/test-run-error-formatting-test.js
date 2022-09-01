@@ -102,9 +102,8 @@ const {
     ActionObjectOptionError,
     ActionUrlArgumentError,
     ActionSkipJsErrorsArgumentTypeError,
-    ActionSkipJsErrorsDependenciesArgumentTypeError,
-}                                             = require('../../lib/errors/test-run');
-const { ActionStringOrRegexOptionError }      = require('../../lib/shared/errors');
+}                                                                   = require('../../lib/errors/test-run');
+const { ActionStringOrRegexOptionError, ActionFunctionOptionError } = require('../../lib/shared/errors');
 
 const untestedErrorTypes = Object.keys(TEST_RUN_ERRORS).map(key => TEST_RUN_ERRORS[key]);
 
@@ -826,8 +825,8 @@ describe('Error formatting', () => {
             assertErrorMessage('action-skip-js-errors-argument-error', new ActionSkipJsErrorsArgumentTypeError('options', 'string'));
         });
 
-        it('Should format "actionSkipJsErrorsDependenciesArgumentTypeError"', () => {
-            assertErrorMessage('action-skip-js-errors-dependencies-argument-error', new ActionSkipJsErrorsDependenciesArgumentTypeError('dependencies', 'string'));
+        it('Should format "actionFunctionOptionError"', () => {
+            assertErrorMessage('action-function-option-error', new ActionFunctionOptionError('fn', 'string'));
         });
     });
 

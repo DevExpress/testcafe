@@ -37,7 +37,7 @@ import getTestcafeVersion from '../../utils/get-testcafe-version';
 import { parsePortNumber, parseList } from './parse-utils';
 import COMMAND_NAMES from './command-names';
 import { SendReportState } from '../../dashboard/interfaces';
-import SKIP_JS_ERRORS_OPTION_NAMES from '../../configuration/skip-js-errors-option-names';
+import { SKIP_JS_ERRORS_OPTIONS_OBJECT_OPTION_NAMES } from '../../configuration/skip-js-errors-option-names';
 
 const REMOTE_ALIAS_RE = /^remote(?::(\d*))?$/;
 
@@ -465,7 +465,7 @@ export default class CLIArgumentParser {
 
     public async parse (argv: string[]): Promise<void> {
         CLIArgumentParser._prepareBooleanOrObjectOption(argv, ['-q', '--quarantine-mode'], Object.values(QUARANTINE_OPTION_NAMES));
-        CLIArgumentParser._prepareBooleanOrObjectOption(argv, ['-e', '--skip-js-errors'], Object.values(SKIP_JS_ERRORS_OPTION_NAMES));
+        CLIArgumentParser._prepareBooleanOrObjectOption(argv, ['-e', '--skip-js-errors'], Object.values(SKIP_JS_ERRORS_OPTIONS_OBJECT_OPTION_NAMES));
 
         const { args, v8Flags } = extractNodeProcessArguments(argv);
 
