@@ -34,6 +34,8 @@ export const DEVTOOLS_COMMAND_TYPE = {
     navigate:          'navigate',
     setViewport:       'setViewport',
     click:             'click',
+    dblClick:          'doubleClick',
+    hover:             'hover',
     change:            'change',
     keyDown:           'keyDown',
     keyUp:             'keyUp',

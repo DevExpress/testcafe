@@ -5,6 +5,18 @@ describe('[API] DevTools Compiler', function () {
         return runTests('./testcafe-fixtures/click-test.json', null, { only: 'chrome' });
     });
 
+    it('Should make hover on a button', function () {
+        return runTests('./testcafe-fixtures/hover-test.json', null, { only: 'chrome' });
+    });
+
+    it('Should make dblclick on a button', function () {
+        return runTests('./testcafe-fixtures/dblclick-test.json', null, { only: 'chrome' });
+    });
+
+    it('Should make rclick on a button', function () {
+        return runTests('./testcafe-fixtures/rclick-test.json', null, { only: 'chrome' });
+    });
+
     it('Should throw error clicking on unexisting element', function () {
         const now = Date.now();
 

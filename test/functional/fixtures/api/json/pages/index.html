@@ -10,6 +10,10 @@
             left: 0;
         }
 
+        #statusBtn:hover {
+            background-color: red;
+        }
+
         #focusable1, #focusable2 {
             height: 30px;
         }
@@ -56,8 +60,18 @@
 <script>
     const status = document.querySelector('#status');
 
+    function dblClickListener (event) {
+        status.textContent = 'dblclick ' + event.clientX + ' ' + event.clientY;
+    }
+
     function clickListener (event) {
         status.textContent = 'click ' + event.clientX + ' ' + event.clientY;
+    }
+
+    function rClickListener (event) {
+        status.textContent = 'rclick ' + event.clientX + ' ' + event.clientY;
+
+        event.preventDefault();
     }
 
     function pressListener (event) {
@@ -65,6 +79,8 @@
     }
 
     document.querySelector('#statusBtn').addEventListener('click', clickListener);
+    document.querySelector('#statusBtn').addEventListener('dblclick', dblClickListener);
+    document.querySelector('#statusBtn').addEventListener('contextmenu', rClickListener);
     document.querySelector('#focusable1').addEventListener('keydown', pressListener);
     document.querySelector('#focusable1').addEventListener('keypress', pressListener);
     document.querySelector('#focusable1').addEventListener('keyup', pressListener);
