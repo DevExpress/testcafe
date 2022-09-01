@@ -9,6 +9,7 @@ const Videos                          = require('../../lib/video-recorder/videos
 const delay                           = require('../../lib/utils/delay');
 const { ReporterPluginError }         = require('../../lib/errors/runtime');
 const WarningLog                      = require('../../lib/notifications/warning-log');
+const util                            = require('util');
 
 
 describe('Reporter', () => {
@@ -1400,6 +1401,32 @@ describe('Reporter', () => {
 
             expect(lastErr).instanceOf(ReporterPluginError);
             expect(lastErr.message).startsWith(`The "${method}" method of the "customReporter" reporter produced an uncaught error. Error details:\nError: oops`);
+        }
+    });
+
+    it('More tolerant error handling for reporter plugin methods', async () => {
+        const taskMock = new TaskMock();
+        const reporter = new Reporter({
+            [ReporterPluginMethod.reportTaskStart]: (error) => {
+                throw error;
+            },
+        }, taskMock._messageBus, null, 'customReporter');
+
+        const errs = [
+            void 0,
+            null,
+            { size: 'big' },
+            new Error('oops'),
+        ];
+
+        for (const err of errs) {
+            try {
+                await reporter.dispatchToPlugin({ method: ReporterPluginMethod.reportTaskStart, args: [err] });
+            }
+            catch (e) {
+                expect(e).instanceOf(ReporterPluginError);
+                expect(e.stack).contains(err?.stack || util.inspect(err));
+            }
         }
     });
 });

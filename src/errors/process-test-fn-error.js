@@ -10,6 +10,10 @@ import {
     UncaughtNonErrorObjectInTestCode,
     ExternalAssertionLibraryError,
 } from './test-run';
+import debug from 'debug';
+
+const debugLog = debug('testcafe:errors');
+
 
 function isAssertionErrorCallsiteFrame (frame) {
     const filename = frame.getFileName();
@@ -22,6 +26,8 @@ function isAssertionErrorCallsiteFrame (frame) {
 }
 
 export default function processTestFnError (err) {
+    debugLog('processTestFnError: %O', err);
+
     if (err && (err.isTestCafeError || err instanceof TestCafeErrorList))
         return err;
 
