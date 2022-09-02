@@ -177,6 +177,6 @@ export const RUNTIME_ERRORS = {
     requestRuntimeError:                                'E1073',
     requestCannotResolveTestRun:                        'E1074',
     relativeBaseUrl:                                    'E1075',
-    invalidSkipJsErrorsOptionsObjectKey:                'E1076',
-    invalidSkipJsErrorsCallbackWithOptionsKey:          'E1077',
+    invalidSkipJsErrorsOptionsObjectProperty:           'E1076',
+    invalidSkipJsErrorsCallbackWithOptionsProperty:     'E1077',
 };

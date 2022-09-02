@@ -44,13 +44,13 @@ function _isSkipJsErrorsCallbackWithOptionsOption (option: string): option is SK
 function validateSkipJsErrorsOptionsObject (options: Dictionary<unknown> | SkipJsErrorsOptionsObject, ErrorCtor: any): void {
     for (const key in options) {
         if (!_isSkipJsErrorsOptionsObjectOption(key))
-            throw new ErrorCtor(RUNTIME_ERRORS.invalidSkipJsErrorsOptionsObjectKey, key);
+            throw new ErrorCtor(RUNTIME_ERRORS.invalidSkipJsErrorsOptionsObjectProperty, key);
     }
 }
 
 function validateSkipJsErrorsCallbackWithOptionsObject (options: Dictionary<unknown> | SkipJsErrorsCallbackWithOptionsObject, ErrorCtor: any): void {
     for (const key in options) {
         if (!_isSkipJsErrorsCallbackWithOptionsOption(key))
-            throw new ErrorCtor(RUNTIME_ERRORS.invalidSkipJsErrorsCallbackWithOptionsKey, key);
+            throw new ErrorCtor(RUNTIME_ERRORS.invalidSkipJsErrorsCallbackWithOptionsProperty, key);
     }
 }

@@ -50,7 +50,9 @@ import { SetNativeDialogHandlerCodeWrongTypeError } from '../../errors/test-run'
 import { ExecuteClientFunctionCommand } from './observation';
 import { camelCase } from 'lodash';
 import {
-    prepareSkipJsErrorsOptions, isSkipJsErrorsOptionsObject, isSkipJsErrorsCallbackWithOptionsObject,
+    prepareSkipJsErrorsOptions,
+    isSkipJsErrorsOptionsObject,
+    isSkipJsErrorsCallbackWithOptionsObject,
 } from '../../api/skip-js-errors';
 
 
