@@ -17,6 +17,8 @@ import { createList } from '../utils/string';
 
 const RELEASE_TIMEOUT = 10000;
 
+const COUNT_OWN_AND_OUTER_LISTENERS = 3;
+
 export default class BrowserSet extends EventEmitter {
     private readonly _browserConnections: BrowserConnection[];
     private readonly _browserErrorHandler: (error: Error) => void;
@@ -39,6 +41,7 @@ export default class BrowserSet extends EventEmitter {
         // NOTE: We're setting an empty error handler, because Node kills the process on an 'error' event
         // if there is no handler. See: https://nodejs.org/api/events.html#events_class_events_eventemitter
         this.on('error', noop);
+        this.setMaxListeners(COUNT_OWN_AND_OUTER_LISTENERS + this._browserConnections.length);
     }
 
     private static async _waitIdle (bc: BrowserConnection): Promise<void> {
