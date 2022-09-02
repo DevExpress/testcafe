@@ -27,7 +27,10 @@ const DEBUG_GLOB_2 = [
     ...SCREENSHOT_TESTS_GLOB.map(glob => `!${glob}`),
 ];
 
-const PROXYLESS_TESTS_GLOB = [];
+const PROXYLESS_TESTS_GLOB = [
+    'test/functional/fixtures/app-command/test.js',
+    'test/functional/fixtures/driver/test.js',
+];
 
 module.exports = {
     TESTS_GLOB,

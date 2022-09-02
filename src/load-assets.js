@@ -1,4 +1,5 @@
 import { readSync as read } from 'read-file-relative';
+import { getAssetPath } from 'testcafe-hammerhead';
 
 
 const ASSETS_CACHE = {};
@@ -11,13 +12,11 @@ function loadAsset (filename, asBuffer) {
 }
 
 export default function (developmentMode) {
-    const scriptNameSuffix = developmentMode ? 'js' : 'min.js';
-
     return {
         favIcon:      loadAsset('./client/ui/favicon.ico', true),
-        coreScript:   loadAsset(`./client/core/index.${scriptNameSuffix}`),
-        driverScript: loadAsset(`./client/driver/index.${scriptNameSuffix}`),
-        uiScript:     loadAsset(`./client/ui/index.${scriptNameSuffix}`),
+        coreScript:   loadAsset(getAssetPath('./client/core/index.js', developmentMode)),
+        driverScript: loadAsset(getAssetPath('./client/driver/index.js', developmentMode)),
+        uiScript:     loadAsset(getAssetPath('./client/ui/index.js', developmentMode)),
         uiStyle:      loadAsset('./client/ui/styles.css'),
         uiSprite:     loadAsset('./client/ui/sprite.png', true),
         uiSpriteSvg:  loadAsset('./client/ui/sprite.svg', true),
@@ -28,7 +27,7 @@ export default function (developmentMode) {
 
         serviceWorkerScript: loadAsset('./client/browser/service-worker.js'),
 
-        automationScript: loadAsset(`./client/automation/index.${scriptNameSuffix}`),
+        automationScript: loadAsset(getAssetPath('./client/automation/index.js', developmentMode)),
 
         // NOTE: Load the legacy client script lazily to reduce startup time
         legacyRunnerScript: require('testcafe-legacy-api').CLIENT_RUNNER_SCRIPT,

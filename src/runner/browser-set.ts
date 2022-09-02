@@ -129,9 +129,9 @@ export default class BrowserSet extends EventEmitter {
         );
     }
 
-    public releaseConnection (bc: BrowserConnection): Promise<void> {
+    public async releaseConnection (bc: BrowserConnection): Promise<void> {
         if (!this._browserConnections.includes(bc))
-            return Promise.resolve();
+            return;
 
         remove(this._browserConnections, bc);
 
@@ -146,7 +146,7 @@ export default class BrowserSet extends EventEmitter {
 
         this._pendingReleases.push(release);
 
-        return release;
+        return release; // eslint-disable-line consistent-return
     }
 
     public async dispose (): Promise<void> {
@@ -154,11 +154,11 @@ export default class BrowserSet extends EventEmitter {
         // the this.connections array, which leads to shifting indexes
         // towards the beginning. So, we must copy the array in order to iterate it,
         // or we can perform iteration from the end to the beginning.
-        this._browserConnections.reduceRight((_, bc) => {
-            this.releaseConnection(bc);
+        await this._browserConnections.reduceRight(async (_, bc) => {
+            await this.releaseConnection(bc);
 
             return bc;
-        }, {});
+        }, Promise.resolve({}));
 
         await Promise.all(this._pendingReleases);
     }
