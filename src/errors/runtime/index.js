@@ -164,3 +164,9 @@ export class RequestRuntimeError extends APIError {
         super(methodName, code, ...args);
     }
 }
+
+export class SkipJsErrorsArgumentApiError extends APIError {
+    constructor (code, ...args) {
+        super('skipJsErrors', code, ...args);
+    }
+}

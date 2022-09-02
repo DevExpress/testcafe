@@ -122,3 +122,9 @@ export class SkipJsErrorsOptions {
     public message?: string | RegExp;
     public pageUrl?: string | RegExp;
 }
+
+export class SkipJsErrorsCallbackWithOptions {
+    public constructor (obj: object, validate: boolean);
+    public fn: SkipJsErrorsCallback;
+    public dependencies: { [key: string]: any }
+}

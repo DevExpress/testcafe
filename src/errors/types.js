@@ -99,7 +99,7 @@ export const TEST_RUN_ERRORS = {
     actionUrlArgumentError:                                'E96',
     actionStringOrRegexOptionError:                        'E97',
     actionSkipJsErrorsArgumentError:                       'E98',
-    actionSkipJsErrorsDependenciesArgumentError:           'E99',
+    actionFunctionOptionError:                             'E99',
 };
 
 export const RUNTIME_ERRORS = {
@@ -177,5 +177,6 @@ export const RUNTIME_ERRORS = {
     requestRuntimeError:                                'E1073',
     requestCannotResolveTestRun:                        'E1074',
     relativeBaseUrl:                                    'E1075',
-    invalidSkipJsErrorsOption:                          'E1076',
+    invalidSkipJsErrorsOptionsObjectProperty:           'E1076',
+    invalidSkipJsErrorsCallbackWithOptionsProperty:     'E1077',
 };

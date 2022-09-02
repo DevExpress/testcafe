@@ -108,3 +108,12 @@ export function createObjectValidator (ErrorCtor) {
             throw new ErrorCtor(name, valType);
     };
 }
+
+export function createFunctionValidator (ErrorCtor) {
+    return (name, val) => {
+        const valType = typeof val;
+
+        if (valType !== 'function')
+            throw new ErrorCtor(name, valType);
+    };
+}
