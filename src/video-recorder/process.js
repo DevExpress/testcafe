@@ -36,7 +36,7 @@ const DEFAULT_OPTIONS = {
 
 const FFMPEG_START_DELAY = 500;
 
-const DELAY_AFTER_EMPTY_FRAME = 50;
+const DELAY_AFTER_EMPTY_FRAME = 20;
 
 export default class VideoRecorder extends AsyncEmitter {
     constructor (basePath, ffmpegPath, connection, customOptions) {

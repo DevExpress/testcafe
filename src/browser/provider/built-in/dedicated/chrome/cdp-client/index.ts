@@ -386,7 +386,8 @@ export class BrowserClient {
     }
 
     public async getVideoFrameData (): Promise<Buffer | null> {
-        const currentVideoFrame = this._videoFramesBuffer.shift() || this._lastFrame;
+        const firstFrameFromBuffer = this._videoFramesBuffer.shift();
+        const currentVideoFrame    = firstFrameFromBuffer || this._lastFrame;
 
         if (!currentVideoFrame)
             return null;
@@ -399,7 +400,8 @@ export class BrowserClient {
         if (!client)
             return null;
 
-        await client.Page.screencastFrameAck({ sessionId: currentVideoFrame.sessionId });
+        if (firstFrameFromBuffer)
+            await client.Page.screencastFrameAck({ sessionId: currentVideoFrame.sessionId });
 
         return Buffer.from(currentVideoFrame.data, 'base64');
     }
