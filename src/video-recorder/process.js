@@ -8,6 +8,10 @@ import delay from '../utils/delay';
 const DEBUG_LOGGER_PREFIX = 'testcafe:video-recorder:process:';
 
 const DEFAULT_OPTIONS = {
+
+    // NOTE: use to force stdin and stdout formats
+    'f': 'image2pipe',
+
     // NOTE: don't ask confirmation for rewriting the output file
     'y': true,
 
