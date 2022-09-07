@@ -87,19 +87,16 @@ describe('Test run commands', () => {
             let commandObj = {
                 type:     TYPE.click,
                 selector: '#yo',
-                yo:       'test',
 
                 options: {
                     offsetX:  23,
                     offsetY:  32,
                     caretPos: 2,
                     speed:    0.5,
-                    dummy:    'yo',
 
                     modifiers: {
                         ctrl:  true,
                         shift: true,
-                        dummy: 'yo',
                         alt:   true,
                         meta:  true,
                     },
@@ -160,19 +157,16 @@ describe('Test run commands', () => {
             let commandObj = {
                 type:     TYPE.rightClick,
                 selector: '#yo',
-                yo:       'test',
 
                 options: {
                     offsetX:  23,
                     offsetY:  32,
                     caretPos: 2,
                     speed:    0.5,
-                    dummy:    'yo',
 
                     modifiers: {
                         ctrl:  true,
                         shift: false,
-                        dummy: 'yo',
                         alt:   true,
                         meta:  false,
                     },
@@ -233,19 +227,16 @@ describe('Test run commands', () => {
             let commandObj = {
                 type:     TYPE.doubleClick,
                 selector: '#yo',
-                yo:       'test',
 
                 options: {
                     offsetX:  23,
                     offsetY:  32,
                     caretPos: 2,
                     speed:    0.5,
-                    dummy:    'yo',
 
                     modifiers: {
                         ctrl:  true,
                         shift: false,
-                        dummy: 'yo',
                         alt:   true,
                         meta:  false,
                     },
@@ -306,19 +297,15 @@ describe('Test run commands', () => {
             let commandObj = {
                 type:     TYPE.hover,
                 selector: '#yo',
-                yo:       'test',
 
                 options: {
-                    offsetX:  23,
-                    offsetY:  32,
-                    caretPos: 2,
-                    speed:    0.5,
-                    dummy:    'yo',
+                    offsetX: 23,
+                    offsetY: 32,
+                    speed:   0.5,
 
                     modifiers: {
                         ctrl:  true,
                         shift: false,
-                        dummy: 'yo',
                         alt:   true,
                         meta:  false,
                     },
@@ -379,19 +366,15 @@ describe('Test run commands', () => {
                 selector:    '#yo',
                 dragOffsetX: 10,
                 dragOffsetY: -15,
-                dummy:       false,
 
                 options: {
-                    offsetX:  23,
-                    offsetY:  32,
-                    caretPos: 2,
-                    speed:    0.5,
-                    dummy:    1,
+                    offsetX: 23,
+                    offsetY: 32,
+                    speed:   0.5,
 
                     modifiers: {
                         ctrl:  true,
                         shift: false,
-                        dummy: 'yo',
                         alt:   true,
                         meta:  false,
                     },
@@ -457,21 +440,17 @@ describe('Test run commands', () => {
                 type:                TYPE.dragToElement,
                 selector:            '#yo',
                 destinationSelector: '#destination',
-                dragOffsetX:         10,
 
                 options: {
                     offsetX:            23,
                     offsetY:            32,
                     destinationOffsetX: 12,
                     destinationOffsetY: 21,
-                    caretPos:           2,
                     speed:              0.5,
-                    dummy:              1,
 
                     modifiers: {
                         ctrl:  true,
                         shift: false,
-                        dummy: 'yo',
                         alt:   true,
                         meta:  false,
                     },
@@ -540,21 +519,18 @@ describe('Test run commands', () => {
                 type:     TYPE.typeText,
                 selector: '#yo',
                 text:     'testText',
-                yo:       'test',
 
                 options: {
                     offsetX:  23,
                     offsetY:  32,
                     caretPos: 2,
                     speed:    0.5,
-                    dummy:    'yo',
                     replace:  true,
                     paste:    true,
 
                     modifiers: {
                         ctrl:  true,
                         shift: false,
-                        dummy: 'yo',
                         alt:   false,
                         meta:  false,
                     },
@@ -628,12 +604,9 @@ describe('Test run commands', () => {
                 selector: '#yo',
                 startPos: 1,
                 endPos:   2,
-                yo:       'test',
 
                 options: {
-                    offsetX: 23,
-                    dummy:   'yo',
-                    speed:   0.5,
+                    speed: 0.5,
                 },
             };
 
@@ -679,12 +652,9 @@ describe('Test run commands', () => {
                 startPos:  1,
                 endLine:   2,
                 endPos:    3,
-                yo:        5,
 
                 options: {
-                    offsetX: 23,
-                    dummy:   'yo',
-                    speed:   0.5,
+                    speed: 0.5,
                 },
             };
 
@@ -729,15 +699,11 @@ describe('Test run commands', () => {
         it('Should create SelectEditableContentCommand from object', () => {
             let commandObj = {
                 type:          TYPE.selectEditableContent,
-                selector:      '#yo',
                 startSelector: '#node1',
                 endSelector:   '#node2',
-                yo:            'test',
 
                 options: {
-                    offsetX: 23,
-                    dummy:   'yo',
-                    speed:   0.5,
+                    speed: 0.5,
                 },
             };
 
@@ -756,7 +722,6 @@ describe('Test run commands', () => {
 
             commandObj = {
                 type:          TYPE.selectEditableContent,
-                selector:      '#yo',
                 startSelector: '#node1',
             };
 
@@ -776,24 +741,11 @@ describe('Test run commands', () => {
 
         it('Should create PressKeyCommand from object', () => {
             const commandObj = {
-                type:     TYPE.pressKey,
-                selector: '#yo',
-                keys:     'a+b c',
-                yo:       'test',
+                type: TYPE.pressKey,
+                keys: 'a+b c',
 
                 options: {
-                    offsetX: 23,
-                    offsetY: 32,
-                    dummy:   'yo',
-                    speed:   0.5,
-
-                    modifiers: {
-                        ctrl:  true,
-                        shift: false,
-                        dummy: 'yo',
-                        alt:   false,
-                        meta:  false,
-                    },
+                    speed: 0.5,
                 },
             };
 
@@ -848,11 +800,6 @@ describe('Test run commands', () => {
                 type:     TYPE.setFilesToUpload,
                 selector: '#yo',
                 filePath: '/test/path',
-                dummy:    'test',
-
-                options: {
-                    dummy: 'yo',
-                },
             };
 
             let command = createCommand(commandObj);
@@ -868,11 +815,6 @@ describe('Test run commands', () => {
                 type:     TYPE.setFilesToUpload,
                 selector: '#yo',
                 filePath: ['/test/path/1', '/test/path/2'],
-                dummy:    'test',
-
-                options: {
-                    dummy: 'yo',
-                },
             };
 
             command = createCommand(commandObj);
@@ -889,11 +831,6 @@ describe('Test run commands', () => {
             const commandObj = {
                 type:     TYPE.clearUpload,
                 selector: '#yo',
-                dummy:    'test',
-
-                options: {
-                    dummy: 'yo',
-                },
             };
 
             const command = createCommand(commandObj);
@@ -908,14 +845,8 @@ describe('Test run commands', () => {
         it('Should create TakeScreenshotCommand from object', function () {
             let commandObj = {
                 type:     TYPE.takeScreenshot,
-                selector: '#yo',
                 path:     'custom',
-                dummy:    'test',
                 fullPage: true,
-
-                options: {
-                    dummy: 'yo',
-                },
             };
 
             let command = createCommand(commandObj);
@@ -931,13 +862,7 @@ describe('Test run commands', () => {
 
             commandObj = {
                 type:     TYPE.takeScreenshot,
-                selector: '#yo',
-                dummy:    'test',
                 fullPage: void 0,
-
-                options: {
-                    dummy: 'yo',
-                },
             };
 
             command = createCommand(commandObj);
@@ -956,16 +881,11 @@ describe('Test run commands', () => {
                 type:     TYPE.takeElementScreenshot,
                 selector: '#yo',
                 path:     'custom',
-                dummy:    'test',
 
                 options: {
                     crop: {
                         left: 50,
                         top:  13,
-                    },
-
-                    modifiers: {
-                        alt: true,
                     },
                 },
             };
@@ -1001,15 +921,9 @@ describe('Test run commands', () => {
 
         it('Should create ResizeWindowCommand from object', function () {
             const commandObj = {
-                type:     TYPE.resizeWindow,
-                selector: '#yo',
-                dummy:    'test',
-                width:    100,
-                height:   100,
-
-                options: {
-                    dummy: 'yo',
-                },
+                type:   TYPE.resizeWindow,
+                width:  100,
+                height: 100,
             };
 
             const command = createCommand(commandObj);
@@ -1024,13 +938,10 @@ describe('Test run commands', () => {
 
         it('Should create ResizeWindowToFitDeviceCommand from object', function () {
             let commandObj = {
-                type:     TYPE.resizeWindowToFitDevice,
-                selector: '#yo',
-                dummy:    'test',
-                device:   'iPhone',
+                type:   TYPE.resizeWindowToFitDevice,
+                device: 'iPhone',
 
                 options: {
-                    dummy:               'yo',
                     portraitOrientation: true,
                 },
             };
@@ -1120,11 +1031,9 @@ describe('Test run commands', () => {
                 actual:        1,
                 expected:      0.2,
                 expected2:     3.5,
-                yo:            'test',
                 message:       'ok',
 
                 options: {
-                    offsetX: 23,
                     timeout: 100,
                 },
             };
@@ -1266,10 +1175,6 @@ describe('Test run commands', () => {
             let commandObj = {
                 type:    TYPE.recorder,
                 subtype: 'test',
-
-                options: {
-                    dummy: 'yo',
-                },
             };
 
             let command = createCommand(commandObj);
@@ -1287,10 +1192,6 @@ describe('Test run commands', () => {
                 subtype: 'test',
 
                 forceExecutionInTopWindowOnly: true,
-
-                options: {
-                    dummy: 'yo',
-                },
             };
 
             command = createCommand(commandObj);
@@ -1585,7 +1486,7 @@ describe('Test run commands', () => {
                 {
                     isTestCafeError: true,
                     code:            'E11',
-                    optionName:      'modifiers.shift',
+                    optionName:      'shift',
                     actualValue:     'string',
                     callsite:        null,
                 }

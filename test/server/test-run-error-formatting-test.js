@@ -103,7 +103,7 @@ const {
     ActionUrlArgumentError,
     ActionSkipJsErrorsArgumentTypeError,
 }                                                                   = require('../../lib/errors/test-run');
-const { ActionStringOrRegexOptionError, ActionFunctionOptionError } = require('../../lib/shared/errors');
+const { ActionStringOrRegexOptionError, ActionFunctionOptionError, ActionInvalidObjectPropertyError } = require('../../lib/shared/errors');
 
 const untestedErrorTypes = Object.keys(TEST_RUN_ERRORS).map(key => TEST_RUN_ERRORS[key]);
 
@@ -827,6 +827,10 @@ describe('Error formatting', () => {
 
         it('Should format "actionFunctionOptionError"', () => {
             assertErrorMessage('action-function-option-error', new ActionFunctionOptionError('fn', 'string'));
+        });
+
+        it('Should format "actionInvalidObjectPropertyError"', () => {
+            assertErrorMessage('action-invalid-object-property-error', new ActionInvalidObjectPropertyError('ClickOptions', 'invalidProp', ['ctrl', 'alt']));
         });
     });
 

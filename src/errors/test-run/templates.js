@@ -8,6 +8,7 @@ import {
     replaceLeadingSpacesWithNbsp,
     formatExpressionMessage,
 } from './utils';
+import { getConcatenatedValuesString } from '../../utils/string';
 
 const EXTERNAL_LINKS = {
     createNewIssue:      'https://github.com/DevExpress/testcafe/issues/new?template=bug-report.md',
@@ -450,5 +451,9 @@ export default {
 
     [TEST_RUN_ERRORS.actionFunctionOptionError]: err => `
         The value of the "${err.optionName}" option belongs to an unsupported data type (${err.actualValue}). The "${err.optionName}" option only accepts function types values.
+    `,
+
+    [TEST_RUN_ERRORS.actionInvalidObjectPropertyError]: err => `
+        The "${err.objectName}" object contains an invalid property: "${err.propertyName}". Please use the following properties to configure "${err.objectName}": ${getConcatenatedValuesString(err.availableProperties)}.
     `,
 };

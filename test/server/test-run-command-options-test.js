@@ -11,6 +11,7 @@ const ElementScreenshotOptions = require('../../lib/test-run/commands/options').
 const ResizeToFitDeviceOptions = require('../../lib/test-run/commands/options').ResizeToFitDeviceOptions;
 const AssertionOptions         = require('../../lib/test-run/commands/options').AssertionOptions;
 const CookieOptions            = require('../../lib/test-run/commands/options').CookieOptions;
+const SkipJsErrorsOptions      = require('../../lib/test-run/commands/options').SkipJsErrorsOptions;
 
 // NOTE: chai's throws doesn't perform deep comparison of error objects
 function assertThrow (fn, expectedErr) {
@@ -289,6 +290,56 @@ describe('Test run command options', function () {
     });
 
     describe('Validation', function () {
+        it('Should throw an error if the invalid property is in any object inherited from "Assignable"', function () {
+            assertThrow(
+                function () {
+                    return new ActionOptions({ speed: '1', invalidProp: 'value' }, true);
+                },
+                {
+                    isTestCafeError:     true,
+                    code:                'E100',
+                    objectName:          'ActionOptions',
+                    propertyName:        'invalidProp',
+                    availableProperties: ['speed'],
+                    callsite:            null,
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return new ClickOptions({ invalidProp: 'value' }, true);
+                },
+                {
+                    isTestCafeError:     true,
+                    code:                'E100',
+                    objectName:          'ClickOptions',
+                    propertyName:        'invalidProp',
+                    availableProperties: [
+                        'speed',
+                        'offsetX',
+                        'offsetY',
+                        'modifiers',
+                        'caretPos',
+                    ],
+                    callsite: null,
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return new SkipJsErrorsOptions({ message: '1', invalidProp: 'value' }, true);
+                },
+                {
+                    isTestCafeError:     true,
+                    code:                'E100',
+                    objectName:          'SkipJsErrorsOptions',
+                    propertyName:        'invalidProp',
+                    availableProperties: ['stack', 'message', 'pageUrl'],
+                    callsite:            null,
+                }
+            );
+        });
+
         it('Should validate ActionOptions', function () {
             assertThrow(
                 function () {
@@ -380,7 +431,7 @@ describe('Test run command options', function () {
                     isTestCafeError: true,
                     code:            'E11',
                     actualValue:     'number',
-                    optionName:      'modifiers.ctrl',
+                    optionName:      'ctrl',
                     callsite:        null,
                 }
             );
@@ -393,7 +444,7 @@ describe('Test run command options', function () {
                     isTestCafeError: true,
                     code:            'E11',
                     actualValue:     'number',
-                    optionName:      'modifiers.alt',
+                    optionName:      'alt',
                     callsite:        null,
                 }
             );
@@ -406,7 +457,7 @@ describe('Test run command options', function () {
                     isTestCafeError: true,
                     code:            'E11',
                     actualValue:     'number',
-                    optionName:      'modifiers.shift',
+                    optionName:      'shift',
                     callsite:        null,
                 }
             );
@@ -419,7 +470,7 @@ describe('Test run command options', function () {
                     isTestCafeError: true,
                     code:            'E11',
                     actualValue:     'number',
-                    optionName:      'modifiers.meta',
+                    optionName:      'meta',
                     callsite:        null,
                 }
             );

@@ -3,6 +3,18 @@
 // Do not use any browser or node-specific API!
 // -------------------------------------------------------------
 
+import { ActionInvalidObjectPropertyError } from '../shared/errors';
+
+function validateObjectProps (obj, dest) {
+    const objectName = dest.constructor.name;
+    const validKeys = dest._getAssignableProperties().map(p => p.name);
+
+    for (const key in obj) {
+        if (!(validKeys.includes(key) || key in dest))
+            throw new ActionInvalidObjectPropertyError(objectName, key, validKeys);
+    }
+}
+
 export default class Assignable {
     _getAssignableProperties () {
         throw new Error('Not implemented');
@@ -12,34 +24,24 @@ export default class Assignable {
         if (!obj)
             return;
 
+        if (validate)
+            validateObjectProps(obj, this);
+
         const props = this._getAssignableProperties();
 
         for (let i = 0; i < props.length; i++) {
             const { name, type, required, init, defaultValue } = props[i];
 
-            const path    = name.split('.');
-            const lastIdx = path.length - 1;
-            const last    = path[lastIdx];
-            let srcObj  = obj;
-            let destObj = this;
+            if (defaultValue !== void 0)
+                this[name] = defaultValue;
 
-            for (let j = 0; j < lastIdx && srcObj && destObj; j++) {
-                srcObj  = srcObj[path[j]];
-                destObj = destObj[path[j]];
-            }
+            const srcVal = obj[name];
 
-            if (destObj && 'defaultValue' in props[i])
-                destObj[name] = defaultValue;
+            if (srcVal !== void 0 || required) {
+                if (validate && type)
+                    type(name, srcVal);
 
-            if (srcObj && destObj) {
-                const srcVal = srcObj[last];
-
-                if (srcVal !== void 0 || required) {
-                    if (validate && type)
-                        type(name, srcVal);
-
-                    destObj[last] = init ? init(name, srcVal, initOptions, validate) : srcVal;
-                }
+                this[name] = init ? init(name, srcVal, initOptions, validate) : srcVal;
             }
         }
     }

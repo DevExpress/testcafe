@@ -71,21 +71,6 @@ class TaskMock extends AsyncEventEmitter {
     }
 }
 
-const options = {
-    caretPos:  1,
-    modifiers: {
-        alt:   true,
-        ctrl:  true,
-        shift: true,
-    },
-    offsetX:            1,
-    offsetY:            2,
-    destinationOffsetX: 3,
-    speed:              1,
-    replace:            true,
-    paste:              true,
-};
-
 const actionsWithoutOptions = {
     click:                   ['#target'],
     rightClick:              ['#target'],
@@ -103,22 +88,31 @@ const actionsWithoutOptions = {
     resizeWindowToFitDevice: ['Sony Xperia Z'],
 };
 
+const {
+    basicOptions,
+    clickOptions,
+    mouseOptions,
+    offsetOptions,
+    dragToElementOptions,
+    typeTextOptions,
+} = require('./data/test-controller-reporter-expected');
+
 const actions = {
     dispatchEvent:             ['#target', 'mousedown'],
-    click:                     ['#target', options],
-    rightClick:                ['#target', options],
-    doubleClick:               ['#target', options],
-    hover:                     ['#target', options],
-    drag:                      ['#target', 100, 200, options],
-    dragToElement:             ['#target', '#target', options],
-    scroll:                    ['#target', 100, 200, options],
-    scrollBy:                  ['#target', 100, 200, options],
-    scrollIntoView:            ['#target', options],
-    typeText:                  ['#input', 'test', options],
-    selectText:                ['#input', 1, 3, options],
-    selectTextAreaContent:     ['#textarea', 1, 2, 3, 4, options],
-    selectEditableContent:     ['#contenteditable', '#contenteditable', options],
-    pressKey:                  ['enter', options],
+    click:                     ['#target', clickOptions],
+    rightClick:                ['#target', clickOptions],
+    doubleClick:               ['#target', clickOptions],
+    hover:                     ['#target', mouseOptions],
+    drag:                      ['#target', 100, 200, mouseOptions],
+    dragToElement:             ['#target', '#target', dragToElementOptions],
+    scroll:                    ['#target', 100, 200, offsetOptions],
+    scrollBy:                  ['#target', 100, 200, offsetOptions],
+    scrollIntoView:            ['#target', offsetOptions],
+    typeText:                  ['#input', 'test', typeTextOptions],
+    selectText:                ['#input', 1, 3, basicOptions],
+    selectTextAreaContent:     ['#textarea', 1, 2, 3, 4, basicOptions],
+    selectEditableContent:     ['#contenteditable', '#contenteditable', basicOptions],
+    pressKey:                  ['enter', basicOptions],
     wait:                      [1],
     navigateTo:                ['./index.html'],
     setFilesToUpload:          ['#file', '../test.js'],
@@ -226,9 +220,9 @@ describe('TestController action events', () => {
         expect(actionsKeys.length).eql(doneLog.length);
         expect(startLog).eql(actionsKeys);
 
-        const expected = require('./data/test-controller-reporter-expected');
+        const { expectedLog } = require('./data/test-controller-reporter-expected');
 
-        expect(doneLog).eql(expected);
+        expect(doneLog).eql(expectedLog);
     });
 
     it('Error action', async () => {

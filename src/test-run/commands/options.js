@@ -100,6 +100,23 @@ export class ScrollOptions extends OffsetOptions {
     }
 }
 
+export class CropOptions extends Assignable {
+    constructor (obj, validate) {
+        super();
+
+        this._assignFrom(obj, validate);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'left', type: integerOption, defaultValue: null },
+            { name: 'right', type: integerOption, defaultValue: null },
+            { name: 'top', type: integerOption, defaultValue: null },
+            { name: 'bottom', type: integerOption, defaultValue: null },
+        ];
+    }
+}
+
 // Element Screenshot
 export class ElementScreenshotOptions extends ActionOptions {
     constructor (obj, validate) {
@@ -125,14 +142,28 @@ export class ElementScreenshotOptions extends ActionOptions {
         return super._getAssignableProperties().concat([
             { name: 'scrollTargetX', type: integerOption },
             { name: 'scrollTargetY', type: integerOption },
-            { name: 'crop.left', type: integerOption },
-            { name: 'crop.right', type: integerOption },
-            { name: 'crop.top', type: integerOption },
-            { name: 'crop.bottom', type: integerOption },
+            { name: 'crop', type: objectOption, init: initCropOptions },
             { name: 'includeMargins', type: booleanOption },
             { name: 'includeBorders', type: booleanOption },
             { name: 'includePaddings', type: booleanOption },
         ]);
+    }
+}
+
+export class ModifiersOptions extends Assignable {
+    constructor (obj, validate) {
+        super();
+
+        this._assignFrom(obj, validate);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'ctrl', type: booleanOption, defaultValue: false },
+            { name: 'alt', type: booleanOption, defaultValue: false },
+            { name: 'shift', type: booleanOption, defaultValue: false },
+            { name: 'meta', type: booleanOption, defaultValue: false },
+        ];
     }
 }
 
@@ -153,10 +184,7 @@ export class MouseOptions extends OffsetOptions {
 
     _getAssignableProperties () {
         return super._getAssignableProperties().concat([
-            { name: 'modifiers.ctrl', type: booleanOption },
-            { name: 'modifiers.alt', type: booleanOption },
-            { name: 'modifiers.shift', type: booleanOption },
-            { name: 'modifiers.meta', type: booleanOption },
+            { name: 'modifiers', type: objectOption, init: initModifiersOptions },
         ]);
     }
 }
@@ -426,4 +454,12 @@ function initRequestAuthOption (name, val, initOptions, validate = true) {
 
 function initRequestProxyOptions (name, val, initOptions, validate = true) {
     return new RequestProxyOptions(val, validate);
+}
+
+function initCropOptions (name, val, initOptions, validate = true) {
+    return new CropOptions(val, validate);
+}
+
+function initModifiersOptions (name, val, initOptions, validate = true) {
+    return new ModifiersOptions(val, validate);
 }
