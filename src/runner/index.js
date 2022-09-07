@@ -165,8 +165,10 @@ export default class Runner extends EventEmitter {
 
     async _getTaskResult (task, browserSet, reporters, testedApp, runnableConfigurationId) {
         if (!task.opts.live) {
-            task.on('browser-job-done', job => {
-                job.browserConnections.forEach(bc => browserSet.releaseConnection(bc));
+            task.on('browser-job-done', async job => {
+                await Promise.all(job.browserConnections.map(async bc => {
+                    await browserSet.releaseConnection(bc);
+                }));
             });
         }
 
