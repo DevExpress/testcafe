@@ -7,6 +7,10 @@ export class CommandBase extends Assignable {
 
         this.type = type;
 
+        //NOTE: This is a service field for TestCafe Studio.
+        //It is used during the test creation phase and does not affect the execution of the command.
+        this.studio = {};
+
         this._assignFrom(obj, validateProperties, { testRun });
 
         this.actionId = obj?.actionId || nanoid(7);
