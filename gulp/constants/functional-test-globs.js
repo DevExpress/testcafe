@@ -30,6 +30,7 @@ const DEBUG_GLOB_2 = [
 const PROXYLESS_TESTS_GLOB = [
     'test/functional/fixtures/app-command/test.js',
     'test/functional/fixtures/driver/test.js',
+    'test/functional/fixtures/page-error/test.js',
 ];
 
 module.exports = {

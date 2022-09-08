@@ -14,10 +14,12 @@ import {
 } from 'testcafe-hammerhead';
 import BrowserConnection from '../browser/connection';
 import { SCRIPTS, TESTCAFE_UI_STYLES } from '../assets/injectables';
-import ABOUT_BLANK_PAGE_MARKUP from './about-blank-page-markup';
+import EMPTY_PAGE_MARKUP from './empty-page-markup';
 import { remove } from 'lodash';
 import debug from 'debug';
 import { StatusCodes } from 'http-status-codes';
+import { PageLoadError } from '../errors/test-run';
+import ERROR_ROUTE from './error-route';
 
 const ALL_DOCUMENT_RESPONSES = {
     urlPattern:   '*',
@@ -35,10 +37,19 @@ const debugLogger = debug('testcafe:proxyless:resource-injector');
 export default class ResourceInjector {
     private readonly _browserId: string;
     private readonly _idlePageUrl: string;
+    private readonly _errorPageUrl: string;
 
     public constructor (browserId: string) {
-        this._browserId   = browserId;
-        this._idlePageUrl = this._getIdlePageUrl(browserId);
+        this._browserId    = browserId;
+        this._idlePageUrl  = this._getIdlePageUrl(browserId);
+        this._errorPageUrl = this._getErrorPageUrl(browserId);
+    }
+
+    private _getErrorPageUrl (browserId: string): string {
+        const browserConnection = BrowserConnection.getById(browserId) as BrowserConnection;
+        const proxy             = browserConnection.browserConnectionGateway.proxy;
+
+        return proxy.resolveRelativeServiceUrl(ERROR_ROUTE);
     }
 
     private _getIdlePageUrl (browserId: string): string {
@@ -52,11 +63,8 @@ export default class ResourceInjector {
             : response.body;
     }
 
-    private _isServicePage (url: string): boolean {
-        const browserConnection = BrowserConnection.getById(this._browserId) as BrowserConnection;
-        const proxy             = browserConnection.browserConnectionGateway.proxy;
-
-        return url.startsWith(proxy.server1Info.domain);
+    private _shouldProxyPage (url: string): boolean {
+        return url !== this._idlePageUrl;
     }
 
     private async _prepareInjectableResources (): Promise<PageInjectableResources | null> {
@@ -103,18 +111,30 @@ export default class ResourceInjector {
         return headers;
     }
 
-    private _tryToHandlePageError (err: Error, url: string): void {
+    private async _handlePageError (client: ProtocolApi, err: Error, url: string): Promise<void> {
         const browserConnection = BrowserConnection.getById(this._browserId) as BrowserConnection;
         const currentTestRun    = browserConnection?.currentJob?.currentTestRun;
 
         if (!currentTestRun)
             return;
 
-        const ctxMock = {
-            reqOpts: { url },
-        };
+        currentTestRun.pendingPageError = new PageLoadError(err, url);
 
-        currentTestRun.session.handlePageError(ctxMock, err);
+        await client.Page.navigate({ url: this._errorPageUrl });
+    }
+
+    private async _redirect (client: ProtocolApi, requestId: string, url: string): Promise<void> {
+        await client.Fetch.fulfillRequest({
+            requestId,
+            responseCode:    StatusCodes.MOVED_PERMANENTLY,
+            responseHeaders: [
+                { name: 'location', value: url },
+            ],
+        });
+    }
+
+    private async _redirectToIdlePage (client: ProtocolApi, requestId: string): Promise<void> {
+        await this._redirect(client, requestId, this._idlePageUrl);
     }
 
     private async _handleHTTPPages (client: ProtocolApi): Promise<void> {
@@ -127,8 +147,8 @@ export default class ResourceInjector {
                 responseStatusCode,
             } = params;
 
-            if (this._isServicePage(params.request.url))
-                await client.Fetch.continueRequest({ requestId });
+            if (!this._shouldProxyPage(params.request.url))
+                await client.Fetch.continueResponse({ requestId });
             else {
                 try {
                     const responseObj         = await client.Fetch.getResponseBody({ requestId });
@@ -137,17 +157,10 @@ export default class ResourceInjector {
 
                     // NOTE: an unhandled exception interrupts the test execution,
                     // and we are force to redirect manually to the idle page.
-                    if (!injectableResources) {
-                        await client.Fetch.fulfillRequest({
-                            requestId,
-                            responseCode:    StatusCodes.MOVED_PERMANENTLY,
-                            responseHeaders: [
-                                { name: 'location', value: this._idlePageUrl },
-                            ],
-                        });
-                    }
+                    if (!injectableResources)
+                        await this._redirectToIdlePage(client, requestId);
                     else {
-                        const updatedResponseStr  = injectResources(responseStr, injectableResources);
+                        const updatedResponseStr = injectResources(responseStr, injectableResources);
 
                         await client.Fetch.fulfillRequest({
                             requestId,
@@ -158,9 +171,9 @@ export default class ResourceInjector {
                     }
                 }
                 catch (err) {
-                    this._tryToHandlePageError(err as Error, params.request.url);
-
                     debugLogger('Failed to process request: %s', params.request.url);
+
+                    await this._handlePageError(client, err as Error, params.request.url);
                 }
             }
         });
@@ -187,7 +200,7 @@ export default class ResourceInjector {
                 return;
 
             const injectableResources = await this._prepareInjectableResources() as PageInjectableResources;
-            const html                = injectResources(ABOUT_BLANK_PAGE_MARKUP, injectableResources);
+            const html                = injectResources(EMPTY_PAGE_MARKUP, injectableResources);
 
             await client.Page.setDocumentContent({
                 frameId: params.frame.id,
