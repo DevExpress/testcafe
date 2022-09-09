@@ -8,10 +8,11 @@ import { ActionInvalidObjectPropertyError } from '../shared/errors';
 function validateObjectProps (obj, dest) {
     const objectName = dest.constructor.name;
     const validKeys = dest._getAssignableProperties().map(p => p.name);
+    const reportedProperties = dest._getReportedProperties();
 
     for (const key in obj) {
         if (!(validKeys.includes(key) || key in dest))
-            throw new ActionInvalidObjectPropertyError(objectName, key, validKeys);
+            throw new ActionInvalidObjectPropertyError(objectName, key, reportedProperties);
     }
 }
 
@@ -20,10 +21,12 @@ export default class Assignable {
         throw new Error('Not implemented');
     }
     _getNonReportedProperties () {
-        throw new Error('Not implemented');
+        return [];
     }
     _getReportedProperties () {
-        throw new Error('Not implemented');
+        return this._getAssignableProperties()
+            .map(prop => prop.name)
+            .filter(name => !this._getNonReportedProperties().includes(name));
     }
 
     _assignFrom (obj, validate, initOptions = {}) {

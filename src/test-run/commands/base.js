@@ -26,12 +26,6 @@ export class CommandBase extends Assignable {
     _getNonReportedProperties () {
         return NOT_REPORTED_PROPERTIES;
     }
-
-    _getReportedProperties () {
-        return this._getAssignableProperties()
-            .map(prop => prop.name)
-            .filter(name => !this._getNonReportedProperties().includes(name));
-    }
 }
 
 export class ActionCommandBase extends CommandBase {
