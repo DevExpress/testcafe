@@ -6,6 +6,12 @@ const { statSync }               = require('fs');
 const Capturer                   = require('../../lib/screenshots/capturer');
 const TestRunController          = require('../../lib/runner/test-run-controller');
 const Screenshots                = require('../../lib/screenshots');
+const {
+    writePng,
+    deleteFile,
+    readPng,
+}               = require('../../lib/utils/promisified-functions');
+const WarningLog                 = require('../../lib/notifications/warning-log');
 
 
 const filePath = resolve(process.cwd(), `temp${nanoid(7)}`, 'temp.png');
@@ -110,5 +116,62 @@ describe('Capturer', () => {
             quarantineAttempt: 1,
             takenOnFail:       false,
         });
+    });
+
+    it('Should not delete screenshot if unable to locate the page area', async () => {
+        const warningLog = new WarningLog();
+        const customPath = `${nanoid(7)}screenshot.png`;
+
+        const screenshots = new ScreenshotsMock({
+            enabled:     true,
+            path:        process.cwd(),
+            pathPattern: '',
+            fullPage:    false,
+        });
+
+        const providerMock = {
+            takeScreenshot: async (_, path) => {
+                const image = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M/wHwAEBgIApD5fRAAAAABJRU5ErkJggg==', 'base64');
+                const png   = await readPng(image);
+
+                await writePng(path, png);
+            },
+        };
+
+        const testRunControllerMock = {
+            _screenshots: screenshots,
+            test:         { fixture: {} },
+            emit:         noop,
+            _warningLog:  warningLog,
+            _testRunCtor: function ({ browserConnection }) {
+                this.id                = 'test-run-id';
+                this.browserConnection = browserConnection;
+                this.initialize        = noop;
+            },
+        };
+
+        await screenshots._onMessageBusStart();
+
+        await TestRunController.prototype._createTestRun.call(testRunControllerMock, {
+            id:          'browser-connection-id',
+            provider:    providerMock,
+            browserInfo: {
+                parsedUserAgent: {
+                    os: {
+                        name: 'os-name',
+                    },
+                },
+            },
+        });
+
+        await screenshots.capturer._capture(false, {
+            actionId: 'action-id',
+            markSeed: Buffer.from([255, 255, 255, 255]),
+            customPath,
+        });
+
+        expect(warningLog.messages[0]).contain('Unable to locate the page area in the browser window screenshot at');
+
+        await deleteFile(customPath);
     });
 });

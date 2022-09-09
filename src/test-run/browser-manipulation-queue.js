@@ -3,8 +3,6 @@ import { isServiceCommand } from './commands/utils';
 import COMMAND_TYPE from './commands/type';
 import WARNING_MESSAGE from '../notifications/warning-message';
 import { WindowDimensionsOverflowError } from '../errors/test-run/';
-import { TEST_RUN_ERRORS } from '../errors/types';
-
 
 export default class BrowserManipulationQueue {
     constructor (browserConnection, screenshotCapturer, warningLog) {
@@ -51,16 +49,7 @@ export default class BrowserManipulationQueue {
     }
 
     async _takeScreenshot (capture) {
-        try {
-            return await capture();
-        }
-        catch (err) {
-            if (err.code === TEST_RUN_ERRORS.invalidElementScreenshotDimensionsError)
-                throw err;
-
-            this.warningLog.addWarning(WARNING_MESSAGE.screenshotError, err.stack);
-            return null;
-        }
+        return capture();
     }
 
     async _executeCommand (driverMsg) {
