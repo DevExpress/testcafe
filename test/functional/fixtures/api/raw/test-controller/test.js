@@ -2,8 +2,7 @@ const { expect } = require('chai');
 
 // NOTE: we run tests in chrome only, because we mainly test server API functionality.
 // Actions functionality is tested in lower-level raw API.
-/* eslint-disable */
-describe.only('[Raw API] TestController', () => {
+describe('[Raw API] TestController', () => {
     it('Should produce correct callsites for chained calls', () => {
         return runTests('./testcafe-fixtures/test-controller-test.testcafe', 'Chaining callsites', {
             shouldFail: true,
