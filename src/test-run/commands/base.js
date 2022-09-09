@@ -2,6 +2,8 @@ import { nanoid } from 'nanoid';
 import Assignable from '../../utils/assignable';
 import { objectOption } from './options';
 
+const NOT_REPORTED_PROPERTIES = ['studio'];
+
 export class CommandBase extends Assignable {
     constructor (obj, testRun, type, validateProperties = true) {
         super();
@@ -19,6 +21,16 @@ export class CommandBase extends Assignable {
         return [
             { name: 'studio', type: objectOption, required: false },
         ];
+    }
+
+    _getNonReportedProperties () {
+        return NOT_REPORTED_PROPERTIES;
+    }
+
+    _getReportedProperties () {
+        return this._getAssignableProperties()
+            .map(prop => prop.name)
+            .filter(name => !this._getNonReportedProperties().includes(name));
     }
 }
 

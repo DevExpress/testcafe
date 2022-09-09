@@ -19,6 +19,12 @@ export default class Assignable {
     _getAssignableProperties () {
         throw new Error('Not implemented');
     }
+    _getNonReportedProperties () {
+        throw new Error('Not implemented');
+    }
+    _getReportedProperties () {
+        throw new Error('Not implemented');
+    }
 
     _assignFrom (obj, validate, initOptions = {}) {
         if (!obj)

@@ -21,9 +21,6 @@ import {
 } from '../../test-run/commands/options';
 
 import { CommandBase } from '../../test-run/commands/base';
-import CommandType from '../../test-run/commands/type';
-import { AssertionCommand } from '../../test-run/commands/assertion';
-
 
 const CONFIDENTIAL_INFO_PLACEHOLDER = '********';
 
@@ -128,20 +125,11 @@ export class CommandFormatter {
         return command.url;
     }
 
-    private _filterNotReportedProperties (properties: string[], commandType: string): string[] {
-        if (commandType !== CommandType.assertion)
-            return properties;
-
-        return properties.filter(prop => !AssertionCommand.NOT_REPORTED_PROPERTIES.includes(prop));
-    }
-
     private _assignProperties (command: CommandBase, formattedCommand: FormattedCommand): void {
         if (!this._command._getAssignableProperties)
             return;
 
-        let sourceProperties = this._command._getAssignableProperties().map(prop => prop.name);
-
-        sourceProperties = this._filterNotReportedProperties(sourceProperties, this._command.type);
+        const sourceProperties = this._command._getReportedProperties();
 
         sourceProperties.forEach((key: string) => {
             const property = this._command[key];

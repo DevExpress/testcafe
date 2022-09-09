@@ -454,6 +454,8 @@ export default {
     `,
 
     [TEST_RUN_ERRORS.actionInvalidObjectPropertyError]: err => `
-        The "${err.objectName}" object contains an invalid property: "${err.propertyName}". Please use the following properties to configure "${err.objectName}": ${getConcatenatedValuesString(err.availableProperties)}.
+        The "${err.objectName}" object contains an invalid property: "${err.propertyName}". You can safely remove it due to this property is not applied.
+        Make sure you have correctly specified the action options. List of available options for the "${err.objectName}" are:
+        ${getConcatenatedValuesString(err.availableProperties)}.
     `,
 };
