@@ -13,7 +13,7 @@ const complexRole = Role(page, async t => {
 });
 
 const errorRole = Role(page, async t => {
-    await t.click(Selector('#non-existing-element'), { timeout: 100 });
+    await t.click(Selector('#non-existing-element', { timeout: 100 }));
 });
 
 const foo = ClientFunction(bool => () => bool);

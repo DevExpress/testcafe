@@ -20,7 +20,7 @@ describe('[API] t.rightClick()', function () {
             only:       'chrome',
         })
             .catch(function (errs) {
-                expect(errs[0]).to.contains('The "offsetX" option is expected to be an integer, but it was -3.5.');
+                expect(errs[0]).to.contains('The "ClickOptions.offsetX" option is expected to be an integer, but it was -3.5.');
                 expect(errs[0]).to.contains(' > 15 |    await t.rightClick(\'#button\', { offsetX: -3.5 });');
             });
     });
