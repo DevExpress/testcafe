@@ -32,7 +32,7 @@ describe('[API] Drag actions', function () {
                 only:       'chrome',
             })
                 .catch(function (errs) {
-                    expect(errs[0]).to.contain('The "MouseOptions.dragOffsetX" argument is expected to be an integer, but it was NaN.');
+                    expect(errs[0]).to.contain('The "dragOffsetX" argument is expected to be an integer, but it was NaN.');
                     expect(errs[0]).to.contain('> 21 |    await t.drag(\'#draggable-div-1\', NaN, 20);');
                 });
         });
@@ -54,7 +54,7 @@ describe('[API] Drag actions', function () {
                 only:       'chrome',
             })
                 .catch(function (errs) {
-                    expect(errs[0]).to.contain('The "offsetX" option is expected to be an integer, but it was string.');
+                    expect(errs[0]).to.contain('The "MouseOptions.offsetX" option is expected to be an integer, but it was string.');
                     expect(errs[0]).to.contain('> 29 |    await t.drag(\'#draggable-div-1\', 10, 20, { offsetX: \'test\' });');
                 });
         });

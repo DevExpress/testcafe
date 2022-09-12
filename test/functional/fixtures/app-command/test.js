@@ -1,8 +1,9 @@
 const expect     = require('chai').expect;
 const isFreePort = require('endpoint-utils').isFreePort;
 const delay      = require('../../../../lib/utils/delay');
+const config     = require('../../config');
 
-describe('App command', function () {
+(config.experimentalDebug ? describe.skip : describe)('App command', function () {
     it('Should fail task if app fails', function () {
         return runTests('./testcafe-fixtures/app-command-test.js', 'Wait', {
             shouldFail: true,
