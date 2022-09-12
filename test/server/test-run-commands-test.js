@@ -1365,14 +1365,14 @@ describe('Test run commands', () => {
                         type:     TYPE.click,
                         selector: 'element',
                         options:  {
-                            offsetX: 'offsetX',
+                            offsetX: 'ClickOptions.offsetX',
                         },
                     });
                 },
                 {
                     isTestCafeError: true,
                     code:            'E9',
-                    optionName:      'offsetX',
+                    optionName:      'ClickOptions.offsetX',
                     actualValue:     'string',
                     callsite:        null,
                 }
@@ -1391,7 +1391,7 @@ describe('Test run commands', () => {
                 {
                     isTestCafeError: true,
                     code:            'E9',
-                    optionName:      'offsetX',
+                    optionName:      'ClickOptions.offsetX',
                     actualValue:     10.5,
                     callsite:        null,
                 }
@@ -1465,7 +1465,7 @@ describe('Test run commands', () => {
                 {
                     isTestCafeError: true,
                     code:            'E9',
-                    optionName:      'offsetX',
+                    optionName:      'ClickOptions.offsetX',
                     actualValue:     'boolean',
                     callsite:        null,
                 }
@@ -1486,7 +1486,7 @@ describe('Test run commands', () => {
                 {
                     isTestCafeError: true,
                     code:            'E11',
-                    optionName:      'shift',
+                    optionName:      'ModifiersOptions.shift',
                     actualValue:     'string',
                     callsite:        null,
                 }
@@ -1560,7 +1560,7 @@ describe('Test run commands', () => {
                 {
                     isTestCafeError: true,
                     code:            'E10',
-                    optionName:      'caretPos',
+                    optionName:      'ClickOptions.caretPos',
                     actualValue:     'string',
                     callsite:        null,
                 }
@@ -1634,7 +1634,7 @@ describe('Test run commands', () => {
                 {
                     isTestCafeError: true,
                     code:            'E9',
-                    optionName:      'offsetX',
+                    optionName:      'MouseOptions.offsetX',
                     actualValue:     'string',
                     callsite:        null,
                 }
@@ -1653,7 +1653,7 @@ describe('Test run commands', () => {
                 {
                     isTestCafeError: true,
                     code:            'E9',
-                    optionName:      'offsetY',
+                    optionName:      'MouseOptions.offsetY',
                     actualValue:     1.01,
                     callsite:        null,
                 }
@@ -1982,7 +1982,7 @@ describe('Test run commands', () => {
                 {
                     isTestCafeError: true,
                     code:            'E9',
-                    optionName:      'offsetX',
+                    optionName:      'TypeOptions.offsetX',
                     actualValue:     'string',
                     callsite:        null,
                 }
@@ -2002,7 +2002,7 @@ describe('Test run commands', () => {
                 {
                     isTestCafeError: true,
                     code:            'E11',
-                    optionName:      'replace',
+                    optionName:      'TypeOptions.replace',
                     actualValue:     'number',
                     callsite:        null,
                 }
@@ -2829,7 +2829,7 @@ describe('Test run commands', () => {
                 {
                     isTestCafeError: true,
                     code:            'E11',
-                    optionName:      'portraitOrientation',
+                    optionName:      'ResizeToFitDeviceOptions.portraitOrientation',
                     actualValue:     'object',
                     callsite:        null,
                 }
@@ -2963,7 +2963,7 @@ describe('Test run commands', () => {
                 {
                     isTestCafeError: true,
                     code:            'E10',
-                    optionName:      'timeout',
+                    optionName:      'AssertionOptions.timeout',
                     actualValue:     'string',
                     callsite:        null,
                 }
@@ -2982,7 +2982,7 @@ describe('Test run commands', () => {
                 {
                     isTestCafeError: true,
                     code:            'E10',
-                    optionName:      'timeout',
+                    optionName:      'AssertionOptions.timeout',
                     actualValue:     10.5,
                     callsite:        null,
                 }
@@ -3444,7 +3444,7 @@ describe('Test run commands', () => {
                     });
                 },
                 {
-                    optionName:      'method',
+                    optionName:      'RequestOptions.method',
                     actualValue:     'boolean',
                     isTestCafeError: true,
                     code:            'E90',
@@ -3462,7 +3462,7 @@ describe('Test run commands', () => {
                     });
                 },
                 {
-                    optionName:      'headers',
+                    optionName:      'RequestOptions.headers',
                     actualValue:     'boolean',
                     isTestCafeError: true,
                     code:            'E95',
@@ -3480,7 +3480,7 @@ describe('Test run commands', () => {
                     });
                 },
                 {
-                    optionName:      'params',
+                    optionName:      'RequestOptions.params',
                     actualValue:     'boolean',
                     isTestCafeError: true,
                     code:            'E94',
@@ -3498,7 +3498,7 @@ describe('Test run commands', () => {
                     });
                 },
                 {
-                    optionName:      'timeout',
+                    optionName:      'RequestOptions.timeout',
                     actualValue:     'string',
                     isTestCafeError: true,
                     code:            'E92',
@@ -3516,7 +3516,7 @@ describe('Test run commands', () => {
                     });
                 },
                 {
-                    optionName:      'withCredentials',
+                    optionName:      'RequestOptions.withCredentials',
                     actualValue:     'string',
                     isTestCafeError: true,
                     code:            'E11',
@@ -3534,7 +3534,7 @@ describe('Test run commands', () => {
                     });
                 },
                 {
-                    optionName:      'auth',
+                    optionName:      'RequestOptions.auth',
                     actualValue:     'boolean',
                     isTestCafeError: true,
                     code:            'E95',
@@ -3555,7 +3555,7 @@ describe('Test run commands', () => {
                     });
                 },
                 {
-                    optionName:      'username',
+                    optionName:      'RequestAuthOptions.username',
                     actualValue:     'boolean',
                     isTestCafeError: true,
                     code:            'E90',
@@ -3576,7 +3576,7 @@ describe('Test run commands', () => {
                     });
                 },
                 {
-                    optionName:      'password',
+                    optionName:      'RequestAuthOptions.password',
                     actualValue:     'boolean',
                     isTestCafeError: true,
                     code:            'E90',
@@ -3594,7 +3594,7 @@ describe('Test run commands', () => {
                     });
                 },
                 {
-                    optionName:      'proxy',
+                    optionName:      'RequestOptions.proxy',
                     actualValue:     'boolean',
                     isTestCafeError: true,
                     code:            'E95',
@@ -3614,7 +3614,7 @@ describe('Test run commands', () => {
                     });
                 },
                 {
-                    optionName:      'protocol',
+                    optionName:      'RequestProxyOptions.protocol',
                     actualValue:     'boolean',
                     isTestCafeError: true,
                     code:            'E90',
@@ -3635,7 +3635,7 @@ describe('Test run commands', () => {
                     });
                 },
                 {
-                    optionName:      'host',
+                    optionName:      'RequestProxyOptions.host',
                     actualValue:     'boolean',
                     isTestCafeError: true,
                     code:            'E90',
@@ -3656,7 +3656,7 @@ describe('Test run commands', () => {
                     });
                 },
                 {
-                    optionName:      'port',
+                    optionName:      'RequestProxyOptions.port',
                     actualValue:     'object',
                     isTestCafeError: true,
                     code:            'E92',
@@ -3674,7 +3674,7 @@ describe('Test run commands', () => {
                     });
                 },
                 {
-                    optionName:      'rawResponse',
+                    optionName:      'RequestOptions.rawResponse',
                     actualValue:     'string',
                     isTestCafeError: true,
                     code:            'E11',

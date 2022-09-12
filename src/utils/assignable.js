@@ -16,13 +16,22 @@ function validateObjectProps (obj, dest) {
     }
 }
 
+function prepareComplexName (constructorName, propName) {
+    if (constructorName.endsWith('Command'))
+        return propName;
+
+    return `${ constructorName }.${ propName }`;
+}
+
 export default class Assignable {
     _getAssignableProperties () {
         throw new Error('Not implemented');
     }
+
     _getNonReportedProperties () {
         return [];
     }
+
     _getReportedProperties () {
         return this._getAssignableProperties()
             .map(prop => prop.name)
@@ -48,7 +57,7 @@ export default class Assignable {
 
             if (srcVal !== void 0 || required) {
                 if (validate && type)
-                    type(name, srcVal);
+                    type(prepareComplexName(this.constructor.name, name), srcVal);
 
                 this[name] = init ? init(name, srcVal, initOptions, validate) : srcVal;
             }

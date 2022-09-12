@@ -349,7 +349,7 @@ describe('Test run command options', function () {
                     isTestCafeError: true,
                     code:            'E12',
                     actualValue:     'string',
-                    optionName:      'speed',
+                    optionName:      'ActionOptions.speed',
                     callsite:        null,
                 }
             );
@@ -362,7 +362,7 @@ describe('Test run command options', function () {
                     isTestCafeError: true,
                     code:            'E12',
                     actualValue:     5,
-                    optionName:      'speed',
+                    optionName:      'ActionOptions.speed',
                     callsite:        null,
                 }
             );
@@ -375,7 +375,7 @@ describe('Test run command options', function () {
                     isTestCafeError: true,
                     code:            'E12',
                     actualValue:     0,
-                    optionName:      'speed',
+                    optionName:      'ActionOptions.speed',
                     callsite:        null,
                 }
             );
@@ -390,7 +390,7 @@ describe('Test run command options', function () {
                     isTestCafeError: true,
                     code:            'E9',
                     actualValue:     'object',
-                    optionName:      'offsetX',
+                    optionName:      'OffsetOptions.offsetX',
                     callsite:        null,
                 }
             );
@@ -403,7 +403,7 @@ describe('Test run command options', function () {
                     isTestCafeError: true,
                     code:            'E9',
                     actualValue:     NaN,
-                    optionName:      'offsetX',
+                    optionName:      'OffsetOptions.offsetX',
                     callsite:        null,
                 }
             );
@@ -416,7 +416,7 @@ describe('Test run command options', function () {
                     isTestCafeError: true,
                     code:            'E9',
                     actualValue:     3.14,
-                    optionName:      'offsetX',
+                    optionName:      'OffsetOptions.offsetX',
                     callsite:        null,
                 }
             );
@@ -431,7 +431,7 @@ describe('Test run command options', function () {
                     isTestCafeError: true,
                     code:            'E11',
                     actualValue:     'number',
-                    optionName:      'ctrl',
+                    optionName:      'ModifiersOptions.ctrl',
                     callsite:        null,
                 }
             );
@@ -444,7 +444,7 @@ describe('Test run command options', function () {
                     isTestCafeError: true,
                     code:            'E11',
                     actualValue:     'number',
-                    optionName:      'alt',
+                    optionName:      'ModifiersOptions.alt',
                     callsite:        null,
                 }
             );
@@ -457,7 +457,7 @@ describe('Test run command options', function () {
                     isTestCafeError: true,
                     code:            'E11',
                     actualValue:     'number',
-                    optionName:      'shift',
+                    optionName:      'ModifiersOptions.shift',
                     callsite:        null,
                 }
             );
@@ -470,7 +470,7 @@ describe('Test run command options', function () {
                     isTestCafeError: true,
                     code:            'E11',
                     actualValue:     'number',
-                    optionName:      'meta',
+                    optionName:      'ModifiersOptions.meta',
                     callsite:        null,
                 }
             );
@@ -485,7 +485,7 @@ describe('Test run command options', function () {
                     isTestCafeError: true,
                     code:            'E10',
                     actualValue:     -1,
-                    optionName:      'caretPos',
+                    optionName:      'ClickOptions.caretPos',
                     callsite:        null,
                 }
             );
@@ -498,7 +498,7 @@ describe('Test run command options', function () {
                     isTestCafeError: true,
                     code:            'E10',
                     actualValue:     3.14,
-                    optionName:      'caretPos',
+                    optionName:      'ClickOptions.caretPos',
                     callsite:        null,
                 }
             );
@@ -513,7 +513,7 @@ describe('Test run command options', function () {
                     isTestCafeError: true,
                     code:            'E11',
                     actualValue:     'number',
-                    optionName:      'replace',
+                    optionName:      'TypeOptions.replace',
                     callsite:        null,
                 }
             );
@@ -528,7 +528,7 @@ describe('Test run command options', function () {
                     isTestCafeError: true,
                     code:            'E9',
                     actualValue:     'object',
-                    optionName:      'destinationOffsetX',
+                    optionName:      'DragToElementOptions.destinationOffsetX',
                     callsite:        null,
                 }
             );
@@ -541,7 +541,7 @@ describe('Test run command options', function () {
                     isTestCafeError: true,
                     code:            'E9',
                     actualValue:     NaN,
-                    optionName:      'destinationOffsetY',
+                    optionName:      'DragToElementOptions.destinationOffsetY',
                     callsite:        null,
                 }
             );
@@ -556,7 +556,7 @@ describe('Test run command options', function () {
                     isTestCafeError: true,
                     code:            'E11',
                     actualValue:     'number',
-                    optionName:      'portraitOrientation',
+                    optionName:      'ResizeToFitDeviceOptions.portraitOrientation',
                     callsite:        null,
                 }
             );
@@ -571,7 +571,7 @@ describe('Test run command options', function () {
                     isTestCafeError: true,
                     code:            'E10',
                     actualValue:     -1,
-                    optionName:      'timeout',
+                    optionName:      'AssertionOptions.timeout',
                     callsite:        null,
                 }
             );
@@ -584,7 +584,7 @@ describe('Test run command options', function () {
                     isTestCafeError: true,
                     code:            'E10',
                     actualValue:     'string',
-                    optionName:      'timeout',
+                    optionName:      'AssertionOptions.timeout',
                     callsite:        null,
                 }
             );
@@ -599,7 +599,7 @@ describe('Test run command options', function () {
                     isTestCafeError: true,
                     code:            'E90',
                     actualValue:     'boolean',
-                    optionName:      'name',
+                    optionName:      'CookieOptions.name',
                     callsite:        null,
                 }
             );
@@ -612,7 +612,7 @@ describe('Test run command options', function () {
                     isTestCafeError: true,
                     code:            'E90',
                     actualValue:     'object',
-                    optionName:      'value',
+                    optionName:      'CookieOptions.value',
                     callsite:        null,
                 }
             );
@@ -625,7 +625,7 @@ describe('Test run command options', function () {
                     isTestCafeError: true,
                     code:            'E90',
                     actualValue:     'number',
-                    optionName:      'domain',
+                    optionName:      'CookieOptions.domain',
                     callsite:        null,
                 }
             );
@@ -638,7 +638,7 @@ describe('Test run command options', function () {
                     isTestCafeError: true,
                     code:            'E90',
                     actualValue:     'boolean',
-                    optionName:      'path',
+                    optionName:      'CookieOptions.path',
                     callsite:        null,
                 }
             );
@@ -651,7 +651,7 @@ describe('Test run command options', function () {
                     isTestCafeError: true,
                     code:            'E91',
                     actualValue:     -Infinity,
-                    optionName:      'expires',
+                    optionName:      'CookieOptions.expires',
                     callsite:        null,
                 }
             );
@@ -664,7 +664,7 @@ describe('Test run command options', function () {
                     isTestCafeError: true,
                     code:            'E92',
                     actualValue:     'string',
-                    optionName:      'maxAge',
+                    optionName:      'CookieOptions.maxAge',
                     callsite:        null,
                 }
             );
@@ -677,7 +677,7 @@ describe('Test run command options', function () {
                     isTestCafeError: true,
                     code:            'E11',
                     actualValue:     'number',
-                    optionName:      'secure',
+                    optionName:      'CookieOptions.secure',
                     callsite:        null,
                 }
             );
@@ -690,7 +690,7 @@ describe('Test run command options', function () {
                     isTestCafeError: true,
                     code:            'E11',
                     actualValue:     'string',
-                    optionName:      'httpOnly',
+                    optionName:      'CookieOptions.httpOnly',
                     callsite:        null,
                 }
             );
@@ -703,7 +703,7 @@ describe('Test run command options', function () {
                     isTestCafeError: true,
                     code:            'E90',
                     actualValue:     'object',
-                    optionName:      'sameSite',
+                    optionName:      'CookieOptions.sameSite',
                     callsite:        null,
                 }
             );
