@@ -147,6 +147,8 @@ export default class ResourceInjector {
                 responseStatusCode,
             } = params;
 
+            debugLogger('requestPaused %s', params.request.url);
+
             if (!this._shouldProxyPage(params.request.url))
                 await client.Fetch.continueResponse({ requestId });
             else {
@@ -196,8 +198,12 @@ export default class ResourceInjector {
         await client.Page.enable();
 
         client.Page.on('frameNavigated', async (params: FrameNavigatedEvent) => {
+            debugLogger('frameNavigated %s %s', params.frame.url, params.type);
+
             if (!this._topFrameNavigationToAboutBlank(params))
                 return;
+
+            debugLogger('Handle page as about:blank. Origin url: %s', params.frame.url);
 
             const injectableResources = await this._prepareInjectableResources() as PageInjectableResources;
             const html                = injectResources(EMPTY_PAGE_MARKUP, injectableResources);
