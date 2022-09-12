@@ -10,9 +10,9 @@ export class CommandBase extends Assignable {
 
         this.type = type;
 
-        this._assignFrom(obj, validateProperties, { testRun });
-
         this.actionId = obj?.actionId || nanoid(7);
+
+        this._assignFrom(obj, validateProperties, { testRun });
     }
 
     //NOTE: This is a service field for TestCafe Studio.
