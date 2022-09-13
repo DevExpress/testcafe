@@ -49,5 +49,7 @@ export default {
     deprecatedAPI:                      '{API} is deprecated and will be removed in the next major release. Use {replacement} instead.',
     unawaitedMethodWithAssertion:       "An asynchronous method that you do not await includes an assertion. Inspect that method's execution chain and add the 'await' keyword where necessary.",
     multipleConfigurationFilesFound:    'There are multiple configuration files found, TestCafe will only use one. The file "{path}" will be used.\nThe priority order is as follows:\n{priorityList}',
+    scrolledToElement:                  'The page was scrolled to the element automatically.\n{selector}',
+    elementOverlapped:                  'Element was overlapped. The action was performed on the coordinates of the element.\n{selector}',
 };
 

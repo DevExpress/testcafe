@@ -126,6 +126,7 @@ import executeFnWithTimeout from '../utils/execute-fn-with-timeout';
 import { URL } from 'url';
 import { CookieOptions } from './commands/options';
 import { prepareSkipJsErrorsOptions } from '../api/skip-js-errors';
+import formatSelectorCallstack from '../utils/format-selector-callstack';
 import { CookieProviderFactory } from './cookies/factory';
 import { CookieProvider } from './cookies/base';
 
@@ -893,6 +894,14 @@ export default class TestRun extends AsyncEventEmitter {
     private _fulfillCurrentDriverTask (driverStatus: DriverStatus): void {
         if (!this.currentDriverTask)
             return;
+
+        if (driverStatus.warnings?.length) {
+            driverStatus.warnings.forEach((warning: { type: keyof typeof WARNING_MESSAGE }) => {
+                const apiFnChain = (this.currentDriverTask.command.selector as ExecuteSelectorCommand)?.apiFnChain || [];
+
+                this.warningLog.addWarning(WARNING_MESSAGE[warning.type], formatSelectorCallstack(apiFnChain, apiFnChain.length - 1));
+            });
+        }
 
         if (driverStatus.executionError)
             this._rejectCurrentDriverTask(driverStatus.executionError);

@@ -19,6 +19,7 @@ const CHECK_ELEMENT_IN_AUTOMATIONS_INTERVAL = 250;
 export default class ActionExecutor extends EventEmitter {
     public static readonly EXECUTION_STARTED_EVENT = 'execution-started';
     public static readonly WAITING_FOR_ELEMENT_EVENT = 'waiting-for-elements';
+    public static readonly WARNING_EVENT = 'warning';
     public static readonly ACTIONS_HANDLERS: Dictionary<AutomationHandler> = {};
 
     private readonly _command: ActionCommandBase;
@@ -133,6 +134,12 @@ export default class ActionExecutor extends EventEmitter {
             .then(() => this._ensureCommandOptions())
             .then(() => {
                 const automation = this._createAutomation();
+
+                if (automation.WARNING_EVENT) {
+                    automation.on(automation.WARNING_EVENT, warning => {
+                        this.emit(ActionExecutor.WARNING_EVENT, warning);
+                    });
+                }
 
                 if (automation.TARGET_ELEMENT_FOUND_EVENT) {
                     automation.on(automation.TARGET_ELEMENT_FOUND_EVENT, e => {

@@ -25,6 +25,7 @@ import * as positionUtils from '../core/utils/position';
 import ScrollAutomation from '../core/scroll/index';
 import { Dictionary } from '../../configuration/interfaces';
 import ensureMouseEventAfterScroll from './utils/ensure-mouse-event-after-scroll';
+import WARNING_TYPES from '../../shared/warnings/types';
 
 
 interface ElementStateArgsBase {
@@ -90,6 +91,7 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
     public window: Window;
     public cursor: Cursor;
     private readonly TARGET_ELEMENT_FOUND_EVENT: string;
+    private readonly WARNING_EVENT: string;
     protected automationSettings: AutomationSettings;
     private readonly options: OffsetOptions;
 
@@ -97,6 +99,7 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
         super();
 
         this.TARGET_ELEMENT_FOUND_EVENT = 'automation|target-element-found-event';
+        this.WARNING_EVENT              = 'automation|warning-event';
 
         this.element            = element;
         this.options            = offsetOptions;
@@ -137,6 +140,9 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
         return scrollAutomation.run()
             .then((scrollWasPerformed: boolean | Dictionary<any>) => {
                 wasScrolled = !!scrollWasPerformed;
+
+                if (wasScrolled)
+                    this.emit(this.WARNING_EVENT, { type: WARNING_TYPES.scrolledToElement });
 
                 return delay(this.automationSettings.mouseActionStepDelay);
             })
@@ -235,7 +241,12 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
                 return state;
             })
             .then(state => {
-                this.emit(this.TARGET_ELEMENT_FOUND_EVENT, { element: state?.element || null });
+                const element = state?.element;
+
+                this.emit(this.TARGET_ELEMENT_FOUND_EVENT, { element: element || null });
+
+                if ( !useStrictElementCheck && element && !state.isTarget)
+                    this.emit(this.WARNING_EVENT, { type: WARNING_TYPES.elementOverlapped });
 
                 return {
                     element:     state?.element || null,
