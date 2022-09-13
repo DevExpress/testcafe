@@ -783,7 +783,7 @@ export default class Runner extends EventEmitter {
                 const resultOptions = {
                     ...this.configuration.getOptions(),
 
-                    dashboardUrl: reporters.find(r => r.plugin.name === 'dashboard')?.plugin.getReportUrl(),
+                    dashboardUrl: reporters.find(r => r.plugin.name === 'dashboard')?.plugin?.getReportUrl() || void 0,
                 };
 
                 await this.bootstrapper.compilerService?.setOptions({ value: resultOptions });
