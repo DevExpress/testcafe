@@ -110,6 +110,18 @@ describe('[API] t.click()', function () {
             });
     });
 
+    it('Should show warning that the element was overlapped', async function () {
+        await runTests('./testcafe-fixtures/click-test.js', 'Click overlapped element', { only: 'chrome' });
+
+        expect(testReport.warnings[0]).eql("Element was overlapped. The action was performed on the coordinates of the element.\n > | Selector('.child1')");
+    });
+
+    it('Should show warning that the page was scrolled till the element', async function () {
+        await runTests('./testcafe-fixtures/click-test.js', 'Scroll to the element and click', { only: 'chrome' });
+
+        expect(testReport.warnings[0]).eql("The page was scrolled to the element automatically.\n > | Selector('.child')");
+    });
+
     describe('[Regression](GH-628)', function () {
         it('Should click on an "option" element', function () {
             return runTests('./testcafe-fixtures/click-on-select-child-test.js', 'Click on an "option" element');
