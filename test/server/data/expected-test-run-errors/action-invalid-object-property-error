@@ -1,6 +1,7 @@
 The "ClickOptions" object contains an invalid property: "invalidProp". You can safely remove it due to this property is not applied.
 Make sure you have correctly specified the action options. List of available options for the "ClickOptions" are:
-"ctrl" and "alt".
+"alt",
+"ctrl".
 
 Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>

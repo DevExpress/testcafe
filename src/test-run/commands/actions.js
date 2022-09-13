@@ -151,12 +151,12 @@ export class DispatchEventCommand extends ActionCommandBase {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'selector', init: initSelector, required: true },
             { name: 'eventName', type: nonEmptyStringArgument, required: true },
             { name: 'options', type: actionOptions },
             { name: 'relatedTarget', init: initSelector, required: false },
-        ]);
+        ];
     }
 }
 
@@ -168,10 +168,10 @@ export class ClickCommand extends ActionCommandBase {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'selector', init: initSelector, required: true },
             { name: 'options', type: actionOptions, init: initClickOptions, required: true },
-        ]);
+        ];
     }
 }
 
@@ -183,10 +183,10 @@ export class RightClickCommand extends ActionCommandBase {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'selector', init: initSelector, required: true },
             { name: 'options', type: actionOptions, init: initClickOptions, required: true },
-        ]);
+        ];
     }
 }
 
@@ -196,10 +196,10 @@ export class ExecuteExpressionCommand extends CommandBase {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'expression', type: nonEmptyStringArgument, required: true },
             { name: 'resultVariableName', type: nonEmptyStringArgument, defaultValue: null },
-        ]);
+        ];
     }
 }
 
@@ -209,9 +209,9 @@ export class ExecuteAsyncExpressionCommand extends CommandBase {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'expression', type: stringArgument, required: true },
-        ]);
+        ];
     }
 }
 
@@ -223,10 +223,10 @@ export class DoubleClickCommand extends ActionCommandBase {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'selector', init: initSelector, required: true },
             { name: 'options', type: actionOptions, init: initClickOptions, required: true },
-        ]);
+        ];
     }
 }
 
@@ -238,10 +238,10 @@ export class HoverCommand extends ActionCommandBase {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'selector', init: initSelector, required: true },
             { name: 'options', type: actionOptions, init: initMouseOptions, required: true },
-        ]);
+        ];
     }
 }
 
@@ -253,11 +253,11 @@ export class TypeTextCommand extends ActionCommandBase {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'selector', init: initTypeSelector, required: true },
             { name: 'text', type: nonEmptyStringArgument, required: true },
             { name: 'options', type: actionOptions, init: initTypeOptions, required: true },
-        ]);
+        ];
     }
 }
 
@@ -269,12 +269,12 @@ export class DragCommand extends ActionCommandBase {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'selector', init: initSelector, required: true },
             { name: 'dragOffsetX', type: integerArgument, required: true },
             { name: 'dragOffsetY', type: integerArgument, required: true },
             { name: 'options', type: actionOptions, init: initMouseOptions, required: true },
-        ]);
+        ];
     }
 }
 
@@ -286,11 +286,11 @@ export class DragToElementCommand extends ActionCommandBase {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'selector', init: initSelector, required: true },
             { name: 'destinationSelector', init: initSelector, required: true },
             { name: 'options', type: actionOptions, init: initDragToElementOptions, required: true },
-        ]);
+        ];
     }
 }
 
@@ -302,13 +302,13 @@ export class ScrollCommand extends ActionCommandBase {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'selector', init: initSelector, required: false },
             { name: 'position', type: nullableStringArgument, required: false },
             { name: 'x', type: positiveIntegerArgument, defaultValue: null },
             { name: 'y', type: positiveIntegerArgument, defaultValue: null },
             { name: 'options', type: actionOptions, init: initOffsetOptions, required: true },
-        ]);
+        ];
     }
 }
 
@@ -320,12 +320,12 @@ export class ScrollByCommand extends ActionCommandBase {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'selector', init: initSelector, required: false },
             { name: 'byX', type: integerArgument, defaultValue: 0 },
             { name: 'byY', type: integerArgument, defaultValue: 0 },
             { name: 'options', type: actionOptions, init: initOffsetOptions, required: true },
-        ]);
+        ];
     }
 }
 
@@ -337,10 +337,10 @@ export class ScrollIntoViewCommand extends ActionCommandBase {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'selector', init: initSelector, required: true },
             { name: 'options', type: actionOptions, init: initOffsetOptions, required: true },
-        ]);
+        ];
     }
 }
 
@@ -352,12 +352,12 @@ export class SelectTextCommand extends ActionCommandBase {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'selector', init: initSelector, required: true },
             { name: 'startPos', type: positiveIntegerArgument, defaultValue: null },
             { name: 'endPos', type: positiveIntegerArgument, defaultValue: null },
             { name: 'options', type: actionOptions, init: initActionOptions, required: true },
-        ]);
+        ];
     }
 }
 
@@ -369,11 +369,11 @@ export class SelectEditableContentCommand extends ActionCommandBase {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'startSelector', init: initSelector, required: true },
             { name: 'endSelector', init: initSelector, defaultValue: null },
             { name: 'options', type: actionOptions, init: initActionOptions, required: true },
-        ]);
+        ];
     }
 }
 
@@ -385,14 +385,14 @@ export class SelectTextAreaContentCommand extends ActionCommandBase {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'selector', init: initSelector, required: true },
             { name: 'startLine', type: positiveIntegerArgument, defaultValue: null },
             { name: 'startPos', type: positiveIntegerArgument, defaultValue: null },
             { name: 'endLine', type: positiveIntegerArgument, defaultValue: null },
             { name: 'endPos', type: positiveIntegerArgument, defaultValue: null },
             { name: 'options', type: actionOptions, init: initActionOptions, required: true },
-        ]);
+        ];
     }
 }
 
@@ -404,10 +404,10 @@ export class PressKeyCommand extends ActionCommandBase {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'keys', type: nonEmptyStringArgument, required: true },
             { name: 'options', type: actionOptions, init: initPressOptions, required: true },
-        ]);
+        ];
     }
 }
 
@@ -419,11 +419,11 @@ export class NavigateToCommand extends ActionCommandBase {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'url', type: pageUrlArgument, required: true },
             { name: 'stateSnapshot', type: nullableStringArgument, defaultValue: null },
             { name: 'forceReload', type: booleanArgument, defaultValue: false },
-        ]);
+        ];
     }
 }
 
@@ -435,10 +435,10 @@ export class SetFilesToUploadCommand extends ActionCommandBase {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'selector', init: initUploadSelector, required: true },
             { name: 'filePath', type: stringOrStringArrayArgument, required: true },
-        ]);
+        ];
     }
 }
 
@@ -450,9 +450,9 @@ export class ClearUploadCommand extends ActionCommandBase {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'selector', init: initUploadSelector, required: true },
-        ]);
+        ];
     }
 }
 
@@ -464,9 +464,9 @@ export class SwitchToIframeCommand extends ActionCommandBase {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'selector', init: initSelector, required: true },
-        ]);
+        ];
     }
 }
 
@@ -487,9 +487,9 @@ export class OpenWindowCommand extends ActionCommandBase {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'url', type: pageUrlArgument },
-        ]);
+        ];
     }
 }
 
@@ -501,9 +501,9 @@ export class CloseWindowCommand extends ActionCommandBase {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'windowId', type: nullableStringArgument, required: true },
-        ]);
+        ];
     }
 }
 
@@ -532,9 +532,9 @@ export class SwitchToWindowCommand extends ActionCommandBase {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'windowId', type: nonEmptyStringArgument, required: true },
-        ]);
+        ];
     }
 }
 
@@ -546,10 +546,10 @@ export class SwitchToWindowByPredicateCommand extends ActionCommandBase {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'id', type: nonEmptyStringArgument, required: false },
             { name: 'checkWindow', type: functionArgument, required: true },
-        ]);
+        ];
     }
 }
 
@@ -577,9 +577,9 @@ export class SetNativeDialogHandlerCommand extends ActionCommandBase {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'dialogHandler', init: initDialogHandler, required: true },
-        ]);
+        ];
     }
 
     static from (val) {
@@ -621,9 +621,9 @@ export class SetTestSpeedCommand extends ActionCommandBase {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'speed', type: setSpeedArgument, required: true },
-        ]);
+        ];
     }
 }
 
@@ -635,9 +635,9 @@ export class SetPageLoadTimeoutCommand extends ActionCommandBase {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'duration', type: positiveIntegerArgument, required: true },
-        ]);
+        ];
     }
 }
 
@@ -649,9 +649,9 @@ export class UseRoleCommand extends ActionCommandBase {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'role', type: actionRoleArgument, required: true },
-        ]);
+        ];
     }
 }
 
@@ -671,10 +671,10 @@ export class RecorderCommand extends ActionCommandBase {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'subtype', type: nonEmptyStringArgument, required: true },
             { name: 'forceExecutionInTopWindowOnly', type: booleanArgument, defaultValue: false },
-        ]);
+        ];
     }
 }
 
@@ -686,10 +686,10 @@ export class GetCookiesCommand extends ActionCommandBase {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'urls', type: urlsArgument, required: false },
             { name: 'cookies', type: cookiesArgument, init: initCookiesOption, required: false },
-        ]);
+        ];
     }
 }
 
@@ -701,10 +701,10 @@ export class SetCookiesCommand extends ActionCommandBase {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'url', type: urlsArgument, required: false },
             { name: 'cookies', type: setCookiesArgument, init: initCookiesOption, required: true },
-        ]);
+        ];
     }
 }
 
@@ -716,10 +716,10 @@ export class DeleteCookiesCommand extends ActionCommandBase {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'urls', type: urlsArgument, required: false },
             { name: 'cookies', type: cookiesArgument, init: initCookiesOption, required: false },
-        ]);
+        ];
     }
 }
 
@@ -733,10 +733,10 @@ export class RequestCommand extends ActionCommandBase {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'url', type: urlArgument, required: false },
             { name: 'options', type: actionOptions, init: initRequestOption, required: false },
-        ]);
+        ];
     }
 }
 
@@ -748,10 +748,10 @@ export class GetProxyUrlCommand extends ActionCommandBase {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'url', type: urlArgument, required: true },
             { name: 'options', init: initGetProxyUrlOptions, required: false },
-        ]);
+        ];
     }
 }
 
@@ -763,9 +763,9 @@ export class SkipJsErrorsCommand extends ActionCommandBase {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'options', type: skipJsErrorOptions, init: initSkipJsErrorsOptions, required: false },
-        ]);
+        ];
     }
 }
 

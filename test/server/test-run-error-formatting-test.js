@@ -103,7 +103,11 @@ const {
     ActionUrlArgumentError,
     ActionSkipJsErrorsArgumentTypeError,
 }                                                                   = require('../../lib/errors/test-run');
-const { ActionStringOrRegexOptionError, ActionFunctionOptionError, ActionInvalidObjectPropertyError } = require('../../lib/shared/errors');
+const {
+    ActionStringOrRegexOptionError,
+    ActionFunctionOptionError,
+    ActionInvalidObjectPropertyError,
+} = require('../../lib/shared/errors');
 
 const untestedErrorTypes = Object.keys(TEST_RUN_ERRORS).map(key => TEST_RUN_ERRORS[key]);
 

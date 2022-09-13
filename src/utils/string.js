@@ -90,7 +90,7 @@ function getDisplayedItemText (item, quote) {
 export function getConcatenatedValuesString (array, separator = DEFAULT_CONCATENATED_VALUES.SEPARATOR, quoteChar = DEFAULT_CONCATENATED_VALUES.QUOTE_CHAR) {
     const clonedArray = [...array];
 
-    if (separator === '\n')
+    if (separator.includes('\n'))
         return clonedArray.map(item => getDisplayedItemText(item, quoteChar)).join(separator);
 
     else if (clonedArray.length === 1)

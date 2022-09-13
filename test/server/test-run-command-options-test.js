@@ -1,17 +1,19 @@
-const expect                   = require('chai').expect;
-const ActionOptions            = require('../../lib/test-run/commands/options').ActionOptions;
-const OffsetOptions            = require('../../lib/test-run/commands/options').OffsetOptions;
-const ScrollOptions            = require('../../lib/test-run/commands/options').ScrollOptions;
-const MouseOptions             = require('../../lib/test-run/commands/options').MouseOptions;
-const DragToElementOptions     = require('../../lib/test-run/commands/options').DragToElementOptions;
-const ClickOptions             = require('../../lib/test-run/commands/options').ClickOptions;
-const MoveOptions              = require('../../lib/test-run/commands/options').MoveOptions;
-const TypeOptions              = require('../../lib/test-run/commands/options').TypeOptions;
-const ElementScreenshotOptions = require('../../lib/test-run/commands/options').ElementScreenshotOptions;
-const ResizeToFitDeviceOptions = require('../../lib/test-run/commands/options').ResizeToFitDeviceOptions;
-const AssertionOptions         = require('../../lib/test-run/commands/options').AssertionOptions;
-const CookieOptions            = require('../../lib/test-run/commands/options').CookieOptions;
-const SkipJsErrorsOptions      = require('../../lib/test-run/commands/options').SkipJsErrorsOptions;
+const expect = require('chai').expect;
+const {
+    ActionOptions,
+    OffsetOptions,
+    ScrollOptions,
+    MouseOptions,
+    DragToElementOptions,
+    ClickOptions,
+    MoveOptions,
+    TypeOptions,
+    ElementScreenshotOptions,
+    ResizeToFitDeviceOptions,
+    AssertionOptions,
+    CookieOptions,
+    SkipJsErrorsOptions,
+}      = require('../../lib/test-run/commands/options');
 
 // NOTE: chai's throws doesn't perform deep comparison of error objects
 function assertThrow (fn, expectedErr) {
@@ -315,11 +317,11 @@ describe('Test run command options', function () {
                     objectName:          'ClickOptions',
                     propertyName:        'invalidProp',
                     availableProperties: [
-                        'speed',
+                        'caretPos',
+                        'modifiers',
                         'offsetX',
                         'offsetY',
-                        'modifiers',
-                        'caretPos',
+                        'speed',
                     ],
                     callsite: null,
                 }
@@ -334,8 +336,12 @@ describe('Test run command options', function () {
                     code:                'E100',
                     objectName:          'SkipJsErrorsOptions',
                     propertyName:        'invalidProp',
-                    availableProperties: ['stack', 'message', 'pageUrl'],
-                    callsite:            null,
+                    availableProperties: [
+                        'message',
+                        'pageUrl',
+                        'stack',
+                    ],
+                    callsite: null,
                 }
             );
         });

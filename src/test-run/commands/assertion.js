@@ -43,7 +43,7 @@ export class AssertionCommand extends ActionCommandBase {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'id', type: nonEmptyStringArgument, required: false },
             { name: 'assertionType', type: nonEmptyStringArgument, required: true },
             { name: 'originActual', defaultValue: void 0 },
@@ -52,7 +52,7 @@ export class AssertionCommand extends ActionCommandBase {
             { name: 'expected2', init: initAssertionParameter, defaultValue: void 0 },
             { name: 'message', type: stringArgument, defaultValue: null },
             { name: 'options', type: actionOptions, init: initAssertionOptions, required: true },
-        ]);
+        ];
     }
 
     _getNonReportedProperties () {

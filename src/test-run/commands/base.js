@@ -8,8 +8,7 @@ export class CommandBase extends Assignable {
     constructor (obj, testRun, type, validateProperties = true) {
         super();
 
-        this.type = type;
-
+        this.type     = type;
         this.actionId = obj?.actionId || nanoid(7);
 
         this._assignFrom(obj, validateProperties, { testRun });

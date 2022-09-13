@@ -75,10 +75,10 @@ export class OffsetOptions extends ActionOptions {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'offsetX', type: integerOption },
             { name: 'offsetY', type: integerOption },
-        ]);
+        ];
     }
 }
 
@@ -93,10 +93,10 @@ export class ScrollOptions extends OffsetOptions {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'scrollToCenter', type: booleanOption },
             { name: 'skipParentFrames', type: booleanOption },
-        ]);
+        ];
     }
 }
 
@@ -139,14 +139,14 @@ export class ElementScreenshotOptions extends ActionOptions {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'scrollTargetX', type: integerOption },
             { name: 'scrollTargetY', type: integerOption },
             { name: 'crop', type: objectOption, init: initCropOptions },
             { name: 'includeMargins', type: booleanOption },
             { name: 'includeBorders', type: booleanOption },
             { name: 'includePaddings', type: booleanOption },
-        ]);
+        ];
     }
 }
 
@@ -183,9 +183,9 @@ export class MouseOptions extends OffsetOptions {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'modifiers', type: objectOption, init: initModifiersOptions },
-        ]);
+        ];
     }
 }
 
@@ -201,9 +201,9 @@ export class ClickOptions extends MouseOptions {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'caretPos', type: positiveIntegerOption },
-        ]);
+        ];
     }
 }
 
@@ -222,13 +222,13 @@ export class MoveOptions extends MouseOptions {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'speed' },
             { name: 'minMovingTime' },
             { name: 'holdLeftButton' },
             { name: 'skipScrolling', type: booleanOption },
             { name: 'skipDefaultDragBehavior', type: booleanOption },
-        ]);
+        ];
     }
 }
 
@@ -245,11 +245,11 @@ export class TypeOptions extends ClickOptions {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'replace', type: booleanOption },
             { name: 'paste', type: booleanOption },
             { name: 'confidential', type: booleanOption },
-        ]);
+        ];
     }
 }
 
@@ -265,10 +265,10 @@ export class DragToElementOptions extends MouseOptions {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'destinationOffsetX', type: integerOption },
             { name: 'destinationOffsetY', type: integerOption },
-        ]);
+        ];
     }
 }
 
@@ -319,9 +319,9 @@ export class PressOptions extends ActionOptions {
     }
 
     _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+        return [
             { name: 'confidential', type: booleanOption },
-        ]);
+        ];
     }
 }
 
