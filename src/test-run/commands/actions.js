@@ -150,7 +150,7 @@ export class DispatchEventCommand extends ActionCommandBase {
         super(obj, testRun, TYPE.dispatchEvent, validateProperties);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'selector', init: initSelector, required: true },
             { name: 'eventName', type: nonEmptyStringArgument, required: true },
@@ -167,7 +167,7 @@ export class ClickCommand extends ActionCommandBase {
         super(obj, testRun, TYPE.click, validateProperties);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'selector', init: initSelector, required: true },
             { name: 'options', type: actionOptions, init: initClickOptions, required: true },
@@ -182,7 +182,7 @@ export class RightClickCommand extends ActionCommandBase {
         super(obj, testRun, TYPE.rightClick, validateProperties);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'selector', init: initSelector, required: true },
             { name: 'options', type: actionOptions, init: initClickOptions, required: true },
@@ -195,7 +195,7 @@ export class ExecuteExpressionCommand extends CommandBase {
         super(obj, testRun, TYPE.executeExpression, validateProperties);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'expression', type: nonEmptyStringArgument, required: true },
             { name: 'resultVariableName', type: nonEmptyStringArgument, defaultValue: null },
@@ -208,7 +208,7 @@ export class ExecuteAsyncExpressionCommand extends CommandBase {
         super(obj, testRun, TYPE.executeAsyncExpression, validateProperties);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'expression', type: stringArgument, required: true },
         ];
@@ -222,7 +222,7 @@ export class DoubleClickCommand extends ActionCommandBase {
         super(obj, testRun, TYPE.doubleClick, validateProperties);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'selector', init: initSelector, required: true },
             { name: 'options', type: actionOptions, init: initClickOptions, required: true },
@@ -237,7 +237,7 @@ export class HoverCommand extends ActionCommandBase {
         super(obj, testRun, TYPE.hover, validateProperties);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'selector', init: initSelector, required: true },
             { name: 'options', type: actionOptions, init: initMouseOptions, required: true },
@@ -252,7 +252,7 @@ export class TypeTextCommand extends ActionCommandBase {
         super(obj, testRun, TYPE.typeText, validateProperties);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'selector', init: initTypeSelector, required: true },
             { name: 'text', type: nonEmptyStringArgument, required: true },
@@ -268,7 +268,7 @@ export class DragCommand extends ActionCommandBase {
         super(obj, testRun, TYPE.drag, validateProperties);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'selector', init: initSelector, required: true },
             { name: 'dragOffsetX', type: integerArgument, required: true },
@@ -285,7 +285,7 @@ export class DragToElementCommand extends ActionCommandBase {
         super(obj, testRun, TYPE.dragToElement, validateProperties);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'selector', init: initSelector, required: true },
             { name: 'destinationSelector', init: initSelector, required: true },
@@ -301,7 +301,7 @@ export class ScrollCommand extends ActionCommandBase {
         super(obj, testRun, TYPE.scroll, validateProperties);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'selector', init: initSelector, required: false },
             { name: 'position', type: nullableStringArgument, required: false },
@@ -319,7 +319,7 @@ export class ScrollByCommand extends ActionCommandBase {
         super(obj, testRun, TYPE.scrollBy, validateProperties);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'selector', init: initSelector, required: false },
             { name: 'byX', type: integerArgument, defaultValue: 0 },
@@ -336,7 +336,7 @@ export class ScrollIntoViewCommand extends ActionCommandBase {
         super(obj, testRun, TYPE.scrollIntoView, validateProperties);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'selector', init: initSelector, required: true },
             { name: 'options', type: actionOptions, init: initOffsetOptions, required: true },
@@ -351,7 +351,7 @@ export class SelectTextCommand extends ActionCommandBase {
         super(obj, testRun, TYPE.selectText, validateProperties);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'selector', init: initSelector, required: true },
             { name: 'startPos', type: positiveIntegerArgument, defaultValue: null },
@@ -368,7 +368,7 @@ export class SelectEditableContentCommand extends ActionCommandBase {
         super(obj, testRun, TYPE.selectEditableContent, validateProperties);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'startSelector', init: initSelector, required: true },
             { name: 'endSelector', init: initSelector, defaultValue: null },
@@ -384,7 +384,7 @@ export class SelectTextAreaContentCommand extends ActionCommandBase {
         super(obj, testRun, TYPE.selectTextAreaContent, validateProperties);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'selector', init: initSelector, required: true },
             { name: 'startLine', type: positiveIntegerArgument, defaultValue: null },
@@ -403,7 +403,7 @@ export class PressKeyCommand extends ActionCommandBase {
         super(obj, testRun, TYPE.pressKey, validateProperties);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'keys', type: nonEmptyStringArgument, required: true },
             { name: 'options', type: actionOptions, init: initPressOptions, required: true },
@@ -418,7 +418,7 @@ export class NavigateToCommand extends ActionCommandBase {
         super(obj, testRun, TYPE.navigateTo, validateProperties);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'url', type: pageUrlArgument, required: true },
             { name: 'stateSnapshot', type: nullableStringArgument, defaultValue: null },
@@ -434,7 +434,7 @@ export class SetFilesToUploadCommand extends ActionCommandBase {
         super(obj, testRun, TYPE.setFilesToUpload, validateProperties);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'selector', init: initUploadSelector, required: true },
             { name: 'filePath', type: stringOrStringArrayArgument, required: true },
@@ -449,7 +449,7 @@ export class ClearUploadCommand extends ActionCommandBase {
         super(obj, testRun, TYPE.clearUpload, validateProperties);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'selector', init: initUploadSelector, required: true },
         ];
@@ -463,7 +463,7 @@ export class SwitchToIframeCommand extends ActionCommandBase {
         super(obj, testRun, TYPE.switchToIframe, validateProperties);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'selector', init: initSelector, required: true },
         ];
@@ -486,7 +486,7 @@ export class OpenWindowCommand extends ActionCommandBase {
         super(obj, testRun, TYPE.openWindow, validateProperties);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'url', type: pageUrlArgument },
         ];
@@ -500,7 +500,7 @@ export class CloseWindowCommand extends ActionCommandBase {
         super(obj, testRun, TYPE.closeWindow, validateProperties);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'windowId', type: nullableStringArgument, required: true },
         ];
@@ -531,7 +531,7 @@ export class SwitchToWindowCommand extends ActionCommandBase {
         super(obj, testRun, TYPE.switchToWindow, validateProperties);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'windowId', type: nonEmptyStringArgument, required: true },
         ];
@@ -545,7 +545,7 @@ export class SwitchToWindowByPredicateCommand extends ActionCommandBase {
         super(obj, testRun, TYPE.switchToWindowByPredicate, validateProperties);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'id', type: nonEmptyStringArgument, required: false },
             { name: 'checkWindow', type: functionArgument, required: true },
@@ -576,7 +576,7 @@ export class SetNativeDialogHandlerCommand extends ActionCommandBase {
         super(obj, testRun, TYPE.setNativeDialogHandler, validateProperties);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'dialogHandler', init: initDialogHandler, required: true },
         ];
@@ -620,7 +620,7 @@ export class SetTestSpeedCommand extends ActionCommandBase {
         super(obj, testRun, TYPE.setTestSpeed, validateProperties);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'speed', type: setSpeedArgument, required: true },
         ];
@@ -634,7 +634,7 @@ export class SetPageLoadTimeoutCommand extends ActionCommandBase {
         super(obj, testRun, TYPE.setPageLoadTimeout, validateProperties);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'duration', type: positiveIntegerArgument, required: true },
         ];
@@ -648,7 +648,7 @@ export class UseRoleCommand extends ActionCommandBase {
         super(obj, testRun, TYPE.useRole, validateProperties);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'role', type: actionRoleArgument, required: true },
         ];
@@ -670,7 +670,7 @@ export class RecorderCommand extends ActionCommandBase {
         super(obj, testRun, TYPE.recorder);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'subtype', type: nonEmptyStringArgument, required: true },
             { name: 'forceExecutionInTopWindowOnly', type: booleanArgument, defaultValue: false },
@@ -685,7 +685,7 @@ export class GetCookiesCommand extends ActionCommandBase {
         super(obj, testRun, TYPE.getCookies, validateProperties);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'urls', type: urlsArgument, required: false },
             { name: 'cookies', type: cookiesArgument, init: initCookiesOption, required: false },
@@ -700,7 +700,7 @@ export class SetCookiesCommand extends ActionCommandBase {
         super(obj, testRun, TYPE.setCookies, validateProperties);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'url', type: urlsArgument, required: false },
             { name: 'cookies', type: setCookiesArgument, init: initCookiesOption, required: true },
@@ -715,7 +715,7 @@ export class DeleteCookiesCommand extends ActionCommandBase {
         super(obj, testRun, TYPE.deleteCookies, validateProperties);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'urls', type: urlsArgument, required: false },
             { name: 'cookies', type: cookiesArgument, init: initCookiesOption, required: false },
@@ -732,7 +732,7 @@ export class RequestCommand extends ActionCommandBase {
         super(obj, testRun, TYPE.request, validateProperties);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'url', type: urlArgument, required: false },
             { name: 'options', type: actionOptions, init: initRequestOption, required: false },
@@ -747,7 +747,7 @@ export class GetProxyUrlCommand extends ActionCommandBase {
         super(obj, testRun, TYPE.getProxyUrl, validateProperties);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'url', type: urlArgument, required: true },
             { name: 'options', init: initGetProxyUrlOptions, required: false },
@@ -762,7 +762,7 @@ export class SkipJsErrorsCommand extends ActionCommandBase {
         super(obj, testRun, TYPE.skipJsErrors, validateProperties);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'options', type: skipJsErrorOptions, init: initSkipJsErrorsOptions, required: false },
         ];

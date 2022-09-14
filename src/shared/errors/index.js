@@ -4,8 +4,6 @@
 // -------------------------------------------------------------
 import { TEST_RUN_ERRORS } from '../../errors/types';
 
-const arraySort           = Array.prototype.sort;
-
 // Base
 //--------------------------------------------------------------------
 export class TestRunErrorBase {
@@ -195,9 +193,9 @@ export class ActionInvalidObjectPropertyError extends TestRunErrorBase {
     constructor (objectName, propertyName, availableProperties) {
         super(TEST_RUN_ERRORS.actionInvalidObjectPropertyError);
 
-        this.objectName = objectName;
-        this.propertyName  = propertyName;
-        this.availableProperties  = arraySort.call(availableProperties);
+        this.objectName          = objectName;
+        this.propertyName        = propertyName;
+        this.availableProperties = availableProperties;
     }
 }
 

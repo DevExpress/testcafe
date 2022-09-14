@@ -834,7 +834,7 @@ describe('Error formatting', () => {
         });
 
         it('Should format "actionInvalidObjectPropertyError"', () => {
-            assertErrorMessage('action-invalid-object-property-error', new ActionInvalidObjectPropertyError('ClickOptions', 'invalidProp', ['ctrl', 'alt']));
+            assertErrorMessage('action-invalid-object-property-error', new ActionInvalidObjectPropertyError('ClickOptions', 'invalidProp', ['alt', 'ctrl']));
         });
     });
 

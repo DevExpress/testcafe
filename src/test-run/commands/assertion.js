@@ -32,7 +32,7 @@ function initAssertionParameter (name, val, { skipVisibilityCheck, testRun }) {
     }
 }
 
-const NOT_REPORTED_PROPERTIES = ['id', 'originActual'];
+const ASSERTION_NOT_REPORTED_PROPERTIES = ['id', 'originActual'];
 
 // Commands
 export class AssertionCommand extends ActionCommandBase {
@@ -42,7 +42,7 @@ export class AssertionCommand extends ActionCommandBase {
         super(obj, testRun, TYPE.assertion, validateProperties);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'id', type: nonEmptyStringArgument, required: false },
             { name: 'assertionType', type: nonEmptyStringArgument, required: true },
@@ -55,8 +55,8 @@ export class AssertionCommand extends ActionCommandBase {
         ];
     }
 
-    _getNonReportedProperties () {
-        return super._getNonReportedProperties().concat(NOT_REPORTED_PROPERTIES);
+    getNonReportedProperties () {
+        return super.getNonReportedProperties().concat(ASSERTION_NOT_REPORTED_PROPERTIES);
     }
 }
 

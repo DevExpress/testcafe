@@ -126,10 +126,10 @@ export class CommandFormatter {
     }
 
     private _assignProperties (command: CommandBase, formattedCommand: FormattedCommand): void {
-        if (!this._command._getAssignableProperties)
+        if (!this._command.getReportedProperties)
             return;
 
-        const sourceProperties = this._command._getReportedProperties();
+        const sourceProperties = this._command.getReportedProperties();
 
         sourceProperties.forEach((key: string) => {
             const property = this._command[key];

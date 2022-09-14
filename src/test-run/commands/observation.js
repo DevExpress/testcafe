@@ -11,7 +11,7 @@ export class WaitCommand extends ActionCommandBase {
         super(obj, testRun, TYPE.wait);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'timeout', type: positiveIntegerArgument, required: true },
         ];
@@ -23,7 +23,7 @@ export class ExecuteClientFunctionCommandBase extends ActionCommandBase {
         super(obj, testRun, type, false);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'instantiationCallsiteName', defaultValue: '' },
             { name: 'fnCode', defaultValue: '' },
@@ -49,7 +49,7 @@ export class ExecuteSelectorCommand extends ExecuteClientFunctionCommandBase {
         super(obj, testRun, TYPE.executeSelector);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'visibilityCheck', defaultValue: false },
             { name: 'timeout', defaultValue: null },

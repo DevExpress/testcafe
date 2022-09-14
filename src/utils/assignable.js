@@ -4,32 +4,21 @@
 // -------------------------------------------------------------
 
 import { ActionInvalidObjectPropertyError } from '../shared/errors';
+import stringEndsWith from './string-ends-with';
+
+const arrayIndexOf   = Array.prototype.indexOf;
+const arrayMap       = Array.prototype.map;
+const arraySort      = Array.prototype.sort;
+const arrayFilter    = Array.prototype.filter;
+const arrayConcat    = Array.prototype.concat;
 
 const COMMAND_NAME_SUFFIX = 'Command';
-const arrayIndexOf        = Array.prototype.indexOf;
-const arrayMap            = Array.prototype.map;
-const arrayFilter         = Array.prototype.filter;
-const arrayConcat         = Array.prototype.concat;
-const objectToString      = Object.prototype.toString;
-const stringIndexOf       = String.prototype.indexOf;
-const stringEndsWith      = String.prototype.endsWith
-                            || function (searchString, position) {
-                                const subjectString = objectToString.call(this);
 
-                                if (position === void 0 || position > subjectString.length)
-                                    position = subjectString.length;
-
-                                position -= searchString.length;
-
-                                const lastIndex = stringIndexOf.call(subjectString, searchString, position);
-
-                                return lastIndex !== -1 && lastIndex === position;
-                            };
 
 function validateObjectProps (obj, dest) {
     const objectName         = dest.constructor.name;
-    const validKeys          = arrayMap.call(dest._getAllAssignableProperties(), p => p.name);
-    const reportedProperties = dest._getReportedProperties();
+    const validKeys          = arrayMap.call(dest.getAllAssignableProperties(), p => p.name);
+    const reportedProperties = arraySort.call(dest.getReportedProperties());
 
     for (const key in obj) {
         if (!(arrayIndexOf.call(validKeys, key) > -1 || key in dest))
@@ -45,29 +34,29 @@ function getDisplayTypeName (constructorName, propName) {
 }
 
 export default class Assignable {
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [];
     }
 
-    _getAllAssignableProperties () {
-        let parent      = Object.getPrototypeOf(this);
+    getAllAssignableProperties () {
+        let parent = Object.getPrototypeOf(this);
         let result = [];
 
-        while (parent && parent._getAssignableProperties) {
-            result = arrayConcat.call(result, parent._getAssignableProperties());
+        while (parent && parent.getAssignableProperties) {
+            result = arrayConcat.call(result, parent.getAssignableProperties());
             parent = Object.getPrototypeOf(parent);
         }
 
         return result;
     }
 
-    _getNonReportedProperties () {
+    getNonReportedProperties () {
         return [];
     }
 
-    _getReportedProperties () {
-        const props = arrayMap.call( this._getAllAssignableProperties(), prop => prop.name );
-        const nonReportedProps = this._getNonReportedProperties();
+    getReportedProperties () {
+        const props            = arrayMap.call(this.getAllAssignableProperties(), prop => prop.name);
+        const nonReportedProps = this.getNonReportedProperties();
 
         return arrayFilter.call(props, name => !(arrayIndexOf.call(nonReportedProps, name) > -1));
     }
@@ -79,7 +68,7 @@ export default class Assignable {
         if (validate)
             validateObjectProps(obj, this);
 
-        const props = this._getAllAssignableProperties();
+        const props = this.getAllAssignableProperties();
 
         for (let i = 0; i < props.length; i++) {
             const { name, type, required, init, defaultValue } = props[i];
@@ -89,12 +78,16 @@ export default class Assignable {
 
             const srcVal = obj[name];
 
-            if (srcVal !== void 0 || required) {
-                if (validate && type)
-                    type(getDisplayTypeName(this.constructor.name, name), srcVal);
+            if (srcVal === void 0 && !required)
+                continue;
 
-                this[name] = init ? init(name, srcVal, initOptions, validate) : srcVal;
+            if (validate && type) {
+                const typeName = getDisplayTypeName(this.constructor.name, name);
+
+                type(typeName, srcVal);
             }
+
+            this[name] = init ? init(name, srcVal, initOptions, validate) : srcVal;
         }
     }
 }
