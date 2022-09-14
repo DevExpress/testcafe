@@ -89,7 +89,7 @@ export default {
         this._setUserAgentMetaInfoForEmulatingDevice(browserId, runtimeInfo.config);
 
         if (proxyless)
-            await this._setupProxyless(browserId, browserClient, runtimeInfo.config.headless);
+            await this._setupProxyless(browserId, browserClient);
     },
 
     async closeBrowser (browserId, closingInfo = {}) {
