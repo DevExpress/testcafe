@@ -79,8 +79,12 @@ export default class BrowserConnectionGateway {
         proxy.GET(SERVICE_ROUTES.assets.styles, { content: idlePageStyle, contentType: 'text/css' });
         proxy.GET(SERVICE_ROUTES.assets.logo, { content: idlePageLogo, contentType: 'image/svg+xml' });
 
-        if (this.proxyless)
-            proxy.GET(PROXYLESS_ERROR_ROUTE, { content: EMPTY_PAGE_MARKUP, contentType: 'text/html' });
+        if (this.proxyless) {
+            proxy.GET(PROXYLESS_ERROR_ROUTE, (req: IncomingMessage, res: ServerResponse) => {
+                res.writeHead(200, { 'Content-Type': 'text/html' });
+                res.end(EMPTY_PAGE_MARKUP);
+            });
+        }
     }
 
     // Helpers

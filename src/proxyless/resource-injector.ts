@@ -21,6 +21,7 @@ import { StatusCodes } from 'http-status-codes';
 import { PageLoadError } from '../errors/test-run';
 import ERROR_ROUTE from './error-route';
 
+
 const ALL_DOCUMENT_RESPONSES = {
     urlPattern:   '*',
     resourceType: 'Document',
@@ -140,19 +141,29 @@ export default class ResourceInjector {
     private async _handleHTTPPages (client: ProtocolApi): Promise<void> {
         await client.Fetch.enable({ patterns: [ALL_DOCUMENT_RESPONSES] });
 
-        client.Fetch.on('requestPaused', async (params: RequestPausedEvent) => {
+        client.Fetch.on('requestPaused', async (requestPausedEvent: RequestPausedEvent) => {
             const {
                 requestId,
                 responseHeaders,
                 responseStatusCode,
-            } = params;
+                request,
+                responseErrorReason,
+            } = requestPausedEvent;
 
-            debugLogger('requestPaused %s', params.request.url);
+            debugLogger('requestPaused %s', request.url);
 
-            if (!this._shouldProxyPage(params.request.url))
+            if (!this._shouldProxyPage(request.url))
                 await client.Fetch.continueResponse({ requestId });
             else {
                 try {
+                    if (responseErrorReason === 'NameNotResolved') {
+                        const err = new Error(`Failed to find a DNS-record for the resource at "${requestPausedEvent.request.url}"`);
+
+                        await this._handlePageError(client, err, request.url);
+
+                        return;
+                    }
+
                     const responseObj         = await client.Fetch.getResponseBody({ requestId });
                     const responseStr         = this._getResponseAsString(responseObj);
                     const injectableResources = await this._prepareInjectableResources();
@@ -173,9 +184,9 @@ export default class ResourceInjector {
                     }
                 }
                 catch (err) {
-                    debugLogger('Failed to process request: %s', params.request.url);
+                    debugLogger('Failed to process request: %s', request.url);
 
-                    await this._handlePageError(client, err as Error, params.request.url);
+                    await this._handlePageError(client, err as Error, request.url);
                 }
             }
         });
@@ -197,19 +208,21 @@ export default class ResourceInjector {
     private async _handleAboutBlankPage (client: ProtocolApi): Promise<void> {
         await client.Page.enable();
 
-        client.Page.on('frameNavigated', async (params: FrameNavigatedEvent) => {
-            debugLogger('frameNavigated %s %s', params.frame.url, params.type);
+        client.Page.on('frameNavigated', async (frameNavigatedEvent: FrameNavigatedEvent) => {
+            const { frame, type } = frameNavigatedEvent;
 
-            if (!this._topFrameNavigationToAboutBlank(params))
+            debugLogger('frameNavigated %s %s', frame.url, type);
+
+            if (!this._topFrameNavigationToAboutBlank(frameNavigatedEvent))
                 return;
 
-            debugLogger('Handle page as about:blank. Origin url: %s', params.frame.url);
+            debugLogger('Handle page as about:blank. Origin url: %s', frame.url);
 
             const injectableResources = await this._prepareInjectableResources() as PageInjectableResources;
             const html                = injectResources(EMPTY_PAGE_MARKUP, injectableResources);
 
             await client.Page.setDocumentContent({
-                frameId: params.frame.id,
+                frameId: frame.id,
                 html,
             });
         });
