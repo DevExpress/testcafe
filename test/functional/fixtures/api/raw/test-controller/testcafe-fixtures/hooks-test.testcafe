@@ -1,0 +1,44 @@
+{
+    "fixtures":[
+        {
+            "name":"[API] TestController",
+            "pageUrl":"http://localhost:3000/fixtures/api/es-next/test-controller/pages/index.html",
+            "tests":[
+                {
+                    "name":"Chaining callsites in hooks",
+                    "commands":[]
+                }
+            ],
+            "beforeEachCommands":[
+                {
+                    "selector": {"type":"js-expr","value":"Selector('#btn1')"},
+                    "studio": {"selectors":[{"rawSelector":{"type":"js-expr","value":"Selector('#btn1')"},"ruleType":"id"},{"rawSelector":{"type":"js-expr","value":"Selector('form input')"},"ruleType":"$dom$"}],"useOffsets":false,"offsetX":18,"offsetY":12},
+                    "options": {},
+                    "type": "click",
+                    "actionId": "0"
+                },
+                {
+                    "selector": {"type":"js-expr","value":"Selector('#btn2')"},
+                    "studio": {"selectors":[{"rawSelector":{"type":"js-expr","value":"Selector('#btn2')"},"ruleType":"id"},{"rawSelector":{"type":"js-expr","value":"Selector('form input').nth(1)"},"ruleType":"$dom$"}],"useOffsets":false,"offsetX":30,"offsetY":12},
+                    "options": {},
+                    "type": "click",
+                    "actionId": "1"
+                },
+                {
+                    "selector": {"type":"js-expr","value":"Selector('#errorrr')"},
+                    "studio": {"selectors":[{"rawSelector":{"type":"js-expr","value":"Selector('#error')"},"ruleType":"id"},{"rawSelector":{"type":"js-expr","value":"Selector('form input').nth(3)"},"ruleType":"$dom$"}],"useOffsets":false,"offsetX":14,"offsetY":10},
+                    "options":{},
+                    "type":"click",
+                    "actionId":"2"
+                },
+                {
+                    "selector":{"type":"js-expr","value":"Selector('#btn3')"},
+                    "studio":{"selectors":[{"rawSelector":{"type":"js-expr","value":"Selector('#btn3')"},"ruleType":"id"},{"rawSelector":{"type":"js-expr","value":"Selector('form input').nth(2)"},"ruleType":"$dom$"}],"useOffsets":false,"offsetX":28,"offsetY":8},
+                    "options":{},
+                    "type":"click",
+                    "actionId":"3"
+                }
+            ]
+        }
+    ]
+}
