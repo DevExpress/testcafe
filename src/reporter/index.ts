@@ -2,6 +2,7 @@ import {
     find,
     sortBy,
     union,
+    isFunction,
 } from 'lodash';
 
 import { writable as isWritableStream } from 'is-stream';
@@ -206,26 +207,21 @@ export default class Reporter {
         messageBus.once('done', async () => await this._onceTaskDoneHandler());
     }
 
-    private _createStreamFinishedPromise (): Promise<unknown> {
-        if (typeof this?.outStream?.once !== 'function')
-            return Promise.resolve();
-
-        return new Promise(resolve => {
-            this.outStream.once('finish', resolve);
-            this.outStream.once('error', resolve);
-        });
-    }
-
     public async dispose (): Promise<unknown> {
         if (this.disposed)
             return Promise.resolve();
 
         this.disposed = true;
 
-        if (!this.outStream || Reporter._isSpecialStream(this.outStream) || !isWritableStream(this.outStream))
+        if (!isFunction(this?.outStream?.once)
+            || Reporter._isSpecialStream(this.outStream)
+            || !isWritableStream(this.outStream))
             return Promise.resolve();
 
-        const streamFinishedPromise = this._createStreamFinishedPromise();
+        const streamFinishedPromise = new Promise(resolve => {
+            this.outStream.once('finish', resolve);
+            this.outStream.once('error', resolve);
+        });
 
         this.outStream.end();
 

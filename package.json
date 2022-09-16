@@ -183,7 +183,7 @@
     "chai-string": "^1.5.0",
     "chrome-launcher": "^0.15.0",
     "connect": "^3.4.0",
-    "devtools-protocol": "0.0.1046751",
+    "devtools-protocol": "0.0.1047822",
     "dom-walk": "^0.1.1",
     "escape-string-regexp": "^4.0.0",
     "eslint": "^7.13.0",
