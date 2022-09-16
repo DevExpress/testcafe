@@ -1,11 +1,12 @@
-import TestFileCompilerBase from '../base';
-import { GeneralError } from '../../../errors/runtime';
-import { RUNTIME_ERRORS } from '../../../errors/types';
-import TestFile from '../../../api/structure/test-file';
-import Fixture from '../../../api/structure/fixture';
-import Test from '../../../api/structure/test';
-import createCommandFromObject from '../../../test-run/commands/from-object';
-import { RawCommandCallsiteRecord } from '../../../utils/raw-command-callsite-record';
+import TestFileCompilerBase from '../../base';
+import { GeneralError } from '../../../../errors/runtime';
+import { RUNTIME_ERRORS } from '../../../../errors/types';
+import TestFile from '../../../../api/structure/test-file';
+import Fixture from '../../../../api/structure/fixture';
+import Test from '../../../../api/structure/test';
+import createCommandFromObject from '../../../../test-run/commands/from-object';
+import { RawCommandCallsiteRecord } from '../../../../utils/raw-command-callsite-record';
+import prepareCommandObject from './prepare-command-object';
 
 export default class RawTestFileCompiler extends TestFileCompilerBase {
 
@@ -21,6 +22,8 @@ export default class RawTestFileCompiler extends TestFileCompilerBase {
                 const callsite = actionId ? new RawCommandCallsiteRecord(actionId, commands) : initCallsite || actionId;
 
                 try {
+                    prepareCommandObject(commandObj);
+
                     const command = createCommandFromObject(commandObj, t.testRun);
 
                     await t.testRun.executeCommand(command, callsite);
