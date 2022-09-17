@@ -1,5 +1,6 @@
-//NOTE: This is a service field for TestCafe Studio.
-//It is used during the test creation phase and does not affect the execution of the command.
+// NOTE: TestCafe Studio adds additional fields to the command object in RAW tests.
+// They do not affect the execution of the command. Therefore, we should remove them before validation.
+// We should change this mechanism in TestCafe Studio in the future to not add these properties to RAW tests.
 
 const studioRemoveStrategy = () => true;
 const selectorRemoveStrategy = value => value === null;
