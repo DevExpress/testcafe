@@ -141,9 +141,6 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
             .then((scrollWasPerformed: boolean | Dictionary<any>) => {
                 wasScrolled = !!scrollWasPerformed;
 
-                if (wasScrolled)
-                    this.emit(this.WARNING_EVENT, { type: WARNING_TYPES.scrolledToElement });
-
                 return delay(this.automationSettings.mouseActionStepDelay);
             })
             .then(() => getElementFromPoint(this.cursor.getPosition(), this.window))
