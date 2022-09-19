@@ -11,6 +11,7 @@ import Cursor from './cursor/cursor';
 import cursorInstance from './cursor';
 import delay from '../core/utils/delay';
 import SharedEventEmitter from '../core/utils/event-emitter';
+import stringifyElement from './utils/stringify-element';
 
 import {
     MoveOptions,
@@ -242,8 +243,15 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
 
                 this.emit(this.TARGET_ELEMENT_FOUND_EVENT, { element: element || null });
 
-                if ( !useStrictElementCheck && element && !state.isTarget)
-                    this.emit(this.WARNING_EVENT, { type: WARNING_TYPES.elementOverlapped });
+                if ( !useStrictElementCheck && element && !state.isTarget) {
+                    const expectedElementStr = stringifyElement(this.element);
+                    const actualElementStr   = stringifyElement(element);
+
+                    this.emit(this.WARNING_EVENT, {
+                        type: WARNING_TYPES.elementOverlapped,
+                        args: [expectedElementStr, actualElementStr],
+                    });
+                }
 
                 return {
                     element:     state?.element || null,
