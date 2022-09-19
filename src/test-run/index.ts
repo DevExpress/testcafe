@@ -126,7 +126,6 @@ import executeFnWithTimeout from '../utils/execute-fn-with-timeout';
 import { URL } from 'url';
 import { CookieOptions } from './commands/options';
 import { prepareSkipJsErrorsOptions } from '../api/skip-js-errors';
-import formatSelectorCallstack from '../utils/format-selector-callstack';
 import { CookieProviderFactory } from './cookies/factory';
 import { CookieProvider } from './cookies/base';
 
@@ -176,6 +175,11 @@ interface DriverTask {
 
 interface DriverMessage {
     status: DriverStatus;
+}
+
+interface DriverWarning {
+    type: keyof typeof WARNING_MESSAGE;
+    args: string[];
 }
 
 interface RequestTimeout {
@@ -896,10 +900,8 @@ export default class TestRun extends AsyncEventEmitter {
             return;
 
         if (driverStatus.warnings?.length) {
-            driverStatus.warnings.forEach((warning: { type: keyof typeof WARNING_MESSAGE }) => {
-                const apiFnChain = (this.currentDriverTask.command.selector as ExecuteSelectorCommand)?.apiFnChain || [];
-
-                this.warningLog.addWarning(WARNING_MESSAGE[warning.type], formatSelectorCallstack(apiFnChain, apiFnChain.length - 1));
+            driverStatus.warnings.forEach((warning: DriverWarning) => {
+                this.warningLog.addWarning(WARNING_MESSAGE[warning.type], ...warning.args);
             });
         }
 
