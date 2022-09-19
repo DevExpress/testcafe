@@ -3,6 +3,7 @@ const path                    = require('path');
 const { expect }              = require('chai');
 const fs                      = require('fs');
 const del                     = require('del');
+const { sign: createJWT }     = require('jsonwebtoken');
 const request                 = require('request');
 const { times, uniqBy }       = require('lodash');
 const consoleWrapper          = require('./helpers/console-wrapper');
@@ -225,7 +226,8 @@ describe('Runner', () => {
             };
 
             before(() => {
-                process.env.TESTCAFE_DASHBOARD_AUTHENTICATION_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcm9qZWN0SWQiOiJ0ZXN0X3Byb2plY3QifQ.5OFxixtZPpIdW6Mc4Fht-9FzYZ9rS_rODLvA1xFftxY';
+                //TODO: add mocks to get rid of using the real dashboard reporter in unit tests
+                process.env.TESTCAFE_DASHBOARD_AUTHENTICATION_TOKEN = createJWT({ projectId: 'test_project' }, 'secret');
             });
 
             after(() => {
