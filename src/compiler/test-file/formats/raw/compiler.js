@@ -6,7 +6,23 @@ import Fixture from '../../../../api/structure/fixture';
 import Test from '../../../../api/structure/test';
 import createCommandFromObject from '../../../../test-run/commands/from-object';
 import { RawCommandCallsiteRecord } from '../../../../utils/raw-command-callsite-record';
-import prepareCommandObject from './prepare-command-object';
+import { isNil as isNullOrUndefined } from 'lodash';
+
+const STUDIO_PROPERTY_NAMES =  {
+    studio:   'studio',
+    selector: 'selector',
+};
+
+function removeStudioRelatedProperties (commandObj) {
+    delete commandObj[STUDIO_PROPERTY_NAMES.studio];
+
+    const selectorValue = commandObj[STUDIO_PROPERTY_NAMES.selector];
+
+    if (isNullOrUndefined(selectorValue))
+        return;
+
+    delete commandObj['selector'];
+}
 
 export default class RawTestFileCompiler extends TestFileCompilerBase {
 
@@ -22,7 +38,7 @@ export default class RawTestFileCompiler extends TestFileCompilerBase {
                 const callsite = actionId ? new RawCommandCallsiteRecord(actionId, commands) : initCallsite || actionId;
 
                 try {
-                    prepareCommandObject(commandObj);
+                    removeStudioRelatedProperties(commandObj);
 
                     const command = createCommandFromObject(commandObj, t.testRun);
 
