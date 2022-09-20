@@ -114,7 +114,7 @@ describe('[API] t.click()', function () {
         await runTests('./testcafe-fixtures/click-test.js', 'Click overlapped element', { only: 'chrome' });
 
         expect(testReport.warnings[0]).eql(
-            'Element <div class="child1">Text</div> was overlapped by <div class="child2">...</div>. The action was performed on the coordinates of the element.\n' + 
+            'Element <div class="child1">Text</div> was overlapped by <div class="child2">...</div>. The action was performed on the coordinates of the element.\n' +
             'Make sure there are no unexpected elements during test execution.'
         );
     });
