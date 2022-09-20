@@ -29,6 +29,7 @@ import calculateSelectTextArguments from './playback/select/calculate-select-tex
 import ERROR_TYPES from '../../shared/errors/automation-errors';
 import cursor from './cursor';
 import MoveAutomation from './move';
+import stringifyElement from './utils/stringify-element';
 
 
 const exports = {};
@@ -59,6 +60,7 @@ exports.calculateSelectTextArguments = calculateSelectTextArguments;
 exports.cursor                       = cursor;
 exports.getNextFocusableElement      = getNextFocusableElement;
 exports.SHORTCUT_TYPE                = SHORTCUT_TYPE;
+exports.stringifyElement             = stringifyElement;
 
 exports.getSelectionCoordinatesByPosition = getSelectionCoordinatesByPosition;
 
