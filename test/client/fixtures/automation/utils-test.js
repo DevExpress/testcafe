@@ -1,5 +1,6 @@
 const testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
 const MoveAutomation     = testCafeAutomation.MoveAutomation;
+const stringifyElement   = testCafeAutomation.stringifyElement;
 
 function isInteger (num) {
     return (num ^ 0) === num;
@@ -22,4 +23,21 @@ asyncTest('MoveAutomation._getTargetClientPoint should return integer numbers (G
             ok(isInteger(point.y));
             start();
         });
+});
+
+asyncTest('Stringify element', function () {
+    const emptyElement             = $('<div />')[0];
+    const elementWithChild         = $('<div><div></div></div>')[0];
+    const elementWithShortText     = $('<div>Short</div>')[0];
+    const elementWithLongText      = $('<div>Long text long</div>')[0];
+    const elementWithChildAndText  = $('<div>Long text long<div></div></div>')[0];
+
+    equal(stringifyElement(null), '');
+    equal(stringifyElement(emptyElement), '<div></div>');
+    equal(stringifyElement(elementWithChild), '<div>...</div>');
+    equal(stringifyElement(elementWithShortText), '<div>Short</div>');
+    equal(stringifyElement(elementWithLongText), '<div>Long te...</div>');
+    equal(stringifyElement(elementWithChildAndText), '<div>...</div>');
+
+    start();
 });
