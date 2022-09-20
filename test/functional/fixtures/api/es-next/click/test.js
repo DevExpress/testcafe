@@ -113,7 +113,10 @@ describe('[API] t.click()', function () {
     it('Should show warning that the element was overlapped', async function () {
         await runTests('./testcafe-fixtures/click-test.js', 'Click overlapped element', { only: 'chrome' });
 
-        expect(testReport.warnings[0]).eql("Element was overlapped. The action was performed on the coordinates of the element.\n > | Selector('.child1')");
+        expect(testReport.warnings[0]).eql(
+            'Element <div class="child1">Text</div> was overlapped by <div class="child2">...</div>. The action was performed on the coordinates of the element.\n' + 
+            'Make sure there are no unexpected elements during test execution.'
+        );
     });
 
     describe('[Regression](GH-628)', function () {
