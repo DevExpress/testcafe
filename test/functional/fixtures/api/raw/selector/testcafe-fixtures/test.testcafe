@@ -9,6 +9,7 @@
           "commands": [
             {
               "type": "click",
+              "note": "client function as argument",
               "selector": {
                 "type": "js-expr",
                 "value": "Selector(() => document.getElementById('input'))"
@@ -20,6 +21,7 @@
             },
             {
               "type": "click",
+              "note": ".with()",
               "selector": {
                 "type": "js-expr",
                 "value": "const el = Selector('#input2', { timeout: 0 }); Selector(el).with({ timeout: 5000 })"
@@ -31,6 +33,7 @@
             },
             {
               "type": "click",
+              "note": "derivative selector",
               "selector": {
                 "type": "js-expr",
                 "value": "const getElementById = Selector(id => document.getElementById(id)); Selector(getElementById('input'))"
@@ -42,6 +45,7 @@
             },
             {
               "type": "click",
+              "note": ".withText(text)",
               "selector": {
                 "type": "js-expr",
                 "value": "Selector('div').withText('div text')"
@@ -53,6 +57,7 @@
             },
             {
               "type": "click",
+              "note": ".withText(/re/)",
               "selector": {
                 "type": "js-expr",
                 "value": "Selector('div').withText(/div text/)"
@@ -64,6 +69,7 @@
             },
             {
               "type": "click",
+              "note": ".withText(new RegExp('re'))",
               "selector": {
                 "type": "js-expr",
                 "value": "Selector('div').withText(new RegExp('div text'))"
@@ -75,6 +81,7 @@
             },
             {
               "type": "click",
+              "note": ".withAttribute(/re/, /re/)",
               "selector": {
                 "type": "js-expr",
                 "value": "Selector('input').withAttribute(/id/, /input$/)"
@@ -86,6 +93,7 @@
             },
             {
               "type": "click",
+              "note": "nested .nth()",
               "selector": {
                 "type": "js-expr",
                 "value": "Selector('input').nth(0).nth(0)"
@@ -97,6 +105,7 @@
             },
             {
               "type": "click",
+              "note": ".filter(string)",
               "selector": {
                 "type": "js-expr",
                 "value": "Selector('input').filter('#input')"
@@ -108,6 +117,7 @@
             },
             {
               "type": "click",
+              "note": ".filter(fn)",
               "selector": {
                 "type": "js-expr",
                 "value": "Selector('input').filter(node => node.id === 'input')"
@@ -119,6 +129,7 @@
             },
             {
               "type": "click",
+              "note": "compound .filter()",
               "selector": {
                 "type": "js-expr",
                 "value": "Selector('*').filter('input').filter('#input')"
@@ -130,6 +141,7 @@
             },
             {
               "type": "click",
+              "note": "parametrized selector with .filter()",
               "selector": {
                 "type": "js-expr",
                 "value": "const withId = Selector(id => document.getElementById(id)); withId('input').filter('#input')"
@@ -141,6 +153,7 @@
             },
             {
               "type": "click",
+              "note": "ClientFunction as a dependency",
               "selector": {
                 "type": "js-expr",
                 "value": "const isOne = ClientFunction(i => i === 1); Selector('input').filter((node, i) => isOne(i), { isOne })"

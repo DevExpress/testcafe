@@ -8,21 +8,11 @@ import createCommandFromObject from '../../../../test-run/commands/from-object';
 import { RawCommandCallsiteRecord } from '../../../../utils/raw-command-callsite-record';
 import { isNil as isNullOrUndefined } from 'lodash';
 
-const STUDIO_PROPERTY_NAMES =  {
+const STUDIO_PROPERTY_NAMES = {
     studio:   'studio',
     selector: 'selector',
+    note:     'note',
 };
-
-function removeStudioRelatedProperties (commandObj) {
-    delete commandObj[STUDIO_PROPERTY_NAMES.studio];
-
-    const selectorValue = commandObj[STUDIO_PROPERTY_NAMES.selector];
-
-    if (!isNullOrUndefined(selectorValue))
-        return;
-
-    delete commandObj['selector'];
-}
 
 export default class RawTestFileCompiler extends TestFileCompilerBase {
 
@@ -41,7 +31,7 @@ export default class RawTestFileCompiler extends TestFileCompilerBase {
                     // NOTE: TestCafe Studio adds additional fields to the command object in RAW tests.
                     // They do not affect the execution of the command. Therefore, we should remove them before validation.
                     // We should change this mechanism in TestCafe Studio in the future to not add these properties to RAW tests.
-                    removeStudioRelatedProperties(commandObj);
+                    this._removeStudioRelatedProperties(commandObj);
 
                     const command = createCommandFromObject(commandObj, t.testRun);
 
@@ -108,6 +98,18 @@ export default class RawTestFileCompiler extends TestFileCompilerBase {
             fixture.afterEach(RawTestFileCompiler._createTestFn(src.afterEachCommands));
 
         src.tests.forEach(testSrc => RawTestFileCompiler._addTest(testFile, testSrc, baseUrl));
+    }
+
+    static _removeStudioRelatedProperties (commandObj) {
+        delete commandObj[STUDIO_PROPERTY_NAMES.studio];
+        delete commandObj[STUDIO_PROPERTY_NAMES.note];
+
+        const selectorValue = commandObj[STUDIO_PROPERTY_NAMES.selector];
+
+        if (!isNullOrUndefined(selectorValue))
+            return;
+
+        delete commandObj['selector'];
     }
 
     _hasTests () {
