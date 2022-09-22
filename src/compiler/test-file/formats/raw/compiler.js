@@ -18,7 +18,7 @@ function removeStudioRelatedProperties (commandObj) {
 
     const selectorValue = commandObj[STUDIO_PROPERTY_NAMES.selector];
 
-    if (isNullOrUndefined(selectorValue))
+    if (!isNullOrUndefined(selectorValue))
         return;
 
     delete commandObj['selector'];
