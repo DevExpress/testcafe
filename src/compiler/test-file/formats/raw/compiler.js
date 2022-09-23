@@ -31,7 +31,7 @@ export default class RawTestFileCompiler extends TestFileCompilerBase {
                     // NOTE: TestCafe Studio adds additional fields to the command object in RAW tests.
                     // They do not affect the execution of the command. Therefore, we should remove them before validation.
                     // We should change this mechanism in TestCafe Studio in the future to not add these properties to RAW tests.
-                    this._removeStudioRelatedProperties(commandObj);
+                    RawTestFileCompiler._removeStudioRelatedProperties(commandObj);
 
                     const command = createCommandFromObject(commandObj, t.testRun);
 
