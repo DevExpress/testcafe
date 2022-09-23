@@ -39,7 +39,7 @@ test('Should skip JS errors without param', async t => {
     await t.skipJsErrors();
 });
 
-test('Should skip JS errors with SkipJsErrorsCallbackOptions containing RegExp enclosed in quotes', async t => {
+test('Should skip JS errors if SkipJsErrorsCallbackOptions.message prop is string containing RegExp', async t => {
     await t.skipJsErrors({
         message: `${ CLIENT_ERROR_REGEXP }`,
     })
