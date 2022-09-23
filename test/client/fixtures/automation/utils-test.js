@@ -1,3 +1,5 @@
+const hammerhead         = window.getTestCafeModule('hammerhead');
+const browserUtils       = hammerhead.utils.browser;
 const testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
 const MoveAutomation     = testCafeAutomation.MoveAutomation;
 const stringifyElement   = testCafeAutomation.stringifyElement;
@@ -31,7 +33,6 @@ test('Stringify element', function () {
     const elementWithShortText           = $('<div>Short</div>')[0];
     const elementWithLongText            = $('<div>Long text long</div>')[0];
     const elementWithChildAndText        = $('<div>With child<div></div></div>')[0];
-    const elementWithAttributes          = $('<div id="element-id" class="element-class" data-property="element-data"/>')[0];
     const elementWithNestedElementsAndBr = $('<div id="root"><div id="node1"><br></div><div id="node2"><div id="node3"><br></div><div id="node4"><br></div></div></div>')[0];
 
     equal(stringifyElement(null), '');
@@ -40,6 +41,12 @@ test('Stringify element', function () {
     equal(stringifyElement(elementWithShortText), '<div>Short</div>');
     equal(stringifyElement(elementWithLongText), '<div>Long te...</div>');
     equal(stringifyElement(elementWithChildAndText), '<div>...</div>');
-    equal(stringifyElement(elementWithAttributes), '<div id="element-id" class="element-class" data-property="element-data"></div>');
     equal(stringifyElement(elementWithNestedElementsAndBr), '<div id="root">...</div>');
+
+    //NOTE: IE change an order of the id and class
+    if (!browserUtils.isIE) {
+        const elementWithAttributes = $('<div id="element-id" class="element-class" data-property="element-data"/>')[0];
+
+        equal(stringifyElement(elementWithAttributes), '<div id="element-id" class="element-class" data-property="element-data"></div>');
+    }
 });
