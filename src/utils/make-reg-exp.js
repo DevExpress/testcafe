@@ -9,7 +9,7 @@ export function parseRegExpString (regExp) {
     const parsedRegExpWithFlags = regExp.match(SPLIT_INPUT_AND_FLAGS_REG_EXP);
 
     if (parsedRegExpWithFlags)
-        return makeRegExp(parsedRegExpWithFlags[1], parsedRegExpWithFlags[2]);
+        return RegExp(parsedRegExpWithFlags[1], parsedRegExpWithFlags[2]);
 
     return makeRegExp(regExp);
 }
