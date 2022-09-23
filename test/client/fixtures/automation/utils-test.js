@@ -25,12 +25,14 @@ asyncTest('MoveAutomation._getTargetClientPoint should return integer numbers (G
         });
 });
 
-asyncTest('Stringify element', function () {
-    const emptyElement             = $('<div />')[0];
-    const elementWithChild         = $('<div><div></div></div>')[0];
-    const elementWithShortText     = $('<div>Short</div>')[0];
-    const elementWithLongText      = $('<div>Long text long</div>')[0];
-    const elementWithChildAndText  = $('<div>Long text long<div></div></div>')[0];
+test('Stringify element', function () {
+    const emptyElement                   = $('<div />')[0];
+    const elementWithChild               = $('<div><div></div></div>')[0];
+    const elementWithShortText           = $('<div>Short</div>')[0];
+    const elementWithLongText            = $('<div>Long text long</div>')[0];
+    const elementWithChildAndText        = $('<div>With child<div></div></div>')[0];
+    const elementWithAttributes          = $('<div id="element-id" class="element-class" data-property="element-data"/>')[0];
+    const elementWithNestedElementsAndBr = $('<div id="root"><div id="node1"><br></div><div id="node2"><div id="node3"><br></div><div id="node4"><br></div></div></div>')[0];
 
     equal(stringifyElement(null), '');
     equal(stringifyElement(emptyElement), '<div></div>');
@@ -38,6 +40,6 @@ asyncTest('Stringify element', function () {
     equal(stringifyElement(elementWithShortText), '<div>Short</div>');
     equal(stringifyElement(elementWithLongText), '<div>Long te...</div>');
     equal(stringifyElement(elementWithChildAndText), '<div>...</div>');
-
-    start();
+    equal(stringifyElement(elementWithAttributes), '<div id="element-id" class="element-class" data-property="element-data"></div>');
+    equal(stringifyElement(elementWithNestedElementsAndBr), '<div id="root">...</div>');
 });
