@@ -11,6 +11,7 @@ import {
 import { GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from '../../../utils/client-functions';
 import { BrowserClient } from './cdp-client';
 import ResourceInjector from '../../../../../proxyless/resource-injector';
+import { navigateTo } from '../../../../../proxyless/cdp-utils';
 
 const MIN_AVAILABLE_DIMENSION = 50;
 
@@ -162,5 +163,12 @@ export default {
 
             await this.resizeWindow(browserId, newWidth, newHeight, outerWidth, outerHeight);
         }
+    },
+
+    async openFileProtocol (browserId, url) {
+        const { browserClient } = this.openedBrowsers[browserId];
+        const cdpClient         = await browserClient.getActiveClient();
+
+        await navigateTo(cdpClient, url);
     },
 };

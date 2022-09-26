@@ -20,6 +20,7 @@ import debug from 'debug';
 import { StatusCodes } from 'http-status-codes';
 import { PageLoadError } from '../errors/test-run';
 import ERROR_ROUTE from './error-route';
+import { redirect, navigateTo } from './cdp-utils';
 
 
 const ALL_DOCUMENT_RESPONSES = {
@@ -121,21 +122,11 @@ export default class ResourceInjector {
 
         currentTestRun.pendingPageError = new PageLoadError(err, url);
 
-        await client.Page.navigate({ url: this._errorPageUrl });
-    }
-
-    private async _redirect (client: ProtocolApi, requestId: string, url: string): Promise<void> {
-        await client.Fetch.fulfillRequest({
-            requestId,
-            responseCode:    StatusCodes.MOVED_PERMANENTLY,
-            responseHeaders: [
-                { name: 'location', value: url },
-            ],
-        });
+        await navigateTo(client, this._errorPageUrl);
     }
 
     private async _redirectToIdlePage (client: ProtocolApi, requestId: string): Promise<void> {
-        await this._redirect(client, requestId, this._idlePageUrl);
+        await redirect(client, requestId, this._idlePageUrl);
     }
 
     private async _handleHTTPPages (client: ProtocolApi): Promise<void> {

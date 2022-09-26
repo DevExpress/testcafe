@@ -50,6 +50,8 @@ const getReporter = function (scope) {
     });
 };
 
+const itFn = config.proxyless ? it.skip : it;
+
 describe('[API] t.takeScreenshot()', function () {
     afterEach(assertionHelper.removeScreenshotDir);
 
@@ -551,7 +553,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                 });
         });
 
-        it('Should capture screenshot of the element inside a same-domain iframe', function () {
+        itFn('Should capture screenshot of the element inside a same-domain iframe', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Same-domain iframe',
                 { setScreenshotPath: true })
                 .then(function () {
@@ -562,7 +564,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                 });
         });
 
-        it('Should capture screenshot of the element inside a nested iframe', function () {
+        itFn('Should capture screenshot of the element inside a nested iframe', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Nested iframes',
                 { setScreenshotPath: true })
                 .then(function () {
@@ -573,7 +575,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                 });
         });
 
-        it('Should capture screenshot of the element inside a cross-domain iframe', function () {
+        itFn('Should capture screenshot of the element inside a cross-domain iframe', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Cross-domain iframe',
                 { setScreenshotPath: true })
                 .then(function () {
@@ -584,7 +586,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                 });
         });
 
-        it("Shouldn't scroll parent frames multiple times", function () {
+        itFn("Shouldn't scroll parent frames multiple times", function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Rescroll parents',
                 { setScreenshotPath: true })
                 .then(function () {

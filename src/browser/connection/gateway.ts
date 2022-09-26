@@ -26,7 +26,7 @@ export default class BrowserConnectionGateway {
 
     public constructor (proxy: Proxy, options: { retryTestPages: boolean; proxyless: boolean }) {
         this._remotesQueue   = new RemotesQueue();
-        this.connectUrl      = proxy.resolveRelativeServiceUrl('/browser/connect');
+        this.connectUrl      = proxy.resolveRelativeServiceUrl(SERVICE_ROUTES.connect);
         this.retryTestPages  = options.retryTestPages;
         this.proxyless       = options.proxyless;
         this.proxy           = proxy;
@@ -59,17 +59,18 @@ export default class BrowserConnectionGateway {
             serviceWorkerScript,
         } = loadAssets();
 
-        this._dispatch('/browser/connect/{id}', proxy, BrowserConnectionGateway._onConnection);
-        this._dispatch('/browser/heartbeat/{id}', proxy, BrowserConnectionGateway._onHeartbeat, 'GET', this.proxyless);
-        this._dispatch('/browser/idle/{id}', proxy, BrowserConnectionGateway._onIdle);
-        this._dispatch('/browser/idle-forced/{id}', proxy, BrowserConnectionGateway._onIdleForced);
-        this._dispatch('/browser/status/{id}', proxy, BrowserConnectionGateway._onStatusRequest);
-        this._dispatch('/browser/status-done/{id}', proxy, BrowserConnectionGateway._onStatusRequestOnTestDone, 'GET', this.proxyless);
-        this._dispatch('/browser/init-script/{id}', proxy, BrowserConnectionGateway._onInitScriptRequest);
-        this._dispatch('/browser/init-script/{id}', proxy, BrowserConnectionGateway._onInitScriptResponse, 'POST');
-        this._dispatch('/browser/active-window-id/{id}', proxy, BrowserConnectionGateway._onGetActiveWindowIdRequest);
-        this._dispatch('/browser/active-window-id/{id}', proxy, BrowserConnectionGateway._onSetActiveWindowIdRequest, 'POST');
-        this._dispatch('/browser/close-window/{id}', proxy, BrowserConnectionGateway._onCloseWindowRequest, 'POST');
+        this._dispatch(`${SERVICE_ROUTES.connect}/{id}`, proxy, BrowserConnectionGateway._onConnection);
+        this._dispatch(`${SERVICE_ROUTES.heartbeat}/{id}`, proxy, BrowserConnectionGateway._onHeartbeat, 'GET', this.proxyless);
+        this._dispatch(`${SERVICE_ROUTES.idle}/{id}`, proxy, BrowserConnectionGateway._onIdle);
+        this._dispatch(`${SERVICE_ROUTES.idleForced}/{id}`, proxy, BrowserConnectionGateway._onIdleForced);
+        this._dispatch(`${SERVICE_ROUTES.status}/{id}`, proxy, BrowserConnectionGateway._onStatusRequest);
+        this._dispatch(`${SERVICE_ROUTES.statusDone}/{id}`, proxy, BrowserConnectionGateway._onStatusRequestOnTestDone, 'GET', this.proxyless);
+        this._dispatch(`${SERVICE_ROUTES.initScript}/{id}`, proxy, BrowserConnectionGateway._onInitScriptRequest);
+        this._dispatch(`${SERVICE_ROUTES.initScript}/{id}`, proxy, BrowserConnectionGateway._onInitScriptResponse, 'POST');
+        this._dispatch(`${SERVICE_ROUTES.activeWindowId}/{id}`, proxy, BrowserConnectionGateway._onGetActiveWindowIdRequest);
+        this._dispatch(`${SERVICE_ROUTES.activeWindowId}/{id}`, proxy, BrowserConnectionGateway._onSetActiveWindowIdRequest, 'POST');
+        this._dispatch(`${SERVICE_ROUTES.closeWindow}/{id}`, proxy, BrowserConnectionGateway._onCloseWindowRequest, 'POST');
+        this._dispatch(`${SERVICE_ROUTES.openFileProtocol}/{id}`, proxy, BrowserConnectionGateway._onOpenFileProtocolRequest, 'POST');
 
         proxy.GET(SERVICE_ROUTES.connect, (req: IncomingMessage, res: ServerResponse) => this._connectNextRemoteBrowser(req, res));
         proxy.GET(SERVICE_ROUTES.connectWithTrailingSlash, (req: IncomingMessage, res: ServerResponse) => this._connectNextRemoteBrowser(req, res));
@@ -203,6 +204,19 @@ export default class BrowserConnectionGateway {
                 .then(() => {
                     respondWithJSON(res);
                 });
+        }
+    }
+
+    private static _onOpenFileProtocolRequest (req: IncomingMessage, res: ServerResponse, connection: BrowserConnection): void {
+        if (BrowserConnectionGateway._ensureConnectionReady(res, connection)) {
+            BrowserConnectionGateway._fetchRequestData(req, data => {
+                const parsedData = JSON.parse(data);
+
+                connection.openFileProtocol(parsedData.url)
+                    .then(() => {
+                        respondWithJSON(res);
+                    });
+            });
         }
     }
 

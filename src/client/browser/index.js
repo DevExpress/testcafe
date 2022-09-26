@@ -15,6 +15,8 @@ const MAX_STATUS_RETRY   = 5;
 
 const SERVICE_WORKER_LOCATION = LOCATION_ORIGIN + SERVICE_ROUTES.serviceWorker;
 
+const FILE_PROTOCOL_ORIGIN = 'file://';
+
 let allowInitScriptExecution = false;
 let heartbeatIntervalId      = null;
 
@@ -54,6 +56,10 @@ export function sendXHR (url, createXHR, { method = 'GET', data = null, parseRes
 
 function isCurrentLocation (url) {
     return LOCATION_HREF.toLowerCase() === url.toLowerCase();
+}
+
+function isFileProtocol (url = '') {
+    return url.indexOf(FILE_PROTOCOL_ORIGIN) === 0;
 }
 
 //API
@@ -103,23 +109,22 @@ export function stopInitScriptExecution () {
     allowInitScriptExecution = false;
 }
 
-export function redirect (command) {
+export function redirect (command, createXHR, openFileProtocolUrl) {
     stopInitScriptExecution();
-    document.location = command.url;
+
+    if (isFileProtocol(command.url))
+        sendXHR(openFileProtocolUrl, createXHR, { method: 'POST', data: JSON.stringify({ url: command.url }) }); //eslint-disable-line no-restricted-globals
+    else
+        document.location = command.url;
 }
 
-function proxylessCheckRedirecting (result, idlePageUrl) {
-    const shouldStayOnIdle = result.cmd === COMMAND.idle
-        && result.url === idlePageUrl
-        && isCurrentLocation(idlePageUrl);
+function proxylessCheckRedirecting ({ result }) {
+    if (result.cmd === COMMAND.idle)
+        return regularCheckRedirecting(result);
 
-    const shouldGoToIdle = result.cmd === COMMAND.idle
-        && result.url === idlePageUrl
-        && !isCurrentLocation(result.url);
-
-    return !shouldStayOnIdle
-        || result.cmd === COMMAND.run
-        || shouldGoToIdle;
+    // NOTE: The tested page URL can be the same for a few tests.
+    // So, we are forced to return true for all 'run' commands.
+    return true;
 }
 
 function regularCheckRedirecting (result) {
@@ -127,12 +132,12 @@ function regularCheckRedirecting (result) {
         && !isCurrentLocation(result.url);
 }
 
-async function getStatus ({ statusUrl, idlePageUrl }, createXHR, { manualRedirect, proxyless } = {}) {
+async function getStatus ({ statusUrl, openFileProtocolUrl }, createXHR, { manualRedirect, proxyless } = {}) {
     const result      = await sendXHR(statusUrl, createXHR);
-    const redirecting = proxyless ? proxylessCheckRedirecting(result, idlePageUrl) : regularCheckRedirecting(result);
+    const redirecting = proxyless ? proxylessCheckRedirecting({ result }) : regularCheckRedirecting(result);
 
     if (redirecting && !manualRedirect)
-        redirect(result);
+        redirect(result, createXHR, openFileProtocolUrl);
 
     return { command: result, redirecting };
 }

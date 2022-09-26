@@ -118,6 +118,7 @@ import createErrorCtorCallback, {
 import './command-executors/action-executor/actions-initializer';
 import { shouldSkipJsError } from './process-skip-js-errors';
 
+
 const settings = hammerhead.settings;
 
 const transport      = hammerhead.transport;
@@ -173,25 +174,11 @@ export default class Driver extends serviceUtils.EventEmitter {
         this.PENDING_WINDOW_SWITCHING_FLAG = 'testcafe|driver|pending-window-switching-flag';
         this.WINDOW_COMMAND_API_CALL_FLAG  = 'testcafe|driver|window-command-api-flag';
 
-        this.testRunId                  = testRunId;
-        this.heartbeatUrl               = communicationUrls.heartbeat;
-        this.browserStatusUrl           = communicationUrls.status;
-        this.browserStatusDoneUrl       = communicationUrls.statusDone;
-        this.browserIdleUrl             = communicationUrls.idle;
-        this.browserActiveWindowId      = communicationUrls.activeWindowId;
-        this.browserCloseWindowUrl      = communicationUrls.closeWindow;
-        this.userAgent                  = runInfo.userAgent;
-        this.fixtureName                = runInfo.fixtureName;
-        this.testName                   = runInfo.testName;
-        this.selectorTimeout            = options.selectorTimeout;
-        this.pageLoadTimeout            = options.pageLoadTimeout;
-        this.childWindowReadyTimeout    = options.childWindowReadyTimeout;
-        this.initialSpeed               = options.speed;
-        this.skipJsErrors               = options.skipJsErrors;
-        this.dialogHandler              = options.dialogHandler;
-        this.canUseDefaultWindowActions = options.canUseDefaultWindowActions;
-        this.proxyless                  = options.proxyless;
-        this.isFirstPageLoad            = settings.get().isFirstPageLoad;
+        this.testRunId         = testRunId;
+        this.communicationUrls = communicationUrls;
+        this.runInfo           = runInfo;
+        this.options           = options;
+        this.isFirstPageLoad   = settings.get().isFirstPageLoad;
 
         this.customCommandHandlers = {};
 
@@ -262,7 +249,7 @@ export default class Driver extends serviceUtils.EventEmitter {
     }
 
     async _getReadyPromise () {
-        await eventUtils.documentReady(this.pageLoadTimeout);
+        await eventUtils.documentReady(this.options.pageLoadTimeout);
 
         await this.pageInitialRequestBarrier.wait(true);
     }
@@ -286,11 +273,11 @@ export default class Driver extends serviceUtils.EventEmitter {
         if (this.contextStorage.getItem(TEST_DONE_SENT_FLAG))
             return;
 
-        if (this.skipJsErrors) {
+        if (this.options.skipJsErrors) {
             this.contextStorage.setItem(EXECUTING_SKIP_JS_ERRORS_FUNCTION_FLAG, true);
 
             try {
-                if (!await shouldSkipJsError(this.skipJsErrors, err))
+                if (!await shouldSkipJsError(this.options.skipJsErrors, err))
                     this._setUncaughtErrorOnPage(err);
             }
             catch (e) {
@@ -399,7 +386,7 @@ export default class Driver extends serviceUtils.EventEmitter {
 
         Promise.resolve()
             .then(() => {
-                return browser.setActiveWindowId(this.browserActiveWindowId, hammerhead.createNativeXHR, this.windowId);
+                return browser.setActiveWindowId(this.communicationUrls.browserActiveWindowId, hammerhead.createNativeXHR, this.windowId);
             })
             .then(() => {
                 this._startInternal({
@@ -675,7 +662,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         if (!this.closing) {
             this.closing = true;
 
-            await browser.closeWindow(this.browserCloseWindowUrl, hammerhead.createNativeXHR, this.windowId);
+            await browser.closeWindow(this.communicationUrls.browserCloseWindowUrl, hammerhead.createNativeXHR, this.windowId);
         }
 
         childWindowToClose.driverWindow.close();
@@ -770,7 +757,7 @@ export default class Driver extends serviceUtils.EventEmitter {
 
         Promise.resolve()
             .then(() => {
-                return browser.setActiveWindowId(this.browserActiveWindowId, hammerhead.createNativeXHR, this.windowId);
+                return browser.setActiveWindowId(this.communicationUrls.browserActiveWindowId, hammerhead.createNativeXHR, this.windowId);
             })
             .then(() => {
                 this._startInternal({
@@ -986,7 +973,7 @@ export default class Driver extends serviceUtils.EventEmitter {
 
     _switchToIframe (selector, iframeErrorCtors) {
         const hasSpecificTimeout     = typeof selector.timeout === 'number';
-        const commandSelectorTimeout = hasSpecificTimeout ? selector.timeout : this.selectorTimeout;
+        const commandSelectorTimeout = hasSpecificTimeout ? selector.timeout : this.options.selectorTimeout;
 
         return getExecuteSelectorResult(selector, commandSelectorTimeout, null,
             fn => new iframeErrorCtors.NotFoundError(null, fn), () => new iframeErrorCtors.IsInvisibleError(), this.statusBar)
@@ -1077,7 +1064,7 @@ export default class Driver extends serviceUtils.EventEmitter {
 
         return executeChildWindowDriverLinkSelector(selector, this.childWindowDriverLinks)
             .then(childWindowDriverLink => {
-                return this._ensureChildWindowDriverLink(childWindowDriverLink.driverWindow, ChildWindowIsNotLoadedError, this.childWindowReadyTimeout);
+                return this._ensureChildWindowDriverLink(childWindowDriverLink.driverWindow, ChildWindowIsNotLoadedError, this.options.childWindowReadyTimeout);
             })
             .then(childWindowDriverLink => {
                 this.activeChildWindowDriverLink = childWindowDriverLink;
@@ -1172,13 +1159,13 @@ export default class Driver extends serviceUtils.EventEmitter {
         const executeSelectorCb = (selector/*: ExecuteSelectorCommand*/, errCtors/*: AutomationErrorCtors*/, startTime/*: number*/) => {
             const createNotFoundError    = createErrorCtorCallback(errCtors.notFound);
             const createIsInvisibleError = createErrorCtorCallback(errCtors.invisible);
-            const selectorExecutor       = new SelectorExecutor(selector, this.selectorTimeout,
+            const selectorExecutor       = new SelectorExecutor(selector, this.options.selectorTimeout,
                 startTime, createNotFoundError, createIsInvisibleError);
 
             return selectorExecutor.getResult();
         };
 
-        const executor = new ActionExecutor(command, this.selectorTimeout, this.speed, executeSelectorCb);
+        const executor = new ActionExecutor(command, this.options.selectorTimeout, this.speed, executeSelectorCb);
 
         executor.on(ActionExecutor.EXECUTION_STARTED_EVENT, () => {
             this.statusBar.hideWaitingElementStatus(true);
@@ -1246,7 +1233,7 @@ export default class Driver extends serviceUtils.EventEmitter {
     }
 
     _onSkipJsErrorsCommand ({ options }) {
-        this.skipJsErrors = options;
+        this.options.skipJsErrors = options;
 
         this._onReady(new DriverStatus({ isCommandResult: true }));
     }
@@ -1270,7 +1257,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         const elementIsInvisible          = command.strictError ? createErrorCtorCallback(getInvisibleErrorCtor()) : elementNotFoundOrNotVisible;
 
         getExecuteSelectorResultDriverStatus(command,
-            this.selectorTimeout,
+            this.options.selectorTimeout,
             startTime,
             command.needError ? elementNotFound : null,
             command.needError ? elementIsInvisible : null,
@@ -1427,7 +1414,7 @@ export default class Driver extends serviceUtils.EventEmitter {
     _onBrowserManipulationCommand (command) {
         this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, true);
 
-        executeManipulationCommand(command, this.selectorTimeout, this.statusBar)
+        executeManipulationCommand(command, this.options.selectorTimeout, this.statusBar)
             .then(driverStatus => {
                 this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, false);
                 return this._onReady(driverStatus);
@@ -1490,14 +1477,13 @@ export default class Driver extends serviceUtils.EventEmitter {
 
     _checkStatus () {
         const urls = {
-            statusUrl:   this.browserStatusDoneUrl,
-            idlePageUrl: this.browserIdleUrl,
+            statusUrl: this.communicationUrls.statusDone,
         };
 
         return browser
-            .checkStatus(urls, hammerhead.createNativeXHR, { manualRedirect: true, proxyless: this.proxyless })
-            .then(({ command, redirecting }) => {
-                const isSessionChange = redirecting && command.url.indexOf(this.testRunId) < 0;
+            .checkStatus(urls, hammerhead.createNativeXHR, { manualRedirect: true, proxyless: this.options.proxyless })
+            .then(({ command }) => {
+                const isSessionChange = command.testRunId !== this.testRunId;
 
                 if (isSessionChange) {
                     storages.clear();
@@ -1506,8 +1492,8 @@ export default class Driver extends serviceUtils.EventEmitter {
                 else
                     this.contextStorage.setItem(TEST_DONE_SENT_FLAG, false);
 
-                if (redirecting)
-                    browser.redirect(command);
+                if (isSessionChange)
+                    browser.redirect(command, hammerhead.createNativeXHR, this.communicationUrls.openFileProtocolUrl);
                 else
                     this._onReady({ isCommandResult: false });
             })
@@ -1785,7 +1771,7 @@ export default class Driver extends serviceUtils.EventEmitter {
     _startInternal (opts) {
         this.role = DriverRole.master;
 
-        browser.startHeartbeat(this.heartbeatUrl, hammerhead.createNativeXHR);
+        browser.startHeartbeat(this.communicationUrls.heartbeat, hammerhead.createNativeXHR);
         this._setupAssertionRetryIndication();
         this._startCommandsProcessing(opts);
     }
@@ -1871,7 +1857,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         if (!this.windowId)
             return DriverRole.master;
 
-        const { activeWindowId } = await browser.getActiveWindowId(this.browserActiveWindowId, hammerhead.createNativeXHR);
+        const { activeWindowId } = await browser.getActiveWindowId(this.communicationUrls.activeWindowId, hammerhead.createNativeXHR);
 
         return activeWindowId === this.windowId ?
             DriverRole.master :
@@ -1880,12 +1866,12 @@ export default class Driver extends serviceUtils.EventEmitter {
 
     _init () {
         this.contextStorage       = new ContextStorage(window, this.testRunId, this.windowId);
-        this.nativeDialogsTracker = new NativeDialogTracker(this.contextStorage, this.dialogHandler);
-        this.statusBar            = new StatusBar(this.userAgent, this.fixtureName, this.testName, this.contextStorage);
+        this.nativeDialogsTracker = new NativeDialogTracker(this.contextStorage, this.options.dialogHandler);
+        this.statusBar            = new StatusBar(this.runInfo.userAgent, this.runInfo.fixtureName, this.runInfo.testName, this.contextStorage);
 
         this.statusBar.on(this.statusBar.UNLOCK_PAGE_BTN_CLICK, disableRealEventsPreventing);
 
-        this.speed = this.initialSpeed;
+        this.speed = this.options.initialSpeed;
 
         this._initConsoleMessages();
         this._initParentWindowLink();
@@ -1895,7 +1881,7 @@ export default class Driver extends serviceUtils.EventEmitter {
     }
 
     async _doFirstPageLoadSetup () {
-        if (this.isFirstPageLoad && this.canUseDefaultWindowActions) {
+        if (this.isFirstPageLoad && this.options.canUseDefaultWindowActions) {
             // Stub: perform initial setup of the test first page
         }
     }

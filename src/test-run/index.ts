@@ -287,6 +287,8 @@ export default class TestRun extends AsyncEventEmitter {
         this.requestTimeout = this._getRequestTimeout(test, opts);
 
         this.session = SessionController.getSession(this);
+        // Take proxylessRequestHookEventEmitter.
+        // Use the tracker for it.
 
         this.consoleMessages = new BrowserConsoleMessages();
 
@@ -339,7 +341,6 @@ export default class TestRun extends AsyncEventEmitter {
         this.runExecutionTimeout   = this._getRunExecutionTimeout(opts);
 
         this._addInjectables();
-        this._initRequestHooks();
     }
 
     private _getPageLoadTimeout (test: Test, opts: Dictionary<OptionValue>): number {
@@ -546,27 +547,28 @@ export default class TestRun extends AsyncEventEmitter {
         const skipJsErrors = this._prepareSkipJsErrorsOption();
 
         return Mustache.render(TEST_RUN_TEMPLATE, {
-            testRunId:                    JSON.stringify(this.session.id),
-            browserId:                    JSON.stringify(this.browserConnection.id),
-            browserHeartbeatRelativeUrl:  JSON.stringify(this.browserConnection.heartbeatRelativeUrl),
-            browserStatusRelativeUrl:     JSON.stringify(this.browserConnection.statusRelativeUrl),
-            browserStatusDoneRelativeUrl: JSON.stringify(this.browserConnection.statusDoneRelativeUrl),
-            browserIdleRelativeUrl:       JSON.stringify(this.browserConnection.idleRelativeUrl),
-            browserActiveWindowIdUrl:     JSON.stringify(this.browserConnection.activeWindowIdUrl),
-            browserCloseWindowUrl:        JSON.stringify(this.browserConnection.closeWindowUrl),
-            userAgent:                    JSON.stringify(this.browserConnection.userAgent),
-            testName:                     JSON.stringify(this.test.name),
-            fixtureName:                  JSON.stringify((this.test.fixture as Fixture).name),
-            selectorTimeout:              this.opts.selectorTimeout,
-            pageLoadTimeout:              this.pageLoadTimeout,
-            childWindowReadyTimeout:      CHILD_WINDOW_READY_TIMEOUT,
-            skipJsErrors:                 JSON.stringify(skipJsErrors),
-            retryTestPages:               this.opts.retryTestPages,
-            speed:                        this.speed,
-            dialogHandler:                JSON.stringify(this.activeDialogHandler),
-            canUseDefaultWindowActions:   JSON.stringify(await this.browserConnection.canUseDefaultWindowActions()),
-            proxyless:                    JSON.stringify(this.opts.proxyless),
-            domain:                       JSON.stringify(this.browserConnection.browserConnectionGateway.proxy.server1Info.domain),
+            testRunId:                          JSON.stringify(this.session.id),
+            browserId:                          JSON.stringify(this.browserConnection.id),
+            browserHeartbeatRelativeUrl:        JSON.stringify(this.browserConnection.heartbeatRelativeUrl),
+            browserStatusRelativeUrl:           JSON.stringify(this.browserConnection.statusRelativeUrl),
+            browserStatusDoneRelativeUrl:       JSON.stringify(this.browserConnection.statusDoneRelativeUrl),
+            browserIdleRelativeUrl:             JSON.stringify(this.browserConnection.idleRelativeUrl),
+            browserActiveWindowIdUrl:           JSON.stringify(this.browserConnection.activeWindowIdUrl),
+            browserCloseWindowUrl:              JSON.stringify(this.browserConnection.closeWindowUrl),
+            browserOpenFileProtocolRelativeUrl: JSON.stringify(this.browserConnection.openFileProtocolRelativeUrl),
+            userAgent:                          JSON.stringify(this.browserConnection.userAgent),
+            testName:                           JSON.stringify(this.test.name),
+            fixtureName:                        JSON.stringify((this.test.fixture as Fixture).name),
+            selectorTimeout:                    this.opts.selectorTimeout,
+            pageLoadTimeout:                    this.pageLoadTimeout,
+            childWindowReadyTimeout:            CHILD_WINDOW_READY_TIMEOUT,
+            skipJsErrors:                       JSON.stringify(skipJsErrors),
+            retryTestPages:                     this.opts.retryTestPages,
+            speed:                              this.speed,
+            dialogHandler:                      JSON.stringify(this.activeDialogHandler),
+            canUseDefaultWindowActions:         JSON.stringify(await this.browserConnection.canUseDefaultWindowActions()),
+            proxyless:                          JSON.stringify(this.opts.proxyless),
+            domain:                             JSON.stringify(this.browserConnection.browserConnectionGateway.proxy.server1Info.domain),
         });
     }
 

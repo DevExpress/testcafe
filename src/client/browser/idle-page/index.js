@@ -19,8 +19,8 @@ class IdlePage {
 
     async _pollStatus () {
         const urls = {
-            statusUrl:   this.communicationUrls.statusUrl,
-            idlePageUrl: this.communicationUrls.idlePageUrl,
+            statusUrl:           this.communicationUrls.statusUrl,
+            openFileProtocolUrl: this.communicationUrls.openFileProtocolUrl,
         };
 
         let { command } = await browser.checkStatus(urls, createXHR, { proxyless: this.options.proxyless });
