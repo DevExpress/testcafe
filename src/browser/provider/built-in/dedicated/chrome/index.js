@@ -68,7 +68,7 @@ export default {
         };
 
         //NOTE: A not-working tab is opened when the browser start in the docker so we should create a new tab.
-        if (runtimeInfo.inDocker)
+        if (runtimeInfo.inContainer)
             await startLocalChromeOnDocker(pageUrl, runtimeInfo);
         else
             await startLocalChrome(pageUrl, runtimeInfo);

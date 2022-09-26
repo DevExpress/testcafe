@@ -1,6 +1,7 @@
 import { getFreePort } from 'endpoint-utils';
 import createTempProfile from './create-temp-profile';
 import isDocker from 'is-docker';
+import isPodman from 'is-podman';
 import TempDirectory from '../../../../../utils/temp-directory';
 import { Config } from './interfaces';
 
@@ -8,14 +9,14 @@ export default class ChromeRuntimeInfo {
     public config: Config;
     public tempProfileDir: null | TempDirectory;
     public cdpPort: number;
-    public inDocker: boolean;
+    public inContainer: boolean;
     public browserName?: string;
 
     protected constructor (config: Config) {
         this.config         = config;
         this.tempProfileDir = null;
         this.cdpPort        = this.config.cdpPort;
-        this.inDocker       = isDocker();
+        this.inContainer    = isDocker() || isPodman();
     }
 
     protected async createTempProfile (proxyHostName: string, disableMultipleWindows: boolean): Promise<TempDirectory> {

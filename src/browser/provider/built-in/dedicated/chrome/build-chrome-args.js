@@ -1,6 +1,6 @@
 export const IN_DOCKER_FLAGS = ['--no-sandbox', '--disable-dev-shm-usage'];
 
-export function buildChromeArgs ({ config, cdpPort, platformArgs, tempProfileDir, inDocker }) {
+export function buildChromeArgs ({ config, cdpPort, platformArgs, tempProfileDir, inDocker: inContainer }) {
     let chromeArgs = []
         .concat(
             cdpPort ? [`--remote-debugging-port=${cdpPort}`] : [],
@@ -11,7 +11,7 @@ export function buildChromeArgs ({ config, cdpPort, platformArgs, tempProfileDir
         )
         .join(' ');
 
-    if (inDocker) {
+    if (inContainer) {
         IN_DOCKER_FLAGS.forEach(inDockerFlag => {
             if (!chromeArgs.includes(inDockerFlag))
                 chromeArgs = chromeArgs.concat(' ', inDockerFlag);
