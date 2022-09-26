@@ -180,4 +180,5 @@ export const RUNTIME_ERRORS = {
     relativeBaseUrl:                                    'E1075',
     invalidSkipJsErrorsOptionsObjectProperty:           'E1076',
     invalidSkipJsErrorsCallbackWithOptionsProperty:     'E1077',
+    invalidCommandInJsonCompiler:                       'E1078',
 };

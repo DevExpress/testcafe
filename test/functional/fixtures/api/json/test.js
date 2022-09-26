@@ -1,4 +1,5 @@
 const { expect } = require('chai');
+const path       = require('path');
 
 describe('[API] DevTools Compiler', function () {
     it('Should make click on a button', function () {
@@ -58,6 +59,24 @@ describe('[API] DevTools Compiler', function () {
 
     it('Should switch to iframe', function () {
         return runTests('./testcafe-fixtures/iframe-test.json', null, { only: 'chrome' });
+    });
+
+    it('Should throw an error in command is invalid', function () {
+        return runTests('./testcafe-fixtures/invalid-test.json', null, {
+            only:       'chrome',
+            shouldFail: true,
+        })
+            .catch(err => {
+                const filepath = path.join(__dirname, 'testcafe-fixtures', 'invalid-test.json');
+
+                expect(err.message).contains(
+                    'TestCafe terminated the test run. The "' +
+                    filepath +
+                    '" file contains an unknown Chrome User Flow action "invalid". ' +
+                    'Remove the action to continue. Refer to the following article for the definitive list of supported Chrome User Flow actions: ' +
+                    'https://testcafe.io/documentation/403998/guides/experimental-capabilities/chrome-replay-support#supported-replay-actions'
+                );
+            });
     });
 
     it('Should click inside shadow DOM', function () {

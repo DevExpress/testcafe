@@ -138,4 +138,5 @@ export default {
     [RUNTIME_ERRORS.requestRuntimeError]:                            'The request was interrupted by an error:\n{message}',
     [RUNTIME_ERRORS.invalidSkipJsErrorsOptionsObjectProperty]:       `The "{optionName}" option does not exist. Use the following options to configure skipJsErrors: ${getConcatenatedValuesString(Object.keys(SKIP_JS_ERRORS_OPTIONS_OBJECT_OPTION_NAMES))}.`,
     [RUNTIME_ERRORS.invalidSkipJsErrorsCallbackWithOptionsProperty]: `The "{optionName}" option does not exist. Use the following options to configure skipJsErrors callback: ${getConcatenatedValuesString(Object.keys(SKIP_JS_ERRORS_CALLBACK_WITH_OPTIONS_OPTION_NAMES))}.`,
+    [RUNTIME_ERRORS.invalidCommandInJsonCompiler]:                   `TestCafe terminated the test run. The "{path}" file contains an unknown Chrome User Flow action "{action}". Remove the action to continue. Refer to the following article for the definitive list of supported Chrome User Flow actions: https://testcafe.io/documentation/403998/guides/experimental-capabilities/chrome-replay-support#supported-replay-actions`,
 };
