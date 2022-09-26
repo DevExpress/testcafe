@@ -287,8 +287,6 @@ export default class TestRun extends AsyncEventEmitter {
         this.requestTimeout = this._getRequestTimeout(test, opts);
 
         this.session = SessionController.getSession(this);
-        // Take proxylessRequestHookEventEmitter.
-        // Use the tracker for it.
 
         this.consoleMessages = new BrowserConsoleMessages();
 
