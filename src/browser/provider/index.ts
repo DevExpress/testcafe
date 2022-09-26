@@ -443,6 +443,7 @@ export default class BrowserProvider {
     public async openFileProtocol (browserId: string, url: string): Promise<void> {
         await this.plugin.openFileProtocol(browserId, url);
     }
+
     public async closeBrowserChildWindow (browserId: string): Promise<void> {
         await this.plugin.closeBrowserChildWindow(browserId);
     }
