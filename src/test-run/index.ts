@@ -339,6 +339,7 @@ export default class TestRun extends AsyncEventEmitter {
         this.runExecutionTimeout   = this._getRunExecutionTimeout(opts);
 
         this._addInjectables();
+        this._initRequestHooks();
     }
 
     private _getPageLoadTimeout (test: Test, opts: Dictionary<OptionValue>): number {
