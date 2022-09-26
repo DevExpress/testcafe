@@ -1,6 +1,14 @@
 # Changelog
 
-## v2.0 (2022-08-31)
+## v2.0.1 (2022-09-26)
+
+### Bug Fixes
+
+* TestCafe yields incomplete video recordings in concurrency mode ([#7218](https://github.com/DevExpress/testcafe/issues/7218)).
+* Video recordings in concurrency mode yield `EPIPE` errors that cause crashes ([#7216](https://github.com/DevExpress/testcafe/issues/7216)).
+* Running TestCafe 1.20.1 and up with a high concurrency factor may nonetheless result in a `MaxListenersExceededWarning` warning ([#7188](https://github.com/DevExpress/testcafe/issues/7188)).
+  
+## v2.0.0 (2022-08-31)
 
 ### TypeScript update
 
