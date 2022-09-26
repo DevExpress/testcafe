@@ -8,7 +8,9 @@ import { ScrollCommandTransformer } from './scroll';
 import { WaitForExpressionCommandTransformer } from './wait-for-expression';
 import { WaitForElementCommandTransformer } from './wait-for-element';
 import { CommandTransformerBase } from './base';
-import { HoverCommandTransformer } from "./hover";
+import { HoverCommandTransformer } from './hover';
+import { GeneralError } from '../../../../../errors/runtime';
+import { RUNTIME_ERRORS } from '../../../../../errors/types';
 
 import {
     ClickCommandTransformer,
@@ -16,13 +18,16 @@ import {
     RightClickCommandTransformer,
 } from './click';
 
+
+const SECONDARY_BUTTON_NAME = 'secondary';
+
 export class CommandTransformerFactory {
-    static create (step: DevToolsRecorderStep, callsite: number): CommandTransformerBase | null {
+    static create (step: DevToolsRecorderStep, filename: string, callsite: number): CommandTransformerBase | null {
         switch (step.type) {
             case DEVTOOLS_COMMAND_TYPE.navigate: return new NavigateCommandTransformer(step, callsite);
             case DEVTOOLS_COMMAND_TYPE.setViewport: return new SetViewportCommandTransformer(step, callsite);
             case DEVTOOLS_COMMAND_TYPE.click: {
-                if (step.button === 'secondary')
+                if (step.button === SECONDARY_BUTTON_NAME)
                     return new RightClickCommandTransformer(step, callsite);
                 return new ClickCommandTransformer(step, callsite);
             }
@@ -37,6 +42,6 @@ export class CommandTransformerFactory {
             case DEVTOOLS_COMMAND_TYPE.close: return null;
         }
 
-        throw new Error('Incorrect command: ' + step.type);
+        throw new GeneralError(RUNTIME_ERRORS.invalidCommandInJsonCompiler, filename, step.type);
     }
 }
