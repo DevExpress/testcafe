@@ -1456,6 +1456,7 @@ export default class Driver extends serviceUtils.EventEmitter {
 
     _onSetTestSpeedCommand (command) {
         this.speed = command.speed;
+
         this._onReady(new DriverStatus({ isCommandResult: true }));
     }
 
@@ -1871,7 +1872,7 @@ export default class Driver extends serviceUtils.EventEmitter {
 
         this.statusBar.on(this.statusBar.UNLOCK_PAGE_BTN_CLICK, disableRealEventsPreventing);
 
-        this.speed = this.options.initialSpeed;
+        this.speed = this.options.speed;
 
         this._initConsoleMessages();
         this._initParentWindowLink();
