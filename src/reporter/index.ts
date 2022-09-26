@@ -2,6 +2,7 @@ import {
     find,
     sortBy,
     union,
+    isFunction,
 } from 'lodash';
 
 import { writable as isWritableStream } from 'is-stream';
@@ -212,7 +213,9 @@ export default class Reporter {
 
         this.disposed = true;
 
-        if (!this.outStream || Reporter._isSpecialStream(this.outStream) || !isWritableStream(this.outStream))
+        if (!isFunction(this?.outStream?.once)
+            || Reporter._isSpecialStream(this.outStream)
+            || !isWritableStream(this.outStream))
             return Promise.resolve();
 
         const streamFinishedPromise = new Promise(resolve => {
