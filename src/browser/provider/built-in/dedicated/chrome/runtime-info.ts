@@ -9,14 +9,14 @@ export default class ChromeRuntimeInfo {
     public config: Config;
     public tempProfileDir: null | TempDirectory;
     public cdpPort: number;
-    public inContainer: boolean;
+    public isContainerized: boolean;
     public browserName?: string;
 
     protected constructor (config: Config) {
-        this.config         = config;
-        this.tempProfileDir = null;
-        this.cdpPort        = this.config.cdpPort;
-        this.inContainer    = isDocker() || isPodman();
+        this.config          = config;
+        this.tempProfileDir  = null;
+        this.cdpPort         = this.config.cdpPort;
+        this.isContainerized = isDocker() || isPodman();
     }
 
     protected async createTempProfile (proxyHostName: string, disableMultipleWindows: boolean): Promise<TempDirectory> {
