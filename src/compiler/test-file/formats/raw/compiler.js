@@ -6,13 +6,6 @@ import Fixture from '../../../../api/structure/fixture';
 import Test from '../../../../api/structure/test';
 import createCommandFromObject from '../../../../test-run/commands/from-object';
 import { RawCommandCallsiteRecord } from '../../../../utils/raw-command-callsite-record';
-import { isNil as isNullOrUndefined } from 'lodash';
-
-const STUDIO_PROPERTY_NAMES = {
-    studio:   'studio',
-    selector: 'selector',
-    note:     'note',
-};
 
 export default class RawTestFileCompiler extends TestFileCompilerBase {
 
@@ -28,11 +21,6 @@ export default class RawTestFileCompiler extends TestFileCompilerBase {
                 const callsite = actionId ? new RawCommandCallsiteRecord(actionId, commands) : initCallsite || actionId;
 
                 try {
-                    // NOTE: TestCafe Studio adds additional fields to the command object in RAW tests.
-                    // They do not affect the execution of the command. Therefore, we should remove them before validation.
-                    // We should change this mechanism in TestCafe Studio in the future to not add these properties to RAW tests.
-                    RawTestFileCompiler._removeStudioRelatedProperties(commandObj);
-
                     const command = createCommandFromObject(commandObj, t.testRun);
 
                     await t.testRun.executeCommand(command, callsite);
@@ -98,18 +86,6 @@ export default class RawTestFileCompiler extends TestFileCompilerBase {
             fixture.afterEach(RawTestFileCompiler._createTestFn(src.afterEachCommands));
 
         src.tests.forEach(testSrc => RawTestFileCompiler._addTest(testFile, testSrc, baseUrl));
-    }
-
-    static _removeStudioRelatedProperties (commandObj) {
-        delete commandObj[STUDIO_PROPERTY_NAMES.studio];
-        delete commandObj[STUDIO_PROPERTY_NAMES.note];
-
-        const selectorValue = commandObj[STUDIO_PROPERTY_NAMES.selector];
-
-        if (!isNullOrUndefined(selectorValue))
-            return;
-
-        delete commandObj['selector'];
     }
 
     _hasTests () {
