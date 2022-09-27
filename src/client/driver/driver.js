@@ -119,8 +119,7 @@ import './command-executors/action-executor/actions-initializer';
 import { shouldSkipJsError } from './process-skip-js-errors';
 
 
-const settings = hammerhead.settings;
-
+const settings       = hammerhead.settings;
 const transport      = hammerhead.transport;
 const Promise        = hammerhead.Promise;
 const messageSandbox = hammerhead.eventSandbox.message;
@@ -1489,14 +1488,13 @@ export default class Driver extends serviceUtils.EventEmitter {
                 if (isSessionChange) {
                     storages.clear();
                     storages.lock();
-                }
-                else
-                    this.contextStorage.setItem(TEST_DONE_SENT_FLAG, false);
 
-                if (isSessionChange)
                     browser.redirect(command, hammerhead.createNativeXHR, this.communicationUrls.openFileProtocolUrl);
-                else
+                }
+                else {
+                    this.contextStorage.setItem(TEST_DONE_SENT_FLAG, false);
                     this._onReady({ isCommandResult: false });
+                }
             })
             .catch(() => {
                 return delay(CHECK_STATUS_RETRY_DELAY);

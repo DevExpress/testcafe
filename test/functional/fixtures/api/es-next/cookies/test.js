@@ -1,5 +1,3 @@
-const config = require('../../../../config');
-
 describe('[API] Cookies', function () {
     it('Should get cookies by name', function () {
         return runTests('./testcafe-fixtures/cookies-test.js', 'Should get cookies by name');
@@ -17,11 +15,9 @@ describe('[API] Cookies', function () {
         return runTests('./testcafe-fixtures/cookies-test.js', 'Should set cookies by key-value');
     });
 
-    if (!config.proxyless) {
-        it('Should set on the client', function () {
-            return runTests('./testcafe-fixtures/cookies-test.js', 'Should set on the client');
-        });
-    }
+    it('Should set on the client', function () {
+        return runTests('./testcafe-fixtures/cookies-test.js', 'Should set on the client');
+    });
 
     it('Should delete cookies by names and url', function () {
         return runTests('./testcafe-fixtures/cookies-test.js', 'Should delete cookies by names and url');
@@ -31,9 +27,7 @@ describe('[API] Cookies', function () {
         return runTests('./testcafe-fixtures/cookies-test.js', 'Should delete cookies by objects');
     });
 
-    if (!config.proxyless) {
-        it('Should delete on the client', function () {
-            return runTests('./testcafe-fixtures/cookies-test.js', 'Should delete on the client');
-        });
-    }
+    it('Should delete on the client', function () {
+        return runTests('./testcafe-fixtures/cookies-test.js', 'Should delete on the client');
+    });
 });
