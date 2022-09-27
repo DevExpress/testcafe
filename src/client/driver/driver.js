@@ -386,7 +386,7 @@ export default class Driver extends serviceUtils.EventEmitter {
 
         Promise.resolve()
             .then(() => {
-                return browser.setActiveWindowId(this.communicationUrls.browserActiveWindowId, hammerhead.createNativeXHR, this.windowId);
+                return browser.setActiveWindowId(this.communicationUrls.activeWindowId, hammerhead.createNativeXHR, this.windowId);
             })
             .then(() => {
                 this._startInternal({
@@ -662,7 +662,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         if (!this.closing) {
             this.closing = true;
 
-            await browser.closeWindow(this.communicationUrls.browserCloseWindowUrl, hammerhead.createNativeXHR, this.windowId);
+            await browser.closeWindow(this.communicationUrls.closeWindow, hammerhead.createNativeXHR, this.windowId);
         }
 
         childWindowToClose.driverWindow.close();
@@ -757,7 +757,7 @@ export default class Driver extends serviceUtils.EventEmitter {
 
         Promise.resolve()
             .then(() => {
-                return browser.setActiveWindowId(this.communicationUrls.browserActiveWindowId, hammerhead.createNativeXHR, this.windowId);
+                return browser.setActiveWindowId(this.communicationUrls.activeWindowId, hammerhead.createNativeXHR, this.windowId);
             })
             .then(() => {
                 this._startInternal({
