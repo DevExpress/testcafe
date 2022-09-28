@@ -163,11 +163,13 @@ const STUDIO_PROPERTY_NAMES = {
     studio:   'studio',
     selector: 'selector',
     note:     'note',
+    callsite: 'callsite',
 };
 
 function removeStudioRelatedProperties (commandObj) {
     delete commandObj[STUDIO_PROPERTY_NAMES.studio];
     delete commandObj[STUDIO_PROPERTY_NAMES.note];
+    delete commandObj[STUDIO_PROPERTY_NAMES.callsite];
 
     const selectorValue = commandObj[STUDIO_PROPERTY_NAMES.selector];
 
