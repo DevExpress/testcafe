@@ -594,23 +594,23 @@ describe('Utils', () => {
 
         chromeArgs               = buildChromeArgs({ config, cdpPort, platformArgs, tempProfileDir, isContainerized: false });
         containerizedChromeFlags = chromeArgs.match(IN_DOCKER_FLAGS_RE);
-        
+
         expect(containerizedChromeFlags).eql(null);
 
         chromeArgs               = buildChromeArgs({ config, cdpPort, platformArgs, tempProfileDir, isContainerized: true });
         containerizedChromeFlags = chromeArgs.match(IN_DOCKER_FLAGS_RE);
-        
+
         expect(containerizedChromeFlags.length).eql(1);
 
         // NOTE: Flag should not be duplicated
         config.userArgs          = '--no-sandbox --disable-dev-shm-usage';
         chromeArgs               = buildChromeArgs({ config, cdpPort, platformArgs, tempProfileDir, isContainerized: true });
         containerizedChromeFlags = chromeArgs.match(SANDBOX_FLAG_RE);
-        
+
         expect(containerizedChromeFlags.length).eql(1);
-        
+
         containerizedChromeFlags = chromeArgs.match(DISABLE_DEV_SHM_USAGE_RE);
-        
+
         expect(containerizedChromeFlags.length).eql(1);
     });
 
