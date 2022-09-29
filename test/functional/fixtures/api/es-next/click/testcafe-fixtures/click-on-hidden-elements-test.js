@@ -1,6 +1,10 @@
 fixture `Click`
     .page `http://localhost:3000/fixtures/api/es-next/click/pages/visible.html`;
 
+test('Click on an element with width: 0 and height: 0', async t => {
+    await t.click('.width-height-0');
+});
+
 test('Click on an element with width: 0', async t => {
     await t.click('.width-0');
 });

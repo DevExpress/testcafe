@@ -139,8 +139,13 @@ describe('[API] t.click()', function () {
         });
     });
 
-    describe('Hidden reasons', function () {
-        it('Should show that element has width: 0', function () {
+        it('Should show that element has width: 0 and height: 0', function () {
+            return runTests('./testcafe-fixtures/click-on-hidden-elements-test.js', 'Click on an element with width: 0 and height: 0', { shouldFail: true })
+                .catch (function (errs) {
+                    expect(errs[0]).to.contains(`This element '<>' is not visible because it has an effective width and height of: '0 x 0' pixels.`);
+                });
+        });
+
             return runTests('./testcafe-fixtures/click-on-hidden-elements-test.js', 'Click on an element with width: 0', { shouldFail: true })
                 .catch (function (errs) {
                     expect(errs[0]).to.contains(`This element '<div class="width-0">Element...</div>' is not visible because it has an effective width and height of: '0 x 100' pixels.`);
