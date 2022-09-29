@@ -55,6 +55,8 @@ import {
     DeleteCookiesCommand,
     RequestCommand,
     SkipJsErrorsCommand,
+    AddRequestHooksCommand,
+    RemoveRequestHooksCommand,
 } from '../../test-run/commands/actions';
 
 import {
@@ -66,7 +68,6 @@ import {
 } from '../../test-run/commands/browser-manipulation';
 
 import { WaitCommand, DebugCommand } from '../../test-run/commands/observation';
-import assertRequestHookType from '../request-hooks/assert-type';
 import { createExecutionContext as createContext } from './execution-context';
 import { isSelector } from '../../client-functions/types';
 import TestRunProxy from '../../services/compiler/test-run-proxy';
@@ -612,24 +613,16 @@ export default class TestController {
         return this._enqueueCommand(SkipJsErrorsCommand, { options });
     }
 
-    _addRequestHooks$ (...hooks) {
-        return this._enqueueTask('addRequestHooks', () => {
-            hooks = flattenDeep(hooks);
+    [delegatedAPI(AddRequestHooksCommand.methodName)] (...hooks) {
+        hooks = flattenDeep(hooks);
 
-            assertRequestHookType(hooks);
-
-            hooks.forEach(hook => this.testRun.addRequestHook(hook));
-        });
+        return this._enqueueCommand(AddRequestHooksCommand, { hooks });
     }
 
-    _removeRequestHooks$ (...hooks) {
-        return this._enqueueTask('removeRequestHooks', () => {
-            hooks = flattenDeep(hooks);
+    [delegatedAPI(RemoveRequestHooksCommand.methodName)] (...hooks) {
+        hooks = flattenDeep(hooks);
 
-            assertRequestHookType(hooks);
-
-            hooks.forEach(hook => this.testRun.removeRequestHook(hook));
-        });
+        return this._enqueueCommand(RemoveRequestHooksCommand, { hooks });
     }
 
     static enableDebugForNonDebugCommands () {

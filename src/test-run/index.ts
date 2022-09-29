@@ -74,6 +74,8 @@ import {
     GetCookiesCommand,
     SetCookiesCommand,
     DeleteCookiesCommand,
+    AddRequestHooksCommand,
+    RemoveRequestHooksCommand,
 } from './commands/actions';
 
 import { RUNTIME_ERRORS, TEST_RUN_ERRORS } from '../errors/types';
@@ -339,7 +341,6 @@ export default class TestRun extends AsyncEventEmitter {
         this.runExecutionTimeout   = this._getRunExecutionTimeout(opts);
 
         this._addInjectables();
-        this._initRequestHooks();
     }
 
     private _getPageLoadTimeout (test: Test, opts: Dictionary<OptionValue>): number {
@@ -434,32 +435,32 @@ export default class TestRun extends AsyncEventEmitter {
         this.quarantine = quarantine;
     }
 
-    public addRequestHook (hook: RequestHook): void {
+    private async _addRequestHook (hook: RequestHook): Promise<void> {
         if (this.test.requestHooks.includes(hook))
             return;
 
         this.test.requestHooks.push(hook);
-        this._initRequestHook(hook);
+        await this._initRequestHook(hook);
     }
 
-    public removeRequestHook (hook: RequestHook): void {
+    private async _removeRequestHook (hook: RequestHook): Promise<void> {
         if (!this.test.requestHooks.includes(hook))
             return;
 
         pull(this.test.requestHooks, hook);
-        this._disposeRequestHook(hook);
+        await this._disposeRequestHook(hook);
     }
 
-    private _initRequestHook (hook: RequestHook): void {
+    private async _initRequestHook (hook: RequestHook): Promise<void> {
         hook._warningLog = this.warningLog;
 
-        hook._requestFilterRules.forEach(rule => {
-            this.session.addRequestEventListeners(rule, {
+        await Promise.all(hook._requestFilterRules.map(rule => {
+            return this.session.addRequestEventListeners(rule, {
                 onRequest:           hook.onRequest.bind(hook),
                 onConfigureResponse: hook._onConfigureResponse.bind(hook),
                 onResponse:          hook.onResponse.bind(hook),
             }, (err: RequestHookMethodError) => this._onRequestHookMethodError(err, hook._className));
-        });
+        }));
     }
 
     private _initRequestHookForCompilerService (hookId: string, hookClassName: string, rules: RequestFilterRule[]): void {
@@ -484,12 +485,12 @@ export default class TestRun extends AsyncEventEmitter {
         this.addError(err);
     }
 
-    private _disposeRequestHook (hook: RequestHook): void {
+    private async _disposeRequestHook (hook: RequestHook): Promise<void> {
         hook._warningLog = null;
 
-        hook._requestFilterRules.forEach(rule => {
-            this.session.removeRequestEventListeners(rule);
-        });
+        await Promise.all(hook._requestFilterRules.map(rule => {
+            return this.session.removeRequestEventListeners(rule);
+        }));
     }
 
     private _detachRequestEventListeners (rules: RequestFilterRule[]): void {
@@ -519,7 +520,7 @@ export default class TestRun extends AsyncEventEmitter {
         }
     }
 
-    private _initRequestHooks (): void {
+    private async _initRequestHooks (): Promise<void> {
         if (this.compilerService) {
             this._subscribeOnCompilerServiceEvents();
             this.test.requestHooks.forEach(hook => {
@@ -527,7 +528,7 @@ export default class TestRun extends AsyncEventEmitter {
             });
         }
         else
-            this.test.requestHooks.forEach(hook => this._initRequestHook(hook));
+            await Promise.all(this.test.requestHooks.map(hook => this._initRequestHook(hook)));
     }
 
     private _prepareSkipJsErrorsOption (): boolean | ExecuteClientFunctionCommand {
@@ -1249,6 +1250,12 @@ export default class TestRun extends AsyncEventEmitter {
         if (command.type === COMMAND_TYPE.deleteCookies)
             return this._enqueueDeleteCookies(command as DeleteCookiesCommand);
 
+        if (command.type === COMMAND_TYPE.addRequestHooks)
+            return Promise.all((command as AddRequestHooksCommand).hooks.map(hook => this._addRequestHook(hook)));
+
+        if (command.type === COMMAND_TYPE.removeRequestHooks)
+            return Promise.all((command as RemoveRequestHooksCommand).hooks.map(hook => this._removeRequestHook(hook)));
+
         return this._enqueueCommand(command, callsite as CallsiteRecord);
     }
 
@@ -1478,6 +1485,8 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     public async initialize (): Promise<void> {
+        await this._initRequestHooks();
+
         if (!this.compilerService)
             return;
 
