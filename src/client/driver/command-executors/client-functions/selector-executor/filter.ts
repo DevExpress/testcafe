@@ -1,6 +1,6 @@
 import { InvalidSelectorResultError } from '../../../../../shared/errors/index';
 import {
-    visible,
+    isElementVisible,
     isNodeCollection,
     isArrayOfNodes,
     castToArray,
@@ -37,13 +37,13 @@ class SelectorFilter {
 
     public filter (nodes: Node[], options: FilterOptions, apiInfo: APIInfo): number | Node | Node[] | undefined {
         if (options.filterVisible) {
-            nodes = nodes.filter(visible);
+            nodes = nodes.filter(isElementVisible);
 
             this._assertFilterError(nodes, apiInfo, SELECTOR_FILTER_ERROR.filterVisible);
         }
 
         if (options.filterHidden) {
-            nodes = nodes.filter(n => !visible(n));
+            nodes = nodes.filter(n => !isElementVisible(n));
 
             this._assertFilterError(nodes, apiInfo, SELECTOR_FILTER_ERROR.filterHidden);
         }

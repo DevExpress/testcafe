@@ -234,6 +234,12 @@ function hiddenByRectangle (el: HTMLElement): boolean {
 }
 
 export function isElementVisible (el: Node): boolean {
+    if (!domUtils.isDomElement(el) && !domUtils.isTextNode(el))
+        return false;
+
+    if (domUtils.isIframeElement(el))
+        return isIframeVisible(el);
+
     if (domUtils.isTextNode(el))
         return !styleUtils.isNotVisibleNode(el);
 

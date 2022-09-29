@@ -10,7 +10,7 @@ import {
 } from '../types';
 import selectorFilter from './filter';
 import Replicator from 'replicator';
-import { visible } from './utils';
+import * as selectorUtils from './utils';
 import CHECK_ELEMENT_DELAY from './check-element-delay';
 import {
     // @ts-ignore
@@ -78,7 +78,7 @@ export default class SelectorExecutor extends ClientFunctionExecutor<ExecuteSele
             .then((el: unknown) => {
                 const element          = el as Node | undefined;
                 const isElementExists  = !!element;
-                const isElementVisible = !this.command.visibilityCheck || element && visible(element);
+                const isElementVisible = !this.command.visibilityCheck || element && selectorUtils.isElementVisible(element);
                 const isTimeout        = nativeMethods.dateNow() - startTime >= this.timeout;
 
                 if (isElementExists && (isElementVisible || utils.dom.isShadowRoot(element as Node)))
