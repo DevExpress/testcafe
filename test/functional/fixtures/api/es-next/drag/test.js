@@ -125,7 +125,7 @@ describe('[API] Drag actions', function () {
 
     describe('html5 drag and drop', function () {
         it('Should raise drag and drop events', function () {
-            return runTests('./testcafe-fixtures/drag-and-drop-test.js', 'drag and drop', { skip: ['iphone', 'ipad', 'android'] });
+            return runTests('./testcafe-fixtures/drag-and-drop-test.js', 'drag and drop', { skip: ['iphone', 'ipad', 'android', 'firefox-osx'] });
         });
 
         it('Should check is element draggable', function () {
