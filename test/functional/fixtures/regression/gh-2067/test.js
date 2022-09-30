@@ -1,6 +1,6 @@
 describe('[Regression](GH-2067) - Radio button navigation by keyboard', function () {
     it('named', function () {
-        return runTests('testcafe-fixtures/index.js', 'named');
+        return runTests('testcafe-fixtures/index.js', 'named', { skip: ['firefox-osx'] });
     });
 
     it('nonamed - chrome', function () {
@@ -12,6 +12,6 @@ describe('[Regression](GH-2067) - Radio button navigation by keyboard', function
     });
 
     it('Should select the checked radio button by pressing the tab key', function () {
-        return runTests('testcafe-fixtures/index.js', 'Should select the checked radio button by pressing the tab key');
+        return runTests('testcafe-fixtures/index.js', 'Should select the checked radio button by pressing the tab key', { skip: ['firefox-osx'] });
     });
 });
