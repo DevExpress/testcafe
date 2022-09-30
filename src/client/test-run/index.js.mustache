@@ -24,6 +24,7 @@
     var browserStatusUrl           = origin + {{{browserStatusRelativeUrl}}};
     var browserStatusDoneUrl       = origin + {{{browserStatusDoneRelativeUrl}}};
     var browserIdleUrl             = origin + {{{browserIdleRelativeUrl}}};
+    var browserOpenFileProtocolUrl = origin + {{{browserOpenFileProtocolRelativeUrl}}};
     var browserActiveWindowIdUrl   = origin + {{{browserActiveWindowIdUrl}}};
     var browserCloseWindowUrl      = origin + {{{browserCloseWindowUrl}}};
     var skipJsErrors               = {{{skipJsErrors}}};
@@ -35,8 +36,20 @@
 
     var ClientDriver = window['%testCafeDriver%'];
     var driver       = new ClientDriver(testRunId,
-        { heartbeat: browserHeartbeatUrl, status: browserStatusUrl, statusDone: browserStatusDoneUrl, idle: browserIdleUrl, activeWindowId: browserActiveWindowIdUrl, closeWindow: browserCloseWindowUrl },
-        { userAgent: userAgent, fixtureName: fixtureName, testName: testName },
+        {
+            heartbeat:           browserHeartbeatUrl,
+            status:              browserStatusUrl,
+            statusDone:          browserStatusDoneUrl,
+            idle:                browserIdleUrl,
+            activeWindowId:      browserActiveWindowIdUrl,
+            closeWindow:         browserCloseWindowUrl,
+            openFileProtocolUrl: browserOpenFileProtocolUrl,
+        },
+        {
+            userAgent:   userAgent,
+            fixtureName: fixtureName,
+            testName:    testName,
+        },
         {
             selectorTimeout:            selectorTimeout,
             pageLoadTimeout:            pageLoadTimeout,
@@ -46,7 +59,7 @@
             retryTestPages:             retryTestPages,
             speed:                      speed,
             canUseDefaultWindowActions: canUseDefaultWindowActions,
-            proxyless:                  proxyless
+            proxyless:                  proxyless,
         }
     );
 

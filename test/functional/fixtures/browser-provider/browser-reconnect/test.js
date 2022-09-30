@@ -63,7 +63,7 @@ function run (pathToTest, filter, initializeConnection = initializeConnectionLow
         });
 }
 
-if (config.useLocalBrowsers && !config.proxyless) {
+if (config.useLocalBrowsers) {
     // TODO: make tests stable for IE and Windows
     (config.hasBrowser('ie') ? describe.skip : describe)('Browser reconnect', function () {
         it('Should restart browser when it does not respond', function () {

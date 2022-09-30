@@ -25,11 +25,9 @@ if (config.useLocalBrowsers && config.hasBrowser('chrome')) {
                 expect(failedCount).eql(0);
             }
 
-            if (!config.proxyless) {
-                it('headless', () => {
-                    return checkTouchEmulation('chrome:headless:emulation:device=iphone 6 --no-sandbox');
-                });
-            }
+            it('headless', () => {
+                return checkTouchEmulation('chrome:headless:emulation:device=iphone 6 --no-sandbox');
+            });
 
             if (!isLinuxWithoutGUI) {
                 it('non-headless', () => {

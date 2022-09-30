@@ -17,6 +17,7 @@ import TestRunHookController from './test-run-hook-controller';
 import TestRun from '../test-run';
 // @ts-ignore
 import { TestRun as LegacyTestRun } from 'testcafe-legacy-api';
+import { NextTestRunInfo } from '../shared/types';
 
 interface BrowserJobResultInfo {
     status: BrowserJobResult;
@@ -214,7 +215,7 @@ export default class BrowserJob extends AsyncEventEmitter {
         return this._completionQueue.length ? this._completionQueue[0].testRun : null;
     }
 
-    public async popNextTestRunUrl (connection: BrowserConnection): Promise<string | null> {
+    public async popNextTestRunInfo (connection: BrowserConnection): Promise<NextTestRunInfo | null> {
         while (this._testRunControllerQueue.length) {
             const testRunController = this._testRunControllerQueue[0];
 
@@ -238,8 +239,12 @@ export default class BrowserJob extends AsyncEventEmitter {
 
             const testRunUrl = await testRunController.start(connection, this._startTime);
 
-            if (testRunUrl)
-                return testRunUrl;
+            if (testRunUrl) {
+                return {
+                    testRunId: testRunController.testRun.id,
+                    url:       testRunUrl,
+                };
+            }
         }
 
         return null;

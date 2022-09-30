@@ -1,6 +1,7 @@
 const { expect }              = require('chai');
 const { promisify }           = require('util');
 const request                 = require('request');
+const { noop }                = require('lodash');
 const createTestCafe          = require('../../lib/');
 const COMMAND                 = require('../../lib/browser/connection/command');
 const browserProviderPool     = require('../../lib/browser/provider/pool');
@@ -55,6 +56,7 @@ describe('Browser connection', function () {
 
     afterEach(async function () {
         connection._forceIdle();
+
         await connection.close();
     });
 
@@ -119,28 +121,24 @@ describe('Browser connection', function () {
     it('Should provide status', function () {
         function createBrowserJobMock (urls) {
             return {
-                popNextTestRunUrl: function () {
+                popNextTestRunInfo: function () {
                     const url = urls.shift();
 
-                    return url;
+                    return {
+                        url,
+                        testRunId: 'testRunId' + url,
+                    };
                 },
 
                 get hasQueuedTestRuns () {
                     return urls.length;
                 },
 
-                once: function () {
-                    // Do nothing =)
-                },
-
-                on: function () {
-                    // Do nothing
-                },
+                once: noop,
+                on:   noop,
 
                 warningLog: {
-                    copyFrom: function () {
-                        // Do nothing
-                    },
+                    copyFrom: noop,
                 },
             };
         }
@@ -153,25 +151,40 @@ describe('Browser connection', function () {
         }
 
         return promisedRequest(connection.url)
-
             .then(queryStatus)
             .then(function (res) {
-                expect(JSON.parse(res.body)).eql({ cmd: COMMAND.run, url: '1' });
+                expect(JSON.parse(res.body)).eql({
+                    cmd:       COMMAND.run,
+                    url:       '1',
+                    testRunId: 'testRunId1',
+                });
             })
 
             .then(queryStatus)
             .then(function (res) {
-                expect(JSON.parse(res.body)).eql({ cmd: COMMAND.run, url: '2' });
+                expect(JSON.parse(res.body)).eql({
+                    cmd:       COMMAND.run,
+                    url:       '2',
+                    testRunId: 'testRunId2',
+                });
             })
 
             .then(queryStatus)
             .then(function (res) {
-                expect(JSON.parse(res.body)).eql({ cmd: COMMAND.run, url: '3' });
+                expect(JSON.parse(res.body)).eql({
+                    cmd:       COMMAND.run,
+                    url:       '3',
+                    testRunId: 'testRunId3',
+                });
             })
 
             .then(queryStatus)
             .then(function (res) {
-                expect(JSON.parse(res.body)).eql({ cmd: COMMAND.idle, url: connection.idleUrl });
+                expect(JSON.parse(res.body)).eql({
+                    cmd:       COMMAND.idle,
+                    url:       connection.idleUrl,
+                    testRunId: null,
+                });
             });
     });
 

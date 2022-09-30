@@ -5,6 +5,7 @@ const config                    = require('../../../../config.js');
 const assertionHelper           = require('../../../../assertion-helper.js');
 const { createReporter }        = require('../../../../utils/reporter');
 const { createWarningReporter } = require('../../../../utils/warning-reporter');
+const skipInProxyless           = require('../../../../utils/skip-in-proxyless');
 
 const SCREENSHOTS_PATH                   = path.resolve(assertionHelper.SCREENSHOTS_PATH);
 const THUMBNAILS_DIR_NAME                = assertionHelper.THUMBNAILS_DIR_NAME;
@@ -551,7 +552,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                 });
         });
 
-        it('Should capture screenshot of the element inside a same-domain iframe', function () {
+        skipInProxyless('Should capture screenshot of the element inside a same-domain iframe', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Same-domain iframe',
                 { setScreenshotPath: true })
                 .then(function () {
@@ -562,7 +563,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                 });
         });
 
-        it('Should capture screenshot of the element inside a nested iframe', function () {
+        skipInProxyless('Should capture screenshot of the element inside a nested iframe', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Nested iframes',
                 { setScreenshotPath: true })
                 .then(function () {
@@ -573,7 +574,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                 });
         });
 
-        it('Should capture screenshot of the element inside a cross-domain iframe', function () {
+        skipInProxyless('Should capture screenshot of the element inside a cross-domain iframe', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Cross-domain iframe',
                 { setScreenshotPath: true })
                 .then(function () {
@@ -584,7 +585,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                 });
         });
 
-        it("Shouldn't scroll parent frames multiple times", function () {
+        skipInProxyless("Shouldn't scroll parent frames multiple times", function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Rescroll parents',
                 { setScreenshotPath: true })
                 .then(function () {
