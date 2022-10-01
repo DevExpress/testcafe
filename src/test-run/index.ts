@@ -463,16 +463,16 @@ export default class TestRun extends AsyncEventEmitter {
         }));
     }
 
-    private _initRequestHookForCompilerService (hookId: string, hookClassName: string, rules: RequestFilterRule[]): void {
+    private async _initRequestHookForCompilerService (hookId: string, hookClassName: string, rules: RequestFilterRule[]): Promise<void> {
         const testId = this.test.id;
 
-        rules.forEach(rule => {
-            this.session.addRequestEventListeners(rule, {
+        await Promise.all(rules.map(rule => {
+            return this.session.addRequestEventListeners(rule, {
                 onRequest:           (event: RequestEvent) => this.compilerService?.onRequestHookEvent({ testId, hookId, name: RequestHookMethodNames.onRequest, eventData: event }),
                 onConfigureResponse: (event: ConfigureResponseEvent) => this.compilerService?.onRequestHookEvent({ testId, hookId, name: RequestHookMethodNames._onConfigureResponse, eventData: event }),
                 onResponse:          (event: ResponseEvent) => this.compilerService?.onRequestHookEvent({ testId, hookId, name: RequestHookMethodNames.onResponse, eventData: event }),
             }, err => this._onRequestHookMethodError(err, hookClassName));
-        });
+        }));
     }
 
     private _onRequestHookMethodError (event: RequestHookMethodError, hookClassName: string): void {
@@ -493,10 +493,10 @@ export default class TestRun extends AsyncEventEmitter {
         }));
     }
 
-    private _detachRequestEventListeners (rules: RequestFilterRule[]): void {
-        rules.forEach(rule => {
-            this.session.removeRequestEventListeners(rule);
-        });
+    private async _detachRequestEventListeners (rules: RequestFilterRule[]): Promise<void> {
+        await Promise.all(rules.map(rule => {
+            return this.session.removeRequestEventListeners(rule);
+        }));
     }
 
     private _subscribeOnCompilerServiceEvents (): void {
@@ -511,11 +511,11 @@ export default class TestRun extends AsyncEventEmitter {
 
         if (this.compilerService) {
             this.compilerService.on('addRequestEventListeners', async ({ hookId, hookClassName, rules }) => {
-                this._initRequestHookForCompilerService(hookId, hookClassName, rules);
+                await this._initRequestHookForCompilerService(hookId, hookClassName, rules);
             });
 
             this.compilerService.on('removeRequestEventListeners', async ({ rules }) => {
-                this._detachRequestEventListeners(rules);
+                await this._detachRequestEventListeners(rules);
             });
         }
     }
@@ -523,9 +523,9 @@ export default class TestRun extends AsyncEventEmitter {
     private async _initRequestHooks (): Promise<void> {
         if (this.compilerService) {
             this._subscribeOnCompilerServiceEvents();
-            this.test.requestHooks.forEach(hook => {
-                this._initRequestHookForCompilerService(hook.id, hook._className, hook._requestFilterRules);
-            });
+            await Promise.all(this.test.requestHooks.map(hook => {
+                return this._initRequestHookForCompilerService(hook.id, hook._className, hook._requestFilterRules);
+            }));
         }
         else
             await Promise.all(this.test.requestHooks.map(hook => this._initRequestHook(hook)));

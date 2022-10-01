@@ -47,6 +47,8 @@ import {
     DeleteCookiesCommand,
     RequestCommand,
     SkipJsErrorsCommand,
+    AddRequestHooksCommand,
+    RemoveRequestHooksCommand,
 } from '../../../../../test-run/commands/actions';
 
 import { AssertionCommand } from '../../../../../test-run/commands/assertion';
@@ -111,6 +113,8 @@ const COMMAND_CONSTRUCTORS = new Map<string, CommandConstructor>([
     [CommandType.deleteCookies, DeleteCookiesCommand],
     [CommandType.request, RequestCommand],
     [CommandType.skipJsErrors, SkipJsErrorsCommand],
+    [CommandType.addRequestHooks, AddRequestHooksCommand],
+    [CommandType.removeRequestHooks, RemoveRequestHooksCommand],
 ]);
 
 export default COMMAND_CONSTRUCTORS;
