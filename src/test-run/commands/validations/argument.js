@@ -35,6 +35,7 @@ import { URL } from 'url';
 import { assertPageUrl } from '../../../api/test-page-url';
 import checkFilePath from '../../../utils/check-file-path';
 import { castArray } from 'lodash';
+import assertRequestHookType from '../../../api/request-hooks/assert-type';
 
 // Validators
 export const integerArgument         = createIntegerValidator(ActionIntegerArgumentError);
@@ -54,7 +55,6 @@ export function actionOptions (name, val) {
     if (type !== 'object' && val !== null && val !== void 0)
         throw new ActionOptionsTypeError(type);
 }
-
 
 export function stringArgument (argument, val, createError) {
     if (!createError)
@@ -192,4 +192,8 @@ export function skipJsErrorOptions (name, val) {
 
     if (valType !== 'undefined' && valType !== 'object' && valType !== 'boolean' && valType !== 'function')
         throw new ActionSkipJsErrorsArgumentTypeError(name, valType);
+}
+
+export function requestHooksArgument (name, val) {
+    assertRequestHookType(val);
 }

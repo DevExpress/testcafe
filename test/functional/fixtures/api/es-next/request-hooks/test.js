@@ -1,4 +1,5 @@
-const { expect } = require('chai');
+const { expect }                  = require('chai');
+const { skipInExperimentalDebug } = require('../../../../utils/skip-in');
 
 describe('Request Hooks', () => {
     describe('RequestMock', () => {
@@ -51,11 +52,11 @@ describe('Request Hooks', () => {
     });
 
     describe('API', () => {
-        it('Add/remove request hooks', () => {
+        skipInExperimentalDebug('Add/remove request hooks', () => {
             return runTests('./testcafe-fixtures/api/add-remove-request-hook.js', 'Test', { only: 'chrome' });
         });
 
-        it('Conditional adding', () => {
+        skipInExperimentalDebug('Conditional adding', () => {
             return runTests('./testcafe-fixtures/api/conditional-adding.js', 'Conditional adding');
         });
 
@@ -89,6 +90,18 @@ describe('Request Hooks', () => {
 
         it('Request hook events should be represented as appropriate classes', () => {
             return runTests('./testcafe-fixtures/api/request-hook-events.js', null, { only: 'chrome' });
+        });
+
+        skipInExperimentalDebug('Correct execution order for addRequestHooks/removeRequestHooks sequence (GH-3861)', () => {
+            return runTests('./testcafe-fixtures/api/gh-3861.js', null, { only: 'chrome' });
+        });
+
+        it('TestController API parameter validation', () => {
+            return runTests('./testcafe-fixtures/api/parameter-validation.js', null, { only: 'chrome', shouldFail: true })
+                .catch(() => {
+                    expect(testReport.errs.length).eql(1);
+                    expect(testReport.errs[0]).contains('The hook (string) is not of expected type (RequestHook subclass).');
+                });
         });
     });
 });

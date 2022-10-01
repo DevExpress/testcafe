@@ -5,7 +5,7 @@ const config                    = require('../../../../config.js');
 const assertionHelper           = require('../../../../assertion-helper.js');
 const { createReporter }        = require('../../../../utils/reporter');
 const { createWarningReporter } = require('../../../../utils/warning-reporter');
-const skipInProxyless           = require('../../../../utils/skip-in-proxyless');
+const { skipInProxyless }       = require('../../../../utils/skip-in');
 
 const SCREENSHOTS_PATH                   = path.resolve(assertionHelper.SCREENSHOTS_PATH);
 const THUMBNAILS_DIR_NAME                = assertionHelper.THUMBNAILS_DIR_NAME;

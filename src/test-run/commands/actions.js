@@ -44,6 +44,7 @@ import {
     urlsArgument,
     urlArgument,
     skipJsErrorOptions,
+    requestHooksArgument,
 } from './validations/argument';
 
 import { SetNativeDialogHandlerCodeWrongTypeError } from '../../errors/test-run';
@@ -784,6 +785,34 @@ export class SkipJsErrorsCommand extends ActionCommandBase {
     _getAssignableProperties () {
         return [
             { name: 'options', type: skipJsErrorOptions, init: initSkipJsErrorsOptions, required: false },
+        ];
+    }
+}
+
+export class AddRequestHooksCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.addRequestHooks);
+
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.addRequestHooks, validateProperties);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'hooks', type: requestHooksArgument, required: true },
+        ];
+    }
+}
+
+export class RemoveRequestHooksCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.removeRequestHooks);
+
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.removeRequestHooks, validateProperties);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'hooks', type: requestHooksArgument, required: true },
         ];
     }
 }
