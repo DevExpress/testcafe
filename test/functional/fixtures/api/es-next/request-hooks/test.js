@@ -1,4 +1,5 @@
-const { expect } = require('chai');
+const { expect }                  = require('chai');
+const { skipInExperimentalDebug } = require('../../../../utils/skip-in');
 
 describe('Request Hooks', () => {
     describe('RequestMock', () => {
@@ -51,11 +52,11 @@ describe('Request Hooks', () => {
     });
 
     describe('API', () => {
-        it('Add/remove request hooks', () => {
+        skipInExperimentalDebug('Add/remove request hooks', () => {
             return runTests('./testcafe-fixtures/api/add-remove-request-hook.js', 'Test', { only: 'chrome' });
         });
 
-        it('Conditional adding', () => {
+        skipInExperimentalDebug('Conditional adding', () => {
             return runTests('./testcafe-fixtures/api/conditional-adding.js', 'Conditional adding');
         });
 
@@ -91,7 +92,7 @@ describe('Request Hooks', () => {
             return runTests('./testcafe-fixtures/api/request-hook-events.js', null, { only: 'chrome' });
         });
 
-        it('Correct execution order for addRequestHooks/removeRequestHooks sequence (GH-3861)', () => {
+        skipInExperimentalDebug('Correct execution order for addRequestHooks/removeRequestHooks sequence (GH-3861)', () => {
             return runTests('./testcafe-fixtures/api/gh-3861.js', null, { only: 'chrome' });
         });
 
