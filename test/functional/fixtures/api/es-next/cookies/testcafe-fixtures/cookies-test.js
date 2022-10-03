@@ -15,7 +15,10 @@ fixture`[API] Get Cookies`
     });
 
 const getClientCookie = ClientFunction(() => {
-    return document.cookie || window['%hammerhead%'].nativeMethods.documentCookieGetter.call(document);
+    if (window['%hammerhead%'].sandbox.proxyless)
+        return window['%hammerhead%'].nativeMethods.documentCookieGetter.call(document);
+
+    return document.cookie;
 });
 
 test('Should get cookies by name', async t => {
@@ -152,7 +155,7 @@ test('Should set cookies by key-value', async t => {
 });
 
 test('Should set on the client', async (t) => {
-    await t.expect(await t.eval(() => document.cookie)).eql('');
+    await t.expect(getClientCookie()).eql('');
     await t.setCookies({ name: 'apiCookie13', value: 'value13' });
 
     await t.expect(getClientCookie()).eql('apiCookie13=value13');
