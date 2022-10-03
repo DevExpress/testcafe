@@ -240,11 +240,21 @@ export function isElementVisible (el: Node): boolean {
     if (domUtils.isIframeElement(el))
         return isIframeVisible(el);
 
+    if (domUtils.isSVGElement(el)) {
+        const hiddenParent = domUtils.findParent(el, true, (parent: Node) => {
+            return hiddenUsingStyles(parent as unknown as HTMLElement);
+        });
+
+        if (!hiddenParent)
+            return !hiddenByRectangle(el as unknown as HTMLElement);
+
+        return false;
+    }
+
     if (domUtils.isTextNode(el))
         return !styleUtils.isNotVisibleNode(el);
 
     if (!domUtils.isContentEditableElement(el) &&
-        !domUtils.isSVGElement(el) &&
         hiddenByRectangle(el as HTMLElement))
         return false;
 
@@ -263,17 +273,6 @@ export function isElementVisible (el: Node): boolean {
         const optionVisibleIndex  = Math.max(childRealIndex - topVisibleIndex, 0);
 
         return optionVisibleIndex >= topVisibleIndex && optionVisibleIndex <= bottomVisibleIndex;
-    }
-
-    if (domUtils.isSVGElement(el)) {
-        const hiddenParent = domUtils.findParent(el, true, (parent: Node) => {
-            return hiddenUsingStyles(parent as unknown as HTMLElement);
-        });
-
-        if (!hiddenParent)
-            return !hiddenByRectangle(el as unknown as HTMLElement);
-
-        return false;
     }
 
     return styleUtils.hasDimensions(el as HTMLElement) && !hiddenUsingStyles(el as unknown as HTMLElement);
