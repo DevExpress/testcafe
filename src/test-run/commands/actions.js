@@ -776,7 +776,7 @@ export class AddRequestHooksCommand extends ActionCommandBase {
         super(obj, testRun, TYPE.addRequestHooks, validateProperties);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'hooks', type: requestHooksArgument, required: true },
         ];
@@ -790,7 +790,7 @@ export class RemoveRequestHooksCommand extends ActionCommandBase {
         super(obj, testRun, TYPE.removeRequestHooks, validateProperties);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'hooks', type: requestHooksArgument, required: true },
         ];
