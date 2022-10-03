@@ -170,9 +170,6 @@ fixture`[API] Delete Cookies`
                 { name: 'apiCookie4', value: 'value4', domain: 'domain1.com', path: '/path-2' },
                 { name: 'apiCookie5', value: 'value5', domain: 'domain2.com', path: '/path-1' },
             ]);
-    })
-    .afterEach(async t => {
-        await t.deleteCookies();
     });
 
 test('Should delete cookies by names and url', async t => {
