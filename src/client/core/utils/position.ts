@@ -264,17 +264,6 @@ export function isElementVisible (el: Node): boolean {
         return mapContainer ? isElementVisible(mapContainer) : false;
     }
 
-    if (styleUtils.isSelectVisibleChild(el)) {
-        const select              = domUtils.getSelectParent(el) as HTMLSelectElement;
-        const childRealIndex      = domUtils.getChildVisibleIndex(select, el);
-        const realSelectSizeValue = styleUtils.getSelectElementSize(select);
-        const topVisibleIndex     = Math.max(styleUtils.getScrollTop(select) / styleUtils.getOptionHeight(select), 0);
-        const bottomVisibleIndex  = topVisibleIndex + realSelectSizeValue - 1;
-        const optionVisibleIndex  = Math.max(childRealIndex - topVisibleIndex, 0);
-
-        return optionVisibleIndex >= topVisibleIndex && optionVisibleIndex <= bottomVisibleIndex;
-    }
-
     return styleUtils.hasDimensions(el as HTMLElement) && !hiddenUsingStyles(el as unknown as HTMLElement);
 }
 
