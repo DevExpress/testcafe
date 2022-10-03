@@ -1,72 +1,43 @@
 import { ProtocolApi } from 'chrome-remote-interface';
 import Protocol from 'devtools-protocol';
 import RequestPausedEvent = Protocol.Fetch.RequestPausedEvent;
-import RequestPattern = Protocol.Fetch.RequestPattern;
-import GetResponseBodyResponse = Protocol.Fetch.GetResponseBodyResponse;
 import FrameNavigatedEvent = Protocol.Page.FrameNavigatedEvent;
+import FulfillRequestRequest = Protocol.Fetch.FulfillRequestRequest;
 import HeaderEntry = Protocol.Fetch.HeaderEntry;
 import {
     injectResources,
     PageInjectableResources,
     INJECTABLE_SCRIPTS as HAMMERHEAD_INJECTABLE_SCRIPTS,
-    SPECIAL_BLANK_PAGE,
     getAssetPath,
 } from 'testcafe-hammerhead';
 import BrowserConnection from '../browser/connection';
 import { SCRIPTS, TESTCAFE_UI_STYLES } from '../assets/injectables';
 import EMPTY_PAGE_MARKUP from './empty-page-markup';
 import { remove } from 'lodash';
-import debug from 'debug';
 import { StatusCodes } from 'http-status-codes';
 import { PageLoadError } from '../errors/test-run';
-import ERROR_ROUTE from './error-route';
-import { redirect, navigateTo } from './cdp-utils';
+import { redirect, navigateTo } from './utils/cdp';
+import { SpecialServiceRoutes } from './types';
+import { resourceInjectorLogger } from '../utils/debug-loggers';
+import {
+    getResponseAsString,
+    stringifyHeaderValues,
+    toBase64String,
+} from './utils/string';
 
-
-const ALL_DOCUMENT_RESPONSES = {
-    urlPattern:   '*',
-    resourceType: 'Document',
-    requestStage: 'Response',
-} as RequestPattern;
 
 const CONTENT_SECURITY_POLICY_HEADER_NAMES = [
     'content-security-policy',
     'content-security-policy-report-only',
 ];
 
-const debugLogger = debug('testcafe:proxyless:resource-injector');
-
 export default class ResourceInjector {
     private readonly _browserId: string;
-    private readonly _idlePageUrl: string;
-    private readonly _errorPageUrl: string;
+    private readonly _specialServiceRoutes: SpecialServiceRoutes;
 
-    public constructor (browserId: string) {
-        this._browserId    = browserId;
-        this._idlePageUrl  = this._getIdlePageUrl(browserId);
-        this._errorPageUrl = this._getErrorPageUrl(browserId);
-    }
-
-    private _getErrorPageUrl (browserId: string): string {
-        const browserConnection = BrowserConnection.getById(browserId) as BrowserConnection;
-        const proxy             = browserConnection.browserConnectionGateway.proxy;
-
-        return proxy.resolveRelativeServiceUrl(ERROR_ROUTE);
-    }
-
-    private _getIdlePageUrl (browserId: string): string {
-        return BrowserConnection.getById(browserId)
-            ?.idleUrl || '';
-    }
-
-    private _getResponseAsString (response: GetResponseBodyResponse): string {
-        return response.base64Encoded
-            ? Buffer.from(response.body, 'base64').toString()
-            : response.body;
-    }
-
-    private _shouldProxyPage (url: string): boolean {
-        return url !== this._idlePageUrl;
+    public constructor (browserId: string, specialServiceRoutes: SpecialServiceRoutes) {
+        this._browserId            = browserId;
+        this._specialServiceRoutes = specialServiceRoutes;
     }
 
     private async _prepareInjectableResources (): Promise<PageInjectableResources | null> {
@@ -108,9 +79,9 @@ export default class ResourceInjector {
         if (!headers)
             return [];
 
-        remove(headers, header => CONTENT_SECURITY_POLICY_HEADER_NAMES.includes(header.name));
+        remove(headers, header => CONTENT_SECURITY_POLICY_HEADER_NAMES.includes(header.name.toLowerCase()));
 
-        return headers;
+        return stringifyHeaderValues(headers);
     }
 
     private async _handlePageError (client: ProtocolApi, err: Error, url: string): Promise<void> {
@@ -122,105 +93,86 @@ export default class ResourceInjector {
 
         currentTestRun.pendingPageError = new PageLoadError(err, url);
 
-        await navigateTo(client, this._errorPageUrl);
+        await navigateTo(client, this._specialServiceRoutes.errorPage1);
     }
 
-    private async _redirectToIdlePage (client: ProtocolApi, requestId: string): Promise<void> {
-        await redirect(client, requestId, this._idlePageUrl);
-    }
+    public async onResponse (event: RequestPausedEvent, client: ProtocolApi): Promise<void> {
+        const {
+            requestId,
+            responseHeaders,
+            responseStatusCode,
+            request,
+            responseErrorReason,
+            resourceType,
+        } = event;
 
-    private async _handleHTTPPages (client: ProtocolApi): Promise<void> {
-        await client.Fetch.enable({ patterns: [ALL_DOCUMENT_RESPONSES] });
+        if (resourceType !== 'Document')
+            await client.Fetch.continueResponse({ requestId });
+        else {
+            try {
+                if (responseErrorReason === 'NameNotResolved') {
+                    const err = new Error(`Failed to find a DNS-record for the resource at "${event.request.url}"`);
 
-        client.Fetch.on('requestPaused', async (requestPausedEvent: RequestPausedEvent) => {
-            const {
-                requestId,
-                responseHeaders,
-                responseStatusCode,
-                request,
-                responseErrorReason,
-            } = requestPausedEvent;
+                    await this._handlePageError(client, err, request.url);
 
-            debugLogger('requestPaused %s', request.url);
-
-            if (!this._shouldProxyPage(request.url))
-                await client.Fetch.continueResponse({ requestId });
-            else {
-                try {
-                    if (responseErrorReason === 'NameNotResolved') {
-                        const err = new Error(`Failed to find a DNS-record for the resource at "${requestPausedEvent.request.url}"`);
-
-                        await this._handlePageError(client, err, request.url);
-
-                        return;
-                    }
-
-                    const responseObj         = await client.Fetch.getResponseBody({ requestId });
-                    const responseStr         = this._getResponseAsString(responseObj);
-                    const injectableResources = await this._prepareInjectableResources();
-
-                    // NOTE: an unhandled exception interrupts the test execution,
-                    // and we are force to redirect manually to the idle page.
-                    if (!injectableResources)
-                        await this._redirectToIdlePage(client, requestId);
-                    else {
-                        const updatedResponseStr = injectResources(responseStr, injectableResources);
-
-                        await client.Fetch.fulfillRequest({
-                            requestId,
-                            responseCode:    responseStatusCode || StatusCodes.OK,
-                            responseHeaders: this._processResponseHeaders(responseHeaders),
-                            body:            Buffer.from(updatedResponseStr).toString('base64'),
-                        });
-                    }
+                    return;
                 }
-                catch (err) {
-                    debugLogger('Failed to process request: %s', request.url);
 
-                    await this._handlePageError(client, err as Error, request.url);
-                }
+                const responseObj = await client.Fetch.getResponseBody({ requestId });
+                const responseStr = getResponseAsString(responseObj);
+
+                await this.processHTMLPageContent({
+                    requestId,
+                    responseHeaders,
+                    responseCode: responseStatusCode as number,
+                    body:         responseStr,
+                }, client);
             }
+            catch (err) {
+                resourceInjectorLogger('Failed to process request: %s', request.url);
+
+                await this._handlePageError(client, err as Error, request.url);
+            }
+        }
+    }
+
+    public async processAboutBlankPage (event: FrameNavigatedEvent, client: ProtocolApi): Promise<void> {
+        resourceInjectorLogger('Handle page as about:blank. Origin url: %s', event.frame.url);
+
+        const injectableResources = await this._prepareInjectableResources() as PageInjectableResources;
+        const html                = injectResources(EMPTY_PAGE_MARKUP, injectableResources);
+
+        await client.Page.setDocumentContent({
+            frameId: event.frame.id,
+            html,
         });
     }
 
-    private _topFrameNavigationToAboutBlank (event: FrameNavigatedEvent): boolean {
-        if (event.frame.url !== SPECIAL_BLANK_PAGE)
-            return false;
+    public async processHTMLPageContent (fulfillRequestInfo: FulfillRequestRequest, client: ProtocolApi): Promise<void> {
+        const injectableResources = await this._prepareInjectableResources();
 
-        if (event.type !== 'Navigation')
-            return false;
+        // NOTE: an unhandled exception interrupts the test execution,
+        // and we are force to redirect manually to the idle page.
+        if (!injectableResources)
+            await redirect(client, fulfillRequestInfo.requestId, this._specialServiceRoutes.idlePage);
+        else {
+            const updatedResponseStr = injectResources(fulfillRequestInfo.body as string, injectableResources);
 
-        if (event.frame.parentId)
-            return false;
-
-        return true;
-    }
-
-    private async _handleAboutBlankPage (client: ProtocolApi): Promise<void> {
-        await client.Page.enable();
-
-        client.Page.on('frameNavigated', async (frameNavigatedEvent: FrameNavigatedEvent) => {
-            const { frame, type } = frameNavigatedEvent;
-
-            debugLogger('frameNavigated %s %s', frame.url, type);
-
-            if (!this._topFrameNavigationToAboutBlank(frameNavigatedEvent))
-                return;
-
-            debugLogger('Handle page as about:blank. Origin url: %s', frame.url);
-
-            const injectableResources = await this._prepareInjectableResources() as PageInjectableResources;
-            const html                = injectResources(EMPTY_PAGE_MARKUP, injectableResources);
-
-            await client.Page.setDocumentContent({
-                frameId: frame.id,
-                html,
+            await client.Fetch.fulfillRequest({
+                requestId:       fulfillRequestInfo.requestId,
+                responseCode:    fulfillRequestInfo.responseCode || StatusCodes.OK,
+                responseHeaders: this._processResponseHeaders(fulfillRequestInfo.responseHeaders),
+                body:            toBase64String(updatedResponseStr),
             });
-        });
+        }
     }
 
-    public async setup (client: ProtocolApi): Promise<void> {
-        await this._handleHTTPPages(client);
-        await this._handleAboutBlankPage(client);
+    public async processNonProxiedContent (fulfillRequestInfo: FulfillRequestRequest, client: ProtocolApi): Promise<void> {
+        await client.Fetch.fulfillRequest({
+            requestId:       fulfillRequestInfo.requestId,
+            responseCode:    fulfillRequestInfo.responseCode || StatusCodes.OK,
+            responseHeaders: this._processResponseHeaders(fulfillRequestInfo.responseHeaders),
+            body:            toBase64String(fulfillRequestInfo.body as string),
+        });
     }
 }

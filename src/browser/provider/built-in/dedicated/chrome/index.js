@@ -10,8 +10,9 @@ import {
 } from './local-chrome';
 import { GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from '../../../utils/client-functions';
 import { BrowserClient } from './cdp-client';
-import ResourceInjector from '../../../../../proxyless/resource-injector';
-import { navigateTo } from '../../../../../proxyless/cdp-utils';
+import { navigateTo } from '../../../../../proxyless/utils/cdp';
+import Proxyless from '../../../../../proxyless';
+import { chromeBrowserProviderLogger } from '../../../../../utils/debug-loggers';
 
 const MIN_AVAILABLE_DIMENSION = 50;
 
@@ -45,14 +46,16 @@ export default {
         this.setUserAgentMetaInfo(browserId, metaInfo, options);
     },
 
-    async _setupProxyless (browserId, browserClient) {
-        const resourceInjector = new ResourceInjector(browserId);
-        const cdpClient        = await browserClient.getActiveClient();
+    async _setupProxyless ({ browserId, browserClient, runtimeInfo, proxylessOptions }) {
+        const cdpClient = await browserClient.getActiveClient();
+        const proxyless = new Proxyless(browserId, cdpClient);
 
-        await resourceInjector.setup(cdpClient);
+        await proxyless.init(proxylessOptions);
+
+        runtimeInfo.proxyless = proxyless;
     },
 
-    async openBrowser (browserId, pageUrl, config, disableMultipleWindows, proxyless) {
+    async openBrowser (browserId, pageUrl, config, { disableMultipleWindows, proxyless }) {
         const parsedPageUrl = parseUrl(pageUrl);
         const runtimeInfo   = await this._createRunTimeInfo(parsedPageUrl.hostname, config, disableMultipleWindows);
 
@@ -90,11 +93,16 @@ export default {
         this._setUserAgentMetaInfoForEmulatingDevice(browserId, runtimeInfo.config);
 
         if (proxyless)
-            await this._setupProxyless(browserId, browserClient);
+            await this._setupProxyless({ browserId, browserClient, runtimeInfo, proxylessOptions: proxyless });
+
+        chromeBrowserProviderLogger('browser opened %s', browserId);
     },
 
     async closeBrowser (browserId, closingInfo = {}) {
         const runtimeInfo = this.openedBrowsers[browserId];
+
+        if (runtimeInfo.proxyless)
+            await runtimeInfo.proxyless.dispose();
 
         if (runtimeInfo.browserClient.isHeadlessTab())
             await runtimeInfo.browserClient.closeTab();
@@ -108,6 +116,8 @@ export default {
             await runtimeInfo.tempProfileDir.dispose();
 
         delete this.openedBrowsers[browserId];
+
+        chromeBrowserProviderLogger('browser closed %s', browserId);
     },
 
     async resizeWindow (browserId, width, height, currentWidth, currentHeight) {

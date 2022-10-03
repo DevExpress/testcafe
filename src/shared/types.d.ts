@@ -44,4 +44,11 @@ interface NextTestRunInfo {
     url: string;
 }
 
+interface ProxylessSetupOptions {
+    serviceDomains: string[];
+}
 
+interface OpenBrowserAdditionalOptions {
+    disableMultipleWindows: boolean;
+    proxyless?: ProxylessSetupOptions;
+}

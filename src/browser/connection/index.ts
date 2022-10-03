@@ -36,7 +36,7 @@ import TestRun from '../../test-run';
 // @ts-ignore
 import { TestRun as LegacyTestRun } from 'testcafe-legacy-api';
 import { Proxy } from 'testcafe-hammerhead';
-import { NextTestRunInfo } from '../../shared/types';
+import { NextTestRunInfo, OpenBrowserAdditionalOptions } from '../../shared/types';
 
 const getBrowserConnectionDebugScope = (id: string): string => `testcafe:browser:connection:${id}`;
 
@@ -232,9 +232,28 @@ export default class BrowserConnection extends EventEmitter {
         return nanoid(7);
     }
 
+    private _getAdditionalBrowserOptions (): OpenBrowserAdditionalOptions {
+        const options = {
+            disableMultipleWindows: this.disableMultipleWindows,
+        } as OpenBrowserAdditionalOptions;
+
+        if (this.proxyless) {
+            options.proxyless = {
+                serviceDomains: [
+                    this.browserConnectionGateway.proxy.server1Info.domain,
+                    this.browserConnectionGateway.proxy.server2Info.domain,
+                ],
+            };
+        }
+
+        return options;
+    }
+
     private async _runBrowser (): Promise<void> {
         try {
-            await this.provider.openBrowser(this.id, this.url, this.browserInfo.browserOption, this.disableMultipleWindows, this.proxyless);
+            const additionalOptions = this._getAdditionalBrowserOptions();
+
+            await this.provider.openBrowser(this.id, this.url, this.browserInfo.browserOption, additionalOptions);
 
             if (this.status !== BrowserConnectionStatus.ready)
                 await promisifyEvent(this, 'ready');

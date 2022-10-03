@@ -14,6 +14,7 @@ import WARNING_MESSAGE from '../../notifications/warning-message';
 import { Dictionary } from '../../configuration/interfaces';
 import { WindowDimentionsInfo } from '../interfaces';
 import getLocalOSInfo, { OSInfo } from 'get-os-info';
+import { OpenBrowserAdditionalOptions } from '../../shared/types';
 
 const DEBUG_LOGGER = debug('testcafe:browser:provider');
 
@@ -318,8 +319,8 @@ export default class BrowserProvider {
         return await this.plugin.getOSInfo(browserId);
     }
 
-    public async openBrowser (browserId: string, pageUrl: string, browserOption: unknown, disableMultipleWindows: boolean, proxyless: boolean): Promise<void> {
-        await this.plugin.openBrowser(browserId, pageUrl, browserOption, disableMultipleWindows, proxyless);
+    public async openBrowser (browserId: string, pageUrl: string, browserOption: unknown, additionalOptions: OpenBrowserAdditionalOptions = { disableMultipleWindows: false }): Promise<void> {
+        await this.plugin.openBrowser(browserId, pageUrl, browserOption, additionalOptions);
 
         await this._ensureRetryTestPagesWarning(browserId);
 

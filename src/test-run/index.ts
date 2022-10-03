@@ -48,6 +48,7 @@ import {
     ResponseEvent,
     RequestHookMethodError,
     StoragesSnapshot,
+    RequestHookEventProvider,
 } from 'testcafe-hammerhead';
 
 import * as INJECTABLES from '../assets/injectables';
@@ -225,7 +226,7 @@ export default class TestRun extends AsyncEventEmitter {
     public pageLoadTimeout: number;
     private readonly testExecutionTimeout: ExecutionTimeout | null;
     private readonly runExecutionTimeout: ExecutionTimeout | null;
-    private disablePageReloads: boolean;
+    private readonly disablePageReloads: boolean;
     private disablePageCaching: boolean;
     private disableMultipleWindows: boolean;
     private requestTimeout: RequestTimeout;
@@ -265,6 +266,7 @@ export default class TestRun extends AsyncEventEmitter {
     private _clientEnvironmentPrepared = false;
     private _cookieProvider: CookieProvider;
     public readonly startRunExecutionTime?: Date;
+    private readonly _requestHookEventProvider: RequestHookEventProvider;
 
     public constructor ({ test, browserConnection, screenshotCapturer, globalWarningLog, opts, compilerService, messageBus, startRunExecutionTime }: TestRunInit) {
         super();
@@ -345,12 +347,22 @@ export default class TestRun extends AsyncEventEmitter {
         this.disconnected      = false;
         this.errScreenshotPath = null;
 
-        this.startRunExecutionTime = startRunExecutionTime;
-        this.runExecutionTimeout   = this._getRunExecutionTimeout(opts);
+        this.startRunExecutionTime     = startRunExecutionTime;
+        this.runExecutionTimeout       = this._getRunExecutionTimeout(opts);
+        this._requestHookEventProvider = this._getRequestHookEventProvider();
 
         this._cookieProvider = CookieProviderFactory.create(this, this.opts.proxyless as boolean);
 
         this._addInjectables();
+    }
+
+    private _getRequestHookEventProvider (): RequestHookEventProvider {
+        if (!this.opts.proxyless)
+            return this.session.requestHookEventProvider;
+
+        const runtimeInfo = this.browserConnection.provider.plugin.openedBrowsers[this.browserConnection.id];
+
+        return runtimeInfo.proxyless.requestPipeline.requestHookEventProvider;
     }
 
     private _getPageLoadTimeout (test: Test, opts: Dictionary<OptionValue>): number {
@@ -465,7 +477,7 @@ export default class TestRun extends AsyncEventEmitter {
         hook._warningLog = this.warningLog;
 
         await Promise.all(hook._requestFilterRules.map(rule => {
-            return this.session.addRequestEventListeners(rule, {
+            return this._requestHookEventProvider.addRequestEventListeners(rule, {
                 onRequest:           hook.onRequest.bind(hook),
                 onConfigureResponse: hook._onConfigureResponse.bind(hook),
                 onResponse:          hook.onResponse.bind(hook),
@@ -499,7 +511,7 @@ export default class TestRun extends AsyncEventEmitter {
         hook._warningLog = null;
 
         await Promise.all(hook._requestFilterRules.map(rule => {
-            return this.session.removeRequestEventListeners(rule);
+            return this._requestHookEventProvider.removeRequestEventListeners(rule);
         }));
     }
 
@@ -712,7 +724,7 @@ export default class TestRun extends AsyncEventEmitter {
         await this._internalExecuteCommand(new serviceCommands.TestDoneCommand());
 
         this._addPendingPageErrorIfAny();
-        this.session.clearRequestEventListeners();
+        this._requestHookEventProvider.clearRequestEventListeners();
         this.normalizeRequestHookErrors();
 
         await this._finalizeTestRun(this.session.id);

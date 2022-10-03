@@ -1,5 +1,10 @@
-const { expect }                  = require('chai');
-const { skipInExperimentalDebug } = require('../../../../utils/skip-in');
+const { expect } = require('chai');
+
+const {
+    skipInExperimentalDebug,
+    skipDescribeInProxyless,
+    skipInProxyless,
+} = require('../../../../utils/skip-in');
 
 describe('Request Hooks', () => {
     describe('RequestMock', () => {
@@ -7,7 +12,7 @@ describe('Request Hooks', () => {
             return runTests('./testcafe-fixtures/request-mock/basic.js', 'Basic', { only: 'chrome' });
         });
 
-        it('Request failed the CORS validation', () => {
+        skipInProxyless('Request failed the CORS validation', () => {
             return runTests('./testcafe-fixtures/request-mock/failed-cors-validation.js', 'Failed CORS validation', { only: 'chrome' })
                 .then(() => {
                     expect(testReport.warnings).eql([
@@ -33,7 +38,7 @@ describe('Request Hooks', () => {
         });
     });
 
-    describe('RequestLogger', () => {
+    skipDescribeInProxyless('RequestLogger', () => {
         it('API', () => {
             return runTests('./testcafe-fixtures/request-logger/api.js', 'API', { only: 'chrome' });
         });
@@ -51,7 +56,7 @@ describe('Request Hooks', () => {
         });
     });
 
-    describe('API', () => {
+    skipDescribeInProxyless('API', () => {
         skipInExperimentalDebug('Add/remove request hooks', () => {
             return runTests('./testcafe-fixtures/api/add-remove-request-hook.js', 'Test', { only: 'chrome' });
         });

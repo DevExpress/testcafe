@@ -1,20 +1,26 @@
 import { Selector, RequestMock } from 'testcafe';
 
+const DUMMY_URLS = {
+    main:    'http://dummy-url.com',
+    get:     'http://dummy-url.com/get',
+    another: 'https://another-dummy-url.com',
+};
+
 const testPageMarkup = `
     <html>
         <body>
             <h1>Mocked page</h1>
             <h2></h2>
-            <button onclick="sendRequest()"></button>
+            <button onclick="sendRequest()">Send request</button>
             <script>
                 function sendRequest() {
-                    fetch('http://dummy-url.com/get')
+                    fetch('${DUMMY_URLS.get}')
                         .then(res => {
                             return res.text();
                         })
                         .then(text => {
-                            document.querySelector('h2').textContent = text;                            
-                        });                    
+                            document.querySelector('h2').textContent = text;
+                        });
                 }
             </script>
         </body>
@@ -22,11 +28,11 @@ const testPageMarkup = `
 `;
 
 const requestMock = RequestMock()
-    .onRequestTo('http://dummy-url.com')
+    .onRequestTo(DUMMY_URLS.main)
     .respond(testPageMarkup)
-    .onRequestTo('http://dummy-url.com/get')
+    .onRequestTo(DUMMY_URLS.get)
     .respond('Data from mocked fetch request')
-    .onRequestTo('https://another-dummy-url.com')
+    .onRequestTo(DUMMY_URLS.another)
     .respond();
 
 fixture `Basic`;
