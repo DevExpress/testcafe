@@ -142,35 +142,37 @@ describe('[API] t.click()', function () {
         it('Should show that element has width: 0 and height: 0', function () {
             return runTests('./testcafe-fixtures/click-on-hidden-elements-test.js', 'Click on an element with width: 0 and height: 0', { shouldFail: true })
                 .catch (function (errs) {
-                    expect(errs[0]).to.contains(`The element '<div class="width-height-0">Element...</div>' is not visible because it has an effective width and height of: '0 x 0' pixels.`);
+                    expect(errs[0]).to.contains(`The element: '<div class="element width-height-0">Element...</div>' is not visible because it has an effective width and height of: '0 x 0' pixels.`);
                 });
         });
 
         it('Should show that element has width: 0', function () {
             return runTests('./testcafe-fixtures/click-on-hidden-elements-test.js', 'Click on an element with width: 0', { shouldFail: true })
                 .catch (function (errs) {
-                    expect(errs[0]).to.contains(`The element '<div class="width-0">Element...</div>' is not visible because it has an effective width and height of: '0 x 100' pixels.`);
+                    expect(errs[0]).to.contains(`The element: '<div class="element width-0">Element...</div>' is not visible because it has an effective width and height of: '0 x 100' pixels.`);
                 });
         });
 
         it('Should show that element has height: 0', function () {
             return runTests('./testcafe-fixtures/click-on-hidden-elements-test.js', 'Click on an element with height: 0', { shouldFail: true })
                 .catch (function (errs) {
-                    expect(errs[0]).to.contains(`The element '<div class="height-0">Element...</div>' is not visible because it has an effective width and height of: '100 x 0' pixels.`);
+                    expect(errs[0]).to.contains(`The element: '<div class="element height-0">Element...</div>' is not visible because it has an effective width and height of: '100 x 0' pixels.`);
                 });
         });
 
         it('Should show that element has display: none', function () {
             return runTests('./testcafe-fixtures/click-on-hidden-elements-test.js', 'Click on an element with display: none', { shouldFail: true })
                 .catch (function (errs) {
-                    expect(errs[0]).to.contains(`The element '<div class="display-none">Element...</div>' is not visible because it has CSS property: 'display: none'`);
+                    expect(errs[0]).to.contains(`The element: '<div class="element display-none">Element...</div>' is not visible because it has CSS property: 'display: none'`);
                 });
         });
 
         it('Should show that element has visibility: hidden', function () {
             return runTests('./testcafe-fixtures/click-on-hidden-elements-test.js', 'Click on an element with visibility: hidden', { shouldFail: true })
                 .catch (function (errs) {
-                    expect(errs[0]).to.contains(`The element '<div class="visibility-hidden">Element...</div>' is not visible because it has CSS property: 'visibility: hidden'`);
+                    expect(errs[0]).to.contains(`The element: '<div class="element visibility-hidden">Element...</div>' is not visible because it has CSS property: 'visibility: hidden'`);
+                });
+        });
                 });
         });
     });
