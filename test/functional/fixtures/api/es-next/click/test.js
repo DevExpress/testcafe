@@ -173,6 +173,18 @@ describe('[API] t.click()', function () {
                     expect(errs[0]).to.contains(`The element: '<div class="element visibility-hidden">Element...</div>' is not visible because it has CSS property: 'visibility: hidden'`);
                 });
         });
+
+        it('Should show that ancestor has display: none', function () {
+            return runTests('./testcafe-fixtures/click-on-hidden-elements-test.js', 'Click on an element in ancestor with display: none', { shouldFail: true })
+                .catch (function (errs) {
+                    expect(errs[0]).to.contains(`The element: '<div class="element width-height-100"></div>' is not visible because its parent: '<div class="ancestor display-none">...</div>' has CSS property: 'display: none'`);
+                });
+        });
+
+        it('Should show that ancestor has visibility: hidden', function () {
+            return runTests('./testcafe-fixtures/click-on-hidden-elements-test.js', 'Click on an element in ancestor with visibility: hidden', { shouldFail: true })
+                .catch (function (errs) {
+                    expect(errs[0]).to.contains(`The element: '<div class="element width-height-100"></div>' is not visible because its parent: '<div class="ancestor visibility-hidden">...</div>' has CSS property: 'visibility: hidden'`);
                 });
         });
     });

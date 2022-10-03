@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <title>Document</title>
     <style>
+        .width-height-100 {
+            width: 100;
+            height: 100;
+            color: red;
+        }
         .width-height-0 {
             width: 0;
             height: 0;
@@ -34,5 +39,7 @@
     <div class="element height-0">Element with 0 height</div>
     <div class="element visibility-hidden">Element with visibility: hidden</div>
     <div class="element display-none">Element with display: none</div>
+    <div class="ancestor visibility-hidden"><div class="element width-height-100"></div></div>
+    <div class="ancestor display-none"><div class="element width-height-100"></div></div>
 </body>
 </html>

@@ -21,4 +21,10 @@ test('Click on an element with visibility: hidden', async t => {
     await t.click('.element.visibility-hidden');
 });
 
+test('Click on an element in ancestor with display: none', async t => {
+    await t.click('.ancestor.display-none>.element');
+});
+
+test('Click on an element in ancestor with visibility: hidden', async t => {
+    await t.click('.ancestor.visibility-hidden>.element');
 });
