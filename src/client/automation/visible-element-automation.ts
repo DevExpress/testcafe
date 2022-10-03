@@ -3,7 +3,7 @@ import screenPointToClient from './utils/screen-point-to-client';
 import getDevicePoint from './utils/get-device-point';
 import { getOffsetOptions } from '../core/utils/offsets';
 import getElementFromPoint from './get-element';
-import AUTOMATION_ERROR_TYPES from '../../shared/errors/automation-errors';
+import { ActionElementIsInvisibleError, ActionElementNotFoundError } from '../../shared/errors';
 import AutomationSettings from './settings';
 import MoveAutomation from './move';
 import AxisValues, { AxisValuesData } from '../core/utils/values/axis-values';
@@ -217,10 +217,10 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
 
     private static _checkElementState (state: ElementState, useStrictElementCheck: boolean): ElementState {
         if (!state.element)
-            throw new Error(AUTOMATION_ERROR_TYPES.elementIsInvisibleError);
+            throw new ActionElementIsInvisibleError();
 
         if (useStrictElementCheck && (!state.isTarget || state.inMoving))
-            throw new Error(AUTOMATION_ERROR_TYPES.foundElementIsNotTarget);
+            throw new ActionElementNotFoundError();
 
         return state;
     }

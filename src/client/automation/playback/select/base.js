@@ -6,7 +6,7 @@ import * as selectUtils from './utils';
 import MoveAutomation from '../move/move';
 import { MoveOptions } from '../../../../test-run/commands/options';
 import cursor from '../../cursor';
-import AUTOMATION_ERROR_TYPES from '../../../../shared/errors/automation-errors';
+import { ActionElementIsInvisibleError } from '../../../../shared/errors';
 
 const Promise          = hammerhead.Promise;
 const browserUtils     = hammerhead.utils.browser;
@@ -51,7 +51,7 @@ export default class SelectBaseAutomation extends VisibleElementAutomation {
         return getElementFromPoint(clientPoint)
             .then(element => {
                 if (!element)
-                    throw new Error(AUTOMATION_ERROR_TYPES.elementIsInvisibleError);
+                    throw new ActionElementIsInvisibleError();
 
                 return {
                     element: element,
