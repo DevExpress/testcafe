@@ -126,6 +126,8 @@ import executeFnWithTimeout from '../utils/execute-fn-with-timeout';
 import { URL } from 'url';
 import { CookieOptions } from './commands/options';
 import { prepareSkipJsErrorsOptions } from '../api/skip-js-errors';
+import { CookieProviderFactory } from './cookies/factory';
+import { CookieProvider } from './cookies/base';
 
 const lazyRequire                 = require('import-lazy')(require);
 const ClientFunctionBuilder       = lazyRequire('../client-functions/client-function-builder');
@@ -256,6 +258,7 @@ export default class TestRun extends AsyncEventEmitter {
     public readonly browser: Browser;
     private readonly _messageBus?: MessageBus;
     private _clientEnvironmentPrepared = false;
+    private _cookieProvider: CookieProvider;
     public readonly startRunExecutionTime?: Date;
 
     public constructor ({ test, browserConnection, screenshotCapturer, globalWarningLog, opts, compilerService, messageBus, startRunExecutionTime }: TestRunInit) {
@@ -339,6 +342,8 @@ export default class TestRun extends AsyncEventEmitter {
 
         this.startRunExecutionTime = startRunExecutionTime;
         this.runExecutionTimeout   = this._getRunExecutionTimeout(opts);
+
+        this._cookieProvider = CookieProviderFactory.create(this, this.opts.proxyless as boolean);
 
         this._addInjectables();
     }
@@ -798,20 +803,20 @@ export default class TestRun extends AsyncEventEmitter {
     public async _enqueueGetCookies (command: GetCookiesCommand): Promise<Partial<CookieOptions>[]> {
         const { cookies, urls } = command;
 
-        return this.session.cookies.getCookies(cookies, urls);
+        return this._cookieProvider.getCookies(cookies, urls);
     }
 
     public async _enqueueSetCookies (command: SetCookiesCommand): Promise<void> {
         const cookies = command.cookies;
         const url     = command.url || await this.getCurrentUrl();
 
-        return this.session.cookies.setCookies(cookies, url);
+        return this._cookieProvider.setCookies(cookies, url);
     }
 
     public async _enqueueDeleteCookies (command: DeleteCookiesCommand): Promise<void> {
         const { cookies, urls } = command;
 
-        return this.session.cookies.deleteCookies(cookies, urls);
+        return this._cookieProvider.deleteCookies(cookies, urls);
     }
 
     private async _enqueueSetBreakpointCommand (callsite: CallsiteRecord | undefined, error?: string): Promise<void> {
@@ -1485,6 +1490,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     public async initialize (): Promise<void> {
+        await this._cookieProvider.initialize();
         await this._initRequestHooks();
 
         if (!this.compilerService)
