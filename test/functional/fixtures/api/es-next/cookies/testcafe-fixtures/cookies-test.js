@@ -1,3 +1,5 @@
+import { ClientFunction } from 'testcafe';
+
 fixture`[API] Get Cookies`
     .page('http://localhost:3000/fixtures/api/es-next/cookies/pages/index.html')
     .beforeEach(async t => {
@@ -10,10 +12,11 @@ fixture`[API] Get Cookies`
                 { name: 'apiCookie4', value: 'value4', domain: 'domain1.com', path: '/path-2' },
                 { name: 'apiCookie5', value: 'value5', domain: 'domain2.com', path: '/path-1' },
             ]);
-    })
-    .afterEach(async t => {
-        await t.deleteCookies();
     });
+
+const getClientCookie = ClientFunction(() => {
+    return document.cookie || window['%hammerhead%'].nativeMethods.documentCookieGetter.call(document);
+});
 
 test('Should get cookies by name', async t => {
     const expectedCookies = [
@@ -40,7 +43,8 @@ test('Should get cookies by name', async t => {
             'sameSite': 'none',
         },
     ];
-    const cookies         = await t.getCookies('apiCookie1');
+
+    const cookies = await t.getCookies('apiCookie1');
 
     await t.expect(expectedCookies).eql(cookies);
 });
@@ -100,10 +104,7 @@ test('Should get cookies by objects', async t => {
 });
 
 fixture`[API] Set Cookies`
-    .page('http://localhost:3000/fixtures/api/es-next/cookies/pages/index.html')
-    .afterEach(async t => {
-        await t.deleteCookies();
-    });
+    .page('http://localhost:3000/fixtures/api/es-next/cookies/pages/index.html');
 
 test('Should set cookies by object with default url', async t => {
     const expectedCookies = [
@@ -153,7 +154,8 @@ test('Should set cookies by key-value', async t => {
 test('Should set on the client', async (t) => {
     await t.expect(await t.eval(() => document.cookie)).eql('');
     await t.setCookies({ name: 'apiCookie13', value: 'value13' });
-    await t.expect(await t.eval(() => document.cookie)).eql('apiCookie13=value13');
+
+    await t.expect(getClientCookie()).eql('apiCookie13=value13');
 });
 
 fixture`[API] Delete Cookies`
@@ -203,7 +205,7 @@ test('Should delete cookies by objects', async t => {
 });
 
 test('Should delete on the client', async t => {
-    await t.expect(await t.eval(() => document.cookie)).eql('apiCookie1=value1; apiCookie2=value2');
+    await t.expect(getClientCookie()).eql('apiCookie1=value1; apiCookie2=value2');
     await t.deleteCookies({ domain: 'localhost', path: '/fixtures/api/es-next/cookies/pages/index.html' });
-    await t.expect(await t.eval(() => document.cookie)).eql('');
+    await t.expect(getClientCookie()).eql('');
 });
