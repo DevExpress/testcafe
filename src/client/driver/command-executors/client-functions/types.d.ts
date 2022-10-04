@@ -16,7 +16,7 @@ export interface APIInfo {
     apiFnID: number;
 }
 
-export interface FnInfo {
+export interface SelectorErrorParams {
     apiFnChain: string[];
     apiFnIndex: number | null;
 }
@@ -31,7 +31,7 @@ export interface SelectorDependencies extends Dictionary<unknown> {
     customDOMProperties?: CustomDOMProperties;
 }
 
-type SelectorErrorCb = (fn: FnInfo | null) => SelectorErrorBase;
+type SelectorErrorCb = (fn: SelectorErrorParams | null) => SelectorErrorBase;
 
 export interface NativeMethods {
     Function: typeof Function;

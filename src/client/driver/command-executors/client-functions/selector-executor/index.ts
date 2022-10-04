@@ -4,7 +4,7 @@ import FunctionTransform from '../replicator/transforms/function-transform';
 import SelectorNodeTransform from '../replicator/transforms/selector-node-transform';
 import { ExecuteSelectorCommand } from '../../../../../test-run/commands/observation';
 import {
-    FnInfo,
+    SelectorErrorParams,
     SelectorDependencies,
     SelectorErrorCb,
 } from '../types';
@@ -61,7 +61,7 @@ export default class SelectorExecutor extends ClientFunctionExecutor<ExecuteSele
         ]);
     }
 
-    private _getTimeoutErrorParams (): FnInfo | null {
+    private _getTimeoutErrorParams (): SelectorErrorParams | null {
         const apiFnIndex = selectorFilter.error;
         const apiFnChain = this.command.apiFnChain;
 
