@@ -227,6 +227,10 @@ function elHasVisibilityHidden (el: Node): boolean {
     return styleUtils.get(el, 'visibility') === 'hidden';
 }
 
+function elHasVisibilityCollapse (el: Node): boolean {
+    return styleUtils.get(el, 'visibility') === 'collapse';
+}
+
 function elHasDisplayNone (el: Node): boolean {
     return styleUtils.get(el, 'display') === 'none';
 }
@@ -237,6 +241,12 @@ function getVisibilityHiddenParent (el: Node): HTMLElement {
     });
 }
 
+function getVisibilityCollapseParent (el: Node): HTMLElement {
+    return domUtils.findParent(el, false, (parent: Node) => {
+        return elHasVisibilityCollapse(parent);
+    });
+}
+
 function getDisplayNoneParent (el: Node): HTMLElement {
     return domUtils.findParent(el, false, (parent: Node) => {
         return elHasDisplayNone(parent);
@@ -244,7 +254,7 @@ function getDisplayNoneParent (el: Node): HTMLElement {
 }
 
 function hiddenUsingStyles (el: HTMLElement): boolean {
-    return elHasVisibilityHidden(el) || elHasDisplayNone(el);
+    return elHasVisibilityHidden(el) || elHasVisibilityCollapse(el) || elHasDisplayNone(el);
 }
 
 function hiddenByRectangle (el: HTMLElement): boolean {
@@ -313,6 +323,11 @@ export function getHiddenReason (el?: Node): string | null {
     if (visibilityHiddenParent)
         return hiddenReasons.parentHasVisibilityHidden(strEl, stringifyElement(visibilityHiddenParent));
 
+    const visibilityCollapseParent = getVisibilityCollapseParent(el);
+
+    if (visibilityCollapseParent)
+        return hiddenReasons.parentHasVisibilityCollapse(strEl, stringifyElement(visibilityCollapseParent));
+
     const displayNoneParent = getDisplayNoneParent(el);
 
     if (displayNoneParent)
@@ -320,6 +335,9 @@ export function getHiddenReason (el?: Node): string | null {
 
     if (elHasVisibilityHidden(el))
         return hiddenReasons.elHasVisibilityHidden(strEl);
+
+    if (elHasVisibilityCollapse(el))
+        return hiddenReasons.elHasVisibilityCollapse(strEl);
 
     if (elHasDisplayNone(el))
         return hiddenReasons.elHasDisplayNone(strEl);
