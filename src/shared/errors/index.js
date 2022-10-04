@@ -45,11 +45,12 @@ export class DomNodeClientFunctionResultError extends TestRunErrorBase {
 // Selector errors
 //--------------------------------------------------------------------
 export class SelectorErrorBase extends TestRunErrorBase {
-    constructor (code, { apiFnChain, apiFnIndex }, callsite) {
+    constructor (code, { apiFnChain, apiFnIndex, reason } = {}, callsite) {
         super(code, callsite);
 
         this.apiFnChain = apiFnChain;
         this.apiFnIndex = apiFnIndex;
+        this.reason     = reason;
     }
 }
 
@@ -207,9 +208,9 @@ export class ActionElementNotFoundError extends SelectorErrorBase {
     }
 }
 
-export class ActionElementIsInvisibleError extends TestRunErrorBase {
-    constructor (callsite) {
-        super(TEST_RUN_ERRORS.actionElementIsInvisibleError, callsite);
+export class ActionElementIsInvisibleError extends SelectorErrorBase {
+    constructor (callsite, apiFnArgs) {
+        super(TEST_RUN_ERRORS.actionElementIsInvisibleError, apiFnArgs, callsite);
     }
 }
 
@@ -229,9 +230,9 @@ export class ActionAdditionalElementNotFoundError extends SelectorErrorBase {
     }
 }
 
-export class ActionAdditionalElementIsInvisibleError extends TestRunErrorBase {
-    constructor (argumentName) {
-        super(TEST_RUN_ERRORS.actionAdditionalElementIsInvisibleError);
+export class ActionAdditionalElementIsInvisibleError extends SelectorErrorBase {
+    constructor (argumentName, apiFnArgs) {
+        super(TEST_RUN_ERRORS.actionAdditionalElementIsInvisibleError, apiFnArgs);
 
         this.argumentName = argumentName;
     }
