@@ -221,9 +221,16 @@ export function isIframeVisible (el: Node): boolean {
     return !hiddenUsingStyles(el as HTMLElement);
 }
 
+function elHasVisibilityHidden (el: Node): boolean {
+    return styleUtils.get(el, 'visibility') === 'hidden';
+}
+
+function elHasDisplayNone (el: Node): boolean {
+    return styleUtils.get(el, 'display') === 'none';
+}
+
 function hiddenUsingStyles (el: HTMLElement): boolean {
-    return styleUtils.get(el, 'visibility') === 'hidden' ||
-        styleUtils.get(el, 'display') === 'none';
+    return elHasVisibilityHidden(el) || elHasDisplayNone(el);
 }
 
 function hiddenByRectangle (el: HTMLElement): boolean {
