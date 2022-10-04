@@ -4,6 +4,8 @@ import * as domUtils from './dom';
 import AxisValues, { AxisValuesData } from './values/axis-values';
 import BoundaryValues, { BoundaryValuesData } from './values/boundary-values';
 import Dimensions from './values/dimensions';
+import hiddenReasons from '../../../shared/errors/element-hidden-reasons';
+import stringifyElement from './stringify-element';
 
 
 export const getElementRectangle  = hammerhead.utils.position.getElementRectangle;
@@ -229,6 +231,18 @@ function elHasDisplayNone (el: Node): boolean {
     return styleUtils.get(el, 'display') === 'none';
 }
 
+function getVisibilityHiddenParent (el: Node): HTMLElement {
+    return domUtils.findParent(el, false, (parent: Node) => {
+        return elHasVisibilityHidden(parent);
+    });
+}
+
+function getDisplayNoneParent (el: Node): HTMLElement {
+    return domUtils.findParent(el, false, (parent: Node) => {
+        return elHasDisplayNone(parent);
+    });
+}
+
 function hiddenUsingStyles (el: HTMLElement): boolean {
     return elHasVisibilityHidden(el) || elHasDisplayNone(el);
 }
@@ -274,3 +288,57 @@ export function isElementVisible (el: Node): boolean {
     return styleUtils.hasDimensions(el as HTMLElement) && !hiddenUsingStyles(el as unknown as HTMLElement);
 }
 
+export function getHiddenReason (el?: Node): string | null {
+    if (!el)
+        return null;
+
+    const isTextNode = domUtils.isTextNode(el);
+
+    if (!domUtils.isDomElement(el) && !isTextNode)
+        return hiddenReasons.notElementOrTextNode();
+
+    const strEl        = isTextNode ? (el as Text).data : stringifyElement(el as HTMLElement);
+    const offsetHeight = (el as HTMLElement).offsetHeight;
+    const offsetWidth  = (el as HTMLElement).offsetWidth;
+
+    if (domUtils.isMapElement(el)) {
+        const mapContainer          = domUtils.getMapContainer(domUtils.closest(el, 'map'));
+        const containerHiddenReason = getHiddenReason(mapContainer);
+
+        return hiddenReasons.mapContainerNotVisible(strEl, stringifyElement(mapContainer), containerHiddenReason || '');
+    }
+
+    const visibilityHiddenParent = getVisibilityHiddenParent(el);
+
+    if (visibilityHiddenParent)
+        return hiddenReasons.parentHasVisibilityHidden(strEl, stringifyElement(visibilityHiddenParent));
+
+    const displayNoneParent = getDisplayNoneParent(el);
+
+    if (displayNoneParent)
+        return hiddenReasons.parentHasDisplayNone(strEl, stringifyElement(displayNoneParent));
+
+    if (elHasVisibilityHidden(el))
+        return hiddenReasons.elHasVisibilityHidden(strEl);
+
+    if (elHasDisplayNone(el))
+        return hiddenReasons.elHasDisplayNone(strEl);
+
+    if (domUtils.isTextNode(el) && !domUtils.isRenderedNode(el))
+        return hiddenReasons.elNotRendered(strEl);
+
+    if (!domUtils.isContentEditableElement(el) &&
+        hiddenByRectangle(el as HTMLElement))
+        return hiddenReasons.elHasWidthOrHeightZero(strEl, offsetWidth, offsetHeight);
+
+    if (!styleUtils.hasDimensions(el as HTMLElement))
+        return hiddenReasons.elHasWidthOrHeightZero(strEl, offsetWidth, offsetHeight);
+
+    return null;
+}
+
+export function getElOutsideBoundsReason (el: HTMLElement): string {
+    const elStr  = stringifyElement(el);
+
+    return hiddenReasons.elOutsideBounds(elStr);
+}

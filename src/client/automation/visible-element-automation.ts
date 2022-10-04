@@ -215,9 +215,12 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
         });
     }
 
-    private static _checkElementState (state: ElementState, useStrictElementCheck: boolean): ElementState {
-        if (!state.element)
-            throw new ActionElementIsInvisibleError();
+    private _checkElementState (state: ElementState, useStrictElementCheck: boolean): ElementState {
+        if (!state.element) {
+            throw new ActionElementIsInvisibleError(null, {
+                reason: positionUtils.getElOutsideBoundsReason(this.element),
+            });
+        }
 
         if (useStrictElementCheck && (!state.isTarget || state.inMoving))
             throw new ActionElementNotFoundError();
@@ -228,13 +231,13 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
     protected _ensureElement (useStrictElementCheck: boolean, skipCheckAfterMoving = false, skipMoving = false): Promise<ElementStateArgsBase> {
         return this
             ._wrapAction(() => this._scrollToElement())
-            .then(state => VisibleElementAutomation._checkElementState(state, useStrictElementCheck))
+            .then(state => this._checkElementState(state, useStrictElementCheck))
             .then(state => {
                 return skipMoving ? state : this._wrapAction(() => this._moveToElement());
             })
             .then(state => {
                 if (!skipCheckAfterMoving)
-                    VisibleElementAutomation._checkElementState(state, useStrictElementCheck);
+                    this._checkElementState(state, useStrictElementCheck);
 
                 return state;
             })

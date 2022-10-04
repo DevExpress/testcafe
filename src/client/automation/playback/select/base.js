@@ -45,13 +45,16 @@ export default class SelectBaseAutomation extends VisibleElementAutomation {
         };
     }
 
-    static _calculateEventArguments (point) {
-        const clientPoint = positionUtils.offsetToClientCoords(point);
+    _calculateEventArguments () {
+        const clientPoint = positionUtils.offsetToClientCoords(this.clientPoint);
 
         return getElementFromPoint(clientPoint)
             .then(element => {
-                if (!element)
-                    throw new ActionElementIsInvisibleError();
+                if (!element) {
+                    throw new ActionElementIsInvisibleError(null, {
+                        reason: positionUtils.getElOutsideBoundsReason(this.element),
+                    });
+                }
 
                 return {
                     element: element,
@@ -109,7 +112,7 @@ export default class SelectBaseAutomation extends VisibleElementAutomation {
     _mousedown () {
         return cursor
             .leftButtonDown()
-            .then(() => SelectBaseAutomation._calculateEventArguments(this.clientPoint))
+            .then(() => this._calculateEventArguments())
             .then(args => {
                 this.eventArgs = args;
 
@@ -151,7 +154,7 @@ export default class SelectBaseAutomation extends VisibleElementAutomation {
             .then(() => {
                 this._setSelection();
 
-                return SelectBaseAutomation._calculateEventArguments(this.clientPoint);
+                return this._calculateEventArguments();
             })
             .then(args => {
                 this.eventArgs = args;

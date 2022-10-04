@@ -1,9 +1,16 @@
 // @ts-ignore
 import { nativeMethods } from '../../../deps/hammerhead';
-// @ts-ignore
-import { domUtils, positionUtils } from '../../../deps/testcafe-core';
+import {
+    // @ts-ignore
+    domUtils,
+    // @ts-ignore
+    positionUtils,
+    // @ts-ignore
+    stringifyElement,
+} from '../../../deps/testcafe-core';
 // @ts-ignore
 import { selectElement } from '../../../deps/testcafe-ui';
+import elementHiddenReasons from '../../../../../shared/errors/element-hidden-reasons';
 
 
 export function isElementVisible (el: Node): boolean {
@@ -13,13 +20,18 @@ export function isElementVisible (el: Node): boolean {
     return positionUtils.isElementVisible(el);
 }
 
-    if (!utils.dom.isDomElement(el) && !utils.dom.isTextNode(el))
-        return false;
+export function getHiddenReason (el?: Node): string | null {
+    const isOptionElement = domUtils.isOptionElement(el) || domUtils.getTagName(el as Element) === 'optgroup';
 
-    if (domUtils.isOptionElement(el) || domUtils.getTagName(el as Element) === 'optgroup')
-        return selectElement.isOptionElementVisible(el);
+    if (isOptionElement && !selectElement.isOptionElementVisible(el)) {
+        const optionParent    = domUtils.getSelectParent(el);
+        const optionParentStr = stringifyElement(optionParent);
+        const optionStr       = stringifyElement(el);
 
-    return isElementVisible(el);
+        return elementHiddenReasons.optionNotVisible(optionStr, optionParentStr);
+    }
+
+    return positionUtils.getHiddenReason(el);
 }
 
 export function isNodeCollection (obj: unknown): obj is HTMLCollection | NodeList {

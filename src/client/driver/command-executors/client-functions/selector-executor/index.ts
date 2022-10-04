@@ -61,11 +61,12 @@ export default class SelectorExecutor extends ClientFunctionExecutor<ExecuteSele
         ]);
     }
 
-    private _getTimeoutErrorParams (): SelectorErrorParams | null {
+    private _getTimeoutErrorParams (el?: Node): SelectorErrorParams | null {
         const apiFnIndex = selectorFilter.error;
         const apiFnChain = this.command.apiFnChain;
+        const reason     = selectorUtils.getHiddenReason(el);
 
-        return { apiFnIndex, apiFnChain };
+        return { apiFnIndex, apiFnChain, reason };
     }
 
     private _getTimeoutError (elementExists: boolean): SelectorErrorCb | null {
@@ -90,7 +91,7 @@ export default class SelectorExecutor extends ClientFunctionExecutor<ExecuteSele
                 const createTimeoutError = this.getVisibleValueMode ? null : this._getTimeoutError(isElementExists);
 
                 if (createTimeoutError)
-                    throw createTimeoutError(this._getTimeoutErrorParams());
+                    throw createTimeoutError(this._getTimeoutErrorParams(element));
 
                 return null;
             });
