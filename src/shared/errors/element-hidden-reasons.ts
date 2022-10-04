@@ -1,7 +1,4 @@
 export default {
-    undefined: () => `
-        Element is undefined.
-    `,
     notElementOrTextNode: () => `
         Element is not dom element or text node.
     `,
