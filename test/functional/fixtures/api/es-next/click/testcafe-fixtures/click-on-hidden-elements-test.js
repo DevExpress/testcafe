@@ -32,3 +32,7 @@ test('Click on an element in ancestor with visibility: hidden', async t => {
 test('Click on an option in not expended select with size less than 2', async t => {
     await t.click('.select-not-expended>option');
 });
+
+test('Click on a map element with not visible container', async t => {
+    await t.click('.map-area');
+});

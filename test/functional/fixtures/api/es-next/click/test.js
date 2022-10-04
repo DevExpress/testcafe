@@ -195,5 +195,13 @@ describe('[API] t.click()', function () {
                     expect(errs[0]).to.contains(`The option: '<option>Option</option>' is not visible because its parent: '<select class="select-not-expended">...</select>' is not expended and has size less than 2.`);
                 });
         });
+
+        it('Should show that map container is not visible', function () {
+            return runTests('./testcafe-fixtures/click-on-hidden-elements-test.js', 'Click on a map element with not visible container', { shouldFail: true })
+                .catch(function (errs) {
+                    expect(errs[0]).to.contains(`The element: '<area class="map-area">' is not visible because container: '<img usemap="#map" src="" alt="">' is not visible'.`);
+                    expect(errs[0]).to.contains(`The element: '<img usemap="#map" src="" alt="">' is not visible because it has an effective width and height of: '0 x 0' pixels.`);
+                });
+        });
     });
 });
