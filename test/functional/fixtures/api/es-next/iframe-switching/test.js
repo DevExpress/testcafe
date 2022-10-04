@@ -20,7 +20,10 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
     });
 
     it('Should switch context between a nested iframe and the main window', function () {
-        return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click on element in a nested iframe', DEFAULT_RUN_OPTIONS);
+        return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click on element in a nested iframe', {
+            skip: 'firefox-osx',
+            ...DEFAULT_RUN_OPTIONS,
+        });
     });
 
     it('Should switch context between a shadow iframe and the main window', function () {
@@ -63,7 +66,7 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
 
     it('Should work in a cross-domain iframe', function () {
         // TODO: fix this test for Safari on BrowserStack
-        return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click in a cross-domain iframe with redirect', { skip: 'safari', ...DEFAULT_RUN_OPTIONS });
+        return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click in a cross-domain iframe with redirect', { skip: ['safari', 'firefox-osx'], ...DEFAULT_RUN_OPTIONS });
     });
 
     it('Should work in an iframe with the srcdoc attribute', function () {

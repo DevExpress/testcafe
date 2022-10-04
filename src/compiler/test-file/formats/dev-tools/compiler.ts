@@ -1,4 +1,4 @@
-import RawTestFileCompiler from '../raw';
+import RawTestFileCompiler from '../raw/compiler';
 import Test from '../../../../api/structure/test';
 import { CommandTransformerFactory } from './commands/factory';
 import { SwitchToIframeCommandTransformer } from './commands/switch-to-iframe';

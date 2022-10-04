@@ -42,6 +42,7 @@ import {
 } from './browser-manipulation';
 
 import { WaitCommand, DebugCommand } from './observation';
+import { isNil as isNullOrUndefined } from 'lodash';
 
 function getCmdCtor (type) {
     switch (type) {
@@ -158,9 +159,34 @@ function getCmdCtor (type) {
     }
 }
 
+const STUDIO_PROPERTY_NAMES = {
+    studio:   'studio',
+    selector: 'selector',
+    note:     'note',
+    callsite: 'callsite',
+};
+
+function removeStudioRelatedProperties (commandObj) {
+    delete commandObj[STUDIO_PROPERTY_NAMES.studio];
+    delete commandObj[STUDIO_PROPERTY_NAMES.note];
+    delete commandObj[STUDIO_PROPERTY_NAMES.callsite];
+
+    const selectorValue = commandObj[STUDIO_PROPERTY_NAMES.selector];
+
+    if (!isNullOrUndefined(selectorValue))
+        return;
+
+    delete commandObj['selector'];
+}
+
 // Create command from object
 export default function createCommandFromObject (obj, testRun) {
     const CmdCtor = getCmdCtor(obj.type);
+
+    // NOTE: TestCafe Studio adds additional fields to the command object in RAW tests.
+    // They do not affect the execution of the command. Therefore, we should remove them before validation.
+    // We should change this mechanism in TestCafe Studio in the future to not add these properties to RAW tests.
+    removeStudioRelatedProperties(obj);
 
     return CmdCtor && new CmdCtor(obj, testRun);
 }

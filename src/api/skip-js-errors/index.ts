@@ -49,7 +49,7 @@ function createSkipJsErrorsObjectFunction (deps: SkipJsErrorsOptionsObject): Exe
 
     const func = new Function('err', SKIP_JS_ERRORS_OBJECT_FUNCTION) as SkipJsErrorsCallback;
 
-    const callbackWrapper = wrapSkipJsErrorsCallback(func, { deps }) as SkipJsErrorsCallbackWithOptionsObject;
+    const callbackWrapper = wrapSkipJsErrorsCallback(func, { deps });
 
     return createSkipJsErrorsCallbackFunction(callbackWrapper);
 }

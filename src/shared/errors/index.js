@@ -189,6 +189,16 @@ export class ActionFunctionOptionError extends ActionOptionErrorBase {
     }
 }
 
+export class ActionInvalidObjectPropertyError extends TestRunErrorBase {
+    constructor (objectName, propertyName, availableProperties) {
+        super(TEST_RUN_ERRORS.actionInvalidObjectPropertyError);
+
+        this.objectName          = objectName;
+        this.propertyName        = propertyName;
+        this.availableProperties = availableProperties;
+    }
+}
+
 // Action execution errors
 //--------------------------------------------------------------------
 export class ActionElementNotFoundError extends SelectorErrorBase {

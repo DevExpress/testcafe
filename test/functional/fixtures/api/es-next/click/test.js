@@ -31,7 +31,7 @@ describe('[API] t.click()', function () {
             only:       'chrome',
         })
             .catch(function (errs) {
-                expect(errs[0]).to.contains('The "offsetX" option is expected to be an integer, but it was -3.5.');
+                expect(errs[0]).to.contains('The "ClickOptions.offsetX" option is expected to be an integer, but it was -3.5.');
                 expect(errs[0]).to.contains(
                     ' 11 |test(\'Incorrect action selector\', async t => {' +
                     ' 12 |    await t.click(123);' +

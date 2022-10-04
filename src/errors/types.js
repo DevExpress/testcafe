@@ -100,6 +100,7 @@ export const TEST_RUN_ERRORS = {
     actionStringOrRegexOptionError:                        'E97',
     actionSkipJsErrorsArgumentError:                       'E98',
     actionFunctionOptionError:                             'E99',
+    actionInvalidObjectPropertyError:                      'E100',
 };
 
 export const RUNTIME_ERRORS = {

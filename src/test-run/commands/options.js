@@ -56,7 +56,7 @@ export class ActionOptions extends Assignable {
         this._assignFrom(obj, validate);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'speed', type: speedOption },
         ];
@@ -74,11 +74,11 @@ export class OffsetOptions extends ActionOptions {
         this._assignFrom(obj, validate);
     }
 
-    _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+    getAssignableProperties () {
+        return [
             { name: 'offsetX', type: integerOption },
             { name: 'offsetY', type: integerOption },
-        ]);
+        ];
     }
 }
 
@@ -92,11 +92,28 @@ export class ScrollOptions extends OffsetOptions {
         this._assignFrom(obj, validate);
     }
 
-    _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+    getAssignableProperties () {
+        return [
             { name: 'scrollToCenter', type: booleanOption },
             { name: 'skipParentFrames', type: booleanOption },
-        ]);
+        ];
+    }
+}
+
+export class CropOptions extends Assignable {
+    constructor (obj, validate) {
+        super();
+
+        this._assignFrom(obj, validate);
+    }
+
+    getAssignableProperties () {
+        return [
+            { name: 'left', type: integerOption, defaultValue: null },
+            { name: 'right', type: integerOption, defaultValue: null },
+            { name: 'top', type: integerOption, defaultValue: null },
+            { name: 'bottom', type: integerOption, defaultValue: null },
+        ];
     }
 }
 
@@ -121,18 +138,32 @@ export class ElementScreenshotOptions extends ActionOptions {
         this._assignFrom(obj, validate);
     }
 
-    _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+    getAssignableProperties () {
+        return [
             { name: 'scrollTargetX', type: integerOption },
             { name: 'scrollTargetY', type: integerOption },
-            { name: 'crop.left', type: integerOption },
-            { name: 'crop.right', type: integerOption },
-            { name: 'crop.top', type: integerOption },
-            { name: 'crop.bottom', type: integerOption },
+            { name: 'crop', type: objectOption, init: initCropOptions },
             { name: 'includeMargins', type: booleanOption },
             { name: 'includeBorders', type: booleanOption },
             { name: 'includePaddings', type: booleanOption },
-        ]);
+        ];
+    }
+}
+
+export class ModifiersOptions extends Assignable {
+    constructor (obj, validate) {
+        super();
+
+        this._assignFrom(obj, validate);
+    }
+
+    getAssignableProperties () {
+        return [
+            { name: 'ctrl', type: booleanOption, defaultValue: false },
+            { name: 'alt', type: booleanOption, defaultValue: false },
+            { name: 'shift', type: booleanOption, defaultValue: false },
+            { name: 'meta', type: booleanOption, defaultValue: false },
+        ];
     }
 }
 
@@ -151,13 +182,10 @@ export class MouseOptions extends OffsetOptions {
         this._assignFrom(obj, validate);
     }
 
-    _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
-            { name: 'modifiers.ctrl', type: booleanOption },
-            { name: 'modifiers.alt', type: booleanOption },
-            { name: 'modifiers.shift', type: booleanOption },
-            { name: 'modifiers.meta', type: booleanOption },
-        ]);
+    getAssignableProperties () {
+        return [
+            { name: 'modifiers', type: objectOption, init: initModifiersOptions },
+        ];
     }
 }
 
@@ -172,10 +200,10 @@ export class ClickOptions extends MouseOptions {
         this._assignFrom(obj, validate);
     }
 
-    _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+    getAssignableProperties () {
+        return [
             { name: 'caretPos', type: positiveIntegerOption },
-        ]);
+        ];
     }
 }
 
@@ -193,14 +221,14 @@ export class MoveOptions extends MouseOptions {
         this._assignFrom(obj, validate);
     }
 
-    _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+    getAssignableProperties () {
+        return [
             { name: 'speed' },
             { name: 'minMovingTime' },
             { name: 'holdLeftButton' },
             { name: 'skipScrolling', type: booleanOption },
             { name: 'skipDefaultDragBehavior', type: booleanOption },
-        ]);
+        ];
     }
 }
 
@@ -216,12 +244,12 @@ export class TypeOptions extends ClickOptions {
         this._assignFrom(obj, validate);
     }
 
-    _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+    getAssignableProperties () {
+        return [
             { name: 'replace', type: booleanOption },
             { name: 'paste', type: booleanOption },
             { name: 'confidential', type: booleanOption },
-        ]);
+        ];
     }
 }
 
@@ -236,11 +264,11 @@ export class DragToElementOptions extends MouseOptions {
         this._assignFrom(obj, validate);
     }
 
-    _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+    getAssignableProperties () {
+        return [
             { name: 'destinationOffsetX', type: integerOption },
             { name: 'destinationOffsetY', type: integerOption },
-        ]);
+        ];
     }
 }
 
@@ -254,7 +282,7 @@ export class ResizeToFitDeviceOptions extends Assignable {
         this._assignFrom(obj, validate);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'portraitOrientation', type: booleanOption },
         ];
@@ -272,7 +300,7 @@ export class AssertionOptions extends Assignable {
         this._assignFrom(obj, validate);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'timeout', type: positiveIntegerOption },
             { name: 'allowUnawaitedPromise', type: booleanOption },
@@ -290,10 +318,10 @@ export class PressOptions extends ActionOptions {
         this._assignFrom(obj, validate);
     }
 
-    _getAssignableProperties () {
-        return super._getAssignableProperties().concat([
+    getAssignableProperties () {
+        return [
             { name: 'confidential', type: booleanOption },
-        ]);
+        ];
     }
 }
 
@@ -305,7 +333,7 @@ export class CookieOptions extends Assignable {
         this._assignFrom(obj, validate);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'name', type: stringOption },
             { name: 'value', type: stringOption },
@@ -327,7 +355,7 @@ export class RequestAuthOptions extends Assignable {
         this._assignFrom(obj, validate);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'username', type: stringOption, required: true },
             { name: 'password', type: stringOption },
@@ -342,7 +370,7 @@ export class RequestProxyOptions extends Assignable {
         this._assignFrom(obj, validate);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'protocol', type: stringOption },
             { name: 'host', type: stringOption, required: true },
@@ -359,7 +387,7 @@ export class RequestOptions extends Assignable {
         this._assignFrom(obj, validate);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'url', type: urlOption },
             { name: 'method', type: stringOption },
@@ -382,7 +410,7 @@ export class GetProxyUrlOptions extends Assignable {
         this._assignFrom(obj, validate);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'credentials', type: numberOption },
         ];
@@ -396,7 +424,7 @@ export class SkipJsErrorsOptions extends Assignable {
         this._assignFrom(obj, validate);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'stack', type: stringOrRegexOption, required: false },
             { name: 'message', type: stringOrRegexOption, required: false },
@@ -411,7 +439,7 @@ export class SkipJsErrorsCallbackWithOptions extends Assignable {
         this._assignFrom(obj, validate);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'fn', type: functionOption, required: true },
             { name: 'dependencies', type: objectOption, required: false },
@@ -426,4 +454,12 @@ function initRequestAuthOption (name, val, initOptions, validate = true) {
 
 function initRequestProxyOptions (name, val, initOptions, validate = true) {
     return new RequestProxyOptions(val, validate);
+}
+
+function initCropOptions (name, val, initOptions, validate = true) {
+    return new CropOptions(val, validate);
+}
+
+function initModifiersOptions (name, val, initOptions, validate = true) {
+    return new ModifiersOptions(val, validate);
 }

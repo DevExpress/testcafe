@@ -54,7 +54,7 @@ describe('[API] Drag actions', function () {
                 only:       'chrome',
             })
                 .catch(function (errs) {
-                    expect(errs[0]).to.contain('The "offsetX" option is expected to be an integer, but it was string.');
+                    expect(errs[0]).to.contain('The "MouseOptions.offsetX" option is expected to be an integer, but it was string.');
                     expect(errs[0]).to.contain('> 29 |    await t.drag(\'#draggable-div-1\', 10, 20, { offsetX: \'test\' });');
                 });
         });
@@ -105,7 +105,7 @@ describe('[API] Drag actions', function () {
                 only:       'chrome',
             })
                 .catch(function (errs) {
-                    expect(errs[0]).to.contain('The "modifiers.shift" option is expected to be a boolean value, but it was number.');
+                    expect(errs[0]).to.contain('The "ModifiersOptions.shift" option is expected to be a boolean value, but it was number.');
                     expect(errs[0]).to.contain('> 48 |    await t.dragToElement(\'#draggable-div-2\', \'#destination-div\'');
                 });
         });

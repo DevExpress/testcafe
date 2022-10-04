@@ -21,7 +21,7 @@ export default class DriverStatus extends Assignable {
         this._assignFrom(obj, true);
     }
 
-    _getAssignableProperties () {
+    getAssignableProperties () {
         return [
             { name: 'isCommandResult' },
             { name: 'executionError' },
