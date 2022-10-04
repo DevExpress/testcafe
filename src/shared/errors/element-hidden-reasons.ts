@@ -48,4 +48,12 @@ export default {
         '${parent}'
         is not expended and has size less than 2.
     `,
+    mapContainerNotVisible: (target: string, container: string, containerHiddenReason: string) => `
+        The element:
+        '${target}'
+        is not visible because container:
+        '${container}'
+        is not visible'.
+        '${containerHiddenReason}'
+    `,
 };
