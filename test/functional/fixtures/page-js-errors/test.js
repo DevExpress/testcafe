@@ -102,6 +102,10 @@ const expectFailAttempt = (errors, expectedMessage) => {
             return runTests('./testcafe-fixtures/test-controller.js', 'Should skip JS errors with SkipJsErrorsCallbackOptions');
         });
 
+        it('Should skip JS errors if some SkipJsErrorsCallbackOptions prop is string containing RegExp', async () => {
+            return runTests('./testcafe-fixtures/test-controller.js', 'Should skip JS errors if some SkipJsErrorsCallbackOptions prop is string containing RegExp');
+        });
+
         it('Should skip JS errors with callback function returning Promise', async () => {
             return runTests('./testcafe-fixtures/test-controller.js', 'Should skip JS errors with callback function returning Promise', { skip: ['ie'] });
         });

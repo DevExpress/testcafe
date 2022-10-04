@@ -1,4 +1,10 @@
-const { CLIENT_ERROR_MESSAGE, CLIENT_PAGE_URL, CLIENT_PAGE_URL_REGEXP, SKIP_JS_ERRORS_CALLBACK_OPTIONS } = require('../constants');
+const {
+    CLIENT_ERROR_MESSAGE,
+    CLIENT_PAGE_URL,
+    CLIENT_PAGE_URL_REGEXP,
+    SKIP_JS_ERRORS_CALLBACK_OPTIONS,
+    CLIENT_ERROR_REGEXP,
+} = require('../constants');
 
 fixture`TestController method`
     .page('http://localhost:3000/fixtures/page-js-errors/pages/skip-js-errors.html');
@@ -22,7 +28,7 @@ test('Should skip JS errors with SkipJsErrorsCallbackOptions', async t => {
 });
 
 test('Should skip JS errors with callback function returning Promise', async t => {
-    const asyncFunc       = () =>
+    const asyncFunc = () =>
         new Promise(resolve => setTimeout(() => resolve(true), 3000));
 
     await t.skipJsErrors(asyncFunc)
@@ -31,6 +37,13 @@ test('Should skip JS errors with callback function returning Promise', async t =
 
 test('Should skip JS errors without param', async t => {
     await t.skipJsErrors();
+});
+
+test('Should skip JS errors if some SkipJsErrorsCallbackOptions prop is string containing RegExp', async t => {
+    await t.skipJsErrors({
+        message: `${ CLIENT_ERROR_REGEXP }`,
+    })
+        .click('button');
 });
 
 test('Should correctly skip JS errors with multiple method calls', async t => {
