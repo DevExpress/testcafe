@@ -175,6 +175,13 @@ describe('[API] t.click()', function () {
                 });
         });
 
+        it('Should show that element has visibility: collapse', function () {
+            return runTests('./testcafe-fixtures/click-on-hidden-elements-test.js', 'Click on an element with visibility: collapse', { shouldFail: true })
+                .catch(function (errs) {
+                    expect(errs[0]).to.contains(`The element: '<div class="element visibility-collapse">Element...</div>' is not visible because it has CSS property: 'visibility: collapse'`);
+                });
+        });
+
         it('Should show that ancestor has display: none', function () {
             return runTests('./testcafe-fixtures/click-on-hidden-elements-test.js', 'Click on an element in ancestor with display: none', { shouldFail: true })
                 .catch(function (errs) {
@@ -186,6 +193,13 @@ describe('[API] t.click()', function () {
             return runTests('./testcafe-fixtures/click-on-hidden-elements-test.js', 'Click on an element in ancestor with visibility: hidden', { shouldFail: true })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains(`The element: '<div class="element width-height-100"></div>' is not visible because its parent: '<div class="ancestor visibility-hidden">...</div>' has CSS property: 'visibility: hidden'`);
+                });
+        });
+
+        it('Should show that ancestor has visibility: collapse', function () {
+            return runTests('./testcafe-fixtures/click-on-hidden-elements-test.js', 'Click on an element in ancestor with visibility: collapse', { shouldFail: true })
+                .catch(function (errs) {
+                    expect(errs[0]).to.contains(`The element: '<div class="element width-height-100"></div>' is not visible because its parent: '<div class="ancestor visibility-collapse">...</div>' has CSS property: 'visibility: collapse'`);
                 });
         });
 

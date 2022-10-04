@@ -21,12 +21,20 @@ test('Click on an element with visibility: hidden', async t => {
     await t.click('.element.visibility-hidden');
 });
 
+test('Click on an element with visibility: collapse', async t => {
+    await t.click('.element.visibility-collapse');
+});
+
 test('Click on an element in ancestor with display: none', async t => {
     await t.click('.ancestor.display-none>.element');
 });
 
 test('Click on an element in ancestor with visibility: hidden', async t => {
     await t.click('.ancestor.visibility-hidden>.element');
+});
+
+test('Click on an element in ancestor with visibility: collapse', async t => {
+    await t.click('.ancestor.visibility-collapse>.element');
 });
 
 test('Click on an option in not expended select with size less than 2', async t => {
