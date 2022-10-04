@@ -190,7 +190,7 @@ export default {
     `,
 
     [TEST_RUN_ERRORS.actionAdditionalElementIsInvisibleError]: err => `
-        ${escapeHtml(err.reason) || 'The element that matches the specified "${err.argumentName}" is not visible.'}
+        ${escapeHtml(err.reason) || `The element that matches the specified "${err.argumentName}" is not visible.`}
     `,
 
     [TEST_RUN_ERRORS.actionAdditionalSelectorMatchesWrongNodeTypeError]: err => `
