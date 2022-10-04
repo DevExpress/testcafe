@@ -12,41 +12,6 @@ declare type CookieSameSite = 'Lax' | 'Strict' | 'None';
 
 const MAX_TIMESTAMP = 8640000000000000;
 
-function cdpCookieToExternalCookie (cookie: Cookie): ExternalCookies {
-    return {
-        name:     cookie.name,
-        value:    cookie.value,
-        domain:   cookie.domain,
-        maxAge:   void 0,
-        path:     cookie.path,
-        expires:  void 0,
-        secure:   cookie.secure,
-        httpOnly: cookie.httpOnly,
-        sameSite: cookie.sameSite ?? 'none',
-    } as unknown as ExternalCookies;
-}
-
-function cookieOptionToCdpCookieParam (cookie: CookieOptions, hostname: string, pathname: string): CookieParam {
-    return {
-        name:     cookie.name,
-        value:    cookie.value,
-        domain:   cookie.domain ?? hostname,
-        path:     cookie.path ?? pathname,
-        secure:   cookie.secure,
-        httpOnly: false,
-        sameSite: cookie.sameSite as CookieSameSite,
-        expires:  cookie.expires?.getTime() || MAX_TIMESTAMP,
-    };
-}
-
-function parseUrls (urls: string[]): { domain: string, path: string }[] {
-    return urls.map(url => {
-        const { hostname, pathname } = new URL(url);
-
-        return { domain: hostname, path: pathname };
-    });
-}
-
 export class CdpCookieProvider extends CookieProviderBase implements CookieProvider {
     private async _getCdpClient (): Promise<remoteChrome.ProtocolApi> {
         const browserConnection = this.testRun.browserConnection;
@@ -63,7 +28,7 @@ export class CdpCookieProvider extends CookieProviderBase implements CookieProvi
         const client      = await this._getCdpClient();
         const { cookies } = await client.Storage.getCookies({});
 
-        return (matchCollection(cookies, externalCookies) as Cookie[]).map(cdpCookieToExternalCookie);
+        return (matchCollection(cookies, externalCookies) as Cookie[]).map(this._cdpCookieToExternalCookie);
     }
 
     async setCookies (cookies: CookieOptions[], url: string): Promise<void> {
@@ -71,7 +36,7 @@ export class CdpCookieProvider extends CookieProviderBase implements CookieProvi
         const { hostname = '', pathname = '/' } = url ? new URL(url) : {};
 
         await client.Network.setCookies({
-            cookies: cookies.map(cookie => cookieOptionToCdpCookieParam(cookie, hostname, pathname)),
+            cookies: cookies.map(cookie => this._cookieOptionToCdpCookieParam(cookie, hostname, pathname)),
         });
     }
 
@@ -81,7 +46,7 @@ export class CdpCookieProvider extends CookieProviderBase implements CookieProvi
         if (!cookies || !cookies.length)
             return client.Network.clearBrowserCookies();
 
-        const parsedUrls    = parseUrls(urls);
+        const parsedUrls    = this._parseUrls(urls);
         let existingCookies = await this.getCookies([]);
 
         if (parsedUrls.length) {
@@ -100,5 +65,40 @@ export class CdpCookieProvider extends CookieProviderBase implements CookieProvi
         }
 
         return void 0;
+    }
+
+    private _cdpCookieToExternalCookie (cookie: Cookie): ExternalCookies {
+        return {
+            name:     cookie.name,
+            value:    cookie.value,
+            domain:   cookie.domain,
+            maxAge:   void 0,
+            path:     cookie.path,
+            expires:  void 0,
+            secure:   cookie.secure,
+            httpOnly: cookie.httpOnly,
+            sameSite: cookie.sameSite ?? 'none',
+        } as unknown as ExternalCookies;
+    }
+
+    private _cookieOptionToCdpCookieParam (cookie: CookieOptions, hostname: string, pathname: string): CookieParam {
+        return {
+            name:     cookie.name,
+            value:    cookie.value,
+            domain:   cookie.domain ?? hostname,
+            path:     cookie.path ?? pathname,
+            secure:   cookie.secure,
+            httpOnly: false,
+            sameSite: cookie.sameSite as CookieSameSite,
+            expires:  cookie.expires?.getTime() || MAX_TIMESTAMP,
+        };
+    }
+
+    private _parseUrls (urls: string[]): { domain: string, path: string }[] {
+        return urls.map(url => {
+            const { hostname, pathname } = new URL(url);
+
+            return { domain: hostname, path: pathname };
+        });
     }
 }

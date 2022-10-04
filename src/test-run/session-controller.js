@@ -6,16 +6,6 @@ import TestRun from './';
 const ACTIVE_SESSIONS_MAP = {};
 const UPLOADS_DIR_NAME = '_uploads_';
 
-class CookieMock {
-    getClientString () {
-        return '';
-    }
-
-    takePendingSyncCookies () {
-        return [];
-    }
-}
-
 export default class SessionController extends Session {
     constructor (uploadRoots, options) {
         super(uploadRoots, options);
@@ -55,10 +45,6 @@ export default class SessionController extends Session {
 
     handlePageError (ctx, err) {
         return this.currentTestRun.handlePageError(ctx, err);
-    }
-
-    createCookies () {
-        return this.options.proxyless ? new CookieMock() : super.createCookies();
     }
 
     // API
