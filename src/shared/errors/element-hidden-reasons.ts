@@ -36,6 +36,18 @@ export default {
         '${parent}'
         has CSS property: 'visibility: hidden'
     `,
+    elHasVisibilityCollapse: (target: string) => `
+        The element:
+        '${target}'
+        is not visible because it has CSS property: 'visibility: collapse'
+    `,
+    parentHasVisibilityCollapse: (target: string, parent: string) => `
+        The element:
+        '${target}'
+        is not visible because its parent:
+        '${parent}'
+        has CSS property: 'visibility: collapse'
+    `,
     elNotRendered: (target: string) => `
         The element:
         '${target}'
