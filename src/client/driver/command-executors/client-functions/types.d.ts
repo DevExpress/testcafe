@@ -19,6 +19,7 @@ export interface APIInfo {
 export interface SelectorErrorParams {
     apiFnChain: string[];
     apiFnIndex: number | null;
+    reason: string | null;
 }
 
 type CustomDOMProperties = Dictionary<(n: Node) => unknown>;
