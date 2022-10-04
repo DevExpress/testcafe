@@ -28,3 +28,7 @@ test('Click on an element in ancestor with display: none', async t => {
 test('Click on an element in ancestor with visibility: hidden', async t => {
     await t.click('.ancestor.visibility-hidden>.element');
 });
+
+test('Click on an option in not expended select with size less than 2', async t => {
+    await t.click('.select-not-expended>option');
+});

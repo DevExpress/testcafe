@@ -139,6 +139,7 @@ describe('[API] t.click()', function () {
         });
     });
 
+    describe('Hidden reasons', function () {
         it('Should show that element has width: 0 and height: 0', function () {
             return runTests('./testcafe-fixtures/click-on-hidden-elements-test.js', 'Click on an element with width: 0 and height: 0', { shouldFail: true })
                 .catch (function (errs) {
@@ -185,6 +186,13 @@ describe('[API] t.click()', function () {
             return runTests('./testcafe-fixtures/click-on-hidden-elements-test.js', 'Click on an element in ancestor with visibility: hidden', { shouldFail: true })
                 .catch (function (errs) {
                     expect(errs[0]).to.contains(`The element: '<div class="element width-height-100"></div>' is not visible because its parent: '<div class="ancestor visibility-hidden">...</div>' has CSS property: 'visibility: hidden'`);
+                });
+        });
+
+        it('Should show that select has size less than 2 and is not expended', function () {
+            return runTests('./testcafe-fixtures/click-on-hidden-elements-test.js', 'Click on an option in not expended select with size less than 2', { shouldFail: true })
+                .catch (function (errs) {
+                    expect(errs[0]).to.contains(`The option: '<option>Option</option>' is not visible because its parent: '<select class="select-not-expended">...</select>' is not expended and has size less than 2.`);
                 });
         });
     });
