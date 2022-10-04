@@ -175,8 +175,8 @@ export default {
         ${formatSelectorCallstack(err.apiFnChain, err.apiFnIndex, viewportWidth)}
     `,
 
-    [TEST_RUN_ERRORS.actionElementIsInvisibleError]: () => `
-        The element that matches the specified selector is not visible.
+    [TEST_RUN_ERRORS.actionElementIsInvisibleError]: err => `
+        ${escapeHtml(err.reason) || 'The element that matches the specified selector is not visible.'}
     `,
 
     [TEST_RUN_ERRORS.actionSelectorMatchesWrongNodeTypeError]: err => `
@@ -190,7 +190,7 @@ export default {
     `,
 
     [TEST_RUN_ERRORS.actionAdditionalElementIsInvisibleError]: err => `
-        The element that matches the specified "${err.argumentName}" is not visible.
+        ${escapeHtml(err.reason) || 'The element that matches the specified "${err.argumentName}" is not visible.'}
     `,
 
     [TEST_RUN_ERRORS.actionAdditionalSelectorMatchesWrongNodeTypeError]: err => `
