@@ -9,6 +9,7 @@ import * as pageUnloadBarrier from './barriers/page-unload-barrier';
 import { preventRealEvents, disableRealEventsPreventing } from './prevent-real-events';
 import scrollController from './scroll/controller';
 import ScrollAutomation from './scroll/index';
+import selectController from './select';
 
 import * as serviceUtils from './utils/service';
 import * as domUtils from './utils/dom';
@@ -46,6 +47,7 @@ exports.preventRealEvents           = preventRealEvents;
 exports.disableRealEventsPreventing = disableRealEventsPreventing;
 exports.scrollController            = scrollController;
 exports.ScrollAutomation            = ScrollAutomation;
+exports.selectController            = selectController;
 
 exports.serviceUtils           = serviceUtils;
 exports.domUtils               = domUtils;

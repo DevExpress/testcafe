@@ -1,6 +1,7 @@
 import hammerhead from '../deps/hammerhead';
 import * as styleUtils from './style';
 import * as domUtils from './dom';
+import selectController from '../select/index';
 import AxisValues, { AxisValuesData } from './values/axis-values';
 import BoundaryValues, { BoundaryValuesData } from './values/boundary-values';
 import Dimensions from './values/dimensions';
@@ -268,16 +269,19 @@ export function isElementVisible (el: Node): boolean {
     if (!domUtils.isDomElement(el) && !domUtils.isTextNode(el))
         return false;
 
+    if (domUtils.isOptionElement(el) || domUtils.getTagName(el as Element) === 'optgroup')
+        return selectController.isOptionElementVisible(el as HTMLElement);
+
     if (domUtils.isIframeElement(el))
         return isIframeVisible(el);
 
     if (domUtils.isSVGElement(el)) {
         const hiddenParent = domUtils.findParent(el, true, (parent: Node) => {
-            return hiddenUsingStyles(parent as unknown as HTMLElement);
+            return hiddenUsingStyles(parent as HTMLElement);
         });
 
         if (!hiddenParent)
-            return !hiddenByRectangle(el as unknown as HTMLElement);
+            return !hiddenByRectangle(el as HTMLElement);
 
         return false;
     }
@@ -307,9 +311,18 @@ export function getHiddenReason (el?: Node): string | null {
     if (!domUtils.isDomElement(el) && !isTextNode)
         return hiddenReasons.notElementOrTextNode();
 
-    const strEl        = isTextNode ? (el as Text).data : stringifyElement(el as HTMLElement);
-    const offsetHeight = (el as HTMLElement).offsetHeight;
-    const offsetWidth  = (el as HTMLElement).offsetWidth;
+    const strEl           = isTextNode ? (el as Text).data : stringifyElement(el as HTMLElement);
+    const offsetHeight    = (el as HTMLElement).offsetHeight;
+    const offsetWidth     = (el as HTMLElement).offsetWidth;
+    const isOptionElement = domUtils.isOptionElement(el) || domUtils.getTagName(el as HTMLElement) === 'optgroup';
+
+    if (isOptionElement && !selectController.isOptionElementVisible(el as HTMLElement)) {
+        const optionParent    = domUtils.getSelectParent(el);
+        const optionParentStr = stringifyElement(optionParent);
+        const optionStr       = stringifyElement(el as HTMLElement);
+
+        return hiddenReasons.optionNotVisible(optionStr, optionParentStr);
+    }
 
     if (domUtils.isMapElement(el)) {
         const mapContainer          = domUtils.getMapContainer(domUtils.closest(el, 'map'));

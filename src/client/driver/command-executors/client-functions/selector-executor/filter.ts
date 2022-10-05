@@ -1,6 +1,5 @@
 import { InvalidSelectorResultError } from '../../../../../shared/errors/index';
 import {
-    isElementVisible,
     isNodeCollection,
     isArrayOfNodes,
     castToArray,
@@ -8,6 +7,8 @@ import {
 import { APIInfo, FilterOptions } from '../types';
 // @ts-ignore
 import { nativeMethods } from '../../../deps/hammerhead';
+// @ts-ignore
+import { positionUtils } from '../../../deps/testcafe-core';
 
 
 const SELECTOR_FILTER_ERROR = {
@@ -37,13 +38,13 @@ class SelectorFilter {
 
     public filter (nodes: Node[], options: FilterOptions, apiInfo: APIInfo): number | Node | Node[] | undefined {
         if (options.filterVisible) {
-            nodes = nodes.filter(isElementVisible);
+            nodes = nodes.filter(positionUtils.isElementVisible);
 
             this._assertFilterError(nodes, apiInfo, SELECTOR_FILTER_ERROR.filterVisible);
         }
 
         if (options.filterHidden) {
-            nodes = nodes.filter(n => !isElementVisible(n));
+            nodes = nodes.filter(n => !positionUtils.isElementVisible(n));
 
             this._assertFilterError(nodes, apiInfo, SELECTOR_FILTER_ERROR.filterHidden);
         }

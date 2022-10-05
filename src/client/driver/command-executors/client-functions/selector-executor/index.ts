@@ -10,7 +10,6 @@ import {
 } from '../types';
 import selectorFilter from './filter';
 import Replicator from 'replicator';
-import * as selectorUtils from './utils';
 import CHECK_ELEMENT_DELAY from './check-element-delay';
 import {
     // @ts-ignore
@@ -20,7 +19,8 @@ import {
     // @ts-ignore
     utils,
 } from '../../../deps/hammerhead';
-import delay from '../../../../core/utils/delay';
+// @ts-ignore
+import { positionUtils, delay } from '../../../deps/testcafe-core';
 
 export default class SelectorExecutor extends ClientFunctionExecutor<ExecuteSelectorCommand, SelectorDependencies> {
     private readonly createNotFoundError: SelectorErrorCb | null;
@@ -64,7 +64,7 @@ export default class SelectorExecutor extends ClientFunctionExecutor<ExecuteSele
     private _getTimeoutErrorParams (el?: Node): SelectorErrorParams | null {
         const apiFnIndex = selectorFilter.error;
         const apiFnChain = this.command.apiFnChain;
-        const reason     = selectorUtils.getHiddenReason(el);
+        const reason     = positionUtils.getHiddenReason(el);
 
         return { apiFnIndex, apiFnChain, reason };
     }
@@ -79,7 +79,7 @@ export default class SelectorExecutor extends ClientFunctionExecutor<ExecuteSele
             .then((el: unknown) => {
                 const element          = el as Node | undefined;
                 const isElementExists  = !!element;
-                const isElementVisible = !this.command.visibilityCheck || element && selectorUtils.isElementVisible(element);
+                const isElementVisible = !this.command.visibilityCheck || element && positionUtils.isElementVisible(element);
                 const isTimeout        = nativeMethods.dateNow() - startTime >= this.timeout;
 
                 if (isElementExists && (isElementVisible || utils.dom.isShadowRoot(element as Node)))
