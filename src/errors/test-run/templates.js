@@ -179,6 +179,10 @@ export default {
         ${escapeHtml(err.reason) || 'The element that matches the specified selector is not visible.'}
     `,
 
+    [TEST_RUN_ERRORS.actionElementIsNotTargetError]: () => `
+        The element that matches the specified selector is covered.'
+    `,
+
     [TEST_RUN_ERRORS.actionSelectorMatchesWrongNodeTypeError]: err => `
         The specified selector is expected to match a DOM element, but it matches a ${err.nodeDescription} node.
     `,
