@@ -230,6 +230,12 @@ export class ActionAdditionalElementNotFoundError extends SelectorErrorBase {
     }
 }
 
+export class ActionElementIsNotTargetError extends TestRunErrorBase {
+    constructor (callsite) {
+        super(TEST_RUN_ERRORS.actionElementIsNotTargetError, callsite);
+    }
+}
+
 export class ActionAdditionalElementIsInvisibleError extends SelectorErrorBase {
     constructor (argumentName, apiFnArgs) {
         super(TEST_RUN_ERRORS.actionAdditionalElementIsInvisibleError, apiFnArgs);

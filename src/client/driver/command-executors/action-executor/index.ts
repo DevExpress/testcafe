@@ -4,7 +4,7 @@ import delay from '../../../core/utils/delay';
 import { whilst } from '../../../core/utils/promise';
 import { ActionCommandBase } from '../../../../test-run/commands/base';
 import { Dictionary } from '../../../../configuration/interfaces';
-import { ActionElementNotFoundError } from '../../../../shared/errors';
+import { ActionElementIsNotTargetError } from '../../../../shared/errors';
 import { ExecuteSelectorFn } from '../../../../shared/types';
 import ElementsRetriever from './elements-retriever';
 import { Automation, AutomationHandler } from '../../../automation/types';
@@ -167,7 +167,7 @@ export default class ActionExecutor extends EventEmitter {
                     if (!this._isExecutionTimeoutExpired())
                         return delay(CHECK_ELEMENT_IN_AUTOMATIONS_INTERVAL);
 
-                    if (err.constructor.name === ActionElementNotFoundError.name) {
+                    if (err.constructor.name === ActionElementIsNotTargetError.name) {
                         // If we can't get a target element via elementFromPoint but it's
                         // visible we click on the point where the element is located.
                         strictElementCheck = false;
