@@ -71,7 +71,7 @@ describe('[Raw API] Click action', () => {
     it('Should fail if an action target is invisible', () => {
         return runTests('./testcafe-fixtures/click.testcafe', 'Click invisible button', { shouldFail: true })
             .catch(errs => {
-                expect(errs[0]).contains('The element that matches the specified selector is not visible.');
+                expect(errs[0]).contains('The element: \'<input type="button" id="invisible-button" value="invisible-button" style="display: none;">\' is not visible because it has CSS property: \'display: none\'');
                 expect(errs[0]).contains('[[Click invisible button callsite]]');
             });
     });
@@ -79,7 +79,7 @@ describe('[Raw API] Click action', () => {
     it('Should fail if an action target is out of the visible area', () => {
         return runTests('./testcafe-fixtures/click.testcafe', 'Click a button that is out of the visible area', { shouldFail: true })
             .catch(errs => {
-                expect(errs[0]).contains('The element that matches the specified selector is not visible.');
+                expect(errs[0]).contains('The element: \'<input type="button" id="out-of-visible-area" style="position: absolute; left: -100px; top: -100px;">\' is outside the visible bounds of the document.');
                 expect(errs[0]).contains('[[Click a button that is out of the visible area callsite]]');
             });
     });

@@ -15,7 +15,7 @@ describe('[Regression](GH-1521)', function () {
             shouldFail: true,
         })
             .catch(function (errs) {
-                expect(errs[0]).to.contains('The element that matches the specified selector is not visible');
+                expect(errs[0]).to.contains('The element: \'<input id="out-of-viewport-input" value="value">\' is outside the visible bounds of the document.');
                 expect(errs[0]).to.contains(' > 65 |        await t.click(Selector(\'#out-of-viewport-input\', { timeout: 2000 }));');
             });
     });

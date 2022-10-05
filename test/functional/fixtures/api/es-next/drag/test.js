@@ -113,7 +113,7 @@ describe('[API] Drag actions', function () {
         it("Should validate node type of element that destinationElement's selector returns", function () {
             return runTests('./testcafe-fixtures/drag-test.js', 'Destination element selector returns text node', { shouldFail: true })
                 .catch(function (errs) {
-                    expect(errs[0]).to.contains('The element that matches the specified "destinationSelector" is not visible.');
+                    expect(errs[0]).to.contains('Element is not dom element or text node.');
                     expect(errs[0]).to.contains(' > 56 |    await t.dragToElement(\'#draggable-div-2\', getDocument);');
                 });
         });

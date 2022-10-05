@@ -506,7 +506,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                 only:              'chrome',
             })
                 .catch(function (errs) {
-                    expect(errs[0]).to.contains('The element that matches the specified selector is not visible.');
+                    expect(errs[0]).to.contains('The element: \'<table style="visibility: hidden;">...</table>\' is not visible because it has CSS property: \'visibility: hidden\'');
                     expect(errs[0]).to.contains(
                         ' 43 |        .click(\'#hide\')' +
                         ' > 44 |        .takeElementScreenshot(\'table\', \'custom/\' + t.ctx.parsedUA.name + \'.png\');' +

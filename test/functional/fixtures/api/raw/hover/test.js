@@ -13,7 +13,7 @@ describe('[Raw API] Hover action', function () {
     it('Should fail if an action target is out of the visible area', function () {
         return runTests('./testcafe-fixtures/hover.testcafe', 'Hover on a button that is out of the visible area', { shouldFail: true })
             .catch(function (errs) {
-                expect(errs[0]).contains('The element that matches the specified selector is not visible.');
+                expect(errs[0]).contains('The element: \'<input type="button" id="out-of-visible-area" style="position: absolute; left: -100px; top: -100px;">\' is outside the visible bounds of the document.');
                 expect(errs[0]).contains('[[Hover on a button that is out of the visible area callsite]]');
             });
     });
