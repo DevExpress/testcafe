@@ -180,7 +180,7 @@ export default {
     `,
 
     [TEST_RUN_ERRORS.actionElementIsNotTargetError]: () => `
-        The element that matches the specified selector is covered.'
+        The element that matches the specified selector is covered.
     `,
 
     [TEST_RUN_ERRORS.actionSelectorMatchesWrongNodeTypeError]: err => `
