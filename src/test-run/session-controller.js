@@ -6,6 +6,18 @@ import TestRun from './';
 const ACTIVE_SESSIONS_MAP = {};
 const UPLOADS_DIR_NAME = '_uploads_';
 
+// NOTE: Proxyless cookie implementation doesn't require client-server communication.
+// This stub was created to reduce conditional logic in connected classes.
+class ProxylessCookieStub {
+    getClientString () {
+        return '';
+    }
+
+    takePendingSyncCookies () {
+        return [];
+    }
+}
+
 export default class SessionController extends Session {
     constructor (uploadRoots, options) {
         super(uploadRoots, options);
@@ -45,6 +57,10 @@ export default class SessionController extends Session {
 
     handlePageError (ctx, err) {
         return this.currentTestRun.handlePageError(ctx, err);
+    }
+
+    createCookies () {
+        return this.options.proxyless ? new ProxylessCookieStub() : super.createCookies();
     }
 
     // API
