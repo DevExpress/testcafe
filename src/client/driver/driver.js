@@ -14,6 +14,7 @@ import {
     delay,
     getTimeLimitedPromise,
     browser,
+    TEST_RUN_ERRORS,
 } from './deps/testcafe-core';
 
 import { cursor } from './deps/testcafe-automation';
@@ -31,7 +32,6 @@ import {
 
 import TEST_RUN_MESSAGES from '../../test-run/client-messages';
 import COMMAND_TYPE from '../../test-run/commands/type';
-import { TEST_RUN_ERRORS } from '../../errors/types';
 import {
     isBrowserManipulationCommand,
     isCommandRejectableByPageError,

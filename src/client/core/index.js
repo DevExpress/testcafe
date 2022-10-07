@@ -36,6 +36,8 @@ import * as browser from '../browser';
 import selectorTextFilter from '../../client-functions/selectors/selector-text-filter';
 import selectorAttributeFilter from '../../client-functions/selectors/selector-attribute-filter';
 
+import { TEST_RUN_ERRORS, RUNTIME_ERRORS } from '../../errors/types';
+
 const exports = {};
 
 exports.RequestBarrier              = RequestBarrier;
@@ -73,6 +75,9 @@ exports.stringifyElement       = stringifyElement;
 
 exports.selectorTextFilter      = selectorTextFilter;
 exports.selectorAttributeFilter = selectorAttributeFilter;
+
+exports.TEST_RUN_ERRORS = TEST_RUN_ERRORS;
+exports.RUNTIME_ERRORS  = RUNTIME_ERRORS;
 
 const nativeMethods    = hammerhead.nativeMethods;
 const evalIframeScript = hammerhead.EVENTS.evalIframeScript;
