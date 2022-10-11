@@ -32,5 +32,26 @@
         status.textContent = 'Clicked!';
     });
 </script>
+<!--Click shifted element-->
+<div id="shifted-element" style="background: green; width: 100px; height: 100px; transform: translateX(-60px);"></div>
+<script>
+    document.querySelector('#shifted-element').addEventListener('click', function () {
+        const rect = document.querySelector('#shifted-element').getBoundingClientRect();
+
+        window.clickOffset = { x: e.pageX - rect.left, y: e.pageY - rect.top };
+    });
+</script>
+<!--Click overlapped element-->
+<div style="position: relative;">
+    <div id="overlapped-center" style="background: blue; width: 100px; height: 100px; position: absolute;"></div>
+    <div style="background: red; width: 60px; height: 60px; position: absolute;"></div>
+</div>
+<script>
+    document.querySelector('#overlapped-center').addEventListener('click', function () {
+        const rect = document.querySelector('#overlapped-center').getBoundingClientRect();
+
+        window.clickOffset = { x: e.pageX - rect.left, y: e.pageY - rect.top };
+    });
+</script>
 </body>
 </html>

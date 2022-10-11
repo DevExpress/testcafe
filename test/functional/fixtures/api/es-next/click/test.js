@@ -121,6 +121,14 @@ describe('[API] t.click()', function () {
         );
     });
 
+    it('Should click on a more than half-shifted element', async function () {
+        await runTests('./testcafe-fixtures/click-test.js', 'Click on a more than half-shifted element', { only: 'chrome' });
+    });
+
+    it('Should click on an element with overlapped center', async function () {
+        await runTests('./testcafe-fixtures/click-test.js', 'Click on an element with overlapped center', { only: 'chrome' });
+    });
+
     describe('[Regression](GH-628)', function () {
         it('Should click on an "option" element', function () {
             return runTests('./testcafe-fixtures/click-on-select-child-test.js', 'Click on an "option" element');
