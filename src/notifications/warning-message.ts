@@ -48,7 +48,7 @@ export default {
     testsCompilationTakesTooLong:       'Tests took too long to compile ({compileTime}). Ensure the test code has no excessive imports.',
     deprecatedAPI:                      '{API} is deprecated and will be removed in the next major release. Use {replacement} instead.',
     unawaitedMethodWithAssertion:       "An asynchronous method that you do not await includes an assertion. Inspect that method's execution chain and add the 'await' keyword where necessary.",
-    multipleConfigurationFilesFound:    'There are multiple configuration files found, TestCafe will only use one. The file "{path}" will be used.\nThe priority order is as follows:\n{priorityList}',
+    multipleConfigurationFilesFound:    'TestCafe detected more than one configuration file.\nTo prevent configuration conflicts, TestCafe will use the configuration file with the highest priority: {path}.\nRefer to the following article for more information: https://testcafe.io/documentation/402638/reference/configuration-file?search#configuration-file-priority',
     elementOverlapped:                  'TestCafe cannot interact with the {expected} element because another element obstructs it.\nWhen something overlaps the action target, TestCafe performs the action with the topmost element at the original target\'s location.\nThe following element with a greater z-order replaced the original action target: {actual}.\nReview your code to prevent this behavior.',
 };
 
