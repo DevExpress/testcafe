@@ -3,13 +3,13 @@ import { TEST_RUN_ERRORS } from '../types';
 import {
     renderForbiddenCharsList,
     renderDiff,
+    formatSelectorCallstack,
     formatUrl,
     replaceLeadingSpacesWithNbsp,
     formatExpressionMessage,
 } from './utils';
 import { getConcatenatedValuesString } from '../../utils/string';
 
-import formatSelectorCallstack from '../../utils/format-selector-callstack';
 
 const EXTERNAL_LINKS = {
     createNewIssue:      'https://github.com/DevExpress/testcafe/issues/new?template=bug-report.md',
