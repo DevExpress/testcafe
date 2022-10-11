@@ -49,6 +49,6 @@ export default {
     deprecatedAPI:                      '{API} is deprecated and will be removed in the next major release. Use {replacement} instead.',
     unawaitedMethodWithAssertion:       "An asynchronous method that you do not await includes an assertion. Inspect that method's execution chain and add the 'await' keyword where necessary.",
     multipleConfigurationFilesFound:    'There are multiple configuration files found, TestCafe will only use one. The file "{path}" will be used.\nThe priority order is as follows:\n{priorityList}',
-    elementOverlapped:                  'Element {expected} was overlapped by {actual}. The action was performed on the coordinates of the element.\nMake sure there are no unexpected elements during test execution.',
+    elementOverlapped:                  'TestCafe cannot interact with the {expected} element because another element obstructs it.\nWhen something overlaps the action target, TestCafe performs the action with the topmost element at the original target\'s location.\nThe following element with a greater z-order replaced the original action target: {actual}.\nReview your code to prevent this behavior.',
 };
 
