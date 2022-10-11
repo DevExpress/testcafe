@@ -2,7 +2,8 @@ const hammerhead         = window.getTestCafeModule('hammerhead');
 const browserUtils       = hammerhead.utils.browser;
 const testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
 const MoveAutomation     = testCafeAutomation.MoveAutomation;
-const stringifyElement   = testCafeAutomation.stringifyElement;
+const testCafeCore       = window.getTestCafeModule('testCafeCore');
+const stringifyElement   = testCafeCore.stringifyElement;
 
 function isInteger (num) {
     return (num ^ 0) === num;

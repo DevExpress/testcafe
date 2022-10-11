@@ -11,7 +11,7 @@ import Cursor from './cursor/cursor';
 import cursorInstance from './cursor';
 import delay from '../core/utils/delay';
 import SharedEventEmitter from '../core/utils/event-emitter';
-import stringifyElement from './utils/stringify-element';
+import stringifyElement from '../core/utils/stringify-element';
 
 import {
     MoveOptions,
