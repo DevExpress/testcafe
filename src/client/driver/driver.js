@@ -1164,7 +1164,7 @@ export default class Driver extends serviceUtils.EventEmitter {
             return selectorExecutor.getResult();
         };
 
-        const executor = new ActionExecutor(command, this.selectorTimeout, this.speed, executeSelectorCb);
+        const executor = new ActionExecutor(command, this.options.selectorTimeout, this.speed, executeSelectorCb);
         const warnings = [];
 
         executor.on(ActionExecutor.EXECUTION_STARTED_EVENT, () => {
