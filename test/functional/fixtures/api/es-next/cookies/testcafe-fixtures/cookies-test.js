@@ -15,9 +15,6 @@ fixture`[API] Get Cookies`
     });
 
 const getClientCookie = ClientFunction(() => {
-    if (window['%hammerhead%'].sandbox.proxyless)
-        return window['%hammerhead%'].nativeMethods.documentCookieGetter.call(document);
-
     return document.cookie;
 });
 
