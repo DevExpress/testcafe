@@ -1165,6 +1165,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         };
 
         const executor = new ActionExecutor(command, this.options.selectorTimeout, this.speed, executeSelectorCb);
+        const warnings = [];
 
         executor.on(ActionExecutor.EXECUTION_STARTED_EVENT, () => {
             this.statusBar.hideWaitingElementStatus(true);
@@ -1175,6 +1176,10 @@ export default class Driver extends serviceUtils.EventEmitter {
             this.statusBar.showWaitingElementStatus(timeout);
         });
 
+        executor.on(ActionExecutor.WARNING_EVENT, warning => {
+            warnings.push(warning);
+        });
+
         const clientRequestEmitter   = new ClientRequestEmitter();
         const scriptExecutionEmitter = new ScriptExecutionEmitter();
         const barriers               = new BarriersComplex(clientRequestEmitter, scriptExecutionEmitter, pageUnloadBarrier);
@@ -1183,6 +1188,7 @@ export default class Driver extends serviceUtils.EventEmitter {
             .then(elements => new DriverStatus({
                 isCommandResult: true,
                 result:          createReplicator(new SelectorElementActionTransform()).encode(elements),
+                warnings,
             }))
             .catch(err => this.statusBar.hideWaitingElementStatus(false)
                 .then(() => new DriverStatus({ isCommandResult: true, executionError: err })),

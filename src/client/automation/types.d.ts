@@ -12,6 +12,7 @@ export interface AutomationHandler {
 export interface Automation extends EventEmitter {
     run(strictElementCheck: boolean): Promise<any>;
     TARGET_ELEMENT_FOUND_EVENT?: string;
+    WARNING_EVENT?: string;
 }
 
 export interface CursorUI {

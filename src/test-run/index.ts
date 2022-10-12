@@ -177,6 +177,11 @@ interface DriverMessage {
     status: DriverStatus;
 }
 
+interface DriverWarning {
+    type: keyof typeof WARNING_MESSAGE;
+    args: string[];
+}
+
 interface RequestTimeout {
     page?: number;
     ajax?: number;
@@ -893,6 +898,12 @@ export default class TestRun extends AsyncEventEmitter {
     private _fulfillCurrentDriverTask (driverStatus: DriverStatus): void {
         if (!this.currentDriverTask)
             return;
+
+        if (driverStatus.warnings?.length) {
+            driverStatus.warnings.forEach((warning: DriverWarning) => {
+                this.warningLog.addWarning(WARNING_MESSAGE[warning.type], ...warning.args);
+            });
+        }
 
         if (driverStatus.executionError)
             this._rejectCurrentDriverTask(driverStatus.executionError);
