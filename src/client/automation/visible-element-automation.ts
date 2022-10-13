@@ -41,6 +41,11 @@ interface ElementStateArgs extends ElementStateArgsBase {
     inMoving: boolean;
 }
 
+interface PointOptions {
+    x: number;
+    y: number;
+}
+
 class ElementState implements ElementStateArgs {
     public element: HTMLElement | null;
     public clientPoint: AxisValues<number> | null;
@@ -153,10 +158,16 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
             });
     }
 
-    private _getElementOffset (): { offsetX: number; offsetY: number } {
+    private _getElementOffset (): PointOptions {
         const defaultOffsets = getOffsetOptions(this.element);
 
-        let { offsetX, offsetY } = this.options;
+        const { offsetX, offsetY } = this.options;
+
+        const y = offsetY || offsetY === 0 ? offsetY : defaultOffsets.offsetY;
+        const x = offsetX || offsetX === 0 ? offsetX : defaultOffsets.offsetX;
+
+        return { x, y };
+    }
 
         offsetX = offsetX || offsetX === 0 ? offsetX : defaultOffsets.offsetX;
         offsetY = offsetY || offsetY === 0 ? offsetY : defaultOffsets.offsetY;
@@ -165,7 +176,7 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
     }
 
     private async _wrapAction (action: () => Promise<unknown>): Promise<ElementState> {
-        const { offsetX: x, offsetY: y } = this._getElementOffset();
+        let { x, y } = this._getElementOffset();
         const screenPointBeforeAction    = await getAutomationPoint(this.element, { x, y });
         const clientPositionBeforeAction = await positionUtils.getClientPosition(this.element);
 
