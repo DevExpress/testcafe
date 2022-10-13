@@ -36,6 +36,7 @@ const PROXYLESS_TESTS_GLOB = [
     'test/functional/fixtures/api/es-next/disable-reloads/test.js',
     'test/functional/fixtures/quarantine/test.js',
     'test/functional/fixtures/api/es-next/cookies/test.js',
+    'test/functional/fixtures/concurrency/test.js',
 ];
 
 module.exports = {

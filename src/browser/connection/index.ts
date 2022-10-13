@@ -94,6 +94,7 @@ export default class BrowserConnection extends EventEmitter {
     private readonly BROWSER_CLOSE_TIMEOUT: number;
     private readonly BROWSER_RESTART_TIMEOUT: number;
     public readonly id: string;
+    private _currentTestRun: TestRun | null = null;
     private readonly jobQueue: BrowserJob[];
     private readonly initScriptsQueue: InitScriptTask[];
     public browserConnectionGateway: BrowserConnectionGateway;
@@ -147,9 +148,11 @@ export default class BrowserConnection extends EventEmitter {
         this.browserConnectionGateway = gateway;
         this.disconnectionPromise     = null;
         this.testRunAborted           = false;
-        this._messageBus              = messageBus;
-        this.warningLog               = new WarningLog(null, WarningLog.createAddWarningCallback(this._messageBus));
+        this.warningLog               = new WarningLog(null, WarningLog.createAddWarningCallback(messageBus));
         this.debugLogger              = debug(getBrowserConnectionDebugScope(this.id));
+
+        if (messageBus)
+            this.messageBus = messageBus;
 
         this.browserInfo                           = browserInfo;
         this.browserInfo.userAgentProviderMetaInfo = '';
@@ -200,6 +203,13 @@ export default class BrowserConnection extends EventEmitter {
     public set messageBus (messageBus: MessageBus) {
         this._messageBus         = messageBus;
         this.warningLog.callback = WarningLog.createAddWarningCallback(this._messageBus);
+
+        if (messageBus) {
+            messageBus.on('test-run-start', testRun => {
+                if (testRun.browserConnection.id === this.id)
+                    this._currentTestRun = testRun;
+            });
+        }
     }
 
     private _setEventHandlers (): void {
@@ -294,7 +304,7 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     public getCurrentTestRun (): LegacyTestRun | TestRun | null {
-        return this.currentJob ? this.currentJob.currentTestRun : null;
+        return this._currentTestRun;
     }
 
     public static getById (id: string): BrowserConnection | null {

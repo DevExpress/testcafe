@@ -73,7 +73,7 @@ export default class ResourceInjector {
         const browserConnection = BrowserConnection.getById(this._browserId) as BrowserConnection;
         const proxy             = browserConnection.browserConnectionGateway.proxy;
         const windowId          = browserConnection.activeWindowId;
-        const currentTestRun    = browserConnection?.currentJob?.currentTestRun;
+        const currentTestRun    = browserConnection.getCurrentTestRun();
 
         if (!currentTestRun)
             return null;
