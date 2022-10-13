@@ -169,8 +169,17 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
         return { x, y };
     }
 
-        offsetX = offsetX || offsetX === 0 ? offsetX : defaultOffsets.offsetX;
-        offsetY = offsetY || offsetY === 0 ? offsetY : defaultOffsets.offsetY;
+    private async _isTargetElement ( element: HTMLElement, expectedElement: HTMLElement | null): Promise<boolean> {
+        let isTarget = !expectedElement || element === expectedElement || element === this.element;
+
+        if (!isTarget && element) {
+            // NOTE: perform an operation with searching in dom only if necessary
+            isTarget = await this._contains(this.element, element);
+        }
+
+        return isTarget;
+    }
+
 
         return { offsetX, offsetY };
     }
@@ -199,12 +208,7 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
             });
         }
 
-        let isTarget = !expectedElement || element === expectedElement || element === this.element;
-
-        if (!isTarget) {
-            // NOTE: perform an operation with searching in dom only if necessary
-            isTarget = await this._contains(this.element, element);
-        }
+        const isTarget = await this._isTargetElement(element, expectedElement);
 
         const offsetPositionChanged = screenPointBeforeAction.x !== screenPointAfterAction.x ||
                                     screenPointBeforeAction.y !== screenPointAfterAction.y;
