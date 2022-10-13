@@ -87,7 +87,7 @@ test('Selector returns text node', async t => {
 test('Click on a more than half-shifted element', async t => {
     await t.click('#shifted-element');
 
-    const expectedClickOffset = { x: 75, y: 75 };
+    const expectedClickOffset = { x: 75, y: 25 };
     const actualClickOffset   = await getClickOffset();
 
     expect(actualClickOffset.x).eql(expectedClickOffset.x);
@@ -97,7 +97,7 @@ test('Click on a more than half-shifted element', async t => {
 test('Click on an element with overlapped center', async t => {
     await t.click('#overlapped-center');
 
-    const expectedClickOffset = { x: 75, y: 75 };
+    const expectedClickOffset = { x: 75, y: 25 };
     const actualClickOffset   = await getClickOffset();
 
     expect(actualClickOffset.x).eql(expectedClickOffset.x);
