@@ -180,21 +180,67 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
         return isTarget;
     }
 
+    private async _getAvailableOffset (expectedElement: HTMLElement | null, pointOptions: PointOptions, deep = 2): Promise<PointOptions | null> {
+        let screenPoint = await getAutomationPoint(this.element, { ...pointOptions });
+        let clientPoint = await screenPointToClient(this.element, screenPoint);
+        let element     = await getElementFromPoint(clientPoint, this.window, expectedElement as HTMLElement);
+        let isTarget    = element && await this._isTargetElement(element, expectedElement);
 
-        return { offsetX, offsetY };
+        if (element && isTarget)
+            return pointOptions;
+
+        const stepX = pointOptions.x / deep;
+        const stepY = pointOptions.y / deep;
+        const maxX  = pointOptions.x * 2;
+        const maxY  = pointOptions.y * 2;
+
+        let y = stepY;
+
+        while (y < maxY) {
+            let x = stepX;
+
+            while (x < maxX) {
+
+                screenPoint = await getAutomationPoint(this.element, { x, y });
+                clientPoint = await screenPointToClient(this.element, screenPoint);
+                element     = await getElementFromPoint(clientPoint, this.window, expectedElement as HTMLElement);
+                isTarget    = await this._isTargetElement(element, expectedElement);
+
+                if (element && isTarget)
+                    return { x, y };
+
+                x += stepX;
+            }
+
+            y += stepY;
+        }
+
+        return null;
     }
 
     private async _wrapAction (action: () => Promise<unknown>): Promise<ElementState> {
         let { x, y } = this._getElementOffset();
+
+        const expectedElement            = await positionUtils.containsOffset(this.element, x, y) ? this.element : null;
         const screenPointBeforeAction    = await getAutomationPoint(this.element, { x, y });
         const clientPositionBeforeAction = await positionUtils.getClientPosition(this.element);
 
         await action();
 
+        if (this.options.defaultOffset) {
+            const availableOffset = await this._getAvailableOffset(expectedElement, { x, y });
+
+            x = availableOffset?.x || x;
+            y = availableOffset?.y || y;
+
+            this.options.offsetX       = x;
+            this.options.offsetY       = y;
+            this.options.defaultOffset = false;
+        }
+
         const screenPointAfterAction    = await getAutomationPoint(this.element, { x, y });
         const clientPositionAfterAction = await positionUtils.getClientPosition(this.element);
         const clientPoint               = await screenPointToClient(this.element, screenPointAfterAction);
-        const expectedElement           = await positionUtils.containsOffset(this.element, x, y) ? this.element : null;
 
         const element = await getElementFromPoint(clientPoint, this.window, expectedElement as HTMLElement);
 
