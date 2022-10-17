@@ -41,11 +41,6 @@ interface ElementStateArgs extends ElementStateArgsBase {
     inMoving: boolean;
 }
 
-interface PointOptions {
-    x: number;
-    y: number;
-}
-
 class ElementState implements ElementStateArgs {
     public element: HTMLElement | null;
     public clientPoint: AxisValues<number> | null;
@@ -158,7 +153,7 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
             });
     }
 
-    private _getElementOffset (): PointOptions {
+    private _getElementOffset (): AxisValues<number> {
         const defaultOffsets = getOffsetOptions(this.element);
 
         const { offsetX, offsetY } = this.options;
@@ -166,7 +161,7 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
         const y = offsetY || offsetY === 0 ? offsetY : defaultOffsets.offsetY;
         const x = offsetX || offsetX === 0 ? offsetX : defaultOffsets.offsetX;
 
-        return { x, y };
+        return AxisValues.create({ x, y });
     }
 
     private async _isTargetElement ( element: HTMLElement, expectedElement: HTMLElement | null): Promise<boolean> {
@@ -180,65 +175,60 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
         return isTarget;
     }
 
-    private async _getAvailableOffset (expectedElement: HTMLElement | null, pointOptions: PointOptions, deep = 2): Promise<PointOptions | null> {
-        let screenPoint = await getAutomationPoint(this.element, { ...pointOptions });
-        let clientPoint = await screenPointToClient(this.element, screenPoint);
-        let element     = await getElementFromPoint(clientPoint, this.window, expectedElement as HTMLElement);
-        let isTarget    = element && await this._isTargetElement(element, expectedElement);
+    private _getCheckedPoints (centerPoint: AxisValues<number>, deep: number): AxisValues<number>[] {
+        const points = [centerPoint];
+        const stepX  = centerPoint.x / deep;
+        const stepY  = centerPoint.y / deep;
+        const maxX   = centerPoint.x * 2;
+        const maxY   = centerPoint.y * 2;
 
-        if (element && isTarget)
-            return pointOptions;
+        for (let y = stepY; y < maxY; y += stepY) {
+            for (let x = stepX; x < maxX; x += stepX)
+                points.push(AxisValues.create({ x, y }));
+        }
 
-        const stepX = pointOptions.x / deep;
-        const stepY = pointOptions.y / deep;
-        const maxX  = pointOptions.x * 2;
-        const maxY  = pointOptions.y * 2;
+        return points;
+    }
 
-        let y = stepY;
+    private async _getAvailableOffset (expectedElement: HTMLElement | null, centerPoint: AxisValues<number>, deep = 2): Promise<AxisValues<number> | null> {
+        const checkedPoints = this._getCheckedPoints(centerPoint, deep);
 
-        while (y < maxY) {
-            let x = stepX;
+        let screenPoint = null;
+        let clientPoint = null;
+        let element     = null;
 
-            while (x < maxX) {
+        for (let i = 0; i < checkedPoints.length; i++) {
+            screenPoint = await getAutomationPoint(this.element, checkedPoints[i]);
+            clientPoint = await screenPointToClient(this.element, screenPoint);
+            element     = await getElementFromPoint(clientPoint, this.window, expectedElement as HTMLElement);
 
-                screenPoint = await getAutomationPoint(this.element, { x, y });
-                clientPoint = await screenPointToClient(this.element, screenPoint);
-                element     = await getElementFromPoint(clientPoint, this.window, expectedElement as HTMLElement);
-                isTarget    = await this._isTargetElement(element, expectedElement);
-
-                if (element && isTarget)
-                    return { x, y };
-
-                x += stepX;
-            }
-
-            y += stepY;
+            if (await this._isTargetElement(element, expectedElement))
+                return checkedPoints[i];
         }
 
         return null;
     }
 
     private async _wrapAction (action: () => Promise<unknown>): Promise<ElementState> {
-        let { x, y } = this._getElementOffset();
-
-        const expectedElement            = await positionUtils.containsOffset(this.element, x, y) ? this.element : null;
-        const screenPointBeforeAction    = await getAutomationPoint(this.element, { x, y });
+        const elementOffset              = this._getElementOffset();
+        const expectedElement            = await positionUtils.containsOffset(this.element, elementOffset.x, elementOffset.y) ? this.element : null;
+        const screenPointBeforeAction    = await getAutomationPoint(this.element, elementOffset);
         const clientPositionBeforeAction = await positionUtils.getClientPosition(this.element);
 
         await action();
 
         if (this.options.defaultOffset) {
-            const availableOffset = await this._getAvailableOffset(expectedElement, { x, y });
+            const availableOffset = await this._getAvailableOffset(expectedElement, elementOffset);
 
-            x = availableOffset?.x || x;
-            y = availableOffset?.y || y;
+            // eslint-disable-next-line no-restricted-globals
+            Object.assign(elementOffset, availableOffset);
 
-            this.options.offsetX       = x;
-            this.options.offsetY       = y;
+            this.options.offsetX       = elementOffset.x;
+            this.options.offsetY       = elementOffset.y;
             this.options.defaultOffset = false;
         }
 
-        const screenPointAfterAction    = await getAutomationPoint(this.element, { x, y });
+        const screenPointAfterAction    = await getAutomationPoint(this.element, elementOffset);
         const clientPositionAfterAction = await positionUtils.getClientPosition(this.element);
         const clientPoint               = await screenPointToClient(this.element, screenPointAfterAction);
 
