@@ -14,7 +14,7 @@
         var resultSpan     = document.getElementById('result');
 
         sendRequestBtn.addEventListener('click', function () {
-            fetch('http://dummy-url.com/route')
+            fetch('http://one-dummy-url.com/get')
                 .then(res => res.text())
                 .then(text => {
                     resultSpan.textContent = text;

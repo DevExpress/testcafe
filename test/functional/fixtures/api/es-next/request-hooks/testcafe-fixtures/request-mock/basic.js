@@ -1,10 +1,5 @@
 import { Selector, RequestMock } from 'testcafe';
-
-const DUMMY_URLS = {
-    main:    'http://dummy-url.com',
-    get:     'http://dummy-url.com/get',
-    another: 'https://another-dummy-url.com',
-};
+import DUMMY_URLS from '../../common/mock-routes';
 
 const testPageMarkup = `
     <html>
@@ -41,10 +36,10 @@ test
     .requestHooks(requestMock)
     ('Basic', async t => {
         await t
-            .navigateTo('http://dummy-url.com')
+            .navigateTo(DUMMY_URLS.main)
             .expect(Selector('h1').textContent).eql('Mocked page')
             .click('button')
             .expect(Selector('h2').textContent).eql('Data from mocked fetch request')
-            .navigateTo('https://another-dummy-url.com')
+            .navigateTo(DUMMY_URLS.another)
             .expect(Selector('body').exists).ok();
     });

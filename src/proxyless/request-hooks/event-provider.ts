@@ -30,7 +30,7 @@ export default class ProxylessRequestHookEventProvider extends RequestHookEventP
     private _createEventFactory (event: RequestPausedEvent): ProxylessEventFactory {
         const eventFactory = new ProxylessEventFactory(event);
 
-        this._eventFactories[event.requestId] = eventFactory;
+        this._eventFactories[event.networkId as string] = eventFactory;
 
         return eventFactory;
     }
@@ -43,7 +43,7 @@ export default class ProxylessRequestHookEventProvider extends RequestHookEventP
         return this._eventFactories[requestId];
     }
 
-    private _cleanUpServiceData (requestId: string): void {
+    public cleanUp (requestId: string): void {
         delete this._pipelineContexts[requestId];
         delete this._eventFactories[requestId];
     }
@@ -55,7 +55,7 @@ export default class ProxylessRequestHookEventProvider extends RequestHookEventP
             return;
         }
 
-        const pipelineContext = this._createPipelineContext(event.requestId);
+        const pipelineContext = this._createPipelineContext(event.networkId as string);
         const eventFactory    = this._createEventFactory(event);
 
         pipelineContext.setRequestOptions(eventFactory);
@@ -63,13 +63,7 @@ export default class ProxylessRequestHookEventProvider extends RequestHookEventP
         await pipelineContext.onRequestHookRequest(this, eventFactory);
     }
 
-    public async onResponse (event: RequestPausedEvent, client: ProtocolApi): Promise<void> {
-        if (!this.hasRequestEventListeners()) {
-            await continueRequestOrResponse(client, event);
-
-            return;
-        }
-
-        this._cleanUpServiceData(event.requestId);
+    public async onResponse (event: RequestPausedEvent): Promise<void> {
+        this.cleanUp(event.networkId as string);
     }
 }

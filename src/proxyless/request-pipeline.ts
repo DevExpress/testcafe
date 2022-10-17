@@ -2,6 +2,7 @@ import { ProtocolApi } from 'chrome-remote-interface';
 import Protocol from 'devtools-protocol';
 import RequestPausedEvent = Protocol.Fetch.RequestPausedEvent;
 import FrameNavigatedEvent = Protocol.Page.FrameNavigatedEvent;
+import LoadingFailedEvent = Protocol.Network.LoadingFailedEvent;
 import ProxylessRequestHookEventProvider from './request-hooks/event-provider';
 import ResourceInjector from './resource-injector';
 import { convertToHeaderEntries, isRequest } from './utils/cdp';
@@ -82,7 +83,7 @@ export default class ProxylessRequestPipeline {
 
         await pipelineContext.handleMockError(this.requestHookEventProvider);
 
-        requestPipelineMockLogger('%s\n%s', event.requestId, pipelineContext.mock.error);
+        requestPipelineMockLogger('%s\n%s', event.networkId, pipelineContext.mock.error);
     }
 
     private async _handleMockResponse (mockedResponse: IncomingMessageLike, pipelineContext: ProxylessPipelineContext, event: RequestPausedEvent): Promise<void> {
@@ -105,7 +106,7 @@ export default class ProxylessRequestPipeline {
     }
 
     private async _handleRequestMock (event: RequestPausedEvent): Promise<boolean> {
-        const pipelineContext = this.requestHookEventProvider.getPipelineContext(event.requestId);
+        const pipelineContext = this.requestHookEventProvider.getPipelineContext(event.networkId as string);
 
         if (!pipelineContext?.mock)
             return false;
@@ -127,10 +128,10 @@ export default class ProxylessRequestPipeline {
             if (!requestIsHandled)
                 await this._client.Fetch.continueRequest({ requestId: event.requestId });
             else
-                await this.requestHookEventProvider.onResponse(event, this._client);
+                await this.requestHookEventProvider.onResponse(event);
         }
         else {
-            await this.requestHookEventProvider.onResponse(event, this._client);
+            await this.requestHookEventProvider.onResponse(event);
             await this._resourceInjector.onResponse(event, this._client);
         }
     }
@@ -174,6 +175,13 @@ export default class ProxylessRequestPipeline {
                 return;
 
             await this._resourceInjector.processAboutBlankPage(event, this._client);
+        });
+
+        this._client.Network.on('loadingFailed', async (event: LoadingFailedEvent) => {
+            requestPipelineLogger('%l', event);
+
+            if (event.requestId)
+                this.requestHookEventProvider.cleanUp(event.requestId);
         });
     }
 
