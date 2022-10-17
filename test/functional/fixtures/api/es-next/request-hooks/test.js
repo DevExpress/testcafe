@@ -3,16 +3,16 @@ const { expect } = require('chai');
 const {
     skipInExperimentalDebug,
     skipDescribeInProxyless,
-    skipInProxyless,
+    skipInProxylessOrExperimentalDebug,
 } = require('../../../../utils/skip-in');
 
 describe('Request Hooks', () => {
     describe('RequestMock', () => {
-        it('Basic', () => {
+        skipInExperimentalDebug('Basic', () => {
             return runTests('./testcafe-fixtures/request-mock/basic.js', 'Basic', { only: 'chrome' });
         });
 
-        skipInProxyless('Request failed the CORS validation', () => {
+        skipInProxylessOrExperimentalDebug('Request failed the CORS validation', () => {
             return runTests('./testcafe-fixtures/request-mock/failed-cors-validation.js', 'Failed CORS validation', { only: 'chrome' })
                 .then(() => {
                     expect(testReport.warnings).eql([
@@ -21,11 +21,11 @@ describe('Request Hooks', () => {
                 });
         });
 
-        it('Asynchronous response function (GH-4467)', () => {
+        skipInExperimentalDebug('Asynchronous response function (GH-4467)', () => {
             return runTests('./testcafe-fixtures/request-mock/async-response-function.js', null, { only: 'chrome' });
         });
 
-        it("Handle error in 'respond' function (GH-6703)", () => {
+        skipInExperimentalDebug("Handle error in 'respond' function (GH-6703)", () => {
             return runTests('./testcafe-fixtures/request-mock/respond-error.js', null, { only: 'chrome', shouldFail: true })
                 .catch(() => {
                     expect(testReport.errs.length).eql(1);
@@ -85,7 +85,7 @@ describe('Request Hooks', () => {
             return runTests('./testcafe-fixtures/api/i4122.js', null, { only: 'chrome' });
         });
 
-        it('Async predicate for request filter rules', () => {
+        skipInExperimentalDebug('Async predicate for request filter rules', () => {
             return runTests('./testcafe-fixtures/api/request-filter-rule-async-predicate.js', null, { only: 'chrome' });
         });
 

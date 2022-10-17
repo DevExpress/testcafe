@@ -489,7 +489,7 @@ export default class TestRun extends AsyncEventEmitter {
         const testId = this.test.id;
 
         await Promise.all(rules.map(rule => {
-            return this.session.addRequestEventListeners(rule, {
+            return this._requestHookEventProvider.addRequestEventListeners(rule, {
                 onRequest:           (event: RequestEvent) => this.compilerService?.onRequestHookEvent({ testId, hookId, name: RequestHookMethodNames.onRequest, eventData: event }),
                 onConfigureResponse: (event: ConfigureResponseEvent) => this.compilerService?.onRequestHookEvent({ testId, hookId, name: RequestHookMethodNames._onConfigureResponse, eventData: event }),
                 onResponse:          (event: ResponseEvent) => this.compilerService?.onRequestHookEvent({ testId, hookId, name: RequestHookMethodNames.onResponse, eventData: event }),
@@ -517,7 +517,7 @@ export default class TestRun extends AsyncEventEmitter {
 
     private async _detachRequestEventListeners (rules: RequestFilterRule[]): Promise<void> {
         await Promise.all(rules.map(rule => {
-            return this.session.removeRequestEventListeners(rule);
+            return this._requestHookEventProvider.removeRequestEventListeners(rule);
         }));
     }
 
