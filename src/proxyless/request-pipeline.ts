@@ -121,7 +121,7 @@ export default class ProxylessRequestPipeline {
 
     private async _handleOtherRequests (event: RequestPausedEvent): Promise<void> {
         if (isRequest(event)) {
-            await this.requestHookEventProvider.onRequest(event, this._client);
+            await this.requestHookEventProvider.onRequest(event);
 
             const requestIsHandled = await this._handleRequestMock(event);
 

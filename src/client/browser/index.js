@@ -4,7 +4,6 @@ import COMMAND from '../../browser/connection/command';
 import HeartbeatStatus from '../../browser/connection/heartbeat-status';
 import { HEARTBEAT_INTERVAL } from '../../utils/browser-connection-timeouts';
 import SERVICE_ROUTES from '../../browser/connection/service-routes';
-import isFileProtocol from '../../utils/is-file-procol';
 
 /*eslint-disable no-restricted-properties*/
 const LOCATION_HREF   = document.location.href;
@@ -15,6 +14,8 @@ const STATUS_RETRY_DELAY = 1000;
 const MAX_STATUS_RETRY   = 5;
 
 const SERVICE_WORKER_LOCATION = LOCATION_ORIGIN + SERVICE_ROUTES.serviceWorker;
+
+const FILE_PROTOCOL_ORIGIN = 'file://';
 
 let allowInitScriptExecution = false;
 let heartbeatIntervalId      = null;
@@ -55,6 +56,10 @@ export function sendXHR (url, createXHR, { method = 'GET', data = null, parseRes
 
 function isCurrentLocation (url) {
     return LOCATION_HREF.toLowerCase() === url.toLowerCase();
+}
+
+function isFileProtocol (url = '') {
+    return url.indexOf(FILE_PROTOCOL_ORIGIN) === 0;
 }
 
 //API

@@ -4,7 +4,6 @@ import RequestPausedEvent = Protocol.Fetch.RequestPausedEvent;
 import FrameNavigatedEvent = Protocol.Page.FrameNavigatedEvent;
 import FulfillRequestRequest = Protocol.Fetch.FulfillRequestRequest;
 import HeaderEntry = Protocol.Fetch.HeaderEntry;
-import GetResponseBodyResponse = Protocol.Fetch.GetResponseBodyResponse;
 import {
     injectResources,
     PageInjectableResources,
@@ -25,9 +24,6 @@ import {
     stringifyHeaderValues,
     toBase64String,
 } from './utils/string';
-import isFileProtocol from '../utils/is-file-procol';
-import { readFile } from '../utils/promisified-functions';
-import { fileURLToPath } from 'url';
 
 
 const CONTENT_SECURITY_POLICY_HEADER_NAMES = [
@@ -100,30 +96,6 @@ export default class ResourceInjector {
         await navigateTo(client, this._specialServiceRoutes.errorPage1);
     }
 
-    private async _getResponseBody (client: ProtocolApi, requestId: string, requestUrl: string): Promise<GetResponseBodyResponse> {
-        // NOTE: We are forced to read the content of the page manually if it's served via file protocol.
-        // In the previous versions of Chrome, it works fine.
-        // Consider removing this code after the issue is fixed in Chrome.
-        let result = {
-            body:          '',
-            base64Encoded: false,
-        };
-
-        if (isFileProtocol(requestUrl)) {
-            const filePath    = fileURLToPath(requestUrl);
-            const fileContent = await readFile(filePath);
-
-            result.body = fileContent.toString();
-        }
-        else {
-            const responseObj = await client.Fetch.getResponseBody({ requestId });
-
-            result = responseObj;
-        }
-
-        return result;
-    }
-
     public async onResponse (event: RequestPausedEvent, client: ProtocolApi): Promise<void> {
         const {
             requestId,
@@ -146,7 +118,7 @@ export default class ResourceInjector {
                     return;
                 }
 
-                const responseObj = await this._getResponseBody(client, requestId, request.url);
+                const responseObj = await client.Fetch.getResponseBody({ requestId });
                 const responseStr = getResponseAsString(responseObj);
 
                 await this.processHTMLPageContent({

@@ -1,11 +1,9 @@
-import { ProtocolApi } from 'chrome-remote-interface';
 import { RequestHookEventProvider } from 'testcafe-hammerhead';
 import Protocol from 'devtools-protocol';
 import RequestPausedEvent = Protocol.Fetch.RequestPausedEvent;
 import ProxylessPipelineContext from './pipeline-context';
 import { Dictionary } from '../../configuration/interfaces';
 import ProxylessEventFactory from './event-factory';
-import { continueRequestOrResponse } from '../utils/cdp';
 
 
 export default class ProxylessRequestHookEventProvider extends RequestHookEventProvider {
@@ -48,12 +46,9 @@ export default class ProxylessRequestHookEventProvider extends RequestHookEventP
         delete this._eventFactories[requestId];
     }
 
-    public async onRequest (event: RequestPausedEvent, client: ProtocolApi): Promise<void> {
-        if (!this.hasRequestEventListeners()) {
-            await continueRequestOrResponse(client, event);
-
+    public async onRequest (event: RequestPausedEvent): Promise<void> {
+        if (!this.hasRequestEventListeners())
             return;
-        }
 
         const pipelineContext = this._createPipelineContext(event.networkId as string);
         const eventFactory    = this._createEventFactory(event);

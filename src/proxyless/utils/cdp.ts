@@ -20,15 +20,6 @@ export async function navigateTo (client: ProtocolApi, url: string): Promise<voi
     await client.Page.navigate({ url });
 }
 
-export async function continueRequestOrResponse (client: ProtocolApi, event: RequestPausedEvent): Promise<void> {
-    const { requestId } = event;
-
-    if (isRequest(event))
-        await client.Fetch.continueRequest({ requestId });
-    else
-        await client.Fetch.continueResponse({ requestId });
-}
-
 export function isRequest (event: RequestPausedEvent): boolean {
     return event.responseStatusCode === void 0;
 }
