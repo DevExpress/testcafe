@@ -217,15 +217,14 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
 
         await action();
 
-        if (this.options.defaultOffset) {
+        if (this.options.isDefaultOffset) {
             const availableOffset = await this._getAvailableOffset(expectedElement, elementOffset);
 
             // eslint-disable-next-line no-restricted-globals
             Object.assign(elementOffset, availableOffset);
 
-            this.options.offsetX       = elementOffset.x;
-            this.options.offsetY       = elementOffset.y;
-            this.options.defaultOffset = false;
+            this.options.offsetX = elementOffset.x;
+            this.options.offsetY = elementOffset.y;
         }
 
         const screenPointAfterAction    = await getAutomationPoint(this.element, elementOffset);

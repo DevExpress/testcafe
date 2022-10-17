@@ -68,8 +68,9 @@ export class OffsetOptions extends ActionOptions {
     constructor (obj, validate) {
         super();
 
-        this.offsetX = null;
-        this.offsetY = null;
+        this.offsetX         = null;
+        this.offsetY         = null;
+        this.isDefaultOffset = null;
 
         this._assignFrom(obj, validate);
     }
@@ -78,6 +79,7 @@ export class OffsetOptions extends ActionOptions {
         return [
             { name: 'offsetX', type: integerOption },
             { name: 'offsetY', type: integerOption },
+            { name: 'isDefaultOffset', type: booleanOption },
         ];
     }
 }

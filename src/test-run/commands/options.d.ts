@@ -13,7 +13,7 @@ export class ActionOptions {
 export class OffsetOptions extends ActionOptions {
     public offsetX: number;
     public offsetY: number;
-    public defaultOffset?: boolean;
+    public isDefaultOffset?: boolean;
 }
 
 export class MouseOptions extends OffsetOptions {
