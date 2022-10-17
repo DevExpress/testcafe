@@ -36,14 +36,6 @@ testingEnvironments[testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers] = {
             alias:       'safari',
         },
         {
-            browserName: 'browserstack:chrome:OS X Monterey',
-            alias:       'chrome-osx',
-        },
-        {
-            browserName: 'browserstack:firefox:OS X Monterey',
-            alias:       'firefox-osx',
-        },
-        {
             browserName: 'browserstack:edge:OS X Monterey',
             alias:       'edge',
         },
