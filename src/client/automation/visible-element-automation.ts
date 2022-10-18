@@ -186,7 +186,7 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
             for (let x = stepX; x < maxX; x += stepX)
                 points.push(AxisValues.create({ x, y }));
         }
-
+        
         return points;
     }
 
@@ -220,8 +220,8 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
         if (this.options.isDefaultOffset) {
             const availableOffset = await this._getAvailableOffset(expectedElement, elementOffset);
 
-            // eslint-disable-next-line no-restricted-globals
-            Object.assign(elementOffset, availableOffset);
+            elementOffset.x = availableOffset?.x || elementOffset.x;
+            elementOffset.y = availableOffset?.y || elementOffset.y;
 
             this.options.offsetX = elementOffset.x;
             this.options.offsetY = elementOffset.y;
