@@ -593,7 +593,7 @@ $(document).ready(function () {
             .height(50);
 
         $target.click(function (e) {
-            clickOffsets.push({ x: Math.round(e.pageX - elOffset.left), y: Math.round(e.pageY - elOffset.top) });
+            clickOffsets.push({ x: Math.floor(e.pageX - elOffset.left), y: Math.floor(e.pageY - elOffset.top) });
         });
 
         Promise.resolve()
