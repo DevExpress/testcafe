@@ -186,7 +186,7 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
             for (let x = stepX; x < maxX; x += stepX)
                 points.push(AxisValues.create({ x, y }));
         }
-        
+
         return points;
     }
 
