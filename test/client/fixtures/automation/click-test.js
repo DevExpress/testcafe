@@ -578,65 +578,65 @@ $(document).ready(function () {
             });
     });
 
-    // TODO: fix test timeout for iOS
+    // TODO: stabilize test on iOS
     (isIOS ? QUnit.skip : asyncTest)('click on covered element', function () {
+        $el.css({ display: 'none' });
+
         const clickOffsets = [];
-        const el           = $el[0];
+        const $target      = addDiv(150, 150);
+        const target       = $target[0];
+        const elOffset     = $target.offset();
 
-        $el.css({ width: '100px', height: '100px', margin: 0 });
+        addDiv(elOffset.left + 50, elOffset.top + 50)
+            .css({ backgroundColor: 'red' })
+            .width(50)
+            .height(50);
 
-        const elOffset = $el.offset();
-
-        addDiv(elOffset.left + 35, elOffset.top + 35)
-            .width(30)
-            .height(30);
-
-        $el.click(function (e) {
+        $target.click(function (e) {
             clickOffsets.push({ x: Math.round(e.pageX - elOffset.left), y: Math.round(e.pageY - elOffset.top) });
         });
 
-
         Promise.resolve()
             .then(function () {
-                const click = new ClickAutomation(el, new ClickOptions({ offsetX: 50, offsetY: 50, isDefaultOffset: true }), window, cursor);
+                const click = new ClickAutomation(target, new ClickOptions({ offsetX: 75, offsetY: 75, isDefaultOffset: true }), window, cursor);
 
                 return click.run();
             })
             .then(function () {
-                const click = new ClickAutomation(el, new ClickOptions({ offsetX: 50, offsetY: 50, isDefaultOffset: true }), window, cursor);
+                const click = new ClickAutomation(target, new ClickOptions({ offsetX: 75, offsetY: 75, isDefaultOffset: true }), window, cursor);
 
                 addDiv(elOffset.left, elOffset.top)
                     .css({ backgroundColor: 'red' })
-                    .width(60)
-                    .height(60);
+                    .width(80)
+                    .height(80);
 
                 return click.run();
             })
             .then(function () {
-                const click = new ClickAutomation(el, new ClickOptions({ offsetX: 50, offsetY: 50, isDefaultOffset: true }), window, cursor);
+                const click = new ClickAutomation(target, new ClickOptions({ offsetX: 75, offsetY: 75, isDefaultOffset: true }), window, cursor);
 
-                addDiv(elOffset.left + 40, elOffset.top)
+                addDiv(elOffset.left + 70, elOffset.top)
                     .css({ backgroundColor: 'red' })
-                    .width(60)
-                    .height(60);
+                    .width(80)
+                    .height(80);
 
                 return click.run();
             })
             .then(function () {
-                const click = new ClickAutomation(el, new ClickOptions({ offsetX: 50, offsetY: 50, isDefaultOffset: true }), window, cursor);
+                const click = new ClickAutomation(target, new ClickOptions({ offsetX: 75, offsetY: 75, isDefaultOffset: true }), window, cursor);
 
-                addDiv(elOffset.left, elOffset.top + 40)
+                addDiv(elOffset.left, elOffset.top + 70)
                     .css({ backgroundColor: 'red' })
-                    .width(60)
-                    .height(60);
+                    .width(80)
+                    .height(80);
 
                 return click.run();
             })
             .then(function () {
-                deepEqual(clickOffsets[0], { x: 25, y: 25 }, 'click in the upper left corner');
-                deepEqual(clickOffsets[1], { x: 75, y: 25 }, 'click in the upper right corner');
-                deepEqual(clickOffsets[2], { x: 25, y: 75 }, 'click in the lower left corner');
-                deepEqual(clickOffsets[3], { x: 75, y: 75 }, 'click in the lower right corner');
+                deepEqual(clickOffsets[0], { x: 37, y: 37 }, 'click in the upper left corner');
+                deepEqual(clickOffsets[1], { x: 112, y: 37 }, 'click in the upper right corner');
+                deepEqual(clickOffsets[2], { x: 37, y: 112 }, 'click in the lower left corner');
+                deepEqual(clickOffsets[3], { x: 112, y: 112 }, 'click in the lower right corner');
 
                 startNext();
             });
