@@ -36,7 +36,8 @@ if (config.useLocalBrowsers && !config.hasBrowser('ie')) {
                     ...browserConfig,
                     userArgs: `--no-sandbox ${browserConfig.userArgs}`,
                     headless: true,
-                });
+                },
+                { disableMultipleWindows: false });
             },
 
             closeBrowser (browserId) {
