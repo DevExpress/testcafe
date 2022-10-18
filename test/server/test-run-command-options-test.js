@@ -318,6 +318,7 @@ describe('Test run command options', function () {
                     propertyName:        'invalidProp',
                     availableProperties: [
                         'caretPos',
+                        'isDefaultOffset',
                         'modifiers',
                         'offsetX',
                         'offsetY',
