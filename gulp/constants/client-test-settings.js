@@ -49,14 +49,6 @@ const CLIENT_TESTS_DESKTOP_BROWSERS = [
         platform:    'macOS 12',
         browserName: 'safari',
     },
-    {
-        platform:    'macOS 12',
-        browserName: 'chrome',
-    },
-    {
-        platform:    'macOS 12',
-        browserName: 'firefox',
-    },
 ];
 
 const CLIENT_TESTS_MOBILE_BROWSERS = [
