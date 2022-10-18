@@ -592,17 +592,17 @@ $(document).ready(function () {
             .height(30);
 
         $el.click(function (e) {
-            clickOffsets.push({ x: e.pageX - elOffset.left, y: e.pageY - elOffset.top });
+            clickOffsets.push({ x: Math.round(e.pageX - elOffset.left), y: Math.round(e.pageY - elOffset.top) });
         });
 
 
         Promise.resolve()
-            .then(() => {
+            .then(function () {
                 const click = new ClickAutomation(el, new ClickOptions({ offsetX: 50, offsetY: 50, isDefaultOffset: true }), window, cursor);
 
                 return click.run();
             })
-            .then(() => {
+            .then(function () {
                 const click = new ClickAutomation(el, new ClickOptions({ offsetX: 50, offsetY: 50, isDefaultOffset: true }), window, cursor);
 
                 addDiv(elOffset.left, elOffset.top)
@@ -612,7 +612,7 @@ $(document).ready(function () {
 
                 return click.run();
             })
-            .then(() => {
+            .then(function () {
                 const click = new ClickAutomation(el, new ClickOptions({ offsetX: 50, offsetY: 50, isDefaultOffset: true }), window, cursor);
 
                 addDiv(elOffset.left + 40, elOffset.top)
@@ -622,7 +622,7 @@ $(document).ready(function () {
 
                 return click.run();
             })
-            .then(() => {
+            .then(function () {
                 const click = new ClickAutomation(el, new ClickOptions({ offsetX: 50, offsetY: 50, isDefaultOffset: true }), window, cursor);
 
                 addDiv(elOffset.left, elOffset.top + 40)
