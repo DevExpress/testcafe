@@ -29,6 +29,8 @@ import ensureMouseEventAfterScroll from './utils/ensure-mouse-event-after-scroll
 import WARNING_TYPES from '../../shared/warnings/types';
 
 
+const AVAILABLE_OFFSET_DEEP = 2;
+
 interface ElementStateArgsBase {
     element: HTMLElement | null;
     clientPoint: AxisValues<number> | null;
@@ -175,10 +177,10 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
         return isTarget;
     }
 
-    private _getCheckedPoints (centerPoint: AxisValues<number>, deep: number): AxisValues<number>[] {
+    private _getCheckedPoints (centerPoint: AxisValues<number>): AxisValues<number>[] {
         const points = [centerPoint];
-        const stepX  = centerPoint.x / deep;
-        const stepY  = centerPoint.y / deep;
+        const stepX  = centerPoint.x / AVAILABLE_OFFSET_DEEP;
+        const stepY  = centerPoint.y / AVAILABLE_OFFSET_DEEP;
         const maxX   = centerPoint.x * 2;
         const maxY   = centerPoint.y * 2;
 
@@ -190,8 +192,8 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
         return points;
     }
 
-    private async _getAvailableOffset (expectedElement: HTMLElement | null, centerPoint: AxisValues<number>, deep = 2): Promise<AxisValues<number> | null> {
-        const checkedPoints = this._getCheckedPoints(centerPoint, deep);
+    private async _getAvailableOffset (expectedElement: HTMLElement | null, centerPoint: AxisValues<number>): Promise<AxisValues<number> | null> {
+        const checkedPoints = this._getCheckedPoints(centerPoint);
 
         let screenPoint = null;
         let clientPoint = null;
