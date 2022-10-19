@@ -4,7 +4,8 @@ import {
     RequestFilterRule,
     RequestInfo,
     RequestOptions,
-    RequestOptionsParams, ResponseInfo,
+    RequestOptionsParams,
+    ResponseInfo,
 } from 'testcafe-hammerhead';
 import Protocol from 'devtools-protocol';
 import RequestPausedEvent = Protocol.Fetch.RequestPausedEvent;
