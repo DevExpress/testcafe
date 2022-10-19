@@ -4,6 +4,7 @@ const {
     skipInExperimentalDebug,
     skipDescribeInProxyless,
     skipInProxylessOrExperimentalDebug,
+    skipInProxyless,
 } = require('../../../../utils/skip-in');
 
 describe('Request Hooks', () => {
@@ -38,20 +39,20 @@ describe('Request Hooks', () => {
         });
     });
 
-    skipDescribeInProxyless('RequestLogger', () => {
+    describe('RequestLogger', () => {
         it('API', () => {
             return runTests('./testcafe-fixtures/request-logger/api.js', 'API', { only: 'chrome' });
         });
 
-        it('Log options', () => {
+        skipInProxyless('Log options', () => {
             return runTests('./testcafe-fixtures/request-logger/log-options.js', 'Log options', { only: 'chrome' });
         });
 
-        it('Multi-browser', () => {
+        skipInProxyless('Multi-browser', () => {
             return runTests('./testcafe-fixtures/request-logger/multi-browser.js', 'Multi-browser');
         });
 
-        it('Request filter rule predicate', () => {
+        skipInProxyless('Request filter rule predicate', () => {
             return runTests('./testcafe-fixtures/request-logger/request-filter-rule-predicate.js', null, { only: 'chrome' });
         });
     });

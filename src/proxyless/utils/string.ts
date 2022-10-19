@@ -8,6 +8,12 @@ export function getResponseAsString (response: GetResponseBodyResponse): string 
         : response.body;
 }
 
+export function getResponseAsBuffer (response: GetResponseBodyResponse): Buffer {
+    return response.base64Encoded
+        ? Buffer.from(response.body, 'base64')
+        : Buffer.from(response.body);
+}
+
 export function toBase64String (str: string): string {
     return Buffer.from(str).toString('base64');
 }

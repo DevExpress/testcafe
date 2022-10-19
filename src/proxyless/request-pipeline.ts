@@ -16,7 +16,6 @@ import ProxylessPipelineContext from './request-hooks/pipeline-context';
 const INVALID_INTERCEPTED_RESPONSE_ERROR_MSG = 'Invalid InterceptionId.';
 
 export default class ProxylessRequestPipeline {
-    private readonly _browserId: string;
     private readonly _client: ProtocolApi;
     public readonly requestHookEventProvider: ProxylessRequestHookEventProvider;
     private readonly _resourceInjector: ResourceInjector;
@@ -25,10 +24,9 @@ export default class ProxylessRequestPipeline {
     private _stopped: boolean;
 
     public constructor (browserId: string, client: ProtocolApi) {
-        this._browserId               = browserId;
         this._client                  = client;
         this._specialServiceRoutes    = this._getSpecialServiceRoutes(browserId);
-        this.requestHookEventProvider = new ProxylessRequestHookEventProvider();
+        this.requestHookEventProvider = new ProxylessRequestHookEventProvider(browserId);
         this._resourceInjector        = new ResourceInjector(browserId, this._specialServiceRoutes);
         this._serviceDomains          = [];
         this._stopped                 = false;
@@ -128,11 +126,12 @@ export default class ProxylessRequestPipeline {
             if (!requestIsHandled)
                 await this._client.Fetch.continueRequest({ requestId: event.requestId });
             else
-                await this.requestHookEventProvider.onResponse(event);
+                await this.requestHookEventProvider.onResponse(event, Buffer.alloc(0), this._client);
         }
         else {
-            await this.requestHookEventProvider.onResponse(event);
-            await this._resourceInjector.onResponse(event, this._client);
+            const resourceBody = await this._resourceInjector.onResponse(event, this._client);
+
+            await this.requestHookEventProvider.onResponse(event, resourceBody, this._client);
         }
     }
 

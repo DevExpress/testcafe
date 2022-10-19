@@ -3,7 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import Protocol from 'devtools-protocol';
 import RequestPausedEvent = Protocol.Fetch.RequestPausedEvent;
 import HeaderEntry = Protocol.Fetch.HeaderEntry;
-import { IncomingHttpHeaders } from 'http';
+import { IncomingHttpHeaders, OutgoingHttpHeaders } from 'http';
 
 
 export async function redirect (client: ProtocolApi, requestId: string, url: string): Promise<void> {
@@ -35,4 +35,13 @@ export function convertToHeaderEntries (headers: IncomingHttpHeaders): HeaderEnt
     });
 }
 
+export function convertToOutgoingHttpHeaders (headers: HeaderEntry[] | undefined): OutgoingHttpHeaders {
+    if (!headers)
+        return {};
 
+    return headers.reduce((result: any, header) => {
+        result[header.name] = header.value;
+
+        return result;
+    }, {});
+}
