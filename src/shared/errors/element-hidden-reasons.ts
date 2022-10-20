@@ -1,71 +1,54 @@
 export default {
-    notElementOrTextNode: () => `
-        Element is not dom element or text node.
-    `,
+    getSentenceSubject: (isRecursive: boolean): string => {
+        return isRecursive ? 'container' : 'action target';
+    },
+    chainMessage: (originalInput:string) => {
+        originalInput = originalInput.trimStart();
+        return originalInput.replace(/The/, 'its') || '';
+    },
+    notElementOrTextNode: (target: string) => `
+    The action target (${target}) is neither a DOM element nor a text node.
+  `,
     elOutsideBounds: (target: string) => `
-        The element:
-        '${target}'
-        is outside the visible bounds of the document.
-    `,
-    elHasWidthOrHeightZero: (target: string, width: number, height: number) => `
-        The element:
-        '${target}'
-        is not visible because it has an effective width and height of: '${width} x ${height}' pixels.
-    `,
-    elHasDisplayNone: (target: string) => `
-        The element:
-        '${target}'
-        is not visible because it has CSS property: 'display: none'
-    `,
-    parentHasDisplayNone: (target: string, parent: string) => `
-        The element:
-        '${target}'
-        is not visible because its parent:
-        '${parent}'
-        has CSS property: 'display: none'
-    `,
-    elHasVisibilityHidden: (target: string) => `
-        The element:
-        '${target}'
-        is not visible because it has CSS property: 'visibility: hidden'
-    `,
-    parentHasVisibilityHidden: (target: string, parent: string) => `
-        The element:
-        '${target}'
-        is not visible because its parent:
-        '${parent}'
-        has CSS property: 'visibility: hidden'
-    `,
-    elHasVisibilityCollapse: (target: string) => `
-        The element:
-        '${target}'
-        is not visible because it has CSS property: 'visibility: collapse'
-    `,
-    parentHasVisibilityCollapse: (target: string, parent: string) => `
-        The element:
-        '${target}'
-        is not visible because its parent:
-        '${parent}'
-        has CSS property: 'visibility: collapse'
-    `,
-    elNotRendered: (target: string) => `
-        The element:
-        '${target}'
-        is not visible because it is not rendered'
-    `,
-    optionNotVisible: (target: string, parent: string) => `
-        The option:
-        '${target}'
-        is not visible because its parent:
-        '${parent}'
-        is not expended and has size less than 2.
-    `,
-    mapContainerNotVisible: (target: string, container: string, containerHiddenReason: string) => `
-        The element:
-        '${target}'
-        is not visible because container:
-        '${container}'
-        is not visible'.
-        '${containerHiddenReason}'
-    `,
+    The action target (${target}) is located outside the the layout viewport.
+  `,
+    elHasWidthOrHeightZero: (target: string, width: number, height: number, sentenceSubject: string) => `
+    The ${sentenceSubject} (${target}) is too small to be visible: ${width}px x ${height}px
+  `,
+    elHasDisplayNone: (target: string, sentenceSubject: string) => `
+    The ${sentenceSubject} (${target}) is invisible. 
+    The value of its 'display' property is 'none'.
+  `,
+    parentHasDisplayNone: (target: string, parent: string, sentenceSubject: string) => `
+    The ${sentenceSubject} (${target}) is invisible. 
+    It descends from an element that has the 'display: none' property (${parent}).
+  `,
+    elHasVisibilityHidden: (target: string, sentenceSubject: string) => `
+    The ${sentenceSubject} (${target}) is invisible.
+    The value of its 'visibility' property is 'hidden'.
+  `,
+    parentHasVisibilityHidden: (target: string, parent: string, sentenceSubject: string) => `
+    The ${sentenceSubject} (${target}) is invisible.
+    It descends from an element that has the 'visibility: hidden' property ('${parent}').
+  `,
+    elHasVisibilityCollapse: (target: string, sentenceSubject: string) => `
+    The ${sentenceSubject} (${target}) is invisible.
+    The value of its 'visibility' property is 'collapse'.
+  `,
+    parentHasVisibilityCollapse: (target: string, parent: string, sentenceSubject: string) => `
+    The ${sentenceSubject} (${target}) is invisible.
+    It descends from an element that has the 'visibility: collapse' property ('${parent}).
+  `,
+    elNotRendered: (target: string, sentenceSubject: string) => `
+    The ${sentenceSubject} (${target}) has not been rendered.
+  `,
+    optionNotVisible: (target: string, parent: string, sentenceSubject: string) => `
+    The ${sentenceSubject} (${target}) is invisible. 
+    The parent element (${parent}) is collapsed, and its length is shorter than 2.
+  `,
+    mapContainerNotVisible: (target: string, containerHiddenReason: string) => {
+        return `
+            The action target (${target}) is invisible because ${containerHiddenReason}
+        `;
+    },
 };

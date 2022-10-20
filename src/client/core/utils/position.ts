@@ -302,68 +302,68 @@ export function isElementVisible (el: Node): boolean {
     return styleUtils.hasDimensions(el as HTMLElement) && !hiddenUsingStyles(el as unknown as HTMLElement);
 }
 
-export function getHiddenReason (el?: Node): string | null {
+export function getHiddenReason (el?: Node, isRecursive = false): string | null {
     if (!el)
         return null;
 
     const isTextNode = domUtils.isTextNode(el);
-
-    if (!domUtils.isDomElement(el) && !isTextNode)
-        return hiddenReasons.notElementOrTextNode();
-
     const strEl           = isTextNode ? (el as Text).data : stringifyElement(el as HTMLElement);
     const offsetHeight    = (el as HTMLElement).offsetHeight;
     const offsetWidth     = (el as HTMLElement).offsetWidth;
     const isOptionElement = domUtils.isOptionElement(el) || domUtils.getTagName(el as HTMLElement) === 'optgroup';
 
+    const sentenceSubject = hiddenReasons.getSentenceSubject(isRecursive);
+
+    if (!domUtils.isDomElement(el) && !isTextNode)
+        return hiddenReasons.notElementOrTextNode(strEl);
+
     if (isOptionElement && !selectController.isOptionElementVisible(el as HTMLElement)) {
         const optionParent    = domUtils.getSelectParent(el);
         const optionParentStr = stringifyElement(optionParent);
-        const optionStr       = stringifyElement(el as HTMLElement);
 
-        return hiddenReasons.optionNotVisible(optionStr, optionParentStr);
+        return hiddenReasons.optionNotVisible(strEl, optionParentStr, sentenceSubject);
     }
 
     if (domUtils.isMapElement(el)) {
         const mapContainer          = domUtils.getMapContainer(domUtils.closest(el, 'map'));
-        const containerHiddenReason = getHiddenReason(mapContainer);
+        const containerError = hiddenReasons.chainMessage(getHiddenReason(mapContainer, true) || '');
 
-        return hiddenReasons.mapContainerNotVisible(strEl, stringifyElement(mapContainer), containerHiddenReason || '');
+        return hiddenReasons.mapContainerNotVisible(strEl, containerError || '');
     }
 
     const visibilityHiddenParent = getVisibilityHiddenParent(el);
 
     if (visibilityHiddenParent)
-        return hiddenReasons.parentHasVisibilityHidden(strEl, stringifyElement(visibilityHiddenParent));
+        return hiddenReasons.parentHasVisibilityHidden(strEl, stringifyElement(visibilityHiddenParent), sentenceSubject);
 
     const visibilityCollapseParent = getVisibilityCollapseParent(el);
 
     if (visibilityCollapseParent)
-        return hiddenReasons.parentHasVisibilityCollapse(strEl, stringifyElement(visibilityCollapseParent));
+        return hiddenReasons.parentHasVisibilityCollapse(strEl, stringifyElement(visibilityCollapseParent), sentenceSubject);
 
     const displayNoneParent = getDisplayNoneParent(el);
 
     if (displayNoneParent)
-        return hiddenReasons.parentHasDisplayNone(strEl, stringifyElement(displayNoneParent));
+        return hiddenReasons.parentHasDisplayNone(strEl, stringifyElement(displayNoneParent), sentenceSubject);
 
     if (elHasVisibilityHidden(el))
-        return hiddenReasons.elHasVisibilityHidden(strEl);
+        return hiddenReasons.elHasVisibilityHidden(strEl, sentenceSubject);
 
     if (elHasVisibilityCollapse(el))
-        return hiddenReasons.elHasVisibilityCollapse(strEl);
+        return hiddenReasons.elHasVisibilityCollapse(strEl, sentenceSubject);
 
     if (elHasDisplayNone(el))
-        return hiddenReasons.elHasDisplayNone(strEl);
+        return hiddenReasons.elHasDisplayNone(strEl, sentenceSubject);
 
     if (domUtils.isTextNode(el) && !domUtils.isRenderedNode(el))
-        return hiddenReasons.elNotRendered(strEl);
+        return hiddenReasons.elNotRendered(strEl, sentenceSubject);
 
     if (!domUtils.isContentEditableElement(el) &&
         hiddenByRectangle(el as HTMLElement))
-        return hiddenReasons.elHasWidthOrHeightZero(strEl, offsetWidth, offsetHeight);
+        return hiddenReasons.elHasWidthOrHeightZero(strEl, offsetWidth, offsetHeight, sentenceSubject);
 
     if (!styleUtils.hasDimensions(el as HTMLElement))
-        return hiddenReasons.elHasWidthOrHeightZero(strEl, offsetWidth, offsetHeight);
+        return hiddenReasons.elHasWidthOrHeightZero(strEl, offsetWidth, offsetHeight, sentenceSubject);
 
     return null;
 }
