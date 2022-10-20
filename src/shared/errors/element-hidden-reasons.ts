@@ -6,7 +6,7 @@ export default {
         The ${targetType} (${target}) is located outside the the layout viewport.
     `,
     elHasWidthOrHeightZero: (target: string, targetType: string, width: number, height: number) => `
-        The ${targetType} (${target}) is too small to be visible: ${width}px x ${height}px
+        The ${targetType} (${target}) is too small to be visible: ${width}px x ${height}px.
     `,
     elHasDisplayNone: (target: string, targetType: string) => `
         The ${targetType} (${target}) is invisible. 
@@ -22,7 +22,7 @@ export default {
     `,
     parentHasVisibilityHidden: (target: string, targetType: string, parent: string) => `
         The ${targetType} (${target}) is invisible.
-        It descends from an element that has the 'visibility: hidden' property ('${parent}').
+        It descends from an element that has the 'visibility: hidden' property (${parent}).
     `,
     elHasVisibilityCollapse: (target: string, targetType: string) => `
         The ${targetType} (${target}) is invisible.
@@ -30,7 +30,7 @@ export default {
     `,
     parentHasVisibilityCollapse: (target: string, targetType: string, parent: string) => `
         The ${targetType} (${target}) is invisible.
-        It descends from an element that has the 'visibility: collapse' property ('${parent}).
+        It descends from an element that has the 'visibility: collapse' property (${parent}).
     `,
     elNotRendered: (target: string, targetType: string) => `
         The ${targetType} (${target}) has not been rendered.
