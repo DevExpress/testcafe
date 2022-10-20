@@ -2,7 +2,6 @@ const { expect } = require('chai');
 
 const {
     skipInExperimentalDebug,
-    skipDescribeInProxyless,
     skipInProxylessOrExperimentalDebug,
     skipInProxyless,
 } = require('../../../../utils/skip-in');
@@ -44,20 +43,20 @@ describe('Request Hooks', () => {
             return runTests('./testcafe-fixtures/request-logger/api.js', 'API', { only: 'chrome' });
         });
 
-        skipInProxyless('Log options', () => {
+        it('Log options', () => {
             return runTests('./testcafe-fixtures/request-logger/log-options.js', 'Log options', { only: 'chrome' });
         });
 
-        skipInProxyless('Multi-browser', () => {
+        it('Multi-browser', () => {
             return runTests('./testcafe-fixtures/request-logger/multi-browser.js', 'Multi-browser');
         });
 
-        skipInProxyless('Request filter rule predicate', () => {
+        it('Request filter rule predicate', () => {
             return runTests('./testcafe-fixtures/request-logger/request-filter-rule-predicate.js', null, { only: 'chrome' });
         });
     });
 
-    skipDescribeInProxyless('API', () => {
+    describe('API', () => {
         skipInExperimentalDebug('Add/remove request hooks', () => {
             return runTests('./testcafe-fixtures/api/add-remove-request-hook.js', 'Test', { only: 'chrome' });
         });
@@ -78,11 +77,11 @@ describe('Request Hooks', () => {
                 });
         });
 
-        it('Execution order', () => {
+        skipInProxyless('Execution order', () => {
             return runTests('./testcafe-fixtures/api/execution-order.js', null, { only: 'chrome' });
         });
 
-        it("Test's request hooks should not override the fixture's request hooks (GH-4122)", () => {
+        skipInProxyless("Test's request hooks should not override the fixture's request hooks (GH-4122)", () => {
             return runTests('./testcafe-fixtures/api/i4122.js', null, { only: 'chrome' });
         });
 
@@ -94,11 +93,11 @@ describe('Request Hooks', () => {
             return runTests('./testcafe-fixtures/api/change-remove-response-headers.js', null, { only: 'chrome' });
         });
 
-        it('Request hook events should be represented as appropriate classes', () => {
+        skipInProxyless('Request hook events should be represented as appropriate classes', () => {
             return runTests('./testcafe-fixtures/api/request-hook-events.js', null, { only: 'chrome' });
         });
 
-        skipInExperimentalDebug('Correct execution order for addRequestHooks/removeRequestHooks sequence (GH-3861)', () => {
+        skipInProxylessOrExperimentalDebug('Correct execution order for addRequestHooks/removeRequestHooks sequence (GH-3861)', () => {
             return runTests('./testcafe-fixtures/api/gh-3861.js', null, { only: 'chrome' });
         });
 

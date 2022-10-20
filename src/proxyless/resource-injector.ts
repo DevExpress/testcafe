@@ -17,7 +17,7 @@ import { remove } from 'lodash';
 import { StatusCodes } from 'http-status-codes';
 import { PageLoadError } from '../errors/test-run';
 import { redirect, navigateTo } from './utils/cdp';
-import { SpecialServiceRoutes } from './types';
+import { DocumentResourceInfo, SpecialServiceRoutes } from './types';
 import { resourceInjectorLogger } from '../utils/debug-loggers';
 import {
     getResponseAsString,
@@ -96,20 +96,19 @@ export default class ResourceInjector {
         await navigateTo(client, this._specialServiceRoutes.errorPage1);
     }
 
-    public async onResponse (event: RequestPausedEvent, client: ProtocolApi): Promise<Buffer | null> {
+    public async getDocumentResourceInfo (event: RequestPausedEvent, client: ProtocolApi): Promise<DocumentResourceInfo> {
         const {
             requestId,
-            responseHeaders,
-            responseStatusCode,
             request,
             responseErrorReason,
             resourceType,
         } = event;
 
         if (resourceType !== 'Document') {
-            await client.Fetch.continueResponse({ requestId });
-
-            return null;
+            return {
+                success: true,
+                body:    null,
+            };
         }
 
         try {
@@ -118,27 +117,29 @@ export default class ResourceInjector {
 
                 await this._handlePageError(client, err, request.url);
 
-                return null;
+                return {
+                    success: false,
+                    body:    null,
+                };
             }
 
             const responseObj = await client.Fetch.getResponseBody({ requestId });
             const responseStr = getResponseAsString(responseObj);
 
-            await this.processHTMLPageContent({
-                requestId,
-                responseHeaders,
-                responseCode: responseStatusCode as number,
-                body:         responseStr,
-            }, client);
-
-            return Buffer.from(responseStr);
+            return {
+                success: true,
+                body:    Buffer.from(responseStr),
+            };
         }
         catch (err) {
             resourceInjectorLogger('Failed to process request: %s', request.url);
 
             await this._handlePageError(client, err as Error, request.url);
 
-            return null;
+            return {
+                success: false,
+                body:    null,
+            };
         }
     }
 

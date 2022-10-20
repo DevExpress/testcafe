@@ -105,19 +105,24 @@ export default class ProxylessRequestHookEventProvider extends RequestHookEventP
         await pipelineContext.onRequestHookRequest(this, eventFactory);
     }
 
-    public async onResponse (event: RequestPausedEvent, resourceBody: Buffer | null, client: ProtocolApi): Promise<void> {
+    public async onResponse (event: RequestPausedEvent, resourceBody: Buffer | null, client: ProtocolApi): Promise<boolean> {
+        let modified = false;
+
         if (!this.hasRequestEventListeners()) {
             this.cleanUp(event.networkId as string);
 
-            return;
+            return modified;
         }
-
 
         const { pipelineContext, eventFactory } = this._getContextData(event);
 
         eventFactory.update(event);
 
         await pipelineContext.onRequestHookConfigureResponse(this, eventFactory);
+
+        if (eventFactory.headersModified)
+            modified = true;
+
         await ProxylessRequestHookEventProvider._setResponseBody({
             pipelineContext,
             resourceBody,
@@ -131,5 +136,7 @@ export default class ProxylessRequestHookEventProvider extends RequestHookEventP
         }));
 
         this.cleanUp(event.networkId as string);
+
+        return modified;
     }
 }

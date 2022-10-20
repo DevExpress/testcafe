@@ -23,15 +23,13 @@ export default class Proxyless {
     }
 
     public async init (options: ProxylessSetupOptions): Promise<void> {
-        this.requestPipeline.setServiceDomains(options.serviceDomains);
-
         // NOTE: We are forced to handle all requests and responses at once
         // because CDP API does not allow specifying request filtering behavior for different handlers.
         await this._client.Fetch.enable({
             patterns: ALL_REQUESTS_DATA,
         });
 
-        this.requestPipeline.init();
+        this.requestPipeline.init(options);
 
         proxylessLogger('proxyless initialized');
     }

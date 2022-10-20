@@ -243,6 +243,8 @@ export default class BrowserConnection extends EventEmitter {
                     this.browserConnectionGateway.proxy.server1Info.domain,
                     this.browserConnectionGateway.proxy.server2Info.domain,
                 ],
+
+                developmentMode: this.browserConnectionGateway.proxy.options.developmentMode,
             };
         }
 

@@ -1,31 +1,58 @@
 import {
     BaseRequestHookEventFactory,
     ConfigureResponseEvent,
+    ModifyResponseFunctions,
     RequestFilterRule,
     RequestInfo,
     RequestOptions,
     RequestOptionsParams,
     ResponseInfo,
 } from 'testcafe-hammerhead';
+import { remove } from 'lodash';
 import Protocol from 'devtools-protocol';
 import RequestPausedEvent = Protocol.Fetch.RequestPausedEvent;
 import Request = Protocol.Network.Request;
+import HeaderEntry = Protocol.Fetch.HeaderEntry;
 import { fromBase64String } from '../utils/string';
 import { StatusCodes } from 'http-status-codes';
-import { convertToOutgoingHttpHeaders } from '../utils/cdp';
+import { convertToOutgoingHttpHeaders, lowerCaseHeaderNames } from '../utils/headers';
 
 
 export default class ProxylessEventFactory extends BaseRequestHookEventFactory {
     private _event: RequestPausedEvent;
     private _responseBody: Buffer;
     private readonly _sessionId: string;
+    private readonly _modifyResponseFunction: ModifyResponseFunctions;
+    public headersModified: boolean;
 
     public constructor (event: RequestPausedEvent, sessionId: string) {
         super();
 
-        this._event        = event;
-        this._responseBody = Buffer.alloc(0);
-        this._sessionId    = sessionId;
+        this._event                  = event;
+        this._responseBody           = Buffer.alloc(0);
+        this._sessionId              = sessionId;
+        this._modifyResponseFunction = this._createModifyResponseFunctions();
+        this.headersModified         = false;
+    }
+
+    private _createModifyResponseFunctions (): ModifyResponseFunctions {
+        return {
+            setHeader: (name: string, value: string) => {
+                const header = (this._event.responseHeaders as HeaderEntry[]).find(h => h.name.toLowerCase() === name.toLowerCase());
+
+                if (!header)
+                    (this._event.responseHeaders as HeaderEntry[]).push({ name, value });
+                else
+                    header.value = value;
+
+                this.headersModified = true;
+            },
+            removeHeader: (name: string) => {
+                remove(this._event.responseHeaders as HeaderEntry[], header => header.name.toLowerCase() === name.toLowerCase());
+
+                this.headersModified = true;
+            },
+        };
     }
 
     private static _getRequestData (request: Request): Buffer {
@@ -56,9 +83,10 @@ export default class ProxylessEventFactory extends BaseRequestHookEventFactory {
             sessionId: this._sessionId,
             userAgent: RequestInfo.getUserAgent(request.headers),
             url:       request.url,
-            method:    request.method,
-            headers:   request.headers,
+            method:    request.method.toLowerCase(),
+            headers:   lowerCaseHeaderNames(request.headers),
             body:      ProxylessEventFactory._getRequestData(request),
+            isAjax:    ProxylessEventFactory._getIsAjaxRequest(this._event),
         });
     }
 
@@ -85,7 +113,7 @@ export default class ProxylessEventFactory extends BaseRequestHookEventFactory {
     }
 
     public createConfigureResponseEvent (rule: RequestFilterRule): ConfigureResponseEvent {
-        return new ConfigureResponseEvent(rule, null);
+        return new ConfigureResponseEvent(rule, this._modifyResponseFunction);
     }
 
     public createResponseInfo (): ResponseInfo {
