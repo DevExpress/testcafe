@@ -302,74 +302,86 @@ export function isElementVisible (el: Node): boolean {
     return styleUtils.hasDimensions(el as HTMLElement) && !hiddenUsingStyles(el as unknown as HTMLElement);
 }
 
-export function getHiddenReason (el?: Node, isRecursive = false): string | null {
+export function getSubHiddenReason (reason:string): string {
+    return reason.replace(/.*The/, 'its');
+}
+
+export function getHiddenReason (el?: Node, targetType = 'action target'): string | null {
     if (!el)
         return null;
 
     const isTextNode = domUtils.isTextNode(el);
+
+    if (!domUtils.isDomElement(el) && !isTextNode)
+        return hiddenReasons.notElementOrTextNode(targetType);
+
     const strEl           = isTextNode ? (el as Text).data : stringifyElement(el as HTMLElement);
     const offsetHeight    = (el as HTMLElement).offsetHeight;
     const offsetWidth     = (el as HTMLElement).offsetWidth;
     const isOptionElement = domUtils.isOptionElement(el) || domUtils.getTagName(el as HTMLElement) === 'optgroup';
 
-    const sentenceSubject = hiddenReasons.getSentenceSubject(isRecursive);
-
-    if (!domUtils.isDomElement(el) && !isTextNode)
-        return hiddenReasons.notElementOrTextNode(strEl);
-
     if (isOptionElement && !selectController.isOptionElementVisible(el as HTMLElement)) {
         const optionParent    = domUtils.getSelectParent(el);
         const optionParentStr = stringifyElement(optionParent);
 
-        return hiddenReasons.optionNotVisible(strEl, optionParentStr, sentenceSubject);
+        return hiddenReasons.optionNotVisible(strEl, targetType, optionParentStr);
     }
 
     if (domUtils.isMapElement(el)) {
         const mapContainer          = domUtils.getMapContainer(domUtils.closest(el, 'map'));
-        const containerError = hiddenReasons.chainMessage(getHiddenReason(mapContainer, true) || '');
+        const containerHiddenReason = getHiddenReason(mapContainer, 'container') || '';
+        const containerError        = getSubHiddenReason(containerHiddenReason);
 
-        return hiddenReasons.mapContainerNotVisible(strEl, containerError || '');
+        return hiddenReasons.mapContainerNotVisible(strEl, containerError);
     }
 
     const visibilityHiddenParent = getVisibilityHiddenParent(el);
 
     if (visibilityHiddenParent)
-        return hiddenReasons.parentHasVisibilityHidden(strEl, stringifyElement(visibilityHiddenParent), sentenceSubject);
+        return hiddenReasons.parentHasVisibilityHidden(strEl, targetType, stringifyElement(visibilityHiddenParent));
 
     const visibilityCollapseParent = getVisibilityCollapseParent(el);
 
     if (visibilityCollapseParent)
-        return hiddenReasons.parentHasVisibilityCollapse(strEl, stringifyElement(visibilityCollapseParent), sentenceSubject);
+        return hiddenReasons.parentHasVisibilityCollapse(strEl, targetType, stringifyElement(visibilityCollapseParent));
 
     const displayNoneParent = getDisplayNoneParent(el);
 
     if (displayNoneParent)
-        return hiddenReasons.parentHasDisplayNone(strEl, stringifyElement(displayNoneParent), sentenceSubject);
+        return hiddenReasons.parentHasDisplayNone(strEl, targetType, stringifyElement(displayNoneParent));
 
     if (elHasVisibilityHidden(el))
-        return hiddenReasons.elHasVisibilityHidden(strEl, sentenceSubject);
+        return hiddenReasons.elHasVisibilityHidden(strEl, targetType);
 
     if (elHasVisibilityCollapse(el))
-        return hiddenReasons.elHasVisibilityCollapse(strEl, sentenceSubject);
+        return hiddenReasons.elHasVisibilityCollapse(strEl, targetType);
 
     if (elHasDisplayNone(el))
-        return hiddenReasons.elHasDisplayNone(strEl, sentenceSubject);
+        return hiddenReasons.elHasDisplayNone(strEl, targetType);
 
     if (domUtils.isTextNode(el) && !domUtils.isRenderedNode(el))
-        return hiddenReasons.elNotRendered(strEl, sentenceSubject);
+        return hiddenReasons.elNotRendered(strEl, targetType);
 
     if (!domUtils.isContentEditableElement(el) &&
         hiddenByRectangle(el as HTMLElement))
-        return hiddenReasons.elHasWidthOrHeightZero(strEl, offsetWidth, offsetHeight, sentenceSubject);
+        return hiddenReasons.elHasWidthOrHeightZero(strEl, targetType, offsetWidth, offsetHeight);
 
     if (!styleUtils.hasDimensions(el as HTMLElement))
-        return hiddenReasons.elHasWidthOrHeightZero(strEl, offsetWidth, offsetHeight, sentenceSubject);
+        return hiddenReasons.elHasWidthOrHeightZero(strEl, targetType, offsetWidth, offsetHeight);
 
     return null;
 }
 
-export function getElOutsideBoundsReason (el: HTMLElement): string {
-    const elStr  = stringifyElement(el);
+export function getElOutsideBoundsReason (el: HTMLElement, targetType = 'action target'): string {
+    const strEl  = stringifyElement(el);
 
-    return hiddenReasons.elOutsideBounds(elStr);
+    if (domUtils.isMapElement(el)) {
+        const mapContainer          = domUtils.getMapContainer(domUtils.closest(el, 'map'));
+        const containerHiddenReason = getElOutsideBoundsReason(mapContainer, 'container') || '';
+        const containerError        = getSubHiddenReason(containerHiddenReason);
+
+        return hiddenReasons.mapContainerNotVisible(strEl, containerError);
+    }
+
+    return hiddenReasons.elOutsideBounds(strEl, targetType);
 }
