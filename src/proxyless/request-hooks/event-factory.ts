@@ -1,22 +1,31 @@
 import {
     BaseRequestHookEventFactory,
+    ConfigureResponseEvent,
+    RequestFilterRule,
     RequestInfo,
     RequestOptions,
     RequestOptionsParams,
+    ResponseInfo,
 } from 'testcafe-hammerhead';
 import Protocol from 'devtools-protocol';
 import RequestPausedEvent = Protocol.Fetch.RequestPausedEvent;
 import Request = Protocol.Network.Request;
 import { fromBase64String } from '../utils/string';
+import { StatusCodes } from 'http-status-codes';
+import { convertToOutgoingHttpHeaders } from '../utils/cdp';
 
 
 export default class ProxylessEventFactory extends BaseRequestHookEventFactory {
-    private readonly _event: RequestPausedEvent;
+    private _event: RequestPausedEvent;
+    private _responseBody: Buffer;
+    private readonly _sessionId: string;
 
-    public constructor (event: RequestPausedEvent) {
+    public constructor (event: RequestPausedEvent, sessionId: string) {
         super();
 
-        this._event = event;
+        this._event        = event;
+        this._responseBody = Buffer.alloc(0);
+        this._sessionId    = sessionId;
     }
 
     private static _getRequestData (request: Request): Buffer {
@@ -31,12 +40,20 @@ export default class ProxylessEventFactory extends BaseRequestHookEventFactory {
             || event.resourceType === 'Fetch';
     }
 
+    public update (event: RequestPausedEvent): void {
+        this._event = event;
+    }
+
+    public setResponseBody (body: Buffer): void {
+        this._responseBody = body;
+    }
+
     public createRequestInfo (): RequestInfo {
         const { requestId, request } = this._event;
 
         return new RequestInfo({
             requestId,
-            sessionId: '',
+            sessionId: this._sessionId,
             userAgent: RequestInfo.getUserAgent(request.headers),
             url:       request.url,
             method:    request.method,
@@ -65,5 +82,20 @@ export default class ProxylessEventFactory extends BaseRequestHookEventFactory {
             requestParams.auth = parsedUrl.username + ':' + parsedUrl.password;
 
         return new RequestOptions(requestParams);
+    }
+
+    public createConfigureResponseEvent (rule: RequestFilterRule): ConfigureResponseEvent {
+        return new ConfigureResponseEvent(rule, null);
+    }
+
+    public createResponseInfo (): ResponseInfo {
+        return new ResponseInfo({
+            statusCode:               this._event.responseStatusCode || StatusCodes.OK,
+            headers:                  convertToOutgoingHttpHeaders(this._event.responseHeaders),
+            body:                     this._responseBody,
+            sessionId:                '',
+            requestId:                this._event.requestId,
+            isSameOriginPolicyFailed: false,
+        });
     }
 }

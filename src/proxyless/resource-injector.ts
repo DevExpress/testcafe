@@ -86,7 +86,7 @@ export default class ResourceInjector {
 
     private async _handlePageError (client: ProtocolApi, err: Error, url: string): Promise<void> {
         const browserConnection = BrowserConnection.getById(this._browserId) as BrowserConnection;
-        const currentTestRun    = browserConnection?.currentJob?.currentTestRun;
+        const currentTestRun    = browserConnection.getCurrentTestRun();
 
         if (!currentTestRun)
             return;
@@ -96,7 +96,7 @@ export default class ResourceInjector {
         await navigateTo(client, this._specialServiceRoutes.errorPage1);
     }
 
-    public async onResponse (event: RequestPausedEvent, client: ProtocolApi): Promise<void> {
+    public async onResponse (event: RequestPausedEvent, client: ProtocolApi): Promise<Buffer | null> {
         const {
             requestId,
             responseHeaders,
@@ -106,33 +106,39 @@ export default class ResourceInjector {
             resourceType,
         } = event;
 
-        if (resourceType !== 'Document')
+        if (resourceType !== 'Document') {
             await client.Fetch.continueResponse({ requestId });
-        else {
-            try {
-                if (responseErrorReason === 'NameNotResolved') {
-                    const err = new Error(`Failed to find a DNS-record for the resource at "${event.request.url}"`);
 
-                    await this._handlePageError(client, err, request.url);
+            return null;
+        }
 
-                    return;
-                }
+        try {
+            if (responseErrorReason === 'NameNotResolved') {
+                const err = new Error(`Failed to find a DNS-record for the resource at "${event.request.url}"`);
 
-                const responseObj = await client.Fetch.getResponseBody({ requestId });
-                const responseStr = getResponseAsString(responseObj);
+                await this._handlePageError(client, err, request.url);
 
-                await this.processHTMLPageContent({
-                    requestId,
-                    responseHeaders,
-                    responseCode: responseStatusCode as number,
-                    body:         responseStr,
-                }, client);
+                return null;
             }
-            catch (err) {
-                resourceInjectorLogger('Failed to process request: %s', request.url);
 
-                await this._handlePageError(client, err as Error, request.url);
-            }
+            const responseObj = await client.Fetch.getResponseBody({ requestId });
+            const responseStr = getResponseAsString(responseObj);
+
+            await this.processHTMLPageContent({
+                requestId,
+                responseHeaders,
+                responseCode: responseStatusCode as number,
+                body:         responseStr,
+            }, client);
+
+            return Buffer.from(responseStr);
+        }
+        catch (err) {
+            resourceInjectorLogger('Failed to process request: %s', request.url);
+
+            await this._handlePageError(client, err as Error, request.url);
+
+            return null;
         }
     }
 
