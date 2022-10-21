@@ -31,7 +31,7 @@ const {
 } = require('../../lib/errors/test-run/utils');
 const {
     buildChromeArgs,
-    IN_DOCKER_FLAGS,
+    CONTAINERIZED_CHROME_FLAGS,
 } = require('../../lib/browser/provider/built-in/dedicated/chrome/build-chrome-args');
 
 describe('Utils', () => {
@@ -586,7 +586,7 @@ describe('Utils', () => {
 
         let chromeArgs = '';
 
-        const IN_DOCKER_FLAGS_RE       = new RegExp(IN_DOCKER_FLAGS.join(' '));
+        const IN_DOCKER_FLAGS_RE       = new RegExp(CONTAINERIZED_CHROME_FLAGS.join(' '));
         const SANDBOX_FLAG_RE          = new RegExp('--no-sandbox');
         const DISABLE_DEV_SHM_USAGE_RE = new RegExp('--disable-dev-shm-usage');
 
