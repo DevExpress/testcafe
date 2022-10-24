@@ -100,7 +100,7 @@ export default class ProxylessRequestPipeline {
 
             const pipelineContext = this.requestHookEventProvider.getPipelineContext(event.networkId as string);
 
-            if (!pipelineContext.mock)
+            if (!pipelineContext || !pipelineContext.mock)
                 await this._client.Fetch.continueRequest({ requestId: event.requestId });
             else {
                 const mockedResponse = await pipelineContext.getMockResponse();
