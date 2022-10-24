@@ -217,7 +217,7 @@ describe('[API] t.click()', function () {
         it('Should show that map container is not visible', function () {
             return runTests('./testcafe-fixtures/click-on-hidden-elements-test.js', 'Click on a map element with not visible container', runTestOptions)
                 .catch(function (errs) {
-                    expect(errs[0]).to.contains(`The action target (<area class="map-area">) is invisible because its container (<img usemap="#map" src="" alt="">) is too small to be visible: 0px x 0px.`);
+                    expect(errs[0]).to.match(/The action target \(<area .*>\) is invisible because its container \(<img .*>\) is too small to be visible: 0px x 0px./);
                 });
         });
     });

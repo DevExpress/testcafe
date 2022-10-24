@@ -13,7 +13,7 @@ describe('[Raw API] Hover action', function () {
     it('Should fail if an action target is out of the visible area', function () {
         return runTests('./testcafe-fixtures/hover.testcafe', 'Hover on a button that is out of the visible area', { shouldFail: true })
             .catch(function (errs) {
-                expect(errs[0]).contains('The action target (<input type="button" id="out-of-visible-area" style="position: absolute; left: -100px; top: -100px;">) is located outside the the layout viewport.');
+                expect(errs[0]).match(/The action target \(.*\) is located outside the the layout viewport./);
                 expect(errs[0]).contains('[[Hover on a button that is out of the visible area callsite]]');
             });
     });

@@ -33,7 +33,7 @@ describe('[Raw API] Drag actions', function () {
         it('Should fail if a dragged element is invisible', function () {
             return runTests('./testcafe-fixtures/drag.testcafe', 'Drag invisible element to another element', { shouldFail: true })
                 .catch(function (errs) {
-                    expect(errs[0]).contains('The action target (<input type="button" id="invisible" value="invisible-button" style="display: none;">) is invisible. The value of its \'display\' property is \'none\'.');
+                    expect(errs[0]).match(/The action target \(.*\) is invisible. The value of its 'display' property is 'none'./);
                     expect(errs[0]).contains('[[Drag invisible element to another element callsite]]');
                 });
         });
@@ -52,7 +52,7 @@ describe('[Raw API] Drag actions', function () {
         it('Should fail if a destination element is invisible', function () {
             return runTests('./testcafe-fixtures/drag.testcafe', 'Drag to invisible element', { shouldFail: true })
                 .catch(function (errs) {
-                    expect(errs[0]).contains('The action target (<input type="button" id="invisible" value="invisible-button" style="display: none;">) is invisible. The value of its \'display\' property is \'none\'.');
+                    expect(errs[0]).match(/The action target \(.*\) is invisible. The value of its 'display' property is 'none'./);
                     expect(errs[0]).contains('[[Drag to invisible element callsite]]');
                 });
         });
