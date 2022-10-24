@@ -192,7 +192,6 @@ export default class Driver extends serviceUtils.EventEmitter {
 
         this.statusBar = null;
 
-        this.windowId                         = this._getCurrentWindowId();
         this.role                             = DriverRole.replica;
         this.setAsMasterInProgress            = false;
         this.checkClosedChildWindowIntervalId = null;
@@ -256,13 +255,6 @@ export default class Driver extends serviceUtils.EventEmitter {
     _hasPendingActionFlags (contextStorage) {
         return contextStorage.getItem(this.COMMAND_EXECUTING_FLAG) ||
                contextStorage.getItem(this.EXECUTING_IN_IFRAME_FLAG);
-    }
-
-    _getCurrentWindowId () {
-        const currentUrl     = window.location.toString();
-        const parsedProxyUrl = hammerhead.utils.url.parseProxyUrl(currentUrl);
-
-        return parsedProxyUrl && parsedProxyUrl.windowId || null;
     }
 
     // Error handling
@@ -385,7 +377,7 @@ export default class Driver extends serviceUtils.EventEmitter {
 
         Promise.resolve()
             .then(() => {
-                return browser.setActiveWindowId(this.communicationUrls.activeWindowId, hammerhead.createNativeXHR, this.windowId);
+                return browser.setActiveWindowId(this.communicationUrls.activeWindowId, hammerhead.createNativeXHR, this.runInfo.windowId);
             })
             .then(() => {
                 this._startInternal({
@@ -437,7 +429,7 @@ export default class Driver extends serviceUtils.EventEmitter {
     _onConsoleMessage ({ meth, line }) {
         const messages = this.consoleMessages;
 
-        messages.addMessage(meth, line, this.windowId);
+        messages.addMessage(meth, line, this.runInfo.windowId);
 
         this.consoleMessages = messages;
     }
@@ -572,14 +564,14 @@ export default class Driver extends serviceUtils.EventEmitter {
         const parsedUrl = hammerhead.utils.url.parseProxyUrl(window.location.toString());
 
         return {
-            id:    this.windowId,
+            id:    this.runInfo.windowId,
             title: document.title,
             url:   parsedUrl.destUrl,
         };
     }
 
     _isTargetWindow (msg) {
-        return msg.windowId === this.windowId;
+        return msg.windowId === this.runInfo.windowId;
     }
 
     async _validateWindow (msg, wnd, getWindowFoundResult, WindowValidationMessageCtor) {
@@ -661,7 +653,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         if (!this.closing) {
             this.closing = true;
 
-            await browser.closeWindow(this.communicationUrls.closeWindow, hammerhead.createNativeXHR, this.windowId);
+            await browser.closeWindow(this.communicationUrls.closeWindow, hammerhead.createNativeXHR, this.runInfo.windowId);
         }
 
         childWindowToClose.driverWindow.close();
@@ -756,12 +748,12 @@ export default class Driver extends serviceUtils.EventEmitter {
 
         Promise.resolve()
             .then(() => {
-                return browser.setActiveWindowId(this.communicationUrls.activeWindowId, hammerhead.createNativeXHR, this.windowId);
+                return browser.setActiveWindowId(this.communicationUrls.activeWindowId, hammerhead.createNativeXHR, this.runInfo.windowId);
             })
             .then(() => {
                 this._startInternal({
                     finalizePendingCommand: msg.finalizePendingCommand,
-                    result:                 { id: this.windowId },
+                    result:                 { id: this.runInfo.windowId },
                 });
 
                 this.setAsMasterInProgress = false;
@@ -1297,8 +1289,8 @@ export default class Driver extends serviceUtils.EventEmitter {
 
     async _onWindowCloseCommand (command) {
         const wnd             = this._getTopOpenedWindow();
-        const windowId        = command.windowId || this.windowId;
-        const isCurrentWindow = windowId === this.windowId;
+        const windowId        = command.windowId || this.runInfo.windowId;
+        const isCurrentWindow = windowId === this.runInfo.windowId;
 
         try {
             const response = await this._validateChildWindowCloseCommandExists(windowId, wnd);
@@ -1335,7 +1327,7 @@ export default class Driver extends serviceUtils.EventEmitter {
             isCommandResult: true,
 
             result: {
-                id: this.windowId,
+                id: this.runInfo.windowId,
             },
         }));
     }
@@ -1846,31 +1838,31 @@ export default class Driver extends serviceUtils.EventEmitter {
         // current window has parent window
         // current window parent is not the same as current window
         // the last case is possible when we have the series of multiple and non-multiple windows tests
-        if (window.opener && window.opener !== window && this.windowId)
+        if (window.opener && window.opener !== window && this.runInfo.windowId)
             this.parentWindowDriverLink = new ParentWindowDriverLink(window);
     }
 
     _initConsoleMessages () {
         const messages = this.consoleMessages;
 
-        messages.ensureMessageContainer(this.windowId);
+        messages.ensureMessageContainer(this.runInfo.windowId);
 
         this.consoleMessages = messages;
     }
 
     async _getDriverRole () {
-        if (!this.windowId)
+        if (!this.runInfo.windowId)
             return DriverRole.master;
 
         const { activeWindowId } = await browser.getActiveWindowId(this.communicationUrls.activeWindowId, hammerhead.createNativeXHR);
 
-        return activeWindowId === this.windowId ?
+        return activeWindowId === this.runInfo.windowId ?
             DriverRole.master :
             DriverRole.replica;
     }
 
     _init () {
-        this.contextStorage       = new ContextStorage(window, this.testRunId, this.windowId);
+        this.contextStorage       = new ContextStorage(window, this.testRunId, this.runInfo.windowId);
         this.nativeDialogsTracker = new NativeDialogTracker(this.contextStorage, this.options.dialogHandler);
         this.statusBar            = new StatusBar(this.runInfo.userAgent, this.runInfo.fixtureName, this.runInfo.testName, this.contextStorage);
 
@@ -1882,7 +1874,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         this._initParentWindowLink();
 
         if (this._isOpenedInIframe())
-            sendMessageToDriver(new ChildWindowIsLoadedInFrameMessage(this.windowId), window.opener.top, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT, WindowNotFoundError);
+            sendMessageToDriver(new ChildWindowIsLoadedInFrameMessage(this.runInfo.windowId), window.opener.top, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT, WindowNotFoundError);
     }
 
     async _doFirstPageLoadSetup () {
