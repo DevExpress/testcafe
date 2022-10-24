@@ -46,6 +46,7 @@ interface NextTestRunInfo {
 
 interface ProxylessSetupOptions {
     serviceDomains: string[];
+    developmentMode: boolean;
 }
 
 interface OpenBrowserAdditionalOptions {

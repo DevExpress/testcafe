@@ -2,8 +2,8 @@ import { ProtocolApi } from 'chrome-remote-interface';
 import { StatusCodes } from 'http-status-codes';
 import Protocol from 'devtools-protocol';
 import RequestPausedEvent = Protocol.Fetch.RequestPausedEvent;
-import HeaderEntry = Protocol.Fetch.HeaderEntry;
-import { IncomingHttpHeaders, OutgoingHttpHeaders } from 'http';
+import { IncomingMessageLike } from 'testcafe-hammerhead';
+import { convertToHeaderEntries } from './headers';
 
 
 export async function redirect (client: ProtocolApi, requestId: string, url: string): Promise<void> {
@@ -24,24 +24,9 @@ export function isRequest (event: RequestPausedEvent): boolean {
     return event.responseStatusCode === void 0;
 }
 
-export function convertToHeaderEntries (headers: IncomingHttpHeaders): HeaderEntry[] {
-    return Object.entries(headers).map(([name, value]) => {
-        let resultValue = '';
-
-        if (value)
-            resultValue = Array.isArray(value) ? value.toString() : value;
-
-        return { name, value: resultValue };
+export function createRequestPausedEventForResponse (mockedResponse: IncomingMessageLike, requestEvent: RequestPausedEvent): RequestPausedEvent {
+    return Object.assign({}, requestEvent, {
+        responseStatusCode: mockedResponse.statusCode,
+        responseHeaders:    convertToHeaderEntries(mockedResponse.headers),
     });
-}
-
-export function convertToOutgoingHttpHeaders (headers: HeaderEntry[] | undefined): OutgoingHttpHeaders {
-    if (!headers)
-        return {};
-
-    return headers.reduce((result: any, header) => {
-        result[header.name] = header.value;
-
-        return result;
-    }, {});
 }

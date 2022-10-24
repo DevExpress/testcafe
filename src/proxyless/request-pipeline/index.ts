@@ -3,23 +3,31 @@ import Protocol from 'devtools-protocol';
 import RequestPausedEvent = Protocol.Fetch.RequestPausedEvent;
 import FrameNavigatedEvent = Protocol.Page.FrameNavigatedEvent;
 import LoadingFailedEvent = Protocol.Network.LoadingFailedEvent;
-import ProxylessRequestHookEventProvider from './request-hooks/event-provider';
-import ResourceInjector from './resource-injector';
-import { convertToHeaderEntries, isRequest } from './utils/cdp';
-import BrowserConnection from '../browser/connection';
-import ERROR_ROUTE from './error-route';
-import { SpecialServiceRoutes } from './types';
-import { requestPipelineLogger, requestPipelineMockLogger } from '../utils/debug-loggers';
+import ContinueResponseRequest = Protocol.Fetch.ContinueResponseRequest;
+import ProxylessRequestHookEventProvider from '../request-hooks/event-provider';
+import ResourceInjector from '../resource-injector';
+import { convertToHeaderEntries } from '../utils/headers';
+import { createRequestPausedEventForResponse, isRequest } from '../utils/cdp';
+import BrowserConnection from '../../browser/connection';
+import ERROR_ROUTE from '../error-route';
+import { SpecialServiceRoutes } from '../types';
+import {
+    requestPipelineLogger,
+    requestPipelineMockLogger,
+    requestPipelineOtherRequestLogger,
+} from '../../utils/debug-loggers';
 import { IncomingMessageLike, SPECIAL_BLANK_PAGE } from 'testcafe-hammerhead';
-import ProxylessPipelineContext from './request-hooks/pipeline-context';
+import ProxylessPipelineContext from '../request-hooks/pipeline-context';
+import { ProxylessSetupOptions } from '../../shared/types';
+import DEFAULT_PROXYLESS_SETUP_OPTIONS from '../default-setup-options';
+import getSpecialRequestHandler from './special-handlers';
 
-const INVALID_INTERCEPTED_RESPONSE_ERROR_MSG = 'Invalid InterceptionId.';
 
 export default class ProxylessRequestPipeline {
     private readonly _client: ProtocolApi;
     public readonly requestHookEventProvider: ProxylessRequestHookEventProvider;
     private readonly _resourceInjector: ResourceInjector;
-    private _serviceDomains: string[];
+    private _options: ProxylessSetupOptions;
     private readonly _specialServiceRoutes: SpecialServiceRoutes;
     private _stopped: boolean;
 
@@ -28,7 +36,7 @@ export default class ProxylessRequestPipeline {
         this._specialServiceRoutes    = this._getSpecialServiceRoutes(browserId);
         this.requestHookEventProvider = new ProxylessRequestHookEventProvider(browserId);
         this._resourceInjector        = new ResourceInjector(browserId, this._specialServiceRoutes);
-        this._serviceDomains          = [];
+        this._options                 = DEFAULT_PROXYLESS_SETUP_OPTIONS;
         this._stopped                 = false;
     }
 
@@ -42,37 +50,6 @@ export default class ProxylessRequestPipeline {
             idlePage:            browserConnection.idleUrl,
             openFileProtocolUrl: browserConnection.openFileProtocolUrl,
         };
-    }
-
-    private _isServiceRequest (url: string): boolean {
-        // NOTE: the service 'Error page' should be proxied.
-        if (url === this._specialServiceRoutes.errorPage1
-            || url === this._specialServiceRoutes.errorPage2)
-            return false;
-
-        return this._serviceDomains.some(domain => url.startsWith(domain));
-    }
-
-    private async _handleServiceRequest (event: RequestPausedEvent): Promise<void> {
-        const { requestId } = event;
-
-        if (isRequest(event))
-            await this._client.Fetch.continueRequest({ requestId });
-        else {
-            // Hack: CDP doesn't allow to continue response for requests sent from the reloaded page.
-            // Such situation rarely occurs on 'heartbeat' or 'open-file-protocol' requests.
-            // We are using the simplest way to fix it - just omit such errors.
-            try {
-                await this._client.Fetch.continueResponse({ requestId });
-            }
-            catch (err: any) {
-                if (err.message === INVALID_INTERCEPTED_RESPONSE_ERROR_MSG)
-                    return;
-
-                throw err;
-            }
-
-        }
     }
 
     private async _handleMockErrorIfNecessary (pipelineContext: ProxylessPipelineContext, event: RequestPausedEvent): Promise<void> {
@@ -100,38 +77,64 @@ export default class ProxylessRequestPipeline {
             await this._resourceInjector.processHTMLPageContent(fulfillInfo, this._client);
 
         requestPipelineMockLogger(`Mock request ${event.requestId}`);
-
     }
 
-    private async _handleRequestMock (event: RequestPausedEvent): Promise<boolean> {
-        const pipelineContext = this.requestHookEventProvider.getPipelineContext(event.networkId as string);
+    private _createContinueResponseRequest (event: RequestPausedEvent, modified: boolean): ContinueResponseRequest {
+        const continueResponseRequest = {
+            requestId: event.requestId,
+        } as ContinueResponseRequest;
 
-        if (!pipelineContext?.mock)
-            return false;
+        if (modified) {
+            continueResponseRequest.responseHeaders = event.responseHeaders;
+            continueResponseRequest.responseCode    = event.responseStatusCode as number;
+        }
 
-        const mockedResponse = await pipelineContext.getMockResponse();
-
-        await this._handleMockErrorIfNecessary(pipelineContext, event);
-        await this._handleMockResponse(mockedResponse, pipelineContext, event);
-
-        return true;
+        return continueResponseRequest;
     }
 
     private async _handleOtherRequests (event: RequestPausedEvent): Promise<void> {
+        requestPipelineOtherRequestLogger('%r', event);
+
         if (isRequest(event)) {
             await this.requestHookEventProvider.onRequest(event);
 
-            const requestIsHandled = await this._handleRequestMock(event);
+            const pipelineContext = this.requestHookEventProvider.getPipelineContext(event.networkId as string);
 
-            if (!requestIsHandled)
+            if (!pipelineContext || !pipelineContext.mock)
                 await this._client.Fetch.continueRequest({ requestId: event.requestId });
-            else
-                await this.requestHookEventProvider.onResponse(event, Buffer.alloc(0), this._client);
+            else {
+                const mockedResponse = await pipelineContext.getMockResponse();
+
+                await this._handleMockErrorIfNecessary(pipelineContext, event);
+
+                const mockedResponseEvent = createRequestPausedEventForResponse(mockedResponse, event);
+
+                await this.requestHookEventProvider.onResponse(mockedResponseEvent, mockedResponse.getBody(), this._client);
+
+                await this._handleMockResponse(mockedResponse, pipelineContext, event);
+            }
         }
         else {
-            const resourceBody = await this._resourceInjector.onResponse(event, this._client);
+            const resourceInfo = await this._resourceInjector.getDocumentResourceInfo(event, this._client);
 
-            await this.requestHookEventProvider.onResponse(event, resourceBody, this._client);
+            if (!resourceInfo.success)
+                return;
+
+            const modified = await this.requestHookEventProvider.onResponse(event, resourceInfo.body, this._client);
+
+            if (event.resourceType !== 'Document') {
+                const continueResponseRequest = this._createContinueResponseRequest(event, modified);
+
+                await this._client.Fetch.continueResponse(continueResponseRequest);
+            }
+            else {
+                await this._resourceInjector.processHTMLPageContent({
+                    requestId:       event.requestId,
+                    responseHeaders: event.responseHeaders,
+                    responseCode:    event.responseStatusCode as number,
+                    body:            (resourceInfo.body as Buffer).toString(),
+                }, this._client);
+            }
         }
     }
 
@@ -140,28 +143,17 @@ export default class ProxylessRequestPipeline {
             && !event.frame.parentId;
     }
 
-    private _isInternalRequest (event: RequestPausedEvent): boolean {
-        return !event.networkId;
-    }
+    public init (options: ProxylessSetupOptions): void {
+        this._options = options;
 
-    private async _failInternalRequest (event: RequestPausedEvent): Promise<void> {
-        await this._client.Fetch.failRequest({
-            requestId:   event.requestId,
-            errorReason: 'Aborted',
-        });
-    }
-
-    public init (): void {
         this._client.Fetch.on('requestPaused', async (event: RequestPausedEvent) => {
             if (this._stopped)
                 return;
 
-            requestPipelineLogger('%r', event);
+            const specialRequestHandler = getSpecialRequestHandler(event, this._options, this._specialServiceRoutes);
 
-            if (this._isInternalRequest(event))
-                await this._failInternalRequest(event);
-            else if (this._isServiceRequest(event.request.url))
-                await this._handleServiceRequest(event);
+            if (specialRequestHandler)
+                await specialRequestHandler(event, this._client, this._options);
             else
                 await this._handleOtherRequests(event);
         });
@@ -182,10 +174,6 @@ export default class ProxylessRequestPipeline {
             if (event.requestId)
                 this.requestHookEventProvider.cleanUp(event.requestId);
         });
-    }
-
-    public setServiceDomains (domains: string[]): void {
-        this._serviceDomains = domains;
     }
 
     public stop (): void {

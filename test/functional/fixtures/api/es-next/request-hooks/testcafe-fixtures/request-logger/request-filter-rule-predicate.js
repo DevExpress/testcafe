@@ -1,7 +1,7 @@
 import { RequestLogger } from 'testcafe';
 
-const targetPageUrl = 'http://localhost:3000/fixtures/api/es-next/request-hooks/pages/index.html';
-const page2Url      = 'http://localhost:3000/fixtures/api/es-next/request-hooks/pages/page2.html';
+const targetPageUrl = 'http://localhost:3000/fixtures/api/es-next/request-hooks/pages/request-logger/index.html';
+const page2Url      = 'http://localhost:3000/fixtures/api/es-next/request-hooks/pages/request-logger/page2.html';
 
 const logger = new RequestLogger(req => {
     return req.url === targetPageUrl;
