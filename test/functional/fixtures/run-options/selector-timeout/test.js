@@ -10,7 +10,7 @@ describe('Selector timeout', function () {
         return runTests('testcafe-fixtures/selector-timeout.js', 'Wait for element with insufficient timeout',
             { shouldFail: true, selectorTimeout: 500 })
             .catch(function (errs) {
-                expect(errs[0]).to.contains('The element: \'<button id="button" style="display: none">After 1...</button>\' is not visible because it has CSS property: \'display: none\'');
+                expect(errs[0]).to.contains('The action target (<button id="button" style="display: none">After 1...</button>) is invisible. The value of its \'display\' property is \'none\'.');
             });
     });
 });

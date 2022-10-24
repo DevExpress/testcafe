@@ -23,7 +23,7 @@ describe('[Raw API] Select editable content', function () {
     it('Should fail if any element is invisible', function () {
         return runTests('./testcafe-fixtures/select-editable-content.testcafe', 'Select editable content in invisible div', { shouldFail: true })
             .catch(function (errs) {
-                expect(errs[0]).contains('The element: \'<p id="p3" style="display: none;">3</p>\' is not visible because it has CSS property: \'display: none\'');
+                expect(errs[0]).contains('The action target (<p id="p3" style="display: none;">3</p>) is invisible. The value of its \'display\' property is \'none\'.');
                 expect(errs[0]).contains('[[Select editable content in invisible div callsite]]');
             });
     });

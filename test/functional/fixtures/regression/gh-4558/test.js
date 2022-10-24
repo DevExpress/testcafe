@@ -4,7 +4,7 @@ describe('[Regression](GH-4558)', () => {
     it('Should fail on click an element in invisible iframe', () => {
         return runTests('./testcafe-fixtures/index.js', 'Button click', { skip: ['ie'], shouldFail: true })
             .catch(err => {
-                expect(err[0]).contains('The element: \'<button id="button" onclick="setSpanText()">OK</button>\' is outside the visible bounds of the document.');
+                expect(err[0]).contains('The action target (<button id="button" onclick="setSpanText()">OK</button>) is located outside the the layout viewport.');
             });
     });
 

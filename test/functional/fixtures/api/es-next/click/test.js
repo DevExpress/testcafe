@@ -131,7 +131,7 @@ describe('[API] t.click()', function () {
                 shouldFail: true,
             })
                 .catch(function (errs) {
-                    expect(errs[0]).to.contains('The option: \'<option value="Second">Second</option>\' is not visible because its parent: \'<select id="simple-select">...</select>\' is not expended and has size less than 2.');
+                    expect(errs[0]).to.contains('The action target (<option value="Second">Second</option>) is invisible. The parent element (<select id="simple-select">...</select>) is collapsed, and its length is shorter than 2.');
                     expect(errs[0]).to.contains(
                         "> 17 |        .click('[value=Second]');"
                     );
