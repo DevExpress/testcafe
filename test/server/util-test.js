@@ -31,7 +31,7 @@ const {
 } = require('../../lib/errors/test-run/utils');
 const {
     buildChromeArgs,
-    IN_DOCKER_FLAGS,
+    CONTAINERIZED_CHROME_FLAGS,
 } = require('../../lib/browser/provider/built-in/dedicated/chrome/build-chrome-args');
 
 describe('Utils', () => {
@@ -586,26 +586,32 @@ describe('Utils', () => {
 
         let chromeArgs = '';
 
-        const IN_DOCKER_FLAGS_RE       = new RegExp(IN_DOCKER_FLAGS.join(' '));
+        const IN_DOCKER_FLAGS_RE       = new RegExp(CONTAINERIZED_CHROME_FLAGS.join(' '));
         const SANDBOX_FLAG_RE          = new RegExp('--no-sandbox');
         const DISABLE_DEV_SHM_USAGE_RE = new RegExp('--disable-dev-shm-usage');
-        let inDockerFlagMatch    = null;
 
-        chromeArgs        = buildChromeArgs({ config, cdpPort, platformArgs, tempProfileDir, inDocker: false });
-        inDockerFlagMatch = chromeArgs.match(IN_DOCKER_FLAGS_RE);
-        expect(inDockerFlagMatch).eql(null);
+        let containerizedChromeFlags = null;
 
-        chromeArgs        = buildChromeArgs({ config, cdpPort, platformArgs, tempProfileDir, inDocker: true });
-        inDockerFlagMatch = chromeArgs.match(IN_DOCKER_FLAGS_RE);
-        expect(inDockerFlagMatch.length).eql(1);
+        chromeArgs               = buildChromeArgs({ config, cdpPort, platformArgs, tempProfileDir, isContainerized: false });
+        containerizedChromeFlags = chromeArgs.match(IN_DOCKER_FLAGS_RE);
+
+        expect(containerizedChromeFlags).eql(null);
+
+        chromeArgs               = buildChromeArgs({ config, cdpPort, platformArgs, tempProfileDir, isContainerized: true });
+        containerizedChromeFlags = chromeArgs.match(IN_DOCKER_FLAGS_RE);
+
+        expect(containerizedChromeFlags.length).eql(1);
 
         // NOTE: Flag should not be duplicated
-        config.userArgs = '--no-sandbox --disable-dev-shm-usage';
-        chromeArgs        = buildChromeArgs({ config, cdpPort, platformArgs, tempProfileDir, inDocker: true });
-        inDockerFlagMatch = chromeArgs.match(SANDBOX_FLAG_RE);
-        expect(inDockerFlagMatch.length).eql(1);
-        inDockerFlagMatch = chromeArgs.match(DISABLE_DEV_SHM_USAGE_RE);
-        expect(inDockerFlagMatch.length).eql(1);
+        config.userArgs          = '--no-sandbox --disable-dev-shm-usage';
+        chromeArgs               = buildChromeArgs({ config, cdpPort, platformArgs, tempProfileDir, isContainerized: true });
+        containerizedChromeFlags = chromeArgs.match(SANDBOX_FLAG_RE);
+
+        expect(containerizedChromeFlags.length).eql(1);
+
+        containerizedChromeFlags = chromeArgs.match(DISABLE_DEV_SHM_USAGE_RE);
+
+        expect(containerizedChromeFlags.length).eql(1);
     });
 
     describe('Create temporary profile for the Google Chrome browser', () => {
