@@ -272,7 +272,7 @@ $(document).ready(function () {
     module('scroll in input');
 
     // TODO: stabilize test on iOS
-    (browserUtils.isIOS ? QUnit.skip : asyncTest)('forward select and scroll', function () {
+    (browserUtils.isIOS || browserUtils.isSafari ? QUnit.skip : asyncTest)('forward select and scroll', function () {
         const input = $(INPUT_SELECTOR)[0];
 
         let mousedown = false;

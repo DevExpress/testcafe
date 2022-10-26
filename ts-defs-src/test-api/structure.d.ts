@@ -2,6 +2,7 @@
 // {{#allowReferences}}
 /// <reference path="client-script.d.ts" />
 /// <reference path="test-controller.d.ts" />
+/// <reference path="skip-js-errors-options.d.ts" />
 // {{/allowReferences}}
 
 interface HTTPAuthCredentials {
@@ -131,6 +132,13 @@ interface FixtureFn {
      * @param scripts - Scripts that should be added to the tested pages.
      */
     clientScripts (scripts: ClientScript | ClientScript[]): this;
+
+    /**
+     * Customize the behavior of the skipJsErrors method.
+     *
+     * @param options - Error skipping conditions: a Boolean flag, an Object with options, or a callback function that defines custom error skipping logic.
+     */
+    skipJsErrors (options?: boolean | SkipJsErrorsOptionsObject | SkipJsErrorsCallback | SkipJsErrorsCallbackWithOptionsObject): this;
 }
 
 interface TestFn {
@@ -217,4 +225,11 @@ interface TestFn {
      *
      */
     timeouts(testTimeouts: TestTimeouts): this;
+
+    /**
+     * Customize the behavior of the skipJsErrors method.
+     *
+     * @param options - Error skipping conditions: a Boolean flag, an Object with options, or a callback function that defines custom error skipping logic.
+     */
+    skipJsErrors (options?: boolean | SkipJsErrorsOptionsObject | SkipJsErrorsCallback | SkipJsErrorsCallbackWithOptionsObject): this;
 }

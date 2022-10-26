@@ -5,6 +5,7 @@ import renderTemplate from '../../utils/render-template';
 import renderCallsiteSync from '../../utils/render-callsite-sync';
 import { RUNTIME_ERRORS } from '../types';
 import getRenderers from '../../utils/get-renderes';
+import util from 'util';
 
 const ERROR_SEPARATOR = '\n\n';
 
@@ -128,10 +129,22 @@ export class CompositeError extends Error {
 
 export class ReporterPluginError extends GeneralError {
     constructor ({ name, method, originalError }) {
-        const code = RUNTIME_ERRORS.uncaughtErrorInReporter;
+        const code          = RUNTIME_ERRORS.uncaughtErrorInReporter;
+        const preparedStack = ReporterPluginError._prepareStack(originalError);
 
-        super(code, method, name, originalError.stack);
+        super(code, method, name, preparedStack);
     }
+
+    static _prepareStack (err) {
+        if (!err?.stack) {
+            const inspectedObject = util.inspect(err);
+
+            return `No stack trace is available for a raised error.\nRaised error object inspection:\n${inspectedObject}`;
+        }
+
+        return err.stack;
+    }
+
 }
 
 export class TimeoutError extends GeneralError {
@@ -149,5 +162,11 @@ export class BrowserConnectionError extends GeneralError {
 export class RequestRuntimeError extends APIError {
     constructor (methodName, code, ...args) {
         super(methodName, code, ...args);
+    }
+}
+
+export class SkipJsErrorsArgumentApiError extends APIError {
+    constructor (code, ...args) {
+        super('skipJsErrors', code, ...args);
     }
 }

@@ -1,4 +1,4 @@
-import RawTestFileCompiler from '../raw';
+import RawTestFileCompiler from '../raw/compiler';
 import Test from '../../../../api/structure/test';
 import { CommandTransformerFactory } from './commands/factory';
 import { SwitchToIframeCommandTransformer } from './commands/switch-to-iframe';
@@ -47,7 +47,7 @@ export default class DevToolsTestFileCompiler extends RawTestFileCompiler {
     compile (code: string, filename: string): Test[] {
         this.raw = JSON.parse(TEST_BASE);
 
-        const preprocessedCode = this._preProcess(code);
+        const preprocessedCode = this._preProcess(code, filename);
 
         if (!preprocessedCode)
             return [];
@@ -55,7 +55,7 @@ export default class DevToolsTestFileCompiler extends RawTestFileCompiler {
         return super.compile(preprocessedCode, filename);
     }
 
-    _preProcess (code: string): string | null {
+    _preProcess (code: string, filename: string): string | null {
         const parsedCode = JSON.parse(code);
 
         this._fixture.name = parsedCode.title;
@@ -64,13 +64,13 @@ export default class DevToolsTestFileCompiler extends RawTestFileCompiler {
         if (!parsedCode.steps)
             return null;
 
-        parsedCode.steps.forEach((step: DevToolsRecorderStep, i: number) => this._processStep(step, i));
+        parsedCode.steps.forEach((step: DevToolsRecorderStep, i: number) => this._processStep(step, filename, i));
 
         return JSON.stringify(this.raw);
     }
 
-    _processStep (step: DevToolsRecorderStep, i: number): void {
-        const transformer = CommandTransformerFactory.create(step, i);
+    _processStep (step: DevToolsRecorderStep, filename:string, i: number): void {
+        const transformer = CommandTransformerFactory.create(step, filename, i);
 
         if (transformer) {
             this._onBeforeCommandExecute(step);

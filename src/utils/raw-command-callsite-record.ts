@@ -84,10 +84,10 @@ export const renderers = {
 };
 
 export class RawCommandCallsiteRecord {
-    public readonly actionId: number;
+    public readonly actionId: string;
     private readonly _list: Command[];
 
-    public constructor (actionId: number, list: Command[]) {
+    public constructor (actionId: string, list: Command[]) {
         this.actionId = actionId;
         this._list    = list;
     }

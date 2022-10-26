@@ -1,6 +1,5 @@
 import { copyImagePart } from './utils';
 import limitNumber from '../utils/limit-number';
-import renderTemplate from '../utils/render-template';
 import { deleteFile } from '../utils/promisified-functions';
 import { InvalidElementScreenshotDimensionsError } from '../errors/test-run/';
 import {
@@ -9,13 +8,11 @@ import {
     MARK_BYTES_PER_PIXEL,
 } from './constants';
 
-import WARNING_MESSAGES from '../notifications/warning-message';
-
 const MARK_SEED_ERROR_THRESHOLD = 10;
 const WHITE_COLOR_PART          = 255;
 const BLACK_COLOR_PART          = 0;
 
-function markSeedToId (markSeed) {
+export function markSeedToId (markSeed) {
     let id = 0;
 
     for (let i = 0; i < MARK_LENGTH; i++)
@@ -102,7 +99,7 @@ export function getClipInfoByCropDimensions ({ clipRight, clipLeft, clipBottom, 
     };
 }
 
-export function calculateClipInfo (pngImage, path, markSeed, clientAreaDimensions, cropDimensions) {
+export function calculateClipInfo (pngImage, markSeedPosition, clientAreaDimensions, cropDimensions) {
     let clipInfo = {
         clipRight:  pngImage.width,
         clipBottom: pngImage.height,
@@ -110,30 +107,22 @@ export function calculateClipInfo (pngImage, path, markSeed, clientAreaDimension
         clipTop:    0,
     };
 
-    let markPosition = null;
-
-    if (markSeed && clientAreaDimensions) {
-        markPosition = calculateMarkPosition(pngImage, markSeed);
-
-        if (!markPosition)
-            throw new Error(renderTemplate(WARNING_MESSAGES.screenshotMarkNotFound, path, markSeedToId(markSeed)));
-
-        clipInfo = getClipInfoByMarkPosition(markPosition, clientAreaDimensions);
-    }
+    if (markSeedPosition && clientAreaDimensions)
+        clipInfo = getClipInfoByMarkPosition(markSeedPosition, clientAreaDimensions);
 
     clipInfo = getClipInfoByCropDimensions(clipInfo, cropDimensions);
 
-    if (markPosition && markPosition.y === clipInfo.clipBottom)
+    if (markSeedPosition && markSeedPosition.y === clipInfo.clipBottom)
         clipInfo.clipBottom--;
 
     return clipInfo;
 }
 
-export async function cropScreenshot (image, { path, markSeed, clientAreaDimensions, cropDimensions }) {
-    if (!markSeed && !cropDimensions)
+export async function cropScreenshot (image, { path, markSeedPosition, clientAreaDimensions, cropDimensions }) {
+    if (!markSeedPosition && !cropDimensions)
         return null;
 
-    const clip = calculateClipInfo(image, path, markSeed, clientAreaDimensions, cropDimensions);
+    const clip = calculateClipInfo(image, markSeedPosition, clientAreaDimensions, cropDimensions);
 
     await validateClipInfo(clip, path);
 

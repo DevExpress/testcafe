@@ -51,6 +51,7 @@ import { validateQuarantineOptions } from '../utils/get-options/quarantine';
 import logEntry from '../utils/log-entry';
 import MessageBus from '../utils/message-bus';
 import getEnvOptions from '../dashboard/get-env-options';
+import { validateSkipJsErrorsOptionValue } from '../utils/get-options/skip-js-errors';
 
 const DEBUG_LOGGER            = debug('testcafe:runner');
 const DASHBOARD_REPORTER_NAME = 'dashboard';
@@ -164,8 +165,10 @@ export default class Runner extends EventEmitter {
 
     async _getTaskResult (task, browserSet, reporters, testedApp, runnableConfigurationId) {
         if (!task.opts.live) {
-            task.on('browser-job-done', job => {
-                job.browserConnections.forEach(bc => browserSet.releaseConnection(bc));
+            task.on('browser-job-done', async job => {
+                await Promise.all(job.browserConnections.map(async bc => {
+                    await browserSet.releaseConnection(bc);
+                }));
             });
         }
 
@@ -303,6 +306,15 @@ export default class Runner extends EventEmitter {
                 : browser.browserOption.cdpPort;
         }))
             throw new GeneralError(RUNTIME_ERRORS.cannotSetConcurrencyWithCDPPort);
+    }
+
+    _validateSkipJsErrorsOption () {
+        const skipJsErrorsOptions = this.configuration.getOption(OPTION_NAMES.skipJsErrors);
+
+        if (!skipJsErrorsOptions)
+            return;
+
+        validateSkipJsErrorsOptionValue(skipJsErrorsOptions, GeneralError);
     }
 
     async _validateBrowsers () {
@@ -457,7 +469,7 @@ export default class Runner extends EventEmitter {
         const quarantineMode = this.configuration.getOption(OPTION_NAMES.quarantineMode);
 
         if (typeof quarantineMode === 'object')
-            validateQuarantineOptions(quarantineMode, OPTION_NAMES.quarantineMode);
+            validateQuarantineOptions(quarantineMode);
     }
 
     async _validateRunOptions () {
@@ -472,6 +484,7 @@ export default class Runner extends EventEmitter {
         this._validateRequestTimeoutOption(OPTION_NAMES.ajaxRequestTimeout);
         this._validateQuarantineOptions();
         this._validateConcurrencyOption();
+        this._validateSkipJsErrorsOption();
         await this._validateBrowsers();
     }
 
@@ -593,7 +606,7 @@ export default class Runner extends EventEmitter {
             errors.UnableToAccessScreenRecordingAPIError,
             {
                 interactive: hasLocalBrowsers && !isCI,
-            }
+            },
         );
 
         if (!error)
@@ -616,7 +629,7 @@ export default class Runner extends EventEmitter {
             if (isLocalBrowser && !isHeadlessBrowser) {
                 throw new GeneralError(
                     RUNTIME_ERRORS.cannotRunLocalNonHeadlessBrowserWithoutDisplay,
-                    browserInfo.alias
+                    browserInfo.alias,
                 );
             }
         }
@@ -767,10 +780,13 @@ export default class Runner extends EventEmitter {
             .then(async ({ browserSet, tests, testedApp, commonClientScripts, id }) => {
                 await this._prepareClientScripts(tests, commonClientScripts);
 
+                const dashboardReporter = reporters.find(r => r.plugin.name === 'dashboard')?.plugin;
+                const dashboardUrl      = dashboardReporter?.getReportUrl ? dashboardReporter.getReportUrl() : '';
+
                 const resultOptions = {
                     ...this.configuration.getOptions(),
 
-                    dashboardUrl: reporters.find(r => r.plugin.name === 'dashboard')?.plugin.getReportUrl(),
+                    dashboardUrl,
                 };
 
                 await this.bootstrapper.compilerService?.setOptions({ value: resultOptions });

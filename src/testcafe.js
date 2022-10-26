@@ -26,11 +26,15 @@ export default class TestCafe {
 
         const { hostname, port1, port2, options } = configuration.startOptions;
 
-        this.closed                   = false;
-        this.proxy                    = new hammerhead.Proxy(hostname, port1, port2, options);
-        this.browserConnectionGateway = new BrowserConnectionGateway(this.proxy, { retryTestPages: configuration.getOption(OPTION_NAMES.retryTestPages) });
-        this.runners                  = [];
-        this.configuration            = configuration;
+        this.closed        = false;
+        this.proxy         = new hammerhead.Proxy(hostname, port1, port2, options);
+        this.runners       = [];
+        this.configuration = configuration;
+
+        this.browserConnectionGateway = new BrowserConnectionGateway(this.proxy, {
+            retryTestPages: configuration.getOption(OPTION_NAMES.retryTestPages),
+            proxyless:      configuration.getOption(OPTION_NAMES.proxyless),
+        });
 
         if (configuration.getOption(OPTION_NAMES.experimentalDebug)) {
             const developmentMode = configuration.getOption(OPTION_NAMES.developmentMode);
@@ -58,7 +62,7 @@ export default class TestCafe {
         this.proxy.GET(INJECTABLES.TESTCAFE_UI, { content: uiScript, contentType: CONTENT_TYPES.javascript });
         this.proxy.GET(INJECTABLES.TESTCAFE_UI_SPRITE, { content: uiSprite, contentType: CONTENT_TYPES.png });
         this.proxy.GET(INJECTABLES.TESTCAFE_UI_SPRITE_SVG, { content: uiSpriteSvg, contentType: CONTENT_TYPES.svg });
-        this.proxy.GET(INJECTABLES.TESTCAFE_ICON, { content: favIcon, contentType: CONTENT_TYPES.icon });
+        this.proxy.GET(INJECTABLES.DEFAULT_FAVICON_PATH, { content: favIcon, contentType: CONTENT_TYPES.icon });
 
         this.proxy.GET(INJECTABLES.TESTCAFE_UI_STYLES, {
             content:              uiStyle,

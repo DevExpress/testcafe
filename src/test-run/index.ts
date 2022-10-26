@@ -48,6 +48,7 @@ import {
     ResponseEvent,
     RequestHookMethodError,
     StoragesSnapshot,
+    RequestHookEventProvider,
 } from 'testcafe-hammerhead';
 
 import * as INJECTABLES from '../assets/injectables';
@@ -74,6 +75,8 @@ import {
     GetCookiesCommand,
     SetCookiesCommand,
     DeleteCookiesCommand,
+    AddRequestHooksCommand,
+    RemoveRequestHooksCommand,
 } from './commands/actions';
 
 import { RUNTIME_ERRORS, TEST_RUN_ERRORS } from '../errors/types';
@@ -123,6 +126,9 @@ import MessageBus from '../utils/message-bus';
 import executeFnWithTimeout from '../utils/execute-fn-with-timeout';
 import { URL } from 'url';
 import { CookieOptions } from './commands/options';
+import { prepareSkipJsErrorsOptions } from '../api/skip-js-errors';
+import { CookieProviderFactory } from './cookies/factory';
+import { CookieProvider } from './cookies/base';
 
 const lazyRequire                 = require('import-lazy')(require);
 const ClientFunctionBuilder       = lazyRequire('../client-functions/client-function-builder');
@@ -172,6 +178,11 @@ interface DriverMessage {
     status: DriverStatus;
 }
 
+interface DriverWarning {
+    type: keyof typeof WARNING_MESSAGE;
+    args: string[];
+}
+
 interface RequestTimeout {
     page?: number;
     ajax?: number;
@@ -215,7 +226,7 @@ export default class TestRun extends AsyncEventEmitter {
     public pageLoadTimeout: number;
     private readonly testExecutionTimeout: ExecutionTimeout | null;
     private readonly runExecutionTimeout: ExecutionTimeout | null;
-    private disablePageReloads: boolean;
+    private readonly disablePageReloads: boolean;
     private disablePageCaching: boolean;
     private disableMultipleWindows: boolean;
     private requestTimeout: RequestTimeout;
@@ -253,7 +264,9 @@ export default class TestRun extends AsyncEventEmitter {
     public readonly browser: Browser;
     private readonly _messageBus?: MessageBus;
     private _clientEnvironmentPrepared = false;
+    private _cookieProvider: CookieProvider;
     public readonly startRunExecutionTime?: Date;
+    private readonly _requestHookEventProvider: RequestHookEventProvider;
 
     public constructor ({ test, browserConnection, screenshotCapturer, globalWarningLog, opts, compilerService, messageBus, startRunExecutionTime }: TestRunInit) {
         super();
@@ -334,11 +347,22 @@ export default class TestRun extends AsyncEventEmitter {
         this.disconnected      = false;
         this.errScreenshotPath = null;
 
-        this.startRunExecutionTime = startRunExecutionTime;
-        this.runExecutionTimeout   = this._getRunExecutionTimeout(opts);
+        this.startRunExecutionTime     = startRunExecutionTime;
+        this.runExecutionTimeout       = this._getRunExecutionTimeout(opts);
+        this._requestHookEventProvider = this._getRequestHookEventProvider();
+
+        this._cookieProvider = CookieProviderFactory.create(this, this.opts.proxyless as boolean);
 
         this._addInjectables();
-        this._initRequestHooks();
+    }
+
+    private _getRequestHookEventProvider (): RequestHookEventProvider {
+        if (!this.opts.proxyless)
+            return this.session.requestHookEventProvider;
+
+        const runtimeInfo = this.browserConnection.provider.plugin.openedBrowsers[this.browserConnection.id];
+
+        return runtimeInfo.proxyless.requestPipeline.requestHookEventProvider;
     }
 
     private _getPageLoadTimeout (test: Test, opts: Dictionary<OptionValue>): number {
@@ -433,44 +457,44 @@ export default class TestRun extends AsyncEventEmitter {
         this.quarantine = quarantine;
     }
 
-    public addRequestHook (hook: RequestHook): void {
+    private async _addRequestHook (hook: RequestHook): Promise<void> {
         if (this.test.requestHooks.includes(hook))
             return;
 
         this.test.requestHooks.push(hook);
-        this._initRequestHook(hook);
+        await this._initRequestHook(hook);
     }
 
-    public removeRequestHook (hook: RequestHook): void {
+    private async _removeRequestHook (hook: RequestHook): Promise<void> {
         if (!this.test.requestHooks.includes(hook))
             return;
 
         pull(this.test.requestHooks, hook);
-        this._disposeRequestHook(hook);
+        await this._disposeRequestHook(hook);
     }
 
-    private _initRequestHook (hook: RequestHook): void {
+    private async _initRequestHook (hook: RequestHook): Promise<void> {
         hook._warningLog = this.warningLog;
 
-        hook._requestFilterRules.forEach(rule => {
-            this.session.addRequestEventListeners(rule, {
+        await Promise.all(hook._requestFilterRules.map(rule => {
+            return this._requestHookEventProvider.addRequestEventListeners(rule, {
                 onRequest:           hook.onRequest.bind(hook),
                 onConfigureResponse: hook._onConfigureResponse.bind(hook),
                 onResponse:          hook.onResponse.bind(hook),
             }, (err: RequestHookMethodError) => this._onRequestHookMethodError(err, hook._className));
-        });
+        }));
     }
 
-    private _initRequestHookForCompilerService (hookId: string, hookClassName: string, rules: RequestFilterRule[]): void {
+    private async _initRequestHookForCompilerService (hookId: string, hookClassName: string, rules: RequestFilterRule[]): Promise<void> {
         const testId = this.test.id;
 
-        rules.forEach(rule => {
-            this.session.addRequestEventListeners(rule, {
+        await Promise.all(rules.map(rule => {
+            return this._requestHookEventProvider.addRequestEventListeners(rule, {
                 onRequest:           (event: RequestEvent) => this.compilerService?.onRequestHookEvent({ testId, hookId, name: RequestHookMethodNames.onRequest, eventData: event }),
                 onConfigureResponse: (event: ConfigureResponseEvent) => this.compilerService?.onRequestHookEvent({ testId, hookId, name: RequestHookMethodNames._onConfigureResponse, eventData: event }),
                 onResponse:          (event: ResponseEvent) => this.compilerService?.onRequestHookEvent({ testId, hookId, name: RequestHookMethodNames.onResponse, eventData: event }),
             }, err => this._onRequestHookMethodError(err, hookClassName));
-        });
+        }));
     }
 
     private _onRequestHookMethodError (event: RequestHookMethodError, hookClassName: string): void {
@@ -483,18 +507,18 @@ export default class TestRun extends AsyncEventEmitter {
         this.addError(err);
     }
 
-    private _disposeRequestHook (hook: RequestHook): void {
+    private async _disposeRequestHook (hook: RequestHook): Promise<void> {
         hook._warningLog = null;
 
-        hook._requestFilterRules.forEach(rule => {
-            this.session.removeRequestEventListeners(rule);
-        });
+        await Promise.all(hook._requestFilterRules.map(rule => {
+            return this._requestHookEventProvider.removeRequestEventListeners(rule);
+        }));
     }
 
-    private _detachRequestEventListeners (rules: RequestFilterRule[]): void {
-        rules.forEach(rule => {
-            this.session.removeRequestEventListeners(rule);
-        });
+    private async _detachRequestEventListeners (rules: RequestFilterRule[]): Promise<void> {
+        await Promise.all(rules.map(rule => {
+            return this._requestHookEventProvider.removeRequestEventListeners(rule);
+        }));
     }
 
     private _subscribeOnCompilerServiceEvents (): void {
@@ -509,24 +533,32 @@ export default class TestRun extends AsyncEventEmitter {
 
         if (this.compilerService) {
             this.compilerService.on('addRequestEventListeners', async ({ hookId, hookClassName, rules }) => {
-                this._initRequestHookForCompilerService(hookId, hookClassName, rules);
+                await this._initRequestHookForCompilerService(hookId, hookClassName, rules);
             });
 
             this.compilerService.on('removeRequestEventListeners', async ({ rules }) => {
-                this._detachRequestEventListeners(rules);
+                await this._detachRequestEventListeners(rules);
             });
         }
     }
 
-    private _initRequestHooks (): void {
+    private async _initRequestHooks (): Promise<void> {
         if (this.compilerService) {
             this._subscribeOnCompilerServiceEvents();
-            this.test.requestHooks.forEach(hook => {
-                this._initRequestHookForCompilerService(hook.id, hook._className, hook._requestFilterRules);
-            });
+            await Promise.all(this.test.requestHooks.map(hook => {
+                return this._initRequestHookForCompilerService(hook.id, hook._className, hook._requestFilterRules);
+            }));
         }
         else
-            this.test.requestHooks.forEach(hook => this._initRequestHook(hook));
+            await Promise.all(this.test.requestHooks.map(hook => this._initRequestHook(hook)));
+    }
+
+    private _prepareSkipJsErrorsOption (): boolean | ExecuteClientFunctionCommand {
+        const options = this.test.skipJsErrorsOptions !== void 0
+            ? this.test.skipJsErrorsOptions
+            : this.opts.skipJsErrors as SkipJsErrorsOptionsObject | boolean || false;
+
+        return prepareSkipJsErrorsOptions(options);
     }
 
     // Hammerhead payload
@@ -534,26 +566,31 @@ export default class TestRun extends AsyncEventEmitter {
         this.fileDownloadingHandled               = false;
         this.resolveWaitForFileDownloadingPromise = null;
 
+        const skipJsErrors = this._prepareSkipJsErrorsOption();
+
         return Mustache.render(TEST_RUN_TEMPLATE, {
-            testRunId:                    JSON.stringify(this.session.id),
-            browserId:                    JSON.stringify(this.browserConnection.id),
-            browserHeartbeatRelativeUrl:  JSON.stringify(this.browserConnection.heartbeatRelativeUrl),
-            browserStatusRelativeUrl:     JSON.stringify(this.browserConnection.statusRelativeUrl),
-            browserStatusDoneRelativeUrl: JSON.stringify(this.browserConnection.statusDoneRelativeUrl),
-            browserActiveWindowIdUrl:     JSON.stringify(this.browserConnection.activeWindowIdUrl),
-            browserCloseWindowUrl:        JSON.stringify(this.browserConnection.closeWindowUrl),
-            userAgent:                    JSON.stringify(this.browserConnection.userAgent),
-            testName:                     JSON.stringify(this.test.name),
-            fixtureName:                  JSON.stringify((this.test.fixture as Fixture).name),
-            selectorTimeout:              this.opts.selectorTimeout,
-            pageLoadTimeout:              this.pageLoadTimeout,
-            childWindowReadyTimeout:      CHILD_WINDOW_READY_TIMEOUT,
-            skipJsErrors:                 this.opts.skipJsErrors,
-            retryTestPages:               this.opts.retryTestPages,
-            speed:                        this.speed,
-            dialogHandler:                JSON.stringify(this.activeDialogHandler),
-            canUseDefaultWindowActions:   JSON.stringify(await this.browserConnection.canUseDefaultWindowActions()),
-            proxyless:                    JSON.stringify(this.opts.proxyless),
+            testRunId:                          JSON.stringify(this.session.id),
+            browserId:                          JSON.stringify(this.browserConnection.id),
+            browserHeartbeatRelativeUrl:        JSON.stringify(this.browserConnection.heartbeatRelativeUrl),
+            browserStatusRelativeUrl:           JSON.stringify(this.browserConnection.statusRelativeUrl),
+            browserStatusDoneRelativeUrl:       JSON.stringify(this.browserConnection.statusDoneRelativeUrl),
+            browserIdleRelativeUrl:             JSON.stringify(this.browserConnection.idleRelativeUrl),
+            browserActiveWindowIdUrl:           JSON.stringify(this.browserConnection.activeWindowIdUrl),
+            browserCloseWindowUrl:              JSON.stringify(this.browserConnection.closeWindowUrl),
+            browserOpenFileProtocolRelativeUrl: JSON.stringify(this.browserConnection.openFileProtocolRelativeUrl),
+            userAgent:                          JSON.stringify(this.browserConnection.userAgent),
+            testName:                           JSON.stringify(this.test.name),
+            fixtureName:                        JSON.stringify((this.test.fixture as Fixture).name),
+            selectorTimeout:                    this.opts.selectorTimeout,
+            pageLoadTimeout:                    this.pageLoadTimeout,
+            childWindowReadyTimeout:            CHILD_WINDOW_READY_TIMEOUT,
+            skipJsErrors:                       JSON.stringify(skipJsErrors),
+            retryTestPages:                     this.opts.retryTestPages,
+            speed:                              this.speed,
+            dialogHandler:                      JSON.stringify(this.activeDialogHandler),
+            canUseDefaultWindowActions:         JSON.stringify(await this.browserConnection.canUseDefaultWindowActions()),
+            proxyless:                          JSON.stringify(this.opts.proxyless),
+            domain:                             JSON.stringify(this.browserConnection.browserConnectionGateway.proxy.server1Info.domain),
         });
     }
 
@@ -600,7 +637,7 @@ export default class TestRun extends AsyncEventEmitter {
         try {
             await executeFnWithTimeout(fn, timeout, this);
         }
-        catch (err) {
+        catch (err: any) {
             await this._makeScreenshotOnFail();
 
             this.addError(err);
@@ -687,7 +724,7 @@ export default class TestRun extends AsyncEventEmitter {
         await this._internalExecuteCommand(new serviceCommands.TestDoneCommand());
 
         this._addPendingPageErrorIfAny();
-        this.session.clearRequestEventListeners();
+        this._requestHookEventProvider.clearRequestEventListeners();
         this.normalizeRequestHookErrors();
 
         await this._finalizeTestRun(this.session.id);
@@ -758,7 +795,7 @@ export default class TestRun extends AsyncEventEmitter {
         if (this.pendingRequest)
             this._resolvePendingRequest(command);
 
-        return new Promise(async (resolve, reject) => {
+        return new Promise(async (resolve, reject) => { // eslint-disable-line no-async-promise-executor
             this.addingDriverTasksCount--;
             this.driverTaskQueue.push({ command, resolve, reject, callsite });
 
@@ -783,20 +820,20 @@ export default class TestRun extends AsyncEventEmitter {
     public async _enqueueGetCookies (command: GetCookiesCommand): Promise<Partial<CookieOptions>[]> {
         const { cookies, urls } = command;
 
-        return this.session.cookies.getCookies(cookies, urls);
+        return this._cookieProvider.getCookies(cookies, urls);
     }
 
     public async _enqueueSetCookies (command: SetCookiesCommand): Promise<void> {
         const cookies = command.cookies;
         const url     = command.url || await this.getCurrentUrl();
 
-        return this.session.cookies.setCookies(cookies, url);
+        return this._cookieProvider.setCookies(cookies, url);
     }
 
     public async _enqueueDeleteCookies (command: DeleteCookiesCommand): Promise<void> {
         const { cookies, urls } = command;
 
-        return this.session.cookies.deleteCookies(cookies, urls);
+        return this._cookieProvider.deleteCookies(cookies, urls);
     }
 
     private async _enqueueSetBreakpointCommand (callsite: CallsiteRecord | undefined, error?: string): Promise<void> {
@@ -873,6 +910,12 @@ export default class TestRun extends AsyncEventEmitter {
     private _fulfillCurrentDriverTask (driverStatus: DriverStatus): void {
         if (!this.currentDriverTask)
             return;
+
+        if (driverStatus.warnings?.length) {
+            driverStatus.warnings.forEach((warning: DriverWarning) => {
+                this.warningLog.addWarning(WARNING_MESSAGE[warning.type], ...warning.args);
+            });
+        }
 
         if (driverStatus.executionError)
             this._rejectCurrentDriverTask(driverStatus.executionError);
@@ -1235,6 +1278,12 @@ export default class TestRun extends AsyncEventEmitter {
         if (command.type === COMMAND_TYPE.deleteCookies)
             return this._enqueueDeleteCookies(command as DeleteCookiesCommand);
 
+        if (command.type === COMMAND_TYPE.addRequestHooks)
+            return Promise.all((command as AddRequestHooksCommand).hooks.map(hook => this._addRequestHook(hook)));
+
+        if (command.type === COMMAND_TYPE.removeRequestHooks)
+            return Promise.all((command as RemoveRequestHooksCommand).hooks.map(hook => this._removeRequestHook(hook)));
+
         return this._enqueueCommand(command, callsite as CallsiteRecord);
     }
 
@@ -1266,9 +1315,6 @@ export default class TestRun extends AsyncEventEmitter {
 
             try {
                 return await fn();
-            }
-            catch (err) {
-                throw err;
             }
             finally {
                 // @ts-ignore
@@ -1419,7 +1465,7 @@ export default class TestRun extends AsyncEventEmitter {
 
                 return command.checkWindow(predicateData);
             }
-            catch (e) {
+            catch (e: any) {
                 throw new SwitchToWindowPredicateError(e.message);
             }
         });
@@ -1467,6 +1513,9 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     public async initialize (): Promise<void> {
+        await this._cookieProvider.initialize();
+        await this._initRequestHooks();
+
         if (!this.compilerService)
             return;
 
@@ -1526,7 +1575,7 @@ export default class TestRun extends AsyncEventEmitter {
         try {
             result = await this.browserManipulationQueue.executePendingManipulation(msg, this._messageBus);
         }
-        catch (err) {
+        catch (err: any) {
             error = err;
         }
 

@@ -14,6 +14,8 @@ import {
 
 import Role from '../../role/role';
 import TestRun from '../index';
+import { SkipJsErrorsOptionsObject } from '../../configuration/interfaces';
+import RequestHook from '../../api/request-hooks/hook';
 
 
 export class SetNativeDialogHandlerCommand extends ActionCommandBase {
@@ -260,3 +262,19 @@ export class GetProxyUrlCommand extends ActionCommandBase {
     public url: string;
     public options: GetProxyUrlOptions;
 }
+
+export class SkipJsErrorsCommand extends ActionCommandBase {
+    public constructor (obj: object, testRun: TestRun, validateProperties: boolean);
+    public options: SkipJsErrorsOptionsObject | SkipJsErrorsCallbackWithOptionsObject | boolean;
+}
+
+export class AddRequestHooksCommand extends ActionCommandBase {
+    public constructor (obj: object, testRun: TestRun, validateProperties: boolean);
+    public hooks: RequestHook[];
+}
+
+export class RemoveRequestHooksCommand extends ActionCommandBase {
+    public constructor (obj: object, testRun: TestRun, validateProperties: boolean);
+    public hooks: RequestHook[];
+}
+

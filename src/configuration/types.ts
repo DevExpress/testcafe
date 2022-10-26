@@ -1,5 +1,6 @@
 const RequestHook = require('../api/request-hooks/hook');
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type TemplateArguments = any[];
 
 interface ScreenshotOptionValue {
@@ -16,6 +17,8 @@ interface QuarantineOptionValue {
     successThreshold?: number;
 }
 
+type SkipJsErrorsOptionValue = SkipJsErrorsOptionsObject | boolean;
+
 interface TestingEntryHooks {
     before?: Function;
     after?: Function;
@@ -28,4 +31,5 @@ interface GlobalHooks {
     request?: typeof RequestHook[] | typeof RequestHook;
 }
 
-type OptionValue = undefined | null | string | boolean | number | string[] | Function | { [key: string]: any } | ScreenshotOptionValue | QuarantineOptionValue | CompilerOptions | GlobalHooks;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+type OptionValue = undefined | null | string | boolean | number | string[] | Function | { [key: string]: any } | ScreenshotOptionValue | QuarantineOptionValue | CompilerOptions | GlobalHooks | SkipJsErrorsOptionValue;

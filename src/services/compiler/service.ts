@@ -529,7 +529,7 @@ class CompilerService implements CompilerProtocol {
                 ._getTargetTestRun(testRunId)
                 .checkWindow(commandId, { title, url });
         }
-        catch (err) {
+        catch (err: any) {
             throw new SwitchToWindowPredicateError(err.message);
         }
     }

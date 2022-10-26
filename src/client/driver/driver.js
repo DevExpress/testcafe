@@ -116,9 +116,10 @@ import createErrorCtorCallback, {
     getNotFoundErrorCtor,
 } from '../../shared/errors/selector-error-ctor-callback';
 import './command-executors/action-executor/actions-initializer';
+import { shouldSkipJsError } from './process-skip-js-errors';
 
-const settings = hammerhead.settings;
 
+const settings       = hammerhead.settings;
 const transport      = hammerhead.transport;
 const Promise        = hammerhead.Promise;
 const messageSandbox = hammerhead.eventSandbox.message;
@@ -128,17 +129,18 @@ const DateCtor       = nativeMethods.date;
 const listeners      = hammerhead.eventSandbox.listeners;
 const urlUtils       = hammerhead.utils.url;
 
-const TEST_DONE_SENT_FLAG                  = 'testcafe|driver|test-done-sent-flag';
-const PENDING_STATUS                       = 'testcafe|driver|pending-status';
-const EXECUTING_CLIENT_FUNCTION_DESCRIPTOR = 'testcafe|driver|executing-client-function-descriptor';
-const SELECTOR_EXECUTION_START_TIME        = 'testcafe|driver|selector-execution-start-time';
-const PENDING_PAGE_ERROR                   = 'testcafe|driver|pending-page-error';
-const ACTIVE_IFRAME_SELECTOR               = 'testcafe|driver|active-iframe-selector';
-const TEST_SPEED                           = 'testcafe|driver|test-speed';
-const ASSERTION_RETRIES_TIMEOUT            = 'testcafe|driver|assertion-retries-timeout';
-const ASSERTION_RETRIES_START_TIME         = 'testcafe|driver|assertion-retries-start-time';
-const CONSOLE_MESSAGES                     = 'testcafe|driver|console-messages';
-const PENDING_CHILD_WINDOW_COUNT           = 'testcafe|driver|pending-child-window-count';
+const TEST_DONE_SENT_FLAG                    = 'testcafe|driver|test-done-sent-flag';
+const PENDING_STATUS                         = 'testcafe|driver|pending-status';
+const EXECUTING_CLIENT_FUNCTION_DESCRIPTOR   = 'testcafe|driver|executing-client-function-descriptor';
+const EXECUTING_SKIP_JS_ERRORS_FUNCTION_FLAG = 'testcafe|driver|executing-skip-js-errors-function-flag';
+const SELECTOR_EXECUTION_START_TIME          = 'testcafe|driver|selector-execution-start-time';
+const PENDING_PAGE_ERROR                     = 'testcafe|driver|pending-page-error';
+const ACTIVE_IFRAME_SELECTOR                 = 'testcafe|driver|active-iframe-selector';
+const TEST_SPEED                             = 'testcafe|driver|test-speed';
+const ASSERTION_RETRIES_TIMEOUT              = 'testcafe|driver|assertion-retries-timeout';
+const ASSERTION_RETRIES_START_TIME           = 'testcafe|driver|assertion-retries-start-time';
+const CONSOLE_MESSAGES                       = 'testcafe|driver|console-messages';
+const PENDING_CHILD_WINDOW_COUNT             = 'testcafe|driver|pending-child-window-count';
 
 const ACTION_IFRAME_ERROR_CTORS = {
     NotLoadedError:   ActionIframeIsNotLoadedError,
@@ -157,9 +159,10 @@ const EMPTY_COMMAND_EVENT_WAIT_TIMEOUT  = 30 * 1000;
 const CHILD_WINDOW_CLOSED_EVENT_TIMEOUT = 2000;
 const RESTORE_CHILD_WINDOWS_TIMEOUT     = 30 * 1000;
 
-const STATUS_WITH_COMMAND_RESULT_EVENT = 'status-with-command-result-event';
-const EMPTY_COMMAND_EVENT              = 'empty-command-event';
-const CHILD_WINDOW_CLOSED_EVENT        = 'child-window-closed';
+const STATUS_WITH_COMMAND_RESULT_EVENT                 = 'status-with-command-result-event';
+const EMPTY_COMMAND_EVENT                              = 'empty-command-event';
+const CHILD_WINDOW_CLOSED_EVENT                        = 'child-window-closed';
+const SKIP_JS_ERRORS_FUNCTION_EXECUTION_COMPLETE_EVENT = 'skip-js-errors-function-execution-complete';
 
 export default class Driver extends serviceUtils.EventEmitter {
     constructor (testRunId, communicationUrls, runInfo, options) {
@@ -170,23 +173,11 @@ export default class Driver extends serviceUtils.EventEmitter {
         this.PENDING_WINDOW_SWITCHING_FLAG = 'testcafe|driver|pending-window-switching-flag';
         this.WINDOW_COMMAND_API_CALL_FLAG  = 'testcafe|driver|window-command-api-flag';
 
-        this.testRunId                  = testRunId;
-        this.heartbeatUrl               = communicationUrls.heartbeat;
-        this.browserStatusUrl           = communicationUrls.status;
-        this.browserStatusDoneUrl       = communicationUrls.statusDone;
-        this.browserActiveWindowId      = communicationUrls.activeWindowId;
-        this.browserCloseWindowUrl      = communicationUrls.closeWindow;
-        this.userAgent                  = runInfo.userAgent;
-        this.fixtureName                = runInfo.fixtureName;
-        this.testName                   = runInfo.testName;
-        this.selectorTimeout            = options.selectorTimeout;
-        this.pageLoadTimeout            = options.pageLoadTimeout;
-        this.childWindowReadyTimeout    = options.childWindowReadyTimeout;
-        this.initialSpeed               = options.speed;
-        this.skipJsErrors               = options.skipJsErrors;
-        this.dialogHandler              = options.dialogHandler;
-        this.canUseDefaultWindowActions = options.canUseDefaultWindowActions;
-        this.isFirstPageLoad            = settings.get().isFirstPageLoad;
+        this.testRunId         = testRunId;
+        this.communicationUrls = communicationUrls;
+        this.runInfo           = runInfo;
+        this.options           = options;
+        this.isFirstPageLoad   = settings.get().isFirstPageLoad;
 
         this.customCommandHandlers = {};
 
@@ -257,14 +248,14 @@ export default class Driver extends serviceUtils.EventEmitter {
     }
 
     async _getReadyPromise () {
-        await eventUtils.documentReady(this.pageLoadTimeout);
+        await eventUtils.documentReady(this.options.pageLoadTimeout);
 
         await this.pageInitialRequestBarrier.wait(true);
     }
 
     _hasPendingActionFlags (contextStorage) {
         return contextStorage.getItem(this.COMMAND_EXECUTING_FLAG) ||
-            contextStorage.getItem(this.EXECUTING_IN_IFRAME_FLAG);
+               contextStorage.getItem(this.EXECUTING_IN_IFRAME_FLAG);
     }
 
     _getCurrentWindowId () {
@@ -275,18 +266,39 @@ export default class Driver extends serviceUtils.EventEmitter {
     }
 
     // Error handling
-    _onJsError (err) {
+    async _onJsError (err) {
         // NOTE: we should not send any message to the server if we've
         // sent the 'test-done' message but haven't got the response.
-        if (this.skipJsErrors || this.contextStorage.getItem(TEST_DONE_SENT_FLAG))
-            return Promise.resolve();
+        if (this.contextStorage.getItem(TEST_DONE_SENT_FLAG))
+            return;
 
+        if (this.options.skipJsErrors) {
+            this.contextStorage.setItem(EXECUTING_SKIP_JS_ERRORS_FUNCTION_FLAG, true);
+
+            try {
+                if (!await shouldSkipJsError(this.options.skipJsErrors, err))
+                    this._setUncaughtErrorOnPage(err);
+            }
+            catch (e) {
+                if (!this.contextStorage.getItem(PENDING_PAGE_ERROR))
+                    this.contextStorage.setItem(PENDING_PAGE_ERROR, e);
+            }
+            finally {
+                this.contextStorage.setItem(EXECUTING_SKIP_JS_ERRORS_FUNCTION_FLAG, false);
+                this.emit(SKIP_JS_ERRORS_FUNCTION_EXECUTION_COMPLETE_EVENT);
+            }
+
+            return;
+        }
+
+        this._setUncaughtErrorOnPage(err);
+    }
+
+    _setUncaughtErrorOnPage (err) {
         const error = new UncaughtErrorOnPage(err.stack, err.pageUrl);
 
         if (!this.contextStorage.getItem(PENDING_PAGE_ERROR))
             this.contextStorage.setItem(PENDING_PAGE_ERROR, error);
-
-        return null;
     }
 
     _unlockPageAfterTestIsDone () {
@@ -373,7 +385,7 @@ export default class Driver extends serviceUtils.EventEmitter {
 
         Promise.resolve()
             .then(() => {
-                return browser.setActiveWindowId(this.browserActiveWindowId, hammerhead.createNativeXHR, this.windowId);
+                return browser.setActiveWindowId(this.communicationUrls.activeWindowId, hammerhead.createNativeXHR, this.windowId);
             })
             .then(() => {
                 this._startInternal({
@@ -649,7 +661,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         if (!this.closing) {
             this.closing = true;
 
-            await browser.closeWindow(this.browserCloseWindowUrl, hammerhead.createNativeXHR, this.windowId);
+            await browser.closeWindow(this.communicationUrls.closeWindow, hammerhead.createNativeXHR, this.windowId);
         }
 
         childWindowToClose.driverWindow.close();
@@ -744,7 +756,7 @@ export default class Driver extends serviceUtils.EventEmitter {
 
         Promise.resolve()
             .then(() => {
-                return browser.setActiveWindowId(this.browserActiveWindowId, hammerhead.createNativeXHR, this.windowId);
+                return browser.setActiveWindowId(this.communicationUrls.activeWindowId, hammerhead.createNativeXHR, this.windowId);
             })
             .then(() => {
                 this._startInternal({
@@ -960,7 +972,7 @@ export default class Driver extends serviceUtils.EventEmitter {
 
     _switchToIframe (selector, iframeErrorCtors) {
         const hasSpecificTimeout     = typeof selector.timeout === 'number';
-        const commandSelectorTimeout = hasSpecificTimeout ? selector.timeout : this.selectorTimeout;
+        const commandSelectorTimeout = hasSpecificTimeout ? selector.timeout : this.options.selectorTimeout;
 
         return getExecuteSelectorResult(selector, commandSelectorTimeout, null,
             fn => new iframeErrorCtors.NotFoundError(null, fn), () => new iframeErrorCtors.IsInvisibleError(), this.statusBar)
@@ -1015,6 +1027,21 @@ export default class Driver extends serviceUtils.EventEmitter {
         return this._createWaitForEventPromise(STATUS_WITH_COMMAND_RESULT_EVENT, COMMAND_EXECUTION_MAX_TIMEOUT);
     }
 
+    _waitForSkipJsErrorFunctionCompletion (driverStatus) {
+        if (!this.contextStorage.getItem(EXECUTING_SKIP_JS_ERRORS_FUNCTION_FLAG))
+            return Promise.resolve(driverStatus);
+
+        return new Promise(resolve => {
+            const eventHandler = () => {
+                this.off(SKIP_JS_ERRORS_FUNCTION_EXECUTION_COMPLETE_EVENT, eventHandler);
+
+                resolve(driverStatus);
+            };
+
+            this.on(SKIP_JS_ERRORS_FUNCTION_EXECUTION_COMPLETE_EVENT, eventHandler);
+        });
+    }
+
     _waitForEmptyCommand () {
         return this._createWaitForEventPromise(EMPTY_COMMAND_EVENT, EMPTY_COMMAND_EVENT_WAIT_TIMEOUT);
     }
@@ -1036,7 +1063,7 @@ export default class Driver extends serviceUtils.EventEmitter {
 
         return executeChildWindowDriverLinkSelector(selector, this.childWindowDriverLinks)
             .then(childWindowDriverLink => {
-                return this._ensureChildWindowDriverLink(childWindowDriverLink.driverWindow, ChildWindowIsNotLoadedError, this.childWindowReadyTimeout);
+                return this._ensureChildWindowDriverLink(childWindowDriverLink.driverWindow, ChildWindowIsNotLoadedError, this.options.childWindowReadyTimeout);
             })
             .then(childWindowDriverLink => {
                 this.activeChildWindowDriverLink = childWindowDriverLink;
@@ -1131,13 +1158,14 @@ export default class Driver extends serviceUtils.EventEmitter {
         const executeSelectorCb = (selector/*: ExecuteSelectorCommand*/, errCtors/*: AutomationErrorCtors*/, startTime/*: number*/) => {
             const createNotFoundError    = createErrorCtorCallback(errCtors.notFound);
             const createIsInvisibleError = createErrorCtorCallback(errCtors.invisible);
-            const selectorExecutor       = new SelectorExecutor(selector, this.selectorTimeout,
+            const selectorExecutor       = new SelectorExecutor(selector, this.options.selectorTimeout,
                 startTime, createNotFoundError, createIsInvisibleError);
 
             return selectorExecutor.getResult();
         };
 
-        const executor = new ActionExecutor(command, this.selectorTimeout, this.speed, executeSelectorCb);
+        const executor = new ActionExecutor(command, this.options.selectorTimeout, this.speed, executeSelectorCb);
+        const warnings = [];
 
         executor.on(ActionExecutor.EXECUTION_STARTED_EVENT, () => {
             this.statusBar.hideWaitingElementStatus(true);
@@ -1148,6 +1176,10 @@ export default class Driver extends serviceUtils.EventEmitter {
             this.statusBar.showWaitingElementStatus(timeout);
         });
 
+        executor.on(ActionExecutor.WARNING_EVENT, warning => {
+            warnings.push(warning);
+        });
+
         const clientRequestEmitter   = new ClientRequestEmitter();
         const scriptExecutionEmitter = new ScriptExecutionEmitter();
         const barriers               = new BarriersComplex(clientRequestEmitter, scriptExecutionEmitter, pageUnloadBarrier);
@@ -1156,14 +1188,16 @@ export default class Driver extends serviceUtils.EventEmitter {
             .then(elements => new DriverStatus({
                 isCommandResult: true,
                 result:          createReplicator(new SelectorElementActionTransform()).encode(elements),
+                warnings,
             }))
             .catch(err => this.statusBar.hideWaitingElementStatus(false)
-                .then(() => new DriverStatus({ isCommandResult: true, executionError: err }))
+                .then(() => new DriverStatus({ isCommandResult: true, executionError: err })),
             )
+            .then(driverStatus => this._waitForSkipJsErrorFunctionCompletion(driverStatus))
             .then(driverStatus => {
                 this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, false);
-
-                return this._onReady(driverStatus);
+                this.contextStorage.setItem(EXECUTING_SKIP_JS_ERRORS_FUNCTION_FLAG, false);
+                this._onReady(driverStatus);
             });
     }
 
@@ -1203,6 +1237,12 @@ export default class Driver extends serviceUtils.EventEmitter {
         }));
     }
 
+    _onSkipJsErrorsCommand ({ options }) {
+        this.options.skipJsErrors = options;
+
+        this._onReady(new DriverStatus({ isCommandResult: true }));
+    }
+
     _onExecuteClientFunctionCommand (command) {
         this.contextStorage.setItem(EXECUTING_CLIENT_FUNCTION_DESCRIPTOR, { instantiationCallsiteName: command.instantiationCallsiteName });
 
@@ -1222,7 +1262,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         const elementIsInvisible          = command.strictError ? createErrorCtorCallback(getInvisibleErrorCtor()) : elementNotFoundOrNotVisible;
 
         getExecuteSelectorResultDriverStatus(command,
-            this.selectorTimeout,
+            this.options.selectorTimeout,
             startTime,
             command.needError ? elementNotFound : null,
             command.needError ? elementIsInvisible : null,
@@ -1379,7 +1419,7 @@ export default class Driver extends serviceUtils.EventEmitter {
     _onBrowserManipulationCommand (command) {
         this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, true);
 
-        executeManipulationCommand(command, this.selectorTimeout, this.statusBar)
+        executeManipulationCommand(command, this.options.selectorTimeout, this.statusBar)
             .then(driverStatus => {
                 this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, false);
                 return this._onReady(driverStatus);
@@ -1421,6 +1461,7 @@ export default class Driver extends serviceUtils.EventEmitter {
 
     _onSetTestSpeedCommand (command) {
         this.speed = command.speed;
+
         this._onReady(new DriverStatus({ isCommandResult: true }));
     }
 
@@ -1441,22 +1482,25 @@ export default class Driver extends serviceUtils.EventEmitter {
     }
 
     _checkStatus () {
+        const urls = {
+            statusUrl: this.communicationUrls.statusDone,
+        };
+
         return browser
-            .checkStatus(this.browserStatusDoneUrl, hammerhead.createNativeXHR, { manualRedirect: true })
-            .then(({ command, redirecting }) => {
-                const isSessionChange = redirecting && command.url.indexOf(this.testRunId) < 0;
+            .checkStatus(urls, hammerhead.createNativeXHR, { manualRedirect: true, proxyless: this.options.proxyless })
+            .then(({ command }) => {
+                const isSessionChange = command.testRunId !== this.testRunId;
 
                 if (isSessionChange) {
                     storages.clear();
                     storages.lock();
-                }
-                else
-                    this.contextStorage.setItem(TEST_DONE_SENT_FLAG, false);
 
-                if (redirecting)
-                    browser.redirect(command);
-                else
+                    browser.redirect(command, hammerhead.createNativeXHR, this.communicationUrls.openFileProtocolUrl);
+                }
+                else {
+                    this.contextStorage.setItem(TEST_DONE_SENT_FLAG, false);
                     this._onReady({ isCommandResult: false });
+                }
             })
             .catch(() => {
                 return delay(CHECK_STATUS_RETRY_DELAY);
@@ -1669,6 +1713,9 @@ export default class Driver extends serviceUtils.EventEmitter {
         else if (command.type === COMMAND_TYPE.getProxyUrl)
             this._onGetProxyUrlCommand(command);
 
+        else if (command.type === COMMAND_TYPE.skipJsErrors)
+            this._onSkipJsErrorsCommand(command);
+
         else
             this._onActionCommand(command);
     }
@@ -1729,7 +1776,7 @@ export default class Driver extends serviceUtils.EventEmitter {
     _startInternal (opts) {
         this.role = DriverRole.master;
 
-        browser.startHeartbeat(this.heartbeatUrl, hammerhead.createNativeXHR);
+        browser.startHeartbeat(this.communicationUrls.heartbeat, hammerhead.createNativeXHR);
         this._setupAssertionRetryIndication();
         this._startCommandsProcessing(opts);
     }
@@ -1815,7 +1862,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         if (!this.windowId)
             return DriverRole.master;
 
-        const { activeWindowId } = await browser.getActiveWindowId(this.browserActiveWindowId, hammerhead.createNativeXHR);
+        const { activeWindowId } = await browser.getActiveWindowId(this.communicationUrls.activeWindowId, hammerhead.createNativeXHR);
 
         return activeWindowId === this.windowId ?
             DriverRole.master :
@@ -1824,12 +1871,12 @@ export default class Driver extends serviceUtils.EventEmitter {
 
     _init () {
         this.contextStorage       = new ContextStorage(window, this.testRunId, this.windowId);
-        this.nativeDialogsTracker = new NativeDialogTracker(this.contextStorage, this.dialogHandler);
-        this.statusBar            = new StatusBar(this.userAgent, this.fixtureName, this.testName, this.contextStorage);
+        this.nativeDialogsTracker = new NativeDialogTracker(this.contextStorage, this.options.dialogHandler);
+        this.statusBar            = new StatusBar(this.runInfo.userAgent, this.runInfo.fixtureName, this.runInfo.testName, this.contextStorage);
 
         this.statusBar.on(this.statusBar.UNLOCK_PAGE_BTN_CLICK, disableRealEventsPreventing);
 
-        this.speed = this.initialSpeed;
+        this.speed = this.options.speed;
 
         this._initConsoleMessages();
         this._initParentWindowLink();
@@ -1839,7 +1886,7 @@ export default class Driver extends serviceUtils.EventEmitter {
     }
 
     async _doFirstPageLoadSetup () {
-        if (this.isFirstPageLoad && this.canUseDefaultWindowActions) {
+        if (this.isFirstPageLoad && this.options.canUseDefaultWindowActions) {
             // Stub: perform initial setup of the test first page
         }
     }

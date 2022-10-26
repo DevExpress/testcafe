@@ -1,6 +1,6 @@
 import { RequestHook } from 'testcafe';
 
-const pageUrl = 'http://localhost:3000/fixtures/api/es-next/request-hooks/pages/index.html';
+const pageUrl = 'http://localhost:3000/fixtures/api/es-next/request-hooks/pages/request-logger/index.html';
 
 class Hook1 extends RequestHook {
     constructor () {

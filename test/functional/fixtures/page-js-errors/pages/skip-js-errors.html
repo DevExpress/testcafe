@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+</head>
+<body>
+<script>
+    function onClick () {
+        throw new Error('Custom client error');
+    }
+</script>
+<button onclick="onClick()">Error</button>
+</body>
+</html>

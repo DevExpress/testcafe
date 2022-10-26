@@ -18,14 +18,9 @@ import TypeScript, {
     VisitResult,
     Visitor,
     Node,
-    createStringLiteral,
     visitEachChild,
     visitNode,
     TransformerFactory,
-    createExpressionStatement,
-    createCall,
-    createIdentifier,
-    updateSourceFileNode,
     SourceFile,
     addSyntheticLeadingComment,
 } from 'typescript';
@@ -34,6 +29,8 @@ import { Dictionary, TypeScriptCompilerOptions } from '../../../../configuration
 import { OptionalCompilerArguments } from '../../../interfaces';
 
 declare type TypeScriptInstance = typeof TypeScript;
+
+const tsFactory = TypeScript.factory;
 
 interface TestFileInfo {
     filename: string;
@@ -52,7 +49,7 @@ function testcafeImportPathReplacer<T extends Node> (): TransformerFactory<T> {
         const visit: Visitor = (node): VisitResult<Node> => {
             // @ts-ignore
             if (node.parent?.kind === SyntaxKind.ImportDeclaration && node.kind === SyntaxKind.StringLiteral && node.text === 'testcafe')
-                return createStringLiteral(EXPORTABLE_LIB_PATH);
+                return tsFactory.createStringLiteral(EXPORTABLE_LIB_PATH);
 
             return visitEachChild(node, child => visit(child), context);
         };
@@ -64,16 +61,16 @@ function testcafeImportPathReplacer<T extends Node> (): TransformerFactory<T> {
 function disableV8OptimizationCodeAppender<T extends Node> (): TransformerFactory<T> {
     return () => {
         const visit: Visitor = (node): VisitResult<Node> => {
-            const evalStatement = createExpressionStatement(createCall(
-                createIdentifier('eval'),
+            const evalStatement = tsFactory.createExpressionStatement(tsFactory.createCallExpression(
+                tsFactory.createIdentifier('eval'),
                 void 0,
-                [createStringLiteral('')]
+                [tsFactory.createStringLiteral('')]
             ));
 
             const evalStatementWithComment = addSyntheticLeadingComment(evalStatement, SyntaxKind.MultiLineCommentTrivia, DISABLE_V8_OPTIMIZATION_NOTE, true);
 
             // @ts-ignore
-            return updateSourceFileNode(node, [...node.statements, evalStatementWithComment]);
+            return tsFactory.updateSourceFile(node, [...node.statements, evalStatementWithComment]);
         };
 
         return node => visitNode(node, visit);
@@ -131,7 +128,7 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
         try {
             return require(this._compilerPath);
         }
-        catch (err) {
+        catch (err: any) {
             throw new GeneralError(RUNTIME_ERRORS.typeScriptCompilerLoadingError, err.message);
         }
     }

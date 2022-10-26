@@ -7,15 +7,15 @@ const config = require('../../../../config');
         return runTests('./testcafe-fixtures/default-test.js');
     });
 
-    it('Shouldn\'t reload test pages when the Runner\'s disablePageReloads option is specified', () => {
+    it("Shouldn't reload test pages when the Runner's disablePageReloads option is specified", () => {
         return runTests('./testcafe-fixtures/globally-disabled-reloads-test.js', '', { disablePageReloads: true });
     });
 
-    it('Shouldn\'t reload test pages when the fixture.disablePageReloads option is specified', () => {
+    it("Shouldn't reload test pages when the fixture.disablePageReloads option is specified", () => {
         return runTests('./testcafe-fixtures/fixture-disabled-reloads-test.js');
     });
 
-    it('Shouldn\'t reload test pages when the test.disablePageReloads option is specified', () => {
+    it("Shouldn't reload test pages when the test.disablePageReloads option is specified", () => {
         return runTests('./testcafe-fixtures/test-disabled-reloads-test.js');
     });
 
@@ -27,7 +27,7 @@ const config = require('../../../../config');
         return runTests('./testcafe-fixtures/test-enabled-reloads-test.js');
     });
 
-    it('Shouldn\'t reload test pages when the fixture.enablePageReloads and the test.disablePageReloads options are specified', () => {
+    it("Shouldn't reload test pages when the fixture.enablePageReloads and the test.disablePageReloads options are specified", () => {
         return runTests('./testcafe-fixtures/fixture-enabled-test-disabled-reloads-test.js', '', { disablePageReloads: true });
     });
 });

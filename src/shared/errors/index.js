@@ -42,7 +42,6 @@ export class DomNodeClientFunctionResultError extends TestRunErrorBase {
     }
 }
 
-
 // Selector errors
 //--------------------------------------------------------------------
 export class SelectorErrorBase extends TestRunErrorBase {
@@ -148,6 +147,11 @@ export class ActionStringOptionError extends ActionOptionErrorBase {
         super(TEST_RUN_ERRORS.actionStringOptionError, optionName, actualValue);
     }
 }
+export class ActionStringOrRegexOptionError extends ActionOptionErrorBase {
+    constructor (optionName, actualValue) {
+        super(TEST_RUN_ERRORS.actionStringOrRegexOptionError, optionName, actualValue);
+    }
+}
 
 export class ActionDateOptionError extends ActionOptionErrorBase {
     constructor (optionName, actualValue) {
@@ -179,6 +183,21 @@ export class ActionObjectOptionError extends ActionOptionErrorBase {
     }
 }
 
+export class ActionFunctionOptionError extends ActionOptionErrorBase {
+    constructor (optionName, actualValue) {
+        super(TEST_RUN_ERRORS.actionFunctionOptionError, optionName, actualValue);
+    }
+}
+
+export class ActionInvalidObjectPropertyError extends TestRunErrorBase {
+    constructor (objectName, propertyName, availableProperties) {
+        super(TEST_RUN_ERRORS.actionInvalidObjectPropertyError);
+
+        this.objectName          = objectName;
+        this.propertyName        = propertyName;
+        this.availableProperties = availableProperties;
+    }
+}
 
 // Action execution errors
 //--------------------------------------------------------------------

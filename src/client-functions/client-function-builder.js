@@ -107,7 +107,7 @@ export default class ClientFunctionBuilder {
         return clientFn;
     }
 
-    getCommand (args) {
+    getCommand (args = []) {
         const encodedArgs         = this.replicator.encode(args);
         const encodedDependencies = this.replicator.encode(this.getFunctionDependencies());
 

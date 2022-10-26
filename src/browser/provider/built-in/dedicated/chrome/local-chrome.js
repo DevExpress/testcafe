@@ -11,11 +11,11 @@ const browserStarter = new BrowserStarter();
 const LIST_TABS_TIMEOUT = 10000;
 const LIST_TABS_DELAY   = 500;
 
-export async function start (pageUrl, { browserName, config, cdpPort, tempProfileDir, inDocker }) {
+export async function start (pageUrl, { browserName, config, cdpPort, tempProfileDir, isContainerized }) {
     const chromeInfo           = await browserTools.getBrowserInfo(config.path || browserName);
     const chromeOpenParameters = Object.assign({}, chromeInfo);
 
-    chromeOpenParameters.cmd = buildChromeArgs({ config, cdpPort, platformArgs: chromeOpenParameters.cmd, tempProfileDir, inDocker });
+    chromeOpenParameters.cmd = buildChromeArgs({ config, cdpPort, platformArgs: chromeOpenParameters.cmd, tempProfileDir, isContainerized });
 
     await browserStarter.startBrowser(chromeOpenParameters, pageUrl);
 }
@@ -29,8 +29,8 @@ async function tryListTabs (cdpPort) {
     }
 }
 
-export async function startOnDocker (pageUrl, { browserName, config, cdpPort, tempProfileDir, inDocker }) {
-    await start('', { browserName, config, cdpPort, tempProfileDir, inDocker });
+export async function startOnDocker (pageUrl, { browserName, config, cdpPort, tempProfileDir, isContainerized }) {
+    await start('', { browserName, config, cdpPort, tempProfileDir, isContainerized });
 
     let { tabs, error } = await tryListTabs(cdpPort);
     const timer         = new Timer(LIST_TABS_TIMEOUT);

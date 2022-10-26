@@ -140,15 +140,16 @@ if (config.useLocalBrowsers) {
             });
         }
 
-        if (!config.proxyless) {
-            // TODO: stabilize test on Firefox
-            (config.hasBrowser('firefox') ? it.skip : it)('Should run tests concurrently with Role', function () {
-                return run('chrome:headless --no-sandbox', 2, './testcafe-fixtures/role-test.js')
-                    .then(() => {
-                        expect(testInfo.getData()).eql(['/fixtures/concurrency/pages/first-page.html', '/fixtures/concurrency/pages/second-page.html']);
-                    });
-            });
-        }
+        // TODO: stabilize test on Firefox
+        // NOTE: Skip the test for proxyless mode
+        const needSkip = config.hasBrowser('firefox') || config.proxyless;
+
+        (needSkip ? it.skip : it)('Should run tests concurrently with Role', function () {
+            return run('chrome:headless --no-sandbox', 2, './testcafe-fixtures/role-test.js')
+                .then(() => {
+                    expect(testInfo.getData()).eql(['/fixtures/concurrency/pages/first-page.html', '/fixtures/concurrency/pages/second-page.html']);
+                });
+        });
 
         it('Should report fixture start correctly if second fixture finishes before first', function () {
             return run('chrome:headless --no-sandbox', 2, ['./testcafe-fixtures/multifixture-test-a.js', './testcafe-fixtures/multifixture-test-b.js'], customReporter)

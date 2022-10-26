@@ -31,7 +31,7 @@ describe('[API] t.click()', function () {
             only:       'chrome',
         })
             .catch(function (errs) {
-                expect(errs[0]).to.contains('The "offsetX" option is expected to be an integer, but it was -3.5.');
+                expect(errs[0]).to.contains('The "ClickOptions.offsetX" option is expected to be an integer, but it was -3.5.');
                 expect(errs[0]).to.contains(
                     ' 11 |test(\'Incorrect action selector\', async t => {' +
                     ' 12 |    await t.click(123);' +
@@ -108,6 +108,17 @@ describe('[API] t.click()', function () {
                 expect(errs[0]).to.contains('The specified selector is expected to match a DOM element, but it matches a text node.');
                 expect(errs[0]).to.contains('> 83 |    await t.click(getNode);');
             });
+    });
+
+    it('Should show warning that the element was overlapped', async function () {
+        await runTests('./testcafe-fixtures/click-test.js', 'Click overlapped element', { only: 'chrome' });
+
+        expect(testReport.warnings[0]).eql(
+            'TestCafe cannot interact with the <div class="child1">Text</div> element because another element obstructs it.\n' +
+            'When something overlaps the action target, TestCafe performs the action with the topmost element at the original target\'s location.\n' +
+            'The following element with a greater z-order replaced the original action target: <div class="child2">...</div>.\n' +
+            'Review your code to prevent this behavior.'
+        );
     });
 
     describe('[Regression](GH-628)', function () {

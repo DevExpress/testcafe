@@ -18,7 +18,7 @@ describe('[API] t.doubleClick()', function () {
             only:       'chrome',
         })
             .catch(function (errs) {
-                expect(errs[0]).to.contains('The "offsetX" option is expected to be an integer, but it was 3.14.');
+                expect(errs[0]).to.contains('The "ClickOptions.offsetX" option is expected to be an integer, but it was 3.14.');
                 expect(errs[0]).to.contains(' > 15 |    await t.doubleClick(\'#button\', { offsetX: 3.14 });');
             });
     });

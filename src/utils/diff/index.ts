@@ -25,7 +25,7 @@ export function generate (actual: unknown, expected: unknown): string {
     try {
         return unifiedDiff(stringify(actual), stringify(expected));
     }
-    catch (err) {
+    catch (err: any) {
         debugLogger(FAILED_TO_GENERATE_DETAILED_DIFF(err.message));
 
         return '';

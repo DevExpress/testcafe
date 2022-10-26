@@ -1,5 +1,5 @@
 // NOTE: node description by node type
-export default { // eslint-disable-line @typescript-eslint/no-object-literal-type-assertion
+export default {
     1:  'element',
     2:  'attribute',
     3:  'text',

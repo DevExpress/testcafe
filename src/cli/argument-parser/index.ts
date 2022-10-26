@@ -15,6 +15,7 @@ import {
     getSSLOptions,
     getQuarantineOptions,
     getScreenshotOptions,
+    getSkipJsErrorsOptions,
     getVideoOptions,
     getMetaOptions,
     getGrepOptions,
@@ -36,6 +37,7 @@ import getTestcafeVersion from '../../utils/get-testcafe-version';
 import { parsePortNumber, parseList } from './parse-utils';
 import COMMAND_NAMES from './command-names';
 import { SendReportState } from '../../dashboard/interfaces';
+import { SKIP_JS_ERRORS_OPTIONS_OBJECT_OPTION_NAMES } from '../../configuration/skip-js-errors-option-names';
 
 const REMOTE_ALIAS_RE = /^remote(?::(\d*))?$/;
 
@@ -77,7 +79,7 @@ interface CommandLineOptions {
     quarantineMode?: boolean | Dictionary<string | number>;
     ports?: string | number[];
     providerName?: string;
-    ssl?: string | Dictionary<string | number | boolean >;
+    ssl?: string | Dictionary<string | number | boolean>;
     reporter?: string | ReporterOption[];
     screenshots?: Dictionary<string | number | boolean> | string;
     screenshotPathPattern?: string;
@@ -88,8 +90,9 @@ interface CommandLineOptions {
     configFile?: string;
     proxyless?: boolean;
     v8Flags?: string[];
-    dashboardOptions? : string | Dictionary<string | boolean | number>;
+    dashboardOptions?: string | Dictionary<string | boolean | number>;
     baseUrl?: string;
+    skipJsErrors?: boolean | Dictionary<RegExp | string>;
 }
 
 export default class CLIArgumentParser {
@@ -102,10 +105,10 @@ export default class CLIArgumentParser {
     private readonly testCafeCommand: Command;
 
     public constructor (cwd?: string) {
-        this.cwd          = cwd || process.cwd();
-        this.remoteCount  = 0;
-        this.opts         = {};
-        this.args         = [];
+        this.cwd         = cwd || process.cwd();
+        this.remoteCount = 0;
+        this.opts        = {};
+        this.args        = [];
 
         this.isDashboardCommand = false;
         this.testCafeCommand    = this._addTestCafeCommand();
@@ -154,7 +157,7 @@ export default class CLIArgumentParser {
             .option('-p, --screenshot-path-pattern <pattern>', 'use patterns to compose screenshot file names and paths: ${BROWSER}, ${BROWSER_VERSION}, ${OS}, etc.')
             .option('-q, --quarantine-mode [option=value,...]', 'enable quarantine mode and (optionally) modify quarantine mode settings')
             .option('-d, --debug-mode', 'execute test steps one by one pausing the test after each step')
-            .option('-e, --skip-js-errors', 'make tests not fail when a JS error happens on a page')
+            .option('-e, --skip-js-errors [option=value,...]', 'ignore JavaScript errors that match the specified criteria')
             .option('-u, --skip-uncaught-errors', 'ignore uncaught errors and unhandled promise rejections, which occur during test execution')
             .option('-t, --test <name>', 'run only tests with the specified name')
             .option('-T, --test-grep <pattern>', 'run only tests matching the specified pattern')
@@ -345,6 +348,11 @@ export default class CLIArgumentParser {
             this.opts.quarantineMode = await getQuarantineOptions('--quarantine-mode', this.opts.quarantineMode);
     }
 
+    private async _parseSkipJsErrorsOptions (): Promise<void> {
+        if (this.opts.skipJsErrors)
+            this.opts.skipJsErrors = await getSkipJsErrorsOptions('--skip-js-errors', this.opts.skipJsErrors);
+    }
+
     private _parsePorts (): void {
         if (this.opts.ports) {
             const parsedPorts = (this.opts.ports as string) /* eslint-disable-line no-extra-parens */
@@ -440,23 +448,24 @@ export default class CLIArgumentParser {
         this.opts.providerName = typeof listBrowserOption === 'string' ? listBrowserOption : 'locally-installed';
     }
 
-    private static _prepareQuarantineOptions (argv: string[]): void {
-        // NOTE: move the quarantine mode options to the end of the array to avoid the wrong quarantine mode CLI options parsing (GH-6231)
-        const quarantineOptionIndex = argv.findIndex(
-            el => ['-q', '--quarantine-mode'].some(opt => el.startsWith(opt)));
+    private static _prepareBooleanOrObjectOption (argv: string[], optionNames: string[], subOptionsNames: string[]): void {
+        // NOTE: move options to the end of the array to correctly parse both Boolean and Object type arguments (GH-6231)
+        const optionIndex = argv.findIndex(
+            el => optionNames.some(opt => el.startsWith(opt)));
 
-        if (quarantineOptionIndex > -1) {
-            const isNotLastOption       = quarantineOptionIndex < argv.length - 1;
+        if (optionIndex > -1) {
+            const isNotLastOption       = optionIndex < argv.length - 1;
             const shouldMoveOptionToEnd = isNotLastOption &&
-                ![QUARANTINE_OPTION_NAMES.attemptLimit, QUARANTINE_OPTION_NAMES.successThreshold].some(opt => argv[quarantineOptionIndex + 1].startsWith(opt));
+                !subOptionsNames.some(opt => argv[optionIndex + 1].startsWith(opt));
 
             if (shouldMoveOptionToEnd)
-                argv.push(argv.splice(quarantineOptionIndex, 1)[0]);
+                argv.push(argv.splice(optionIndex, 1)[0]);
         }
     }
 
     public async parse (argv: string[]): Promise<void> {
-        CLIArgumentParser._prepareQuarantineOptions(argv);
+        CLIArgumentParser._prepareBooleanOrObjectOption(argv, ['-q', '--quarantine-mode'], Object.values(QUARANTINE_OPTION_NAMES));
+        CLIArgumentParser._prepareBooleanOrObjectOption(argv, ['-e', '--skip-js-errors'], Object.values(SKIP_JS_ERRORS_OPTIONS_OBJECT_OPTION_NAMES));
 
         const { args, v8Flags } = extractNodeProcessArguments(argv);
 
@@ -489,6 +498,7 @@ export default class CLIArgumentParser {
 
         await this._parseFilteringOptions();
         await this._parseQuarantineOptions();
+        await this._parseSkipJsErrorsOptions();
         await this._parseScreenshotOptions();
         await this._parseVideoOptions();
         await this._parseCompilerOptions();

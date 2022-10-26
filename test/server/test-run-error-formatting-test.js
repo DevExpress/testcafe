@@ -101,7 +101,13 @@ const {
     ActionUrlSearchParamsOptionError,
     ActionObjectOptionError,
     ActionUrlArgumentError,
-} = require('../../lib/errors/test-run');
+    ActionSkipJsErrorsArgumentTypeError,
+}                                                                   = require('../../lib/errors/test-run');
+const {
+    ActionStringOrRegexOptionError,
+    ActionFunctionOptionError,
+    ActionInvalidObjectPropertyError,
+} = require('../../lib/shared/errors');
 
 const untestedErrorTypes = Object.keys(TEST_RUN_ERRORS).map(key => TEST_RUN_ERRORS[key]);
 
@@ -813,6 +819,22 @@ describe('Error formatting', () => {
 
         it('Should format "actionUrlArgumentError"', () => {
             assertErrorMessage('action-url-argument-error', new ActionUrlArgumentError('url', 'object'));
+        });
+
+        it('Should format "actionStringOrRegexOptionError"', () => {
+            assertErrorMessage('action-string-or-regex-argument-error', new ActionStringOrRegexOptionError('SkipJsErrorsOptions.message', 'object'));
+        });
+
+        it('Should format "actionSkipJsErrorsArgumentTypeError"', () => {
+            assertErrorMessage('action-skip-js-errors-argument-error', new ActionSkipJsErrorsArgumentTypeError('options', 'string'));
+        });
+
+        it('Should format "actionFunctionOptionError"', () => {
+            assertErrorMessage('action-function-option-error', new ActionFunctionOptionError('fn', 'string'));
+        });
+
+        it('Should format "actionInvalidObjectPropertyError"', () => {
+            assertErrorMessage('action-invalid-object-property-error', new ActionInvalidObjectPropertyError('ClickOptions', 'invalidProp', ['alt', 'ctrl']));
         });
     });
 

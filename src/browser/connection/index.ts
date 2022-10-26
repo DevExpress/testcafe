@@ -22,7 +22,7 @@ import BrowserJob from '../../runner/browser-job';
 import WarningLog from '../../notifications/warning-log';
 import BrowserProvider from '../provider';
 import { OSInfo } from 'get-os-info';
-
+import SERVICE_ROUTES from './service-routes';
 import {
     BROWSER_RESTART_TIMEOUT,
     BROWSER_CLOSE_TIMEOUT,
@@ -31,11 +31,12 @@ import {
     REMOTE_BROWSER_INIT_TIMEOUT,
 } from '../../utils/browser-connection-timeouts';
 import MessageBus from '../../utils/message-bus';
-import BrowserConnectionTracker from './browser-connection-tracker';
+import BrowserConnectionTracker from './tracker';
 import TestRun from '../../test-run';
 // @ts-ignore
 import { TestRun as LegacyTestRun } from 'testcafe-legacy-api';
 import { Proxy } from 'testcafe-hammerhead';
+import { NextTestRunInfo, OpenBrowserAdditionalOptions } from '../../shared/types';
 
 const getBrowserConnectionDebugScope = (id: string): string => `testcafe:browser:connection:${id}`;
 
@@ -50,6 +51,7 @@ interface DisconnectionPromise<T> extends Promise<T> {
 interface BrowserConnectionStatusResult {
     cmd: string;
     url: string;
+    testRunId: string | null;
 }
 
 interface HeartbeatStatusResult {
@@ -92,6 +94,7 @@ export default class BrowserConnection extends EventEmitter {
     private readonly BROWSER_CLOSE_TIMEOUT: number;
     private readonly BROWSER_RESTART_TIMEOUT: number;
     public readonly id: string;
+    private _currentTestRun: TestRun | null = null;
     private readonly jobQueue: BrowserJob[];
     private readonly initScriptsQueue: InitScriptTask[];
     public browserConnectionGateway: BrowserConnectionGateway;
@@ -99,7 +102,7 @@ export default class BrowserConnection extends EventEmitter {
     private testRunAborted: boolean;
     public status: BrowserConnectionStatus;
     private heartbeatTimeout: NodeJS.Timeout | null;
-    private pendingTestRunUrl: string | null;
+    private pendingTestRunInfo: NextTestRunInfo | null;
     public url = '';
     public idleUrl = '';
     private forcedIdleUrl = '';
@@ -112,6 +115,9 @@ export default class BrowserConnection extends EventEmitter {
     public heartbeatRelativeUrl = '';
     public statusRelativeUrl = '';
     public statusDoneRelativeUrl = '';
+    public idleRelativeUrl = '';
+    public openFileProtocolRelativeUrl = '';
+    public openFileProtocolUrl = '';
     private readonly debugLogger: debug.Debugger;
     private osInfo: OSInfo | null = null;
 
@@ -142,9 +148,11 @@ export default class BrowserConnection extends EventEmitter {
         this.browserConnectionGateway = gateway;
         this.disconnectionPromise     = null;
         this.testRunAborted           = false;
-        this._messageBus              = messageBus;
-        this.warningLog               = new WarningLog(null, WarningLog.createAddWarningCallback(this._messageBus));
+        this.warningLog               = new WarningLog(null, WarningLog.createAddWarningCallback(messageBus));
         this.debugLogger              = debug(getBrowserConnectionDebugScope(this.id));
+
+        if (messageBus)
+            this.messageBus = messageBus;
 
         this.browserInfo                           = browserInfo;
         this.browserInfo.userAgentProviderMetaInfo = '';
@@ -155,7 +163,7 @@ export default class BrowserConnection extends EventEmitter {
         this.status                 = BrowserConnectionStatus.uninitialized;
         this.idle                   = true;
         this.heartbeatTimeout       = null;
-        this.pendingTestRunUrl      = null;
+        this.pendingTestRunInfo     = null;
         this.disableMultipleWindows = disableMultipleWindows;
         this.proxyless              = proxyless;
 
@@ -173,26 +181,35 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     private _buildCommunicationUrls (proxy: Proxy): void {
-        this.url               = proxy.resolveRelativeServiceUrl(`/browser/connect/${this.id}`);
-        this.idleUrl           = proxy.resolveRelativeServiceUrl(`/browser/idle/${this.id}`);
-        this.forcedIdleUrl     = proxy.resolveRelativeServiceUrl(`/browser/idle-forced/${this.id}`);
-        this.initScriptUrl     = proxy.resolveRelativeServiceUrl(`/browser/init-script/${this.id}`);
+        this.url               = proxy.resolveRelativeServiceUrl(`${SERVICE_ROUTES.connect}/${this.id}`);
+        this.forcedIdleUrl     = proxy.resolveRelativeServiceUrl(`${SERVICE_ROUTES.idleForced}/${this.id}`);
+        this.initScriptUrl     = proxy.resolveRelativeServiceUrl(`${SERVICE_ROUTES.initScript}/${this.id}`);
 
-        this.heartbeatRelativeUrl  = `/browser/heartbeat/${this.id}`;
-        this.statusRelativeUrl     = `/browser/status/${this.id}`;
-        this.statusDoneRelativeUrl = `/browser/status-done/${this.id}`;
-        this.activeWindowIdUrl     = `/browser/active-window-id/${this.id}`;
-        this.closeWindowUrl        = `/browser/close-window/${this.id}`;
+        this.heartbeatRelativeUrl        = `${SERVICE_ROUTES.heartbeat}/${this.id}`;
+        this.statusRelativeUrl           = `${SERVICE_ROUTES.status}/${this.id}`;
+        this.statusDoneRelativeUrl       = `${SERVICE_ROUTES.statusDone}/${this.id}`;
+        this.idleRelativeUrl             = `${SERVICE_ROUTES.idle}/${this.id}`;
+        this.activeWindowIdUrl           = `${SERVICE_ROUTES.activeWindowId}/${this.id}`;
+        this.closeWindowUrl              = `${SERVICE_ROUTES.closeWindow}/${this.id}`;
+        this.openFileProtocolRelativeUrl = `${SERVICE_ROUTES.openFileProtocol}/${this.id}`;
 
-        this.heartbeatUrl      = proxy.resolveRelativeServiceUrl(this.heartbeatRelativeUrl);
-        this.statusUrl         = proxy.resolveRelativeServiceUrl(this.statusRelativeUrl);
-        this.statusDoneUrl     = proxy.resolveRelativeServiceUrl(this.statusDoneRelativeUrl);
-
+        this.idleUrl             = proxy.resolveRelativeServiceUrl(this.idleRelativeUrl);
+        this.heartbeatUrl        = proxy.resolveRelativeServiceUrl(this.heartbeatRelativeUrl);
+        this.statusUrl           = proxy.resolveRelativeServiceUrl(this.statusRelativeUrl);
+        this.statusDoneUrl       = proxy.resolveRelativeServiceUrl(this.statusDoneRelativeUrl);
+        this.openFileProtocolUrl = proxy.resolveRelativeServiceUrl(this.openFileProtocolRelativeUrl);
     }
 
     public set messageBus (messageBus: MessageBus) {
         this._messageBus         = messageBus;
         this.warningLog.callback = WarningLog.createAddWarningCallback(this._messageBus);
+
+        if (messageBus) {
+            messageBus.on('test-run-start', testRun => {
+                if (testRun.browserConnection.id === this.id)
+                    this._currentTestRun = testRun;
+            });
+        }
     }
 
     private _setEventHandlers (): void {
@@ -215,9 +232,30 @@ export default class BrowserConnection extends EventEmitter {
         return nanoid(7);
     }
 
+    private _getAdditionalBrowserOptions (): OpenBrowserAdditionalOptions {
+        const options = {
+            disableMultipleWindows: this.disableMultipleWindows,
+        } as OpenBrowserAdditionalOptions;
+
+        if (this.proxyless) {
+            options.proxyless = {
+                serviceDomains: [
+                    this.browserConnectionGateway.proxy.server1Info.domain,
+                    this.browserConnectionGateway.proxy.server2Info.domain,
+                ],
+
+                developmentMode: this.browserConnectionGateway.proxy.options.developmentMode,
+            };
+        }
+
+        return options;
+    }
+
     private async _runBrowser (): Promise<void> {
         try {
-            await this.provider.openBrowser(this.id, this.url, this.browserInfo.browserOption, this.disableMultipleWindows, this.proxyless);
+            const additionalOptions = this._getAdditionalBrowserOptions();
+
+            await this.provider.openBrowser(this.id, this.url, this.browserInfo.browserOption, additionalOptions);
 
             if (this.status !== BrowserConnectionStatus.ready)
                 await promisifyEvent(this, 'ready');
@@ -225,7 +263,7 @@ export default class BrowserConnection extends EventEmitter {
             this.status = BrowserConnectionStatus.opened;
             this.emit('opened');
         }
-        catch (err) {
+        catch (err: any) {
             this.emit('error', new GeneralError(
                 RUNTIME_ERRORS.unableToOpenBrowser,
                 this.browserInfo.providerName + ':' + this.browserInfo.browserName,
@@ -272,22 +310,22 @@ export default class BrowserConnection extends EventEmitter {
         }, this.HEARTBEAT_TIMEOUT);
     }
 
-    private async _getTestRunUrl (needPopNext: boolean): Promise<string> {
-        if (needPopNext || !this.pendingTestRunUrl)
-            this.pendingTestRunUrl = await this._popNextTestRunUrl();
+    private async _getTestRunInfo (needPopNext: boolean): Promise<NextTestRunInfo> {
+        if (needPopNext || !this.pendingTestRunInfo)
+            this.pendingTestRunInfo = await this._popNextTestRunInfo();
 
-        return this.pendingTestRunUrl as string;
+        return this.pendingTestRunInfo as NextTestRunInfo;
     }
 
-    private async _popNextTestRunUrl (): Promise<string | null> {
+    private async _popNextTestRunInfo (): Promise<NextTestRunInfo | null> {
         while (this.hasQueuedJobs && !this.currentJob.hasQueuedTestRuns)
             this.jobQueue.shift();
 
-        return this.hasQueuedJobs ? await this.currentJob.popNextTestRunUrl(this) : null;
+        return this.hasQueuedJobs ? await this.currentJob.popNextTestRunInfo(this) : null;
     }
 
     public getCurrentTestRun (): LegacyTestRun | TestRun | null {
-        return this.currentJob ? this.currentJob.currentTestRun : null;
+        return this._currentTestRun;
     }
 
     public static getById (id: string): BrowserConnection | null {
@@ -307,7 +345,7 @@ export default class BrowserConnection extends EventEmitter {
             .catch(err => this.debugLogger(err))
             .then(() => this._runBrowser());
 
-        const timeoutPromise = new Promise(resolve => {
+        const timeoutPromise = new Promise<void>(resolve => {
             resolveTimeout = resolve;
 
             timeout = setTimeout(() => {
@@ -495,11 +533,13 @@ export default class BrowserConnection extends EventEmitter {
 
     public renderIdlePage (): string {
         return Mustache.render(IDLE_PAGE_TEMPLATE as string, {
-            userAgent:      this.connectionInfo,
-            statusUrl:      this.statusUrl,
-            heartbeatUrl:   this.heartbeatUrl,
-            initScriptUrl:  this.initScriptUrl,
-            retryTestPages: !!this.browserConnectionGateway.retryTestPages,
+            userAgent:           this.connectionInfo,
+            statusUrl:           this.statusUrl,
+            heartbeatUrl:        this.heartbeatUrl,
+            initScriptUrl:       this.initScriptUrl,
+            openFileProtocolUrl: this.openFileProtocolUrl,
+            retryTestPages:      !!this.browserConnectionGateway.retryTestPages,
+            proxyless:           this.proxyless,
         });
     }
 
@@ -531,18 +571,26 @@ export default class BrowserConnection extends EventEmitter {
         }
 
         if (this.status === BrowserConnectionStatus.opened) {
-            const testRunUrl = await this._getTestRunUrl(isTestDone || this.testRunAborted);
+            const nextTestRunInfo = await this._getTestRunInfo(isTestDone || this.testRunAborted);
 
             this.testRunAborted = false;
 
-            if (testRunUrl) {
+            if (nextTestRunInfo) {
                 this.idle = false;
 
-                return { cmd: COMMAND.run, url: testRunUrl };
+                return {
+                    cmd:       COMMAND.run,
+                    testRunId: nextTestRunInfo.testRunId,
+                    url:       nextTestRunInfo.url,
+                };
             }
         }
 
-        return { cmd: COMMAND.idle, url: this.idleUrl };
+        return {
+            cmd:       COMMAND.idle,
+            url:       this.idleUrl,
+            testRunId: null,
+        };
     }
 
     public get activeWindowId (): null | string {
@@ -553,6 +601,10 @@ export default class BrowserConnection extends EventEmitter {
         this.previousActiveWindowId = this.activeWindowId;
 
         this.provider.setActiveWindowId(this.id, val);
+    }
+
+    public async openFileProtocol (url: string): Promise<void> {
+        return this.provider.openFileProtocol(this.id, url);
     }
 
     public async canUseDefaultWindowActions (): Promise<boolean> {

@@ -11,7 +11,7 @@ describe('[API] Hover action', function () {
             only:       'chrome',
         })
             .catch(function (errs) {
-                expect(errs[0]).to.contains('The "offsetX" option is expected to be an integer, but it was NaN.');
+                expect(errs[0]).to.contains('The "MouseOptions.offsetX" option is expected to be an integer, but it was NaN.');
                 expect(errs[0]).to.contains(' > 56 |    await t.hover(\'#container1\', { offsetX: NaN });');
             });
     });

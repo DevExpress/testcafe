@@ -17,6 +17,8 @@ import { createList } from '../utils/string';
 
 const RELEASE_TIMEOUT = 10000;
 
+const COUNT_OWN_AND_OUTER_LISTENERS = 3;
+
 export default class BrowserSet extends EventEmitter {
     private readonly _browserConnections: BrowserConnection[];
     private readonly _browserErrorHandler: (error: Error) => void;
@@ -39,6 +41,7 @@ export default class BrowserSet extends EventEmitter {
         // NOTE: We're setting an empty error handler, because Node kills the process on an 'error' event
         // if there is no handler. See: https://nodejs.org/api/events.html#events_class_events_eventemitter
         this.on('error', noop);
+        this.setMaxListeners(COUNT_OWN_AND_OUTER_LISTENERS + this._browserConnections.length);
     }
 
     private static async _waitIdle (bc: BrowserConnection): Promise<void> {
@@ -100,7 +103,7 @@ export default class BrowserSet extends EventEmitter {
 
             return browserSet;
         }
-        catch (e) {
+        catch (e: any) {
             const finalError = e.code === RUNTIME_ERRORS.cannotEstablishBrowserConnection
                 ? browserSet.createBrowserConnectionError(e)
                 : e;
@@ -129,9 +132,9 @@ export default class BrowserSet extends EventEmitter {
         );
     }
 
-    public releaseConnection (bc: BrowserConnection): Promise<void> {
+    public async releaseConnection (bc: BrowserConnection): Promise<void> {
         if (!this._browserConnections.includes(bc))
-            return Promise.resolve();
+            return;
 
         remove(this._browserConnections, bc);
 
@@ -146,7 +149,7 @@ export default class BrowserSet extends EventEmitter {
 
         this._pendingReleases.push(release);
 
-        return release;
+        return release; // eslint-disable-line consistent-return
     }
 
     public async dispose (): Promise<void> {
@@ -154,11 +157,11 @@ export default class BrowserSet extends EventEmitter {
         // the this.connections array, which leads to shifting indexes
         // towards the beginning. So, we must copy the array in order to iterate it,
         // or we can perform iteration from the end to the beginning.
-        this._browserConnections.reduceRight((_, bc) => {
-            this.releaseConnection(bc);
+        await this._browserConnections.reduceRight(async (_, bc) => {
+            await this.releaseConnection(bc);
 
             return bc;
-        }, {});
+        }, Promise.resolve({}));
 
         await Promise.all(this._pendingReleases);
     }

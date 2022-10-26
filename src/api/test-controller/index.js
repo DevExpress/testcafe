@@ -54,6 +54,9 @@ import {
     SetCookiesCommand,
     DeleteCookiesCommand,
     RequestCommand,
+    SkipJsErrorsCommand,
+    AddRequestHooksCommand,
+    RemoveRequestHooksCommand,
 } from '../../test-run/commands/actions';
 
 import {
@@ -65,7 +68,6 @@ import {
 } from '../../test-run/commands/browser-manipulation';
 
 import { WaitCommand, DebugCommand } from '../../test-run/commands/observation';
-import assertRequestHookType from '../request-hooks/assert-type';
 import { createExecutionContext as createContext } from './execution-context';
 import { isSelector } from '../../client-functions/types';
 import TestRunProxy from '../../services/compiler/test-run-proxy';
@@ -94,9 +96,9 @@ export default class TestController {
     constructor (testRun) {
         this._executionContext = null;
 
-        this.testRun               = testRun;
-        this.executionChain        = Promise.resolve();
-        this.warningLog            = testRun.warningLog;
+        this.testRun        = testRun;
+        this.executionChain = Promise.resolve();
+        this.warningLog     = testRun.warningLog;
 
         this._addTestControllerToExecutionChain();
     }
@@ -104,13 +106,14 @@ export default class TestController {
     _addTestControllerToExecutionChain () {
         this.executionChain._testController = this;
     }
-    // NOTE: we track missing `awaits` by exposing a special custom Promise to user code.
-    // Action or assertion is awaited if:
-    // a)someone used `await` so Promise's `then` function executed
-    // b)Promise chained by using one of the mixed-in controller methods
+
+    // NOTE: TestCafe executes actions and assertions asynchronously in the following cases:
+    // a) The `await` keyword that proceeds the method declaration triggers the `then` function of a Promise.
+    // b) The action is chained to another `awaited` method.
     //
-    // In both scenarios, we check that callsite that produced Promise is equal to the one
-    // that is currently missing await. This is required to workaround scenarios like this:
+    // In order to track missing `await` statements, TestCafe exposes a special Promise to the user.
+    // When TestCafe detects a missing `await` statement, it compares the method's callsite to the call site of the exposed Promise.
+    // This workaround is necessary for situations like these:
     //
     // var t2 = t.click('#btn1'); // <-- stores new callsiteWithoutAwait
     // await t2;                  // <-- callsiteWithoutAwait = null
@@ -273,8 +276,8 @@ export default class TestController {
             throw new RequestRuntimeError(callsite, RUNTIME_ERRORS.requestCannotResolveTestRun);
 
         return function (...args) {
-            const cmdArgs  = controller._prepareRequestArguments(bindOptions, ...args);
-            const command  = controller._createCommand(RequestCommand, cmdArgs, callsite);
+            const cmdArgs = controller._prepareRequestArguments(bindOptions, ...args);
+            const command = controller._createCommand(RequestCommand, cmdArgs, callsite);
 
             const options = {
                 ...command.options,
@@ -606,24 +609,20 @@ export default class TestController {
         return this._enqueueCommand(UseRoleCommand, { role });
     }
 
-    _addRequestHooks$ (...hooks) {
-        return this._enqueueTask('addRequestHooks', () => {
-            hooks = flattenDeep(hooks);
-
-            assertRequestHookType(hooks);
-
-            hooks.forEach(hook => this.testRun.addRequestHook(hook));
-        });
+    [delegatedAPI(SkipJsErrorsCommand.methodName)] (options) {
+        return this._enqueueCommand(SkipJsErrorsCommand, { options });
     }
 
-    _removeRequestHooks$ (...hooks) {
-        return this._enqueueTask('removeRequestHooks', () => {
-            hooks = flattenDeep(hooks);
+    [delegatedAPI(AddRequestHooksCommand.methodName)] (...hooks) {
+        hooks = flattenDeep(hooks);
 
-            assertRequestHookType(hooks);
+        return this._enqueueCommand(AddRequestHooksCommand, { hooks });
+    }
 
-            hooks.forEach(hook => this.testRun.removeRequestHook(hook));
-        });
+    [delegatedAPI(RemoveRequestHooksCommand.methodName)] (...hooks) {
+        hooks = flattenDeep(hooks);
+
+        return this._enqueueCommand(RemoveRequestHooksCommand, { hooks });
     }
 
     static enableDebugForNonDebugCommands () {
@@ -656,6 +655,7 @@ export default class TestController {
     isCompilerServiceMode () {
         return this.testRun instanceof TestRunProxy;
     }
+
 }
 
 TestController.API_LIST = getDelegatedAPIList(TestController.prototype);

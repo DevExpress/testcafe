@@ -68,4 +68,7 @@ export default {
     deleteCookies:                       'delete-cookies',
     getProxyUrl:                         'get-proxy-url',
     request:                             'request',
+    skipJsErrors:                        'skip-js-errors',
+    addRequestHooks:                     'add-request-hooks',
+    removeRequestHooks:                  'remove-request-hooks',
 };

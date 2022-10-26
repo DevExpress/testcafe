@@ -74,7 +74,7 @@ function makeSelector (str, skipVisibilityCheck, needError, strictError) {
         visibilityCheck: !skipVisibilityCheck,
         needError, strictError,
     }, { instantiation: 'Selector' });
-    const command = builder.getCommand([]);
+    const command = builder.getCommand();
 
     command.actionId = 'child-command-selector';
 
@@ -87,19 +87,16 @@ describe('Test run commands', () => {
             let commandObj = {
                 type:     TYPE.click,
                 selector: '#yo',
-                yo:       'test',
 
                 options: {
                     offsetX:  23,
                     offsetY:  32,
                     caretPos: 2,
                     speed:    0.5,
-                    dummy:    'yo',
 
                     modifiers: {
                         ctrl:  true,
                         shift: true,
-                        dummy: 'yo',
                         alt:   true,
                         meta:  true,
                     },
@@ -160,19 +157,16 @@ describe('Test run commands', () => {
             let commandObj = {
                 type:     TYPE.rightClick,
                 selector: '#yo',
-                yo:       'test',
 
                 options: {
                     offsetX:  23,
                     offsetY:  32,
                     caretPos: 2,
                     speed:    0.5,
-                    dummy:    'yo',
 
                     modifiers: {
                         ctrl:  true,
                         shift: false,
-                        dummy: 'yo',
                         alt:   true,
                         meta:  false,
                     },
@@ -233,19 +227,16 @@ describe('Test run commands', () => {
             let commandObj = {
                 type:     TYPE.doubleClick,
                 selector: '#yo',
-                yo:       'test',
 
                 options: {
                     offsetX:  23,
                     offsetY:  32,
                     caretPos: 2,
                     speed:    0.5,
-                    dummy:    'yo',
 
                     modifiers: {
                         ctrl:  true,
                         shift: false,
-                        dummy: 'yo',
                         alt:   true,
                         meta:  false,
                     },
@@ -306,19 +297,15 @@ describe('Test run commands', () => {
             let commandObj = {
                 type:     TYPE.hover,
                 selector: '#yo',
-                yo:       'test',
 
                 options: {
-                    offsetX:  23,
-                    offsetY:  32,
-                    caretPos: 2,
-                    speed:    0.5,
-                    dummy:    'yo',
+                    offsetX: 23,
+                    offsetY: 32,
+                    speed:   0.5,
 
                     modifiers: {
                         ctrl:  true,
                         shift: false,
-                        dummy: 'yo',
                         alt:   true,
                         meta:  false,
                     },
@@ -379,19 +366,15 @@ describe('Test run commands', () => {
                 selector:    '#yo',
                 dragOffsetX: 10,
                 dragOffsetY: -15,
-                dummy:       false,
 
                 options: {
-                    offsetX:  23,
-                    offsetY:  32,
-                    caretPos: 2,
-                    speed:    0.5,
-                    dummy:    1,
+                    offsetX: 23,
+                    offsetY: 32,
+                    speed:   0.5,
 
                     modifiers: {
                         ctrl:  true,
                         shift: false,
-                        dummy: 'yo',
                         alt:   true,
                         meta:  false,
                     },
@@ -457,21 +440,17 @@ describe('Test run commands', () => {
                 type:                TYPE.dragToElement,
                 selector:            '#yo',
                 destinationSelector: '#destination',
-                dragOffsetX:         10,
 
                 options: {
                     offsetX:            23,
                     offsetY:            32,
                     destinationOffsetX: 12,
                     destinationOffsetY: 21,
-                    caretPos:           2,
                     speed:              0.5,
-                    dummy:              1,
 
                     modifiers: {
                         ctrl:  true,
                         shift: false,
-                        dummy: 'yo',
                         alt:   true,
                         meta:  false,
                     },
@@ -540,21 +519,18 @@ describe('Test run commands', () => {
                 type:     TYPE.typeText,
                 selector: '#yo',
                 text:     'testText',
-                yo:       'test',
 
                 options: {
                     offsetX:  23,
                     offsetY:  32,
                     caretPos: 2,
                     speed:    0.5,
-                    dummy:    'yo',
                     replace:  true,
                     paste:    true,
 
                     modifiers: {
                         ctrl:  true,
                         shift: false,
-                        dummy: 'yo',
                         alt:   false,
                         meta:  false,
                     },
@@ -628,12 +604,9 @@ describe('Test run commands', () => {
                 selector: '#yo',
                 startPos: 1,
                 endPos:   2,
-                yo:       'test',
 
                 options: {
-                    offsetX: 23,
-                    dummy:   'yo',
-                    speed:   0.5,
+                    speed: 0.5,
                 },
             };
 
@@ -679,12 +652,9 @@ describe('Test run commands', () => {
                 startPos:  1,
                 endLine:   2,
                 endPos:    3,
-                yo:        5,
 
                 options: {
-                    offsetX: 23,
-                    dummy:   'yo',
-                    speed:   0.5,
+                    speed: 0.5,
                 },
             };
 
@@ -729,15 +699,11 @@ describe('Test run commands', () => {
         it('Should create SelectEditableContentCommand from object', () => {
             let commandObj = {
                 type:          TYPE.selectEditableContent,
-                selector:      '#yo',
                 startSelector: '#node1',
                 endSelector:   '#node2',
-                yo:            'test',
 
                 options: {
-                    offsetX: 23,
-                    dummy:   'yo',
-                    speed:   0.5,
+                    speed: 0.5,
                 },
             };
 
@@ -756,7 +722,6 @@ describe('Test run commands', () => {
 
             commandObj = {
                 type:          TYPE.selectEditableContent,
-                selector:      '#yo',
                 startSelector: '#node1',
             };
 
@@ -776,24 +741,11 @@ describe('Test run commands', () => {
 
         it('Should create PressKeyCommand from object', () => {
             const commandObj = {
-                type:     TYPE.pressKey,
-                selector: '#yo',
-                keys:     'a+b c',
-                yo:       'test',
+                type: TYPE.pressKey,
+                keys: 'a+b c',
 
                 options: {
-                    offsetX: 23,
-                    offsetY: 32,
-                    dummy:   'yo',
-                    speed:   0.5,
-
-                    modifiers: {
-                        ctrl:  true,
-                        shift: false,
-                        dummy: 'yo',
-                        alt:   false,
-                        meta:  false,
-                    },
+                    speed: 0.5,
                 },
             };
 
@@ -848,11 +800,6 @@ describe('Test run commands', () => {
                 type:     TYPE.setFilesToUpload,
                 selector: '#yo',
                 filePath: '/test/path',
-                dummy:    'test',
-
-                options: {
-                    dummy: 'yo',
-                },
             };
 
             let command = createCommand(commandObj);
@@ -868,11 +815,6 @@ describe('Test run commands', () => {
                 type:     TYPE.setFilesToUpload,
                 selector: '#yo',
                 filePath: ['/test/path/1', '/test/path/2'],
-                dummy:    'test',
-
-                options: {
-                    dummy: 'yo',
-                },
             };
 
             command = createCommand(commandObj);
@@ -889,11 +831,6 @@ describe('Test run commands', () => {
             const commandObj = {
                 type:     TYPE.clearUpload,
                 selector: '#yo',
-                dummy:    'test',
-
-                options: {
-                    dummy: 'yo',
-                },
             };
 
             const command = createCommand(commandObj);
@@ -908,14 +845,8 @@ describe('Test run commands', () => {
         it('Should create TakeScreenshotCommand from object', function () {
             let commandObj = {
                 type:     TYPE.takeScreenshot,
-                selector: '#yo',
                 path:     'custom',
-                dummy:    'test',
                 fullPage: true,
-
-                options: {
-                    dummy: 'yo',
-                },
             };
 
             let command = createCommand(commandObj);
@@ -931,13 +862,7 @@ describe('Test run commands', () => {
 
             commandObj = {
                 type:     TYPE.takeScreenshot,
-                selector: '#yo',
-                dummy:    'test',
                 fullPage: void 0,
-
-                options: {
-                    dummy: 'yo',
-                },
             };
 
             command = createCommand(commandObj);
@@ -956,16 +881,11 @@ describe('Test run commands', () => {
                 type:     TYPE.takeElementScreenshot,
                 selector: '#yo',
                 path:     'custom',
-                dummy:    'test',
 
                 options: {
                     crop: {
                         left: 50,
                         top:  13,
-                    },
-
-                    modifiers: {
-                        alt: true,
                     },
                 },
             };
@@ -1001,15 +921,9 @@ describe('Test run commands', () => {
 
         it('Should create ResizeWindowCommand from object', function () {
             const commandObj = {
-                type:     TYPE.resizeWindow,
-                selector: '#yo',
-                dummy:    'test',
-                width:    100,
-                height:   100,
-
-                options: {
-                    dummy: 'yo',
-                },
+                type:   TYPE.resizeWindow,
+                width:  100,
+                height: 100,
             };
 
             const command = createCommand(commandObj);
@@ -1024,13 +938,10 @@ describe('Test run commands', () => {
 
         it('Should create ResizeWindowToFitDeviceCommand from object', function () {
             let commandObj = {
-                type:     TYPE.resizeWindowToFitDevice,
-                selector: '#yo',
-                dummy:    'test',
-                device:   'iPhone',
+                type:   TYPE.resizeWindowToFitDevice,
+                device: 'iPhone',
 
                 options: {
-                    dummy:               'yo',
                     portraitOrientation: true,
                 },
             };
@@ -1120,11 +1031,9 @@ describe('Test run commands', () => {
                 actual:        1,
                 expected:      0.2,
                 expected2:     3.5,
-                yo:            'test',
                 message:       'ok',
 
                 options: {
-                    offsetX: 23,
                     timeout: 100,
                 },
             };
@@ -1266,10 +1175,6 @@ describe('Test run commands', () => {
             let commandObj = {
                 type:    TYPE.recorder,
                 subtype: 'test',
-
-                options: {
-                    dummy: 'yo',
-                },
             };
 
             let command = createCommand(commandObj);
@@ -1287,10 +1192,6 @@ describe('Test run commands', () => {
                 subtype: 'test',
 
                 forceExecutionInTopWindowOnly: true,
-
-                options: {
-                    dummy: 'yo',
-                },
             };
 
             command = createCommand(commandObj);
@@ -1464,14 +1365,14 @@ describe('Test run commands', () => {
                         type:     TYPE.click,
                         selector: 'element',
                         options:  {
-                            offsetX: 'offsetX',
+                            offsetX: 'ClickOptions.offsetX',
                         },
                     });
                 },
                 {
                     isTestCafeError: true,
                     code:            'E9',
-                    optionName:      'offsetX',
+                    optionName:      'ClickOptions.offsetX',
                     actualValue:     'string',
                     callsite:        null,
                 }
@@ -1490,7 +1391,7 @@ describe('Test run commands', () => {
                 {
                     isTestCafeError: true,
                     code:            'E9',
-                    optionName:      'offsetX',
+                    optionName:      'ClickOptions.offsetX',
                     actualValue:     10.5,
                     callsite:        null,
                 }
@@ -1564,7 +1465,7 @@ describe('Test run commands', () => {
                 {
                     isTestCafeError: true,
                     code:            'E9',
-                    optionName:      'offsetX',
+                    optionName:      'ClickOptions.offsetX',
                     actualValue:     'boolean',
                     callsite:        null,
                 }
@@ -1585,7 +1486,7 @@ describe('Test run commands', () => {
                 {
                     isTestCafeError: true,
                     code:            'E11',
-                    optionName:      'modifiers.shift',
+                    optionName:      'ModifiersOptions.shift',
                     actualValue:     'string',
                     callsite:        null,
                 }
@@ -1659,7 +1560,7 @@ describe('Test run commands', () => {
                 {
                     isTestCafeError: true,
                     code:            'E10',
-                    optionName:      'caretPos',
+                    optionName:      'ClickOptions.caretPos',
                     actualValue:     'string',
                     callsite:        null,
                 }
@@ -1733,7 +1634,7 @@ describe('Test run commands', () => {
                 {
                     isTestCafeError: true,
                     code:            'E9',
-                    optionName:      'offsetX',
+                    optionName:      'MouseOptions.offsetX',
                     actualValue:     'string',
                     callsite:        null,
                 }
@@ -1752,7 +1653,7 @@ describe('Test run commands', () => {
                 {
                     isTestCafeError: true,
                     code:            'E9',
-                    optionName:      'offsetY',
+                    optionName:      'MouseOptions.offsetY',
                     actualValue:     1.01,
                     callsite:        null,
                 }
@@ -2081,7 +1982,7 @@ describe('Test run commands', () => {
                 {
                     isTestCafeError: true,
                     code:            'E9',
-                    optionName:      'offsetX',
+                    optionName:      'TypeOptions.offsetX',
                     actualValue:     'string',
                     callsite:        null,
                 }
@@ -2101,7 +2002,7 @@ describe('Test run commands', () => {
                 {
                     isTestCafeError: true,
                     code:            'E11',
-                    optionName:      'replace',
+                    optionName:      'TypeOptions.replace',
                     actualValue:     'number',
                     callsite:        null,
                 }
@@ -2928,7 +2829,7 @@ describe('Test run commands', () => {
                 {
                     isTestCafeError: true,
                     code:            'E11',
-                    optionName:      'portraitOrientation',
+                    optionName:      'ResizeToFitDeviceOptions.portraitOrientation',
                     actualValue:     'object',
                     callsite:        null,
                 }
@@ -3062,7 +2963,7 @@ describe('Test run commands', () => {
                 {
                     isTestCafeError: true,
                     code:            'E10',
-                    optionName:      'timeout',
+                    optionName:      'AssertionOptions.timeout',
                     actualValue:     'string',
                     callsite:        null,
                 }
@@ -3081,7 +2982,7 @@ describe('Test run commands', () => {
                 {
                     isTestCafeError: true,
                     code:            'E10',
-                    optionName:      'timeout',
+                    optionName:      'AssertionOptions.timeout',
                     actualValue:     10.5,
                     callsite:        null,
                 }
@@ -3543,7 +3444,7 @@ describe('Test run commands', () => {
                     });
                 },
                 {
-                    optionName:      'method',
+                    optionName:      'RequestOptions.method',
                     actualValue:     'boolean',
                     isTestCafeError: true,
                     code:            'E90',
@@ -3561,7 +3462,7 @@ describe('Test run commands', () => {
                     });
                 },
                 {
-                    optionName:      'headers',
+                    optionName:      'RequestOptions.headers',
                     actualValue:     'boolean',
                     isTestCafeError: true,
                     code:            'E95',
@@ -3579,7 +3480,7 @@ describe('Test run commands', () => {
                     });
                 },
                 {
-                    optionName:      'params',
+                    optionName:      'RequestOptions.params',
                     actualValue:     'boolean',
                     isTestCafeError: true,
                     code:            'E94',
@@ -3597,7 +3498,7 @@ describe('Test run commands', () => {
                     });
                 },
                 {
-                    optionName:      'timeout',
+                    optionName:      'RequestOptions.timeout',
                     actualValue:     'string',
                     isTestCafeError: true,
                     code:            'E92',
@@ -3615,7 +3516,7 @@ describe('Test run commands', () => {
                     });
                 },
                 {
-                    optionName:      'withCredentials',
+                    optionName:      'RequestOptions.withCredentials',
                     actualValue:     'string',
                     isTestCafeError: true,
                     code:            'E11',
@@ -3633,7 +3534,7 @@ describe('Test run commands', () => {
                     });
                 },
                 {
-                    optionName:      'auth',
+                    optionName:      'RequestOptions.auth',
                     actualValue:     'boolean',
                     isTestCafeError: true,
                     code:            'E95',
@@ -3654,7 +3555,7 @@ describe('Test run commands', () => {
                     });
                 },
                 {
-                    optionName:      'username',
+                    optionName:      'RequestAuthOptions.username',
                     actualValue:     'boolean',
                     isTestCafeError: true,
                     code:            'E90',
@@ -3675,7 +3576,7 @@ describe('Test run commands', () => {
                     });
                 },
                 {
-                    optionName:      'password',
+                    optionName:      'RequestAuthOptions.password',
                     actualValue:     'boolean',
                     isTestCafeError: true,
                     code:            'E90',
@@ -3693,7 +3594,7 @@ describe('Test run commands', () => {
                     });
                 },
                 {
-                    optionName:      'proxy',
+                    optionName:      'RequestOptions.proxy',
                     actualValue:     'boolean',
                     isTestCafeError: true,
                     code:            'E95',
@@ -3713,7 +3614,7 @@ describe('Test run commands', () => {
                     });
                 },
                 {
-                    optionName:      'protocol',
+                    optionName:      'RequestProxyOptions.protocol',
                     actualValue:     'boolean',
                     isTestCafeError: true,
                     code:            'E90',
@@ -3734,7 +3635,7 @@ describe('Test run commands', () => {
                     });
                 },
                 {
-                    optionName:      'host',
+                    optionName:      'RequestProxyOptions.host',
                     actualValue:     'boolean',
                     isTestCafeError: true,
                     code:            'E90',
@@ -3755,7 +3656,7 @@ describe('Test run commands', () => {
                     });
                 },
                 {
-                    optionName:      'port',
+                    optionName:      'RequestProxyOptions.port',
                     actualValue:     'object',
                     isTestCafeError: true,
                     code:            'E92',
@@ -3773,7 +3674,7 @@ describe('Test run commands', () => {
                     });
                 },
                 {
-                    optionName:      'rawResponse',
+                    optionName:      'RequestOptions.rawResponse',
                     actualValue:     'string',
                     isTestCafeError: true,
                     code:            'E11',

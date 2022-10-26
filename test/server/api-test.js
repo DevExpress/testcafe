@@ -425,6 +425,81 @@ describe('API', function () {
                 expect(err.code).eql(code);
             }
         });
+
+        it('Should raise an error if "fixture.skipJsErrors" method argument has invalid value type', () => {
+            const testfile = resolve('test/server/data/test-suites/skip-js-errors/fixture-invalid-argument.js');
+
+            return compile(testfile)
+                .then(() => {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(err => {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'The skipJsErrors options argument (string) is not of expected type (boolean, non-null object or a function).',
+
+                        callsite: '   1 |fixture`SkipJsErrors API`\n' +
+                                  ' > 2 |    .skipJsErrors(\'test\');\n' +
+                                  '   3 |\n' +
+                                  '   4 |test(\'test\', () => {\n' +
+                                  '   5 |\n' +
+                                  '   6 |})\n' +
+                                  '   7 |\n',
+                    });
+                });
+        });
+
+        it('Should raise an error if "fixture.skipJsErrors" method argument has invalid SkipJsErrorsOptionsObject structure', () => {
+            const testfile = resolve('test/server/data/test-suites/skip-js-errors/fixture-options-object-argument.js');
+
+            return compile(testfile)
+                .then(() => {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(err => {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'The "invalidProp" option does not exist. Use the following options to configure skipJsErrors: "message", "stack", and "pageUrl".',
+
+                        callsite: '   1 |fixture`SkipJsErrors API`\n' +
+                                  ' > 2 |    .skipJsErrors({ message: \'test\', invalidProp: false });\n' +
+                                  '   3 |\n' +
+                                  '   4 |test(\'test\', () => {\n' +
+                                  '   5 |\n' +
+                                  '   6 |})\n' +
+                                  '   7 |\n',
+                    });
+                });
+        });
+
+        it('Should raise an error if "fixture.skipJsErrors" method argument has invalid SkipJsErrorsCallbackWithOptionsObject structure', () => {
+            const testfile = resolve('test/server/data/test-suites/skip-js-errors/fixture-function-with-options-object-argument.js');
+
+            return compile(testfile)
+                .then(() => {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(err => {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'The "invalidProp" option does not exist. Use the following options to configure skipJsErrors callback: "fn" and "dependencies".',
+
+                        callsite: '   1 |fixture`SkipJsErrors API`\n' +
+                                  ' > 2 |    .skipJsErrors({ fn: () => true, invalidProp: false });\n' +
+                                  '   3 |\n' +
+                                  '   4 |test(\'test\', () => {\n' +
+                                  '   5 |\n' +
+                                  '   6 |})\n' +
+                                  '   7 |\n',
+                    });
+                });
+        });
     });
 
     describe('test', function () {

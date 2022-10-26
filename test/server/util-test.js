@@ -18,15 +18,20 @@ const getCommonPath                    = require('../../lib/utils/get-common-pat
 const resolvePathRelativelyCwd         = require('../../lib/utils/resolve-path-relatively-cwd');
 const getFilterFn                      = require('../../lib/utils/get-filter-fn');
 const prepareReporters                 = require('../../lib/utils/prepare-reporters');
-const { replaceLeadingSpacesWithNbsp } = require('../../lib/errors/test-run/utils');
 const createTempProfile                = require('../../lib/browser/provider/built-in/dedicated/chrome/create-temp-profile');
-const { parseUserAgent }                   = require('../../lib/utils/parse-user-agent');
+const { parseUserAgent }               = require('../../lib/utils/parse-user-agent');
 const diff                             = require('../../lib/utils/diff');
 const { generateScreenshotMark }       = require('../../lib/screenshots/utils');
 const getViewPortWidth                 = require('../../lib/utils/get-viewport-width');
+const TEST_RUN_PHASE                   = require('../../lib/test-run/phase');
+const {
+    replaceLeadingSpacesWithNbsp,
+    markup,
+    SUBTITLES,
+} = require('../../lib/errors/test-run/utils');
 const {
     buildChromeArgs,
-    IN_DOCKER_FLAGS,
+    CONTAINERIZED_CHROME_FLAGS,
 } = require('../../lib/browser/provider/built-in/dedicated/chrome/build-chrome-args');
 
 describe('Utils', () => {
@@ -322,12 +327,41 @@ describe('Utils', () => {
         });
     });
 
-    it('Replace leading spaces with &nbsp', () => {
-        expect(replaceLeadingSpacesWithNbsp('test')).eql('test');
-        expect(replaceLeadingSpacesWithNbsp(' test')).eql('&nbsp;test');
-        expect(replaceLeadingSpacesWithNbsp('  test')).eql('&nbsp;&nbsp;test');
-        expect(replaceLeadingSpacesWithNbsp(' test1 test2 ')).eql('&nbsp;test1 test2 ');
-        expect(replaceLeadingSpacesWithNbsp('  test1\n test2 \r\ntest3 ')).eql('&nbsp;&nbsp;test1\n&nbsp;test2 \r\ntest3 ');
+    describe('Error utils', () => {
+        it('Markup should return correct value for error in "pendingFinalization" phase', () => {
+            const err = {
+                userAgent:       'Chrome 104.0.5112.81 / Windows 10',
+                screenshotPath:  '',
+                testRunId:       'UGqL1Nz7Z',
+                testRunPhase:    'pendingFinalization',
+                code:            'E53',
+                isTestCafeError: true,
+                callsite:        '0',
+                errMsg:          'AssertionError: expected false to be truthy',
+                diff:            false,
+                id:              '7fTLOzU',
+
+                getCallsiteMarkup: () => '0',
+            };
+            const msgMarkup      = '\n        AssertionError: expected false to be truthy\n\n        \n';
+            const expectedResult = '<div class="message">AssertionError: expected false to be truthy</div>\n\n' +
+                                   '<strong>Browser:</strong> <span class="user-agent">Chrome 104.0.5112.81 / Windows 10</span>\n\n0';
+
+            expect(markup(err, msgMarkup)).eql(expectedResult);
+        });
+
+        it('SUBTITLES should contains definitions of all test run phases', () => {
+            for (const phase in TEST_RUN_PHASE)
+                expect(phase in SUBTITLES).to.be.ok;
+        });
+
+        it('Replace leading spaces with &nbsp', () => {
+            expect(replaceLeadingSpacesWithNbsp('test')).eql('test');
+            expect(replaceLeadingSpacesWithNbsp(' test')).eql('&nbsp;test');
+            expect(replaceLeadingSpacesWithNbsp('  test')).eql('&nbsp;&nbsp;test');
+            expect(replaceLeadingSpacesWithNbsp(' test1 test2 ')).eql('&nbsp;test1 test2 ');
+            expect(replaceLeadingSpacesWithNbsp('  test1\n test2 \r\ntest3 ')).eql('&nbsp;&nbsp;test1\n&nbsp;test2 \r\ntest3 ');
+        });
     });
 
     it('Get common path', () => {
@@ -552,26 +586,32 @@ describe('Utils', () => {
 
         let chromeArgs = '';
 
-        const IN_DOCKER_FLAGS_RE       = new RegExp(IN_DOCKER_FLAGS.join(' '));
+        const IN_DOCKER_FLAGS_RE       = new RegExp(CONTAINERIZED_CHROME_FLAGS.join(' '));
         const SANDBOX_FLAG_RE          = new RegExp('--no-sandbox');
         const DISABLE_DEV_SHM_USAGE_RE = new RegExp('--disable-dev-shm-usage');
-        let inDockerFlagMatch    = null;
 
-        chromeArgs        = buildChromeArgs({ config, cdpPort, platformArgs, tempProfileDir, inDocker: false });
-        inDockerFlagMatch = chromeArgs.match(IN_DOCKER_FLAGS_RE);
-        expect(inDockerFlagMatch).eql(null);
+        let containerizedChromeFlags = null;
 
-        chromeArgs        = buildChromeArgs({ config, cdpPort, platformArgs, tempProfileDir, inDocker: true });
-        inDockerFlagMatch = chromeArgs.match(IN_DOCKER_FLAGS_RE);
-        expect(inDockerFlagMatch.length).eql(1);
+        chromeArgs               = buildChromeArgs({ config, cdpPort, platformArgs, tempProfileDir, isContainerized: false });
+        containerizedChromeFlags = chromeArgs.match(IN_DOCKER_FLAGS_RE);
+
+        expect(containerizedChromeFlags).eql(null);
+
+        chromeArgs               = buildChromeArgs({ config, cdpPort, platformArgs, tempProfileDir, isContainerized: true });
+        containerizedChromeFlags = chromeArgs.match(IN_DOCKER_FLAGS_RE);
+
+        expect(containerizedChromeFlags.length).eql(1);
 
         // NOTE: Flag should not be duplicated
-        config.userArgs = '--no-sandbox --disable-dev-shm-usage';
-        chromeArgs        = buildChromeArgs({ config, cdpPort, platformArgs, tempProfileDir, inDocker: true });
-        inDockerFlagMatch = chromeArgs.match(SANDBOX_FLAG_RE);
-        expect(inDockerFlagMatch.length).eql(1);
-        inDockerFlagMatch = chromeArgs.match(DISABLE_DEV_SHM_USAGE_RE);
-        expect(inDockerFlagMatch.length).eql(1);
+        config.userArgs          = '--no-sandbox --disable-dev-shm-usage';
+        chromeArgs               = buildChromeArgs({ config, cdpPort, platformArgs, tempProfileDir, isContainerized: true });
+        containerizedChromeFlags = chromeArgs.match(SANDBOX_FLAG_RE);
+
+        expect(containerizedChromeFlags.length).eql(1);
+
+        containerizedChromeFlags = chromeArgs.match(DISABLE_DEV_SHM_USAGE_RE);
+
+        expect(containerizedChromeFlags.length).eql(1);
     });
 
     describe('Create temporary profile for the Google Chrome browser', () => {

@@ -8,11 +8,14 @@ import {
     replaceLeadingSpacesWithNbsp,
     formatExpressionMessage,
 } from './utils';
+import { getConcatenatedValuesString } from '../../utils/string';
+
 
 const EXTERNAL_LINKS = {
     createNewIssue:      'https://github.com/DevExpress/testcafe/issues/new?template=bug-report.md',
     troubleshootNetwork: 'https://go.devexpress.com/TestCafe_FAQ_ARequestHasFailed.aspx',
     viewportSizes:       'https://github.com/DevExpress/device-specs/blob/master/viewport-sizes.json',
+    skipJsErrorsRecipes: 'https://testcafe.io/documentation/404038/recipes/debugging/skip-javascript-errors',
 };
 
 export default {
@@ -44,7 +47,7 @@ export default {
     [TEST_RUN_ERRORS.uncaughtErrorOnPage]: err => `
         A JavaScript error occurred on ${formatUrl(err.pageDestUrl)}.
         Repeat test actions in the browser and check the console for errors.
-        To ignore client-side JavaScript errors, enable the "--skip-js-errors" CLI option, or set the "skipJsErrors" configuration file property to "true".
+        Enable the “skipJsErrors” option to ignore JavaScript errors during test execution. Learn more: ${formatUrl(EXTERNAL_LINKS.skipJsErrorsRecipes)}
         If the website only throws this error when you test it with TestCafe, please create a new issue at:
         ${formatUrl(EXTERNAL_LINKS.createNewIssue)}.
 
@@ -415,6 +418,10 @@ export default {
         The value of the "${err.optionName}" option belongs to an unsupported data type (${err.actualValue}). The "${err.optionName}" option only accepts String type values.
     `,
 
+    [TEST_RUN_ERRORS.actionStringOrRegexOptionError]: err => `
+        The value of the "${err.optionName}" option belongs to an unsupported data type (${err.actualValue}). The "${err.optionName}" option only accepts String or Regex type values.
+    `,
+
     [TEST_RUN_ERRORS.actionDateOptionError]: err => `
         The value of the "${err.optionName}" option belongs to an unsupported data type (${err.actualValue}). The "${err.optionName}" option only accepts Date type values.
     `,
@@ -437,5 +444,20 @@ export default {
 
     [TEST_RUN_ERRORS.actionUrlArgumentError]: err => `
         The "${err.argumentName}" argument is expected to be an URL or a string, but it was ${err.actualValue}.
+    `,
+
+    [TEST_RUN_ERRORS.actionSkipJsErrorsArgumentError]: err => `
+        Cannot execute the skipJsErrors method. The value of the "${err.argumentName}" argument belongs to an unsupported type (${err.actualValue}). The "${err.argumentName}" supports the following data types: Boolean, Object, Function.
+    `,
+
+    [TEST_RUN_ERRORS.actionFunctionOptionError]: err => `
+        The value of the "${err.optionName}" option belongs to an unsupported data type (${err.actualValue}). The "${err.optionName}" option only accepts function types values.
+    `,
+
+    [TEST_RUN_ERRORS.actionInvalidObjectPropertyError]: err => `
+        The "${err.objectName}" object does not support the "${err.propertyName}" property.
+        To proceed, remove invalid options from your code or check your test for spelling errors.
+        The "${err.objectName}" object supports the following options:
+        ${getConcatenatedValuesString(err.availableProperties, ',\n')}.
     `,
 };

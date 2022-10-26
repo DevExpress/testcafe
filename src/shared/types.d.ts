@@ -39,3 +39,17 @@ interface AutomationErrorCtors {
 
 export type ExecuteSelectorFn<T> = (selector: ExecuteSelectorCommand, errCtors: AutomationErrorCtors, startTime: number) => Promise<T>;
 
+interface NextTestRunInfo {
+    testRunId: string;
+    url: string;
+}
+
+interface ProxylessSetupOptions {
+    serviceDomains: string[];
+    developmentMode: boolean;
+}
+
+interface OpenBrowserAdditionalOptions {
+    disableMultipleWindows: boolean;
+    proxyless?: ProxylessSetupOptions;
+}

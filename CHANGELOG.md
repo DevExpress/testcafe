@@ -1,6 +1,51 @@
 # Changelog
 
-## v1.20.0 (2022-07-14) 
+## v2.0.1 (2022-09-26)
+
+### Bug Fixes
+
+* TestCafe yields incomplete video recordings in concurrency mode ([#7218](https://github.com/DevExpress/testcafe/issues/7218)).
+* Video recordings in concurrency mode yield `EPIPE` errors that cause crashes ([#7216](https://github.com/DevExpress/testcafe/issues/7216)).
+* Running TestCafe 1.20.1 and up with a high concurrency factor may nonetheless result in a `MaxListenersExceededWarning` warning ([#7188](https://github.com/DevExpress/testcafe/issues/7188)).
+  
+## v2.0.0 (2022-08-31)
+
+### TypeScript update
+
+> :warning:
+> TestCafe 2.0 includes a breaking change.
+The framework’s built-in TypeScript compiler has been updated from version 3.9 to version 4.7. The vast majority of TestCafe users should not experience any issues during the upgrade. However, since TypeScript does not follow the semver versioning policy, even minor TypeScript updates contain breaking changes. Some TypeScript users may need to perform additional actions to ensure the compatibility of their test code.
+
+Read the [TestCafe 2.0 Migration Guide](https://testcafe.io/documentation/404017/recipes/migration/testcafe-2-0-migration-guide) to learn more.
+
+### Improvement: New ways to ignore JavaScript errors
+
+TestCafe v2.0 introduces new ways to ignore JavaScript errors during test runs.
+
+Two new methods allow you to ignore errors on a per-test or a per-fixture basis.
+
+* Use the [test.skipJsErrors](https://testcafe.io/documentation/404026/reference/test-api/test/skipjserrors) method to ignore JavaScript errors in specific tests.
+* Use the [fixture.skipJsErrors](https://testcafe.io/documentation/404025/reference/test-api/fixture/skipjserrors) method to ignore JavaScript errors for specific fixtures.
+* The [t.skipJsErrors](https://testcafe.io/documentation/404027/reference/test-api/testcontroller/skipjserrors) action lets you ignore JavaScript errors at specific points in the test.
+
+For each of the methods above, you can define the following options:
+
+* The pageUrl option filters errors by page URL.
+* The message option filters errors by message.
+* The stack option filters errors by call stack.
+
+Read the [Skip JavaScript Errors](https://testcafe.io/documentation/404038/recipes/debugging/skip-javascript-errors) recipe to learn more.
+
+## v1.20.1 (2022-08-08)
+
+### Bug Fixes
+
+* Running 11 or more tests concurrently causes a memory leak ([#7188](https://github.com/DevExpress/testcafe/issues/7188)).
+* TestCafe cannot switch to iframes that descend from a shadowRoot element ([#3673](https://github.com/DevExpress/testcafe/issues/3673)).
+* TestCafe attempts to execute JSON files without `fixture` and `test` definitions (PR [#7187](https://github.com/DevExpress/testcafe/pull/7187)).
+* TestCafe incorrectly processes request hooks that return status code 500 ([#7213](https://github.com/DevExpress/testcafe/issues/7213))
+
+## v1.20.0 (2022-07-14)
 
 > :warning:
 > Warning: [Impending breaking change](#coming-in-testcafe-20-typescript-4).
@@ -14,10 +59,10 @@ TestCafe v1.20.0 includes two major capabilities: an [API testing toolkit](#api-
 TestCafe v1.20.0 includes a comprehensive set of server-side API testing tools. You can add dedicated API tests to your test suite, or include API testing methods in existing functional tests.
 
 The new [Request](https://testcafe.io/documentation/403981/reference/test-api/testcontroller/request) test action executes an HTTP request and returns the server's response.
- 
+
 ```js
 const responseBody = await t.request(`http://localhost:3000/helloworld`).body;
- 
+
 t.expect(responseBody).contains('Hello World') // true
 ```
 
@@ -46,9 +91,9 @@ fixture`Test structure`
 
 ### Experimental: Chrome User Flow Replays
 
-TestCafe v1.20.0 introduces **experimental, limited** support for [Google Chrome user flow recordings](https://developer.chrome.com/docs/devtools/recorder/). 
+TestCafe v1.20.0 introduces **experimental, limited** support for [Google Chrome user flow recordings](https://developer.chrome.com/docs/devtools/recorder/).
 
-Record page actions in Google Chrome and export the recording as a JSON file. TestCafe will play the recording back just like it would a generate a test report 
+Record page actions in Google Chrome and export the recording as a JSON file. TestCafe will play the recording back just like it would a generate a test report
 
 Read the [User Flow Recordings](https://testcafe.io/documentation/403998/guides/experimental-capabilities/chrome-replay-support) guide to learn more.
 
@@ -168,17 +213,17 @@ Read the [Request Hooks guide](https://testcafe.io/documentation/402842/guides/a
 ### Bug Fixes
 
  * The t.scrollIntoView method causes the "Element is not visible" error when the target's `overflow` property is `hidden` ([#6601](https://github.com/DevExpress/testcafe/issues/6601))
- 
+
  * TestCafe triggers click events for label elements even when the input is disabled ([#6949](https://github.com/DevExpress/testcafe/issues/6949))
- 
+
  * TestCafe hangs when you change the active window between two consecutive assertions ([#6037](https://github.com/DevExpress/testcafe/issues/6037))
- 
+
  * TestCafe cannot take screenshots when using the LambdaTest browser provider ([#6887](https://github.com/DevExpress/testcafe/issues/6887))
- 
+
  * Pages that target a missing `<iframe>`([testcafe-hammerhead/#2178](https://github.com/DevExpress/testcafe-hammerhead/issues/2178) element with the `Element.focus` method yield a ""TypeError: window.location.toString is not a function" error.
- 
+
  * TestCafe causes errors when it encounters XMLHTTPRequest calls that fetch resources from `blob:` URLs ([testcafe-hammerhead/#2634](https://github.com/DevExpress/testcafe-hammerhead/issues/2634))
- 
+
  * `HTMLElement.removeAttributeNode` method calls yield unjustified exceptions ([PR testcafe-hammerhead/#2742](https://github.com/DevExpress/testcafe-hammerhead/pull/2742) by @TrevorKarjanis)
 
 ## v1.18.4 (2022-02-21)
@@ -186,14 +231,14 @@ Read the [Request Hooks guide](https://testcafe.io/documentation/402842/guides/a
 ### Bug Fixes
 
  * TestCafe does not display reporter output during initialization ([#6842](https://github.com/DevExpress/testcafe/issues/6842))
- 
+
  * TestCafe uses outdated automation scripts after cache expiration ([testcafe-hammerhead/#2738](https://github.com/DevExpress/testcafe-hammerhead/issues/2738), [PR](https://github.com/DevExpress/testcafe-hammerhead/issues/2739) by @rr13k)
 
  * The `Node.append` method causes the `Illegal invocation` error ([PR testcafe-hammerhead/#2730](https://github.com/DevExpress/testcafe-hammerhead/pull/2730) by @danieltroger)
- 
+
  * Scripts in SVG documents cause the `Illegal invocation` error ([testcafe-hammerhead/#2735](https://github.com/DevExpress/testcafe-hammerhead/issues/2735
 ))
- 
+
 ## v1.18.3 (2022-01-25)
 
 ### Bug Fixes
@@ -307,7 +352,7 @@ module.exports = {
 
 #### Execution Timeouts
 
-You can now specify custom timeouts for tests and test runs. If a test/test run is idle or unresponsive for the specified length of time, TestCafe terminates it. Specify these timeouts in the [configuration file](https://testcafe.io/documentation/402638/reference/configuration-file) or from the [command line](https://testcafe.io/documentation/402639/reference/command-line-interface). 
+You can now specify custom timeouts for tests and test runs. If a test/test run is idle or unresponsive for the specified length of time, TestCafe terminates it. Specify these timeouts in the [configuration file](https://testcafe.io/documentation/402638/reference/configuration-file) or from the [command line](https://testcafe.io/documentation/402639/reference/command-line-interface).
 
 **Command line interface**
 
@@ -426,17 +471,17 @@ test('Type text', async t => {
 
 ### Bug Fixes
 
-* The `Element.getAttribute` method returns an incorrect value ([#5984](https://github.com/DevExpress/testcafe/issues/5984)). 
+* The `Element.getAttribute` method returns an incorrect value ([#5984](https://github.com/DevExpress/testcafe/issues/5984)).
 * TestCafe test fails when you forget to include the `await` keyword before the assertion statement ([#4613](https://github.com/DevExpress/testcafe/issues/4613)).
 * TestCafe fails to focus an element inside a shadow DOM ([#4988](https://github.com/DevExpress/testcafe/issues/4988)).
 * TestCafe fails to focus SVG elements ([#6262](https://github.com/DevExpress/testcafe/issues/6262)).
 * TestCafe raises the blur event when you focus a non-focusable element ([#6236](https://github.com/DevExpress/testcafe/pull/6236)).
 * TestCafe test hangs when you click a link within a cross-domain iframe ([#6331](https://github.com/DevExpress/testcafe/pull/6331)).
-* TestCafe loads the Babel compiler libraries multiple times ([#6310](https://github.com/DevExpress/testcafe/pull/6310)). 
+* TestCafe loads the Babel compiler libraries multiple times ([#6310](https://github.com/DevExpress/testcafe/pull/6310)).
 * TestCafe incorrectly parses the meta refresh tags ([PR testcafe-hammerhead/#2663](https://github.com/DevExpress/testcafe-hammerhead/pull/2663))
 * TestCafe incorrectly processes iframe elements with the "srcdoc" attribute ([testcafe-hammerhead/#2647](https://github.com/DevExpress/testcafe-hammerhead/issues/2647)).
 * TestCafe incorrectly specifies the Referer HTTP request header if you use the "navigateTo" action ([testcafe-hammerhead/#2607](https://github.com/DevExpress/testcafe-hammerhead/issues/2607)).
-* An error related to the [bug in Node.js](https://github.com/nodejs/node/issues/37849) occurs ([testcafe-hammerhead/#2655](https://github.com/DevExpress/testcafe-hammerhead/pull/2655)). 
+* An error related to the [bug in Node.js](https://github.com/nodejs/node/issues/37849) occurs ([testcafe-hammerhead/#2655](https://github.com/DevExpress/testcafe-hammerhead/pull/2655)).
 
 ## v1.15.0 (2021-07-08)
 

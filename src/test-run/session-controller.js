@@ -6,6 +6,18 @@ import TestRun from './';
 const ACTIVE_SESSIONS_MAP = {};
 const UPLOADS_DIR_NAME = '_uploads_';
 
+// NOTE: Proxyless cookie implementation doesn't require client-server communication.
+// This stub was created to reduce conditional logic in connected classes.
+class ProxylessCookieStub {
+    getClientString () {
+        return '';
+    }
+
+    takePendingSyncCookies () {
+        return [];
+    }
+}
+
 export default class SessionController extends Session {
     constructor (uploadRoots, options) {
         super(uploadRoots, options);
@@ -47,6 +59,10 @@ export default class SessionController extends Session {
         return this.currentTestRun.handlePageError(ctx, err);
     }
 
+    createCookies () {
+        return this.options.proxyless ? new ProxylessCookieStub() : super.createCookies();
+    }
+
     // API
     static getSession (testRun) {
         let sessionInfo = ACTIVE_SESSIONS_MAP[testRun.browserConnection.id];
@@ -72,6 +88,7 @@ export default class SessionController extends Session {
                     disablePageCaching:   testRun.disablePageCaching,
                     allowMultipleWindows: TestRun.isMultipleWindowsAllowed(testRun),
                     requestTimeout:       testRun.requestTimeout,
+                    proxyless:            testRun.opts.proxyless,
                 };
 
                 if (options.allowMultipleWindows)

@@ -5,15 +5,28 @@ export interface FilterOption {
 
 export interface ReporterOption {
     name: string;
-    output? : string | Buffer;
+    output?: string | Buffer;
 }
 
 export interface Dictionary<T> {
     [key: string]: T;
 }
 
+export interface SkipJsErrorsOptionsObject {
+    stack?: string | RegExp;
+    message?: string | RegExp;
+    pageUrl?: string | RegExp;
+}
+
+export type SkipJsErrorsCallback = (opts?: { message: string; stack: string; pageUrl: string }) => boolean;
+
+export interface SkipJsErrorsCallbackWithOptionsObject {
+    fn: SkipJsErrorsCallback;
+    dependencies?: Dictionary<any>;
+}
+
 export interface RunnerRunOptions {
-    skipJsErrors?: boolean;
+    skipJsErrors?: SkipJsErrorsOptionValue | SkipJsErrorsCallback | SkipJsErrorsCallbackWithOptionsObject;
     skipUncaughtErrors?: boolean;
     debugMode?: boolean;
     debugOnFail?: boolean;

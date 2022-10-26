@@ -390,7 +390,7 @@ describe('[API] Assertions', function () {
             only:       'chrome',
         })
             .catch(function (errs) {
-                expect(errs[0]).contains('The "timeout" option is expected to be a positive integer, but it was string.');
+                expect(errs[0]).contains('The "AssertionOptions.timeout" option is expected to be a positive integer, but it was string.');
                 expect(errs[0]).contains("> 140 |    await t.expect(42).eql(43, { timeout: 'hey' });");
             });
     });

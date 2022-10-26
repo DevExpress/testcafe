@@ -3,7 +3,7 @@ import { escape as escapeHtml, repeat } from 'lodash';
 import TEST_RUN_PHASE from '../../test-run/phase';
 import { TEST_RUN_ERRORS } from '../types';
 
-const SUBTITLES = {
+export const SUBTITLES = {
     [TEST_RUN_PHASE.initial]:                 '',
     [TEST_RUN_PHASE.inTestRunBeforeHook]:     '<span class="subtitle">Error in testRun.before hook</span>\n',
     [TEST_RUN_PHASE.inFixtureBeforeHook]:     '<span class="subtitle">Error in fixture.before hook</span>\n',
@@ -16,6 +16,7 @@ const SUBTITLES = {
     [TEST_RUN_PHASE.inTestRunAfterHook]:      '<span class="subtitle">Error in testRun.after hook</span>\n',
     [TEST_RUN_PHASE.inRoleInitializer]:       '<span class="subtitle">Error in Role initializer</span>\n',
     [TEST_RUN_PHASE.inBookmarkRestore]:       '<span class="subtitle">Error while restoring configuration after Role switch</span>\n',
+    [TEST_RUN_PHASE.pendingFinalization]:     '',
 };
 
 export function renderForbiddenCharsList (forbiddenCharsList) {

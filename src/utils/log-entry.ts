@@ -16,7 +16,7 @@ export default function (logger: Debugger, data: unknown): void {
 
         logger(entry);
     }
-    catch (e) {
+    catch (e: any) {
         logger(e.stack ? e.stack : String(e));
     }
 }

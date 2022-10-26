@@ -6,6 +6,7 @@ import getMetaOptions from './meta';
 import getGrepOptions from './grep';
 import getCompilerOptions from './compiler';
 import getDashboardOptions from './dashboard';
+import { getSkipJsErrorsOptions } from './skip-js-errors';
 
 export {
     getSSLOptions,
@@ -16,4 +17,5 @@ export {
     getGrepOptions,
     getCompilerOptions,
     getDashboardOptions,
+    getSkipJsErrorsOptions,
 };

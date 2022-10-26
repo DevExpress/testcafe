@@ -92,6 +92,7 @@ describe('TestCafeConfiguration', function () {
                 'disableHttp2':  true,
                 'proxyless':     true,
                 'baseUrl':       'localhost:3000',
+                'skipJsErrors':  { message: '/testRegex/i', stack: 'testRegex' },
             });
         });
 
@@ -135,6 +136,7 @@ describe('TestCafeConfiguration', function () {
                             expect(testCafeConfiguration.getOption('disableHttp2')).to.be.true;
                             expect(testCafeConfiguration.getOption('proxyless')).to.be.true;
                             expect(testCafeConfiguration.getOption('baseUrl')).eql('localhost:3000');
+                            expect(testCafeConfiguration.getOption('skipJsErrors')).to.be.deep.equal({ message: '/testRegex/i', stack: 'testRegex' });
                         });
                 });
 
@@ -323,10 +325,9 @@ describe('TestCafeConfiguration', function () {
                     consoleWrapper.unwrap();
 
                     const expectedMessage =
-                        `There are multiple configuration files found, TestCafe will only use one. The file "${pathUtil.resolve('.testcaferc.js')}" will be used.\n` +
-                        'The priority order is as follows:\n' +
-                        `1. ${pathUtil.resolve('.testcaferc.js')}\n` +
-                        `2. ${pathUtil.resolve('.testcaferc.json')}`;
+                        `TestCafe detected more than one configuration file.\n` +
+                        `To prevent configuration conflicts, TestCafe will use the configuration file with the highest priority: ${pathUtil.resolve('.testcaferc.js')}.\n` +
+                        `Refer to the following article for more information: https://testcafe.io/documentation/402638/reference/configuration-file?search#configuration-file-priority`;
 
                     expect(consoleWrapper.messages.log).eql(expectedMessage);
                 });

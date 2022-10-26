@@ -36,15 +36,10 @@ export default class Screenshots extends EventEmitter {
 
     _assignEventHandlers (messageBus) {
         messageBus.once('start', this._createSafeListener(this._onMessageBusStart));
-        messageBus.once('done', this._createSafeListener(this._onMessageBusDone));
     }
 
     async _onMessageBusStart () {
         await this.tempDirectory.init();
-    }
-
-    async _onMessageBusDone () {
-        await this.tempDirectory.dispose();
     }
 
     _addTestEntry (test) {

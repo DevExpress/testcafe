@@ -276,6 +276,14 @@ export class ActionUrlArgumentError extends TestRunErrorBase {
     }
 }
 
+export class ActionSkipJsErrorsArgumentTypeError extends TestRunErrorBase {
+    constructor (argumentName, actualValue) {
+        super(TEST_RUN_ERRORS.actionSkipJsErrorsArgumentError);
+
+        this.argumentName = argumentName;
+        this.actualValue  = actualValue;
+    }
+}
 
 // Action execution errors
 //--------------------------------------------------------------------

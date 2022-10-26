@@ -1,0 +1,39 @@
+{
+  "title": "Invalid",
+  "steps": [
+    {
+      "type": "setViewport",
+      "width": 1536,
+      "height": 721,
+      "deviceScaleFactor": 1,
+      "isMobile": false,
+      "hasTouch": false,
+      "isLandscape": false
+    },
+    {
+      "type": "navigate",
+      "url": "http://localhost:3000/fixtures/api/json/pages/index.html",
+      "assertedEvents": [
+        {
+          "type": "navigation",
+          "url": "http://localhost:3000/fixtures/api/json/pages/index.html",
+          "title": "Title"
+        }
+      ]
+    },
+    {
+      "type": "invalid",
+      "selectors": [
+        [
+          "aria/click"
+        ],
+        [
+          "#statusBtn"
+        ]
+      ],
+      "target": "main",
+      "offsetX": 20,
+      "offsetY": 13
+    }
+  ]
+}

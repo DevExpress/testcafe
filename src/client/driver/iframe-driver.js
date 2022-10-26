@@ -120,7 +120,7 @@ export default class IframeDriver extends Driver {
 
     // API
     start () {
-        this.nativeDialogsTracker = new IframeNativeDialogTracker(this.dialogHandler);
+        this.nativeDialogsTracker = new IframeNativeDialogTracker(this.options.dialogHandler);
         this.statusBar            = new IframeStatusBar();
 
         const initializePromise   = this._init();

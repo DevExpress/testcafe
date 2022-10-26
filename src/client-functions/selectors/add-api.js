@@ -6,7 +6,7 @@ import { getCallsiteForMethod } from '../../errors/get-callsite';
 import ClientFunctionBuilder from '../client-function-builder';
 import ReExecutablePromise from '../../utils/re-executable-promise';
 import { assertType, is } from '../../errors/runtime/type-assertions';
-import makeRegExp from '../../utils/make-reg-exp';
+import { makeRegExp } from '../../utils/make-reg-exp';
 import selectorTextFilter from './selector-text-filter';
 import selectorAttributeFilter from './selector-attribute-filter';
 import prepareApiFnArgs from './prepare-api-args';

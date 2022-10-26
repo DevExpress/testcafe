@@ -177,11 +177,8 @@ export default class Configuration {
 
         this._filePath = existedConfigs[0].filePath;
 
-        if (existedConfigs.length > 1) {
-            const configPriorityListStr = this._getConfigPriorityListString();
-
-            Configuration._showConsoleWarning(renderTemplate(WARNING_MESSAGES.multipleConfigurationFilesFound, this._filePath, configPriorityListStr));
-        }
+        if (existedConfigs.length > 1)
+            Configuration._showConsoleWarning(renderTemplate(WARNING_MESSAGES.multipleConfigurationFilesFound, this._filePath));
 
         return existedConfigs[0].options;
     }
@@ -192,7 +189,7 @@ export default class Configuration {
 
             return true;
         }
-        catch (error) {
+        catch (error: any) {
             DEBUG_LOGGER(renderTemplate(WARNING_MESSAGES.cannotFindConfigurationFile, filePath, error.stack));
 
             return false;
@@ -218,7 +215,7 @@ export default class Configuration {
 
                 return require(filePath);
             }
-            catch (error) {
+            catch (error: any) {
                 Configuration._showWarningForError(error, WARNING_MESSAGES.cannotReadConfigFile, filePath);
             }
         }
@@ -230,7 +227,7 @@ export default class Configuration {
         try {
             return await readFile(filePath);
         }
-        catch (error) {
+        catch (error: any) {
             Configuration._showWarningForError(error, WARNING_MESSAGES.cannotReadConfigFile, filePath);
         }
 
@@ -241,7 +238,7 @@ export default class Configuration {
         try {
             return JSON5.parse(configurationFileContent.toString());
         }
-        catch (error) {
+        catch (error: any) {
             Configuration._showWarningForError(error, WARNING_MESSAGES.cannotParseConfigFile, filePath);
         }
 
@@ -303,9 +300,5 @@ export default class Configuration {
         }
 
         option.source = OptionSource.Input;
-    }
-
-    protected _getConfigPriorityListString (filesPaths = this.defaultPaths): string {
-        return filesPaths?.map((path, index) => `${index + 1}. ${path}`).join('\n') || '';
     }
 }

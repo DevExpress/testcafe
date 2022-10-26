@@ -73,7 +73,7 @@ function waitForFileDownload (): Promise<void> {
             // NOTE: we use a flag to confirm file download because if unload
             // is raised the browser can respond with an empty string
             if (!fileDownloadingHandled)
-                return new Promise(() => {});
+                return new Promise(() => {}); // eslint-disable-line @typescript-eslint/no-empty-function
         });
 }
 

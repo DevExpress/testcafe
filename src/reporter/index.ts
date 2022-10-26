@@ -2,6 +2,7 @@ import {
     find,
     sortBy,
     union,
+    isFunction,
 } from 'lodash';
 
 import { writable as isWritableStream } from 'is-stream';
@@ -32,6 +33,7 @@ import fs from 'fs';
 import MessageBus from '../utils/message-bus';
 import BrowserConnection from '../browser/connection';
 import { Dictionary } from '../configuration/interfaces';
+import debug from 'debug';
 
 interface PendingPromise {
     resolve: Function | null;
@@ -121,6 +123,8 @@ interface ReportWarningEventArguments {
     actionId?: string;
 }
 
+const debugLog = debug('testcafe:reporter');
+
 export default class Reporter {
     public readonly plugin: ReporterPluginHost;
     public readonly messageBus: MessageBus;
@@ -175,6 +179,9 @@ export default class Reporter {
                 originalError,
             });
 
+            debugLog('Plugin error: %O', uncaughtError);
+            debugLog('Plugin error: initialObject: %O', initialObject);
+
             if (initialObject)
                 await initialObject.emit('error', uncaughtError);
             else
@@ -206,7 +213,9 @@ export default class Reporter {
 
         this.disposed = true;
 
-        if (!this.outStream || Reporter._isSpecialStream(this.outStream) || !isWritableStream(this.outStream))
+        if (!isFunction(this?.outStream?.once)
+            || Reporter._isSpecialStream(this.outStream)
+            || !isWritableStream(this.outStream))
             return Promise.resolve();
 
         const streamFinishedPromise = new Promise(resolve => {
@@ -388,7 +397,7 @@ export default class Reporter {
                 return result;
             }, { });
 
-            Object.assign(testItem.quarantine, testItemQuarantine);
+            Object.assign(testItem.quarantine as object, testItemQuarantine);
         }
 
         if (!testItem.testRunInfo) {

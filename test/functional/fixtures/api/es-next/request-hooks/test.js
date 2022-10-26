@@ -1,12 +1,18 @@
 const { expect } = require('chai');
 
+const {
+    skipInExperimentalDebug,
+    skipInProxylessOrExperimentalDebug,
+    skipInProxyless,
+} = require('../../../../utils/skip-in');
+
 describe('Request Hooks', () => {
     describe('RequestMock', () => {
-        it('Basic', () => {
+        skipInExperimentalDebug('Basic', () => {
             return runTests('./testcafe-fixtures/request-mock/basic.js', 'Basic', { only: 'chrome' });
         });
 
-        it('Request failed the CORS validation', () => {
+        skipInProxylessOrExperimentalDebug('Request failed the CORS validation', () => {
             return runTests('./testcafe-fixtures/request-mock/failed-cors-validation.js', 'Failed CORS validation', { only: 'chrome' })
                 .then(() => {
                     expect(testReport.warnings).eql([
@@ -15,16 +21,20 @@ describe('Request Hooks', () => {
                 });
         });
 
-        it('Asynchronous response function (GH-4467)', () => {
+        skipInExperimentalDebug('Asynchronous response function (GH-4467)', () => {
             return runTests('./testcafe-fixtures/request-mock/async-response-function.js', null, { only: 'chrome' });
         });
 
-        it("Handle error in 'respond' function (GH-6703)", () => {
+        skipInExperimentalDebug("Handle error in 'respond' function (GH-6703)", () => {
             return runTests('./testcafe-fixtures/request-mock/respond-error.js', null, { only: 'chrome', shouldFail: true })
                 .catch(() => {
                     expect(testReport.errs.length).eql(1);
                     expect(testReport.errs[0]).contains('Error in the "respond" method');
                 });
+        });
+
+        it('Should not raise an error if response has 500 status code (GH-7213)', () => {
+            return runTests('./testcafe-fixtures/request-mock/500-status-code.js', null, { only: 'chrome' });
         });
     });
 
@@ -47,11 +57,11 @@ describe('Request Hooks', () => {
     });
 
     describe('API', () => {
-        it('Add/remove request hooks', () => {
+        skipInExperimentalDebug('Add/remove request hooks', () => {
             return runTests('./testcafe-fixtures/api/add-remove-request-hook.js', 'Test', { only: 'chrome' });
         });
 
-        it('Conditional adding', () => {
+        skipInExperimentalDebug('Conditional adding', () => {
             return runTests('./testcafe-fixtures/api/conditional-adding.js', 'Conditional adding');
         });
 
@@ -67,15 +77,15 @@ describe('Request Hooks', () => {
                 });
         });
 
-        it('Execution order', () => {
+        skipInProxyless('Execution order', () => {
             return runTests('./testcafe-fixtures/api/execution-order.js', null, { only: 'chrome' });
         });
 
-        it("Test's request hooks should not override the fixture's request hooks (GH-4122)", () => {
+        skipInProxyless("Test's request hooks should not override the fixture's request hooks (GH-4122)", () => {
             return runTests('./testcafe-fixtures/api/i4122.js', null, { only: 'chrome' });
         });
 
-        it('Async predicate for request filter rules', () => {
+        skipInExperimentalDebug('Async predicate for request filter rules', () => {
             return runTests('./testcafe-fixtures/api/request-filter-rule-async-predicate.js', null, { only: 'chrome' });
         });
 
@@ -83,8 +93,20 @@ describe('Request Hooks', () => {
             return runTests('./testcafe-fixtures/api/change-remove-response-headers.js', null, { only: 'chrome' });
         });
 
-        it('Request hook events should be represented as appropriate classes', () => {
+        skipInProxyless('Request hook events should be represented as appropriate classes', () => {
             return runTests('./testcafe-fixtures/api/request-hook-events.js', null, { only: 'chrome' });
+        });
+
+        skipInProxylessOrExperimentalDebug('Correct execution order for addRequestHooks/removeRequestHooks sequence (GH-3861)', () => {
+            return runTests('./testcafe-fixtures/api/gh-3861.js', null, { only: 'chrome' });
+        });
+
+        it('TestController API parameter validation', () => {
+            return runTests('./testcafe-fixtures/api/parameter-validation.js', null, { only: 'chrome', shouldFail: true })
+                .catch(() => {
+                    expect(testReport.errs.length).eql(1);
+                    expect(testReport.errs[0]).contains('The hook (string) is not of expected type (RequestHook subclass).');
+                });
         });
     });
 });

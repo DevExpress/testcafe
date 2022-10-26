@@ -59,6 +59,14 @@ export function createStringValidator (ErrorCtor) {
             throw new ErrorCtor(name, valType);
     };
 }
+export function createStringOrRegexValidator (ErrorCtor) {
+    return (name, val) => {
+        const valType = typeof val;
+
+        if (valType !== 'string' && !(val instanceof RegExp))
+            throw new ErrorCtor(name, valType);
+    };
+}
 
 export function createDateValidator (ErrorCtor) {
     return (name, val) => {
@@ -97,6 +105,15 @@ export function createObjectValidator (ErrorCtor) {
         const valType = typeof val;
 
         if (valType !== 'object')
+            throw new ErrorCtor(name, valType);
+    };
+}
+
+export function createFunctionValidator (ErrorCtor) {
+    return (name, val) => {
+        const valType = typeof val;
+
+        if (valType !== 'function')
             throw new ErrorCtor(name, valType);
     };
 }

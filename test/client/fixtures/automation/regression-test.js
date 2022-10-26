@@ -1181,7 +1181,7 @@ $(document).ready(function () {
 
         const mockChildDimension = {
             top:    3.91999983787566,
-            bottom: 777.91999983787566,
+            bottom: 777.91999983787566, // eslint-disable-line @typescript-eslint/no-loss-of-precision
             height: 774,
             left:   571.5,
             right:  991.5,

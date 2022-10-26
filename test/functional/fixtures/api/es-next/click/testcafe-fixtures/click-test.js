@@ -82,3 +82,7 @@ test('Selector returns text node', async t => {
 
     await t.click(getNode);
 });
+
+test('Click overlapped element', async t => {
+    await t.click('.child1');
+}).page('http://localhost:3000/fixtures/api/es-next/click/pages/overlapped.html');

@@ -1,4 +1,5 @@
 import { RequestMock, Selector } from 'testcafe';
+import DUMMY_URLS from '../../common/mock-routes';
 
 const responsePromise = new Promise(resolve => {
     setTimeout(() => {
@@ -7,7 +8,7 @@ const responsePromise = new Promise(resolve => {
 });
 
 const requestMock = RequestMock()
-    .onRequestTo('http://dummy-url.com/route')
+    .onRequestTo(DUMMY_URLS.get)
     .respond(async (req, res) => {
         const response = await responsePromise;
 

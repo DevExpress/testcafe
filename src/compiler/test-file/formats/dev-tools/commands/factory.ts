@@ -1,7 +1,6 @@
 import { DEVTOOLS_COMMAND_TYPE, DevToolsRecorderStep } from '../types';
 import { NavigateCommandTransformer } from './navigate';
 import { SetViewportCommandTransformer } from './set-viewport';
-import { ClickCommandTransformer } from './click';
 import { ChangeCommandTransformer } from './change';
 import { KeyDownCommandTransformer } from './key-down';
 import { KeyUpCommandTransformer } from './key-up';
@@ -9,13 +8,31 @@ import { ScrollCommandTransformer } from './scroll';
 import { WaitForExpressionCommandTransformer } from './wait-for-expression';
 import { WaitForElementCommandTransformer } from './wait-for-element';
 import { CommandTransformerBase } from './base';
+import { HoverCommandTransformer } from './hover';
+import { GeneralError } from '../../../../../errors/runtime';
+import { RUNTIME_ERRORS } from '../../../../../errors/types';
+
+import {
+    ClickCommandTransformer,
+    DoubleClickCommandTransformer,
+    RightClickCommandTransformer,
+} from './click';
+
+
+const SECONDARY_BUTTON_NAME = 'secondary';
 
 export class CommandTransformerFactory {
-    static create (step: DevToolsRecorderStep, callsite: number): CommandTransformerBase | null {
+    static create (step: DevToolsRecorderStep, filename: string, callsite: number): CommandTransformerBase | null {
         switch (step.type) {
             case DEVTOOLS_COMMAND_TYPE.navigate: return new NavigateCommandTransformer(step, callsite);
             case DEVTOOLS_COMMAND_TYPE.setViewport: return new SetViewportCommandTransformer(step, callsite);
-            case DEVTOOLS_COMMAND_TYPE.click: return new ClickCommandTransformer(step, callsite);
+            case DEVTOOLS_COMMAND_TYPE.click: {
+                if (step.button === SECONDARY_BUTTON_NAME)
+                    return new RightClickCommandTransformer(step, callsite);
+                return new ClickCommandTransformer(step, callsite);
+            }
+            case DEVTOOLS_COMMAND_TYPE.dblClick: return new DoubleClickCommandTransformer(step, callsite);
+            case DEVTOOLS_COMMAND_TYPE.hover: return new HoverCommandTransformer(step, callsite);
             case DEVTOOLS_COMMAND_TYPE.change: return new ChangeCommandTransformer(step, callsite);
             case DEVTOOLS_COMMAND_TYPE.keyDown: return new KeyDownCommandTransformer(step, callsite);
             case DEVTOOLS_COMMAND_TYPE.keyUp: return new KeyUpCommandTransformer(step, callsite);
@@ -25,6 +42,6 @@ export class CommandTransformerFactory {
             case DEVTOOLS_COMMAND_TYPE.close: return null;
         }
 
-        throw new Error('Incorrect command: ' + step.type);
+        throw new GeneralError(RUNTIME_ERRORS.invalidCommandInJsonCompiler, filename, step.type);
     }
 }

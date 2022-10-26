@@ -27,7 +27,16 @@
 </div>
 
 <script type="text/javascript">
-    var idlePage = new IdlePage('{{{statusUrl}}}', '{{{heartbeatUrl}}}', '{{{initScriptUrl}}}', { retryTestPages: {{{retryTestPages}}} });
+    var idlePage = new IdlePage({
+            statusUrl:           '{{{statusUrl}}}',
+            heartbeatUrl:        '{{{heartbeatUrl}}}',
+            initScriptUrl:       '{{{initScriptUrl}}}',
+            openFileProtocolUrl: '{{{openFileProtocolUrl}}}',
+        },
+        {
+            retryTestPages: {{{retryTestPages}}},
+            proxyless:      {{{proxyless}}},
+        });
 
     idlePage.start();
 </script>

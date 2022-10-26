@@ -5,7 +5,10 @@ export class CommandBase {
     public actionId: string;
     public type: string;
     [key: string]: unknown;
-    public _getAssignableProperties(): { name: string }[];
+    public getAssignableProperties(): { name: string }[];
+    public getAllAssignableProperties(): { name: string }[];
+    public getNonReportedProperties(): string[];
+    public getReportedProperties(): string[];
 }
 
 export class ActionCommandBase extends CommandBase {

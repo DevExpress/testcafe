@@ -518,7 +518,7 @@ function enter (element) {
 }
 
 function isRadioButtonNavigationRequired (element) {
-    return domUtils.isRadioButtonElement(element) && !browserUtils.isFirefox;
+    return domUtils.isRadioButtonElement(element);
 }
 
 function focusAndCheckNextRadioButton (element, reverse) {

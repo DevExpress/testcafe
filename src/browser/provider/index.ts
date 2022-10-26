@@ -14,6 +14,7 @@ import WARNING_MESSAGE from '../../notifications/warning-message';
 import { Dictionary } from '../../configuration/interfaces';
 import { WindowDimentionsInfo } from '../interfaces';
 import getLocalOSInfo, { OSInfo } from 'get-os-info';
+import { OpenBrowserAdditionalOptions } from '../../shared/types';
 
 const DEBUG_LOGGER = debug('testcafe:browser:provider');
 
@@ -180,7 +181,7 @@ export default class BrowserProvider {
             try {
                 windowDescriptor = await this._findWindow(browserId);
             }
-            catch (err) {
+            catch (err: any) {
                 // NOTE: We can suppress the error here since we can just disable window manipulation functions
                 // when we cannot find a local window descriptor
                 DEBUG_LOGGER(err);
@@ -318,8 +319,8 @@ export default class BrowserProvider {
         return await this.plugin.getOSInfo(browserId);
     }
 
-    public async openBrowser (browserId: string, pageUrl: string, browserOption: unknown, disableMultipleWindows: boolean, proxyless: boolean): Promise<void> {
-        await this.plugin.openBrowser(browserId, pageUrl, browserOption, disableMultipleWindows, proxyless);
+    public async openBrowser (browserId: string, pageUrl: string, browserOption: unknown, additionalOptions: OpenBrowserAdditionalOptions = { disableMultipleWindows: false }): Promise<void> {
+        await this.plugin.openBrowser(browserId, pageUrl, browserOption, additionalOptions);
 
         await this._ensureRetryTestPagesWarning(browserId);
 
@@ -417,6 +418,10 @@ export default class BrowserProvider {
         await this.plugin.startCapturingVideo(browserId);
     }
 
+    public async stopCapturingVideo (browserId: string): Promise<void> {
+        await this.plugin.stopCapturingVideo(browserId);
+    }
+
     public async hasCustomActionForBrowser (browserId: string): Promise<any> {
         return this.plugin.hasCustomActionForBrowser(browserId);
     }
@@ -434,6 +439,10 @@ export default class BrowserProvider {
 
     public setActiveWindowId (browserId: string, val: string): void {
         this.plugin.setActiveWindowId(browserId, val);
+    }
+
+    public async openFileProtocol (browserId: string, url: string): Promise<void> {
+        await this.plugin.openFileProtocol(browserId, url);
     }
 
     public async closeBrowserChildWindow (browserId: string): Promise<void> {

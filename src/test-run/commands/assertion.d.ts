@@ -12,7 +12,6 @@ export class AssertionCommand extends ActionCommandBase {
     public expected2: unknown;
     public message: string;
     public options: AssertionOptions;
-    public static NOT_REPORTED_PROPERTIES: string[];
 }
 
 export class EqlAssertionCommand extends AssertionCommand {}

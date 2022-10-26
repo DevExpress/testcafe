@@ -8,35 +8,41 @@ import {
 } from '../../utils/http';
 
 import RemotesQueue from './remotes-queue';
-import { Proxy } from 'testcafe-hammerhead';
+import { Proxy, acceptCrossOrigin } from 'testcafe-hammerhead';
 import { Dictionary } from '../../configuration/interfaces';
 import BrowserConnection from './index';
 import { IncomingMessage, ServerResponse } from 'http';
 import SERVICE_ROUTES from './service-routes';
-
+import EMPTY_PAGE_MARKUP from '../../proxyless/empty-page-markup';
+import PROXYLESS_ERROR_ROUTE from '../../proxyless/error-route';
 
 export default class BrowserConnectionGateway {
     private _connections: Dictionary<BrowserConnection> = {};
     private _remotesQueue: RemotesQueue;
     public readonly connectUrl: string;
     public retryTestPages: boolean;
+    private readonly proxyless: boolean;
     public readonly proxy: Proxy;
 
-    public constructor (proxy: Proxy, options: { retryTestPages: boolean }) {
+    public constructor (proxy: Proxy, options: { retryTestPages: boolean; proxyless: boolean }) {
         this._remotesQueue   = new RemotesQueue();
-        this.connectUrl      = proxy.resolveRelativeServiceUrl('/browser/connect');
+        this.connectUrl      = proxy.resolveRelativeServiceUrl(SERVICE_ROUTES.connect);
         this.retryTestPages  = options.retryTestPages;
+        this.proxyless       = options.proxyless;
         this.proxy           = proxy;
 
         this._registerRoutes(proxy);
     }
 
-    private _dispatch (url: string, proxy: Proxy, handler: Function, method = 'GET'): void {
+    private _dispatch (url: string, proxy: Proxy, handler: Function, method = 'GET', shouldAcceptCrossOrigin?: boolean): void {
         // @ts-ignore Need to improve typings of the 'testcafe-hammerhead' module
         proxy[method](url, (req: IncomingMessage, res: ServerResponse, serverInfo, params: Dictionary<string>) => {
             const connection = this._connections[params.id];
 
             preventCaching(res);
+
+            if (shouldAcceptCrossOrigin)
+                acceptCrossOrigin(res);
 
             if (connection)
                 handler(req, res, connection);
@@ -53,18 +59,18 @@ export default class BrowserConnectionGateway {
             serviceWorkerScript,
         } = loadAssets();
 
-        this._dispatch('/browser/connect/{id}', proxy, BrowserConnectionGateway._onConnection);
-        this._dispatch('/browser/heartbeat/{id}', proxy, BrowserConnectionGateway._onHeartbeat);
-        this._dispatch('/browser/idle/{id}', proxy, BrowserConnectionGateway._onIdle);
-        this._dispatch('/browser/idle-forced/{id}', proxy, BrowserConnectionGateway._onIdleForced);
-        this._dispatch('/browser/status/{id}', proxy, BrowserConnectionGateway._onStatusRequest);
-        this._dispatch('/browser/status-done/{id}', proxy, BrowserConnectionGateway._onStatusRequestOnTestDone);
-        this._dispatch('/browser/init-script/{id}', proxy, BrowserConnectionGateway._onInitScriptRequest);
-        this._dispatch('/browser/init-script/{id}', proxy, BrowserConnectionGateway._onInitScriptResponse, 'POST');
-        this._dispatch('/browser/active-window-id/{id}', proxy, BrowserConnectionGateway._onGetActiveWindowIdRequest);
-        this._dispatch('/browser/active-window-id/{id}', proxy, BrowserConnectionGateway._onSetActiveWindowIdRequest, 'POST');
-        this._dispatch('/browser/close-window/{id}', proxy, BrowserConnectionGateway._onCloseWindowRequest, 'POST');
-
+        this._dispatch(`${SERVICE_ROUTES.connect}/{id}`, proxy, BrowserConnectionGateway._onConnection);
+        this._dispatch(`${SERVICE_ROUTES.heartbeat}/{id}`, proxy, BrowserConnectionGateway._onHeartbeat, 'GET', this.proxyless);
+        this._dispatch(`${SERVICE_ROUTES.idle}/{id}`, proxy, BrowserConnectionGateway._onIdle);
+        this._dispatch(`${SERVICE_ROUTES.idleForced}/{id}`, proxy, BrowserConnectionGateway._onIdleForced);
+        this._dispatch(`${SERVICE_ROUTES.status}/{id}`, proxy, BrowserConnectionGateway._onStatusRequest);
+        this._dispatch(`${SERVICE_ROUTES.statusDone}/{id}`, proxy, BrowserConnectionGateway._onStatusRequestOnTestDone, 'GET', this.proxyless);
+        this._dispatch(`${SERVICE_ROUTES.initScript}/{id}`, proxy, BrowserConnectionGateway._onInitScriptRequest);
+        this._dispatch(`${SERVICE_ROUTES.initScript}/{id}`, proxy, BrowserConnectionGateway._onInitScriptResponse, 'POST');
+        this._dispatch(`${SERVICE_ROUTES.activeWindowId}/{id}`, proxy, BrowserConnectionGateway._onGetActiveWindowIdRequest);
+        this._dispatch(`${SERVICE_ROUTES.activeWindowId}/{id}`, proxy, BrowserConnectionGateway._onSetActiveWindowIdRequest, 'POST');
+        this._dispatch(`${SERVICE_ROUTES.closeWindow}/{id}`, proxy, BrowserConnectionGateway._onCloseWindowRequest, 'POST');
+        this._dispatch(`${SERVICE_ROUTES.openFileProtocol}/{id}`, proxy, BrowserConnectionGateway._onOpenFileProtocolRequest, 'POST');
 
         proxy.GET(SERVICE_ROUTES.connect, (req: IncomingMessage, res: ServerResponse) => this._connectNextRemoteBrowser(req, res));
         proxy.GET(SERVICE_ROUTES.connectWithTrailingSlash, (req: IncomingMessage, res: ServerResponse) => this._connectNextRemoteBrowser(req, res));
@@ -73,6 +79,13 @@ export default class BrowserConnectionGateway {
         proxy.GET(SERVICE_ROUTES.assets.index, { content: idlePageScript, contentType: 'application/x-javascript' });
         proxy.GET(SERVICE_ROUTES.assets.styles, { content: idlePageStyle, contentType: 'text/css' });
         proxy.GET(SERVICE_ROUTES.assets.logo, { content: idlePageLogo, contentType: 'image/svg+xml' });
+
+        if (this.proxyless) {
+            proxy.GET(PROXYLESS_ERROR_ROUTE, (req: IncomingMessage, res: ServerResponse) => {
+                res.writeHead(200, { 'Content-Type': 'text/html' });
+                res.end(EMPTY_PAGE_MARKUP);
+            });
+        }
     }
 
     // Helpers
@@ -191,6 +204,19 @@ export default class BrowserConnectionGateway {
                 .then(() => {
                     respondWithJSON(res);
                 });
+        }
+    }
+
+    private static _onOpenFileProtocolRequest (req: IncomingMessage, res: ServerResponse, connection: BrowserConnection): void {
+        if (BrowserConnectionGateway._ensureConnectionReady(res, connection)) {
+            BrowserConnectionGateway._fetchRequestData(req, data => {
+                const parsedData = JSON.parse(data);
+
+                connection.openFileProtocol(parsedData.url)
+                    .then(() => {
+                        respondWithJSON(res);
+                    });
+            });
         }
     }
 

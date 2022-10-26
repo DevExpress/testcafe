@@ -2,7 +2,8 @@
   "rules": {
     "no-unused-expressions": 0,
     "no-spaced-func": 0,
-    "no-unexpected-multiline": 0
+    "no-unexpected-multiline": 0,
+    "no-prototype-builtins": 0
   },
   "globals": {
     "fixture": true,
