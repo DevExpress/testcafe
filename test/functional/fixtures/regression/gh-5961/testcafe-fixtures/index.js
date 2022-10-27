@@ -1,25 +1,15 @@
-import { Selector } from 'testcafe';
+import { ClientFunction } from 'testcafe';
+import { parseUserAgent } from '../../../../../../lib/utils/parse-user-agent';
 
 fixture`Getting Started`
-    .page`../pages/index.html`;
+    .page`http://localhost:3000/fixtures/regression/gh-5961/pages/index.html`;
 
-const getBrowserName = (alias) => alias.split(':').join('_');
-
-test('Take a full page screenshot', async t => {
-    const path = `gh-5961/${ getBrowserName(t.browser.alias) }_full-page.png`;
+test('Take a resized full page screenshot', async t => {
+    const ua = await ClientFunction(() => navigator.userAgent.toString())();
 
     await t.resizeWindow(1024, 768);
     await t.takeScreenshot({
-        path,
+        path:     'custom/' + parseUserAgent(ua).name + '.png',
         fullPage: true,
     });
-});
-
-test.page('https://advancedinstaller.com/blog/page-1.html')('Take a full page screenshot2', async t => {
-    const path = `gh-5961/${ getBrowserName(t.browser.alias) }1_full-page.png`;
-
-    await t
-        .resizeWindow(768, 800)
-        .click(Selector('#cookies button'))
-        .takeScreenshot({ fullPage: true, path });
 });

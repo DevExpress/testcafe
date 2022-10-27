@@ -1,39 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Testcafe screenshot sizing issue</title>
     <style>
-        .test-box {
-            width: 80px;
-            height: 80px;
-            margin: 8px;
-            display: inline-block;
-            border: 2px solid red;
+        * {
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            margin: 0;
-            background-color: #60A96E;
+            background-color: black;
+        }
+
+        div.wrapper {
+            position: relative;
+            height: 5000px;
+        }
+
+        div.d {
+            width: 50px;
+            height: 50px;
+            position: absolute;
+        }
+
+        .left {
+            left: 0;
+        }
+
+        .right {
+            right: 0;
+        }
+
+        .top {
+            top: 0;
+        }
+
+        .bottom {
+            bottom: 0;
+        }
+
+        .red {
+            background-color: rgb(255, 0, 0);
+        }
+
+        .green {
+            background-color: rgb(0, 255, 0);
+        }
+
+        @media screen and (max-width: 1023px) {
+            .red {
+                background-color: rgb(0, 255, 0);
+            }
+
+            .green {
+                background-color: rgb(255, 0, 0);
+            }
         }
     </style>
 </head>
+
 <body>
-<div id="wrapper"></div>
-<script>
-    var wrapper = document.getElementById("wrapper");
-
-    var myHTML = '';
-
-    for (var i = 0; i < 10; i++) {
-        myHTML += '<div>';
-        for (var j = 0; j < 10; j++) {
-            myHTML += '<div class="test-box">' + (i * 10 + j + 1) + '</div>';
-        }
-        myHTML += '</div>';
-    }
-    wrapper.innerHTML = myHTML
-
-</script>
+    <div class="wrapper">
+        <div class="d left top red"></div>
+        <div class="d right top green"></div>
+        <div class="d left bottom green"></div>
+        <div class="d right bottom red"></div>
+    </div>
 </body>
+
 </html>
