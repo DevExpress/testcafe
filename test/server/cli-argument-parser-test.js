@@ -753,7 +753,7 @@ describe('CLI argument parser', function () {
     });
 
     it('Should parse command line arguments', function () {
-        return parse('-r list -S -q -e message=/testMessage/i,stack=testStack,pageUrl=testPageUrl --hostname myhost --base-url localhost:3000 --proxy localhost:1234 --proxy-bypass localhost:5678 --qr-code --app run-app --speed 0.5 --debug-on-fail --disable-page-reloads --retry-test-pages --dev --sf --disable-page-caching --disable-http2 --proxyless ie test/server/data/file-list/file-1.js')
+        return parse('-r list -S -q -e message=/testMessage/i,stack=testStack,pageUrl=testPageUrl --hostname myhost --base-url localhost:3000 --proxy localhost:1234 --proxy-bypass localhost:5678 --qr-code --app run-app --speed 0.5 --debug-on-fail --disable-page-reloads --retry-test-pages --dev --sf --disable-page-caching --disable-http2 --proxyless --disable-cross-domain ie test/server/data/file-list/file-1.js')
             .then(parser => {
                 expect(parser.opts.browsers).eql(['ie']);
                 expect(parser.opts.src).eql(['test/server/data/file-list/file-1.js']);
@@ -779,6 +779,7 @@ describe('CLI argument parser', function () {
                 expect(parser.opts.disablePageReloads).to.be.ok;
                 expect(parser.opts.retryTestPages).to.be.ok;
                 expect(parser.opts.disableHttp2).to.be.ok;
+                expect(parser.opts.disableCrossDomain).to.be.ok;
                 expect(parser.opts.proxyless).to.be.ok;
                 expect(parser.opts.baseUrl).eql('localhost:3000');
             });
@@ -857,6 +858,7 @@ describe('CLI argument parser', function () {
             { long: '--disable-http2' },
             { long: '--proxyless' },
             { long: '--base-url' },
+            { long: '--disable-cross-domain' },
         ];
 
         const parser  = new CliArgumentParser('');
@@ -873,7 +875,7 @@ describe('CLI argument parser', function () {
         }
 
         const expectedRunOptionsCount   = 22;
-        const expectedOtherOptionsCount = 36;
+        const expectedOtherOptionsCount = 37;
         const otherOptionsCount         = options.length - expectedRunOptionsCount;
 
         expect(runOptionNames.length).eql(expectedRunOptionsCount, ADD_TO_RUN_OPTIONS_WARNING);
