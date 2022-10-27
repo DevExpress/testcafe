@@ -1,5 +1,7 @@
-const expect                     = require('chai').expect;
-const errorInEachBrowserContains = require('../../../../assertion-helper.js').errorInEachBrowserContains;
+const { expect }                     = require('chai');
+const { errorInEachBrowserContains } = require('../../../../assertion-helper.js');
+
+const { skipInProxyless, skipDescribeInProxyless } = require('../../../../utils/skip-in');
 
 // NOTE: we set selectorTimeout to a large value in some tests to wait for
 // an iframe to load on the farm (it is fast locally but can take some time on the farm)
@@ -19,61 +21,61 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
             DEFAULT_RUN_OPTIONS);
     });
 
-    it('Should switch context between a nested iframe and the main window', function () {
+    skipInProxyless('Should switch context between a nested iframe and the main window', function () {
         return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click on element in a nested iframe', {
             skip: 'firefox-osx',
             ...DEFAULT_RUN_OPTIONS,
         });
     });
 
-    it('Should switch context between a shadow iframe and the main window', function () {
+    skipInProxyless('Should switch context between a shadow iframe and the main window', function () {
         return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click on an element in a shadow iframe and return to the main window', {
             ...DEFAULT_RUN_OPTIONS,
             skip: ['ie', 'edge'],
         });
     });
 
-    it('Should switch context between a nested shadow iframe and the main window', function () {
+    skipInProxyless('Should switch context between a nested shadow iframe and the main window', function () {
         return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click on element in a nested shadow iframe', {
             ...DEFAULT_RUN_OPTIONS,
             skip: ['ie', 'edge'],
         });
     });
 
-    it('Should wait while a target iframe is loaded', function () {
+    skipInProxyless('Should wait while a target iframe is loaded', function () {
         return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click in a slowly loading iframe', DEFAULT_RUN_OPTIONS);
     });
 
-    it('Should resume execution if an iframe is removed as a result of an action', function () {
+    skipInProxyless('Should resume execution if an iframe is removed as a result of an action', function () {
         return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Remove an iframe during execution', DEFAULT_RUN_OPTIONS);
     });
 
-    it('Should execute an action in an iframe with redirect', function () {
+    skipInProxyless('Should execute an action in an iframe with redirect', function () {
         return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click in an iframe with redirect', DEFAULT_RUN_OPTIONS);
     });
 
-    it('Should keep context if the page was reloaded', function () {
+    skipInProxyless('Should keep context if the page was reloaded', function () {
         return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Reload the main page from an iframe', DEFAULT_RUN_OPTIONS);
     });
 
-    it('Should correctly switch to the main window context if an iframe was removed from the nested one', function () {
+    skipInProxyless('Should correctly switch to the main window context if an iframe was removed from the nested one', function () {
         return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Remove the parent iframe from the nested one', DEFAULT_RUN_OPTIONS);
     });
 
-    it('Should work in an iframe without src', function () {
+    skipInProxyless('Should work in an iframe without src', function () {
         return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click in an iframe without src', DEFAULT_RUN_OPTIONS);
     });
 
-    it('Should work in a cross-domain iframe', function () {
+    skipInProxyless('Should work in a cross-domain iframe', function () {
         // TODO: fix this test for Safari on BrowserStack
         return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click in a cross-domain iframe with redirect', { skip: ['safari', 'firefox-osx'], ...DEFAULT_RUN_OPTIONS });
     });
 
-    it('Should work in an iframe with the srcdoc attribute', function () {
+    skipInProxyless('Should work in an iframe with the srcdoc attribute', function () {
         return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click in an iframe with the srcdoc attribute', { skip: 'ie', ...DEFAULT_RUN_OPTIONS });
     });
 
-    describe('Unavailable iframe errors', function () {
+    skipDescribeInProxyless('Unavailable iframe errors', function () {
         it('Should ensure the iframe element exists before switching to it', function () {
             return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Switch to a non-existent iframe',
                 { shouldFail: true })
@@ -144,7 +146,7 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
         });
     });
 
-    describe('Page errors handling', function () {
+    skipDescribeInProxyless('Page errors handling', function () {
         it('Should fail if an error occurs in a same-domain iframe while an action is being executed', function () {
             return runTests('./testcafe-fixtures/page-errors-test.js', 'Error in a same-domain iframe', DEFAULT_FAILED_RUN_OPTIONS)
                 .catch(function (errs) {

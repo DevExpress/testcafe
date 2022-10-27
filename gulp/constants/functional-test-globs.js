@@ -38,6 +38,7 @@ const PROXYLESS_TESTS_GLOB = [
     'test/functional/fixtures/api/es-next/cookies/test.js',
     'test/functional/fixtures/concurrency/test.js',
     'test/functional/fixtures/api/es-next/request-hooks/test.js',
+    'test/functional/fixtures/api/es-next/iframe-switching/test.js',
 ];
 
 module.exports = {
