@@ -152,7 +152,7 @@ export default class ProxylessRequestPipeline {
     private async _updateCurrentFrameTree (): Promise<void> {
         // NOTE: Due to CDP restrictions (it hangs), we can't get the frame tree
         // right before injecting service scripts.
-        // So, we are forced to update the frame tree on the 'frameAdded' and 'frameRemoved' events.
+        // So, we are forced tracking frames tree.
         const result = await this._client.Page.getFrameTree();
 
         this._currentFrameTree = result.frameTree;
