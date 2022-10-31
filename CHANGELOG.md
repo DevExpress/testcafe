@@ -1,5 +1,13 @@
 # Changelog
 
+## v2.0.2 (2022-10-31)
+
+### Bug Fixes
+
+* TestCafe doesn't include the flags necessary to launch Chrome in a Podman container ([PR #7307](https://github.com/DevExpress/testcafe/pull/7307) by @timnederhoff)
+* TestCafe doesn't warn users when it interacts with an element that obstructs the original action target ([#2930](https://github.com/DevExpress/testcafe/issues/2930))
+* TestCafe incorrectly parses regular expressions passed to the --skip-js-errors CLI flag ([#7301](https://github.com/DevExpress/testcafe/issues/7301))
+
 ## v2.0.1 (2022-09-26)
 
 ### Bug Fixes
