@@ -279,6 +279,7 @@ interface StartOptions {
     cache: boolean;
     configFile: string;
     disableHttp2: boolean;
+    proxyless: boolean;
 }
 
 interface ColorOutputOptions {
