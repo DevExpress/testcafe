@@ -4,6 +4,7 @@ import RequestPausedEvent = Protocol.Fetch.RequestPausedEvent;
 import FrameNavigatedEvent = Protocol.Page.FrameNavigatedEvent;
 import LoadingFailedEvent = Protocol.Network.LoadingFailedEvent;
 import ContinueResponseRequest = Protocol.Fetch.ContinueResponseRequest;
+import FrameTree = Protocol.Page.FrameTree;
 import ProxylessRequestHookEventProvider from '../request-hooks/event-provider';
 import ResourceInjector from '../resource-injector';
 import { convertToHeaderEntries } from '../utils/headers';
@@ -30,6 +31,7 @@ export default class ProxylessRequestPipeline {
     private _options: ProxylessSetupOptions;
     private readonly _specialServiceRoutes: SpecialServiceRoutes;
     private _stopped: boolean;
+    private _currentFrameTree: FrameTree | null;
 
     public constructor (browserId: string, client: ProtocolApi) {
         this._client                  = client;
@@ -38,6 +40,7 @@ export default class ProxylessRequestPipeline {
         this._resourceInjector        = new ResourceInjector(browserId, this._specialServiceRoutes);
         this._options                 = DEFAULT_PROXYLESS_SETUP_OPTIONS;
         this._stopped                 = false;
+        this._currentFrameTree        = null;
     }
 
     private _getSpecialServiceRoutes (browserId: string): SpecialServiceRoutes {
@@ -74,7 +77,7 @@ export default class ProxylessRequestPipeline {
         if (pipelineContext.reqOpts.isAjax)
             await this._resourceInjector.processNonProxiedContent(fulfillInfo, this._client);
         else
-            await this._resourceInjector.processHTMLPageContent(fulfillInfo, this._client);
+            await this._resourceInjector.processHTMLPageContent(fulfillInfo, false, this._client);
 
         requestPipelineMockLogger(`Mock request ${event.requestId}`);
     }
@@ -128,12 +131,15 @@ export default class ProxylessRequestPipeline {
                 await this._client.Fetch.continueResponse(continueResponseRequest);
             }
             else {
-                await this._resourceInjector.processHTMLPageContent({
-                    requestId:       event.requestId,
-                    responseHeaders: event.responseHeaders,
-                    responseCode:    event.responseStatusCode as number,
-                    body:            (resourceInfo.body as Buffer).toString(),
-                }, this._client);
+                await this._resourceInjector.processHTMLPageContent(
+                    {
+                        requestId:       event.requestId,
+                        responseHeaders: event.responseHeaders,
+                        responseCode:    event.responseStatusCode as number,
+                        body:            (resourceInfo.body as Buffer).toString(),
+                    },
+                    this._isIframe(event.frameId),
+                    this._client);
             }
         }
     }
@@ -141,6 +147,22 @@ export default class ProxylessRequestPipeline {
     private _topFrameNavigation (event: FrameNavigatedEvent): boolean {
         return event.type === 'Navigation'
             && !event.frame.parentId;
+    }
+
+    private async _updateCurrentFrameTree (): Promise<void> {
+        // NOTE: Due to CDP restrictions (it hangs), we can't get the frame tree
+        // right before injecting service scripts.
+        // So, we are forced tracking frames tree.
+        const result = await this._client.Page.getFrameTree();
+
+        this._currentFrameTree = result.frameTree;
+    }
+
+    private _isIframe (frameId: string): boolean {
+        if (!this._currentFrameTree)
+            return false;
+
+        return this._currentFrameTree.frame.id !== frameId;
     }
 
     public init (options: ProxylessSetupOptions): void {
@@ -166,6 +188,10 @@ export default class ProxylessRequestPipeline {
                 return;
 
             await this._resourceInjector.processAboutBlankPage(event, this._client);
+        });
+
+        this._client.Page.on('frameStartedLoading', async () => {
+            await this._updateCurrentFrameTree();
         });
 
         this._client.Network.on('loadingFailed', async (event: LoadingFailedEvent) => {
