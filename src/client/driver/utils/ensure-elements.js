@@ -59,7 +59,7 @@ export function createElementDescriptor (selector) {
     return {
         selector:                    selector,
         createNotFoundError:         fn => new ActionElementNotFoundError(null, fn),
-        createIsInvisibleError:      () => new ActionElementIsInvisibleError(),
+        createIsInvisibleError:      fn => new ActionElementIsInvisibleError(null, fn),
         createHasWrongNodeTypeError: nodeDescription => new ActionSelectorMatchesWrongNodeTypeError(nodeDescription),
     };
 }

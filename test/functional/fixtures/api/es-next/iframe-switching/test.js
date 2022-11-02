@@ -1,5 +1,5 @@
-const expect                     = require('chai').expect;
-const errorInEachBrowserContains = require('../../../../assertion-helper.js').errorInEachBrowserContains;
+const { expect }                     = require('chai');
+const { errorInEachBrowserContains } = require('../../../../assertion-helper.js');
 
 // NOTE: we set selectorTimeout to a large value in some tests to wait for
 // an iframe to load on the farm (it is fast locally but can take some time on the farm)

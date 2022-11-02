@@ -83,6 +83,27 @@ test('Selector returns text node', async t => {
     await t.click(getNode);
 });
 
+
+test('Click on a more than half-shifted element', async t => {
+    await t.click('#shifted-element');
+
+    const expectedClickOffset = { x: 75, y: 25 };
+    const actualClickOffset   = await getClickOffset();
+
+    expect(actualClickOffset.x).eql(expectedClickOffset.x);
+    expect(actualClickOffset.y).eql(expectedClickOffset.y);
+});
+
+test('Click on an element with overlapped center', async t => {
+    await t.click('#overlapped-center');
+
+    const expectedClickOffset = { x: 75, y: 25 };
+    const actualClickOffset   = await getClickOffset();
+
+    expect(actualClickOffset.x).eql(expectedClickOffset.x);
+    expect(actualClickOffset.y).eql(expectedClickOffset.y);
+});
+
 test('Click overlapped element', async t => {
     await t.click('.child1');
 }).page('http://localhost:3000/fixtures/api/es-next/click/pages/overlapped.html');

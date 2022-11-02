@@ -78,6 +78,7 @@ export class OffsetOptions extends ActionOptions {
         return [
             { name: 'offsetX', type: integerOption },
             { name: 'offsetY', type: integerOption },
+            { name: 'isDefaultOffset', type: booleanOption },
         ];
     }
 }

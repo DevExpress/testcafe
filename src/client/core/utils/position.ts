@@ -1,9 +1,12 @@
 import hammerhead from '../deps/hammerhead';
 import * as styleUtils from './style';
 import * as domUtils from './dom';
+import selectController from '../select/index';
 import AxisValues, { AxisValuesData } from './values/axis-values';
 import BoundaryValues, { BoundaryValuesData } from './values/boundary-values';
 import Dimensions from './values/dimensions';
+import hiddenReasons from '../../../shared/errors/element-hidden-reasons';
+import stringifyElement from './stringify-element';
 
 
 export const getElementRectangle  = hammerhead.utils.position.getElementRectangle;
@@ -221,9 +224,38 @@ export function isIframeVisible (el: Node): boolean {
     return !hiddenUsingStyles(el as HTMLElement);
 }
 
+function elHasVisibilityHidden (el: Node): boolean {
+    return styleUtils.get(el, 'visibility') === 'hidden';
+}
+
+function elHasVisibilityCollapse (el: Node): boolean {
+    return styleUtils.get(el, 'visibility') === 'collapse';
+}
+
+function elHasDisplayNone (el: Node): boolean {
+    return styleUtils.get(el, 'display') === 'none';
+}
+
+function getVisibilityHiddenParent (el: Node): HTMLElement {
+    return domUtils.findParent(el, false, (parent: Node) => {
+        return elHasVisibilityHidden(parent);
+    });
+}
+
+function getVisibilityCollapseParent (el: Node): HTMLElement {
+    return domUtils.findParent(el, false, (parent: Node) => {
+        return elHasVisibilityCollapse(parent);
+    });
+}
+
+function getDisplayNoneParent (el: Node): HTMLElement {
+    return domUtils.findParent(el, false, (parent: Node) => {
+        return elHasDisplayNone(parent);
+    });
+}
+
 function hiddenUsingStyles (el: HTMLElement): boolean {
-    return styleUtils.get(el, 'visibility') === 'hidden' ||
-        styleUtils.get(el, 'display') === 'none';
+    return elHasVisibilityHidden(el) || elHasVisibilityCollapse(el) || elHasDisplayNone(el);
 }
 
 function hiddenByRectangle (el: HTMLElement): boolean {
@@ -234,11 +266,30 @@ function hiddenByRectangle (el: HTMLElement): boolean {
 }
 
 export function isElementVisible (el: Node): boolean {
+    if (!domUtils.isDomElement(el) && !domUtils.isTextNode(el))
+        return false;
+
+    if (domUtils.isOptionElement(el) || domUtils.getTagName(el as Element) === 'optgroup')
+        return selectController.isOptionElementVisible(el as HTMLElement);
+
+    if (domUtils.isIframeElement(el))
+        return isIframeVisible(el);
+
+    if (domUtils.isSVGElement(el)) {
+        const hiddenParent = domUtils.findParent(el, true, (parent: Node) => {
+            return hiddenUsingStyles(parent as HTMLElement);
+        });
+
+        if (!hiddenParent)
+            return !hiddenByRectangle(el as HTMLElement);
+
+        return false;
+    }
+
     if (domUtils.isTextNode(el))
         return !styleUtils.isNotVisibleNode(el);
 
     if (!domUtils.isContentEditableElement(el) &&
-        !domUtils.isSVGElement(el) &&
         hiddenByRectangle(el as HTMLElement))
         return false;
 
@@ -248,28 +299,89 @@ export function isElementVisible (el: Node): boolean {
         return mapContainer ? isElementVisible(mapContainer) : false;
     }
 
-    if (styleUtils.isSelectVisibleChild(el)) {
-        const select              = domUtils.getSelectParent(el) as HTMLSelectElement;
-        const childRealIndex      = domUtils.getChildVisibleIndex(select, el);
-        const realSelectSizeValue = styleUtils.getSelectElementSize(select);
-        const topVisibleIndex     = Math.max(styleUtils.getScrollTop(select) / styleUtils.getOptionHeight(select), 0);
-        const bottomVisibleIndex  = topVisibleIndex + realSelectSizeValue - 1;
-        const optionVisibleIndex  = Math.max(childRealIndex - topVisibleIndex, 0);
-
-        return optionVisibleIndex >= topVisibleIndex && optionVisibleIndex <= bottomVisibleIndex;
-    }
-
-    if (domUtils.isSVGElement(el)) {
-        const hiddenParent = domUtils.findParent(el, true, (parent: Node) => {
-            return hiddenUsingStyles(parent as unknown as HTMLElement);
-        });
-
-        if (!hiddenParent)
-            return !hiddenByRectangle(el as unknown as HTMLElement);
-
-        return false;
-    }
-
     return styleUtils.hasDimensions(el as HTMLElement) && !hiddenUsingStyles(el as unknown as HTMLElement);
 }
 
+export function getSubHiddenReason (reason:string): string {
+    return reason.replace(/.*The/, 'its');
+}
+
+export function getHiddenReason (el?: Node, targetType = 'action target'): string | null {
+    if (!el)
+        return null;
+
+    const isTextNode = domUtils.isTextNode(el);
+
+    if (!domUtils.isDomElement(el) && !isTextNode)
+        return hiddenReasons.notElementOrTextNode(targetType);
+
+    const strEl           = isTextNode ? (el as Text).data : stringifyElement(el as HTMLElement);
+    const offsetHeight    = (el as HTMLElement).offsetHeight;
+    const offsetWidth     = (el as HTMLElement).offsetWidth;
+    const isOptionElement = domUtils.isOptionElement(el) || domUtils.getTagName(el as HTMLElement) === 'optgroup';
+
+    if (isOptionElement && !selectController.isOptionElementVisible(el as HTMLElement)) {
+        const optionParent    = domUtils.getSelectParent(el);
+        const optionParentStr = stringifyElement(optionParent);
+
+        return hiddenReasons.optionNotVisible(strEl, targetType, optionParentStr);
+    }
+
+    if (domUtils.isMapElement(el)) {
+        const mapContainer          = domUtils.getMapContainer(domUtils.closest(el, 'map'));
+        const containerHiddenReason = getHiddenReason(mapContainer, 'container') || '';
+        const containerError        = getSubHiddenReason(containerHiddenReason);
+
+        return hiddenReasons.mapContainerNotVisible(strEl, containerError);
+    }
+
+    const visibilityHiddenParent = getVisibilityHiddenParent(el);
+
+    if (visibilityHiddenParent)
+        return hiddenReasons.parentHasVisibilityHidden(strEl, targetType, stringifyElement(visibilityHiddenParent));
+
+    const visibilityCollapseParent = getVisibilityCollapseParent(el);
+
+    if (visibilityCollapseParent)
+        return hiddenReasons.parentHasVisibilityCollapse(strEl, targetType, stringifyElement(visibilityCollapseParent));
+
+    const displayNoneParent = getDisplayNoneParent(el);
+
+    if (displayNoneParent)
+        return hiddenReasons.parentHasDisplayNone(strEl, targetType, stringifyElement(displayNoneParent));
+
+    if (elHasVisibilityHidden(el))
+        return hiddenReasons.elHasVisibilityHidden(strEl, targetType);
+
+    if (elHasVisibilityCollapse(el))
+        return hiddenReasons.elHasVisibilityCollapse(strEl, targetType);
+
+    if (elHasDisplayNone(el))
+        return hiddenReasons.elHasDisplayNone(strEl, targetType);
+
+    if (domUtils.isTextNode(el) && !domUtils.isRenderedNode(el))
+        return hiddenReasons.elNotRendered(strEl, targetType);
+
+    if (!domUtils.isContentEditableElement(el) &&
+        hiddenByRectangle(el as HTMLElement))
+        return hiddenReasons.elHasWidthOrHeightZero(strEl, targetType, offsetWidth, offsetHeight);
+
+    if (!styleUtils.hasDimensions(el as HTMLElement))
+        return hiddenReasons.elHasWidthOrHeightZero(strEl, targetType, offsetWidth, offsetHeight);
+
+    return null;
+}
+
+export function getElOutsideBoundsReason (el: HTMLElement, targetType = 'action target'): string {
+    const strEl  = stringifyElement(el);
+
+    if (domUtils.isMapElement(el)) {
+        const mapContainer          = domUtils.getMapContainer(domUtils.closest(el, 'map'));
+        const containerHiddenReason = getElOutsideBoundsReason(mapContainer, 'container') || '';
+        const containerError        = getSubHiddenReason(containerHiddenReason);
+
+        return hiddenReasons.mapContainerNotVisible(strEl, containerError);
+    }
+
+    return hiddenReasons.elOutsideBounds(strEl, targetType);
+}

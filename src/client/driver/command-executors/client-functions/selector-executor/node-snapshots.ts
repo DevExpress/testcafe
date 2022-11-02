@@ -6,7 +6,8 @@ import {
 import { Dictionary } from '../../../../../configuration/interfaces';
 // @ts-ignore
 import { utils } from '../../../deps/hammerhead';
-import { isElementVisible } from '../../../../core/utils/position';
+// @ts-ignore
+import { positionUtils } from '../../../deps/testcafe-core';
 
 
 const nodeSnapshotPropertyInitializers = {
@@ -63,7 +64,7 @@ export class NodeSnapshot extends BaseSnapshot {
 // Element
 const elementSnapshotPropertyInitializers = {
     tagName: (element: Element) => element.tagName.toLowerCase(),
-    visible: (element: Element) => isElementVisible(element),
+    visible: (element: Element) => positionUtils.isElementVisible(element),
     focused: (element: Element) => utils.dom.getActiveElement() === element,
 
     attributes: (element: Element) => {

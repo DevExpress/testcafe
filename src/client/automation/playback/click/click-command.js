@@ -8,8 +8,9 @@ const eventSimulator = hammerhead.eventSandbox.eventSimulator;
 const listeners      = hammerhead.eventSandbox.listeners;
 const nativeMethods  = hammerhead.nativeMethods;
 
-const domUtils   = testCafeCore.domUtils;
-const styleUtils = testCafeCore.styleUtils;
+const domUtils         = testCafeCore.domUtils;
+const styleUtils       = testCafeCore.styleUtils;
+const selectController = testCafeCore.selectController;
 
 const selectElementUI = testCafeUI.selectElement;
 
@@ -76,7 +77,7 @@ class SelectElementClickCommand extends ElementClickCommand {
         const isSelectWithDropDown = styleUtils.getSelectElementSize(element) === 1;
 
         if (isSelectWithDropDown && this.eventState.simulateDefaultBehavior !== false) {
-            if (selectElementUI.isOptionListExpanded(element))
+            if (selectController.isOptionListExpanded(element))
                 selectElementUI.collapseOptionList();
             else
                 selectElementUI.expandOptionList(element);

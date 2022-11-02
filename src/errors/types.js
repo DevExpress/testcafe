@@ -101,6 +101,7 @@ export const TEST_RUN_ERRORS = {
     actionSkipJsErrorsArgumentError:                       'E98',
     actionFunctionOptionError:                             'E99',
     actionInvalidObjectPropertyError:                      'E100',
+    actionElementIsNotTargetError:                         'E101',
 };
 
 export const RUNTIME_ERRORS = {

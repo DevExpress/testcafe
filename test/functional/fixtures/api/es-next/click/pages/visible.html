@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        .width-height-100 {
+            width: 100;
+            height: 100;
+            color: red;
+        }
+        .width-height-0 {
+            width: 0;
+            height: 0;
+        }
+        .width-0 {
+            width: 0;
+            height: 100px;
+        }
+        .height-0 {
+            width: 100px;
+            height: 0;
+        }
+        .visibility-hidden {
+            width: 100px;
+            height: 100px;
+            visibility: hidden;
+        }
+        .visibility-collapse {
+            width: 100px;
+            height: 100px;
+            visibility: collapse;
+        }
+        .display-none {
+            width: 100px;
+            height: 100px;
+            display: none;
+        }
+        .container {
+            width: 0;
+            height: 0;
+        }
+        </style>
+</head>
+<body>
+    <div class="element width-height-0">Element with 0 width and height</div>
+    <div class="element width-0">Element with 0 width</div>
+    <div class="element height-0">Element with 0 height</div>
+    <div class="element visibility-hidden">Element with visibility: hidden</div>
+    <div class="element visibility-collapse">Element with visibility: collapse</div>
+    <div class="element display-none">Element with display: none</div>
+    <div class="ancestor visibility-hidden"><div class="element width-height-100"></div></div>
+    <div class="ancestor visibility-collapse"><div class="element width-height-100"></div></div>
+    <div class="ancestor display-none"><div class="element width-height-100"></div></div>
+    <select class="select-not-expended">
+        <option>Option</option>
+    </select>
+    <map name="map">
+        <area class="map-area">
+    </map>
+    <img class="container" usemap="#map" src="" alt="">
+</body>
+</html>

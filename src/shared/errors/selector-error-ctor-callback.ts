@@ -1,5 +1,5 @@
 import { AutomationErrorCtor } from '../types';
-import { FnInfo, SelectorErrorCb } from '../../client/driver/command-executors/client-functions/types';
+import { SelectorErrorParams, SelectorErrorCb } from '../../client/driver/command-executors/client-functions/types';
 import * as Errors from './index';
 
 export function getInvisibleErrorCtor (elementName?: string): AutomationErrorCtor | string {
@@ -25,5 +25,5 @@ export default function createErrorCtorCallback (errCtor: AutomationErrorCtor | 
     const Error    = typeof errCtor === 'string' ? Errors[errCtor] : Errors[errCtor.name];
     const firstArg = typeof errCtor === 'string' ? null : errCtor.firstArg;
 
-    return (fn: FnInfo | null) => new Error(firstArg, fn);
+    return (fn: SelectorErrorParams | null) => new Error(firstArg, fn);
 }

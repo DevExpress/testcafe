@@ -71,7 +71,7 @@ describe('[Raw API] Click action', () => {
     it('Should fail if an action target is invisible', () => {
         return runTests('./testcafe-fixtures/click.testcafe', 'Click invisible button', { shouldFail: true })
             .catch(errs => {
-                expect(errs[0]).contains('The element that matches the specified selector is not visible.');
+                expect(errs[0]).match(/The action target \(.*\) is invisible. The value of its 'display' property is 'none'./);
                 expect(errs[0]).contains('[[Click invisible button callsite]]');
             });
     });
@@ -79,7 +79,7 @@ describe('[Raw API] Click action', () => {
     it('Should fail if an action target is out of the visible area', () => {
         return runTests('./testcafe-fixtures/click.testcafe', 'Click a button that is out of the visible area', { shouldFail: true })
             .catch(errs => {
-                expect(errs[0]).contains('The element that matches the specified selector is not visible.');
+                expect(errs[0]).match(/The action target \(.*\) is located outside the the layout viewport./);
                 expect(errs[0]).contains('[[Click a button that is out of the visible area callsite]]');
             });
     });

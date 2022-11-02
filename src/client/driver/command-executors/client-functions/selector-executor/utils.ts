@@ -1,24 +1,6 @@
 // @ts-ignore
-import { nativeMethods, utils } from '../../../deps/hammerhead';
-// @ts-ignore
-import { domUtils } from '../../../deps/testcafe-core';
-// @ts-ignore
-import { selectElement } from '../../../deps/testcafe-ui';
-import { isElementVisible, isIframeVisible } from '../../../../core/utils/position';
+import { nativeMethods } from '../../../deps/hammerhead';
 
-
-export function visible (el: Node): boolean {
-    if (domUtils.isIframeElement(el))
-        return isIframeVisible(el);
-
-    if (!utils.dom.isDomElement(el) && !utils.dom.isTextNode(el))
-        return false;
-
-    if (domUtils.isOptionElement(el) || domUtils.getTagName(el as Element) === 'optgroup')
-        return selectElement.isOptionElementVisible(el);
-
-    return isElementVisible(el);
-}
 
 export function isNodeCollection (obj: unknown): obj is HTMLCollection | NodeList {
     return obj instanceof nativeMethods.HTMLCollection || obj instanceof nativeMethods.NodeList;

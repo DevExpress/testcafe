@@ -4,14 +4,13 @@ import delay from '../../../core/utils/delay';
 import { whilst } from '../../../core/utils/promise';
 import { ActionCommandBase } from '../../../../test-run/commands/base';
 import { Dictionary } from '../../../../configuration/interfaces';
-import AUTOMATION_ERROR_TYPES from '../../../../shared/errors/automation-errors';
-import { ActionElementIsInvisibleError } from '../../../../shared/errors';
 import { ExecuteSelectorFn } from '../../../../shared/types';
 import ElementsRetriever from './elements-retriever';
 import { Automation, AutomationHandler } from '../../../automation/types';
 // @ts-ignore
 import { nativeMethods, Promise } from '../../deps/hammerhead';
 import { getOffsetOptions } from '../../../core/utils/offsets';
+import { TEST_RUN_ERRORS } from '../../../../errors/types';
 
 const MAX_DELAY_AFTER_EXECUTION             = 2000;
 const CHECK_ELEMENT_IN_AUTOMATIONS_INTERVAL = 250;
@@ -113,6 +112,8 @@ export default class ActionExecutor extends EventEmitter {
             const { offsetX, offsetY } = getOffsetOptions(this._elements[0], opts.offsetX, opts.offsetY);
 
             // @ts-ignore TODO
+            opts.isDefaultOffset = !opts.offsetX && !opts.offsetY;
+            // @ts-ignore TODO
             opts.offsetX = offsetX;
             // @ts-ignore TODO
             opts.offsetY = offsetY;
@@ -168,7 +169,7 @@ export default class ActionExecutor extends EventEmitter {
                     if (!this._isExecutionTimeoutExpired())
                         return delay(CHECK_ELEMENT_IN_AUTOMATIONS_INTERVAL);
 
-                    if (err.message === AUTOMATION_ERROR_TYPES.foundElementIsNotTarget) {
+                    if (err.code === TEST_RUN_ERRORS.actionElementIsNotTargetError) {
                         // If we can't get a target element via elementFromPoint but it's
                         // visible we click on the point where the element is located.
                         strictElementCheck = false;
@@ -176,8 +177,7 @@ export default class ActionExecutor extends EventEmitter {
                         return Promise.resolve();
                     }
 
-                    throw err.message === AUTOMATION_ERROR_TYPES.elementIsInvisibleError ?
-                        new ActionElementIsInvisibleError() : err;
+                    throw err;
                 });
         });
     }
