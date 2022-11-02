@@ -16,6 +16,10 @@ test('Test code throws null', () => {
     throw null;
 });
 
+test('Test code throws object', () => {
+    throw { test: 'test' };
+});
+
 test('Helper code throws Error', () => {
     throwError();
 });

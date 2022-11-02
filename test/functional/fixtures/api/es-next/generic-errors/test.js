@@ -46,6 +46,14 @@ describe('[API] Generic errors', function () {
                 });
         });
 
+        it('Should handle object thrown by test code', function () {
+            return runTests('./testcafe-fixtures/error-in-test-code-test.js', 'Test code throws object',
+                { shouldFail: true, only: 'chrome' })
+                .catch(function (errs) {
+                    expect(errs[0]).contains('Uncaught object "{"test":"test"}" was thrown. Throw Error instead.');
+                });
+        });
+
         it('Should handle error thrown by helper code', function () {
             return runTests('./testcafe-fixtures/error-in-test-code-test.js', 'Helper code throws Error',
                 { shouldFail: true, only: 'chrome' })
