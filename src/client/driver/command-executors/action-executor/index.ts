@@ -112,6 +112,8 @@ export default class ActionExecutor extends EventEmitter {
             const { offsetX, offsetY } = getOffsetOptions(this._elements[0], opts.offsetX, opts.offsetY);
 
             // @ts-ignore TODO
+            opts.isDefaultOffset = !opts.offsetX && !opts.offsetY;
+            // @ts-ignore TODO
             opts.offsetX = offsetX;
             // @ts-ignore TODO
             opts.offsetY = offsetY;

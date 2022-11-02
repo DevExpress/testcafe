@@ -578,6 +578,70 @@ $(document).ready(function () {
             });
     });
 
+    // TODO: stabilize test on iOS
+    (isIOS ? QUnit.skip : asyncTest)('click on covered element', function () {
+        $el.css({ display: 'none' });
+
+        const clickOffsets = [];
+        const $target      = addDiv(150, 150);
+        const target       = $target[0];
+        const elOffset     = $target.offset();
+
+        addDiv(elOffset.left + 50, elOffset.top + 50)
+            .css({ backgroundColor: 'red' })
+            .width(50)
+            .height(50);
+
+        $target.click(function (e) {
+            clickOffsets.push({ x: Math.floor(e.pageX - elOffset.left), y: Math.floor(e.pageY - elOffset.top) });
+        });
+
+        Promise.resolve()
+            .then(function () {
+                const click = new ClickAutomation(target, new ClickOptions({ offsetX: 75, offsetY: 75, isDefaultOffset: true }), window, cursor);
+
+                return click.run();
+            })
+            .then(function () {
+                const click = new ClickAutomation(target, new ClickOptions({ offsetX: 75, offsetY: 75, isDefaultOffset: true }), window, cursor);
+
+                addDiv(elOffset.left, elOffset.top)
+                    .css({ backgroundColor: 'red' })
+                    .width(80)
+                    .height(80);
+
+                return click.run();
+            })
+            .then(function () {
+                const click = new ClickAutomation(target, new ClickOptions({ offsetX: 75, offsetY: 75, isDefaultOffset: true }), window, cursor);
+
+                addDiv(elOffset.left + 70, elOffset.top)
+                    .css({ backgroundColor: 'red' })
+                    .width(80)
+                    .height(80);
+
+                return click.run();
+            })
+            .then(function () {
+                const click = new ClickAutomation(target, new ClickOptions({ offsetX: 75, offsetY: 75, isDefaultOffset: true }), window, cursor);
+
+                addDiv(elOffset.left, elOffset.top + 70)
+                    .css({ backgroundColor: 'red' })
+                    .width(80)
+                    .height(80);
+
+                return click.run();
+            })
+            .then(function () {
+                deepEqual(clickOffsets[0], { x: 37, y: 37 }, 'click in the upper left corner');
+                deepEqual(clickOffsets[1], { x: 112, y: 37 }, 'click in the upper right corner');
+                deepEqual(clickOffsets[2], { x: 37, y: 112 }, 'click in the lower left corner');
+                deepEqual(clickOffsets[3], { x: 112, y: 112 }, 'click in the lower right corner');
+
+                startNext();
+            });
+    });
+
     asyncTest('cancel bubble', function () {
         let divClicked = false;
         let btnClicked = false;
