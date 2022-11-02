@@ -13,6 +13,7 @@ import {
     DEFAULT_APP_INIT_DELAY,
     DEFAULT_CONCURRENCY_VALUE,
     DEFAULT_DEVELOPMENT_MODE,
+    DEFAULT_DISABLE_CROSS_DOMAIN,
     DEFAULT_DISABLE_HTTP2,
     DEFAULT_FILTER_FN,
     DEFAULT_PROXYLESS,
@@ -65,6 +66,7 @@ const OPTION_INIT_FLAG_NAMES = [
     OPTION_NAMES.cache,
     OPTION_NAMES.disableHttp2,
     OPTION_NAMES.proxyless,
+    OPTION_NAMES.disableCrossDomain,
 ];
 
 interface TestCafeAdditionalStartOptions {
@@ -74,6 +76,7 @@ interface TestCafeAdditionalStartOptions {
     cache: boolean;
     disableHttp2: boolean;
     proxyless: boolean;
+    disableCrossDomain: boolean;
 }
 
 interface TestCafeStartOptions {
@@ -155,12 +158,13 @@ export default class TestCafeConfiguration extends Configuration {
             port2:    this.getOption(OPTION_NAMES.port2) as number,
 
             options: {
-                ssl:             this.getOption(OPTION_NAMES.ssl) as string,
-                developmentMode: this.getOption(OPTION_NAMES.developmentMode) as boolean,
-                retryTestPages:  this.getOption(OPTION_NAMES.retryTestPages) as boolean,
-                cache:           this.getOption(OPTION_NAMES.cache) as boolean,
-                disableHttp2:    this.getOption(OPTION_NAMES.disableHttp2) as boolean,
-                proxyless:       this.getOption(OPTION_NAMES.proxyless) as boolean,
+                ssl:                this.getOption(OPTION_NAMES.ssl) as string,
+                developmentMode:    this.getOption(OPTION_NAMES.developmentMode) as boolean,
+                retryTestPages:     this.getOption(OPTION_NAMES.retryTestPages) as boolean,
+                cache:              this.getOption(OPTION_NAMES.cache) as boolean,
+                disableHttp2:       this.getOption(OPTION_NAMES.disableHttp2) as boolean,
+                proxyless:          this.getOption(OPTION_NAMES.proxyless) as boolean,
+                disableCrossDomain: this.getOption(OPTION_NAMES.disableCrossDomain) as boolean,
             },
         };
 
@@ -266,6 +270,7 @@ export default class TestCafeConfiguration extends Configuration {
         this._ensureOptionWithValue(OPTION_NAMES.retryTestPages, DEFAULT_RETRY_TEST_PAGES, OptionSource.Configuration);
         this._ensureOptionWithValue(OPTION_NAMES.disableHttp2, DEFAULT_DISABLE_HTTP2, OptionSource.Configuration);
         this._ensureOptionWithValue(OPTION_NAMES.proxyless, DEFAULT_PROXYLESS, OptionSource.Configuration);
+        this._ensureOptionWithValue(OPTION_NAMES.disableCrossDomain, DEFAULT_DISABLE_CROSS_DOMAIN, OptionSource.Configuration);
 
         this._ensureScreenshotOptions();
         this._ensureSkipJsOptions();

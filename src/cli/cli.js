@@ -86,6 +86,7 @@ async function runTests (argParser) {
         disableHttp2,
         v8Flags,
         proxyless,
+        disableCrossDomain,
     } = opts;
 
     const testCafe = await createTestCafe({
@@ -103,6 +104,7 @@ async function runTests (argParser) {
         disableHttp2,
         v8Flags,
         proxyless,
+        disableCrossDomain,
     });
 
     const correctedBrowsersAndSources = await correctBrowsersAndSources(argParser, testCafe.configuration);
