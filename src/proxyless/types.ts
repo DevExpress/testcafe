@@ -19,3 +19,8 @@ export interface RequestHandler {
     condition: (event: RequestPausedEvent, options?: ProxylessSetupOptions, serviceRoutes?: SpecialServiceRoutes) => boolean;
     handler: (event: RequestPausedEvent, client: ProtocolApi, options?: ProxylessSetupOptions) => Promise<void>;
 }
+
+export interface InjectableResourcesOptions {
+    isIframe: boolean;
+    url?: string;
+}

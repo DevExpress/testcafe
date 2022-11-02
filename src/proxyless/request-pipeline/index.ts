@@ -8,7 +8,13 @@ import FrameTree = Protocol.Page.FrameTree;
 import ProxylessRequestHookEventProvider from '../request-hooks/event-provider';
 import ResourceInjector from '../resource-injector';
 import { convertToHeaderEntries } from '../utils/headers';
-import { createRequestPausedEventForResponse, isRequest } from '../utils/cdp';
+
+import {
+    createRequestPausedEventForResponse,
+    isRedirect,
+    isRequest,
+} from '../utils/cdp';
+
 import BrowserConnection from '../../browser/connection';
 import ERROR_ROUTE from '../error-route';
 import { SpecialServiceRoutes } from '../types';
@@ -22,6 +28,7 @@ import ProxylessPipelineContext from '../request-hooks/pipeline-context';
 import { ProxylessSetupOptions } from '../../shared/types';
 import DEFAULT_PROXYLESS_SETUP_OPTIONS from '../default-setup-options';
 import getSpecialRequestHandler from './special-handlers';
+import TestRun from '../../test-run';
 
 
 export default class ProxylessRequestPipeline {
@@ -32,6 +39,7 @@ export default class ProxylessRequestPipeline {
     private readonly _specialServiceRoutes: SpecialServiceRoutes;
     private _stopped: boolean;
     private _currentFrameTree: FrameTree | null;
+    private _browserId: string;
 
     public constructor (browserId: string, client: ProtocolApi) {
         this._client                  = client;
@@ -41,6 +49,7 @@ export default class ProxylessRequestPipeline {
         this._options                 = DEFAULT_PROXYLESS_SETUP_OPTIONS;
         this._stopped                 = false;
         this._currentFrameTree        = null;
+        this._browserId               = browserId;
     }
 
     private _getSpecialServiceRoutes (browserId: string): SpecialServiceRoutes {
@@ -77,7 +86,7 @@ export default class ProxylessRequestPipeline {
         if (pipelineContext.reqOpts.isAjax)
             await this._resourceInjector.processNonProxiedContent(fulfillInfo, this._client);
         else
-            await this._resourceInjector.processHTMLPageContent(fulfillInfo, false, this._client);
+            await this._resourceInjector.processHTMLPageContent(fulfillInfo, { isIframe: false }, this._client);
 
         requestPipelineMockLogger(`Mock request ${event.requestId}`);
     }
@@ -95,10 +104,18 @@ export default class ProxylessRequestPipeline {
         return continueResponseRequest;
     }
 
+    get currentTestRun (): TestRun {
+        const browserConnection = BrowserConnection.getById(this._browserId) as BrowserConnection;
+
+        return browserConnection.getCurrentTestRun() as TestRun;
+    }
+
     private async _handleOtherRequests (event: RequestPausedEvent): Promise<void> {
         requestPipelineOtherRequestLogger('%r', event);
 
-        if (isRequest(event)) {
+        // NOTE: temporary add isRedirect for roles testing
+        // need to research redirects in details
+        if (isRequest(event) || isRedirect(event)) {
             await this.requestHookEventProvider.onRequest(event);
 
             const pipelineContext = this.requestHookEventProvider.getPipelineContext(event.networkId as string);
@@ -137,8 +154,10 @@ export default class ProxylessRequestPipeline {
                         responseHeaders: event.responseHeaders,
                         responseCode:    event.responseStatusCode as number,
                         body:            (resourceInfo.body as Buffer).toString(),
+                    }, {
+                        isIframe: this._isIframe(event.frameId),
+                        url:      event.request.url,
                     },
-                    this._isIframe(event.frameId),
                     this._client);
             }
         }

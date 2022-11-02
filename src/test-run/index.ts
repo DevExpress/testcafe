@@ -130,6 +130,12 @@ import { prepareSkipJsErrorsOptions } from '../api/skip-js-errors';
 import { CookieProviderFactory } from './cookies/factory';
 import { CookieProvider } from './cookies/base';
 
+import {
+    ProxylessRoleProvider,
+    ProxyRoleProvider,
+    RoleProvider,
+} from './role-provider';
+
 const lazyRequire                 = require('import-lazy')(require);
 const ClientFunctionBuilder       = lazyRequire('../client-functions/client-function-builder');
 const TestRunBookmark             = lazyRequire('./bookmark');
@@ -267,6 +273,7 @@ export default class TestRun extends AsyncEventEmitter {
     private _cookieProvider: CookieProvider;
     public readonly startRunExecutionTime?: Date;
     private readonly _requestHookEventProvider: RequestHookEventProvider;
+    private readonly _roleProvider: RoleProvider;
 
     public constructor ({ test, browserConnection, screenshotCapturer, globalWarningLog, opts, compilerService, messageBus, startRunExecutionTime }: TestRunInit) {
         super();
@@ -350,6 +357,7 @@ export default class TestRun extends AsyncEventEmitter {
         this.startRunExecutionTime     = startRunExecutionTime;
         this.runExecutionTimeout       = this._getRunExecutionTimeout(opts);
         this._requestHookEventProvider = this._getRequestHookEventProvider();
+        this._roleProvider             = this._getRoleProvider();
 
         this._cookieProvider = CookieProviderFactory.create(this, this.opts.proxyless as boolean);
 
@@ -363,6 +371,13 @@ export default class TestRun extends AsyncEventEmitter {
         const runtimeInfo = this.browserConnection.provider.plugin.openedBrowsers[this.browserConnection.id];
 
         return runtimeInfo.proxyless.requestPipeline.requestHookEventProvider;
+    }
+
+    private _getRoleProvider (): RoleProvider {
+        if (this.opts.proxyless)
+            return new ProxylessRoleProvider(this);
+
+        return new ProxyRoleProvider(this);
     }
 
     private _getPageLoadTimeout (test: Test, opts: Dictionary<OptionValue>): number {
@@ -936,7 +951,7 @@ export default class TestRun extends AsyncEventEmitter {
         return false;
     }
 
-    private _handleDriverRequest (driverStatus: DriverStatus): CommandBase | null | string {
+    private async _handleDriverRequest (driverStatus: DriverStatus): Promise<CommandBase | null | string> {
         const isTestDone                 = this.currentDriverTask && this.currentDriverTask.command.type ===
                                            COMMAND_TYPE.testDone;
         const pageError                  = this.pendingPageError || driverStatus.pageError;
@@ -962,14 +977,14 @@ export default class TestRun extends AsyncEventEmitter {
         return this._getCurrentDriverTaskCommand();
     }
 
-    private _getCurrentDriverTaskCommand (): CommandBase | null {
+    private async _getCurrentDriverTaskCommand (): Promise<CommandBase | null> {
         if (!this.currentDriverTask)
             return null;
 
         const command = this.currentDriverTask.command;
 
         if (command.type === COMMAND_TYPE.navigateTo && (command as any).stateSnapshot)
-            this.session.useStateSnapshot(JSON.parse((command as any).stateSnapshot));
+            await this._roleProvider.useStateSnapshot(JSON.parse((command as any).stateSnapshot));
 
         return command;
     }
@@ -1333,7 +1348,7 @@ export default class TestRun extends AsyncEventEmitter {
 
     // Role management
     public async getStateSnapshot (): Promise<StateSnapshot> {
-        const state = this.session.getStateSnapshot();
+        const state = await this._roleProvider.getStateSnapshot();
 
         state.storages = await this._internalExecuteCommand(new serviceCommands.BackupStoragesCommand()) as StoragesSnapshot;
 
@@ -1363,7 +1378,7 @@ export default class TestRun extends AsyncEventEmitter {
 
         this.consoleMessages = new BrowserConsoleMessages();
 
-        this.session.useStateSnapshot(StateSnapshot.empty());
+        await this._roleProvider.useStateSnapshot(StateSnapshot.empty());
 
         if (this.speed !== this.opts.speed) {
             const setSpeedCommand = new actionCommands.SetTestSpeedCommand({ speed: this.opts.speed });
@@ -1427,7 +1442,7 @@ export default class TestRun extends AsyncEventEmitter {
 
         const stateSnapshot = this.usedRoleStates[role.id] || await this._getStateSnapshotFromRole(role);
 
-        this.session.useStateSnapshot(stateSnapshot);
+        await this._roleProvider.useStateSnapshot(stateSnapshot);
 
         this.currentRoleId = role.id;
 
@@ -1552,7 +1567,7 @@ export default class TestRun extends AsyncEventEmitter {
             return this.lastDriverStatusResponse;
 
         this.lastDriverStatusId       = msg.status.id;
-        this.lastDriverStatusResponse = this._handleDriverRequest(msg.status);
+        this.lastDriverStatusResponse = await this._handleDriverRequest(msg.status);
 
         if (this.lastDriverStatusResponse || msg.status.isPendingWindowSwitching)
             return this.lastDriverStatusResponse;

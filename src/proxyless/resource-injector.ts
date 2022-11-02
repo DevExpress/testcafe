@@ -17,14 +17,21 @@ import { remove } from 'lodash';
 import { StatusCodes } from 'http-status-codes';
 import { PageLoadError } from '../errors/test-run';
 import { redirect, navigateTo } from './utils/cdp';
-import { DocumentResourceInfo, SpecialServiceRoutes } from './types';
 import { resourceInjectorLogger } from '../utils/debug-loggers';
+
 import {
     getResponseAsString,
     stringifyHeaderValues,
     toBase64String,
 } from './utils/string';
 
+import {
+    DocumentResourceInfo,
+    InjectableResourcesOptions,
+    SpecialServiceRoutes,
+} from './types';
+
+import { ProxylessStorageSnapshotController } from './snapshots/storage-snapshot-controller';
 
 const CONTENT_SECURITY_POLICY_HEADER_NAMES = [
     'content-security-policy',
@@ -40,7 +47,7 @@ export default class ResourceInjector {
         this._specialServiceRoutes = specialServiceRoutes;
     }
 
-    private async _prepareInjectableResources (isIframe: boolean): Promise<PageInjectableResources | null> {
+    private async _prepareInjectableResources ({ isIframe, url }: InjectableResourcesOptions): Promise<PageInjectableResources | null> {
         const browserConnection = BrowserConnection.getById(this._browserId) as BrowserConnection;
         const proxy             = browserConnection.browserConnectionGateway.proxy;
         const windowId          = browserConnection.activeWindowId;
@@ -48,6 +55,8 @@ export default class ResourceInjector {
 
         if (!currentTestRun)
             return null;
+
+        const snapshotController = new ProxylessStorageSnapshotController(currentTestRun);
 
         const taskScript = await currentTestRun.session.getTaskScript({
             referer:     '',
@@ -58,6 +67,8 @@ export default class ResourceInjector {
             isIframe,
         });
 
+        const embeddedScripts = [...snapshotController.createRestoreStoragesScripts(url), taskScript];
+
         const injectableResources = {
             stylesheets: [
                 TESTCAFE_UI_STYLES,
@@ -66,7 +77,7 @@ export default class ResourceInjector {
                 ...HAMMERHEAD_INJECTABLE_SCRIPTS.map(hs => getAssetPath(hs, proxy.options.developmentMode)),
                 ...SCRIPTS.map(s => getAssetPath(s, proxy.options.developmentMode)),
             ],
-            embeddedScripts: [taskScript],
+            embeddedScripts,
         };
 
         injectableResources.scripts     = injectableResources.scripts.map(script => proxy.resolveRelativeServiceUrl(script));
@@ -146,7 +157,7 @@ export default class ResourceInjector {
     public async processAboutBlankPage (event: FrameNavigatedEvent, client: ProtocolApi): Promise<void> {
         resourceInjectorLogger('Handle page as about:blank. Origin url: %s', event.frame.url);
 
-        const injectableResources = await this._prepareInjectableResources(false) as PageInjectableResources;
+        const injectableResources = await this._prepareInjectableResources({ isIframe: false }) as PageInjectableResources;
         const html                = injectResources(EMPTY_PAGE_MARKUP, injectableResources);
 
         await client.Page.setDocumentContent({
@@ -155,8 +166,8 @@ export default class ResourceInjector {
         });
     }
 
-    public async processHTMLPageContent (fulfillRequestInfo: FulfillRequestRequest, isIframe: boolean, client: ProtocolApi): Promise<void> {
-        const injectableResources = await this._prepareInjectableResources(isIframe);
+    public async processHTMLPageContent (fulfillRequestInfo: FulfillRequestRequest, injectableResourcesOptions: InjectableResourcesOptions, client: ProtocolApi): Promise<void> {
+        const injectableResources = await this._prepareInjectableResources(injectableResourcesOptions);
 
         // NOTE: an unhandled exception interrupts the test execution,
         // and we are force to redirect manually to the idle page.
