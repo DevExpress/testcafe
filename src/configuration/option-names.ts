@@ -55,6 +55,7 @@ enum OptionNames {
     hooks = 'hooks',
     dashboard = 'dashboard',
     baseUrl = 'baseUrl',
+    disableCrossDomain = 'disableCrossDomain',
 }
 
 export default OptionNames;
