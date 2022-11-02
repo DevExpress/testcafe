@@ -8,7 +8,13 @@ import FrameTree = Protocol.Page.FrameTree;
 import ProxylessRequestHookEventProvider from '../request-hooks/event-provider';
 import ResourceInjector from '../resource-injector';
 import { convertToHeaderEntries } from '../utils/headers';
-import { createRequestPausedEventForResponse, isRequest } from '../utils/cdp';
+
+import {
+    createRequestPausedEventForResponse,
+    isRedirect,
+    isRequest,
+} from '../utils/cdp';
+
 import BrowserConnection from '../../browser/connection';
 import ERROR_ROUTE from '../error-route';
 import { SpecialServiceRoutes } from '../types';
@@ -22,6 +28,8 @@ import ProxylessPipelineContext from '../request-hooks/pipeline-context';
 import { ProxylessSetupOptions } from '../../shared/types';
 import DEFAULT_PROXYLESS_SETUP_OPTIONS from '../default-setup-options';
 import getSpecialRequestHandler from './special-handlers';
+import { ProxylessSessionController } from '../session-controller';
+import TestRun from '../../test-run';
 
 
 export default class ProxylessRequestPipeline {
@@ -32,6 +40,7 @@ export default class ProxylessRequestPipeline {
     private readonly _specialServiceRoutes: SpecialServiceRoutes;
     private _stopped: boolean;
     private _currentFrameTree: FrameTree | null;
+    private _browserId: string;
 
     public constructor (browserId: string, client: ProtocolApi) {
         this._client                  = client;
@@ -41,6 +50,7 @@ export default class ProxylessRequestPipeline {
         this._options                 = DEFAULT_PROXYLESS_SETUP_OPTIONS;
         this._stopped                 = false;
         this._currentFrameTree        = null;
+        this._browserId               = browserId;
     }
 
     private _getSpecialServiceRoutes (browserId: string): SpecialServiceRoutes {
@@ -95,10 +105,20 @@ export default class ProxylessRequestPipeline {
         return continueResponseRequest;
     }
 
+    get session (): ProxylessSessionController {
+        const browserConnection = BrowserConnection.getById(this._browserId) as BrowserConnection;
+        const testRun           = browserConnection.getCurrentTestRun() as TestRun;
+        const session           = testRun.session as unknown as ProxylessSessionController;
+
+        return session;
+    }
+
     private async _handleOtherRequests (event: RequestPausedEvent): Promise<void> {
         requestPipelineOtherRequestLogger('%r', event);
 
-        if (isRequest(event)) {
+        // NOTE: temporary add isRedirect for roles testing
+        // need to research redirects in details
+        if (isRequest(event) || isRedirect(event)) {
             await this.requestHookEventProvider.onRequest(event);
 
             const pipelineContext = this.requestHookEventProvider.getPipelineContext(event.networkId as string);
@@ -131,6 +151,8 @@ export default class ProxylessRequestPipeline {
                 await this._client.Fetch.continueResponse(continueResponseRequest);
             }
             else {
+                await this.session.onProxylessPageResponseStart(event);
+
                 await this._resourceInjector.processHTMLPageContent(
                     {
                         requestId:       event.requestId,
@@ -140,6 +162,8 @@ export default class ProxylessRequestPipeline {
                     },
                     this._isIframe(event.frameId),
                     this._client);
+
+                await this.session.onProxylessPageResponseEnd();
             }
         }
     }

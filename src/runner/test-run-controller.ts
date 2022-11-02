@@ -2,7 +2,7 @@ import AsyncEventEmitter from '../utils/async-event-emitter';
 //@ts-ignore
 import { TestRun as LegacyTestRun } from 'testcafe-legacy-api';
 import TestRun from '../test-run';
-import SessionController from '../test-run/session-controller';
+import { getSessionUrl } from '../test-run/session/session-utils';
 import BrowserConnection from '../browser/connection';
 import { Proxy } from 'testcafe-hammerhead';
 import Test from '../api/structure/test';
@@ -247,6 +247,6 @@ export default class TestRunController extends AsyncEventEmitter {
 
         testRun.start();
 
-        return SessionController.getSessionUrl(testRun, this._proxy);
+        return getSessionUrl(testRun, this._proxy);
     }
 }

@@ -24,6 +24,10 @@ export function isRequest (event: RequestPausedEvent): boolean {
     return event.responseStatusCode === void 0;
 }
 
+export function isRedirect (event: RequestPausedEvent): boolean {
+    return event.responseStatusCode === StatusCodes.MOVED_TEMPORARILY;
+}
+
 export function createRequestPausedEventForResponse (mockedResponse: IncomingMessageLike, requestEvent: RequestPausedEvent): RequestPausedEvent {
     return Object.assign({}, requestEvent, {
         responseStatusCode: mockedResponse.statusCode,

@@ -87,7 +87,8 @@ import Test from '../api/structure/test';
 import Capturer from '../screenshots/capturer';
 import { Dictionary } from '../configuration/interfaces';
 import CompilerService from '../services/compiler/host';
-import SessionController from './session-controller';
+import SessionController from './session';
+import { getSession } from './session/session-utils';
 import TestController from '../api/test-controller';
 import BrowserManipulationQueue from './browser-manipulation-queue';
 import ObservedCallsitesStorage from './observed-callsites-storage';
@@ -298,7 +299,7 @@ export default class TestRun extends AsyncEventEmitter {
 
         this.requestTimeout = this._getRequestTimeout(test, opts);
 
-        this.session = SessionController.getSession(this);
+        this.session = getSession(this);
 
         this.consoleMessages = new BrowserConsoleMessages();
 
@@ -1333,7 +1334,7 @@ export default class TestRun extends AsyncEventEmitter {
 
     // Role management
     public async getStateSnapshot (): Promise<StateSnapshot> {
-        const state = this.session.getStateSnapshot();
+        const state = await this.session.getStateSnapshot();
 
         state.storages = await this._internalExecuteCommand(new serviceCommands.BackupStoragesCommand()) as StoragesSnapshot;
 

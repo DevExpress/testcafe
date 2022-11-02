@@ -15,8 +15,8 @@ const getBrowserStub = () => {
 };
 
 const TestRun = proxyquire('../../../lib/test-run/index', {
-    './session-controller': SessionControllerStub,
-    '../utils/get-browser': getBrowserStub,
+    './session/session-utils': SessionControllerStub,
+    '../utils/get-browser':    getBrowserStub,
 });
 
 class BaseTestRunMock extends TestRun {

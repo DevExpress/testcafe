@@ -1,7 +1,7 @@
 import { pull as remove } from 'lodash';
 import AsyncEventEmitter from '../utils/async-event-emitter';
 import TestRunController from './test-run-controller';
-import SessionController from '../test-run/session-controller';
+import { closeSession } from '../test-run/session/session-utils';
 import BrowserConnection from '../browser/connection';
 import { Proxy } from 'testcafe-hammerhead';
 import Test from '../api/structure/test';
@@ -167,7 +167,7 @@ export default class BrowserJob extends AsyncEventEmitter {
 
         if (!this._completionQueue.length && !this.hasQueuedTestRuns) {
             if (!this._opts.live)
-                SessionController.closeSession(testRunController.testRun);
+                closeSession(testRunController.testRun);
 
             this
                 ._setResult(BrowserJobResult.done, { total: this._total, passed: this._passed })
