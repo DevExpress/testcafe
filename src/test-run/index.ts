@@ -201,7 +201,7 @@ interface PendingRequest {
 
 interface BrowserManipulationResult {
     result: unknown;
-    error: Error;
+    error: unknown;
 }
 
 interface OpenedWindowInformation {
@@ -1575,8 +1575,17 @@ export default class TestRun extends AsyncEventEmitter {
         try {
             result = await this.browserManipulationQueue.executePendingManipulation(msg, this._messageBus);
         }
-        catch (err: any) {
-            error = err;
+        catch (err: unknown) {
+            if (err instanceof Error) {
+                error = {
+                    name:            err.name,
+                    message:         err.message,
+                    stack:           err.stack,
+                    isInternalError: true,
+                };
+            }
+            else
+                error = err;
         }
 
         return { result, error };

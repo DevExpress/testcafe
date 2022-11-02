@@ -9,6 +9,7 @@ import {
     UncaughtErrorInTestCode,
     UncaughtNonErrorObjectInTestCode,
     ExternalAssertionLibraryError,
+    UncaughtExceptionError,
 } from './test-run';
 import debug from 'debug';
 
@@ -45,6 +46,9 @@ export default function processTestFnError (err) {
             new ExternalAssertionLibraryError(err, callsite) :
             new UncaughtErrorInTestCode(err, callsite);
     }
+
+    if (err && err.isInternalError)
+        return new UncaughtExceptionError(err.stack);
 
     return new UncaughtNonErrorObjectInTestCode(err);
 }
