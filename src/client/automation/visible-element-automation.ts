@@ -3,7 +3,7 @@ import screenPointToClient from './utils/screen-point-to-client';
 import getDevicePoint from './utils/get-device-point';
 import { getOffsetOptions } from '../core/utils/offsets';
 import getElementFromPoint from './get-element';
-import AUTOMATION_ERROR_TYPES from '../../shared/errors/automation-errors';
+import { ActionElementIsInvisibleError, ActionElementIsNotTargetError } from '../../shared/errors';
 import AutomationSettings from './settings';
 import MoveAutomation from './move';
 import AxisValues, { AxisValuesData } from '../core/utils/values/axis-values';
@@ -215,12 +215,15 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
         });
     }
 
-    private static _checkElementState (state: ElementState, useStrictElementCheck: boolean): ElementState {
-        if (!state.element)
-            throw new Error(AUTOMATION_ERROR_TYPES.elementIsInvisibleError);
+    private _checkElementState (state: ElementState, useStrictElementCheck: boolean): ElementState {
+        if (!state.element) {
+            throw new ActionElementIsInvisibleError(null, {
+                reason: positionUtils.getElOutsideBoundsReason(this.element),
+            });
+        }
 
         if (useStrictElementCheck && (!state.isTarget || state.inMoving))
-            throw new Error(AUTOMATION_ERROR_TYPES.foundElementIsNotTarget);
+            throw new ActionElementIsNotTargetError();
 
         return state;
     }
@@ -228,13 +231,13 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
     protected _ensureElement (useStrictElementCheck: boolean, skipCheckAfterMoving = false, skipMoving = false): Promise<ElementStateArgsBase> {
         return this
             ._wrapAction(() => this._scrollToElement())
-            .then(state => VisibleElementAutomation._checkElementState(state, useStrictElementCheck))
+            .then(state => this._checkElementState(state, useStrictElementCheck))
             .then(state => {
                 return skipMoving ? state : this._wrapAction(() => this._moveToElement());
             })
             .then(state => {
                 if (!skipCheckAfterMoving)
-                    VisibleElementAutomation._checkElementState(state, useStrictElementCheck);
+                    this._checkElementState(state, useStrictElementCheck);
 
                 return state;
             })

@@ -35,6 +35,7 @@ const {
     UncaughtExceptionError,
     ActionElementNotFoundError,
     ActionElementIsInvisibleError,
+    ActionElementIsNotTargetError,
     ActionSelectorMatchesWrongNodeTypeError,
     ActionAdditionalElementNotFoundError,
     ActionAdditionalElementIsInvisibleError,
@@ -420,6 +421,10 @@ describe('Error formatting', () => {
 
         it('Should format "actionElementIsInvisibleError" message', () => {
             assertErrorMessage('action-element-is-invisible-error', new ActionElementIsInvisibleError());
+        });
+
+        it('Should format "actionElementIsNotTargetError" message', () => {
+            assertErrorMessage('action-element-is-not-target-error', new ActionElementIsNotTargetError());
         });
 
         it('Should format "actionSelectorMatchesWrongNodeTypeError" message', () => {

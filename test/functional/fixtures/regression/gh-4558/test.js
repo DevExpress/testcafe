@@ -4,7 +4,7 @@ describe('[Regression](GH-4558)', () => {
     it('Should fail on click an element in invisible iframe', () => {
         return runTests('./testcafe-fixtures/index.js', 'Button click', { skip: ['ie'], shouldFail: true })
             .catch(err => {
-                expect(err[0]).contains('The element that matches the specified selector is not visible.');
+                expect(err[0]).contains('The action target (<button id="button" onclick="setSpanText()">OK</button>) is located outside the the layout viewport.');
             });
     });
 

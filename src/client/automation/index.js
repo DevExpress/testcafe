@@ -26,7 +26,6 @@ import SHORTCUT_TYPE from './playback/press/shortcut-type';
 import { getSelectionCoordinatesByPosition } from './playback/select/utils';
 import getElementFromPoint from './get-element';
 import calculateSelectTextArguments from './playback/select/calculate-select-text-arguments';
-import ERROR_TYPES from '../../shared/errors/automation-errors';
 import cursor from './cursor';
 import MoveAutomation from './move';
 
@@ -52,7 +51,6 @@ exports.MouseOptions          = MouseOptions;
 exports.ClickOptions          = ClickOptions;
 exports.TypeOptions           = TypeOptions;
 
-exports.ERROR_TYPES                  = ERROR_TYPES;
 exports.AutomationSettings           = AutomationSettings;
 exports.getOffsetOptions             = getOffsetOptions;
 exports.calculateSelectTextArguments = calculateSelectTextArguments;

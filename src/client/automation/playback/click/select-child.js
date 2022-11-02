@@ -15,9 +15,10 @@ const eventSimulator   = hammerhead.eventSandbox.eventSimulator;
 const focusBlurSandbox = hammerhead.eventSandbox.focusBlur;
 const nativeMethods    = hammerhead.nativeMethods;
 
-const domUtils   = testCafeCore.domUtils;
-const styleUtils = testCafeCore.styleUtils;
-const delay      = testCafeCore.delay;
+const domUtils         = testCafeCore.domUtils;
+const styleUtils       = testCafeCore.styleUtils;
+const delay            = testCafeCore.delay;
+const selectController = testCafeCore.selectController;
 
 const selectElementUI = testCafeUI.selectElement;
 
@@ -37,7 +38,7 @@ export default class SelectChildClickAutomation {
         this.automationSettings = new AutomationSettings(clickOptions.speed);
 
         this.parentSelect       = domUtils.getSelectParent(this.element);
-        this.optionListExpanded = this.parentSelect ? selectElementUI.isOptionListExpanded(this.parentSelect) : false;
+        this.optionListExpanded = this.parentSelect ? selectController.isOptionListExpanded(this.parentSelect) : false;
         this.childIndex         = null;
         this.clickCausesChange  = false;
 
@@ -62,7 +63,7 @@ export default class SelectChildClickAutomation {
     }
 
     _calculateEventArguments () {
-        const childElement     = this.optionListExpanded ? selectElementUI.getEmulatedChildElement(this.element) : this.element;
+        const childElement     = this.optionListExpanded ? selectController.getEmulatedChildElement(this.element) : this.element;
         const parentSelectSize = styleUtils.getSelectElementSize(this.parentSelect) > 1;
 
         return {
@@ -77,7 +78,7 @@ export default class SelectChildClickAutomation {
         let offsetY = null;
 
         if (this.optionListExpanded) {
-            element = selectElementUI.getEmulatedChildElement(this.element);
+            element = selectController.getEmulatedChildElement(this.element);
 
             const moveActionOffsets = getDefaultAutomationOffsets(element);
 
