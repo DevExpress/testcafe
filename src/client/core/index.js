@@ -9,6 +9,7 @@ import * as pageUnloadBarrier from './barriers/page-unload-barrier';
 import { preventRealEvents, disableRealEventsPreventing } from './prevent-real-events';
 import scrollController from './scroll/controller';
 import ScrollAutomation from './scroll/index';
+import selectController from './select';
 
 import * as serviceUtils from './utils/service';
 import * as domUtils from './utils/dom';
@@ -35,6 +36,8 @@ import * as browser from '../browser';
 import selectorTextFilter from '../../client-functions/selectors/selector-text-filter';
 import selectorAttributeFilter from '../../client-functions/selectors/selector-attribute-filter';
 
+import { TEST_RUN_ERRORS, RUNTIME_ERRORS } from '../../errors/types';
+
 const exports = {};
 
 exports.RequestBarrier              = RequestBarrier;
@@ -46,6 +49,7 @@ exports.preventRealEvents           = preventRealEvents;
 exports.disableRealEventsPreventing = disableRealEventsPreventing;
 exports.scrollController            = scrollController;
 exports.ScrollAutomation            = ScrollAutomation;
+exports.selectController            = selectController;
 
 exports.serviceUtils           = serviceUtils;
 exports.domUtils               = domUtils;
@@ -71,6 +75,9 @@ exports.stringifyElement       = stringifyElement;
 
 exports.selectorTextFilter      = selectorTextFilter;
 exports.selectorAttributeFilter = selectorAttributeFilter;
+
+exports.TEST_RUN_ERRORS = TEST_RUN_ERRORS;
+exports.RUNTIME_ERRORS  = RUNTIME_ERRORS;
 
 const nativeMethods    = hammerhead.nativeMethods;
 const evalIframeScript = hammerhead.EVENTS.evalIframeScript;

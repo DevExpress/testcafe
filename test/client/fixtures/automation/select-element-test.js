@@ -6,6 +6,7 @@ const Promise          = hammerhead.Promise;
 
 const testCafeCore     = window.getTestCafeModule('testCafeCore');
 const parseKeySequence = testCafeCore.parseKeySequence;
+const selectController = testCafeCore.selectController;
 
 testCafeCore.preventRealEvents();
 
@@ -17,9 +18,6 @@ const ClickAutomation            = testCafeAutomation.Click;
 const SelectChildClickAutomation = testCafeAutomation.SelectChildClick;
 const getOffsetOptions           = testCafeAutomation.getOffsetOptions;
 const cursor                     = testCafeAutomation.cursor;
-
-const testCafeUI    = window.getTestCafeModule('testCafeUI');
-const selectElement = testCafeUI.selectElement;
 
 const isMobileSafari = browserUtils.isSafari && featureDetection.isTouchDevice;
 const nextTestDelay  = browserUtils.isIE ? 30 : 200;
@@ -668,7 +666,7 @@ $(document).ready(function () {
             const select = createSelect(2);
 
             runClickAutomation(select, {}, function () {
-                ok(selectElement.isOptionListExpanded(select));
+                ok(selectController.isOptionListExpanded(select));
                 startNext();
             });
         });
@@ -679,7 +677,7 @@ $(document).ready(function () {
             $(select).attr('multiple', 'multiple');
 
             runClickAutomation(select, {}, function () {
-                ok(selectElement.isOptionListExpanded(select));
+                ok(selectController.isOptionListExpanded(select));
                 startNext();
             });
         });

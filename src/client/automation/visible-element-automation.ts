@@ -3,7 +3,7 @@ import screenPointToClient from './utils/screen-point-to-client';
 import getDevicePoint from './utils/get-device-point';
 import { getOffsetOptions } from '../core/utils/offsets';
 import getElementFromPoint from './get-element';
-import AUTOMATION_ERROR_TYPES from '../../shared/errors/automation-errors';
+import { ActionElementIsInvisibleError, ActionElementIsNotTargetError } from '../../shared/errors';
 import AutomationSettings from './settings';
 import MoveAutomation from './move';
 import AxisValues, { AxisValuesData } from '../core/utils/values/axis-values';
@@ -28,6 +28,8 @@ import { Dictionary } from '../../configuration/interfaces';
 import ensureMouseEventAfterScroll from './utils/ensure-mouse-event-after-scroll';
 import WARNING_TYPES from '../../shared/warnings/types';
 
+
+const AVAILABLE_OFFSET_DEEP = 2;
 
 interface ElementStateArgsBase {
     element: HTMLElement | null;
@@ -153,28 +155,83 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
             });
     }
 
-    private _getElementOffset (): { offsetX: number; offsetY: number } {
+    private _getElementOffset (): AxisValues<number> {
         const defaultOffsets = getOffsetOptions(this.element);
 
-        let { offsetX, offsetY } = this.options;
+        const { offsetX, offsetY } = this.options;
 
-        offsetX = offsetX || offsetX === 0 ? offsetX : defaultOffsets.offsetX;
-        offsetY = offsetY || offsetY === 0 ? offsetY : defaultOffsets.offsetY;
+        const y = offsetY || offsetY === 0 ? offsetY : defaultOffsets.offsetY;
+        const x = offsetX || offsetX === 0 ? offsetX : defaultOffsets.offsetX;
 
-        return { offsetX, offsetY };
+        return AxisValues.create({ x, y });
+    }
+
+    private async _isTargetElement ( element: HTMLElement, expectedElement: HTMLElement | null): Promise<boolean> {
+        let isTarget = !expectedElement || element === expectedElement || element === this.element;
+
+        if (!isTarget && element) {
+            // NOTE: perform an operation with searching in dom only if necessary
+            isTarget = await this._contains(this.element, element);
+        }
+
+        return isTarget;
+    }
+
+    private _getCheckedPoints (centerPoint: AxisValues<number>): AxisValues<number>[] {
+        const points = [centerPoint];
+        const stepX  = centerPoint.x / AVAILABLE_OFFSET_DEEP;
+        const stepY  = centerPoint.y / AVAILABLE_OFFSET_DEEP;
+        const maxX   = centerPoint.x * 2;
+        const maxY   = centerPoint.y * 2;
+
+        for (let y = stepY; y < maxY; y += stepY) {
+            for (let x = stepX; x < maxX; x += stepX)
+                points.push(AxisValues.create({ x, y }));
+        }
+
+        return points;
+    }
+
+    private async _getAvailableOffset (expectedElement: HTMLElement | null, centerPoint: AxisValues<number>): Promise<AxisValues<number> | null> {
+        const checkedPoints = this._getCheckedPoints(centerPoint);
+
+        let screenPoint = null;
+        let clientPoint = null;
+        let element     = null;
+
+        for (let i = 0; i < checkedPoints.length; i++) {
+            screenPoint = await getAutomationPoint(this.element, checkedPoints[i]);
+            clientPoint = await screenPointToClient(this.element, screenPoint);
+            element     = await getElementFromPoint(clientPoint, this.window, expectedElement as HTMLElement);
+
+            if (await this._isTargetElement(element, expectedElement))
+                return checkedPoints[i];
+        }
+
+        return null;
     }
 
     private async _wrapAction (action: () => Promise<unknown>): Promise<ElementState> {
-        const { offsetX: x, offsetY: y } = this._getElementOffset();
-        const screenPointBeforeAction    = await getAutomationPoint(this.element, { x, y });
+        const elementOffset              = this._getElementOffset();
+        const expectedElement            = await positionUtils.containsOffset(this.element, elementOffset.x, elementOffset.y) ? this.element : null;
+        const screenPointBeforeAction    = await getAutomationPoint(this.element, elementOffset);
         const clientPositionBeforeAction = await positionUtils.getClientPosition(this.element);
 
         await action();
 
-        const screenPointAfterAction    = await getAutomationPoint(this.element, { x, y });
+        if (this.options.isDefaultOffset) {
+            const availableOffset = await this._getAvailableOffset(expectedElement, elementOffset);
+
+            elementOffset.x = availableOffset?.x || elementOffset.x;
+            elementOffset.y = availableOffset?.y || elementOffset.y;
+
+            this.options.offsetX = elementOffset.x;
+            this.options.offsetY = elementOffset.y;
+        }
+
+        const screenPointAfterAction    = await getAutomationPoint(this.element, elementOffset);
         const clientPositionAfterAction = await positionUtils.getClientPosition(this.element);
         const clientPoint               = await screenPointToClient(this.element, screenPointAfterAction);
-        const expectedElement           = await positionUtils.containsOffset(this.element, x, y) ? this.element : null;
 
         const element = await getElementFromPoint(clientPoint, this.window, expectedElement as HTMLElement);
 
@@ -188,12 +245,7 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
             });
         }
 
-        let isTarget = !expectedElement || element === expectedElement || element === this.element;
-
-        if (!isTarget) {
-            // NOTE: perform an operation with searching in dom only if necessary
-            isTarget = await this._contains(this.element, element);
-        }
+        const isTarget = await this._isTargetElement(element, expectedElement);
 
         const offsetPositionChanged = screenPointBeforeAction.x !== screenPointAfterAction.x ||
                                     screenPointBeforeAction.y !== screenPointAfterAction.y;
@@ -215,12 +267,15 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
         });
     }
 
-    private static _checkElementState (state: ElementState, useStrictElementCheck: boolean): ElementState {
-        if (!state.element)
-            throw new Error(AUTOMATION_ERROR_TYPES.elementIsInvisibleError);
+    private _checkElementState (state: ElementState, useStrictElementCheck: boolean): ElementState {
+        if (!state.element) {
+            throw new ActionElementIsInvisibleError(null, {
+                reason: positionUtils.getElOutsideBoundsReason(this.element),
+            });
+        }
 
         if (useStrictElementCheck && (!state.isTarget || state.inMoving))
-            throw new Error(AUTOMATION_ERROR_TYPES.foundElementIsNotTarget);
+            throw new ActionElementIsNotTargetError();
 
         return state;
     }
@@ -228,13 +283,13 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
     protected _ensureElement (useStrictElementCheck: boolean, skipCheckAfterMoving = false, skipMoving = false): Promise<ElementStateArgsBase> {
         return this
             ._wrapAction(() => this._scrollToElement())
-            .then(state => VisibleElementAutomation._checkElementState(state, useStrictElementCheck))
+            .then(state => this._checkElementState(state, useStrictElementCheck))
             .then(state => {
                 return skipMoving ? state : this._wrapAction(() => this._moveToElement());
             })
             .then(state => {
                 if (!skipCheckAfterMoving)
-                    VisibleElementAutomation._checkElementState(state, useStrictElementCheck);
+                    this._checkElementState(state, useStrictElementCheck);
 
                 return state;
             })

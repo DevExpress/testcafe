@@ -11,37 +11,32 @@ const nativeMethods    = hammerhead.nativeMethods;
 const eventSimulator   = hammerhead.eventSandbox.eventSimulator;
 const listeners        = hammerhead.eventSandbox.listeners;
 
-const positionUtils = testCafeCore.positionUtils;
-const domUtils      = testCafeCore.domUtils;
-const styleUtils    = testCafeCore.styleUtils;
-const eventUtils    = testCafeCore.eventUtils;
-const arrayUtils    = testCafeCore.arrayUtils;
+const positionUtils    = testCafeCore.positionUtils;
+const domUtils         = testCafeCore.domUtils;
+const styleUtils       = testCafeCore.styleUtils;
+const eventUtils       = testCafeCore.eventUtils;
+const arrayUtils       = testCafeCore.arrayUtils;
+const selectController = testCafeCore.selectController;
 
 
 const OPTION_LIST_CLASS      = 'tcOptionList';
-const OPTION_GROUP_CLASS     = 'tcOptionGroup';
-const OPTION_CLASS           = 'tcOption';
 const DISABLED_CLASS         = 'disabled';
 const MAX_OPTION_LIST_LENGTH = browserUtils.isIE ? 30 : 20;
 
 
-let curSelectEl = null;
-let optionList  = null;
-let groups      = [];
-let options     = [];
-
 function onDocumentMouseDown (e) {
-    const target = nativeMethods.eventTargetGetter.call(e);
+    const target      = nativeMethods.eventTargetGetter.call(e);
+    const curSelectEl = selectController.currentEl;
 
     //NOTE: only in Mozilla 'mousedown' raises for option
     if ((target || e.srcElement) !== curSelectEl && !domUtils.containsElement(curSelectEl, target) &&
-        !domUtils.containsElement(optionList, target))
+        !domUtils.containsElement(selectController.optionList, target))
         collapseOptionList();
 }
 
 function onWindowClick (e, dispatched, preventDefault) {
     const target      = nativeMethods.eventTargetGetter.call(e);
-    const optionIndex = arrayUtils.indexOf(options, target);
+    const optionIndex = arrayUtils.indexOf(selectController.options, target);
 
     if (optionIndex < 0)
         return;
@@ -57,6 +52,7 @@ function onWindowClick (e, dispatched, preventDefault) {
 }
 
 function clickOnOption (optionIndex, isOptionDisabled) {
+    const curSelectEl      = selectController.currentEl;
     const curSelectIndex   = curSelectEl.selectedIndex;
     const realOption       = curSelectEl.getElementsByTagName('option')[optionIndex];
     const clickLeadChanges = !isOptionDisabled && optionIndex !== curSelectIndex;
@@ -92,55 +88,6 @@ function clickOnOption (optionIndex, isOptionDisabled) {
         collapseOptionList();
 }
 
-function createOption (realOption, parent) {
-    const option           = document.createElement('div');
-    const isOptionDisabled = realOption.disabled || domUtils.getTagName(realOption.parentElement) === 'optgroup' &&
-                                                  realOption.parentElement.disabled;
-
-    // eslint-disable-next-line no-restricted-properties
-    nativeMethods.nodeTextContentSetter.call(option, realOption.text);
-
-    parent.appendChild(option);
-    shadowUI.addClass(option, OPTION_CLASS);
-
-    if (isOptionDisabled) {
-        shadowUI.addClass(option, DISABLED_CLASS);
-        styleUtils.set(option, 'color', styleUtils.get(realOption, 'color'));
-    }
-
-    options.push(option);
-}
-
-function createGroup (realGroup, parent) {
-    const group = document.createElement('div');
-
-    nativeMethods.nodeTextContentSetter.call(group, realGroup.label || ' ');
-    parent.appendChild(group);
-
-    shadowUI.addClass(group, OPTION_GROUP_CLASS);
-
-    if (group.disabled) {
-        shadowUI.addClass(group, DISABLED_CLASS);
-
-        styleUtils.set(group, 'color', styleUtils.get(realGroup, 'color'));
-    }
-
-    createChildren(realGroup.children, group);
-
-    groups.push(group);
-}
-
-function createChildren (children, parent) {
-    const childrenLength = domUtils.getChildrenLength(children);
-
-    for (let i = 0; i < childrenLength; i++) {
-        if (domUtils.isOptionElement(children[i]))
-            createOption(children[i], parent);
-        else if (domUtils.getTagName(children[i]) === 'optgroup')
-            createGroup(children[i], parent);
-    }
-}
-
 export function expandOptionList (select) {
     const selectChildren = select.children;
 
@@ -148,8 +95,8 @@ export function expandOptionList (select) {
         return;
 
     //NOTE: check is option list expanded
-    if (curSelectEl) {
-        const isSelectExpanded = select === curSelectEl;
+    if (selectController.currentEl) {
+        const isSelectExpanded = select === selectController.currentEl;
 
         collapseOptionList();
 
@@ -157,13 +104,13 @@ export function expandOptionList (select) {
             return;
     }
 
-    curSelectEl = select;
+    const curSelectEl = selectController.currentEl = select;
+    const optionList  = selectController.optionList = document.createElement('div');
 
-    optionList = document.createElement('div');
     uiRoot.element().appendChild(optionList);
     shadowUI.addClass(optionList, OPTION_LIST_CLASS);
 
-    createChildren(selectChildren, optionList);
+    selectController.createChildren(selectChildren, optionList);
 
     listeners.addInternalEventBeforeListener(window, [ 'click' ], onWindowClick);
 
@@ -196,28 +143,10 @@ export function expandOptionList (select) {
 }
 
 export function collapseOptionList () {
-    domUtils.remove(optionList);
+    domUtils.remove(selectController.optionList);
     eventUtils.unbind(document, 'mousedown', onDocumentMouseDown);
 
-    optionList  = null;
-    curSelectEl = null;
-    options     = [];
-    groups      = [];
-}
-
-export function isOptionListExpanded (select) {
-    return select ? select === curSelectEl : !!curSelectEl;
-}
-
-export function getEmulatedChildElement (element) {
-    const isGroup      = domUtils.getTagName(element) === 'optgroup';
-    const elementIndex = isGroup ? domUtils.getElementIndexInParent(curSelectEl, element) :
-        domUtils.getElementIndexInParent(curSelectEl, element);
-
-    if (!isGroup)
-        return options[elementIndex];
-
-    return groups[elementIndex];
+    selectController.clear();
 }
 
 export function scrollOptionListByChild (child) {
@@ -293,16 +222,4 @@ export function switchOptionsByKeys (element, command) {
             eventSimulator.change(element);
         }
     }
-}
-
-export function isOptionElementVisible (el) {
-    const parentSelect = domUtils.getSelectParent(el);
-
-    if (!parentSelect)
-        return true;
-
-    const expanded        = isOptionListExpanded(parentSelect);
-    const selectSizeValue = styleUtils.getSelectElementSize(parentSelect);
-
-    return expanded || selectSizeValue > 1;
 }

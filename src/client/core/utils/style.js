@@ -55,18 +55,18 @@ export function getWindowDimensions (window) {
     return new BoundaryValues(0, getWidth(window), getHeight(window), 0);
 }
 
-function isVisibilityHiddenNode (node) {
+export function isHiddenNode (node) {
     return !!domUtils.findParent(node, true, ancestor =>
         domUtils.isElementNode(ancestor) && styleUtils.get(ancestor, 'visibility') === 'hidden');
 }
 
-function isHiddenNode (node) {
+export function isNotDisplayedNode (node) {
     return !!domUtils.findParent(node, true, ancestor =>
         domUtils.isElementNode(ancestor) && styleUtils.get(ancestor, 'display') === 'none');
 }
 
 export function isNotVisibleNode (node) {
-    return !domUtils.isRenderedNode(node) || isHiddenNode(node) || isVisibilityHiddenNode(node);
+    return !domUtils.isRenderedNode(node) || isNotDisplayedNode(node) || isHiddenNode(node);
 }
 
 export function hasDimensions (el) {
