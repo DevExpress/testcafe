@@ -58,12 +58,11 @@ export class ProxylessSessionController extends SessionController {
             return;
 
         const { cookies } = this.pendingStateSnapshot;
-        const cookieProvider = new CdpCookieProvider(this.currentTestRun);
 
-        await cookieProvider.deleteCookies();
+        await this.cookieProvider.deleteCookies();
 
         if (cookies)
-            await cookieProvider.setCookies(JSON.parse(cookies), '');
+            await this.cookieProvider.setCookies(JSON.parse(cookies), '');
     }
 
     _createRestoreStoragesScript (storageName: 'localStorage' | 'sessionStorage'): string {
