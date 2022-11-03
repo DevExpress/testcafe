@@ -1,8 +1,8 @@
-import TestRun from '../../test-run';
+import TestRun from '../test-run';
 import { StateSnapshot } from 'testcafe-hammerhead';
-import SessionController from '../../test-run/session-controller';
+import SessionController from '../test-run/session-controller';
 
-export class ProxylessStorageSnapshotController {
+export class RestoreStorageController {
     private _testRun: TestRun;
 
     constructor (testRun: TestRun) {

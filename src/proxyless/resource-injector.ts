@@ -31,7 +31,7 @@ import {
     SpecialServiceRoutes,
 } from './types';
 
-import { ProxylessStorageSnapshotController } from './snapshots/storage-snapshot-controller';
+import { RestoreStorageController } from './restore-storage-controller';
 
 const CONTENT_SECURITY_POLICY_HEADER_NAMES = [
     'content-security-policy',
@@ -56,7 +56,7 @@ export default class ResourceInjector {
         if (!currentTestRun)
             return null;
 
-        const snapshotController = new ProxylessStorageSnapshotController(currentTestRun);
+        const snapshotController = new RestoreStorageController(currentTestRun);
 
         const taskScript = await currentTestRun.session.getTaskScript({
             referer:     '',

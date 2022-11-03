@@ -46,16 +46,13 @@ export class ProxylessRoleProvider extends RoleProviderBase implements RoleProvi
     async useStateSnapshot (stateSnapshot: StateSnapshot): Promise<void> {
         await super.useStateSnapshot(stateSnapshot);
 
-        const cookieProvider = new CdpCookieProvider(this._testRun);
-
         const { cookies } = stateSnapshot;
 
-        await cookieProvider.deleteCookies();
+        await this._cookieProvider.deleteCookies();
 
         if (cookies)
-            await cookieProvider.setCookies(JSON.parse(cookies), '');
+            await this._cookieProvider.setCookies(JSON.parse(cookies), '');
     }
-
 }
 
 export class ProxyRoleProvider extends RoleProviderBase implements RoleProvider {
