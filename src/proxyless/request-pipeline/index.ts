@@ -20,7 +20,7 @@ import {
 import {
     IncomingMessageLike,
     isRedirectStatusCode,
-    SPECIAL_BLANK_PAGE
+    SPECIAL_BLANK_PAGE,
 } from 'testcafe-hammerhead';
 import ProxylessPipelineContext from '../request-hooks/pipeline-context';
 import { ProxylessSetupOptions } from '../../shared/types';
