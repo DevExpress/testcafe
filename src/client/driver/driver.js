@@ -259,6 +259,9 @@ export default class Driver extends serviceUtils.EventEmitter {
     }
 
     _getCurrentWindowId () {
+        if (this.options.proxyless)
+            return this.runInfo.activeWindowId;
+
         const currentUrl     = window.location.toString();
         const parsedProxyUrl = hammerhead.utils.url.parseProxyUrl(currentUrl);
 

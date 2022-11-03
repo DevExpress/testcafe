@@ -15,6 +15,7 @@
 
     var testRunId                  = {{{testRunId}}};
     var browserId                  = {{{browserId}}};
+    var activeWindowId             = {{{activeWindowId}}};
     var selectorTimeout            = {{{selectorTimeout}}};
     var pageLoadTimeout            = {{{pageLoadTimeout}}};
     var childWindowReadyTimeout    = {{{childWindowReadyTimeout}}};
@@ -46,9 +47,10 @@
             openFileProtocolUrl: browserOpenFileProtocolUrl,
         },
         {
-            userAgent:   userAgent,
-            fixtureName: fixtureName,
-            testName:    testName,
+            userAgent:      userAgent,
+            fixtureName:    fixtureName,
+            testName:       testName,
+            activeWindowId: activeWindowId,
         },
         {
             selectorTimeout:            selectorTimeout,

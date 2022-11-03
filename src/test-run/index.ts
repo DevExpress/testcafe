@@ -571,6 +571,7 @@ export default class TestRun extends AsyncEventEmitter {
         return Mustache.render(TEST_RUN_TEMPLATE, {
             testRunId:                          JSON.stringify(this.session.id),
             browserId:                          JSON.stringify(this.browserConnection.id),
+            activeWindowId:                     JSON.stringify(this.activeWindowId),
             browserHeartbeatRelativeUrl:        JSON.stringify(this.browserConnection.heartbeatRelativeUrl),
             browserStatusRelativeUrl:           JSON.stringify(this.browserConnection.statusRelativeUrl),
             browserStatusDoneRelativeUrl:       JSON.stringify(this.browserConnection.statusDoneRelativeUrl),
