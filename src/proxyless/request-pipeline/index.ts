@@ -17,7 +17,11 @@ import {
     requestPipelineMockLogger,
     requestPipelineOtherRequestLogger,
 } from '../../utils/debug-loggers';
-import { IncomingMessageLike, SPECIAL_BLANK_PAGE } from 'testcafe-hammerhead';
+import {
+    IncomingMessageLike,
+    isRedirectStatusCode,
+    SPECIAL_BLANK_PAGE
+} from 'testcafe-hammerhead';
 import ProxylessPipelineContext from '../request-hooks/pipeline-context';
 import { ProxylessSetupOptions } from '../../shared/types';
 import DEFAULT_PROXYLESS_SETUP_OPTIONS from '../default-setup-options';
@@ -124,6 +128,12 @@ export default class ProxylessRequestPipeline {
             }
         }
         else {
+            if (isRedirectStatusCode(event.responseStatusCode as number)) {
+                await safeContinueResponse(this._client, { requestId: event.requestId });
+
+                return;
+            }
+
             const resourceInfo = await this._resourceInjector.getDocumentResourceInfo(event, this._client);
 
             if (resourceInfo.error) {
