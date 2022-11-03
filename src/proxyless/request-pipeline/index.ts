@@ -17,7 +17,13 @@ import {
     requestPipelineMockLogger,
     requestPipelineOtherRequestLogger,
 } from '../../utils/debug-loggers';
-import { IncomingMessageLike, SPECIAL_BLANK_PAGE } from 'testcafe-hammerhead';
+
+import {
+    IncomingMessageLike,
+    SPECIAL_BLANK_PAGE,
+    StoragesSnapshot,
+} from 'testcafe-hammerhead';
+
 import ProxylessPipelineContext from '../request-hooks/pipeline-context';
 import { ProxylessSetupOptions } from '../../shared/types';
 import DEFAULT_PROXYLESS_SETUP_OPTIONS from '../default-setup-options';
@@ -28,6 +34,7 @@ import { safeContinueResponse } from './safe-api';
 export default class ProxylessRequestPipeline {
     private readonly _client: ProtocolApi;
     public readonly requestHookEventProvider: ProxylessRequestHookEventProvider;
+    public restoringStorages: StoragesSnapshot | null;
     private readonly _resourceInjector: ResourceInjector;
     private _options: ProxylessSetupOptions;
     private readonly _specialServiceRoutes: SpecialServiceRoutes;
@@ -42,6 +49,7 @@ export default class ProxylessRequestPipeline {
         this._options                 = DEFAULT_PROXYLESS_SETUP_OPTIONS;
         this._stopped                 = false;
         this._currentFrameTree        = null;
+        this.restoringStorages        = null;
     }
 
     private _getSpecialServiceRoutes (browserId: string): SpecialServiceRoutes {
@@ -78,7 +86,7 @@ export default class ProxylessRequestPipeline {
         if (pipelineContext.reqOpts.isAjax)
             await this._resourceInjector.processNonProxiedContent(fulfillInfo, this._client);
         else
-            await this._resourceInjector.processHTMLPageContent(fulfillInfo, false, this._client);
+            await this._resourceInjector.processHTMLPageContent(fulfillInfo, { isIframe: false }, this._client);
 
         requestPipelineMockLogger(`Mock request ${event.requestId}`);
     }
@@ -147,9 +155,14 @@ export default class ProxylessRequestPipeline {
                         responseHeaders: event.responseHeaders,
                         responseCode:    event.responseStatusCode as number,
                         body:            (resourceInfo.body as Buffer).toString(),
+                    }, {
+                        isIframe:          this._isIframe(event.frameId),
+                        url:               event.request.url,
+                        restoringStorages: this.restoringStorages,
                     },
-                    this._isIframe(event.frameId),
                     this._client);
+
+                this.restoringStorages = null;
             }
         }
     }

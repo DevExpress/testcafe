@@ -186,3 +186,5 @@ Server.prototype.close = function () {
         socket.destroy();
     });
 };
+
+new Server(3000, "C:\\Projects\\testcafe\\test\\functional");

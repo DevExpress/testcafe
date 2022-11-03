@@ -13,6 +13,8 @@
     document.querySelector('form').addEventListener('submit', function () {
         const name = document.querySelector('[name="name"]').value;
 
+        debugger;
+
         localStorage.setItem('token', '123456789' + name);
     });
 </script>
