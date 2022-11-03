@@ -11,7 +11,7 @@ export interface SpecialServiceRoutes {
 }
 
 export interface DocumentResourceInfo {
-    success: boolean;
+    error: any;
     body: Buffer | null;
 }
 

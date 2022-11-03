@@ -10,10 +10,11 @@ import {
 } from '../../utils/debug-loggers';
 import { ProxylessSetupOptions } from '../../shared/types';
 import { isRequest } from '../utils/cdp';
-import { FAVICON_CONTENT_TYPE_HEADER, INVALID_INTERCEPTED_RESPONSE_ERROR_MSG } from './constants';
+import { FAVICON_CONTENT_TYPE_HEADER } from './constants';
 import { StatusCodes } from 'http-status-codes';
 import loadAssets from '../../load-assets';
 import { toBase64String } from '../utils/string';
+import { safeContinueRequest, safeContinueResponse } from './safe-api';
 
 
 const internalRequest = {
@@ -42,25 +43,10 @@ const serviceRequest = {
     handler: async (event: RequestPausedEvent, client: ProtocolApi): Promise<void> => {
         requestPipelineServiceRequestLogger('%r', event);
 
-        const { requestId } = event;
-
         if (isRequest(event))
-            await client.Fetch.continueRequest({ requestId });
-        else {
-            // Hack: CDP doesn't allow to continue response for requests sent from the reloaded page.
-            // Such situation rarely occurs on 'heartbeat' or 'open-file-protocol' requests.
-            // We are using the simplest way to fix it - just omit such errors.
-            try {
-                await client.Fetch.continueResponse({ requestId });
-            }
-            catch (err: any) {
-                if (err.message === INVALID_INTERCEPTED_RESPONSE_ERROR_MSG)
-                    return;
-
-                throw err;
-            }
-
-        }
+            await safeContinueRequest(client, event);
+        else
+            await safeContinueResponse(client, event);
     },
 } as RequestHandler;
 
@@ -74,7 +60,7 @@ const defaultFaviconRequest = {
         requestPipelineLogger('%r', event);
 
         if (isRequest(event))
-            await client.Fetch.continueRequest({ requestId: event.requestId });
+            await safeContinueRequest(client, event);
         else {
             if (event.responseStatusCode === StatusCodes.NOT_FOUND) { // eslint-disable-line no-lonely-if
                 const { favIcon } = loadAssets(options.developmentMode);
@@ -87,7 +73,7 @@ const defaultFaviconRequest = {
                 });
             }
             else
-                await client.Fetch.continueResponse({ requestId: event.requestId });
+                await safeContinueResponse(client, event);
         }
     },
 } as RequestHandler;

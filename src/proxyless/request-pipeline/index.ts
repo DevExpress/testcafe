@@ -22,6 +22,7 @@ import ProxylessPipelineContext from '../request-hooks/pipeline-context';
 import { ProxylessSetupOptions } from '../../shared/types';
 import DEFAULT_PROXYLESS_SETUP_OPTIONS from '../default-setup-options';
 import getSpecialRequestHandler from './special-handlers';
+import { safeContinueResponse } from './safe-api';
 
 
 export default class ProxylessRequestPipeline {
@@ -95,6 +96,11 @@ export default class ProxylessRequestPipeline {
         return continueResponseRequest;
     }
 
+    private _shouldRedirectToErrorPage (event: RequestPausedEvent): boolean {
+        return event.resourceType === 'Document'
+            && !this._isIframe(event.frameId);
+    }
+
     private async _handleOtherRequests (event: RequestPausedEvent): Promise<void> {
         requestPipelineOtherRequestLogger('%r', event);
 
@@ -120,15 +126,19 @@ export default class ProxylessRequestPipeline {
         else {
             const resourceInfo = await this._resourceInjector.getDocumentResourceInfo(event, this._client);
 
-            if (!resourceInfo.success)
+            if (resourceInfo.error) {
+                if (this._shouldRedirectToErrorPage(event))
+                    await this._resourceInjector.redirectToErrorPage(this._client, resourceInfo.error, event.request.url);
+
                 return;
+            }
 
             const modified = await this.requestHookEventProvider.onResponse(event, resourceInfo.body, this._client);
 
             if (event.resourceType !== 'Document') {
                 const continueResponseRequest = this._createContinueResponseRequest(event, modified);
 
-                await this._client.Fetch.continueResponse(continueResponseRequest);
+                await safeContinueResponse(this._client, continueResponseRequest);
             }
             else {
                 await this._resourceInjector.processHTMLPageContent(

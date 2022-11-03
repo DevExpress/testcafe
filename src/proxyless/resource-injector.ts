@@ -24,6 +24,7 @@ import {
     stringifyHeaderValues,
     toBase64String,
 } from './utils/string';
+import { safeFulfillRequest } from './request-pipeline/safe-api';
 
 
 const CONTENT_SECURITY_POLICY_HEADER_NAMES = [
@@ -84,7 +85,7 @@ export default class ResourceInjector {
         return stringifyHeaderValues(headers);
     }
 
-    private async _handlePageError (client: ProtocolApi, err: Error, url: string): Promise<void> {
+    public async redirectToErrorPage (client: ProtocolApi, err: Error, url: string): Promise<void> {
         const browserConnection = BrowserConnection.getById(this._browserId) as BrowserConnection;
         const currentTestRun    = browserConnection.getCurrentTestRun();
 
@@ -106,8 +107,8 @@ export default class ResourceInjector {
 
         if (resourceType !== 'Document') {
             return {
-                success: true,
-                body:    null,
+                error: null,
+                body:  null,
             };
         }
 
@@ -115,11 +116,9 @@ export default class ResourceInjector {
             if (responseErrorReason === 'NameNotResolved') {
                 const err = new Error(`Failed to find a DNS-record for the resource at "${event.request.url}"`);
 
-                await this._handlePageError(client, err, request.url);
-
                 return {
-                    success: false,
-                    body:    null,
+                    error: err,
+                    body:  null,
                 };
             }
 
@@ -127,18 +126,16 @@ export default class ResourceInjector {
             const responseStr = getResponseAsString(responseObj);
 
             return {
-                success: true,
-                body:    Buffer.from(responseStr),
+                error: null,
+                body:  Buffer.from(responseStr),
             };
         }
         catch (err) {
             resourceInjectorLogger('Failed to process request: %s', request.url);
 
-            await this._handlePageError(client, err as Error, request.url);
-
             return {
-                success: false,
-                body:    null,
+                error: err,
+                body:  null,
             };
         }
     }
@@ -165,7 +162,7 @@ export default class ResourceInjector {
         else {
             const updatedResponseStr = injectResources(fulfillRequestInfo.body as string, injectableResources);
 
-            await client.Fetch.fulfillRequest({
+            await safeFulfillRequest(client, {
                 requestId:       fulfillRequestInfo.requestId,
                 responseCode:    fulfillRequestInfo.responseCode || StatusCodes.OK,
                 responseHeaders: this._processResponseHeaders(fulfillRequestInfo.responseHeaders),
@@ -175,7 +172,7 @@ export default class ResourceInjector {
     }
 
     public async processNonProxiedContent (fulfillRequestInfo: FulfillRequestRequest, client: ProtocolApi): Promise<void> {
-        await client.Fetch.fulfillRequest({
+        await safeFulfillRequest(client, {
             requestId:       fulfillRequestInfo.requestId,
             responseCode:    fulfillRequestInfo.responseCode || StatusCodes.OK,
             responseHeaders: this._processResponseHeaders(fulfillRequestInfo.responseHeaders),
