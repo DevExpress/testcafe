@@ -1333,7 +1333,7 @@ export default class TestRun extends AsyncEventEmitter {
 
     // Role management
     public async getStateSnapshot (): Promise<StateSnapshot> {
-        const state = this.session.getStateSnapshot();
+        const state = await this.session.getStateSnapshot();
 
         state.storages = await this._internalExecuteCommand(new serviceCommands.BackupStoragesCommand()) as StoragesSnapshot;
 
