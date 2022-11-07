@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <button id="send-request">Send request</button>
+    <script>
+        document.getElementById('send-request').addEventListener('click', function () {
+            fetch('http://one-dummy-url.com/post', {
+                method: 'POST',
+                body:    JSON.stringify({ foo: 'bar' }),
+                headers: {
+                    'x-custom-header': 'test',
+                }
+            })
+            .then(res => res.json());
+        });
+    </script>
+</body>
+</html>
