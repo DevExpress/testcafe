@@ -3,7 +3,6 @@ import MOCK_ROUTES from '../../common/mock-routes';
 
 const logger = RequestLogger(MOCK_ROUTES.post, {
     logRequestHeaders:     true,
-    stringifyRequestBody:  true,
     logResponseHeaders:    true,
     logResponseBody:       true,
     stringifyResponseBody: true,
