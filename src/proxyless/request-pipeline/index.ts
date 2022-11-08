@@ -38,7 +38,7 @@ export default class ProxylessRequestPipeline {
     private readonly _specialServiceRoutes: SpecialServiceRoutes;
     private _stopped: boolean;
     private _currentFrameTree: FrameTree | null;
-    private readonly _failedRequests: string[];
+    private readonly _failedRequestIds: string[];
 
     public constructor (browserId: string, client: ProtocolApi) {
         this._client                  = client;
@@ -48,7 +48,7 @@ export default class ProxylessRequestPipeline {
         this._options                 = DEFAULT_PROXYLESS_SETUP_OPTIONS;
         this._stopped                 = false;
         this._currentFrameTree        = null;
-        this._failedRequests          = [];
+        this._failedRequestIds        = [];
     }
 
     private _getSpecialServiceRoutes (browserId: string): SpecialServiceRoutes {
@@ -171,8 +171,8 @@ export default class ProxylessRequestPipeline {
                 await this._respondToOtherRequest(event);
             }
             catch (err) {
-                if (event.networkId && this._failedRequests.includes(event.networkId)) {
-                    remove(this._failedRequests, event.networkId);
+                if (event.networkId && this._failedRequestIds.includes(event.networkId)) {
+                    remove(this._failedRequestIds, event.networkId);
 
                     return;
                 }
@@ -235,7 +235,7 @@ export default class ProxylessRequestPipeline {
         this._client.Network.on('loadingFailed', async (event: LoadingFailedEvent) => {
             requestPipelineLogger('%l', event);
 
-            this._failedRequests.push(event.requestId);
+            this._failedRequestIds.push(event.requestId);
 
             if (event.requestId)
                 this.requestHookEventProvider.cleanUp(event.requestId);
