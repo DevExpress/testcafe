@@ -1,3 +1,4 @@
+import { remove } from 'lodash';
 import { ProtocolApi } from 'chrome-remote-interface';
 import Protocol from 'devtools-protocol';
 import RequestPausedEvent = Protocol.Fetch.RequestPausedEvent;
@@ -37,6 +38,7 @@ export default class ProxylessRequestPipeline {
     private readonly _specialServiceRoutes: SpecialServiceRoutes;
     private _stopped: boolean;
     private _currentFrameTree: FrameTree | null;
+    private readonly _failedRequests: string[];
 
     public constructor (browserId: string, client: ProtocolApi) {
         this._client                  = client;
@@ -46,6 +48,7 @@ export default class ProxylessRequestPipeline {
         this._options                 = DEFAULT_PROXYLESS_SETUP_OPTIONS;
         this._stopped                 = false;
         this._currentFrameTree        = null;
+        this._failedRequests          = [];
     }
 
     private _getSpecialServiceRoutes (browserId: string): SpecialServiceRoutes {
@@ -105,6 +108,42 @@ export default class ProxylessRequestPipeline {
             && !this._isIframe(event.frameId);
     }
 
+    private async _respondToOtherRequest (event: RequestPausedEvent): Promise<void> {
+        if (isRedirectStatusCode(event.responseStatusCode as number)) {
+            await safeContinueResponse(this._client, { requestId: event.requestId });
+
+            return;
+        }
+
+        const resourceInfo = await this._resourceInjector.getDocumentResourceInfo(event, this._client);
+
+        if (resourceInfo.error) {
+            if (this._shouldRedirectToErrorPage(event))
+                await this._resourceInjector.redirectToErrorPage(this._client, resourceInfo.error, event.request.url);
+
+            return;
+        }
+
+        const modified = await this.requestHookEventProvider.onResponse(event, resourceInfo.body, this._client);
+
+        if (event.resourceType !== 'Document') {
+            const continueResponseRequest = this._createContinueResponseRequest(event, modified);
+
+            await safeContinueResponse(this._client, continueResponseRequest);
+        }
+        else {
+            await this._resourceInjector.processHTMLPageContent(
+                {
+                    requestId:       event.requestId,
+                    responseHeaders: event.responseHeaders,
+                    responseCode:    event.responseStatusCode as number,
+                    body:            (resourceInfo.body as Buffer).toString(),
+                },
+                this._isIframe(event.frameId),
+                this._client);
+        }
+    }
+
     private async _handleOtherRequests (event: RequestPausedEvent): Promise<void> {
         requestPipelineOtherRequestLogger('%r', event);
 
@@ -128,38 +167,17 @@ export default class ProxylessRequestPipeline {
             }
         }
         else {
-            if (isRedirectStatusCode(event.responseStatusCode as number)) {
-                await safeContinueResponse(this._client, { requestId: event.requestId });
-
-                return;
+            try {
+                await this._respondToOtherRequest(event);
             }
+            catch (err) {
+                if (event.networkId && this._failedRequests.includes(event.networkId)) {
+                    remove(this._failedRequests, event.networkId);
 
-            const resourceInfo = await this._resourceInjector.getDocumentResourceInfo(event, this._client);
+                    return;
+                }
 
-            if (resourceInfo.error) {
-                if (this._shouldRedirectToErrorPage(event))
-                    await this._resourceInjector.redirectToErrorPage(this._client, resourceInfo.error, event.request.url);
-
-                return;
-            }
-
-            const modified = await this.requestHookEventProvider.onResponse(event, resourceInfo.body, this._client);
-
-            if (event.resourceType !== 'Document') {
-                const continueResponseRequest = this._createContinueResponseRequest(event, modified);
-
-                await safeContinueResponse(this._client, continueResponseRequest);
-            }
-            else {
-                await this._resourceInjector.processHTMLPageContent(
-                    {
-                        requestId:       event.requestId,
-                        responseHeaders: event.responseHeaders,
-                        responseCode:    event.responseStatusCode as number,
-                        body:            (resourceInfo.body as Buffer).toString(),
-                    },
-                    this._isIframe(event.frameId),
-                    this._client);
+                throw err;
             }
         }
     }
@@ -216,6 +234,8 @@ export default class ProxylessRequestPipeline {
 
         this._client.Network.on('loadingFailed', async (event: LoadingFailedEvent) => {
             requestPipelineLogger('%l', event);
+
+            this._failedRequests.push(event.requestId);
 
             if (event.requestId)
                 this.requestHookEventProvider.cleanUp(event.requestId);
