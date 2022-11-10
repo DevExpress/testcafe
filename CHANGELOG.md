@@ -1,5 +1,25 @@
 # Changelog
 
+## v2.1.0 (2022-11-10)
+
+### Improvements
+
+#### Improved handling of invisible elements
+
+* [Visibility criteria](xref:402833#visibility-criteria) update: TestCafe no longer interacts with elements that have the `visibility: collapse` attribute.
+* If the action target does not fit the visibility criteria, TestCafe outputs an error message that references the exact reason. ([#7310](https://github.com/DevExpress/testcafe/issues/7310)).
+
+#### Improved handling of overlapped elements
+
+* When another element overlaps the center of the action target, TestCafe scans the target element for available points of contact. If the selector timeout ends before TestCafe finds an unobstructed point, TestCafe outputs a warning message and interacts with the topmost element at the center of the original target ([#7309](https://github.com/DevExpress/testcafe/issues/7309)).
+* TestCafe v2.1.0 contains an improved algorithm that detects whether extra scrolling can resolve an element obstruction issue. ([#6208](https://github.com/DevExpress/testcafe/issues/6208))
+
+### Bug Fixes
+
+* In some environments, TestCafe cannot take screenshots when the test runs in a headless Chromium-based browser ([#7224](https://github.com/DevExpress/testcafe/issues/7224)).
+* Full-page screenshots in headless Chrome do not include the edges of the page ([#5961](https://github.com/DevExpress/testcafe/issues/5961)).
+* TestCafe throws the "TypeError: Illegal invocation" error when the front-end code passes a number value to the  `Element.insertAdjacentText` method ([#7352](https://github.com/DevExpress/testcafe/issues/7352)).
+
 ## v2.0.2 (2022-10-31)
 
 ### Bug Fixes
