@@ -57,6 +57,7 @@ import {
     SkipJsErrorsCommand,
     AddRequestHooksCommand,
     RemoveRequestHooksCommand,
+    RunCustomActionCommand,
 } from '../../test-run/commands/actions';
 
 import {
@@ -83,6 +84,7 @@ import ReExecutablePromise from '../../utils/re-executable-promise';
 import sendRequest from '../../test-run/request/send';
 import { RequestRuntimeError } from '../../errors/runtime';
 import { RUNTIME_ERRORS } from '../../errors/types';
+import CustomActions from './custom-actions';
 
 const originalThen = Promise.resolve().then;
 
@@ -99,8 +101,37 @@ export default class TestController {
         this.testRun        = testRun;
         this.executionChain = Promise.resolve();
         this.warningLog     = testRun.warningLog;
+        this.customActions  = new CustomActions(testRun);
 
         this._addTestControllerToExecutionChain();
+    }
+
+    _registerCustomActions () {
+        const customActions = this.testRun?.opts?.customActions || {};
+
+        Object.entries(customActions).forEach(([ name, fn ]) => {
+            TestController.prototype[delegatedAPI(name)] = (...args) => {
+                const callsite = getCallsiteForMethod(name);
+
+                return this._enqueueCommand(RunCustomActionCommand, { fn, args }, null, callsite);
+            };
+        });
+
+        this._extendTestControllerAPIList(customActions);
+    }
+
+    _extendTestControllerAPIList (actions) {
+        const customActionsList = Object.entries(actions).map(([name]) => {
+            return {
+                srcProp:  delegatedAPI(name),
+                apiProp:  name,
+                accessor: '',
+            };
+        });
+
+        TestController.API_LIST = [...TestController.API_LIST, ...customActionsList ];
+
+        delegateAPI(TestController.prototype, TestController.API_LIST, { useCurrentCtxAsHandler: true });
     }
 
     _addTestControllerToExecutionChain () {
@@ -164,8 +195,9 @@ export default class TestController {
         return this.executionChain;
     }
 
-    _enqueueCommand (CmdCtor, cmdArgs, validateCommandFn) {
-        const callsite = getCallsiteForMethod(CmdCtor.methodName);
+    _enqueueCommand (CmdCtor, cmdArgs, validateCommandFn, callsite) {
+        callsite = callsite || getCallsiteForMethod(CmdCtor.methodName);
+
         const command  = this._createCommand(CmdCtor, cmdArgs, callsite);
 
         if (typeof validateCommandFn === 'function')
@@ -220,6 +252,10 @@ export default class TestController {
 
     _browser$getter () {
         return this.testRun.browser;
+    }
+
+    _custom$getter () {
+        return this.customActions || new CustomActions(this.testRun);
     }
 
     [delegatedAPI(DispatchEventCommand.methodName)] (selector, eventName, options = {}) {

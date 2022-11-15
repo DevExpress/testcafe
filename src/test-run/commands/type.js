@@ -71,4 +71,5 @@ export default {
     skipJsErrors:                        'skip-js-errors',
     addRequestHooks:                     'add-request-hooks',
     removeRequestHooks:                  'remove-request-hooks',
+    runCustomAction:                     'run-custom-action',
 };

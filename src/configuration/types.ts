@@ -31,5 +31,7 @@ interface GlobalHooks {
     request?: typeof RequestHook[] | typeof RequestHook;
 }
 
+type CustomActions = { [name: string]: () => void }
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-type OptionValue = undefined | null | string | boolean | number | string[] | Function | { [key: string]: any } | ScreenshotOptionValue | QuarantineOptionValue | CompilerOptions | GlobalHooks | SkipJsErrorsOptionValue;
+type OptionValue = undefined | null | string | boolean | number | string[] | Function | { [key: string]: any } | ScreenshotOptionValue | QuarantineOptionValue | CompilerOptions | GlobalHooks | SkipJsErrorsOptionValue | CustomActions;

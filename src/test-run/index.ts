@@ -129,6 +129,7 @@ import { CookieOptions } from './commands/options';
 import { prepareSkipJsErrorsOptions } from '../api/skip-js-errors';
 import { CookieProviderFactory } from './cookies/factory';
 import { CookieProvider } from './cookies/base';
+import wrapCustomAction from '../api/wrap-custom-action';
 
 import {
     ProxylessRoleProvider,
@@ -1275,6 +1276,14 @@ export default class TestRun extends AsyncEventEmitter {
             fn = this.decorateDisableDebugBreakpoints(fn, { disable: true });
 
             return await fn();
+        }
+
+        if (command.type === COMMAND_TYPE.runCustomAction) {
+            debugger;
+            const { fn, args } = command as any;
+            const wrappedFn    = wrapCustomAction(fn);
+
+            return await wrappedFn(this, args);
         }
 
         if (command.type === COMMAND_TYPE.assertion)

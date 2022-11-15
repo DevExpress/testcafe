@@ -1,0 +1,56 @@
+import TestController from './test-controller';
+import testRunTracker from './test-run-tracker';
+import TestRun from '../test-run';
+import TestCafeErrorList from '../errors/error-list';
+import { MissingAwaitError } from '../errors/test-run';
+import addRenderedWarning from '../notifications/add-rendered-warning';
+import WARNING_MESSAGES from '../notifications/warning-message';
+
+export default function wrapCustomAction (fn: Function): Function {
+    return async (testRun: TestRun, functionArgs: any) => {
+        let result       = null;
+        const errList    = new TestCafeErrorList();
+        const markeredfn = (controller: TestController, args: any):Function => fn.call(controller, ...args);
+
+        function addWarnings (callsiteSet: Set<Record<string, any>>, message: string): void {
+            callsiteSet.forEach(callsite => {
+                addRenderedWarning(testRun.warningLog, message, callsite);
+                callsiteSet.delete(callsite);
+            });
+        }
+
+        function addErrors (callsiteSet: Set<Record<string, any>>, ErrorClass: any): void {
+            callsiteSet.forEach(callsite => {
+                errList.addError(new ErrorClass(callsite));
+                callsiteSet.delete(callsite);
+            });
+        }
+
+        testRun.controller = new TestController(testRun);
+
+        testRun.observedCallsites.clear();
+
+        testRunTracker.ensureEnabled();
+
+        try {
+            result = await markeredfn(testRun.controller, functionArgs);
+        }
+        catch (err) {
+            errList.addError(err);
+        }
+
+        if (!errList.hasUncaughtErrorsInTestCode) {
+            for (const { callsite, actionId } of testRun.observedCallsites.awaitedSnapshotWarnings.values())
+                addRenderedWarning(testRun.warningLog, { message: WARNING_MESSAGES.excessiveAwaitInAssertion, actionId }, callsite);
+
+
+            addWarnings(testRun.observedCallsites.unawaitedSnapshotCallsites, WARNING_MESSAGES.missingAwaitOnSnapshotProperty);
+            addErrors(testRun.observedCallsites.callsitesWithoutAwait, MissingAwaitError);
+        }
+
+        if (errList.hasErrors)
+            throw errList;
+
+        return result;
+    };
+}
