@@ -57,7 +57,6 @@ import {
     SkipJsErrorsCommand,
     AddRequestHooksCommand,
     RemoveRequestHooksCommand,
-    RunCustomActionCommand,
 } from '../../test-run/commands/actions';
 
 import {
@@ -85,14 +84,11 @@ import sendRequest from '../../test-run/request/send';
 import { RequestRuntimeError } from '../../errors/runtime';
 import { RUNTIME_ERRORS } from '../../errors/types';
 import CustomActions from './custom-actions';
+import delegatedAPI from './delegated-api';
 
 const originalThen = Promise.resolve().then;
 
 let inDebug = false;
-
-function delegatedAPI (methodName, accessor = '') {
-    return `_${methodName}$${accessor}`;
-}
 
 export default class TestController {
     constructor (testRun) {
@@ -101,37 +97,9 @@ export default class TestController {
         this.testRun        = testRun;
         this.executionChain = Promise.resolve();
         this.warningLog     = testRun.warningLog;
-        this.customActions  = new CustomActions(testRun);
+        this.customActions  = new CustomActions(this, testRun?.opts?.customActions);
 
         this._addTestControllerToExecutionChain();
-    }
-
-    _registerCustomActions () {
-        const customActions = this.testRun?.opts?.customActions || {};
-
-        Object.entries(customActions).forEach(([ name, fn ]) => {
-            TestController.prototype[delegatedAPI(name)] = (...args) => {
-                const callsite = getCallsiteForMethod(name);
-
-                return this._enqueueCommand(RunCustomActionCommand, { fn, args }, null, callsite);
-            };
-        });
-
-        this._extendTestControllerAPIList(customActions);
-    }
-
-    _extendTestControllerAPIList (actions) {
-        const customActionsList = Object.entries(actions).map(([name]) => {
-            return {
-                srcProp:  delegatedAPI(name),
-                apiProp:  name,
-                accessor: '',
-            };
-        });
-
-        TestController.API_LIST = [...TestController.API_LIST, ...customActionsList ];
-
-        delegateAPI(TestController.prototype, TestController.API_LIST, { useCurrentCtxAsHandler: true });
     }
 
     _addTestControllerToExecutionChain () {
@@ -255,7 +223,7 @@ export default class TestController {
     }
 
     _custom$getter () {
-        return this.customActions || new CustomActions(this.testRun);
+        return this.customActions || new CustomActions(this, this.testRun.opts.customActions);
     }
 
     [delegatedAPI(DispatchEventCommand.methodName)] (selector, eventName, options = {}) {

@@ -1,39 +1,39 @@
-import TestRun from '../../test-run';
 import { getCallsiteForMethod } from '../../errors/get-callsite';
 import { RunCustomActionCommand } from '../../test-run/commands/actions';
 import { delegateAPI } from '../../utils/delegated-api';
-
-function delegatedAPI (methodName: string, accessor = ''): string {
-    return `_${methodName}$${accessor}`;
-}
+import { Dictionary } from '../../configuration/interfaces';
+import TestController from './index';
+import delegatedAPI from './delegated-api';
 
 export default class CustomActions {
-    private readonly _testRun: TestRun;
+    private _testController: TestController;
+    private readonly _customActions: Dictionary<Function>;
 
-    constructor (testRun: TestRun) {
-        this._testRun = testRun;
+    constructor (testController: TestController, customActions: Dictionary<Function>) {
+        this._testController = testController;
+        this._customActions = customActions || {};
+
         this._registerCustomActions();
     }
 
     _registerCustomActions (): void {
-        // @ts-ignore
-        const customActions = this._testRun?.opts?.customActions || {};
-
-        Object.entries(customActions).forEach(([ name, fn ]) => {
+        Object.entries(this._customActions).forEach(([ name, fn ]) => {
             // @ts-ignore
-            CustomActions.prototype[delegatedAPI(name)] = (...args) => {
-                const callsite = getCallsiteForMethod(name);
+            this[delegatedAPI(name)] = (...args) => {
+                const callsite = getCallsiteForMethod(name) || void 0;
 
-                // @ts-ignore
-                return this._testRun.controller._enqueueCommand(RunCustomActionCommand, { fn, args }, null, callsite);
+                return this._testController._enqueueCommand(RunCustomActionCommand, { fn, args }, this._validateCommand, callsite);
             };
         });
 
-        this._extendTestControllerAPIList(customActions);
+        this._delegateAPI(this._customActions);
     }
 
-    // @ts-ignore
-    _extendTestControllerAPIList (actions): void {
+    _validateCommand (): boolean {
+        return true;
+    }
+
+    _delegateAPI (actions: Dictionary<Function>): void {
         const customActionsList = Object.entries(actions).map(([name]) => {
             return {
                 srcProp:  delegatedAPI(name),
@@ -42,10 +42,6 @@ export default class CustomActions {
             };
         });
 
-        // @ts-ignore
-        CustomActions.API_LIST = customActionsList;
-
-        // @ts-ignore
-        delegateAPI(CustomActions.prototype, CustomActions.API_LIST, { useCurrentCtxAsHandler: true });
+        delegateAPI(this, customActionsList, { useCurrentCtxAsHandler: true });
     }
 }

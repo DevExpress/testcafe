@@ -9,7 +9,7 @@ export default class TestController {
     public constructor (testRun: TestRun | TestRunProxy);
     public testRun: TestRun;
     public warningLog: WarningLog;
-    public _enqueueCommand (CmdCtor: unknown, cmdArgs: object, validateCommand: Function): () => Promise<unknown>;
+    public _enqueueCommand (CmdCtor: unknown, cmdArgs: object, validateCommand: Function, callsite?: CallsiteRecord): () => Promise<unknown>;
     public checkForExcessiveAwaits (checkedCallsite: CallsiteRecord, { actionId }: CommandBase): void;
     public static enableDebugForNonDebugCommands (): void;
     public static disableDebugForNonDebugCommands (): void;
