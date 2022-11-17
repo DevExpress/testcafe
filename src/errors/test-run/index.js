@@ -90,7 +90,7 @@ export class UncaughtNonErrorObjectInTestCode extends TestRunErrorBase {
         super(TEST_RUN_ERRORS.uncaughtNonErrorObjectInTestCode);
 
         this.objType = typeof obj;
-        this.objStr  = String(obj);
+        this.objStr  = this.objType === 'object' ? JSON.stringify(obj) : String(obj);
     }
 }
 
