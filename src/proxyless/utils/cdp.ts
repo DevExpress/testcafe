@@ -32,6 +32,10 @@ export function isRequestPausedEvent (val: any): val is RequestPausedEvent {
     return val && val.frameId && typeof val.request === 'object';
 }
 
+export function isPreflightRequest (event: RequestPausedEvent): boolean {
+    return event.request.method === 'OPTIONS';
+}
+
 export function createRequestPausedEventForResponse (mockedResponse: IncomingMessageLike, requestEvent: RequestPausedEvent): RequestPausedEvent {
     return Object.assign({}, requestEvent, {
         responseStatusCode: mockedResponse.statusCode,
