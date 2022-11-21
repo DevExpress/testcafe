@@ -1,4 +1,6 @@
 import { ProtocolApi } from 'chrome-remote-interface';
+// @ts-ignore
+import { TestRun as LegacyTestRun } from 'testcafe-legacy-api';
 import Protocol from 'devtools-protocol';
 import RequestPausedEvent = Protocol.Fetch.RequestPausedEvent;
 import FrameNavigatedEvent = Protocol.Page.FrameNavigatedEvent;
@@ -9,6 +11,7 @@ import {
     PageInjectableResources,
     INJECTABLE_SCRIPTS as HAMMERHEAD_INJECTABLE_SCRIPTS,
     getAssetPath,
+    PageRestoreStoragesOptions,
 } from 'testcafe-hammerhead';
 import BrowserConnection from '../browser/connection';
 import { SCRIPTS, TESTCAFE_UI_STYLES } from '../assets/injectables';
@@ -17,7 +20,13 @@ import { remove } from 'lodash';
 import { StatusCodes } from 'http-status-codes';
 import { PageLoadError } from '../errors/test-run';
 import { redirect, navigateTo } from './utils/cdp';
-import { DocumentResourceInfo, SpecialServiceRoutes } from './types';
+
+import {
+    DocumentResourceInfo,
+    InjectableResourcesOptions,
+    SpecialServiceRoutes,
+} from './types';
+
 import { resourceInjectorLogger } from '../utils/debug-loggers';
 import {
     getResponseAsString,
@@ -25,6 +34,7 @@ import {
     toBase64String,
 } from './utils/string';
 import { safeFulfillRequest } from './request-pipeline/safe-api';
+import TestRun from '../test-run';
 
 
 const CONTENT_SECURITY_POLICY_HEADER_NAMES = [
@@ -41,16 +51,22 @@ export default class ResourceInjector {
         this._specialServiceRoutes = specialServiceRoutes;
     }
 
-    private async _prepareInjectableResources (isIframe: boolean): Promise<PageInjectableResources | null> {
-        const browserConnection = BrowserConnection.getById(this._browserId) as BrowserConnection;
-        const proxy             = browserConnection.browserConnectionGateway.proxy;
-        const windowId          = browserConnection.activeWindowId;
-        const currentTestRun    = browserConnection.getCurrentTestRun();
+    private get _browserConnection (): BrowserConnection {
+        return BrowserConnection.getById(this._browserId) as BrowserConnection;
+    }
 
-        if (!currentTestRun)
+    private get _currentTestRun (): LegacyTestRun | TestRun | null {
+        return this._browserConnection.getCurrentTestRun();
+    }
+
+    private async _prepareInjectableResources ({ isIframe, restoringStorages }: InjectableResourcesOptions): Promise<PageInjectableResources | null> {
+        const proxy    = this._browserConnection.browserConnectionGateway.proxy;
+        const windowId = this._browserConnection.activeWindowId;
+
+        if (!this._currentTestRun)
             return null;
 
-        const taskScript = await currentTestRun.session.getTaskScript({
+        const taskScript = await this._currentTestRun.session.getTaskScript({
             referer:     '',
             cookieUrl:   '',
             withPayload: true,
@@ -60,6 +76,7 @@ export default class ResourceInjector {
         });
 
         const injectableResources = {
+            storages:    restoringStorages,
             stylesheets: [
                 TESTCAFE_UI_STYLES,
             ],
@@ -143,7 +160,7 @@ export default class ResourceInjector {
     public async processAboutBlankPage (event: FrameNavigatedEvent, client: ProtocolApi): Promise<void> {
         resourceInjectorLogger('Handle page as about:blank. Origin url: %s', event.frame.url);
 
-        const injectableResources = await this._prepareInjectableResources(false) as PageInjectableResources;
+        const injectableResources = await this._prepareInjectableResources({ isIframe: false }) as PageInjectableResources;
         const html                = injectResources(EMPTY_PAGE_MARKUP, injectableResources);
 
         await client.Page.setDocumentContent({
@@ -152,15 +169,19 @@ export default class ResourceInjector {
         });
     }
 
-    public async processHTMLPageContent (fulfillRequestInfo: FulfillRequestRequest, isIframe: boolean, client: ProtocolApi): Promise<void> {
-        const injectableResources = await this._prepareInjectableResources(isIframe);
+    public async processHTMLPageContent (fulfillRequestInfo: FulfillRequestRequest, injectableResourcesOptions: InjectableResourcesOptions, client: ProtocolApi): Promise<void> {
+        const injectableResources = await this._prepareInjectableResources(injectableResourcesOptions);
 
         // NOTE: an unhandled exception interrupts the test execution,
         // and we are force to redirect manually to the idle page.
         if (!injectableResources)
             await redirect(client, fulfillRequestInfo.requestId, this._specialServiceRoutes.idlePage);
         else {
-            const updatedResponseStr = injectResources(fulfillRequestInfo.body as string, injectableResources);
+            const updatedResponseStr = injectResources(
+                fulfillRequestInfo.body as string,
+                injectableResources,
+                this._getPageInjectableResourcesOptions(injectableResourcesOptions),
+            );
 
             await safeFulfillRequest(client, {
                 requestId:       fulfillRequestInfo.requestId,
@@ -178,5 +199,18 @@ export default class ResourceInjector {
             responseHeaders: this._processResponseHeaders(fulfillRequestInfo.responseHeaders),
             body:            toBase64String(fulfillRequestInfo.body as string),
         });
+    }
+
+    private _getPageInjectableResourcesOptions (injectableResourcesOptions: InjectableResourcesOptions): PageRestoreStoragesOptions | undefined {
+        const { url, restoringStorages } = injectableResourcesOptions;
+
+        if (url && restoringStorages) {
+            return {
+                host:      new URL(url).host,
+                sessionId: this._currentTestRun.session.id,
+            };
+        }
+
+        return void 0;
     }
 }
