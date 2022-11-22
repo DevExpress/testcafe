@@ -7,6 +7,7 @@ import ProxylessEventFactory from './event-factory';
 import { ProtocolApi } from 'chrome-remote-interface';
 import { getResponseAsBuffer } from '../utils/string';
 import BrowserConnection from '../../browser/connection';
+import { isPreflightRequest } from '../utils/cdp';
 
 interface ContextData {
     pipelineContext: ProxylessPipelineContext;
@@ -70,8 +71,8 @@ export default class ProxylessRequestHookEventProvider extends RequestHookEventP
     }
 
     private static async _setResponseBody ({ pipelineContext, resourceBody, eventFactory, event, client }: { pipelineContext: ProxylessPipelineContext, resourceBody: Buffer | null, eventFactory: ProxylessEventFactory, event: RequestPausedEvent, client: ProtocolApi }): Promise<void> {
-        if (resourceBody?.length) {
-            eventFactory.setResponseBody(resourceBody);
+        if (resourceBody?.length || isPreflightRequest(event)) {
+            eventFactory.setResponseBody(resourceBody as Buffer);
 
             return;
         }

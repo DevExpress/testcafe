@@ -54,6 +54,10 @@ describe('Request Hooks', () => {
         it('Request filter rule predicate', () => {
             return runTests('./testcafe-fixtures/request-logger/request-filter-rule-predicate.js', null, { only: 'chrome' });
         });
+
+        skipInExperimentalDebug('Log mocked requests', () => {
+            return runTests('./testcafe-fixtures/request-logger/mocked-requests.js', null, { only: 'chrome' });
+        });
     });
 
     describe('API', () => {

@@ -20,7 +20,7 @@ export function convertToOutgoingHttpHeaders (headers: HeaderEntry[] | undefined
         return {};
 
     return headers.reduce((result: any, header) => {
-        result[header.name] = header.value;
+        result[header.name.toLowerCase()] = header.value;
 
         return result;
     }, {});

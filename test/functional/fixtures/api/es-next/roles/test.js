@@ -35,7 +35,7 @@ const isRemoteTask = config.currentEnvironmentName === config.testingEnvironment
             });
     });
 
-    skipInProxyless('Should restore configuration after role initializer', function () {
+    it('Should restore configuration after role initializer', function () {
         return runTests('./testcafe-fixtures/configuration-test.js', 'Restore configuration', TEST_WITH_IFRAME_RUN_OPTIONS);
     });
 
