@@ -150,8 +150,14 @@ export default class ProxylessRequestPipeline {
                     responseCode:    event.responseStatusCode as number,
                     body:            (resourceInfo.body as Buffer).toString(),
                 },
-                this._isIframe(event.frameId),
+                {
+                    isIframe:          this._isIframe(event.frameId),
+                    url:               event.request.url,
+                    restoringStorages: this.restoringStorages,
+                },
                 this._client);
+
+            this.restoringStorages = null;
         }
     }
 
