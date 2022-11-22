@@ -173,6 +173,8 @@ jobs:
             tasks.push('test-functional-local-proxyless.yml');
 
             tasks.push('test-functional-local-legacy.yml');
+            
+            tasks.push('test-functional-local-safari.yml');
 
             tasks.push('test-functional-remote-macos.yml');
             tasks.push('test-functional-remote-mobile.yml');

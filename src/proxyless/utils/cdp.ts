@@ -2,7 +2,7 @@ import { ProtocolApi } from 'chrome-remote-interface';
 import { StatusCodes } from 'http-status-codes';
 import Protocol from 'devtools-protocol';
 import RequestPausedEvent = Protocol.Fetch.RequestPausedEvent;
-import { IncomingMessageLike } from 'testcafe-hammerhead';
+import { IncomingMessageLike, isRedirectStatusCode } from 'testcafe-hammerhead';
 import { convertToHeaderEntries } from './headers';
 
 
@@ -22,6 +22,10 @@ export async function navigateTo (client: ProtocolApi, url: string): Promise<voi
 
 export function isRequest (event: RequestPausedEvent): boolean {
     return event.responseStatusCode === void 0;
+}
+
+export function isRedirect (event: RequestPausedEvent): boolean {
+    return event.responseStatusCode !== void 0 && isRedirectStatusCode(event.responseStatusCode);
 }
 
 export function isRequestPausedEvent (val: any): val is RequestPausedEvent {

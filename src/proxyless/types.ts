@@ -2,6 +2,7 @@ import Protocol from 'devtools-protocol';
 import RequestPausedEvent = Protocol.Fetch.RequestPausedEvent;
 import { ProtocolApi } from 'chrome-remote-interface';
 import { ProxylessSetupOptions } from '../shared/types';
+import { StoragesSnapshot } from 'testcafe-hammerhead';
 
 export interface SpecialServiceRoutes {
     errorPage1: string;
@@ -18,4 +19,10 @@ export interface DocumentResourceInfo {
 export interface RequestHandler {
     condition: (event: RequestPausedEvent, options?: ProxylessSetupOptions, serviceRoutes?: SpecialServiceRoutes) => boolean;
     handler: (event: RequestPausedEvent, client: ProtocolApi, options?: ProxylessSetupOptions) => Promise<void>;
+}
+
+export interface InjectableResourcesOptions {
+    isIframe: boolean;
+    url?: string;
+    restoringStorages?: StoragesSnapshot | null;
 }

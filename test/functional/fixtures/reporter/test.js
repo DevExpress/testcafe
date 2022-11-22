@@ -18,7 +18,7 @@ const del                = require('del');
 
 const experimentalDebug = !!process.env.EXPERIMENTAL_DEBUG;
 
-describe('Reporter', () => {
+(config.hasBrowser('chrome') ? describe : describe.skip)('Reporter', () => {
     const stdoutWrite = process.stdout.write;
     const stderrWrite = process.stderr.write;
 
@@ -1198,7 +1198,8 @@ describe('Reporter', () => {
         }
     });
 
-    it('Should work with option from configuration file', () => {
+    it('Should work with option from configuration file', function () {
+
         return runTestsWithConfig('Simple test', './test/functional/fixtures/reporter/configs/xunit-config.js')
             .then(() => {
                 const pathReport = path.resolve(__dirname, 'report.xml');

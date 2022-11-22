@@ -388,6 +388,12 @@ gulp.step('test-functional-local-headless-firefox-run', () => {
 
 gulp.task('test-functional-local-headless-firefox', gulp.series('prepare-tests', 'test-functional-local-headless-firefox-run'));
 
+gulp.step('test-functional-local-safari-run', () => {
+    return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localSafari);
+});
+
+gulp.task('test-functional-local-safari', gulp.series('prepare-tests', 'test-functional-local-safari-run'));
+
 gulp.step('test-functional-remote-run', () => {
     if (QR_CODE)
         process.env.QR_CODE = 'true';
