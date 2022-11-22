@@ -27,7 +27,6 @@ import {
 
 import {
     IncomingMessageLike,
-    isRedirectStatusCode,
     SPECIAL_BLANK_PAGE,
     StoragesSnapshot,
 } from 'testcafe-hammerhead';
@@ -120,7 +119,7 @@ export default class ProxylessRequestPipeline {
     }
 
     private async _respondToOtherRequest (event: RequestPausedEvent): Promise<void> {
-        if (isRedirectStatusCode(event.responseStatusCode as number)) {
+        if (isRedirect(event)) {
             await safeContinueResponse(this._client, { requestId: event.requestId });
 
             return;
