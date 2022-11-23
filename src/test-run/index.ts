@@ -361,13 +361,13 @@ export default class TestRun extends AsyncEventEmitter {
         this._requestHookEventProvider = this._getRequestHookEventProvider();
         this._roleProvider             = this._getRoleProvider();
 
-        this._cookieProvider = CookieProviderFactory.create(this, this.opts.proxyless as boolean);
+        this._cookieProvider = CookieProviderFactory.create(this, this.opts.experimentalProxyless as boolean);
 
         this._addInjectables();
     }
 
     private _getRequestHookEventProvider (): RequestHookEventProvider {
-        if (!this.opts.proxyless)
+        if (!this.opts.experimentalProxyless)
             return this.session.requestHookEventProvider;
 
         return this._proxylessRequestPipeline.requestHookEventProvider;
@@ -384,7 +384,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     private _getRoleProvider (): RoleProvider {
-        if (this.opts.proxyless)
+        if (this.opts.experimentalProxyless)
             return new ProxylessRoleProvider(this);
 
         return new ProxyRoleProvider(this);
@@ -615,7 +615,7 @@ export default class TestRun extends AsyncEventEmitter {
             speed:                              this.speed,
             dialogHandler:                      JSON.stringify(this.activeDialogHandler),
             canUseDefaultWindowActions:         JSON.stringify(await this.browserConnection.canUseDefaultWindowActions()),
-            proxyless:                          JSON.stringify(this.opts.proxyless),
+            proxyless:                          JSON.stringify(this.opts.experimentalProxyless),
             domain:                             JSON.stringify(this.browserConnection.browserConnectionGateway.proxy.server1Info.domain),
         });
     }
