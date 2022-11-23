@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Page error</title>
+    <script>
+        function onClick1 () {
+            document.querySelector('#result1').innerHTML = 'OK';
+        }
+        function onClick2 () {
+            document.querySelector('#result2').innerHTML = document.querySelector('#input1').value;
+        }
+    </script>
+</head>
+<body>
+<span id="result1"></span>
+<button id="button1" onclick="onClick1()">BUTTON1</button>
+<input type="text" id="input1">
+<button id="button2" onclick="onClick2()">BUTTON2</button>
+<span id="result2"></span>
+</body>
+</html>

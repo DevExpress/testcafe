@@ -5,26 +5,13 @@ import TestCafeErrorList from '../errors/error-list';
 import { MissingAwaitError } from '../errors/test-run';
 import addRenderedWarning from '../notifications/add-rendered-warning';
 import WARNING_MESSAGES from '../notifications/warning-message';
+import { addErrors, addWarnings } from './test-controller/add-errors';
 
 export default function wrapTestFunction (fn: Function): Function {
     return async (testRun: TestRun) => {
         let result       = null;
         const errList    = new TestCafeErrorList();
         const markeredfn = testRunTracker.addTrackingMarkerToFunction(testRun.id, fn);
-
-        function addWarnings (callsiteSet: Set<Record<string, any>>, message: string): void {
-            callsiteSet.forEach(callsite => {
-                addRenderedWarning(testRun.warningLog, message, callsite);
-                callsiteSet.delete(callsite);
-            });
-        }
-
-        function addErrors (callsiteSet: Set<Record<string, any>>, ErrorClass: any): void {
-            callsiteSet.forEach(callsite => {
-                errList.addError(new ErrorClass(callsite));
-                callsiteSet.delete(callsite);
-            });
-        }
 
         testRun.controller = new TestController(testRun);
 
@@ -43,8 +30,8 @@ export default function wrapTestFunction (fn: Function): Function {
             for (const { callsite, actionId } of testRun.observedCallsites.awaitedSnapshotWarnings.values())
                 addRenderedWarning(testRun.warningLog, { message: WARNING_MESSAGES.excessiveAwaitInAssertion, actionId }, callsite);
 
-            addWarnings(testRun.observedCallsites.unawaitedSnapshotCallsites, WARNING_MESSAGES.missingAwaitOnSnapshotProperty);
-            addErrors(testRun.observedCallsites.callsitesWithoutAwait, MissingAwaitError);
+            addWarnings(testRun.observedCallsites.unawaitedSnapshotCallsites, WARNING_MESSAGES.missingAwaitOnSnapshotProperty, testRun);
+            addErrors(testRun.observedCallsites.callsitesWithoutAwait, MissingAwaitError, errList);
         }
 
         if (errList.hasErrors)

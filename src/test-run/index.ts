@@ -77,6 +77,7 @@ import {
     DeleteCookiesCommand,
     AddRequestHooksCommand,
     RemoveRequestHooksCommand,
+    RunCustomActionCommand,
 } from './commands/actions';
 
 import { RUNTIME_ERRORS, TEST_RUN_ERRORS } from '../errors/types';
@@ -1279,8 +1280,7 @@ export default class TestRun extends AsyncEventEmitter {
         }
 
         if (command.type === COMMAND_TYPE.runCustomAction) {
-            debugger;
-            const { fn, args } = command as any;
+            const { fn, args } = command as RunCustomActionCommand;
             const wrappedFn    = wrapCustomAction(fn);
 
             return await wrappedFn(this, args);

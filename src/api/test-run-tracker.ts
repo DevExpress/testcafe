@@ -66,21 +66,22 @@ class TestRunTracker extends EventEmitter {
         }
     }
 
-    public addTrackingMarkerToFunction (testRunId: string, fn: Function): Function {
+    public addTrackingMarkerToFunction (testRunId: string, fn: Function, context?: any): Function {
         const markerFactoryBody = `
-            return function ${this.getMarkedFnName(testRunId)} () {
+            return function ${ this.getMarkedFnName(testRunId) } () {
+                context = context || this;
                 switch (arguments.length) {
-                    case 0: return fn.call(this);
-                    case 1: return fn.call(this, arguments[0]);
-                    case 2: return fn.call(this, arguments[0], arguments[1]);
-                    case 3: return fn.call(this, arguments[0], arguments[1], arguments[2]);
-                    case 4: return fn.call(this, arguments[0], arguments[1], arguments[2], arguments[3]);
-                    default: return fn.apply(this, arguments);
+                    case 0: return fn.call(context);
+                    case 1: return fn.call(context, arguments[0]);
+                    case 2: return fn.call(context, arguments[0], arguments[1]);
+                    case 3: return fn.call(context, arguments[0], arguments[1], arguments[2]);
+                    case 4: return fn.call(context, arguments[0], arguments[1], arguments[2], arguments[3]);
+                    default: return fn.apply(context, arguments);
                 }
             };
         `;
 
-        return new Function('fn', markerFactoryBody)(fn);
+        return new Function('fn', 'context', markerFactoryBody)(fn, context);
     }
 
     public getContextTestRunId (): string | null {
