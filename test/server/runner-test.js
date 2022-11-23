@@ -1336,6 +1336,41 @@ describe('Runner', () => {
                                         'The testRun.globalAfter hook (string) is not of expected type (function).');
             }
         });
+
+        it('Should raise an error if customActions property belongs to invalid type', async function () {
+            try {
+                await runner
+                    .browsers(connection)
+                    .src('test/server/data/test-suites/basic/testfile2.js')
+                    .run({
+                        customActions: 'string',
+                    });
+
+                throw new Error('Promise rejection expected');
+            }
+            catch (err) {
+                expect(err.message).eql('The value of the customActions option does not belong to type Object. Refer to the following article for custom action setup instructions: CUSTOM_ACTIONS_LINK');
+            }
+        });
+
+        it('Should raise an error if some of custom actions belongs to invalid type', async function () {
+            try {
+                await runner
+                    .browsers(connection)
+                    .src('test/server/data/test-suites/basic/testfile2.js')
+                    .run({
+                        customActions: {
+                            makeCoffee () { },
+                            makeTea: 'string',
+                        },
+                    });
+
+                throw new Error('Promise rejection expected');
+            }
+            catch (err) {
+                expect(err.message).eql('The makeTea custom action does not contain an asynchronous function. Actual data type: string. Refer to the following article for custom action setup instructions:  CUSTOM_ACTIONS_LINK');
+            }
+        });
     });
 
     describe('.clientScripts', () => {

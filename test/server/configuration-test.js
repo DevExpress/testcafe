@@ -552,6 +552,21 @@ describe('TestCafeConfiguration', function () {
                 expect(configuration.getOption('hooks')).to.equal(clone.getOption('hooks'));
             });
         });
+
+        describe('[API] CustomActions', () => {
+            it('Should get custom actions from the JS Configuration file property', async () => {
+                const customConfigFilePath = './test/server/data/custom-actions/config.js';
+
+                const configuration = new TestCafeConfiguration(customConfigFilePath);
+
+                await configuration.init();
+
+                const customActions = configuration.getOption('customActions');
+
+                expect(customActions.makeSomething).to.be.a('function');
+                expect(customActions.doSomething).to.be.a('function');
+            });
+        });
     });
 
     describe('Default values', function () {
