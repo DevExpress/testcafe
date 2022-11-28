@@ -2,7 +2,7 @@ import { ProtocolApi } from 'chrome-remote-interface';
 import { StatusCodes } from 'http-status-codes';
 import Protocol from 'devtools-protocol';
 import RequestPausedEvent = Protocol.Fetch.RequestPausedEvent;
-import { IncomingMessageLike, isRedirectStatusCode } from 'testcafe-hammerhead';
+import { IncomingMessageLike } from 'testcafe-hammerhead';
 import { convertToHeaderEntries } from './headers';
 
 
