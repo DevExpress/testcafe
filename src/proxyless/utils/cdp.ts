@@ -24,10 +24,6 @@ export function isRequest (event: RequestPausedEvent): boolean {
     return event.responseStatusCode === void 0;
 }
 
-export function isRedirect (event: RequestPausedEvent): boolean {
-    return event.responseStatusCode !== void 0 && isRedirectStatusCode(event.responseStatusCode);
-}
-
 export function isRequestPausedEvent (val: any): val is RequestPausedEvent {
     return val && val.frameId && typeof val.request === 'object';
 }
