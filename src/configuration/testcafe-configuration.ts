@@ -65,7 +65,7 @@ const OPTION_INIT_FLAG_NAMES = [
     OPTION_NAMES.retryTestPages,
     OPTION_NAMES.cache,
     OPTION_NAMES.disableHttp2,
-    OPTION_NAMES.proxyless,
+    OPTION_NAMES.experimentalProxyless,
     OPTION_NAMES.disableCrossDomain,
 ];
 
@@ -163,7 +163,7 @@ export default class TestCafeConfiguration extends Configuration {
                 retryTestPages:     this.getOption(OPTION_NAMES.retryTestPages) as boolean,
                 cache:              this.getOption(OPTION_NAMES.cache) as boolean,
                 disableHttp2:       this.getOption(OPTION_NAMES.disableHttp2) as boolean,
-                proxyless:          this.getOption(OPTION_NAMES.proxyless) as boolean,
+                proxyless:          this.getOption(OPTION_NAMES.experimentalProxyless) as boolean,
                 disableCrossDomain: this.getOption(OPTION_NAMES.disableCrossDomain) as boolean,
             },
         };
@@ -269,7 +269,7 @@ export default class TestCafeConfiguration extends Configuration {
         this._ensureOptionWithValue(OPTION_NAMES.developmentMode, DEFAULT_DEVELOPMENT_MODE, OptionSource.Configuration);
         this._ensureOptionWithValue(OPTION_NAMES.retryTestPages, DEFAULT_RETRY_TEST_PAGES, OptionSource.Configuration);
         this._ensureOptionWithValue(OPTION_NAMES.disableHttp2, DEFAULT_DISABLE_HTTP2, OptionSource.Configuration);
-        this._ensureOptionWithValue(OPTION_NAMES.proxyless, DEFAULT_PROXYLESS, OptionSource.Configuration);
+        this._ensureOptionWithValue(OPTION_NAMES.experimentalProxyless, DEFAULT_PROXYLESS, OptionSource.Configuration);
         this._ensureOptionWithValue(OPTION_NAMES.disableCrossDomain, DEFAULT_DISABLE_CROSS_DOMAIN, OptionSource.Configuration);
 
         this._ensureScreenshotOptions();

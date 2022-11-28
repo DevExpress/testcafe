@@ -154,9 +154,9 @@ before(function () {
 
         retryTestPages,
 
-        experimentalDebug: !!process.env.EXPERIMENTAL_DEBUG,
-        proxyless:         config.proxyless,
-        userVariables:     {
+        experimentalProxyless: config.proxyless,
+        experimentalDebug:     !!process.env.EXPERIMENTAL_DEBUG,
+        userVariables:         {
             url:             'localhost',
             port:            1337,
             isUserVariables: true,

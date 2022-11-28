@@ -209,7 +209,7 @@ export default class CLIArgumentParser {
             .option('--no-color', 'disable colors in command line')
 
             // NOTE: temporary hide experimental options from --help command
-            .addOption(new Option('--proxyless', 'experimental').hideHelp())
+            .addOption(new Option('--experimental-proxyless', 'experimental').hideHelp())
             .addOption(new Option('--experimental-debug', 'enable experimental debug mode').hideHelp())
             .addOption(new Option('--disable-cross-domain', 'experimental').hideHelp())
             .action((opts: CommandLineOptions) => {

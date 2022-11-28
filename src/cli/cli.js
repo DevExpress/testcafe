@@ -85,7 +85,7 @@ async function runTests (argParser) {
         cache,
         disableHttp2,
         v8Flags,
-        proxyless,
+        experimentalProxyless,
         disableCrossDomain,
     } = opts;
 
@@ -103,7 +103,7 @@ async function runTests (argParser) {
         configFile,
         disableHttp2,
         v8Flags,
-        proxyless,
+        experimentalProxyless,
         disableCrossDomain,
     });
 

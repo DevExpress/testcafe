@@ -33,7 +33,7 @@ export default class TestCafe {
 
         this.browserConnectionGateway = new BrowserConnectionGateway(this.proxy, {
             retryTestPages: configuration.getOption(OPTION_NAMES.retryTestPages),
-            proxyless:      configuration.getOption(OPTION_NAMES.proxyless),
+            proxyless:      configuration.getOption(OPTION_NAMES.experimentalProxyless),
         });
 
         if (configuration.getOption(OPTION_NAMES.experimentalDebug)) {
