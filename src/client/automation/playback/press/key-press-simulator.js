@@ -144,10 +144,7 @@ export default class KeyPressSimulator {
         const isSafariWithAutoRaisedClick = browserUtils.isSafari &&
                                            browserUtils.compareVersions([browserUtils.webkitVersion, '603.1.30']) >= 0;
 
-        const isKeyActivatedInputInFirefox = browserUtils.isFirefox && isKeyActivatedInput;
-
-        const raiseClickOnEnter = (!browserUtils.isFirefox || isKeyActivatedInputInFirefox) && !isSafariWithAutoRaisedClick
-                                && (isKeyActivatedInput || isButton);
+        const raiseClickOnEnter = !isSafariWithAutoRaisedClick && (isKeyActivatedInput || isButton);
 
         if (raiseClickOnEnter && this.sanitizedKey === 'enter')
             activeElement.click();
