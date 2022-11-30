@@ -1,9 +1,5 @@
-const LOCALHOST_NAMES = [
-    'localhost',
-    '127.0.0.1',
-    '[::1]',
-];
+import { LOCALHOST_NAMES } from './localhost-names';
 
 export default function (hostname: string): boolean {
-    return LOCALHOST_NAMES.includes(hostname);
+    return Object.values(LOCALHOST_NAMES).includes(hostname);
 }

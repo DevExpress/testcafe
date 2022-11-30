@@ -431,6 +431,37 @@ describe('TestCafeConfiguration', function () {
                         expect(testCafeConfiguration.getOption('hostname')).eql('123.456.789');
                     });
             });
+
+            describe('Proxyless and hostname configuration', () => {
+                let configuration;
+
+                beforeEach(async () => {
+                    configuration = new TestCafeConfiguration();
+
+                    await del(configuration.defaultPaths);
+                });
+
+                it('Proxyless is enabled/hostname is unset', async () => {
+                    return configuration.init({ experimentalProxyless: true })
+                        .then(() => {
+                            expect(configuration.getOption('hostname')).eql('localhost');
+                        });
+                });
+
+                it('Proxyless is enabled/hostname is set', async () => {
+                    return configuration.init({ hostname: '123.456.789', experimentalProxyless: true })
+                        .then(() => {
+                            expect(configuration.getOption('hostname')).eql('123.456.789');
+                        });
+                });
+
+                it('Proxyless is disabled/hostname is unset', async () => {
+                    return configuration.init({ experimentalProxyless: false })
+                        .then(() => {
+                            expect(configuration.getOption('hostname')).eql(void 0);
+                        });
+                });
+            });
         });
 
         describe('Should copy value from "tsConfigPath" to compiler options', () => {
