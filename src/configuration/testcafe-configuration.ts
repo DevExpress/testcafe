@@ -42,6 +42,7 @@ import BrowserConnection, { BrowserInfo } from '../browser/connection';
 import { CONFIGURATION_EXTENSIONS } from './formats';
 import { GeneralError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
+import { LOCALHOST_NAMES } from '../utils/localhost-names';
 
 const BASE_CONFIGURATION_FILENAME = '.testcaferc';
 const CONFIGURATION_FILENAMES     = CONFIGURATION_EXTENSIONS.map(ext => `${BASE_CONFIGURATION_FILENAME}${ext}`);
@@ -111,6 +112,11 @@ export default class TestCafeConfiguration extends Configuration {
         }
 
         await this.asyncMergeOptions(options);
+
+        const proxyless = this.getOption(OPTION_NAMES.experimentalProxyless);
+
+        if (proxyless)
+            this._ensureOptionWithValue(OPTION_NAMES.hostname, LOCALHOST_NAMES.LOCALHOST, OptionSource.Input);
     }
 
     public async asyncMergeOptions (options?: Dictionary<object>): Promise<void> {
@@ -152,10 +158,16 @@ export default class TestCafeConfiguration extends Configuration {
     }
 
     public get startOptions (): TestCafeStartOptions {
+        const proxyless = this.getOption(OPTION_NAMES.experimentalProxyless) as boolean;
+        let hostname    = this.getOption(OPTION_NAMES.hostname) as string;
+
+        if (!hostname && proxyless)
+            hostname = LOCALHOST_NAMES.LOCALHOST;
+
         const result: TestCafeStartOptions = {
-            hostname: this.getOption(OPTION_NAMES.hostname) as string,
-            port1:    this.getOption(OPTION_NAMES.port1) as number,
-            port2:    this.getOption(OPTION_NAMES.port2) as number,
+            hostname,
+            port1: this.getOption(OPTION_NAMES.port1) as number,
+            port2: this.getOption(OPTION_NAMES.port2) as number,
 
             options: {
                 ssl:                this.getOption(OPTION_NAMES.ssl) as string,
@@ -163,8 +175,8 @@ export default class TestCafeConfiguration extends Configuration {
                 retryTestPages:     this.getOption(OPTION_NAMES.retryTestPages) as boolean,
                 cache:              this.getOption(OPTION_NAMES.cache) as boolean,
                 disableHttp2:       this.getOption(OPTION_NAMES.disableHttp2) as boolean,
-                proxyless:          this.getOption(OPTION_NAMES.experimentalProxyless) as boolean,
                 disableCrossDomain: this.getOption(OPTION_NAMES.disableCrossDomain) as boolean,
+                proxyless,
             },
         };
 
