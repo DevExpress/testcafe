@@ -113,12 +113,13 @@ describe('[API] t.click()', function () {
     it('Should show warning that the element was overlapped', async function () {
         await runTests('./testcafe-fixtures/click-test.js', 'Click overlapped element', { only: 'chrome' });
 
-        expect(testReport.warnings[0]).eql(
+        expect(testReport.warnings[0]).includes(
             'TestCafe cannot interact with the <div class="child1">Text</div> element because another element obstructs it.\n' +
             'When something overlaps the action target, TestCafe performs the action with the topmost element at the original target\'s location.\n' +
             'The following element with a greater z-order replaced the original action target: <div class="child2">...</div>.\n' +
             'Review your code to prevent this behavior.'
         );
+        expect(testReport.warnings[0]).match(/>.*await t.click\('.child1'\);/);
     });
 
     it('Should click on a more than half-shifted element', async function () {
