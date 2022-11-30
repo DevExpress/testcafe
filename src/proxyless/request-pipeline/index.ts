@@ -9,13 +9,7 @@ import FrameTree = Protocol.Page.FrameTree;
 import ProxylessRequestHookEventProvider from '../request-hooks/event-provider';
 import ResourceInjector from '../resource-injector';
 import { convertToHeaderEntries } from '../utils/headers';
-
-import {
-    createRequestPausedEventForResponse,
-    isRedirect,
-    isRequest,
-} from '../utils/cdp';
-
+import { createRequestPausedEventForResponse, isRequest } from '../utils/cdp';
 import BrowserConnection from '../../browser/connection';
 import ERROR_ROUTE from '../error-route';
 import { SpecialServiceRoutes } from '../types';
@@ -27,6 +21,7 @@ import {
 
 import {
     IncomingMessageLike,
+    isRedirectStatusCode,
     SPECIAL_BLANK_PAGE,
     StoragesSnapshot,
 } from 'testcafe-hammerhead';
@@ -119,7 +114,7 @@ export default class ProxylessRequestPipeline {
     }
 
     private async _respondToOtherRequest (event: RequestPausedEvent): Promise<void> {
-        if (isRedirect(event)) {
+        if (isRedirectStatusCode(event.responseStatusCode)) {
             await safeContinueResponse(this._client, { requestId: event.requestId });
 
             return;
@@ -163,7 +158,7 @@ export default class ProxylessRequestPipeline {
     private async _handleOtherRequests (event: RequestPausedEvent): Promise<void> {
         requestPipelineOtherRequestLogger('%r', event);
 
-        if (isRequest(event) || isRedirect(event)) {
+        if (isRequest(event) || isRedirectStatusCode(event.responseStatusCode)) {
             await this.requestHookEventProvider.onRequest(event);
 
             const pipelineContext = this.requestHookEventProvider.getPipelineContext(event.networkId as string);
@@ -219,7 +214,7 @@ export default class ProxylessRequestPipeline {
         return this._currentFrameTree.frame.id !== frameId;
     }
 
-    public init (options: ProxylessSetupOptions): void {
+    public async init (options: ProxylessSetupOptions): Promise<void> {
         this._options = options;
 
         this._client.Fetch.on('requestPaused', async (event: RequestPausedEvent) => {
@@ -256,6 +251,8 @@ export default class ProxylessRequestPipeline {
             if (event.requestId)
                 this.requestHookEventProvider.cleanUp(event.requestId);
         });
+
+        await this._client.Page.setBypassCSP({ enabled: true });
     }
 
     public stop (): void {

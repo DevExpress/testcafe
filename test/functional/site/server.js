@@ -101,6 +101,16 @@ Server.prototype._setupRoutes = function () {
         `);
     });
 
+    this.app.get('/redirect', (req, res) => {
+        res.redirect(req.query.page);
+    });
+
+    this.app.get('/fixtures/request-pipeline/content-security-policy/pages/csp.html', (req, res, next) => {
+        res.setHeader('Content-Security-Policy', 'script-src \'self\'');
+
+        next();
+    });
+
     this.app.get('*', function (req, res) {
         const reqPath      = req.params[0] || '';
         const resourcePath = path.join(server.basePath, reqPath);

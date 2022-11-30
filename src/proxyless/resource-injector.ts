@@ -16,7 +16,6 @@ import {
 import BrowserConnection from '../browser/connection';
 import { SCRIPTS, TESTCAFE_UI_STYLES } from '../assets/injectables';
 import EMPTY_PAGE_MARKUP from './empty-page-markup';
-import { remove } from 'lodash';
 import { StatusCodes } from 'http-status-codes';
 import { PageLoadError } from '../errors/test-run';
 import { redirect, navigateTo } from './utils/cdp';
@@ -36,11 +35,6 @@ import {
 import { safeFulfillRequest } from './request-pipeline/safe-api';
 import TestRun from '../test-run';
 
-
-const CONTENT_SECURITY_POLICY_HEADER_NAMES = [
-    'content-security-policy',
-    'content-security-policy-report-only',
-];
 
 export default class ResourceInjector {
     private readonly _browserId: string;
@@ -96,8 +90,6 @@ export default class ResourceInjector {
     private _processResponseHeaders (headers: HeaderEntry[] | undefined): HeaderEntry[] {
         if (!headers)
             return [];
-
-        remove(headers, header => CONTENT_SECURITY_POLICY_HEADER_NAMES.includes(header.name.toLowerCase()));
 
         return stringifyHeaderValues(headers);
     }

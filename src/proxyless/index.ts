@@ -29,7 +29,7 @@ export default class Proxyless {
             patterns: ALL_REQUESTS_DATA,
         });
 
-        this.requestPipeline.init(options);
+        await this.requestPipeline.init(options);
 
         proxylessLogger('proxyless initialized');
     }
