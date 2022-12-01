@@ -141,6 +141,7 @@ export default class ProxylessRequestPipeline {
                 {
                     requestId:       event.requestId,
                     responseHeaders: event.responseHeaders,
+                    responsePhrase:  event.responseStatusText,
                     responseCode:    event.responseStatusCode as number,
                     body:            (resourceInfo.body as Buffer).toString(),
                 },
