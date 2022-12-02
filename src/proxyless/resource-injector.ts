@@ -94,6 +94,16 @@ export default class ResourceInjector {
         return stringifyHeaderValues(headers);
     }
 
+    private async _fulfillRequest (client: ProtocolApi, fulfillRequestInfo: FulfillRequestRequest, body: string): Promise<void> {
+        await safeFulfillRequest(client, {
+            requestId:       fulfillRequestInfo.requestId,
+            responseCode:    fulfillRequestInfo.responseCode || StatusCodes.OK,
+            responsePhrase:  fulfillRequestInfo.responsePhrase,
+            responseHeaders: this._processResponseHeaders(fulfillRequestInfo.responseHeaders),
+            body:            toBase64String(body),
+        });
+    }
+
     public async redirectToErrorPage (client: ProtocolApi, err: Error, url: string): Promise<void> {
         const browserConnection = BrowserConnection.getById(this._browserId) as BrowserConnection;
         const currentTestRun    = browserConnection.getCurrentTestRun();
@@ -175,22 +185,12 @@ export default class ResourceInjector {
                 this._getPageInjectableResourcesOptions(injectableResourcesOptions),
             );
 
-            await safeFulfillRequest(client, {
-                requestId:       fulfillRequestInfo.requestId,
-                responseCode:    fulfillRequestInfo.responseCode || StatusCodes.OK,
-                responseHeaders: this._processResponseHeaders(fulfillRequestInfo.responseHeaders),
-                body:            toBase64String(updatedResponseStr),
-            });
+            await this._fulfillRequest(client, fulfillRequestInfo, updatedResponseStr);
         }
     }
 
     public async processNonProxiedContent (fulfillRequestInfo: FulfillRequestRequest, client: ProtocolApi): Promise<void> {
-        await safeFulfillRequest(client, {
-            requestId:       fulfillRequestInfo.requestId,
-            responseCode:    fulfillRequestInfo.responseCode || StatusCodes.OK,
-            responseHeaders: this._processResponseHeaders(fulfillRequestInfo.responseHeaders),
-            body:            toBase64String(fulfillRequestInfo.body as string),
-        });
+        await this._fulfillRequest(client, fulfillRequestInfo, fulfillRequestInfo.body as string);
     }
 
     private _getPageInjectableResourcesOptions (injectableResourcesOptions: InjectableResourcesOptions): PageRestoreStoragesOptions | undefined {
