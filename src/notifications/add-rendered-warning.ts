@@ -3,7 +3,7 @@ import createStackFilter from '../errors/create-stack-filter';
 import getRenderers from '../utils/get-renderes';
 import WarningLog, { WarningLogMessage } from './warning-log';
 
-export default function addWarning (warningLog: WarningLog, msg: WarningLogMessage | string, callsite: any = void 0): void {
+export default function addWarning (warningLog: WarningLog, msg: WarningLogMessage | string, callsite: any = void 0, ...args: any[]): void {
     const renderers        = getRenderers(callsite);
     const renderedCallsite = renderCallsiteSync(callsite, {
         renderer:    renderers.noColor,
@@ -16,5 +16,5 @@ export default function addWarning (warningLog: WarningLog, msg: WarningLogMessa
 
     message += `\n\n${renderedCallsite}`;
 
-    warningLog.addWarning({ message, actionId });
+    warningLog.addWarning({ message, actionId }, ...args);
 }

@@ -939,7 +939,7 @@ export default class TestRun extends AsyncEventEmitter {
 
         if (driverStatus.warnings?.length) {
             driverStatus.warnings.forEach((warning: DriverWarning) => {
-                this.warningLog.addWarning(WARNING_MESSAGE[warning.type], ...warning.args);
+                addRenderedWarning(this.warningLog, WARNING_MESSAGE[warning.type], this.currentDriverTask.callsite, ...warning.args);
             });
         }
 
