@@ -13,52 +13,48 @@ const INVALID_INTERCEPTED_RESPONSE_ERROR_MSG = 'Invalid InterceptionId.';
 // and raises the "Invalid InterceptionId" error.
 // We use the simplest way to fix it - omit such an error.
 
+async function connectionResetGuard (handleRequestFn: () => Promise<void>, handleErrorFn: (err: any) => void): Promise<void> {
+    try {
+        await handleRequestFn();
+    }
+    catch (err: any) {
+        if (err.message === INVALID_INTERCEPTED_RESPONSE_ERROR_MSG)
+            return;
+
+        handleErrorFn(err);
+
+        throw err;
+    }
+}
+
 export async function safeContinueResponse (client: ProtocolApi, data: RequestPausedEvent | ContinueResponseRequest): Promise<void> {
     const isPausedEvent = isRequestPausedEvent(data);
 
-    try {
+    await connectionResetGuard(async () => {
         const param = isPausedEvent
             ? { requestId: data.requestId }
             : data;
 
         await client.Fetch.continueResponse(param);
-    }
-    catch (err: any) {
-        if (err.message === INVALID_INTERCEPTED_RESPONSE_ERROR_MSG)
-            return;
-
+    }, err => {
         const formatter = isPausedEvent ? '%r' : '%s';
 
         requestPipelineLogger(`Fetch.continueResponse. Unhandled error %s during processing ${formatter}`, err, data);
-
-        throw err;
-    }
+    });
 }
 
 export async function safeFulfillRequest (client: ProtocolApi, fulfillInfo: FulfillRequestRequest): Promise<void> {
-    try {
+    await connectionResetGuard(async () => {
         await client.Fetch.fulfillRequest(fulfillInfo);
-    }
-    catch (err: any) {
-        if (err.message === INVALID_INTERCEPTED_RESPONSE_ERROR_MSG)
-            return;
-
+    }, err => {
         requestPipelineLogger(`Fetch.fulfillRequest. Unhandled error %s during processing %s`, err, fulfillInfo.requestId);
-
-        throw err;
-    }
+    });
 }
 
 export async function safeContinueRequest (client: ProtocolApi, event: RequestPausedEvent): Promise<void> {
-    try {
+    await connectionResetGuard(async () => {
         await client.Fetch.continueRequest({ requestId: event.requestId });
-    }
-    catch (err: any) {
-        if (err.message === INVALID_INTERCEPTED_RESPONSE_ERROR_MSG)
-            return;
-
+    }, err => {
         requestPipelineLogger(`Fetch.continueRequest. Unhandled error %s during processing %r`, err, event);
-
-        throw err;
-    }
+    });
 }

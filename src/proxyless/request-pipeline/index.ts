@@ -6,6 +6,7 @@ import FrameNavigatedEvent = Protocol.Page.FrameNavigatedEvent;
 import LoadingFailedEvent = Protocol.Network.LoadingFailedEvent;
 import ContinueResponseRequest = Protocol.Fetch.ContinueResponseRequest;
 import FrameTree = Protocol.Page.FrameTree;
+import FulfillRequestRequest = Protocol.Fetch.FulfillRequestRequest;
 import ProxylessRequestHookEventProvider from '../request-hooks/event-provider';
 import ResourceInjector from '../resource-injector';
 import { convertToHeaderEntries } from '../utils/headers';
@@ -30,7 +31,7 @@ import ProxylessPipelineContext from '../request-hooks/pipeline-context';
 import { ProxylessSetupOptions } from '../../shared/types';
 import DEFAULT_PROXYLESS_SETUP_OPTIONS from '../default-setup-options';
 import getSpecialRequestHandler from './special-handlers';
-import { safeContinueResponse } from './safe-api';
+import { safeContinueRequest, safeContinueResponse } from './safe-api';
 
 
 export default class ProxylessRequestPipeline {
@@ -137,14 +138,20 @@ export default class ProxylessRequestPipeline {
             await safeContinueResponse(this._client, continueResponseRequest);
         }
         else {
+            const fulfillInfo = {
+                requestId:       event.requestId,
+                responseHeaders: event.responseHeaders,
+                responseCode:    event.responseStatusCode as number,
+                body:            (resourceInfo.body as Buffer).toString(),
+            } as FulfillRequestRequest;
+
+            // NOTE: Strange behavior of the CDP API:
+            // if we pass the empty "responseStatusText" value, we get an error 'Invalid status code or phrase'.
+            if (event.responseStatusText !== '')
+                fulfillInfo.responsePhrase = event.responseStatusText;
+
             await this._resourceInjector.processHTMLPageContent(
-                {
-                    requestId:       event.requestId,
-                    responseHeaders: event.responseHeaders,
-                    responsePhrase:  event.responseStatusText,
-                    responseCode:    event.responseStatusCode as number,
-                    body:            (resourceInfo.body as Buffer).toString(),
-                },
+                fulfillInfo,
                 {
                     isIframe:          this._isIframe(event.frameId),
                     url:               event.request.url,
@@ -165,7 +172,7 @@ export default class ProxylessRequestPipeline {
             const pipelineContext = this.requestHookEventProvider.getPipelineContext(event.networkId as string);
 
             if (!pipelineContext || !pipelineContext.mock)
-                await this._client.Fetch.continueRequest({ requestId: event.requestId });
+                await safeContinueRequest(this._client, event);
             else {
                 const mockedResponse = await pipelineContext.getMockResponse();
 
