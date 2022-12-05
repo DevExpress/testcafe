@@ -4,6 +4,7 @@ import Protocol from 'devtools-protocol';
 import RequestPausedEvent = Protocol.Fetch.RequestPausedEvent;
 import FulfillRequestRequest = Protocol.Fetch.FulfillRequestRequest;
 import ContinueResponseRequest = Protocol.Fetch.ContinueResponseRequest;
+import ErrorReason = Protocol.Network.ErrorReason;
 import { isRequestPausedEvent } from '../utils/cdp';
 
 const INVALID_INTERCEPTED_RESPONSE_ERROR_MSG = 'Invalid InterceptionId.';
@@ -56,5 +57,16 @@ export async function safeContinueRequest (client: ProtocolApi, event: RequestPa
         await client.Fetch.continueRequest({ requestId: event.requestId });
     }, err => {
         requestPipelineLogger(`Fetch.continueRequest. Unhandled error %s during processing %r`, err, event);
+    });
+}
+
+export async function safeFailRequest (client: ProtocolApi, event: RequestPausedEvent, errorReason: ErrorReason = 'Aborted'): Promise<void> {
+    await connectionResetGuard(async () => {
+        await client.Fetch.failRequest({
+            requestId: event.requestId,
+            errorReason,
+        });
+    }, err => {
+        requestPipelineLogger(`Fetch.failRequest. Unhandled error %s during processing %s`, err, event.requestId);
     });
 }

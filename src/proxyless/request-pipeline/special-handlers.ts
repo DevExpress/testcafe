@@ -14,7 +14,12 @@ import { FAVICON_CONTENT_TYPE_HEADER } from './constants';
 import { StatusCodes } from 'http-status-codes';
 import loadAssets from '../../load-assets';
 import { toBase64String } from '../utils/string';
-import { safeContinueRequest, safeContinueResponse } from './safe-api';
+import {
+    safeContinueRequest,
+    safeContinueResponse,
+    safeFailRequest,
+    safeFulfillRequest,
+} from './safe-api';
 
 
 const internalRequest = {
@@ -22,10 +27,7 @@ const internalRequest = {
     handler:   async (event: RequestPausedEvent, client: ProtocolApi): Promise<void> => {
         requestPipelineInternalRequestLogger('%r', event);
 
-        await client.Fetch.failRequest({
-            requestId:   event.requestId,
-            errorReason: 'Aborted',
-        });
+        await safeFailRequest(client, event);
     },
 } as RequestHandler;
 
@@ -65,7 +67,7 @@ const defaultFaviconRequest = {
             if (event.responseStatusCode === StatusCodes.NOT_FOUND) { // eslint-disable-line no-lonely-if
                 const { favIcon } = loadAssets(options.developmentMode);
 
-                await client.Fetch.fulfillRequest({
+                await safeFulfillRequest(client, {
                     requestId:       event.requestId,
                     responseCode:    StatusCodes.OK,
                     responseHeaders: [ FAVICON_CONTENT_TYPE_HEADER ],
