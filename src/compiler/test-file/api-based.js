@@ -29,13 +29,14 @@ const TESTCAFE_LIB_FOLDER_NAME = 'lib';
 const Module = module.constructor;
 
 export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
-    constructor ({ isCompilerServiceMode, baseUrl }) {
+    constructor ({ isCompilerServiceMode, baseUrl, experimentalEsm }) {
         super({ baseUrl });
 
         this.isCompilerServiceMode = isCompilerServiceMode;
         this.cache                 = Object.create(null);
         this.origRequireExtensions = Object.create(null);
         this.cachePrefix           = nanoid(7);
+        this.experimentalEsm       = experimentalEsm;
     }
 
     static _getNodeModulesLookupPath (filename) {
