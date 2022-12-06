@@ -85,6 +85,7 @@ export default class StatusBar extends serviceUtils.EventEmitter {
         this.showingTimeout    = null;
 
         this.windowHeight = document.documentElement ? styleUtils.getHeight(window) : window.innerHeight;
+        this.maxHeight    = 0;
 
         this.state = {
             created:          false,
@@ -100,6 +101,12 @@ export default class StatusBar extends serviceUtils.EventEmitter {
 
         this._createBeforeReady();
         this._initChildListening();
+    }
+
+    get visibleHeight () {
+        this.maxHeight = Math.max(this.maxHeight, styleUtils.getHeight(this.statusBar));
+
+        return this.maxHeight;
     }
 
     _createButton (text, className) {
@@ -300,13 +307,11 @@ export default class StatusBar extends serviceUtils.EventEmitter {
             this.windowHeight = window.innerHeight;
         });
 
-        const statusBarHeight = styleUtils.getHeight(this.statusBar);
-
         listeners.addFirstInternalEventBeforeListener(window, ['mousemove', 'mouseout', 'touchmove'], e => {
             if (e.type === 'mouseout' && !e.relatedTarget)
                 this._fadeIn(e);
             else if (e.type === 'mousemove' || e.type === 'touchmove') {
-                if (e.clientY > this.windowHeight - statusBarHeight)
+                if (e.clientY > this.windowHeight - this.visibleHeight)
                     this._fadeOut(e);
                 else if (this.state.hidden)
                     this._fadeIn(e);
