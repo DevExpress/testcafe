@@ -209,6 +209,7 @@ export default class CLIArgumentParser {
 
             // NOTE: temporary hide experimental options from --help command
             .addOption(new Option('--experimental-debug', 'enable experimental debug mode').hideHelp())
+            .addOption(new Option('--experimental-esm', 'enable experimental esm mode').hideHelp())
             .addOption(new Option('--disable-cross-domain', 'experimental').hideHelp())
             .action((opts: CommandLineOptions) => {
                 this.opts = opts;
