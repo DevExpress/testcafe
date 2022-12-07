@@ -161,6 +161,7 @@ before(function () {
             port:            1337,
             isUserVariables: true,
         },
+        experimentalEsm: config.experimentalESM,
     };
 
     return createTestCafe(testCafeOptions)
