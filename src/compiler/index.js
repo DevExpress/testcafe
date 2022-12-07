@@ -26,7 +26,7 @@ export default class Compiler {
         return uniq(flattenDeep(getTestFileCompilers().map(compiler => compiler.getSupportedExtension())));
     }
 
-    async _createTestFileInfo (filename) {
+    static async createTestFileInfo (filename) {
         let code = null;
 
         try {
@@ -53,7 +53,7 @@ export default class Compiler {
     }
 
     async _createTestFilesInfo (filenames) {
-        const testFilesInfo = await Promise.all(filenames.map(filename => this._createTestFileInfo(filename)));
+        const testFilesInfo = await Promise.all(filenames.map(filename => Compiler.createTestFileInfo(filename)));
 
         return testFilesInfo.filter(info => !!info);
     }

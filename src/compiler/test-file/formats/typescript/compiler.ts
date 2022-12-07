@@ -91,8 +91,8 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
     private readonly _compilerPath: string;
     private readonly _customCompilerOptions?: object;
 
-    public constructor (compilerOptions?: TypeScriptCompilerOptions, { isCompilerServiceMode, baseUrl }: OptionalCompilerArguments = {}) {
-        super({ isCompilerServiceMode, baseUrl });
+    public constructor (compilerOptions?: TypeScriptCompilerOptions, { isCompilerServiceMode, baseUrl, experimentalEsm }: OptionalCompilerArguments = {}) {
+        super({ isCompilerServiceMode, baseUrl, experimentalEsm });
 
         // NOTE: At present, it's necessary create an instance TypeScriptTestFileCompiler
         // to collect a list of supported test file extensions.
@@ -103,7 +103,7 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
         const configPath = compilerOptions && compilerOptions.configPath || null;
 
         this._customCompilerOptions = compilerOptions && compilerOptions.options;
-        this._tsConfig              = new TypescriptConfiguration(configPath, isCompilerServiceMode);
+        this._tsConfig              = new TypescriptConfiguration(configPath, isCompilerServiceMode || experimentalEsm);
         this._compilerPath          = TypeScriptTestFileCompiler._getCompilerPath(compilerOptions);
     }
 
@@ -244,6 +244,10 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
     }
 
     public get canPrecompile (): boolean {
+        return true;
+    }
+
+    public get canCompileInEsm (): boolean {
         return true;
     }
 
