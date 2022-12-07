@@ -12,7 +12,7 @@ function createTestFileCompilers (compilerOptions = {}, { isCompilerServiceMode,
         new LegacyTestFileCompiler(hammerhead.processScript),
         new EsNextTestFileCompiler({ isCompilerServiceMode, baseUrl, experimentalEsm }),
         new TypeScriptTestFileCompiler(compilerOptions[CustomizableCompilers.typescript], { isCompilerServiceMode, baseUrl, experimentalEsm }),
-        new CoffeeScriptTestFileCompiler({ baseUrl }),
+        new CoffeeScriptTestFileCompiler({ baseUrl, experimentalEsm }),
         new RawTestFileCompiler({ baseUrl }),
         new DevToolsTestFileCompiler({ baseUrl }),
     ];

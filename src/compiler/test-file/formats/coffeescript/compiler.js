@@ -23,7 +23,7 @@ export default class CoffeeScriptTestFileCompiler extends ESNextTestFileCompiler
         });
 
         const { babel }    = loadBabelLibs();
-        const babelOptions = ESNextTestFileCompiler.getBabelOptions(filename, code);
+        const babelOptions = ESNextTestFileCompiler.getBabelOptions(filename, code, this.isCompilerServiceMode, this.experimentalEsm);
         const compiled     = babel.transform(transpiled.js, babelOptions);
 
         this.cache[filename] = compiled.code;
