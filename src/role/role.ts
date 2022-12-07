@@ -2,6 +2,7 @@ import { EventEmitter } from 'events';
 import RolePhase from './phase';
 import { StateSnapshot } from 'testcafe-hammerhead';
 import roleMarker from './marker-symbol';
+//@ts-ignore
 import { nanoid } from 'nanoid';
 import TestRun from '../test-run';
 import TestCafeErrorList from '../errors/error-list';

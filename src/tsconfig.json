@@ -12,6 +12,7 @@
     "outDir": "../lib",
     "target": "es2017",
     "module": "commonjs",
+    "moduleResolution": "Node16",
     "strict": true,
     "esModuleInterop": true,
     "allowJs": true,
