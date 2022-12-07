@@ -251,10 +251,16 @@ gulp.step('images', () => {
         .pipe(gulp.dest('lib'));
 });
 
+gulp.step('esm-exportable-lib-script', () => {
+    return gulp
+        .src(['src/api/exportable-lib/index.mjs'])
+        .pipe(gulp.dest('lib/api/exportable-lib/'));
+});
+
 //NOTE: Executing tasks in parallel can cause out-of-memory errors on Azure Pipelines
 const buildTasks = process.env.TF_BUILD ? gulp.series : gulp.parallel;
 
-gulp.step('package-content', buildTasks('ts-defs', 'server-scripts', 'client-scripts', 'styles', 'images', 'templates'));
+gulp.step('package-content', buildTasks('ts-defs', 'server-scripts', 'client-scripts', 'esm-exportable-lib-script', 'styles', 'images', 'templates'));
 
 gulp.task('fast-build', gulp.series('clean', 'package-content'));
 
