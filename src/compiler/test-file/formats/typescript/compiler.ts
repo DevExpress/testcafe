@@ -8,7 +8,7 @@ import { GeneralError } from '../../../../errors/runtime';
 import { RUNTIME_ERRORS } from '../../../../errors/types';
 import debug from 'debug';
 import { isRelative } from '../../../../api/test-page-url';
-import EXPORTABLE_LIB_PATH from '../../exportble-lib-path';
+import { EXPORTABLE_LIB_PATH, EXPORTABLE_LIB_ESM_PATH } from '../../exportble-lib-paths';
 import DISABLE_V8_OPTIMIZATION_NOTE from '../../disable-v8-optimization-note';
 
 // NOTE: For type definitions only
@@ -44,12 +44,15 @@ interface RequireCompilers {
     [extension: string]: RequireCompilerFunction;
 }
 
-function testcafeImportPathReplacer<T extends Node> (): TransformerFactory<T> {
+function testcafeImportPathReplacer<T extends Node> (experimentalEsm?: boolean): TransformerFactory<T> {
     return context => {
         const visit: Visitor = (node): VisitResult<Node> => {
             // @ts-ignore
-            if (node.parent?.kind === SyntaxKind.ImportDeclaration && node.kind === SyntaxKind.StringLiteral && node.text === 'testcafe')
-                return tsFactory.createStringLiteral(EXPORTABLE_LIB_PATH);
+            if (node.parent?.kind === SyntaxKind.ImportDeclaration && node.kind === SyntaxKind.StringLiteral && node.text === 'testcafe') {
+                const libPath = experimentalEsm ? EXPORTABLE_LIB_ESM_PATH : EXPORTABLE_LIB_PATH;
+
+                return tsFactory.createStringLiteral(libPath);
+            }
 
             return visitEachChild(node, child => visit(child), context);
         };
@@ -207,7 +210,7 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
     }
 
     private _getTypescriptTransformers (): TransformerFactory<SourceFile>[] {
-        const transformers: TransformerFactory<SourceFile>[] = [testcafeImportPathReplacer()];
+        const transformers: TransformerFactory<SourceFile>[] = [testcafeImportPathReplacer(this.experimentalEsm)];
 
         if (this.isCompilerServiceMode)
             transformers.push(disableV8OptimizationCodeAppender());
