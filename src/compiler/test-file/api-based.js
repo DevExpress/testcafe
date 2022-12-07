@@ -52,7 +52,7 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
 
     static _isTestCafeLibDep (filename) {
         return relative(CWD, filename)
-            .split(pathSep)[0] === TESTCAFE_LIB_FOLDER_NAME;
+            .split(pathSep).includes(TESTCAFE_LIB_FOLDER_NAME);
     }
 
     async _execAsModule (code, filename) {
