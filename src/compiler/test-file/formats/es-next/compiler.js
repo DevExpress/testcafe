@@ -57,6 +57,8 @@ export default class ESNextTestFileCompiler extends APIBasedTestFileCompilerBase
         return {
             '.js':  (code, filename) => this._compileCode(code, filename),
             '.jsx': (code, filename) => this._compileCode(code, filename),
+            '.mjs': (code, filename) => this._compileCode(code, filename),
+            '.cjs': (code, filename) => this._compileCode(code, filename),
         };
     }
 
@@ -65,6 +67,6 @@ export default class ESNextTestFileCompiler extends APIBasedTestFileCompilerBase
     }
 
     getSupportedExtension () {
-        return ['.js', '.jsx'];
+        return ['.js', '.jsx', '.mjs', '.cjs'];
     }
 }

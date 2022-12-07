@@ -239,6 +239,8 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
             '.ts':  (code, filename) => this._compileCode(code, filename),
             '.tsx': (code, filename) => this._compileCode(code, filename),
             '.js':  (code, filename) => ESNextTestFileCompiler.prototype._compileCode.call(this, code, filename),
+            '.cjs': (code, filename) => ESNextTestFileCompiler.prototype._compileCode.call(this, code, filename),
+            '.mjs': (code, filename) => ESNextTestFileCompiler.prototype._compileCode.call(this, code, filename),
             '.jsx': (code, filename) => ESNextTestFileCompiler.prototype._compileCode.call(this, code, filename),
         };
     }
