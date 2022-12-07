@@ -193,24 +193,21 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         });
     }
 
-    _addExportAPIInCompilerServiceMode (testFile) {
-        // 'esm' library has an issue with loading modules
-        // in case of the combination of require and import directives.
-        // This hack allowing achieve the desired behavior.
-        const exportableLibPath = require.resolve('../../api/exportable-lib');
-
-        delete require.cache[exportableLibPath];
-
-        global[TEST_FILE_TEMP_VARIABLE_NAME] = { testFile, baseUrl: this.baseUrl };
-
-        require('../../api/exportable-lib');
-    }
-
     _addExportAPI (testFile) {
-        if (this.isCompilerServiceMode)
-            this._addExportAPIInCompilerServiceMode(testFile);
-        else
-            addExportAPI(testFile, exportableLib, { baseUrl: this.baseUrl });
+        Object.defineProperty(exportableLib, 'fixture', {
+            get:          () => Fixture.init.bind(Fixture, { testFile, baseUrl: this.baseUrl }),
+            configurable: true,
+        });
+
+        Object.defineProperty(exportableLib, 'test', {
+            get: () => Test.init.bind(Test, {
+                testFile,
+                isCompilerServiceMode: this.isCompilerServiceMode,
+                experimentalEsm:       this.experimentalEsm,
+                baseUrl:               this.baseUrl,
+            }),
+            configurable: true,
+        });
     }
 
     _removeGlobalAPI () {
