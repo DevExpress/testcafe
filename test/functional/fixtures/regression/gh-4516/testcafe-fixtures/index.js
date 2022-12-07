@@ -1,7 +1,5 @@
 import { RequestHook, Selector } from 'testcafe';
-import { resolve } from 'path';
-
-const ReExecutablePromise = require(resolve('./lib/utils/re-executable-promise'));
+import ReExecutablePromise from '../../../../../../lib/utils/re-executable-promise.js';
 
 export default class CustomHook extends RequestHook {
     constructor (config) {

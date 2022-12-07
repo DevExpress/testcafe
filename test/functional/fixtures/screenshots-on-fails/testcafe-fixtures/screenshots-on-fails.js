@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { saveWindowState, restoreWindowState } from '../../../window-helpers';
+import { saveWindowState, restoreWindowState } from '../../../window-helpers.js';
 
 
 // NOTE: to preserve callsites, add new tests AFTER the existing ones

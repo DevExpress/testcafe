@@ -1,5 +1,5 @@
 import { ClientFunction } from 'testcafe';
-import helper from '../test-helper';
+import helper from '../test-helper.js';
 
 const getTestVariableValue = ClientFunction(() => window.test);
 

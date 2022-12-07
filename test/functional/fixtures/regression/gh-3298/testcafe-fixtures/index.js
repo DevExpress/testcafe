@@ -1,4 +1,4 @@
-import actual from '../actual';
+import actual from '../actual.js';
 
 fixture `Define hooks of the first fixture`
     .page `http://localhost:3000/fixtures/regression/gh-3298/pages/index.html`

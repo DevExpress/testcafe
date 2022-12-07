@@ -1,6 +1,7 @@
 // NOTE: to preserve callsites, add new tests AFTER the existing ones
 import { ClientFunction } from 'testcafe';
 import { expect } from 'chai';
+import fs from 'fs';
 
 fixture `ClientFunction`
     .page `http://localhost:3000/fixtures/api/es-next/client-function/pages/index.html`;
@@ -33,8 +34,6 @@ test('ClientFunction fn is not a function', async () => {
 });
 
 test('ClientFunction fn test run is unresolvable', async () => {
-    const fs = require('fs');
-
     const fn = ClientFunction(() => 123);
 
     return new Promise((resolve, reject) => {
@@ -61,7 +60,6 @@ test('Generator in ClientFunction', async () => {
 });
 
 test('Bind ClientFunction', async t => {
-    const fs               = require('fs');
     const boundGetLocation = getLocation.with({ boundTestRun: t });
 
     // NOTE: binding does not modify the original function,

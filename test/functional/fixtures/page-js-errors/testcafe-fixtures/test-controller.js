@@ -1,10 +1,10 @@
-const {
+import {
     CLIENT_ERROR_MESSAGE,
     CLIENT_PAGE_URL,
     CLIENT_PAGE_URL_REGEXP,
     SKIP_JS_ERRORS_CALLBACK_OPTIONS,
     CLIENT_ERROR_REGEXP,
-} = require('../constants');
+} from '../constants.js';
 
 fixture`TestController method`
     .page('http://localhost:3000/fixtures/page-js-errors/pages/skip-js-errors.html');

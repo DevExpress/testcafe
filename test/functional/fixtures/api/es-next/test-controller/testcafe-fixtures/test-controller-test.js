@@ -1,4 +1,4 @@
-import { missingAwaitFn } from './helpers';
+import { missingAwaitFn } from './helpers.js';
 // NOTE: to preserve callsites, add new tests AFTER the existing ones
 fixture `TestController`
     .page `http://localhost:3000/fixtures/api/es-next/test-controller/pages/index.html`;

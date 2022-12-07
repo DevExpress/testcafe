@@ -1,6 +1,6 @@
 import { ClientFunction } from 'testcafe';
-import { saveWindowState, restoreWindowState } from '../../../../window-helpers';
-import config from '../../../../config';
+import { saveWindowState, restoreWindowState } from '../../../../window-helpers.js';
+import config from '../../../../config.js';
 
 
 const removeBodyMargin = ClientFunction(() => {

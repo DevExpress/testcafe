@@ -102,7 +102,7 @@ describe('[API] TestController', () => {
                 { shouldFail: true, only: 'chrome' })
                 .catch(errs => {
                     expect(errs.length).eql(1);
-                    expect(errs[0]).contains("TypeError: Cannot read property 'someProperty' of undefined  [[user-agent]]");
+                    expect(errs[0]).contains("TypeError: Cannot read properties of undefined (reading 'someProperty')  [[user-agent]]");
                 });
         });
 

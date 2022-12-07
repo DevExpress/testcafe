@@ -1,4 +1,4 @@
-import { checkPageTestData, setPageTestData } from './helpers';
+import { checkPageTestData, setPageTestData } from './helpers.js';
 
 fixture `Default`;
 

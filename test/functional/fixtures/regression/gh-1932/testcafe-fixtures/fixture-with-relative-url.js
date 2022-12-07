@@ -6,7 +6,7 @@ import {
     INDEX1_RELATIVE_URL,
     INDEX2_RELATIVE_URL,
     INDEX1_WITH_UPDIR_RELATIVE_URL,
-} from '../constants';
+} from '../constants.js';
 
 const getLocation = ClientFunction(() => window.location.href);
 const ABSOLUTE_BASE_PATH = pathToFileURL(join(FILE_PROTOCOL_URL, '/'));

@@ -1,5 +1,5 @@
 import { getViewportSize } from 'device-specs';
-import { getWindowHeight, getWindowWidth } from '../../../../window-helpers';
+import { getWindowHeight, getWindowWidth } from '../../../../window-helpers.js';
 
 fixture `Resize in emulation`
     .page `http://localhost:3000/fixtures/multiple-windows/pages/features/emulation/index.html`;

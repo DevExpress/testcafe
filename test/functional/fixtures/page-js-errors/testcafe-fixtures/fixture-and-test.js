@@ -1,4 +1,4 @@
-const { SKIP_JS_ERRORS_CALLBACK_OPTIONS } = require('../constants');
+import { SKIP_JS_ERRORS_CALLBACK_OPTIONS } from '../constants.js';
 
 fixture`Fixture and Test methods`
     .page('http://localhost:3000/fixtures/page-js-errors/pages/skip-js-errors.html')

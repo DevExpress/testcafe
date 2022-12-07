@@ -1,5 +1,5 @@
 import { ClientFunction, Selector } from 'testcafe';
-import { parseUserAgent } from '../../../../../../lib/utils/parse-user-agent';
+import { parseUserAgent } from '../../../../../../lib/utils/parse-user-agent.js';
 
 fixture `Check the target element value when the first input event raised`
     .page('http://localhost:3000/fixtures/regression/gh-1054/pages/index.html');

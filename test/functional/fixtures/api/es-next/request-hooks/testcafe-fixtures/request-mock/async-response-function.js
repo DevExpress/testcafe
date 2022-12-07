@@ -1,5 +1,5 @@
 import { RequestMock, Selector } from 'testcafe';
-import DUMMY_URLS from '../../common/mock-routes';
+import DUMMY_URLS from '../../common/mock-routes.js';
 
 const responsePromise = new Promise(resolve => {
     setTimeout(() => {

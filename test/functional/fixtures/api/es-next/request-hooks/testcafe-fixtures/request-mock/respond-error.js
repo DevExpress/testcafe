@@ -1,5 +1,5 @@
 import { RequestMock } from 'testcafe';
-import DUMMY_URLS from '../../common/mock-routes';
+import DUMMY_URLS from '../../common/mock-routes.js';
 
 const mock = RequestMock()
     .onRequestTo(DUMMY_URLS.get)

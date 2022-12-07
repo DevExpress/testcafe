@@ -1,3 +1,3 @@
-import libraryTest from './lib';
+import libraryTest from './lib.js';
 
 libraryTest();

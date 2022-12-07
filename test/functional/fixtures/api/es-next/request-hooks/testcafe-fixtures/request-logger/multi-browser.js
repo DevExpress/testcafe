@@ -1,5 +1,5 @@
 import { RequestLogger, Selector, ClientFunction } from 'testcafe';
-import { parseUserAgent } from '../../../../../../../../lib/utils/parse-user-agent';
+import { parseUserAgent } from '../../../../../../../../lib/utils/parse-user-agent.js';
 
 const pageUrl = 'http://localhost:3000/fixtures/api/es-next/request-hooks/pages/request-logger/multi-browser.html';
 

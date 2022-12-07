@@ -2,7 +2,7 @@ import { Selector } from 'testcafe';
 
 fixture `Should restore local storage correctly on UseRole with PreserveUrl`;
 
-import userRole from './role';
+import userRole from './role.js';
 
 test('Should log in with role navigation', async t => {
     await t.useRole(userRole);

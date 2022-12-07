@@ -1,4 +1,4 @@
-import helper from '../test-helper';
+import helper from '../test-helper.js';
 
 fixture `Live`
     .page `../pages/index.html`

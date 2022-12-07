@@ -7,7 +7,7 @@ import {
     restoreWindowState,
     getWindowHeight,
     getWindowWidth,
-} from '../../../../../window-helpers';
+} from '../../../../../window-helpers.js';
 
 
 const setWindowOnresizeHandler = ClientFunction(() => {

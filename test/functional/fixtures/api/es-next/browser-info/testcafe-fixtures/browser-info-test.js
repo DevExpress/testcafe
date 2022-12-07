@@ -1,11 +1,10 @@
 import { ClientFunction } from 'testcafe';
-import { parseUserAgent } from '../../../../../../../lib/utils/parse-user-agent';
-import config from '../../../../../config';
+import { parseUserAgent } from '../../../../../../../lib/utils/parse-user-agent.js';
+import config from '../../../../../config.js';
 
 fixture `Browser information in headless Chrome`;
 
-test
-    .page `http://localhost:3000/fixtures/api/es-next/browser-info/pages/index.html`
+test.page `http://localhost:3000/fixtures/api/es-next/browser-info/pages/index.html`
 ('t.browser', async t => {
     const userAgent       = ClientFunction(() => window.navigator.userAgent);
     const parsedUserAgent = parseUserAgent(await userAgent());

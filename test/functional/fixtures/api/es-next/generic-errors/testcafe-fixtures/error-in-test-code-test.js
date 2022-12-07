@@ -1,5 +1,5 @@
 // NOTE: to preserve callsites, add new tests AFTER the existing ones
-import throwError from './helpers';
+import throwError from './helpers.js';
 
 fixture `Errors in test code`
     .page `http://localhost:3000/fixtures/api/es-next/generic-errors/pages/index.html`;

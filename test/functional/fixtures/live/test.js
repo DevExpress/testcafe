@@ -244,7 +244,7 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
         });
     });
 }
-else if (testingEnvironmentName === 'local-headless-chrome') {
+else if (testingEnvironmentName === 'local-headless-chrome' && !config.experimentalESM) {
     describe('Live Mode', () => {
         it('Experimental debug', () => {
             const markerFile = path.join(__dirname, 'testcafe-fixtures', '.test-completed.marker');
