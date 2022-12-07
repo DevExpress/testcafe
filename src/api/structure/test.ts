@@ -17,6 +17,11 @@ import { TestTimeouts } from './interfaces';
 import TestTimeout from './test-timeout';
 import ESM_RUNTIME_HOLDER_NAME from '../../services/compiler/esm-runtime-holder-name';
 
+interface InitOptions {
+    testFile: TestFile;
+    baseUrl?: string;
+    isCompilerServiceMode?: boolean;
+}
 
 export default class Test extends TestingUnit {
     public fixture: Fixture | null;
@@ -55,12 +60,21 @@ export default class Test extends TestingUnit {
         return this.apiOrigin as unknown as Test;
     }
 
+    public static init (initOptions: InitOptions, name: string, fn: Function): Test {
+        const { testFile, baseUrl, isCompilerServiceMode } = initOptions;
+
+        const test = new Test(testFile, isCompilerServiceMode, baseUrl);
+
+        return (test as unknown as Function)(name, fn);
+    }
+
     private _initFixture (testFile: TestFile): void {
         this.fixture = testFile.currentFixture;
 
         if (!this.fixture)
             return;
 
+        this.pageUrl             = this.fixture.pageUrl || SPECIAL_BLANK_PAGE;
         this.requestHooks        = this.fixture.requestHooks.slice();
         this.clientScripts       = this.fixture.clientScripts.slice();
         this.skipJsErrorsOptions = this.fixture.skipJsErrorsOptions;

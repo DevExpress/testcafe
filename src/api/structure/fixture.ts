@@ -14,6 +14,11 @@ import RequestHook from '../request-hooks/hook';
 import ClientScriptInit from '../../custom-client-scripts/client-script-init';
 import { SPECIAL_BLANK_PAGE } from 'testcafe-hammerhead';
 
+interface InitOptions {
+    baseUrl?: string;
+    testFile: TestFile;
+}
+
 export default class Fixture extends TestingUnit {
     public path: string;
     public beforeEachFn: Function | null;
@@ -37,6 +42,14 @@ export default class Fixture extends TestingUnit {
         this.globalAfterFn  = null;
 
         return this.apiOrigin as unknown as Fixture;
+    }
+
+    public static init (initOptions: InitOptions, name: string, ...rest: unknown[]): Fixture | null {
+        const { testFile, baseUrl } = initOptions;
+
+        const fixture = new Fixture(testFile, baseUrl);
+
+        return (fixture as unknown as Function)(name, ...rest);
     }
 
     protected _add (name: string, ...rest: unknown[]): Function {
