@@ -170,3 +170,11 @@ export class SkipJsErrorsArgumentApiError extends APIError {
         super('skipJsErrors', code, ...args);
     }
 }
+
+export class ImportESMInCommonJSError extends GeneralError {
+    constructor (originalError) {
+        const [, esModule, targetFile] = originalError.toString().match(/(\S*) from (\S*)/);
+
+        super(RUNTIME_ERRORS.cannotImportESMInCommonsJS, esModule, targetFile);
+    }
+}
