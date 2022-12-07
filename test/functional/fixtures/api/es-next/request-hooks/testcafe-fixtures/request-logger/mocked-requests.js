@@ -1,5 +1,5 @@
 import { RequestMock, RequestLogger } from 'testcafe';
-import MOCK_ROUTES from '../../common/mock-routes';
+import MOCK_ROUTES from '../../common/mock-routes.js';
 
 const logger = RequestLogger(MOCK_ROUTES.post, {
     logRequestHeaders:     true,

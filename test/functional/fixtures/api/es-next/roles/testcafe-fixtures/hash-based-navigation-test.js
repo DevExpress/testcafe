@@ -1,5 +1,5 @@
 import { Role, Selector } from 'testcafe';
-import { setFlag, hasFlag } from './utils';
+import { setFlag, hasFlag } from './utils.js';
 
 fixture `Should always reload the target url`
     .page `http://localhost:3000/fixtures/api/es-next/roles/pages/page-with-hash-navigation.html`

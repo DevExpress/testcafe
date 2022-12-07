@@ -1,5 +1,5 @@
 import { Role, ClientFunction } from 'testcafe';
-import { hasFlag, setFlag } from './utils';
+import { hasFlag, setFlag } from './utils.js';
 
 const loginPageUrl = 'http://localhost:3000/fixtures/api/es-next/roles/pages/login-page.html';
 
