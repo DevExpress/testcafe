@@ -75,7 +75,7 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
     });
 
     it('Correct execution order of "message" events in cross-domain iframe', function () {
-        return runTests('./testcafe-fixtures/message-event.js', null, { ...DEFAULT_RUN_OPTIONS });
+        return runTests('./testcafe-fixtures/message-event.js', null, { skip: 'ie', ...DEFAULT_RUN_OPTIONS });
     });
 
     describe('Unavailable iframe errors', function () {
