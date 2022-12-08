@@ -1,4 +1,4 @@
-import unhandledRejection from '../unhandled-rejection';
+import unhandledRejection from '../unhandled-rejection.js';
 
 fixture `Should fail on unhandled promise rejection`
     .after(() => {
