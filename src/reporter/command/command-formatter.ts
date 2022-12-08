@@ -2,7 +2,7 @@ import { isEmpty } from 'lodash';
 import { ExecuteSelectorCommand, ExecuteClientFunctionCommand } from '../../test-run/commands/observation';
 import {
     NavigateToCommand,
-    PressKeyCommand,
+    PressKeyCommand, RunCustomActionCommand,
     SetNativeDialogHandlerCommand,
     TypeTextCommand,
     UseRoleCommand,
@@ -53,6 +53,9 @@ export class CommandFormatter {
             formattedCommand.dialogHandler = this._prepareDialogHandler(this._command);
         else
             this._assignProperties(this._command, formattedCommand);
+
+        if (this._command instanceof RunCustomActionCommand)
+            this._assignCustomActionResult(formattedCommand);
 
         this._maskConfidentialInfo(formattedCommand);
 
@@ -123,6 +126,11 @@ export class CommandFormatter {
 
     private _prepareUrl (command: NavigateToCommand): string {
         return command.url;
+    }
+
+    private _assignCustomActionResult (formatedCommand: FormattedCommand) :void {
+        if (this._result !== void 0)
+            formatedCommand.actionResult = this._result;
     }
 
     private _assignProperties (command: CommandBase, formattedCommand: FormattedCommand): void {

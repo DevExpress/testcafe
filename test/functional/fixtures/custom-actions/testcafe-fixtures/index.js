@@ -24,6 +24,12 @@ test('Should run custom action inside another custom action', async t => {
     await t.custom.typeToInputAndCheckResult('#input1', '#button2', '#result2', 'Some text');
 });
 
+test('Should run non-async custom action', async t => {
+    const result = await t.custom.getTextValue();
+
+    await t.expect(result).eql('some text');
+});
+
 test('Should throw an exception inside custom action', async t => {
     await t.custom.clickBySelector('blablabla');
 });

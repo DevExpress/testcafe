@@ -779,6 +779,7 @@ export class RunCustomActionCommand extends ActionCommandBase {
     getAssignableProperties () {
         return [
             { name: 'fn', type: functionArgument, required: true },
+            { name: 'name', type: stringArgument, required: true },
             { name: 'args', required: false },
         ];
     }

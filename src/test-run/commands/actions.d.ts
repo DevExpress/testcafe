@@ -281,6 +281,8 @@ export class RemoveRequestHooksCommand extends ActionCommandBase {
 export class RunCustomActionCommand extends ActionCommandBase {
     public constructor (obj: object, testRun: TestRun, validateProperties: boolean);
     public fn: Function;
+    public name: string;
     public args: any;
+    public actionResult: any;
 }
 

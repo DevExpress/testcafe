@@ -17,9 +17,14 @@ async function typeToInputAndCheckResult (inputSelector, buttonSelector, resultS
         .expect(await this.custom.getSpanTextBySelector(resultSelector)).eql(inputText);
 }
 
+function getTextValue () {
+    return 'some text';
+}
+
 module.exports = {
     getSpanTextBySelector,
     clickBySelector,
     typeTextAndClickButton,
     typeToInputAndCheckResult,
+    getTextValue,
 };
