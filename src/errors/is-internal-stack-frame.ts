@@ -2,6 +2,7 @@ import { sep, join } from 'path';
 import { escapeRegExp as escapeRe } from 'lodash';
 import INTERNAL_MODULES_PREFIX from './internal-modules-prefix';
 import { StackFrame } from 'error-stack-parser';
+import FILE_PROTOCOL_PREFIX from './file-protocol-prefix';
 
 const BABEL               = require.resolve('@babel/core');
 const BABEL_MODULES_DIR   = BABEL.replace(new RegExp(`^(.*${escapeRe(sep)}node_modules${escapeRe(sep)})(.*)`), '$1');
@@ -33,7 +34,7 @@ const INTERNAL_INCLUDES_PATH_SEGMENTS = [
 
 function isInternalFile (filename = ''): boolean {
     return !filename ||
-        !filename.includes(sep) ||
+        !(filename.includes(sep) || filename.startsWith(FILE_PROTOCOL_PREFIX)) ||
         INTERNAL_INCLUDES_PATH_SEGMENTS.some(pathSegment => filename.includes(pathSegment)) ||
         INTERNAL_STARTS_WITH_PATH_SEGMENTS.some(pathSegment => filename.startsWith(pathSegment));
 }

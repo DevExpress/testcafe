@@ -12,6 +12,7 @@ import {
     UncaughtExceptionError,
 } from './test-run';
 import debug from 'debug';
+import FILE_PROTOCOL_PREFIX from './file-protocol-prefix';
 
 const debugLog = debug('testcafe:errors');
 
@@ -21,7 +22,7 @@ function isAssertionErrorCallsiteFrame (frame) {
 
     // NOTE: filter out the internals of node.js and assertion libraries
     return filename &&
-        filename.includes(sep) &&
+        (filename.includes(sep) || filename.startsWith(FILE_PROTOCOL_PREFIX)) &&
         !filename.startsWith(INTERNAL_MODULES_PREFIX) &&
         !filename.includes(`${sep}${NODE_MODULES}${sep}`);
 }
