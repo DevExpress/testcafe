@@ -1368,7 +1368,7 @@ describe('Runner', () => {
                 throw new Error('Promise rejection expected');
             }
             catch (err) {
-                expect(err.message).eql('The makeTea custom action does not contain an asynchronous function. Actual data type: string. Refer to the following article for custom action setup instructions:  CUSTOM_ACTIONS_LINK');
+                expect(err.message).eql('TestCafe cannot parse the "makeTea" action, because the action definition is invalid. Format the definition in accordance with the custom actions guide: CUSTOM_ACTIONS_LINK');
             }
         });
     });
