@@ -283,6 +283,5 @@ export class RunCustomActionCommand extends ActionCommandBase {
     public fn: Function;
     public name: string;
     public args: any;
-    public actionResult: any;
 }
 

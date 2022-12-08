@@ -82,7 +82,7 @@ const { createReporter } = require('../../utils/reporter');
             this.command = command;
         }
 
-        const result         = [];
+        const result         = {};
         const expectedResult = [
             { phase: 'start', actionName: 'runCustomAction', command: { type: 'run-custom-action', name: 'typeToInputAndCheckResult' } },
             { phase: 'start', actionName: 'runCustomAction', command: { type: 'run-custom-action', name: 'typeTextAndClickButton' } },
@@ -108,13 +108,16 @@ const { createReporter } = require('../../utils/reporter');
             { phase: 'end', actionName: 'runCustomAction', command: { type: 'run-custom-action', name: 'typeToInputAndCheckResult' } },
         ];
 
+        function addTestRecord ( phase, testRunId, name, command) {
+            if (!result[testRunId])
+                result[testRunId] = [];
+
+            result[testRunId].push(new ReporterRecord(phase, name, command));
+        }
+
         const reporter = createReporter({
-            reportTestActionStart: (name, { command }) => {
-                result.push(new ReporterRecord('start', name, command));
-            },
-            reportTestActionDone: (name, { command }) => {
-                result.push(new ReporterRecord('end', name, command));
-            },
+            reportTestActionStart: (name, { command, testRunId }) => addTestRecord('start', testRunId, name, command),
+            reportTestActionDone:  (name, { command, testRunId }) => addTestRecord('end', testRunId, name, command),
         });
 
         return runTests('./testcafe-fixtures/index.js', 'Should run custom action inside another custom action', {
@@ -125,7 +128,9 @@ const { createReporter } = require('../../utils/reporter');
             },
             reporter,
         }).then(() => {
-            expect(result).to.deep.equal(expectedResult);
+            Object.values(result).map(res => {
+                expect(res).to.deep.equal(expectedResult);
+            });
         });
     });
 });
