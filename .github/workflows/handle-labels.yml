@@ -1,0 +1,13 @@
+name: 'Label Actions'
+
+on:
+  issues:
+    types: [labeled, unlabeled]
+  pull_request_target:
+    types: [labeled, unlabeled]
+
+jobs:
+  reaction:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: DevExpress/testcafe-build-system/actions/handle-labels@main

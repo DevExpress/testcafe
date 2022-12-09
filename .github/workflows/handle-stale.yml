@@ -1,0 +1,21 @@
+name: "Mark stale issues and pull requests"
+on:
+  schedule:
+  - cron: "30 1 * * *"
+  workflow_dispatch:
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/stale@v3
+      with:
+        stale-issue-message: "This issue has been automatically marked as stale because it has not had any activity for a long period. It will be closed and archived if no further activity occurs. However, we may return to this issue in the future. If it still affects you or you have any additional information regarding it, please leave a comment and we will keep it open."
+        stale-pr-message: "This pull request has been automatically marked as stale because it has not had any activity for a long period. It will be closed and archived if no further activity occurs. However, we may return to this pull request in the future. If it is still relevant or you have any additional information regarding it, please leave a comment and we will keep it open."
+        close-issue-message: "We're closing this issue after a prolonged period of inactivity. If it still affects you, please add a comment to this issue with up-to-date information. Thank you."
+        close-pr-message: "We're closing this pull request after a prolonged period of inactivity. If it is still relevant, please ask for this pull request to be reopened. Thank you."
+        stale-issue-label: "STATE: Stale"
+        stale-pr-label: "STATE: Stale"
+        days-before-stale: 365
+        days-before-close: 10
+        exempt-issue-labels: "AREA: docs,FREQUENCY: critical,FREQUENCY: level 2,HELP WANTED,!IMPORTANT!,STATE: Need clarification,STATE: Need response,STATE: won't fix,support center"
+        exempt-pr-labels: "AREA: docs,FREQUENCY: critical,FREQUENCY: level 2,HELP WANTED,!IMPORTANT!,STATE: Need clarification,STATE: Need response,STATE: won't fix,support center"
