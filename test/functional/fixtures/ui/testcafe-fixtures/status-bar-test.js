@@ -1,4 +1,5 @@
 import { Selector, ClientFunction } from 'testcafe';
+import assert from 'assert';
 import OS from 'os-family';
 import { saveWindowState, restoreWindowState } from '../../../window-helpers';
 
@@ -115,3 +116,43 @@ test('Hide elements when resizing the window', async t => {
         .expect(itemsVisibility.iconVisible).notOk()
         .expect(statusBarDiv.clientHeight).eql(82);
 });
+
+const TOTAL_DELAY = 5000;
+const START_DELAY = 1000;
+const AFTER_DELAY = 2000;
+
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+async function evaluateOnRemote (client, func) {
+    const { result } = await client.Runtime.evaluate({ expression: `(${func.toString()})()`, returnByValue: true });
+
+    return result.value;
+}
+
+async function simulateMoveAndCheckStatusBar (t) {
+    await delay(START_DELAY);
+
+    const browserConnection = t.testRun.browserConnection;
+    const providerPlugin    = browserConnection.provider.plugin;
+    const browserClient     = providerPlugin._getBrowserProtocolClient(providerPlugin.openedBrowsers[browserConnection.id]);
+    const remoteInterface   = await browserClient.getActiveClient();
+
+    const windowSize = await evaluateOnRemote(remoteInterface, () => ({ width: innerWidth, height: innerHeight }));
+
+    await remoteInterface.Input.dispatchMouseEvent({ type: 'mouseMoved', x: windowSize.width / 2, y: windowSize.height - 1 });
+
+    await delay(AFTER_DELAY);
+
+    const statusBarState = await evaluateOnRemote(remoteInterface, () => window['%testCafeDriverInstance%'].statusBar.state);
+
+    assert.ok(statusBarState.hidden);
+}
+
+test
+    .page('../pages/hiding.html')
+    ('Hide status bar after mouse move', async t => {
+        await Promise.all([
+            t.wait(TOTAL_DELAY),
+            simulateMoveAndCheckStatusBar(t),
+        ]);
+    });
