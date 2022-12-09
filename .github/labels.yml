@@ -1,0 +1,108 @@
+# EDITS SHOULD BE SUBMITTED TO DevExpress/testcafe-build-system/config/labels.yml
+# Configuration for Label Actions - https://github.com/dessant/label-actions
+
+? 'TYPE: question'
+:
+  # Post a comment
+  comment: |
+    Thank you for your inquiry. This issue looks like a question that would be best [asked on StackOverflow](https://stackoverflow.com/questions/ask?tags=testcafe) - an amazing platform for users to ask and answer questions. We try to keep the GitHub issues tracker for bugs and feature requests only (see [Contributing](https://github.com/DevExpress/testcafe#contributing)).
+    
+    If you think that this issue is a bug, feel free to [open a new issue](https://github.com/DevExpress/testcafe/issues/new?template=bug-report.md), but please make sure to follow the issue template. Thank you in advance.
+  unlabel: 'STATE: Need response'
+  close: true
+
+? 'STATE: Non-latest version'
+:
+  # Post a comment
+  comment: |
+    Thank you for submitting this issue. Since you are using an outdated version of TestCafe, we recommend you update TestCafe to the [latest version](https://github.com/DevExpress/testcafe/releases/latest) to check if this issue has been addressed. We constantly improve our tools, and there is a chance that this issue has been already resolved and/or is no longer reproducible in the latest version. We look forward to your response.
+  label: 'STATE: Need clarification'
+  unlabel:
+    - 'STATE: Non-latest version'
+    - 'STATE: Need response'
+
+? 'STATE: Need simple sample'
+:
+  # Post a comment
+  comment: |
+    Thank you for submitting this issue. We would love to assist you and diagnose it. However, we need a simple sample that we can easily run on our side in order to replicate the issue and research its cause. Without a sample, we are not able to figure out what's going on and why this issue occurs. Refer to this article to create the best example: [How To: Create a Minimal Working Example When You Submit an Issue](https://testcafe.io/402636/faq#how-to-create-a-minimal-working-example-when-you-submit-an-issue). We look forward to your response.
+  label: 'STATE: Need clarification'
+  unlabel:
+    - 'STATE: Need simple sample'
+    - 'STATE: Need response'
+
+? 'STATE: Need access confirmation'
+:
+  # Post a comment
+  comment: |
+    Thank you for submitting this issue. We would love to assist you and diagnose this issue. However, since your website sits behind a proxy and/or requires authentication, I will not be able to access it. Our policy prevents us from accessing a customer's internal resources without prior written approval from the entity that owns the server/web resource.
+    
+    If you want us to research the problem further, we'll need access to the server/web resource. Please ask the website owner to send us ([support@devexpress.com](mailto:support@devexpress.com)) written confirmation. It must permit DevExpress personnel to remotely access the website and its internal resources for research/testing and debugging purposes.
+  label: 'STATE: Need clarification'
+  unlabel: 
+    - 'STATE: Need access confirmation'
+    - 'STATE: Need response'
+
+? 'STATE: Incomplete template'
+:
+  # Post a comment
+  comment: |
+    Thank you for submitting this issue. However, the information you shared is insufficient to determine its cause. Please submit a new issue and fill the issue template completely - specify your TestCafe version and share a sample application with a test case that we can run on our side to reproduce and research the issue.
+  unlabel:
+    - 'STATE: Incomplete template'
+    - 'STATE: Need response'
+  close: true
+
+? 'STATE: No updates'
+:
+  # Post a comment
+  comment: |
+    No updates yet. Once we get any results, we will post them in this thread.
+  unlabel:
+    - 'STATE: No updates'
+    - 'STATE: Need response'
+
+? 'STATE: No estimations'
+:
+  # Post a comment
+  comment: |
+    Any personal estimate may be misleading, so we cannot currently tell it at the moment. Once we get any results, we will post them in this thread.
+  unlabel:
+    - 'STATE: No estimations'
+    - 'STATE: Need response'
+
+? 'STATE: Outdated proposal'
+:
+  # Post a comment
+  comment: |
+    We are focused on implementing features from our [Roadmap](https://devexpress.github.io/testcafe/roadmap/). Since this enhancement is not there, we cannot tell you any time frames on when we will be able to address it. If this feature is important for you, please submit a Pull Request with its implementation. See the [Сontribution guide](https://github.com/DevExpress/testcafe/blob/master/CONTRIBUTING.md) for more information.
+  unlabel:
+    - 'STATE: Outdated proposal'
+    - 'STATE: Need response'
+
+? 'STATE: Outdated issue'
+:
+  # Post a comment
+  comment: |
+    We address issues according to their severity, priority, and other factors. It appears that this issue is an edge case. If this issue is important for you, please submit a Pull Request with a fix. See the [Сontribution guide](https://github.com/DevExpress/testcafe/blob/master/CONTRIBUTING.md) for more information.
+  unlabel:
+    - 'STATE: Outdated issue'
+    - 'STATE: Need response'
+
+? 'STATE: No workarounds'
+:
+  # Post a comment
+  comment: |
+    There are no workarounds. Once we get any updates, we will post them in this thread.
+  unlabel:
+    - 'STATE: No workarounds'
+    - 'STATE: Need response'
+
+? 'STATE: PR Review Pending'
+:
+  # Post a comment
+  comment: |
+    Thank you for your contribution to TestCafe. We will review this PR.
+  unlabel:
+    - 'STATE: PR Review Pending'
+    - 'STATE: Need response'
