@@ -49,7 +49,7 @@ function testcafeImportPathReplacer<T extends Node> (experimentalEsm?: boolean):
         const visit: Visitor = (node): VisitResult<Node> => {
             // @ts-ignore
             if (node.parent?.kind === SyntaxKind.ImportDeclaration && node.kind === SyntaxKind.StringLiteral && node.text === 'testcafe') {
-                const libPath = experimentalEsm ? EXPORTABLE_LIB_ESM_PATH : EXPORTABLE_LIB_PATH;
+                const libPath = experimentalEsm ? `${EXPORTABLE_LIB_ESM_PATH}?update=${Date.now()}` : EXPORTABLE_LIB_PATH;
 
                 return tsFactory.createStringLiteral(libPath);
             }

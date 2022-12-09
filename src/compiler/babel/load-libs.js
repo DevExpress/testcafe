@@ -24,7 +24,7 @@ function getModuleResolverOpts (experimentalEsm) {
     return {
         resolvePath (source) {
             if (source === 'testcafe')
-                return experimentalEsm ? EXPORTABLE_LIB_ESM_PATH : EXPORTABLE_LIB_PATH;
+                return experimentalEsm ? `${EXPORTABLE_LIB_ESM_PATH}?update=${Date.now()}` : EXPORTABLE_LIB_PATH;
 
             return source;
         },
