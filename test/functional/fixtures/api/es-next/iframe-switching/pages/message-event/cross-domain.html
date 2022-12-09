@@ -28,9 +28,8 @@
         const receivedLog = document.getElementById('received-log');
 
         window.addEventListener('message', e => {
-            const logEntry = document.createElement('div');
-
-            logEntry.textContent = JSON.stringify(e.data);
+            const text     = JSON.stringify(e.data);
+            const logEntry = document.createTextNode(text);
 
             receivedLog.appendChild(logEntry);
 
