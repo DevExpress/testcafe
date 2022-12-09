@@ -22,7 +22,7 @@ export default class CustomActions {
             this[delegatedAPI(name)] = (...args) => {
                 const callsite = getCallsiteForMethod(name) || void 0;
 
-                return this._testController._enqueueCommand(RunCustomActionCommand, { fn, args, name }, this._validateCommand, callsite);
+                return this._testController.enqueueCommand(RunCustomActionCommand, { fn, args, name }, this._validateCommand, callsite);
             };
         });
 

@@ -60,7 +60,7 @@ export default class Assertion {
             message = void 0;
         }
 
-        return this._testController._enqueueCommand(command, {
+        return this._testController.enqueueCommand(command, {
             assertionType: command.methodName,
             actual:        this._actual,
             expected:      assertionArgs.expected,
