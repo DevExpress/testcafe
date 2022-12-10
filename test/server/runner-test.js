@@ -1349,7 +1349,7 @@ describe('Runner', () => {
                 throw new Error('Promise rejection expected');
             }
             catch (err) {
-                expect(err.message).eql('The value of the customActions option does not belong to type Object. Refer to the following article for custom action setup instructions: CUSTOM_ACTIONS_LINK');
+                expect(err.message).eql('The value of the customActions option does not belong to type Object. Refer to the following article for custom action setup instructions: https://testcafe.io/documentation/404150/guides/advanced-guides/custom-test-actions');
             }
         });
 
