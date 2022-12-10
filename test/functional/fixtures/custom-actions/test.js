@@ -84,14 +84,14 @@ const { createReporter } = require('../../utils/reporter');
 
         const result         = {};
         const expectedResult = [
-            { phase: 'start', actionName: 'runCustomAction', command: { type: 'run-custom-action', name: 'typeToInputAndCheckResult' } },
-            { phase: 'start', actionName: 'runCustomAction', command: { type: 'run-custom-action', name: 'typeTextAndClickButton' } },
+            { phase: 'start', actionName: 'runCustomAction', command: { type: 'run-custom-action', name: 'typeToInputAndCheckResult', actionResult: void 0 } },
+            { phase: 'start', actionName: 'runCustomAction', command: { type: 'run-custom-action', name: 'typeTextAndClickButton', actionResult: void 0 } },
             { phase: 'start', actionName: 'typeText' },
             { phase: 'end', actionName: 'typeText' },
             { phase: 'start', actionName: 'click' },
             { phase: 'end', actionName: 'click' },
-            { phase: 'end', actionName: 'runCustomAction', command: { type: 'run-custom-action', name: 'typeTextAndClickButton' } },
-            { phase: 'start', actionName: 'runCustomAction', command: { type: 'run-custom-action', name: 'getSpanTextBySelector' } },
+            { phase: 'end', actionName: 'runCustomAction', command: { type: 'run-custom-action', name: 'typeTextAndClickButton', actionResult: void 0 } },
+            { phase: 'start', actionName: 'runCustomAction', command: { type: 'run-custom-action', name: 'getSpanTextBySelector', actionResult: void 0 } },
             { phase: 'start', actionName: 'execute-selector' },
             { phase: 'end', actionName: 'execute-selector' },
             {
@@ -105,7 +105,7 @@ const { createReporter } = require('../../utils/reporter');
             },
             { phase: 'start', actionName: 'eql' },
             { phase: 'end', actionName: 'eql' },
-            { phase: 'end', actionName: 'runCustomAction', command: { type: 'run-custom-action', name: 'typeToInputAndCheckResult' } },
+            { phase: 'end', actionName: 'runCustomAction', command: { type: 'run-custom-action', name: 'typeToInputAndCheckResult', actionResult: void 0 } },
         ];
 
         function addTestRecord ( phase, testRunId, name, command) {

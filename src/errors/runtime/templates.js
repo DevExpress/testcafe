@@ -12,6 +12,7 @@ const DOCUMENTATION_LINKS = {
     TEST_SOURCE_PARAMETER: 'https://testcafe.io/documentation/402639/reference/command-line-interface#file-pathglob-pattern',
     FILTER_SETTINGS:       'https://testcafe.io/documentation/402638/reference/configuration-file#filter',
     HEADLESS_MODE:         'https://testcafe.io/documentation/402828/guides/concepts/browsers#test-in-headless-mode',
+    CUSTOM_ACTIONS:        'https://testcafe.io/documentation/404150/guides/advanced-guides/custom-test-actions',
 };
 
 export default {
@@ -139,6 +140,6 @@ export default {
     [RUNTIME_ERRORS.invalidSkipJsErrorsOptionsObjectProperty]:       `The "{optionName}" option does not exist. Use the following options to configure skipJsErrors: ${getConcatenatedValuesString(Object.keys(SKIP_JS_ERRORS_OPTIONS_OBJECT_OPTION_NAMES))}.`,
     [RUNTIME_ERRORS.invalidSkipJsErrorsCallbackWithOptionsProperty]: `The "{optionName}" option does not exist. Use the following options to configure skipJsErrors callback: ${getConcatenatedValuesString(Object.keys(SKIP_JS_ERRORS_CALLBACK_WITH_OPTIONS_OPTION_NAMES))}.`,
     [RUNTIME_ERRORS.invalidCommandInJsonCompiler]:                   `TestCafe terminated the test run. The "{path}" file contains an unknown Chrome User Flow action "{action}". Remove the action to continue. Refer to the following article for the definitive list of supported Chrome User Flow actions: https://testcafe.io/documentation/403998/guides/experimental-capabilities/chrome-replay-support#supported-replay-actions`,
-    [RUNTIME_ERRORS.invalidCustomActionsOptionType]:                 `The value of the customActions option does not belong to type Object. Refer to the following article for custom action setup instructions: CUSTOM_ACTIONS_LINK`,
-    [RUNTIME_ERRORS.invalidCustomActionType]:                        `TestCafe cannot parse the "{actionName}" action, because the action definition is invalid. Format the definition in accordance with the custom actions guide: CUSTOM_ACTIONS_LINK`,
+    [RUNTIME_ERRORS.invalidCustomActionsOptionType]:                 `The value of the customActions option does not belong to type Object. Refer to the following article for custom action setup instructions: ${ DOCUMENTATION_LINKS.CUSTOM_ACTIONS }`,
+    [RUNTIME_ERRORS.invalidCustomActionType]:                        `TestCafe cannot parse the "{actionName}" action, because the action definition is invalid. Format the definition in accordance with the custom actions guide: ${ DOCUMENTATION_LINKS.CUSTOM_ACTIONS }`,
 };
