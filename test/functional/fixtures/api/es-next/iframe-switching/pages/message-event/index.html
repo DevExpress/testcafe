@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index Page</title>
+</head>
+<body>
+    <h1>Index Page</h1>
+    <div>
+        <button id="post-string-message">Post string message</button>
+        <button id="post-object-message">Post object message</button>
+    </div>
+    <div>
+        <strong>Received log</strong>
+        <div id="received-log"></div>
+    </div>
+    <iframe id="cross-domain-iframe" src="http://localhost:3001/fixtures/api/es-next/iframe-switching/pages/message-event/cross-domain.html" style="width: auto; height: 300px"></iframe>
+    <script>
+        function postMessage (msg) {
+            const crossDomainIframe = document.getElementById('cross-domain-iframe');
+
+            crossDomainIframe.contentWindow.postMessage(msg, 'http://localhost:3001');
+        }
+
+        const receivedLog             = document.getElementById('received-log');
+        const postStringMessageButton = document.getElementById('post-string-message');
+        const postObjectMessageButton = document.getElementById('post-object-message');
+
+        postStringMessageButton.addEventListener('click', () => {
+            postMessage('string message');
+        });
+
+        postObjectMessageButton.addEventListener('click', () => {
+            postMessage({ object: 'message' });
+        });
+
+        window.addEventListener('message', e => {
+            const text     = JSON.stringify(e.data);
+            const logEntry = document.createTextNode(text);
+
+            receivedLog.appendChild(logEntry);
+        });
+    </script>
+</body>
+</html>

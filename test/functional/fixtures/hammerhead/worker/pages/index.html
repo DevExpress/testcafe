@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Worker</title>
+</head>
+<body>
+    <h1>Worker</h1>
+    <div>
+        <input id="first"> * <input id="second"> = <input id="result">
+    </div>
+    <script>
+        const first = document.getElementById('first');
+        const second = document.getElementById('second');
+        const result = document.getElementById('result');
+
+        const worker = new Worker('worker.js');
+
+        function sendDataToWorker () {
+            worker.postMessage({
+                first:  first.value,
+                second: second.value
+            });
+        }
+
+        first.oninput  = sendDataToWorker;
+        second.oninput = sendDataToWorker;
+
+        worker.onmessage = function (e) {
+            result.value = e.data;
+        }
+    </script>
+</body>
+</html>

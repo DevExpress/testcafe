@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cross-domain page</title>
+</head>
+<body>
+    <h1>Cross-domain page</h1>
+    <div>
+        <strong>Received log</strong>
+        <div id="received-log"></div>
+    </div>
+    <div>
+        <strong>Interactions</strong>
+        <input id="input">
+    </div>
+    <script>
+        function processMessageEventData (e) {
+            let data = e.data;
+
+            if (typeof data === 'string')
+                data += ' processed';
+            else if (typeof data === 'object')
+                data.processed = true;
+
+            return data;
+        }
+        const receivedLog = document.getElementById('received-log');
+
+        window.addEventListener('message', e => {
+            const text     = JSON.stringify(e.data);
+            const logEntry = document.createTextNode(text);
+
+            receivedLog.appendChild(logEntry);
+
+            e.source.postMessage(processMessageEventData(e), e.origin);
+        });
+    </script>
+</body>
+</html>
