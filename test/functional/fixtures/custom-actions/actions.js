@@ -13,8 +13,8 @@ async function typeTextAndClickButton (inputSelector, buttonSelector, inputText)
 }
 
 async function typeToInputAndCheckResult (inputSelector, buttonSelector, resultSelector, inputText) {
-    await this.custom.typeTextAndClickButton(inputSelector, buttonSelector, inputText)
-        .expect(await this.custom.getSpanTextBySelector(resultSelector)).eql(inputText);
+    await this.customActions.typeTextAndClickButton(inputSelector, buttonSelector, inputText)
+        .expect(await this.customActions.getSpanTextBySelector(resultSelector)).eql(inputText);
 }
 
 function getTextValue () {

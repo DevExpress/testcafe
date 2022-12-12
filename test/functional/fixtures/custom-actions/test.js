@@ -64,7 +64,7 @@ const { createReporter } = require('../../utils/reporter');
             shouldFail: true,
         })
             .catch(errs => {
-                expect(errs[0]).contains('TypeError: t.custom.clickBySelector is not a function');
+                expect(errs[0]).contains('TypeError: t.customActions.clickBySelector is not a function');
             });
     });
 

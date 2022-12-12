@@ -97,7 +97,7 @@ export default class TestController {
         this.testRun        = testRun;
         this.executionChain = Promise.resolve();
         this.warningLog     = testRun.warningLog;
-        this.customActions  = new CustomActions(this, testRun?.opts?.customActions);
+        this._customActions = new CustomActions(this, testRun?.opts?.customActions);
 
         this._addTestControllerToExecutionChain();
     }
@@ -222,8 +222,8 @@ export default class TestController {
         return this.testRun.browser;
     }
 
-    _custom$getter () {
-        return this.customActions || new CustomActions(this, this.testRun.opts.customActions);
+    _customActions$getter () {
+        return this._customActions || new CustomActions(this, this.testRun.opts.customActions);
     }
 
     [delegatedAPI(DispatchEventCommand.methodName)] (selector, eventName, options = {}) {
