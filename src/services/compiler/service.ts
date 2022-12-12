@@ -86,7 +86,7 @@ import {
 } from '../../errors/test-run';
 
 import { renderHtmlWithoutStack, shouldRenderHtmlWithoutStack } from '../../errors/test-run/render-error-template/utils';
-import setupSourceMapSupport from '../../utils/setup-sourcemap-support';
+import { setupSourceMapSupport } from '../../utils/setup-sourcemap-support';
 import { formatError } from '../../utils/handle-errors';
 import { SwitchToWindowPredicateError } from '../../shared/errors';
 import MessageBus from '../../utils/message-bus';

@@ -1,6 +1,7 @@
 import APIBasedTestFileCompilerBase from './test-file/api-based';
 import urlUtils from 'url';
 import Compiler from './index';
+import { fileContentsCache } from '../utils/setup-sourcemap-support';
 
 interface Load {
     format: string;
@@ -35,6 +36,8 @@ export async function load (url: string, context: Context, defaultLoad: Function
 
     if (testFilesInfo?.compiler) {
         const [compiledCode] = await testFilesInfo.compiler.precompile([testFilesInfo]);
+
+        fileContentsCache[url] = compiledCode;
 
         return {
             format:       context.format || 'module',
