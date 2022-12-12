@@ -82,7 +82,7 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
             }
             catch (e) {
                 if (e.code === errRequireEsmErrorCode)
-                    throw new ImportESMInCommonJSError(e);
+                    throw new ImportESMInCommonJSError(e, filename);
 
                 throw e;
             }

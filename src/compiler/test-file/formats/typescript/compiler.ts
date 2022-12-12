@@ -238,14 +238,18 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
     }
 
     public _getRequireCompilers (): RequireCompilers {
-        return {
+        const requireCompilers: RequireCompilers = {
             '.ts':  (code, filename) => this._compileCode(code, filename),
             '.tsx': (code, filename) => this._compileCode(code, filename),
             '.js':  (code, filename) => ESNextTestFileCompiler.prototype._compileCode.call(this, code, filename),
             '.cjs': (code, filename) => ESNextTestFileCompiler.prototype._compileCode.call(this, code, filename),
-            '.mjs': (code, filename) => ESNextTestFileCompiler.prototype._compileCode.call(this, code, filename),
             '.jsx': (code, filename) => ESNextTestFileCompiler.prototype._compileCode.call(this, code, filename),
         };
+
+        if (this.experimentalEsm)
+            requireCompilers['.mjs'] = (code, filename) => ESNextTestFileCompiler.prototype._compileCode.call(this, code, filename);
+
+        return requireCompilers;
     }
 
     public get canPrecompile (): boolean {

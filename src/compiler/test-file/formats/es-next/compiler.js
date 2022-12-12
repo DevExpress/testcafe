@@ -55,12 +55,16 @@ export default class ESNextTestFileCompiler extends APIBasedTestFileCompilerBase
     }
 
     _getRequireCompilers () {
-        return {
+        const requireCompilers = {
             '.js':  (code, filename) => this._compileCode(code, filename),
             '.jsx': (code, filename) => this._compileCode(code, filename),
-            '.mjs': (code, filename) => this._compileCode(code, filename),
             '.cjs': (code, filename) => this._compileCode(code, filename),
         };
+
+        if (this.experimentalEsm)
+            requireCompilers['.mjs'] = (code, filename) => this._compileCode(code, filename);
+
+        return requireCompilers;
     }
 
     get canCompileInEsm () {
@@ -68,6 +72,11 @@ export default class ESNextTestFileCompiler extends APIBasedTestFileCompilerBase
     }
 
     getSupportedExtension () {
-        return ['.js', '.jsx', '.mjs', '.cjs'];
+        const supportedExtensions = ['.js', '.jsx', '.cjs'];
+
+        if (this.experimentalEsm)
+            supportedExtensions.push('.mjs');
+
+        return supportedExtensions;
     }
 }
