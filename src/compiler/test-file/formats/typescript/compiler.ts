@@ -212,7 +212,7 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
     private _getTypescriptTransformers (): TransformerFactory<SourceFile>[] {
         const transformers: TransformerFactory<SourceFile>[] = [testcafeImportPathReplacer(this.experimentalEsm)];
 
-        if (this.isCompilerServiceMode)
+        if (this.isCompilerServiceMode || this.experimentalEsm)
             transformers.push(disableV8OptimizationCodeAppender());
 
         return transformers;
