@@ -56,7 +56,7 @@ export class CommandFormatter {
             this._assignProperties(this._command, formattedCommand);
 
         if (this._command instanceof RunCustomActionCommand)
-            formattedCommand.actionResult = this._prepareCustomActionResult();
+            formattedCommand.actionResult = this._result;
 
         this._maskConfidentialInfo(formattedCommand);
 
@@ -127,10 +127,6 @@ export class CommandFormatter {
 
     private _prepareUrl (command: NavigateToCommand): string {
         return command.url;
-    }
-
-    private _prepareCustomActionResult (): unknown {
-        return this._result;
     }
 
     private _assignProperties (command: CommandBase, formattedCommand: FormattedCommand): void {
