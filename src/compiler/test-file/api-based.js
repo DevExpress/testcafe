@@ -194,16 +194,12 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
 
     _addGlobalAPI (testFile) {
         Object.defineProperty(global, 'fixture', {
-            get:          () => Fixture.init.bind(Fixture, { testFile, baseUrl: this.baseUrl }),
+            get:          () => new Fixture(testFile, this.baseUrl),
             configurable: true,
         });
 
         Object.defineProperty(global, 'test', {
-            get: () => Test.init.bind(Test, {
-                testFile,
-                isCompilerServiceMode: this.isCompilerServiceMode,
-                baseUrl:               this.baseUrl,
-            }),
+            get:          () => new Test(testFile, false, this.baseUrl),
             configurable: true,
         });
     }
