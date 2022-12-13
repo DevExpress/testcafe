@@ -14,7 +14,7 @@ describe('[API] fixture.beforeEach/fixture.afterEach hooks', () => {
                 return runTests('./testcafe-fixtures/run-all.js', 'Test2', { shouldFail: true, only: 'chrome' });
             })
             .catch(errs => {
-                expect(errs[0].replaceAll(/\?update=\d*/g)).eql(test1Err.replaceAll(/\?update=\d*/g));
+                expect(errs[0].replace(/\?update=\d*/g)).eql(test1Err.replace(/\?update=\d*/g));
                 expect(errs[0].indexOf(
                     '- Error in fixture.afterEach hook - ' +
                     'A JavaScript error occurred on "http://localhost:3000/fixtures/api/es-next/hooks/pages/index.html"')).eql(0);

@@ -54,9 +54,10 @@ test('Should correctly skip JS errors with multiple method calls', async t => {
 });
 
 test('Should fail with SkipJsErrorsCallbackOptions', async t => {
+    const errMessage      = CLIENT_ERROR_MESSAGE;
     const callbackOptions = {
-        fn:           ({ message, pageUrl }) => message === CLIENT_ERROR_MESSAGE && pageUrl === 'incorrect url',
-        dependencies: { CLIENT_ERROR_MESSAGE },
+        fn:           ({ message, pageUrl }) => message === errMessage && pageUrl === 'incorrect url',
+        dependencies: { errMessage },
     };
 
     await t.skipJsErrors(callbackOptions)

@@ -1,4 +1,5 @@
 const { expect } = require('chai');
+const semver     = require('semver');
 
 // NOTE: we run tests in chrome only, because we mainly test server API functionality.
 // Actions functionality is tested in lower-level raw API.
@@ -101,8 +102,12 @@ describe('[API] TestController', () => {
             return runTests('./testcafe-fixtures/test-controller-test.js', 'GH-2557',
                 { shouldFail: true, only: 'chrome' })
                 .catch(errs => {
+                    const expectedMessage = semver.gte(process.version, '16.0.0')
+                        ? "TypeError: Cannot read properties of undefined (reading 'someProperty')  [[user-agent]]"
+                        : "TypeError: Cannot read property 'someProperty' of undefined  [[user-agent]]";
+
                     expect(errs.length).eql(1);
-                    expect(errs[0]).contains("TypeError: Cannot read properties of undefined (reading 'someProperty')  [[user-agent]]");
+                    expect(errs[0]).contains(expectedMessage);
                 });
         });
 
