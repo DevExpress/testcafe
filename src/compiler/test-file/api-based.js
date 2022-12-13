@@ -20,7 +20,10 @@ import stackCleaningHook from '../../errors/stack-cleaning-hook';
 import NODE_MODULES from '../../utils/node-modules-folder-name';
 import cacheProxy from './cache-proxy';
 import exportableLib from '../../api/exportable-lib';
+import TEST_FILE_TEMP_VARIABLE_NAME from './test-file-temp-variable-name';
+import addExportAPI from './add-export-api';
 import url from 'url';
+
 
 const CWD = process.cwd();
 
@@ -191,31 +194,38 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
 
     _addGlobalAPI (testFile) {
         Object.defineProperty(global, 'fixture', {
-            get:          () => new Fixture(testFile, this.baseUrl),
-            configurable: true,
-        });
-
-        Object.defineProperty(global, 'test', {
-            get:          () => new Test(testFile, false, this.baseUrl),
-            configurable: true,
-        });
-    }
-
-    _addExportAPI (testFile) {
-        Object.defineProperty(exportableLib, 'fixture', {
             get:          () => Fixture.init.bind(Fixture, { testFile, baseUrl: this.baseUrl }),
             configurable: true,
         });
 
-        Object.defineProperty(exportableLib, 'test', {
+        Object.defineProperty(global, 'test', {
             get: () => Test.init.bind(Test, {
                 testFile,
                 isCompilerServiceMode: this.isCompilerServiceMode,
-                experimentalEsm:       this.experimentalEsm,
                 baseUrl:               this.baseUrl,
             }),
             configurable: true,
         });
+    }
+
+    _addExportAPIInCompilerServiceMode (testFile) {
+        // 'esm' library has an issue with loading modules
+        // in case of the combination of require and import directives.
+        // This hack allowing achieve the desired behavior.
+        const exportableLibPath = require.resolve('../../api/exportable-lib');
+
+        delete require.cache[exportableLibPath];
+
+        global[TEST_FILE_TEMP_VARIABLE_NAME] = { testFile, baseUrl: this.baseUrl };
+
+        require('../../api/exportable-lib');
+    }
+
+    _addExportAPI (testFile) {
+        if (this.isCompilerServiceMode)
+            this._addExportAPIInCompilerServiceMode(testFile);
+        else
+            addExportAPI(testFile, exportableLib, { baseUrl: this.baseUrl });
     }
 
     _removeGlobalAPI () {
