@@ -3,7 +3,7 @@ const config = require('../../config');
 const path = require('path');
 
 describe('ESM support', function () {
-    if (config.experimentalESM) {
+    if (config.experimentalESM || config.experimentalDebug) {
         it('Should import ESM without errors in ESM mode', function () {
             return runTests('./testcafe-fixtures/import-esm.js', null, { only: 'chrome' });
         });

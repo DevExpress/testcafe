@@ -1,10 +1,12 @@
 import path from 'path';
 import { ClientFunction } from 'testcafe';
+import dirname from '../dirname.js';
+
 
 fixture `NavigateTo`
     .page `http://localhost:3000/fixtures/api/es-next/navigate-to-and-test-page/pages/index.html`;
 
-const __dirname = global.localDirname;
+const __dirname      = dirname;
 const getLocation    = ClientFunction(() => window.location.toString().toLowerCase().replace(/\/\/\/(\w):[\\/]/g, '//$1:/'));
 const resolveFileUrl = relativeUrl => `file://${path.join(__dirname, relativeUrl)}`.replace(/\\/g, '/').toLowerCase();
 
