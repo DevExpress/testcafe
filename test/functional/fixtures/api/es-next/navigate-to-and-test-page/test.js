@@ -5,7 +5,7 @@ describe('[API] t.navigateTo', function () {
         return runTests('./testcafe-fixtures/navigate-to-test.js', 'Incorrect protocol', { shouldFail: 'true' })
             .catch(function (errs) {
                 expect(errs[0]).contains('Invalid test page URL: "ftp://localhost:3000/fixtures/api/es-next/navigate-to-and-test-page/pages/index.html". TestCafe cannot execute the test because the test page URL includes the ftp protocol. TestCafe supports the following protocols: http://, https:// and file://.');
-                expect(errs[0]).contains('> 71 |    await t.navigateTo(\'ftp://localhost:3000/fixtures/api/es-next/navigate-to-and-test-page/pages/index.html\');');
+                expect(errs[0]).contains('> 72 |    await t.navigateTo(\'ftp://localhost:3000/fixtures/api/es-next/navigate-to-and-test-page/pages/index.html\');');
             });
     });
 
