@@ -173,7 +173,8 @@ export class SkipJsErrorsArgumentApiError extends APIError {
 
 export class ImportESMInCommonJSError extends GeneralError {
     constructor (originalError, targetFile) {
-        const [, esModule] = originalError.toString().match(/ES Module (\S*)/);
+        //NOTE: There is different error message for 14.* node and 16.* and higher.
+        const [, esModule] = originalError.toString().match(/ES Module:? (\S*)/);
 
         super(RUNTIME_ERRORS.cannotImportESMInCommonsJS, esModule, targetFile);
     }
