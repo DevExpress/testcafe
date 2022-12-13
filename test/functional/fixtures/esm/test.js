@@ -15,7 +15,7 @@ describe('ESM support', function () {
                     const targetFileName = path.resolve('test/functional/fixtures/esm/testcafe-fixtures/import-esm.js');
                     const ESModule = path.resolve('test/functional/fixtures/esm/testcafe-fixtures/esm-package.mjs');
 
-                    expect(errs.message).to.contains(`Cannot import ES module ${ESModule} from ${targetFileName}. Please use dynamic import() or set options --esm-experimental`);
+                    expect(errs.message).to.contains(`Cannot import ES module ${ESModule} from ${targetFileName}. Please use dynamic import() or set options --experimental-esm`);
                 });
         });
     }
