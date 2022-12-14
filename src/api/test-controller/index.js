@@ -83,14 +83,12 @@ import ReExecutablePromise from '../../utils/re-executable-promise';
 import sendRequest from '../../test-run/request/send';
 import { RequestRuntimeError } from '../../errors/runtime';
 import { RUNTIME_ERRORS } from '../../errors/types';
+import CustomActions from './custom-actions';
+import delegatedAPI from './delegated-api';
 
 const originalThen = Promise.resolve().then;
 
 let inDebug = false;
-
-function delegatedAPI (methodName, accessor = '') {
-    return `_${methodName}$${accessor}`;
-}
 
 export default class TestController {
     constructor (testRun) {
@@ -99,6 +97,7 @@ export default class TestController {
         this.testRun        = testRun;
         this.executionChain = Promise.resolve();
         this.warningLog     = testRun.warningLog;
+        this._customActions = new CustomActions(this, testRun?.opts?.customActions);
 
         this._addTestControllerToExecutionChain();
     }
@@ -164,8 +163,9 @@ export default class TestController {
         return this.executionChain;
     }
 
-    _enqueueCommand (CmdCtor, cmdArgs, validateCommandFn) {
-        const callsite = getCallsiteForMethod(CmdCtor.methodName);
+    enqueueCommand (CmdCtor, cmdArgs, validateCommandFn, callsite) {
+        callsite = callsite || getCallsiteForMethod(CmdCtor.methodName);
+
         const command  = this._createCommand(CmdCtor, cmdArgs, callsite);
 
         if (typeof validateCommandFn === 'function')
@@ -222,8 +222,12 @@ export default class TestController {
         return this.testRun.browser;
     }
 
+    _customActions$getter () {
+        return this._customActions || new CustomActions(this, this.testRun.opts.customActions);
+    }
+
     [delegatedAPI(DispatchEventCommand.methodName)] (selector, eventName, options = {}) {
-        return this._enqueueCommand(DispatchEventCommand, { selector, eventName, options, relatedTarget: options.relatedTarget });
+        return this.enqueueCommand(DispatchEventCommand, { selector, eventName, options, relatedTarget: options.relatedTarget });
     }
 
     _prepareCookieArguments (args, isSetCommand = false) {
@@ -246,17 +250,17 @@ export default class TestController {
     }
 
     [delegatedAPI(GetCookiesCommand.methodName)] (...args) {
-        return this._enqueueCommand(GetCookiesCommand, this._prepareCookieArguments(args));
+        return this.enqueueCommand(GetCookiesCommand, this._prepareCookieArguments(args));
     }
 
     [delegatedAPI(SetCookiesCommand.methodName)] (...args) {
         const { urls, cookies } = this._prepareCookieArguments(args, true);
 
-        return this._enqueueCommand(SetCookiesCommand, { cookies, url: urls[0] });
+        return this.enqueueCommand(SetCookiesCommand, { cookies, url: urls[0] });
     }
 
     [delegatedAPI(DeleteCookiesCommand.methodName)] (...args) {
-        return this._enqueueCommand(DeleteCookiesCommand, this._prepareCookieArguments(args));
+        return this.enqueueCommand(DeleteCookiesCommand, this._prepareCookieArguments(args));
     }
 
     _prepareRequestArguments (bindOptions, ...args) {
@@ -319,27 +323,27 @@ export default class TestController {
     }
 
     [delegatedAPI(ClickCommand.methodName)] (selector, options) {
-        return this._enqueueCommand(ClickCommand, { selector, options });
+        return this.enqueueCommand(ClickCommand, { selector, options });
     }
 
     [delegatedAPI(RightClickCommand.methodName)] (selector, options) {
-        return this._enqueueCommand(RightClickCommand, { selector, options });
+        return this.enqueueCommand(RightClickCommand, { selector, options });
     }
 
     [delegatedAPI(DoubleClickCommand.methodName)] (selector, options) {
-        return this._enqueueCommand(DoubleClickCommand, { selector, options });
+        return this.enqueueCommand(DoubleClickCommand, { selector, options });
     }
 
     [delegatedAPI(HoverCommand.methodName)] (selector, options) {
-        return this._enqueueCommand(HoverCommand, { selector, options });
+        return this.enqueueCommand(HoverCommand, { selector, options });
     }
 
     [delegatedAPI(DragCommand.methodName)] (selector, dragOffsetX, dragOffsetY, options) {
-        return this._enqueueCommand(DragCommand, { selector, dragOffsetX, dragOffsetY, options });
+        return this.enqueueCommand(DragCommand, { selector, dragOffsetX, dragOffsetY, options });
     }
 
     [delegatedAPI(DragToElementCommand.methodName)] (selector, destinationSelector, options) {
-        return this._enqueueCommand(DragToElementCommand, { selector, destinationSelector, options });
+        return this.enqueueCommand(DragToElementCommand, { selector, destinationSelector, options });
     }
 
     _getSelectorForScroll (args) {
@@ -380,7 +384,7 @@ export default class TestController {
         if (typeof args[0] === 'number')
             [ x, y, options ] = args;
 
-        return this._enqueueCommand(ScrollCommand, { selector, x, y, position, options });
+        return this.enqueueCommand(ScrollCommand, { selector, x, y, position, options });
     }
 
     [delegatedAPI(ScrollByCommand.methodName)] (...args) {
@@ -388,23 +392,23 @@ export default class TestController {
 
         const [byX, byY, options] = args;
 
-        return this._enqueueCommand(ScrollByCommand, { selector, byX, byY, options });
+        return this.enqueueCommand(ScrollByCommand, { selector, byX, byY, options });
     }
 
     [delegatedAPI(ScrollIntoViewCommand.methodName)] (selector, options) {
-        return this._enqueueCommand(ScrollIntoViewCommand, { selector, options });
+        return this.enqueueCommand(ScrollIntoViewCommand, { selector, options });
     }
 
     [delegatedAPI(TypeTextCommand.methodName)] (selector, text, options) {
-        return this._enqueueCommand(TypeTextCommand, { selector, text, options });
+        return this.enqueueCommand(TypeTextCommand, { selector, text, options });
     }
 
     [delegatedAPI(SelectTextCommand.methodName)] (selector, startPos, endPos, options) {
-        return this._enqueueCommand(SelectTextCommand, { selector, startPos, endPos, options });
+        return this.enqueueCommand(SelectTextCommand, { selector, startPos, endPos, options });
     }
 
     [delegatedAPI(SelectTextAreaContentCommand.methodName)] (selector, startLine, startPos, endLine, endPos, options) {
-        return this._enqueueCommand(SelectTextAreaContentCommand, {
+        return this.enqueueCommand(SelectTextAreaContentCommand, {
             selector,
             startLine,
             startPos,
@@ -415,7 +419,7 @@ export default class TestController {
     }
 
     [delegatedAPI(SelectEditableContentCommand.methodName)] (startSelector, endSelector, options) {
-        return this._enqueueCommand(SelectEditableContentCommand, {
+        return this.enqueueCommand(SelectEditableContentCommand, {
             startSelector,
             endSelector,
             options,
@@ -423,30 +427,30 @@ export default class TestController {
     }
 
     [delegatedAPI(PressKeyCommand.methodName)] (keys, options) {
-        return this._enqueueCommand(PressKeyCommand, { keys, options });
+        return this.enqueueCommand(PressKeyCommand, { keys, options });
     }
 
     [delegatedAPI(WaitCommand.methodName)] (timeout) {
-        return this._enqueueCommand(WaitCommand, { timeout });
+        return this.enqueueCommand(WaitCommand, { timeout });
     }
 
     [delegatedAPI(NavigateToCommand.methodName)] (url) {
-        return this._enqueueCommand(NavigateToCommand, { url });
+        return this.enqueueCommand(NavigateToCommand, { url });
     }
 
     [delegatedAPI(SetFilesToUploadCommand.methodName)] (selector, filePath) {
-        return this._enqueueCommand(SetFilesToUploadCommand, { selector, filePath });
+        return this.enqueueCommand(SetFilesToUploadCommand, { selector, filePath });
     }
 
     [delegatedAPI(ClearUploadCommand.methodName)] (selector) {
-        return this._enqueueCommand(ClearUploadCommand, { selector });
+        return this.enqueueCommand(ClearUploadCommand, { selector });
     }
 
     [delegatedAPI(TakeScreenshotCommand.methodName)] (options) {
         if (options && typeof options !== 'object')
             options = { path: options };
 
-        return this._enqueueCommand(TakeScreenshotCommand, options);
+        return this.enqueueCommand(TakeScreenshotCommand, options);
     }
 
     [delegatedAPI(TakeElementScreenshotCommand.methodName)] (selector, ...args) {
@@ -461,33 +465,33 @@ export default class TestController {
         else
             commandArgs.path = args[0];
 
-        return this._enqueueCommand(TakeElementScreenshotCommand, commandArgs);
+        return this.enqueueCommand(TakeElementScreenshotCommand, commandArgs);
     }
 
     [delegatedAPI(ResizeWindowCommand.methodName)] (width, height) {
-        return this._enqueueCommand(ResizeWindowCommand, { width, height });
+        return this.enqueueCommand(ResizeWindowCommand, { width, height });
     }
 
     [delegatedAPI(ResizeWindowToFitDeviceCommand.methodName)] (device, options) {
-        return this._enqueueCommand(ResizeWindowToFitDeviceCommand, { device, options });
+        return this.enqueueCommand(ResizeWindowToFitDeviceCommand, { device, options });
     }
 
     [delegatedAPI(MaximizeWindowCommand.methodName)] () {
-        return this._enqueueCommand(MaximizeWindowCommand);
+        return this.enqueueCommand(MaximizeWindowCommand);
     }
 
     [delegatedAPI(SwitchToIframeCommand.methodName)] (selector) {
-        return this._enqueueCommand(SwitchToIframeCommand, { selector });
+        return this.enqueueCommand(SwitchToIframeCommand, { selector });
     }
 
     [delegatedAPI(SwitchToMainWindowCommand.methodName)] () {
-        return this._enqueueCommand(SwitchToMainWindowCommand);
+        return this.enqueueCommand(SwitchToMainWindowCommand);
     }
 
     [delegatedAPI(OpenWindowCommand.methodName)] (url) {
         this._validateMultipleWindowCommand(OpenWindowCommand.methodName);
 
-        return this._enqueueCommand(OpenWindowCommand, { url });
+        return this.enqueueCommand(OpenWindowCommand, { url });
     }
 
     [delegatedAPI(CloseWindowCommand.methodName)] (window) {
@@ -495,13 +499,13 @@ export default class TestController {
 
         this._validateMultipleWindowCommand(CloseWindowCommand.methodName);
 
-        return this._enqueueCommand(CloseWindowCommand, { windowId });
+        return this.enqueueCommand(CloseWindowCommand, { windowId });
     }
 
     [delegatedAPI(GetCurrentWindowCommand.methodName)] () {
         this._validateMultipleWindowCommand(GetCurrentWindowCommand.methodName);
 
-        return this._enqueueCommand(GetCurrentWindowCommand);
+        return this.enqueueCommand(GetCurrentWindowCommand);
     }
 
     [delegatedAPI(SwitchToWindowCommand.methodName)] (windowSelector) {
@@ -521,19 +525,19 @@ export default class TestController {
             args = { windowId: windowSelector?.id };
         }
 
-        return this._enqueueCommand(command, args);
+        return this.enqueueCommand(command, args);
     }
 
     [delegatedAPI(SwitchToParentWindowCommand.methodName)] () {
         this._validateMultipleWindowCommand(SwitchToParentWindowCommand.methodName);
 
-        return this._enqueueCommand(SwitchToParentWindowCommand);
+        return this.enqueueCommand(SwitchToParentWindowCommand);
     }
 
     [delegatedAPI(SwitchToPreviousWindowCommand.methodName)] () {
         this._validateMultipleWindowCommand(SwitchToPreviousWindowCommand.methodName);
 
-        return this._enqueueCommand(SwitchToPreviousWindowCommand);
+        return this.enqueueCommand(SwitchToPreviousWindowCommand);
     }
 
     _eval$ (fn, options) {
@@ -547,7 +551,7 @@ export default class TestController {
     }
 
     [delegatedAPI(SetNativeDialogHandlerCommand.methodName)] (fn, options) {
-        return this._enqueueCommand(SetNativeDialogHandlerCommand, {
+        return this.enqueueCommand(SetNativeDialogHandlerCommand, {
             dialogHandler: { fn, options },
         });
     }
@@ -592,37 +596,37 @@ export default class TestController {
         // NOTE: do not need to enqueue the Debug command if we are in debugging mode.
         // The Debug command will be executed by CDP.
         // Also, we are forced to add empty function to the execution chain to preserve it.
-        return this.isCompilerServiceMode() ? this._enqueueTask(DebugCommand.methodName, noop) : this._enqueueCommand(DebugCommand);
+        return this.isCompilerServiceMode() ? this._enqueueTask(DebugCommand.methodName, noop) : this.enqueueCommand(DebugCommand);
     }
 
     [delegatedAPI(SetTestSpeedCommand.methodName)] (speed) {
-        return this._enqueueCommand(SetTestSpeedCommand, { speed });
+        return this.enqueueCommand(SetTestSpeedCommand, { speed });
     }
 
     [delegatedAPI(SetPageLoadTimeoutCommand.methodName)] (duration) {
-        return this._enqueueCommand(SetPageLoadTimeoutCommand, { duration }, (testController, command) => {
+        return this.enqueueCommand(SetPageLoadTimeoutCommand, { duration }, (testController, command) => {
             addWarning(testController.warningLog, { message: getDeprecationMessage(DEPRECATED.setPageLoadTimeout), actionId: command.actionId });
         });
     }
 
     [delegatedAPI(UseRoleCommand.methodName)] (role) {
-        return this._enqueueCommand(UseRoleCommand, { role });
+        return this.enqueueCommand(UseRoleCommand, { role });
     }
 
     [delegatedAPI(SkipJsErrorsCommand.methodName)] (options) {
-        return this._enqueueCommand(SkipJsErrorsCommand, { options });
+        return this.enqueueCommand(SkipJsErrorsCommand, { options });
     }
 
     [delegatedAPI(AddRequestHooksCommand.methodName)] (...hooks) {
         hooks = flattenDeep(hooks);
 
-        return this._enqueueCommand(AddRequestHooksCommand, { hooks });
+        return this.enqueueCommand(AddRequestHooksCommand, { hooks });
     }
 
     [delegatedAPI(RemoveRequestHooksCommand.methodName)] (...hooks) {
         hooks = flattenDeep(hooks);
 
-        return this._enqueueCommand(RemoveRequestHooksCommand, { hooks });
+        return this.enqueueCommand(RemoveRequestHooksCommand, { hooks });
     }
 
     static enableDebugForNonDebugCommands () {

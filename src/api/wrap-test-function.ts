@@ -1,50 +1,51 @@
-import TestController from './test-controller';
 import testRunTracker from './test-run-tracker';
 import TestRun from '../test-run';
+import TestController from './test-controller';
 import TestCafeErrorList from '../errors/error-list';
 import { MissingAwaitError } from '../errors/test-run';
 import addRenderedWarning from '../notifications/add-rendered-warning';
 import WARNING_MESSAGES from '../notifications/warning-message';
+import { addErrors, addWarnings } from './test-controller/add-message';
 
-export default function wrapTestFunction (fn: Function): Function {
-    return async (testRun: TestRun) => {
-        let result       = null;
-        const errList    = new TestCafeErrorList();
-        const markeredfn = testRunTracker.addTrackingMarkerToFunction(testRun.id, fn);
+export interface WrapTestFunctionExecutorArguments {
+    testRun: TestRun;
+    functionArgs: any[];
+    fn: Function;
+}
 
-        function addWarnings (callsiteSet: Set<Record<string, any>>, message: string): void {
-            callsiteSet.forEach(callsite => {
-                addRenderedWarning(testRun.warningLog, message, callsite);
-                callsiteSet.delete(callsite);
-            });
-        }
+const defaultExecutor = async function ({ testRun, fn }: WrapTestFunctionExecutorArguments): Promise<any> {
+    const markeredfn = testRunTracker.addTrackingMarkerToFunction(testRun.id, fn);
 
-        function addErrors (callsiteSet: Set<Record<string, any>>, ErrorClass: any): void {
-            callsiteSet.forEach(callsite => {
-                errList.addError(new ErrorClass(callsite));
-                callsiteSet.delete(callsite);
-            });
-        }
+    return await markeredfn(testRun.controller);
+};
+
+export default function wrapTestFunction (fn: Function, executor: Function = defaultExecutor): Function {
+    return async (testRun: TestRun, functionArgs: any) => {
+        let result    = null;
+        const errList = new TestCafeErrorList();
 
         testRun.controller = new TestController(testRun);
 
         testRun.observedCallsites.clear();
-
         testRunTracker.ensureEnabled();
 
         try {
-            result = await markeredfn(testRun.controller);
+            result = await executor({ fn, functionArgs, testRun });
         }
         catch (err) {
             errList.addError(err);
         }
 
         if (!errList.hasUncaughtErrorsInTestCode) {
-            for (const { callsite, actionId } of testRun.observedCallsites.awaitedSnapshotWarnings.values())
-                addRenderedWarning(testRun.warningLog, { message: WARNING_MESSAGES.excessiveAwaitInAssertion, actionId }, callsite);
+            for (const { callsite, actionId } of testRun.observedCallsites.awaitedSnapshotWarnings.values()) {
+                addRenderedWarning(testRun.warningLog, {
+                    message: WARNING_MESSAGES.excessiveAwaitInAssertion,
+                    actionId,
+                }, callsite);
+            }
 
-            addWarnings(testRun.observedCallsites.unawaitedSnapshotCallsites, WARNING_MESSAGES.missingAwaitOnSnapshotProperty);
-            addErrors(testRun.observedCallsites.callsitesWithoutAwait, MissingAwaitError);
+            addWarnings(testRun.observedCallsites.unawaitedSnapshotCallsites, WARNING_MESSAGES.missingAwaitOnSnapshotProperty, testRun);
+            addErrors(testRun.observedCallsites.callsitesWithoutAwait, MissingAwaitError, errList);
         }
 
         if (errList.hasErrors)
@@ -53,3 +54,4 @@ export default function wrapTestFunction (fn: Function): Function {
         return result;
     };
 }
+

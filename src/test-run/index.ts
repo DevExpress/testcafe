@@ -77,6 +77,7 @@ import {
     DeleteCookiesCommand,
     AddRequestHooksCommand,
     RemoveRequestHooksCommand,
+    RunCustomActionCommand,
 } from './commands/actions';
 
 import { RUNTIME_ERRORS, TEST_RUN_ERRORS } from '../errors/types';
@@ -129,6 +130,7 @@ import { CookieOptions } from './commands/options';
 import { prepareSkipJsErrorsOptions } from '../api/skip-js-errors';
 import { CookieProviderFactory } from './cookies/factory';
 import { CookieProvider } from './cookies/base';
+import wrapCustomAction from '../api/wrap-custom-action';
 
 import {
     ProxylessRoleProvider,
@@ -1275,6 +1277,13 @@ export default class TestRun extends AsyncEventEmitter {
             fn = this.decorateDisableDebugBreakpoints(fn, { disable: true });
 
             return await fn();
+        }
+
+        if (command.type === COMMAND_TYPE.runCustomAction) {
+            const { fn, args } = command as RunCustomActionCommand;
+            const wrappedFn    = wrapCustomAction(fn);
+
+            return await wrappedFn(this, args);
         }
 
         if (command.type === COMMAND_TYPE.assertion)

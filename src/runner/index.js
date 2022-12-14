@@ -317,6 +317,21 @@ export default class Runner extends EventEmitter {
         validateSkipJsErrorsOptionValue(skipJsErrorsOptions, GeneralError);
     }
 
+    _validateCustomActionsOption () {
+        const customActions = this.configuration.getOption(OPTION_NAMES.customActions);
+
+        if (!customActions)
+            return;
+
+        if (typeof customActions !== 'object')
+            throw new GeneralError(RUNTIME_ERRORS.invalidCustomActionsOptionType);
+
+        for (const name in customActions) {
+            if (typeof customActions[name] !== 'function')
+                throw new GeneralError(RUNTIME_ERRORS.invalidCustomActionType, name, typeof customActions[name]);
+        }
+    }
+
     async _validateBrowsers () {
         const browsers = this.configuration.getOption(OPTION_NAMES.browsers);
 
@@ -485,6 +500,7 @@ export default class Runner extends EventEmitter {
         this._validateQuarantineOptions();
         this._validateConcurrencyOption();
         this._validateSkipJsErrorsOption();
+        this._validateCustomActionsOption();
         await this._validateBrowsers();
     }
 

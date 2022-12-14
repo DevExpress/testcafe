@@ -239,6 +239,7 @@ before(function () {
                     testExecutionTimeout,
                     runExecutionTimeout,
                     baseUrl,
+                    customActions,
                 } = opts;
 
                 const actualBrowsers = browsersInfo.filter(browserInfo => {
@@ -309,6 +310,7 @@ before(function () {
                         testExecutionTimeout,
                         runExecutionTimeout,
                         baseUrl,
+                        customActions,
                     })
                     .then(failedCount => {
                         if (customReporters)

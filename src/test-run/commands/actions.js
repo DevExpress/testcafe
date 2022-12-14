@@ -769,6 +769,22 @@ export class SkipJsErrorsCommand extends ActionCommandBase {
     }
 }
 
+export class RunCustomActionCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.runCustomAction);
+
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.runCustomAction, validateProperties);
+    }
+
+    getAssignableProperties () {
+        return [
+            { name: 'fn', type: functionArgument, required: true },
+            { name: 'name', type: stringArgument, required: true },
+            { name: 'args', required: false },
+        ];
+    }
+}
+
 export class AddRequestHooksCommand extends ActionCommandBase {
     static methodName = camelCase(TYPE.addRequestHooks);
 

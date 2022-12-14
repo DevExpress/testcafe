@@ -3,6 +3,7 @@ import { ExecuteSelectorCommand, ExecuteClientFunctionCommand } from '../../test
 import {
     NavigateToCommand,
     PressKeyCommand,
+    RunCustomActionCommand,
     SetNativeDialogHandlerCommand,
     TypeTextCommand,
     UseRoleCommand,
@@ -53,6 +54,9 @@ export class CommandFormatter {
             formattedCommand.dialogHandler = this._prepareDialogHandler(this._command);
         else
             this._assignProperties(this._command, formattedCommand);
+
+        if (this._command instanceof RunCustomActionCommand)
+            formattedCommand.actionResult = this._result;
 
         this._maskConfidentialInfo(formattedCommand);
 
