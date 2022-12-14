@@ -1,6 +1,6 @@
 import { ClientFunction } from 'testcafe';
 import { parseUserAgent } from '../../../../../../../lib/utils/parse-user-agent.js';
-import { saveWindowState, restoreWindowState } from '../../../../../window-helpers.js';
+import { saveWindowState, restoreWindowState } from '../../../../../esm-utils/window-helpers.js';
 
 
 const getUserAgent        = ClientFunction(() => navigator.userAgent.toString());

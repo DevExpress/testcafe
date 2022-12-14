@@ -1,7 +1,7 @@
 import { Selector, ClientFunction } from 'testcafe';
 import assert from 'assert';
 import OS from 'os-family';
-import { saveWindowState, restoreWindowState } from '../../../window-helpers.js';
+import { saveWindowState, restoreWindowState } from '../../../esm-utils/window-helpers.js';
 
 fixture `Status Bar`
     .page `http://localhost:3000/fixtures/ui/pages/empty-page.html`

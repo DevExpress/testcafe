@@ -5,7 +5,7 @@ import {
     restoreWindowState,
     getWindowHeight,
     getWindowWidth,
-} from '../../../../window-helpers.js';
+} from '../../../../esm-utils/window-helpers.js';
 
 
 const reload = ClientFunction(() => window.location.reload());

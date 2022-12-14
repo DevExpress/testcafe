@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { ClientFunction } from 'testcafe';
-import { saveWindowState, restoreWindowState } from '../../../../../window-helpers.js';
+import { saveWindowState, restoreWindowState } from '../../../../../esm-utils/window-helpers.js';
 
 
 const getWindowDimensionsInfo = ClientFunction(() => {

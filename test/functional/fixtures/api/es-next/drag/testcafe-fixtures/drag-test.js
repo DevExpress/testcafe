@@ -1,6 +1,6 @@
 // NOTE: to preserve callsites, add new tests AFTER the existing ones
 import { Selector } from 'testcafe';
-import { saveWindowState, restoreWindowState } from '../../../../../window-helpers.js';
+import { saveWindowState, restoreWindowState } from '../../../../../esm-utils/window-helpers.js';
 import config from '../../../../../config.js';
 
 fixture `Drag`

@@ -1,4 +1,4 @@
-const { ClientFunction } = require('../../lib');
+import { ClientFunction } from 'testcafe';
 
 
 const getWindowState = ClientFunction(() => ({
@@ -26,7 +26,7 @@ async function restoreWindowState (t) {
 const getWindowWidth  = ClientFunction(() => window.innerWidth);
 const getWindowHeight = ClientFunction(() => window.innerHeight);
 
-module.exports = {
+export {
     saveWindowState,
     restoreWindowState,
     getWindowWidth,
