@@ -35,6 +35,11 @@ import {
 import { safeFulfillRequest } from './request-pipeline/safe-api';
 import TestRun from '../test-run';
 
+const RESPONSE_REMOVED_HEADERS = [
+    'cross-origin-embedder-policy',
+    'cross-origin-opener-policy',
+    'cross-origin-resource-policy',
+];
 
 export default class ResourceInjector {
     private readonly _browserId: string;
@@ -90,6 +95,8 @@ export default class ResourceInjector {
     private _processResponseHeaders (headers: HeaderEntry[] | undefined): HeaderEntry[] {
         if (!headers)
             return [];
+
+        headers = headers.filter(header => !RESPONSE_REMOVED_HEADERS.includes(header.name.toLowerCase()));
 
         return stringifyHeaderValues(headers);
     }
