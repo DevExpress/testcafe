@@ -1,4 +1,4 @@
-import { EXPORTABLE_LIB_PATH, EXPORTABLE_LIB_ESM_PATH } from '../test-file/exportble-lib-paths';
+import getExportableLibPath from '../test-file/get-exportable-lib-path';
 
 function getPresetEnvForTestCodeOpts (useEsmModules) {
     const opts = {
@@ -23,8 +23,9 @@ function getPresetEnvForClientFunctionOpts () {
 function getModuleResolverOpts (experimentalEsm) {
     return {
         resolvePath (source) {
+            //NOTE: Prevent module caching is necessary for the importing 'fixture' and 'test' in ESM mode.
             if (source === 'testcafe')
-                return experimentalEsm ? `${EXPORTABLE_LIB_ESM_PATH}?update=${Date.now()}` : EXPORTABLE_LIB_PATH;
+                return getExportableLibPath(experimentalEsm);
 
             return source;
         },

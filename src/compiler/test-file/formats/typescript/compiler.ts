@@ -8,7 +8,7 @@ import { GeneralError } from '../../../../errors/runtime';
 import { RUNTIME_ERRORS } from '../../../../errors/types';
 import debug from 'debug';
 import { isRelative } from '../../../../api/test-page-url';
-import { EXPORTABLE_LIB_PATH, EXPORTABLE_LIB_ESM_PATH } from '../../exportble-lib-paths';
+import getExportableLibPath from '../../get-exportable-lib-path';
 import DISABLE_V8_OPTIMIZATION_NOTE from '../../disable-v8-optimization-note';
 
 // NOTE: For type definitions only
@@ -49,7 +49,7 @@ function testcafeImportPathReplacer<T extends Node> (experimentalEsm?: boolean):
         const visit: Visitor = (node): VisitResult<Node> => {
             // @ts-ignore
             if (node.parent?.kind === SyntaxKind.ImportDeclaration && node.kind === SyntaxKind.StringLiteral && node.text === 'testcafe') {
-                const libPath = experimentalEsm ? `${EXPORTABLE_LIB_ESM_PATH}?update=${Date.now()}` : EXPORTABLE_LIB_PATH;
+                const libPath = getExportableLibPath(experimentalEsm);
 
                 return tsFactory.createStringLiteral(libPath);
             }
@@ -83,7 +83,7 @@ function disableV8OptimizationCodeAppender<T extends Node> (): TransformerFactor
 
 const DEBUG_LOGGER = debug('testcafe:compiler:typescript');
 
-const RENAMED_DEPENDENCIES_MAP = new Map([['testcafe', EXPORTABLE_LIB_PATH]]);
+const RENAMED_DEPENDENCIES_MAP = new Map([['testcafe', getExportableLibPath()]]);
 
 const DEFAULT_TYPESCRIPT_COMPILER_PATH = 'typescript';
 

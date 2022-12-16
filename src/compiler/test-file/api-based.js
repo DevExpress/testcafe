@@ -23,6 +23,7 @@ import exportableLib from '../../api/exportable-lib';
 import TEST_FILE_TEMP_VARIABLE_NAME from './test-file-temp-variable-name';
 import addExportAPI from './add-export-api';
 import url from 'url';
+import PREVENT_MODULE_CACHING_SUFFIX from '../prevent-module-caching-suffix';
 
 
 const CWD = process.cwd();
@@ -68,7 +69,8 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         if (this.experimentalEsm) {
             const fileUrl = url.pathToFileURL(filename);
 
-            await import(`${fileUrl}?update=${Date.now()}`);
+            //NOTE: Prevent module caching is necessary for the live mode.
+            await import(`${fileUrl}?${PREVENT_MODULE_CACHING_SUFFIX}=${Date.now()}`);
         }
         else {
             try {

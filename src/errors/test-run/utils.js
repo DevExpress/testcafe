@@ -1,5 +1,6 @@
 import dedent from 'dedent';
 import { escape as escapeHtml, repeat } from 'lodash';
+import PREVENT_MODULE_CACHING_SUFFIX from '../../compiler/prevent-module-caching-suffix';
 import TEST_RUN_PHASE from '../../test-run/phase';
 import { TEST_RUN_ERRORS } from '../types';
 
@@ -91,7 +92,9 @@ export function markup (err, msgMarkup, errCallsite = '') {
             msgMarkup += `\n\n${callsiteMarkup}`;
     }
 
-    return msgMarkup.replace('\t', '&nbsp;'.repeat(4));
+    return msgMarkup
+        .replace('\t', '&nbsp;'.repeat(4))
+        .replace(new RegExp(`\\?${PREVENT_MODULE_CACHING_SUFFIX}=\\d*`, 'g'), '');
 }
 
 export function renderDiff (diff) {
