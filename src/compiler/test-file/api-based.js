@@ -70,7 +70,8 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
             const fileUrl = url.pathToFileURL(filename);
 
             //NOTE: Prevent module caching is necessary for the live mode.
-            await import(`${fileUrl}?${PREVENT_MODULE_CACHING_SUFFIX}=${Date.now()}`);
+            // eslint-disable-next-line no-eval
+            await eval(`import('${fileUrl}?${PREVENT_MODULE_CACHING_SUFFIX}=${Date.now()}')`);
         }
         else {
             try {

@@ -4,7 +4,6 @@ import {
     chain,
 } from 'lodash';
 
-//@ts-ignore
 import { nanoid } from 'nanoid';
 import { readSync as read } from 'read-file-relative';
 import promisifyEvent from 'promisify-event';

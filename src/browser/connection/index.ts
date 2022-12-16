@@ -11,7 +11,6 @@ import {
 } from '../../utils/parse-user-agent';
 import { readSync as read } from 'read-file-relative';
 import promisifyEvent from 'promisify-event';
-//@ts-ignore
 import { nanoid } from 'nanoid';
 import COMMAND from './command';
 import BrowserConnectionStatus from './status';
