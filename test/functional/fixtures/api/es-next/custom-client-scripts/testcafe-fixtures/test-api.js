@@ -1,4 +1,4 @@
-import { getFlag1, getFlag2 } from '../helpers/index.js';
+import { getFlag1, getFlag2 } from '../common/index.js';
 
 fixture `Fixture`
     .clientScripts('../data/set-flag1.js');

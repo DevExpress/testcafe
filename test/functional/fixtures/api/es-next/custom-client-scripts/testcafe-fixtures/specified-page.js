@@ -1,4 +1,4 @@
-import { getFlag1 } from '../helpers/index.js';
+import { getFlag1 } from '../common/index.js';
 
 fixture `Fixture`;
 
