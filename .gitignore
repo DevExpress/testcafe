@@ -14,3 +14,4 @@ Gemfile.lock
 .npmrc
 .DS_Store
 !gulp
+/test/functional/fixtures/**/package.json
