@@ -6,6 +6,7 @@ import renderCallsiteSync from '../../utils/render-callsite-sync';
 import { RUNTIME_ERRORS } from '../types';
 import getRenderers from '../../utils/get-renderes';
 import util from 'util';
+import semver from 'semver';
 
 const ERROR_SEPARATOR = '\n\n';
 
@@ -173,9 +174,15 @@ export class SkipJsErrorsArgumentApiError extends APIError {
 
 export class ImportESMInCommonJSError extends GeneralError {
     constructor (originalError, targetFile) {
-        //NOTE: There is different error message for 14.* node and 16.* and higher.
-        const [, esModule] = originalError.toString().match(/ES Module:? (\S*)/);
+        const esModule = ImportESMInCommonJSError._getESModule(originalError);
 
         super(RUNTIME_ERRORS.cannotImportESMInCommonsJS, esModule, targetFile);
+    }
+
+    static _getESModule (err) {
+        const regExp       = semver.gte(process.version, '16.0.0') ? new RegExp(/ES Module (\S*)/) : /ES Module: (\S*)/;
+        const [, esModule] = err.toString().match(regExp);
+
+        return esModule;
     }
 }

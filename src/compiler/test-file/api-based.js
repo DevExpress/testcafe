@@ -24,6 +24,7 @@ import TEST_FILE_TEMP_VARIABLE_NAME from './test-file-temp-variable-name';
 import addExportAPI from './add-export-api';
 import url from 'url';
 import PREVENT_MODULE_CACHING_SUFFIX from '../prevent-module-caching-suffix';
+import { replacePreventModuleCachingSuffix } from '../../errors/test-run/utils';
 
 
 const CWD = process.cwd();
@@ -62,19 +63,20 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
 
     static _isTestCafeLibDep (filename) {
         return relative(CWD, filename)
-            .split(pathSep).includes(TESTCAFE_LIB_FOLDER_NAME);
+            .split(pathSep)
+            .includes(TESTCAFE_LIB_FOLDER_NAME);
     }
 
     async _execAsModule (code, filename) {
-        if (this.experimentalEsm) {
-            const fileUrl = url.pathToFileURL(filename);
+        try {
+            if (this.experimentalEsm) {
+                const fileUrl = url.pathToFileURL(filename);
 
-            //NOTE: Prevent module caching is necessary for the live mode.
-            // eslint-disable-next-line no-eval
-            await eval(`import('${fileUrl}?${PREVENT_MODULE_CACHING_SUFFIX}=${Date.now()}')`);
-        }
-        else {
-            try {
+                //NOTE: Prevent module caching is necessary for the live mode.
+                // eslint-disable-next-line no-eval
+                await eval(`import('${fileUrl}?${PREVENT_MODULE_CACHING_SUFFIX}=${Date.now()}')`);
+            }
+            else {
                 const mod = new Module(filename, module.parent);
 
                 mod.filename = filename;
@@ -86,12 +88,14 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
 
                 cacheProxy.stopExternalCaching();
             }
-            catch (e) {
-                if (e.code === errRequireEsmErrorCode)
-                    throw new ImportESMInCommonJSError(e, filename);
+        }
+        catch (e) {
+            if (e.code === errRequireEsmErrorCode)
+                throw new ImportESMInCommonJSError(e, filename);
 
-                throw e;
-            }
+            replacePreventModuleCachingSuffix(e);
+
+            throw e;
         }
     }
 

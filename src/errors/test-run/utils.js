@@ -72,6 +72,19 @@ export function shouldSkipCallsite (err) {
            err.code === TEST_RUN_ERRORS.uncaughtException;
 }
 
+export function replacePreventModuleCachingSuffix (err) {
+    if (!err)
+        return err;
+
+    if (typeof err === 'string')
+        return err.replace(new RegExp(`\\?${PREVENT_MODULE_CACHING_SUFFIX}=\\d*`, 'g'), '');
+
+    err.message = replacePreventModuleCachingSuffix(err.message);
+    err.stack   = replacePreventModuleCachingSuffix(err.stack);
+
+    return err;
+}
+
 export function markup (err, msgMarkup, errCallsite = '') {
     msgMarkup = dedent(`${SUBTITLES[err.testRunPhase]}<div class="message">${dedent(msgMarkup)}</div>`);
 
@@ -92,9 +105,7 @@ export function markup (err, msgMarkup, errCallsite = '') {
             msgMarkup += `\n\n${callsiteMarkup}`;
     }
 
-    return msgMarkup
-        .replace('\t', '&nbsp;'.repeat(4))
-        .replace(new RegExp(`\\?${PREVENT_MODULE_CACHING_SUFFIX}=\\d*`, 'g'), '');
+    return replacePreventModuleCachingSuffix(msgMarkup.replace('\t', '&nbsp;'.repeat(4)));
 }
 
 export function renderDiff (diff) {

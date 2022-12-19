@@ -1,13 +1,13 @@
 import getExportableLibPath from '../test-file/get-exportable-lib-path';
 
-function getPresetEnvForTestCodeOpts (useEsmModules) {
+function getPresetEnvForTestCodeOpts (dontUseModules) {
     const opts = {
         targets: { node: 'current' },
         loose:   true,
         exclude: ['transform-regenerator'],
     };
 
-    if (useEsmModules)
+    if (dontUseModules)
         opts.modules = false;
 
     return opts;
@@ -56,7 +56,7 @@ function getPresetReact () {
 }
 
 // NOTE: lazy load heavy dependencies
-export default function loadLibs (isCompilerServiceMode, experimentalEsm) {
+export default function loadLibs ({ isCompilerServiceMode, experimentalEsm } = {}) {
     return {
         babel:                      require('@babel/core'),
         presetStage2:               require('./preset-stage-2'),

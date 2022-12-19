@@ -17,7 +17,7 @@ import { TestTimeouts } from './interfaces';
 import TestTimeout from './test-timeout';
 import ESM_RUNTIME_HOLDER_NAME from '../../services/compiler/esm-runtime-holder-name';
 
-interface InitOptions {
+interface TestInitOptions {
     testFile: TestFile;
     baseUrl?: string;
     isCompilerServiceMode?: boolean;
@@ -60,7 +60,7 @@ export default class Test extends TestingUnit {
         return this.apiOrigin as unknown as Test;
     }
 
-    public static init (initOptions: InitOptions, name: string, fn: Function): Test {
+    public static init (initOptions: TestInitOptions, name: string, fn: Function): Test {
         const { testFile, baseUrl, isCompilerServiceMode } = initOptions;
 
         const test = new Test(testFile, isCompilerServiceMode, baseUrl);
