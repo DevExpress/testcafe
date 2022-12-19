@@ -73,16 +73,7 @@ export function shouldSkipCallsite (err) {
 }
 
 export function replacePreventModuleCachingSuffix (err) {
-    if (!err)
-        return err;
-
-    if (typeof err === 'string')
-        return err.replace(new RegExp(`\\?${PREVENT_MODULE_CACHING_SUFFIX}=\\d*`, 'g'), '');
-
-    err.message = replacePreventModuleCachingSuffix(err.message);
-    err.stack   = replacePreventModuleCachingSuffix(err.stack);
-
-    return err;
+    return err.replace(new RegExp(`\\?${PREVENT_MODULE_CACHING_SUFFIX}=\\d*`, 'g'), '');
 }
 
 export function markup (err, msgMarkup, errCallsite = '') {

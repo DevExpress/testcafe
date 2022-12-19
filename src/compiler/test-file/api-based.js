@@ -24,7 +24,6 @@ import TEST_FILE_TEMP_VARIABLE_NAME from './test-file-temp-variable-name';
 import addExportAPI from './add-export-api';
 import url from 'url';
 import PREVENT_MODULE_CACHING_SUFFIX from '../prevent-module-caching-suffix';
-import { replacePreventModuleCachingSuffix } from '../../errors/test-run/utils';
 
 
 const CWD = process.cwd();
@@ -68,34 +67,24 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
     }
 
     async _execAsModule (code, filename) {
-        try {
-            if (this.experimentalEsm) {
-                const fileUrl = url.pathToFileURL(filename);
+        if (this.experimentalEsm) {
+            const fileUrl = url.pathToFileURL(filename);
 
-                //NOTE: Prevent module caching is necessary for the live mode.
-                // eslint-disable-next-line no-eval
-                await eval(`import('${fileUrl}?${PREVENT_MODULE_CACHING_SUFFIX}=${Date.now()}')`);
-            }
-            else {
-                const mod = new Module(filename, module.parent);
-
-                mod.filename = filename;
-                mod.paths    = APIBasedTestFileCompilerBase._getNodeModulesLookupPath(filename);
-
-                cacheProxy.startExternalCaching(this.cachePrefix);
-
-                mod._compile(code, filename);
-
-                cacheProxy.stopExternalCaching();
-            }
+            //NOTE: Prevent module caching is necessary for the live mode.
+            // eslint-disable-next-line no-eval
+            await eval(`import('${fileUrl}?${PREVENT_MODULE_CACHING_SUFFIX}=${Date.now()}')`);
         }
-        catch (e) {
-            if (e.code === errRequireEsmErrorCode)
-                throw new ImportESMInCommonJSError(e, filename);
+        else {
+            const mod = new Module(filename, module.parent);
 
-            replacePreventModuleCachingSuffix(e);
+            mod.filename = filename;
+            mod.paths    = APIBasedTestFileCompilerBase._getNodeModulesLookupPath(filename);
 
-            throw e;
+            cacheProxy.startExternalCaching(this.cachePrefix);
+
+            mod._compile(code, filename);
+
+            cacheProxy.stopExternalCaching();
         }
     }
 
@@ -254,6 +243,9 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
             await this._execAsModule(compiledCode, filename);
         }
         catch (err) {
+            if (err.code === errRequireEsmErrorCode)
+                throw new ImportESMInCommonJSError(err, filename);
+
             if (!(err instanceof APIError))
                 throw new TestCompilationError(stackCleaningHook.cleanError(err));
 

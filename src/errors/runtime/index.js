@@ -7,6 +7,7 @@ import { RUNTIME_ERRORS } from '../types';
 import getRenderers from '../../utils/get-renderes';
 import util from 'util';
 import semver from 'semver';
+import { replacePreventModuleCachingSuffix } from '../test-run/utils';
 
 const ERROR_SEPARATOR = '\n\n';
 
@@ -36,7 +37,7 @@ export class GeneralError extends Error {
 export class TestCompilationError extends Error {
     constructor (originalError) {
         const template     = TEMPLATES[RUNTIME_ERRORS.cannotPrepareTestsDueToError];
-        const errorMessage = originalError.toString();
+        const errorMessage = replacePreventModuleCachingSuffix(originalError.toString());
 
         super(renderTemplate(template, errorMessage));
 
@@ -46,7 +47,7 @@ export class TestCompilationError extends Error {
         });
 
         // NOTE: stack includes message as well.
-        this.stack = renderTemplate(template, originalError.stack);
+        this.stack = renderTemplate(template, replacePreventModuleCachingSuffix(originalError.stack));
     }
 }
 
