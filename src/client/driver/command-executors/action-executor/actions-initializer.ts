@@ -64,11 +64,13 @@ ActionExecutor.ACTIONS_HANDLERS[COMMAND_TYPE.pressKey] = {
 };
 
 ActionExecutor.ACTIONS_HANDLERS[COMMAND_TYPE.click] = {
-    create: (command, elements) => {
+    create: (command, elements, dispatchProxylessEventFn?: Function) => {
         if (/option|optgroup/.test(domUtils.getTagName(elements[0])))
             return new SelectChildClickAutomation(elements[0], command.options);
 
-        return new ClickAutomation(elements[0], command.options, window, cursor);
+        cursor.shouldRender = !dispatchProxylessEventFn;
+
+        return new ClickAutomation(elements[0], command.options, window, cursor, dispatchProxylessEventFn);
     },
 };
 

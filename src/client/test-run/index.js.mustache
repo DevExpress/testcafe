@@ -13,38 +13,40 @@
     if (proxyless)
         origin = {{{domain}}};
 
-    var testRunId                  = {{{testRunId}}};
-    var browserId                  = {{{browserId}}};
-    var activeWindowId             = {{{activeWindowId}}};
-    var selectorTimeout            = {{{selectorTimeout}}};
-    var pageLoadTimeout            = {{{pageLoadTimeout}}};
-    var childWindowReadyTimeout    = {{{childWindowReadyTimeout}}};
-    var retryTestPages             = {{{retryTestPages}}};
-    var speed                      = {{{speed}}};
-    var browserHeartbeatUrl        = origin + {{{browserHeartbeatRelativeUrl}}};
-    var browserStatusUrl           = origin + {{{browserStatusRelativeUrl}}};
-    var browserStatusDoneUrl       = origin + {{{browserStatusDoneRelativeUrl}}};
-    var browserIdleUrl             = origin + {{{browserIdleRelativeUrl}}};
-    var browserOpenFileProtocolUrl = origin + {{{browserOpenFileProtocolRelativeUrl}}};
-    var browserActiveWindowIdUrl   = origin + {{{browserActiveWindowIdUrl}}};
-    var browserCloseWindowUrl      = origin + {{{browserCloseWindowUrl}}};
-    var skipJsErrors               = {{{skipJsErrors}}};
-    var dialogHandler              = {{{dialogHandler}}};
-    var userAgent                  = {{{userAgent}}};
-    var fixtureName                = {{{fixtureName}}};
-    var testName                   = {{{testName}}};
-    var canUseDefaultWindowActions = {{{canUseDefaultWindowActions}}};
+    var testRunId                        = {{{testRunId}}};
+    var browserId                        = {{{browserId}}};
+    var activeWindowId                   = {{{activeWindowId}}};
+    var selectorTimeout                  = {{{selectorTimeout}}};
+    var pageLoadTimeout                  = {{{pageLoadTimeout}}};
+    var childWindowReadyTimeout          = {{{childWindowReadyTimeout}}};
+    var retryTestPages                   = {{{retryTestPages}}};
+    var speed                            = {{{speed}}};
+    var browserHeartbeatUrl              = origin + {{{browserHeartbeatRelativeUrl}}};
+    var browserStatusUrl                 = origin + {{{browserStatusRelativeUrl}}};
+    var browserStatusDoneUrl             = origin + {{{browserStatusDoneRelativeUrl}}};
+    var browserIdleUrl                   = origin + {{{browserIdleRelativeUrl}}};
+    var browserOpenFileProtocolUrl       = origin + {{{browserOpenFileProtocolRelativeUrl}}};
+    var browserActiveWindowIdUrl         = origin + {{{browserActiveWindowIdUrl}}};
+    var browserCloseWindowUrl            = origin + {{{browserCloseWindowUrl}}};
+    var browserDispatchProxylessEventUrl = origin + {{{browserDispatchProxylessEventRelativeUrl}}};
+    var skipJsErrors                     = {{{skipJsErrors}}};
+    var dialogHandler                    = {{{dialogHandler}}};
+    var userAgent                        = {{{userAgent}}};
+    var fixtureName                      = {{{fixtureName}}};
+    var testName                         = {{{testName}}};
+    var canUseDefaultWindowActions       = {{{canUseDefaultWindowActions}}};
 
     var ClientDriver = window['%testCafeDriver%'];
     var driver       = new ClientDriver(testRunId,
         {
-            heartbeat:           browserHeartbeatUrl,
-            status:              browserStatusUrl,
-            statusDone:          browserStatusDoneUrl,
-            idle:                browserIdleUrl,
-            activeWindowId:      browserActiveWindowIdUrl,
-            closeWindow:         browserCloseWindowUrl,
-            openFileProtocolUrl: browserOpenFileProtocolUrl,
+            heartbeat:              browserHeartbeatUrl,
+            status:                 browserStatusUrl,
+            statusDone:             browserStatusDoneUrl,
+            idle:                   browserIdleUrl,
+            activeWindowId:         browserActiveWindowIdUrl,
+            closeWindow:            browserCloseWindowUrl,
+            openFileProtocolUrl:    browserOpenFileProtocolUrl,
+            dispatchProxylessEvent: browserDispatchProxylessEventUrl,
         },
         {
             userAgent:      userAgent,

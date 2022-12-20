@@ -29,11 +29,12 @@ import {
 import sendConfirmationMessage from '../send-confirmation-message';
 
 export default class ChildIframeDriverLink {
-    constructor (driverWindow, driverId) {
+    constructor (driverWindow, driverId, dispatchProxylessEventUrl) {
         this.driverWindow              = driverWindow;
         this.driverIframe              = domUtils.findIframeByWindow(driverWindow);
         this.driverId                  = driverId;
         this.iframeAvailabilityTimeout = 0;
+        this.dispatchProxylessEventUrl = dispatchProxylessEventUrl;
     }
 
     set availabilityTimeout (val) {
@@ -92,7 +93,7 @@ export default class ChildIframeDriverLink {
     sendConfirmationMessage (requestMsgId) {
         sendConfirmationMessage({
             requestMsgId,
-            result: { id: this.driverId },
+            result: { id: this.driverId, dispatchProxylessEventUrl: this.dispatchProxylessEventUrl },
             window: this.driverWindow,
         });
     }

@@ -4,6 +4,7 @@ import Protocol from 'devtools-protocol';
 import RequestPausedEvent = Protocol.Fetch.RequestPausedEvent;
 import { IncomingMessageLike } from 'testcafe-hammerhead';
 import { convertToHeaderEntries } from './headers';
+import { EventType } from '../types';
 
 
 export async function redirect (client: ProtocolApi, requestId: string, url: string): Promise<void> {
@@ -18,6 +19,22 @@ export async function redirect (client: ProtocolApi, requestId: string, url: str
 
 export async function navigateTo (client: ProtocolApi, url: string): Promise<void> {
     await client.Page.navigate({ url });
+}
+
+export async function dispatchEvent (client: ProtocolApi, type: EventType, options: any): Promise<void> {
+    switch (+type) {
+        case EventType.Mouse:
+            await client.Input.dispatchMouseEvent(options);
+            break;
+        case EventType.Key:
+            await client.Input.dispatchKeyEvent(options);
+            break;
+        case EventType.Touch:
+            await client.Input.dispatchTouchEvent(options);
+            break;
+        default:
+            throw new Error(`Unknown "${options.type}" event type`);
+    }
 }
 
 export function isRequest (event: RequestPausedEvent): boolean {

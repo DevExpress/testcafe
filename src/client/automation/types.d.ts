@@ -3,7 +3,7 @@ import EventEmitter from '../core/utils/event-emitter';
 import { AxisValuesData } from '../core/utils/values/axis-values';
 
 export interface AutomationHandler {
-    create: (cmd: ActionCommandBase, elements: any[]) => Automation;
+    create: (cmd: ActionCommandBase, elements: any[], dispatchProxylessEventFn?: Function) => Automation;
     ensureElsProps?: (elements: any[]) => void;
     ensureCmdArgs?: (cmd: ActionCommandBase) => void;
     additionalSelectorProps?: string[];
@@ -23,4 +23,5 @@ export interface CursorUI {
     leftButtonDown(): Promise<void>;
     rightButtonDown(): Promise<void>;
     buttonUp(): Promise<void>;
+    shouldRender: boolean;
 }

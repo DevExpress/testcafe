@@ -1,7 +1,8 @@
-const expect             = require('chai').expect;
-const config             = require('../../config.js');
-const assertionHelper    = require('../../assertion-helper.js');
-const { createReporter } = require('../../utils/reporter');
+const { expect }          = require('chai');
+const config              = require('../../config.js');
+const assertionHelper     = require('../../assertion-helper.js');
+const { createReporter }  = require('../../utils/reporter');
+const { skipInProxyless } = require('../../utils/skip-in');
 
 const SCREENSHOT_PATH_MESSAGE_TEXT       = 'Screenshot: ___test-screenshots___';
 const REPORT_SCREENSHOT_PATH_TEXT_RE     = /___test-screenshots___[\\/]\d{4,4}-\d{2,2}-\d{2,2}_\d{2,2}-\d{2,2}-\d{2,2}[\\/]test-1/;
@@ -101,7 +102,7 @@ describe('Screenshots on fails', function () {
                 });
         });
 
-        it('Should save a screenshot to default dir if the ensureElement method fails without screenshotPath specified', function () {
+        skipInProxyless('Should save a screenshot to default dir if the ensureElement method fails without screenshotPath specified', function () {
             return runTests('./testcafe-fixtures/screenshots-on-fails.js', 'Screenshot on the ensureElement method fail',
                 { shouldFail: true, selectorTimeout: 0, screenshotsOnFails: true })
                 .catch(function () {

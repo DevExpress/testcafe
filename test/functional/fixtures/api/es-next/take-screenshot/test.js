@@ -333,7 +333,7 @@ describe('[API] t.takeElementScreenshot()', function () {
     afterEach(assertionHelper.removeScreenshotDir);
 
     if (config.useLocalBrowsers && config.currentEnvironmentName !== config.testingEnvironmentNames.localBrowsersIE) {
-        it('Should take screenshot of an element', function () {
+        skipInProxyless('Should take screenshot of an element', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Element',
                 { setScreenshotPath: true })
                 .then(function () {
@@ -344,7 +344,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                 });
         });
 
-        it('Should save screenshots to default dir with custom path specified', function () {
+        skipInProxyless('Should save screenshots to default dir with custom path specified', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Element')
                 .then(function () {
                     expect(assertionHelper.checkScreenshotsCreated({ baseDir: 'screenshots', customPath: 'custom' })).eql(true);

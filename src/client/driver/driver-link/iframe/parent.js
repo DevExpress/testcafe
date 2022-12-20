@@ -18,7 +18,7 @@ export default class ParentIframeDriverLink {
         const msg = new EstablishConnectionMessage();
 
         return sendMessageToDriver(msg, this.driverWindow, WAIT_FOR_IFRAME_DRIVER_RESPONSE_TIMEOUT, CurrentIframeIsNotLoadedError)
-            .then(response => response.result.id);
+            .then(response => response.result);
     }
 
     sendConfirmationMessage (requestMsgId) {

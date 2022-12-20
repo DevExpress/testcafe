@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div>
+        <h1>Click options</h1>
+    </div>
+    <div>
+        <button id="btn">Button</button>
+    </div>
+    <div>
+        <span id="eventAreRaised"></span>
+    </div>
+    <script>
+        const btn                = document.getElementById('btn');
+        const eventAreRaisedSpan = document.getElementById('eventAreRaised');
+
+        function logEvent (e) {
+            const eventData = {
+                type:      e.type,
+                timestamp: e.timeStamp,
+                button:    e.button,
+                buttons:   e.buttons,
+
+                modifiers: {
+                    ctrl:  e.ctrlKey,
+                    alt:   e.altKey,
+                    shift: e.shiftKey,
+                    meta:  e.metaKey,
+                },
+
+                clientX: e.clientX,
+                clientY: e.clientY,
+            };
+
+            const loggedEvents = window['loggedEvents'] || [];
+
+            loggedEvents.push(eventData);
+
+            window['loggedEvents'] = loggedEvents;
+        };
+        function checkAndPrepareEventData () {
+            const loggedEvents = window['loggedEvents'];
+
+            window['checkResult'] = {
+                events:                          loggedEvents.map(e => e.type),
+                sameTimestampForMouseUpAndClick: loggedEvents[1].timestamp === loggedEvents[2].timestamp,
+            };
+
+            loggedEvents.forEach(event => {
+                delete event.timestamp;
+            });
+
+            window['loggedEvents'] = loggedEvents;
+        }
+
+        btn.addEventListener('mousedown', logEvent);
+        btn.addEventListener('mouseup', logEvent);
+        btn.addEventListener('click', function (e) {
+            logEvent(e);
+            checkAndPrepareEventData();
+
+            eventAreRaisedSpan.textContent = 'Events are raised.';
+        });
+    </script>
+</body>
+</html>
