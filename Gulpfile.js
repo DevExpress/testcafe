@@ -29,7 +29,7 @@ const promisifyStream               = require('./gulp/helpers/promisify-stream')
 const testFunctional                = require('./gulp/helpers/test-functional');
 const testClient                    = require('./gulp/helpers/test-client');
 const moduleExportsTransform        = require('./gulp/helpers/module-exports-transform');
-const createPackagesForTests        = require('./gulp/helpers/create-packages-for-tests');
+const createPackageFilesForTests    = require('./gulp/helpers/create-package-files-for-tests');
 
 const {
     TESTS_GLOB,
@@ -269,7 +269,7 @@ gulp.task('build', process.env.DEV_MODE === 'true' ? gulp.registry().get('fast-b
 
 // Test
 gulp.step('prepare-functional-tests', async () => {
-    return createPackagesForTests();
+    return createPackageFilesForTests();
 });
 
 gulp.step('clean-functional-tests', async () => {

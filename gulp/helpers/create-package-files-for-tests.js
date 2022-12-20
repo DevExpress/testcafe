@@ -1,10 +1,10 @@
-const gulp   = require('gulp');
-const globby = require('globby');
-const path   = require('path');
-const Readable = require('stream').Readable;
+const gulp         = require('gulp');
+const globby       = require('globby');
+const path         = require('path');
+const { Readable } = require('stream');
 
 
-module.exports = async function createPackagesForTests () {
+module.exports = async function createPackageFilesForTests () {
     const testFolders = await globby([
         'test/functional/fixtures/**/testcafe-fixtures',
         'test/functional/fixtures/**/common',

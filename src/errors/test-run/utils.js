@@ -72,7 +72,7 @@ export function shouldSkipCallsite (err) {
            err.code === TEST_RUN_ERRORS.uncaughtException;
 }
 
-export function replacePreventModuleCachingSuffix (err) {
+export function removePreventModuleCachingSuffix (err) {
     return err.replace(new RegExp(`\\?${PREVENT_MODULE_CACHING_SUFFIX}=\\d*`, 'g'), '');
 }
 
@@ -96,7 +96,7 @@ export function markup (err, msgMarkup, errCallsite = '') {
             msgMarkup += `\n\n${callsiteMarkup}`;
     }
 
-    return replacePreventModuleCachingSuffix(msgMarkup.replace('\t', '&nbsp;'.repeat(4)));
+    return removePreventModuleCachingSuffix(msgMarkup.replace('\t', '&nbsp;'.repeat(4)));
 }
 
 export function renderDiff (diff) {
