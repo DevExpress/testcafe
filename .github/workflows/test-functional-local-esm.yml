@@ -75,6 +75,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - run: npm ci
+      - run: npx gulp prepare-functional-tests --steps-as-tasks
       - run: npm run test-functional-local-headless-chrome-run-esm
         timeout-minutes: 60
       - uses: actions/github-script@v3
