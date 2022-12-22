@@ -4,7 +4,7 @@
 
 const path          = require('path');
 const url           = require('url');
-const v8FlagsFilter = require('bin-v8-flags-filter');
+const v8FlagsFilter = require('@devexpress/bin-v8-flags-filter');
 
 const EXPERIMENTAL_DEBUG_OPTION = '--experimental-debug';
 const EXPERIMENTAL_ESM_OPTION   = '--experimental-esm';
