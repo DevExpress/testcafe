@@ -43,8 +43,6 @@ export default class ConsoleMessagesAPI extends ProxylessApiBase {
             if (!CONSOLE_MESSAGES_ENTRY_KEYS.includes(type))
                 return;
 
-            console.log('--log called: ' + args[0].value);
-
             const { host } = await this._getCurrentUrl();
             const messages = this._getBrowserConsoleMessages(host, type as ConsoleMessagesEntryKeys);
 
