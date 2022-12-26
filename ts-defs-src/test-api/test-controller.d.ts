@@ -97,6 +97,10 @@ interface WindowFilterData {
     url: URL;
 }
 
+interface CustomActions {
+    [key: string]: (...args: any[]) => TestControllerPromise
+}
+
 type ScrollPosition = 'top' | 'right' | 'bottom' | 'left' | 'topRight' | 'topLeft' | 'bottomRight' | 'bottomLeft' | 'center';
 
 interface TestController {
@@ -112,6 +116,10 @@ interface TestController {
      * Returns an object that contains browser information.
      */
     readonly browser: Browser;
+    /**
+     * Returns an object that contains registered custom actions.
+     */
+    readonly customActions: CustomActions;
     /**
      * Dispatches an event over a specified webpage element.
      *
