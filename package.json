@@ -13,7 +13,7 @@
   "bugs": {
     "url": "https://github.com/DevExpress/testcafe/issues"
   },
-  "homepage": "https://devexpress.github.io/testcafe/",
+  "homepage": "https://testcafe.io/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/DevExpress/testcafe.git"

@@ -42,18 +42,16 @@ import { SKIP_JS_ERRORS_OPTIONS_OBJECT_OPTION_NAMES } from '../../configuration/
 const REMOTE_ALIAS_RE = /^remote(?::(\d*))?$/;
 
 const DESCRIPTION = dedent(`
-    In the browser list, you can use browser names (e.g. "ie", "chrome", etc.) as well as paths to executables.
 
-    To run tests against all installed browsers, use the "all" alias.
+    To select a browser, specify an alias ("ie", "chrome", etc.) or the path to the browser executable. You can select more than one browser.
+    
+    Use the "all" alias to run tests against all available browsers.   
+    Use the "remote" alias to run tests on remote devices, like smartphones or tablets. Specify the number of remote browsers after the semicolon ("remote:3").
+    If you use a browser provider plugin, specify both the name of the plugin and the name of the browser. Separate the two with a semicolon ("saucelabs:chrome@51").
 
-    To use a remote browser connection (e.g., to connect a mobile device), specify "remote" as the browser alias.
-    If you need to connect multiple devices, add a colon and the number of browsers you want to connect (e.g., "remote:3").
+    To execute multiple test files, specify multiple file paths or glob patterns.
 
-    To run tests in a browser accessed through a browser provider plugin, specify a browser alias that consists of two parts - the browser provider name prefix and the name of the browser itself; for example, "saucelabs:chrome@51".
-
-    You can use one or more file paths or glob patterns to specify which tests to run.
-
-    More info: https://devexpress.github.io/testcafe/documentation
+    Full documentation: https://testcafe.io/documentation/402639/reference/command-line-interface
 `);
 
 interface CommandLineOptions {
@@ -150,66 +148,66 @@ export default class CLIArgumentParser {
             .description(CLIArgumentParser._getDescription())
 
             .allowUnknownOption()
-            .option('-b, --list-browsers [provider]', 'output the aliases for local browsers or browsers available through the specified browser provider')
-            .option('-r, --reporter <name[:outputFile][,...]>', 'specify the reporters and optionally files where reports are saved')
+            .option('-b, --list-browsers [provider]', 'display the list of aliases for available browsers and browser providers')
+            .option('-r, --reporter <name[:outputFile][,...]>', 'specify reporters and report filenames')
             .option('-s, --screenshots <option=value[,...]>', 'specify screenshot options')
-            .option('-S, --screenshots-on-fails', 'take a screenshot whenever a test fails')
-            .option('-p, --screenshot-path-pattern <pattern>', 'use patterns to compose screenshot file names and paths: ${BROWSER}, ${BROWSER_VERSION}, ${OS}, etc.')
-            .option('-q, --quarantine-mode [option=value,...]', 'enable quarantine mode and (optionally) modify quarantine mode settings')
-            .option('-d, --debug-mode', 'execute test steps one by one pausing the test after each step')
+            .option('-S, --screenshots-on-fails', 'take a screenshot on test failure')
+            .option('-p, --screenshot-path-pattern <pattern>', 'specify the naming schema for screenshot filenames and paths: ${BROWSER}, ${BROWSER_VERSION}, ${OS}, etc.')
+            .option('-q, --quarantine-mode [option=value,...]', 'enable and configure quarantine mode')
+            .option('-d, --debug-mode', 'enable debug mode. When you run TestCafe in debug mode, it executes test steps one by one, and pauses the test after each step.')
             .option('-e, --skip-js-errors [option=value,...]', 'ignore JavaScript errors that match the specified criteria')
-            .option('-u, --skip-uncaught-errors', 'ignore uncaught errors and unhandled promise rejections, which occur during test execution')
-            .option('-t, --test <name>', 'run only tests with the specified name')
-            .option('-T, --test-grep <pattern>', 'run only tests matching the specified pattern')
-            .option('-f, --fixture <name>', 'run only fixtures with the specified name')
-            .option('-F, --fixture-grep <pattern>', 'run only fixtures matching the specified pattern')
-            .option('-a, --app <command>', 'launch the tested app using the specified command before running tests')
+            .option('-u, --skip-uncaught-errors', 'ignore uncaught errors and unhandled promise rejections')
+            .option('-t, --test <name>', 'filter tests by name')
+            .option('-T, --test-grep <pattern>', 'filter tests by regular expression')
+            .option('-f, --fixture <name>', 'filter fixtures by name')
+            .option('-F, --fixture-grep <pattern>', 'filter fixtures by regular expression')
+            .option('-a, --app <command>', 'execute a shell command on startup to launch a web application or perform other preparatory tasks')
             .option('-c, --concurrency <number>', 'run tests concurrently')
-            .option('-L, --live', 'enable live mode. In this mode, TestCafe watches for changes you make in the test files. These changes immediately restart the tests so that you can see the effect.')
-            .option('--test-meta <key=value[,key2=value2,...]>', 'run only tests with matching metadata')
-            .option('--fixture-meta <key=value[,key2=value2,...]>', 'run only fixtures with matching metadata')
-            .option('--debug-on-fail', 'pause the test if it fails')
-            .option('--app-init-delay <ms>', 'specify how much time it takes for the tested app to initialize')
-            .option('--selector-timeout <ms>', 'specify the time within which selectors make attempts to obtain a node to be returned')
-            .option('--assertion-timeout <ms>', 'specify the time within which assertion should pass')
-            .option('--page-load-timeout <ms>', 'specify the time within which TestCafe waits for the `window.load` event to fire on page load before proceeding to the next test action')
-            .option('--page-request-timeout <ms>', "specifies the timeout in milliseconds to complete the request for the page's HTML")
-            .option('--ajax-request-timeout <ms>', 'specifies the timeout in milliseconds to complete the AJAX requests (XHR or fetch)')
-            .option('--browser-init-timeout <ms>', 'specify the time (in milliseconds) TestCafe waits for the browser to start')
-            .option('--test-execution-timeout <ms>', 'specify the time (in milliseconds) TestCafe waits for the test executed')
-            .option('--run-execution-timeout <ms>', 'specify the time (in milliseconds) TestCafe waits for the all test executed')
-            .option('--speed <factor>', 'set the speed of test execution (0.01 ... 1)')
-            .option('--ports <port1,port2>', 'specify custom port numbers')
-            .option('--hostname <name>', 'specify the hostname')
-            .option('--proxy <host>', 'specify the host of the proxy server')
-            .option('--proxy-bypass <rules>', 'specify a comma-separated list of rules that define URLs accessed bypassing the proxy server')
-            .option('--ssl <options>', 'specify SSL options to run TestCafe proxy server over the HTTPS protocol')
+            .option('-L, --live', 'enable live mode. Live mode restarts tests when you make changes to test files.')
+            .option('--test-meta <key=value[,key2=value2,...]>', 'filter tests by metadata')
+            .option('--fixture-meta <key=value[,key2=value2,...]>', 'filter fixtures by metadata')
+            .option('--debug-on-fail', 'pause tests on failure')
+            .option('--experimental-proxyless', 'automate Google Chrome with the CDP protocol')
+            .option('--app-init-delay <ms>', 'specify your application`s initialization time')
+            .option('--selector-timeout <ms>', 'specify the maximum Selector resolution time')
+            .option('--assertion-timeout <ms>', 'specify the maximum Assertion resolution time')
+            .option('--page-load-timeout <ms>', 'specify the maximum time between the window.load event and the DOMContentLoaded event (ms)')
+            .option('--page-request-timeout <ms>', 'specify the maximum page request resolution time')
+            .option('--ajax-request-timeout <ms>', 'specify the maximum AJAX request resolution time')
+            .option('--browser-init-timeout <ms>', 'specify the maximum browser startup time')
+            .option('--test-execution-timeout <ms>', 'specify the maximum test execution time')
+            .option('--run-execution-timeout <ms>', 'specify the maximum test run time')
+            .option('--speed <factor>', 'set test execution speed (0.01 ... 1)')
+            .option('--ports <port1,port2>', 'specify network ports to use during the test run. The second port is necessary to access cross-domain resources.')
+            .option('--hostname <name>', `specify your hostname. Necessary to run tests in remote browsers.`)
+            .option('--proxy <host>', 'specify the proxy server hostname or IP address')
+            .option('--proxy-bypass <rules>', 'specify URLs that bypass the proxy server')
+            .option('--ssl <options>', 'specify SSL options to run TestCafe over HTTPS')
             .option('--video <path>', 'record videos of test runs')
             .option('--video-options <option=value[,...]>', 'specify video recording options')
-            .option('--video-encoding-options <option=value[,...]>', 'specify encoding options')
-            .option('--dev', 'enables mechanisms to log and diagnose errors')
-            .option('--qr-code', 'outputs QR-code that repeats URLs used to connect the remote browsers')
-            .option('--sf, --stop-on-first-fail', 'stop an entire test run if any test fails')
+            .option('--video-encoding-options <option=value[,...]>', 'specify video encoding options')
+            .option('--dev', 'log and diagnose TestCafe errors')
+            .option('--qr-code', 'output QR codes with URLs for remote browser connections')
+            .option('--sf, --stop-on-first-fail', 'stop the test run if any test fails')
             .option('--config-file <path>', 'specify a custom path to the testcafe configuration file')
-            .option('--ts-config-path <path>', 'use a custom TypeScript configuration file and specify its location')
-            .option('--cs, --client-scripts <paths>', 'inject scripts into tested pages', parseList, [])
-            .option('--disable-page-caching', 'disable page caching during test execution')
-            .option('--disable-page-reloads', 'disable page reloads between tests')
-            .option('--retry-test-pages', 'retry network requests to test pages during test execution')
+            .option('--ts-config-path <path>', 'specify the path to a custom TypeScript configuration file')
+            .option('--cs, --client-scripts <paths>', 'inject client-side scripts into the page', parseList, [])
+            .option('--disable-page-caching', 'do not cache pages')
+            .option('--disable-page-reloads', 'do not reload pages between tests')
+            .option('--retry-test-pages', 'retry page requests in case of failure')
             .option('--disable-screenshots', 'disable screenshots')
             .option('--screenshots-full-page', 'enable full-page screenshots')
-            .option('--compiler-options <option=value[,...]>', 'specify test file compiler options')
-            .option('--disable-multiple-windows', 'disable multiple windows mode')
-            .option('--disable-http2', 'disable the HTTP/2 proxy backend and force the proxy to use only HTTP/1.1 requests')
+            .option('--compiler-options <option=value[,...]>', 'specify test compilation settings')
+            .option('--disable-multiple-windows', 'disable the multi-window mode')
+            .option('--disable-http2', 'force the proxy to issue HTTP/1.1 requests')
             .option('--cache', 'cache web assets between test runs')
-            .option('--base-url <url>', 'set the base url for all tests')
+            .option('--base-url <url>', 'set the base url for the test run')
 
             // NOTE: these options will be handled by chalk internally
-            .option('--color', 'force colors in command line')
-            .option('--no-color', 'disable colors in command line')
+            .option('--color', 'force TestCafe to format CLI output with color')
+            .option('--no-color', 'disable text color formatting in the CLI')
 
             // NOTE: temporary hide experimental options from --help command
-            .addOption(new Option('--experimental-proxyless', 'experimental').hideHelp())
             .addOption(new Option('--experimental-debug', 'enable experimental debug mode').hideHelp())
             .addOption(new Option('--disable-cross-domain', 'experimental').hideHelp())
             .action((opts: CommandLineOptions) => {
