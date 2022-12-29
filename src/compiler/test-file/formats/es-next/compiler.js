@@ -5,7 +5,7 @@ import BASE_BABEL_OPTIONS from '../../../babel/get-base-babel-options';
 import DISABLE_V8_OPTIMIZATION_NOTE from '../../disable-v8-optimization-note';
 import Extensions from '../extensions';
 
-//NOTE: We should put ; before otherwise if last declaration without ; bounded with eval
+//NOTE: The semicolon ; prevents the declaration from being bound with eval
 const DISABLE_V8_OPTIMIZATION_CODE =
 `;/*${DISABLE_V8_OPTIMIZATION_NOTE}*/
 eval("");

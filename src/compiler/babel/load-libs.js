@@ -23,7 +23,7 @@ function getPresetEnvForClientFunctionOpts () {
 function getModuleResolverOpts (experimentalEsm) {
     return {
         resolvePath (source) {
-            //NOTE: Prevent module caching is necessary for the importing 'fixture' and 'test' in ESM mode.
+            //NOTE: Prevent module caching to import 'fixture' and 'test' in ESM mode.
             if (source === 'testcafe')
                 return getExportableLibPath(experimentalEsm);
 
