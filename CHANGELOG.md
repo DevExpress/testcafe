@@ -1,5 +1,59 @@
 # Changelog
 
+## v2.2.0 (2022-12-29)
+
+TestCafe v2.2.0 introduces user-defined custom actions and an important *experimental* capability. Google Chrome users can now enable "proxyless mode" to speed up their test suite.
+
+### Custom Action Support
+
+TestCafe users can now define [custom test actions](xref:404150). Place the definition function in a [**JavaScript** configuration file](xref:402638#customactions):
+
+```js
+module.exports = {
+  customActions: {
+   async makeCoffee (args) {
+        await this.click(args);
+    }, 
+  }
+};
+```
+
+Include custom methods in your tests alongside [other TestController methods](xref:402632#test-controller-api). 
+Add the `customActions` prefix when you call the action:
+
+```js
+test('Test with a custom action', async t => {
+    await t.click()
+        .customActions.makeCoffee()
+        .click();
+})
+```
+
+### Experimental: Proxyless mode
+
+TestCafe runs an under-the-hood [reverse proxy](xref:402631#page-proxying) to automate tests across different browsers. But this technique complicates the framework. Native automation protocols offer superior automation speeds and greater stability. That's why the TestCafe team decided to gradually phase the reverse proxy out in favor of native support for these automation protocols.
+
+TestCafe v2.2.0 includes an **experimental** option that disables the proxy for **Google Chrome**. 
+
+```sh
+testcafe chrome tests --experimental-proxyless
+```
+
+You can enable this option in the [command line interface](xref:402639#--experimental-proxyless), the [Test Runner API](xref:402662), and the [configuration file](xref:402638#experimentalproxyless). Read the [Proxyless mode guide](xref:404237) for more information.
+
+### Bug Fixes
+
+* TestCafe doesn't hide the live mode status bar when the bar obstructs the action target ([#7384](https://github.com/DevExpress/testcafe/issues/7384))
+* The 'Target element is overlapped' message does not reference the Selector that caused the warning ([#7386](https://github.com/DevExpress/testcafe/issues/7386))
+* The TestCafe Dashboard reporter includes an outdated `uuid` dependency ([testcafe-reporter-dashboard#111](https://github.com/DevExpress/testcafe-reporter-dashboard/issues/111))
+* TestCafe doesn't display the correct error message when the framework throws an exception ([#6936](https://github.com/DevExpress/testcafe/issues/6936))
+* TestCafe retains some cookies after the user requests their deletion (PR [testcafe-hammerhead#2818](https://github.com/DevExpress/testcafe-hammerhead/pull/2818))
+* TestCafe cannot load test pages with the `localhost` URL on Node.js v17 and up ([#7396](https://github.com/DevExpress/testcafe/issues/7396))
+* TestCafe cannot take screenshots in headless Chrome on Node.js v17 and up ([#7408](https://github.com/DevExpress/testcafe/issues/7408))
+* Web workers that originate from Blob URLs throw an error when they call the  `importScript` function ([#7378](https://github.com/DevExpress/testcafe/issues/7378))
+* TestCafe doesn't set the correct `Request` header when an `iframe` points the user to a new URL ([#7376](https://github.com/DevExpress/testcafe/issues/7376), PR [testcafe-hammerhead#2813](https://github.com/DevExpress/testcafe-hammerhead/pull/2813) by [@naggingant](https://github.com/naggingant))
+* TestCafe cannot interact with options that belong to a `<select>` element with the `multiple` attribute (PR [testcafe-hammerhead#2815](https://github.com/DevExpress/testcafe-hammerhead/pull/2815))
+
 ## v2.1.0 (2022-11-10)
 
 ### Improvements
