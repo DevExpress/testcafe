@@ -86,7 +86,7 @@ interface Runner {
     screenshots(options: ScreenshotsOptions): this;
 
     /**
-     * https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/screenshots-and-videos.html#basic-video-options
+     * https://testcafe.io/documentation/402840/guides/advanced-guides/screenshots-and-videos#basic-video-options
      *
      * Enables TestCafe to take videos of the tested webpages.
      *

@@ -11,4 +11,4 @@
      ```
 
 2. Create a new GitHub repository and copy the sample files from *examples/running-tests-in-firefox-and-chrome-using-travis-ci* to your repository.
-3. Go through steps described in the [Running Tests in Firefox and Chrome Using Travis CI](http://devexpress.github.io/testcafe/documentation/recipes/running-tests-in-firefox-and-chrome-using-travis-ci.html) topic.
+3. Go through steps described in the [Running Tests in Firefox and Chrome Using Travis CI](https://testcafe.io/documentation/402813/guides/continuous-integration/travis) topic.

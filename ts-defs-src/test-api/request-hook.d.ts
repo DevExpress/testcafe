@@ -165,7 +165,7 @@ interface RequestMockFactory {
 }
 
 /**
- * {@link https://devexpress.github.io/testcafe/documentation/reference/test-api/requestmock/respond.html#requestoptions See documentation}.
+ * {@link https://testcafe.io/documentation/402762/reference/test-api/requestmock/respond#requestoptions See documentation}.
  */
 interface RequestMockOptions {
     /** The request headers in the property-value form. */
@@ -194,7 +194,7 @@ interface RequestMockOptions {
      * Credentials that were used for authentication in the current session using NTLM or Basic
      * authentication. For HTTP Basic authentication, these are `username` and `password`. NTLM
      * authentication additionally specifies `workstation` and `domain`.
-     * See {@link https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/authentication.html#http-authentication HTTP Authentication}.
+     * See {@link https://testcafe.io/documentation/402845/guides/intermediate-guides/authentication?search#http-authentication HTTP Authentication}.
      */
     credentials: Record<string, string>;
     /**

@@ -75,7 +75,7 @@
 :
   # Post a comment
   comment: |
-    We are focused on implementing features from our [Roadmap](https://devexpress.github.io/testcafe/roadmap/). Since this enhancement is not there, we cannot tell you any time frames on when we will be able to address it. If this feature is important for you, please submit a Pull Request with its implementation. See the [Сontribution guide](https://github.com/DevExpress/testcafe/blob/master/CONTRIBUTING.md) for more information.
+    We are focused on implementing features from our [Roadmap](https://testcafe.io/402949/roadmap). Since this enhancement is not there, we cannot tell you any time frames on when we will be able to address it. If this feature is important for you, please submit a Pull Request with its implementation. See the [Сontribution guide](https://github.com/DevExpress/testcafe/blob/master/CONTRIBUTING.md) for more information.
   unlabel:
     - 'STATE: Outdated proposal'
     - 'STATE: Need response'
