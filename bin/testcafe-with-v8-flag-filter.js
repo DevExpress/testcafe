@@ -13,15 +13,15 @@ if (process.argv.slice(2).includes(EXPERIMENTAL_DEBUG_OPTION))
     require('../lib/cli');
 
 else {
-    const forcedNodeArgs = [];
+    const forcedArgs = [];
 
     if (process.argv.slice(2).includes(EXPERIMENTAL_ESM_OPTION)) {
-        forcedNodeArgs.push('--no-warnings');
-        forcedNodeArgs.push(`--experimental-loader=${url.pathToFileURL(path.join(__dirname, '../lib/compiler/esm-loader.js')).href}`);
+        forcedArgs.push('--no-warnings');
+        forcedArgs.push(`--experimental-loader=${url.pathToFileURL(path.join(__dirname, '../lib/compiler/esm-loader.js')).href}`);
     }
 
     v8FlagsFilter(path.join(__dirname, '../lib/cli'), {
         useShutdownMessage: true,
-        forcedNodeArgs,
+        forcedArgs,
     });
 }
