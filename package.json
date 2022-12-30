@@ -112,7 +112,7 @@
     "is-glob": "^2.0.1",
     "is-podman": "^1.0.1",
     "is-stream": "^2.0.0",
-    "json5": "^2.1.0",
+    "json5": "^2.2.2",
     "lodash": "^4.17.13",
     "log-update-async-hook": "^2.0.7",
     "make-dir": "^3.0.0",
@@ -235,5 +235,11 @@
     "testcafe-browser-provider-browserstack": "^1.14.1-alpha.1",
     "tslib": "^2.4.0",
     "uglify-js": "~3.10.4"
+  },
+  "overrides": {
+    "json5": "^2.2.2"
+  },
+  "resolutions": {
+    "json5": "^2.2.2"
   }
 }
