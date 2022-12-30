@@ -139,6 +139,7 @@ import {
 } from './role-provider';
 
 import ProxylessRequestPipeline from '../proxyless/request-pipeline';
+import ProxylessAPI from '../proxyless/api';
 
 const lazyRequire                 = require('import-lazy')(require);
 const ClientFunctionBuilder       = lazyRequire('../client-functions/client-function-builder');
@@ -383,6 +384,12 @@ export default class TestRun extends AsyncEventEmitter {
         const runtimeInfo = this.browserConnection.provider.plugin.openedBrowsers[this.browserConnection.id];
 
         return runtimeInfo.proxyless.requestPipeline;
+    }
+
+    private get _proxylessApi (): ProxylessAPI {
+        const runtimeInfo = this.browserConnection.provider.plugin.openedBrowsers[this.browserConnection.id];
+
+        return runtimeInfo.proxyless.api;
     }
 
     private _getRoleProvider (): RoleProvider {
@@ -1295,8 +1302,12 @@ export default class TestRun extends AsyncEventEmitter {
         if (command.type === COMMAND_TYPE.executeAsyncExpression)
             return this._executeAsyncJsExpression(command as ExecuteAsyncExpressionCommand, callsite as string);
 
-        if (command.type === COMMAND_TYPE.getBrowserConsoleMessages)
+        if (command.type === COMMAND_TYPE.getBrowserConsoleMessages) {
+            if (this.opts.experimentalProxyless)
+                return this._proxylessApi.getBrowserConsoleMessages();
+
             return this._enqueueBrowserConsoleMessagesCommand(command, callsite as CallsiteRecord);
+        }
 
         if (command.type === COMMAND_TYPE.switchToPreviousWindow)
             (command as any).windowId = this.browserConnection.previousActiveWindowId;
