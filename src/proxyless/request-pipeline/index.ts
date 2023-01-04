@@ -32,12 +32,13 @@ import { ProxylessSetupOptions } from '../../shared/types';
 import DEFAULT_PROXYLESS_SETUP_OPTIONS from '../default-setup-options';
 import getSpecialRequestHandler from './special-handlers';
 import { safeContinueRequest, safeContinueResponse } from './safe-api';
+import ProxylessApiBase from '../api-base';
 
 
-export default class ProxylessRequestPipeline {
-    private readonly _client: ProtocolApi;
+export default class ProxylessRequestPipeline extends ProxylessApiBase {
     public readonly requestHookEventProvider: ProxylessRequestHookEventProvider;
     public restoringStorages: StoragesSnapshot | null;
+    public contextStorage: string;
     private readonly _resourceInjector: ResourceInjector;
     private _options: ProxylessSetupOptions;
     private readonly _specialServiceRoutes: SpecialServiceRoutes;
@@ -46,7 +47,8 @@ export default class ProxylessRequestPipeline {
     private readonly _failedRequestIds: string[];
 
     public constructor (browserId: string, client: ProtocolApi) {
-        this._client                  = client;
+        super(browserId, client);
+
         this._specialServiceRoutes    = this._getSpecialServiceRoutes(browserId);
         this.requestHookEventProvider = new ProxylessRequestHookEventProvider(browserId);
         this._resourceInjector        = new ResourceInjector(browserId, this._specialServiceRoutes);
@@ -55,6 +57,7 @@ export default class ProxylessRequestPipeline {
         this._currentFrameTree        = null;
         this._failedRequestIds        = [];
         this.restoringStorages        = null;
+        this.contextStorage           = '';
     }
 
     private _getSpecialServiceRoutes (browserId: string): SpecialServiceRoutes {
@@ -156,6 +159,7 @@ export default class ProxylessRequestPipeline {
                     isIframe:          this._isIframe(event.frameId),
                     url:               event.request.url,
                     restoringStorages: this.restoringStorages,
+                    contextStorage:    this.contextStorage,
                 },
                 this._client);
 
@@ -222,8 +226,8 @@ export default class ProxylessRequestPipeline {
         return this._currentFrameTree.frame.id !== frameId;
     }
 
-    public async init (options: ProxylessSetupOptions): Promise<void> {
-        this._options = options;
+    public async init (options?: ProxylessSetupOptions): Promise<void> {
+        this._options = options as ProxylessSetupOptions;
 
         this._client.Fetch.on('requestPaused', async (event: RequestPausedEvent) => {
             if (this._stopped)

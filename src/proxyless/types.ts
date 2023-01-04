@@ -25,4 +25,5 @@ export interface InjectableResourcesOptions {
     isIframe: boolean;
     url?: string;
     restoringStorages?: StoragesSnapshot | null;
+    contextStorage?: string;
 }

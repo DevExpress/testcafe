@@ -24,16 +24,23 @@ export default class Storage {
     }
 
     _loadFromStorage () {
-        const savedData = nativeMethods.storageGetItem.call(this.storage, this.storageKey);
+        const savedData = nativeMethods.storageGetItem.call(this.storage, this.storageKey)
+            || window['%proxylessContextStorage%'];
 
         if (savedData) {
             this.data = JSON.parse(savedData);
+
+            window['%proxylessContextStorage%'] = null;
+
             nativeMethods.storageRemoveItem.call(this.storage, this.storageKey);
         }
     }
 
     save () {
         nativeMethods.storageSetItem.call(this.storage, this.storageKey, JSON.stringify(this.data));
+
+        if (window.PROXYLESS_STORAGE_BINDING)
+            window.PROXYLESS_STORAGE_BINDING(JSON.stringify(this.data));
     }
 
     setItem (prop, value) {
