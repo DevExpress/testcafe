@@ -104,7 +104,7 @@ test('Expected beforeUnload after an action', async t => {
 
     const info = await t.getNativeDialogHistory();
 
-    const { experimentalProxyless } = t.testRun.opts;
+    const experimentalProxyless = t.testRun.opts && t.testRun.opts.experimentalProxyless;
 
     if (experimentalProxyless)
         // NOTE: before unload handling through CDP does not support the type property
