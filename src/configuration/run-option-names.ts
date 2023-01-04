@@ -23,4 +23,5 @@ export default [
     OPTION_NAMES.retryTestPages,
     OPTION_NAMES.experimentalProxyless,
     OPTION_NAMES.baseUrl,
+    OPTION_NAMES.suppressErrors,
 ];

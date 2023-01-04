@@ -44,8 +44,8 @@ const REMOTE_ALIAS_RE = /^remote(?::(\d*))?$/;
 const DESCRIPTION = dedent(`
 
     To select a browser, specify an alias ("ie", "chrome", etc.) or the path to the browser executable. You can select more than one browser.
-    
-    Use the "all" alias to run tests against all available browsers.   
+
+    Use the "all" alias to run tests against all available browsers.
     Use the "remote" alias to run tests on remote devices, like smartphones or tablets. Specify the number of remote browsers after the semicolon ("remote:3").
     If you use a browser provider plugin, specify both the name of the plugin and the name of the browser. Separate the two with a semicolon ("saucelabs:chrome@51").
 
@@ -91,6 +91,7 @@ interface CommandLineOptions {
     dashboardOptions?: string | Dictionary<string | boolean | number>;
     baseUrl?: string;
     skipJsErrors?: boolean | Dictionary<RegExp | string>;
+    suppressErrors?: string;
 }
 
 export default class CLIArgumentParser {
@@ -202,6 +203,7 @@ export default class CLIArgumentParser {
             .option('--disable-http2', 'force the proxy to issue HTTP/1.1 requests')
             .option('--cache', 'cache web assets between test runs')
             .option('--base-url <url>', 'set the base url for the test run')
+            .option('--suppress-errors <errorCodes>', 'comma separated values of error codes')
 
             // NOTE: these options will be handled by chalk internally
             .option('--color', 'force TestCafe to format CLI output with color')

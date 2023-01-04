@@ -57,6 +57,7 @@ enum OptionNames {
     baseUrl = 'baseUrl',
     disableCrossDomain = 'disableCrossDomain',
     customActions = 'customActions',
+    suppressErrors = 'suppressErrors'
 }
 
 export default OptionNames;

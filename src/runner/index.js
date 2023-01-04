@@ -541,6 +541,7 @@ export default class Runner extends EventEmitter {
         this.bootstrapper.browserInitTimeout     = this.configuration.getOption(OPTION_NAMES.browserInitTimeout);
         this.bootstrapper.hooks                  = this.configuration.getOption(OPTION_NAMES.hooks);
         this.bootstrapper.configuration          = this.configuration;
+        this.bootstrapper.suppressErrors         = this.configuration.getOption(OPTION_NAMES.suppressErrors);
     }
 
     async _addDashboardReporterIfNeeded () {

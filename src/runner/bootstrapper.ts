@@ -98,6 +98,7 @@ export default class Bootstrapper {
     public browserInitTimeout?: number;
     public hooks?: GlobalHooks;
     public configuration: Configuration;
+    public suppressErrors: string;
 
     private readonly compilerService?: CompilerService;
     private readonly debugLogger: debug.Debugger;
@@ -125,6 +126,7 @@ export default class Bootstrapper {
         this.compilerService          = compilerService;
         this.messageBus               = messageBus;
         this.configuration            = configuration;
+        this.suppressErrors           = '';
 
         this.TESTS_COMPILATION_UPPERBOUND = 60;
     }
@@ -286,7 +288,7 @@ export default class Bootstrapper {
         if (this.filter)
             tests = await this._filterTests(tests, this.filter);
 
-        if (!tests.length)
+        if (!tests.length && !this.suppressErrors.includes('E1030'))
             throw new GeneralError(RUNTIME_ERRORS.noTestsToRunDueFiltering);
 
         this._setGlobalHooksToTests(tests);
