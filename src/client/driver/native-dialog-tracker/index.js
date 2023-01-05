@@ -20,13 +20,7 @@ export default class NativeDialogTracker {
         this.dialogHandler  = dialogHandler;
         this.nativeHandlers = {};
 
-        if (proxyless) {
-            ['alert', 'confirm', 'prompt'].forEach(dialogType => {
-                this.nativeHandlers[dialogType] = window[dialogType];
-            });
-        }
-
-        this._init();
+        this._init(proxyless);
         this._initListening();
 
         if (this.dialogHandler)
@@ -84,7 +78,13 @@ export default class NativeDialogTracker {
         });
     }
 
-    _init () {
+    _init (proxyless) {
+        if (proxyless) {
+            ['alert', 'confirm', 'prompt'].forEach(dialogType => {
+                this.nativeHandlers[dialogType] = window[dialogType];
+            });
+        }
+
         hammerhead.on(hammerhead.EVENTS.beforeUnload, e => {
             if (e.prevented && !e.isFakeIEEvent) {
                 if (this.dialogHandler) {

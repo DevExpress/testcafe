@@ -102,7 +102,11 @@ export default class IframeDriver extends Driver {
     async _init () {
         const id = await this.parentDriverLink.establishConnection();
 
-        this.contextStorage = new ContextStorage(window, id, this.windowId);
+        this.contextStorage = new ContextStorage(window, {
+            testRunId: id,
+            windowId:  this.windowId,
+            proxyless: this.options.proxyless,
+        });
 
         if (this._failIfClientCodeExecutionIsInterrupted())
             return;

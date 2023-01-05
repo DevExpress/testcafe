@@ -1875,7 +1875,12 @@ export default class Driver extends serviceUtils.EventEmitter {
     _init () {
         const { proxyless, dialogHandler, speed } = this.options;
 
-        this.contextStorage       = new ContextStorage(window, this.testRunId, this.windowId);
+        this.contextStorage = new ContextStorage(window, {
+            testRunId: this.testRunId,
+            windowId:  this.windowId,
+            proxyless,
+        });
+
         this.nativeDialogsTracker = new NativeDialogTracker(this.contextStorage, { proxyless, dialogHandler });
         this.statusBar            = new StatusBar(this.runInfo.userAgent, this.runInfo.fixtureName, this.runInfo.testName, this.contextStorage);
 

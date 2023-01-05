@@ -61,7 +61,7 @@ export default class ResourceInjector {
     private _getRestoreContextStorageScript (contextStorage?: string): string {
         contextStorage = JSON.stringify(contextStorage || '');
 
-        return `window['%proxylessContextStorage%'] = ${contextStorage};`;
+        return `Object.defineProperty(window, '%proxylessContextStorage%', { configurable: true, value: ${contextStorage} });`;
     }
 
     private async _prepareInjectableResources ({ isIframe, restoringStorages, contextStorage }: InjectableResourcesOptions): Promise<PageInjectableResources | null> {
