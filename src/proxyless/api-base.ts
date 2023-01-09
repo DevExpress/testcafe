@@ -11,6 +11,10 @@ export default class ProxylessApiBase {
         this._browserConnection = BrowserConnection.getById(browserId) as BrowserConnection;
     }
 
+    public async init (): Promise<void> {
+        throw new Error('Not implemented');
+    }
+
     protected get _testRun (): TestRun {
         return this._browserConnection.getCurrentTestRun() as TestRun;
     }

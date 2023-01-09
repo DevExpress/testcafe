@@ -102,7 +102,11 @@ export default class IframeDriver extends Driver {
     async _init () {
         const id = await this.parentDriverLink.establishConnection();
 
-        this.contextStorage = new ContextStorage(window, id, this.windowId);
+        this.contextStorage = new ContextStorage(window, {
+            testRunId: id,
+            windowId:  this.windowId,
+            proxyless: this.options.proxyless,
+        });
 
         if (this._failIfClientCodeExecutionIsInterrupted())
             return;
@@ -120,7 +124,11 @@ export default class IframeDriver extends Driver {
 
     // API
     start () {
-        this.nativeDialogsTracker = new IframeNativeDialogTracker(this.options.dialogHandler);
+        this.nativeDialogsTracker = new IframeNativeDialogTracker({
+            dialogHandler: this.options.dialogHandler,
+            proxyless:     this.options.proxyless,
+        });
+
         this.statusBar            = new IframeStatusBar();
 
         const initializePromise   = this._init();

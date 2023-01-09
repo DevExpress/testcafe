@@ -1873,13 +1873,20 @@ export default class Driver extends serviceUtils.EventEmitter {
     }
 
     _init () {
-        this.contextStorage       = new ContextStorage(window, this.testRunId, this.windowId);
-        this.nativeDialogsTracker = new NativeDialogTracker(this.contextStorage, this.options.dialogHandler);
+        const { proxyless, dialogHandler, speed } = this.options;
+
+        this.contextStorage = new ContextStorage(window, {
+            testRunId: this.testRunId,
+            windowId:  this.windowId,
+            proxyless,
+        });
+
+        this.nativeDialogsTracker = new NativeDialogTracker(this.contextStorage, { proxyless, dialogHandler });
         this.statusBar            = new StatusBar(this.runInfo.userAgent, this.runInfo.fixtureName, this.runInfo.testName, this.contextStorage);
 
         this.statusBar.on(this.statusBar.UNLOCK_PAGE_BTN_CLICK, disableRealEventsPreventing);
 
-        this.speed = this.options.speed;
+        this.speed = speed;
 
         this._initConsoleMessages();
         this._initParentWindowLink();

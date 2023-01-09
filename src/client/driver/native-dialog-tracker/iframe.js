@@ -6,8 +6,8 @@ const messageSandbox = hammerhead.eventSandbox.message;
 
 
 export default class IframeNativeDialogTracker extends NativeDialogTracker {
-    constructor (dialogHandler) {
-        super(null, dialogHandler);
+    constructor (options) {
+        super(null, options);
     }
 
     _defaultDialogHandler (type) {
