@@ -15,11 +15,12 @@ const GETTING_PAGE_URL_PROCESSED_SCRIPT = processScript('window.location.href');
 
 
 export default class NativeDialogTracker {
-    constructor (contextStorage, dialogHandler) {
+    constructor (contextStorage, { proxyless, dialogHandler } = {}) {
         this.contextStorage = contextStorage;
         this.dialogHandler  = dialogHandler;
+        this.nativeHandlers = {};
 
-        this._init();
+        this._init(proxyless);
         this._initListening();
 
         if (this.dialogHandler)
@@ -77,7 +78,13 @@ export default class NativeDialogTracker {
         });
     }
 
-    _init () {
+    _init (proxyless) {
+        if (proxyless) {
+            ['alert', 'confirm', 'prompt'].forEach(dialogType => {
+                this.nativeHandlers[dialogType] = window[dialogType];
+            });
+        }
+
         hammerhead.on(hammerhead.EVENTS.beforeUnload, e => {
             if (e.prevented && !e.isFakeIEEvent) {
                 if (this.dialogHandler) {
@@ -114,6 +121,11 @@ export default class NativeDialogTracker {
             catch (err) {
                 this._onHandlerError(type, err.message || String(err), url);
             }
+
+            // NOTE: need to call native handlers in proxyless
+            // mode to handle it on the cdp side
+            if (this.nativeHandlers[type])
+                this.nativeHandlers[type].call(window, text);
 
             return result;
         };

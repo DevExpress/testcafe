@@ -139,7 +139,7 @@ import {
 } from './role-provider';
 
 import ProxylessRequestPipeline from '../proxyless/request-pipeline';
-import ProxylessAPI from '../proxyless/api';
+import Proxyless from '../proxyless';
 
 const lazyRequire                 = require('import-lazy')(require);
 const ClientFunctionBuilder       = lazyRequire('../client-functions/client-function-builder');
@@ -381,15 +381,13 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     private get _proxylessRequestPipeline (): ProxylessRequestPipeline {
-        const runtimeInfo = this.browserConnection.provider.plugin.openedBrowsers[this.browserConnection.id];
-
-        return runtimeInfo.proxyless.requestPipeline;
+        return this._proxyless.requestPipeline;
     }
 
-    private get _proxylessApi (): ProxylessAPI {
+    private get _proxyless (): Proxyless {
         const runtimeInfo = this.browserConnection.provider.plugin.openedBrowsers[this.browserConnection.id];
 
-        return runtimeInfo.proxyless.api;
+        return runtimeInfo.proxyless;
     }
 
     private _getRoleProvider (): RoleProvider {
@@ -637,6 +635,7 @@ export default class TestRun extends AsyncEventEmitter {
             retryTestPages:  !!this.opts.retryTestPages,
             speed:           this.speed,
             dialogHandler:   JSON.stringify(this.activeDialogHandler),
+            proxyless:       JSON.stringify(this.opts.experimentalProxyless),
         });
     }
 
@@ -1302,9 +1301,16 @@ export default class TestRun extends AsyncEventEmitter {
         if (command.type === COMMAND_TYPE.executeAsyncExpression)
             return this._executeAsyncJsExpression(command as ExecuteAsyncExpressionCommand, callsite as string);
 
+
+        if (command.type === COMMAND_TYPE.getNativeDialogHistory && this.opts.experimentalProxyless)
+            return this._proxyless.nativeDialogsApi.getNativeDialogHistory();
+
+        if (command.type === COMMAND_TYPE.setNativeDialogHandler && this.opts.experimentalProxyless)
+            await this._proxyless.nativeDialogsApi.fixMissingBeforeUnloadHandling();
+
         if (command.type === COMMAND_TYPE.getBrowserConsoleMessages) {
             if (this.opts.experimentalProxyless)
-                return this._proxylessApi.getBrowserConsoleMessages();
+                return this._proxyless.consoleMessagesApi.getBrowserConsoleMessages();
 
             return this._enqueueBrowserConsoleMessagesCommand(command, callsite as CallsiteRecord);
         }

@@ -58,7 +58,13 @@ export default class ResourceInjector {
         return this._browserConnection.getCurrentTestRun();
     }
 
-    private async _prepareInjectableResources ({ isIframe, restoringStorages }: InjectableResourcesOptions): Promise<PageInjectableResources | null> {
+    private _getRestoreContextStorageScript (contextStorage?: string): string {
+        contextStorage = JSON.stringify(contextStorage || '');
+
+        return `Object.defineProperty(window, '%proxylessContextStorage%', { configurable: true, value: ${contextStorage} });`;
+    }
+
+    private async _prepareInjectableResources ({ isIframe, restoringStorages, contextStorage }: InjectableResourcesOptions): Promise<PageInjectableResources | null> {
         const proxy    = this._browserConnection.browserConnectionGateway.proxy;
         const windowId = this._browserConnection.activeWindowId;
 
@@ -83,7 +89,7 @@ export default class ResourceInjector {
                 ...HAMMERHEAD_INJECTABLE_SCRIPTS.map(hs => getAssetPath(hs, proxy.options.developmentMode)),
                 ...SCRIPTS.map(s => getAssetPath(s, proxy.options.developmentMode)),
             ],
-            embeddedScripts: [taskScript],
+            embeddedScripts: [this._getRestoreContextStorageScript(contextStorage), taskScript],
         };
 
         injectableResources.scripts     = injectableResources.scripts.map(script => proxy.resolveRelativeServiceUrl(script));

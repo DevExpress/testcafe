@@ -43,6 +43,8 @@ const PROXYLESS_TESTS_GLOB = [
     'test/functional/fixtures/api/es-next/roles/test.js',
     'test/functional/fixtures/request-pipeline/**/test.js',
     'test/functional/fixtures/hammerhead/worker/test.js',
+    'test/functional/fixtures/api/es-next/native-dialogs-handling/test.js',
+    'test/functional/fixtures/api/es-next/native-dialogs-handling/iframe/test.js',
 ];
 
 module.exports = {
