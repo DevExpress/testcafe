@@ -86,7 +86,6 @@ export class IPCProxy extends EventEmitter {
         return error;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public register (func: Function | Function[], context: any = null): void {
         func = castArray(func);
 
@@ -98,7 +97,6 @@ export class IPCProxy extends EventEmitter {
         });
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public async call (target: string|Function, ...args: any[]): Promise<any> {
         const name            = typeof target === 'string' ? target : target.name;
         const packet          = this._createPacket({ data: { name, args }, sync: false });
@@ -114,7 +112,6 @@ export class IPCProxy extends EventEmitter {
         return data.result;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public callSync (target: string|Function, ...args: any[]): any {
         const name          = typeof target === 'string' ? target : target.name;
         const requestPacket = this._createPacket({ data: { name, args }, sync: true });

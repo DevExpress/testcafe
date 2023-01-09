@@ -6,7 +6,7 @@ const DEFAULT_KEY_VALUE_SEPARATOR = '=';
 
 type OptionKeyValue = [string, string];
 
-function convertOptionValueType (value: any): any { /* eslint-disable-line @typescript-eslint/no-explicit-any */
+function convertOptionValueType (value: any): any {
     // NOTE: threat a key without a separator and a value as a boolean flag
     if (value === void 0)
         return true;
@@ -21,7 +21,7 @@ function parseOptionsString (optionsStr: string, optionsSeparator: string, keyVa
         .map(([key, ...value]) => [key, value.length > 1 ? value.join(keyValueSeparator) : value[0]]);
 }
 
-export default async function (sourceOptions: string | Dictionary<string | number | boolean> = '', optionsConfig: GetOptionConfiguration = {}): Promise<Dictionary<any>> { /* eslint-disable-line @typescript-eslint/no-explicit-any */
+export default async function (sourceOptions: string | Dictionary<string | number | boolean> = '', optionsConfig: GetOptionConfiguration = {}): Promise<Dictionary<any>> {
     const {
         optionsSeparator = DEFAULT_OPTIONS_SEPARATOR,
         keyValueSeparator = DEFAULT_KEY_VALUE_SEPARATOR,

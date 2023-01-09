@@ -19,7 +19,6 @@ export interface IPCPacket {
 export interface IPCRequestData {
     name: string;
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     args: any[];
 }
 
@@ -28,7 +27,6 @@ export interface IPCRequestPacket extends IPCPacket {
 }
 
 export interface IPCSuccessfulResponse {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     result: any;
 }
 
