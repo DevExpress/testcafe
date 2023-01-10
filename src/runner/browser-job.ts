@@ -21,7 +21,7 @@ import { NextTestRunInfo } from '../shared/types';
 
 interface BrowserJobResultInfo {
     status: BrowserJobResult;
-    data?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+    data?: any;
 }
 
 enum BrowserJobStatus { initialized, starting, started }
@@ -119,7 +119,7 @@ export default class BrowserJob extends AsyncEventEmitter {
         return testRunController;
     }
 
-    private async _setResult (status: BrowserJobResult, data?: any): Promise<void> { // eslint-disable-line @typescript-eslint/no-explicit-any
+    private async _setResult (status: BrowserJobResult, data?: any): Promise<void> {
         if (this._result)
             return;
 

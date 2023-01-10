@@ -9,7 +9,7 @@ export default class AsyncEventEmitter extends Emittery {
         this.captureRejections = captureRejections;
     }
 
-    public once (event: string, listener?: Function): Promise<any> { // eslint-disable-line @typescript-eslint/no-explicit-any
+    public once (event: string, listener?: Function): Promise<any> {
         if (!listener)
             return super.once(event);
 

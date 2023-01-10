@@ -97,6 +97,7 @@
     "comma-dangle": ["error", "always-multiline"],
     "prefer-rest-params": 0,
     "prefer-spread": 0,
+    "@typescript-eslint/no-explicit-any": 0,
     "@typescript-eslint/no-extra-parens": 2,
     "@typescript-eslint/no-use-before-define": [2, "nofunc"],
     "@typescript-eslint/no-var-requires": [0],
