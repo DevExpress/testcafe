@@ -4,12 +4,15 @@ const { errorInEachBrowserContains } = require('../../assertion-helper.js');
 const {
     CLIENT_ERROR_MESSAGE,
     CLIENT_PAGE_URL,
-    CALLBACK_FUNC_ERROR,
-    CLIENT_ERROR_REGEXP, SKIP_JS_ERRORS_CALLBACK_OPTIONS,
+    CLIENT_ERROR_REGEXP,
+    SKIP_JS_ERRORS_CALLBACK_OPTIONS,
 } = require('./constants');
 
 const { createReporter } = require('../../utils/reporter');
 const experimentalDebug  = !!process.env.EXPERIMENTAL_DEBUG;
+const proxyless          = !!process.env.PROXYLESS;
+
+const CALLBACK_FUNC_ERROR = proxyless ? 'Error in the skipJsError callback function' : 'An error occurred in skipJsErrors handler code:';
 
 describe('Test should fail after js-error on the page', () => {
     it('if an error is raised before test done', () => {
@@ -206,5 +209,13 @@ const expectFailAttempt = (errors, expectedMessage) => {
                 });
         });
     });
-});
 
+    describe('Skip command should be disposed between test runs', () => {
+        it('Skip command should be disposed between test runs', () => {
+            return runTests('./testcafe-fixtures/skip-command-dispose-test.js', void 0, { shouldFail: true })
+                .catch(errs => {
+                    errorInEachBrowserContains(errs, 'Custom client error', 0);
+                });
+        });
+    });
+});

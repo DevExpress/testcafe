@@ -7,6 +7,7 @@ import { ProxylessSetupOptions } from '../shared/types';
 import { proxylessLogger } from '../utils/debug-loggers';
 import ConsoleMessagesAPI from './console-messages';
 import NativeDialogsAPI from './native-dialogs';
+import JSErrorHandlingAPI from './js-error-handling';
 import SessionStorage from './session-storage';
 import { Dictionary } from '../configuration/interfaces';
 
@@ -21,6 +22,7 @@ export default class Proxyless {
     public readonly consoleMessagesApi: ConsoleMessagesAPI;
     public readonly nativeDialogsApi: NativeDialogsAPI;
     public readonly sessionStorage: SessionStorage;
+    public readonly jsErrorHandlingApi: JSErrorHandlingAPI;
 
     public constructor (browserId: string, client: ProtocolApi) {
         this._client         = client;
@@ -28,6 +30,7 @@ export default class Proxyless {
         this.consoleMessagesApi = new ConsoleMessagesAPI(browserId, client);
         this.nativeDialogsApi = new NativeDialogsAPI(browserId, client);
         this.sessionStorage = new SessionStorage(browserId, client);
+        this.jsErrorHandlingApi = new JSErrorHandlingAPI(browserId, client);
 
         this.sessionStorage.on('contextStorageModified', sessionStorage => {
             const COMMAND_EXECUTING_FLAG = 'testcafe|driver|command-executing-flag';
@@ -60,6 +63,7 @@ export default class Proxyless {
             this.consoleMessagesApi,
             this.nativeDialogsApi,
             this.sessionStorage,
+            this.jsErrorHandlingApi,
         ];
 
         for (const api of proxylessSystems)
