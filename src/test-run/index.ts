@@ -594,7 +594,7 @@ export default class TestRun extends AsyncEventEmitter {
             await Promise.all(this.test.requestHooks.map(hook => this._initRequestHook(hook)));
     }
 
-    private _prepareSkipJsErrorsOption (): boolean | ExecuteClientFunctionCommand | SkipJsErrorsCallback {
+    public prepareSkipJsErrorsOption (): boolean | ExecuteClientFunctionCommand | SkipJsErrorsCallback {
         const options = this.test.skipJsErrorsOptions !== void 0
             ? this.test.skipJsErrorsOptions
             : this.opts.skipJsErrors as SkipJsErrorsOptionsObject | boolean || false;
@@ -608,7 +608,7 @@ export default class TestRun extends AsyncEventEmitter {
         this.resolveWaitForFileDownloadingPromise = null;
 
         const proxyless    = this.opts.experimentalProxyless;
-        const skipJsErrors = proxyless ? false : this._prepareSkipJsErrorsOption();
+        const skipJsErrors = proxyless ? false : this.prepareSkipJsErrorsOption();
 
         return Mustache.render(TEST_RUN_TEMPLATE, {
             testRunId:                          JSON.stringify(this.session.id),
@@ -818,19 +818,7 @@ export default class TestRun extends AsyncEventEmitter {
         });
     }
 
-    public addProxylessJSError (err: TestRunErrorBase, skipJsErrors: boolean | undefined, errFilter: SkipJsErrorsOptionsObject): void {
-        if (typeof skipJsErrors === 'undefined')
-            skipJsErrors = this.opts.skipJsErrors === true;
-
-        const options = this._prepareSkipJsErrorsOption();
-
-        if (typeof options === 'function')
-            // @ts-ignore
-            skipJsErrors = options(errFilter);
-
-        if (skipJsErrors)
-            return;
-
+    public addProxylessJSError (err: TestRunErrorBase): void {
         this.proxylessJSError = err;
 
         this.proxylessJSError.callsite = this.currentDriverTask?.callsite;

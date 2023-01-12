@@ -28,26 +28,13 @@ export default class JSErrorHandlingAPI extends ProxylessApiBase {
             const errorMessage = this._getErrorMessage(exceptionDetails);
             const errFilter = this._getErrFilter(exceptionDetails, errorMessage);
 
-            let shouldSkipJsErrors;
-
             try {
-                shouldSkipJsErrors = this._getShouldSkipJsErrors(errFilter);
+                if (!this._getShouldSkipJsErrors(errFilter))
+                    this._testRun.addProxylessJSError(new UncaughtErrorOnPage(errorMessage, exceptionDetails.url));
             }
             catch (err) {
-                this._testRun.addProxylessJSError(
-                    new UncaughtErrorInTestCode(err),
-                    false,
-                    errFilter,
-                );
-
-                return;
+                this._testRun.addProxylessJSError(new UncaughtErrorInTestCode(err));
             }
-
-            this._testRun.addProxylessJSError(
-                new UncaughtErrorOnPage(errorMessage, exceptionDetails.url),
-                shouldSkipJsErrors,
-                errFilter,
-            );
         });
     }
 
@@ -76,15 +63,17 @@ export default class JSErrorHandlingAPI extends ProxylessApiBase {
         };
     }
 
-    private _getShouldSkipJsErrors (errFilter: SkipJsErrorsOptionsObject): boolean | undefined {
-        if (this.command?.options === true)
+    private _getShouldSkipJsErrors (errFilter: SkipJsErrorsOptionsObject): boolean {
+        const options = this.command ? this.command.options : this._testRun.prepareSkipJsErrorsOption();
+
+        if (options === true)
             return true;
 
-        if (typeof this.command?.options === 'function')
+        if (typeof options === 'function')
             // @ts-ignore
-            return this.command?.options(errFilter);
+            return options(errFilter);
 
-        return void 0;
+        return false;
     }
 
     private _addTestRunEvents (): void {
