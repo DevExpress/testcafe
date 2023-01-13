@@ -4,7 +4,7 @@ import { homedir } from 'os';
 import { promisify } from 'util';
 import timeLimit from 'time-limit-promise';
 import del from 'del';
-import delay from '../../../../../../lib/utils/delay';
+import delay from '../../../../../../lib/utils/delay.js';
 
 const DOWNLOADED_JSON_FILE_PATH = join(homedir(), 'Downloads', 'package.json');
 const DOWNLOADED_ZIP_FILE_PATH  = join(homedir(), 'Downloads', 'dummy.zip');

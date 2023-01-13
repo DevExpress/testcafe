@@ -86,7 +86,7 @@ import {
 } from '../../errors/test-run';
 
 import { renderHtmlWithoutStack, shouldRenderHtmlWithoutStack } from '../../errors/test-run/render-error-template/utils';
-import setupSourceMapSupport from '../../utils/setup-sourcemap-support';
+import { setupSourceMapSupport } from '../../utils/setup-sourcemap-support';
 import { formatError } from '../../utils/handle-errors';
 import { SwitchToWindowPredicateError } from '../../shared/errors';
 import MessageBus from '../../utils/message-bus';
@@ -322,7 +322,7 @@ class CompilerService implements CompilerProtocol {
     }
 
     public async getTests ({ sourceList, compilerOptions, runnableConfigurationId }: CompilerArguments, baseUrl?: string): Promise<Units> {
-        const compiler = new Compiler(sourceList, compilerOptions, { isCompilerServiceMode: true, baseUrl });
+        const compiler = new Compiler(sourceList, compilerOptions, { isCompilerServiceMode: true, baseUrl, experimentalEsm: false });
 
         const tests   = await compiler.getTests();
         const units   = flattenTestStructure(tests);

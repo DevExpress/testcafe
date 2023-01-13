@@ -1,4 +1,4 @@
-import helper from '../test-helper';
+import helper from '../test-helper.js';
 
 fixture `Stops and starts 2`
     .page `../pages/index.html`

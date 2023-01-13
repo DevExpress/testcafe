@@ -859,6 +859,7 @@ describe('CLI argument parser', function () {
             { long: '--experimental-proxyless' },
             { long: '--base-url' },
             { long: '--disable-cross-domain' },
+            { long: '--experimental-esm' },
         ];
 
         const parser  = new CliArgumentParser('');
@@ -875,7 +876,7 @@ describe('CLI argument parser', function () {
         }
 
         const expectedRunOptionsCount   = 22;
-        const expectedOtherOptionsCount = 37;
+        const expectedOtherOptionsCount = 38;
         const otherOptionsCount         = options.length - expectedRunOptionsCount;
 
         expect(runOptionNames.length).eql(expectedRunOptionsCount, ADD_TO_RUN_OPTIONS_WARNING);

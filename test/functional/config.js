@@ -270,4 +270,8 @@ module.exports = {
     hasBrowser (alias) {
         return this.currentEnvironment.browsers.some(browser => browser.alias.includes(alias));
     },
+
+    get experimentalESM () {
+        return !!process.env.NODE_OPTIONS && process.env.NODE_OPTIONS.includes('--experimental-loader');
+    },
 };

@@ -25,7 +25,7 @@ interface TestCafeConfigurationOptions extends RunOptions, StartOptions {
     videoOptions: VideoConfigOptions['options'];
     videoEncodingOptions: VideoConfigOptions['encodingOptions'];
 
-    filter: FilterDescriptor; 
+    filter: FilterDescriptor;
 
     clientScripts: ClientScriptOptions;
 

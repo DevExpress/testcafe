@@ -1,9 +1,8 @@
 import { RequestHook } from 'testcafe';
-import path from 'path';
+import ReExecutablePromise from '../../../../../../../../lib/utils/re-executable-promise.js';
 
 
-const ReExecutablePromise = require(path.resolve('./lib/utils/re-executable-promise'));
-const pageUrl             = 'http://localhost:3000/fixtures/api/es-next/request-hooks/pages/request-logger/index.html';
+const pageUrl = 'http://localhost:3000/fixtures/api/es-next/request-hooks/pages/request-logger/index.html';
 
 const log = [];
 

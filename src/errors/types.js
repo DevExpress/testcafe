@@ -184,4 +184,5 @@ export const RUNTIME_ERRORS = {
     invalidCommandInJsonCompiler:                       'E1078',
     invalidCustomActionsOptionType:                     'E1079',
     invalidCustomActionType:                            'E1080',
+    cannotImportESMInCommonsJS:                         'E1081',
 };

@@ -1,5 +1,5 @@
 import { ClientFunction } from 'testcafe';
-import { INDEX1_URL, INDEX2_URL } from '../constants';
+import { INDEX1_URL, INDEX2_URL } from '../constants.js';
 
 const getLocation = ClientFunction(() => window.location.href);
 

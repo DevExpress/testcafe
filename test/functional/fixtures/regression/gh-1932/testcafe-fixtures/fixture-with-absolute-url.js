@@ -4,7 +4,7 @@ import {
     INDEX1_URL,
     INDEX2_RELATIVE_URL,
     INDEX2_URL,
-} from '../constants';
+} from '../constants.js';
 
 const getLocation = ClientFunction(() => window.location.href);
 

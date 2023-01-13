@@ -1,9 +1,9 @@
 import { ClientFunction } from 'testcafe';
-import { parseUserAgent } from '../../../../../../../lib/utils/parse-user-agent';
-import { saveWindowState, restoreWindowState } from '../../../../../window-helpers';
-import quarantineScope from './quarantineScope';
+import { parseUserAgent } from '../../../../../../../lib/utils/parse-user-agent.js';
+import { saveWindowState, restoreWindowState } from '../../../../../esm-utils/window-helpers.js';
+import quarantineScope from './quarantineScope.js';
 import sanitizeFilename from 'sanitize-filename';
-import { readPngFile } from '../../../../../../../lib/utils/promisified-functions';
+import { readPngFile } from '../../../../../../../lib/utils/promisified-functions.js';
 import config from '../../../../../config.js';
 import { join } from 'path';
 

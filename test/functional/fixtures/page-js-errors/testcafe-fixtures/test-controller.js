@@ -1,10 +1,10 @@
-const {
+import {
     CLIENT_ERROR_MESSAGE,
     CLIENT_PAGE_URL,
     CLIENT_PAGE_URL_REGEXP,
     SKIP_JS_ERRORS_CALLBACK_OPTIONS,
     CLIENT_ERROR_REGEXP,
-} = require('../constants');
+} from '../constants.js';
 
 fixture`TestController method`
     .page('http://localhost:3000/fixtures/page-js-errors/pages/skip-js-errors.html');
@@ -54,9 +54,10 @@ test('Should correctly skip JS errors with multiple method calls', async t => {
 });
 
 test('Should fail with SkipJsErrorsCallbackOptions', async t => {
+    const errMessage      = CLIENT_ERROR_MESSAGE;
     const callbackOptions = {
-        fn:           ({ message, pageUrl }) => message === CLIENT_ERROR_MESSAGE && pageUrl === 'incorrect url',
-        dependencies: { CLIENT_ERROR_MESSAGE },
+        fn:           ({ message, pageUrl }) => message === errMessage && pageUrl === 'incorrect url',
+        dependencies: { errMessage },
     };
 
     await t.skipJsErrors(callbackOptions)

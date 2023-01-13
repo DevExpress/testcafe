@@ -207,8 +207,9 @@ export default class CLIArgumentParser {
             .option('--color', 'force TestCafe to format CLI output with color')
             .option('--no-color', 'disable text color formatting in the CLI')
 
-            // NOTE: temporary hide experimental options from --help command
-            .addOption(new Option('--experimental-debug', 'enable experimental debug mode').hideHelp())
+            // NOTE: Temporarily exclude experimental options from --help output
+            .addOption(new Option('--experimental-debug', 'enable experimental the debug mode').hideHelp())
+            .addOption(new Option('--experimental-esm', 'enable experimental the esm mode').hideHelp())
             .addOption(new Option('--disable-cross-domain', 'experimental').hideHelp())
             .action((opts: CommandLineOptions) => {
                 this.opts = opts;

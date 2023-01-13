@@ -4,7 +4,10 @@
     "../ts-defs-src",
     "./"
   ],
-  "exclude": ["./client"],
+  "exclude": [
+    "./client", 
+    "./api/exportable-lib/index.mjs"
+],
   "compilerOptions": {
     "outDir": "../lib",
     "target": "es2017",

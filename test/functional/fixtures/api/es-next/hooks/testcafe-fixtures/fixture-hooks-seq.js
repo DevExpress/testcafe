@@ -1,4 +1,4 @@
-import delay from '../../../../../../../lib/utils/delay';
+import delay from '../../../../../../../lib/utils/delay.js';
 
 fixture `Fixture 1`
     .after(async () => {

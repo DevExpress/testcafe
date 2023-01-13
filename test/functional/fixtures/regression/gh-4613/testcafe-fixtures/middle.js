@@ -1,4 +1,4 @@
-import methodWithFailedAssertion from '../common/method-with-failed-assertion';
+import methodWithFailedAssertion from '../common/method-with-failed-assertion.js';
 
 fixture `Middle`;
 

@@ -1,7 +1,7 @@
 // NOTE: to preserve callsites, add new tests AFTER the existing ones
 import { Selector } from 'testcafe';
-import { saveWindowState, restoreWindowState } from '../../../../../window-helpers';
-import config from '../../../../../config';
+import { saveWindowState, restoreWindowState } from '../../../../../esm-utils/window-helpers.js';
+import config from '../../../../../config.js';
 
 fixture `Drag`
     .page `http://localhost:3000/fixtures/api/es-next/drag/pages/index.html`;

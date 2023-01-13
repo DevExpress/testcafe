@@ -53,6 +53,9 @@
   ],
   "scripts": {
     "test": "gulp travis",
+    "build": "gulp build",
+    "test-functional-local-headless-chrome-run-esm": "cross-env NODE_OPTIONS='--experimental-loader=./lib/compiler/esm-loader.js' gulp test-functional-local-headless-chrome-run --steps-as-tasks",
+    "test-functional-local-headless-chrome-esm": "npm run build && npm run test-functional-local-headless-chrome-run-esm",
     "publish-please-only": "publish-please",
     "publish-please": "del-cli package-lock.json node_modules && npm i && publish-please",
     "prepublishOnly": "publish-please guard"
@@ -79,7 +82,7 @@
     "async-exit-hook": "^1.1.2",
     "babel-plugin-module-resolver": "^5.0.0",
     "babel-plugin-syntax-trailing-function-commas": "^6.22.0",
-    "bin-v8-flags-filter": "^1.1.2",
+    "@devexpress/bin-v8-flags-filter": "^1.3.0",
     "bowser": "^2.8.1",
     "callsite": "^1.0.0",
     "callsite-record": "^4.0.0",
@@ -184,6 +187,7 @@
     "chai-string": "^1.5.0",
     "chrome-launcher": "^0.15.0",
     "connect": "^3.4.0",
+    "cross-env": "^7.0.3",
     "devtools-protocol": "0.0.1078443",
     "dom-walk": "^0.1.1",
     "escape-string-regexp": "^4.0.0",

@@ -1,5 +1,5 @@
 import { ClientFunction } from 'testcafe';
-import { parseUserAgent } from '../../../../../../lib/utils/parse-user-agent';
+import { parseUserAgent } from '../../../../../../lib/utils/parse-user-agent.js';
 
 fixture`Getting Started`
     .page`http://localhost:3000/fixtures/regression/gh-5961/pages/index.html`;

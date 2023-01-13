@@ -1,4 +1,4 @@
-import testInfo from '../test-info';
+import testInfo from '../test-info.js';
 import { ClientFunction } from 'testcafe';
 
 const getUserAgent = ClientFunction(() => navigator.userAgent);

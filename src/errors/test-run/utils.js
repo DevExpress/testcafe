@@ -1,5 +1,6 @@
 import dedent from 'dedent';
 import { escape as escapeHtml, repeat } from 'lodash';
+import PREVENT_MODULE_CACHING_SUFFIX from '../../compiler/prevent-module-caching-suffix';
 import TEST_RUN_PHASE from '../../test-run/phase';
 import { TEST_RUN_ERRORS } from '../types';
 
@@ -71,6 +72,10 @@ export function shouldSkipCallsite (err) {
            err.code === TEST_RUN_ERRORS.uncaughtException;
 }
 
+export function removePreventModuleCachingSuffix (err) {
+    return err.replace(new RegExp(`\\?${PREVENT_MODULE_CACHING_SUFFIX}=\\d*`, 'g'), '');
+}
+
 export function markup (err, msgMarkup, errCallsite = '') {
     msgMarkup = dedent(`${SUBTITLES[err.testRunPhase]}<div class="message">${dedent(msgMarkup)}</div>`);
 
@@ -91,7 +96,7 @@ export function markup (err, msgMarkup, errCallsite = '') {
             msgMarkup += `\n\n${callsiteMarkup}`;
     }
 
-    return msgMarkup.replace('\t', '&nbsp;'.repeat(4));
+    return removePreventModuleCachingSuffix(msgMarkup.replace('\t', '&nbsp;'.repeat(4)));
 }
 
 export function renderDiff (diff) {

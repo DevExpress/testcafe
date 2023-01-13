@@ -1,7 +1,7 @@
 import { Selector, ClientFunction } from 'testcafe';
 import { expect } from 'chai';
-import selectorApiExecutionMode from '../../../../../lib/client-functions/selector-api-execution-mode';
-import CHECK_ELEMENT_DELAY from '../../../../../lib/client/driver/command-executors/client-functions/selector-executor/check-element-delay';
+import selectorApiExecutionMode from '../../../../../lib/client-functions/selector-api-execution-mode.js';
+import CHECK_ELEMENT_DELAY from '../../../../../lib/client/driver/command-executors/client-functions/selector-executor/check-element-delay.js';
 
 fixture `Selector`
     .page`../../api/es-next/selector/pages/index.html`

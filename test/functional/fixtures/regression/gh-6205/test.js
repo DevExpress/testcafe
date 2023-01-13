@@ -7,7 +7,7 @@ describe('[Regression](GH-6205)', function () {
             'Should throw an error',
             { shouldFail: true, only: 'chrome' }
         ).catch((errs) => {
-            expect(errs[0]).match(/at .*index.js:4:11/);
+            expect(errs[0]).match(/at .*index.js.*:4/);
         });
     });
 
@@ -17,7 +17,7 @@ describe('[Regression](GH-6205)', function () {
             null,
             { shouldFail: true, only: 'chrome' }
         ).catch((err) => {
-            expect(err.stack).match(/at .*index.js:1/);
+            expect(err.stack).match(/at .*index.js.*:1/);
         });
     });
 });

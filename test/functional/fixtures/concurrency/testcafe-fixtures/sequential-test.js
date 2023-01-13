@@ -1,4 +1,4 @@
-import testInfo from '../test-info';
+import testInfo from '../test-info.js';
 
 fixture `Sequential`
     .page`../pages/index.html`

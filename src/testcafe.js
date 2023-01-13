@@ -3,7 +3,7 @@ import { RUNTIME_ERRORS } from './errors/types';
 import CONTENT_TYPES from './assets/content-types';
 import OPTION_NAMES from './configuration/option-names';
 import * as INJECTABLES from './assets/injectables';
-import setupSourceMapSupport from './utils/setup-sourcemap-support';
+import { setupSourceMapSupport } from './utils/setup-sourcemap-support';
 
 const lazyRequire              = require('import-lazy')(require);
 const hammerhead               = lazyRequire('testcafe-hammerhead');

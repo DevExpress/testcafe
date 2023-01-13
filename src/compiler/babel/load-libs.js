@@ -1,13 +1,13 @@
-import EXPORTABLE_LIB_PATH from '../test-file/exportble-lib-path';
+import getExportableLibPath from '../test-file/get-exportable-lib-path';
 
-function getPresetEnvForTestCodeOpts (isCompilerServiceMode) {
+function getPresetEnvForTestCodeOpts (dontUseModules) {
     const opts = {
         targets: { node: 'current' },
         loose:   true,
         exclude: ['transform-regenerator'],
     };
 
-    if (isCompilerServiceMode)
+    if (dontUseModules)
         opts.modules = false;
 
     return opts;
@@ -20,11 +20,12 @@ function getPresetEnvForClientFunctionOpts () {
     };
 }
 
-function getModuleResolverOpts () {
+function getModuleResolverOpts (experimentalEsm) {
     return {
         resolvePath (source) {
+            //NOTE: Prevent module caching to import 'fixture' and 'test' in ESM mode.
             if (source === 'testcafe')
-                return EXPORTABLE_LIB_PATH;
+                return getExportableLibPath(experimentalEsm);
 
             return source;
         },
@@ -55,7 +56,7 @@ function getPresetReact () {
 }
 
 // NOTE: lazy load heavy dependencies
-export default function loadLibs (isCompilerServiceMode) {
+export default function loadLibs ({ isCompilerServiceMode, experimentalEsm } = {}) {
     return {
         babel:                      require('@babel/core'),
         presetStage2:               require('./preset-stage-2'),
@@ -63,8 +64,8 @@ export default function loadLibs (isCompilerServiceMode) {
         transformRuntime:           [require('@babel/plugin-transform-runtime'), getTransformRuntimeOpts()],
         transformForOfAsArray:      [require('@babel/plugin-transform-for-of'), getTransformForOfOptions()],
         presetEnvForClientFunction: [require('@babel/preset-env'), getPresetEnvForClientFunctionOpts()],
-        presetEnvForTestCode:       [require('@babel/preset-env'), getPresetEnvForTestCodeOpts(isCompilerServiceMode)],
-        moduleResolver:             [require('babel-plugin-module-resolver'), getModuleResolverOpts()],
+        presetEnvForTestCode:       [require('@babel/preset-env'), getPresetEnvForTestCodeOpts(isCompilerServiceMode || experimentalEsm)],
+        moduleResolver:             [require('babel-plugin-module-resolver'), getModuleResolverOpts(experimentalEsm)],
         presetReact:                getPresetReact(),
         proposalPrivateMethods:     [require('@babel/plugin-proposal-private-methods'), { loose: true }],
         proposalClassProperties:    [require('@babel/plugin-proposal-class-properties'), { loose: true }],

@@ -49,6 +49,10 @@ export default class TestFileCompilerBase {
         return this.supportedExtensionRe.test(filename);
     }
 
+    get canCompileInEsm () {
+        return false;
+    }
+
     get canPrecompile () {
         return false;
     }

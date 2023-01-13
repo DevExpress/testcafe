@@ -165,6 +165,7 @@ jobs:
 
             tasks.push('test-functional-docker.yml');
             tasks.push('test-functional-local-chrome.yml');
+            tasks.push('test-functional-local-esm.yml');
             tasks.push('test-functional-local-debug-1.yml');
             tasks.push('test-functional-local-debug-2.yml');
             tasks.push('test-functional-local-firefox.yml');

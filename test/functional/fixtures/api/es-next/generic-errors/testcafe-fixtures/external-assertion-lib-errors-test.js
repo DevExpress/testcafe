@@ -1,6 +1,6 @@
 import assert from 'assert';
 import { expect, config as chaiConfig } from 'chai';
-import { assertionError } from './helpers';
+import { assertionError } from './helpers.js';
 
 // NOTE: set this flag to check that TestCafe adds a correct callsite to
 // the report when there are chai module files on top of the error stack.

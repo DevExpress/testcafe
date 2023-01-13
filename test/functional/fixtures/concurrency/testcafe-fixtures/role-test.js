@@ -1,5 +1,5 @@
 import { Role } from 'testcafe';
-import testInfo from '../test-info';
+import testInfo from '../test-info.js';
 
 const DEMO_ROLE = Role('http://localhost:3000/fixtures/concurrency/pages/index.html', async () => {
 });

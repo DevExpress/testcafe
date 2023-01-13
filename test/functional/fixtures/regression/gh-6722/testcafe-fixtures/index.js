@@ -3,7 +3,7 @@ import {
     SUCCESS_RESULT_ATTEMPTS,
     ERRORS,
     Counter,
-} from '../constants';
+} from '../constants.js';
 
 const counter = new Counter();
 

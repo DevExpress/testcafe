@@ -1,4 +1,4 @@
-import { role, url, expectedRoleLastPageLocation } from '../common/index';
+import { role, url, expectedRoleLastPageLocation } from '../common/index.js';
 
 fixture `Fixture`;
 

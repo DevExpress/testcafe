@@ -7,7 +7,7 @@ describe('[Regression](GH-637)', function () {
         tmp.setGracefulCleanup();
 
         const tmpDir = tmp.dirSync().name;
-        const srcDir = path.join(__dirname, './data');
+        const srcDir = path.join(__dirname, './testcafe-fixtures');
 
         return copy(srcDir, tmpDir).then(function () {
             const testFile = path.join(tmpDir, './testfile.js');

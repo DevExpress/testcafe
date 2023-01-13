@@ -6,6 +6,8 @@ import renderCallsiteSync from '../../utils/render-callsite-sync';
 import { RUNTIME_ERRORS } from '../types';
 import getRenderers from '../../utils/get-renderes';
 import util from 'util';
+import semver from 'semver';
+import { removePreventModuleCachingSuffix } from '../test-run/utils';
 
 const ERROR_SEPARATOR = '\n\n';
 
@@ -35,7 +37,7 @@ export class GeneralError extends Error {
 export class TestCompilationError extends Error {
     constructor (originalError) {
         const template     = TEMPLATES[RUNTIME_ERRORS.cannotPrepareTestsDueToError];
-        const errorMessage = originalError.toString();
+        const errorMessage = removePreventModuleCachingSuffix(originalError.toString());
 
         super(renderTemplate(template, errorMessage));
 
@@ -45,7 +47,7 @@ export class TestCompilationError extends Error {
         });
 
         // NOTE: stack includes message as well.
-        this.stack = renderTemplate(template, originalError.stack);
+        this.stack = renderTemplate(template, removePreventModuleCachingSuffix(originalError.stack));
     }
 }
 
@@ -168,5 +170,20 @@ export class RequestRuntimeError extends APIError {
 export class SkipJsErrorsArgumentApiError extends APIError {
     constructor (code, ...args) {
         super('skipJsErrors', code, ...args);
+    }
+}
+
+export class ImportESMInCommonJSError extends GeneralError {
+    constructor (originalError, targetFile) {
+        const esModule = ImportESMInCommonJSError._getESModule(originalError);
+
+        super(RUNTIME_ERRORS.cannotImportESMInCommonsJS, esModule, targetFile);
+    }
+
+    static _getESModule (err) {
+        const regExp       = semver.gte(process.version, '16.0.0') ? new RegExp(/ES Module (\S*)/) : /ES Module: (\S*)/;
+        const [, esModule] = err.toString().match(regExp);
+
+        return esModule;
     }
 }

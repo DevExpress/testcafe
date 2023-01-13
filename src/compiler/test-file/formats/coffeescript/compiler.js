@@ -1,6 +1,7 @@
 import CoffeeScript from 'coffeescript';
 import loadBabelLibs from '../../../babel/load-libs';
 import ESNextTestFileCompiler from '../es-next/compiler.js';
+import Extensions from '../extensions';
 
 const FIXTURE_RE = /(^|;|\s+)fixture\s*(\.|\(|'|")/;
 const TEST_RE    = /(^|;|\s+)test\s*/;
@@ -23,7 +24,7 @@ export default class CoffeeScriptTestFileCompiler extends ESNextTestFileCompiler
         });
 
         const { babel }    = loadBabelLibs();
-        const babelOptions = ESNextTestFileCompiler.getBabelOptions(filename, code);
+        const babelOptions = ESNextTestFileCompiler.getBabelOptions(filename, code, this);
         const compiled     = babel.transform(transpiled.js, babelOptions);
 
         this.cache[filename] = compiled.code;
@@ -32,10 +33,10 @@ export default class CoffeeScriptTestFileCompiler extends ESNextTestFileCompiler
     }
 
     _getRequireCompilers () {
-        return { '.coffee': (code, filename) => this._compileCode(code, filename) };
+        return { [Extensions.coffee]: (code, filename) => this._compileCode(code, filename) };
     }
 
     getSupportedExtension () {
-        return '.coffee';
+        return Extensions.coffee;
     }
 }

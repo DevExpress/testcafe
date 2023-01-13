@@ -7,12 +7,12 @@ import RawTestFileCompiler from './test-file/formats/raw/compiler';
 import DevToolsTestFileCompiler from './test-file/formats/dev-tools/compiler';
 import CustomizableCompilers from '../configuration/customizable-compilers';
 
-function createTestFileCompilers (compilerOptions = {}, { isCompilerServiceMode, baseUrl } = {}) {
+function createTestFileCompilers (compilerOptions = {}, { isCompilerServiceMode, baseUrl, experimentalEsm } = {}) {
     return [
         new LegacyTestFileCompiler(hammerhead.processScript),
-        new EsNextTestFileCompiler({ isCompilerServiceMode, baseUrl }),
-        new TypeScriptTestFileCompiler(compilerOptions[CustomizableCompilers.typescript], { isCompilerServiceMode, baseUrl }),
-        new CoffeeScriptTestFileCompiler({ baseUrl }),
+        new EsNextTestFileCompiler({ isCompilerServiceMode, baseUrl, experimentalEsm }),
+        new TypeScriptTestFileCompiler(compilerOptions[CustomizableCompilers.typescript], { isCompilerServiceMode, baseUrl, experimentalEsm }),
+        new CoffeeScriptTestFileCompiler({ baseUrl, experimentalEsm }),
         new RawTestFileCompiler({ baseUrl }),
         new DevToolsTestFileCompiler({ baseUrl }),
     ];
@@ -27,6 +27,6 @@ export function getTestFileCompilers () {
     return testFileCompilers;
 }
 
-export function initTestFileCompilers (compilerOptions, { isCompilerServiceMode, baseUrl } = {}) {
-    testFileCompilers = createTestFileCompilers(compilerOptions, { isCompilerServiceMode, baseUrl });
+export function initTestFileCompilers (compilerOptions, { isCompilerServiceMode, baseUrl, experimentalEsm } = {}) {
+    testFileCompilers = createTestFileCompilers(compilerOptions, { isCompilerServiceMode, baseUrl, experimentalEsm });
 }

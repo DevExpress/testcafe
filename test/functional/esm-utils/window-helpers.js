@@ -7,13 +7,13 @@ const getWindowState = ClientFunction(() => ({
     height:      window.innerHeight,
 }));
 
-export async function saveWindowState (t) {
+async function saveWindowState (t) {
     const boundGetWindowState =  getWindowState.with({ boundTestRun: t });
 
     t.ctx._savedWindowState = await boundGetWindowState();
 }
 
-export async function restoreWindowState (t) {
+async function restoreWindowState (t) {
     if (!t.ctx._savedWindowState)
         return;
 
@@ -23,5 +23,12 @@ export async function restoreWindowState (t) {
         await t.resizeWindow(t.ctx._savedWindowState.width, t.ctx._savedWindowState.height);
 }
 
-export const getWindowWidth  = ClientFunction(() => window.innerWidth);
-export const getWindowHeight = ClientFunction(() => window.innerHeight);
+const getWindowWidth  = ClientFunction(() => window.innerWidth);
+const getWindowHeight = ClientFunction(() => window.innerHeight);
+
+export {
+    saveWindowState,
+    restoreWindowState,
+    getWindowWidth,
+    getWindowHeight,
+};

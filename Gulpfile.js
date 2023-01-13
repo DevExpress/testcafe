@@ -29,6 +29,7 @@ const promisifyStream               = require('./gulp/helpers/promisify-stream')
 const testFunctional                = require('./gulp/helpers/test-functional');
 const testClient                    = require('./gulp/helpers/test-client');
 const moduleExportsTransform        = require('./gulp/helpers/module-exports-transform');
+const createPackageFilesForTests    = require('./gulp/helpers/create-package-files-for-tests');
 
 const {
     TESTS_GLOB,
@@ -251,16 +252,30 @@ gulp.step('images', () => {
         .pipe(gulp.dest('lib'));
 });
 
+gulp.step('esm-exportable-lib-script', () => {
+    return gulp
+        .src(['src/api/exportable-lib/index.mjs'])
+        .pipe(gulp.dest('lib/api/exportable-lib/'));
+});
+
 //NOTE: Executing tasks in parallel can cause out-of-memory errors on Azure Pipelines
 const buildTasks = process.env.TF_BUILD ? gulp.series : gulp.parallel;
 
-gulp.step('package-content', buildTasks('ts-defs', 'server-scripts', 'client-scripts', 'styles', 'images', 'templates'));
+gulp.step('package-content', buildTasks('ts-defs', 'server-scripts', 'client-scripts', 'esm-exportable-lib-script', 'styles', 'images', 'templates'));
 
 gulp.task('fast-build', gulp.series('clean', 'package-content'));
 
 gulp.task('build', process.env.DEV_MODE === 'true' ? gulp.registry().get('fast-build') : buildTasks('lint', 'fast-build'));
 
 // Test
+gulp.step('prepare-functional-tests', async () => {
+    return createPackageFilesForTests();
+});
+
+gulp.step('clean-functional-tests', async () => {
+    return del('test/functional/fixtures/**/package.json');
+});
+
 gulp.step('prepare-tests', gulp.registry().get(SKIP_BUILD ? 'lint' : 'build'));
 
 gulp.step('test-server-run', () => {
@@ -380,7 +395,7 @@ gulp.step('test-functional-local-headless-chrome-run', () => {
     return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localHeadlessChrome);
 });
 
-gulp.task('test-functional-local-headless-chrome', gulp.series('prepare-tests', 'test-functional-local-headless-chrome-run'));
+gulp.task('test-functional-local-headless-chrome', gulp.series('prepare-tests', 'prepare-functional-tests', 'test-functional-local-headless-chrome-run', 'clean-functional-tests'));
 
 gulp.step('test-functional-local-headless-firefox-run', () => {
     return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localHeadlessFirefox);

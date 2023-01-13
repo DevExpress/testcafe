@@ -11,13 +11,20 @@ import TestFileCompilerBase from './base';
 import TestFile from '../../api/structure/test-file';
 import Fixture from '../../api/structure/fixture';
 import Test from '../../api/structure/test';
-import { TestCompilationError, APIError } from '../../errors/runtime';
+import {
+    TestCompilationError,
+    APIError,
+    ImportESMInCommonJSError,
+} from '../../errors/runtime';
 import stackCleaningHook from '../../errors/stack-cleaning-hook';
 import NODE_MODULES from '../../utils/node-modules-folder-name';
 import cacheProxy from './cache-proxy';
 import exportableLib from '../../api/exportable-lib';
 import TEST_FILE_TEMP_VARIABLE_NAME from './test-file-temp-variable-name';
 import addExportAPI from './add-export-api';
+import url from 'url';
+import PREVENT_MODULE_CACHING_SUFFIX from '../prevent-module-caching-suffix';
+
 
 const CWD = process.cwd();
 
@@ -28,14 +35,17 @@ const TESTCAFE_LIB_FOLDER_NAME = 'lib';
 
 const Module = module.constructor;
 
+const errRequireEsmErrorCode = 'ERR_REQUIRE_ESM';
+
 export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
-    constructor ({ isCompilerServiceMode, baseUrl }) {
+    constructor ({ isCompilerServiceMode, baseUrl, experimentalEsm }) {
         super({ baseUrl });
 
         this.isCompilerServiceMode = isCompilerServiceMode;
         this.cache                 = Object.create(null);
         this.origRequireExtensions = Object.create(null);
         this.cachePrefix           = nanoid(7);
+        this.experimentalEsm       = experimentalEsm;
     }
 
     static _getNodeModulesLookupPath (filename) {
@@ -52,20 +62,30 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
 
     static _isTestCafeLibDep (filename) {
         return relative(CWD, filename)
-            .split(pathSep)[0] === TESTCAFE_LIB_FOLDER_NAME;
+            .split(pathSep)
+            .includes(TESTCAFE_LIB_FOLDER_NAME);
     }
 
-    _execAsModule (code, filename) {
-        const mod = new Module(filename, module.parent);
+    async _execAsModule (code, filename) {
+        if (this.experimentalEsm) {
+            const fileUrl = url.pathToFileURL(filename);
 
-        mod.filename = filename;
-        mod.paths    = APIBasedTestFileCompilerBase._getNodeModulesLookupPath(filename);
+            //NOTE: It is necessary to prevent module caching during live mode.
+            // eslint-disable-next-line no-eval
+            await eval(`import('${fileUrl}?${PREVENT_MODULE_CACHING_SUFFIX}=${Date.now()}')`);
+        }
+        else {
+            const mod = new Module(filename, module.parent);
 
-        cacheProxy.startExternalCaching(this.cachePrefix);
+            mod.filename = filename;
+            mod.paths    = APIBasedTestFileCompilerBase._getNodeModulesLookupPath(filename);
 
-        mod._compile(code, filename);
+            cacheProxy.startExternalCaching(this.cachePrefix);
 
-        cacheProxy.stopExternalCaching();
+            mod._compile(code, filename);
+
+            cacheProxy.stopExternalCaching();
+        }
     }
 
     _compileCode (code, filename) {
@@ -209,7 +229,7 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         return global.fixture && global.test;
     }
 
-    _runCompiledCode (compiledCode, filename) {
+    async _runCompiledCode (compiledCode, filename) {
         const testFile = new TestFile(filename);
 
         this._addGlobalAPI(testFile);
@@ -220,9 +240,12 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         this._setupRequireHook(testFile);
 
         try {
-            this._execAsModule(compiledCode, filename);
+            await this._execAsModule(compiledCode, filename);
         }
         catch (err) {
+            if (err.code === errRequireEsmErrorCode)
+                throw new ImportESMInCommonJSError(err, filename);
+
             if (!(err instanceof APIError))
                 throw new TestCompilationError(stackCleaningHook.cleanError(err));
 
@@ -232,7 +255,8 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
             this._removeRequireHook();
             stackCleaningHook.enabled = false;
 
-            this._removeGlobalAPI();
+            if (!this.experimentalEsm)
+                this._removeGlobalAPI();
         }
 
         return testFile.getTests();

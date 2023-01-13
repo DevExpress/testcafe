@@ -1,6 +1,5 @@
 const expect = require('chai').expect;
 
-
 describe('[API] t.navigateTo', function () {
     it('Should validate the url argument', function () {
         return runTests('./testcafe-fixtures/navigate-to-test.js', 'Incorrect protocol', { shouldFail: 'true' })

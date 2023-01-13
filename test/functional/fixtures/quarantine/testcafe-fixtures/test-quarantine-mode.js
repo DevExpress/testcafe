@@ -1,4 +1,4 @@
-import quarantineScope from './quarantineScope';
+import quarantineScope from './quarantineScope.js';
 
 
 fixture `Test Quarantine Mode`
