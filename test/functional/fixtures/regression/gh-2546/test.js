@@ -3,6 +3,7 @@ const { expect }         = require('chai');
 const { exec }           = require('child_process');
 const config             = require('../../../config');
 const unhandledRejection = require('./unhandled-rejection');
+const semver             = require('semver');
 
 if (config.useLocalBrowsers) {
     describe('[Regression](GH-2546)', function () {
@@ -12,39 +13,42 @@ if (config.useLocalBrowsers) {
             unhandledRejection.delete();
         });
 
-        describe('uncaught promise rejection', () => {
-            it('Should fail when skipUncaughtErrors is false', function () {
-                return runTests('./testcafe-fixtures/index.js', 'Unhandled promise rejection', { shouldFail: true })
-                    .catch(function (errs) {
-                        const allErrors = [];
+        //NOTE: 'unhandledRejection' hook doesn't work under NodeJS 16.x.x and higher because of Gulp
+        if (semver.lt(process.version, '16.0.0')) {
+            describe('uncaught promise rejection', () => {
+                it('Should fail when skipUncaughtErrors is false', function () {
+                    return runTests('./testcafe-fixtures/index.js', 'Unhandled promise rejection', { shouldFail: true })
+                        .catch(function (errs) {
+                            const allErrors = [];
 
-                        if (!Array.isArray(errs)) {
-                            const browsers = Object.keys(errs);
+                            if (!Array.isArray(errs)) {
+                                const browsers = Object.keys(errs);
 
-                            browsers.forEach(browser => {
-                                allErrors.push(errs[browser][0]);
+                                browsers.forEach(browser => {
+                                    allErrors.push(errs[browser][0]);
+                                });
+                            }
+                            else
+                                allErrors.push(errs[0]);
+
+                            expect(allErrors.length).gte(1);
+
+                            allErrors.forEach(function (err) {
+                                expect(err).contains('Unhandled promise rejection');
                             });
-                        }
-                        else
-                            allErrors.push(errs[0]);
 
-                        expect(allErrors.length).gte(1);
-
-                        allErrors.forEach(function (err) {
-                            expect(err).contains('Unhandled promise rejection');
+                            expect(unhandledRejection.getData()).contains('reject');
                         });
+                });
 
-                        expect(unhandledRejection.getData()).contains('reject');
-                    });
+                it('Should not fail when skipUncaughtErrors is true', function () {
+                    return runTests('./testcafe-fixtures/index.js', 'Unhandled promise rejection', { skipUncaughtErrors: true })
+                        .then(() => {
+                            expect(unhandledRejection.getData()).contains('reject');
+                        });
+                });
             });
-
-            it('Should not fail when skipUncaughtErrors is true', function () {
-                return runTests('./testcafe-fixtures/index.js', 'Unhandled promise rejection', { skipUncaughtErrors: true })
-                    .then(() => {
-                        expect(unhandledRejection.getData()).contains('reject');
-                    });
-            });
-        });
+        }
 
         it('Should fail on uncaught exception when skipUncaughtErrors is false', function () {
             const testcafePath = path.resolve('bin/testcafe');
