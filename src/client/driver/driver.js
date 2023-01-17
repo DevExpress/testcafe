@@ -936,7 +936,7 @@ export default class Driver extends serviceUtils.EventEmitter {
             .then(() => {
                 this.contextStorage.setItem(this.EXECUTING_IN_IFRAME_FLAG, true);
 
-                return this.activeChildIframeDriverLink.executeCommand(command, this.speed);
+                return this.activeChildIframeDriverLink.executeCommand(command, this.speed, this.options.proxyless, this.leftTopPoint);
             })
             .then(status => this._onCommandExecutedInIframe(status))
             .catch(err => this._onCommandExecutedInIframe(new DriverStatus({
@@ -1178,6 +1178,7 @@ export default class Driver extends serviceUtils.EventEmitter {
             globalSelectorTimeout: this.options.selectorTimeout,
             testSpeed:             this.speed,
             executeSelectorFn:     executeSelectorCb,
+            leftTopPoint:          this.leftTopPoint,
             dispatchProxylessEventFn,
         });
 

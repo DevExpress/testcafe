@@ -100,7 +100,7 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
     private readonly options: OffsetOptions;
     protected readonly proxylessEventSimulator: ProxylessEventSimulator | null;
 
-    protected constructor (element: HTMLElement, offsetOptions: OffsetOptions, win: Window, cursor: Cursor, dispatchProxylessEventFn?: Function) {
+    protected constructor (element: HTMLElement, offsetOptions: OffsetOptions, win: Window, cursor: Cursor, dispatchProxylessEventFn?: Function, topLeftPoint?: AxisValues<number>) {
         super();
 
         this.TARGET_ELEMENT_FOUND_EVENT = 'automation|target-element-found-event';
@@ -113,7 +113,7 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
         this.window  = win;
         this.cursor  = cursor;
 
-        this.proxylessEventSimulator = dispatchProxylessEventFn ? new ProxylessEventSimulator(dispatchProxylessEventFn) : null;
+        this.proxylessEventSimulator = dispatchProxylessEventFn ? new ProxylessEventSimulator(dispatchProxylessEventFn, topLeftPoint) : null;
 
         // NOTE: only for legacy API
         this._ensureWindowAndCursorForLegacyTests(this);
@@ -127,8 +127,7 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
     protected canUseProxylessEventSimulator (element: HTMLElement | null): boolean {
         return !!this.proxylessEventSimulator
             && !!element
-            && domUtils.getTagName(element) !== 'select'
-            && !utils.dom.isIframeWindow(this.window);
+            && domUtils.getTagName(element) !== 'select';
     }
 
     protected async _getElementForEvent (eventArgs: MouseEventArgs): Promise<HTMLElement | null> {

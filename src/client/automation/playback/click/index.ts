@@ -6,6 +6,7 @@ import delay from '../../../core/utils/delay';
 import { utils, Promise } from '../../deps/hammerhead';
 import { createMouseClickStrategy, MouseClickStrategy } from './browser-click-strategy';
 import ProxylessEventSimulator from '../../../../proxyless/client/event-simulator';
+import AxisValues from '../../../core/utils/values/axis-values';
 
 export interface MouseClickEventState {
     mousedownPrevented: boolean;
@@ -20,11 +21,11 @@ export default class ClickAutomation extends VisibleElementAutomation {
     private modifiers: Modifiers;
     public strategy: MouseClickStrategy;
 
-    protected constructor (element: HTMLElement, clickOptions: ClickOptions, win: Window, cursor: Cursor, dispatchProxylessEventFn?: Function) {
-        super(element, clickOptions, win, cursor, dispatchProxylessEventFn);
+    protected constructor (element: HTMLElement, clickOptions: ClickOptions, win: Window, cursor: Cursor, dispatchProxylessEventFn?: Function, leftTopPoint?: AxisValues<number>) {
+        super(element, clickOptions, win, cursor, dispatchProxylessEventFn, leftTopPoint);
 
         this.modifiers = clickOptions.modifiers;
-        this.strategy = createMouseClickStrategy(this.element, clickOptions.caretPos);
+        this.strategy  = createMouseClickStrategy(this.element, clickOptions.caretPos);
     }
 
     private _mousedown (eventArgs: MouseEventArgs): Promise<void> {

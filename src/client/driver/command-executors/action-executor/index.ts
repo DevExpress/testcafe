@@ -11,6 +11,7 @@ import { Automation, AutomationHandler } from '../../../automation/types';
 import { nativeMethods, Promise } from '../../deps/hammerhead';
 import { getOffsetOptions } from '../../../core/utils/offsets';
 import { TEST_RUN_ERRORS } from '../../../../errors/types';
+import AxisValues from '../../../core/utils/values/axis-values';
 
 const MAX_DELAY_AFTER_EXECUTION             = 2000;
 const CHECK_ELEMENT_IN_AUTOMATIONS_INTERVAL = 250;
@@ -20,6 +21,7 @@ interface ActionExecutorOptions {
     testSpeed: number;
     executeSelectorFn: ExecuteSelectorFn<HTMLElement>;
     dispatchProxylessEventFn: Function;
+    leftTopPoint: AxisValues<number>;
 }
 
 export default class ActionExecutor extends EventEmitter {
@@ -137,7 +139,7 @@ export default class ActionExecutor extends EventEmitter {
         if (!handler)
             throw new Error(`There is no handler for the "${this._command.type}" command.`);
 
-        return handler.create(this._command, this._elements, this._options.dispatchProxylessEventFn);
+        return handler.create(this._command, this._elements, this._options.dispatchProxylessEventFn, this._options.leftTopPoint);
     }
 
     private _runAction (strictElementCheck: boolean): Promise<void> {

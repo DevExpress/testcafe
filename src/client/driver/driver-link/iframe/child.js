@@ -27,6 +27,8 @@ import {
 } from '../timeouts';
 
 import sendConfirmationMessage from '../send-confirmation-message';
+import { getBordersWidthFloat, getElementPaddingFloat } from '../../../core/utils/style';
+
 
 export default class ChildIframeDriverLink {
     constructor (driverWindow, driverId, dispatchProxylessEventUrl) {
@@ -90,6 +92,20 @@ export default class ChildIframeDriverLink {
             });
     }
 
+    _getLeftTopPoint (proxyless) {
+        if (!proxyless)
+            return null;
+
+        const rect     = this.driverIframe.getBoundingClientRect();
+        const borders  = getBordersWidthFloat(this.driverIframe);
+        const paddings = getElementPaddingFloat(this.driverIframe);
+
+        return {
+            x: rect.left + borders.left + paddings.left,
+            y: rect.top + borders.top + paddings.top,
+        };
+    }
+
     sendConfirmationMessage (requestMsgId) {
         sendConfirmationMessage({
             requestMsgId,
@@ -98,13 +114,20 @@ export default class ChildIframeDriverLink {
         });
     }
 
-    executeCommand (command, testSpeed) {
+    executeCommand (command, testSpeed, proxyless, leftTopPoint) {
         // NOTE:  We should check if the iframe is visible and exists before executing the next
         // command, because the iframe might be hidden or removed since the previous command.
         return this
             ._ensureIframe()
             .then(() => {
-                const msg = new ExecuteCommandMessage(command, testSpeed);
+                const currentLeftTopPoint = this._getLeftTopPoint(proxyless);
+
+                if (leftTopPoint) {
+                    currentLeftTopPoint.x += leftTopPoint.x;
+                    currentLeftTopPoint.y += leftTopPoint.y;
+                }
+
+                const msg = new ExecuteCommandMessage(command, testSpeed, currentLeftTopPoint);
 
                 return Promise.all([
                     sendMessageToDriver(msg, this.driverWindow, this.iframeAvailabilityTimeout, CurrentIframeIsNotLoadedError),

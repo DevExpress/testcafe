@@ -25,6 +25,9 @@ messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
 
     switch (msg.cmd) {
         case CURSOR_UI_MESSAGES.moveRequest:
+            if (!msg.shouldRender)
+                CursorUI.shouldRender = msg.shouldRender;
+
             CursorUI.move(positionUtils.getIframePointRelativeToParentFrame({ x: msg.x, y: msg.y }, e.source))
                 .then(() => messageSandbox.sendServiceMsg({ cmd: CURSOR_UI_MESSAGES.moveResponse }, e.source));
             break;
