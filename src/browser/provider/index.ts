@@ -15,6 +15,8 @@ import { Dictionary } from '../../configuration/interfaces';
 import { WindowDimentionsInfo } from '../interfaces';
 import getLocalOSInfo, { OSInfo } from 'get-os-info';
 import { OpenBrowserAdditionalOptions } from '../../shared/types';
+import { EventType } from '../../proxyless/types';
+
 
 const DEBUG_LOGGER = debug('testcafe:browser:provider');
 
@@ -447,5 +449,9 @@ export default class BrowserProvider {
 
     public async closeBrowserChildWindow (browserId: string): Promise<void> {
         await this.plugin.closeBrowserChildWindow(browserId);
+    }
+
+    public async dispatchProxylessEvent (browserId: string, type: EventType, options: any): Promise<void> {
+        await this.plugin.dispatchProxylessEvent(browserId, type, options);
     }
 }

@@ -11,6 +11,7 @@ export default {
     closeWindow:              '/browser/close-window',
     serviceWorker:            '/service-worker.js',
     openFileProtocol:         '/browser/open-file-protocol',
+    dispatchProxylessEvent:   '/browser/dispatch-proxyless-event',
 
     assets: {
         index:  '/browser/assets/index.js',

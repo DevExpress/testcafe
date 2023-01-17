@@ -27,3 +27,9 @@ export interface InjectableResourcesOptions {
     restoringStorages?: StoragesSnapshot | null;
     contextStorage?: string;
 }
+
+export enum EventType {
+    Mouse,
+    Key,
+    Touch,
+}

@@ -71,6 +71,7 @@ export default class BrowserConnectionGateway {
         this._dispatch(`${SERVICE_ROUTES.activeWindowId}/{id}`, proxy, BrowserConnectionGateway._onSetActiveWindowIdRequest, 'POST', this.proxyless);
         this._dispatch(`${SERVICE_ROUTES.closeWindow}/{id}`, proxy, BrowserConnectionGateway._onCloseWindowRequest, 'POST');
         this._dispatch(`${SERVICE_ROUTES.openFileProtocol}/{id}`, proxy, BrowserConnectionGateway._onOpenFileProtocolRequest, 'POST');
+        this._dispatch(`${SERVICE_ROUTES.dispatchProxylessEvent}/{id}`, proxy, BrowserConnectionGateway._onDispatchProxylessEvent, 'POST', this.proxyless);
 
         proxy.GET(SERVICE_ROUTES.connect, (req: IncomingMessage, res: ServerResponse) => this._connectNextRemoteBrowser(req, res));
         proxy.GET(SERVICE_ROUTES.connectWithTrailingSlash, (req: IncomingMessage, res: ServerResponse) => this._connectNextRemoteBrowser(req, res));
@@ -213,6 +214,19 @@ export default class BrowserConnectionGateway {
                 const parsedData = JSON.parse(data);
 
                 connection.openFileProtocol(parsedData.url)
+                    .then(() => {
+                        respondWithJSON(res);
+                    });
+            });
+        }
+    }
+
+    private static _onDispatchProxylessEvent (req: IncomingMessage, res: ServerResponse, connection: BrowserConnection): void {
+        if (BrowserConnectionGateway._ensureConnectionReady(res, connection)) {
+            BrowserConnectionGateway._fetchRequestData(req, data => {
+                const { type, options } = JSON.parse(data);
+
+                connection.dispatchProxylessEvent(type, options)
                     .then(() => {
                         respondWithJSON(res);
                     });

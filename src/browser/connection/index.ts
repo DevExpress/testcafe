@@ -37,6 +37,7 @@ import TestRun from '../../test-run';
 import { TestRun as LegacyTestRun } from 'testcafe-legacy-api';
 import { Proxy } from 'testcafe-hammerhead';
 import { NextTestRunInfo, OpenBrowserAdditionalOptions } from '../../shared/types';
+import { EventType } from '../../proxyless/types';
 
 const getBrowserConnectionDebugScope = (id: string): string => `testcafe:browser:connection:${id}`;
 
@@ -118,6 +119,7 @@ export default class BrowserConnection extends EventEmitter {
     public idleRelativeUrl = '';
     public openFileProtocolRelativeUrl = '';
     public openFileProtocolUrl = '';
+    public dispatchProxylessEventRelativeUrl = '';
     private readonly debugLogger: debug.Debugger;
     private osInfo: OSInfo | null = null;
 
@@ -185,13 +187,14 @@ export default class BrowserConnection extends EventEmitter {
         this.forcedIdleUrl     = proxy.resolveRelativeServiceUrl(`${SERVICE_ROUTES.idleForced}/${this.id}`);
         this.initScriptUrl     = proxy.resolveRelativeServiceUrl(`${SERVICE_ROUTES.initScript}/${this.id}`);
 
-        this.heartbeatRelativeUrl        = `${SERVICE_ROUTES.heartbeat}/${this.id}`;
-        this.statusRelativeUrl           = `${SERVICE_ROUTES.status}/${this.id}`;
-        this.statusDoneRelativeUrl       = `${SERVICE_ROUTES.statusDone}/${this.id}`;
-        this.idleRelativeUrl             = `${SERVICE_ROUTES.idle}/${this.id}`;
-        this.activeWindowIdUrl           = `${SERVICE_ROUTES.activeWindowId}/${this.id}`;
-        this.closeWindowUrl              = `${SERVICE_ROUTES.closeWindow}/${this.id}`;
-        this.openFileProtocolRelativeUrl = `${SERVICE_ROUTES.openFileProtocol}/${this.id}`;
+        this.heartbeatRelativeUrl              = `${SERVICE_ROUTES.heartbeat}/${this.id}`;
+        this.statusRelativeUrl                 = `${SERVICE_ROUTES.status}/${this.id}`;
+        this.statusDoneRelativeUrl             = `${SERVICE_ROUTES.statusDone}/${this.id}`;
+        this.idleRelativeUrl                   = `${SERVICE_ROUTES.idle}/${this.id}`;
+        this.activeWindowIdUrl                 = `${SERVICE_ROUTES.activeWindowId}/${this.id}`;
+        this.closeWindowUrl                    = `${SERVICE_ROUTES.closeWindow}/${this.id}`;
+        this.openFileProtocolRelativeUrl       = `${SERVICE_ROUTES.openFileProtocol}/${this.id}`;
+        this.dispatchProxylessEventRelativeUrl = `${SERVICE_ROUTES.dispatchProxylessEvent}/${this.id}`;
 
         this.idleUrl             = proxy.resolveRelativeServiceUrl(this.idleRelativeUrl);
         this.heartbeatUrl        = proxy.resolveRelativeServiceUrl(this.heartbeatRelativeUrl);
@@ -605,6 +608,10 @@ export default class BrowserConnection extends EventEmitter {
 
     public async openFileProtocol (url: string): Promise<void> {
         return this.provider.openFileProtocol(this.id, url);
+    }
+
+    public async dispatchProxylessEvent (type: EventType, options: any): Promise<void> {
+        return this.provider.dispatchProxylessEvent(this.id, type, options);
     }
 
     public async canUseDefaultWindowActions (): Promise<boolean> {

@@ -10,7 +10,7 @@ import {
 } from './local-chrome';
 import { GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from '../../../utils/client-functions';
 import { BrowserClient } from './cdp-client';
-import { navigateTo } from '../../../../../proxyless/utils/cdp';
+import { dispatchEvent as dispatchProxylessEvent, navigateTo } from '../../../../../proxyless/utils/cdp';
 import Proxyless from '../../../../../proxyless';
 import { chromeBrowserProviderLogger } from '../../../../../utils/debug-loggers';
 
@@ -180,5 +180,12 @@ export default {
         const cdpClient         = await browserClient.getActiveClient();
 
         await navigateTo(cdpClient, url);
+    },
+
+    async dispatchProxylessEvent (browserId, type, options) {
+        const { browserClient } = this.openedBrowsers[browserId];
+        const cdpClient         = await browserClient.getActiveClient();
+
+        await dispatchProxylessEvent(cdpClient, type, options);
     },
 };

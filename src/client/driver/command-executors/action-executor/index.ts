@@ -15,6 +15,13 @@ import { TEST_RUN_ERRORS } from '../../../../errors/types';
 const MAX_DELAY_AFTER_EXECUTION             = 2000;
 const CHECK_ELEMENT_IN_AUTOMATIONS_INTERVAL = 250;
 
+interface ActionExecutorOptions {
+    globalSelectorTimeout: number;
+    testSpeed: number;
+    executeSelectorFn: ExecuteSelectorFn<HTMLElement>;
+    dispatchProxylessEventFn: Function;
+}
+
 export default class ActionExecutor extends EventEmitter {
     public static readonly EXECUTION_STARTED_EVENT = 'execution-started';
     public static readonly WAITING_FOR_ELEMENT_EVENT = 'waiting-for-elements';
@@ -22,32 +29,36 @@ export default class ActionExecutor extends EventEmitter {
     public static readonly ACTIONS_HANDLERS: Dictionary<AutomationHandler> = {};
 
     private readonly _command: ActionCommandBase;
-    private readonly _globalSelectorTimeout: number;
+    private readonly _options: ActionExecutorOptions;
     private readonly _commandSelectorTimeout: number;
-    private readonly _executeSelectorFn: ExecuteSelectorFn<HTMLElement>;
     private _elements: HTMLElement[];
     private _executionStartTime: number;
     private _targetElement: HTMLElement | null;
 
-    public constructor (command: ActionCommandBase, globalSelectorTimeout: number, testSpeed: number, executeSelectorFn: ExecuteSelectorFn<HTMLElement>) {
+    public constructor (command: ActionCommandBase, options: ActionExecutorOptions) {
         super();
 
-        this._command       = command;
-        this._targetElement = null;
-        this._elements      = [];
+        this._command            = command;
+        this._targetElement      = null;
+        this._elements           = [];
+        this._options            = options;
+        this._executionStartTime = 0;
 
-        this._globalSelectorTimeout = globalSelectorTimeout;
-        this._executionStartTime    = 0;
-        this._executeSelectorFn     = executeSelectorFn;
+        this._prepareCommand(command, options);
 
+        this._commandSelectorTimeout = this._getCommandSelectorTimeout(command, options);
+    }
+
+    private _prepareCommand (command: ActionCommandBase, options: ActionExecutorOptions): void {
         // TODO: move it to the server
         // @ts-ignore
         if (command.options && !command.options.speed) // @ts-ignore
-            command.options.speed = testSpeed;
+            command.options.speed = options.testSpeed;
+    }
 
-        // TODO: and this
+    private _getCommandSelectorTimeout (command: ActionCommandBase, options: ActionExecutorOptions): number {
         // @ts-ignore
-        this._commandSelectorTimeout = typeof command.selector?.timeout === 'number' ? command.selector.timeout : globalSelectorTimeout;
+        return typeof command.selector?.timeout === 'number' ? command.selector.timeout : options.globalSelectorTimeout;
     }
 
     private _delayAfterExecution (): Promise<void> {
@@ -73,7 +84,7 @@ export default class ActionExecutor extends EventEmitter {
     }
 
     private _ensureCommandElements (): Promise<void> {
-        const elsRetriever = new ElementsRetriever(this._globalSelectorTimeout, this._executeSelectorFn);
+        const elsRetriever = new ElementsRetriever(this._options.globalSelectorTimeout, this._options.executeSelectorFn);
 
         if (this._command.selector)
             // @ts-ignore TODO
@@ -126,7 +137,7 @@ export default class ActionExecutor extends EventEmitter {
         if (!handler)
             throw new Error(`There is no handler for the "${this._command.type}" command.`);
 
-        return handler.create(this._command, this._elements);
+        return handler.create(this._command, this._elements, this._options.dispatchProxylessEventFn);
     }
 
     private _runAction (strictElementCheck: boolean): Promise<void> {

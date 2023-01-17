@@ -130,6 +130,10 @@ describe('[API] t.click()', function () {
         await runTests('./testcafe-fixtures/click-test.js', 'Click on an element with overlapped center', { only: 'chrome' });
     });
 
+    it('Click options', function () {
+        return runTests('./testcafe-fixtures/click-options.js', null, { only: 'chrome' });
+    });
+
     describe('[Regression](GH-628)', function () {
         it('Should click on an "option" element', function () {
             return runTests('./testcafe-fixtures/click-on-select-child-test.js', 'Click on an "option" element');

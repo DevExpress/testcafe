@@ -1,4 +1,6 @@
-const errorInEachBrowserContains = require('../../assertion-helper').errorInEachBrowserContains;
+const { errorInEachBrowserContains } = require('../../assertion-helper');
+const { skipInProxyless }            = require('../../utils/skip-in');
+
 
 describe('TestRun - Driver protocol', function () {
     it('TestRun should not process the same driver status twice', function () {
@@ -23,7 +25,7 @@ describe('TestRun - Driver protocol', function () {
             });
     });
 
-    it('Driver should prevent a real action', function () {
+    skipInProxyless('Driver should prevent a real action', function () {
         return runTests('./testcafe-fixtures/prevent-real-action-test.js', 'Perform native click');
     });
 

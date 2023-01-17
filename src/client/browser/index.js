@@ -197,3 +197,15 @@ export function closeWindow (closeWindowUrl, createXHR, windowId) {
         data:   JSON.stringify({ windowId }), //eslint-disable-line no-restricted-globals
     });
 }
+
+export function dispatchProxylessEvent (dispatchProxylessEventUrl, createXHR, type, options) {
+    const data = JSON.stringify({ //eslint-disable-line no-restricted-globals
+        type,
+        options,
+    });
+
+    return sendXHR(dispatchProxylessEventUrl, createXHR, {
+        method: 'POST',
+        data,
+    });
+}

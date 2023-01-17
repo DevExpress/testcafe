@@ -50,6 +50,7 @@ const CursorUI = {
     y:              50,
     pointerOffsetX: 0,
     pointerOffsetY: 0,
+    shouldRender:   true,
 
     _createElement () {
         this.cursorElement = document.createElement('div');
@@ -68,65 +69,70 @@ const CursorUI = {
         uiRoot.element().appendChild(this.cursorElement);
     },
 
+    _ensureCursorElement () {
+        if (!this.shouldRender)
+            return false;
+
+        if (!this.cursorElement)
+            this._createElement();
+
+        return true;
+    },
+
     isVisible () {
         return this.cursorElement && styleUtils.get(this.cursorElement, 'visibility') !== 'hidden';
     },
 
     hide () {
-        if (!this.cursorElement)
-            this._createElement();
+        if (!this._ensureCursorElement())
+            return;
 
         if (this.isVisible())
             styleUtils.set(this.cursorElement, 'visibility', 'hidden');
     },
 
     show () {
-        if (!this.cursorElement)
-            this._createElement();
+        if (!this._ensureCursorElement())
+            return;
 
         styleUtils.set(this.cursorElement, 'visibility', '');
     },
 
     move (position) {
-        this.x = position.x;
-        this.y = position.y;
+        if (this._ensureCursorElement()) {
+            this.x = position.x;
+            this.y = position.y;
 
-        if (!this.cursorElement)
-            this._createElement();
-
-        styleUtils.set(this.cursorElement, {
-            left: this.x - this.pointerOffsetX + 'px',
-            top:  this.y - this.pointerOffsetY + 'px',
-        });
+            styleUtils.set(this.cursorElement, {
+                left: this.x - this.pointerOffsetX + 'px',
+                top:  this.y - this.pointerOffsetY + 'px',
+            });
+        }
 
         return Promise.resolve();
     },
 
     leftButtonDown () {
-        if (!this.cursorElement)
-            this._createElement();
-
-        shadowUI.removeClass(this.cursorElement, STATE_CLASSES);
-        shadowUI.addClass(this.cursorElement, L_MOUSE_DOWN_CLASS);
+        if (this._ensureCursorElement()) {
+            shadowUI.removeClass(this.cursorElement, STATE_CLASSES);
+            shadowUI.addClass(this.cursorElement, L_MOUSE_DOWN_CLASS);
+        }
 
         return Promise.resolve();
     },
 
     rightButtonDown () {
-        if (!this.cursorElement)
-            this._createElement();
-
-        shadowUI.removeClass(this.cursorElement, STATE_CLASSES);
-        shadowUI.addClass(this.cursorElement, R_MOUSE_DOWN_CLASS);
+        if (this._ensureCursorElement()) {
+            shadowUI.removeClass(this.cursorElement, STATE_CLASSES);
+            shadowUI.addClass(this.cursorElement, R_MOUSE_DOWN_CLASS);
+        }
 
         return Promise.resolve();
     },
 
     buttonUp () {
-        if (!this.cursorElement)
-            this._createElement();
-
-        shadowUI.removeClass(this.cursorElement, STATE_CLASSES);
+        if (this._ensureCursorElement())
+            shadowUI.removeClass(this.cursorElement, STATE_CLASSES);
 
         return Promise.resolve();
     },

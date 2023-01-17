@@ -27,6 +27,7 @@ import ScrollAutomation from '../core/scroll/index';
 import { Dictionary } from '../../configuration/interfaces';
 import ensureMouseEventAfterScroll from './utils/ensure-mouse-event-after-scroll';
 import WARNING_TYPES from '../../shared/warnings/types';
+import ProxylessEventSimulator from '../../proxyless/client/event-simulator';
 
 
 const AVAILABLE_OFFSET_DEEP = 2;
@@ -97,8 +98,9 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
     private readonly WARNING_EVENT: string;
     protected automationSettings: AutomationSettings;
     private readonly options: OffsetOptions;
+    protected readonly proxylessEventSimulator: ProxylessEventSimulator | null;
 
-    protected constructor (element: HTMLElement, offsetOptions: OffsetOptions, win: Window, cursor: Cursor) {
+    protected constructor (element: HTMLElement, offsetOptions: OffsetOptions, win: Window, cursor: Cursor, dispatchProxylessEventFn?: Function) {
         super();
 
         this.TARGET_ELEMENT_FOUND_EVENT = 'automation|target-element-found-event';
@@ -111,6 +113,8 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
         this.window  = win;
         this.cursor  = cursor;
 
+        this.proxylessEventSimulator = dispatchProxylessEventFn ? new ProxylessEventSimulator(dispatchProxylessEventFn) : null;
+
         // NOTE: only for legacy API
         this._ensureWindowAndCursorForLegacyTests(this);
     }
@@ -118,6 +122,13 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
     private _ensureWindowAndCursorForLegacyTests (automation: VisibleElementAutomation): void {
         automation.window = automation.window || window; // eslint-disable-line no-undef
         automation.cursor = cursorInstance;
+    }
+
+    protected canUseProxylessEventSimulator (element: HTMLElement | null): boolean {
+        return !!this.proxylessEventSimulator
+            && !!element
+            && domUtils.getTagName(element) !== 'select'
+            && !utils.dom.isIframeWindow(this.window);
     }
 
     protected async _getElementForEvent (eventArgs: MouseEventArgs): Promise<HTMLElement | null> {
@@ -130,7 +141,7 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
         const moveOptions    = new MoveOptions(utils.extend({ skipScrolling: true }, this.options), false);
         const moveAutomation = await MoveAutomation.create(this.element, moveOptions, this.window, this.cursor);
 
-        return moveAutomation
+        return moveAutomation // eslint-disable-line consistent-return
             .run()
             .then(() => delay(this.automationSettings.mouseActionStepDelay));
     }

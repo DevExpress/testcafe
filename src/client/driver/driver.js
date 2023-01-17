@@ -206,7 +206,9 @@ export default class Driver extends serviceUtils.EventEmitter {
         this._initChildDriverListening();
 
         pageUnloadBarrier.init();
-        preventRealEvents();
+
+        if (!this.options.proxyless)
+            preventRealEvents();
 
         hammerhead.on(hammerhead.EVENTS.consoleMethCalled, e => this._onConsoleMessage(e));
         hammerhead.on(hammerhead.EVENTS.beforeFormSubmit, e => this._onFormSubmit(e));
@@ -308,7 +310,8 @@ export default class Driver extends serviceUtils.EventEmitter {
     }
 
     _unlockPageAfterTestIsDone () {
-        disableRealEventsPreventing();
+        if (!this.options.proxyless)
+            disableRealEventsPreventing();
 
         return Promise.resolve();
     }
@@ -531,7 +534,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         if (!childIframeDriverLink) {
             const driverId = `${this.testRunId}-${generateId()}`;
 
-            childIframeDriverLink = new ChildIframeDriverLink(driverWindow, driverId);
+            childIframeDriverLink = new ChildIframeDriverLink(driverWindow, driverId, this.communicationUrls.dispatchProxylessEvent);
 
             this.childIframeDriverLinks.push(childIframeDriverLink);
         }
@@ -1170,7 +1173,17 @@ export default class Driver extends serviceUtils.EventEmitter {
             return selectorExecutor.getResult();
         };
 
-        const executor = new ActionExecutor(command, this.options.selectorTimeout, this.speed, executeSelectorCb);
+        const dispatchProxylessEventFn = this.options.proxyless
+            ? browser.dispatchProxylessEvent.bind(browser.dispatchProxylessEvent, this.communicationUrls.dispatchProxylessEvent, hammerhead.createNativeXHR)
+            : null;
+
+        const executor = new ActionExecutor(command, {
+            globalSelectorTimeout: this.options.selectorTimeout,
+            testSpeed:             this.speed,
+            executeSelectorFn:     executeSelectorCb,
+            dispatchProxylessEventFn,
+        });
+
         const warnings = [];
 
         executor.on(ActionExecutor.EXECUTION_STARTED_EVENT, () => {
@@ -1887,7 +1900,12 @@ export default class Driver extends serviceUtils.EventEmitter {
         this.nativeDialogsTracker = new NativeDialogTracker(this.contextStorage, { proxyless, dialogHandler });
         this.statusBar            = new StatusBar(this.runInfo.userAgent, this.runInfo.fixtureName, this.runInfo.testName, this.contextStorage);
 
-        this.statusBar.on(this.statusBar.UNLOCK_PAGE_BTN_CLICK, disableRealEventsPreventing);
+        const self = this;
+
+        this.statusBar.on(this.statusBar.UNLOCK_PAGE_BTN_CLICK, () => {
+            if (!self.options.proxyless)
+                disableRealEventsPreventing();
+        });
 
         this.speed = speed;
 

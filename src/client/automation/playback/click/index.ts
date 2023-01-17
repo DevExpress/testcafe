@@ -5,6 +5,7 @@ import delay from '../../../core/utils/delay';
 // @ts-ignore
 import { utils, Promise } from '../../deps/hammerhead';
 import { createMouseClickStrategy, MouseClickStrategy } from './browser-click-strategy';
+import ProxylessEventSimulator from '../../../../proxyless/client/event-simulator';
 
 export interface MouseClickEventState {
     mousedownPrevented: boolean;
@@ -19,18 +20,24 @@ export default class ClickAutomation extends VisibleElementAutomation {
     private modifiers: Modifiers;
     public strategy: MouseClickStrategy;
 
-    protected constructor (element: HTMLElement, clickOptions: ClickOptions, win: Window, cursor: Cursor) {
-        super(element, clickOptions, win, cursor);
+    protected constructor (element: HTMLElement, clickOptions: ClickOptions, win: Window, cursor: Cursor, dispatchProxylessEventFn?: Function) {
+        super(element, clickOptions, win, cursor, dispatchProxylessEventFn);
 
         this.modifiers = clickOptions.modifiers;
         this.strategy = createMouseClickStrategy(this.element, clickOptions.caretPos);
     }
 
     private _mousedown (eventArgs: MouseEventArgs): Promise<void> {
+        if (this.canUseProxylessEventSimulator(eventArgs.element))
+            return (this.proxylessEventSimulator as ProxylessEventSimulator).mouseDown(eventArgs);
+
         return this.strategy.mousedown(eventArgs);
     }
 
     private _mouseup (element: HTMLElement, eventArgs: MouseEventArgs): Promise<MouseEventArgs> {
+        if (this.canUseProxylessEventSimulator(eventArgs.element))
+            return (this.proxylessEventSimulator as ProxylessEventSimulator).mouseUp(eventArgs);
+
         return this.strategy.mouseup(element, eventArgs);
     }
 
@@ -51,7 +58,6 @@ export default class ClickAutomation extends VisibleElementAutomation {
                         screenY: devicePoint?.y,
                     }, this.modifiers),
                 } as unknown as MouseEventArgs;
-
 
                 // NOTE: we should raise mouseup event with 'mouseActionStepDelay' after we trigger
                 // mousedown event regardless of how long mousedown event handlers were executing
