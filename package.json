@@ -58,7 +58,9 @@
     "test-functional-local-headless-chrome-esm": "npm run build && npm run test-functional-local-headless-chrome-run-esm",
     "publish-please-only": "publish-please",
     "publish-please": "del-cli package-lock.json node_modules && npm i && publish-please",
-    "prepublishOnly": "publish-please guard"
+    "prepublishOnly": "publish-please guard",
+    "inspector-run": "node bin/testcafe.js chrome temp.js",
+    "inspector": "gulp fast-build && npm run inspector-run"
   },
   "dependencies": {
     "@babel/core": "^7.12.1",
@@ -151,6 +153,7 @@
     "testcafe-reporter-spec": "^2.1.1",
     "testcafe-reporter-xunit": "^2.2.1",
     "testcafe-safe-storage": "^1.1.1",
+    "testcafe-selector-generator": "git+https://github.com/devexpress/testcafe-selector-generator",
     "time-limit-promise": "^1.0.2",
     "tmp": "0.0.28",
     "tree-kill": "^1.2.2",

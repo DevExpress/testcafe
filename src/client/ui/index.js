@@ -10,6 +10,7 @@ import cursorUI from './cursor';
 import iframeCursorUI from './cursor/iframe-cursor';
 import screenshotMark from './screenshot-mark';
 import uiRoot from './ui-root';
+import SelectorInspectorPanel from './selector-inspector-panel';
 
 
 const Promise        = hammerhead.Promise;
@@ -44,6 +45,8 @@ exports.modalBackground = modalBackground;
 exports.ProgressPanel   = ProgressPanel;
 exports.StatusBar       = StatusBar;
 exports.IframeStatusBar = IframeStatusBar;
+
+exports.SelectorInspectorPanel = SelectorInspectorPanel;
 
 
 exports.hide = function (hideTopRoot) {

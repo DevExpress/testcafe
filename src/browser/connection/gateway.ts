@@ -15,6 +15,7 @@ import { IncomingMessage, ServerResponse } from 'http';
 import SERVICE_ROUTES from './service-routes';
 import EMPTY_PAGE_MARKUP from '../../proxyless/empty-page-markup';
 import PROXYLESS_ERROR_ROUTE from '../../proxyless/error-route';
+import { initSelector } from '../../test-run/commands/validations/initializers';
 
 export default class BrowserConnectionGateway {
     private _connections: Dictionary<BrowserConnection> = {};
@@ -72,6 +73,7 @@ export default class BrowserConnectionGateway {
         this._dispatch(`${SERVICE_ROUTES.closeWindow}/{id}`, proxy, BrowserConnectionGateway._onCloseWindowRequest, 'POST');
         this._dispatch(`${SERVICE_ROUTES.openFileProtocol}/{id}`, proxy, BrowserConnectionGateway._onOpenFileProtocolRequest, 'POST');
         this._dispatch(`${SERVICE_ROUTES.dispatchProxylessEvent}/{id}`, proxy, BrowserConnectionGateway._onDispatchProxylessEvent, 'POST', this.proxyless);
+        this._dispatch(`${SERVICE_ROUTES.parseSelector}/{id}`, proxy, BrowserConnectionGateway._parseSelector, 'POST');
 
         proxy.GET(SERVICE_ROUTES.connect, (req: IncomingMessage, res: ServerResponse) => this._connectNextRemoteBrowser(req, res));
         proxy.GET(SERVICE_ROUTES.connectWithTrailingSlash, (req: IncomingMessage, res: ServerResponse) => this._connectNextRemoteBrowser(req, res));
@@ -243,6 +245,30 @@ export default class BrowserConnectionGateway {
             redirect(res, remoteConnection.url);
         else
             respond500(res, 'There are no available _connections to establish.');
+    }
+
+    private static _parseSelector (req: IncomingMessage, res: ServerResponse, connection: BrowserConnection): void {
+        if (BrowserConnectionGateway._ensureConnectionReady(res, connection)) {
+            BrowserConnectionGateway._fetchRequestData(req, data => {
+                try {
+                    const options = {
+                        testRun:             connection.getCurrentTestRun(),
+                        skipVisibilityCheck: true,
+                        collectionMode:      true,
+                    };
+
+                    const rawSelector    = JSON.parse(data).selector;
+                    const value          = rawSelector.trim().startsWith('Selector(') ? rawSelector : `'${rawSelector}'`;
+                    const selector       = { type: 'js-expr', value };
+                    const parsedSelector = initSelector('selector', selector, options);
+
+                    respondWithJSON(res, parsedSelector);
+                }
+                catch (error) {
+                    respondWithJSON(res);
+                }
+            });
+        }
     }
 
     // API

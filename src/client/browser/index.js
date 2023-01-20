@@ -213,3 +213,10 @@ export async function dispatchProxylessEvent (dispatchProxylessEventUrl, testCaf
 
     await testCafeUI.show();
 }
+
+export function parseSelector (parseSelectorUrl, createXHR, selector) {
+    return sendXHR(parseSelectorUrl, createXHR, {
+        method: 'POST',
+        data:   JSON.stringify({ selector }), //eslint-disable-line no-restricted-globals
+    });
+}

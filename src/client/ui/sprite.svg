@@ -39,4 +39,19 @@
       <path d="M11 8L20 15L11 22V8Z" fill="white"/>
     </svg>
   </g>
+  <g class="sprite" id="arrow-down">
+    <svg width="16" height="8" viewBox="0 0 16 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 0h16L8 8 0 0z" fill="#667599"/>
+    </svg>
+  </g>
+  <g class="sprite" id="expand-button">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M6 8h8 L10 12Z" fill="#2D3F53"/>
+    </svg>
+  </g>
+  <g class="sprite" id="disabled-expand-button">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M6 8h8 L10 12Z" fill="#b4b9be"/>
+    </svg>
+  </g>
 </svg>

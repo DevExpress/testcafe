@@ -12,6 +12,7 @@ export default {
     serviceWorker:            '/service-worker.js',
     openFileProtocol:         '/browser/open-file-protocol',
     dispatchProxylessEvent:   '/browser/dispatch-proxyless-event',
+    parseSelector:            '/parse-selector',
 
     assets: {
         index:  '/browser/assets/index.js',
