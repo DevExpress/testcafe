@@ -60,6 +60,8 @@ export class SelectorInputContainer {
     _addEventListeners () {
         eventUtils.bind(this.expandButton, 'click', () => this._expandSelectorsList());
         eventUtils.bind(this.input, 'input', () => this._onSelectorTyped());
+        eventUtils.bind(this.input, 'focus', () => this._onFocusInput());
+        eventUtils.bind(this.input, 'blur', () => highlighter.stopHighlighting());
 
         selectorsList.on(LIST_CHANGED, selectors => {
             this._updateExpandButton(selectors);
@@ -113,8 +115,6 @@ export class SelectorInputContainer {
         this.value = selector.value;
 
         this.input.focus();
-
-        this._onSelectorChanged();
     }
 
     _expandSelectorsList () {
@@ -133,10 +133,10 @@ export class SelectorInputContainer {
     _onSelectorTyped () {
         selectorsList.clear();
 
-        this._onSelectorChanged();
+        this._onFocusInput();
     }
 
-    async _onSelectorChanged () {
+    async _onFocusInput () {
         highlighter.stopHighlighting();
 
         if (!this.value) {
