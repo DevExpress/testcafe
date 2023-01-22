@@ -2,8 +2,11 @@
 import uiRoot from '../../ui-root';
 
 export function addToUiRoot (element) {
-    if (!element.parentElement)
-        uiRoot.element().appendChild(element);
+    if (!element.parentElement) {
+        const panelsContainer = uiRoot.panelsContainer();
+
+        uiRoot.element().insertBefore(element, panelsContainer);
+    }
 }
 
 export function removeFromUiRoot (element) {
