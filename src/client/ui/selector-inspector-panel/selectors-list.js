@@ -77,7 +77,7 @@ class SelectorsList extends serviceUtils.EventEmitter {
         listeners.addFirstInternalEventBeforeListener(window, ['click'], onClick);
     }
 
-    show (left, width) {
+    show ({ left, bottom, width }) {
         if (!this.pickedSelectors || this.pickedSelectors.length === 0)
             return;
 
@@ -87,8 +87,9 @@ class SelectorsList extends serviceUtils.EventEmitter {
         }
 
         const styles = {
-            left:  left + 'px',
-            width: width + 'px',
+            left:   left + 'px',
+            bottom: bottom + 'px',
+            width:  width + 'px',
         };
 
         addToUiRoot(this.element);

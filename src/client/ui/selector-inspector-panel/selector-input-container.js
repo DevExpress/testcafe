@@ -118,9 +118,18 @@ export class SelectorInputContainer {
     }
 
     _expandSelectorsList () {
-        const { width, left } = this.element.getBoundingClientRect();
+        const { left, top, width } = this.element.getBoundingClientRect();
+        const { clientHeight }     = document.documentElement;
 
-        selectorsList.show(left, width);
+
+        const result = {
+            left,
+            width,
+
+            bottom: clientHeight - top + 1,
+        };
+
+        selectorsList.show(result);
     }
 
     _updateExpandButton (selectors) {

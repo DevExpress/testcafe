@@ -1,5 +1,7 @@
+import uiRoot from '../ui-root';
+
 import { createElementFromDescriptor } from './utils/create-element-from-descriptor';
-import { addToUiRoot, removeFromUiRoot } from './utils/ui-root';
+import { setStyles } from './utils/set-styles';
 
 import { panel } from './descriptors';
 import { PickButton } from './pick-button';
@@ -22,10 +24,13 @@ export default class SelectorInspectorPanel {
     }
 
     show () {
-        addToUiRoot(this.element);
+        if (!this.element.parentElement)
+            uiRoot.insertFirstChildToPanelsContainer(this.element);
+
+        setStyles(this.element, { display: 'flex' });
     }
 
     hide () {
-        removeFromUiRoot(this.element);
+        setStyles(this.element, { display: 'none' });
     }
 }
