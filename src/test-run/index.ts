@@ -78,7 +78,6 @@ import {
     AddRequestHooksCommand,
     RemoveRequestHooksCommand,
     RunCustomActionCommand,
-    SkipJsErrorsCommand,
 } from './commands/actions';
 
 import { RUNTIME_ERRORS, TEST_RUN_ERRORS } from '../errors/types';
@@ -87,6 +86,7 @@ import RequestHookMethodNames from '../api/request-hooks/hook-method-names';
 import { createReplicator, SelectorNodeTransform } from '../client-functions/replicator';
 import Test from '../api/structure/test';
 import Capturer from '../screenshots/capturer';
+import { Dictionary } from '../configuration/interfaces';
 import CompilerService from '../services/compiler/host';
 import SessionController from './session-controller';
 import TestController from '../api/test-controller';
@@ -105,13 +105,6 @@ import EventEmitter from 'events';
 import getAssertionTimeout from '../utils/get-options/get-assertion-timeout';
 import { AssertionCommand } from './commands/assertion';
 import { TakeScreenshotBaseCommand } from './commands/browser-manipulation';
-
-import {
-    Dictionary,
-    SkipJsErrorsCallback,
-    SkipJsErrorsOptionsObject,
-} from '../configuration/interfaces';
-
 //@ts-ignore
 import { TestRun as LegacyTestRun } from 'testcafe-legacy-api';
 import { AuthCredentials } from '../api/structure/interfaces';
@@ -252,7 +245,6 @@ export default class TestRun extends AsyncEventEmitter {
     public consoleMessages: BrowserConsoleMessages;
     private pendingRequest: PendingRequest | null;
     private pendingPageError: PageLoadError | Error | null;
-    private proxylessJSError: TestRunErrorBase | null;
     public controller: TestController | null;
     public ctx: object;
     public fixtureCtx: object | null;
@@ -324,7 +316,6 @@ export default class TestRun extends AsyncEventEmitter {
 
         this.pendingRequest   = null;
         this.pendingPageError = null;
-        this.proxylessJSError = null;
 
         this.controller = null;
         this.ctx        = Object.create(null);
@@ -386,7 +377,8 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     public saveStoragesSnapshot (storageSnapshot: StoragesSnapshot): void {
-        this._proxylessRequestPipeline.restoringStorages = storageSnapshot;
+        if (this.opts.experimentalProxyless)
+            this._proxylessRequestPipeline.restoringStorages = storageSnapshot;
     }
 
     private get _proxylessRequestPipeline (): ProxylessRequestPipeline {
@@ -594,12 +586,12 @@ export default class TestRun extends AsyncEventEmitter {
             await Promise.all(this.test.requestHooks.map(hook => this._initRequestHook(hook)));
     }
 
-    public prepareSkipJsErrorsOption (): boolean | ExecuteClientFunctionCommand | SkipJsErrorsCallback {
+    private _prepareSkipJsErrorsOption (): boolean | ExecuteClientFunctionCommand {
         const options = this.test.skipJsErrorsOptions !== void 0
             ? this.test.skipJsErrorsOptions
             : this.opts.skipJsErrors as SkipJsErrorsOptionsObject | boolean || false;
 
-        return prepareSkipJsErrorsOptions(options, this.opts.experimentalProxyless as boolean);
+        return prepareSkipJsErrorsOptions(options);
     }
 
     // Hammerhead payload
@@ -607,8 +599,7 @@ export default class TestRun extends AsyncEventEmitter {
         this.fileDownloadingHandled               = false;
         this.resolveWaitForFileDownloadingPromise = null;
 
-        const proxyless    = this.opts.experimentalProxyless;
-        const skipJsErrors = proxyless ? false : this.prepareSkipJsErrorsOption();
+        const skipJsErrors = this._prepareSkipJsErrorsOption();
 
         return Mustache.render(TEST_RUN_TEMPLATE, {
             testRunId:                                JSON.stringify(this.session.id),
@@ -633,7 +624,7 @@ export default class TestRun extends AsyncEventEmitter {
             speed:                                    this.speed,
             dialogHandler:                            JSON.stringify(this.activeDialogHandler),
             canUseDefaultWindowActions:               JSON.stringify(await this.browserConnection.canUseDefaultWindowActions()),
-            proxyless:                                JSON.stringify(proxyless),
+            proxyless:                                JSON.stringify(this.opts.experimentalProxyless),
             domain:                                   JSON.stringify(this.browserConnection.browserConnectionGateway.proxy.server1Info.domain),
         });
     }
@@ -779,13 +770,12 @@ export default class TestRun extends AsyncEventEmitter {
 
     // Errors
     private _addPendingPageErrorIfAny (): boolean {
-        const error = this.pendingPageError || this.proxylessJSError;
+        const error = this.pendingPageError;
 
         if (error) {
             this.addError(error);
 
             this.pendingPageError = null;
-            this.proxylessJSError = null;
 
             return true;
         }
@@ -817,12 +807,6 @@ export default class TestRun extends AsyncEventEmitter {
 
             this.errs.push(adapter);
         });
-    }
-
-    public addProxylessJSError (err: TestRunErrorBase): void {
-        this.proxylessJSError = err;
-
-        this.proxylessJSError.callsite = this.currentDriverTask?.callsite;
     }
 
     public normalizeRequestHookErrors (): void {
@@ -1216,12 +1200,6 @@ export default class TestRun extends AsyncEventEmitter {
                 error = err;
         }
 
-        if (this.proxylessJSError) {
-            error = this.proxylessJSError;
-
-            this.proxylessJSError = null;
-        }
-
         const duration = new Date().getTime() - start;
 
         if (error) {
@@ -1328,21 +1306,8 @@ export default class TestRun extends AsyncEventEmitter {
         if (command.type === COMMAND_TYPE.executeAsyncExpression)
             return this._executeAsyncJsExpression(command as ExecuteAsyncExpressionCommand, callsite as string);
 
-        if (command.type === COMMAND_TYPE.skipJsErrors && this.opts.experimentalProxyless)
-            return this._proxyless.jsErrorHandlingApi.setErrorHandler(command as SkipJsErrorsCommand);
-
-        if (command.type === COMMAND_TYPE.getNativeDialogHistory && this.opts.experimentalProxyless)
-            return this._proxyless.nativeDialogsApi.getNativeDialogHistory();
-
-        if (command.type === COMMAND_TYPE.setNativeDialogHandler && this.opts.experimentalProxyless)
-            await this._proxyless.nativeDialogsApi.fixMissingBeforeUnloadHandling();
-
-        if (command.type === COMMAND_TYPE.getBrowserConsoleMessages) {
-            if (this.opts.experimentalProxyless)
-                return this._proxyless.consoleMessagesApi.getBrowserConsoleMessages();
-
+        if (command.type === COMMAND_TYPE.getBrowserConsoleMessages)
             return this._enqueueBrowserConsoleMessagesCommand(command, callsite as CallsiteRecord);
-        }
 
         if (command.type === COMMAND_TYPE.switchToPreviousWindow)
             (command as any).windowId = this.browserConnection.previousActiveWindowId;
@@ -1595,6 +1560,8 @@ export default class TestRun extends AsyncEventEmitter {
 
     public async initialize (): Promise<void> {
         await this._cookieProvider.initialize();
+        await this.saveStoragesSnapshot(StateSnapshot.empty().storages);
+
         await this._initRequestHooks();
 
         if (!this.compilerService)

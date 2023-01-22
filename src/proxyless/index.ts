@@ -5,11 +5,7 @@ import ProxylessRequestPipeline from './request-pipeline';
 import addCustomDebugFormatters from './add-custom-debug-formatters';
 import { ProxylessSetupOptions } from '../shared/types';
 import { proxylessLogger } from '../utils/debug-loggers';
-import ConsoleMessagesAPI from './console-messages';
-import NativeDialogsAPI from './native-dialogs';
-import JSErrorHandlingAPI from './js-error-handling';
 import SessionStorage from './session-storage';
-import { Dictionary } from '../configuration/interfaces';
 
 const ALL_REQUEST_RESPONSES = { requestStage: 'Request' } as RequestPattern;
 const ALL_REQUEST_REQUESTS  = { requestStage: 'Response' } as RequestPattern;
@@ -19,33 +15,24 @@ const ALL_REQUESTS_DATA = [ALL_REQUEST_REQUESTS, ALL_REQUEST_RESPONSES];
 export default class Proxyless {
     private readonly _client: ProtocolApi;
     public readonly requestPipeline;
-    public readonly consoleMessagesApi: ConsoleMessagesAPI;
-    public readonly nativeDialogsApi: NativeDialogsAPI;
     public readonly sessionStorage: SessionStorage;
-    public readonly jsErrorHandlingApi: JSErrorHandlingAPI;
 
     public constructor (browserId: string, client: ProtocolApi) {
         this._client         = client;
         this.requestPipeline = new ProxylessRequestPipeline(browserId, client);
-        this.consoleMessagesApi = new ConsoleMessagesAPI(browserId, client);
-        this.nativeDialogsApi = new NativeDialogsAPI(browserId, client);
         this.sessionStorage = new SessionStorage(browserId, client);
-        this.jsErrorHandlingApi = new JSErrorHandlingAPI(browserId, client);
 
-        this.sessionStorage.on('contextStorageModified', sessionStorage => {
-            const COMMAND_EXECUTING_FLAG = 'testcafe|driver|command-executing-flag';
-
+        this.sessionStorage.on('contextStorageSync', ({ sessionStorage, testRunId, frameDriverId }) => {
             if (sessionStorage) {
-                const parsed = JSON.parse(sessionStorage);
-
-                if (parsed.hasOwnProperty(COMMAND_EXECUTING_FLAG)) {
-                    const storage: Dictionary<boolean> = {};
-
-                    storage[COMMAND_EXECUTING_FLAG] = parsed[COMMAND_EXECUTING_FLAG];
-
-                    this.requestPipeline.contextStorage = JSON.stringify(storage);
-                }
+                this.requestPipeline.contextStorage = this.requestPipeline.contextStorage || {};
+                this.requestPipeline.contextStorage[testRunId] = this.requestPipeline.contextStorage[testRunId] || {};
+                this.requestPipeline.contextStorage[testRunId][frameDriverId] = sessionStorage;
             }
+        });
+
+        this.sessionStorage.on('contextStorageTestRunDone', ({ testRunId }) => {
+            if (this.requestPipeline.contextStorage)
+                delete this.requestPipeline.contextStorage[testRunId];
         });
 
         addCustomDebugFormatters();
@@ -60,10 +47,7 @@ export default class Proxyless {
 
         const proxylessSystems = [
             this.requestPipeline,
-            this.consoleMessagesApi,
-            this.nativeDialogsApi,
             this.sessionStorage,
-            this.jsErrorHandlingApi,
         ];
 
         for (const api of proxylessSystems)

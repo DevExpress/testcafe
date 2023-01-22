@@ -5,36 +5,11 @@ import { parseRegExpString } from '../../utils/make-reg-exp';
 import { ExecuteClientFunctionCommand } from '../../test-run/commands/observation';
 import ClientFunctionBuilder from '../../client-functions/client-function-builder';
 
-function depsToJsonWithRegExp (deps: SkipJsErrorsOptionsObject): string {
-    return `{
-        stack: ${deps.stack}, 
-        pageUrl: ${deps.pageUrl},
-        message: ${deps.message}, 
-    }`;
-}
+const SKIP_JS_ERRORS_OBJECT_FUNCTION = `
+                let { stack, pageUrl, message } = deps;
 
-function getSkipJSErrorsObjectFunction (deps: SkipJsErrorsOptionsObject, proxyless: boolean): string {
-    const dependencies = proxyless ? depsToJsonWithRegExp(deps) : 'deps';
-
-    return `
-        let { stack, pageUrl, message } = ${dependencies};
-
-        return stack.test(err.stack) && pageUrl.test(err.pageUrl) && message.test(err.message);
-    `;
-}
-
-function getSkipJSErrorsDependenciesFunction ({ fn, dependencies }: SkipJsErrorsCallbackWithOptionsObject): string {
-    let varDeclaration = '';
-
-    if (dependencies)
-        varDeclaration = `const { ${Object.keys(dependencies).join(', ')} } = ${JSON.stringify(dependencies)};`;
-
-    return `
-        ${varDeclaration}
-        
-        return (${fn.toString()})(err);
-    `;
-}
+                return stack.test(err.stack) && pageUrl.test(err.pageUrl) && message.test(err.message);
+        `;
 
 export function isSkipJsErrorsCallbackWithOptionsObject (obj: unknown): obj is SkipJsErrorsCallbackWithOptionsObject {
     return !!obj && typeof obj === 'object' && 'fn' in obj;
@@ -55,37 +30,31 @@ function wrapSkipJsErrorsCallback (options: SkipJsErrorsCallback, dependencies: 
     return { fn: options, dependencies };
 }
 
-export function prepareSkipJsErrorsOptions (options: boolean | SkipJsErrorsOptionsObject | SkipJsErrorsCallback | SkipJsErrorsCallbackWithOptionsObject, proxyless: boolean): boolean | ExecuteClientFunctionCommand | SkipJsErrorsCallback {
+export function prepareSkipJsErrorsOptions (options: boolean | SkipJsErrorsOptionsObject | SkipJsErrorsCallback | SkipJsErrorsCallbackWithOptionsObject): boolean | ExecuteClientFunctionCommand {
     options = ensureSkipJsErrorsCallbackWrapped(options);
 
     if (isSkipJsErrorsCallbackWithOptionsObject(options))
-        return createSkipJsErrorsCallbackFunction(options, proxyless);
+        return createSkipJsErrorsCallbackFunction(options);
 
     if (isSkipJsErrorsOptionsObject(options))
-        return createSkipJsErrorsObjectFunction(prepareOptionsObject(options), proxyless);
+        return createSkipJsErrorsObjectFunction(prepareOptionsObject(options));
 
     return options;
 }
 
-function createSkipJsErrorsObjectFunction (deps: SkipJsErrorsOptionsObject, proxyless: boolean): ExecuteClientFunctionCommand | SkipJsErrorsCallback {
+function createSkipJsErrorsObjectFunction (deps: SkipJsErrorsOptionsObject): ExecuteClientFunctionCommand {
     deps.message = deps.message || new RegExp('');
     deps.stack   = deps.stack || new RegExp('');
     deps.pageUrl = deps.pageUrl || new RegExp('');
 
-    const func = new Function('err', getSkipJSErrorsObjectFunction(deps, proxyless)) as SkipJsErrorsCallback;
-
-    if (proxyless)
-        return func;
+    const func = new Function('err', SKIP_JS_ERRORS_OBJECT_FUNCTION) as SkipJsErrorsCallback;
 
     const callbackWrapper = wrapSkipJsErrorsCallback(func, { deps });
 
-    return createSkipJsErrorsCallbackFunction(callbackWrapper, false);
+    return createSkipJsErrorsCallbackFunction(callbackWrapper);
 }
 
-function createSkipJsErrorsCallbackFunction ({ fn, dependencies }: SkipJsErrorsCallbackWithOptionsObject, proxyless: boolean): ExecuteClientFunctionCommand | SkipJsErrorsCallback {
-    if (proxyless)
-        return new Function('err', getSkipJSErrorsDependenciesFunction({ fn, dependencies })) as SkipJsErrorsCallback;
-
+function createSkipJsErrorsCallbackFunction ({ fn, dependencies }: SkipJsErrorsCallbackWithOptionsObject): ExecuteClientFunctionCommand {
     const methodName = 'skipJsErrors handler';
     const options    = { dependencies };
 

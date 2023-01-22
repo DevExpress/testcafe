@@ -35,10 +35,7 @@ const isRemoteTask = config.currentEnvironmentName === config.testingEnvironment
             });
     });
 
-    // NOTE: we do not want to make console.log() messages inside the role initializer
-    // be isolated from the other console.log() calls
-    // However, it is how it work now in proxy mode
-    skipInProxyless('Should restore configuration after role initializer', function () {
+    it('Should restore configuration after role initializer', function () {
         return runTests('./testcafe-fixtures/configuration-test.js', 'Restore configuration', TEST_WITH_IFRAME_RUN_OPTIONS);
     });
 

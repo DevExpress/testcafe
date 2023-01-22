@@ -6,21 +6,8 @@ const nativeMethods = hammerhead.nativeMethods;
 const STORAGE_KEY_PREFIX    = 'testcafe|driver|';
 const PROXYLESS_STORAGE_KEY = '%proxylessContextStorage%';
 
-class StorageStrategy {
-    constructor (window, testRunId, windowId) {
-        this.storage    = nativeMethods.winSessionStorageGetter.call(window);
-        this.storageKey = this._createStorageKey(testRunId, windowId);
-    }
 
-    _createStorageKey (testRunId, windowId) {
-        const storageKey = STORAGE_KEY_PREFIX + testRunId;
-
-        if (windowId)
-            return storageKey + '|' + windowId;
-
-        return storageKey;
-    }
-
+class StorageStrategyBase {
     loadFromStorage () {
         let res = { };
 
@@ -36,6 +23,43 @@ class StorageStrategy {
     }
 
     _getData () {
+        throw new Error('Not implemented');
+    }
+
+    _deleteData () {
+        throw new Error('Not implemented');
+    }
+
+    save () {
+        throw new Error('Not implemented');
+    }
+
+    sync () {
+    }
+
+    dispose () {
+        this._deleteData();
+    }
+}
+
+class StorageStrategyProxy extends StorageStrategyBase {
+    constructor (window, testRunId, windowId) {
+        super();
+
+        this.storage    = nativeMethods.winSessionStorageGetter.call(window);
+        this.storageKey = this._createStorageKey(testRunId, windowId);
+    }
+
+    _createStorageKey (testRunId, windowId) {
+        const storageKey = STORAGE_KEY_PREFIX + testRunId;
+
+        if (windowId)
+            return storageKey + '|' + windowId;
+
+        return storageKey;
+    }
+
+    _getData () {
         return nativeMethods.storageGetItem.call(this.storage, this.storageKey);
     }
 
@@ -46,28 +70,34 @@ class StorageStrategy {
     save (data) {
         nativeMethods.storageSetItem.call(this.storage, this.storageKey, JSON.stringify(data));
     }
-
-    dispose () {
-        nativeMethods.storageRemoveItem.call(this.storage, this.storageKey);
-    }
 }
 
-class StorageStrategyProxyless extends StorageStrategy {
+class StorageStrategyProxyless extends StorageStrategyBase {
+    constructor (window, testRunId) {
+        super();
+
+        const [id, frameId] = testRunId.split('-');
+
+        this.testRunId = id;
+        this.frameId = frameId || 'main';
+    }
+
     _getData () {
-        return super._getData() || window[PROXYLESS_STORAGE_KEY];
+        return window[PROXYLESS_STORAGE_KEY]?.[this.frameId];
     }
 
     _deleteData () {
-        super._deleteData();
-
         window[PROXYLESS_STORAGE_KEY] = null;
     }
 
     save (data) {
-        super.save(data);
-
-        if (window.PROXYLESS_STORAGE_BINDING)
-            window.PROXYLESS_STORAGE_BINDING(JSON.stringify(data));
+        if (window.PROXYLESS_STORAGE_BINDING) {
+            window.PROXYLESS_STORAGE_BINDING(JSON.stringify({
+                testRunId:     this.testRunId,
+                frameDriverId: this.frameId,
+                data:          JSON.stringify(data),
+            }));
+        }
     }
 }
 
@@ -75,10 +105,11 @@ export default class Storage {
     constructor (window, { testRunId, windowId, proxyless }) {
         this.strategy  = this._createStorageStrategy(proxyless, window, testRunId, windowId);
         this.data      = this.strategy.loadFromStorage();
+        this.testRunId = testRunId;
     }
 
     _createStorageStrategy (proxyless, window, testRunId, windowId) {
-        return proxyless ? new StorageStrategyProxyless(window, testRunId, windowId) : new StorageStrategy(window, testRunId, windowId);
+        return proxyless ? new StorageStrategyProxyless(window, testRunId, windowId) : new StorageStrategyProxy(window, testRunId, windowId);
     }
 
     save () {

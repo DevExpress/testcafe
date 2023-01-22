@@ -14,7 +14,7 @@ describe('Native dialogs handling', function () {
         return runTests('./testcafe-fixtures/native-dialogs-test.js', 'Null handler', { shouldFail: true })
             .catch(function (errs) {
                 errorInEachBrowserContains(errs, getNativeDialogNotHandledErrorText('alert', pageUrl), 0);
-                errorInEachBrowserContains(errs, '> 199 |        .click(\'#buttonAlert\');', 0);
+                errorInEachBrowserContains(errs, '> 193 |        .click(\'#buttonAlert\');', 0);
             });
     });
 
@@ -111,7 +111,7 @@ describe('Native dialogs handling', function () {
                 { shouldFail: true })
                 .catch(function (errs) {
                     errorInEachBrowserContains(errs, 'AssertionError: expected 0 to equal 1', 0);
-                    errorInEachBrowserContains(errs, '> 169 |    expect(info.length).equals(1);', 0);
+                    errorInEachBrowserContains(errs, '> 163 |    expect(info.length).equals(1);', 0);
                 });
         });
 
@@ -129,7 +129,7 @@ describe('Native dialogs handling', function () {
             return runTests('./testcafe-fixtures/native-dialogs-test.js', 'Dialog handler has wrong type', { shouldFail: true })
                 .catch(function (errs) {
                     errorInEachBrowserContains(errs, 'The native dialog handler is expected to be a function, ClientFunction or null, but it was number.', 0);
-                    errorInEachBrowserContains(errs, ' > 180 |    await t.setNativeDialogHandler(42);', 0);
+                    errorInEachBrowserContains(errs, ' > 174 |    await t.setNativeDialogHandler(42);', 0);
                 });
         });
 
@@ -137,7 +137,7 @@ describe('Native dialogs handling', function () {
             return runTests('./testcafe-fixtures/native-dialogs-test.js', 'Client function argument wrong type', { shouldFail: true })
                 .catch(function (errs) {
                     errorInEachBrowserContains(errs, 'Cannot initialize a ClientFunction because ClientFunction is number, and not a function.', 0);
-                    errorInEachBrowserContains(errs, ' > 184 |    await t.setNativeDialogHandler(ClientFunction(42));', 0);
+                    errorInEachBrowserContains(errs, ' > 178 |    await t.setNativeDialogHandler(ClientFunction(42));', 0);
                 });
         });
 
@@ -145,7 +145,7 @@ describe('Native dialogs handling', function () {
             return runTests('./testcafe-fixtures/native-dialogs-test.js', 'Selector as dialogHandler', { shouldFail: true })
                 .catch(function (errs) {
                     errorInEachBrowserContains(errs, 'The native dialog handler is expected to be a function, ClientFunction or null, but it was Selector.', 0);
-                    errorInEachBrowserContains(errs, '> 190 |    await t.setNativeDialogHandler(dialogHandler);', 0);
+                    errorInEachBrowserContains(errs, '> 184 |    await t.setNativeDialogHandler(dialogHandler);', 0);
                 });
         });
     });

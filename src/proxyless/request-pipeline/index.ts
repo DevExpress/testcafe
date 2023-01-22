@@ -13,7 +13,7 @@ import { convertToHeaderEntries } from '../utils/headers';
 import { createRequestPausedEventForResponse, isRequest } from '../utils/cdp';
 import BrowserConnection from '../../browser/connection';
 import ERROR_ROUTE from '../error-route';
-import { SpecialServiceRoutes } from '../types';
+import { SessionStorageInfo, SpecialServiceRoutes } from '../types';
 import {
     requestPipelineLogger,
     requestPipelineMockLogger,
@@ -38,7 +38,7 @@ import ProxylessApiBase from '../api-base';
 export default class ProxylessRequestPipeline extends ProxylessApiBase {
     public readonly requestHookEventProvider: ProxylessRequestHookEventProvider;
     public restoringStorages: StoragesSnapshot | null;
-    public contextStorage: string;
+    public contextStorage: SessionStorageInfo | null;
     private readonly _resourceInjector: ResourceInjector;
     private _options: ProxylessSetupOptions;
     private readonly _specialServiceRoutes: SpecialServiceRoutes;
@@ -57,7 +57,7 @@ export default class ProxylessRequestPipeline extends ProxylessApiBase {
         this._currentFrameTree        = null;
         this._failedRequestIds        = [];
         this.restoringStorages        = null;
-        this.contextStorage           = '';
+        this.contextStorage           = null;
     }
 
     private _getSpecialServiceRoutes (browserId: string): SpecialServiceRoutes {
@@ -93,8 +93,12 @@ export default class ProxylessRequestPipeline extends ProxylessApiBase {
 
         if (pipelineContext.reqOpts.isAjax)
             await this._resourceInjector.processNonProxiedContent(fulfillInfo, this._client);
-        else
-            await this._resourceInjector.processHTMLPageContent(fulfillInfo, { isIframe: false }, this._client);
+        else {
+            await this._resourceInjector.processHTMLPageContent(fulfillInfo, {
+                isIframe:       false,
+                contextStorage: this.contextStorage,
+            }, this._client);
+        }
 
         requestPipelineMockLogger(`Mock request ${event.requestId}`);
     }

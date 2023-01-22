@@ -1,5 +1,6 @@
 const { errorInEachBrowserContains } = require('../../assertion-helper');
 const { skipInProxyless }            = require('../../utils/skip-in');
+const config                         = require('../../config');
 
 
 describe('TestRun - Driver protocol', function () {
@@ -35,7 +36,9 @@ describe('TestRun - Driver protocol', function () {
         });
 
         it('Should clear out the localStorage and sessionStorage after test (GH-1546)', function () {
-            return runTests('./testcafe-fixtures/clear-and-lock-storages.js');
+            const testsPath = config.proxyless ? './testcafe-fixtures/clear-and-lock-storages-proxyless.js' : './testcafe-fixtures/clear-and-lock-storages.js';
+
+            return runTests(testsPath);
         });
     });
 });
