@@ -22,9 +22,9 @@ const eventUtils = testCafeCore.eventUtils;
 const ENABLED_CLASS = 'enabled';
 
 const MATCH_INDICATOR_CLASSES = {
-    notFound:  'not-found',
-    incorrect: 'incorrect',
-    ok:        'ok',
+    notFound: 'not-found',
+    invalid:  'invalid',
+    ok:       'ok',
 };
 
 export class SelectorInputContainer {
@@ -89,14 +89,14 @@ export class SelectorInputContainer {
 
     _indicateMatches (elements) {
         if (elements === null) {
-            this._setMatchIndicatorText('Incorrect Selector');
-            this._setMatchIndicatorClass(MATCH_INDICATOR_CLASSES.incorrect);
+            this._setMatchIndicatorText('Invalid Selector');
+            this._setMatchIndicatorClass(MATCH_INDICATOR_CLASSES.invalid);
 
             return;
         }
 
         if (elements.length === 0) {
-            this._setMatchIndicatorText('Not Found');
+            this._setMatchIndicatorText('No Matching Elements');
             this._setMatchIndicatorClass(MATCH_INDICATOR_CLASSES.notFound);
 
             return;
