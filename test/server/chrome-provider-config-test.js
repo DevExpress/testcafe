@@ -5,7 +5,7 @@ const getChromeConfig = require('../../lib/browser/provider/built-in/dedicated/c
 
 describe('Chrome provider config parser', function () {
     it('Should parse options and arguments', function () {
-        const config = getChromeConfig('/chrome/path/with\\::headless:emulation:device=iPhone 4;cdpPort=9222 --arg1 --arg2');
+        const config = getChromeConfig('/chrome/path/with\\::headless:emulation:device=Apple iPhone 4;cdpPort=9222 --arg1 --arg2');
 
         expect(config.path).to.equal('/chrome/path/with:');
         expect(config.userProfile).to.be.false;
