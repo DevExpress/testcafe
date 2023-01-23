@@ -7,6 +7,7 @@ import { CookieOptions } from '../test-run/commands/options';
 import { CookieProvider, CookieProviderBase } from '../test-run/cookies/base';
 import CookieParam = Protocol.Network.CookieParam;
 import matchCollection from '../utils/match-collection';
+import { getActiveClient } from './utils/get-active-client';
 
 declare type CookieSameSite = 'Lax' | 'Strict' | 'None';
 
@@ -15,9 +16,8 @@ const MAX_TIMESTAMP = 8640000000000000;
 export class CdpCookieProvider extends CookieProviderBase implements CookieProvider {
     private async _getCdpClient (): Promise<remoteChrome.ProtocolApi> {
         const browserConnection = this.testRun.browserConnection;
-        const browser           = browserConnection.provider.plugin.openedBrowsers[browserConnection.id];
 
-        return browser.browserClient.getActiveClient();
+        return getActiveClient(browserConnection);
     }
 
     async initialize (): Promise<void> {

@@ -1,6 +1,5 @@
-const { errorInEachBrowserContains } = require('../../assertion-helper');
-const { skipInProxyless }            = require('../../utils/skip-in');
-const config                         = require('../../config');
+const { errorInEachBrowserContains }       = require('../../assertion-helper');
+const { skipInProxyless, onlyInProxyless } = require('../../utils/skip-in');
 
 
 describe('TestRun - Driver protocol', function () {
@@ -35,10 +34,16 @@ describe('TestRun - Driver protocol', function () {
             return runTests('./testcafe-fixtures/driver-test.js', 'Mixed execution order');
         });
 
-        it('Should clear out the localStorage and sessionStorage after test (GH-1546)', function () {
-            const testsPath = config.proxyless ? './testcafe-fixtures/clear-and-lock-storages-proxyless.js' : './testcafe-fixtures/clear-and-lock-storages.js';
+        skipInProxyless('Should clear out the localStorage and sessionStorage after test (GH-1546)(proxy)', function () {
+            return runTests('./testcafe-fixtures/clear-and-lock-storages.js');
+        });
 
-            return runTests(testsPath);
+        onlyInProxyless('Should clear out the localStorage and sessionStorage after test (GH-1546)(proxyless)', function () {
+            return runTests('./testcafe-fixtures/clear-and-lock-storages-proxyless-part-1.js');
+        });
+
+        onlyInProxyless('Should clear out the localStorage and sessionStorage for multiple domains(proxyless)', function () {
+            return runTests('./testcafe-fixtures/clear-and-lock-storages-proxyless-part-2.js');
         });
     });
 });

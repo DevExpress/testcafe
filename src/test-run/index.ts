@@ -130,6 +130,9 @@ import { CookieOptions } from './commands/options';
 import { prepareSkipJsErrorsOptions } from '../api/skip-js-errors';
 import { CookieProviderFactory } from './cookies/factory';
 import { CookieProvider } from './cookies/base';
+import { StoragesProvider } from './storages/base';
+import { StoragesProviderFactory } from './storages/factory';
+
 import wrapCustomAction from '../api/wrap-custom-action';
 
 import {
@@ -276,6 +279,7 @@ export default class TestRun extends AsyncEventEmitter {
     private readonly _messageBus?: MessageBus;
     private _clientEnvironmentPrepared = false;
     private _cookieProvider: CookieProvider;
+    private _storagesProvider: StoragesProvider;
     public readonly startRunExecutionTime?: Date;
     private readonly _requestHookEventProvider: RequestHookEventProvider;
     private readonly _roleProvider: RoleProvider;
@@ -364,7 +368,8 @@ export default class TestRun extends AsyncEventEmitter {
         this._requestHookEventProvider = this._getRequestHookEventProvider();
         this._roleProvider             = this._getRoleProvider();
 
-        this._cookieProvider = CookieProviderFactory.create(this, this.opts.experimentalProxyless as boolean);
+        this._cookieProvider   = CookieProviderFactory.create(this, this.opts.experimentalProxyless as boolean);
+        this._storagesProvider = StoragesProviderFactory.create(this, this.opts.experimentalProxyless as boolean);
 
         this._addInjectables();
     }
@@ -1559,8 +1564,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     public async initialize (): Promise<void> {
-        await this._cookieProvider.initialize();
-        await this.saveStoragesSnapshot(StateSnapshot.empty().storages);
+        await this._clearCookiesAndStorages();
 
         await this._initRequestHooks();
 
@@ -1574,6 +1578,11 @@ export default class TestRun extends AsyncEventEmitter {
             activeWindowId: this.activeWindowId,
             messageBus:     this._messageBus,
         });
+    }
+
+    private async _clearCookiesAndStorages (): Promise<void> {
+        await this._cookieProvider.initialize();
+        await this._storagesProvider.initialize();
     }
 
     public get activeWindowId (): null | string {
