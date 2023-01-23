@@ -13,7 +13,7 @@ export const selectorInput = {
 
 export const matchIndicator = {
     class: 'match-indicator',
-    text:  'Not Found',
+    text:  'No Matching Elements',
 };
 
 export const expandSelectorsList = {
