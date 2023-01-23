@@ -1581,6 +1581,9 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     private async _clearCookiesAndStorages (): Promise<void> {
+        if (this.disablePageReloads)
+            return;
+
         await this._cookieProvider.initialize();
         await this._storagesProvider.initialize();
     }
