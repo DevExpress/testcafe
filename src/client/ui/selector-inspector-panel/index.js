@@ -7,9 +7,11 @@ import { panel } from './descriptors';
 import { PickButton } from './pick-button';
 import { SelectorInputContainer } from './selector-input-container';
 import { CopyButton } from './copy-button';
+import { elementPicker } from './element-picker';
 
 export default class SelectorInspectorPanel {
     element;
+    elementPicker = elementPicker;
 
     constructor () {
         this.element = createElementFromDescriptor(panel);
