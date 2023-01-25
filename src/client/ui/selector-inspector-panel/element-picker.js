@@ -16,6 +16,7 @@ export const ELEMENT_PICKED = 'element-piked';
 
 class ElementPicker extends serviceUtils.EventEmitter {
     actualSelectors;
+    actualTarget;
     hiddenTestCafeElements = new Map();
     handlers;
 
@@ -68,9 +69,10 @@ class ElementPicker extends serviceUtils.EventEmitter {
 
             const target = document.elementFromPoint(x, y);
 
-            if (!target)
+            if (!target || target === this.actualTarget)
                 return;
 
+            this.actualTarget    = target;
             this.actualSelectors = selectorGenerator.generate(target);
 
             highlighter.stopHighlighting();
