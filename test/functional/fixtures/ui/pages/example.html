@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>TestCafe Example Page</title>
+</head>
+<body>
+
+    <form id="main-form" action="#">
+<div class="main-content">
+    <header>
+        <h1>Example</h1>
+        <p>This webpage is used as a sample in TestCafe tutorials.</p>
+        <div id="shadow-host"></div>
+    </header>
+    <div class="row">
+<div class="column col-1">
+        <fieldset>
+            <legend>Your name:</legend>
+            <input id="developer-name" name="name" type="text" data-testid="name-input">
+            <input type="button" id="populate" data-testid="populate-button" value="Populate">
+        </fieldset>
+        <fieldset>
+            <legend>Which features are important to you:</legend>
+            <p><label for="remote-testing"><input type="checkbox" name="remote" id="remote-testing" data-testid="remote-testing-checkbox">Support for testing on remote devices</label></p>
+            <p><label for="reusing-js-code"><input type="checkbox" name="re-using" id="reusing-js-code" data-testid="reusing-js-code-checkbox">Re-using existing JavaScript code for testing</label></p>
+            <p><label for="background-parallel-testing"><input type="checkbox" name="background" id="background-parallel-testing" data-testid="parallel-testing-checkbox">Running tests in background and/or in parallel in multiple browsers</label></p>
+            <p><label for="continuous-integration-embedding"><input type="checkbox" name="CI" id="continuous-integration-embedding" data-testid="ci-checkbox">Easy embedding into a Continuous integration system</label></p>
+            <p><label for="traffic-markup-analysis"><input type="checkbox" name="analysis" id="traffic-markup-analysis" data-testid="analysis-checkbox">Advanced traffic and markup analysis</label></p>
+        </fieldset>
+</div>
+
+<div class="column col-2">
+        <fieldset>
+            <legend>What is your primary Operating System:</legend>
+            <p><label for="windows"><input type="radio" name="os" id="windows" value="Windows" data-testid="windows-radio">Windows</label></p>
+            <p><label for="macos"><input type="radio" name="os" id="macos" value="MacOS" data-testid="macos-radio">MacOS</label></p>
+            <p><label for="linux"><input type="radio" name="os" id="linux" value="Linux" data-testid="linux-radio">Linux</label></p>
+        </fieldset>
+
+        <fieldset>
+            <legend>Which TestCafe interface do you use:</legend>
+            <select id="preferred-interface" name="preferred-interface" data-testid="preferred-interface-select">
+                <option selected="selected">Command Line</option>
+                <option>JavaScript API</option>
+                <option>Both</option>
+            </select>
+        </fieldset>
+</div>
+</div>
+<div class="form-bottom">
+        <fieldset id="tried-section">
+            <label for="tried-test-cafe"><input type="checkbox" name="tried-test-cafe" id="tried-test-cafe" data-testid="tried-testcafe-checkbox">I have tried TestCafe</label>
+        </fieldset>
+
+        <fieldset>
+            <legend>How would you rate TestCafe on a scale from 1 to 10</legend>
+            <div class="slider-container">
+            <div id="slider" class="ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content ui-slider-disabled ui-state-disabled"><span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default" style="left: 0%;"></span></div>
+            <div class="slider-values">
+                <div class="slider-value">1</div>
+                <div class="slider-value">2</div>
+                <div class="slider-value">3</div>
+                <div class="slider-value">4</div>
+                <div class="slider-value">5</div>
+                <div class="slider-value">6</div>
+                <div class="slider-value">7</div>
+                <div class="slider-value">8</div>
+                <div class="slider-value">9</div>
+                <div class="slider-value">10</div>
+            </div>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Please let us know what you think:</legend>
+            <textarea id="comments" name="comments" data-testid="comments-area" disabled="disabled"></textarea>
+        </fieldset>
+
+        <button type="submit" id="submit-button" data-testid="submit-button" disabled="disabled">Submit</button>
+</div>
+        </div>
+    </form>
+
+</body></html>
