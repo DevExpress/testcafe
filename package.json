@@ -151,7 +151,7 @@
     "testcafe-reporter-spec": "^2.1.1",
     "testcafe-reporter-xunit": "^2.2.1",
     "testcafe-safe-storage": "^1.1.1",
-    "testcafe-selector-generator": "git+https://github.com/devexpress/testcafe-selector-generator",
+    "testcafe-selector-generator": "https://raw.githubusercontent.com/felis2803/testcafe-temp-11/master/testcafe-selector-generator-0.1.0.tgz",
     "time-limit-promise": "^1.0.2",
     "tmp": "0.0.28",
     "tree-kill": "^1.2.2",
