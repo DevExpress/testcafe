@@ -53,5 +53,5 @@ export const arrow = {
 export const auxiliaryCopyInput = {
     tag:   'input',
     type:  'text',
-    class: 'auxiliary',
+    class: 'auxiliary-input',
 };
