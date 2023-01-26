@@ -58,9 +58,7 @@
     "test-functional-local-headless-chrome-esm": "npm run build && npm run test-functional-local-headless-chrome-run-esm",
     "publish-please-only": "publish-please",
     "publish-please": "del-cli package-lock.json node_modules && npm i && publish-please",
-    "prepublishOnly": "publish-please guard",
-    "inspector-run": "node bin/testcafe.js chrome temp.js",
-    "inspector": "gulp fast-build && npm run inspector-run"
+    "prepublishOnly": "publish-please guard"
   },
   "dependencies": {
     "@babel/core": "^7.12.1",
