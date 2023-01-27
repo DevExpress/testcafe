@@ -247,7 +247,7 @@ export default class Driver extends serviceUtils.EventEmitter {
     }
 
     set consoleMessages (messages) {
-        return this.contextStorage.setItem(CONSOLE_MESSAGES, messages ? messages.getCopy() : null);
+        this.contextStorage.setItem(CONSOLE_MESSAGES, messages ? messages.getCopy() : null);
     }
 
     async _getReadyPromise () {
@@ -1656,7 +1656,8 @@ export default class Driver extends serviceUtils.EventEmitter {
     _executeCommand (command) {
         this.contextStorage.setItem(this.WINDOW_COMMAND_API_CALL_FLAG, false);
 
-        this.selectorInspectorPanel?.hide();
+        if (this.selectorInspectorPanel)
+            this.selectorInspectorPanel.hide();
 
         if (this.customCommandHandlers[command.type])
             this._onCustomCommand(command);
