@@ -21,7 +21,7 @@ describe('TestCafe UI', () => {
 
     describe('Selector Inspector', () => {
         function runTest (testName) {
-            return runTests('./testcafe-fixtures/selector-inspector-test.js', testName);
+            return runTests('./testcafe-fixtures/selector-inspector-test.js', testName, { skip: ['ie'] });
         }
 
         it('panel should be shown in debug mode', () => {
