@@ -1,7 +1,7 @@
 import { ClientFunction } from 'testcafe';
 
 fixture `Selector Inspector`
-    .clientScripts `../selector-inspector-utils.js`
+    .clientScripts `../utils/selector-inspector.js`
     .page `http://localhost:3000/fixtures/ui/pages/example.html`;
 
 test('Show panel', async t => {
