@@ -20,48 +20,33 @@ describe('TestCafe UI', () => {
     });
 
     describe('Selector Inspector', () => {
-        function runTest (testName) {
-            return runTests('./testcafe-fixtures/selector-inspector-test.js', testName, { skip: ['ie'] });
+        function runTestCafeTest (testName) {
+            it (testName, function () {
+                if (config.experimentalDebug)
+                    this.skip();
+
+                return runTests('./testcafe-fixtures/selector-inspector-test.js', testName, { skip: ['ie'] });
+            });
         }
 
-        it('panel should be shown in debug mode', () => {
-            return runTest('Show panel');
-        });
+        runTestCafeTest('panel should be shown in debug mode');
 
-        it('should hide TestCafe elements while piking', () => {
-            return runTest('Hide TestCafe element while picking');
-        });
+        runTestCafeTest('should hide TestCafe elements while piking');
 
-        it('should generate valid selector', () => {
-            return runTest('Generate selector');
-        });
+        runTestCafeTest('should generate valid selector');
 
-        it('should fill the selectors list with the generated selectors', () => {
-            return runTest('Fill the selectors list');
-        });
+        runTestCafeTest('should fill the selectors list with the generated selectors');
 
-        it('should indicate the correct number of elements matching the selector', () => {
-            return runTest('Indicate matching');
-        });
+        runTestCafeTest('should indicate the correct number of elements matching the selector');
 
-        it('should indicate if the selector is invalid on input', () => {
-            return runTest('Indicate invalid');
-        });
+        runTestCafeTest('should indicate if the selector is invalid on input');
 
-        it('should indicate that no matches on input', () => {
-            return runTest('Indicate no matching');
-        });
+        runTestCafeTest('should indicate that no matches on input');
 
-        it('should highlight matches elements on input', () => {
-            return runTest('Highlight elements');
-        });
+        runTestCafeTest('should highlight matches elements on input');
 
-        it('should place a selector selected from the list in the input field', () => {
-            return runTest('Select selector');
-        });
+        runTestCafeTest('should place a selector selected from the list in the input field');
 
-        it('should copy selector', () => {
-            return runTest('Copy selector');
-        });
+        runTestCafeTest('should copy selector');
     });
 });

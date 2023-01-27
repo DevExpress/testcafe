@@ -4,7 +4,7 @@ fixture `Selector Inspector`
     .clientScripts `../utils/selector-inspector.js`
     .page `http://localhost:3000/fixtures/ui/pages/example.html`;
 
-test('Show panel', async t => {
+test('panel should be shown in debug mode', async t => {
     await ClientFunction(() => {
         window['%testCafeDriverInstance%'].selectorInspectorPanel.show = () => window.resumeTest();
     })();
@@ -12,7 +12,7 @@ test('Show panel', async t => {
     await t.debug();
 });
 
-test('Hide TestCafe element while picking', async t => {
+test('should hide TestCafe elements while piking', async t => {
     await ClientFunction(() => {
         const {
             startPicking,
@@ -35,7 +35,7 @@ test('Hide TestCafe element while picking', async t => {
     await t.debug();
 });
 
-test('Generate selector', async t => {
+test('should generate valid selector', async t => {
     await ClientFunction(() => {
         const {
             startPicking,
@@ -61,7 +61,7 @@ test('Generate selector', async t => {
     await t.debug();
 });
 
-test('Fill the selectors list', async t => {
+test('should fill the selectors list with the generated selectors', async t => {
     await ClientFunction(() => {
         const {
             startPicking,
@@ -93,7 +93,7 @@ test('Fill the selectors list', async t => {
     await t.debug();
 });
 
-test('Indicate matching', async t => {
+test('should indicate the correct number of elements matching the selector', async t => {
     await ClientFunction(() => {
         const { typeSelector, getMatchIndicatorInnerText, resumeTest } = window;
 
@@ -110,7 +110,7 @@ test('Indicate matching', async t => {
     await t.debug();
 });
 
-test('Indicate invalid', async t => {
+test('should indicate if the selector is invalid on input', async t => {
     await ClientFunction(() => {
         const { typeSelector, getMatchIndicatorInnerText, resumeTest } = window;
 
@@ -127,7 +127,7 @@ test('Indicate invalid', async t => {
     await t.debug();
 });
 
-test('Indicate no matching', async t => {
+test('should indicate that no matches on input', async t => {
     await ClientFunction(() => {
         const { typeSelector, getMatchIndicatorInnerText, resumeTest } = window;
 
@@ -144,7 +144,7 @@ test('Indicate no matching', async t => {
     await t.debug();
 });
 
-test('Highlight elements', async t => {
+test('should highlight matches elements on input', async t => {
     await ClientFunction(() => {
         const {
             typeSelector,
@@ -176,7 +176,7 @@ test('Highlight elements', async t => {
     await t.debug();
 });
 
-test('Select selector', async t => {
+test('should place a selector selected from the list in the input field', async t => {
     await ClientFunction(() => {
         const {
             startPicking,
@@ -221,7 +221,7 @@ test('Select selector', async t => {
     await t.debug();
 });
 
-test('Copy selector', async t => {
+test('should copy selector', async t => {
     await ClientFunction(() => {
         const { typeSelector, copySelector, resumeTest } = window;
 
