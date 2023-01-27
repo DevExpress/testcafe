@@ -1656,7 +1656,7 @@ export default class Driver extends serviceUtils.EventEmitter {
     _executeCommand (command) {
         this.contextStorage.setItem(this.WINDOW_COMMAND_API_CALL_FLAG, false);
 
-        this.selectorInspectorPanel.hide();
+        this.selectorInspectorPanel?.hide();
 
         if (this.customCommandHandlers[command.type])
             this._onCustomCommand(command);
