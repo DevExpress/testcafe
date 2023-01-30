@@ -16,6 +16,7 @@ import SERVICE_ROUTES from './service-routes';
 import EMPTY_PAGE_MARKUP from '../../proxyless/empty-page-markup';
 import PROXYLESS_ERROR_ROUTE from '../../proxyless/error-route';
 import { initSelector } from '../../test-run/commands/validations/initializers';
+import TestRun from '../../test-run';
 
 export default class BrowserConnectionGateway {
     private _connections: Dictionary<BrowserConnection> = {};
@@ -247,20 +248,27 @@ export default class BrowserConnectionGateway {
             respond500(res, 'There are no available _connections to establish.');
     }
 
+    private static _getParsedSelector (testRun: TestRun, rawSelector: string): any {
+        const options = {
+            testRun,
+
+            skipVisibilityCheck: true,
+            collectionMode:      true,
+        };
+
+        const value          = rawSelector.trim().startsWith('Selector(') ? rawSelector : `'${rawSelector}'`;
+        const selector       = { type: 'js-expr', value };
+
+        return initSelector('selector', selector, options);
+    }
+
     private static _parseSelector (req: IncomingMessage, res: ServerResponse, connection: BrowserConnection): void {
         if (BrowserConnectionGateway._ensureConnectionReady(res, connection)) {
             BrowserConnectionGateway._fetchRequestData(req, data => {
                 try {
-                    const options = {
-                        testRun:             connection.getCurrentTestRun(),
-                        skipVisibilityCheck: true,
-                        collectionMode:      true,
-                    };
-
+                    const testRun        = connection.getCurrentTestRun();
                     const rawSelector    = JSON.parse(data).selector;
-                    const value          = rawSelector.trim().startsWith('Selector(') ? rawSelector : `'${rawSelector}'`;
-                    const selector       = { type: 'js-expr', value };
-                    const parsedSelector = initSelector('selector', selector, options);
+                    const parsedSelector = this._getParsedSelector(testRun, rawSelector);
 
                     respondWithJSON(res, parsedSelector);
                 }
