@@ -1,5 +1,73 @@
 # Changelog
 
+## v2.3.0 (2023-01-30)
+
+TestCafe v2.3.0 introduces `create-testcafe` --- an interactive tool that allows you to initialize a new TestCafe project in seconds. The update also includes *experimental* ECMAScript module support and a number of bug fixes.
+
+> **_IMPORTANT:_**
+> TestCafe v2.3.0 ends support for Node.js 14 due to a known vulnerability in the `babel-plugin-module-resolver` module.
+>
+> Install an up-to-date version of the Node.js runtime to use TestCafe v2.3.0 and up.
+> 
+> The official maintenance period for Node.js 14 [elapses](https://endoflife.date/nodejs) on April 1st, 2023. 
+
+
+### create-testcafe
+
+Use the [create-testcafe](https://github.com/devexpress/create-testcafe) tool to initialize a new TestCafe project, or *add* TestCafe to an existing Node.js application.
+
+Execute the following command to launch `create-testcafe`:
+
+```sh
+npx create-testcafe
+```
+
+The `create-testcafe` tool allows you to perform the following actions with a single command:
+
+1. Create a new folder for the TestCafe project *(optional)*.
+2. Create a new local installation of TestCafe and its dependencies.
+3. Create and initialize a TestCafe configuration file.
+4. Create a separate subfolder for tests.
+5. Populate the test folder with test examples *(optional)*.
+6. Create a YAML file with a GitLab Actions workflow that runs TestCafe tests *(optional)*.
+
+### Experimental: ECMAScript module support
+
+> **_IMPORTANT:_**
+> ESM module suppport works with Node.js 16 and up.
+
+TestCafe has always used *CommonJS* syntax for module imports:
+
+```js
+const { x } = require('y');
+```
+
+An increasing number of Node.JS packages abandon CommonJS in favour of [ECMAScript module syntax](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c):
+
+```js
+import {x} from 'y'
+```
+
+Enable the `--experimental-esm` [CLI flag](xref:402639#--experimental-esm) to import modules that do not support CommonJS. Note: tests with ECMASCript module syntax are subject to [additional requirements](#additional-reuqirements).
+
+```sh
+testcafe chrome test.js --experimental-esm
+```
+
+#### Additional Reuqirements
+
+To run tests with ECMAScript `import` statements, make sure that your project meets at least one of the following requirements:
+
+1. The value of the `type` key in your project's [package.json file](https://nodejs.org/api/packages.html#packagejson-and-file-extensions) is `module`.
+2. The test files in your project use the `.mjs` extension.
+
+### Bug Fixes
+
+* TestCafe doesn't delete expired cookies ([#7432](https://github.com/DevExpress/testcafe/issues/7432)).
+* TestCafe cannot handle windows that appear when the user clicks a link with a `_blank` target ([#6926](https://github.com/DevExpress/testcafe/issues/6926)).
+* TestCafe fails to start because it triggers the `dns.setDefaultResultOrder` method in older Node.js environments ([#7447](https://github.com/DevExpress/testcafe/issues/7447)).
+* TestCafe depends on a vulnerable, outdated version of the `babel-plugin-module-resolver` package ([#7456](https://github.com/DevExpress/testcafe/issues/7456)).
+
 ## v2.2.0 (2022-12-29)
 
 TestCafe v2.2.0 introduces user-defined custom actions and an important *experimental* capability. Google Chrome users can now enable "proxyless mode" to speed up their test suite.
