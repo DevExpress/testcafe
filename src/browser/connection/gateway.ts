@@ -268,7 +268,7 @@ export default class BrowserConnectionGateway {
                 try {
                     const testRun        = connection.getCurrentTestRun();
                     const rawSelector    = JSON.parse(data).selector;
-                    const parsedSelector = this._getParsedSelector(testRun, rawSelector);
+                    const parsedSelector = BrowserConnectionGateway._getParsedSelector(testRun, rawSelector);
 
                     respondWithJSON(res, parsedSelector);
                 }
