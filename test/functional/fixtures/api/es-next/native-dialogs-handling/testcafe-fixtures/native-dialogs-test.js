@@ -104,13 +104,7 @@ test('Expected beforeUnload after an action', async t => {
 
     const info = await t.getNativeDialogHistory();
 
-    const experimentalProxyless = t.testRun.opts && t.testRun.opts.experimentalProxyless;
-
-    if (experimentalProxyless)
-        // NOTE: before unload handling through CDP does not support the type property
-        expect(info).to.deep.equal([{ type: 'beforeunload', text: '', url: pageUrl }]);
-    else
-        expect(info).to.deep.equal([{ type: 'beforeunload', text: 'Before unload', url: pageUrl }]);
+    expect(info).to.deep.equal([{ type: 'beforeunload', text: 'Before unload', url: pageUrl }]);
 });
 
 test('Expected alert and prompt after redirect', async t => {

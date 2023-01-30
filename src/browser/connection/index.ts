@@ -203,7 +203,7 @@ export default class BrowserConnection extends EventEmitter {
         this.openFileProtocolUrl = proxy.resolveRelativeServiceUrl(this.openFileProtocolRelativeUrl);
     }
 
-    public set messageBus (messageBus: MessageBus) {
+    public set messageBus (messageBus: MessageBus | undefined) {
         this._messageBus         = messageBus;
         this.warningLog.callback = WarningLog.createAddWarningCallback(this._messageBus);
 
@@ -213,6 +213,12 @@ export default class BrowserConnection extends EventEmitter {
                     this._currentTestRun = testRun;
             });
         }
+
+        this.emit('message-bus-initialized', messageBus);
+    }
+
+    public get messageBus (): MessageBus | undefined {
+        return this._messageBus;
     }
 
     private _setEventHandlers (): void {

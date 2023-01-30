@@ -3,6 +3,7 @@ import RequestPausedEvent = Protocol.Fetch.RequestPausedEvent;
 import { ProtocolApi } from 'chrome-remote-interface';
 import { ProxylessSetupOptions } from '../shared/types';
 import { StoragesSnapshot } from 'testcafe-hammerhead';
+import { Dictionary } from '../configuration/interfaces';
 
 export interface SpecialServiceRoutes {
     errorPage1: string;
@@ -25,8 +26,10 @@ export interface InjectableResourcesOptions {
     isIframe: boolean;
     url?: string;
     restoringStorages?: StoragesSnapshot | null;
-    contextStorage?: string;
+    contextStorage?: SessionStorageInfo;
 }
+
+export type SessionStorageInfo = Dictionary<Dictionary<string>> | null;
 
 export enum EventType {
     Mouse,

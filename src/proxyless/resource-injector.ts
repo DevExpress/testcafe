@@ -12,6 +12,7 @@ import {
     INJECTABLE_SCRIPTS as HAMMERHEAD_INJECTABLE_SCRIPTS,
     getAssetPath,
     PageRestoreStoragesOptions,
+    StoragesSnapshot,
 } from 'testcafe-hammerhead';
 import BrowserConnection from '../browser/connection';
 import { SCRIPTS, TESTCAFE_UI_STYLES } from '../assets/injectables';
@@ -23,6 +24,7 @@ import { redirect, navigateTo } from './utils/cdp';
 import {
     DocumentResourceInfo,
     InjectableResourcesOptions,
+    SessionStorageInfo,
     SpecialServiceRoutes,
 } from './types';
 
@@ -58,10 +60,32 @@ export default class ResourceInjector {
         return this._browserConnection.getCurrentTestRun();
     }
 
-    private _getRestoreContextStorageScript (contextStorage?: string): string {
-        contextStorage = JSON.stringify(contextStorage || '');
+    private _getRestoreContextStorageScript (contextStorage?: SessionStorageInfo | null): string {
+        const currentTestRun = this._currentTestRun as TestRun;
+        const value = JSON.stringify(contextStorage?.[currentTestRun.id] || '');
 
-        return `Object.defineProperty(window, '%proxylessContextStorage%', { configurable: true, value: ${contextStorage} });`;
+        return `Object.defineProperty(window, '%proxylessContextStorage%', { configurable: true, value: ${value} });`;
+    }
+
+    private _getRestoreStoragesScript (restoringStorages: StoragesSnapshot | null | undefined): string {
+        if (!restoringStorages)
+            return '(function() {})()';
+
+        return `(function() {
+            window.localStorage.clear();
+            window.sessionStorage.clear();
+            
+            const snapshot = ${JSON.stringify(restoringStorages)};
+            const ls       = JSON.parse(snapshot.localStorage);
+            const ss       = JSON.parse(snapshot.sessionStorage);
+            
+            for (let i = 0; i < ls[0].length; i++)
+                window.localStorage.setItem(ls[0][i], ls[1][i]);
+                
+            for (let i = 0; i < ss[0].length; i++)
+                window.sessionStorage.setItem(ss[0][i], ss[1][i]);
+        })();
+        `;
     }
 
     private async _prepareInjectableResources ({ isIframe, restoringStorages, contextStorage }: InjectableResourcesOptions): Promise<PageInjectableResources | null> {
@@ -81,7 +105,6 @@ export default class ResourceInjector {
         });
 
         const injectableResources = {
-            storages:    restoringStorages,
             stylesheets: [
                 TESTCAFE_UI_STYLES,
             ],
@@ -89,7 +112,7 @@ export default class ResourceInjector {
                 ...HAMMERHEAD_INJECTABLE_SCRIPTS.map(hs => getAssetPath(hs, proxy.options.developmentMode)),
                 ...SCRIPTS.map(s => getAssetPath(s, proxy.options.developmentMode)),
             ],
-            embeddedScripts: [this._getRestoreContextStorageScript(contextStorage), taskScript],
+            embeddedScripts: [ this._getRestoreStoragesScript(restoringStorages), this._getRestoreContextStorageScript(contextStorage), taskScript],
         };
 
         injectableResources.scripts     = injectableResources.scripts.map(script => proxy.resolveRelativeServiceUrl(script));

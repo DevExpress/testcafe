@@ -210,14 +210,11 @@ export default class Driver extends serviceUtils.EventEmitter {
         if (!this.options.proxyless)
             preventRealEvents();
 
+        hammerhead.on(hammerhead.EVENTS.uncaughtJsError, err => this._onJsError(err));
+        hammerhead.on(hammerhead.EVENTS.unhandledRejection, err => this._onJsError(err));
         hammerhead.on(hammerhead.EVENTS.consoleMethCalled, e => this._onConsoleMessage(e));
         hammerhead.on(hammerhead.EVENTS.beforeFormSubmit, e => this._onFormSubmit(e));
         hammerhead.on(hammerhead.EVENTS.windowOpened, e => this._onChildWindowOpened(e));
-
-        if (!this.options.proxyless) {
-            hammerhead.on(hammerhead.EVENTS.uncaughtJsError, err => this._onJsError(err));
-            hammerhead.on(hammerhead.EVENTS.unhandledRejection, err => this._onJsError(err));
-        }
 
         this.setCustomCommandHandlers(COMMAND_TYPE.unlockPage, () => this._unlockPageAfterTestIsDone());
         this.setCustomCommandHandlers(COMMAND_TYPE.getActiveElement, () => this._getActiveElement());
