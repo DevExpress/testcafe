@@ -120,7 +120,7 @@ export default class BrowserConnection extends EventEmitter {
     public openFileProtocolRelativeUrl = '';
     public openFileProtocolUrl = '';
     public dispatchProxylessEventRelativeUrl = '';
-    public parseSelectorUrl = '';
+    public parseSelectorRelativeUrl = '';
     private readonly debugLogger: debug.Debugger;
     private osInfo: OSInfo | null = null;
 
@@ -196,7 +196,7 @@ export default class BrowserConnection extends EventEmitter {
         this.closeWindowUrl                    = `${SERVICE_ROUTES.closeWindow}/${this.id}`;
         this.openFileProtocolRelativeUrl       = `${SERVICE_ROUTES.openFileProtocol}/${this.id}`;
         this.dispatchProxylessEventRelativeUrl = `${SERVICE_ROUTES.dispatchProxylessEvent}/${this.id}`;
-        this.parseSelectorUrl                  = `${SERVICE_ROUTES.parseSelector}/${this.id}`;
+        this.parseSelectorRelativeUrl          = `${SERVICE_ROUTES.parseSelector}/${this.id}`;
 
         this.idleUrl             = proxy.resolveRelativeServiceUrl(this.idleRelativeUrl);
         this.heartbeatUrl        = proxy.resolveRelativeServiceUrl(this.heartbeatRelativeUrl);
