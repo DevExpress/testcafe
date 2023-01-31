@@ -46,14 +46,14 @@ test('should generate valid selector', async t => {
 
         startPicking()
             .then(() => {
-                const target = document.querySelector('div.column:nth-child(2) > fieldset:nth-child(2) > legend:nth-child(1)');
+                const target = document.querySelector('#container > div:nth-child(2)');
 
                 pickElement(target);
 
                 return getSelectorInputValue();
             })
             .then(value => {
-                if (value === "Selector('#main-form legend').withText('Which TestCafe interface do you use:')")
+                if (value === "Selector('#container div').withText('Another text')")
                     resumeTest();
             });
     })();
@@ -102,7 +102,7 @@ test('should indicate the correct number of elements matching the selector', asy
                 return getMatchIndicatorInnerText();
             })
             .then(text => {
-                if (text === 'Found: 19')
+                if (text === 'Found: 4')
                     resumeTest();
             });
     })();
@@ -156,7 +156,7 @@ test('should highlight matches elements on input', async t => {
         const selector = 'input[id]';
         const elements = document.querySelectorAll(selector);
 
-        if (!elements || elements.length < 2)
+        if (!elements || elements.length !== 4)
             return;
 
         typeSelector(selector)
@@ -189,7 +189,7 @@ test('should place a selector selected from the list in the input field', async 
 
         startPicking()
             .then(() => {
-                const target = document.querySelector('#main-form > div > div.row > div.column.col-1 > fieldset:nth-child(2) > p:nth-child(3)');
+                const target = document.querySelector('#main > p:nth-child(3)');
 
                 pickElement(target);
 
