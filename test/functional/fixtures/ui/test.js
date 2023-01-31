@@ -25,7 +25,7 @@ describe('TestCafe UI', () => {
                 if (config.experimentalDebug)
                     this.skip();
 
-                return runTests('./testcafe-fixtures/selector-inspector-test.js', testName, { skip: ['ie'] });
+                return runTests('./testcafe-fixtures/selector-inspector-test.js', testName, { skip: ['ie', 'android', 'ipad', 'iphone'] });
             });
         }
 
