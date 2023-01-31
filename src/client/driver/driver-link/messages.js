@@ -84,11 +84,12 @@ export class CommandExecutedMessage extends InterDriverMessage {
 }
 
 export class ExecuteCommandMessage extends InterDriverMessage {
-    constructor (command, testSpeed) {
+    constructor (command, testSpeed, leftTopPoint) {
         super(TYPE.executeCommand);
 
-        this.command   = command;
-        this.testSpeed = testSpeed;
+        this.command      = command;
+        this.testSpeed    = testSpeed;
+        this.leftTopPoint = leftTopPoint;
     }
 }
 

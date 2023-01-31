@@ -2,6 +2,7 @@ import { EventType } from '../types';
 // @ts-ignore
 import { utils } from '../../client/core/deps/hammerhead';
 import { calculateKeyModifiersValue, calculateMouseButtonValue } from './utils';
+import AxisValues from '../../client/core/utils/values/axis-values';
 
 const MOUSE_EVENT_OPTIONS = {
     clickCount: 1,
@@ -11,14 +12,16 @@ const MOUSE_EVENT_OPTIONS = {
 export default class ProxylessEventSimulator {
 
     private readonly _dispatchEventFn: Function;
-    constructor (dispatchEventFn: Function) {
+    private readonly _leftTopPoint: AxisValues<number>;
+    constructor (dispatchEventFn: Function, leftTopPoint?: AxisValues<number>) {
         this._dispatchEventFn = dispatchEventFn;
+        this._leftTopPoint    = leftTopPoint || new AxisValues<number>(0, 0);
     }
 
     private _createMouseEventOptions (type: string, options: any): any {
         return utils.extend({
-            x:         options.options.clientX,
-            y:         options.options.clientY,
+            x:         options.options.clientX + this._leftTopPoint.x,
+            y:         options.options.clientY + this._leftTopPoint.y,
             modifiers: calculateKeyModifiersValue(options.options),
             button:    calculateMouseButtonValue(options.options),
             type,

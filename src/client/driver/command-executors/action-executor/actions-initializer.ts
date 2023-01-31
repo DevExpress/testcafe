@@ -39,6 +39,7 @@ import {
 import COMMAND_TYPE from '../../../../test-run/commands/type';
 import { ActionCommandBase } from '../../../../test-run/commands/base';
 import { Automation } from '../../../automation/types';
+import AxisValues from '../../../core/utils/values/axis-values';
 
 
 ActionExecutor.ACTIONS_HANDLERS[COMMAND_TYPE.dispatchEvent] = {
@@ -64,13 +65,13 @@ ActionExecutor.ACTIONS_HANDLERS[COMMAND_TYPE.pressKey] = {
 };
 
 ActionExecutor.ACTIONS_HANDLERS[COMMAND_TYPE.click] = {
-    create: (command, elements, dispatchProxylessEventFn?: Function) => {
+    create: (command, elements, dispatchProxylessEventFn?: Function, leftTopPoint?: AxisValues<number>) => {
         if (/option|optgroup/.test(domUtils.getTagName(elements[0])))
             return new SelectChildClickAutomation(elements[0], command.options);
 
         cursor.shouldRender = !dispatchProxylessEventFn;
 
-        return new ClickAutomation(elements[0], command.options, window, cursor, dispatchProxylessEventFn);
+        return new ClickAutomation(elements[0], command.options, window, cursor, dispatchProxylessEventFn, leftTopPoint);
     },
 };
 

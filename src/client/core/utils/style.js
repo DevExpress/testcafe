@@ -4,24 +4,26 @@ import * as domUtils from './dom';
 
 const styleUtils = hammerhead.utils.style;
 
-export const getBordersWidth      = hammerhead.utils.style.getBordersWidth;
-export const getComputedStyle     = hammerhead.utils.style.getComputedStyle;
-export const getElementMargin     = hammerhead.utils.style.getElementMargin;
-export const getElementPadding    = hammerhead.utils.style.getElementPadding;
-export const getElementScroll     = hammerhead.utils.style.getElementScroll;
-export const getOptionHeight      = hammerhead.utils.style.getOptionHeight;
-export const getSelectElementSize = hammerhead.utils.style.getSelectElementSize;
-export const isElementVisible     = hammerhead.utils.style.isElementVisible;
-export const isSelectVisibleChild = hammerhead.utils.style.isVisibleChild;
-export const getWidth             = hammerhead.utils.style.getWidth;
-export const getHeight            = hammerhead.utils.style.getHeight;
-export const getInnerWidth        = hammerhead.utils.style.getInnerWidth;
-export const getInnerHeight       = hammerhead.utils.style.getInnerHeight;
-export const getScrollLeft        = hammerhead.utils.style.getScrollLeft;
-export const getScrollTop         = hammerhead.utils.style.getScrollTop;
-export const setScrollLeft        = hammerhead.utils.style.setScrollLeft;
-export const setScrollTop         = hammerhead.utils.style.setScrollTop;
-export const get                  = hammerhead.utils.style.get;
+export const getBordersWidth        = hammerhead.utils.style.getBordersWidth;
+export const getComputedStyle       = hammerhead.utils.style.getComputedStyle;
+export const getElementMargin       = hammerhead.utils.style.getElementMargin;
+export const getElementPadding      = hammerhead.utils.style.getElementPadding;
+export const getElementScroll       = hammerhead.utils.style.getElementScroll;
+export const getOptionHeight        = hammerhead.utils.style.getOptionHeight;
+export const getSelectElementSize   = hammerhead.utils.style.getSelectElementSize;
+export const isElementVisible       = hammerhead.utils.style.isElementVisible;
+export const isSelectVisibleChild   = hammerhead.utils.style.isVisibleChild;
+export const getWidth               = hammerhead.utils.style.getWidth;
+export const getHeight              = hammerhead.utils.style.getHeight;
+export const getInnerWidth          = hammerhead.utils.style.getInnerWidth;
+export const getInnerHeight         = hammerhead.utils.style.getInnerHeight;
+export const getScrollLeft          = hammerhead.utils.style.getScrollLeft;
+export const getScrollTop           = hammerhead.utils.style.getScrollTop;
+export const setScrollLeft          = hammerhead.utils.style.setScrollLeft;
+export const setScrollTop           = hammerhead.utils.style.setScrollTop;
+export const get                    = hammerhead.utils.style.get;
+export const getBordersWidthFloat   = hammerhead.utils.style.getBordersWidthFloat;
+export const getElementPaddingFloat = hammerhead.utils.style.getElementPaddingFloat;
 
 
 export function set (el, style, value) {
