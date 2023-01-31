@@ -55,6 +55,7 @@ const PROXYLESS_TESTS_GLOB = [
     'test/functional/fixtures/api/es-next/generic-errors/test.js',
     'test/functional/fixtures/api/es-next/global-hooks/test.js',
     'test/functional/fixtures/api/es-next/hooks/test.js',
+    'test/functional/fixtures/api/es-next/auth/test.js',
     'test/functional/fixtures/regression/**/test.js',
     '!test/functional/fixtures/regression/gh-1138/test.js',
     '!test/functional/fixtures/regression/gh-1311/test.js',

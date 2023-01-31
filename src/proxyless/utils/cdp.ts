@@ -41,6 +41,10 @@ export function isRequest (event: RequestPausedEvent): boolean {
     return event.responseStatusCode === void 0;
 }
 
+export function isUnauthorized (statusCode: number): boolean {
+    return statusCode === 401;
+}
+
 export function isRequestPausedEvent (val: any): val is RequestPausedEvent {
     return val && val.frameId && typeof val.request === 'object';
 }

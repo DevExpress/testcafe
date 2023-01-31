@@ -10,7 +10,13 @@ import FulfillRequestRequest = Protocol.Fetch.FulfillRequestRequest;
 import ProxylessRequestHookEventProvider from '../request-hooks/event-provider';
 import ResourceInjector from '../resource-injector';
 import { convertToHeaderEntries } from '../utils/headers';
-import { createRequestPausedEventForResponse, isRequest } from '../utils/cdp';
+
+import {
+    createRequestPausedEventForResponse,
+    isRequest,
+    isUnauthorized,
+} from '../utils/cdp';
+
 import BrowserConnection from '../../browser/connection';
 import ERROR_ROUTE from '../error-route';
 import { SessionStorageInfo, SpecialServiceRoutes } from '../types';
@@ -33,7 +39,7 @@ import DEFAULT_PROXYLESS_SETUP_OPTIONS from '../default-setup-options';
 import getSpecialRequestHandler from './special-handlers';
 import { safeContinueRequest, safeContinueResponse } from './safe-api';
 import ProxylessApiBase from '../api-base';
-
+import { resendAuthRequest } from './resendAuthRequest';
 
 export default class ProxylessRequestPipeline extends ProxylessApiBase {
     public readonly requestHookEventProvider: ProxylessRequestHookEventProvider;
@@ -157,6 +163,9 @@ export default class ProxylessRequestPipeline extends ProxylessApiBase {
             if (event.responseStatusText !== '')
                 fulfillInfo.responsePhrase = event.responseStatusText;
 
+            if (isUnauthorized(event.responseStatusCode as number))
+                await this._tryAuthorizeWithHttpBasicAuthCredentials(event, fulfillInfo);
+
             await this._resourceInjector.processHTMLPageContent(
                 fulfillInfo,
                 {
@@ -168,6 +177,21 @@ export default class ProxylessRequestPipeline extends ProxylessApiBase {
                 this._client);
 
             this.restoringStorages = null;
+        }
+    }
+
+    private async _tryAuthorizeWithHttpBasicAuthCredentials (event: RequestPausedEvent, fulfillInfo: FulfillRequestRequest): Promise<void> {
+        const credentials = this._testRun.getAuthCredentials();
+
+        if (!credentials)
+            return;
+
+        const authRequest = await resendAuthRequest(event.request, credentials);
+
+        if (typeof authRequest !== 'string' && !isUnauthorized(authRequest.status)) {
+            fulfillInfo.responseCode = authRequest.status;
+            fulfillInfo.body = authRequest.body.toString();
+            fulfillInfo.responsePhrase = authRequest.statusText;
         }
     }
 

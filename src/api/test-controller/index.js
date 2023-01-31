@@ -80,7 +80,7 @@ import {
 import { AssertionCommand } from '../../test-run/commands/assertion';
 import { getCallsiteId, getCallsiteStackFrameString } from '../../utils/callsite';
 import ReExecutablePromise from '../../utils/re-executable-promise';
-import sendRequest from '../../test-run/request/send';
+import { sendRequestThroughAPI as sendRequest } from '../../test-run/request/send';
 import { RequestRuntimeError } from '../../errors/runtime';
 import { RUNTIME_ERRORS } from '../../errors/types';
 import CustomActions from './custom-actions';

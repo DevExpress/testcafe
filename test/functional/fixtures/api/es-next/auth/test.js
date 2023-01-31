@@ -1,4 +1,5 @@
-const os = require('os');
+const os                  = require('os');
+const { skipInProxyless } = require('../../../../utils/skip-in');
 
 const TRANSPARENT_PROXY_URL = os.hostname() + ':3005';
 
@@ -11,7 +12,7 @@ describe('Basic and NTLM authentications', function () {
         return runTests('./testcafe-fixtures/basic-auth-with-correct-credentials-test.js');
     });
 
-    it('Should authenticate on a "NTLM" server with correct credentials', function () {
+    skipInProxyless('Should authenticate on a "NTLM" server with correct credentials', function () {
         return runTests('./testcafe-fixtures/ntlm-auth-check-username-test.js');
     });
 
@@ -28,7 +29,7 @@ describe('Basic and NTLM authentications', function () {
             return runTests('./testcafe-fixtures/basic-auth-with-correct-credentials-test.js', null, { useProxy: TRANSPARENT_PROXY_URL });
         });
 
-        it('Should authenticate on a "NTLM" server with correct credentials', function () {
+        skipInProxyless('Should authenticate on a "NTLM" server with correct credentials', function () {
             return runTests('./testcafe-fixtures/ntlm-auth-check-username-test.js', null, { useProxy: TRANSPARENT_PROXY_URL });
         });
 
