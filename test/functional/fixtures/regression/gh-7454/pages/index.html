@@ -1,0 +1,16 @@
+<html>
+<body>
+    <script>
+        const shadowDOMContainer = document.createElement('div');
+        const shadow             = shadowDOMContainer.attachShadow({ mode: 'open' });
+
+        shadow.innerHTML = `<div>
+                  <svg xmlns="http://www.w3.org/2000/svg">
+                      <rect fill="#000" stroke="red" width="220" height="86"/>
+                  </svg>
+          </div>`;
+
+        document.body.appendChild(shadowDOMContainer);
+    </script>
+</body>
+</html>

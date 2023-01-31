@@ -255,7 +255,7 @@ function getDisplayNoneParent (el: Node): HTMLElement {
 }
 
 function hiddenUsingStyles (el: HTMLElement): boolean {
-    return elHasVisibilityHidden(el) || elHasVisibilityCollapse(el) || elHasDisplayNone(el);
+    return !domUtils.isShadowElement(el) && (elHasVisibilityHidden(el) || elHasVisibilityCollapse(el) || elHasDisplayNone(el));
 }
 
 function hiddenByRectangle (el: HTMLElement): boolean {
