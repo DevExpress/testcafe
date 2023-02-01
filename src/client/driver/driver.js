@@ -1170,9 +1170,11 @@ export default class Driver extends serviceUtils.EventEmitter {
             return selectorExecutor.getResult();
         };
 
-        const dispatchProxylessEventFn = this.options.proxyless
-            ? browser.dispatchProxylessEvent.bind(browser.dispatchProxylessEvent, this.communicationUrls.dispatchProxylessEvent, hammerhead.createNativeXHR)
-            : null;
+        const dispatchProxylessEventFn = this.options.proxyless ? nativeMethods.functionBind.call(
+            browser.dispatchProxylessEvent,
+            browser.dispatchProxylessEvent,
+            this.communicationUrls.dispatchProxylessEvent,
+            hammerhead.createNativeXHR) : null;
 
         const executor = new ActionExecutor(command, {
             globalSelectorTimeout: this.options.selectorTimeout,
