@@ -247,7 +247,7 @@ export default class TestRun extends AsyncEventEmitter {
     public readonly session: SessionController;
     public consoleMessages: BrowserConsoleMessages;
     private pendingRequest: PendingRequest | null;
-    private pendingPageError: PageLoadError | Error | null;
+    public pendingPageError: PageLoadError | Error | null;
     public controller: TestController | null;
     public ctx: object;
     public fixtureCtx: object | null;

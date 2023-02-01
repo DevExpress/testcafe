@@ -13,11 +13,11 @@ import { convertToHeaderEntries } from '../utils/headers';
 
 import {
     createRequestPausedEventForResponse,
+    getRequestId,
     isRequest,
     isUnauthorized,
 } from '../utils/cdp';
 
-import BrowserConnection from '../../browser/connection';
 import ERROR_ROUTE from '../error-route';
 import { SessionStorageInfo, SpecialServiceRoutes } from '../types';
 import {
@@ -40,8 +40,13 @@ import getSpecialRequestHandler from './special-handlers';
 import { safeContinueRequest, safeContinueResponse } from './safe-api';
 import ProxylessApiBase from '../api-base';
 import { resendAuthRequest } from './resendAuthRequest';
+import TestRunBridge from './test-run-bridge';
+import ProxylessRequestContextInfo from './context-info';
+
 
 export default class ProxylessRequestPipeline extends ProxylessApiBase {
+    private readonly _testRunBridge: TestRunBridge;
+    private readonly _contextInfo: ProxylessRequestContextInfo;
     public readonly requestHookEventProvider: ProxylessRequestHookEventProvider;
     public restoringStorages: StoragesSnapshot | null;
     public contextStorage: SessionStorageInfo | null;
@@ -55,9 +60,11 @@ export default class ProxylessRequestPipeline extends ProxylessApiBase {
     public constructor (browserId: string, client: ProtocolApi) {
         super(browserId, client);
 
-        this._specialServiceRoutes    = this._getSpecialServiceRoutes(browserId);
-        this.requestHookEventProvider = new ProxylessRequestHookEventProvider(browserId);
-        this._resourceInjector        = new ResourceInjector(browserId, this._specialServiceRoutes);
+        this._testRunBridge           = new TestRunBridge(browserId);
+        this._contextInfo             = new ProxylessRequestContextInfo(this._testRunBridge);
+        this._specialServiceRoutes    = this._getSpecialServiceRoutes();
+        this.requestHookEventProvider = new ProxylessRequestHookEventProvider();
+        this._resourceInjector        = new ResourceInjector(this._testRunBridge, this._specialServiceRoutes);
         this._options                 = DEFAULT_PROXYLESS_SETUP_OPTIONS;
         this._stopped                 = false;
         this._currentFrameTree        = null;
@@ -66,8 +73,8 @@ export default class ProxylessRequestPipeline extends ProxylessApiBase {
         this.contextStorage           = null;
     }
 
-    private _getSpecialServiceRoutes (browserId: string): SpecialServiceRoutes {
-        const browserConnection = BrowserConnection.getById(browserId) as BrowserConnection;
+    private _getSpecialServiceRoutes (): SpecialServiceRoutes {
+        const browserConnection = this._testRunBridge.getBrowserConnection();
         const proxy             = browserConnection.browserConnectionGateway.proxy;
 
         return {
@@ -127,6 +134,14 @@ export default class ProxylessRequestPipeline extends ProxylessApiBase {
             && !this._isIframe(event.frameId);
     }
 
+    private async _getUserScripts (event: RequestPausedEvent | FrameNavigatedEvent): Promise<string[]> {
+        const { pipelineContext, eventFactory } = this._contextInfo.getContextData(event);
+
+        await pipelineContext.prepareInjectableUserScripts(eventFactory, this._testRunBridge.getUserScripts());
+
+        return pipelineContext.injectableUserScripts;
+    }
+
     private async _respondToOtherRequest (event: RequestPausedEvent): Promise<void> {
         if (isRedirectStatusCode(event.responseStatusCode)) {
             await safeContinueResponse(this._client, { requestId: event.requestId });
@@ -137,18 +152,23 @@ export default class ProxylessRequestPipeline extends ProxylessApiBase {
         const resourceInfo = await this._resourceInjector.getDocumentResourceInfo(event, this._client);
 
         if (resourceInfo.error) {
-            if (this._shouldRedirectToErrorPage(event))
+            if (this._shouldRedirectToErrorPage(event)) {
                 await this._resourceInjector.redirectToErrorPage(this._client, resourceInfo.error, event.request.url);
+
+                this._contextInfo.dispose(getRequestId(event));
+            }
 
             return;
         }
 
-        const modified = await this.requestHookEventProvider.onResponse(event, resourceInfo.body, this._client);
+        const modified = await this.requestHookEventProvider.onResponse(event, resourceInfo.body, this._contextInfo, this._client);
 
         if (event.resourceType !== 'Document') {
             const continueResponseRequest = this._createContinueResponseRequest(event, modified);
 
             await safeContinueResponse(this._client, continueResponseRequest);
+
+            this._contextInfo.dispose(getRequestId(event));
         }
         else {
             const fulfillInfo = {
@@ -166,6 +186,8 @@ export default class ProxylessRequestPipeline extends ProxylessApiBase {
             if (isUnauthorized(event.responseStatusCode as number))
                 await this._tryAuthorizeWithHttpBasicAuthCredentials(event, fulfillInfo);
 
+            const userScripts = await this._getUserScripts(event);
+
             await this._resourceInjector.processHTMLPageContent(
                 fulfillInfo,
                 {
@@ -173,8 +195,11 @@ export default class ProxylessRequestPipeline extends ProxylessApiBase {
                     url:               event.request.url,
                     restoringStorages: this.restoringStorages,
                     contextStorage:    this.contextStorage,
+                    userScripts,
                 },
                 this._client);
+
+            this._contextInfo.dispose(getRequestId(event));
 
             this.restoringStorages = null;
         }
@@ -195,13 +220,30 @@ export default class ProxylessRequestPipeline extends ProxylessApiBase {
         }
     }
 
+    private async _tryRespondToOtherRequest (event: RequestPausedEvent): Promise<void> {
+        try {
+            await this._respondToOtherRequest(event);
+        }
+        catch (err) {
+            if (event.networkId && this._failedRequestIds.includes(event.networkId)) {
+                remove(this._failedRequestIds, event.networkId);
+
+                return;
+            }
+
+            throw err;
+        }
+    }
+
     private async _handleOtherRequests (event: RequestPausedEvent): Promise<void> {
         requestPipelineOtherRequestLogger('%r', event);
 
         if (isRequest(event) || isRedirectStatusCode(event.responseStatusCode)) {
-            await this.requestHookEventProvider.onRequest(event);
+            this._contextInfo.init(event);
 
-            const pipelineContext = this.requestHookEventProvider.getPipelineContext(event.networkId as string);
+            await this.requestHookEventProvider.onRequest(event, this._contextInfo);
+
+            const pipelineContext = this._contextInfo.getPipelineContext(event.networkId as string);
 
             if (!pipelineContext || !pipelineContext.mock)
                 await safeContinueRequest(this._client, event);
@@ -212,25 +254,15 @@ export default class ProxylessRequestPipeline extends ProxylessApiBase {
 
                 const mockedResponseEvent = createRequestPausedEventForResponse(mockedResponse, event);
 
-                await this.requestHookEventProvider.onResponse(mockedResponseEvent, mockedResponse.getBody(), this._client);
+                await this.requestHookEventProvider.onResponse(mockedResponseEvent, mockedResponse.getBody(), this._contextInfo, this._client);
 
                 await this._handleMockResponse(mockedResponse, pipelineContext, event);
+
+                this._contextInfo.dispose(getRequestId(event));
             }
         }
-        else {
-            try {
-                await this._respondToOtherRequest(event);
-            }
-            catch (err) {
-                if (event.networkId && this._failedRequestIds.includes(event.networkId)) {
-                    remove(this._failedRequestIds, event.networkId);
-
-                    return;
-                }
-
-                throw err;
-            }
-        }
+        else
+            await this._tryRespondToOtherRequest(event);
     }
 
     private _topFrameNavigation (event: FrameNavigatedEvent): boolean {
@@ -276,7 +308,13 @@ export default class ProxylessRequestPipeline extends ProxylessApiBase {
                 || event.frame.url !== SPECIAL_BLANK_PAGE)
                 return;
 
-            await this._resourceInjector.processAboutBlankPage(event, this._client);
+            this._contextInfo.init(event);
+
+            const userScripts = await this._getUserScripts(event);
+
+            await this._resourceInjector.processAboutBlankPage(event, userScripts, this._client);
+
+            this._contextInfo.dispose(getRequestId(event));
         });
 
         this._client.Page.on('frameStartedLoading', async () => {
@@ -289,7 +327,7 @@ export default class ProxylessRequestPipeline extends ProxylessApiBase {
             this._failedRequestIds.push(event.requestId);
 
             if (event.requestId)
-                this.requestHookEventProvider.cleanUp(event.requestId);
+                this._contextInfo.dispose(event.requestId);
         });
 
         await this._client.Page.setBypassCSP({ enabled: true });

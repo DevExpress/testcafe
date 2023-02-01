@@ -79,7 +79,7 @@ export default class Task extends AsyncEventEmitter {
 
         this.fixtureHookController = new FixtureHookController(tests, browserConnectionGroups.length);
         this._pendingBrowserJobs   = this._createBrowserJobs(proxy, this.opts);
-        this._clientScriptRoutes   = clientScriptsRouting.register(proxy, tests);
+        this._clientScriptRoutes   = clientScriptsRouting.register(proxy, tests, !!this.opts.experimentalProxyless);
         this.testStructure         = this._prepareTestStructure(tests);
 
         if (this.opts.videoPath) {
