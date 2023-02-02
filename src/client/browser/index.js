@@ -198,14 +198,18 @@ export function closeWindow (closeWindowUrl, createXHR, windowId) {
     });
 }
 
-export function dispatchProxylessEvent (dispatchProxylessEventUrl, createXHR, type, options) {
+export async function dispatchProxylessEvent (dispatchProxylessEventUrl, testCafeUI, createXHR, type, options) {
+    await testCafeUI.hide();
+
     const data = JSON.stringify({ //eslint-disable-line no-restricted-globals
         type,
         options,
     });
 
-    return sendXHR(dispatchProxylessEventUrl, createXHR, {
+    await sendXHR(dispatchProxylessEventUrl, createXHR, {
         method: 'POST',
         data,
     });
+
+    await testCafeUI.show();
 }

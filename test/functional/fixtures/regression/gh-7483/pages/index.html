@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        button {
+            position: fixed;
+            bottom: 10px;
+            left: 0;
+        }
+    </style>
+</head>
+
+<body>
+<button>click me</button>
+<div id="logger"></div>
+<script>
+    document.querySelector('button').addEventListener('click', function () {
+        document.querySelector('#logger').innerHTML = 'OK';
+    });
+</script>
+</body>
+</html>

@@ -19,7 +19,7 @@ import {
 
 import { cursor } from './deps/testcafe-automation';
 
-import { StatusBar } from './deps/testcafe-ui';
+import testCafeUI from './deps/testcafe-ui';
 
 import {
     CHECK_IFRAME_DRIVER_LINK_DELAY,
@@ -1174,6 +1174,7 @@ export default class Driver extends serviceUtils.EventEmitter {
             browser.dispatchProxylessEvent,
             browser.dispatchProxylessEvent,
             this.communicationUrls.dispatchProxylessEvent,
+            testCafeUI,
             hammerhead.createNativeXHR) : null;
 
         const executor = new ActionExecutor(command, {
@@ -1898,7 +1899,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         });
 
         this.nativeDialogsTracker = new NativeDialogTracker(this.contextStorage, { proxyless, dialogHandler });
-        this.statusBar            = new StatusBar(this.runInfo.userAgent, this.runInfo.fixtureName, this.runInfo.testName, this.contextStorage);
+        this.statusBar            = new testCafeUI.StatusBar(this.runInfo.userAgent, this.runInfo.fixtureName, this.runInfo.testName, this.contextStorage);
 
         const self = this;
 
