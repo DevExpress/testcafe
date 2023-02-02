@@ -13,12 +13,12 @@ import Protocol from 'devtools-protocol';
 import RequestPausedEvent = Protocol.Fetch.RequestPausedEvent;
 import Request = Protocol.Network.Request;
 import HeaderEntry = Protocol.Fetch.HeaderEntry;
-import { fromBase64String } from '../utils/string';
+import { fromBase64String } from '../../utils/string';
 import { StatusCodes } from 'http-status-codes';
-import { convertToOutgoingHttpHeaders, lowerCaseHeaderNames } from '../utils/headers';
+import { convertToOutgoingHttpHeaders, lowerCaseHeaderNames } from '../../utils/headers';
 
 
-export default class ProxylessEventFactory extends BaseRequestHookEventFactory {
+export default class RequestPausedEventBasedEventFactory extends BaseRequestHookEventFactory {
     private _event: RequestPausedEvent;
     private _responseBody: Buffer;
     private readonly _sessionId: string;
@@ -85,8 +85,8 @@ export default class ProxylessEventFactory extends BaseRequestHookEventFactory {
             url:       request.url,
             method:    request.method.toLowerCase(),
             headers:   lowerCaseHeaderNames(request.headers),
-            body:      ProxylessEventFactory._getRequestData(request),
-            isAjax:    ProxylessEventFactory._getIsAjaxRequest(this._event),
+            body:      RequestPausedEventBasedEventFactory._getRequestData(request),
+            isAjax:    RequestPausedEventBasedEventFactory._getIsAjaxRequest(this._event),
         });
     }
 
@@ -102,8 +102,8 @@ export default class ProxylessEventFactory extends BaseRequestHookEventFactory {
             port:     parsedUrl.port,
             path:     parsedUrl.pathname,
             headers:  this._event.request.headers,
-            body:     ProxylessEventFactory._getRequestData(this._event.request),
-            isAjax:   ProxylessEventFactory._getIsAjaxRequest(this._event),
+            body:     RequestPausedEventBasedEventFactory._getRequestData(this._event.request),
+            isAjax:   RequestPausedEventBasedEventFactory._getIsAjaxRequest(this._event),
         };
 
         if (parsedUrl.username)

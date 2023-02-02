@@ -1,6 +1,4 @@
 import { ProtocolApi } from 'chrome-remote-interface';
-// @ts-ignore
-import { TestRun as LegacyTestRun } from 'testcafe-legacy-api';
 import Protocol from 'devtools-protocol';
 import RequestPausedEvent = Protocol.Fetch.RequestPausedEvent;
 import FrameNavigatedEvent = Protocol.Page.FrameNavigatedEvent;
@@ -13,8 +11,8 @@ import {
     getAssetPath,
     PageRestoreStoragesOptions,
     StoragesSnapshot,
+    Proxy,
 } from 'testcafe-hammerhead';
-import BrowserConnection from '../browser/connection';
 import { SCRIPTS, TESTCAFE_UI_STYLES } from '../assets/injectables';
 import EMPTY_PAGE_MARKUP from './empty-page-markup';
 import { StatusCodes } from 'http-status-codes';
@@ -35,7 +33,7 @@ import {
     toBase64String,
 } from './utils/string';
 import { safeFulfillRequest } from './request-pipeline/safe-api';
-import TestRun from '../test-run';
+import TestRunBridge from './request-pipeline/test-run-bridge';
 
 const RESPONSE_REMOVED_HEADERS = [
     'cross-origin-embedder-policy',
@@ -44,24 +42,16 @@ const RESPONSE_REMOVED_HEADERS = [
 ];
 
 export default class ResourceInjector {
-    private readonly _browserId: string;
     private readonly _specialServiceRoutes: SpecialServiceRoutes;
+    private readonly _testRunBridge: TestRunBridge;
 
-    public constructor (browserId: string, specialServiceRoutes: SpecialServiceRoutes) {
-        this._browserId            = browserId;
+    public constructor (testRunBridge: TestRunBridge, specialServiceRoutes: SpecialServiceRoutes) {
         this._specialServiceRoutes = specialServiceRoutes;
-    }
-
-    private get _browserConnection (): BrowserConnection {
-        return BrowserConnection.getById(this._browserId) as BrowserConnection;
-    }
-
-    private get _currentTestRun (): LegacyTestRun | TestRun | null {
-        return this._browserConnection.getCurrentTestRun();
+        this._testRunBridge        = testRunBridge;
     }
 
     private _getRestoreContextStorageScript (contextStorage?: SessionStorageInfo | null): string {
-        const currentTestRun = this._currentTestRun as TestRun;
+        const currentTestRun = this._testRunBridge.getCurrentTestRun();
         const value = JSON.stringify(contextStorage?.[currentTestRun.id] || '');
 
         return `Object.defineProperty(window, '%proxylessContextStorage%', { configurable: true, value: ${value} });`;
@@ -74,35 +64,30 @@ export default class ResourceInjector {
         return `(function() {
             window.localStorage.clear();
             window.sessionStorage.clear();
-            
+
             const snapshot = ${JSON.stringify(restoringStorages)};
             const ls       = JSON.parse(snapshot.localStorage);
             const ss       = JSON.parse(snapshot.sessionStorage);
-            
+
             for (let i = 0; i < ls[0].length; i++)
                 window.localStorage.setItem(ls[0][i], ls[1][i]);
-                
+
             for (let i = 0; i < ss[0].length; i++)
                 window.sessionStorage.setItem(ss[0][i], ss[1][i]);
         })();
         `;
     }
 
-    private async _prepareInjectableResources ({ isIframe, restoringStorages, contextStorage }: InjectableResourcesOptions): Promise<PageInjectableResources | null> {
-        const proxy    = this._browserConnection.browserConnectionGateway.proxy;
-        const windowId = this._browserConnection.activeWindowId;
+    private _resolveRelativeUrls (proxy: Proxy, relativeUrls: string[]): string[] {
+        return relativeUrls.map(url => proxy.resolveRelativeServiceUrl(url));
+    }
 
-        if (!this._currentTestRun)
+    private async _prepareInjectableResources ({ isIframe, restoringStorages, contextStorage, userScripts }: InjectableResourcesOptions): Promise<PageInjectableResources | null> {
+        if (!this._testRunBridge.getCurrentTestRun())
             return null;
 
-        const taskScript = await this._currentTestRun.session.getTaskScript({
-            referer:     '',
-            cookieUrl:   '',
-            withPayload: true,
-            serverInfo:  proxy.server1Info,
-            windowId,
-            isIframe,
-        });
+        const taskScript = await this._testRunBridge.getTaskScript({ isIframe, restoringStorages, contextStorage, userScripts });
+        const proxy      = this._testRunBridge.getBrowserConnection().browserConnectionGateway.proxy;
 
         const injectableResources = {
             stylesheets: [
@@ -113,10 +98,12 @@ export default class ResourceInjector {
                 ...SCRIPTS.map(s => getAssetPath(s, proxy.options.developmentMode)),
             ],
             embeddedScripts: [ this._getRestoreStoragesScript(restoringStorages), this._getRestoreContextStorageScript(contextStorage), taskScript],
+            userScripts:     userScripts || [],
         };
 
-        injectableResources.scripts     = injectableResources.scripts.map(script => proxy.resolveRelativeServiceUrl(script));
-        injectableResources.stylesheets = injectableResources.stylesheets.map(style => proxy.resolveRelativeServiceUrl(style));
+        injectableResources.scripts     = this._resolveRelativeUrls(proxy, injectableResources.scripts);
+        injectableResources.userScripts = this._resolveRelativeUrls(proxy, injectableResources.userScripts);
+        injectableResources.stylesheets = this._resolveRelativeUrls(proxy, injectableResources.stylesheets);
 
         return injectableResources;
     }
@@ -141,8 +128,7 @@ export default class ResourceInjector {
     }
 
     public async redirectToErrorPage (client: ProtocolApi, err: Error, url: string): Promise<void> {
-        const browserConnection = BrowserConnection.getById(this._browserId) as BrowserConnection;
-        const currentTestRun    = browserConnection.getCurrentTestRun();
+        const currentTestRun = this._testRunBridge.getCurrentTestRun();
 
         if (!currentTestRun)
             return;
@@ -195,10 +181,10 @@ export default class ResourceInjector {
         }
     }
 
-    public async processAboutBlankPage (event: FrameNavigatedEvent, client: ProtocolApi): Promise<void> {
+    public async processAboutBlankPage (event: FrameNavigatedEvent, userScripts: string[], client: ProtocolApi): Promise<void> {
         resourceInjectorLogger('Handle page as about:blank. Origin url: %s', event.frame.url);
 
-        const injectableResources = await this._prepareInjectableResources({ isIframe: false }) as PageInjectableResources;
+        const injectableResources = await this._prepareInjectableResources({ isIframe: false, userScripts }) as PageInjectableResources;
         const html                = injectResources(EMPTY_PAGE_MARKUP, injectableResources);
 
         await client.Page.setDocumentContent({
@@ -235,7 +221,7 @@ export default class ResourceInjector {
         if (url && restoringStorages) {
             return {
                 host:      new URL(url).host,
-                sessionId: this._currentTestRun.session.id,
+                sessionId: this._testRunBridge.getSessionId(),
             };
         }
 

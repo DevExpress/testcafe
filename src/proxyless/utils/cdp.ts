@@ -2,6 +2,7 @@ import { ProtocolApi } from 'chrome-remote-interface';
 import { StatusCodes } from 'http-status-codes';
 import Protocol from 'devtools-protocol';
 import RequestPausedEvent = Protocol.Fetch.RequestPausedEvent;
+import FrameNavigatedEvent = Protocol.Page.FrameNavigatedEvent;
 import { IncomingMessageLike } from 'testcafe-hammerhead';
 import { convertToHeaderEntries } from './headers';
 import { EventType } from '../types';
@@ -58,4 +59,11 @@ export function createRequestPausedEventForResponse (mockedResponse: IncomingMes
         responseStatusCode: mockedResponse.statusCode,
         responseHeaders:    convertToHeaderEntries(mockedResponse.headers),
     });
+}
+
+export function getRequestId (event: RequestPausedEvent | FrameNavigatedEvent): string {
+    if (isRequestPausedEvent(event))
+        return event.networkId as string;
+
+    return event.frame.loaderId;
 }

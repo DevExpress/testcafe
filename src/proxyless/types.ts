@@ -27,6 +27,7 @@ export interface InjectableResourcesOptions {
     url?: string;
     restoringStorages?: StoragesSnapshot | null;
     contextStorage?: SessionStorageInfo;
+    userScripts?: string[];
 }
 
 export type SessionStorageInfo = Dictionary<Dictionary<string>> | null;

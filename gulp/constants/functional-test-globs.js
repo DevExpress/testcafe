@@ -71,6 +71,7 @@ const PROXYLESS_TESTS_GLOB = [
     '!test/functional/fixtures/regression/gh-5886/test.js',
     '!test/functional/fixtures/regression/gh-664/test.js',
     '!test/functional/fixtures/regression/hammerhead/gh-2350/test.js',
+    'test/functional/fixtures/api/es-next/custom-client-scripts/test.js',
 ];
 
 module.exports = {
