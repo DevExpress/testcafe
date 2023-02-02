@@ -8,12 +8,12 @@ export default function (testFile: TestFile, exportableLibExports: any, {
     baseUrl,
 }: OptionalCompilerArguments = {}): void {
     Object.defineProperty(exportableLibExports, 'fixture', {
-        get:          () => Fixture.init.bind(Fixture, { testFile, baseUrl }),
+        get:          () => Fixture.init({ testFile, baseUrl }),
         configurable: true,
     });
 
     Object.defineProperty(exportableLibExports, 'test', {
-        get:          () => Test.init.bind(Test, { testFile, isCompilerServiceMode, baseUrl }),
+        get:          () => Test.init({ testFile, isCompilerServiceMode, baseUrl }),
         configurable: true,
     });
 }

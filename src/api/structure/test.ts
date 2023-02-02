@@ -16,6 +16,7 @@ import { SPECIAL_BLANK_PAGE } from 'testcafe-hammerhead';
 import { TestTimeouts } from './interfaces';
 import TestTimeout from './test-timeout';
 import ESM_RUNTIME_HOLDER_NAME from '../../services/compiler/esm-runtime-holder-name';
+import { delegateAPI } from '../../utils/delegated-api';
 
 interface TestInitOptions {
     testFile: TestFile;
@@ -34,7 +35,7 @@ export default class Test extends TestingUnit {
     private readonly _isCompilerService: boolean;
     public readonly esmRuntime: string;
 
-    public constructor (testFile: TestFile, isCompilerServiceMode = false, baseUrl?: string) {
+    public constructor (testFile: TestFile, isCompilerServiceMode = false, baseUrl?: string, returnApiOrigin = true) {
         // NOTE: 'fixture' directive can be missing
         const fixture = testFile.currentFixture as Fixture;
         const pageUrl = fixture?.pageUrl || SPECIAL_BLANK_PAGE;
@@ -57,15 +58,26 @@ export default class Test extends TestingUnit {
         // @ts-ignore
         this.esmRuntime = global[ESM_RUNTIME_HOLDER_NAME] || null;
 
-        return this.apiOrigin as unknown as Test;
+        if (returnApiOrigin)
+            return this.apiOrigin as unknown as Test;
     }
 
-    public static init (initOptions: TestInitOptions, name: string, fn: Function): Test {
-        const { testFile, baseUrl, isCompilerServiceMode } = initOptions;
+    public static init ({ testFile, baseUrl, isCompilerServiceMode }: TestInitOptions): Test {
 
-        const test = new Test(testFile, isCompilerServiceMode, baseUrl);
+        const fn = (...args: unknown[]) : Test => {
+            const apiOrigin = new Test(testFile, isCompilerServiceMode, baseUrl) as unknown as Function;
 
-        return (test as unknown as Function)(name, fn);
+            return apiOrigin(...args);
+        };
+
+        const getHandler = (): Test => {
+            return new Test(testFile, isCompilerServiceMode, baseUrl, false);
+        };
+
+        //@ts-ignore
+        delegateAPI(fn, Test.API_LIST, { getHandler });
+
+        return fn as unknown as Test;
     }
 
     private _initFixture (testFile: TestFile): void {

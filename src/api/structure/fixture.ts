@@ -13,6 +13,7 @@ import TestFile from './test-file';
 import RequestHook from '../request-hooks/hook';
 import ClientScriptInit from '../../custom-client-scripts/client-script-init';
 import { SPECIAL_BLANK_PAGE } from 'testcafe-hammerhead';
+import { delegateAPI } from '../../utils/delegated-api';
 
 interface FixtureInitOptions {
     baseUrl?: string;
@@ -28,7 +29,7 @@ export default class Fixture extends TestingUnit {
     public globalBeforeFn: Function | null;
     public globalAfterFn: Function | null;
 
-    public constructor (testFile: TestFile, baseUrl?: string) {
+    public constructor (testFile: TestFile, baseUrl?: string, returnApiOrigin = true) {
         const pageUrl = baseUrl || SPECIAL_BLANK_PAGE;
 
         super(testFile, UnitType.fixture, pageUrl, baseUrl);
@@ -41,15 +42,25 @@ export default class Fixture extends TestingUnit {
         this.globalBeforeFn = null;
         this.globalAfterFn  = null;
 
-        return this.apiOrigin as unknown as Fixture;
+        if (returnApiOrigin)
+            return this.apiOrigin as unknown as Fixture;
     }
 
-    public static init (initOptions: FixtureInitOptions, name: string, ...rest: unknown[]): Fixture | null {
-        const { testFile, baseUrl } = initOptions;
+    public static init ({ testFile, baseUrl }: FixtureInitOptions): Fixture {
+        const fn = (...args: unknown[]) : Fixture => {
+            const apiOrigin = new Fixture(testFile, baseUrl) as unknown as Function;
 
-        const fixture = new Fixture(testFile, baseUrl);
+            return apiOrigin(...args);
+        };
 
-        return (fixture as unknown as Function)(name, ...rest);
+        const getHandler = (): Fixture => {
+            return new Fixture(testFile, baseUrl, false);
+        };
+
+        //@ts-ignore
+        delegateAPI(fn, Fixture.API_LIST, { getHandler });
+
+        return fn as unknown as Fixture;
     }
 
     protected _add (name: string, ...rest: unknown[]): Function {
