@@ -1,4 +1,5 @@
-const expect = require('chai').expect;
+const { skipInProxyless } = require('../../../../utils/skip-in');
+const { expect }          = require('chai');
 
 
 describe('[API] Drag actions', function () {
@@ -136,7 +137,7 @@ describe('[API] Drag actions', function () {
             return runTests('./testcafe-fixtures/drag-and-drop-test.js', 'try to drop to undroppable', { skip: ['iphone', 'ipad', 'android'] });
         });
 
-        it('Should reproduce native browser behavior', function () {
+        skipInProxyless('Should reproduce native browser behavior', function () {
             return runTests('./testcafe-fixtures/drag-and-drop-test.js', 'drag link and image', { only: ['chrome'] });
         });
 

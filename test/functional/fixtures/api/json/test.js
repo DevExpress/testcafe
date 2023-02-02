@@ -1,12 +1,13 @@
-const { expect } = require('chai');
-const path       = require('path');
+const { expect }          = require('chai');
+const path                = require('path');
+const { skipInProxyless } = require('../../../utils/skip-in');
 
 describe('[API] DevTools Compiler', function () {
     it('Should make click on a button', function () {
         return runTests('./testcafe-fixtures/click-test.json', null, { only: 'chrome' });
     });
 
-    it('Should make hover on a button', function () {
+    skipInProxyless('Should make hover on a button', function () {
         return runTests('./testcafe-fixtures/hover-test.json', null, { only: 'chrome' });
     });
 
@@ -57,7 +58,7 @@ describe('[API] DevTools Compiler', function () {
         return runTests('./testcafe-fixtures/wait-for-element-test.json', null, { only: 'chrome' });
     });
 
-    it('Should switch to iframe', function () {
+    skipInProxyless('Should switch to iframe', function () {
         return runTests('./testcafe-fixtures/iframe-test.json', null, { only: 'chrome' });
     });
 
@@ -79,7 +80,7 @@ describe('[API] DevTools Compiler', function () {
             });
     });
 
-    it('Should click inside shadow DOM', function () {
+    skipInProxyless('Should click inside shadow DOM', function () {
         return runTests('./testcafe-fixtures/shadow-dom-test.json', null, {
             only:       'chrome',
             shouldFail: true,

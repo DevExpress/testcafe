@@ -1,5 +1,6 @@
-const os     = require('os');
-const expect = require('chai').expect;
+const os                  = require('os');
+const { expect }          = require('chai');
+const { skipInProxyless } = require('../../utils/skip-in');
 
 const TRUSTED_PROXY_URL     = os.hostname() + ':3004';
 const TRANSPARENT_PROXY_URL = os.hostname() + ':3005';
@@ -10,7 +11,7 @@ describe('Using external proxy server', function () {
         return runTests('testcafe-fixtures/index.test.js', null, { useProxy: TRANSPARENT_PROXY_URL });
     });
 
-    it('Should open restricted page via trusted proxy server', function () {
+    skipInProxyless('Should open restricted page via trusted proxy server', function () {
         return runTests('testcafe-fixtures/restricted-page.test.js', null, { useProxy: TRUSTED_PROXY_URL });
     });
 });
@@ -39,7 +40,7 @@ describe('Using proxy-bypass', function () {
             });
     });
 
-    it('Should open page without proxy but get resource with proxy', function () {
+    skipInProxyless('Should open page without proxy but get resource with proxy', function () {
         const http = require('http');
 
         const server = http.createServer(function (req, res) {

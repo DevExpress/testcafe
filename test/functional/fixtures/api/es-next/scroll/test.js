@@ -1,4 +1,6 @@
-describe('Scroll', () => {
+const { skipDescribeInProxyless } = require('../../../../utils/skip-in');
+
+skipDescribeInProxyless('Scroll', () => {
     it('Should raise events for scroll', () => {
         return runTests('./testcafe-fixtures/raise-events.js');
     });

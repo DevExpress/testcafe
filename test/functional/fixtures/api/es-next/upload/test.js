@@ -1,9 +1,10 @@
-const { expect } = require('chai');
-const path       = require('path');
+const { expect }          = require('chai');
+const path                = require('path');
+const { skipInProxyless } = require('../../../../utils/skip-in');
 
 describe('[API] Upload', function () {
     describe('t.setFilesToUpload', function () {
-        it('Should upload the specified file', function () {
+        skipInProxyless('Should upload the specified file', function () {
             return runTests('./testcafe-fixtures/upload-test.js', 'Upload the file', { only: 'chrome' });
         });
 
