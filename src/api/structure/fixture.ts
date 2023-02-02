@@ -13,7 +13,6 @@ import TestFile from './test-file';
 import RequestHook from '../request-hooks/hook';
 import ClientScriptInit from '../../custom-client-scripts/client-script-init';
 import { SPECIAL_BLANK_PAGE } from 'testcafe-hammerhead';
-import { delegateAPI } from '../../utils/delegated-api';
 
 interface FixtureInitOptions {
     baseUrl?: string;
@@ -47,20 +46,7 @@ export default class Fixture extends TestingUnit {
     }
 
     public static init ({ testFile, baseUrl }: FixtureInitOptions): Fixture {
-        const fn = (...args: unknown[]) : Fixture => {
-            const apiOrigin = new Fixture(testFile, baseUrl) as unknown as Function;
-
-            return apiOrigin(...args);
-        };
-
-        const getHandler = (): Fixture => {
-            return new Fixture(testFile, baseUrl, false);
-        };
-
-        //@ts-ignore
-        delegateAPI(fn, Fixture.API_LIST, { getHandler });
-
-        return fn as unknown as Fixture;
+        return TestingUnit.initTestingUnit(Fixture, testFile, baseUrl) as unknown as Fixture;
     }
 
     protected _add (name: string, ...rest: unknown[]): Function {

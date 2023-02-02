@@ -16,7 +16,6 @@ import { SPECIAL_BLANK_PAGE } from 'testcafe-hammerhead';
 import { TestTimeouts } from './interfaces';
 import TestTimeout from './test-timeout';
 import ESM_RUNTIME_HOLDER_NAME from '../../services/compiler/esm-runtime-holder-name';
-import { delegateAPI } from '../../utils/delegated-api';
 
 interface TestInitOptions {
     testFile: TestFile;
@@ -63,21 +62,7 @@ export default class Test extends TestingUnit {
     }
 
     public static init ({ testFile, baseUrl, isCompilerServiceMode }: TestInitOptions): Test {
-
-        const fn = (...args: unknown[]) : Test => {
-            const apiOrigin = new Test(testFile, isCompilerServiceMode, baseUrl) as unknown as Function;
-
-            return apiOrigin(...args);
-        };
-
-        const getHandler = (): Test => {
-            return new Test(testFile, isCompilerServiceMode, baseUrl, false);
-        };
-
-        //@ts-ignore
-        delegateAPI(fn, Test.API_LIST, { getHandler });
-
-        return fn as unknown as Test;
+        return TestingUnit.initTestingUnit(Test, testFile, isCompilerServiceMode, baseUrl) as unknown as Test;
     }
 
     private _initFixture (testFile: TestFile): void {
