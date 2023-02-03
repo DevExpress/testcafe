@@ -46,7 +46,7 @@ export default class Fixture extends TestingUnit {
     }
 
     public static init ({ testFile, baseUrl }: FixtureInitOptions): Fixture {
-        return TestingUnit.initTestingUnit(Fixture, testFile, baseUrl) as unknown as Fixture;
+        return super.init(Fixture, testFile, baseUrl) as unknown as Fixture;
     }
 
     protected _add (name: string, ...rest: unknown[]): Function {

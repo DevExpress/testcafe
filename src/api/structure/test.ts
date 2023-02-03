@@ -62,7 +62,7 @@ export default class Test extends TestingUnit {
     }
 
     public static init ({ testFile, baseUrl, isCompilerServiceMode }: TestInitOptions): Test {
-        return TestingUnit.initTestingUnit(Test, testFile, isCompilerServiceMode, baseUrl) as unknown as Test;
+        return TestingUnit.init(Test, testFile, isCompilerServiceMode, baseUrl) as unknown as Test;
     }
 
     private _initFixture (testFile: TestFile): void {

@@ -156,7 +156,7 @@ export default abstract class TestingUnit extends BaseUnit {
         ChildClass.API_LIST = TestingUnit.API_LIST.concat(getDelegatedAPIList(ChildClass.prototype));
     }
 
-    public static initTestingUnit (ChildClass: unknown, ...initProps: unknown[]): Function {
+    public static init (ChildClass: unknown, ...initProps: unknown[]): TestingUnit {
         const fn = (...args: unknown[]) : unknown => {
             //@ts-ignore
             const apiOrigin = new ChildClass(...initProps) as unknown as Function;
@@ -172,7 +172,7 @@ export default abstract class TestingUnit extends BaseUnit {
         //@ts-ignore
         delegateAPI(fn, ChildClass.API_LIST, { getHandler });
 
-        return fn;
+        return fn as unknown as TestingUnit;
     }
 }
 
