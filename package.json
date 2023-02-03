@@ -155,7 +155,8 @@
     "tmp": "0.0.28",
     "tree-kill": "^1.2.2",
     "typescript": "4.7.4",
-    "unquote": "^1.1.1"
+    "unquote": "^1.1.1",
+    "url-to-options": "^2.0.0"
   },
   "devDependencies": {
     "@ffmpeg-installer/ffmpeg": "^1.0.17",
