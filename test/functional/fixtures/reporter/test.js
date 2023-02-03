@@ -1,4 +1,4 @@
-const expect                    = require('chai').expect;
+const { expect }                = require('chai');
 const fs                        = require('fs');
 const generateReporter          = require('./reporter');
 const { createReporter }        = require('../../utils/reporter');
@@ -7,6 +7,7 @@ const ReporterPluginMethod      = require('../../../../lib/reporter/plugin-metho
 const assertionHelper           = require('../../assertion-helper.js');
 const path                      = require('path');
 const config                    = require('../../config');
+const { skipInProxyless }       = require('../../utils/skip-in');
 
 const {
     createSimpleTestStream,
@@ -945,7 +946,7 @@ const experimentalDebug = !!process.env.EXPERIMENTAL_DEBUG;
             });
         }
 
-        it('Should get warning for request hook', async () => {
+        skipInProxyless('Should get warning for request hook', async () => {
             await runTests('./testcafe-fixtures/failed-cors-validation.js', 'Failed CORS validation', {
                 only: 'chrome',
                 reporter,
@@ -1162,7 +1163,7 @@ const experimentalDebug = !!process.env.EXPERIMENTAL_DEBUG;
             });
     });
 
-    it('Should raise an error when uncaught exception occurred in any reporter method', async () => {
+    skipInProxyless('Should raise an error when uncaught exception occurred in any reporter method', async () => {
         function createReporterWithBrokenMethod (method) {
             const base = {
                 async reportTaskStart () {},
@@ -1211,7 +1212,7 @@ const experimentalDebug = !!process.env.EXPERIMENTAL_DEBUG;
             });
     });
 
-    it('Should set options _hasTaskErrors to the runner if an error occurs', async () => {
+    skipInProxyless('Should set options _hasTaskErrors to the runner if an error occurs', async () => {
         try {
             await runTests('testcafe-fixtures/index-test.js', 'Simple command err test', { only: ['chrome'], shouldFail: true });
         }
