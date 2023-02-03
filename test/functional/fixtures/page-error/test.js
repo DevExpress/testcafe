@@ -1,8 +1,7 @@
-const { expect }          = require('chai');
-const { skipInProxyless } = require('../../utils/skip-in');
+const { expect } = require('chai');
 
 describe('Handle page error', function () {
-    skipInProxyless('Should fail if the error is not caught in the test', function () {
+    it('Should fail if the error is not caught in the test', function () {
         return runTests('./testcafe-fixtures/page-error-test.js', 'Do not handle', { shouldFail: true })
             .catch(function (errs) {
                 expect(errs[0]).contains('Failed to load the page at "http://some-unreachable.url/". ' +

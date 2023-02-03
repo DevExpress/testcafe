@@ -238,7 +238,7 @@ export default class ProxylessRequestPipeline extends ProxylessApiBase {
     private async _handleOtherRequests (event: RequestPausedEvent): Promise<void> {
         requestPipelineOtherRequestLogger('%r', event);
 
-        if (isRequest(event) || isRedirectStatusCode(event.responseStatusCode)) {
+        if (!event.responseErrorReason && (isRequest(event) || isRedirectStatusCode(event.responseStatusCode))) {
             this._contextInfo.init(event);
 
             await this.requestHookEventProvider.onRequest(event, this._contextInfo);
