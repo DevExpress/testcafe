@@ -1,0 +1,30 @@
+name: Test Sequent jobs
+
+on:
+  workflow_dispatch:
+    inputs:
+      sha:
+        description: 'The test commit SHA or ref'
+        required: true
+        default: 'master'
+      merged_sha:
+        description: 'The merge commit SHA'
+      deploy_run_id:
+        description: 'The ID of a deployment workspace run with artifacts'
+env:
+  NO_CACHE: ${{ secrets.NO_CACHE }}
+
+jobs:
+  job1:
+    steps:
+      - run: echo "job 1"
+  job2:
+    needs: job1
+    steps:
+      - run: echo "job 2"
+      - run: fail this job because of non-existing commands
+  job3:
+    if: ${{ always() }}
+    needs: [job2]
+    steps:
+      - run: echo "job 3"
