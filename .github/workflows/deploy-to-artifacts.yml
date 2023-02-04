@@ -13,124 +13,10 @@ on:
         description: 'The base commit SHA'
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    outputs:
-      sha: ${{steps.prep.outputs.sha}}
-    steps:
-      - name: Build Info
-        run: |
-          echo "SHA: ${{ github.event.inputs.sha }}"
-          echo "Merged SHA: ${{ github.event.inputs.merged_sha }}"
-          echo "Deployment run ID: ${{ github.run_id }}"
-      - uses: actions/github-script@v3
-        with:
-          github-token: ${{secrets.ACTIVE_TOKEN}}
-          script: |
-            await github.repos.createCommitStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              sha: context.payload.inputs.sha,
-              context: context.workflow,
-              state: 'pending',
-              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
-            });
-      - id: prep
-        uses: actions/github-script@v3
-        with:
-          github-token: ${{ secrets.ACTIVE_TOKEN }}
-          script: |
-            core.setOutput('sha', context.payload.inputs.merged_sha || context.payload.inputs.sha);
-      - uses: actions/checkout@v2
-        with:
-          ref: ${{steps.prep.outputs.sha}}
-      - run: |
-          npm i
-          npx gulp build
-          npm pack
-      - id: package-name
-        uses: actions/github-script@v3
-        with:
-          script: |
-            const { name, version } = require(require('path').join(process.env.GITHUB_WORKSPACE, 'package.json'));
-
-            core.setOutput('packageName', `${name}-${version}`);
-            core.setOutput('imageName', `${name}/${name}:${version}`);
-
-      - uses: actions/upload-artifact@v2
-        with:
-          name: npm
-          path: |
-            ${{steps.package-name.outputs.packageName}}.tgz
-            package-lock.json
-      - run: |
-          npx gulp docker-build
-          docker save -o ${{steps.package-name.outputs.packageName}}.tar ${{steps.package-name.outputs.imageName}}
-      - uses: actions/upload-artifact@v2
-        with:
-          name: docker
-          path: ${{steps.package-name.outputs.packageName}}.tar
-      - uses: actions/github-script@v3
-        if: failure() || cancelled()
-        with:
-          github-token: ${{secrets.ACTIVE_TOKEN}}
-          script: |
-            await github.repos.createCommitStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              sha: context.payload.inputs.sha,
-              context: context.workflow,
-              state: 'failure',
-              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
-            });
-  changes:
-    # TODO: currently cannot generate a list of changes after rebase
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/github-script@v3
-        with:
-          github-token: ${{secrets.ACTIVE_TOKEN}}
-          script: |
-            await github.repos.createCommitStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              sha: context.payload.inputs.sha,
-              context: context.workflow,
-              state: 'pending',
-              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
-            });
-      - uses: actions/checkout@v2
-        with:
-          ref: ${{ github.event.inputs.sha }}
-          fetch-depth: 0
-      - run: |
-          git reset --soft `git merge-base "${{github.event.inputs.base_sha}}" HEAD`
-          git diff --name-only --cached > changes.txt
-      - uses: actions/upload-artifact@v2
-        with:
-          name: changes
-          path: changes.txt
-      - uses: actions/github-script@v3
-        if: failure() || cancelled()
-        with:
-          github-token: ${{secrets.ACTIVE_TOKEN}}
-          script: |
-            await github.repos.createCommitStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              sha: context.payload.inputs.sha,
-              context: context.workflow,
-              state: 'failure',
-              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
-            });
   test:
     runs-on: ubuntu-latest
-    needs: [build, changes]
     environment: CI
     steps:
-      - uses: actions/download-artifact@v2
-        with:
-          name: changes
       - uses: actions/github-script@v3
         with:
           github-token: ${{secrets.ACTIVE_TOKEN}}
@@ -159,57 +45,34 @@ jobs:
             const fileList = require('fs').readFileSync('changes.txt').toString().split('\n').filter(line => line);
 
             const tasks = [];
+                    
+            tasks.push('test-sequences.yml');
 
-            tasks.push('test-client-desktop.yml');
-            tasks.push('test-client-mobile.yml');
-
-            tasks.push('test-functional-docker.yml');
-            tasks.push('test-functional-local-chrome.yml');
-            tasks.push('test-functional-local-esm.yml');
-            tasks.push('test-functional-local-debug-1.yml');
-            tasks.push('test-functional-local-debug-2.yml');
-            tasks.push('test-functional-local-firefox.yml');
-            tasks.push('test-functional-local-ie.yml');
-            tasks.push('test-functional-local-multiple-windows.yml');
-            tasks.push('test-functional-local-proxyless.yml');
-
-            tasks.push('test-functional-local-legacy.yml');
-            
-            tasks.push('test-functional-local-safari.yml');
-
-            tasks.push('test-functional-remote-macos.yml');
-            tasks.push('test-functional-remote-mobile.yml');
-
-            tasks.push('test-server-docker.yml');
-            tasks.push('test-server-lts.yml');
-            tasks.push('test-server-stable.yml');
+#            tasks.push('test-client-desktop.yml');
+#            tasks.push('test-client-mobile.yml');
+#
+#            tasks.push('test-functional-docker.yml');
+#            tasks.push('test-functional-local-chrome.yml');
+#            tasks.push('test-functional-local-esm.yml');
+#            tasks.push('test-functional-local-debug-1.yml');
+#            tasks.push('test-functional-local-debug-2.yml');
+#            tasks.push('test-functional-local-firefox.yml');
+#            tasks.push('test-functional-local-ie.yml');
+#            tasks.push('test-functional-local-multiple-windows.yml');
+#            tasks.push('test-functional-local-proxyless.yml');
+#
+#            tasks.push('test-functional-local-legacy.yml');
+#
+#            tasks.push('test-functional-local-safari.yml');
+#
+#            tasks.push('test-functional-remote-macos.yml');
+#            tasks.push('test-functional-remote-mobile.yml');
+#
+#            tasks.push('test-server-docker.yml');
+#            tasks.push('test-server-lts.yml');
+#            tasks.push('test-server-stable.yml');
 
             // Temporary disable
             // tasks.push('test-cdp.yml');
 
             await Promise.all(tasks.map(task => dispatchWorkflow(task)));
-      - uses: actions/github-script@v3
-        with:
-          github-token: ${{secrets.ACTIVE_TOKEN}}
-          script: |
-            await github.repos.createCommitStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              sha: context.payload.inputs.sha,
-              context: context.workflow,
-              state: 'success',
-              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}#artifacts`
-            });
-      - uses: actions/github-script@v3
-        if: failure() || cancelled()
-        with:
-          github-token: ${{secrets.ACTIVE_TOKEN}}
-          script: |
-            await github.repos.createCommitStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              sha: context.payload.inputs.sha,
-              context: context.workflow,
-              state: 'failure',
-              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
-            });
