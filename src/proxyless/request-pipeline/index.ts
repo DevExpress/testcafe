@@ -312,7 +312,7 @@ export default class ProxylessRequestPipeline extends ProxylessApiBase {
 
             const userScripts = await this._getUserScripts(event);
 
-            await this._resourceInjector.processAboutBlankPage(event, userScripts, this._client);
+            await this._resourceInjector.processAboutBlankPage(event, userScripts, this.contextStorage, this._client);
 
             this._contextInfo.dispose(getRequestId(event));
         });

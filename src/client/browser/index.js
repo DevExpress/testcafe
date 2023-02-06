@@ -104,11 +104,15 @@ export function stopInitScriptExecution () {
     allowInitScriptExecution = false;
 }
 
+export function redirectUsingCdp (command, createXHR, openFileProtocolUrl) {
+    sendXHR(openFileProtocolUrl, createXHR, { method: 'POST', data: JSON.stringify({ url: command.url }) }); //eslint-disable-line no-restricted-globals
+}
+
 export function redirect (command, createXHR, openFileProtocolUrl) {
     stopInitScriptExecution();
 
     if (isFileProtocol(command.url))
-        sendXHR(openFileProtocolUrl, createXHR, { method: 'POST', data: JSON.stringify({ url: command.url }) }); //eslint-disable-line no-restricted-globals
+        redirectUsingCdp(command, createXHR, openFileProtocolUrl);
     else
         document.location = command.url;
 }

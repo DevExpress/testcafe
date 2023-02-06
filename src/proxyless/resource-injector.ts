@@ -181,10 +181,10 @@ export default class ResourceInjector {
         }
     }
 
-    public async processAboutBlankPage (event: FrameNavigatedEvent, userScripts: string[], client: ProtocolApi): Promise<void> {
+    public async processAboutBlankPage (event: FrameNavigatedEvent, userScripts: string[], contextStorage: SessionStorageInfo | null, client: ProtocolApi): Promise<void> {
         resourceInjectorLogger('Handle page as about:blank. Origin url: %s', event.frame.url);
 
-        const injectableResources = await this._prepareInjectableResources({ isIframe: false, userScripts }) as PageInjectableResources;
+        const injectableResources = await this._prepareInjectableResources({ isIframe: false, userScripts, contextStorage }) as PageInjectableResources;
         const html                = injectResources(EMPTY_PAGE_MARKUP, injectableResources);
 
         await client.Page.setDocumentContent({
