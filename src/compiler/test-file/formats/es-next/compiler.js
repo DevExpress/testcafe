@@ -73,10 +73,7 @@ export default class ESNextTestFileCompiler extends APIBasedTestFileCompilerBase
     }
 
     getSupportedExtension () {
-        const supportedExtensions = [Extensions.js, Extensions.jsx, Extensions.cjs];
-
-        if (this.experimentalEsm)
-            supportedExtensions.push(Extensions.mjs);
+        const supportedExtensions = [Extensions.js, Extensions.jsx, Extensions.cjs, Extensions.mjs];
 
         return supportedExtensions;
     }
