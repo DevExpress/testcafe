@@ -5,7 +5,7 @@ import { send } from '../../test-run/request/send';
 import { ResponseOptions } from '../../test-run/request/interfaces';
 import { RequestOptions } from 'testcafe-hammerhead';
 // @ts-ignore
-import { urlToHttpOptions } from 'node:url';
+import urlToHttpOptions from 'url-to-options';
 
 export async function resendAuthRequest (request: Network.Request, credentials: AuthCredentials): Promise<ResponseOptions | string> {
     const url = new URL(request.url);
