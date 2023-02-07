@@ -233,7 +233,7 @@ $(document).ready(function () {
         testKeysPress('option', expectedEvents);
     });
 
-    asyncTest('symbols with icorrect keycode', function () {
+    asyncTest('symbols with incorrect keycode', function () {
         const expectedEvents = [
             { type: 'keydown', keyCode: KEYCODES['shift'], shiftKey: true },
             { type: 'keydown', keyCode: KEYCODES['"'], shiftKey: true },

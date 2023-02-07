@@ -54,7 +54,7 @@ ActionExecutor.ACTIONS_HANDLERS[COMMAND_TYPE.dispatchEvent] = {
 };
 
 ActionExecutor.ACTIONS_HANDLERS[COMMAND_TYPE.pressKey] = {
-    create: command => new PressAutomation(parseKeySequence(command.keys).combinations, command.options),
+    create: (command, [], dispatchProxylessEventFn?: Function) => new PressAutomation(parseKeySequence(command.keys).combinations, command.options, dispatchProxylessEventFn), // eslint-disable-line no-empty-pattern
 
     ensureCmdArgs: command => {
         const parsedKeySequence = parseKeySequence(command.keys);

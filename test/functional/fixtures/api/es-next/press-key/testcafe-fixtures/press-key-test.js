@@ -1,13 +1,10 @@
 // NOTE: to preserve callsites, add new tests AFTER the existing ones
 import { ClientFunction } from 'testcafe';
 import { expect } from 'chai';
-
+import { focusInput, getInputValue } from '../common/utils.js';
 
 fixture `PressKey`
     .page `http://localhost:3000/fixtures/api/es-next/press-key/pages/index.html`;
-
-const focusInput    = ClientFunction(() => document.getElementById('input').focus());
-const getInputValue = ClientFunction(() => document.getElementById('input').value);
 
 test('Press keys', async t => {
     await focusInput();
