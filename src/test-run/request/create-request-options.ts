@@ -97,9 +97,8 @@ async function prepareHeaders (headers: OutgoingHttpHeaders, currentPageUrl: URL
 
     const preparedHeaders: OutgoingHttpHeaders = Object.assign({}, DEFAULT_ACCEPT, changeHeaderNamesToLowercase(headers));
 
-
-    preparedHeaders[HTTP_HEADERS.host] = host;
-    preparedHeaders[HTTP_HEADERS.origin] = origin;
+    preparedHeaders[HTTP_HEADERS.host]          = host;
+    preparedHeaders[HTTP_HEADERS.origin]        = origin;
     preparedHeaders[HTTP_HEADERS.contentLength] = body.length;
 
     if (headers.method && METHODS_WITH_CONTENT_TYPE.includes(String(headers.method)))
@@ -112,10 +111,7 @@ async function prepareHeaders (headers: OutgoingHttpHeaders, currentPageUrl: URL
         preparedHeaders[HTTP_HEADERS.proxyAuthorization] = getAuthString(options.proxy.auth);
 
     if (withCredentials) {
-        const currentPageCookies = testRun.session.cookies.getHeader({
-            url:      currentPageUrl.href,
-            hostname: currentPageUrl.hostname,
-        });
+        const currentPageCookies = await testRun.cookieProvider.getCookieHeader(currentPageUrl.href, currentPageUrl.hostname);
 
         if (currentPageCookies)
             preparedHeaders[HTTP_HEADERS.cookie] = currentPageCookies;
@@ -173,16 +169,31 @@ function getProxyUrl (testRun: TestRun, url: string, withCredentials?: boolean):
     }, testRun, true)) as Promise<string>;
 }
 
+async function resolveUrlParts (testRun: TestRun, url: URL, withCredentials: boolean): Promise<{ hostname: string; port: string; href: string; partAfterHost: string }> {
+    if (testRun.isProxyless()) {
+        const { href, hostname, port, pathname, search } = url;
+        const partAfterHost      = [pathname, search].join('');
+
+        return { partAfterHost, href, hostname, port };
+    }
+
+    const href               = await getProxyUrl(testRun, url.href, withCredentials);
+    const urlObj             = await parseProxyUrl(href);
+    const { partAfterHost }  = urlObj;
+    const { hostname, port } = urlObj.proxy;
+
+    return { partAfterHost, href, hostname, port };
+}
+
 export async function createRequestOptions (currentPageUrl: URL, testRun: TestRun, options: ExternalRequestOptions, callsite: CallsiteRecord | null): Promise<RequestOptions> {
     options.headers = options.headers || {};
 
-    const url             = await prepareUrl(testRun, currentPageUrl, options.url, callsite);
-    const withCredentials = !currentPageUrl.host || sameOriginCheck(currentPageUrl.href, url.href) || options.withCredentials || false;
-    const body            = transformBody(options.headers, options.body);
-    const headers         = await prepareHeaders(options.headers, currentPageUrl, url, body, testRun, withCredentials, options);
-    const proxyUrl        = await getProxyUrl(testRun, url.href, withCredentials);
-    const proxyUrlObj     = parseProxyUrl(proxyUrl);
-    let auth              = options.auth;
+    const url                                     = await prepareUrl(testRun, currentPageUrl, options.url, callsite);
+    const withCredentials                         = !currentPageUrl.host || sameOriginCheck(currentPageUrl.href, url.href) || options.withCredentials || false;
+    const body                                    = transformBody(options.headers, options.body);
+    const headers                                 = await prepareHeaders(options.headers, currentPageUrl, url, body, testRun, withCredentials, options);
+    const { hostname, port, href, partAfterHost } = await resolveUrlParts(testRun, url, withCredentials);
+    let auth                                      = options.auth;
 
     if (!auth && url.username && url.password) {
         auth = {
@@ -193,13 +204,13 @@ export async function createRequestOptions (currentPageUrl: URL, testRun: TestRu
 
     const requestParams: RequestOptionsParams = {
         method:         options.method || DEFAULT_REQUEST_METHOD,
-        url:            proxyUrl,
+        url:            href,
         protocol:       DEFAULT_PROTOCOL,
-        hostname:       proxyUrlObj.proxy.hostname,
-        host:           proxyUrlObj.proxy.hostname,
-        port:           proxyUrlObj.proxy.port,
-        path:           prepareSearchParams(proxyUrlObj.partAfterHost, options.params),
-        auth:           auth && withCredentials ? `${auth.username}:${auth.password}` : void 0,
+        hostname:       hostname,
+        host:           hostname,
+        port:           port,
+        path:           prepareSearchParams(partAfterHost, options.params),
+        auth:           auth && withCredentials ? `${ auth.username }:${ auth.password }` : void 0,
         headers:        headers,
         credentials:    withCredentials ? testRun.session.getAuthCredentials() : void 0,
         body:           body,

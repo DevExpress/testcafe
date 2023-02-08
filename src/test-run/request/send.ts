@@ -6,7 +6,6 @@ import { processResponseData } from './process-response-data';
 import HTTP_HEADERS from '../../utils/http-headers';
 import { RequestRuntimeError } from '../../errors/runtime';
 import { CallsiteRecord } from 'callsite-record';
-import { castArray } from 'lodash';
 import { RUNTIME_ERRORS } from '../../errors/types';
 
 import {
@@ -54,8 +53,8 @@ export async function sendRequestThroughAPI (testRun: TestRun, options: External
     const setCookie  = (data.headers as IncomingHttpHeaders)[HTTP_HEADERS.setCookie];
     const sameOrigin = !currentPageUrl.host || sameOriginCheck(currentPageUrl.href, requestOptions.url);
 
-    if (setCookie && (sameOrigin || options.withCredentials) )
-        testRun.session.cookies.copySyncCookies(castArray(setCookie).join(';'), currentPageUrl.href);
+    if (setCookie && (sameOrigin || options.withCredentials))
+        await testRun.cookieProvider.setCookies(setCookie, currentPageUrl.href);
 
     return data;
 }

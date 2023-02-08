@@ -4,8 +4,9 @@ import { CookieOptions } from '../commands/options';
 
 export interface CookieProvider {
     initialize: () => Promise<void>,
-    setCookies: (cookies: CookieOptions[], url: string) => Promise<void>,
+    setCookies: (cookies: CookieOptions[] | string | string[], url: string) => Promise<void>,
     getCookies: (externalCookies: ExternalCookies[], urls: string[]) => Promise<ExternalCookies[]>,
+    getCookieHeader: (url: string, hostname: string) => Promise<string | null>
     deleteCookies (cookies?: CookieOptions[], urls?: string[]): Promise<void>;
 }
 
@@ -18,5 +19,9 @@ export class CookieProviderBase {
 
     async initialize (): Promise<void> {
         return Promise.resolve();
+    }
+
+    protected _isCookieOptionsArray (cookies: Array<string | CookieOptions>): cookies is CookieOptions[] {
+        return cookies.every((cookie: string | CookieOptions) => cookie instanceof CookieOptions);
     }
 }

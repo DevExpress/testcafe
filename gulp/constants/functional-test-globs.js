@@ -36,7 +36,6 @@ const PROXYLESS_TESTS_GLOB = [
     '!test/functional/fixtures/run-options/request-timeout/test.js',
     '!test/functional/fixtures/run-options/disable-page-caching/test.js',
     '!test/functional/fixtures/live/test.js',
-    '!test/functional/fixtures/api/es-next/request/test.js',
     '!test/functional/fixtures/regression/gh-1311/test.js',
     '!test/functional/fixtures/hammerhead/gh-2622/test.js',
     '!test/functional/fixtures/regression/gh-2861/test.js',

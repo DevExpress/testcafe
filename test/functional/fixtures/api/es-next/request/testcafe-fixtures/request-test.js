@@ -236,7 +236,8 @@ test('Should interrupt request by timeout', async (t) => {
     });
 });
 
-test('Should send request with cookies', async (t) => {
+test.page('http://localhost:3000/fixtures/request/pages/index.html')
+('Should send request with cookies', async (t) => {
     await t.setCookies({ apiCookie1: 'value1' }, 'http://localhost');
 
     const { body } = await t.request.get(`http://localhost:3000/api/data`);
