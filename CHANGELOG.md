@@ -1,5 +1,15 @@
 # Changelog
 
+## v2.3.1 (2023-02-09)
+TestCafe v2.3.1 introduces a number of bug fixes.
+
+### Bug Fixes
+
+* Client-side code with optional chaining may trigger a TestCafe error ([#7387](https://github.com/DevExpress/testcafe/issues/7387)).
+* TestCafe cannot interact with images from the Shadow DOM ([#7454](https://github.com/DevExpress/testcafe/issues/7454)).
+* TestCafe v2.3.0 fails to launch when the `test.meta` method precedes test code ([#7482](https://github.com/DevExpress/testcafe/issues/7482)).
+* When TestCafe launches a headless instance of Google Chrome in proxyless mode, it cannot interact with elements that are overlapped by the status bar ([#7483](https://github.com/DevExpress/testcafe/issues/7483)).
+
 ## v2.3.0 (2023-01-30)
 
 TestCafe v2.3.0 introduces `create-testcafe` --- an interactive tool that allows you to initialize a new TestCafe project in seconds. The update also includes *experimental* ECMAScript module support and a number of bug fixes.
