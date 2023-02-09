@@ -1,5 +1,15 @@
 # Changelog
 
+## v2.3.1 (2023-02-09)
+TestCafe v2.3.1 introduces a number of bug fixes.
+
+### Bug Fixes
+
+* Client-side code with optional chaining may trigger a TestCafe error ([#7387](https://github.com/DevExpress/testcafe/issues/7387)).
+* TestCafe cannot interact with images from the Shadow DOM ([#7454](https://github.com/DevExpress/testcafe/issues/7454)).
+* TestCafe v2.3.0 fails to launch when the `test.meta` method precedes test code ([#7482](https://github.com/DevExpress/testcafe/issues/7482)).
+* When TestCafe launches a headless instance of Google Chrome in proxyless mode, it cannot interact with elements that are overlapped by the status bar ([#7483](https://github.com/DevExpress/testcafe/issues/7483)).
+
 ## v2.3.0 (2023-01-30)
 
 TestCafe v2.3.0 introduces `create-testcafe` --- an interactive tool that allows you to initialize a new TestCafe project in seconds. The update also includes *experimental* ECMAScript module support and a number of bug fixes.
@@ -22,6 +32,8 @@ Execute the following command to launch `create-testcafe`:
 npx create-testcafe
 ```
 
+![example](https://testcafe.io/images/create-testcafe/wizard.gif)
+
 The `create-testcafe` tool allows you to perform the following actions with a single command:
 
 1. Create a new folder for the TestCafe project *(optional)*.
@@ -30,6 +42,8 @@ The `create-testcafe` tool allows you to perform the following actions with a si
 4. Create a separate subfolder for tests.
 5. Populate the test folder with test examples *(optional)*.
 6. Create a YAML file with a GitLab Actions workflow that runs TestCafe tests *(optional)*.
+
+Read the [TestCafe Setup Wizard guide](https://testcafe.io/documentation/404259/guides/best-practices/create-testcafe) for more information on the create-testcafe tool.
 
 ### Experimental: ECMAScript module support
 
@@ -48,7 +62,7 @@ An increasing number of Node.JS packages abandon CommonJS in favour of [ECMAScri
 import {x} from 'y'
 ```
 
-Enable the `--experimental-esm` [CLI flag](xref:402639#--experimental-esm) to import modules that do not support CommonJS. Note: tests with ECMASCript module syntax are subject to [additional requirements](#additional-reuqirements).
+Enable the `--experimental-esm` [CLI flag](https://testcafe.io/documentation/402639/reference/command-line-interface#--experimental-esm) to import modules that do not support CommonJS. Note: tests with ECMASCript module syntax are subject to [additional requirements](https://testcafe.io/404257/release-notes/framework/2023-1-30-testcafe-v2-3-0-released#additional-reuqirements).
 
 ```sh
 testcafe chrome test.js --experimental-esm
