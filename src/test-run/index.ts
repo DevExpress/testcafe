@@ -368,25 +368,25 @@ export default class TestRun extends AsyncEventEmitter {
         this._requestHookEventProvider = this._getRequestHookEventProvider();
         this._roleProvider             = this._getRoleProvider();
 
-        this.cookieProvider    = CookieProviderFactory.create(this, this.opts.experimentalProxyless as boolean);
-        this._storagesProvider = StoragesProviderFactory.create(this, this.opts.experimentalProxyless as boolean);
+        this.cookieProvider    = CookieProviderFactory.create(this, this.isProxyless() as boolean);
+        this._storagesProvider = StoragesProviderFactory.create(this, this.isProxyless() as boolean);
 
         this._addInjectables();
     }
 
     public isProxyless (): boolean {
-        return this.opts.experimentalProxyless as boolean;
+        return !!this.opts.experimentalProxyless;
     }
 
     private _getRequestHookEventProvider (): RequestHookEventProvider {
-        if (!this.opts.experimentalProxyless)
+        if (!this.isProxyless())
             return this.session.requestHookEventProvider;
 
         return this._proxylessRequestPipeline.requestHookEventProvider;
     }
 
     public saveStoragesSnapshot (storageSnapshot: StoragesSnapshot): void {
-        if (this.opts.experimentalProxyless)
+        if (this.isProxyless())
             this._proxylessRequestPipeline.restoringStorages = storageSnapshot;
     }
 
@@ -401,7 +401,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     private _getRoleProvider (): RoleProvider {
-        if (this.opts.experimentalProxyless)
+        if (this.isProxyless())
             return new ProxylessRoleProvider(this);
 
         return new ProxyRoleProvider(this);
@@ -634,7 +634,7 @@ export default class TestRun extends AsyncEventEmitter {
             speed:                                    this.speed,
             dialogHandler:                            JSON.stringify(this.activeDialogHandler),
             canUseDefaultWindowActions:               JSON.stringify(await this.browserConnection.canUseDefaultWindowActions()),
-            proxyless:                                JSON.stringify(this.opts.experimentalProxyless),
+            proxyless:                                JSON.stringify(this.isProxyless()),
             domain:                                   JSON.stringify(this.browserConnection.browserConnectionGateway.proxy.server1Info.domain),
         });
     }
@@ -647,7 +647,7 @@ export default class TestRun extends AsyncEventEmitter {
             retryTestPages:  !!this.opts.retryTestPages,
             speed:           this.speed,
             dialogHandler:   JSON.stringify(this.activeDialogHandler),
-            proxyless:       JSON.stringify(this.opts.experimentalProxyless),
+            proxyless:       JSON.stringify(this.isProxyless()),
         });
     }
 
