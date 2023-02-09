@@ -22,6 +22,8 @@ Execute the following command to launch `create-testcafe`:
 npx create-testcafe
 ```
 
+![example](https://testcafe.io/images/create-testcafe/wizard.gif)
+
 The `create-testcafe` tool allows you to perform the following actions with a single command:
 
 1. Create a new folder for the TestCafe project *(optional)*.
@@ -30,6 +32,8 @@ The `create-testcafe` tool allows you to perform the following actions with a si
 4. Create a separate subfolder for tests.
 5. Populate the test folder with test examples *(optional)*.
 6. Create a YAML file with a GitLab Actions workflow that runs TestCafe tests *(optional)*.
+
+Read the [TestCafe Setup Wizard guide](https://testcafe.io/documentation/404259/guides/best-practices/create-testcafe) for more information on the create-testcafe tool.
 
 ### Experimental: ECMAScript module support
 
@@ -48,7 +52,7 @@ An increasing number of Node.JS packages abandon CommonJS in favour of [ECMAScri
 import {x} from 'y'
 ```
 
-Enable the `--experimental-esm` [CLI flag](xref:402639#--experimental-esm) to import modules that do not support CommonJS. Note: tests with ECMASCript module syntax are subject to [additional requirements](#additional-reuqirements).
+Enable the `--experimental-esm` [CLI flag](https://testcafe.io/documentation/402639/reference/command-line-interface#--experimental-esm) to import modules that do not support CommonJS. Note: tests with ECMASCript module syntax are subject to [additional requirements](https://testcafe.io/404257/release-notes/framework/2023-1-30-testcafe-v2-3-0-released#additional-reuqirements).
 
 ```sh
 testcafe chrome test.js --experimental-esm
