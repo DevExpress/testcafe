@@ -28,7 +28,7 @@ messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
     }
 });
 
-function setCaretPosition (element, caretPos) {
+export function setCaretPosition (element, caretPos) {
     const isTextEditable    = domUtils.isTextEditableElement(element);
     const isContentEditable = domUtils.isContentEditableElement(element);
 

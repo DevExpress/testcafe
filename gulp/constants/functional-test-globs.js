@@ -39,7 +39,6 @@ const PROXYLESS_TESTS_GLOB = [
     '!test/functional/fixtures/api/es-next/navigate-to-and-test-page/test.js',
     '!test/functional/fixtures/api/es-next/request/test.js',
     '!test/functional/fixtures/regression/gh-1311/test.js',
-    '!test/functional/fixtures/regression/gh-1388/test.js',
     '!test/functional/fixtures/hammerhead/gh-2622/test.js',
     '!test/functional/fixtures/regression/gh-2861/test.js',
     '!test/functional/fixtures/regression/gh-423/test.js',
