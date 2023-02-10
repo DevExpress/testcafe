@@ -1,22 +1,13 @@
 const http               = require('http');
 const path               = require('path');
-const expect             = require('chai').expect;
 const config             = require('../../../config');
 const createTestCafe     = require('../../../../../lib');
 const { getFreePort }    = require('endpoint-utils');
-const { createReporter } = require('../../../utils/reporter');
 
 const ERROR_RESPONSE_COUNT        = 8;
 const SIGNIFICANT_REQUEST_TIMEOUT = 200;
 
 let previousRequestTime = null;
-let warnings            = [];
-
-const customReporter = createReporter({
-    async reportTaskDone (endTime, passed, warns) {
-        warnings = warns;
-    },
-});
 
 async function createServer () {
     let requestCounter = 0;
