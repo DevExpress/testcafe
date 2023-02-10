@@ -191,7 +191,8 @@ export default class Driver extends serviceUtils.EventEmitter {
         this.childWindowDriverLinks = [];
         this.parentWindowDriverLink = null;
 
-        this.statusBar = null;
+        this.statusBar              = null;
+        this.selectorInspectorPanel = null;
 
         this.windowId                         = this._getCurrentWindowId();
         this.role                             = DriverRole.replica;
@@ -247,7 +248,7 @@ export default class Driver extends serviceUtils.EventEmitter {
     }
 
     set consoleMessages (messages) {
-        return this.contextStorage.setItem(CONSOLE_MESSAGES, messages ? messages.getCopy() : null);
+        this.contextStorage.setItem(CONSOLE_MESSAGES, messages ? messages.getCopy() : null);
     }
 
     async _getReadyPromise () {
@@ -1454,6 +1455,8 @@ export default class Driver extends serviceUtils.EventEmitter {
     _onSetBreakpointCommand ({ isTestError, inCompilerService }) {
         const showDebuggingStatusPromise = this.statusBar.showDebuggingStatus(isTestError);
 
+        this.selectorInspectorPanel.show();
+
         if (inCompilerService) {
             showDebuggingStatusPromise.then(debug => {
                 this.debug = debug;
@@ -1657,6 +1660,9 @@ export default class Driver extends serviceUtils.EventEmitter {
 
     _executeCommand (command) {
         this.contextStorage.setItem(this.WINDOW_COMMAND_API_CALL_FLAG, false);
+
+        if (this.selectorInspectorPanel)
+            this.selectorInspectorPanel.hide();
 
         if (this.customCommandHandlers[command.type])
             this._onCustomCommand(command);
@@ -1903,8 +1909,9 @@ export default class Driver extends serviceUtils.EventEmitter {
             proxyless,
         });
 
-        this.nativeDialogsTracker = new NativeDialogTracker(this.contextStorage, { proxyless, dialogHandler });
-        this.statusBar            = new testCafeUI.StatusBar(this.runInfo.userAgent, this.runInfo.fixtureName, this.runInfo.testName, this.contextStorage);
+        this.nativeDialogsTracker   = new NativeDialogTracker(this.contextStorage, { proxyless, dialogHandler });
+        this.statusBar              = new testCafeUI.StatusBar(this.runInfo.userAgent, this.runInfo.fixtureName, this.runInfo.testName, this.contextStorage);
+        this.selectorInspectorPanel = new testCafeUI.SelectorInspectorPanel(this.statusBar);
 
         const self = this;
 
