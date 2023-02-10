@@ -96,19 +96,6 @@ testingEnvironments[testingEnvironmentNames.localChrome] = {
     ],
 };
 
-testingEnvironments[testingEnvironmentNames.localBrowsersIE] = {
-    isLocalBrowsers: true,
-
-    browsers: [
-        {
-            platform:    'Windows 10',
-            browserName: 'ie',
-            version:     '11.0',
-            alias:       'ie',
-        },
-    ],
-};
-
 testingEnvironments[testingEnvironmentNames.localBrowsersChromeFirefox] = {
     isLocalBrowsers: true,
 

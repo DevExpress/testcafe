@@ -41,11 +41,6 @@ const CLIENT_TESTS_DESKTOP_BROWSERS = [
         browserName: 'firefox',
     },
     {
-        platform:    'Windows 10',
-        browserName: 'internet explorer',
-        version:     '11.0',
-    },
-    {
         platform:    'macOS 12',
         browserName: 'safari',
     },

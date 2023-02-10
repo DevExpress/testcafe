@@ -379,12 +379,6 @@ gulp.step('test-functional-local-run', () => {
 
 gulp.task('test-functional-local', gulp.series('prepare-tests', 'test-functional-local-run'));
 
-gulp.step('test-functional-local-ie-run', () => {
-    return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localBrowsersIE);
-});
-
-gulp.task('test-functional-local-ie', gulp.series('prepare-tests', 'test-functional-local-ie-run'));
-
 gulp.step('test-functional-local-chrome-firefox-run', () => {
     return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localBrowsersChromeFirefox);
 });

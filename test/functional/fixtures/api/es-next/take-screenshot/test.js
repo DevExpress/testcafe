@@ -54,7 +54,7 @@ const getReporter = function (scope) {
 describe('[API] t.takeScreenshot()', function () {
     afterEach(assertionHelper.removeScreenshotDir);
 
-    if (config.useLocalBrowsers && config.currentEnvironmentName !== config.testingEnvironmentNames.localBrowsersIE) {
+    if (config.useLocalBrowsers) {
         it('Should take a screenshot', function () {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot', { setScreenshotPath: true })
                 .then(function () {
@@ -332,7 +332,7 @@ describe('[API] t.takeScreenshot()', function () {
 describe('[API] t.takeElementScreenshot()', function () {
     afterEach(assertionHelper.removeScreenshotDir);
 
-    if (config.useLocalBrowsers && config.currentEnvironmentName !== config.testingEnvironmentNames.localBrowsersIE) {
+    if (config.useLocalBrowsers) {
         skipInProxyless('Should take screenshot of an element', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Element',
                 { setScreenshotPath: true })

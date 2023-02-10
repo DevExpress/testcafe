@@ -12,7 +12,7 @@ const QUARANTINE_MODE_SCREENSHOT_PATH_RE = /Screenshot: .*?___test-screenshots__
 describe('Screenshots on fails', function () {
     afterEach(assertionHelper.removeScreenshotDir);
 
-    if (config.useLocalBrowsers && config.currentEnvironmentName !== config.testingEnvironmentNames.localBrowsersIE) {
+    if (config.useLocalBrowsers) {
         it('Should take a screenshot if the ensureElement method fails', function () {
             return runTests('./testcafe-fixtures/screenshots-on-fails.js', 'Screenshot on the ensureElement method fail',
                 {
