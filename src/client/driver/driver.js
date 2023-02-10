@@ -117,6 +117,7 @@ import createErrorCtorCallback, {
 } from '../../shared/errors/selector-error-ctor-callback';
 import './command-executors/action-executor/actions-initializer';
 import { shouldSkipJsError } from './process-skip-js-errors';
+import isFileProtocol from '../../shared/utils/is-file-protocol';
 
 
 const settings       = hammerhead.settings;
@@ -1242,12 +1243,16 @@ export default class Driver extends serviceUtils.EventEmitter {
     _onNavigateToCommand (command) {
         this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, true);
 
-        executeNavigateToCommand(command)
-            .then(driverStatus => {
-                this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, false);
+        if (this.options.proxyless && isFileProtocol(command.url))
+            browser.redirectUsingCdp(command, hammerhead.createNativeXHR, this.communicationUrls.openFileProtocolUrl);
+        else {
+            executeNavigateToCommand(command)
+                .then(driverStatus => {
+                    this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, false);
 
-                return this._onReady(driverStatus);
-            });
+                    return this._onReady(driverStatus);
+                });
+        }
     }
 
     _onGetProxyUrlCommand (command) {
