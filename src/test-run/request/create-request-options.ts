@@ -169,24 +169,28 @@ function getProxyUrl (testRun: TestRun, url: string, withCredentials?: boolean):
     }, testRun, true)) as Promise<string>;
 }
 
-async function resolveUrlParts (testRun: TestRun, url: URL, withCredentials: boolean): Promise<{ hostname: string; port: string; href: string; partAfterHost: string }> {
-    if (testRun.isProxyless()) {
-        const {
-            href, hostname,
-            port, pathname,
-            search,
-        }                     = url;
-        const partAfterHost   = [pathname, search].join('');
+async function resolvePoxylessUrlParts (url: URL): Promise<{ hostname: string; port: string; href: string; partAfterHost: string }> {
+    const {
+        href, hostname,
+        port, pathname,
+        search,
+    }                   = url;
+    const partAfterHost = [pathname, search].join('');
 
-        return { partAfterHost, href, hostname, port };
-    }
+    return { partAfterHost, href, hostname, port };
+}
 
+async function resolvePoxyUrlParts (testRun: TestRun, url: URL, withCredentials: boolean): Promise<{ hostname: string; port: string; href: string; partAfterHost: string }> {
     const href               = await getProxyUrl(testRun, url.href, withCredentials);
     const urlObj             = await parseProxyUrl(href);
     const { partAfterHost }  = urlObj;
     const { hostname, port } = urlObj.proxy;
 
     return { partAfterHost, href, hostname, port };
+}
+
+function resolveUrlParts (testRun: TestRun, url: URL, withCredentials: boolean): Promise<{ hostname: string; port: string; href: string; partAfterHost: string }> {
+    return testRun.isProxyless() ? resolvePoxylessUrlParts(url) : resolvePoxyUrlParts(testRun, url, withCredentials);
 }
 
 export async function createRequestOptions (currentPageUrl: URL, testRun: TestRun, options: ExternalRequestOptions, callsite: CallsiteRecord | null): Promise<RequestOptions> {
@@ -233,7 +237,7 @@ export async function createRequestOptions (currentPageUrl: URL, testRun: TestRu
             host:      options.proxy.host,
             hostname:  options.proxy.host,
             port:      options.proxy.port.toString(),
-            proxyAuth: options.proxy.auth ? `${options.proxy.auth.username}:${options.proxy.auth.password}` : void 0,
+            proxyAuth: options.proxy.auth ? `${ options.proxy.auth.username }:${ options.proxy.auth.password }` : void 0,
         };
 
         requestParams.protocol = url.protocol;
