@@ -7,6 +7,7 @@ import { utils, Promise } from '../../deps/hammerhead';
 import { createMouseClickStrategy, MouseClickStrategy } from './browser-click-strategy';
 import ProxylessEventSimulator from '../../../../proxyless/client/event-simulator';
 import AxisValues from '../../../core/utils/values/axis-values';
+import { setCaretPosition } from '../../utils/utils';
 
 export interface MouseClickEventState {
     mousedownPrevented: boolean;
@@ -36,8 +37,17 @@ export default class ClickAutomation extends VisibleElementAutomation {
     }
 
     private _mouseup (element: HTMLElement, eventArgs: MouseEventArgs): Promise<MouseEventArgs> {
-        if (this.canUseProxylessEventSimulator(eventArgs.element))
-            return (this.proxylessEventSimulator as ProxylessEventSimulator).mouseUp(eventArgs);
+        if (this.canUseProxylessEventSimulator(eventArgs.element)) {
+            return (this.proxylessEventSimulator as ProxylessEventSimulator).mouseUp(eventArgs)
+                .then(result => {
+                    const caretPos = (this.options as ClickOptions).caretPos;
+
+                    if (typeof caretPos === 'number')
+                        setCaretPosition(element, caretPos);
+
+                    return result;
+                });
+        }
 
         return this.strategy.mouseup(element, eventArgs);
     }
