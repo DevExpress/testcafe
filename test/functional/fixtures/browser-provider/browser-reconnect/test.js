@@ -18,7 +18,7 @@ const reporter = createReporter({
 function createConnection (browser) {
     return browserProviderPool
         .getBrowserInfo(browser)
-        .then(browserInfo => new BrowserConnection(testCafe.browserConnectionGateway, browserInfo, false));
+        .then(browserInfo => new BrowserConnection(testCafe.browserConnectionGateway, browserInfo, false, void 0, config.proxyless));
 }
 
 const initializeConnectionLowHeartbeatTimeout = connection => {
