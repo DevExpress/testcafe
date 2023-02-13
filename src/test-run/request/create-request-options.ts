@@ -159,7 +159,7 @@ function prepareSearchParams (url: string, params?: Params): string {
         }
     }
 
-    return `${url}${url.includes('?') ? '&' : '?'}${searchParams.toString()}`;
+    return `${ url }${ url.includes('?') ? '&' : '?' }${ searchParams.toString() }`;
 }
 
 function getProxyUrl (testRun: TestRun, url: string, withCredentials?: boolean): Promise<string> {
@@ -169,14 +169,18 @@ function getProxyUrl (testRun: TestRun, url: string, withCredentials?: boolean):
     }, testRun, true)) as Promise<string>;
 }
 
-async function resolveUrlParts (testRun: TestRun, url: URL, withCredentials: boolean): Promise<{ hostname: string; port: string; href: string; partAfterHost: string }> {
-    if (testRun.isProxyless()) {
-        const { href, hostname, port, pathname, search } = url;
-        const partAfterHost      = [pathname, search].join('');
+async function resolveProxylessUrlParts (url: URL): Promise<{ hostname: string; port: string; href: string; partAfterHost: string }> {
+    const {
+        href, hostname,
+        port, pathname,
+        search,
+    }                     = url;
+    const partAfterHost   = [pathname, search].join('');
 
-        return { partAfterHost, href, hostname, port };
-    }
+    return { partAfterHost, href, hostname, port };
+}
 
+async function resolveProxyUrlParts (testRun: TestRun, url: URL, withCredentials: boolean): Promise<{ hostname: string; port: string; href: string; partAfterHost: string }> {
     const href               = await getProxyUrl(testRun, url.href, withCredentials);
     const urlObj             = await parseProxyUrl(href);
     const { partAfterHost }  = urlObj;
@@ -188,12 +192,17 @@ async function resolveUrlParts (testRun: TestRun, url: URL, withCredentials: boo
 export async function createRequestOptions (currentPageUrl: URL, testRun: TestRun, options: ExternalRequestOptions, callsite: CallsiteRecord | null): Promise<RequestOptions> {
     options.headers = options.headers || {};
 
-    const url                                     = await prepareUrl(testRun, currentPageUrl, options.url, callsite);
-    const withCredentials                         = !currentPageUrl.host || sameOriginCheck(currentPageUrl.href, url.href) || options.withCredentials || false;
-    const body                                    = transformBody(options.headers, options.body);
-    const headers                                 = await prepareHeaders(options.headers, currentPageUrl, url, body, testRun, withCredentials, options);
-    const { hostname, port, href, partAfterHost } = await resolveUrlParts(testRun, url, withCredentials);
-    let auth                                      = options.auth;
+    const url             = await prepareUrl(testRun, currentPageUrl, options.url, callsite);
+    const withCredentials = !currentPageUrl.host || sameOriginCheck(currentPageUrl.href, url.href) || options.withCredentials || false;
+    const body            = transformBody(options.headers, options.body);
+    const headers         = await prepareHeaders(options.headers, currentPageUrl, url, body, testRun, withCredentials, options);
+    const {
+        hostname, port,
+        href, partAfterHost,
+    }                     = testRun.isProxyless()
+        ? await resolveProxylessUrlParts(url)
+        : await resolveProxyUrlParts(testRun, url, withCredentials);
+    let auth              = options.auth;
 
     if (!auth && url.username && url.password) {
         auth = {
