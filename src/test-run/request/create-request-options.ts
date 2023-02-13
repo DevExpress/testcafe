@@ -169,18 +169,18 @@ function getProxyUrl (testRun: TestRun, url: string, withCredentials?: boolean):
     }, testRun, true)) as Promise<string>;
 }
 
-async function resolveProxylessUrlParts (url: URL): Promise<{ hostname: string; port: string; href: string; partAfterHost: string }> {
-    const {
-        href, hostname,
-        port, pathname,
-        search,
-    }                     = url;
-    const partAfterHost   = [pathname, search].join('');
+async function resolveUrlParts (testRun: TestRun, url: URL, withCredentials: boolean): Promise<{ hostname: string; port: string; href: string; partAfterHost: string }> {
+    if (testRun.isProxyless()) {
+        const {
+            href, hostname,
+            port, pathname,
+            search,
+        }                     = url;
+        const partAfterHost   = [pathname, search].join('');
 
-    return { partAfterHost, href, hostname, port };
-}
+        return { partAfterHost, href, hostname, port };
+    }
 
-async function resolveProxyUrlParts (testRun: TestRun, url: URL, withCredentials: boolean): Promise<{ hostname: string; port: string; href: string; partAfterHost: string }> {
     const href               = await getProxyUrl(testRun, url.href, withCredentials);
     const urlObj             = await parseProxyUrl(href);
     const { partAfterHost }  = urlObj;
@@ -199,9 +199,7 @@ export async function createRequestOptions (currentPageUrl: URL, testRun: TestRu
     const {
         hostname, port,
         href, partAfterHost,
-    }                     = testRun.isProxyless()
-        ? await resolveProxylessUrlParts(url)
-        : await resolveProxyUrlParts(testRun, url, withCredentials);
+    }                     = await resolveUrlParts(testRun, url, withCredentials);
     let auth              = options.auth;
 
     if (!auth && url.username && url.password) {
