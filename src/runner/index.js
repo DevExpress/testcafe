@@ -70,6 +70,7 @@ export default class Runner extends EventEmitter {
         this.compilerService     = compilerService;
         this._options            = {};
         this._hasTaskErrors      = false;
+        this._reporters          = null;
 
         this.apiMethodWasCalled = new FlagList([
             OPTION_NAMES.src,
@@ -573,6 +574,80 @@ export default class Runner extends EventEmitter {
             this.configuration.mergeOptions({ [OPTION_NAMES.screenshots]: { takeOnFails: true, autoTakeOnFails: true } });
     }
 
+    _resetBeforeRun () {
+        this.apiMethodWasCalled.reset();
+        this._messageBus.clearListeners();
+    }
+
+    _getDashboardUrl () {
+        const dashboardReporter = this._reporters.find(r => r.plugin.name === 'dashboard')?.plugin;
+
+        return dashboardReporter?.getReportUrl ? dashboardReporter.getReportUrl() : '';
+    }
+
+    _prepareAndRunTask (options) {
+        const messageBusErrorPromise = promisifyEvent(this._messageBus, 'error');
+        const taskOptionsPromise     = this._getRunTaskOptions(options);
+        const bindedTaskRunner       = this._runTask.bind(this);
+        const runTaskPromise         = taskOptionsPromise.then(bindedTaskRunner);
+
+        const promise = Promise.race([
+            runTaskPromise,
+            messageBusErrorPromise,
+        ]);
+
+        return this._createCancelablePromise(promise);
+    }
+
+    async _prepareReporters () {
+        await this._addDashboardReporterIfNeeded();
+        await this._turnOnScreenshotsIfNeeded();
+
+        const reporterPlugins = await Reporter.getReporterPlugins(this.configuration.getOption(OPTION_NAMES.reporter));
+
+        this._reporters = reporterPlugins.map(reporter => new Reporter(reporter.plugin, this._messageBus, reporter.outStream, reporter.name));
+
+        await Promise.all(this._reporters.map(reporter => reporter.init()));
+    }
+
+    async _prepareOptions (options) {
+        this._options = Object.assign(this._options, options);
+
+        await this._setConfigurationOptions();
+        await this._prepareReporters();
+        await this._setBootstrapperOptions();
+
+        logEntry(DEBUG_LOGGER, this.configuration);
+
+        await this._validateRunOptions();
+    }
+
+    async _getRunTaskOptions (options) {
+        await this._prepareOptions(options);
+
+        const { browserSet, tests, testedApp, commonClientScripts, id } = await this._createRunnableConfiguration();
+
+        await this._prepareClientScripts(tests, commonClientScripts);
+
+        const resultOptions = {
+            ...this.configuration.getOptions(),
+
+            dashboardUrl: this._getDashboardUrl(),
+        };
+
+        await this.bootstrapper.compilerService?.setOptions({ value: resultOptions });
+
+        return {
+            browserSet,
+            tests,
+            testedApp,
+
+            runnableConfigurationId: id,
+            options:                 resultOptions,
+            reporters:               this._reporters,
+        };
+    }
+
     async _getDashboardOptions () {
         const storageOptions = await this._loadDashboardOptionsFromStorage();
         const configOptions  = this.configuration.getOption(OPTION_NAMES.dashboard);
@@ -765,64 +840,9 @@ export default class Runner extends EventEmitter {
     }
 
     run (options = {}) {
-        let reporters;
+        this._resetBeforeRun();
 
-        this.apiMethodWasCalled.reset();
-        this._messageBus.clearListeners();
-
-        const messageBusErrorPromise = promisifyEvent(this._messageBus, 'error');
-
-        this._options = Object.assign(this._options, options);
-
-        const runTaskPromise = Promise.resolve()
-            .then(() => this._setConfigurationOptions())
-            .then(async () => {
-                await this._addDashboardReporterIfNeeded();
-                await this._turnOnScreenshotsIfNeeded();
-            })
-            .then(() => Reporter.getReporterPlugins(this.configuration.getOption(OPTION_NAMES.reporter)))
-            .then(reporterPlugins => {
-                reporters = reporterPlugins.map(reporter => new Reporter(reporter.plugin, this._messageBus, reporter.outStream, reporter.name));
-
-                return Promise.all(reporters.map(reporter => reporter.init()));
-            })
-            .then(() => this._setBootstrapperOptions())
-            .then(() => {
-                logEntry(DEBUG_LOGGER, this.configuration);
-
-                return this._validateRunOptions();
-            })
-            .then(() => this._createRunnableConfiguration())
-            .then(async ({ browserSet, tests, testedApp, commonClientScripts, id }) => {
-                await this._prepareClientScripts(tests, commonClientScripts);
-
-                const dashboardReporter = reporters.find(r => r.plugin.name === 'dashboard')?.plugin;
-                const dashboardUrl      = dashboardReporter?.getReportUrl ? dashboardReporter.getReportUrl() : '';
-
-                const resultOptions = {
-                    ...this.configuration.getOptions(),
-
-                    dashboardUrl,
-                };
-
-                await this.bootstrapper.compilerService?.setOptions({ value: resultOptions });
-
-                return this._runTask({
-                    reporters,
-                    browserSet,
-                    tests,
-                    testedApp,
-                    options:                 resultOptions,
-                    runnableConfigurationId: id,
-                });
-            });
-
-        const promises = [
-            runTaskPromise,
-            messageBusErrorPromise,
-        ];
-
-        return this._createCancelablePromise(Promise.race(promises));
+        return this._prepareAndRunTask(options);
     }
 
     async stop () {
