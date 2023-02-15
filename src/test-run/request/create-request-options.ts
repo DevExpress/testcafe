@@ -66,13 +66,11 @@ function transformBody (headers: OutgoingHttpHeaders, body?: any): Buffer {
         setContentTypeIfNotExists(headers, `${CONTENT_TYPES.urlencoded};charset=utf-8`);
 
         return Buffer.from(body.toString());
-    }
-    else if (isObject(body) || headers && headers[HTTP_HEADERS.contentType] === CONTENT_TYPES.json) {
+    } else if (isObject(body) || headers && headers[HTTP_HEADERS.contentType] === CONTENT_TYPES.json) {
         setContentTypeIfNotExists(headers, CONTENT_TYPES.json);
 
         return Buffer.from(JSON.stringify(body));
-    }
-    else if (typeof body === 'string')
+    } else if (typeof body === 'string')
         setContentTypeIfNotExists(headers, CONTENT_TYPES.textPlain);
 
     return body;
@@ -130,8 +128,7 @@ async function prepareUrl (testRun: TestRun, currentPageUrl: URL, url: string | 
         preparedUrl = url instanceof URL
             ? url
             : new URL(url, currentPageUrl.hostname ? currentPageUrl.origin : void 0);
-    }
-    catch (e) {
+    } catch (e) {
         throw new APIError(callsite, RUNTIME_ERRORS.requestUrlInvalidValueError, url);
     }
 
@@ -159,7 +156,7 @@ function prepareSearchParams (url: string, params?: Params): string {
         }
     }
 
-    return `${ url }${ url.includes('?') ? '&' : '?' }${ searchParams.toString() }`;
+    return `${url}${url.includes('?') ? '&' : '?'}${searchParams.toString()}`;
 }
 
 function getProxyUrl (testRun: TestRun, url: string, withCredentials?: boolean): Promise<string> {
@@ -171,10 +168,11 @@ function getProxyUrl (testRun: TestRun, url: string, withCredentials?: boolean):
 
 async function resolvePoxylessUrlParts (url: URL): Promise<{ hostname: string; port: string; href: string; partAfterHost: string }> {
     const {
-        href, hostname,
-        port, pathname,
-        search,
-    }                   = url;
+              href, hostname,
+              port, pathname,
+              search,
+          } = url;
+
     const partAfterHost = [pathname, search].join('');
 
     return { partAfterHost, href, hostname, port };
@@ -200,11 +198,14 @@ export async function createRequestOptions (currentPageUrl: URL, testRun: TestRu
     const withCredentials = !currentPageUrl.host || sameOriginCheck(currentPageUrl.href, url.href) || options.withCredentials || false;
     const body            = transformBody(options.headers, options.body);
     const headers         = await prepareHeaders(options.headers, currentPageUrl, url, body, testRun, withCredentials, options);
-    const {
-        hostname, port,
-        href, partAfterHost,
-    }                     = await resolveUrlParts(testRun, url, withCredentials);
     let auth              = options.auth;
+
+    const {
+        hostname,
+        port,
+        href,
+        partAfterHost,
+    } = await resolveUrlParts(testRun, url, withCredentials);
 
     if (!auth && url.username && url.password) {
         auth = {
@@ -221,7 +222,7 @@ export async function createRequestOptions (currentPageUrl: URL, testRun: TestRu
         host:           hostname,
         port:           port,
         path:           prepareSearchParams(partAfterHost, options.params),
-        auth:           auth && withCredentials ? `${ auth.username }:${ auth.password }` : void 0,
+        auth:           auth && withCredentials ? `${auth.username}:${auth.password}` : void 0,
         headers:        headers,
         credentials:    withCredentials ? testRun.session.getAuthCredentials() : void 0,
         body:           body,
@@ -237,7 +238,7 @@ export async function createRequestOptions (currentPageUrl: URL, testRun: TestRu
             host:      options.proxy.host,
             hostname:  options.proxy.host,
             port:      options.proxy.port.toString(),
-            proxyAuth: options.proxy.auth ? `${ options.proxy.auth.username }:${ options.proxy.auth.password }` : void 0,
+            proxyAuth: options.proxy.auth ? `${options.proxy.auth.username}:${options.proxy.auth.password}` : void 0,
         };
 
         requestParams.protocol = url.protocol;
