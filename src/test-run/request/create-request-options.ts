@@ -66,11 +66,13 @@ function transformBody (headers: OutgoingHttpHeaders, body?: any): Buffer {
         setContentTypeIfNotExists(headers, `${CONTENT_TYPES.urlencoded};charset=utf-8`);
 
         return Buffer.from(body.toString());
-    } else if (isObject(body) || headers && headers[HTTP_HEADERS.contentType] === CONTENT_TYPES.json) {
+    }
+    else if (isObject(body) || headers && headers[HTTP_HEADERS.contentType] === CONTENT_TYPES.json) {
         setContentTypeIfNotExists(headers, CONTENT_TYPES.json);
 
         return Buffer.from(JSON.stringify(body));
-    } else if (typeof body === 'string')
+    }
+    else if (typeof body === 'string')
         setContentTypeIfNotExists(headers, CONTENT_TYPES.textPlain);
 
     return body;
@@ -128,7 +130,8 @@ async function prepareUrl (testRun: TestRun, currentPageUrl: URL, url: string | 
         preparedUrl = url instanceof URL
             ? url
             : new URL(url, currentPageUrl.hostname ? currentPageUrl.origin : void 0);
-    } catch (e) {
+    }
+    catch (e) {
         throw new APIError(callsite, RUNTIME_ERRORS.requestUrlInvalidValueError, url);
     }
 
@@ -168,10 +171,10 @@ function getProxyUrl (testRun: TestRun, url: string, withCredentials?: boolean):
 
 async function resolvePoxylessUrlParts (url: URL): Promise<{ hostname: string; port: string; href: string; partAfterHost: string }> {
     const {
-              href, hostname,
-              port, pathname,
-              search,
-          } = url;
+        href, hostname,
+        port, pathname,
+        search,
+    } = url;
 
     const partAfterHost = [pathname, search].join('');
 
