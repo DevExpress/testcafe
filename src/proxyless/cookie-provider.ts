@@ -77,7 +77,7 @@ export class CdpCookieProvider extends CookieProviderBase implements CookieProvi
     async getCookieHeader (url: string): Promise<string | null> {
         const [{ domain, path }] = this._parseUrls([url]);
         const cookies            = await this.getCookies([{ domain }]);
-        const filteredCookies      = cookies.filter(c => this._includesPath(c.path || '/', path));
+        const filteredCookies    = cookies.filter(c => this._includesPath(c.path || '/', path));
 
         return filteredCookies.map(c => `${ c.name }=${ c.value }`).join(';');
     }

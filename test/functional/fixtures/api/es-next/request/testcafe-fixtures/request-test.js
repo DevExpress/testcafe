@@ -238,7 +238,7 @@ test('Should interrupt request by timeout', async (t) => {
 
 test.page('http://localhost:3000/fixtures/request/pages/index.html')
 ('Should send request with cookies', async (t) => {
-    await t.setCookies({ apiCookie1: 'value1' }, 'http://localhost');
+    await t.setCookies({ apiCookie1: 'value1' });
 
     const { body } = await t.request.get(`http://localhost:3000/api/data`);
 
@@ -268,6 +268,15 @@ test.page('https://devexpress.github.io/testcafe/example/')
     await t.expect(cookies[0].name).eql('cookieName');
     await t.expect(cookies[0].value).eql('cookieValue');
     await t.expect(clientCookies).eql('cookieName=cookieValue');
+});
+
+test.page('https://devexpress.github.io/testcafe/example/')
+('Should send request with cookies and another domain if "withCredentials" is true', async (t) => {
+    await t.setCookies({ cookieName: 'cookieValue' }, 'https://devexpress.github.io/');
+
+    const { body } = await t.request.get(`http://localhost:3000/api/data`, { withCredentials: true });
+
+    await t.expect(body.cookies).eql('cookieName=cookieValue');
 });
 
 test('Should return parsed json', async (t) => {
