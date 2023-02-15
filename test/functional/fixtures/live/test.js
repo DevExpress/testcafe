@@ -242,6 +242,17 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
                     return cafe.close();
                 });
         });
+
+        it('Selector Inspector should indicate the correct number of elements matching the selector in live mode', async () => {
+            const testCafe = await createTestCafe();
+            const runner   = createLiveModeRunner(testCafe, '/testcafe-fixtures/selector-inspector.js');
+
+            helper.emitter.once('tests-completed', () => runner.exit());
+
+            await runner.run();
+
+            return testCafe.close();
+        });
     });
 }
 else if (testingEnvironmentName === 'local-headless-chrome' && !config.experimentalESM) {
