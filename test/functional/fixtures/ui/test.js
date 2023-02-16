@@ -34,7 +34,9 @@ describe('TestCafe UI', () => {
 
         runTestCafeTest('should fill the selectors list with the generated selectors');
 
-        runTestCafeTest('should indicate the correct number of elements matching the selector');
+        runTestCafeTest('should indicate the correct number of elements matching the css selector');
+
+        runTestCafeTest('should indicate the correct number of elements matching the TestCafe selector');
 
         runTestCafeTest('should indicate if the selector is invalid on input');
 
