@@ -205,6 +205,8 @@ export default class Reporter {
         messageBus.on('test-action-done', async e => await this._onTaskTestActionDone(e));
 
         messageBus.once('done', async () => await this._onceTaskDoneHandler());
+
+        messageBus.once('unhandled-rejection', async () => await this._onceTaskDoneHandler());
     }
 
     public async dispose (): Promise<unknown> {
