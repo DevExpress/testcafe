@@ -498,7 +498,7 @@ describe('Reporter', () => {
 
         createReporter(messageBus);
 
-        expect(messageBus.listenerCount()).eql(7);
+        expect(messageBus.listenerCount()).eql(8);
         expect(messageBus.listenerCount('warning-add')).eql(1);
         expect(messageBus.listenerCount('start')).eql(1);
         expect(messageBus.listenerCount('test-run-start')).eql(1);
@@ -506,6 +506,7 @@ describe('Reporter', () => {
         expect(messageBus.listenerCount('test-action-start')).eql(1);
         expect(messageBus.listenerCount('test-action-done')).eql(1);
         expect(messageBus.listenerCount('done')).eql(1);
+        expect(messageBus.listenerCount('unhandled-rejection')).eql(1);
     });
 
     it('Should analyze task progress and call appropriate plugin methods', function () {
