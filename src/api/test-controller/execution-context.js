@@ -44,7 +44,9 @@ function createRequire (filename) {
 
 function createSelectorDefinition (testRun) {
     return (fn, options = {}) => {
-        const { skipVisibilityCheck, collectionMode } = testRun.controller.getExecutionContext()[OPTIONS_KEY];
+        const { skipVisibilityCheck, collectionMode } = testRun.controller ?
+            testRun.controller.getExecutionContext()[OPTIONS_KEY] :
+            createExecutionContext(testRun)[OPTIONS_KEY];
 
         if (skipVisibilityCheck)
             options.visibilityCheck = false;

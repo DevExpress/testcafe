@@ -8,7 +8,11 @@ import {
 } from '../../errors/runtime';
 
 import { UncaughtErrorInCustomScript, UncaughtTestCafeErrorInCustomScript } from '../../errors/test-run';
-import { setContextOptions, DEFAULT_CONTEXT_OPTIONS } from '../../api/test-controller/execution-context';
+import {
+    setContextOptions,
+    DEFAULT_CONTEXT_OPTIONS,
+    createExecutionContext,
+} from '../../api/test-controller/execution-context';
 
 import {
     ERROR_LINE_COLUMN_REGEXP,
@@ -78,7 +82,10 @@ function isRuntimeError (err) {
 }
 
 export function executeJsExpression (expression, testRun, options) {
-    const context      = getExecutionContext(testRun.controller, options);
+    const context = testRun.controller ?
+        getExecutionContext(testRun.controller, options) :
+        createExecutionContext(testRun);
+
     const errorOptions = createErrorFormattingOptions();
 
     return runInContext(expression, context, errorOptions);
