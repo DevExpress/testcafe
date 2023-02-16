@@ -93,6 +93,14 @@ describe('Request', () => {
             return runTests('testcafe-fixtures/request-test.js', 'Should send request with cookies');
         });
 
+        it('Should attach cookies to request with another domain if "withCredentials" is true', function () {
+            return runTests('testcafe-fixtures/request-test.js', 'Should attach cookies to request with another domain if "withCredentials" is true');
+        });
+
+        it('Should not attach cookies to request with another domain if "withCredentials" is false', function () {
+            return runTests('testcafe-fixtures/request-test.js', 'Should not attach cookies to request with another domain if "withCredentials" is false');
+        });
+
         it('Should not set cookies to the client from response', function () {
             return runTests('testcafe-fixtures/request-test.js', 'Should not set cookies to the client from response');
         });

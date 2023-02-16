@@ -278,7 +278,7 @@ export default class TestRun extends AsyncEventEmitter {
     public readonly browser: Browser;
     private readonly _messageBus?: MessageBus;
     private _clientEnvironmentPrepared = false;
-    private _cookieProvider: CookieProvider;
+    public readonly cookieProvider: CookieProvider;
     private _storagesProvider: StoragesProvider;
     public readonly startRunExecutionTime?: Date;
     private readonly _requestHookEventProvider: RequestHookEventProvider;
@@ -368,21 +368,25 @@ export default class TestRun extends AsyncEventEmitter {
         this._requestHookEventProvider = this._getRequestHookEventProvider();
         this._roleProvider             = this._getRoleProvider();
 
-        this._cookieProvider   = CookieProviderFactory.create(this, this.opts.experimentalProxyless as boolean);
-        this._storagesProvider = StoragesProviderFactory.create(this, this.opts.experimentalProxyless as boolean);
+        this.cookieProvider    = CookieProviderFactory.create(this, this.isProxyless() as boolean);
+        this._storagesProvider = StoragesProviderFactory.create(this, this.isProxyless() as boolean);
 
         this._addInjectables();
     }
 
+    public isProxyless (): boolean {
+        return !!this.opts.experimentalProxyless;
+    }
+
     private _getRequestHookEventProvider (): RequestHookEventProvider {
-        if (!this.opts.experimentalProxyless)
+        if (!this.isProxyless())
             return this.session.requestHookEventProvider;
 
         return this._proxylessRequestPipeline.requestHookEventProvider;
     }
 
     public saveStoragesSnapshot (storageSnapshot: StoragesSnapshot): void {
-        if (this.opts.experimentalProxyless)
+        if (this.isProxyless())
             this._proxylessRequestPipeline.restoringStorages = storageSnapshot;
     }
 
@@ -397,7 +401,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     private _getRoleProvider (): RoleProvider {
-        if (this.opts.experimentalProxyless)
+        if (this.isProxyless())
             return new ProxylessRoleProvider(this);
 
         return new ProxyRoleProvider(this);
@@ -630,7 +634,7 @@ export default class TestRun extends AsyncEventEmitter {
             speed:                                    this.speed,
             dialogHandler:                            JSON.stringify(this.activeDialogHandler),
             canUseDefaultWindowActions:               JSON.stringify(await this.browserConnection.canUseDefaultWindowActions()),
-            proxyless:                                JSON.stringify(this.opts.experimentalProxyless),
+            proxyless:                                JSON.stringify(this.isProxyless()),
             domain:                                   JSON.stringify(this.browserConnection.browserConnectionGateway.proxy.server1Info.domain),
         });
     }
@@ -643,7 +647,7 @@ export default class TestRun extends AsyncEventEmitter {
             retryTestPages:  !!this.opts.retryTestPages,
             speed:           this.speed,
             dialogHandler:   JSON.stringify(this.activeDialogHandler),
-            proxyless:       JSON.stringify(this.opts.experimentalProxyless),
+            proxyless:       JSON.stringify(this.isProxyless()),
         });
     }
 
@@ -865,20 +869,20 @@ export default class TestRun extends AsyncEventEmitter {
     public async _enqueueGetCookies (command: GetCookiesCommand): Promise<Partial<CookieOptions>[]> {
         const { cookies, urls } = command;
 
-        return this._cookieProvider.getCookies(cookies, urls);
+        return this.cookieProvider.getCookies(cookies, urls);
     }
 
     public async _enqueueSetCookies (command: SetCookiesCommand): Promise<void> {
         const cookies = command.cookies;
         const url     = command.url || await this.getCurrentUrl();
 
-        return this._cookieProvider.setCookies(cookies, url);
+        return this.cookieProvider.setCookies(cookies, url);
     }
 
     public async _enqueueDeleteCookies (command: DeleteCookiesCommand): Promise<void> {
         const { cookies, urls } = command;
 
-        return this._cookieProvider.deleteCookies(cookies, urls);
+        return this.cookieProvider.deleteCookies(cookies, urls);
     }
 
     private async _enqueueSetBreakpointCommand (callsite: CallsiteRecord | undefined, error?: string): Promise<void> {
@@ -1585,7 +1589,7 @@ export default class TestRun extends AsyncEventEmitter {
         if (this.disablePageReloads)
             return;
 
-        await this._cookieProvider.initialize();
+        await this.cookieProvider.initialize();
         await this._storagesProvider.initialize();
     }
 

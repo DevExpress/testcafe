@@ -8,6 +8,8 @@ import { CookieProvider, CookieProviderBase } from '../test-run/cookies/base';
 import CookieParam = Protocol.Network.CookieParam;
 import matchCollection from '../utils/match-collection';
 import { getActiveClient } from './utils/get-active-client';
+import { parse } from 'set-cookie-parser';
+import { castArray } from 'lodash';
 
 declare type CookieSameSite = 'Lax' | 'Strict' | 'None';
 
@@ -31,12 +33,17 @@ export class CdpCookieProvider extends CookieProviderBase implements CookieProvi
         return (matchCollection(cookies, externalCookies) as Cookie[]).map(this._cdpCookieToExternalCookie);
     }
 
-    async setCookies (cookies: CookieOptions[], url: string): Promise<void> {
-        const client = await this._getCdpClient();
+    async setCookies (cookies: string | string[] | CookieOptions[], url: string): Promise<void> {
+        const client                            = await this._getCdpClient();
         const { hostname = '', pathname = '/' } = url ? new URL(url) : {};
+        const cookiesArray                      = castArray<string | CookieOptions>(cookies);
+
+        const parsedCookies = this._isCookieOptionsArray(cookiesArray)
+            ? cookiesArray
+            : this._parseSetCookieStrings(cookiesArray as string[]);
 
         await client.Network.setCookies({
-            cookies: cookies.map(cookie => this._cookieOptionToCdpCookieParam(cookie, hostname, pathname)),
+            cookies: parsedCookies.map(cookie => this._cookieOptionToCdpCookieParam(cookie, hostname, pathname)),
         });
     }
 
@@ -58,13 +65,21 @@ export class CdpCookieProvider extends CookieProviderBase implements CookieProvi
 
         for (const cookie of existingCookies) {
             await client.Network.deleteCookies({
-                name:   cookie.name,
+                name:   cookie.name || '',
                 domain: cookie.domain,
                 path:   cookie.path,
             });
         }
 
         return void 0;
+    }
+
+    async getCookieHeader (url: string): Promise<string | null> {
+        const [{ domain, path }] = this._parseUrls([url]);
+        const cookies            = await this.getCookies([{ domain }]);
+        const filteredCookies    = cookies.filter(c => this._includesPath(c.path || '/', path));
+
+        return filteredCookies.map(c => `${ c.name }=${ c.value }`).join(';');
     }
 
     private _cdpCookieToExternalCookie (cookie: Cookie): ExternalCookies {
@@ -100,5 +115,27 @@ export class CdpCookieProvider extends CookieProviderBase implements CookieProvi
 
             return { domain: hostname, path: pathname };
         });
+    }
+
+    private _includesPath (cookiePath: string, urlPath: string): boolean {
+        if (cookiePath === '/')
+            return true;
+
+        const cookieParts = cookiePath.split('/');
+        const urlParts    = urlPath.split('/');
+
+        if (cookieParts.length > urlParts.length)
+            return false;
+
+        while (cookieParts.length) {
+            if (cookieParts.shift() !== urlParts.shift())
+                return false;
+        }
+
+        return true;
+    }
+
+    private _parseSetCookieStrings (cookies: string[]): CookieOptions[] {
+        return parse(cookies) as CookieOptions[];
     }
 }
