@@ -200,6 +200,8 @@ export default class Runner extends EventEmitter {
             await Promise.race(promises);
         }
         catch (err) {
+            await this._messageBus.emit('unhandled-rejection');
+            await Promise.all(reporters.map(reporter => reporter.taskInfo.pendingTaskDonePromise));
             await this._disposeTaskAndRelatedAssets(task, browserSet, reporters, testedApp, runnableConfigurationId);
 
             throw err;

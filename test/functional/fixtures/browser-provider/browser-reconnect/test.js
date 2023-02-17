@@ -90,6 +90,29 @@ if (config.useLocalBrowsers) {
                 });
         });
 
+        it('Should raise reporter reportTaskDone event on browser disconnect', function () {
+
+            let reporterLog = '';
+
+            return new Promise(resolve => {
+                const proc = spawn(`node ${path.join(__dirname, 'run-log-error-on-disconnect-test.js')}`, {
+                    shell: true,
+                    env:   {
+                        ...process.env, CUSTOM_REPORTER: true,
+                    },
+                });
+
+                proc.stdout.on('data', data => {
+                    reporterLog += data.toString('utf-8');
+                });
+
+                proc.on('close', resolve);
+            })
+                .then(() => {
+                    expect(reporterLog).eql('reportTaskDone');
+                });
+        });
+
         it('Should fail on 3 disconnects in one browser', function () {
             return run('./testcafe-fixtures/index-test.js', 'Should fail on 3 disconnects in one browser')
                 .then(() => {
