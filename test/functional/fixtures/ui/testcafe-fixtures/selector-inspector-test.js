@@ -93,11 +93,28 @@ test('should fill the selectors list with the generated selectors', async t => {
     await t.debug();
 });
 
-test('should indicate the correct number of elements matching the selector', async t => {
+test('should indicate the correct number of elements matching the css selector', async t => {
     await ClientFunction(() => {
         const { typeSelector, getMatchIndicatorInnerText, resumeTest } = window;
 
         typeSelector('div')
+            .then(() => {
+                return getMatchIndicatorInnerText();
+            })
+            .then(text => {
+                if (text === 'Found: 4')
+                    resumeTest();
+            });
+    })();
+
+    await t.debug();
+});
+
+test('should indicate the correct number of elements matching the TestCafe selector', async t => {
+    await ClientFunction(() => {
+        const { typeSelector, getMatchIndicatorInnerText, resumeTest } = window;
+
+        typeSelector("Selector('div')")
             .then(() => {
                 return getMatchIndicatorInnerText();
             })
