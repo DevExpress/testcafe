@@ -224,7 +224,7 @@ describe('Multiple windows', () => {
         it('Switch to window by predicate with error', () => {
             return runTests('testcafe-fixtures/api/api-test.js', 'Switch to window by predicate with error', { only: 'chrome', shouldFail: true })
                 .catch(errs => {
-                    expect(errs[0]).to.contain('An error occurred inside the "switchToWindow" argument function.  Error details: Cannot read property \'field\' of undefined');
+                    expect(errs[0]).to.contain('An error occurred inside the "switchToWindow" argument function.  Error details: Cannot read properties of undefined (reading \'field\')  [[user-agent]]');
                 });
         });
 
