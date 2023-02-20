@@ -36,7 +36,7 @@ jobs:
           
       - uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: 16
 
       - uses: actions/github-script@v3
         with:
