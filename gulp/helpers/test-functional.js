@@ -3,6 +3,7 @@ const mocha          = require('gulp-mocha-simple');
 const { castArray }  = require('lodash');
 const getTimeout     = require('./get-timeout');
 const chai           = require('chai');
+const globby         = require('globby');
 
 const {
     TESTS_GLOB,
@@ -19,7 +20,7 @@ function shouldAddTakeScreenshotTestGlob (glob) {
     return [TESTS_GLOB, DEBUG_GLOB_1].includes(glob);
 }
 
-module.exports = function testFunctional (src, testingEnvironmentName, { experimentalDebug, isProxyless } = {}) {
+module.exports = async function testFunctional (src, testingEnvironmentName, testFragmentOptions, { experimentalDebug, isProxyless } = {}) {
     process.env.TESTING_ENVIRONMENT       = testingEnvironmentName;
     process.env.BROWSERSTACK_USE_AUTOMATE = 1;
 
@@ -37,6 +38,15 @@ module.exports = function testFunctional (src, testingEnvironmentName, { experim
     // TODO: Run takeScreenshot tests first because other tests heavily impact them
     if (shouldAddTakeScreenshotTestGlob(src))
         tests = SCREENSHOT_TESTS_GLOB.concat(tests);
+
+    if (testFragmentOptions) {
+        const allTestFiles           = await globby(tests);
+        const testFragmentSize       = Math.ceil(allTestFiles.length / testFragmentOptions.TEST_FRAGMENTS_COUNT);
+        const testFragmentStartIndex = testFragmentSize * (testFragmentOptions.CURRENT_TEST_FRAGMENT_NUMBER - 1);
+        const testFragmentEndIndex   = testFragmentSize * testFragmentOptions.CURRENT_TEST_FRAGMENT_NUMBER;
+
+        tests = allTestFiles.slice(testFragmentStartIndex, testFragmentEndIndex);
+    }
 
     tests.unshift(SETUP_TESTS_GLOB);
 
