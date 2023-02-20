@@ -12,6 +12,9 @@ import supportedShortcutHandlers from './shortcuts';
 import { getActualKeysAndEventKeyProperties, getDeepActiveElement } from './utils';
 import AutomationSettings from '../../settings';
 import isIframeWindow from '../../../../utils/is-window-in-iframe';
+import ProxylessInput from '../../../../proxyless/client/input';
+import { changeLetterCaseIfNecessary, getSimulatedKeyInfo } from '../../../../proxyless/client/key-press/utils';
+import { getModifiersBit } from '../../../../proxyless/client/utils';
 
 const Promise        = hammerhead.Promise;
 const browserUtils   = hammerhead.utils.browser;
@@ -37,15 +40,16 @@ messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
 });
 
 export default class PressAutomation {
-    constructor (keyCombinations, options) {
-        this.keyCombinations       = keyCombinations;
-        this.isSelectElement       = false;
-        this.pressedKeyString      = '';
-        this.modifiersState        = null;
-        this.shortcutHandlers      = null;
-        this.topSameDomainDocument = domUtils.getTopSameDomainWindow(window).document;
-        this.automationSettings    = new AutomationSettings(options.speed);
-        this.options               = options;
+    constructor (keyCombinations, options, dispatchProxylessEventFn) {
+        this.keyCombinations         = keyCombinations;
+        this.isSelectElement         = false;
+        this.pressedKeyString        = '';
+        this.modifiersState          = null;
+        this.shortcutHandlers        = null;
+        this.topSameDomainDocument   = domUtils.getTopSameDomainWindow(window).document;
+        this.automationSettings      = new AutomationSettings(options.speed);
+        this.options                 = options;
+        this.proxylessInput          = dispatchProxylessEventFn ? new ProxylessInput(dispatchProxylessEventFn) : null;
     }
 
     static _getKeyPressSimulators (keyCombination) {
@@ -144,7 +148,34 @@ export default class PressAutomation {
         return delay(this.automationSettings.keyActionStepDelay);
     }
 
-    _runCombination (keyCombination) {
+    _runCombinationViaCDP (keyCombination) {
+        const simulatedKeyInfos = getSimulatedKeyInfo(keyCombination);
+        let modifiersBit        = 0;
+
+        return promiseUtils.each(simulatedKeyInfos, keyInfo => {
+            modifiersBit     |= getModifiersBit(keyInfo.key);
+            keyInfo.modifiers = modifiersBit;
+
+            changeLetterCaseIfNecessary(keyInfo);
+
+            return this.proxylessInput.keyDown(keyInfo)
+                .then(() => {
+                    return delay(this.automationSettings.keyActionStepDelay);
+                });
+        })
+            .then(() => {
+                arrayUtils.reverse(simulatedKeyInfos);
+
+                return promiseUtils.each(simulatedKeyInfos, keyInfo => {
+                    modifiersBit     &= ~getModifiersBit(keyInfo.key);
+                    keyInfo.modifiers = modifiersBit;
+
+                    return this.proxylessInput.keyUp(keyInfo);
+                });
+            });
+    }
+
+    _runCombinationViaClientEventSimulation (keyCombination) {
         this.modifiersState   = { ctrl: false, alt: false, shift: false, meta: false };
         this.isSelectElement  = domUtils.isSelectElement(getDeepActiveElement(this.topSameDomainDocument));
         this.pressedKeyString = '';
@@ -162,6 +193,13 @@ export default class PressAutomation {
 
                 return promiseUtils.each(keyPressSimulators, keySimulator => this._up(keySimulator));
             });
+    }
+
+    _runCombination (keyCombination) {
+        if (this.proxylessInput)
+            return this._runCombinationViaCDP(keyCombination);
+
+        return this._runCombinationViaClientEventSimulation(keyCombination);
     }
 
     run () {

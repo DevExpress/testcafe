@@ -5,7 +5,7 @@ import delay from '../../../core/utils/delay';
 // @ts-ignore
 import { utils, Promise } from '../../deps/hammerhead';
 import { createMouseClickStrategy, MouseClickStrategy } from './browser-click-strategy';
-import ProxylessEventSimulator from '../../../../proxyless/client/event-simulator';
+import ProxylessInput from '../../../../proxyless/client/input';
 import AxisValues from '../../../core/utils/values/axis-values';
 import { setCaretPosition } from '../../utils/utils';
 
@@ -31,14 +31,14 @@ export default class ClickAutomation extends VisibleElementAutomation {
 
     private _mousedown (eventArgs: MouseEventArgs): Promise<void> {
         if (this.canUseProxylessEventSimulator(eventArgs.element))
-            return (this.proxylessEventSimulator as ProxylessEventSimulator).mouseDown(eventArgs);
+            return (this.proxylessInput as ProxylessInput).mouseDown(eventArgs);
 
         return this.strategy.mousedown(eventArgs);
     }
 
     private _mouseup (element: HTMLElement, eventArgs: MouseEventArgs): Promise<MouseEventArgs> {
         if (this.canUseProxylessEventSimulator(eventArgs.element)) {
-            return (this.proxylessEventSimulator as ProxylessEventSimulator).mouseUp(eventArgs)
+            return (this.proxylessInput as ProxylessInput).mouseUp(eventArgs)
                 .then(result => {
                     const caretPos = (this.options as ClickOptions).caretPos;
 

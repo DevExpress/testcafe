@@ -27,7 +27,7 @@ export async function dispatchEvent (client: ProtocolApi, type: EventType, optio
         case EventType.Mouse:
             await client.Input.dispatchMouseEvent(options);
             break;
-        case EventType.Key:
+        case EventType.Keyboard:
             await client.Input.dispatchKeyEvent(options);
             break;
         case EventType.Touch:

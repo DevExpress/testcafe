@@ -21,6 +21,7 @@ export const reverse = createNativeMethodWrapper('reverse');
 export const reduce  = createNativeMethodWrapper('reduce');
 export const concat  = createNativeMethodWrapper('concat');
 export const join    = createNativeMethodWrapper('join');
+export const every   = createNativeMethodWrapper('every');
 
 export function isArray (arg) {
     return nativeMethods.objectToString.call(arg) === '[object Array]';

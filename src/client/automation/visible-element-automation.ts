@@ -27,7 +27,7 @@ import ScrollAutomation from '../core/scroll/index';
 import { Dictionary } from '../../configuration/interfaces';
 import ensureMouseEventAfterScroll from './utils/ensure-mouse-event-after-scroll';
 import WARNING_TYPES from '../../shared/warnings/types';
-import ProxylessEventSimulator from '../../proxyless/client/event-simulator';
+import ProxylessInput from '../../proxyless/client/input';
 
 
 const AVAILABLE_OFFSET_DEEP = 2;
@@ -98,7 +98,7 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
     private readonly WARNING_EVENT: string;
     protected automationSettings: AutomationSettings;
     protected readonly options: OffsetOptions;
-    protected readonly proxylessEventSimulator: ProxylessEventSimulator | null;
+    protected readonly proxylessInput: ProxylessInput | null;
 
     protected constructor (element: HTMLElement, offsetOptions: OffsetOptions, win: Window, cursor: Cursor, dispatchProxylessEventFn?: Function, topLeftPoint?: AxisValues<number>) {
         super();
@@ -113,7 +113,7 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
         this.window  = win;
         this.cursor  = cursor;
 
-        this.proxylessEventSimulator = dispatchProxylessEventFn ? new ProxylessEventSimulator(dispatchProxylessEventFn, topLeftPoint) : null;
+        this.proxylessInput = dispatchProxylessEventFn ? new ProxylessInput(dispatchProxylessEventFn, topLeftPoint) : null;
 
         // NOTE: only for legacy API
         this._ensureWindowAndCursorForLegacyTests(this);
@@ -125,7 +125,7 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
     }
 
     protected canUseProxylessEventSimulator (element: HTMLElement | null): boolean {
-        return !!this.proxylessEventSimulator
+        return !!this.proxylessInput
             && !!element
             && domUtils.getTagName(element) !== 'select';
     }

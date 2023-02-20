@@ -34,6 +34,6 @@ export type SessionStorageInfo = Dictionary<Dictionary<string>> | null;
 
 export enum EventType {
     Mouse,
-    Key,
+    Keyboard,
     Touch,
 }
