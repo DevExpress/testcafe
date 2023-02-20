@@ -52,6 +52,7 @@ import logEntry from '../utils/log-entry';
 import MessageBus from '../utils/message-bus';
 import getEnvOptions from '../dashboard/get-env-options';
 import { validateSkipJsErrorsOptionValue } from '../utils/get-options/skip-js-errors';
+import detectTestcafeStudio from '../utils/detect-testcafe-studio';
 
 const DEBUG_LOGGER            = debug('testcafe:runner');
 const DASHBOARD_REPORTER_NAME = 'dashboard';
@@ -842,6 +843,9 @@ export default class Runner extends EventEmitter {
     }
 
     run (options = {}) {
+        detectTestcafeStudio().then(res => {
+            console.log(res);
+        });
         this._resetBeforeRun();
 
         return this._prepareAndRunTask(options);

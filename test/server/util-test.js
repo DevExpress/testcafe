@@ -33,6 +33,7 @@ const {
     buildChromeArgs,
     CONTAINERIZED_CHROME_FLAGS,
 } = require('../../lib/browser/provider/built-in/dedicated/chrome/build-chrome-args');
+const detectTestCafeStudio = require('../../lib/utils/detect-testcafe-studio');
 
 describe('Utils', () => {
     it('Correct File Path', () => {
@@ -660,5 +661,52 @@ describe('Utils', () => {
         const nonTTYStreamMock = {};
 
         expect(getViewPortWidth(nonTTYStreamMock)).eql(Infinity);
+    });
+
+    describe('detectTestCafeStudio', () => {
+        const TMP_ROOT         = resolvePathRelativelyCwd('__tmp__');
+        const savedTmpRoot     = TempDirectory.TEMP_DIRECTORIES_ROOT;
+        const tmpHomeDir       = path.join(TMP_ROOT, 'home');
+        const savedHomeDirEnv  = process.env.APPDATA;
+        const savedPlatform    = OS.win;
+        const savedProcessSend = process.send;
+
+        beforeEach(() => {
+            TempDirectory.TEMP_DIRECTORIES_ROOT = TMP_ROOT;
+            process.env.APPDATA                 = tmpHomeDir;
+            OS.win                              = true;
+
+            return del(TMP_ROOT);
+        });
+
+        afterEach(() => {
+            TempDirectory.TEMP_DIRECTORIES_ROOT = savedTmpRoot;
+            process.env.APPDATA                 = savedHomeDirEnv;
+            OS.win                              = savedPlatform;
+            process.send                        = savedProcessSend;
+
+            return del(TMP_ROOT);
+        });
+
+        it('should detect studio artifacts', async () => {
+            fs.mkdirSync(TMP_ROOT);
+            fs.mkdirSync(tmpHomeDir);
+
+            expect(await detectTestCafeStudio()).false;
+
+            fs.mkdirSync(path.join(tmpHomeDir, 'testcafe-studio'));
+
+            expect(await detectTestCafeStudio()).true;
+        });
+
+        it('should detect studio parent process', async () => {
+            expect(await detectTestCafeStudio()).false;
+
+            process.send = () => {
+                process.emit('message', { type: 'checkParentProcess', message: 'TestCafeStudio' });
+            };
+
+            expect(await detectTestCafeStudio()).true;
+        });
     });
 });
