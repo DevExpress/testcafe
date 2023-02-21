@@ -79,7 +79,8 @@ function createLiveModeRunner (tc, src) {
 const testingEnvironmentName = process.env.TESTING_ENVIRONMENT;
 
 if (config.useLocalBrowsers && !config.hasBrowser('ie')) {
-    describe('Live Mode', () => {
+    // eslint-disable-next-line no-only-tests/no-only-tests
+    describe.only('Live Mode', () => {
         afterEach(() => {
             helper.clean();
         });
