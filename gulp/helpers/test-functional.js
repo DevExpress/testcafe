@@ -1,9 +1,8 @@
-const gulp           = require('gulp');
-const mocha          = require('gulp-mocha-simple');
 const { castArray }  = require('lodash');
 const getTimeout     = require('./get-timeout');
 const chai           = require('chai');
 const globby         = require('globby');
+const Mocha          = require('mocha');
 
 const {
     TESTS_GLOB,
@@ -58,7 +57,13 @@ module.exports = async function testFunctional (src, testingEnvironmentName, tes
     if (process.env.RETRY_FAILED_TESTS === 'true')
         opts.retries = RETRY_TEST_RUN_COUNT;
 
-    return gulp
-        .src(tests)
-        .pipe(mocha(opts));
+    const mocha = new Mocha(opts);
+
+    tests.forEach(file => {
+        mocha.addFile(file);
+    });
+
+    return new Promise(resolve => {
+        mocha.run(resolve);
+    });
 };
