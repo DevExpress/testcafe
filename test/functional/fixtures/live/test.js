@@ -77,8 +77,7 @@ function createLiveModeRunner (tc, src) {
 }
 
 if (config.useLocalBrowsers && !config.hasBrowser('ie')) {
-    // eslint-disable-next-line no-only-tests/no-only-tests
-    describe.only('Live Mode', () => {
+    describe('Live Mode', () => {
         afterEach(() => {
             helper.clean();
         });
