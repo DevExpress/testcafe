@@ -243,12 +243,16 @@ if (config.useLocalBrowsers && !config.hasBrowser('ie')) {
                 });
         });
 
-        it('Selector Inspector should indicate the correct number of elements matching the selector in live mode', async () => {
+        (config.useHeadlessBrowsers ? it : it.skip)('Selector Inspector should indicate the correct number of elements matching the selector in live mode', async () => {
             await createTestCafeInstance();
 
             const runner = createLiveModeRunner(cafe, '/testcafe-fixtures/selector-inspector.js');
 
-            helper.emitter.once('tests-completed', () => runner.exit());
+            helper.emitter.once('tests-completed', () => {
+                setTimeout(() => {
+                    runner.controller.restart().then(() => runner.exit());
+                }, 1000);
+            });
 
             await runner.run();
 
