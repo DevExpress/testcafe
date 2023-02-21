@@ -182,7 +182,7 @@ export default class TypeAutomation {
     }
 
     _proxylessTypingStep () {
-        const keyInfo = getKeyInfo(this.currentKey, this.currentKey);
+        const keyInfo = getKeyInfo(this.currentKey);
 
         const simulatedKeyInfo = extend({ key: this.currentKey }, keyInfo);
 

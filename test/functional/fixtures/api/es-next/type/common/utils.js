@@ -1,6 +1,5 @@
 import { ClientFunction } from 'testcafe';
 
-const focusInput    = ClientFunction(() => document.getElementById('input').focus());
 const getInputValue = ClientFunction(() => document.getElementById('input').value);
 const getEventLog   = ClientFunction(() => document.getElementById('eventLog').textContent.trim());
 const setInputValue = ClientFunction(value => {
@@ -8,7 +7,6 @@ const setInputValue = ClientFunction(value => {
 });
 
 export {
-    focusInput,
     getInputValue,
     setInputValue,
     getEventLog,

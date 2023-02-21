@@ -16,12 +16,14 @@ export interface KeyInfo {
     keyCode: string | null;
 }
 
-export default function (key: string, eventKeyProperty: string): KeyInfo {
+export default function (key: string, eventKeyProperty?: string): KeyInfo {
     const sanitizedKey    = getSanitizedKey(key);
     const isChar          = key.length === 1 || key === 'space';
     const isEnter         = key === 'enter';
     const modifierKeyCode = KEY_MAPS.modifiers[sanitizedKey];
     const specialKeyCode  = KEY_MAPS.specialKeys[sanitizedKey];
+
+    eventKeyProperty = eventKeyProperty || key;
 
     return {
         sanitizedKey,
