@@ -212,8 +212,12 @@ export default class MoveAutomation {
             needMoveImmediately: this._needMoveCursorImmediately(),
         };
 
-        if (this.proxylessInput)
-            return (this.proxylessInput as ProxylessInput).mouseMoveSequence(mouseMoveOptions);
+        if (this.proxylessInput) {
+            return (this.proxylessInput as ProxylessInput).mouseMoveSequence(mouseMoveOptions)
+                .then(() => {
+                    return this.cursor.move(endPoint);
+                });
+        }
 
         return simulateMouseMove(mouseMoveOptions, nativeMethods.dateNow, currPosition => {
             return this._movingStep(currPosition);
