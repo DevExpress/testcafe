@@ -579,7 +579,7 @@ export default class Runner extends EventEmitter {
     _resetBeforeRun () {
         this.apiMethodWasCalled.reset();
         this._messageBus.clearListeners();
-        this.bootstrapper.resetBeforeRun();
+        this.bootstrapper.restoreTestRunEvents();
     }
 
     _getDashboardUrl () {

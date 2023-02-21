@@ -393,7 +393,7 @@ export default class Bootstrapper {
         return { ...await this._bootstrapSequence(this.browsers, id), commonClientScripts, id };
     }
 
-    public resetBeforeRun (): void {
+    public restoreTestRunEvents (): void {
         const connections = this.browserConnectionGateway.getConnections();
 
         Object.values(connections).forEach(connection => {
