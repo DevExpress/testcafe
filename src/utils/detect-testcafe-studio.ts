@@ -4,8 +4,8 @@ import OS from 'os-family';
 
 const PROCESS_CHECK_TIMEOUT             = 1000;
 const CHECK_PARENT_PROCESS_MESSAGE_TYPE = 'checkParentProcess';
+const TESTCAFE_STUDIO_PROCESS_MESSAGE   = 'TestCafeStudio';
 const TESTCAFE_STUDIO_CONFIG_DIRECTORY  = 'testcafe-studio';
-const TESTCAFE_STUDIO_MESSAGE           = 'TestCafeStudio';
 
 export default function (): Promise<boolean> {
     return Promise.race<boolean>([new Promise(resolve => {
@@ -23,9 +23,9 @@ export default function (): Promise<boolean> {
 
         studioWasOnMachine = !!homeDir && fs.existsSync(path.join(homeDir, TESTCAFE_STUDIO_CONFIG_DIRECTORY));
 
-        process.on('message', ({ type, message }) => {
+        process.once('message', ({ type, message }) => {
             if (type === CHECK_PARENT_PROCESS_MESSAGE_TYPE)
-                resolve(studioWasOnMachine || message === TESTCAFE_STUDIO_MESSAGE);
+                resolve(studioWasOnMachine || message === TESTCAFE_STUDIO_PROCESS_MESSAGE);
         });
 
         if (process.send)
