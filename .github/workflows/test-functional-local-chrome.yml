@@ -12,7 +12,7 @@ on:
       deploy_run_id:
         description: 'The ID of a deployment workspace run with artifacts'
 jobs:  
-  test-pocket-number-1:
+  test-fragment-1:
     runs-on: ubuntu-latest
     environment: test-functional
     env:
@@ -102,7 +102,7 @@ jobs:
               state: 'failure',
               target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
             });
-  test-pocket-2:
+  test-fragment-2:
     runs-on: ubuntu-latest
     environment: test-functional
     env:
