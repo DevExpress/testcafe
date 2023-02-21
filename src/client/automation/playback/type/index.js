@@ -9,6 +9,8 @@ import { getDefaultAutomationOffsets } from '../../../core/utils/offsets';
 import AutomationSettings from '../../settings';
 import getKeyProperties from '../../utils/get-key-properties';
 import cursor from '../../cursor';
+import ProxylessInput from '../../../../proxyless/client/input';
+import getKeyInfo from '../press/get-key-info';
 
 const Promise               = hammerhead.Promise;
 const extend                = hammerhead.utils.extend;
@@ -25,9 +27,9 @@ const SPECIAL_KEYS    = testCafeCore.KEY_MAPS.specialKeys;
 
 
 export default class TypeAutomation {
-    constructor (element, text, typeOptions) {
-        this.element = TypeAutomation.findTextEditableChild(element) || element;
-        this.typingText    = text.toString();
+    constructor (element, text, typeOptions, dispatchProxylessEventFn) {
+        this.element    = TypeAutomation.findTextEditableChild(element) || element;
+        this.typingText = text.toString();
 
         this.modifiers = typeOptions.modifiers;
         this.caretPos  = typeOptions.caretPos;
@@ -58,6 +60,8 @@ export default class TypeAutomation {
             simulateKeypress: true,
             simulateTypeChar: true,
         };
+
+        this.proxylessInput = dispatchProxylessEventFn ? new ProxylessInput(dispatchProxylessEventFn) : null;
     }
 
     static findTextEditableChild (element) {
@@ -133,6 +137,8 @@ export default class TypeAutomation {
                 modifiers: this.modifiers,
             });
 
+            cursor.shouldRender = !this.proxylessInput;
+
             const clickAutomation = new ClickAutomation(this.element, clickOptions, window, cursor);
 
             return clickAutomation
@@ -175,6 +181,29 @@ export default class TypeAutomation {
         return this.currentPos === this.typingText.length;
     }
 
+    _proxylessTypingStep () {
+        const keyInfo = getKeyInfo(this.currentKey, this.currentKey);
+
+        const simulatedKeyInfo = extend({ key: this.currentKey }, keyInfo);
+
+        return this.proxylessInput.keyDown(simulatedKeyInfo)
+            .then(() => {
+                return this.proxylessInput.keyUp(simulatedKeyInfo);
+            })
+            .then(() => {
+                this.currentPos++;
+
+                return delay(this.automationSettings.keyActionStepDelay);
+            });
+    }
+
+    _regularTypingStep () {
+        this._keydown();
+        this._keypress();
+
+        return this._keyup();
+    }
+
     _typingStep () {
         const char = this.typingText.charAt(this.currentPos);
 
@@ -185,10 +214,11 @@ export default class TypeAutomation {
 
         this.ignoreChangeEvent = domUtils.getElementValue(this.element) === elementEditingWatcher.getElementSavedValue(this.element);
 
-        this._keydown();
-        this._keypress();
+        // NOTE: 'paste' is a synthetic option that don't have equivalent for native user action.
+        if (this.proxylessInput && !this.paste)
+            return this._proxylessTypingStep();
 
-        return this._keyup();
+        return this._regularTypingStep();
     }
 
     _keydown () {

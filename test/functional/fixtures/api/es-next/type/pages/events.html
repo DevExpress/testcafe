@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <input type="text" id="input"/>
+    <div id="eventLog"></div>
+    <script>
+        const eventLog = document.getElementById('eventLog');
+        const input    = document.getElementById('input');
+
+        function logEvent (e) {
+            const text = e.type === 'click'
+                ? e.type + '; '
+                : e.type + ': ' + e.key + '; ';
+
+            eventLog.textContent += text;
+        }
+
+        [
+            'keydown',
+            'keypress',
+            'keyup',
+            'click'
+        ].forEach(eventName => input.addEventListener(eventName, logEvent));
+    </script>
+</body>
+</html>

@@ -120,7 +120,7 @@ ActionExecutor.ACTIONS_HANDLERS[COMMAND_TYPE.scrollIntoView] = {
 
 ActionExecutor.ACTIONS_HANDLERS[COMMAND_TYPE.typeText] = {
     // eslint-disable-next-line no-restricted-properties
-    create: (command, elements) => new TypeAutomation(elements[0], command.text, command.options),
+    create: (command, elements, dispatchProxylessEventFn?: Function) => new TypeAutomation(elements[0], command.text, command.options, dispatchProxylessEventFn),
 };
 
 
