@@ -2,7 +2,10 @@ import fs from 'fs';
 import path from 'path';
 import OS from 'os-family';
 
-const PROCESS_CHECK_TIMEOUT = 1000;
+const PROCESS_CHECK_TIMEOUT             = 1000;
+const CHECK_PARENT_PROCESS_MESSAGE_TYPE = 'checkParentProcess';
+const TESTCAFE_STUDIO_CONFIG_DIRECTORY  = 'testcafe-studio';
+const TESTCAFE_STUDIO_MESSAGE           = 'TestCafeStudio';
 
 export default function (): Promise<boolean> {
     return Promise.race<boolean>([new Promise(resolve => {
@@ -18,23 +21,15 @@ export default function (): Promise<boolean> {
         else if (OS.mac)
             homeDir = env.XDG_CONFIG_HOME || '~/Library/Application Support';
 
-
-        console.log(homeDir);
-
-        studioWasOnMachine = !!homeDir && fs.existsSync(path.join(homeDir, 'testcafe-studio'));
-
-        if (studioWasOnMachine)
-            console.log(' ----------> Studio was on the machine!!!! <--------------');
+        studioWasOnMachine = !!homeDir && fs.existsSync(path.join(homeDir, TESTCAFE_STUDIO_CONFIG_DIRECTORY));
 
         process.on('message', ({ type, message }) => {
-            if (type === 'checkParentProcess' && message === 'TestCafeStudio')
-                console.log(' ----------> It\'s Studio!!!! <--------------');
-
-            resolve(studioWasOnMachine || type === 'checkParentProcess' && message === 'TestCafeStudio');
+            if (type === CHECK_PARENT_PROCESS_MESSAGE_TYPE)
+                resolve(studioWasOnMachine || message === TESTCAFE_STUDIO_MESSAGE);
         });
 
         if (process.send)
-            process.send({ type: 'checkParentProcess' });
+            process.send({ type: CHECK_PARENT_PROCESS_MESSAGE_TYPE });
         else
             resolve(studioWasOnMachine);
     }), new Promise(resolve => setTimeout(() => resolve(false), PROCESS_CHECK_TIMEOUT))]);
