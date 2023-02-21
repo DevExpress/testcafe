@@ -242,7 +242,8 @@ if (config.useLocalBrowsers && !config.hasBrowser('ie')) {
                 });
         });
 
-        (config.useHeadlessBrowsers ? it : it.skip)('Selector Inspector should indicate the correct number of elements matching the selector in live mode', async () => {
+        // NOTE: This task must be run in headed browser. Otherwise, it will be passed even with incorrect result
+        (!config.useHeadlessBrowsers ? it : it.skip)('Selector Inspector should indicate the correct number of elements matching the selector in live mode', async () => {
             await createTestCafeInstance();
 
             const runner = createLiveModeRunner(cafe, '/testcafe-fixtures/selector-inspector.js');
