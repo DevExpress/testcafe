@@ -6,6 +6,7 @@ import FrameNavigatedEvent = Protocol.Page.FrameNavigatedEvent;
 import { IncomingMessageLike } from 'testcafe-hammerhead';
 import { convertToHeaderEntries } from './headers';
 import { EventType } from '../types';
+import simulateMouseMove from '../../shared/utils/simulate-mouse-move';
 
 
 export async function redirect (client: ProtocolApi, requestId: string, url: string): Promise<void> {
@@ -22,10 +23,23 @@ export async function navigateTo (client: ProtocolApi, url: string): Promise<voi
     await client.Page.navigate({ url });
 }
 
+async function dispatchMouseMoveEventSequence (client: ProtocolApi, options: any): Promise<void> {
+    await simulateMouseMove(options, Date.now, async currPosition => {
+        await client.Input.dispatchMouseEvent({
+            type: 'mouseMoved',
+            x:    currPosition.x as number,
+            y:    currPosition.y as number,
+        });
+    });
+}
+
 export async function dispatchEvent (client: ProtocolApi, type: EventType, options: any): Promise<void> {
     switch (+type) {
         case EventType.Mouse:
-            await client.Input.dispatchMouseEvent(options);
+            if (options.type === 'mouseMoved')
+                await dispatchMouseMoveEventSequence(client, options);
+            else
+                await client.Input.dispatchMouseEvent(options);
             break;
         case EventType.Keyboard:
             await client.Input.dispatchKeyEvent(options);

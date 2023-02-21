@@ -39,7 +39,7 @@ import {
 import COMMAND_TYPE from '../../../../test-run/commands/type';
 import { ActionCommandBase } from '../../../../test-run/commands/base';
 import { Automation } from '../../../automation/types';
-import AxisValues from '../../../core/utils/values/axis-values';
+import AxisValues from '../../../../shared/utils/values/axis-values';
 
 
 ActionExecutor.ACTIONS_HANDLERS[COMMAND_TYPE.dispatchEvent] = {

@@ -1,4 +1,4 @@
-import { AxisValuesData } from './values/axis-values';
+import { AxisValuesData } from '../../../shared/utils/values/axis-values';
 
 export function getLineYByXCoord (startLine: AxisValuesData<number>, endLine: AxisValuesData<number>, x: number): number {
     if (endLine.x === startLine.x)

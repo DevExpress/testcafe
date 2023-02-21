@@ -1,4 +1,4 @@
-import AxisValues, { AxisValuesData } from '../../core/utils/values/axis-values';
+import AxisValues, { AxisValuesData } from '../../../shared/utils/values/axis-values';
 import * as style from '../../core/utils/style';
 import * as positionUtils from '../../core/utils/position';
 import * as scrollUtils from '../../core/utils/scroll';

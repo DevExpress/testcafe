@@ -56,5 +56,5 @@ export function calculateMouseButtonValue (options: any): MouseButton {
     if (!options.button)
         return 'left';
 
-    return 'right';
+    return 'none';
 }

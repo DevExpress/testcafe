@@ -2,7 +2,7 @@ import { EventType } from '../types';
 // @ts-ignore
 import { utils } from '../../client/core/deps/hammerhead';
 import { calculateKeyModifiersValue, calculateMouseButtonValue } from './utils';
-import AxisValues from '../../client/core/utils/values/axis-values';
+import AxisValues from '../../shared/utils/values/axis-values';
 import { SimulatedKeyInfo } from './key-press/utils';
 
 const MOUSE_EVENT_OPTIONS = {
@@ -49,6 +49,12 @@ export default class ProxylessInput {
         const eventOptions = this._createMouseEventOptions('mouseReleased', options);
 
         return this._dispatchEventFn(EventType.Mouse, eventOptions);
+    }
+
+    public mouseMoveSequence (options: any): Promise<void> {
+        options.type = 'mouseMoved';
+
+        return this._dispatchEventFn(EventType.Mouse, options);
     }
 
     public keyDown (options: SimulatedKeyInfo): Promise<void> {

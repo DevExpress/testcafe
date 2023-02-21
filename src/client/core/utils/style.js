@@ -1,5 +1,5 @@
 import hammerhead from '../deps/hammerhead';
-import BoundaryValues from './values/boundary-values';
+import BoundaryValues from '../../../shared/utils/values/boundary-values';
 import * as domUtils from './dom';
 
 const styleUtils = hammerhead.utils.style;

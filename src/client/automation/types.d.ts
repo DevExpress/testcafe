@@ -1,6 +1,6 @@
 import { ActionCommandBase } from '../../test-run/commands/base';
 import EventEmitter from '../core/utils/event-emitter';
-import AxisValues, { AxisValuesData } from '../core/utils/values/axis-values';
+import AxisValues, { AxisValuesData } from '../../shared/utils/values/axis-values';
 
 export interface AutomationHandler {
     create: (cmd: ActionCommandBase, elements: any[], dispatchProxylessEventFn?: Function, leftTopPoint?: AxisValues<number>) => Automation;

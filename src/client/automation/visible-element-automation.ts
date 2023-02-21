@@ -6,7 +6,7 @@ import getElementFromPoint from './get-element';
 import { ActionElementIsInvisibleError, ActionElementIsNotTargetError } from '../../shared/errors';
 import AutomationSettings from './settings';
 import MoveAutomation from './move';
-import AxisValues, { AxisValuesData } from '../core/utils/values/axis-values';
+import AxisValues, { AxisValuesData } from '../../shared/utils/values/axis-values';
 import Cursor from './cursor/cursor';
 import cursorInstance from './cursor';
 import delay from '../core/utils/delay';
@@ -138,7 +138,7 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
 
     private async _moveToElement (): Promise<void> {
         const moveOptions    = new MoveOptions(utils.extend({ skipScrolling: true }, this.options), false);
-        const moveAutomation = await MoveAutomation.create(this.element, moveOptions, this.window, this.cursor);
+        const moveAutomation = await MoveAutomation.create(this.element, moveOptions, this.window, this.cursor, this.proxylessInput);
 
         return moveAutomation // eslint-disable-line consistent-return
             .run()

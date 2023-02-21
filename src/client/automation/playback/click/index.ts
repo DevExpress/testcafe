@@ -6,7 +6,7 @@ import delay from '../../../core/utils/delay';
 import { utils, Promise } from '../../deps/hammerhead';
 import { createMouseClickStrategy, MouseClickStrategy } from './browser-click-strategy';
 import ProxylessInput from '../../../../proxyless/client/input';
-import AxisValues from '../../../core/utils/values/axis-values';
+import AxisValues from '../../../../shared/utils/values/axis-values';
 import { setCaretPosition } from '../../utils/utils';
 
 export interface MouseClickEventState {

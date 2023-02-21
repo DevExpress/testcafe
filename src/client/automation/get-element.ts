@@ -1,4 +1,4 @@
-import { AxisValuesData } from '../core/utils/values/axis-values';
+import { AxisValuesData } from '../../shared/utils/values/axis-values';
 // @ts-ignore
 import { Promise, utils } from '../driver/deps/hammerhead';
 import * as domUtils from '../core/utils/dom';

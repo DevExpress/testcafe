@@ -17,7 +17,7 @@ import {
     StopInternalFromFrameMessage,
     TYPE as MESSAGE_TYPE,
 } from './driver-link/messages';
-import AxisValues from '../core/utils/values/axis-values';
+import AxisValues from '../../shared/utils/values/axis-values';
 
 const messageSandbox = eventSandbox.message;
 

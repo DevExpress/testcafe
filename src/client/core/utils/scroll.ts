@@ -1,4 +1,4 @@
-import AxisValues from './values/axis-values';
+import AxisValues from '../../../shared/utils/values/axis-values';
 // @ts-ignore
 import { utils, nativeMethods } from '../deps/hammerhead';
 import * as domUtils from './dom';

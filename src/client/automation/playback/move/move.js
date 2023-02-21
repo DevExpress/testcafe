@@ -7,7 +7,7 @@ import cursor from '../../cursor';
 import getLineRectIntersection from './get-line-rect-intersection';
 
 import lastHoveredElementHolder from '../../last-hovered-element-holder';
-import AxisValues from '../../../core/utils/values/axis-values';
+import AxisValues from '../../../../shared/utils/values/axis-values';
 
 import MoveAutomation from '../../move';
 
@@ -59,7 +59,6 @@ function onMoveToIframeRequest (e) {
     };
 
     if (cursor.getActiveWindow(window) !== iframeWin) {
-        // const moveAutomation = new MoveAutomation(iframe, moveOptions);
         MoveAutomation.create(iframe, moveOptions, window, cursor)
             .then(moveAutomation => {
                 return moveAutomation.run();

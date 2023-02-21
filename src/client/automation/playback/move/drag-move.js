@@ -5,7 +5,7 @@ import DragAndDropState from '../drag/drag-and-drop-state';
 import createEventSequence from './event-sequence/create-event-sequence';
 import lastHoveredElementHolder from '../../last-hovered-element-holder';
 import MoveAutomation from './move';
-import AxisValues from '../../../core/utils/values/axis-values';
+import AxisValues from '../../../../shared/utils/values/axis-values';
 
 const nativeMethods    = hammerhead.nativeMethods;
 const featureDetection = hammerhead.utils.featureDetection;

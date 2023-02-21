@@ -11,7 +11,7 @@ import { Automation, AutomationHandler } from '../../../automation/types';
 import { nativeMethods, Promise } from '../../deps/hammerhead';
 import { getOffsetOptions } from '../../../core/utils/offsets';
 import { TEST_RUN_ERRORS } from '../../../../errors/types';
-import AxisValues from '../../../core/utils/values/axis-values';
+import AxisValues from '../../../../shared/utils/values/axis-values';
 
 const MAX_DELAY_AFTER_EXECUTION             = 2000;
 const CHECK_ELEMENT_IN_AUTOMATIONS_INTERVAL = 250;

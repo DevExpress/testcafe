@@ -1,6 +1,6 @@
 import { getLineXByYCoord, getLineYByXCoord } from '../../../core/utils/get-line-by';
-import { BoundaryValuesData } from '../../../core/utils/values/boundary-values';
-import AxisValues, { AxisValuesData } from '../../../core/utils/values/axis-values';
+import { BoundaryValuesData } from '../../../../shared/utils/values/boundary-values';
+import AxisValues, { AxisValuesData } from '../../../../shared/utils/values/axis-values';
 
 
 function findIntersectionHorizontal (startLinePoint: AxisValuesData<number>, endLinePoint: AxisValuesData<number>, rectSide: BoundaryValuesData): AxisValues<number> | null {
