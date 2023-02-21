@@ -1,4 +1,4 @@
-import { getEventLog } from '../common/utils';
+import { getEventLog } from '../common/utils.js';
 
 fixture `Input events`
     .page `http://localhost:3000/fixtures/api/es-next/type/pages/input-events.html`;

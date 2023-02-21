@@ -1,4 +1,4 @@
-import { getInputValue, setInputValue } from '../common/utils';
+import { getInputValue, setInputValue } from '../common/utils.js';
 
 fixture `Options`
     .page('http://localhost:3000/fixtures/api/es-next/type/pages/options.html');

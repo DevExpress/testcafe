@@ -1,4 +1,4 @@
-import { getEventLog, getInputValue } from '../common/utils';
+import { getEventLog, getInputValue } from '../common/utils.js';
 
 fixture `Type in various controls`
     .page `http://localhost:3000/fixtures/api/es-next/type/pages/events.html`;
