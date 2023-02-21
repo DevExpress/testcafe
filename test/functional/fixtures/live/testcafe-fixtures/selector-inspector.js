@@ -18,7 +18,7 @@ test('should indicate the correct number of elements matching the selector', asy
                 return getMatchIndicatorInnerText();
             })
             .then(text => {
-                if (text === 'Found: 2')
+                if (text === 'Found: 3')
                     resumeTest();
             });
     })();
