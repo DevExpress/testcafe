@@ -6,11 +6,10 @@ const { Buffer }         = require('buffer');
 const { expect }         = require('chai');
 const helper             = require('./test-helper');
 const { createReporter } = require('../../utils/reporter');
-const fs                 = require( 'fs' );
+const fs                 = require('fs');
 const del                = require('del');
 
-const DEFAULT_BROWSERS = ['chrome', 'firefox'];
-let cafe               = null;
+let cafe = null;
 
 const LiveModeController            = require('../../../../lib/live/controller');
 const LiveModeRunner                = require('../../../../lib/live/test-runner');
@@ -48,7 +47,16 @@ class RunnerMock extends LiveModeRunner {
     }
 }
 
-function createLiveModeRunner (tc, src, browsers = DEFAULT_BROWSERS) {
+function createTestCafeInstance (opts = {}) {
+    return createTestCafe({
+        hostname: '127.0.0.1', port1: 1335, port2: 1336, experimentalProxyless: config.proxyless, ...opts,
+    })
+        .then(tc => {
+            cafe = tc;
+        });
+}
+
+function createLiveModeRunner (tc, src) {
     const { proxy, browserConnectionGateway, configuration, compilerService } = tc;
 
     const runner = new RunnerMock({
@@ -60,6 +68,8 @@ function createLiveModeRunner (tc, src, browsers = DEFAULT_BROWSERS) {
 
     tc.runners.push(runner);
 
+    const browsers = config.browsers.map(browserInfo => browserInfo.browserName);
+
     return runner
         .src(path.join(__dirname, src))
         .browsers(browsers)
@@ -68,20 +78,16 @@ function createLiveModeRunner (tc, src, browsers = DEFAULT_BROWSERS) {
 
 const testingEnvironmentName = process.env.TESTING_ENVIRONMENT;
 
-if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
-    // TODO: stabilize tests in IE
-    (config.hasBrowser('ie') ? describe.skip : describe)('Live Mode', () => {
-        afterEach (() => {
+if (config.useLocalBrowsers && !config.hasBrowser('ie')) {
+    describe('Live Mode', () => {
+        afterEach(() => {
             helper.clean();
         });
 
         it('Smoke', () => {
             const runCount = 2;
 
-            return createTestCafe('127.0.0.1', 1335, 1336)
-                .then(tc => {
-                    cafe = tc;
-                })
+            return createTestCafeInstance()
                 .then(() => {
                     const runner = createLiveModeRunner(cafe, '/testcafe-fixtures/smoke.js');
 
@@ -97,17 +103,14 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
                     return runner.run();
                 })
                 .then(() => {
-                    expect(helper.counter).eql(DEFAULT_BROWSERS.length * helper.testCount * runCount);
+                    expect(helper.counter).eql(config.browsers.length * helper.testCount * runCount);
 
                     return cafe.close();
                 });
         });
 
         it('Quarantine', () => {
-            return createTestCafe('127.0.0.1', 1335, 1336)
-                .then(tc => {
-                    cafe = tc;
-                })
+            return createTestCafeInstance()
                 .then(() => {
                     const runner = createLiveModeRunner(cafe, '/testcafe-fixtures/quarantine.js');
 
@@ -122,17 +125,14 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
                     });
                 })
                 .then(() => {
-                    expect(helper.attempts).eql(DEFAULT_BROWSERS.length * helper.quarantineThreshold);
+                    expect(helper.attempts).eql(config.browsers.length * helper.quarantineThreshold);
 
                     return cafe.close();
                 });
         });
 
         it('Client scripts', () => {
-            return createTestCafe('127.0.0.1', 1335, 1336)
-                .then(tc => {
-                    cafe = tc;
-                })
+            return createTestCafeInstance()
                 .then(() => {
                     const runner = createLiveModeRunner(cafe, '/testcafe-fixtures/client-scripts.js', ['chrome']);
 
@@ -163,10 +163,9 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
             });
 
 
-            createTestCafe('localhost', 1337, 1338)
-                .then(tc => {
-                    cafe         = tc;
-                    const runner = createLiveModeRunner(cafe, '/testcafe-fixtures/test-1.js', ['chrome']);
+            createTestCafeInstance()
+                .then(() => {
+                    const runner = createLiveModeRunner(cafe, '/testcafe-fixtures/test-1.js');
 
                     setTimeout(() => {
                         return runner.stop()
@@ -176,7 +175,7 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
                                 });
 
                                 return runner
-                                    .browsers(['firefox'])
+                                    .browsers(config.browsers.map(browserInfo => browserInfo.browserName))
                                     .src(path.join(__dirname, '/testcafe-fixtures/test-2.js'))
                                     .run()
                                     .then(() => {
@@ -216,7 +215,8 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
             await fileHandle.write(firstPartTests);
             await fileHandle.sync();
 
-            cafe         = await createTestCafe( 'localhost', 1337, 1338 );
+            await createTestCafeInstance();
+
             const runner = createLiveModeRunner(cafe, relativeFilePath, ['chrome']);
 
             helper.emitter.once('tests-completed', async () => {
@@ -244,66 +244,57 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
         });
 
         it('Selector Inspector should indicate the correct number of elements matching the selector in live mode', async () => {
-            const testCafe = await createTestCafe();
-            const runner   = createLiveModeRunner(testCafe, '/testcafe-fixtures/selector-inspector.js');
+            await createTestCafeInstance();
+
+            const runner = createLiveModeRunner(cafe, '/testcafe-fixtures/selector-inspector.js');
 
             helper.emitter.once('tests-completed', () => runner.exit());
 
             await runner.run();
 
-            return testCafe.close();
+            return cafe.close();
         });
     });
-}
-else if (testingEnvironmentName === 'local-headless-chrome' && !config.experimentalESM) {
-    describe('Live Mode', () => {
-        it('Experimental debug', () => {
-            const markerFile = path.join(__dirname, 'testcafe-fixtures', '.test-completed.marker');
 
-            return createTestCafe({
-                hostname:          '127.0.0.1',
-                port1:             1335,
-                port2:             1336,
-                experimentalDebug: true,
+    (testingEnvironmentName === 'local-headless-chrome' && !config.experimentalESM ? it : it.skip)('Experimental debug', () => {
+        const markerFile = path.join(__dirname, 'testcafe-fixtures', '.test-completed.marker');
+
+        return createTestCafeInstance({
+            experimentalDebug: true,
+        })
+            .then(() => {
+                const runner = createLiveModeRunner(cafe, '/testcafe-fixtures/experimental-debug.js', [config.currentEnvironment.browsers[0].browserName]);
+
+                const timeoutId = setTimeout(() => {
+                    clearInterval(intervalId); // eslint-disable-line @typescript-eslint/no-use-before-define
+                    runner.exit();
+
+                    expect.fail('Marker file not found.');
+                }, 20000);
+
+                const intervalId = setInterval(async () => {
+                    if (!fs.existsSync(markerFile))
+                        return;
+
+                    const inTestProcessName = fs.readFileSync(markerFile).toString();
+
+                    await new Promise(resolve => setTimeout(resolve, 3000));
+
+                    clearTimeout(timeoutId);
+                    clearInterval(intervalId);
+                    runner.exit();
+
+                    expect(inTestProcessName).eql(ProcessTitle.service);
+                }, 1000);
+
+                return runner.run();
             })
-                .then(tc => {
-                    cafe = tc;
-                })
-                .then(() => {
-                    const runner = createLiveModeRunner(cafe, '/testcafe-fixtures/experimental-debug.js', [config.currentEnvironment.browsers[0].browserName]);
+            .then(() => {
+                if (fs.existsSync(markerFile))
+                    fs.unlinkSync(markerFile);
 
-                    const timeoutId = setTimeout(() => {
-                        clearInterval(intervalId); // eslint-disable-line @typescript-eslint/no-use-before-define
-                        runner.exit();
-
-                        expect.fail('Marker file not found.');
-                    }, 20000);
-
-                    const intervalId = setInterval(async () => {
-                        if (!fs.existsSync(markerFile))
-                            return;
-
-                        const inTestProcessName = fs.readFileSync(markerFile).toString();
-
-                        await new Promise(resolve => setTimeout(resolve, 3000));
-
-                        clearTimeout(timeoutId);
-                        clearInterval(intervalId);
-                        runner.exit();
-
-                        expect(inTestProcessName).eql(ProcessTitle.service);
-                    }, 1000);
-
-                    return runner.run();
-                })
-                .then(() => {
-                    if (fs.existsSync(markerFile))
-                        fs.unlinkSync(markerFile);
-
-                    return cafe.close();
-                });
-        });
+                return cafe.close();
+            });
     });
 }
-
 

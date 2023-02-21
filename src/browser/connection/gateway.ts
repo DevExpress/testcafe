@@ -27,11 +27,11 @@ export default class BrowserConnectionGateway {
     public readonly proxy: Proxy;
 
     public constructor (proxy: Proxy, options: { retryTestPages: boolean; proxyless: boolean }) {
-        this._remotesQueue   = new RemotesQueue();
-        this.connectUrl      = proxy.resolveRelativeServiceUrl(SERVICE_ROUTES.connect);
-        this.retryTestPages  = options.retryTestPages;
-        this.proxyless       = options.proxyless;
-        this.proxy           = proxy;
+        this._remotesQueue  = new RemotesQueue();
+        this.connectUrl     = proxy.resolveRelativeServiceUrl(SERVICE_ROUTES.connect);
+        this.retryTestPages = options.retryTestPages;
+        this.proxyless      = options.proxyless;
+        this.proxy          = proxy;
 
         this._registerRoutes(proxy);
     }
@@ -270,8 +270,8 @@ export default class BrowserConnectionGateway {
             collectionMode:      true,
         };
 
-        const value          = rawSelector.trim().startsWith('Selector(') ? rawSelector : `'${rawSelector}'`;
-        const selector       = { type: 'js-expr', value };
+        const value    = rawSelector.trim().startsWith('Selector(') ? rawSelector : `'${rawSelector}'`;
+        const selector = { type: 'js-expr', value };
 
         return initSelector('selector', selector, options);
     }
@@ -311,6 +311,10 @@ export default class BrowserConnectionGateway {
     public async close (): Promise<void> {
         for (const id in this._connections)
             await this._connections[id].close();
+    }
+
+    public getConnections (): Dictionary<BrowserConnection> {
+        return this._connections;
     }
 }
 
