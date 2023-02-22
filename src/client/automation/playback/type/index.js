@@ -202,10 +202,11 @@ export default class TypeAutomation {
         if (this.paste)
             return false;
 
-        // NOTE: Type to non-text-editable element is not supported in the proxyless mode
-        // since it's not a real input. In this case, TestCafe just set element value with raising events.
+        // NOTE: Type to non text-editable and content-editable elements are not supported in the proxyless mode.
+        // In this case, TestCafe just set element value with raising events.
         if (!domUtils.isTextEditableElement(this.element)
-            && domUtils.isInputElement(this.element))
+            && domUtils.isInputElement(this.element)
+            || domUtils.isContentEditableElement(this.element))
             return false;
 
         return true;
