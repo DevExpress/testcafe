@@ -197,6 +197,20 @@ export default class TypeAutomation {
             });
     }
 
+    _canUseProxylessInput () {
+        // NOTE: 'paste' is a synthetic option that don't have equivalent for native user action.
+        if (this.paste)
+            return false;
+
+        // NOTE: Type to non-text-editable element is not supported in the proxyless mode
+        // since it's not a real input. In this case, TestCafe just set element value with raising events.
+        if (!domUtils.isTextEditableElement(this.element)
+            && domUtils.isInputElement(this.element))
+            return false;
+
+        return true;
+    }
+
     _regularTypingStep () {
         this._keydown();
         this._keypress();
@@ -214,8 +228,7 @@ export default class TypeAutomation {
 
         this.ignoreChangeEvent = domUtils.getElementValue(this.element) === elementEditingWatcher.getElementSavedValue(this.element);
 
-        // NOTE: 'paste' is a synthetic option that don't have equivalent for native user action.
-        if (this.proxylessInput && !this.paste)
+        if (this.proxylessInput && this._canUseProxylessInput())
             return this._proxylessTypingStep();
 
         return this._regularTypingStep();
