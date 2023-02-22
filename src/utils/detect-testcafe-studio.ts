@@ -19,7 +19,7 @@ export default function (): Promise<boolean> {
         else if (OS.linux)
             homeDir = env.XDG_CONFIG_HOME || env.HOME && path.join(env.HOME, '.config');
         else if (OS.mac)
-            homeDir = env.XDG_CONFIG_HOME || '~/Library/Application Support';
+            homeDir = env.XDG_CONFIG_HOME || env.HOME && path.join(env.HOME, 'Library/Application Support');
 
         studioWasOnMachine = !!homeDir && fs.existsSync(path.join(homeDir, TESTCAFE_STUDIO_CONFIG_DIRECTORY));
 
