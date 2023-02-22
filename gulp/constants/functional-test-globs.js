@@ -1,4 +1,5 @@
 const MULTIPLE_WINDOWS_TESTS_GLOB = 'test/functional/fixtures/multiple-windows/test.js';
+const HEADED_CHROME_FIREFOX_TESTS_GLOB = ['test/functional/fixtures/multiple-windows/test.js'];
 const COMPILER_SERVICE_TESTS_GLOB = 'test/functional/fixtures/compiler-service/test.js';
 const LEGACY_TESTS_GLOB           = 'test/functional/legacy-fixtures/**/test.js';
 const BASIC_TESTS_GLOB            = 'test/functional/fixtures/**/test.js';
@@ -53,4 +54,5 @@ module.exports = {
     DEBUG_GLOB_2,
     SCREENSHOT_TESTS_GLOB,
     PROXYLESS_TESTS_GLOB,
+    HEADED_CHROME_FIREFOX_TESTS_GLOB,
 };
