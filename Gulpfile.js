@@ -74,6 +74,11 @@ const { PUBLISH_TAGS, PUBLISH_REPO } = getDockerPublishInfo(packageInfo);
 
 const NODE_MODULE_BINS = path.join(__dirname, 'node_modules/.bin');
 
+const TEST_FRAGMENT_OPTIONS = {
+    TEST_FRAGMENTS_COUNT:         process.env.TEST_FRAGMENTS_COUNT || 1,
+    CURRENT_TEST_FRAGMENT_NUMBER: process.env.CURRENT_TEST_FRAGMENT_NUMBER || 1,
+};
+
 process.env.PATH = NODE_MODULE_BINS + path.delimiter + process.env.PATH + path.delimiter + NODE_MODULE_BINS;
 
 process.env.DEV_MODE = ('dev' in ARGS).toString();
@@ -386,7 +391,7 @@ gulp.step('test-functional-local-chrome-firefox-run', () => {
 gulp.task('test-functional-local-chrome-firefox', gulp.series('prepare-tests', 'test-functional-local-chrome-firefox-run'));
 
 gulp.step('test-functional-local-headless-chrome-run', () => {
-    return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localHeadlessChrome);
+    return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localHeadlessChrome, TEST_FRAGMENT_OPTIONS);
 });
 
 gulp.task('test-functional-local-headless-chrome', gulp.series('prepare-tests', 'prepare-functional-tests', 'test-functional-local-headless-chrome-run', 'clean-functional-tests'));
