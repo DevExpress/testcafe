@@ -185,9 +185,9 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     private _buildCommunicationUrls (proxy: Proxy): void {
-        this.url               = proxy.resolveRelativeServiceUrl(`${SERVICE_ROUTES.connect}/${this.id}`);
-        this.forcedIdleUrl     = proxy.resolveRelativeServiceUrl(`${SERVICE_ROUTES.idleForced}/${this.id}`);
-        this.initScriptUrl     = proxy.resolveRelativeServiceUrl(`${SERVICE_ROUTES.initScript}/${this.id}`);
+        this.url           = proxy.resolveRelativeServiceUrl(`${SERVICE_ROUTES.connect}/${this.id}`);
+        this.forcedIdleUrl = proxy.resolveRelativeServiceUrl(`${SERVICE_ROUTES.idleForced}/${this.id}`);
+        this.initScriptUrl = proxy.resolveRelativeServiceUrl(`${SERVICE_ROUTES.initScript}/${this.id}`);
 
         this.heartbeatRelativeUrl                      = `${SERVICE_ROUTES.heartbeat}/${this.id}`;
         this.statusRelativeUrl                         = `${SERVICE_ROUTES.status}/${this.id}`;
@@ -207,18 +207,23 @@ export default class BrowserConnection extends EventEmitter {
         this.openFileProtocolUrl = proxy.resolveRelativeServiceUrl(this.openFileProtocolRelativeUrl);
     }
 
-    public set messageBus (messageBus: MessageBus | undefined) {
-        this._messageBus         = messageBus;
+    public initMessageBusEvents (): void {
         this.warningLog.callback = WarningLog.createAddWarningCallback(this._messageBus);
 
-        if (messageBus) {
-            messageBus.on('test-run-start', testRun => {
+        if (this._messageBus) {
+            this._messageBus.on('test-run-start', testRun => {
                 if (testRun.browserConnection.id === this.id)
                     this._currentTestRun = testRun;
             });
         }
 
-        this.emit('message-bus-initialized', messageBus);
+        this.emit('message-bus-initialized', this._messageBus);
+    }
+
+    public set messageBus (messageBus: MessageBus | undefined) {
+        this._messageBus = messageBus;
+
+        this.initMessageBusEvents();
     }
 
     public get messageBus (): MessageBus | undefined {

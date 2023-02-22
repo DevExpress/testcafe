@@ -74,8 +74,8 @@ export default class BrowserConnectionGateway {
         this._dispatch(`${SERVICE_ROUTES.closeWindow}/{id}`, proxy, BrowserConnectionGateway._onCloseWindowRequest, 'POST');
         this._dispatch(`${SERVICE_ROUTES.openFileProtocol}/{id}`, proxy, BrowserConnectionGateway._onOpenFileProtocolRequest, 'POST');
         this._dispatch(`${SERVICE_ROUTES.dispatchProxylessEvent}/{id}`, proxy, BrowserConnectionGateway._onDispatchProxylessEvent, 'POST', this.proxyless);
+        this._dispatch(`${SERVICE_ROUTES.parseSelector}/{id}`, proxy, BrowserConnectionGateway._parseSelector, 'POST', this.proxyless);
         this._dispatch(`${SERVICE_ROUTES.dispatchProxylessEventSequence}/{id}`, proxy, BrowserConnectionGateway._onDispatchProxylessEventSequence, 'POST', this.proxyless);
-        this._dispatch(`${SERVICE_ROUTES.parseSelector}/{id}`, proxy, BrowserConnectionGateway._parseSelector, 'POST');
 
         proxy.GET(SERVICE_ROUTES.connect, (req: IncomingMessage, res: ServerResponse) => this._connectNextRemoteBrowser(req, res));
         proxy.GET(SERVICE_ROUTES.connectWithTrailingSlash, (req: IncomingMessage, res: ServerResponse) => this._connectNextRemoteBrowser(req, res));

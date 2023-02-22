@@ -397,7 +397,7 @@ export default class Bootstrapper {
         const connections = this.browserConnectionGateway.getConnections();
 
         Object.values(connections).forEach(connection => {
-            connection.messageBus = this.messageBus;
+            connection.initMessageBusEvents();
         });
     }
 }
