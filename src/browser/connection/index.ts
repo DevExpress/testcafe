@@ -155,8 +155,11 @@ export default class BrowserConnection extends EventEmitter {
         this.warningLog               = new WarningLog(null, WarningLog.createAddWarningCallback(messageBus));
         this.debugLogger              = debug(getBrowserConnectionDebugScope(this.id));
 
-        if (messageBus)
+        if (messageBus) {
             this.messageBus = messageBus;
+
+            this.initMessageBusEvents();
+        }
 
         this.browserInfo                           = browserInfo;
         this.browserInfo.userAgentProviderMetaInfo = '';
@@ -222,8 +225,6 @@ export default class BrowserConnection extends EventEmitter {
 
     public set messageBus (messageBus: MessageBus | undefined) {
         this._messageBus = messageBus;
-
-        this.initMessageBusEvents();
     }
 
     public get messageBus (): MessageBus | undefined {

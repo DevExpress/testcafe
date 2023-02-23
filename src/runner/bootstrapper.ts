@@ -177,6 +177,8 @@ export default class Bootstrapper {
 
         remotes.forEach(remoteConnection => {
             remoteConnection.messageBus = this.messageBus;
+
+            remoteConnection.initMessageBusEvents();
         });
 
         browserConnections = browserConnections.concat(chunk(remotes, this.concurrency));

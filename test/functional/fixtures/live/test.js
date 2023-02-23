@@ -48,9 +48,7 @@ class RunnerMock extends LiveModeRunner {
 }
 
 function createTestCafeInstance (opts = {}) {
-    return createTestCafe({
-        hostname: '127.0.0.1', port1: 1335, port2: 1336, experimentalProxyless: config.proxyless, ...opts,
-    })
+    return createTestCafe({ experimentalProxyless: config.proxyless, ...opts })
         .then(tc => {
             cafe = tc;
         });
@@ -197,18 +195,18 @@ if (config.useLocalBrowsers && !config.hasBrowser('ie')) {
             const filePath         = path.join(__dirname, relativeFilePath);
             const fileHandle       = await fs.promises.open(filePath, 'w');
             const firstPartTests   = Buffer.from('import helper from "../test-helper";\n' +
-                                                '\n' +
-                                                'fixture `Should rerun tests after changing file`\n' +
-                                                '    .page `../pages/index.html`\n' +
-                                                '    .after(() => {\n' +
-                                                '        helper.emitter.emit("tests-completed");\n' +
-                                                '    });\n' +
-                                                '\n' +
-                                                'test("Old test", async t => {\n' +
-                                                '    for (let i = 0; i < 10; i++)\n' +
-                                                '        await t.click("#button1");\n' +
-                                                '});' +
-                                                '\n');
+                '\n' +
+                'fixture `Should rerun tests after changing file`\n' +
+                '    .page `../pages/index.html`\n' +
+                '    .after(() => {\n' +
+                '        helper.emitter.emit("tests-completed");\n' +
+                '    });\n' +
+                '\n' +
+                'test("Old test", async t => {\n' +
+                '    for (let i = 0; i < 10; i++)\n' +
+                '        await t.click("#button1");\n' +
+                '});' +
+                '\n');
 
             await fileHandle.write(firstPartTests);
             await fileHandle.sync();
@@ -224,11 +222,11 @@ if (config.useLocalBrowsers && !config.hasBrowser('ie')) {
                 });
 
                 const secondPartTests = Buffer.from('\n' +
-                                                    'test("New test", async t => {\n' +
-                                                    '    for (let i = 0; i < 10; i++)\n' +
-                                                    '        await t.click("#button2");\n' +
-                                                    '});' +
-                                                    '\n');
+                    'test("New test", async t => {\n' +
+                    '    for (let i = 0; i < 10; i++)\n' +
+                    '        await t.click("#button2");\n' +
+                    '});' +
+                    '\n');
 
                 await fileHandle.write(secondPartTests);
                 await fileHandle.sync();
