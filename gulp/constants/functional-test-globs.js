@@ -31,7 +31,6 @@ const DEBUG_GLOB_2 = [
 
 const PROXYLESS_TESTS_GLOB = [
     ...TESTS_GLOB,
-    '!test/functional/fixtures/driver/script-execution-barrier/test.js',
     '!test/functional/fixtures/run-options/request-timeout/test.js',
     '!test/functional/fixtures/run-options/disable-page-caching/test.js',
     '!test/functional/fixtures/regression/gh-1311/test.js',
