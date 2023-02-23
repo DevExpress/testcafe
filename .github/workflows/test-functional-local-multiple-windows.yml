@@ -1,4 +1,4 @@
-name: Test Functional (Local Firefox)
+name: Test Functional (Multiple Windows)
 
 on:
   workflow_dispatch:
@@ -16,6 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: test-functional
     env:
+      DISPLAY: ':99.0'
       RETRY_FAILED_TESTS: true
     steps:
       - uses: actions/github-script@v3
@@ -29,6 +30,12 @@ jobs:
               state: 'pending',
               target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
             });
+
+      - run: |
+          sudo apt install fluxbox
+          Xvfb :99 -screen 0 1920x1080x24 &
+          sleep 3
+          fluxbox >/dev/null 2>&1 &
       - uses: actions/checkout@v2
         with:
           ref: ${{github.event.inputs.merged_sha || github.event.inputs.sha}}
@@ -75,7 +82,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - run: npm ci
-      - run: npx gulp test-functional-local-headless-firefox-run --steps-as-tasks
+      - run: npx gulp test-functional-local-multiple-windows-run --steps-as-tasks
         timeout-minutes: 60
       - uses: actions/github-script@v3
         with:

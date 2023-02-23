@@ -4,7 +4,7 @@ on:
     workflow_dispatch:
         inputs:
             sha:
-                desciption: 'The test commit SHA or ref'
+                description: 'The test commit SHA or ref'
                 required: true
                 default: 'master'
             merged_sha:
