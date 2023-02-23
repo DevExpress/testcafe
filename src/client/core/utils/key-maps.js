@@ -77,6 +77,12 @@ const KEY_PROPERTY = {
     shift:     'Shift',
 };
 
+const NEW_LINE_KEYS = [
+    'enter',
+    '\n',
+    '\r',
+];
+
 function reverseMap (map) {
     const reversed = {};
 
@@ -152,4 +158,6 @@ export default {
     reversedSpecialKeys: reverseMap(SPECIAL_KEYS),
 
     reversedKeyProperty: reverseMap(KEY_PROPERTY),
+
+    newLineKeys: NEW_LINE_KEYS,
 };

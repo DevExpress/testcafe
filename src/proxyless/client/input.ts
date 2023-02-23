@@ -30,7 +30,7 @@ export default class ProxylessInput {
     }
 
     private _getKeyDownEventText (options: SimulatedKeyInfo): any {
-        if (options.isEnter)
+        if (options.isNewLine)
             return '\r';
 
         if (options.keyProperty.length === 1)
@@ -56,7 +56,7 @@ export default class ProxylessInput {
 
         const eventOptions = {
             type:                  text ? 'keyDown' : 'rawKeyDown',
-            modifiers:             options.modifiers,
+            modifiers:             options.modifiers || 0,
             windowsVirtualKeyCode: options.keyCode,
             key:                   options.keyProperty,
             text,
@@ -67,7 +67,7 @@ export default class ProxylessInput {
     public keyUp (options: SimulatedKeyInfo): Promise<void> {
         const eventOptions = {
             type:                  'keyUp',
-            modifiers:             options.modifiers,
+            modifiers:             options.modifiers || 0,
             key:                   options.keyProperty,
             windowsVirtualKeyCode: options.keyCode,
         };

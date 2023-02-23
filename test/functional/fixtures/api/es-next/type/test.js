@@ -58,4 +58,22 @@ describe('[API] t.typeText()', function () {
                 expect(errs[0]).to.contains('> 31 |    await t.typeText(\'#not-found\', \'a\');');
             });
     });
+
+    describe('Various combinations', function () {
+        it('Events', function () {
+            return runTests('./testcafe-fixtures/type-events-test.js', null, { only: 'chrome' });
+        });
+
+        it('Read-only input', function () {
+            return runTests('./testcafe-fixtures/read-only-test.js', null, { only: 'chrome' });
+        });
+
+        it('Input events', function () {
+            return runTests('./testcafe-fixtures/input-events-test.js', null, { only: 'chrome' });
+        });
+
+        it('Options.replace', function () {
+            return runTests('./testcafe-fixtures/options-test.js', null, { only: 'chrome' });
+        });
+    });
 });

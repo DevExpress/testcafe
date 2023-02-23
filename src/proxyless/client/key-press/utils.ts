@@ -15,7 +15,7 @@ export interface SimulatedKeyInfo {
     modifierKeyCode: number;
     isLetter: boolean;
     isChar: boolean;
-    isEnter: boolean;
+    isNewLine: boolean;
 }
 
 export function getSimulatedKeyInfo (keyCombination: string): SimulatedKeyInfo[] {

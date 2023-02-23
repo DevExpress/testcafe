@@ -10,25 +10,31 @@ export interface KeyInfo {
     modifierKeyCode: string;
     specialKeyCode: string;
     isLetter: boolean;
-    isEnter: boolean;
+    isNewLine: boolean;
     keyIdentifierProperty: string;
     keyProperty: string;
     keyCode: string | null;
 }
 
-export default function (key: string, eventKeyProperty: string): KeyInfo {
+function isNewLineKey (key: string): boolean {
+    return KEY_MAPS.newLineKeys.indexOf(key) > -1;
+}
+
+export default function (key: string, eventKeyProperty?: string): KeyInfo {
     const sanitizedKey    = getSanitizedKey(key);
     const isChar          = key.length === 1 || key === 'space';
-    const isEnter         = key === 'enter';
+    const isNewLine       = isNewLineKey(key);
     const modifierKeyCode = KEY_MAPS.modifiers[sanitizedKey];
     const specialKeyCode  = KEY_MAPS.specialKeys[sanitizedKey];
+
+    eventKeyProperty = eventKeyProperty || key;
 
     return {
         sanitizedKey,
         isChar,
         modifierKeyCode,
         specialKeyCode,
-        isEnter,
+        isNewLine,
         isLetter:              isLetterKey(key),
         keyIdentifierProperty: getKeyIdentifier(eventKeyProperty),
         keyProperty:           KEY_MAPS.keyProperty[eventKeyProperty] || eventKeyProperty,

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input type="text" id="input"/>
+<div id="eventLog"></div>
+<script>
+    const eventLog = document.getElementById('eventLog');
+    const input    = document.getElementById('input');
+
+    function logEvent (e) {
+        eventLog.textContent += e.type + ': ' + e.data + '; ';
+    }
+
+    [
+        'beforeinput',
+        'textInput',
+        'input',
+    ].forEach(eventName => input.addEventListener(eventName, logEvent));
+</script>
+</body>
+</html>
