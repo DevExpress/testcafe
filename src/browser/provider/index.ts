@@ -454,4 +454,8 @@ export default class BrowserProvider {
     public async dispatchProxylessEvent (browserId: string, type: EventType, options: any): Promise<void> {
         await this.plugin.dispatchProxylessEvent(browserId, type, options);
     }
+
+    public async dispatchProxylessEventSequence (browserId: string, sequence: []): Promise<void> {
+        await this.plugin.dispatchProxylessEventSequence(browserId, sequence);
+    }
 }

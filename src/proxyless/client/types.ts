@@ -11,3 +11,8 @@ export enum KeyModifierValues {
     meta=4,
     shift=8
 }
+
+export interface DispatchEventFn {
+    single: Function;
+    sequence: Function;
+}

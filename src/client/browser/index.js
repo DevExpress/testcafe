@@ -218,6 +218,17 @@ export async function dispatchProxylessEvent (dispatchProxylessEventUrl, testCaf
     await testCafeUI.show();
 }
 
+export async function dispatchProxylessEventSequence (dispatchProxylessEventSequenceUrl, testCafeUI, createXHR, sequence) {
+    await testCafeUI.hide();
+
+    await sendXHR(dispatchProxylessEventSequenceUrl, createXHR, {
+        method: 'POST',
+        data:   JSON.stringify(sequence), //eslint-disable-line no-restricted-globals
+    });
+
+    await testCafeUI.show();
+}
+
 export function parseSelector (parseSelectorUrl, createXHR, selector) {
     return sendXHR(parseSelectorUrl, createXHR, {
         method: 'POST',

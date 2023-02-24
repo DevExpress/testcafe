@@ -36,4 +36,5 @@ export enum EventType {
     Mouse,
     Keyboard,
     Touch,
+    Delay,
 }

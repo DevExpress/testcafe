@@ -11,6 +11,7 @@ import getKeyProperties from '../../utils/get-key-properties';
 import cursor from '../../cursor';
 import ProxylessInput from '../../../../proxyless/client/input';
 import getKeyInfo from '../press/get-key-info';
+import { EventType } from '../../../../proxyless/types';
 
 const Promise               = hammerhead.Promise;
 const extend                = hammerhead.utils.extend;
@@ -174,6 +175,12 @@ export default class TypeAutomation {
                 textSelection.deleteSelectionContents(this.element, true);
         }
 
+        if (this._canUseProxylessInput()) {
+            const eventSequence = this._calculateCDPEventSequence();
+
+            return this.proxylessInput.executeEventSequence(eventSequence);
+        }
+
         return promiseUtils.whilst(() => !this._isTypingFinished(), () => this._typingStep());
     }
 
@@ -181,23 +188,38 @@ export default class TypeAutomation {
         return this.currentPos === this.typingText.length;
     }
 
-    _proxylessTypingStep () {
-        const keyInfo = getKeyInfo(this.currentKey);
+    _getCurrentKey (keyCode, char) {
+        return keyCode === SPECIAL_KEYS['enter'] ? 'Enter' : char;
+    }
 
-        const simulatedKeyInfo = extend({ key: this.currentKey }, keyInfo);
+    _calculateCDPEventSequence () {
+        const eventSequence = [];
 
-        return this.proxylessInput.keyDown(simulatedKeyInfo)
-            .then(() => {
-                return this.proxylessInput.keyUp(simulatedKeyInfo);
-            })
-            .then(() => {
-                this.currentPos++;
+        for (const char of this.typingText) {
+            const currentKeyCode   = getKeyCode(char);
+            const currentKey       = this._getCurrentKey(currentKeyCode, char);
+            const keyInfo          = getKeyInfo(currentKey);
+            const simulatedKeyInfo = extend({ key: currentKey }, keyInfo);
 
-                return delay(this.automationSettings.keyActionStepDelay);
+            eventSequence.push({
+                type:    EventType.Keyboard,
+                options: this.proxylessInput.createKeyDownOptions(simulatedKeyInfo),
+            }, {
+                type:    EventType.Keyboard,
+                options: this.proxylessInput.createKeyUpOptions(simulatedKeyInfo),
+            }, {
+                type:    EventType.Delay,
+                options: { delay: this.automationSettings.keyActionStepDelay },
             });
+        }
+
+        return eventSequence;
     }
 
     _canUseProxylessInput () {
+        if (!this.proxylessInput)
+            return false;
+
         // NOTE: 'paste' is a synthetic option that don't have equivalent for native user action.
         if (this.paste)
             return false;
@@ -212,7 +234,7 @@ export default class TypeAutomation {
         return true;
     }
 
-    _regularTypingStep () {
+    _performTypingStep () {
         this._keydown();
         this._keypress();
 
@@ -224,15 +246,12 @@ export default class TypeAutomation {
 
         this.currentKeyCode       = getKeyCode(char);
         this.currentCharCode      = this.typingText.charCodeAt(this.currentPos);
-        this.currentKey           = this.currentKeyCode === SPECIAL_KEYS['enter'] ? 'Enter' : char;
+        this.currentKey           = this._getCurrentKey(this.currentKeyCode, char);
         this.currentKeyIdentifier = getKeyIdentifier(this.currentKey);
 
         this.ignoreChangeEvent = domUtils.getElementValue(this.element) === elementEditingWatcher.getElementSavedValue(this.element);
 
-        if (this.proxylessInput && this._canUseProxylessInput())
-            return this._proxylessTypingStep();
-
-        return this._regularTypingStep();
+        return this._performTypingStep();
     }
 
     _keydown () {
@@ -314,6 +333,7 @@ export default class TypeAutomation {
 
     _typeAllText (element) {
         typeText(element, this.typingText, this.caretPos);
+
         return delay(this.automationSettings.keyActionStepDelay);
     }
 

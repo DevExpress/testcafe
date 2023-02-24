@@ -105,7 +105,11 @@ export default class IframeDriver extends Driver {
     }
 
     async _init () {
-        const { id, dispatchProxylessEventUrl } = await this.parentDriverLink.establishConnection();
+        const {
+            id,
+            dispatchProxylessEventUrl,
+            dispatchProxylessEventSequenceUrl,
+        } = await this.parentDriverLink.establishConnection();
 
         this.contextStorage = new ContextStorage(window, {
             testRunId: id,
@@ -113,7 +117,8 @@ export default class IframeDriver extends Driver {
             proxyless: this.options.proxyless,
         });
 
-        this.communicationUrls.dispatchProxylessEvent = dispatchProxylessEventUrl;
+        this.communicationUrls.dispatchProxylessEvent         = dispatchProxylessEventUrl;
+        this.communicationUrls.dispatchProxylessEventSequence = dispatchProxylessEventSequenceUrl;
 
         if (this._failIfClientCodeExecutionIsInterrupted())
             return;

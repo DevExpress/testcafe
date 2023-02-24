@@ -31,12 +31,12 @@ import { getBordersWidthFloat, getElementPaddingFloat } from '../../../core/util
 
 
 export default class ChildIframeDriverLink {
-    constructor (driverWindow, driverId, dispatchProxylessEventUrl) {
-        this.driverWindow              = driverWindow;
-        this.driverIframe              = domUtils.findIframeByWindow(driverWindow);
-        this.driverId                  = driverId;
-        this.iframeAvailabilityTimeout = 0;
-        this.dispatchProxylessEventUrl = dispatchProxylessEventUrl;
+    constructor (driverWindow, driverId, dispatchProxylessEventUrls) {
+        this.driverWindow               = driverWindow;
+        this.driverIframe               = domUtils.findIframeByWindow(driverWindow);
+        this.driverId                   = driverId;
+        this.iframeAvailabilityTimeout  = 0;
+        this.dispatchProxylessEventUrls = dispatchProxylessEventUrls;
     }
 
     set availabilityTimeout (val) {
@@ -109,7 +109,7 @@ export default class ChildIframeDriverLink {
     sendConfirmationMessage (requestMsgId) {
         sendConfirmationMessage({
             requestMsgId,
-            result: { id: this.driverId, dispatchProxylessEventUrl: this.dispatchProxylessEventUrl },
+            result: { id: this.driverId, dispatchProxylessEventUrls: this.dispatchProxylessEventUrls },
             window: this.driverWindow,
         });
     }

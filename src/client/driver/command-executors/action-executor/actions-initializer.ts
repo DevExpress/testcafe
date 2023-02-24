@@ -40,6 +40,7 @@ import COMMAND_TYPE from '../../../../test-run/commands/type';
 import { ActionCommandBase } from '../../../../test-run/commands/base';
 import { Automation } from '../../../automation/types';
 import AxisValues from '../../../core/utils/values/axis-values';
+import { DispatchEventFn } from '../../../../proxyless/client/types';
 
 
 ActionExecutor.ACTIONS_HANDLERS[COMMAND_TYPE.dispatchEvent] = {
@@ -54,7 +55,7 @@ ActionExecutor.ACTIONS_HANDLERS[COMMAND_TYPE.dispatchEvent] = {
 };
 
 ActionExecutor.ACTIONS_HANDLERS[COMMAND_TYPE.pressKey] = {
-    create: (command, [], dispatchProxylessEventFn?: Function) => new PressAutomation(parseKeySequence(command.keys).combinations, command.options, dispatchProxylessEventFn), // eslint-disable-line no-empty-pattern
+    create: (command, [], dispatchProxylessEventFn?: DispatchEventFn) => new PressAutomation(parseKeySequence(command.keys).combinations, command.options, dispatchProxylessEventFn), // eslint-disable-line no-empty-pattern
 
     ensureCmdArgs: command => {
         const parsedKeySequence = parseKeySequence(command.keys);
@@ -65,7 +66,7 @@ ActionExecutor.ACTIONS_HANDLERS[COMMAND_TYPE.pressKey] = {
 };
 
 ActionExecutor.ACTIONS_HANDLERS[COMMAND_TYPE.click] = {
-    create: (command, elements, dispatchProxylessEventFn?: Function, leftTopPoint?: AxisValues<number>) => {
+    create: (command, elements, dispatchProxylessEventFn?: DispatchEventFn, leftTopPoint?: AxisValues<number>) => {
         if (/option|optgroup/.test(domUtils.getTagName(elements[0])))
             return new SelectChildClickAutomation(elements[0], command.options);
 
@@ -120,7 +121,7 @@ ActionExecutor.ACTIONS_HANDLERS[COMMAND_TYPE.scrollIntoView] = {
 
 ActionExecutor.ACTIONS_HANDLERS[COMMAND_TYPE.typeText] = {
     // eslint-disable-next-line no-restricted-properties
-    create: (command, elements, dispatchProxylessEventFn?: Function) => new TypeAutomation(elements[0], command.text, command.options, dispatchProxylessEventFn),
+    create: (command, elements, dispatchProxylessEventFn?: DispatchEventFn) => new TypeAutomation(elements[0], command.text, command.options, dispatchProxylessEventFn),
 };
 
 
