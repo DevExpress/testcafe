@@ -533,7 +533,10 @@ export default class Driver extends serviceUtils.EventEmitter {
         if (!childIframeDriverLink) {
             const driverId = `${this.testRunId}-${generateId()}`;
 
-            childIframeDriverLink = new ChildIframeDriverLink(driverWindow, driverId, this.communicationUrls.dispatchProxylessEvent);
+            childIframeDriverLink = new ChildIframeDriverLink(driverWindow, driverId, {
+                single:   this.communicationUrls.dispatchProxylessEvent,
+                sequence: this.communicationUrls.dispatchProxylessEventSequence,
+            });
 
             this.childIframeDriverLinks.push(childIframeDriverLink);
         }
@@ -1160,6 +1163,14 @@ export default class Driver extends serviceUtils.EventEmitter {
             messageSandbox.sendServiceMsg(msg, this.childIframeDriverLinks[i].driverWindow);
     }
 
+    _createDispatchProxylessEventFn (name) {
+        return nativeMethods.functionBind.call(
+            browser[name],
+            browser[name],
+            this.communicationUrls[name],
+            testCafeUI,
+            hammerhead.createNativeXHR);
+    }
 
     // Commands handling
     _onActionCommand (command) {
@@ -1172,12 +1183,12 @@ export default class Driver extends serviceUtils.EventEmitter {
             return selectorExecutor.getResult();
         };
 
-        const dispatchProxylessEventFn = this.options.proxyless ? nativeMethods.functionBind.call(
-            browser.dispatchProxylessEvent,
-            browser.dispatchProxylessEvent,
-            this.communicationUrls.dispatchProxylessEvent,
-            testCafeUI,
-            hammerhead.createNativeXHR) : null;
+        const dispatchProxylessEventFn = this.options.proxyless
+            ? {
+                single:   this._createDispatchProxylessEventFn('dispatchProxylessEvent'),
+                sequence: this._createDispatchProxylessEventFn('dispatchProxylessEventSequence'),
+            }
+            : null;
 
         const executor = new ActionExecutor(command, {
             globalSelectorTimeout: this.options.selectorTimeout,

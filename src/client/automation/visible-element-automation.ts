@@ -28,6 +28,7 @@ import { Dictionary } from '../../configuration/interfaces';
 import ensureMouseEventAfterScroll from './utils/ensure-mouse-event-after-scroll';
 import WARNING_TYPES from '../../shared/warnings/types';
 import ProxylessInput from '../../proxyless/client/input';
+import { DispatchEventFn } from '../../proxyless/client/types';
 
 
 const AVAILABLE_OFFSET_DEEP = 2;
@@ -100,7 +101,7 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
     protected readonly options: OffsetOptions;
     protected readonly proxylessInput: ProxylessInput | null;
 
-    protected constructor (element: HTMLElement, offsetOptions: OffsetOptions, win: Window, cursor: Cursor, dispatchProxylessEventFn?: Function, topLeftPoint?: AxisValues<number>) {
+    protected constructor (element: HTMLElement, offsetOptions: OffsetOptions, win: Window, cursor: Cursor, dispatchProxylessEventFn?: DispatchEventFn, topLeftPoint?: AxisValues<number>) {
         super();
 
         this.TARGET_ELEMENT_FOUND_EVENT = 'automation|target-element-found-event';

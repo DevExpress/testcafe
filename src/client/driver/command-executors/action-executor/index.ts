@@ -12,6 +12,7 @@ import { nativeMethods, Promise } from '../../deps/hammerhead';
 import { getOffsetOptions } from '../../../core/utils/offsets';
 import { TEST_RUN_ERRORS } from '../../../../errors/types';
 import AxisValues from '../../../core/utils/values/axis-values';
+import { DispatchEventFn } from '../../../../proxyless/client/types';
 
 const MAX_DELAY_AFTER_EXECUTION             = 2000;
 const CHECK_ELEMENT_IN_AUTOMATIONS_INTERVAL = 250;
@@ -20,7 +21,7 @@ interface ActionExecutorOptions {
     globalSelectorTimeout: number;
     testSpeed: number;
     executeSelectorFn: ExecuteSelectorFn<HTMLElement>;
-    dispatchProxylessEventFn: Function;
+    dispatchProxylessEventFn: DispatchEventFn;
     leftTopPoint: AxisValues<number>;
 }
 

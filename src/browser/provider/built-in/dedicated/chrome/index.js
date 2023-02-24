@@ -13,6 +13,8 @@ import { BrowserClient } from './cdp-client';
 import { dispatchEvent as dispatchProxylessEvent, navigateTo } from '../../../../../proxyless/utils/cdp';
 import Proxyless from '../../../../../proxyless';
 import { chromeBrowserProviderLogger } from '../../../../../utils/debug-loggers';
+import { EventType } from '../../../../../proxyless/types';
+import delay from '../../../../../utils/delay';
 
 const MIN_AVAILABLE_DIMENSION = 50;
 
@@ -21,6 +23,13 @@ export default {
 
     getConfig (name) {
         return getConfig(name);
+    },
+
+    async _getActiveCDPClient (browserId) {
+        const { browserClient } = this.openedBrowsers[browserId];
+        const cdpClient         = await browserClient.getActiveClient();
+
+        return cdpClient;
     },
 
     _getBrowserProtocolClient (runtimeInfo) {
@@ -176,16 +185,25 @@ export default {
     },
 
     async openFileProtocol (browserId, url) {
-        const { browserClient } = this.openedBrowsers[browserId];
-        const cdpClient         = await browserClient.getActiveClient();
+        const cdpClient = await this._getActiveCDPClient(browserId);
 
         await navigateTo(cdpClient, url);
     },
 
     async dispatchProxylessEvent (browserId, type, options) {
-        const { browserClient } = this.openedBrowsers[browserId];
-        const cdpClient         = await browserClient.getActiveClient();
+        const cdpClient = await this._getActiveCDPClient(browserId);
 
         await dispatchProxylessEvent(cdpClient, type, options);
+    },
+
+    async dispatchProxylessEventSequence (browserId, eventSequence) {
+        const cdpClient = await this._getActiveCDPClient(browserId);
+
+        for (const event of eventSequence) {
+            if (event.type === EventType.Delay)
+                await delay(event.options.delay);
+            else
+                await dispatchProxylessEvent(cdpClient, event.type, event.options);
+        }
     },
 };

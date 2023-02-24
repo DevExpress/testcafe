@@ -8,6 +8,7 @@ import { createMouseClickStrategy, MouseClickStrategy } from './browser-click-st
 import ProxylessInput from '../../../../proxyless/client/input';
 import AxisValues from '../../../core/utils/values/axis-values';
 import { setCaretPosition } from '../../utils/utils';
+import { DispatchEventFn } from '../../../../proxyless/client/types';
 
 export interface MouseClickEventState {
     mousedownPrevented: boolean;
@@ -22,7 +23,7 @@ export default class ClickAutomation extends VisibleElementAutomation {
     private modifiers: Modifiers;
     public strategy: MouseClickStrategy;
 
-    protected constructor (element: HTMLElement, clickOptions: ClickOptions, win: Window, cursor: Cursor, dispatchProxylessEventFn?: Function, leftTopPoint?: AxisValues<number>) {
+    protected constructor (element: HTMLElement, clickOptions: ClickOptions, win: Window, cursor: Cursor, dispatchProxylessEventFn?: DispatchEventFn, leftTopPoint?: AxisValues<number>) {
         super(element, clickOptions, win, cursor, dispatchProxylessEventFn, leftTopPoint);
 
         this.modifiers = clickOptions.modifiers;
