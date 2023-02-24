@@ -34,7 +34,7 @@ const createPackageFilesForTests    = require('./gulp/helpers/create-package-fil
 const {
     TESTS_GLOB,
     LEGACY_TESTS_GLOB,
-    MULTIPLE_WINDOWS_TASK_TESTS_SOURCE,
+    MULTIPLE_WINDOWS_TESTS_GLOB,
     DEBUG_GLOB_1,
     DEBUG_GLOB_2,
     PROXYLESS_TESTS_GLOB,
@@ -423,7 +423,7 @@ gulp.step('test-functional-local-legacy-run', () => {
 gulp.task('test-functional-local-legacy', gulp.series('prepare-tests', 'test-functional-local-legacy-run'));
 
 gulp.step('test-functional-local-multiple-windows-run', () => {
-    return testFunctional(MULTIPLE_WINDOWS_TASK_TESTS_SOURCE, functionalTestConfig.testingEnvironmentNames.localBrowsersChromeFirefox);
+    return testFunctional(MULTIPLE_WINDOWS_TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localBrowsersChromeFirefox);
 });
 
 gulp.task('test-functional-local-multiple-windows', gulp.series('prepare-tests', 'test-functional-local-multiple-windows-run'));
