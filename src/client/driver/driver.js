@@ -534,8 +534,8 @@ export default class Driver extends serviceUtils.EventEmitter {
             const driverId = `${this.testRunId}-${generateId()}`;
 
             childIframeDriverLink = new ChildIframeDriverLink(driverWindow, driverId, {
-                dispatchProxylessEventUrl:         this.communicationUrls.dispatchProxylessEvent,
-                dispatchProxylessEventSequenceUrl: this.communicationUrls.dispatchProxylessEventSequence,
+                single:   this.communicationUrls.dispatchProxylessEvent,
+                sequence: this.communicationUrls.dispatchProxylessEventSequence,
             });
 
             this.childIframeDriverLinks.push(childIframeDriverLink);
