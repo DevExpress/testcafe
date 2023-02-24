@@ -18,7 +18,7 @@ if (config.useLocalBrowsers && !config.hasBrowser('ie')) {
             state:     {},
             idNameMap: {},
 
-            openBrowser (browserId, pageUrl, browserConfig) {
+            openBrowser (browserId, pageUrl, browserConfig, additionalOptions) {
                 const self       = this;
                 const providerId = typeof browserConfig ===
                                    'string' ? browserConfig : browserConfig.userArgs.replace(/\W*/, '');
@@ -37,7 +37,7 @@ if (config.useLocalBrowsers && !config.hasBrowser('ie')) {
                     userArgs: `--no-sandbox ${browserConfig.userArgs}`,
                     headless: true,
                 },
-                { disableMultipleWindows: false });
+                { ...additionalOptions, disableMultipleWindows: false });
             },
 
             closeBrowser (browserId) {
