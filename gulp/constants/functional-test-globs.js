@@ -1,5 +1,4 @@
 const MULTIPLE_WINDOWS_TESTS_GLOB      = 'test/functional/fixtures/multiple-windows/test.js';
-// TODO: Find out how to run these tests in headed browser in both, proxy and proxyless modes
 const HEADED_CHROME_FIREFOX_TESTS_GLOB = ['test/functional/fixtures/live/test.js', 'test/functional/fixtures/ui/test.js'];
 const COMPILER_SERVICE_TESTS_GLOB      = 'test/functional/fixtures/compiler-service/test.js';
 const LEGACY_TESTS_GLOB                = 'test/functional/legacy-fixtures/**/test.js';

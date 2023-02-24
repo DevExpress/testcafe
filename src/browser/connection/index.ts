@@ -158,7 +158,7 @@ export default class BrowserConnection extends EventEmitter {
         if (messageBus) {
             this.messageBus = messageBus;
 
-            this.initMessageBusEvents();
+            this.initMessageBus();
         }
 
         this.browserInfo                           = browserInfo;
@@ -210,17 +210,21 @@ export default class BrowserConnection extends EventEmitter {
         this.openFileProtocolUrl = proxy.resolveRelativeServiceUrl(this.openFileProtocolRelativeUrl);
     }
 
-    public initMessageBusEvents (): void {
+    public initMessageBus (): void {
         this.warningLog.callback = WarningLog.createAddWarningCallback(this._messageBus);
 
-        if (this._messageBus) {
-            this._messageBus.on('test-run-start', testRun => {
-                if (testRun.browserConnection.id === this.id)
-                    this._currentTestRun = testRun;
-            });
-        }
-
+        this.assignTestRunStartEventListener();
         this.emit('message-bus-initialized', this._messageBus);
+    }
+
+    public assignTestRunStartEventListener (): void {
+        if (!this._messageBus)
+            return;
+
+        this._messageBus.on('test-run-start', testRun => {
+            if (testRun.browserConnection.id === this.id)
+                this._currentTestRun = testRun;
+        });
     }
 
     public set messageBus (messageBus: MessageBus | undefined) {

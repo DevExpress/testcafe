@@ -44,7 +44,7 @@ class LiveModeRunner extends Runner {
             })
             .then(() => {
                 this._resetBeforeRun();
-                this.bootstrapper.restoreTestRunEvents();
+                this.bootstrapper.restoreMessageBusListeners();
                 this.runnerTaskPromise = this._prepareAndRunTask(this.opts);
 
                 return this.runnerTaskPromise;

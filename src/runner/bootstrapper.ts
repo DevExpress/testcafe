@@ -178,7 +178,7 @@ export default class Bootstrapper {
         remotes.forEach(remoteConnection => {
             remoteConnection.messageBus = this.messageBus;
 
-            remoteConnection.initMessageBusEvents();
+            remoteConnection.initMessageBus();
         });
 
         browserConnections = browserConnections.concat(chunk(remotes, this.concurrency));
@@ -395,11 +395,11 @@ export default class Bootstrapper {
         return { ...await this._bootstrapSequence(this.browsers, id), commonClientScripts, id };
     }
 
-    public restoreTestRunEvents (): void {
+    public restoreMessageBusListeners (): void {
         const connections = this.browserConnectionGateway.getConnections();
 
         Object.values(connections).forEach(connection => {
-            connection.initMessageBusEvents();
+            connection.assignTestRunStartEventListener();
         });
     }
 }
