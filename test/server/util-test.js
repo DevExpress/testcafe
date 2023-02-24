@@ -665,16 +665,10 @@ describe('Utils', () => {
     describe('checkIsVM', () => {
         const vendors = ['virtual', 'vmware', 'hyperv', 'wsl', 'hyper-v', 'microsoft', 'parallels', 'qemu'];
 
-        const checkVMVendors = async (platform, stdout = '', error = '', code = 0) => {
+        const checkVMVendors = async (platform, stdout = '') => {
             const { checkIsVM } = proxyquire('../../lib/utils/check-is-vm', {
-                'child_process': {
-                    exec: (command, callback) => {
-                        callback(error, stdout, '');
-
-                        return {
-                            on: (event, cb) => cb(code),
-                        };
-                    },
+                '../../lib/utils/promisified-functions': {
+                    exec: () => Promise.resolve({ stdout }),
                 },
                 'os': {
                     platform: () => platform,

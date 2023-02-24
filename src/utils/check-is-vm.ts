@@ -1,36 +1,46 @@
-import { exec } from 'child_process';
 import os from 'os';
+import { exec } from './promisified-functions';
 
-const WIN_PLATFORM   = 'win32';
-const LINUX_PLATFORM = 'linux';
-const MAC_PLATFORM   = 'darwin';
+const PLATFORM = {
+    WIN:   'win32',
+    LINUX: 'linux',
+    MAC:   'darwin',
+};
+
 const VM_REGEX = /virtual|vmware|hyperv|wsl|hyper-v|microsoft|parallels|qemu/gi;
 
-function getCommandOutput (command: string): Promise<string> {
-    return new Promise(resolve => {
-        exec(command, (error, stdout) => resolve(stdout));
-    });
+const MAC_COMMAND = 'ioreg -l | grep -e Manufacturer -e \'Vendor Name\'';
+
+const LINUX_COMMAND         = 'systemd-detect-virt';
+const NOT_FOUND_REGEX_LINUX = /systemd-detect-virt: not found/ig;
+
+const VM_BIOS              = '0';
+const BIOS_NUMBER_COMMAND  = 'WMIC BIOS GET SERIALNUMBER';
+const MODEL_COMMAND        = 'WMIC COMPUTERSYSTEM GET MODEL';
+const MANUFACTURER_COMMAND = 'WMIC COMPUTERSYSTEM GET MANUFACTURER';
+
+async function getCommandOutput (command: string): Promise<string> {
+    const { stdout } = await exec(command);
+
+    return stdout;
 }
 
-function isLinuxVM (): Promise<boolean> {
-    const LINUX_COMMAND   = 'systemd-detect-virt';
-    const NOT_FOUND_REGEX = /systemd-detect-virt: not found/ig;
+async function isLinuxVM (): Promise<boolean> {
+    let isVM = false;
 
-    return new Promise(resolve => {
-        let error = '';
+    try {
+        await exec(LINUX_COMMAND);
 
-        exec(LINUX_COMMAND, (err, stdout, stderr) => {
-            error = stderr;
-        }).on('exit', code => resolve(!NOT_FOUND_REGEX.test(error) || code === 0));
-    });
+        isVM = true;
+    }
+    catch (error: any) {
+        isVM = NOT_FOUND_REGEX_LINUX.test(error.stderr);
+    }
+
+    return isVM;
 }
 
 async function isWinVM (): Promise<boolean> {
-    const VM_BIOS              = '0';
-    const BIOS_NUMBER_COMMAND  = 'WMIC BIOS GET SERIALNUMBER';
-    const MODEL_COMMAND        = 'WMIC COMPUTERSYSTEM GET MODEL';
-    const MANUFACTURER_COMMAND = 'WMIC COMPUTERSYSTEM GET MANUFACTURER';
-
     const biosNumberOutput   = await getCommandOutput(BIOS_NUMBER_COMMAND);
     const modelOutput        = await getCommandOutput(MODEL_COMMAND);
     const manufacturerOutput = await getCommandOutput(MANUFACTURER_COMMAND);
@@ -39,16 +49,14 @@ async function isWinVM (): Promise<boolean> {
 }
 
 async function isMacVM (): Promise<boolean> {
-    const MAC_COMMAND = 'ioreg -l | grep -e Manufacturer -e \'Vendor Name\'';
-
     return VM_REGEX.test(await getCommandOutput(MAC_COMMAND));
 }
 
 export async function checkIsVM (): Promise<boolean> {
     switch (os.platform()) {
-        case LINUX_PLATFORM: return await isLinuxVM();
-        case WIN_PLATFORM: return await isWinVM();
-        case MAC_PLATFORM: return await isMacVM();
+        case PLATFORM.LINUX: return await isLinuxVM();
+        case PLATFORM.WIN: return await isWinVM();
+        case PLATFORM.MAC: return await isMacVM();
         default:
             return false;
     }
