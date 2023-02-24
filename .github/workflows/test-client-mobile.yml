@@ -4,18 +4,18 @@ on:
   workflow_dispatch:
     inputs:
       sha:
-        desciption: 'The test commit SHA or ref'
+        description: 'The test commit SHA or ref'
         required: true
         default: 'master'
       merged_sha:
-        description: 'The merge commit SHA' 
+        description: 'The merge commit SHA'
       deploy_run_id:
         description: 'The ID of a deployment workspace run with artifacts'
-jobs:  
+jobs:
   test:
     runs-on: ubuntu-latest
     environment: test-client
-    env: 
+    env:
       SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
       SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
     steps:
@@ -33,7 +33,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           ref: ${{github.event.inputs.merged_sha || github.event.inputs.sha}}
-          
+
       - uses: actions/setup-node@v2
         with:
           node-version: 16
@@ -42,9 +42,9 @@ jobs:
         with:
           script: |
             const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
-            
+
             let artifacts = {};
-            
+
             for(let i = 0;i<36&&!artifacts.total_count;i++,await delay(5000)) {
               try {
                 ({ data: artifacts } = await github.actions.listWorkflowRunArtifacts({
@@ -57,14 +57,14 @@ jobs:
                 console.log(e);
               }
             }
-            
+
             const { data: artifact } = await github.request(artifacts.artifacts.find(artifact=> artifact.name === 'npm').archive_download_url);
             require('fs').writeFileSync(require('path').join(process.env.GITHUB_WORKSPACE, 'package.zip'), Buffer.from(artifact))
-        
+
       - run: |
           unzip package.zip
           tar --strip-components=1 -xzf testcafe-*.tgz
-          
+
       - name: Get npm cache directory
         id: npm-cache-dir
         run: |

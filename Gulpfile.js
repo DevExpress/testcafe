@@ -38,6 +38,7 @@ const {
     DEBUG_GLOB_1,
     DEBUG_GLOB_2,
     PROXYLESS_TESTS_GLOB,
+    HEADED_CHROME_FIREFOX_TESTS_GLOB,
 } = require('./gulp/constants/functional-test-globs');
 
 const {
@@ -426,6 +427,12 @@ gulp.step('test-functional-local-multiple-windows-run', () => {
 });
 
 gulp.task('test-functional-local-multiple-windows', gulp.series('prepare-tests', 'test-functional-local-multiple-windows-run'));
+
+gulp.step('test-functional-local-chrome-firefox-headed-run', () => {
+    return testFunctional(HEADED_CHROME_FIREFOX_TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localBrowsersChromeFirefox);
+});
+
+gulp.task('test-functional-local-chrome-firefox-headed', gulp.series('prepare-tests', 'test-functional-local-chrome-firefox-headed-run'));
 
 gulp.step('test-functional-local-debug-run-1', () => {
     return testFunctional(DEBUG_GLOB_1, functionalTestConfig.testingEnvironmentNames.localHeadlessChrome, { experimentalDebug: true });
