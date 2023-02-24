@@ -8,7 +8,7 @@ const VM_REGEX = /virtual|vmware|hyperv|wsl|hyper-v|microsoft|parallels|qemu/gi;
 
 function getCommandOutput (command: string): Promise<string> {
     return new Promise(resolve => {
-        exec(command, (error, stdout, stderr) => resolve(stdout));
+        exec(command, (error, stdout) => resolve(stdout));
     });
 }
 
@@ -25,7 +25,7 @@ function isLinuxVM (): Promise<boolean> {
     });
 }
 
-async function isWinVM () {
+async function isWinVM (): Promise<boolean> {
     const VM_BIOS              = '0';
     const BIOS_NUMBER_COMMAND  = 'WMIC BIOS GET SERIALNUMBER';
     const MODEL_COMMAND        = 'WMIC COMPUTERSYSTEM GET MODEL';
@@ -38,7 +38,7 @@ async function isWinVM () {
     return biosNumberOutput === VM_BIOS || VM_REGEX.test(modelOutput) || VM_REGEX.test(manufacturerOutput);
 }
 
-async function isMacVM () {
+async function isMacVM (): Promise<boolean> {
     const MAC_COMMAND = 'ioreg -l | grep -e Manufacturer -e \'Vendor Name\'';
 
     return VM_REGEX.test(await getCommandOutput(MAC_COMMAND));

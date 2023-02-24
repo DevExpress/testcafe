@@ -670,15 +670,15 @@ describe('Utils', () => {
                 'child_process': {
                     exec: (command, callback) => {
                         callback(error, stdout, '');
-            
+
                         return {
-                            on: (event, cb) => cb(code)
-                        }
-                    }
+                            on: (event, cb) => cb(code),
+                        };
+                    },
                 },
                 'os': {
-                    platform: () => platform
-                }
+                    platform: () => platform,
+                },
             });
 
             return await checkIsVM();
@@ -693,9 +693,9 @@ describe('Utils', () => {
         it('should detect windows machine', async () => {
             await Promise.all(vendors.map(async vendor => {
                 const vm = await checkVMVendors('win32', vendor);
-                
+
                 expect(vm).true;
-            }));          
+            }));
         });
 
         it('should detect linux machine', async () => {
@@ -707,9 +707,9 @@ describe('Utils', () => {
         it('should detect macos machine', async () => {
             await Promise.all(vendors.map(async vendor => {
                 const vm = await checkVMVendors('darwin', vendor);
-                
+
                 expect(vm).true;
-            }));    
+            }));
         });
     });
 });
