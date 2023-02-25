@@ -137,8 +137,8 @@ export default class Bootstrapper {
     }
 
     private static _splitBrowserInfo (browserInfo: BrowserInfoSource[]): SeparatedBrowserInfo {
-        const remotes: BrowserConnection[]  = [];
-        const automated: BrowserInfo[]      = [];
+        const remotes: BrowserConnection[] = [];
+        const automated: BrowserInfo[]     = [];
 
         browserInfo.forEach(browser => {
             if (browser instanceof BrowserConnection)
@@ -177,6 +177,8 @@ export default class Bootstrapper {
 
         remotes.forEach(remoteConnection => {
             remoteConnection.messageBus = this.messageBus;
+
+            remoteConnection.initMessageBus();
         });
 
         browserConnections = browserConnections.concat(chunk(remotes, this.concurrency));
@@ -314,9 +316,9 @@ export default class Bootstrapper {
     }
 
     private async _bootstrapSequence (browserInfo: BrowserInfoSource[], id: string): Promise<BasicRuntimeResources> {
-        const tests       = await this._getTests(id);
-        const testedApp   = await this._startTestedApp();
-        const browserSet  = await this._getBrowserConnections(browserInfo);
+        const tests      = await this._getTests(id);
+        const testedApp  = await this._startTestedApp();
+        const browserSet = await this._getBrowserConnections(browserInfo);
 
         return { tests, testedApp, browserSet };
     }
@@ -391,5 +393,13 @@ export default class Bootstrapper {
             return { ...await this._bootstrapParallel(this.browsers, id), commonClientScripts, id };
 
         return { ...await this._bootstrapSequence(this.browsers, id), commonClientScripts, id };
+    }
+
+    public restoreMessageBusListeners (): void {
+        const connections = this.browserConnectionGateway.getConnections();
+
+        Object.values(connections).forEach(connection => {
+            connection.assignTestRunStartEventListener();
+        });
     }
 }

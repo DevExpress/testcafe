@@ -1,9 +1,8 @@
-const MULTIPLE_WINDOWS_TESTS_GLOB = 'test/functional/fixtures/multiple-windows/test.js';
-// NOTE: This source is specified temporary. I will change it to live mode test suit in the next PR.
-const HEADED_CHROME_FIREFOX_TESTS_GLOB = ['test/functional/fixtures/multiple-windows/test.js'];
-const COMPILER_SERVICE_TESTS_GLOB = 'test/functional/fixtures/compiler-service/test.js';
-const LEGACY_TESTS_GLOB           = 'test/functional/legacy-fixtures/**/test.js';
-const BASIC_TESTS_GLOB            = 'test/functional/fixtures/**/test.js';
+const MULTIPLE_WINDOWS_TESTS_GLOB      = 'test/functional/fixtures/multiple-windows/test.js';
+const HEADED_CHROME_FIREFOX_TESTS_GLOB = ['test/functional/fixtures/live/test.js', 'test/functional/fixtures/ui/test.js'];
+const COMPILER_SERVICE_TESTS_GLOB      = 'test/functional/fixtures/compiler-service/test.js';
+const LEGACY_TESTS_GLOB                = 'test/functional/legacy-fixtures/**/test.js';
+const BASIC_TESTS_GLOB                 = 'test/functional/fixtures/**/test.js';
 
 const SCREENSHOT_TESTS_GLOB = [
     'test/functional/fixtures/api/es-next/take-screenshot/test.js',
@@ -31,11 +30,8 @@ const DEBUG_GLOB_2 = [
 
 const PROXYLESS_TESTS_GLOB = [
     ...TESTS_GLOB,
-    '!test/functional/fixtures/ui/test.js',
-    '!test/functional/fixtures/driver/script-execution-barrier/test.js',
     '!test/functional/fixtures/run-options/request-timeout/test.js',
     '!test/functional/fixtures/run-options/disable-page-caching/test.js',
-    '!test/functional/fixtures/live/test.js',
     '!test/functional/fixtures/regression/gh-1311/test.js',
     '!test/functional/fixtures/hammerhead/gh-2622/test.js',
     '!test/functional/fixtures/regression/gh-2861/test.js',

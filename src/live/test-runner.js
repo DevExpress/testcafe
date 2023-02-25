@@ -43,6 +43,8 @@ class LiveModeRunner extends Runner {
                 this.testRunController.setExpectedTestCount(expectedTestCount);
             })
             .then(() => {
+                this._resetBeforeRun();
+                this.bootstrapper.restoreMessageBusListeners();
                 this.runnerTaskPromise = this._prepareAndRunTask(this.opts);
 
                 return this.runnerTaskPromise;
@@ -86,8 +88,6 @@ class LiveModeRunner extends Runner {
     }
 
     run (options) {
-        this._resetBeforeRun();
-
         this.configurationCache = null;
 
         if (this._running)

@@ -27,11 +27,11 @@ export default class BrowserConnectionGateway {
     public readonly proxy: Proxy;
 
     public constructor (proxy: Proxy, options: { retryTestPages: boolean; proxyless: boolean }) {
-        this._remotesQueue   = new RemotesQueue();
-        this.connectUrl      = proxy.resolveRelativeServiceUrl(SERVICE_ROUTES.connect);
-        this.retryTestPages  = options.retryTestPages;
-        this.proxyless       = options.proxyless;
-        this.proxy           = proxy;
+        this._remotesQueue  = new RemotesQueue();
+        this.connectUrl     = proxy.resolveRelativeServiceUrl(SERVICE_ROUTES.connect);
+        this.retryTestPages = options.retryTestPages;
+        this.proxyless      = options.proxyless;
+        this.proxy          = proxy;
 
         this._registerRoutes(proxy);
     }
@@ -74,8 +74,8 @@ export default class BrowserConnectionGateway {
         this._dispatch(`${SERVICE_ROUTES.closeWindow}/{id}`, proxy, BrowserConnectionGateway._onCloseWindowRequest, 'POST');
         this._dispatch(`${SERVICE_ROUTES.openFileProtocol}/{id}`, proxy, BrowserConnectionGateway._onOpenFileProtocolRequest, 'POST');
         this._dispatch(`${SERVICE_ROUTES.dispatchProxylessEvent}/{id}`, proxy, BrowserConnectionGateway._onDispatchProxylessEvent, 'POST', this.proxyless);
+        this._dispatch(`${SERVICE_ROUTES.parseSelector}/{id}`, proxy, BrowserConnectionGateway._parseSelector, 'POST', this.proxyless);
         this._dispatch(`${SERVICE_ROUTES.dispatchProxylessEventSequence}/{id}`, proxy, BrowserConnectionGateway._onDispatchProxylessEventSequence, 'POST', this.proxyless);
-        this._dispatch(`${SERVICE_ROUTES.parseSelector}/{id}`, proxy, BrowserConnectionGateway._parseSelector, 'POST');
 
         proxy.GET(SERVICE_ROUTES.connect, (req: IncomingMessage, res: ServerResponse) => this._connectNextRemoteBrowser(req, res));
         proxy.GET(SERVICE_ROUTES.connectWithTrailingSlash, (req: IncomingMessage, res: ServerResponse) => this._connectNextRemoteBrowser(req, res));
@@ -270,8 +270,8 @@ export default class BrowserConnectionGateway {
             collectionMode:      true,
         };
 
-        const value          = rawSelector.trim().startsWith('Selector(') ? rawSelector : `'${rawSelector}'`;
-        const selector       = { type: 'js-expr', value };
+        const value    = rawSelector.trim().startsWith('Selector(') ? rawSelector : `'${rawSelector}'`;
+        const selector = { type: 'js-expr', value };
 
         return initSelector('selector', selector, options);
     }
@@ -311,6 +311,10 @@ export default class BrowserConnectionGateway {
     public async close (): Promise<void> {
         for (const id in this._connections)
             await this._connections[id].close();
+    }
+
+    public getConnections (): Dictionary<BrowserConnection> {
+        return this._connections;
     }
 }
 

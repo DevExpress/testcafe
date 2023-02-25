@@ -155,8 +155,11 @@ export default class BrowserConnection extends EventEmitter {
         this.warningLog               = new WarningLog(null, WarningLog.createAddWarningCallback(messageBus));
         this.debugLogger              = debug(getBrowserConnectionDebugScope(this.id));
 
-        if (messageBus)
+        if (messageBus) {
             this.messageBus = messageBus;
+
+            this.initMessageBus();
+        }
 
         this.browserInfo                           = browserInfo;
         this.browserInfo.userAgentProviderMetaInfo = '';
@@ -185,9 +188,9 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     private _buildCommunicationUrls (proxy: Proxy): void {
-        this.url               = proxy.resolveRelativeServiceUrl(`${SERVICE_ROUTES.connect}/${this.id}`);
-        this.forcedIdleUrl     = proxy.resolveRelativeServiceUrl(`${SERVICE_ROUTES.idleForced}/${this.id}`);
-        this.initScriptUrl     = proxy.resolveRelativeServiceUrl(`${SERVICE_ROUTES.initScript}/${this.id}`);
+        this.url           = proxy.resolveRelativeServiceUrl(`${SERVICE_ROUTES.connect}/${this.id}`);
+        this.forcedIdleUrl = proxy.resolveRelativeServiceUrl(`${SERVICE_ROUTES.idleForced}/${this.id}`);
+        this.initScriptUrl = proxy.resolveRelativeServiceUrl(`${SERVICE_ROUTES.initScript}/${this.id}`);
 
         this.heartbeatRelativeUrl                      = `${SERVICE_ROUTES.heartbeat}/${this.id}`;
         this.statusRelativeUrl                         = `${SERVICE_ROUTES.status}/${this.id}`;
@@ -207,18 +210,25 @@ export default class BrowserConnection extends EventEmitter {
         this.openFileProtocolUrl = proxy.resolveRelativeServiceUrl(this.openFileProtocolRelativeUrl);
     }
 
-    public set messageBus (messageBus: MessageBus | undefined) {
-        this._messageBus         = messageBus;
+    public initMessageBus (): void {
         this.warningLog.callback = WarningLog.createAddWarningCallback(this._messageBus);
 
-        if (messageBus) {
-            messageBus.on('test-run-start', testRun => {
-                if (testRun.browserConnection.id === this.id)
-                    this._currentTestRun = testRun;
-            });
-        }
+        this.assignTestRunStartEventListener();
+        this.emit('message-bus-initialized', this._messageBus);
+    }
 
-        this.emit('message-bus-initialized', messageBus);
+    public assignTestRunStartEventListener (): void {
+        if (!this._messageBus)
+            return;
+
+        this._messageBus.on('test-run-start', testRun => {
+            if (testRun.browserConnection.id === this.id)
+                this._currentTestRun = testRun;
+        });
+    }
+
+    public set messageBus (messageBus: MessageBus | undefined) {
+        this._messageBus = messageBus;
     }
 
     public get messageBus (): MessageBus | undefined {

@@ -1127,7 +1127,7 @@ describe('Runner', () => {
                     '../browser/connection': BrowserConnectionMock,
                 });
 
-                return new BootstrapperMock({ browserConnectionGatewayMock, compilerService });
+                return new BootstrapperMock({ browserConnectionGateway: browserConnectionGatewayMock, compilerService });
             }
 
             function createMockRunner () {
