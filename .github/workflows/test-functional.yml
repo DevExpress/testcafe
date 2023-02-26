@@ -14,6 +14,9 @@ on:
         required: false
         type: string
         default: ''
+env:
+  NO_CACHE: ${{ secrets.NO_CACHE }}
+
 jobs:
   test:
     runs-on: inputs.os
@@ -87,6 +90,7 @@ jobs:
         run: |
           echo "::set-output name=dir::$(npm config get cache)"
       - uses: actions/cache@v2
+        if: ${{ !env.NO_CACHE }}
         with:
           path: ${{ steps.npm-cache-dir.outputs.dir }}
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
