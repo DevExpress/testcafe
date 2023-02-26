@@ -7,9 +7,13 @@ on:
         required: true
         type: string
       os:
-        required: true
+        required: false
         type: string
         default: ubuntu-latest
+      display:
+        required: false
+        type: string
+        default: ''
 jobs:
   test:
     runs-on: inputs.os
@@ -22,6 +26,7 @@ jobs:
       RETRY_FAILED_TESTS: true
       TEST_GROUPS_COUNT: 3
       TEST_GROUP_NUMBER: ${{ matrix.test-group }}
+      DISPLAY: ${{ inputs.display }}
     steps:
       - run: sudo safaridriver --enable
         if: ${{ contains(inputs.os, macos) }}
@@ -36,6 +41,12 @@ jobs:
               state: 'pending',
               target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
             });
+      - run: |
+          sudo apt install fluxbox
+          Xvfb ${{ inputs.display }} -screen 0 1920x1080x24 &
+          sleep 3
+          fluxbox >/dev/null 2>&1 &
+        if: ${{ inputs.display }}
       - uses: actions/checkout@v2
         with:
           ref: ${{github.event.inputs.merged_sha || github.event.inputs.sha}}
