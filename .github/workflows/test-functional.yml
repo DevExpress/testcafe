@@ -19,7 +19,7 @@ env:
 
 jobs:
   test:
-    runs-on: inputs.os
+    runs-on: ${{ inputs.os }}
     continue-on-error: true
     strategy:
       matrix:
