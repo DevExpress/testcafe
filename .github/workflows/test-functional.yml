@@ -6,9 +6,13 @@ on:
       gulp-script:
         required: true
         type: string
+      os:
+        required: true
+        type: string
+        default: ubuntu-latest
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: inputs.os
     continue-on-error: true
     strategy:
       matrix:
@@ -19,6 +23,8 @@ jobs:
       TEST_GROUPS_COUNT: 3
       TEST_GROUP_NUMBER: ${{ matrix.test-group }}
     steps:
+      - run: sudo safaridriver --enable
+        if: ${{ contains(inputs.os, macos) }}
       - uses: actions/github-script@v3
         with:
           script: |
