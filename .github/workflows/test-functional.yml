@@ -33,7 +33,7 @@ jobs:
     steps:
       - run: echo "NO_CACHE is ${{ env.NO_CACHE }}"
       - run: sudo safaridriver --enable
-        if: ${{ contains(inputs.os, macos) }}
+        if: ${{ contains(inputs.os, 'macos') }}
       - uses: actions/github-script@v3
         with:
           script: |
