@@ -6,7 +6,6 @@ on:
       gulp-script:
         required: true
         type: string
-    secrets: inherit
 jobs:
   test:
     runs-on: ubuntu-latest
