@@ -14,9 +14,15 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    continue-on-error: true
+    strategy:
+      matrix:
+        test-group: [1, 2, 3]
     environment: test-functional
     env:
       RETRY_FAILED_TESTS: true
+      TEST_GROUPS_COUNT: 3
+      TEST_GROUP_NUMBER: ${{ matrix.test-group }}
     steps:
       - uses: actions/github-script@v3
         with:
