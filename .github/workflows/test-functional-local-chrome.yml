@@ -16,4 +16,3 @@ jobs:
     uses: ./.github/workflows/test-functional.yml
     with:
       gulp-script: 'test-functional-local-headless-chrome-run --steps-as-tasks'
-      os: 'ubuntu-latest'
