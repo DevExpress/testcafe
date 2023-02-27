@@ -10,6 +10,10 @@ on:
         required: false
         type: string
         default: ubuntu-latest
+      node-version:
+        required: false
+        type: number
+        default: 16
       max-parallel-jobs:
         required: false
         type: number
@@ -22,10 +26,18 @@ on:
         required: false
         type: boolean
         default: false
+      retry_failed_tests:
+        required: false
+        type: boolean
+        default: true
       timeout:
         required: false
         type: number
         default: 60
+      is-docker:
+        required: false
+        type: boolean
+        default: false
 env:
   NO_CACHE: ${{ secrets.NO_CACHE }}
 
@@ -42,7 +54,7 @@ jobs:
       BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
       BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
       USE_PUBLIC_HOSTNAME: ${{ inputs.use-public-hostname }}
-      RETRY_FAILED_TESTS: true
+      RETRY_FAILED_TESTS: ${{ inputs.retry_failed_tests }}
       TEST_GROUPS_COUNT: 3
       TEST_GROUP_NUMBER: ${{ matrix.test-group }}
       DISPLAY: ${{ inputs.display }}
@@ -73,7 +85,7 @@ jobs:
 
       - uses: actions/setup-node@v2
         with:
-          node-version: 16
+          node-version: ${{ inputs.node-version }}
 
       - uses: actions/github-script@v3
         with:
@@ -95,12 +107,21 @@ jobs:
               }
             }
 
-            const { data: artifact } = await github.request(artifacts.artifacts.find(artifact=> artifact.name === 'npm').archive_download_url);
-            require('fs').writeFileSync(require('path').join(process.env.GITHUB_WORKSPACE, 'package.zip'), Buffer.from(artifact))
+            const artifactName = inputs.is-docker ? 'docker' : 'npm';
+            const packageName = inputs.is-docker ? 'docker.zip' : 'package.zip';
+
+            const { data: artifact } = await github.request(artifacts.artifacts.find(artifact=> artifact.name === artifactName).archive_download_url);
+            require('fs').writeFileSync(require('path').join(process.env.GITHUB_WORKSPACE, packageName), Buffer.from(artifact))
 
       - run: |
           unzip package.zip
           tar --strip-components=1 -xzf testcafe-*.tgz
+        if: ${{ !requests.is-docker }}
+
+      - run: |
+          unzip docker.zip
+          docker load -i testcafe-*.tar
+        if: ${{ requests.is-docker }}
 
       - name: Get npm cache directory
         id: npm-cache-dir
