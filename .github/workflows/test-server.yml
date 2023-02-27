@@ -13,10 +13,10 @@ on:
       is-docker:
         required: false
         type: boolean
-        default: false
+        default: false    
 env:
   NO_CACHE: ${{ secrets.NO_CACHE }}
-
+  
 jobs:  
   test:
     runs-on: ubuntu-latest
@@ -61,8 +61,8 @@ jobs:
               }
             }
 
-            const artifactName = ${{ inputs.is-docker }} ? 'docker' : 'npm';
-            const packageName = ${{ inputs.is-docker }} ? 'docker.zip' : 'package.zip';
+            const artifactName = inputs.is-docker ? 'docker' : 'npm';
+            const packageName = inputs.is-docker ? 'docker.zip' : 'package.zip';
 
             const { data: artifact } = await github.request(artifacts.artifacts.find(artifact=> artifact.name === artifactName).archive_download_url);
             require('fs').writeFileSync(require('path').join(process.env.GITHUB_WORKSPACE, packageName), Buffer.from(artifact))

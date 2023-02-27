@@ -11,7 +11,6 @@ on:
         description: 'The merge commit SHA' 
       deploy_run_id:
         description: 'The ID of a deployment workspace run with artifacts'
-  
 jobs:
   test:
     uses: ./.github/workflows/test-server.yml
