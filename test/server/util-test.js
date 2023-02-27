@@ -7,7 +7,7 @@ const del                              = require('del');
 const OS                               = require('os-family');
 const { expect }                       = require('chai');
 const { noop }                         = require('lodash');
-const proxyquire                       = require('proxyquire');
+const proxyquire                       = require('proxyquire').noPreserveCache();
 const sinon                            = require('sinon');
 const correctFilePath                  = require('../../lib/utils/correct-file-path');
 const escapeUserAgent                  = require('../../lib/utils/escape-user-agent');
@@ -660,5 +660,50 @@ describe('Utils', () => {
         const nonTTYStreamMock = {};
 
         expect(getViewPortWidth(nonTTYStreamMock)).eql(Infinity);
+    });
+
+    describe('checkIsVM', () => {
+        const vendors = ['virtual', 'vmware', 'hyperv', 'wsl', 'hyper-v', 'microsoft', 'parallels', 'qemu'];
+
+        const checkVMVendors = async (platform, stdout = '') => {
+            const { checkIsVM } = proxyquire('../../lib/utils/check-is-vm', {
+                '../../lib/utils/promisified-functions': {
+                    exec: () => Promise.resolve({ stdout }),
+                },
+                'os': {
+                    platform: () => platform,
+                },
+            });
+
+            return await checkIsVM();
+        };
+
+        it('should return false on real machine', async () => {
+            const vm = await checkVMVendors('win32', '');
+
+            expect(vm).false;
+        });
+
+        it('should detect windows machine', async () => {
+            await Promise.all(vendors.map(async vendor => {
+                const vm = await checkVMVendors('win32', vendor);
+
+                expect(vm).true;
+            }));
+        });
+
+        it('should detect linux machine', async () => {
+            const vm = await checkVMVendors('linux');
+
+            expect(vm).true;
+        });
+
+        it('should detect macos machine', async () => {
+            await Promise.all(vendors.map(async vendor => {
+                const vm = await checkVMVendors('darwin', vendor);
+
+                expect(vm).true;
+            }));
+        });
     });
 });
