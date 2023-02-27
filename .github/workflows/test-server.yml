@@ -16,7 +16,7 @@ on:
         default: false
 env:
   NO_CACHE: ${{ secrets.NO_CACHE }}
-  
+
 jobs:  
   test:
     runs-on: ubuntu-latest
@@ -39,7 +39,7 @@ jobs:
           
       - uses: actions/setup-node@v2
         with:
-          node-version: ${{ inputs.node-version }}
+          node-version: ${{ context.payload.inputs.node-version }}
 
       - uses: actions/github-script@v3
         with:
@@ -61,8 +61,8 @@ jobs:
               }
             }
 
-            const artifactName = inputs.is-docker ? 'docker' : 'npm';
-            const packageName = inputs.is-docker ? 'docker.zip' : 'package.zip';
+            const artifactName = context.payload.inputs.is-docker ? 'docker' : 'npm';
+            const packageName = context.payload.inputs.is-docker ? 'docker.zip' : 'package.zip';
             
             const { data: artifact } = await github.request(artifacts.artifacts.find(artifact=> artifact.name === artifactName).archive_download_url);
             require('fs').writeFileSync(require('path').join(process.env.GITHUB_WORKSPACE, packageName), Buffer.from(artifact))
@@ -70,12 +70,12 @@ jobs:
       - run: |
           unzip package.zip
           tar --strip-components=1 -xzf testcafe-*.tgz
-        if: ${{ !inputs.is-docker }}
+        if: ${{ !context.payload.inputs.is-docker }}
 
       - run: |
           unzip docker.zip
           docker load -i testcafe-*.tar
-        if: ${{ inputs.is-docker }}
+        if: ${{ context.payload.inputs.is-docker }}
           
       - name: Get npm cache directory
         id: npm-cache-dir
@@ -90,7 +90,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - run: npm ci
-      - run: ${{ inputs.test-script }}
+      - run: ${{ context.payload.inputs.test-script }}
         timeout-minutes: 60
       - uses: actions/github-script@v3
         with:
