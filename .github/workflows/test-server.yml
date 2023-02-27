@@ -22,6 +22,9 @@ jobs:
     runs-on: ubuntu-latest
     environment: test-server
     steps:
+      - run: echo "inputs.is-docker is ${{ inputs.is-docker }}"
+      - run: echo "github.event.is-docker is ${{ github.event.inputs.is-docker }}"
+      - run: echo "context.payload.inputs.is-docker is ${{ context.payload.inputs.is-docker }}"
       - uses: actions/github-script@v3
         with:
           script: |
