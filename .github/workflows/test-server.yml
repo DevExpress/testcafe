@@ -10,6 +10,10 @@ on:
         required: false
         type: number
         default: 16
+      is-docker:
+        required: false
+        type: boolean
+        default: false
 env:
   NO_CACHE: ${{ secrets.NO_CACHE }}
   
@@ -56,13 +60,22 @@ jobs:
                 console.log(e);
               }
             }
+
+            const artifactName = inputs.is-docker ? 'docker' : 'npm';
+            const packageName = inputs.is-docker ? 'docker.zip' : 'package.zip';
             
-            const { data: artifact } = await github.request(artifacts.artifacts.find(artifact=> artifact.name === 'npm').archive_download_url);
-            require('fs').writeFileSync(require('path').join(process.env.GITHUB_WORKSPACE, 'package.zip'), Buffer.from(artifact))
+            const { data: artifact } = await github.request(artifacts.artifacts.find(artifact=> artifact.name === artifactName).archive_download_url);
+            require('fs').writeFileSync(require('path').join(process.env.GITHUB_WORKSPACE, packageName), Buffer.from(artifact))
         
       - run: |
           unzip package.zip
           tar --strip-components=1 -xzf testcafe-*.tgz
+        if: ${{ !inputs.is-docker }}
+
+      - run: |
+          unzip docker.zip
+          docker load -i testcafe-*.tar
+        if: ${{ inputs.is-docker }}
           
       - name: Get npm cache directory
         id: npm-cache-dir
