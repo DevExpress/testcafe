@@ -25,7 +25,7 @@ jobs:
       - run: echo "inputs.is-docker is ${{ inputs.is-docker }}"
       - run: echo "github.event.is-docker is ${{ github.event.inputs.is-docker }}"
       - run: echo "context.payload.inputs.is-docker is ${{ context.payload.inputs.is-docker }}"
-      - uses: actions/github-script@v3
+      - uses: actions/github-script@v6
         with:
           script: |
             await github.repos.createCommitStatus({
@@ -36,15 +36,15 @@ jobs:
               state: 'pending',
               target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
             });
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           ref: ${{github.event.inputs.merged_sha || github.event.inputs.sha}}
           
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: ${{ github.event.inputs.node-version }}
 
-      - uses: actions/github-script@v3
+      - uses: actions/github-script@v6
         with:
           script: |
             const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -87,7 +87,7 @@ jobs:
         id: npm-cache-dir
         run: |
           echo "::set-output name=dir::$(npm config get cache)"
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         if: ${{ !env.NO_CACHE }}
         id: npm-cache # use this to check for `cache-hit` ==> if: steps.npm-cache.outputs.cache-hit != 'true'
         with:
@@ -98,7 +98,7 @@ jobs:
       - run: npm ci
       - run: ${{ github.event.inputs.test-script }}
         timeout-minutes: 60
-      - uses: actions/github-script@v3
+      - uses: actions/github-script@v6
         with:
           script: |
             await github.repos.createCommitStatus({
@@ -109,7 +109,7 @@ jobs:
               state: 'success',
               target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
             });
-      - uses: actions/github-script@v3
+      - uses: actions/github-script@v6
         if: failure() || cancelled()
         with:
           script: |
