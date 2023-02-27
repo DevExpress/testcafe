@@ -113,9 +113,7 @@ npm install -g testcafe
 
 ### Creating the Test
 
-As an example, we are going to test the [https://devexpress.github.io/testcafe/example](https://devexpress.github.io/testcafe/example) page.
-
-For this simple example, we will test the following page: https://devexpress.github.io/testcafe/example 
+For this simple example, we will test the following page: [https://devexpress.github.io/testcafe/example](https://devexpress.github.io/testcafe/example)
 
 Create a .js or .ts file on your computer. Remember that a .js or .ts file must maintain a specific structure: tests must be organized into fixtures. You can paste the following code to see the test in action:
 
