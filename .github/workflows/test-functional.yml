@@ -106,8 +106,8 @@ jobs:
               }
             }
 
-            const artifactName = inputs.is-docker ? 'docker' : 'npm';
-            const packageName = inputs.is-docker ? 'docker.zip' : 'package.zip';
+            const artifactName = ${{ inputs.is-docker }} ? 'docker' : 'npm';
+            const packageName =  ${{ inputs.is-docker }} ? 'docker.zip' : 'package.zip';
 
             const { data: artifact } = await github.request(artifacts.artifacts.find(artifact=> artifact.name === artifactName).archive_download_url);
             require('fs').writeFileSync(require('path').join(process.env.GITHUB_WORKSPACE, packageName), Buffer.from(artifact))
@@ -136,6 +136,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - run: npm ci
+        if: ${{ !inputs.is-docker }}
+      - run: npm install
+        if: ${{ inputs.is-docker }}
       - run: ${{ inputs.test-script }}
         timeout-minutes: ${{ inputs.timeout }}
       - uses: actions/github-script@v3
