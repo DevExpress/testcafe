@@ -15,4 +15,4 @@ jobs:
   test:
     uses: ./.github/workflows/test-functional.yml
     with:
-      gulp-script: 'test-functional-local-legacy-run --steps-as-tasks'
+      test-script: 'npx gulp test-functional-local-legacy-run --steps-as-tasks'

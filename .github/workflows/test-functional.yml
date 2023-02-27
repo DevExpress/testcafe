@@ -3,7 +3,7 @@ name: Test Functional
 on:
   workflow_call:
     inputs:
-      gulp-script:
+      test-script:
         required: true
         type: string
       os:
@@ -98,7 +98,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - run: npm ci
-      - run: npx gulp ${{ inputs.gulp-script }}
+      - run: ${{ inputs.test-script }}
         timeout-minutes: 60
       - uses: actions/github-script@v3
         with:

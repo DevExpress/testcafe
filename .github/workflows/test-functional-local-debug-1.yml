@@ -15,6 +15,6 @@ jobs:
   test:
     uses: ./.github/workflows/test-functional.yml
     with:
-      gulp-script: 'test-functional-local-debug-run-1 --steps-as-tasks'
+      test-script: 'npx gulp test-functional-local-debug-run-1 --steps-as-tasks'
       display: ':99.0'
     secrets: inherit
