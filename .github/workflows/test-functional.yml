@@ -116,6 +116,7 @@ jobs:
       - run: |
           unzip package.zip
           tar --strip-components=1 -xzf testcafe-*.tgz
+        shell: bash # define shell in the case when os isn't ubuntu
         if: ${{ !inputs.is-docker }}
 
       - run: |
