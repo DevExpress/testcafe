@@ -10,10 +10,22 @@ on:
         required: false
         type: string
         default: ubuntu-latest
+      max-parallel-jobs:
+        required: false
+        type: number
+        default: 3
       display:
         required: false
         type: string
         default: ''
+      use-public-hostname:
+        required: false
+        type: boolean
+        default: false
+      timeout:
+        required: false
+        type: number
+        default: 60
 env:
   NO_CACHE: ${{ secrets.NO_CACHE }}
 
@@ -22,10 +34,14 @@ jobs:
     runs-on: ${{ inputs.os }}
     continue-on-error: true
     strategy:
+      max-parallel: ${{ inputs.max-parallel-jobs }}
       matrix:
         test-group: [1, 2, 3]
     environment: test-functional
     env:
+      BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
+      BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+      USE_PUBLIC_HOSTNAME: ${{ inputs.use-public-hostname }}
       RETRY_FAILED_TESTS: true
       TEST_GROUPS_COUNT: 3
       TEST_GROUP_NUMBER: ${{ matrix.test-group }}
@@ -91,6 +107,7 @@ jobs:
         run: |
           echo "::set-output name=dir::$(npm config get cache)"
       - uses: actions/cache@v2
+        id: npm-cache # use this to check for `cache-hit` ==> if: steps.npm-cache.outputs.cache-hit != 'true'
         if: ${{ !env.NO_CACHE }}
         with:
           path: ${{ steps.npm-cache-dir.outputs.dir }}
@@ -99,7 +116,7 @@ jobs:
             ${{ runner.os }}-node-
       - run: npm ci
       - run: ${{ inputs.test-script }}
-        timeout-minutes: 60
+        timeout-minutes: ${{ inputs.timeout }}
       - uses: actions/github-script@v3
         with:
           script: |
