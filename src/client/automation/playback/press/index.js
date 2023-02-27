@@ -15,7 +15,7 @@ import isIframeWindow from '../../../../utils/is-window-in-iframe';
 import ProxylessInput from '../../../../proxyless/client/input';
 import { changeLetterCaseIfNecessary, getSimulatedKeyInfo } from '../../../../proxyless/client/key-press/utils';
 import { getModifiersBit } from '../../../../proxyless/client/utils';
-import { EventType } from '../../../../proxyless/types';
+import CDPEventDescriptor from '../../../../proxyless/client/event-descriptor';
 
 const Promise        = hammerhead.Promise;
 const browserUtils   = hammerhead.utils.browser;
@@ -182,13 +182,10 @@ export default class PressAutomation {
 
                 changeLetterCaseIfNecessary(keyInfo);
 
-                eventSequence.push({
-                    type:    EventType.Keyboard,
-                    options: this.proxylessInput.createKeyDownOptions(keyInfo),
-                }, {
-                    type:    EventType.Delay,
-                    options: { delay: this.automationSettings.keyActionStepDelay },
-                });
+                eventSequence.push(
+                    CDPEventDescriptor.keyDown(keyInfo),
+                    CDPEventDescriptor.delay(this.automationSettings.keyActionStepDelay)
+                );
             }
 
             for (let i = simulatedKeyInfos.length - 1; i >= 0; i--) {
@@ -197,10 +194,7 @@ export default class PressAutomation {
                 modifiersBit     &= ~getModifiersBit(keyInfo.key);
                 keyInfo.modifiers = modifiersBit;
 
-                eventSequence.push({
-                    type:    EventType.Keyboard,
-                    options: this.proxylessInput.createKeyUpOptions(keyInfo),
-                });
+                eventSequence.push(CDPEventDescriptor.keyUp(keyInfo));
             }
         }
 
