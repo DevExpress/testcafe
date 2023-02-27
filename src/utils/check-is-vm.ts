@@ -7,18 +7,16 @@ const PLATFORM = {
     MAC:   'darwin',
 };
 
-const VM_REGEX = /virtual|vmware|hyperv|wsl|hyper-v|microsoft|parallels|qemu/gi;
-
-const MAC_COMMAND = 'ioreg -l | grep -e Manufacturer -e \'Vendor Name\'';
-
-const LINUX_COMMAND         = 'systemd-detect-virt';
+const VM_REGEX              = /virtual|vmware|hyperv|wsl|hyper-v|microsoft|parallels|qemu/gi;
 const NOT_FOUND_REGEX_LINUX = /systemd-detect-virt: not found/ig;
 
-const VM_BIOS          = '0';
-const WINDOWS_COMMANDS = {
-    BIOS_NUMBER_COMMAND:  'WMIC BIOS GET SERIALNUMBER',
-    MODEL_COMMAND:        'WMIC COMPUTERSYSTEM GET MODEL',
-    MANUFACTURER_COMMAND: 'WMIC COMPUTERSYSTEM GET MANUFACTURER',
+const VM_BIOS  = '0';
+const COMMANDS = {
+    WINDOWS_BIOS_NUMBER:  'WMIC BIOS GET SERIALNUMBER',
+    WINDOWS_MODEL:        'WMIC COMPUTERSYSTEM GET MODEL',
+    WINDOWS_MANUFACTURER: 'WMIC COMPUTERSYSTEM GET MANUFACTURER',
+    LINUX_DETECT_VM:      'systemd-detect-virt',
+    MAC_MANUFACTURER:     'ioreg -l | grep -e Manufacturer -e \'Vendor Name\'',
 };
 
 async function getCommandOutput (command: string): Promise<string> {
@@ -31,7 +29,7 @@ async function isLinuxVM (): Promise<boolean> {
     let isVM = false;
 
     try {
-        await exec(LINUX_COMMAND);
+        await exec(COMMANDS.LINUX_DETECT_VM);
 
         isVM = true;
     }
@@ -43,15 +41,15 @@ async function isLinuxVM (): Promise<boolean> {
 }
 
 async function isWinVM (): Promise<boolean> {
-    const biosNumberOutput   = await getCommandOutput(WINDOWS_COMMANDS.BIOS_NUMBER_COMMAND);
-    const modelOutput        = await getCommandOutput(WINDOWS_COMMANDS.MODEL_COMMAND);
-    const manufacturerOutput = await getCommandOutput(WINDOWS_COMMANDS.MANUFACTURER_COMMAND);
+    const biosNumberOutput   = await getCommandOutput(COMMANDS.WINDOWS_BIOS_NUMBER);
+    const modelOutput        = await getCommandOutput(COMMANDS.WINDOWS_MODEL);
+    const manufacturerOutput = await getCommandOutput(COMMANDS.WINDOWS_MANUFACTURER);
 
     return biosNumberOutput === VM_BIOS || VM_REGEX.test(modelOutput) || VM_REGEX.test(manufacturerOutput);
 }
 
 async function isMacVM (): Promise<boolean> {
-    return VM_REGEX.test(await getCommandOutput(MAC_COMMAND));
+    return VM_REGEX.test(await getCommandOutput(COMMANDS.MAC_MANUFACTURER));
 }
 
 export async function checkIsVM (): Promise<boolean> {
