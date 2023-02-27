@@ -59,7 +59,6 @@ jobs:
       TEST_GROUP_NUMBER: ${{ matrix.test-group }}
       DISPLAY: ${{ inputs.display }}
     steps:
-      - run: echo "NO_CACHE is ${{ env.NO_CACHE }}"
       - run: sudo safaridriver --enable
         if: ${{ contains(inputs.os, 'macos') }}
       - uses: actions/github-script@v3
