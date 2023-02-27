@@ -1,4 +1,4 @@
-name: Test Server (Stable)
+name: Test Server
 
 on:
   workflow_call:
