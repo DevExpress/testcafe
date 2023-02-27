@@ -91,7 +91,7 @@ You can run TestCafe from a console, and its reports can be viewed within CI sys
 
 ## TestCafe Studio: IDE for End-to-End Web Testing
 
-TestCafe is the prefect choice for JavaScript developers and experienced Q&A teams. If you’d like to delegate testing to QA engineers and are looking for a code-free way to record and maintain tests compatible with your existing infrastructure, check out [TestCafe Studio](https://www.devexpress.com/products/testcafestudio/?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-ide) - a testing IDE built atop the open-source version of TestCafe.      
+TestCafe is the perfect choice for JavaScript developers and experienced Q&A teams. If you’d like to delegate testing to QA engineers and are looking for a code-free way to record and maintain tests compatible with your existing infrastructure, check out [TestCafe Studio](https://www.devexpress.com/products/testcafestudio/?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-ide) - a testing IDE built atop the open-source version of TestCafe.
 
 Review the following article to learn how TestCafe Studio can fit into any workflow: [What's Better than TestCafe? TestCafe Studio](https://www.devexpress.com/products/testcafestudio/qa-end-to-end-web-testing.xml).
 
