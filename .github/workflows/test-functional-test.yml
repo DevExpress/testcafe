@@ -38,7 +38,7 @@ jobs:
         test-group: [1, 2, 3]
     environment: test-functional
     env:
-      USE_PUBLIC_HOSTNAME: ${{ inputs.use-public-hostname }}
+      USE_PUBLIC_HOSTNAME: ${{ !!inputs.use-public-hostname }}
       TEST_GROUPS_COUNT: 3
       TEST_GROUP_NUMBER: ${{ matrix.test-group }}
     steps:
