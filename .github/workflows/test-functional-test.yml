@@ -6,12 +6,24 @@ on:
       test-script:
         required: true
         type: string
+      max-parallel-jobs:
+        required: false
+        type: number
+        default: 3
+      timeout:
+        required: false
+        type: number
+        default: 60
 jobs:
   test:
-    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: ${{ inputs.max-parallel-jobs }}
+      matrix:
+        test-group: [1, 2, 3]
     environment: test-functional
     env:
-      RETRY_FAILED_TESTS: true
+      TEST_GROUPS_COUNT: 3
+      TEST_GROUP_NUMBER: ${{ matrix.test-group }}
     steps:
       - uses: actions/github-script@v3
         with:
@@ -70,8 +82,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - run: npm ci
-      - run: npx gulp test-functional-local-headless-chrome-run --steps-as-tasks
-        timeout-minutes: 60
+      - run: ${{ inputs.test-script }}
+        timeout-minutes: ${{ inputs.timeout }}
       - uses: actions/github-script@v3
         with:
           script: |
