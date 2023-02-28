@@ -32,7 +32,7 @@ jobs:
               state: 'pending',
               target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
             });
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           ref: ${{github.event.inputs.merged_sha || github.event.inputs.sha}}
           

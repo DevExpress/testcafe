@@ -41,7 +41,7 @@ jobs:
           github-token: ${{ secrets.ACTIVE_TOKEN }}
           script: |
             core.setOutput('sha', context.payload.inputs.merged_sha || context.payload.inputs.sha);
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           ref: ${{steps.prep.outputs.sha}}
       - run: |
@@ -99,7 +99,7 @@ jobs:
               state: 'pending',
               target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
             });
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           ref: ${{ github.event.inputs.sha }}
           fetch-depth: 0
