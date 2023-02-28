@@ -128,7 +128,7 @@ jobs:
     needs: [build, changes]
     environment: CI
     steps:
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: changes
       - uses: actions/github-script@v3
