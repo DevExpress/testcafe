@@ -13,6 +13,6 @@ on:
         description: 'The ID of a deployment workspace run with artifacts'
 jobs:
   test:
-    uses: ./.github/workflows/test-functional-test.yml
+    uses: ./.github/workflows/test-functional.yml
     with:
       test-script: 'npx gulp test-functional-local-headless-chrome-run --steps-as-tasks'
