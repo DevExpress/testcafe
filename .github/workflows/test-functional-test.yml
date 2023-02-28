@@ -18,10 +18,21 @@ on:
         required: false
         type: number
         default: 3
+      use-public-hostname:
+        required: false
+        type: boolean
+        default: false
+      retry_failed_tests:
+        required: false
+        type: boolean
+        default: true
       timeout:
         required: false
         type: number
         default: 60
+env:
+  NO_CACHE: ${{ secrets.NO_CACHE }}
+
 jobs:
   test:
     runs-on: ${{ inputs.os }}
@@ -31,6 +42,10 @@ jobs:
         test-group: [1, 2, 3]
     environment: test-functional
     env:
+      BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
+      BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+      USE_PUBLIC_HOSTNAME: ${{ inputs.use-public-hostname }}
+      RETRY_FAILED_TESTS: ${{ inputs.retry_failed_tests }}
       TEST_GROUPS_COUNT: 3
       TEST_GROUP_NUMBER: ${{ matrix.test-group }}
     steps:
@@ -86,6 +101,7 @@ jobs:
           echo "::set-output name=dir::$(npm config get cache)"
       - uses: actions/cache@v3
         id: npm-cache # use this to check for `cache-hit` ==> if: steps.npm-cache.outputs.cache-hit != 'true'
+        if: ${{ !env.NO_CACHE }}
         with:
           path: ${{ steps.npm-cache-dir.outputs.dir }}
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
