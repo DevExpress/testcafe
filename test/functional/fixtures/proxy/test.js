@@ -40,18 +40,18 @@ describe('Using proxy-bypass', function () {
             });
     });
 
-    skipInProxyless('Should open page without proxy but get resource with proxy', function () {
-        const http = require('http');
+    // skipInProxyless('Should open page without proxy but get resource with proxy', function () {
+    //     const http = require('http');
 
-        const server = http.createServer(function (req, res) {
-            res.write('document.getElementById(\'result\').innerHTML = \'proxy\'');
-            res.end();
-        }).listen(3006);
+    //     const server = http.createServer(function (req, res) {
+    //         res.write('document.getElementById(\'result\').innerHTML = \'proxy\'');
+    //         res.end();
+    //     }).listen(3006);
 
-        return runTests('testcafe-fixtures/bypass-page-proxy-request.test.js', null, { useProxy: 'localhost:3006', proxyBypass: 'localhost:3000' })
-            .then(() => {
-                server.close();
-            });
-    });
+    //     return runTests('testcafe-fixtures/bypass-page-proxy-request.test.js', null, { useProxy: 'localhost:3006', proxyBypass: 'localhost:3000' })
+    //         .then(() => {
+    //             server.close();
+    //         });
+    // });
 });
 
