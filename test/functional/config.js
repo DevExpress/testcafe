@@ -1,5 +1,5 @@
 /* eslint-disable */
-const hostname = process.env.USE_PUBLIC_HOSTNAME.test(/true/) ? process.env.HOSTNAME : '127.0.0.1';
+const hostname = process.env.USE_PUBLIC_HOSTNAME?.test(/true/) ? process.env.HOSTNAME : '127.0.0.1';
 console.log(`file: config.js -> line 2 -> process.env.USE_PUBLIC_HOSTNAME`, process.env.USE_PUBLIC_HOSTNAME);
 console.log(`file: config.js -> line 3 -> process.env.HOSTNAME`, process.env.HOSTNAME);
 console.log(`file: config.js -> line 3 -> hostname`, hostname);
