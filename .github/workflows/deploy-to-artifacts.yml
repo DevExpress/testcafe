@@ -57,7 +57,7 @@ jobs:
             core.setOutput('packageName', `${name}-${version}`);
             core.setOutput('imageName', `${name}/${name}:${version}`);
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: npm
           path: |
@@ -66,7 +66,7 @@ jobs:
       - run: |
           npx gulp docker-build
           docker save -o ${{steps.package-name.outputs.packageName}}.tar ${{steps.package-name.outputs.imageName}}
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: docker
           path: ${{steps.package-name.outputs.packageName}}.tar
@@ -106,7 +106,7 @@ jobs:
       - run: |
           git reset --soft `git merge-base "${{github.event.inputs.base_sha}}" HEAD`
           git diff --name-only --cached > changes.txt
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: changes
           path: changes.txt
