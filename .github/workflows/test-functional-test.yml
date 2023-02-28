@@ -18,10 +18,6 @@ on:
         required: false
         type: number
         default: 3
-      use-public-hostname:
-        required: false
-        type: boolean
-        default: false
       timeout:
         required: false
         type: number
@@ -38,7 +34,6 @@ jobs:
         test-group: [1, 2, 3]
     environment: test-functional
     env:
-      USE_PUBLIC_HOSTNAME: ${{ inputs.use-public-hostname }}
       TEST_GROUPS_COUNT: 3
       TEST_GROUP_NUMBER: ${{ matrix.test-group }}
     steps:
