@@ -1,16 +1,11 @@
-name: Test Functional (Local Chrome)
+name: Test Functional
 
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
-      sha:
-        description: 'The test commit SHA or ref'
+      test-script:
         required: true
-        default: 'master'
-      merged_sha:
-        description: 'The merge commit SHA'
-      deploy_run_id:
-        description: 'The ID of a deployment workspace run with artifacts'
+        type: string
 jobs:
   test:
     runs-on: ubuntu-latest
