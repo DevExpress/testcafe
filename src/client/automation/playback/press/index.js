@@ -15,6 +15,7 @@ import isIframeWindow from '../../../../utils/is-window-in-iframe';
 import ProxylessInput from '../../../../proxyless/client/input';
 import { changeLetterCaseIfNecessary, getSimulatedKeyInfo } from '../../../../proxyless/client/key-press/utils';
 import { getModifiersBit } from '../../../../proxyless/client/utils';
+import CDPEventDescriptor from '../../../../proxyless/client/event-descriptor';
 
 const Promise        = hammerhead.Promise;
 const browserUtils   = hammerhead.utils.browser;
@@ -148,34 +149,7 @@ export default class PressAutomation {
         return delay(this.automationSettings.keyActionStepDelay);
     }
 
-    _runCombinationViaCDP (keyCombination) {
-        const simulatedKeyInfos = getSimulatedKeyInfo(keyCombination);
-        let modifiersBit        = 0;
-
-        return promiseUtils.each(simulatedKeyInfos, keyInfo => {
-            modifiersBit     |= getModifiersBit(keyInfo.key);
-            keyInfo.modifiers = modifiersBit;
-
-            changeLetterCaseIfNecessary(keyInfo);
-
-            return this.proxylessInput.keyDown(keyInfo)
-                .then(() => {
-                    return delay(this.automationSettings.keyActionStepDelay);
-                });
-        })
-            .then(() => {
-                arrayUtils.reverse(simulatedKeyInfos);
-
-                return promiseUtils.each(simulatedKeyInfos, keyInfo => {
-                    modifiersBit     &= ~getModifiersBit(keyInfo.key);
-                    keyInfo.modifiers = modifiersBit;
-
-                    return this.proxylessInput.keyUp(keyInfo);
-                });
-            });
-    }
-
-    _runCombinationViaClientEventSimulation (keyCombination) {
+    _runCombination (keyCombination) {
         this.modifiersState   = { ctrl: false, alt: false, shift: false, meta: false };
         this.isSelectElement  = domUtils.isSelectElement(getDeepActiveElement(this.topSameDomainDocument));
         this.pressedKeyString = '';
@@ -195,11 +169,36 @@ export default class PressAutomation {
             });
     }
 
-    _runCombination (keyCombination) {
-        if (this.proxylessInput)
-            return this._runCombinationViaCDP(keyCombination);
+    _calculateCDPEventSequence () {
+        const eventSequence = [];
 
-        return this._runCombinationViaClientEventSimulation(keyCombination);
+        for (const keyCombination of this.keyCombinations) {
+            const simulatedKeyInfos = getSimulatedKeyInfo(keyCombination);
+            let modifiersBit        = 0;
+
+            for (const keyInfo of simulatedKeyInfos) {
+                modifiersBit     |= getModifiersBit(keyInfo.key);
+                keyInfo.modifiers = modifiersBit;
+
+                changeLetterCaseIfNecessary(keyInfo);
+
+                eventSequence.push(
+                    CDPEventDescriptor.keyDown(keyInfo),
+                    CDPEventDescriptor.delay(this.automationSettings.keyActionStepDelay)
+                );
+            }
+
+            for (let i = simulatedKeyInfos.length - 1; i >= 0; i--) {
+                const keyInfo = simulatedKeyInfos[i];
+
+                modifiersBit     &= ~getModifiersBit(keyInfo.key);
+                keyInfo.modifiers = modifiersBit;
+
+                eventSequence.push(CDPEventDescriptor.keyUp(keyInfo));
+            }
+        }
+
+        return eventSequence;
     }
 
     run () {
@@ -214,6 +213,12 @@ export default class PressAutomation {
             };
 
             return sendRequestToFrame(msg, PRESS_RESPONSE_CMD, nativeMethods.contentWindowGetter.call(activeElement));
+        }
+
+        if (this.proxylessInput) {
+            const eventSequence = this._calculateCDPEventSequence();
+
+            return this.proxylessInput.executeEventSequence(eventSequence);
         }
 
         return promiseUtils.each(this.keyCombinations, combination => {

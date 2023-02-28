@@ -11,7 +11,7 @@ import getKeyProperties from '../../utils/get-key-properties';
 import cursor from '../../cursor';
 import ProxylessInput from '../../../../proxyless/client/input';
 import getKeyInfo from '../press/get-key-info';
-import { EventType } from '../../../../proxyless/types';
+import CDPEventDescriptor from '../../../../proxyless/client/event-descriptor';
 
 const Promise               = hammerhead.Promise;
 const extend                = hammerhead.utils.extend;
@@ -201,16 +201,11 @@ export default class TypeAutomation {
             const keyInfo          = getKeyInfo(currentKey);
             const simulatedKeyInfo = extend({ key: currentKey }, keyInfo);
 
-            eventSequence.push({
-                type:    EventType.Keyboard,
-                options: this.proxylessInput.createKeyDownOptions(simulatedKeyInfo),
-            }, {
-                type:    EventType.Keyboard,
-                options: this.proxylessInput.createKeyUpOptions(simulatedKeyInfo),
-            }, {
-                type:    EventType.Delay,
-                options: { delay: this.automationSettings.keyActionStepDelay },
-            });
+            eventSequence.push(
+                CDPEventDescriptor.keyDown(simulatedKeyInfo),
+                CDPEventDescriptor.keyUp(simulatedKeyInfo),
+                CDPEventDescriptor.delay(this.automationSettings.keyActionStepDelay)
+            );
         }
 
         return eventSequence;
