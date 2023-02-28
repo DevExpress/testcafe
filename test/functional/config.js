@@ -238,12 +238,13 @@ module.exports = {
     site: {
         viewsPath: './test/functional/',
         ports:     {
-            server1:                3000,
-            server2:                3001,
-            basicAuthServer:        3002,
-            ntlmAuthServer:         3003,
-            trustedProxyServer:     3004,
-            transparentProxyServer: 3005,
+            server1:                       3000,
+            server2:                       3001,
+            basicAuthServer:               3002,
+            ntlmAuthServer:                3003,
+            trustedProxyServer:            3004,
+            transparentProxyServer:        3005,
+            invalidCertificateHttpsServer: 3007,
         },
     },
 

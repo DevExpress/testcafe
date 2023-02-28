@@ -7,6 +7,7 @@ import LoadingFailedEvent = Protocol.Network.LoadingFailedEvent;
 import ContinueResponseRequest = Protocol.Fetch.ContinueResponseRequest;
 import FrameTree = Protocol.Page.FrameTree;
 import FulfillRequestRequest = Protocol.Fetch.FulfillRequestRequest;
+import RequestPattern = Protocol.Fetch.RequestPattern;
 import ProxylessRequestHookEventProvider from '../request-hooks/event-provider';
 import ResourceInjector from '../resource-injector';
 import { convertToHeaderEntries } from '../utils/headers';
@@ -42,7 +43,14 @@ import ProxylessApiBase from '../api-base';
 import { resendAuthRequest } from './resendAuthRequest';
 import TestRunBridge from './test-run-bridge';
 import ProxylessRequestContextInfo from './context-info';
+import CertificateErrorEvent = Protocol.Security.CertificateErrorEvent;
+import { failedToFindDNSError, sslCertificateError } from '../errors';
 
+
+const ALL_REQUEST_RESPONSES = { requestStage: 'Request' } as RequestPattern;
+const ALL_REQUEST_REQUESTS  = { requestStage: 'Response' } as RequestPattern;
+
+const ALL_REQUESTS_DATA = [ALL_REQUEST_REQUESTS, ALL_REQUEST_RESPONSES];
 
 export default class ProxylessRequestPipeline extends ProxylessApiBase {
     private readonly _testRunBridge: TestRunBridge;
@@ -56,6 +64,7 @@ export default class ProxylessRequestPipeline extends ProxylessApiBase {
     private _stopped: boolean;
     private _currentFrameTree: FrameTree | null;
     private readonly _failedRequestIds: string[];
+    private _pendingCertificateError: CertificateErrorEvent | null;
 
     public constructor (browserId: string, client: ProtocolApi) {
         super(browserId, client);
@@ -71,6 +80,7 @@ export default class ProxylessRequestPipeline extends ProxylessApiBase {
         this._failedRequestIds        = [];
         this.restoringStorages        = null;
         this.contextStorage           = null;
+        this._pendingCertificateError = null;
     }
 
     private _getSpecialServiceRoutes (): SpecialServiceRoutes {
@@ -220,9 +230,25 @@ export default class ProxylessRequestPipeline extends ProxylessApiBase {
         }
     }
 
+    private _createError (event: RequestPausedEvent): Error {
+        if (this._pendingCertificateError)
+            return sslCertificateError(this._pendingCertificateError.errorType);
+
+        if (event.responseErrorReason === 'NameNotResolved')
+            return failedToFindDNSError(event.request.url);
+
+        return new Error(event.responseErrorReason);
+    }
+
     private async _tryRespondToOtherRequest (event: RequestPausedEvent): Promise<void> {
         try {
-            await this._respondToOtherRequest(event);
+            if (event.responseErrorReason && this._shouldRedirectToErrorPage(event)) {
+                const error = this._createError(event);
+
+                await this._resourceInjector.redirectToErrorPage(this._client, error, event.request.url);
+            }
+            else
+                await this._respondToOtherRequest(event);
         }
         catch (err) {
             if (event.networkId && this._failedRequestIds.includes(event.networkId)) {
@@ -289,6 +315,12 @@ export default class ProxylessRequestPipeline extends ProxylessApiBase {
     public async init (options?: ProxylessSetupOptions): Promise<void> {
         this._options = options as ProxylessSetupOptions;
 
+        // NOTE: We are forced to handle all requests and responses at once
+        // because CDP API does not allow specifying request filtering behavior for different handlers.
+        await this._client.Fetch.enable({
+            patterns: ALL_REQUESTS_DATA,
+        });
+
         this._client.Fetch.on('requestPaused', async (event: RequestPausedEvent) => {
             if (this._stopped)
                 return;
@@ -331,9 +363,19 @@ export default class ProxylessRequestPipeline extends ProxylessApiBase {
         });
 
         await this._client.Page.setBypassCSP({ enabled: true });
+
+        await this._client.Security.enable();
+
+        this._client.Security.on('certificateError', async (event: CertificateErrorEvent) => {
+            this._pendingCertificateError = event;
+        });
     }
 
     public stop (): void {
         this._stopped = true;
+    }
+
+    public async dispose (): Promise<void> {
+        await this._client.Fetch.disable();
     }
 }

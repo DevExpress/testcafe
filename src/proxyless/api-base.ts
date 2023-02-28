@@ -1,6 +1,7 @@
 import { ProtocolApi } from 'chrome-remote-interface';
 import BrowserConnection from '../browser/connection';
 import TestRun from '../test-run';
+import { notImplementedError } from './errors';
 
 export default class ProxylessApiBase {
     protected readonly _client: ProtocolApi;
@@ -12,7 +13,7 @@ export default class ProxylessApiBase {
     }
 
     public async init (): Promise<void> {
-        throw new Error('Not implemented');
+        throw notImplementedError();
     }
 
     protected get _testRun (): TestRun {
