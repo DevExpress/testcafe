@@ -6,6 +6,10 @@ on:
       test-script:
         required: true
         type: string
+      os:
+        required: false
+        type: string
+        default: ubuntu-latest
       max-parallel-jobs:
         required: false
         type: number
@@ -16,6 +20,7 @@ on:
         default: 60
 jobs:
   test:
+    runs-on: ${{ inputs.os }}
     strategy:
       max-parallel: ${{ inputs.max-parallel-jobs }}
       matrix:
