@@ -82,7 +82,7 @@ jobs:
         with:
           ref: ${{github.event.inputs.merged_sha || github.event.inputs.sha}}
 
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: ${{ inputs.node-version }}
 
