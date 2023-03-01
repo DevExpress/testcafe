@@ -6,5 +6,6 @@ fixture `Fixture`
 test('test', async t => {
     await t
         .click('#redirect')
-        .expect(Selector('h1').textContent).eql('Final page');
+        .expect(Selector('h1').textContent).eql('Final page')
+        .expect(false).ok();
 });
