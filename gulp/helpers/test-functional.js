@@ -19,13 +19,13 @@ function shouldAddTakeScreenshotTestGlob (glob) {
     return [TESTS_GLOB, DEBUG_GLOB_1].includes(glob);
 }
 
-function getGroupOfTests (tests, groupNumber, groupsCount) {
-    const testFragmentSize       = Math.ceil(tests.length / groupsCount);
-    const testFragmentStartIndex = testFragmentSize * (groupNumber - 1);
-    const testFragmentEndIndex   = testFragmentSize * groupNumber;
+// function getGroupOfTests (tests, groupNumber, groupsCount) {
+//     const testFragmentSize       = Math.ceil(tests.length / groupsCount);
+//     const testFragmentStartIndex = testFragmentSize * (groupNumber - 1);
+//     const testFragmentEndIndex   = testFragmentSize * groupNumber;
 
-    return tests.slice(testFragmentStartIndex, testFragmentEndIndex);
-}
+//     return tests.slice(testFragmentStartIndex, testFragmentEndIndex);
+// }
 
 module.exports = async function testFunctional (src, testingEnvironmentName, { experimentalDebug, isProxyless } = {}) {
     process.env.TESTING_ENVIRONMENT       = testingEnvironmentName;
