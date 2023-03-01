@@ -44,7 +44,6 @@ env:
 jobs:
   test:
     runs-on: ${{ inputs.os }}
-    continue-on-error: true
     strategy:
       max-parallel: ${{ inputs.max-parallel-jobs }}
       matrix:
