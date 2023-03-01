@@ -160,12 +160,30 @@ jobs:
         run: echo "failed=true" >> "$GITHUB_OUTPUT"
         if: failure() || cancelled()
   check:
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.os }}
     needs: test
     steps:
-      - name: Show success
-        run: echo "Success"
-        if: ${{ !needs.reusable_workflow_job.execution-failed }}
-      - name: Show error
-        run: echo "Error"
-        if: ${{ needs.reusable_workflow_job.execution-failed }}
+      - uses: actions/github-script@v6
+        if: ${{ !needs.test.outputs.execution-failed }}
+        with:
+          script: |
+            await github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.payload.inputs.sha,
+              context: context.workflow,
+              state: 'success',
+              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
+            });
+      - uses: actions/github-script@v6
+        if: ${{ needs.test.outputs.execution-failed }}
+        with:
+          script: |
+            await github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.payload.inputs.sha,
+              context: context.workflow,
+              state: 'failure',
+              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
+            });
