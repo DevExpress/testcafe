@@ -159,6 +159,7 @@ jobs:
         run: echo "failed=true" >> "$GITHUB_OUTPUT"
         if: failure() || cancelled()
   check:
+    runs-on: ${{ inputs.os }}
     needs: test
     steps:
       - uses: actions/github-script@v6
