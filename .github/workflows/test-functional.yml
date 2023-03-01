@@ -160,43 +160,12 @@ jobs:
         run: echo "failed=true" >> "$GITHUB_OUTPUT"
         if: failure() || cancelled()
   check:
-    runs-on: ${{ inputs.os }}
-    needs: [test]
+    runs-on: ubuntu-latest
+    needs: test
     steps:
-      - uses: actions/github-script@v6
-      if: ${{ !needs.test.outputs.execution-failed }}
-      with:
-        script: |
-          await github.rest.repos.createCommitStatus({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            sha: context.payload.inputs.sha,
-            context: context.workflow,
-            state: 'success',
-            target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
-          });
-    - uses: actions/github-script@v6
-      if: ${{ needs.test.outputs.execution-failed }}
-      with:
-        script: |
-          await github.rest.repos.createCommitStatus({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            sha: context.payload.inputs.sha,
-            context: context.workflow,
-            state: 'failure',
-            target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
-          });
-    - uses: actions/github-script@v6
-      if: failure() || cancelled()
-      with:
-        github-token: ${{secrets.ACTIVE_TOKEN}}
-        script: |
-          await github.rest.repos.createCommitStatus({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            sha: context.payload.inputs.sha,
-            context: context.workflow,
-            state: 'failure',
-            target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
-          });
+      - name: Show success
+        run: echo "Success"
+        if: ${{ !needs.reusable_workflow_job.execution-failed }}
+      - name: Show error
+        run: echo "Error"
+        if: ${{ needs.reusable_workflow_job.execution-failed }}
