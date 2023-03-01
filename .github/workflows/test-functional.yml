@@ -44,12 +44,18 @@ env:
 jobs:
   test:
     runs-on: ${{ inputs.os }}
+    strategy:
+      max-parallel: ${{ inputs.max-parallel-jobs }}
+      matrix:
+        test-group: [1, 2, 3]
     environment: test-functional
     env:
       BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
       BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
       USE_PUBLIC_HOSTNAME: ${{ inputs.use-public-hostname }}
       RETRY_FAILED_TESTS: ${{ inputs.retry_failed_tests }}
+      TEST_GROUPS_COUNT: 3
+      TEST_GROUP_NUMBER: ${{ matrix.test-group }}
       DISPLAY: ${{ inputs.display }}
     outputs:
       execution-failed: ${{ steps.execution-result.outputs.failed }}
@@ -157,26 +163,26 @@ jobs:
     needs: test
     steps:
       - uses: actions/github-script@v6
-        if: ${{ !needs.test.outputs.execution-failed }}
-        with:
-          script: |
-            await github.rest.repos.createCommitStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              sha: context.payload.inputs.sha,
-              context: context.workflow,
-              state: 'success',
-              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
-            });
-      - uses: actions/github-script@v6
-        if: ${{ needs.test.outputs.execution-failed }}
-        with:
-          script: |
-            await github.rest.repos.createCommitStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              sha: context.payload.inputs.sha,
-              context: context.workflow,
-              state: 'failure',
-              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
-            });
+      if: ${{ !needs.test.outputs.execution-failed }}
+      with:
+        script: |
+          await github.rest.repos.createCommitStatus({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            sha: context.payload.inputs.sha,
+            context: context.workflow,
+            state: 'success',
+            target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
+          });
+    - uses: actions/github-script@v6
+      if: ${{ needs.test.outputs.execution-failed }}
+      with:
+        script: |
+          await github.rest.repos.createCommitStatus({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            sha: context.payload.inputs.sha,
+            context: context.workflow,
+            state: 'failure',
+            target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
+          });
