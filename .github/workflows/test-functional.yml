@@ -61,18 +61,6 @@ jobs:
     outputs:
       execution-failed: ${{ steps.execution-result.outputs.failed }}
     steps:
-      - name: View context attributes
-        uses: actions/github-script@v6
-        with:
-          script: console.log(context)
-      - name: View context.repo attributes
-        uses: actions/github-script@v6
-        with:
-          script: console.log(context.repo)
-      - name: View context.issue attributes
-        uses: actions/github-script@v6
-        with:
-          script: console.log(context.issue)
       - run: sudo safaridriver --enable
         if: ${{ contains(inputs.os, 'macos') }}
       - uses: actions/github-script@v6
