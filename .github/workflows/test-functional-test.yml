@@ -56,6 +56,8 @@ jobs:
     steps:
       - run: echo "inputs.use-public-hostname is ${{ inputs.use-public-hostname }}."
       - run: echo "env.USE_PUBLIC_HOSTNAME is ${{ env.USE_PUBLIC_HOSTNAME }}."
+      - run: sudo safaridriver --enable
+        if: ${{ contains(inputs.os, 'macos') }}
       - uses: actions/github-script@v3
         with:
           script: |
