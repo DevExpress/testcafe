@@ -1,8 +1,10 @@
+const gulp           = require('gulp');
+const mocha          = require('gulp-mocha-simple');
 const { castArray }  = require('lodash');
 const getTimeout     = require('./get-timeout');
 const chai           = require('chai');
-const globby         = require('globby');
-const Mocha          = require('mocha');
+// const globby         = require('globby');
+// const Mocha          = require('mocha');
 
 const {
     TESTS_GLOB,
@@ -46,7 +48,7 @@ module.exports = async function testFunctional (src, testingEnvironmentName, { e
     if (shouldAddTakeScreenshotTestGlob(src))
         tests = SCREENSHOT_TESTS_GLOB.concat(tests);
 
-    tests = await globby(tests);
+    // tests = await globby(tests);
 
     // if (process.env.TEST_GROUPS_COUNT && process.env.TEST_GROUP_NUMBER)
     //     tests = getGroupOfTests(tests, process.env.TEST_GROUP_NUMBER, process.env.TEST_GROUPS_COUNT);
@@ -61,13 +63,16 @@ module.exports = async function testFunctional (src, testingEnvironmentName, { e
     if (process.env.RETRY_FAILED_TESTS === 'true')
         opts.retries = RETRY_TEST_RUN_COUNT;
 
-    const mocha = new Mocha(opts);
+    // const mocha = new Mocha(opts);
 
-    tests.forEach(file => {
-        mocha.addFile(file);
-    });
+    // tests.forEach(file => {
+    //     mocha.addFile(file);
+    // });
 
-    return new Promise(resolve => {
-        mocha.run(resolve);
-    });
+    // return new Promise(resolve => {
+    //     mocha.run(resolve);
+    // });
+    return gulp
+        .src(tests)
+        .pipe(mocha(opts));
 };
