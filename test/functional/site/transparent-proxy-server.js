@@ -1,59 +1,50 @@
-const http   = require('http');
-const urlLib = require('url');
+const http            = require('http');
+const urlLib          = require('url');
+const BasicHttpServer = require('./basic-http-server');
 
-let server  = null;
-let sockets = null;
+class TransparentProxyServer extends BasicHttpServer {
+    constructor () {
+        super();
 
-const agentsCache = {};
+        this.agentsCache = {};
+    }
 
-function start (port) {
-    sockets = [];
+    _getUserAgent (reqOptions) {
+        return reqOptions.headers['user-agent'];
+    }
 
-    server = http
-        .createServer()
-        .listen(port);
+    start (port) {
+        this.server = http.createServer().listen(port);
 
-    server
-        .on('request', (req, res) => {
-            const reqOptions = urlLib.parse(req.url);
+        this.server
+            .on('request', (req, res) => {
+                const reqOptions = urlLib.parse(req.url);
+                const self       = this;
 
-            reqOptions.method  = req.method;
-            reqOptions.headers = req.headers;
+                reqOptions.method  = req.method;
+                reqOptions.headers = req.headers;
 
-            if (!agentsCache[reqOptions.headers['user-agent']])
-                agentsCache[reqOptions.headers['user-agent']] = new http.Agent({ keepAlive: true });
+                const userAgent = this._getUserAgent(reqOptions);
 
-            reqOptions.agent = agentsCache[reqOptions.headers['user-agent']];
+                if (!this.agentsCache[userAgent])
+                    this.agentsCache[userAgent] = new http.Agent({ keepAlive: true });
 
-            const serverReq = http.request(reqOptions, function (serverRes) {
-                res.writeHead(serverRes.statusCode, serverRes.headers);
+                reqOptions.agent = this.agentsCache[userAgent];
 
-                if (serverRes.headers.connection && serverRes.headers.connection === 'close')
-                    delete agentsCache[reqOptions.headers['user-agent']];
+                const serverReq = http.request(reqOptions, function (serverRes) {
+                    res.writeHead(serverRes.statusCode, serverRes.headers);
 
-                serverRes.pipe(res);
+                    if (serverRes.headers.connection && serverRes.headers.connection === 'close')
+                        delete self.agentsCache[self._getUserAgent(reqOptions)];
+
+                    serverRes.pipe(res);
+                });
+
+                req.pipe(serverReq);
             });
 
-            req.pipe(serverReq);
-        });
-
-    const connectionHandler = function (socket) {
-        sockets.push(socket);
-
-        socket.on('close', function () {
-            sockets.splice(sockets.indexOf(socket), 1);
-        });
-    };
-
-    server.on('connection', connectionHandler);
+        super.start();
+    }
 }
 
-function shutdown () {
-    server.close();
-
-    sockets.forEach(socket => {
-        socket.destroy();
-    });
-}
-
-module.exports = { start: start, shutdown: shutdown };
+module.exports = new TransparentProxyServer();

@@ -34,6 +34,7 @@ import {
 } from './utils/string';
 import { safeFulfillRequest } from './request-pipeline/safe-api';
 import TestRunBridge from './request-pipeline/test-run-bridge';
+import { failedToFindDNSError } from './errors';
 
 const RESPONSE_REMOVED_HEADERS = [
     'cross-origin-embedder-policy',
@@ -155,7 +156,7 @@ export default class ResourceInjector {
 
         try {
             if (responseErrorReason === 'NameNotResolved') {
-                const err = new Error(`Failed to find a DNS-record for the resource at "${event.request.url}"`);
+                const err = failedToFindDNSError(request.url);
 
                 return {
                     error: err,

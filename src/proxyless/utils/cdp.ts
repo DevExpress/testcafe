@@ -6,6 +6,7 @@ import FrameNavigatedEvent = Protocol.Page.FrameNavigatedEvent;
 import { IncomingMessageLike } from 'testcafe-hammerhead';
 import { convertToHeaderEntries } from './headers';
 import { EventType } from '../types';
+import { unknownCDPEventType } from '../errors';
 
 
 export async function redirect (client: ProtocolApi, requestId: string, url: string): Promise<void> {
@@ -34,7 +35,7 @@ export async function dispatchEvent (client: ProtocolApi, type: EventType, optio
             await client.Input.dispatchTouchEvent(options);
             break;
         default:
-            throw new Error(`Unknown "${options.type}" event type`);
+            throw unknownCDPEventType(options.type);
     }
 }
 
