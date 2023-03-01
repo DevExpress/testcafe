@@ -58,6 +58,8 @@ jobs:
       TEST_GROUPS_COUNT: 3
       TEST_GROUP_NUMBER: ${{ matrix.test-group }}
       DISPLAY: ${{ inputs.display }}
+    outputs:
+      execution-failed: ${{ steps.execution-result.outputs.failed }}
     steps:
       - name: View context attributes
         uses: actions/github-script@v6
@@ -153,7 +155,16 @@ jobs:
         if: ${{ inputs.is-docker }}
       - run: ${{ inputs.test-script }}
         timeout-minutes: ${{ inputs.timeout }}
+      - name: Set failed flag
+        id: execution-result
+        run: echo "failed=true" >> "$GITHUB_OUTPUT"
+        if: failure() || cancelled()
+  check:
+    runs-on: ${{ inputs.os }}
+    needs: test
+    steps:
       - uses: actions/github-script@v6
+        if: ${{ !needs.test.outputs.execution-failed }}
         with:
           script: |
             await github.rest.repos.createCommitStatus({
@@ -165,7 +176,7 @@ jobs:
               target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
             });
       - uses: actions/github-script@v6
-        if: failure() || cancelled()
+        if: ${{ needs.test.outputs.execution-failed }}
         with:
           script: |
             await github.rest.repos.createCommitStatus({
@@ -176,3 +187,6 @@ jobs:
               state: 'failure',
               target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
             });
+      - name: Exit with error
+        if: ${{ needs.test.outputs.execution-failed }}
+        run: exit 1
