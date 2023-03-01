@@ -58,6 +58,10 @@ jobs:
       TEST_GROUP_NUMBER: ${{ matrix.test-group }}
       DISPLAY: ${{ inputs.display }}
     steps:
+      - name: View context attributes
+        uses: actions/github-script@v6
+        with:
+          script: console.log(context)
       - run: sudo safaridriver --enable
         if: ${{ contains(inputs.os, 'macos') }}
       - uses: actions/github-script@v6
