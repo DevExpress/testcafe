@@ -23,11 +23,11 @@ jobs:
           echo "SHA: ${{ github.event.inputs.sha }}"
           echo "Merged SHA: ${{ github.event.inputs.merged_sha }}"
           echo "Deployment run ID: ${{ github.run_id }}"
-      - uses: actions/github-script@v3
+      - uses: actions/github-script@v6
         with:
           github-token: ${{secrets.ACTIVE_TOKEN}}
           script: |
-            await github.repos.createCommitStatus({
+            await github.rest.repos.createCommitStatus({
               owner: context.repo.owner,
               repo: context.repo.repo,
               sha: context.payload.inputs.sha,
@@ -36,7 +36,7 @@ jobs:
               target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
             });
       - id: prep
-        uses: actions/github-script@v3
+        uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.ACTIVE_TOKEN }}
           script: |
@@ -49,7 +49,7 @@ jobs:
           npx gulp build
           npm pack
       - id: package-name
-        uses: actions/github-script@v3
+        uses: actions/github-script@v6
         with:
           script: |
             const { name, version } = require(require('path').join(process.env.GITHUB_WORKSPACE, 'package.json'));
@@ -70,12 +70,12 @@ jobs:
         with:
           name: docker
           path: ${{steps.package-name.outputs.packageName}}.tar
-      - uses: actions/github-script@v3
+      - uses: actions/github-script@v6
         if: failure() || cancelled()
         with:
           github-token: ${{secrets.ACTIVE_TOKEN}}
           script: |
-            await github.repos.createCommitStatus({
+            await github.rest.repos.createCommitStatus({
               owner: context.repo.owner,
               repo: context.repo.repo,
               sha: context.payload.inputs.sha,
@@ -87,11 +87,11 @@ jobs:
     # TODO: currently cannot generate a list of changes after rebase
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/github-script@v3
+      - uses: actions/github-script@v6
         with:
           github-token: ${{secrets.ACTIVE_TOKEN}}
           script: |
-            await github.repos.createCommitStatus({
+            await github.rest.repos.createCommitStatus({
               owner: context.repo.owner,
               repo: context.repo.repo,
               sha: context.payload.inputs.sha,
@@ -110,12 +110,12 @@ jobs:
         with:
           name: changes
           path: changes.txt
-      - uses: actions/github-script@v3
+      - uses: actions/github-script@v6
         if: failure() || cancelled()
         with:
           github-token: ${{secrets.ACTIVE_TOKEN}}
           script: |
-            await github.repos.createCommitStatus({
+            await github.rest.repos.createCommitStatus({
               owner: context.repo.owner,
               repo: context.repo.repo,
               sha: context.payload.inputs.sha,
@@ -131,7 +131,7 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: changes
-      - uses: actions/github-script@v3
+      - uses: actions/github-script@v6
         with:
           github-token: ${{secrets.ACTIVE_TOKEN}}
           script: |
@@ -146,7 +146,7 @@ jobs:
             }
 
             async function dispatchWorkflow (workflowName) {
-              await github.actions.createWorkflowDispatch({
+              await github.rest.actions.createWorkflowDispatch({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 ref: 'master',
@@ -188,11 +188,11 @@ jobs:
             // tasks.push('test-cdp.yml');
 
             await Promise.all(tasks.map(task => dispatchWorkflow(task)));
-      - uses: actions/github-script@v3
+      - uses: actions/github-script@v6
         with:
           github-token: ${{secrets.ACTIVE_TOKEN}}
           script: |
-            await github.repos.createCommitStatus({
+            await github.rest.repos.createCommitStatus({
               owner: context.repo.owner,
               repo: context.repo.repo,
               sha: context.payload.inputs.sha,
@@ -200,12 +200,12 @@ jobs:
               state: 'success',
               target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}#artifacts`
             });
-      - uses: actions/github-script@v3
+      - uses: actions/github-script@v6
         if: failure() || cancelled()
         with:
           github-token: ${{secrets.ACTIVE_TOKEN}}
           script: |
-            await github.repos.createCommitStatus({
+            await github.rest.repos.createCommitStatus({
               owner: context.repo.owner,
               repo: context.repo.repo,
               sha: context.payload.inputs.sha,
