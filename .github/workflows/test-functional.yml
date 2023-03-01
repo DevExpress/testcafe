@@ -44,6 +44,7 @@ env:
 jobs:
   test:
     runs-on: ${{ inputs.os }}
+    continue-on-error: true
     strategy:
       max-parallel: ${{ inputs.max-parallel-jobs }}
       matrix:
@@ -160,7 +161,7 @@ jobs:
         if: failure() || cancelled()
   check:
     runs-on: ${{ inputs.os }}
-    needs: test
+    needs: [test]
     steps:
       - uses: actions/github-script@v6
       if: ${{ !needs.test.outputs.execution-failed }}
