@@ -29,7 +29,7 @@ function shouldAddTakeScreenshotTestGlob (glob) {
 //     return tests.slice(testFragmentStartIndex, testFragmentEndIndex);
 // }
 
-module.exports = async function testFunctional (src, testingEnvironmentName, { experimentalDebug, isProxyless } = {}) {
+module.exports = function testFunctional (src, testingEnvironmentName, { experimentalDebug, isProxyless } = {}) {
     process.env.TESTING_ENVIRONMENT       = testingEnvironmentName;
     process.env.BROWSERSTACK_USE_AUTOMATE = 1;
 
