@@ -57,6 +57,8 @@ jobs:
       TEST_GROUPS_COUNT: 3
       TEST_GROUP_NUMBER: ${{ matrix.test-group }}
       DISPLAY: ${{ inputs.display }}
+    outputs:
+      execution-failed: ${{ steps.execution-result.outputs.failed }}
     steps:
       - name: View context attributes
         uses: actions/github-script@v6
@@ -152,26 +154,34 @@ jobs:
         if: ${{ inputs.is-docker }}
       - run: ${{ inputs.test-script }}
         timeout-minutes: ${{ inputs.timeout }}
-      - uses: actions/github-script@v6
-        with:
-          script: |
-            await github.rest.repos.createCommitStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              sha: context.payload.inputs.sha,
-              context: context.workflow,
-              state: 'success',
-              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
-            });
-      - uses: actions/github-script@v6
+      - name: Set failed flag
+        id: execution-result
+        run: echo "failed=true" >> "$GITHUB_OUTPUT"
         if: failure() || cancelled()
-        with:
-          script: |
-            await github.rest.repos.createCommitStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              sha: context.payload.inputs.sha,
-              context: context.workflow,
-              state: 'failure',
-              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
-            });
+  check:
+    needs: test
+    steps:
+      - uses: actions/github-script@v6
+      if: ${{ !needs.test.outputs.execution-failed }}
+      with:
+        script: |
+          await github.rest.repos.createCommitStatus({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            sha: context.payload.inputs.sha,
+            context: context.workflow,
+            state: 'success',
+            target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
+          });
+    - uses: actions/github-script@v6
+      if: ${{ needs.test.outputs.execution-failed }}
+      with:
+        script: |
+          await github.rest.repos.createCommitStatus({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            sha: context.payload.inputs.sha,
+            context: context.workflow,
+            state: 'failure',
+            target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
+          });
