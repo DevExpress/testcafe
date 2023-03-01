@@ -18,18 +18,6 @@ jobs:
     outputs:
       sha: ${{steps.prep.outputs.sha}}
     steps:
-      - name: View context attributes
-        uses: actions/github-script@v6
-        with:
-          script: console.log(context)
-      - name: View context.repo attributes
-        uses: actions/github-script@v6
-        with:
-          script: console.log(context.repo)
-      - name: View context.issue attributes
-        uses: actions/github-script@v6
-        with:
-          script: console.log(context.issue)
       - name: Build Info
         run: |
           echo "SHA: ${{ github.event.inputs.sha }}"
@@ -143,10 +131,6 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: changes
-      - name: View context attributes
-        uses: actions/github-script@v6
-        with:
-          script: console.log(require('fs').readFileSync('changes.txt').toString().split('\n').filter(line => line))
       - uses: actions/github-script@v6
         with:
           github-token: ${{secrets.ACTIVE_TOKEN}}
