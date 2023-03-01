@@ -18,10 +18,18 @@ on:
         required: false
         type: number
         default: 3
+      display:
+        required: false
+        type: string
+        default: ''
       use-public-hostname:
         required: false
-        type: number
-        default: 0
+        type: boolean
+        default: false
+      retry_failed_tests:
+        required: false
+        type: boolean
+        default: true
       timeout:
         required: false
         type: number
@@ -38,9 +46,13 @@ jobs:
         test-group: [1, 2, 3]
     environment: test-functional
     env:
+      BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
+      BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
       USE_PUBLIC_HOSTNAME: ${{ inputs.use-public-hostname }}
+      RETRY_FAILED_TESTS: ${{ inputs.retry_failed_tests }}
       TEST_GROUPS_COUNT: 3
       TEST_GROUP_NUMBER: ${{ matrix.test-group }}
+      DISPLAY: ${{ inputs.display }}
     steps:
       - run: echo "inputs.use-public-hostname is ${{ inputs.use-public-hostname }}."
       - run: echo "env.USE_PUBLIC_HOSTNAME is ${{ env.USE_PUBLIC_HOSTNAME }}."
@@ -55,6 +67,12 @@ jobs:
               state: 'pending',
               target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
             });
+      - run: |
+          sudo apt install fluxbox
+          Xvfb ${{ inputs.display }} -screen 0 1920x1080x24 &
+          sleep 3
+          fluxbox >/dev/null 2>&1 &
+        if: ${{ inputs.display }}
       - uses: actions/checkout@v3
         with:
           ref: ${{github.event.inputs.merged_sha || github.event.inputs.sha}}
