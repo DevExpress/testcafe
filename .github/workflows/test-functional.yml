@@ -17,7 +17,7 @@ on:
       max-parallel-jobs:
         required: false
         type: number
-        default: 3
+        default: 1
       display:
         required: false
         type: string
@@ -47,7 +47,7 @@ jobs:
     strategy:
       max-parallel: ${{ inputs.max-parallel-jobs }}
       matrix:
-        test-group: [1, 2, 3]
+        test-group: [1]
     environment: test-functional
     env:
       BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
