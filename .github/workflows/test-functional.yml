@@ -17,7 +17,7 @@ on:
       max-parallel-jobs:
         required: false
         type: number
-        default: 1
+        default: 3
       display:
         required: false
         type: string
@@ -54,7 +54,7 @@ jobs:
       BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
       USE_PUBLIC_HOSTNAME: ${{ inputs.use-public-hostname }}
       RETRY_FAILED_TESTS: ${{ inputs.retry_failed_tests }}
-      TEST_GROUPS_COUNT: 3
+      TEST_GROUPS_COUNT: 1
       TEST_GROUP_NUMBER: ${{ matrix.test-group }}
       DISPLAY: ${{ inputs.display }}
     outputs:
