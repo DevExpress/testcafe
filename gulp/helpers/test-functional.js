@@ -48,8 +48,8 @@ module.exports = async function testFunctional (src, testingEnvironmentName, { e
 
     tests = await globby(tests);
 
-    if (process.env.TEST_GROUPS_COUNT && process.env.TEST_GROUP_NUMBER)
-        tests = getGroupOfTests(tests, process.env.TEST_GROUP_NUMBER, process.env.TEST_GROUPS_COUNT);
+    // if (process.env.TEST_GROUPS_COUNT && process.env.TEST_GROUP_NUMBER)
+    //     tests = getGroupOfTests(tests, process.env.TEST_GROUP_NUMBER, process.env.TEST_GROUPS_COUNT);
 
     tests.unshift(SETUP_TESTS_GLOB);
 

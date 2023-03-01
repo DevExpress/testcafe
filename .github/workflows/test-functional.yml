@@ -44,18 +44,12 @@ env:
 jobs:
   test:
     runs-on: ${{ inputs.os }}
-    strategy:
-      max-parallel: ${{ inputs.max-parallel-jobs }}
-      matrix:
-        test-group: [1]
     environment: test-functional
     env:
       BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
       BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
       USE_PUBLIC_HOSTNAME: ${{ inputs.use-public-hostname }}
       RETRY_FAILED_TESTS: ${{ inputs.retry_failed_tests }}
-      TEST_GROUPS_COUNT: 1
-      TEST_GROUP_NUMBER: ${{ matrix.test-group }}
       DISPLAY: ${{ inputs.display }}
     outputs:
       execution-failed: ${{ steps.execution-result.outputs.failed }}
