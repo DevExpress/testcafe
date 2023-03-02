@@ -65,7 +65,7 @@ describe.only('[API] t.takeScreenshot()', function () {
                 });
         });
 
-        it.only('Should emit a warning on rewriting a screenshot', function () {
+        it('Should emit a warning on rewriting a screenshot', function () {
             const { reporter, assertReporterWarnings, warningResult } = createWarningReporter();
 
             const screenshotPath = path.join(SCREENSHOTS_PATH, 'custom', 'duplicate.png');
