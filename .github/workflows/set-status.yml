@@ -14,11 +14,16 @@ on:
         required: false
         type: string
         default: ''
+      failed:
+        required: false
+        type: string
+        default: ''
 
 jobs:
   set-status:
     runs-on: ${{ inputs.os }}
     steps:
+      - run: echo "Failed - ${{inputs.failed}}"
       - uses: actions/github-script@v6
         with:
           script: |

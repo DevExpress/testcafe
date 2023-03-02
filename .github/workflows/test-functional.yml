@@ -143,10 +143,13 @@ jobs:
         id: execution-result
         run: echo "failed=true" >> "$GITHUB_OUTPUT"
         if: failure() || cancelled()
+      - name: Show execution-result
+        run: echo "Step execution result - ${{steps.execution-result.outputs.failed}}"
 
   set-result-status:
     needs: test
     uses: ./.github/workflows/set-status.yml
     with:
       status: ${{fromJSON('["success", "failure"]')[fromJSON(needs.test.outputs.failed)] }}
+      failed: ${{needs.test.outputs.failed}}
     secrets: inherit
