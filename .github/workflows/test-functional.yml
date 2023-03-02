@@ -148,4 +148,4 @@ jobs:
     uses: ./.github/workflows/test-hook-after.yml
     with:
       os: ${{ inputs.os }}
-      execution-failed: ${{ needs.test.outputs.execution-failed }}
+      execution-failed: ${{ fromJSON(needs.test.outputs.execution-failed) }}
