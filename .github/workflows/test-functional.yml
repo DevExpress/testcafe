@@ -140,12 +140,11 @@ jobs:
         timeout-minutes: ${{ inputs.timeout }}
       - name: Set failed flag
         id: execution-result
-        run: echo "failed=true" >> "$GITHUB_OUTPUT"
-        if: failure() || cancelled()
+        run: echo "failed=${{ failure() || cancelled() }}" >> "$GITHUB_OUTPUT"
 
   after:
     needs: test
     uses: ./.github/workflows/test-hook-after.yml
     with:
       os: ${{ inputs.os }}
-      execution-failed: ${{ fromJSON(needs.test.outputs.execution-failed || 'false') }}
+      execution-failed: ${{ fromJSON(needs.test.outputs.execution-failed) }}
