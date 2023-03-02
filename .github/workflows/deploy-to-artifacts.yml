@@ -104,7 +104,7 @@ jobs:
 
   test:
     needs: check
-    if: ${{ always() }}
+    if: ${{ !cancelled() && !failure() }}
     runs-on: ubuntu-latest
     environment: CI
     outputs:
