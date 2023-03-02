@@ -161,6 +161,7 @@ jobs:
             const tasks = [];
 
             tasks.push('test-functional-local-chrome.yml');
+            tasks.push('test-functional-local-safari.yml');
 
             // Temporary disable
             // tasks.push('test-cdp.yml');
