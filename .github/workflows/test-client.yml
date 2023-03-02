@@ -7,24 +7,21 @@ on:
         required: true
         type: string
 jobs:
+  before:
+    uses: ./.github/workflows/test-hook-before.yml
+    with:
+      os: ubuntu-latest
+
   test:
+    needs: before
     runs-on: ubuntu-latest
     environment: test-client
     env:
       SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
       SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
+    outputs:
+      execution-failed: ${{ steps.execution-result.outputs.failed }}
     steps:
-      - uses: actions/github-script@v6
-        with:
-          script: |
-            await github.rest.repos.createCommitStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              sha: context.payload.inputs.sha,
-              context: context.workflow,
-              state: 'pending',
-              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
-            });
       - uses: actions/checkout@v3
         with:
           ref: ${{github.event.inputs.merged_sha || github.event.inputs.sha}}
@@ -73,26 +70,14 @@ jobs:
       - run: npm ci
       - run: ${{ inputs.test-script }}
         timeout-minutes: 60
-      - uses: actions/github-script@v6
-        with:
-          script: |
-            await github.rest.repos.createCommitStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              sha: context.payload.inputs.sha,
-              context: context.workflow,
-              state: 'success',
-              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
-            });
-      - uses: actions/github-script@v6
+      - name: Set failed flag
+        id: execution-result
+        run: echo "failed=true" >> "$GITHUB_OUTPUT"
         if: failure() || cancelled()
-        with:
-          script: |
-            await github.rest.repos.createCommitStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              sha: context.payload.inputs.sha,
-              context: context.workflow,
-              state: 'failure',
-              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
-            });
+
+  after:
+    needs: test
+    uses: ./.github/workflows/test-hook-after.yml
+    with:
+      os: ${{ inputs.os }}
+      execution-failed: ${{ fromJSON(needs.test.outputs.execution-failed) }}
