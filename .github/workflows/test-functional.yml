@@ -148,3 +148,4 @@ jobs:
     uses: ./.github/workflows/set-status.yml
     with:
       status: ${{fromJSON('["success", "failure"]')[fromJSON(needs.test.outputs.failed)] }}
+    secrets: inherit
