@@ -1,4 +1,9 @@
-describe('Disable page caching', () => {
+const { skipDescribeInProxyless } = require('../../../utils/skip-in');
+
+// NOTE: This test suit tests localStorage synchronisation between windows. We didn't support multiple windows in CDP yet.
+// We need to turn on these tests and implement cache-control response header in proxyless once multiple windows are supported.
+
+skipDescribeInProxyless('Disable page caching', () => {
     it('Test run', () => {
         return runTests('testcafe-fixtures/test-run.js', null, { disablePageCaching: true, disableMultipleWindows: true });
     });

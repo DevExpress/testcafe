@@ -30,7 +30,6 @@ const DEBUG_GLOB_2 = [
 
 const PROXYLESS_TESTS_GLOB = [
     ...TESTS_GLOB,
-    '!test/functional/fixtures/run-options/disable-page-caching/test.js',
     '!test/functional/fixtures/regression/gh-1311/test.js',
     '!test/functional/fixtures/hammerhead/gh-2622/test.js',
     '!test/functional/fixtures/regression/gh-2861/test.js',
