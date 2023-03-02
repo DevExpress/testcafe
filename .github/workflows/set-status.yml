@@ -16,7 +16,7 @@ on:
         default: ''
 
 jobs:
-  before:
+  set-status:
     runs-on: ${{ inputs.os }}
     steps:
       - uses: actions/github-script@v6
