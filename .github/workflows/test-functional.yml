@@ -61,8 +61,6 @@ jobs:
     outputs:
       execution-failed: ${{ steps.execution-result.outputs.failed }}
     steps:
-      - run: sudo safaridriver --enable
-        if: ${{ contains(inputs.os, 'macos') }}
       - uses: actions/github-script@v6
         with:
           script: |
@@ -74,6 +72,8 @@ jobs:
               state: 'pending',
               target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
             });
+      - run: sudo safaridriver --enable
+        if: ${{ contains(inputs.os, 'macos') }}
       - run: |
           sudo apt install fluxbox
           Xvfb ${{ inputs.display }} -screen 0 1920x1080x24 &
