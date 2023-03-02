@@ -143,13 +143,6 @@ jobs:
         run: echo "failed=true" >> "$GITHUB_OUTPUT"
         if: failure() || cancelled()
 
-  after:
-    needs: test
-    uses: ./.github/workflows/test-hook-after.yml
-    with:
-      os: ${{ inputs.os }}
-      execution-failed: ${{ fromJSON(needs.test.outputs.execution-failed) }}
-
   set-result-status:
     needs: test
     uses: ./.github/workflows/set-status.yml
