@@ -11,6 +11,7 @@ jobs:
     uses: ./.github/workflows/set-status.yml
     with:
       status: 'pending'
+    secrets: inherit
 
   test:
     needs: set-pending-status
