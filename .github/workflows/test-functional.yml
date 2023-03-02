@@ -42,13 +42,13 @@ env:
   NO_CACHE: ${{ secrets.NO_CACHE }}
 
 jobs:
-  before:
-    uses: ./.github/workflows/test-hook-before.yml
+  set-pending-status:
+    uses: ./.github/workflows/set-status.yml
     with:
-      os: ${{ inputs.os }}
+      status: 'pending'
       
   test:
-    needs: before
+    needs: set-pending-status
     runs-on: ${{ inputs.os }}
     continue-on-error: true
     strategy:
@@ -65,7 +65,7 @@ jobs:
       TEST_GROUP_NUMBER: ${{ matrix.test-group }}
       DISPLAY: ${{ inputs.display }}
     outputs:
-      execution-failed: ${{ steps.execution-result.outputs.failed || 'false' }}
+      failed: ${{ steps.execution-result.outputs.failed || 'false' }}
     steps:
       - run: sudo safaridriver --enable
         if: ${{ contains(inputs.os, 'macos') }}
@@ -149,3 +149,9 @@ jobs:
     with:
       os: ${{ inputs.os }}
       execution-failed: ${{ fromJSON(needs.test.outputs.execution-failed) }}
+
+  set-result-status:
+    needs: test
+    uses: ./.github/workflows/set-status.yml
+    with:
+      status: ${{fromJSON('["success", "failure"]')[fromJSON(needs.test.outputs.failed)] }}

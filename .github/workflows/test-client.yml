@@ -7,20 +7,20 @@ on:
         required: true
         type: string
 jobs:
-  before:
-    uses: ./.github/workflows/test-hook-before.yml
+  set-pending-status:
+    uses: ./.github/workflows/set-status.yml
     with:
-      os: ubuntu-latest
+      status: 'pending'
 
   test:
-    needs: before
+    needs: set-pending-status
     runs-on: ubuntu-latest
     environment: test-client
     env:
       SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
       SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
     outputs:
-      execution-failed: ${{ steps.execution-result.outputs.failed }}
+      failed: ${{ steps.execution-result.outputs.failed || 'false' }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -75,9 +75,8 @@ jobs:
         run: echo "failed=true" >> "$GITHUB_OUTPUT"
         if: failure() || cancelled()
 
-  after:
+  set-result-status:
     needs: test
-    uses: ./.github/workflows/test-hook-after.yml
+    uses: ./.github/workflows/set-status.yml
     with:
-      os: ${{ inputs.os }}
-      execution-failed: ${{ fromJSON(needs.test.outputs.execution-failed || 'false') }}
+      status: ${{fromJSON('["success", "failure"]')[fromJSON(needs.test.outputs.failed)] }}
