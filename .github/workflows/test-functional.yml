@@ -65,7 +65,7 @@ jobs:
       TEST_GROUP_NUMBER: ${{ matrix.test-group }}
       DISPLAY: ${{ inputs.display }}
     outputs:
-      execution-failed: ${{ steps.execution-result.outputs.failed }}
+      execution-failed: ${{ steps.execution-result.outputs.failed || 'false' }}
     steps:
       - run: sudo safaridriver --enable
         if: ${{ contains(inputs.os, 'macos') }}
@@ -140,7 +140,8 @@ jobs:
         timeout-minutes: ${{ inputs.timeout }}
       - name: Set failed flag
         id: execution-result
-        run: echo "failed=${{ failure() || cancelled() }}" >> "$GITHUB_OUTPUT"
+        run: echo "failed=true" >> "$GITHUB_OUTPUT"
+        if: failure() || cancelled()
 
   after:
     needs: test
