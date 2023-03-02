@@ -94,7 +94,7 @@ jobs:
         if: failure() || cancelled()
         run: echo "failed=true" >> "$GITHUB_OUTPUT"
 
-  check:
+  set-failure-status:
     needs: [build, changes]
     if: fromJSON(needs.build.outputs.failed) || fromJSON(needs.changes.outputs.failed)
     uses: ./.github/workflows/set-status.yml
@@ -103,7 +103,7 @@ jobs:
     secrets: inherit
 
   test:
-    needs: check
+    needs: set-failure-status
     if: ${{ !cancelled() && !failure() }}
     runs-on: ubuntu-latest
     environment: CI
