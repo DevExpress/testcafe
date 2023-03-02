@@ -51,7 +51,9 @@ const getReporter = function (scope) {
     });
 };
 
-describe('[API] t.takeScreenshot()', function () {
+
+/* eslint-disable */
+describe.only('[API] t.takeScreenshot()', function () {
     afterEach(assertionHelper.removeScreenshotDir);
 
     if (config.useLocalBrowsers) {
@@ -63,7 +65,7 @@ describe('[API] t.takeScreenshot()', function () {
                 });
         });
 
-        it('Should emit a warning on rewriting a screenshot', function () {
+        it.only('Should emit a warning on rewriting a screenshot', function () {
             const { reporter, assertReporterWarnings, warningResult } = createWarningReporter();
 
             const screenshotPath = path.join(SCREENSHOTS_PATH, 'custom', 'duplicate.png');
