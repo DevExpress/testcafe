@@ -103,8 +103,9 @@ jobs:
     secrets: inherit
 
   test:
-    runs-on: ubuntu-latest
     needs: check
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
     environment: CI
     outputs:
       failed: ${{ steps.execution-result.outputs.failed || 'false' }}
