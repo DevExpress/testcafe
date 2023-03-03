@@ -144,7 +144,7 @@ jobs:
       - name: Save job result
         id: save-result
         if: always()
-        uses: cloudposse/github-action-matrix-outputs-write@v0.3.1
+        uses: cloudposse/github-action-matrix-outputs-write@0.3.1
         with:
           matrix-step-name: ${{ github.job }}
           matrix-key: ${{ matrix.test-group }}
@@ -157,7 +157,7 @@ jobs:
     outputs:
       failed: "${{ contains(steps.read.outputs.result, 'true') }}"
     steps:
-      - uses: cloudposse/github-action-matrix-outputs-read@v0.1.1
+      - uses: cloudposse/github-action-matrix-outputs-read@0.1.1
         id: read
         with:
           matrix-step-name: test
