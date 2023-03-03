@@ -19,6 +19,7 @@ if (config.useLocalBrowsers) {
                 .then(tc => {
                     testCafe = tc;
                 })
+                .then(() => assertionHelper.removeScreenshotDir())
                 .then(() => {
                     const runner      = testCafe.createRunner();
                     const fixturePath = path.join(__dirname, '/testcafe-fixtures/index.js');
