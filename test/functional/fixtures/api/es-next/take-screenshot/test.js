@@ -51,9 +51,7 @@ const getReporter = function (scope) {
     });
 };
 
-
-/* eslint-disable */
-describe.only('[API] t.takeScreenshot()', function () {
+describe('[API] t.takeScreenshot()', function () {
     afterEach(assertionHelper.removeScreenshotDir);
 
     if (config.useLocalBrowsers) {
