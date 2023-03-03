@@ -1,7 +1,7 @@
 <p align="center">
-  <a href="https://testcafe.io/surveys/open-source-feedback-2022">
-    <img src="https://raw.github.com/DevExpress/testcafe/master/media/2022-feedback-survey-banner.png" alt="2022 TestCafe Feedback Survey" />
-  </a>
+ <a href="https://www.devexpress.com/products/testcafestudio/?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-banner">
+     <img src="https://raw.github.com/DevExpress/testcafe/master/media/testcafe-studio-banner.png" alt="Try TestCafe Studio IDE" />
+ </a>
 </p>
 
 <p align="center">
