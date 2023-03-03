@@ -13,19 +13,23 @@ on:
         description: 'The base commit SHA'
 
 jobs:
-  set-pending-status:
-    uses: ./.github/workflows/set-status.yml
-    with:
-      status: 'pending'
-    secrets: inherit
-
   build:
-    needs: set-pending-status
     runs-on: ubuntu-latest
     outputs:
       sha: ${{steps.prep.outputs.sha}}
       failed: ${{ steps.execution-result.outputs.failed || 'false' }}
     steps:
+      - uses: actions/github-script@v3
+        with:
+          script: |
+            await github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.payload.inputs.sha,
+              context: context.workflow,
+              state: 'pending',
+              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
+            });
       - name: Build Info
         run: |
           echo "SHA: ${{ github.event.inputs.sha }}"
@@ -72,12 +76,22 @@ jobs:
         run: echo "failed=true" >> "$GITHUB_OUTPUT"
 
   changes:
-    needs: set-pending-status
     # TODO: currently cannot generate a list of changes after rebase
     runs-on: ubuntu-latest
     outputs:
       failed: ${{ steps.execution-result.outputs.failed || 'false' }}
     steps:
+      - uses: actions/github-script@v3
+        with:
+          script: |
+            await github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.payload.inputs.sha,
+              context: context.workflow,
+              state: 'pending',
+              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
+            });
       - uses: actions/checkout@v3
         with:
           ref: ${{ github.event.inputs.sha }}

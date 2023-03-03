@@ -17,19 +17,24 @@ on:
 env:
   NO_CACHE: ${{ secrets.NO_CACHE }}
 jobs:  
-  set-pending-status:
-    uses: ./.github/workflows/set-status.yml
-    with:
-      status: 'pending'
-    secrets: inherit
-
   test:
-    needs: set-pending-status
     runs-on: ubuntu-latest
     environment: test-server
     outputs:
       failed: ${{ steps.execution-result.outputs.failed || 'false' }}
     steps:
+      - uses: actions/github-script@v3
+        with:
+          script: |
+            await github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.payload.inputs.sha,
+              context: context.workflow,
+              state: 'pending',
+              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
+            });
+            
       - uses: actions/checkout@v3
         with:
           ref: ${{github.event.inputs.merged_sha || github.event.inputs.sha}}
