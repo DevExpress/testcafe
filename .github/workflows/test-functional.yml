@@ -82,6 +82,11 @@ jobs:
       TEST_GROUPS_COUNT: ${{ inputs.matrix-jobs-count }}
       TEST_GROUP_NUMBER: ${{ matrix.test-group }}
       DISPLAY: ${{ inputs.display }}
+    outputs:
+      # Matrix jobs cannot collect outputs about each of them automatically. It rewrites the same outputs. Improve it once it will be possible.
+      test-1-failed: "${{ steps.handle-failure.outputs.test_1_failed }}"
+      test-2-failed: "${{ steps.handle-failure.outputs.test_2_failed }}"
+      test-3-failed: "${{ steps.handle-failure.outputs.test_3_failed }}"
     steps:
       - run: sudo safaridriver --enable
         if: ${{ contains(inputs.os, 'macos') }}
@@ -157,31 +162,11 @@ jobs:
       - name: Handle failure
         id: handle-failure
         if: failure() || cancelled()
-        run: echo "failed=true" >> "$GITHUB_OUTPUT"
-      - name: Save job result
-        id: save-result
-        if: always()
-        uses: cloudposse/github-action-matrix-outputs-write@0.3.1
-        with:
-          matrix-step-name: ${{ env.MATRIX_RESULT_FILE }}
-          matrix-key: ${{ matrix.test-group }}
-          outputs: |-
-            failed: '${{ steps.handle-failure.outputs.failed || 'false' }}'
-
-  read-results:
-    runs-on: ${{ inputs.os }}
-    needs: test
-    outputs:
-      result: "${{ steps.read.outputs.result }}"
-    steps:
-      - uses: cloudposse/github-action-matrix-outputs-read@0.1.1
-        id: read
-        with:
-          matrix-step-name: ${{ env.MATRIX_RESULT_FILE }}
+        run: echo "test_${{ matrix.test-group }}_failed=true" >> "$GITHUB_OUTPUT"
 
   set-result-status:
-    needs: read-results
+    needs: test
     uses: ./.github/workflows/set-status.yml
     with:
-      status: ${{fromJSON('["success", "failure"]')[contains(needs.read-results.outputs.result, 'true')] }}
+      status: ${{fromJSON('["success", "failure"]')[contains(needs.test.outputs, 'true')] }}
     secrets: inherit
