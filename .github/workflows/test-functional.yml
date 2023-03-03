@@ -149,7 +149,7 @@ jobs:
           matrix-step-name: ${{ github.job }}
           matrix-key: ${{ matrix.test-group }}
           outputs: |-
-            failed: '${{ steps.execution-result.outputs.failed || 'false' }}'
+            failed: '${{ steps.handle-failure.outputs.failed || 'false' }}'
 
   read-results:
     runs-on: ${{ inputs.os }}
