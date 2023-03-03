@@ -169,7 +169,7 @@ jobs:
       - name: Save result
         id: save-result
         if: always()
-        run: echo "test_${{ matrix.test-group }}='${{ job.status }}'" >> "$GITHUB_OUTPUT"
+        run: echo "test_${{ matrix.test-group }}=${{ job.status }}" >> "$GITHUB_OUTPUT"
   
   get-priority-status:
     needs: test
