@@ -27,7 +27,7 @@ jobs:
               repo: context.repo.repo,
               sha: context.payload.inputs.sha,
               context: context.workflow,
-              state: '${{ inputs.status }}',
+              state: ${{ inputs.status }},
               target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}${{inputs.artifacts-path}}`
             });
       - name: Exit with error
