@@ -24,7 +24,7 @@ jobs:
     secrets: inherit
 
   test:
-    needs: before
+    needs: set-pending-status
     runs-on: ubuntu-latest
     environment: test-server
     outputs:
