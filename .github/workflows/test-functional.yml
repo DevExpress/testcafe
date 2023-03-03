@@ -81,7 +81,7 @@ jobs:
       test-2: "${{ steps.save-result.outputs.test_2 }}"
       test-3: "${{ steps.save-result.outputs.test_3 }}"
     steps:
-      - uses: actions/github-script@v3
+      - uses: actions/github-script@v6
         with:
           script: |
             await github.rest.repos.createCommitStatus({

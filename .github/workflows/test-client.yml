@@ -16,7 +16,7 @@ jobs:
     outputs:
       failed: ${{ steps.execution-result.outputs.failed || 'false' }}
     steps:
-      - uses: actions/github-script@v3
+      - uses: actions/github-script@v6
         with:
           script: |
             await github.rest.repos.createCommitStatus({
