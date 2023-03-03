@@ -178,13 +178,6 @@ jobs:
         id: read
         with:
           matrix-step-name: ${{ env.MATRIX_RESULT_FILE }}
-      - name: Show matrix results
-        run: |
-          echo "status - ${{ steps.read.outputs.result }}"
-      - name: Contains true
-        run: |
-          echo "status - ${{ contains(steps.read.outputs.result, 'true') }}"
-
 
   set-result-status:
     needs: read-results
