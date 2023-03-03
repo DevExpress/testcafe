@@ -181,10 +181,10 @@ jobs:
         id: status
         with:
           script: |
-            const statuses         = ${{ fromJSON(needs.test.outputs.*) }};
+            const statuses         = ${{ toJSON(needs.test.outputs.*) }};
             const priorityStatuses = [ 'skipped', 'cancelled', 'failure', 'success'];
 
-            return statuses.reduce((res, status) => priorityStatuses.indexOf(res) < priorityStatuses.indexOf(status) ? res : status )
+            return statuses.reduce((res, status) => priorityStatuses.indexOf(res) < priorityStatuses.indexOf(status) ? res : status );
 
   set-result-status:
     needs: get-priority-status
