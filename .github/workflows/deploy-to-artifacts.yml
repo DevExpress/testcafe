@@ -17,7 +17,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       sha: ${{steps.prep.outputs.sha}}
-      failed: ${{ steps.execution-result.outputs.failed || 'false' }}
     steps:
       - uses: actions/github-script@v6
         with:
@@ -27,7 +26,7 @@ jobs:
               repo: context.repo.repo,
               sha: context.payload.inputs.sha,
               context: context.workflow,
-              state: 'pending',
+              state: ${{ job.status }},
               target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
             });
       - name: Build Info
@@ -70,16 +69,10 @@ jobs:
         with:
           name: docker
           path: ${{steps.package-name.outputs.packageName}}.tar
-      - name: Set failed flag
-        id: execution-result
-        if: failure() || cancelled()
-        run: echo "failed=true" >> "$GITHUB_OUTPUT"
 
   changes:
     # TODO: currently cannot generate a list of changes after rebase
     runs-on: ubuntu-latest
-    outputs:
-      failed: ${{ steps.execution-result.outputs.failed || 'false' }}
     steps:
       - uses: actions/github-script@v6
         with:
@@ -89,7 +82,7 @@ jobs:
               repo: context.repo.repo,
               sha: context.payload.inputs.sha,
               context: context.workflow,
-              state: 'pending',
+              state: ${{ job.status }},
               target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
             });
       - uses: actions/checkout@v3
@@ -103,17 +96,13 @@ jobs:
         with:
           name: changes
           path: changes.txt
-      - name: Set failed flag
-        id: execution-result
-        if: failure() || cancelled()
-        run: echo "failed=true" >> "$GITHUB_OUTPUT"
 
   set-failure-status:
     needs: [build, changes]
-    if: fromJSON(needs.build.outputs.failed) || fromJSON(needs.changes.outputs.failed)
+    if: ${{ cancelled() && failure() }}
     uses: ./.github/workflows/set-status.yml
     with:
-      status: 'failure'
+      status: ${{ needs.build.result || needs.changes.result }}
     secrets: inherit
 
   test:
@@ -121,8 +110,6 @@ jobs:
     if: ${{ !cancelled() && !failure() }}
     runs-on: ubuntu-latest
     environment: CI
-    outputs:
-      failed: ${{ steps.execution-result.outputs.failed || 'false' }}
     steps:
       - uses: actions/download-artifact@v3
         with:
@@ -179,16 +166,12 @@ jobs:
             // tasks.push('test-cdp.yml');
 
             await Promise.all(tasks.map(task => dispatchWorkflow(task)));
-      - name: Set failed flag
-        id: execution-result
-        if: failure() || cancelled()
-        run: echo "failed=true" >> "$GITHUB_OUTPUT"
 
   set-result-status:
+    if: always()
     needs: test
-    if: ${{ !cancelled() && !failure() }}
     uses: ./.github/workflows/set-status.yml
     with:
-      status: ${{fromJSON('["success", "failure"]')[fromJSON(needs.test.outputs.failed)] }}
-      artifacts-path: ${{fromJSON('["artifacts", ""]')[fromJSON(needs.test.outputs.failed)] }}
+      status: ${{ needs.test.result }}
+      artifacts-path: ${{ fromJSON('["", "artifacts"]')[needs.test.result == 'success'] }}
     secrets: inherit

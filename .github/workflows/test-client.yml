@@ -13,8 +13,6 @@ jobs:
     env:
       SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
       SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
-    outputs:
-      failed: ${{ steps.execution-result.outputs.failed || 'false' }}
     steps:
       - uses: actions/github-script@v6
         with:
@@ -24,7 +22,7 @@ jobs:
               repo: context.repo.repo,
               sha: context.payload.inputs.sha,
               context: context.workflow,
-              state: 'pending',
+              state: ${{ job.status }},
               target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
             });
             
@@ -76,14 +74,11 @@ jobs:
       - run: npm ci
       - run: ${{ inputs.test-script }}
         timeout-minutes: 60
-      - name: Set failed flag
-        id: execution-result
-        run: echo "failed=true" >> "$GITHUB_OUTPUT"
-        if: failure() || cancelled()
 
   set-result-status:
+    if: always()
     needs: test
     uses: ./.github/workflows/set-status.yml
     with:
-      status: ${{fromJSON('["success", "failure"]')[fromJSON(needs.test.outputs.failed)] }}
+      status: ${{ needs.test.result }}
     secrets: inherit
