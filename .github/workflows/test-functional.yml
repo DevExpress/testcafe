@@ -72,7 +72,7 @@ jobs:
     strategy:
       max-parallel: ${{ inputs.max-parallel-jobs }}
       matrix:
-        test-group: ${{ needs.prepare-matrix.outputs.matrix }}
+        test-group: ${{ fromJSON(needs.prepare-matrix.outputs.matrix) }}
     environment: test-functional
     env:
       BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
