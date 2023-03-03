@@ -172,7 +172,7 @@ jobs:
     runs-on: ${{ inputs.os }}
     needs: test
     outputs:
-      failed: "${{ steps.read.outputs.result }}"
+      result: "${{ steps.read.outputs.result }}"
     steps:
       - uses: cloudposse/github-action-matrix-outputs-read@0.1.1
         id: read
@@ -183,5 +183,5 @@ jobs:
     needs: read-results
     uses: ./.github/workflows/set-status.yml
     with:
-      status: ${{fromJSON('["success", "failure"]')[contains(steps.read.outputs.result, 'true')] }}
+      status: ${{fromJSON('["success", "failure"]')[contains(needs.read-results.outputs.result, 'true')] }}
     secrets: inherit
