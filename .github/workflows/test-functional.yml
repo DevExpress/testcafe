@@ -40,6 +40,7 @@ on:
         default: false
 env:
   NO_CACHE: ${{ secrets.NO_CACHE }}
+  MATRIX_RESULT_FILE: 'matrix-result'
 
 jobs:
   set-pending-status:
@@ -146,7 +147,7 @@ jobs:
         if: always()
         uses: cloudposse/github-action-matrix-outputs-write@0.3.1
         with:
-          matrix-step-name: ${{ github.job }}
+          matrix-step-name: ${{ env.MATRIX_RESULT_FILE }}
           matrix-key: ${{ matrix.test-group }}
           outputs: |-
             failed: '${{ steps.handle-failure.outputs.failed || 'false' }}'
@@ -160,7 +161,7 @@ jobs:
       - uses: cloudposse/github-action-matrix-outputs-read@0.1.1
         id: read
         with:
-          matrix-step-name: test
+          matrix-step-name: ${{ env.MATRIX_RESULT_FILE }}
 
 
   set-result-status:
