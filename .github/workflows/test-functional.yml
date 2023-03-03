@@ -65,8 +65,6 @@ jobs:
       TEST_GROUPS_COUNT: 3
       TEST_GROUP_NUMBER: ${{ matrix.test-group }}
       DISPLAY: ${{ inputs.display }}
-    outputs:
-      failed: ${{ steps.execution-result.outputs.failed || 'false' }}
     steps:
       - run: sudo safaridriver --enable
         if: ${{ contains(inputs.os, 'macos') }}
@@ -139,17 +137,35 @@ jobs:
         if: ${{ inputs.is-docker }}
       - run: ${{ inputs.test-script }}
         timeout-minutes: ${{ inputs.timeout }}
-      - name: Set failed flag
-        id: execution-result
-        run: echo "failed=true" >> "$GITHUB_OUTPUT"
+      - name: Handle failure
+        id: handle-failure
         if: failure() || cancelled()
-      - name: Show execution-result
-        run: echo "Step execution result - ${{steps.execution-result.outputs.failed}}"
+        run: echo "failed=true" >> "$GITHUB_OUTPUT"
+      - name: Save job result
+        id: save-result
+        if: always()
+        uses: cloudposse/github-action-matrix-outputs-write@v0.3.1
+        with:
+          matrix-step-name: ${{ github.job }}
+          matrix-key: ${{ matrix.test-group }}
+          outputs: |-
+            failed: '${{ steps.execution-result.outputs.failed || 'false' }}'
+
+  read-results:
+    runs-on: ${{ inputs.os }}
+    needs: test
+    outputs:
+      failed: "${{ contains(steps.read.outputs.result, 'true') }}"
+    steps:
+      - uses: cloudposse/github-action-matrix-outputs-read@v0.1.1
+        id: read
+        with:
+          matrix-step-name: test
+
 
   set-result-status:
-    needs: test
+    needs: read-results
     uses: ./.github/workflows/set-status.yml
     with:
-      status: ${{fromJSON('["success", "failure"]')[fromJSON(needs.test.outputs.failed)] }}
-      failed: ${{needs.test.outputs.failed}}
+      status: ${{fromJSON('["success", "failure"]')[needs.read-results.outputs.failed] }}
     secrets: inherit
