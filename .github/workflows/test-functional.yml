@@ -14,6 +14,10 @@ on:
         required: false
         type: number
         default: 16
+      matrix-jobs-count:
+        required: false
+        type: number
+        default: 3
       max-parallel-jobs:
         required: false
         type: number
@@ -49,21 +53,33 @@ jobs:
       status: 'pending'
     secrets: inherit
       
-  test:
+  prepare-matrix:
     needs: set-pending-status
+    runs-on: ${{ inputs.os }}
+    outputs:
+      matrix: "${{ steps.generate-matrix.outputs.result }}"
+    steps:
+      - uses: actions/github-script@v6
+        id: generate-matrix
+        with:
+          script: |
+            return Array.from({length: ${{ inputs.matrix-jobs-count }}}, (_, i) => i + 1)
+
+  test:
+    needs: prepare-matrix
     runs-on: ${{ inputs.os }}
     continue-on-error: true
     strategy:
       max-parallel: ${{ inputs.max-parallel-jobs }}
       matrix:
-        test-group: [1, 2, 3]
+        test-group: ${{ needs.prepare-matrix.outputs.matrix }}
     environment: test-functional
     env:
       BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
       BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
       USE_PUBLIC_HOSTNAME: ${{ inputs.use-public-hostname }}
       RETRY_FAILED_TESTS: ${{ inputs.retry_failed_tests }}
-      TEST_GROUPS_COUNT: 3
+      TEST_GROUPS_COUNT: ${{ inputs.matrix-jobs-count }}
       TEST_GROUP_NUMBER: ${{ matrix.test-group }}
       DISPLAY: ${{ inputs.display }}
     steps:
