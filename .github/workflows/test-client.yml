@@ -80,5 +80,5 @@ jobs:
     needs: test
     uses: ./.github/workflows/set-status.yml
     with:
-      status: '${{ needs.test.result }}'
+      status: ${{ needs.test.result }}
     secrets: inherit
