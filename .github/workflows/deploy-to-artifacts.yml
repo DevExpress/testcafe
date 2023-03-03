@@ -143,7 +143,24 @@ jobs:
 
             const tasks = [];
 
+            tasks.push('test-client-desktop.yml');
+            tasks.push('test-client-mobile.yml');
+            tasks.push('test-functional-docker.yml');
+            tasks.push('test-functional-local-chrome.yml');
+            tasks.push('test-functional-local-esm.yml');
+            tasks.push('test-functional-local-debug-1.yml');
+            tasks.push('test-functional-local-debug-2.yml');
             tasks.push('test-functional-local-firefox.yml');
+            tasks.push('test-functional-local-multiple-windows.yml');
+            tasks.push('test-functional-local-proxyless.yml');
+            tasks.push('test-functional-local-headed-browsers.yml');
+            tasks.push('test-functional-local-legacy.yml');
+            tasks.push('test-functional-local-safari.yml');
+            tasks.push('test-functional-remote-macos.yml');
+            tasks.push('test-functional-remote-mobile.yml');
+            tasks.push('test-server-docker.yml');
+            tasks.push('test-server-lts.yml');
+            tasks.push('test-server-stable.yml');
 
             // Temporary disable
             // tasks.push('test-cdp.yml');

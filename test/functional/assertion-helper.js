@@ -322,15 +322,10 @@ exports.isScreenshotsEqual = function (customPath, referenceImagePathGetter) {
     });
 };
 
-/* eslint-disable */
 exports.checkScreenshotsDimensions = function (dimensions, screenshotCount) {
     return checkScreenshotImages(false, '', function (screenshotFilePath) {
         return readPngFile(screenshotFilePath)
             .then(png => {
-                console.log(`file: assertion-helper.js -> line 330 -> png.height`, png.height);
-                console.log(`file: assertion-helper.js -> line 330 -> dimensions.height`, dimensions.height);
-                console.log(`file: assertion-helper.js -> line 330 -> png.width`, png.width);
-                console.log(`file: assertion-helper.js -> line 330 -> dimensions.width`, dimensions.width);
                 return dimensions.width === png.width && dimensions.height === png.height;
             });
     }, screenshotCount);
