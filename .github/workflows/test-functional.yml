@@ -84,9 +84,9 @@ jobs:
       DISPLAY: ${{ inputs.display }}
     outputs:
       # Matrix jobs cannot collect outputs about each of them automatically. It rewrites the same outputs. Improve it once it will be possible.
-      test-1-failed: "${{ steps.handle-failure.outputs.test_1_failed }}"
-      test-2-failed: "${{ steps.handle-failure.outputs.test_2_failed }}"
-      test-3-failed: "${{ steps.handle-failure.outputs.test_3_failed }}"
+      test-1: "${{ steps.save-result.outputs.test_1 }}"
+      test-2: "${{ steps.save-result.outputs.test_2 }}"
+      test-3: "${{ steps.save-result.outputs.test_3 }}"
     steps:
       - run: sudo safaridriver --enable
         if: ${{ contains(inputs.os, 'macos') }}
@@ -159,14 +159,14 @@ jobs:
         if: ${{ inputs.is-docker }}
       - run: ${{ inputs.test-script }}
         timeout-minutes: ${{ inputs.timeout }}
-      - name: Handle failure
-        id: handle-failure
-        if: failure() || cancelled()
-        run: echo "test_${{ matrix.test-group }}_failed=true" >> "$GITHUB_OUTPUT"
+      - name: Save result
+        id: save-result
+        if: always()
+        run: echo "test_${{ matrix.test-group }}=${{ job.status }}" >> "$GITHUB_OUTPUT"
 
   set-result-status:
     needs: test
     uses: ./.github/workflows/set-status.yml
     with:
-      status: ${{fromJSON('["success", "failure"]')[contains(needs.test.outputs, 'true')] }}
+      status: ${{fromJSON('["success", "failure"]')[contains(needs.test.outputs.*, 'failure')] }}
     secrets: inherit
