@@ -89,7 +89,7 @@ jobs:
               repo: context.repo.repo,
               sha: context.payload.inputs.sha,
               context: context.workflow,
-              state: ${{ job.status }},
+              state: '${{ job.status }}',
               target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
             });
 
@@ -169,7 +169,7 @@ jobs:
       - name: Save result
         id: save-result
         if: always()
-        run: echo "test_${{ matrix.test-group }}=${{ job.status }}" >> "$GITHUB_OUTPUT"
+        run: echo "test_${{ matrix.test-group }}='${{ job.status }}'" >> "$GITHUB_OUTPUT"
   
   get-priority-status:
     needs: test
