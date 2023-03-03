@@ -83,10 +83,7 @@ jobs:
       TEST_GROUP_NUMBER: ${{ matrix.test-group }}
       DISPLAY: ${{ inputs.display }}
     outputs:
-      # Matrix jobs cannot collect outputs about each of them automatically. It rewrites the same outputs. Improve it once it will be possible.
-      test-1-failed: "${{ steps.handle-failure.outputs.test_1_failed }}"
-      test-2-failed: "${{ steps.handle-failure.outputs.test_2_failed }}"
-      test-3-failed: "${{ steps.handle-failure.outputs.test_3_failed }}"
+      failed: "${{ steps.handle-failure.outputs.failed }}"
     steps:
       - run: sudo safaridriver --enable
         if: ${{ contains(inputs.os, 'macos') }}
@@ -162,11 +159,11 @@ jobs:
       - name: Handle failure
         id: handle-failure
         if: failure() || cancelled()
-        run: echo "test_${{ matrix.test-group }}_failed=true" >> "$GITHUB_OUTPUT"
+        run: echo "failed=true" >> "$GITHUB_OUTPUT"
 
   set-result-status:
     needs: test
     uses: ./.github/workflows/set-status.yml
     with:
-      status: ${{fromJSON('["success", "failure"]')[contains(needs.test.outputs, 'true')] }}
+      status: ${{fromJSON('["success", "failure"]')[fromJSON(needs.test.outputs.failed)] }}
     secrets: inherit
