@@ -9,10 +9,10 @@ const {
 } = require('./constants');
 
 const { createReporter } = require('../../utils/reporter');
-const experimentalDebug  = !!process.env.EXPERIMENTAL_DEBUG;
-const proxyless          = !!process.env.PROXYLESS;
+const config             = require('../../config');
 
-const CALLBACK_FUNC_ERROR = proxyless ? 'Error in the skipJsError callback function' : 'An error occurred in skipJsErrors handler code:';
+
+const CALLBACK_FUNC_ERROR = config.proxyless ? 'Error in the skipJsError callback function' : 'An error occurred in skipJsErrors handler code:';
 
 describe('Test should fail after js-error on the page', () => {
     it('if an error is raised before test done', () => {
@@ -87,7 +87,7 @@ const expectFailAttempt = (errors, expectedMessage) => {
 };
 
 // TODO: fix tests for Debug task
-(experimentalDebug ? describe.skip : describe)('Customize SkipJSErrors (GH-2775)', () => {
+(config.experimentalDebug ? describe.skip : describe)('Customize SkipJSErrors (GH-2775)', () => {
     describe('TestController method', () => {
         it('Should skip JS errors without param', async () => {
             return runTests('./testcafe-fixtures/test-controller.js', 'Should skip JS errors without param');

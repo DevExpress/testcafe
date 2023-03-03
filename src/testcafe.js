@@ -24,23 +24,28 @@ export default class TestCafe {
         setupSourceMapSupport();
         errorHandlers.registerErrorHandlers();
 
-        const { hostname, port1, port2, options } = configuration.startOptions;
-
         this.closed        = false;
-        this.proxy         = new hammerhead.Proxy(hostname, port1, port2, options);
+        this.proxy         = new hammerhead.Proxy();
         this.runners       = [];
         this.configuration = configuration;
 
+<<<<<<< HEAD
         this.browserConnectionGateway = new BrowserConnectionGateway(this.proxy, this.configuration.browserConnectionGatewayOptions);
+=======
+        const developmentMode = configuration.getOption(OPTION_NAMES.developmentMode);
+
+        this.browserConnectionGateway = new BrowserConnectionGateway(this.proxy, configuration.browserConnectionGatewayOptions);
+
+        this.browserConnectionGateway.on('initialized', () => {
+            this._registerAssets(developmentMode);
+        });
+>>>>>>> 1442cb0cf... run in the proxyless mode by default
 
         if (configuration.getOption(OPTION_NAMES.experimentalDebug)) {
-            const developmentMode = configuration.getOption(OPTION_NAMES.developmentMode);
-            const v8Flags         = configuration.getOption(OPTION_NAMES.v8Flags);
+            const v8Flags = configuration.getOption(OPTION_NAMES.v8Flags);
 
             this.compilerService = new CompilerHost({ developmentMode, v8Flags });
         }
-
-        this._registerAssets(options.developmentMode);
     }
 
     _registerAssets (developmentMode) {
@@ -82,11 +87,23 @@ export default class TestCafe {
         return newRunner;
     }
 
+    async _initializeBrowserConnectionGateway () {
+        await this.configuration.ensureHostname();
+
+        this.browserConnectionGateway.initialize(this.configuration.startOptions);
+    }
+
     // API
     async createBrowserConnection () {
-        const browserInfo = await browserProviderPool.getBrowserInfo('remote');
+        // NOTE: 'remote' browser connection cannot be proxyless.
+        const browserInfo       = await browserProviderPool.getBrowserInfo('remote');
+        const browserConnection = new BrowserConnection(this.browserConnectionGateway, browserInfo, true, this.configuration.permanentBrowserConnectionOptions);
 
-        return new BrowserConnection(this.browserConnectionGateway, browserInfo, true);
+        await this._initializeBrowserConnectionGateway();
+
+        browserConnection.initialize();
+
+        return browserConnection;
     }
 
     createRunner () {

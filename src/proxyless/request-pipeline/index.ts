@@ -9,7 +9,7 @@ import FrameTree = Protocol.Page.FrameTree;
 import FulfillRequestRequest = Protocol.Fetch.FulfillRequestRequest;
 import RequestPattern = Protocol.Fetch.RequestPattern;
 import ProxylessRequestHookEventProvider from '../request-hooks/event-provider';
-import ResourceInjector from '../resource-injector';
+import ResourceInjector, { ResourceInjectorOptions } from '../resource-injector';
 import { convertToHeaderEntries } from '../utils/headers';
 
 import {
@@ -73,7 +73,7 @@ export default class ProxylessRequestPipeline extends ProxylessApiBase {
         this._contextInfo             = new ProxylessRequestContextInfo(this._testRunBridge);
         this._specialServiceRoutes    = this._getSpecialServiceRoutes();
         this.requestHookEventProvider = new ProxylessRequestHookEventProvider();
-        this._resourceInjector        = new ResourceInjector(this._testRunBridge, this._specialServiceRoutes);
+        this._resourceInjector        = new ResourceInjector(this._testRunBridge);
         this._options                 = DEFAULT_PROXYLESS_SETUP_OPTIONS;
         this._stopped                 = false;
         this._currentFrameTree        = null;
@@ -312,8 +312,17 @@ export default class ProxylessRequestPipeline extends ProxylessApiBase {
         return this._currentFrameTree.frame.id !== frameId;
     }
 
+    private _createResourceInjectorOptions (): ResourceInjectorOptions {
+        return {
+            specialServiceRoutes: this._specialServiceRoutes,
+            developmentMode:      this._options.developmentMode,
+        };
+    }
+
     public async init (options?: ProxylessSetupOptions): Promise<void> {
         this._options = options as ProxylessSetupOptions;
+
+        this._resourceInjector.setOptions(this._createResourceInjectorOptions());
 
         // NOTE: We are forced to handle all requests and responses at once
         // because CDP API does not allow specifying request filtering behavior for different handlers.

@@ -23,6 +23,8 @@ describe('Bootstrapper', () => {
             bootstrapper.browserInitTimeout           = 100;
             bootstrapper.TESTS_COMPILATION_UPPERBOUND = 0;
 
+            bootstrapper._calculateIsProxyless = () => true;
+
             bootstrapper.browsers = [ new BrowserConnection(browserConnectionGatewayMock, { provider: createBrowserProviderMock({ local: false }) }) ];
         });
 

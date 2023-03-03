@@ -1,4 +1,5 @@
 const os                  = require('os');
+const http                = require('http');
 const { expect }          = require('chai');
 const { skipInProxyless } = require('../../utils/skip-in');
 
@@ -41,8 +42,6 @@ describe('Using proxy-bypass', function () {
     });
 
     skipInProxyless('Should open page without proxy but get resource with proxy', function () {
-        const http = require('http');
-
         const server = http.createServer(function (req, res) {
             res.write('document.getElementById(\'result\').innerHTML = \'proxy\'');
             res.end();

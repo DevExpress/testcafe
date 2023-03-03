@@ -39,6 +39,10 @@ class BaseTestRunMock extends TestRun {
     get id () {
         return 'id';
     }
+
+    isProxyless () {
+        return false;
+    }
 }
 
 module.exports = BaseTestRunMock;

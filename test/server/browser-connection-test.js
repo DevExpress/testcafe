@@ -1,11 +1,13 @@
-const { expect }              = require('chai');
-const { promisify }           = require('util');
-const request                 = require('request');
-const { noop }                = require('lodash');
-const createTestCafe          = require('../../lib/');
-const COMMAND                 = require('../../lib/browser/connection/command');
-const browserProviderPool     = require('../../lib/browser/provider/pool');
-const BrowserConnectionStatus = require('../../lib/browser/connection/status');
+const { expect }                    = require('chai');
+const { promisify }                 = require('util');
+const request                       = require('request');
+const { noop }                      = require('lodash');
+const createTestCafe                = require('../../lib/');
+const COMMAND                       = require('../../lib/browser/connection/command');
+const browserProviderPool           = require('../../lib/browser/provider/pool');
+const BrowserConnectionStatus       = require('../../lib/browser/connection/status');
+const { createBrowserProviderMock } = require('./helpers/mocks');
+const { HOSTNAME, PORT1, PORT2 }    = require('./helpers/constants');
 
 const { createBrowserProviderMock } = require('./helpers/mocks');
 
@@ -21,7 +23,7 @@ describe('Browser connection', function () {
     before(function () {
         this.timeout(20000);
 
-        return createTestCafe('127.0.0.1', 1335, 1336)
+        return createTestCafe(HOSTNAME, PORT1, PORT2)
             .then(function (tc) {
                 testCafe = tc;
 

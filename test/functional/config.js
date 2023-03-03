@@ -213,16 +213,16 @@ module.exports = {
         return process.env.DEV_MODE === 'true';
     },
 
-    get proxyless () {
-        return process.env.PROXYLESS === 'true';
-    },
-
     get retryTestPages () {
         return this.currentEnvironment.retryTestPages;
     },
 
     get experimentalDebug () {
         return !!process.env.EXPERIMENTAL_DEBUG;
+    },
+
+    get proxyless () {
+        return process.env.PROXYLESS === 'true';
     },
 
     testingEnvironmentNames,

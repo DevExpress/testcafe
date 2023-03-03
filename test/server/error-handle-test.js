@@ -18,6 +18,8 @@ class TaskMock extends AsyncEventEmitter {
     }
 
     unRegisterClientScriptRouting () {}
+
+    registerClientScriptRouting () {}
 }
 
 class RunnerMock extends Runner {

@@ -24,8 +24,8 @@ import BrowserProvider from '../provider';
 import { OSInfo } from 'get-os-info';
 import SERVICE_ROUTES from './service-routes';
 import {
-    BROWSER_RESTART_TIMEOUT,
     BROWSER_CLOSE_TIMEOUT,
+    BROWSER_RESTART_TIMEOUT,
     HEARTBEAT_TIMEOUT,
     LOCAL_BROWSER_INIT_TIMEOUT,
     REMOTE_BROWSER_INIT_TIMEOUT,
@@ -87,9 +87,15 @@ export interface BrowserInfo {
 }
 
 export interface BrowserConnectionOptions {
+<<<<<<< HEAD
     disableMultipleWindows: boolean;
     developmentMode: boolean;
     proxyless: boolean;
+=======
+    disableMultipleWindows?: boolean;
+    developmentMode: boolean;
+    proxyless?: boolean;
+>>>>>>> 1442cb0cf... run in the proxyless mode by default
 }
 
 const DEFAULT_BROWSER_CONNECTION_OPTIONS = {
@@ -98,6 +104,10 @@ const DEFAULT_BROWSER_CONNECTION_OPTIONS = {
     proxyless:              false,
 };
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1442cb0cf... run in the proxyless mode by default
 export default class BrowserConnection extends EventEmitter {
     public permanent: boolean;
     public previousActiveWindowId: string | null;
@@ -148,7 +158,11 @@ export default class BrowserConnection extends EventEmitter {
         gateway: BrowserConnectionGateway,
         browserInfo: BrowserInfo,
         permanent: boolean,
+<<<<<<< HEAD
         options: Partial<BrowserConnectionOptions> = {},
+=======
+        options: BrowserConnectionOptions,
+>>>>>>> 1442cb0cf... run in the proxyless mode by default
         messageBus?: MessageBus) {
         super();
 
@@ -183,7 +197,6 @@ export default class BrowserConnection extends EventEmitter {
         this.pendingTestRunInfo     = null;
         this._options               = this._calculateResultOptions(options);
 
-        this._buildCommunicationUrls(gateway.proxy);
         this._setEventHandlers();
 
         BrowserConnectionTracker.add(this);
@@ -191,9 +204,10 @@ export default class BrowserConnection extends EventEmitter {
         this.previousActiveWindowId = null;
 
         this.browserConnectionGateway.startServingConnection(this);
+    }
 
-        // NOTE: Give a caller time to assign event listeners
-        process.nextTick(() => this._runBrowser());
+    private _calculateResultOptions (options: BrowserConnectionOptions): BrowserConnectionOptions {
+        return Object.assign({}, DEFAULT_BROWSER_CONNECTION_OPTIONS, options);
     }
 
     private _calculateResultOptions (options: Partial<BrowserConnectionOptions>): BrowserConnectionOptions {
@@ -221,6 +235,12 @@ export default class BrowserConnection extends EventEmitter {
         this.statusUrl           = proxy.resolveRelativeServiceUrl(this.statusRelativeUrl);
         this.statusDoneUrl       = proxy.resolveRelativeServiceUrl(this.statusDoneRelativeUrl);
         this.openFileProtocolUrl = proxy.resolveRelativeServiceUrl(this.openFileProtocolRelativeUrl);
+    }
+
+    public initialize (): void {
+        this._buildCommunicationUrls(this.browserConnectionGateway.proxy);
+
+        this._runBrowser();
     }
 
     public initMessageBus (): void {

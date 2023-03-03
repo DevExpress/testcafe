@@ -7,8 +7,14 @@ const tmp        = require('tmp');
 const { nanoid } = require('nanoid');
 const del        = require('del');
 const pathUtil   = require('path');
+const proxyquire = require('proxyquire');
 
-const TestCafeConfiguration                   = require('../../lib/configuration/testcafe-configuration');
+const TestCafeConfiguration = proxyquire('../../lib/configuration/testcafe-configuration', {
+    './utils': {
+        getValidHostname: hostname => hostname || 'calculated-hostname',
+    },
+});
+
 const TypeScriptConfiguration                 = require('../../lib/configuration/typescript-configuration');
 const { DEFAULT_TYPESCRIPT_COMPILER_OPTIONS } = require('../../lib/configuration/default-values');
 const RunnerCtor                              = require('../../lib/runner');
@@ -20,6 +26,7 @@ const {
     JS_CONFIGURATION_EXTENSION,
     JSON_CONFIGURATION_EXTENSION,
 } = require('../../lib/configuration/formats');
+
 
 const tsConfigPath           = 'tsconfig.json';
 const customTSConfigFilePath = 'custom-config.json';
@@ -432,7 +439,7 @@ describe('TestCafeConfiguration', function () {
                     });
             });
 
-            describe('Proxyless and hostname configuration', () => {
+            describe('Calculate hostname', () => {
                 let configuration;
 
                 beforeEach(async () => {
@@ -442,24 +449,38 @@ describe('TestCafeConfiguration', function () {
                 });
 
                 it('Proxyless is enabled/hostname is unset', async () => {
-                    return configuration.init({ experimentalProxyless: true })
-                        .then(() => {
-                            expect(configuration.getOption('hostname')).eql('localhost');
-                        });
+                    await configuration.init();
+                    await configuration.calculateHostname({ proxyless: true });
+
+                    expect(configuration.getOption('hostname')).eql('localhost');
                 });
 
                 it('Proxyless is enabled/hostname is set', async () => {
-                    return configuration.init({ hostname: '123.456.789', experimentalProxyless: true })
-                        .then(() => {
-                            expect(configuration.getOption('hostname')).eql('123.456.789');
-                        });
+                    await configuration.init({ hostname: '123.456.789' });
+                    await configuration.calculateHostname({ proxyless: true });
+
+                    expect(configuration.getOption('hostname')).eql('123.456.789');
                 });
 
                 it('Proxyless is disabled/hostname is unset', async () => {
-                    return configuration.init({ experimentalProxyless: false })
-                        .then(() => {
-                            expect(configuration.getOption('hostname')).eql(void 0);
-                        });
+                    await configuration.init();
+                    await configuration.calculateHostname({ proxyless: false });
+
+                    expect(configuration.getOption('hostname')).eql('calculated-hostname');
+                });
+
+                it('Proxyless is disabled/hostname is set', async () => {
+                    await configuration.init({ hostname: '123.456.789' });
+                    await configuration.calculateHostname({ proxyless: false });
+
+                    expect(configuration.getOption('hostname')).eql('123.456.789');
+                });
+
+                it('Proxyless is disabled (via option)/hostname is set', async () => {
+                    await configuration.init({ hostname: '123.456.789', disableProxyless: true });
+                    await configuration.calculateHostname({ proxyless: true });
+
+                    expect(configuration.getOption('hostname')).eql('123.456.789');
                 });
             });
         });

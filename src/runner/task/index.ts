@@ -62,6 +62,7 @@ export default class Task extends AsyncEventEmitter {
         this.warningLog              = new WarningLog(null, WarningLog.createAddWarningCallback(messageBus));
         this._compilerService        = compilerService;
         this._messageBus             = messageBus;
+        this._clientScriptRoutes     = [];
 
         this.warningLog.copyFrom(runnerWarningLog);
 

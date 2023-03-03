@@ -1,43 +1,17 @@
-import { GeneralError } from './errors/runtime';
-import { RUNTIME_ERRORS } from './errors/types';
 import embeddingUtils from './embedding-utils';
 import exportableLib from './api/exportable-lib';
 import TestCafeConfiguration from './configuration/testcafe-configuration';
 import OPTION_NAMES from './configuration/option-names';
 import ProcessTitle from './services/process-title';
 import userVariables from './api/user-variables';
+import { getValidPort } from './configuration/utils';
 
 const lazyRequire   = require('import-lazy')(require);
 const TestCafe      = lazyRequire('./testcafe');
-const endpointUtils = lazyRequire('endpoint-utils');
 const setupExitHook = lazyRequire('async-exit-hook');
 
 // Validations
-async function getValidHostname (hostname) {
-    if (hostname) {
-        const valid = await endpointUtils.isMyHostname(hostname);
 
-        if (!valid)
-            throw new GeneralError(RUNTIME_ERRORS.invalidHostname, hostname);
-    }
-    else
-        hostname = endpointUtils.getIPAddress();
-
-    return hostname;
-}
-
-async function getValidPort (port) {
-    if (port) {
-        const isFree = await endpointUtils.isFreePort(port);
-
-        if (!isFree)
-            throw new GeneralError(RUNTIME_ERRORS.portIsNotFree, port);
-    }
-    else
-        port = await endpointUtils.getFreePort();
-
-    return port;
-}
 
 // API
 async function getConfiguration (args) {
@@ -51,7 +25,7 @@ async function getConfiguration (args) {
     else {
         // NOTE: Positional arguments support is left only for backward compatibility.
         // It should be removed in future TestCafe versions.
-        // All new APIs should be enabled trough the configuration object in the upper clause.
+        // All new APIs should be enabled through the configuration object in the upper clause.
         // Please do not add new APIs here.
         const [hostname, port1, port2, ssl, developmentMode, retryTestPages, cache, configFile] = args;
 
@@ -77,8 +51,7 @@ async function createTestCafe (...args) {
 
     const configuration = await getConfiguration(args);
 
-    const [hostname, port1, port2] = await Promise.all([
-        getValidHostname(configuration.getOption(OPTION_NAMES.hostname)),
+    const [port1, port2] = await Promise.all([
         getValidPort(configuration.getOption(OPTION_NAMES.port1)),
         getValidPort(configuration.getOption(OPTION_NAMES.port2)),
     ]);
@@ -88,7 +61,7 @@ async function createTestCafe (...args) {
     if (userVariablesOption)
         userVariables.value = userVariablesOption;
 
-    configuration.mergeOptions({ hostname, port1, port2 });
+    configuration.mergeOptions({ port1, port2 });
 
     const testcafe = new TestCafe(configuration);
 

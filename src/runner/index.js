@@ -229,7 +229,10 @@ export default class Runner extends EventEmitter {
     }
 
     _runTask ({ reporters, browserSet, tests, testedApp, options, runnableConfigurationId }) {
-        const task              = this._createTask(tests, browserSet.browserConnectionGroups, this.proxy, options, this.warningLog);
+        const task = this._createTask(tests, browserSet.browserConnectionGroups, this.proxy, options, this.warningLog);
+
+        task.registerClientScriptRouting(this.bootstrapper.proxyless);
+
         const completionPromise = this._getTaskResult(task, browserSet, reporters, testedApp, runnableConfigurationId);
         let completed           = false;
 

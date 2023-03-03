@@ -36,8 +36,8 @@ import { assertType, is } from '../errors/runtime/type-assertions';
 import { generateUniqueId } from 'testcafe-hammerhead';
 import assertRequestHookType from '../api/request-hooks/assert-type';
 import userVariables from '../api/user-variables';
-import Configuration from '../configuration/configuration-base';
 import OPTION_NAMES from '../configuration/option-names';
+import TestCafeConfiguration from '../configuration/testcafe-configuration';
 
 const DEBUG_SCOPE = 'testcafe:bootstrapper';
 
@@ -97,7 +97,7 @@ export default class Bootstrapper {
     public compilerOptions?: CompilerOptions;
     public browserInitTimeout?: number;
     public hooks?: GlobalHooks;
-    public configuration: Configuration;
+    public configuration: TestCafeConfiguration;
 
     private readonly compilerService?: CompilerService;
     private readonly debugLogger: debug.Debugger;
@@ -150,19 +150,35 @@ export default class Bootstrapper {
         return { remotes, automated };
     }
 
+    private _calculateIsProxyless (browserInfo: BrowserInfo[]): boolean {
+        const disableProxyless = this.configuration.getOption(OPTION_NAMES.disableProxyless);
+
+        if (disableProxyless)
+            return false;
+
+        return browserInfo.every(browser => {
+            return browser.provider.supportProxyless();
+        });
+    }
+
     private _createAutomatedConnections (browserInfo: BrowserInfo[]): BrowserConnection[][] {
         if (!browserInfo)
             return [];
 
-        return browserInfo.map(browser => times(this.concurrency, () => {
-            const options = {
-                disableMultipleWindows: this.disableMultipleWindows,
-                developmentMode:        this.configuration.getOption(OPTION_NAMES.developmentMode) as boolean,
-                proxyless:              this.configuration.getOption(OPTION_NAMES.experimentalProxyless) as boolean,
-            };
+        return browserInfo
+            .map(browser => times(this.concurrency, () => {
+                const options = {
+                    disableMultipleWindows: this.disableMultipleWindows,
+                    proxyless:              this.proxyless,
+                    developmentMode:        this.configuration.getOption<boolean>(OPTION_NAMES.developmentMode),
+                };
 
-            return new BrowserConnection(this.browserConnectionGateway, { ...browser }, false, options, this.messageBus);
-        }));
+                const connection = new BrowserConnection(this.browserConnectionGateway, { ...browser }, false, options, this.messageBus);
+
+                connection.initialize();
+
+                return connection;
+            }));
     }
 
     private _getBrowserSetOptions (): BrowserSetOptions {
@@ -173,11 +189,32 @@ export default class Bootstrapper {
         };
     }
 
+    private async _setupProxyless (automatedBrowserInfo: BrowserInfo[], remoteBrowserConnections: BrowserConnection[]): Promise<void> {
+        if (remoteBrowserConnections.length) {
+            this.proxyless = false;
+
+            return;
+        }
+
+        this.proxyless = this._calculateIsProxyless(automatedBrowserInfo);
+
+        await this.configuration.calculateHostname({ proxyless: this.proxyless });
+
+        this.browserConnectionGateway.initialize(this.configuration.startOptions);
+
+        if (this.proxyless) {
+            this.browserConnectionGateway.switchToProxyless();
+            this.browserConnectionGateway.proxy.switchToProxyless();
+        }
+    }
+
     private async _getBrowserConnections (browserInfo: BrowserInfoSource[]): Promise<BrowserSet> {
         const { automated, remotes } = Bootstrapper._splitBrowserInfo(browserInfo);
 
         if (remotes && remotes.length % this.concurrency)
             throw new GeneralError(RUNTIME_ERRORS.cannotDivideRemotesCountByConcurrency);
+
+        await this._setupProxyless(automated, remotes);
 
         let browserConnections = this._createAutomatedConnections(automated);
 
@@ -206,7 +243,7 @@ export default class Bootstrapper {
     }
 
     private async _compileTests ({ sourceList, compilerOptions, runnableConfigurationId }: CompilerArguments): Promise<Test[]> {
-        const baseUrl          = this.configuration.getOption(OPTION_NAMES.baseUrl) as string;
+        const baseUrl          = this.configuration.getOption<string>(OPTION_NAMES.baseUrl);
         const experimentalEsm  = this.configuration.getOption(OPTION_NAMES.experimentalEsm);
 
         if (this.compilerService) {

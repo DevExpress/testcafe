@@ -42,13 +42,29 @@ const RESPONSE_REMOVED_HEADERS = [
     'cross-origin-resource-policy',
 ];
 
-export default class ResourceInjector {
-    private readonly _specialServiceRoutes: SpecialServiceRoutes;
-    private readonly _testRunBridge: TestRunBridge;
+export interface ResourceInjectorOptions {
+    specialServiceRoutes: SpecialServiceRoutes;
+    developmentMode: boolean;
+}
 
-    public constructor (testRunBridge: TestRunBridge, specialServiceRoutes: SpecialServiceRoutes) {
-        this._specialServiceRoutes = specialServiceRoutes;
-        this._testRunBridge        = testRunBridge;
+const DEFAULT_RESOURCE_INJECTOR_OPTIONS = {
+    specialServiceRoutes: {
+        errorPage1:          '',
+        errorPage2:          '',
+        openFileProtocolUrl: '',
+        idlePage:            '',
+    },
+
+    developmentMode: false,
+};
+
+export default class ResourceInjector {
+    private readonly _testRunBridge: TestRunBridge;
+    private _options: ResourceInjectorOptions;
+
+    public constructor (testRunBridge: TestRunBridge) {
+        this._testRunBridge = testRunBridge;
+        this._options       = DEFAULT_RESOURCE_INJECTOR_OPTIONS;
     }
 
     private _getRestoreContextStorageScript (contextStorage?: SessionStorageInfo | null): string {
@@ -95,8 +111,8 @@ export default class ResourceInjector {
                 TESTCAFE_UI_STYLES,
             ],
             scripts: [
-                ...HAMMERHEAD_INJECTABLE_SCRIPTS.map(hs => getAssetPath(hs, proxy.options.developmentMode)),
-                ...SCRIPTS.map(s => getAssetPath(s, proxy.options.developmentMode)),
+                ...HAMMERHEAD_INJECTABLE_SCRIPTS.map(hs => getAssetPath(hs, this._options.developmentMode)),
+                ...SCRIPTS.map(s => getAssetPath(s, this._options.developmentMode)),
             ],
             embeddedScripts: [ this._getRestoreStoragesScript(restoringStorages), this._getRestoreContextStorageScript(contextStorage), taskScript],
             userScripts:     userScripts || [],
@@ -136,7 +152,7 @@ export default class ResourceInjector {
 
         currentTestRun.pendingPageError = new PageLoadError(err, url);
 
-        await navigateTo(client, this._specialServiceRoutes.errorPage1);
+        await navigateTo(client, this._options.specialServiceRoutes.errorPage1);
     }
 
     public async getDocumentResourceInfo (event: RequestPausedEvent, client: ProtocolApi): Promise<DocumentResourceInfo> {
@@ -200,7 +216,7 @@ export default class ResourceInjector {
         // NOTE: an unhandled exception interrupts the test execution,
         // and we are force to redirect manually to the idle page.
         if (!injectableResources)
-            await redirect(client, fulfillRequestInfo.requestId, this._specialServiceRoutes.idlePage);
+            await redirect(client, fulfillRequestInfo.requestId, this._options.specialServiceRoutes.idlePage);
         else {
             const updatedResponseStr = injectResources(
                 fulfillRequestInfo.body as string,
@@ -227,5 +243,9 @@ export default class ResourceInjector {
         }
 
         return void 0;
+    }
+
+    public setOptions (options: ResourceInjectorOptions): void {
+        this._options = options;
     }
 }

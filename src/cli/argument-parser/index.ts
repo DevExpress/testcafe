@@ -44,8 +44,8 @@ const REMOTE_ALIAS_RE = /^remote(?::(\d*))?$/;
 const DESCRIPTION = dedent(`
 
     To select a browser, specify an alias ("ie", "chrome", etc.) or the path to the browser executable. You can select more than one browser.
-    
-    Use the "all" alias to run tests against all available browsers.   
+
+    Use the "all" alias to run tests against all available browsers.
     Use the "remote" alias to run tests on remote devices, like smartphones or tablets. Specify the number of remote browsers after the semicolon ("remote:3").
     If you use a browser provider plugin, specify both the name of the plugin and the name of the browser. Separate the two with a semicolon ("saucelabs:chrome@51").
 
@@ -86,7 +86,7 @@ interface CommandLineOptions {
     videoEncodingOptions?: string | Dictionary<number | string | boolean>;
     compilerOptions?: string | Dictionary<number | string | boolean>;
     configFile?: string;
-    proxyless?: boolean;
+    disableProxyless?: boolean;
     v8Flags?: string[];
     dashboardOptions?: string | Dictionary<string | boolean | number>;
     baseUrl?: string;
@@ -167,7 +167,7 @@ export default class CLIArgumentParser {
             .option('--test-meta <key=value[,key2=value2,...]>', 'filter tests by metadata')
             .option('--fixture-meta <key=value[,key2=value2,...]>', 'filter fixtures by metadata')
             .option('--debug-on-fail', 'pause tests on failure')
-            .option('--experimental-proxyless', 'enable proxyless mode: https://testcafe.io/documentation/404237/guides/experimental-capabilities/proxyless-mode')
+            .option('--disable-proxyless', 'disable proxyless mode')
             .option('--app-init-delay <ms>', 'specify your application`s initialization time')
             .option('--selector-timeout <ms>', 'specify the maximum Selector resolution time')
             .option('--assertion-timeout <ms>', 'specify the maximum Assertion resolution time')

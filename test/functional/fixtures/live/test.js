@@ -48,7 +48,7 @@ class RunnerMock extends LiveModeRunner {
 }
 
 function createTestCafeInstance (opts = {}) {
-    return createTestCafe({ experimentalProxyless: config.proxyless, ...opts })
+    return createTestCafe({ ...opts })
         .then(tc => {
             cafe = tc;
         });

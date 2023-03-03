@@ -38,11 +38,12 @@ import CustomizableCompilers from './customizable-compilers';
 import { DEPRECATED, getDeprecationMessage } from '../notifications/deprecated';
 import WarningLog from '../notifications/warning-log';
 import browserProviderPool from '../browser/provider/pool';
-import BrowserConnection, { BrowserInfo } from '../browser/connection';
+import BrowserConnection, { BrowserConnectionOptions, BrowserInfo } from '../browser/connection';
 import { CONFIGURATION_EXTENSIONS } from './formats';
 import { GeneralError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
 import { LOCALHOST_NAMES } from '../utils/localhost-names';
+import { getValidHostname } from './utils';
 import { BrowserConnectionGatewayOptions } from '../browser/connection/gateway';
 
 const BASE_CONFIGURATION_FILENAME = '.testcaferc';
@@ -60,6 +61,7 @@ const OPTION_FLAG_NAMES = [
     OPTION_NAMES.disablePageReloads,
     OPTION_NAMES.disableScreenshots,
     OPTION_NAMES.disableMultipleWindows,
+    OPTION_NAMES.disableProxyless,
 ];
 
 const OPTION_INIT_FLAG_NAMES = [
@@ -67,28 +69,24 @@ const OPTION_INIT_FLAG_NAMES = [
     OPTION_NAMES.retryTestPages,
     OPTION_NAMES.cache,
     OPTION_NAMES.disableHttp2,
-    OPTION_NAMES.experimentalProxyless,
     OPTION_NAMES.disableCrossDomain,
 ];
 
-interface TestCafeAdditionalStartOptions {
+export interface TestCafeStartOptions {
+    hostname: string;
+    port1: number;
+    port2: number;
     retryTestPages: boolean;
     ssl: object;
     developmentMode: boolean;
     cache: boolean;
     disableHttp2: boolean;
-    proxyless: boolean;
     disableCrossDomain: boolean;
 }
 
-interface TestCafeStartOptions {
-    hostname?: string;
-    port1?: number;
-    port2?: number;
-    options: TestCafeAdditionalStartOptions;
-}
-
 type BrowserInfoSource = BrowserInfo | BrowserConnection;
+
+type CalculateHostnameFn = (hostname: string) => Promise<string>;
 
 export default class TestCafeConfiguration extends Configuration {
     protected readonly _isExplicitConfig: boolean;
@@ -113,11 +111,20 @@ export default class TestCafeConfiguration extends Configuration {
         }
 
         await this.asyncMergeOptions(options);
+    }
 
-        const proxyless = this.getOption(OPTION_NAMES.experimentalProxyless);
+    public async calculateHostname ({ proxyless } = { proxyless: false }): Promise<void> {
+        const disableProxyless = this.getOption(OPTION_NAMES.disableProxyless);
 
-        if (proxyless)
-            this._ensureOptionWithValue(OPTION_NAMES.hostname, LOCALHOST_NAMES.LOCALHOST, OptionSource.Input);
+        await this.ensureHostname(async hostname => {
+            if (disableProxyless || !proxyless)
+                hostname = await getValidHostname(hostname);
+
+            else if (proxyless)
+                hostname = hostname || LOCALHOST_NAMES.LOCALHOST;
+
+            return hostname;
+        });
     }
 
     public async asyncMergeOptions (options?: Dictionary<object>): Promise<void> {
@@ -159,35 +166,23 @@ export default class TestCafeConfiguration extends Configuration {
     }
 
     public get startOptions (): TestCafeStartOptions {
-        const proxyless = this.getOption(OPTION_NAMES.experimentalProxyless) as boolean;
-        let hostname    = this.getOption(OPTION_NAMES.hostname) as string;
-
-        if (!hostname && proxyless)
-            hostname = LOCALHOST_NAMES.LOCALHOST;
-
-        const result: TestCafeStartOptions = {
-            hostname,
-            port1: this.getOption(OPTION_NAMES.port1),
-            port2: this.getOption(OPTION_NAMES.port2),
-
-            options: {
-                ssl:                this.getOption(OPTION_NAMES.ssl),
-                developmentMode:    this.getOption(OPTION_NAMES.developmentMode),
-                retryTestPages:     this.getOption(OPTION_NAMES.retryTestPages),
-                cache:              this.getOption(OPTION_NAMES.cache),
-                disableHttp2:       this.getOption(OPTION_NAMES.disableHttp2),
-                disableCrossDomain: this.getOption(OPTION_NAMES.disableCrossDomain),
-                proxyless,
-            },
+        return {
+            hostname:           this.getOption(OPTION_NAMES.hostname),
+            port1:              this.getOption(OPTION_NAMES.port1),
+            port2:              this.getOption(OPTION_NAMES.port2),
+            ssl:                this.getOption(OPTION_NAMES.ssl),
+            developmentMode:    this.getOption(OPTION_NAMES.developmentMode),
+            retryTestPages:     this.getOption(OPTION_NAMES.retryTestPages),
+            cache:              this.getOption(OPTION_NAMES.cache),
+            disableHttp2:       this.getOption(OPTION_NAMES.disableHttp2),
+            disableCrossDomain: this.getOption(OPTION_NAMES.disableCrossDomain),
         };
-
-        return result;
     }
 
     public get browserConnectionGatewayOptions (): BrowserConnectionGatewayOptions {
         return {
-            retryTestPages: this.getOption(OPTION_NAMES.retryTestPages),
-            proxyless:      this.getOption(OPTION_NAMES.experimentalProxyless),
+            retryTestPages:  this.getOption(OPTION_NAMES.retryTestPages),
+            developmentMode: this.getOption(OPTION_NAMES.developmentMode),
         };
     }
 
@@ -289,7 +284,7 @@ export default class TestCafeConfiguration extends Configuration {
         this._ensureOptionWithValue(OPTION_NAMES.developmentMode, DEFAULT_DEVELOPMENT_MODE, OptionSource.Configuration);
         this._ensureOptionWithValue(OPTION_NAMES.retryTestPages, DEFAULT_RETRY_TEST_PAGES, OptionSource.Configuration);
         this._ensureOptionWithValue(OPTION_NAMES.disableHttp2, DEFAULT_DISABLE_HTTP2, OptionSource.Configuration);
-        this._ensureOptionWithValue(OPTION_NAMES.experimentalProxyless, DEFAULT_PROXYLESS, OptionSource.Configuration);
+        this._ensureOptionWithValue(OPTION_NAMES.disableProxyless, DEFAULT_PROXYLESS, OptionSource.Configuration);
         this._ensureOptionWithValue(OPTION_NAMES.disableCrossDomain, DEFAULT_DISABLE_CROSS_DOMAIN, OptionSource.Configuration);
 
         this._ensureScreenshotOptions();
@@ -337,5 +332,13 @@ export default class TestCafeConfiguration extends Configuration {
 
     public static get FILENAMES (): string[] {
         return CONFIGURATION_FILENAMES;
+    }
+
+    public async ensureHostname (calculateFn: CalculateHostnameFn = getValidHostname): Promise<void> {
+        let hostname = this.getOption<string>(OPTION_NAMES.hostname);
+
+        hostname = await calculateFn(hostname);
+
+        this.mergeOptions({ hostname });
     }
 }

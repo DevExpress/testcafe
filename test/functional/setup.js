@@ -13,6 +13,7 @@ const SafariConnector            = require('./safari-connector');
 const getTestError               = require('./get-test-error.js');
 const { createSimpleTestStream } = require('./utils/stream');
 const BrowserConnectionStatus    = require('../../lib/browser/connection/status');
+//const { isFreePort }             = require('endpoint-utils');
 
 let testCafe     = null;
 let browsersInfo = null;
@@ -113,6 +114,9 @@ function openRemoteBrowsers () {
 }
 
 function waitUtilBrowserConnectionOpened (connection) {
+    if (connection.status === BrowserConnectionStatus.uninitialized)
+        connection.initialize();
+
     const connectedPromise = connection.status === BrowserConnectionStatus.opened
         ? Promise.resolve()
         : promisifyEvent(connection, 'opened');
@@ -162,9 +166,9 @@ before(function () {
 
         retryTestPages,
 
-        experimentalProxyless: config.proxyless,
-        experimentalDebug:     !!process.env.EXPERIMENTAL_DEBUG,
-        userVariables:         {
+        experimentalDebug: !!process.env.EXPERIMENTAL_DEBUG,
+
+        userVariables: {
             url:             'localhost',
             port:            1337,
             isUserVariables: true,
@@ -192,7 +196,7 @@ before(function () {
                 mocha.timeout(0);
 
             if (USE_PROVIDER_POOL)
-                return Promise.resolve();
+                return testCafe._initializeBrowserConnectionGateway();
 
             return openRemoteBrowsers();
         })
@@ -270,7 +274,9 @@ before(function () {
                     return browserInfo.connection;
                 });
 
-                const handleError = (err) => {
+                const handleError = async (err) => {
+                    //console.log('isFreePort: ' + await isFreePort()); // eslint-disable-line no-console
+
                     const shouldFail = opts && opts.shouldFail;
 
                     if (shouldFail && !err)
