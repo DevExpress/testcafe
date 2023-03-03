@@ -19,6 +19,9 @@ jobs:
   set-status:
     runs-on: ${{ inputs.os }}
     steps:
+      - name: Show status
+        run: |
+          echo "status - ${{ inputs.status }}"
       - uses: actions/github-script@v6
         with:
           script: |
