@@ -22,7 +22,7 @@ describe.only("Should provide a valid value for the 'document.title' property", 
         return runTests('./testcafe-fixtures/index.js', 'change value');
     });
 
-    it('Text property getters of the title element', () => {
+    it.only('Text property getters of the title element', () => {
         return runTests('./testcafe-fixtures/index.js', 'text property getters of the title element');
     });
 
