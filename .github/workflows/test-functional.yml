@@ -190,5 +190,5 @@ jobs:
     needs: get-priority-status
     uses: ./.github/workflows/set-status.yml
     with:
-      status: ${{ needs.get-priority-status.outputs.status }}
+      status: ${{ fromJSON(needs.get-priority-status.outputs.status) }}
     secrets: inherit
