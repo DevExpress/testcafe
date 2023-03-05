@@ -176,7 +176,7 @@ jobs:
     needs: test
     runs-on: ${{ inputs.os }}
     outputs:
-      status: "${{ steps.status.outputs.result }}"
+      status: ${{ steps.status.outputs.result }}
     steps:
       - uses: actions/github-script@v6
         id: status
