@@ -182,7 +182,14 @@ jobs:
         id: status
         with:
           script: |
-            return ${{ toJSON(needs.test.outputs.*) }}.every(status => status === 'success') ? 'success' : 'failure';
+            const statuses = ${{ toJSON(needs.test.outputs.*) }};
+
+            for (let i = 0; i < ${{ inputs.matrix-jobs-count }}; i++) {
+              if (statuses[i] !== 'success')
+                return 'failure';
+            }
+
+            return 'success';
 
   set-result-status:
     if: always()
