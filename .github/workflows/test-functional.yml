@@ -172,7 +172,7 @@ jobs:
         run: echo "test_${{ matrix.test-group }}=${{ job.status }}" >> "$GITHUB_OUTPUT"
   
   get-result-status:
-    if: !cancelled()
+    if: ${{ !cancelled() }}
     needs: test
     runs-on: ${{ inputs.os }}
     outputs:
