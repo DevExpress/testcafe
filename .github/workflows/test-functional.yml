@@ -196,5 +196,5 @@ jobs:
     needs: get-result-status
     uses: ./.github/workflows/set-status.yml
     with:
-      status: ${{ fromJSON(needs.get-priority-status.outputs.status || 'failure') }}
+      status: ${{ fromJSON(needs.get-result-status.outputs.status || 'failure') }}
     secrets: inherit
