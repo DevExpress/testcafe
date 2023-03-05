@@ -191,19 +191,10 @@ jobs:
 
             return 'success';
 
-  show-result-status:
-    if: always()
-    needs: get-result-status
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "status - ${{ needs.get-result-status.outputs.status }}"
-      - run: echo "failed status - ${{ fromJSON('' || 'failure') }}"
-      - run: echo "parsed status - ${{ fromJSON(needs.get-result-status.outputs.status || 'failure') }}"
-
   set-result-status:
     if: always()
     needs: get-result-status
     uses: ./.github/workflows/set-status.yml
     with:
-      status: ${{ fromJSON(needs.get-result-status.outputs.status || 'failure') }}
+      status: ${{ needs.get-result-status.outputs.status || 'failure' }}
     secrets: inherit
