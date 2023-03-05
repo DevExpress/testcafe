@@ -102,7 +102,7 @@ jobs:
     if: ${{ cancelled() && failure() }}
     uses: ./.github/workflows/set-status.yml
     with:
-      status: ${{ needs.build.result || needs.changes.result }}
+      status: 'failure'
     secrets: inherit
 
   test:
@@ -172,6 +172,6 @@ jobs:
     needs: test
     uses: ./.github/workflows/set-status.yml
     with:
-      status: ${{ needs.test.result }}
+      status: ${{ fromJSON("['success', 'failure']")[needs.test.result != 'success'] }}
       artifacts-path: ${{ fromJSON('["", "artifacts"]')[needs.test.result == 'success'] }}
     secrets: inherit
