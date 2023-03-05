@@ -80,5 +80,5 @@ jobs:
     needs: test
     uses: ./.github/workflows/set-status.yml
     with:
-      status: ${{ fromJSON("['success', 'failure']")[needs.test.result != 'success'] }}
+      status: ${{ fromJSON('["success", "failure"]')[needs.test.result != 'success'] }}
     secrets: inherit
