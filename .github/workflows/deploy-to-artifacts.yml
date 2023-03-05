@@ -97,16 +97,8 @@ jobs:
           name: changes
           path: changes.txt
 
-  set-failure-status:
-    needs: [build, changes]
-    if: ${{ cancelled() && failure() }}
-    uses: ./.github/workflows/set-status.yml
-    with:
-      status: 'failure'
-    secrets: inherit
-
   test:
-    needs: set-failure-status
+    needs: [build, changes]
     if: ${{ !cancelled() && !failure() }}
     runs-on: ubuntu-latest
     environment: CI
