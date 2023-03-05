@@ -188,6 +188,7 @@ jobs:
             return statuses.reduce((res, status) => priorityStatuses.indexOf(res) < priorityStatuses.indexOf(status) ? res : status );
 
   set-result-status:
+    if: always()
     needs: get-priority-status
     uses: ./.github/workflows/set-status.yml
     with:
