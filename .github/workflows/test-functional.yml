@@ -181,6 +181,7 @@ jobs:
       - uses: actions/github-script@v6
         id: status
         with:
+          result-encoding: string
           script: |
             const statuses = ${{ toJSON(needs.test.outputs.*) }};
 
