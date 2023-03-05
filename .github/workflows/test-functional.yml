@@ -172,6 +172,7 @@ jobs:
         run: echo "test_${{ matrix.test-group }}=${{ job.status }}" >> "$GITHUB_OUTPUT"
   
   get-priority-status:
+    if: always()
     needs: test
     runs-on: ${{ inputs.os }}
     outputs:
