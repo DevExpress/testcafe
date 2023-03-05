@@ -77,9 +77,9 @@ jobs:
       DISPLAY: ${{ inputs.display }}
     outputs:
       # Matrix jobs cannot collect outputs about each of them automatically. It rewrites the same outputs. Improve it once it will be possible.
-      test-1-failed: "${{ steps.save-result.outputs.test_1 }}"
-      test-2-failed: "${{ steps.save-result.outputs.test_2 }}"
-      test-3-failed: "${{ steps.save-result.outputs.test_3 }}"
+      test-1: "${{ steps.save-result.outputs.test_1 }}"
+      test-2: "${{ steps.save-result.outputs.test_2 }}"
+      test-3: "${{ steps.save-result.outputs.test_3 }}"
     steps:
       - uses: actions/github-script@v6
         with:
@@ -169,12 +169,25 @@ jobs:
       - name: Save result
         id: save-result
         if: always()
-        run: echo "test_${{ matrix.test-group }}=${{ job.status != 'success' }}" >> "$GITHUB_OUTPUT"
+        run: echo "test_${{ matrix.test-group }}=${{ job.status }}" >> "$GITHUB_OUTPUT"
   
-  set-result-status:
+  get-result-status:
     if: always()
     needs: test
+    runs-on: ${{ inputs.os }}
+    outputs:
+      status: "${{ steps.status.outputs.result }}"
+    steps:
+      - uses: actions/github-script@v6
+        id: status
+        with:
+          script: |
+            return ${{ toJSON(needs.test.outputs.*) }}.every(status => status === 'success') ? 'success' : 'failure';
+
+  set-result-status:
+    if: always()
+    needs: get-result-status
     uses: ./.github/workflows/set-status.yml
     with:
-      status: ${{ fromJSON('["success", "failure"]')[contains(needs.test.outputs.*, 'true')] }}
+      status: ${{ fromJSON(needs.get-priority-status.outputs.status || 'failure') }}
     secrets: inherit
