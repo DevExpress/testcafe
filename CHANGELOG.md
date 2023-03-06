@@ -1,5 +1,32 @@
 # Changelog
 
+## v2.4.0 (2023-03-06)
+TestCafe v2.4.0 introduces the Visual Selector Debugger. You can now create and debug Selector queries in the browser window.
+
+### Visual Selector Debugger
+
+TestCafe v2.4.0 displays the Visual Selector Debugger panel when you activate [Debug Mode](https://testcafe.io/documentation/402835/guides/basic-guides/debug-tests). Use the panel to debug Selector queries from your test, or generate new Selector queries.
+
+![](https://www.screencast.com/users/testcafe/folders/Default/media/e119a19c-1dc0-405b-b7ab-c8018e008d64/embed)
+
+&nbsp;
+
+If a Selector query causes your test to fail, add the [t.debug()](https://testcafe.io/documentation/402707/reference/test-api/testcontroller/debug) command after the last successful action, and launch the test.
+
+When the test reaches the breakpoint, the window that runs the test displays the Selector Debugger panel. Copy the failing Selector query from test code to the Selector Debugger input field.
+
+* TestCafe highlights page elements that match the Selector query.
+* If no elements match the Selector query, the panel displays the **No Matching Elements** warning. 
+* If your Selector query contians a syntax error, the panel displays the **Invalid Selector** warning.
+
+To interactively generate a Selector query, click the **Pick** button, and select the target element on the page.
+
+For more information on the panel, its capabilities, and limitations, read the [Visual Selector Debugger Guide](https://testcafe.io/documentation/404288/guides/intermediate-guides/visual-selector-debugger).
+
+### Bug Fixes
+
+* TestCafe cannot execute the [t.request](https://testcafe.io/documentation/403981/reference/test-api/testcontroller/request) action in [proxyless mode](https://testcafe.io/documentation/404237/guides/experimental-capabilities/proxyless-mode) ([#7523](https://github.com/DevExpress/testcafe/issues/7523)).
+
 ## v2.3.1 (2023-02-09)
 TestCafe v2.3.1 introduces a number of bug fixes.
 
