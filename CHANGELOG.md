@@ -7,9 +7,7 @@ TestCafe v2.4.0 introduces the Visual Selector Debugger. You can now create and 
 
 TestCafe v2.4.0 displays the Visual Selector Debugger panel when you activate [Debug Mode](https://testcafe.io/documentation/402835/guides/basic-guides/debug-tests). Use the panel to debug Selector queries from your test, or generate new Selector queries.
 
-![](https://www.screencast.com/users/testcafe/folders/Default/media/e119a19c-1dc0-405b-b7ab-c8018e008d64/embed)
-
-&nbsp;
+![](https://testcafe.io/images/inspector/enter-query.gif)
 
 If a Selector query causes your test to fail, add the [t.debug()](https://testcafe.io/documentation/402707/reference/test-api/testcontroller/debug) command after the last successful action, and launch the test.
 
