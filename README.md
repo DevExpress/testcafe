@@ -166,7 +166,7 @@ Visit the following webpage to review our online help system: [Documentation](ht
 
 ## Get Help
 
-Join the TestCafe community on Stack Overflow.  Ask and answer questions [sing the TestCafe tag](https://stackoverflow.com/questions/tagged/testcafe).
+Join the TestCafe community on Stack Overflow.  Ask and answer questions [using the TestCafe tag](https://stackoverflow.com/questions/tagged/testcafe).
 
 ## Issue Tracker
 
