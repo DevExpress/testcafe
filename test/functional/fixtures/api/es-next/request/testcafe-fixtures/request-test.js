@@ -8,6 +8,7 @@ const API_SET_COOKIES_URL = `${API_URL}/cookies`;
 const API_AUTH_URL        = `${API_URL}/auth`;
 const EXTERNAL_DOMAIN     = '127.0.0.1';
 const EXTERNAL_PAGE_URL   = `http://${EXTERNAL_DOMAIN}:3001/fixtures/request/pages/index.html`;
+const HTTPS_API_URL       = `https://${MAIN_DOMAIN}:3007/data`;
 
 fixture`Request`;
 
@@ -369,3 +370,20 @@ test('Should rise request runtime error', async (t) => {
     });
 });
 
+test('Should execute a GET HTTPS request', async (t) => {
+    const {
+        status,
+        statusText,
+        headers,
+        body,
+    } = await t.request(HTTPS_API_URL);
+
+    await t
+        .expect(status).eql(200)
+        .expect(statusText).eql('OK')
+        .expect(headers).contains({ 'content-type': 'application/json; charset=utf-8' })
+        .expect(body).eql({
+            name:     'John Hearts',
+            position: 'CTO',
+        });
+});

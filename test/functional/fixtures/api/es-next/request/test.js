@@ -7,6 +7,10 @@ describe('Request', () => {
             return runTests('testcafe-fixtures/request-test.js', 'Should execute a GET request');
         });
 
+        it('Should execute a GET HTTPS request', function () {
+            return runTests('testcafe-fixtures/request-test.js', 'Should execute a GET HTTPS request');
+        });
+
         it('Should execute a POST request', function () {
             return runTests('testcafe-fixtures/request-test.js', 'Should execute a POST request');
         });
