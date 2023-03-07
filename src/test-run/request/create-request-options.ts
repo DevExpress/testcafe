@@ -171,9 +171,12 @@ function getProxyUrl (testRun: TestRun, url: string, withCredentials?: boolean):
 
 async function resolvePoxylessUrlParts (url: URL): Promise<{ hostname: string; protocol: string; port: string; href: string; partAfterHost: string }> {
     const {
-        href, hostname,
-        port, pathname,
-        search, protocol,
+        href,
+        hostname,
+        port,
+        pathname,
+        search,
+        protocol,
     } = url;
 
     const partAfterHost = [pathname, search].join('');
@@ -190,7 +193,7 @@ async function resolvePoxyUrlParts (testRun: TestRun, url: URL, withCredentials:
     return { partAfterHost, href, hostname, port, protocol: DEFAULT_PROTOCOL };
 }
 
-function resolveUrlParts (testRun: TestRun, url: URL, withCredentials: boolean): Promise<{ hostname: string; protocol:string; port: string; href: string; partAfterHost: string }> {
+function resolveUrlParts (testRun: TestRun, url: URL, withCredentials: boolean): Promise<{ hostname: string; protocol: string; port: string; href: string; partAfterHost: string }> {
     return testRun.isProxyless() ? resolvePoxylessUrlParts(url) : resolvePoxyUrlParts(testRun, url, withCredentials);
 }
 
