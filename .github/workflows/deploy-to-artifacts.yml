@@ -18,16 +18,10 @@ jobs:
     outputs:
       sha: ${{steps.prep.outputs.sha}}
     steps:
-      - name: Build Info
-        run: |
-          echo "SHA: ${{ github.event.inputs.sha }}"
-          echo "Merged SHA: ${{ github.event.inputs.merged_sha }}"
-          echo "Deployment run ID: ${{ github.run_id }}"
-      - uses: actions/github-script@v3
+      - uses: actions/github-script@v6
         with:
-          github-token: ${{secrets.ACTIVE_TOKEN}}
           script: |
-            await github.repos.createCommitStatus({
+            await github.rest.repos.createCommitStatus({
               owner: context.repo.owner,
               repo: context.repo.repo,
               sha: context.payload.inputs.sha,
@@ -35,13 +29,18 @@ jobs:
               state: 'pending',
               target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
             });
+      - name: Build Info
+        run: |
+          echo "SHA: ${{ github.event.inputs.sha }}"
+          echo "Merged SHA: ${{ github.event.inputs.merged_sha }}"
+          echo "Deployment run ID: ${{ github.run_id }}"
       - id: prep
-        uses: actions/github-script@v3
+        uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.ACTIVE_TOKEN }}
           script: |
             core.setOutput('sha', context.payload.inputs.merged_sha || context.payload.inputs.sha);
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           ref: ${{steps.prep.outputs.sha}}
       - run: |
@@ -49,7 +48,7 @@ jobs:
           npx gulp build
           npm pack
       - id: package-name
-        uses: actions/github-script@v3
+        uses: actions/github-script@v6
         with:
           script: |
             const { name, version } = require(require('path').join(process.env.GITHUB_WORKSPACE, 'package.json'));
@@ -57,7 +56,7 @@ jobs:
             core.setOutput('packageName', `${name}-${version}`);
             core.setOutput('imageName', `${name}/${name}:${version}`);
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: npm
           path: |
@@ -66,32 +65,19 @@ jobs:
       - run: |
           npx gulp docker-build
           docker save -o ${{steps.package-name.outputs.packageName}}.tar ${{steps.package-name.outputs.imageName}}
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: docker
           path: ${{steps.package-name.outputs.packageName}}.tar
-      - uses: actions/github-script@v3
-        if: failure() || cancelled()
-        with:
-          github-token: ${{secrets.ACTIVE_TOKEN}}
-          script: |
-            await github.repos.createCommitStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              sha: context.payload.inputs.sha,
-              context: context.workflow,
-              state: 'failure',
-              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
-            });
+
   changes:
     # TODO: currently cannot generate a list of changes after rebase
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/github-script@v3
+      - uses: actions/github-script@v6
         with:
-          github-token: ${{secrets.ACTIVE_TOKEN}}
           script: |
-            await github.repos.createCommitStatus({
+            await github.rest.repos.createCommitStatus({
               owner: context.repo.owner,
               repo: context.repo.repo,
               sha: context.payload.inputs.sha,
@@ -99,39 +85,28 @@ jobs:
               state: 'pending',
               target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
             });
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           ref: ${{ github.event.inputs.sha }}
           fetch-depth: 0
       - run: |
           git reset --soft `git merge-base "${{github.event.inputs.base_sha}}" HEAD`
           git diff --name-only --cached > changes.txt
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: changes
           path: changes.txt
-      - uses: actions/github-script@v3
-        if: failure() || cancelled()
-        with:
-          github-token: ${{secrets.ACTIVE_TOKEN}}
-          script: |
-            await github.repos.createCommitStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              sha: context.payload.inputs.sha,
-              context: context.workflow,
-              state: 'failure',
-              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
-            });
+
   test:
-    runs-on: ubuntu-latest
     needs: [build, changes]
+    if: ${{ !cancelled() && !failure() }}
+    runs-on: ubuntu-latest
     environment: CI
     steps:
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: changes
-      - uses: actions/github-script@v3
+      - uses: actions/github-script@v6
         with:
           github-token: ${{secrets.ACTIVE_TOKEN}}
           script: |
@@ -146,7 +121,7 @@ jobs:
             }
 
             async function dispatchWorkflow (workflowName) {
-              await github.actions.createWorkflowDispatch({
+              await github.rest.actions.createWorkflowDispatch({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 ref: 'master',
@@ -162,7 +137,6 @@ jobs:
 
             tasks.push('test-client-desktop.yml');
             tasks.push('test-client-mobile.yml');
-
             tasks.push('test-functional-docker.yml');
             tasks.push('test-functional-local-chrome.yml');
             tasks.push('test-functional-local-esm.yml');
@@ -172,14 +146,10 @@ jobs:
             tasks.push('test-functional-local-multiple-windows.yml');
             tasks.push('test-functional-local-proxyless.yml');
             tasks.push('test-functional-local-headed-browsers.yml');
-
             tasks.push('test-functional-local-legacy.yml');
-
             tasks.push('test-functional-local-safari.yml');
-
             tasks.push('test-functional-remote-macos.yml');
             tasks.push('test-functional-remote-mobile.yml');
-
             tasks.push('test-server-docker.yml');
             tasks.push('test-server-lts.yml');
             tasks.push('test-server-stable.yml');
@@ -188,28 +158,12 @@ jobs:
             // tasks.push('test-cdp.yml');
 
             await Promise.all(tasks.map(task => dispatchWorkflow(task)));
-      - uses: actions/github-script@v3
-        with:
-          github-token: ${{secrets.ACTIVE_TOKEN}}
-          script: |
-            await github.repos.createCommitStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              sha: context.payload.inputs.sha,
-              context: context.workflow,
-              state: 'success',
-              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}#artifacts`
-            });
-      - uses: actions/github-script@v3
-        if: failure() || cancelled()
-        with:
-          github-token: ${{secrets.ACTIVE_TOKEN}}
-          script: |
-            await github.repos.createCommitStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              sha: context.payload.inputs.sha,
-              context: context.workflow,
-              state: 'failure',
-              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
-            });
+
+  set-result-status:
+    if: always()
+    needs: test
+    uses: ./.github/workflows/set-status.yml
+    with:
+      status: ${{ fromJSON('["success", "failure"]')[needs.test.result != 'success'] }}
+      artifacts-path: ${{ fromJSON('["", "artifacts"]')[needs.test.result == 'success'] }}
+    secrets: inherit

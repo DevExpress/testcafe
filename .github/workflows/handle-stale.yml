@@ -7,7 +7,7 @@ jobs:
   stale:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/stale@v3
+    - uses: actions/stale@v7
       with:
         stale-issue-message: "This issue has been automatically marked as stale because it has not had any activity for a long period. It will be closed and archived if no further activity occurs. However, we may return to this issue in the future. If it still affects you or you have any additional information regarding it, please leave a comment and we will keep it open."
         stale-pr-message: "This pull request has been automatically marked as stale because it has not had any activity for a long period. It will be closed and archived if no further activity occurs. However, we may return to this pull request in the future. If it is still relevant or you have any additional information regarding it, please leave a comment and we will keep it open."
