@@ -169,28 +169,28 @@ function getProxyUrl (testRun: TestRun, url: string, withCredentials?: boolean):
     }, testRun, true)) as Promise<string>;
 }
 
-async function resolvePoxylessUrlParts (url: URL): Promise<{ hostname: string; port: string; href: string; partAfterHost: string }> {
+async function resolvePoxylessUrlParts (url: URL): Promise<{ hostname: string; protocol: string; port: string; href: string; partAfterHost: string }> {
     const {
         href, hostname,
         port, pathname,
-        search,
+        search, protocol,
     } = url;
 
     const partAfterHost = [pathname, search].join('');
 
-    return { partAfterHost, href, hostname, port };
+    return { partAfterHost, href, hostname, port, protocol };
 }
 
-async function resolvePoxyUrlParts (testRun: TestRun, url: URL, withCredentials: boolean): Promise<{ hostname: string; port: string; href: string; partAfterHost: string }> {
+async function resolvePoxyUrlParts (testRun: TestRun, url: URL, withCredentials: boolean): Promise<{ hostname: string; protocol: string; port: string; href: string; partAfterHost: string }> {
     const href               = await getProxyUrl(testRun, url.href, withCredentials);
     const urlObj             = await parseProxyUrl(href);
     const { partAfterHost }  = urlObj;
     const { hostname, port } = urlObj.proxy;
 
-    return { partAfterHost, href, hostname, port };
+    return { partAfterHost, href, hostname, port, protocol: DEFAULT_PROTOCOL };
 }
 
-function resolveUrlParts (testRun: TestRun, url: URL, withCredentials: boolean): Promise<{ hostname: string; port: string; href: string; partAfterHost: string }> {
+function resolveUrlParts (testRun: TestRun, url: URL, withCredentials: boolean): Promise<{ hostname: string; protocol:string; port: string; href: string; partAfterHost: string }> {
     return testRun.isProxyless() ? resolvePoxylessUrlParts(url) : resolvePoxyUrlParts(testRun, url, withCredentials);
 }
 
@@ -208,6 +208,7 @@ export async function createRequestOptions (currentPageUrl: URL, testRun: TestRu
         port,
         href,
         partAfterHost,
+        protocol,
     } = await resolveUrlParts(testRun, url, withCredentials);
 
     if (!auth && url.username && url.password) {
@@ -220,7 +221,7 @@ export async function createRequestOptions (currentPageUrl: URL, testRun: TestRu
     const requestParams: RequestOptionsParams = {
         method:         options.method || DEFAULT_REQUEST_METHOD,
         url:            href,
-        protocol:       DEFAULT_PROTOCOL,
+        protocol:       protocol,
         hostname:       hostname,
         host:           hostname,
         port:           port,
