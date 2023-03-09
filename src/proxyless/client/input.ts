@@ -1,5 +1,5 @@
 import { EventType } from '../types';
-import AxisValues from '../../client/core/utils/values/axis-values';
+import AxisValues, { AxisValuesData } from '../../client/core/utils/values/axis-values';
 import { SimulatedKeyInfo } from './key-press/utils';
 import { DispatchEventFn } from './types';
 import CDPEventDescriptor from './event-descriptor';
@@ -38,5 +38,21 @@ export default class ProxylessInput {
 
     public executeEventSequence (eventSequence: any[]): Promise<void> {
         return this._dispatchEventFn.sequence(eventSequence);
+    }
+
+    public createMouseMoveEvent (currPosition: AxisValuesData<number>): any {
+        const options = CDPEventDescriptor.createMouseEventOptions('mouseMoved', {
+            options: {
+                clientX: currPosition.x,
+                clientY: currPosition.y,
+                button:  'none',
+            },
+            // @ts-ignore
+        }, this._leftTopPoint);
+
+        return {
+            type: EventType.Mouse,
+            options,
+        };
     }
 }

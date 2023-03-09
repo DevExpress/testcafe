@@ -70,8 +70,6 @@ ActionExecutor.ACTIONS_HANDLERS[COMMAND_TYPE.click] = {
         if (/option|optgroup/.test(domUtils.getTagName(elements[0])))
             return new SelectChildClickAutomation(elements[0], command.options);
 
-        cursor.shouldRender = !dispatchProxylessEventFn;
-
         return new ClickAutomation(elements[0], command.options, window, cursor, dispatchProxylessEventFn, leftTopPoint);
     },
 };
@@ -85,7 +83,9 @@ ActionExecutor.ACTIONS_HANDLERS[COMMAND_TYPE.doubleClick] = {
 };
 
 ActionExecutor.ACTIONS_HANDLERS[COMMAND_TYPE.hover] = {
-    create: (command, elements) => new HoverAutomation(elements[0], command.options),
+    create: (command, elements, dispatchProxylessEventFn?: DispatchEventFn, leftTopPoint?: AxisValues<number>) => {
+        return new HoverAutomation(elements[0], command.options, dispatchProxylessEventFn, leftTopPoint);
+    },
 };
 
 ActionExecutor.ACTIONS_HANDLERS[COMMAND_TYPE.drag] = {
