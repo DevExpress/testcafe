@@ -53,8 +53,8 @@ export function getModifiersBit (key: string): number {
 }
 
 export function calculateMouseButtonValue (options: any): MouseButton {
-    if (!options.button)
-        return 'left';
+    if (options.button)
+        return options.button;
 
-    return 'right';
+    return 'left';
 }

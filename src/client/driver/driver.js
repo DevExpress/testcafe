@@ -1163,6 +1163,13 @@ export default class Driver extends serviceUtils.EventEmitter {
             messageSandbox.sendServiceMsg(msg, this.childIframeDriverLinks[i].driverWindow);
     }
 
+    createDispatchProxylessEventFunctions () {
+        return this.options.proxyless ? {
+            single:   this._createDispatchProxylessEventFn('dispatchProxylessEvent'),
+            sequence: this._createDispatchProxylessEventFn('dispatchProxylessEventSequence'),
+        } : null;
+    }
+
     _createDispatchProxylessEventFn (name) {
         return nativeMethods.functionBind.call(
             browser[name],
@@ -1183,19 +1190,12 @@ export default class Driver extends serviceUtils.EventEmitter {
             return selectorExecutor.getResult();
         };
 
-        const dispatchProxylessEventFn = this.options.proxyless
-            ? {
-                single:   this._createDispatchProxylessEventFn('dispatchProxylessEvent'),
-                sequence: this._createDispatchProxylessEventFn('dispatchProxylessEventSequence'),
-            }
-            : null;
-
         const executor = new ActionExecutor(command, {
-            globalSelectorTimeout: this.options.selectorTimeout,
-            testSpeed:             this.speed,
-            executeSelectorFn:     executeSelectorCb,
-            leftTopPoint:          this.leftTopPoint,
-            dispatchProxylessEventFn,
+            globalSelectorTimeout:    this.options.selectorTimeout,
+            testSpeed:                this.speed,
+            executeSelectorFn:        executeSelectorCb,
+            leftTopPoint:             this.leftTopPoint,
+            dispatchProxylessEventFn: this.createDispatchProxylessEventFunctions(),
         });
 
         const warnings = [];

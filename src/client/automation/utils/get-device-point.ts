@@ -1,9 +1,9 @@
-import AxisValues from '../../core/utils/values/axis-values';
+import AxisValues, { AxisValuesData } from '../../core/utils/values/axis-values';
 // @ts-ignore
 import { Promise } from '../../driver/deps/hammerhead';
 import * as positionUtils from '../../core/utils/position';
 
-export default function getDevicePoint (clientPoint: AxisValues<number>): Promise<AxisValues<number> | null> {
+export default function getDevicePoint (clientPoint: AxisValuesData<number>): Promise<AxisValues<number> | null> {
     if (!clientPoint)
         return null;
 

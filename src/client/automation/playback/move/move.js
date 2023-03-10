@@ -2,6 +2,7 @@ import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import { MoveOptions } from '../../../../test-run/commands/options';
 import cursor from '../../cursor';
+import ProxylessInput from '../../../../proxyless/client/input';
 
 
 import getLineRectIntersection from './get-line-rect-intersection';
@@ -21,7 +22,7 @@ const styleUtils         = testCafeCore.styleUtils;
 const MOVE_REQUEST_CMD  = 'automation|move|request';
 const MOVE_RESPONSE_CMD = 'automation|move|response';
 
-function onMoveToIframeRequest (e) {
+function onMoveToIframeRequest (e, dispatchProxylessEventFn) {
     const iframePoint                 = new AxisValues(e.message.endX, e.message.endY);
     const iframeWin                   = e.source;
     const iframe                      = domUtils.findIframeByWindow(iframeWin);
@@ -59,8 +60,12 @@ function onMoveToIframeRequest (e) {
     };
 
     if (cursor.getActiveWindow(window) !== iframeWin) {
-        // const moveAutomation = new MoveAutomation(iframe, moveOptions);
-        MoveAutomation.create(iframe, moveOptions, window, cursor)
+        let proxylessInput = null;
+
+        if (dispatchProxylessEventFn)
+            proxylessInput = new ProxylessInput(dispatchProxylessEventFn);
+
+        MoveAutomation.create(iframe, moveOptions, window, cursor, proxylessInput)
             .then(moveAutomation => {
                 return moveAutomation.run();
             })
@@ -150,8 +155,12 @@ function onMoveOutRequest (e) {
 // Setup cross-iframe interaction
 messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
     if (e.message.cmd === MOVE_REQUEST_CMD) {
-        if (e.source.parent === window)
-            onMoveToIframeRequest(e);
+        if (e.source.parent === window) {
+            // @ts-ignore
+            const driver = window['%testCafeDriverInstance%'];
+
+            onMoveToIframeRequest(e, e.message.proxylessMove && driver.createDispatchProxylessEventFunctions());
+        }
         else {
             hammerhead.on(hammerhead.EVENTS.beforeUnload, () => messageSandbox.sendServiceMsg({ cmd: MOVE_RESPONSE_CMD }, e.source));
 

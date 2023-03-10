@@ -118,6 +118,8 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
 
         // NOTE: only for legacy API
         this._ensureWindowAndCursorForLegacyTests(this);
+
+        this.cursor.shouldRender = !this.proxylessInput;
     }
 
     private _ensureWindowAndCursorForLegacyTests (automation: VisibleElementAutomation): void {
@@ -139,7 +141,7 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
 
     private async _moveToElement (): Promise<void> {
         const moveOptions    = new MoveOptions(utils.extend({ skipScrolling: true }, this.options), false);
-        const moveAutomation = await MoveAutomation.create(this.element, moveOptions, this.window, this.cursor);
+        const moveAutomation = await MoveAutomation.create(this.element, moveOptions, this.window, this.cursor, this.proxylessInput);
 
         return moveAutomation // eslint-disable-line consistent-return
             .run()
