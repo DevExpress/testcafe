@@ -240,7 +240,7 @@
     "sinon": "^7.3.0",
     "stack-chain": "^2.0.0",
     "strip-ansi": "^3.0.0",
-    "testcafe-browser-provider-browserstack": "^1.14.1",
+    "testcafe-browser-provider-browserstack": "file:testcafe-browser-provider-browserstack-1.14.2.tgz",
     "tslib": "^2.4.0",
     "uglify-js": "~3.10.4"
   }
