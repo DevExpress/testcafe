@@ -1,14 +1,69 @@
 import { EventType } from '../types';
 import { SimulatedKeyInfo } from './key-press/utils';
 // @ts-ignore
-import { utils } from '../../client/core/deps/hammerhead';
+import { utils, eventSandbox } from '../../client/core/deps/hammerhead';
 import { calculateKeyModifiersValue, calculateMouseButtonValue } from './utils';
-import AxisValues from '../../client/core/utils/values/axis-values';
+import { AxisValuesData } from '../../client/core/utils/values/axis-values';
+import sendRequestToFrame from '../../client/core/utils/send-request-to-frame';
+import { findIframeByWindow } from '../../client/core/utils/dom';
+import { getBordersWidthFloat, getElementPaddingFloat } from '../../client/core/utils/style';
+
+const messageSandbox = eventSandbox.message;
 
 const MOUSE_EVENT_OPTIONS = {
     clickCount: 1,
     button:     'left',
 };
+
+const CALCULATE_TOP_LEFT_POINT_REQUEST_CMD  = 'proxyless|calculate-top-left-point|request';
+const CALCULATE_TOP_LEFT_POINT_RESPONSE_CMD = 'proxyless|calculate-top-left-point|response';
+
+function getLeftTopPoint (driverIframe: any): AxisValuesData<number> {
+    const rect     = driverIframe.getBoundingClientRect();
+    const borders  = getBordersWidthFloat(driverIframe);
+    const paddings = getElementPaddingFloat(driverIframe);
+
+    return {
+        x: rect.left + borders.left + paddings.left,
+        y: rect.top + borders.top + paddings.top,
+    };
+}
+
+// Setup cross-iframe interaction
+messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, async (e:any) => {
+    if (e.message.cmd === CALCULATE_TOP_LEFT_POINT_REQUEST_CMD) {
+        const iframeWin = e.source;
+
+        const { x, y } = await calculateIFrameTopLeftPoint();
+
+        const iframe = findIframeByWindow(iframeWin);
+        const topLeftPoint = getLeftTopPoint(iframe);
+
+        const responseMsg = {
+            cmd:          CALCULATE_TOP_LEFT_POINT_RESPONSE_CMD,
+            topLeftPoint: {
+                x: topLeftPoint.x + x,
+                y: topLeftPoint.y + y,
+            },
+        };
+
+        messageSandbox.sendServiceMsg(responseMsg, iframeWin);
+    }
+});
+
+async function calculateIFrameTopLeftPoint (): Promise<AxisValuesData<number>> {
+    if (window !== window.parent) {
+        const msg: any = {
+            cmd: CALCULATE_TOP_LEFT_POINT_REQUEST_CMD,
+        };
+
+        const { topLeftPoint } = await sendRequestToFrame(msg, CALCULATE_TOP_LEFT_POINT_RESPONSE_CMD, window.parent);
+
+        return topLeftPoint;
+    }
+
+    return { x: 0, y: 0 };
+}
 
 export default class CDPEventDescriptor {
     private static _getKeyDownEventText (options: SimulatedKeyInfo): any {
@@ -42,10 +97,12 @@ export default class CDPEventDescriptor {
         };
     }
 
-    public static createMouseEventOptions (type: string, options: any, leftTopPoint: AxisValues<number>): any {
+    public static async createMouseEventOptions (type: string, options: any): Promise<any> {
+        const { x, y } = await calculateIFrameTopLeftPoint();
+
         return utils.extend({
-            x:         options.options.clientX + leftTopPoint.x,
-            y:         options.options.clientY + leftTopPoint.y,
+            x:         options.options.clientX + x,
+            y:         options.options.clientY + y,
             modifiers: calculateKeyModifiersValue(options.options),
             button:    calculateMouseButtonValue(options.options),
             type,

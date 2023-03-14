@@ -6,7 +6,6 @@ import delay from '../../../core/utils/delay';
 import { utils, Promise } from '../../deps/hammerhead';
 import { createMouseClickStrategy, MouseClickStrategy } from './browser-click-strategy';
 import ProxylessInput from '../../../../proxyless/client/input';
-import AxisValues from '../../../core/utils/values/axis-values';
 import { setCaretPosition } from '../../utils/utils';
 import { DispatchEventFn } from '../../../../proxyless/client/types';
 
@@ -23,8 +22,8 @@ export default class ClickAutomation extends VisibleElementAutomation {
     private modifiers: Modifiers;
     public strategy: MouseClickStrategy;
 
-    protected constructor (element: HTMLElement, clickOptions: ClickOptions, win: Window, cursor: Cursor, dispatchProxylessEventFn?: DispatchEventFn, leftTopPoint?: AxisValues<number>) {
-        super(element, clickOptions, win, cursor, dispatchProxylessEventFn, leftTopPoint);
+    protected constructor (element: HTMLElement, clickOptions: ClickOptions, win: Window, cursor: Cursor, dispatchProxylessEventFn?: DispatchEventFn) {
+        super(element, clickOptions, win, cursor, dispatchProxylessEventFn);
 
         this.modifiers = clickOptions.modifiers;
         this.strategy  = createMouseClickStrategy(this.element, clickOptions.caretPos);

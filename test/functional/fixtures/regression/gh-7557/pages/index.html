@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        iframe {
+            margin-top: 5000px;
+            margin-left: 5000px;
+            width: 800px;
+            height: 500px;
+        }
+
+        button {
+            margin-left: 5000px;
+        }
+    </style>
+</head>
+<body>
+    <iframe src="http://localhost:3001/fixtures/regression/gh-7557/pages/frame.html"></iframe>
+    <button>click me in parent</button>
+
+    <script>
+        document.querySelector('button').addEventListener('click', function (e) {
+            e.target.style.backgroundColor = 'red';
+
+            window.clickedInParent = true;
+        });
+    </script>
+</body>
+</html>

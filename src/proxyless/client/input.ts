@@ -1,26 +1,23 @@
 import { EventType } from '../types';
-import AxisValues, { AxisValuesData } from '../../client/core/utils/values/axis-values';
+import { AxisValuesData } from '../../client/core/utils/values/axis-values';
 import { SimulatedKeyInfo } from './key-press/utils';
 import { DispatchEventFn } from './types';
 import CDPEventDescriptor from './event-descriptor';
 
 export default class ProxylessInput {
-
     private readonly _dispatchEventFn: DispatchEventFn;
-    private readonly _leftTopPoint: AxisValues<number>;
-    constructor (dispatchEventFn: DispatchEventFn, leftTopPoint?: AxisValues<number>) {
+    constructor (dispatchEventFn: DispatchEventFn) {
         this._dispatchEventFn = dispatchEventFn;
-        this._leftTopPoint    = leftTopPoint || new AxisValues<number>(0, 0);
     }
 
-    public mouseDown (options: any): Promise<void> {
-        const eventOptions = CDPEventDescriptor.createMouseEventOptions('mousePressed', options, this._leftTopPoint);
+    public async mouseDown (options: any): Promise<void> {
+        const eventOptions = await CDPEventDescriptor.createMouseEventOptions('mousePressed', options);
 
         return this._dispatchEventFn.single(EventType.Mouse, eventOptions);
     }
 
-    public mouseUp (options: any): Promise<void> {
-        const eventOptions = CDPEventDescriptor.createMouseEventOptions('mouseReleased', options, this._leftTopPoint);
+    public async mouseUp (options: any): Promise<void> {
+        const eventOptions = await CDPEventDescriptor.createMouseEventOptions('mouseReleased', options);
 
         return this._dispatchEventFn.single(EventType.Mouse, eventOptions);
     }
@@ -40,15 +37,14 @@ export default class ProxylessInput {
         return this._dispatchEventFn.sequence(eventSequence);
     }
 
-    public createMouseMoveEvent (currPosition: AxisValuesData<number>): any {
-        const options = CDPEventDescriptor.createMouseEventOptions('mouseMoved', {
+    public async createMouseMoveEvent (currPosition: AxisValuesData<number>): Promise<any> {
+        const options = await CDPEventDescriptor.createMouseEventOptions('mouseMoved', {
             options: {
                 clientX: currPosition.x,
                 clientY: currPosition.y,
                 button:  'none',
             },
-            // @ts-ignore
-        }, this._leftTopPoint);
+        });
 
         return {
             type: EventType.Mouse,
