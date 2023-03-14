@@ -114,7 +114,7 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
         this.window  = win;
         this.cursor  = cursor;
 
-        this.proxylessInput = dispatchProxylessEventFn ? new ProxylessInput(dispatchProxylessEventFn, topLeftPoint) : null;
+        this.proxylessInput = dispatchProxylessEventFn ? new ProxylessInput(dispatchProxylessEventFn) : null;
 
         // NOTE: only for legacy API
         this._ensureWindowAndCursorForLegacyTests(this);
