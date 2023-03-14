@@ -101,7 +101,7 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
     protected readonly options: OffsetOptions;
     protected readonly proxylessInput: ProxylessInput | null;
 
-    protected constructor (element: HTMLElement, offsetOptions: OffsetOptions, win: Window, cursor: Cursor, dispatchProxylessEventFn?: DispatchEventFn, topLeftPoint?: AxisValues<number>) {
+    protected constructor (element: HTMLElement, offsetOptions: OffsetOptions, win: Window, cursor: Cursor, dispatchProxylessEventFn?: DispatchEventFn) {
         super();
 
         this.TARGET_ELEMENT_FOUND_EVENT = 'automation|target-element-found-event';
