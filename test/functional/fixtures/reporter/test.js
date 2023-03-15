@@ -914,7 +914,7 @@ const experimentalDebug = !!process.env.EXPERIMENTAL_DEBUG;
         };
 
         const expectedReports = {
-            'Run t.report action twice':              ['Report 1', 'Report 2'],
+            'Run t.report action twice':              [['Report 1', 'Report 2'], 'Report 3'],
             'Run t.report action with multiple args': ['Report 1', 'Report2', { 'reportResult': 'test' }, 'Report 3', 'Report 4'],
             'Run t.report action with object val':    ['Report 1', { 'reportResult': 'test' }],
         };
