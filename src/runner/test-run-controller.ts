@@ -214,6 +214,7 @@ export default class TestRunController extends AsyncEventEmitter {
     private _assignTestRunEvents (testRun: TestRun | LegacyTestRun, connection: BrowserConnection): void {
         testRun.on('action-start', async (args: ActionEventArg) => this._emitActionStart(Object.assign(args, { testRun })));
         testRun.on('action-done', async (args: ActionEventArg) => this._emitActionDone(Object.assign(args, { testRun })));
+        testRun.on('report-data', async (data: any) => this._messageBus.emit('report-data', { testRun, data }));
 
         testRun.once('start', async () => this._emitTestRunStart());
         testRun.once('ready', async () => {

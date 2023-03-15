@@ -34,6 +34,7 @@ import MessageBus from '../utils/message-bus';
 import BrowserConnection from '../browser/connection';
 import { Dictionary } from '../configuration/interfaces';
 import debug from 'debug';
+import { ReportDataLogItem } from './report-data-log';
 
 interface PendingPromise {
     resolve: Function | null;
@@ -69,6 +70,7 @@ interface TestInfo {
     pendingTestRunDonePromise: PendingPromise;
     pendingTestRunStartPromise: PendingPromise;
     browsers: BrowserRunInfo[];
+    reportData: ReportDataLogItem[];
 }
 
 interface FixtureInfo {
@@ -86,6 +88,7 @@ interface BrowserRunInfo extends Browser {
 interface TestRunInfo {
     errs: TestRunErrorFormattableAdapter[];
     warnings: string[];
+    reportData: ReportDataLogItem[];
     durationMs: number;
     unstable: boolean;
     screenshotPath: string;
@@ -121,6 +124,11 @@ interface ReportWarningEventArguments {
     message: string;
     testRun?: TestRun;
     actionId?: string;
+}
+
+interface ReportDataEventArgs {
+    data: any;
+    testRun: TestRun
 }
 
 const debugLog = debug('testcafe:reporter');
@@ -193,6 +201,8 @@ export default class Reporter {
         const messageBus = this.messageBus;
 
         messageBus.on('warning-add', async e => await this._onWarningAddHandler(e));
+
+        messageBus.on('report-data', async e => await this._onReportDataHandler(e));
 
         messageBus.once('start', async (task: Task) => await this._onceTaskStartHandler(task));
 
@@ -299,6 +309,7 @@ export default class Reporter {
             pendingTestRunDonePromise:  Reporter._createPendingPromise(),
             pendingTestRunStartPromise: Reporter._createPendingPromise(),
             browsers:                   [],
+            reportData:                 [],
         };
     }
 
@@ -312,6 +323,7 @@ export default class Reporter {
         return {
             errs:           sortBy(reportItem.errs, ['userAgent', 'code']),
             warnings:       reportItem.warnings,
+            reportData:     reportItem.reportData,
             durationMs:     +new Date() - (reportItem.startTime as number), //eslint-disable-line  @typescript-eslint/no-extra-parens
             unstable:       reportItem.unstable,
             screenshotPath: reportItem.screenshotPath as string,
@@ -548,6 +560,7 @@ export default class Reporter {
         reportItem.unstable    = reportItem.unstable || testRun.unstable;
         reportItem.errs        = reportItem.errs.concat(testRun.errs);
         reportItem.warnings    = testRun.warningLog ? union(reportItem.warnings, testRun.warningLog.messages) : [];
+        reportItem.reportData  = testRun.reportDataLog.data;
 
         if (testRun.quarantine) {
             reportItem.quarantine = reportItem.quarantine || {};
@@ -634,5 +647,19 @@ export default class Reporter {
         });
 
         (this.taskInfo.pendingTaskDonePromise.resolve as Function)();
+    }
+
+    private async _onReportDataHandler ({ testRun, data }: ReportDataEventArgs): Promise<void> {
+        if (!this.taskInfo)
+            return;
+
+        await this.dispatchToPlugin({
+            method:        ReporterPluginMethod.reportData as string,
+            initialObject: this.taskInfo.task,
+            args:          [{
+                testRun,
+                data,
+            }],
+        });
     }
 }
