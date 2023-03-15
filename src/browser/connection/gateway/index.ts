@@ -356,8 +356,15 @@ export default class BrowserConnectionGateway extends EventEmitter {
         return this._connections;
     }
 
+<<<<<<< HEAD
     public get proxyless (): boolean {
         return this._options.proxyless;
+=======
+    public switchToProxyless (): void {
+        this._proxyless = true;
+
+        this.proxy.switchToProxyless();
+>>>>>>> 3b874ffff... fix proxyless calculation
     }
 
     public get status (): BrowserConnectionGatewayStatus {

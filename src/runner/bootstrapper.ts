@@ -38,6 +38,7 @@ import assertRequestHookType from '../api/request-hooks/assert-type';
 import userVariables from '../api/user-variables';
 import OPTION_NAMES from '../configuration/option-names';
 import TestCafeConfiguration from '../configuration/testcafe-configuration';
+import BrowserConnectionGatewayStatus from '../browser/connection/gateway/status';
 
 const DEBUG_SCOPE = 'testcafe:bootstrapper';
 
@@ -190,22 +191,19 @@ export default class Bootstrapper {
     }
 
     private async _setupProxyless (automatedBrowserInfo: BrowserInfo[], remoteBrowserConnections: BrowserConnection[]): Promise<void> {
-        if (remoteBrowserConnections.length) {
-            this.proxyless = false;
-
+        if (this.browserConnectionGateway.status === BrowserConnectionGatewayStatus.initialized)
             return;
-        }
 
-        this.proxyless = this._calculateIsProxyless(automatedBrowserInfo);
+        this.proxyless = remoteBrowserConnections.length
+            ? false
+            : this._calculateIsProxyless(automatedBrowserInfo);
 
         await this.configuration.calculateHostname({ proxyless: this.proxyless });
 
         this.browserConnectionGateway.initialize(this.configuration.startOptions);
 
-        if (this.proxyless) {
+        if (this.proxyless)
             this.browserConnectionGateway.switchToProxyless();
-            this.browserConnectionGateway.proxy.switchToProxyless();
-        }
     }
 
     private async _getBrowserConnections (browserInfo: BrowserInfoSource[]): Promise<BrowserSet> {
