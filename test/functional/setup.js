@@ -56,6 +56,7 @@ function getBrowserInfo (settings) {
 
             return browserProviderPool
                 .getBrowserInfo(settings.browserName)
+<<<<<<< HEAD
                 .then(browserInfo => {
                     const options = {
                         disableMultipleWindows: false,
@@ -65,6 +66,9 @@ function getBrowserInfo (settings) {
 
                     return new BrowserConnection(testCafe.browserConnectionGateway, browserInfo, true, options);
                 });
+=======
+                .then(browserInfo => new BrowserConnection(testCafe.browserConnectionGateway, browserInfo, true, { developmentMode: config.devMode }));
+>>>>>>> e005d0698... small fixes
         })
         .then(connection => {
             return {

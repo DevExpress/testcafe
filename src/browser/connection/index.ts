@@ -291,6 +291,7 @@ export default class BrowserConnection extends EventEmitter {
     private _getAdditionalBrowserOptions (): OpenBrowserAdditionalOptions {
         const options = {
             disableMultipleWindows: this._options.disableMultipleWindows,
+            proxyless:              this._options.proxyless,
         } as OpenBrowserAdditionalOptions;
 
         if (this._options.proxyless) {
