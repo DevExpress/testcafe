@@ -285,7 +285,7 @@ export class RunCustomActionCommand extends ActionCommandBase {
     public args: any;
 }
 
-export class ReportDataCommand extends ActionCommandBase {
+export class ReportCommand extends ActionCommandBase {
     public constructor (obj: object, testRun: TestRun, validateProperties: boolean);
     public args: any[];
 }

@@ -560,7 +560,7 @@ export default class Reporter {
         reportItem.unstable    = reportItem.unstable || testRun.unstable;
         reportItem.errs        = reportItem.errs.concat(testRun.errs);
         reportItem.warnings    = testRun.warningLog ? union(reportItem.warnings, testRun.warningLog.messages) : [];
-        reportItem.reportData  = testRun.reportDataLog.data;
+        reportItem.reportData  = testRun.reportDataLog ? testRun.reportDataLog.data : [];
 
         if (testRun.quarantine) {
             reportItem.quarantine = reportItem.quarantine || {};

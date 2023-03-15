@@ -49,6 +49,7 @@ import {
     SkipJsErrorsCommand,
     AddRequestHooksCommand,
     RemoveRequestHooksCommand,
+    ReportCommand,
 } from '../../../../../test-run/commands/actions';
 
 import { AssertionCommand } from '../../../../../test-run/commands/assertion';
@@ -115,6 +116,7 @@ const COMMAND_CONSTRUCTORS = new Map<string, CommandConstructor>([
     [CommandType.skipJsErrors, SkipJsErrorsCommand],
     [CommandType.addRequestHooks, AddRequestHooksCommand],
     [CommandType.removeRequestHooks, RemoveRequestHooksCommand],
+    [CommandType.report, ReportCommand],
 ]);
 
 export default COMMAND_CONSTRUCTORS;
