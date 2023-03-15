@@ -1,4 +1,4 @@
-const expect                = require('chai').expect;
+const { expect }            = require('chai');
 const url                   = require('url');
 const net                   = require('net');
 const path                  = require('path');

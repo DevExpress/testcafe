@@ -7,6 +7,7 @@ const LiveModeController            = require('../../lib/live/controller');
 const LiveModeRunner                = require('../../lib/live/test-runner');
 const LiveModeBootstrapper          = require('../../lib/live/bootstrapper');
 const LiveModeKeyboardEventObserver = require('../../lib/live/keyboard-observer');
+const { browserSetMock }            = require('./helpers/mocks');
 
 const testFileWithSingleTestPath               = path.resolve('test/server/data/test-suites/live/test.js');
 const testFileWithMultipleTestsPath            = path.resolve('test/server/data/test-suites/live/multiple-tests.js');
@@ -21,9 +22,6 @@ const externalCommonJsModulePath = path.resolve('test/server/data/test-suites/li
 
 const DOCKER_TESTCAFE_FOLDER_REGEXP = /^\/usr\/lib\/node_modules\/testcafe/;
 
-const browserSetMock = {
-    browserConnectionGroups: [],
-};
 
 class FileWatcherMock extends FileWatcher {
     addFile (controller, file) {

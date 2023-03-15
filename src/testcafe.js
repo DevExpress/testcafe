@@ -31,10 +31,7 @@ export default class TestCafe {
         this.runners       = [];
         this.configuration = configuration;
 
-        this.browserConnectionGateway = new BrowserConnectionGateway(this.proxy, {
-            retryTestPages: configuration.getOption(OPTION_NAMES.retryTestPages),
-            proxyless:      configuration.getOption(OPTION_NAMES.experimentalProxyless),
-        });
+        this.browserConnectionGateway = new BrowserConnectionGateway(this.proxy, this.configuration.browserConnectionGatewayOptions);
 
         if (configuration.getOption(OPTION_NAMES.experimentalDebug)) {
             const developmentMode = configuration.getOption(OPTION_NAMES.developmentMode);
@@ -117,6 +114,5 @@ export default class TestCafe {
             this.compilerService.stop();
 
         await this.browserConnectionGateway.close();
-        this.proxy.close();
     }
 }

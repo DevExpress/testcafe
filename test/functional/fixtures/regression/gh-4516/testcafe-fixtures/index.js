@@ -12,6 +12,7 @@ export default class CustomHook extends RequestHook {
     onRequest (event) {
         if (event.isAjax) {
             this.pendingAjaxRequestIds.add(event._requestInfo.requestId);
+
             this._hasAjaxRequests = true;
         }
     }
@@ -22,6 +23,10 @@ export default class CustomHook extends RequestHook {
 
     get hasAjaxRequests () {
         return ReExecutablePromise.fromFn(async () => this._hasAjaxRequests);
+    }
+
+    get allAjaxRequestsCompleted () {
+        return ReExecutablePromise.fromFn(async () => this.pendingAjaxRequestIds.size === 0);
     }
 }
 
@@ -36,19 +41,19 @@ test.requestHooks(hook1)('Without config', async t => {
     await t
         .expect(Selector('#result').visible).ok()
         .expect(hook1.hasAjaxRequests).ok()
-        .expect(hook1.pendingAjaxRequestIds.size).eql(0);
+        .expect(hook1.allAjaxRequestsCompleted).ok();
 });
 
 test.requestHooks(hook2)('With empty config', async t => {
     await t
         .expect(Selector('#result').visible).ok()
         .expect(hook2.hasAjaxRequests).ok()
-        .expect(hook2.pendingAjaxRequestIds.size).eql(0);
+        .expect(hook1.allAjaxRequestsCompleted).ok();
 });
 
 test.requestHooks(hook3)('With includeHeaders', async t => {
     await t
         .expect(Selector('#result').visible).ok()
         .expect(hook3.hasAjaxRequests).ok()
-        .expect(hook3.pendingAjaxRequestIds.size).eql(0);
+        .expect(hook1.allAjaxRequestsCompleted).ok();
 });

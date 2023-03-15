@@ -86,11 +86,21 @@ export interface BrowserInfo {
     parsedUserAgent: ParsedUserAgent;
 }
 
+export interface BrowserConnectionOptions {
+    disableMultipleWindows: boolean;
+    developmentMode: boolean;
+    proxyless: boolean;
+}
+
+const DEFAULT_BROWSER_CONNECTION_OPTIONS = {
+    disableMultipleWindows: false,
+    developmentMode:        false,
+    proxyless:              false,
+};
+
 export default class BrowserConnection extends EventEmitter {
     public permanent: boolean;
     public previousActiveWindowId: string | null;
-    private readonly disableMultipleWindows: boolean;
-    public readonly proxyless: boolean;
     private readonly HEARTBEAT_TIMEOUT: number;
     private readonly BROWSER_CLOSE_TIMEOUT: number;
     private readonly BROWSER_RESTART_TIMEOUT: number;
@@ -127,6 +137,7 @@ export default class BrowserConnection extends EventEmitter {
 
     public readonly warningLog: WarningLog;
     private _messageBus?: MessageBus;
+    private readonly _options: BrowserConnectionOptions;
 
     public idle: boolean;
 
@@ -137,8 +148,7 @@ export default class BrowserConnection extends EventEmitter {
         gateway: BrowserConnectionGateway,
         browserInfo: BrowserInfo,
         permanent: boolean,
-        disableMultipleWindows = false,
-        proxyless = false,
+        options: Partial<BrowserConnectionOptions> = {},
         messageBus?: MessageBus) {
         super();
 
@@ -171,8 +181,7 @@ export default class BrowserConnection extends EventEmitter {
         this.idle                   = true;
         this.heartbeatTimeout       = null;
         this.pendingTestRunInfo     = null;
-        this.disableMultipleWindows = disableMultipleWindows;
-        this.proxyless              = proxyless;
+        this._options               = this._calculateResultOptions(options);
 
         this._buildCommunicationUrls(gateway.proxy);
         this._setEventHandlers();
@@ -185,6 +194,10 @@ export default class BrowserConnection extends EventEmitter {
 
         // NOTE: Give a caller time to assign event listeners
         process.nextTick(() => this._runBrowser());
+    }
+
+    private _calculateResultOptions (options: Partial<BrowserConnectionOptions>): BrowserConnectionOptions {
+        return Object.assign({}, DEFAULT_BROWSER_CONNECTION_OPTIONS, options);
     }
 
     private _buildCommunicationUrls (proxy: Proxy): void {
@@ -257,17 +270,17 @@ export default class BrowserConnection extends EventEmitter {
 
     private _getAdditionalBrowserOptions (): OpenBrowserAdditionalOptions {
         const options = {
-            disableMultipleWindows: this.disableMultipleWindows,
+            disableMultipleWindows: this._options.disableMultipleWindows,
         } as OpenBrowserAdditionalOptions;
 
-        if (this.proxyless) {
+        if (this._options.proxyless) {
             options.proxyless = {
                 serviceDomains: [
                     this.browserConnectionGateway.proxy.server1Info.domain,
                     this.browserConnectionGateway.proxy.server2Info.domain,
                 ],
 
-                developmentMode: this.browserConnectionGateway.proxy.options.developmentMode,
+                developmentMode: this._options.developmentMode,
             };
         }
 
@@ -562,7 +575,7 @@ export default class BrowserConnection extends EventEmitter {
             initScriptUrl:       this.initScriptUrl,
             openFileProtocolUrl: this.openFileProtocolUrl,
             retryTestPages:      !!this.browserConnectionGateway.retryTestPages,
-            proxyless:           this.proxyless,
+            proxyless:           this._options.proxyless,
         });
     }
 

@@ -206,4 +206,8 @@ export default {
                 await dispatchProxylessEvent(cdpClient, event.type, event.options);
         }
     },
+
+    supportProxyless () {
+        return true;
+    },
 };
