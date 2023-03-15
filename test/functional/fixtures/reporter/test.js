@@ -888,7 +888,7 @@ const experimentalDebug = !!process.env.EXPERIMENTAL_DEBUG;
         });
     });
 
-    describe.only('Report Data', () => {
+    describe('Report Data', () => {
         let dataResult = null;
         let reporter   = null;
 
