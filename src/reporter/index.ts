@@ -652,10 +652,10 @@ export default class Reporter {
         await this.dispatchToPlugin({
             method:        ReporterPluginMethod.reportData as string,
             initialObject: this.taskInfo.task,
-            args:          [{
+            args:          [
                 testRun,
-                data,
-            }],
+                ...data,
+            ],
         });
     }
 }

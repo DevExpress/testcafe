@@ -888,7 +888,7 @@ const experimentalDebug = !!process.env.EXPERIMENTAL_DEBUG;
         });
     });
 
-    describe('Report Data', () => {
+    describe.only('Report Data', () => {
         let dataResult = null;
         let reporter   = null;
 
@@ -899,7 +899,7 @@ const experimentalDebug = !!process.env.EXPERIMENTAL_DEBUG;
             };
 
             return createReporter({
-                reportData: ({ data, testRun }) => {
+                reportData: (testRun, ...data) => {
                     const testName = testRun.test.name;
 
                     if (!dataResult.reportDataInfos[testName])
