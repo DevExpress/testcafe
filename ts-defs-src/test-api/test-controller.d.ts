@@ -101,17 +101,26 @@ interface CustomActions {
     [key: string]: (...args: any[]) => TestControllerPromise
 }
 
-type ScrollPosition = 'top' | 'right' | 'bottom' | 'left' | 'topRight' | 'topLeft' | 'bottomRight' | 'bottomLeft' | 'center';
+type ScrollPosition =
+    'top'
+    | 'right'
+    | 'bottom'
+    | 'left'
+    | 'topRight'
+    | 'topLeft'
+    | 'bottomRight'
+    | 'bottomLeft'
+    | 'center';
 
 interface TestController {
     /**
      * Dictionary that is shared between test hook functions and test code.
      */
-    ctx: {[key: string]: any};
+    ctx: { [key: string]: any };
     /**
      * Dictionary that is shared between `fixture.before` and `fixture.after`, test hook functions and test code.
      */
-    readonly fixtureCtx: {[key: string]: any};
+    readonly fixtureCtx: { [key: string]: any };
     /**
      * Returns an object that contains browser information.
      */
@@ -120,6 +129,7 @@ interface TestController {
      * Returns an object that contains registered custom actions.
      */
     readonly customActions: CustomActions;
+
     /**
      * Dispatches an event over a specified webpage element.
      *
@@ -127,54 +137,59 @@ interface TestController {
      * @param eventName - The name of the event to be dispatched on the DOM element..
      * @param options - The options which will be passed to EventConstructor.
      */
-    dispatchEvent(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-        eventName: string, options?: object): TestControllerPromise;
+    dispatchEvent (selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
+                   eventName: string, options?: object): TestControllerPromise;
+
     /**
      * Clicks a webpage element.
      *
      * @param selector - Identifies the webpage element being clicked.
      * @param options - A set of options that provide additional parameters for the action.
      */
-    click(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-        options?: ClickActionOptions): TestControllerPromise;
+    click (selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
+           options?: ClickActionOptions): TestControllerPromise;
+
     /**
      * Right-clicks a webpage element.
      *
      * @param selector - Identifies the webpage element being right-clicked.
      * @param options - A set of options that provide additional parameters for the action.
      */
-    rightClick(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-        options?: ClickActionOptions): TestControllerPromise;
+    rightClick (selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
+                options?: ClickActionOptions): TestControllerPromise;
+
     /**
      * Double-clicks a webpage element.
      *
      * @param selector - Identifies the webpage element being double-clicked.
      * @param options - A set of options that provide additional parameters for the action.
      */
-    doubleClick(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-        options?: ClickActionOptions): TestControllerPromise;
+    doubleClick (selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
+                 options?: ClickActionOptions): TestControllerPromise;
+
     /**
      * Hovers the mouse pointer over a webpage element.
      *
      * @param selector - Identifies the webpage element being hovered over.
      * @param options - A set of options that provide additional parameters for the action.
      */
-    hover(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-        options?: MouseActionOptions): TestControllerPromise;
+    hover (selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
+           options?: MouseActionOptions): TestControllerPromise;
+
     /**
      * Scrolls the document element to the { scrollLeft, scrollTop } position.
      *
      * @param scrollLeft - The position along the horizontal axis of the document.
      * @param scrollTop - The position along the vertical axis of the document.
      */
-    scroll(posX: number, posY: number): TestControllerPromise;
+    scroll (posX: number, posY: number): TestControllerPromise;
 
     /**
      * Scrolls the document element to the predefined position.
      *
      * @param position - The position to scroll the document to. Valid values are topLeft, top, topRight, left, center, right, bottomLeft, bottom, bottomRight
      */
-    scroll(position: ScrollPosition): TestControllerPromise;
+    scroll (position: ScrollPosition): TestControllerPromise;
 
     /**
      * Scrolls the specified element to the { scrollLeft, scrollTop } position.
@@ -184,8 +199,8 @@ interface TestController {
      * @param scrollTop - The position along the vertical axis of the document.
      * @param options - A set of options that provide additional parameters for the action.
      */
-    scroll(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-        scrollLeft: number, scrollTop: number, options?: OffsetOptions): TestControllerPromise;
+    scroll (selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
+            scrollLeft: number, scrollTop: number, options?: OffsetOptions): TestControllerPromise;
 
     /**
      * Scrolls the specified element to the predefined position.
@@ -194,8 +209,8 @@ interface TestController {
      * @param position - The position to scroll the document to. Valid values are topLeft, top, topRight, left, center, right, bottomLeft, bottom, bottomRight
      * @param options - A set of options that provide additional parameters for the action.
      */
-    scroll(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-        position: ScrollPosition, options?: OffsetOptions): TestControllerPromise;
+    scroll (selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
+            position: ScrollPosition, options?: OffsetOptions): TestControllerPromise;
 
     /**
      * Scrolls the document element by the given offset.
@@ -203,7 +218,7 @@ interface TestController {
      * @param scrollLeft - The horizontal pixel value that you want to scroll by.
      * @param scrollTop - The vertical pixel value that you want to scroll by.
      */
-    scrollBy(x: number, y: number): TestControllerPromise;
+    scrollBy (x: number, y: number): TestControllerPromise;
 
     /**
      * Scrolls the specified element by the given offset.
@@ -212,16 +227,16 @@ interface TestController {
      * @param scrollTop - The vertical pixel value that you want to scroll by.
      * @param options - A set of options that provide additional parameters for the action.
      */
-    scrollBy(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-        x: number, y: number, options?: OffsetOptions): TestControllerPromise;
+    scrollBy (selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
+              x: number, y: number, options?: OffsetOptions): TestControllerPromise;
 
     /**
      * Scrolls the specified element into view.
      * @param selector - Identifies the webpage element being hovered over.
      * @param options - A set of options that provide additional parameters for the action.
      */
-    scrollIntoView(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-        options?: OffsetOptions): TestControllerPromise;
+    scrollIntoView (selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
+                    options?: OffsetOptions): TestControllerPromise;
 
     /**
      * Drags an element by an offset.
@@ -231,10 +246,11 @@ interface TestController {
      * @param dragOffsetY - An Y-offset of the drop coordinates from the mouse pointer's initial position.
      * @param options - A set of options that provide additional parameters for the action.
      */
-    drag(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-        dragOffsetX: number,
-        dragOffsetY: number,
-        options?: MouseActionOptions): TestControllerPromise;
+    drag (selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
+          dragOffsetX: number,
+          dragOffsetY: number,
+          options?: MouseActionOptions): TestControllerPromise;
+
     /**
      * Drags an element onto another one.
      *
@@ -242,9 +258,10 @@ interface TestController {
      * @param destinationSelector - Identifies the webpage element that serves as the drop location.
      * @param options - A set of options that provide additional parameters for the action.
      */
-    dragToElement(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-        destinationSelector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-        options?: DragToElementOptions): TestControllerPromise;
+    dragToElement (selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
+                   destinationSelector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
+                   options?: DragToElementOptions): TestControllerPromise;
+
     /**
      * Types the specified text into an input element.
      *
@@ -252,9 +269,10 @@ interface TestController {
      * @param text - The text to be typed into the specified webpage element.
      * @param options - A set of options that provide additional parameters for the action.
      */
-    typeText(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-        text: string,
-        options?: TypeActionOptions): TestControllerPromise;
+    typeText (selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
+              text: string,
+              options?: TypeActionOptions): TestControllerPromise;
+
     /**
      * Selects text in input elements.
      *
@@ -263,10 +281,11 @@ interface TestController {
      * @param endPos - The end position of the selection. A zero-based integer.
      * @param options - A set of options that provide additional parameters for the action.
      */
-    selectText(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-        startPos?: number,
-        endPos?: number,
-        options?: ActionOptions): TestControllerPromise;
+    selectText (selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
+                startPos?: number,
+                endPos?: number,
+                options?: ActionOptions): TestControllerPromise;
+
     /**
      * Selects `<textarea>` content.
      *
@@ -277,12 +296,13 @@ interface TestController {
      * @param endPos
      * @param options
      */
-    selectTextAreaContent(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-        startLine?: number,
-        startPos?: number,
-        endLine?: number,
-        endPos?: number,
-        options?: ActionOptions): TestControllerPromise;
+    selectTextAreaContent (selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
+                           startLine?: number,
+                           startPos?: number,
+                           endLine?: number,
+                           endPos?: number,
+                           options?: ActionOptions): TestControllerPromise;
+
     /**
      * Performs selection within editable content
      *
@@ -290,43 +310,49 @@ interface TestController {
      * @param endSelector - Identifies a webpage element at which selection ends. The end position of selection is the last character of the element's text.
      * @param options - A set of options that provide additional parameters for the action.
      */
-    selectEditableContent(startSelector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-        endSelector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-        options?: ActionOptions): TestControllerPromise;
+    selectEditableContent (startSelector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
+                           endSelector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
+                           options?: ActionOptions): TestControllerPromise;
+
     /**
      * Presses the specified keyboard keys.
      *
      * @param keys - The sequence of keys and key combinations to be pressed.
      * @param options - A set of options that provide additional parameters for the action.
      */
-    pressKey(keys: string, options?: PressActionOptions): TestControllerPromise;
+    pressKey (keys: string, options?: PressActionOptions): TestControllerPromise;
+
     /**
      * Pauses a test for a specified period of time.
      *
      * @param timeout - The pause duration, in milliseconds.
      */
-    wait(timeout: number): TestControllerPromise;
+    wait (timeout: number): TestControllerPromise;
+
     /**
      * Navigates to the specified URL.
      *
      * @param url - The URL to navigate to. Absolute or relative to the current page.
      * You can use the `file://` scheme or relative paths to navigate to a webpage in a local directory.
      */
-    navigateTo(url: string): TestControllerPromise;
+    navigateTo (url: string): TestControllerPromise;
+
     /**
      * Populates the specified file upload input with file paths.
      *
      * @param selector - Identifies the input field to which file paths are written.
      * @param filePath - The path to the uploaded file, or several such paths. Relative paths resolve from the folder with the test file.
      */
-    setFilesToUpload(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-        filePath: string | string[]): TestControllerPromise;
+    setFilesToUpload (selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
+                      filePath: string | string[]): TestControllerPromise;
+
     /**
      * Removes all file paths from the specified file upload input.
      *
      * @param selector - Identifies the input field that needs to be cleared.
      */
-    clearUpload(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection)): TestControllerPromise;
+    clearUpload (selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection)): TestControllerPromise;
+
     /**
      * Takes a screenshot of the tested page.
      *
@@ -334,13 +360,15 @@ interface TestController {
      * using the `runner.screenshots` API method or the `screenshots-path` command line option.
      * If path doesn't have .png extension, it will be added automatically.
      */
-    takeScreenshot(path?: string): TestControllerPromise;
+    takeScreenshot (path?: string): TestControllerPromise;
+
     /**
      * Takes a screenshot of the tested page.
      *
      * @param options - TakeScreenshot Options
      */
-    takeScreenshot(options: TakeScreenshotOptions): TestControllerPromise;
+    takeScreenshot (options: TakeScreenshotOptions): TestControllerPromise;
+
     /**
      * Takes a screenshot of the specified element.
      *
@@ -349,16 +377,17 @@ interface TestController {
      * using the `runner.screenshots` API method or the `screenshots-path` command line option.
      * If path doesn't have .png extension, it will be added automatically.
      */
-    takeElementScreenshot(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-        path?: string,
-        options?: TakeElementScreenshotOptions): TestControllerPromise;
+    takeElementScreenshot (selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
+                           path?: string,
+                           options?: TakeElementScreenshotOptions): TestControllerPromise;
+
     /**
      * Sets the browser window size.
      *
      * @param width - The new width, in pixels.
      * @param height - The new height, in pixels.
      */
-    resizeWindow(width: number, height: number): TestControllerPromise;
+    resizeWindow (width: number, height: number): TestControllerPromise;
 
     /**
      * Fits the browser window into a particular device.
@@ -366,64 +395,67 @@ interface TestController {
      * @param deviceName - The name of the device as listed at https://github.com/DevExpress/device-specs/blob/master/viewport-sizes.json.
      * @param options - Provide additional information about the device.
      */
-    resizeWindowToFitDevice(deviceName: string, options?: ResizeToFitDeviceOptions): TestControllerPromise;
+    resizeWindowToFitDevice (deviceName: string, options?: ResizeToFitDeviceOptions): TestControllerPromise;
+
     /**
      * Maximizes the browser window.
      */
-    maximizeWindow(): TestControllerPromise;
+    maximizeWindow (): TestControllerPromise;
+
     /**
      * Switches the test's browsing context to the specified `<iframe>`.
      *
      * @param selector - Identifies an `<iframe>` on the tested page.
      */
-    switchToIframe(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection)): TestControllerPromise;
+    switchToIframe (selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection)): TestControllerPromise;
+
     /**
      * Switches the test's browsing context from an `<iframe>` back to the main window.
      */
-    switchToMainWindow(): TestControllerPromise;
+    switchToMainWindow (): TestControllerPromise;
 
     /**
      * Opens a new browser window.
      *
      * @param url - The URL to open. Can be local or remote, absolute or relative.
      */
-    openWindow(url: string): WindowDescriptorPromise;
+    openWindow (url: string): WindowDescriptorPromise;
 
     /**
      * Closes a browser window.
      *
      * @param windowDescriptor - The target window. If this parameter is omitted, the currently active window is selected.
      */
-    closeWindow(windowDescriptor?: WindowDescriptor): TestControllerPromise;
+    closeWindow (windowDescriptor?: WindowDescriptor): TestControllerPromise;
 
     /**
      * Retrieves a `window` object that corresponds to the currently open window.
      */
-    getCurrentWindow(): WindowDescriptorPromise;
+    getCurrentWindow (): WindowDescriptorPromise;
 
     /**
      * Activates the window that corresponds to the `window` object.
      *
      * @param windowDescriptor - The target window.
      */
-    switchToWindow(windowDescriptor: WindowDescriptor): TestControllerPromise;
+    switchToWindow (windowDescriptor: WindowDescriptor): TestControllerPromise;
 
     /**
      * Activates the first window that matches the criteria passed to the `filterFn` function
      *
      * @param filterFn - The predicate used to select windows.
      */
-    switchToWindow(filterFn: (data: WindowFilterData) => boolean): TestControllerPromise;
+    switchToWindow (filterFn: (data: WindowFilterData) => boolean): TestControllerPromise;
 
     /**
      * Activates the window that launched, or was active during the launch of, the currently active window.
      */
-    switchToParentWindow(): TestControllerPromise;
+    switchToParentWindow (): TestControllerPromise;
 
     /**
      * Activates the most recent of the previously active windows.
      */
-    switchToPreviousWindow(): TestControllerPromise;
+    switchToPreviousWindow (): TestControllerPromise;
 
     /**
      * Executes function on client and returns it's result.
@@ -431,7 +463,8 @@ interface TestController {
      * @param fn - A function to be executed on the client side.
      * @param options - Function options.
      */
-    eval(fn: Function, options?: ClientFunctionOptions): Promise<any>;
+    eval (fn: Function, options?: ClientFunctionOptions): Promise<any>;
+
     /**
      * Specifies handler function for the browser native dialogs.
      *
@@ -443,96 +476,111 @@ interface TestController {
      * the main window or an `<iframe>`.
      * @param options - Handler options.
      */
-    setNativeDialogHandler(fn: ((type: 'alert' | 'confirm' | 'beforeunload' | 'prompt', text: string, url: string) => any) | null,
-        options?: ClientFunctionOptions): TestControllerPromise;
+    setNativeDialogHandler (fn: ((type: 'alert' | 'confirm' | 'beforeunload' | 'prompt', text: string, url: string) => any) | null,
+                            options?: ClientFunctionOptions): TestControllerPromise;
+
     /**
      * Returns a stack of history entries (i.e., an array in which the latest dialog has an index of 0). Each entry
      * corresponds to a certain native dialog that appears in the main window or in an `<iframe>`.
      */
-    getNativeDialogHistory(): Promise<NativeDialogHistoryItem[]>;
+    getNativeDialogHistory (): Promise<NativeDialogHistoryItem[]>;
+
     /**
      * Returns an object that contains messages output to the browser console.
      */
-    getBrowserConsoleMessages(): Promise<BrowserConsoleMessages>;
+    getBrowserConsoleMessages (): Promise<BrowserConsoleMessages>;
+
     /**
      * Starts an assertion chain and specifies assertion actual value.
      *
      * @param actual - An actual value of the assertion.
      */
-    expect<A>(actual: A | Promise<A>): Assertion<A>;
+    expect<A> (actual: A | Promise<A>): Assertion<A>;
+
     /**
      * Pauses the test and switches to the step-by-step execution mode.
      */
-    debug(): TestControllerPromise;
+    debug (): TestControllerPromise;
+
     /**
      * Specifies the speed of test execution.
      *
      * @param speed - Specifies the test speed. Must be a number between 1 (the fastest) and 0.01 (the slowest).
      */
-    setTestSpeed(speed: number): TestControllerPromise;
+    setTestSpeed (speed: number): TestControllerPromise;
+
     /**
      * Specifies the amount of time within which TestCafe waits for the `window.load` event to fire before starting the test.
      *
      * @param duration - Specifies the amount of time within which TestCafe waits for the `window.load` event to fire before starting the test.
      */
-    setPageLoadTimeout(duration: number): TestControllerPromise;
+    setPageLoadTimeout (duration: number): TestControllerPromise;
+
     /**
      * Switches user role.
      *
      * @param role - The role you need to use further in the test.
      */
-    useRole(role: Role): TestControllerPromise;
+    useRole (role: Role): TestControllerPromise;
+
     /**
      * Attaches the hooks during a test run.
      *
      * @param hooks - The set of RequestHook subclasses.
      */
-    addRequestHooks(...hooks: object[]): TestControllerPromise;
+    addRequestHooks (...hooks: object[]): TestControllerPromise;
+
     /**
      * Detaches the hooks during a test run.
      *
      * @param hooks - The set of RequestHook subclasses.
      */
-    removeRequestHooks(...hooks: object[]): TestControllerPromise;
+    removeRequestHooks (...hooks: object[]): TestControllerPromise;
+
     /**
      * Returns cookies from the specified cookie objects. If there are no parameters, the method returns all the cookies.
      *
      * @param cookies - cookie objects.
      */
-    getCookies(cookies?: CookieOptions | CookieOptions[]): Promise<CookieOptions[]>;
+    getCookies (cookies?: CookieOptions | CookieOptions[]): Promise<CookieOptions[]>;
+
     /**
      * Returns cookies with the specified names and URLs.
      *
      * @param names - Cookie names.
      * @param urls - URLs.
      */
-    getCookies(names: string | string[], urls?: string | string[]): Promise<CookieOptions[]>;
+    getCookies (names: string | string[], urls?: string | string[]): Promise<CookieOptions[]>;
+
     /**
      * Creates cookies with the specified parameters.
      *
      * @param cookies - Cookie objects.
      */
-    setCookies(cookies?: CookieOptions | CookieOptions[]): TestControllerPromise;
+    setCookies (cookies?: CookieOptions | CookieOptions[]): TestControllerPromise;
+
     /**
      * Assigns the specified URL to the specified cookie name-value pairs.
      *
      * @param nameValueObjects - Cookie name-value pairs (Objects).
      * @param url - Cookie URL.
      */
-    setCookies(nameValueObjects: Record<string, string> | Record<string, string>[], url?: string): TestControllerPromise;
+    setCookies (nameValueObjects: Record<string, string> | Record<string, string>[], url?: string): TestControllerPromise;
+
     /**
      * Deletes cookies with the specified parameters. If there are no parameters, this method empties the browser's cookie storage.
      *
      * @param cookies - Cookies.
      */
-    deleteCookies(cookies?: CookieOptions | CookieOptions[]): TestControllerPromise;
+    deleteCookies (cookies?: CookieOptions | CookieOptions[]): TestControllerPromise;
+
     /**
      * Deletes cookies associated with the specified URLs. If there are no parameters, this method empties the browser's cookie storage.
      *
      * @param names - Cookie names.
      * @param urls - URLs.
      */
-    deleteCookies(names: string | string[], urls?: string | string[]): TestControllerPromise;
+    deleteCookies (names: string | string[], urls?: string | string[]): TestControllerPromise;
 
     /**
      * Execute a request
@@ -548,9 +596,16 @@ interface TestController {
      * @param options - Error skipping conditions: a Boolean flag, an Object with options, or a callback function that defines custom error skipping logic.
      */
     skipJsErrors (options?: boolean | SkipJsErrorsOptionsObject | SkipJsErrorsCallback | SkipJsErrorsCallbackWithOptionsObject): TestControllerPromise;
+
+    /**
+     * Pass additional data to the reporter.
+     *
+     * @param args - Any user data.
+     */
+    report (...args: any[]): TestControllerPromise;
 }
 
-interface TestControllerPromise<T=any> extends TestController, Promise<T> {
+interface TestControllerPromise<T = any> extends TestController, Promise<T> {
 }
 
 interface WindowDescriptorPromise extends TestControllerPromise<WindowDescriptor> {

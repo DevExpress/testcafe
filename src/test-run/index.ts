@@ -143,6 +143,7 @@ import {
 
 import ProxylessRequestPipeline from '../proxyless/request-pipeline';
 import Proxyless from '../proxyless';
+import ReportDataLog from '../reporter/report-data-log';
 
 const lazyRequire                 = require('import-lazy')(require);
 const ClientFunctionBuilder       = lazyRequire('../client-functions/client-function-builder');
@@ -227,6 +228,7 @@ interface OpenedWindowInformation {
 export default class TestRun extends AsyncEventEmitter {
     private [testRunMarker]: boolean;
     public readonly warningLog: WarningLog;
+    public readonly reportDataLog: ReportDataLog;
     private readonly opts: Dictionary<OptionValue>;
     public readonly test: Test;
     public readonly browserConnection: BrowserConnection;
@@ -290,6 +292,7 @@ export default class TestRun extends AsyncEventEmitter {
         this[testRunMarker]    = true;
         this._messageBus       = messageBus;
         this.warningLog        = new WarningLog(globalWarningLog, WarningLog.createAddWarningCallback(messageBus, this));
+        this.reportDataLog     = new ReportDataLog(ReportDataLog.createAddDataCallback(messageBus, this));
         this.opts              = opts;
         this.test              = test;
         this.browserConnection = browserConnection;
@@ -307,8 +310,8 @@ export default class TestRun extends AsyncEventEmitter {
         this.pageLoadTimeout      = this._getPageLoadTimeout(test, opts);
         this.testExecutionTimeout = this._getTestExecutionTimeout(opts);
 
-        this.disablePageReloads   = test.disablePageReloads || opts.disablePageReloads as boolean && test.disablePageReloads !== false;
-        this.disablePageCaching   = test.disablePageCaching || opts.disablePageCaching as boolean;
+        this.disablePageReloads = test.disablePageReloads || opts.disablePageReloads as boolean && test.disablePageReloads !== false;
+        this.disablePageCaching = test.disablePageCaching || opts.disablePageCaching as boolean;
 
         this.disableMultipleWindows = opts.disableMultipleWindows as boolean;
 
@@ -350,7 +353,7 @@ export default class TestRun extends AsyncEventEmitter {
 
         this.debugLog = new TestRunDebugLog(this.browserConnection.userAgent);
 
-        this.quarantine  = null;
+        this.quarantine = null;
 
         this.debugLogger = this.opts.debugLogger;
 
@@ -1307,6 +1310,9 @@ export default class TestRun extends AsyncEventEmitter {
 
             return await wrappedFn(this, args);
         }
+
+        if (command.type === COMMAND_TYPE.report)
+            return await this.reportDataLog.addData(command.args as any[]);
 
         if (command.type === COMMAND_TYPE.assertion)
             return this._executeAssertion(command as AssertionCommand, callsite as CallsiteRecord);
