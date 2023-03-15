@@ -30,6 +30,7 @@ const {
     configurationMock,
     createBrowserProviderMock,
 } = require('./helpers/mocks');
+
 const createConfigFile = (configPath, options) => {
     options = options || {};
     fs.writeFileSync(configPath, JSON.stringify(options));
