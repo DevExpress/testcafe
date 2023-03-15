@@ -1,12 +1,7 @@
 import MessageBus from '../utils/message-bus';
 import TestRun from '../test-run';
 
-export interface ReportDataLogItem {
-    data: any;
-    testRun: TestRun;
-}
-
-type ReportDataLogCallback = (data: any) => Promise<void>;
+type ReportDataLogCallback = (data: any[]) => Promise<void>;
 
 export default class ReportDataLog {
     private readonly _data: any[];

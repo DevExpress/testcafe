@@ -34,7 +34,6 @@ import MessageBus from '../utils/message-bus';
 import BrowserConnection from '../browser/connection';
 import { Dictionary } from '../configuration/interfaces';
 import debug from 'debug';
-import { ReportDataLogItem } from './report-data-log';
 
 interface PendingPromise {
     resolve: Function | null;
@@ -70,7 +69,6 @@ interface TestInfo {
     pendingTestRunDonePromise: PendingPromise;
     pendingTestRunStartPromise: PendingPromise;
     browsers: BrowserRunInfo[];
-    reportData: ReportDataLogItem[];
 }
 
 interface FixtureInfo {
@@ -88,7 +86,7 @@ interface BrowserRunInfo extends Browser {
 interface TestRunInfo {
     errs: TestRunErrorFormattableAdapter[];
     warnings: string[];
-    reportData: ReportDataLogItem[];
+    reportData: any[];
     durationMs: number;
     unstable: boolean;
     screenshotPath: string;
@@ -127,7 +125,7 @@ interface ReportWarningEventArguments {
 }
 
 interface ReportDataEventArgs {
-    data: any;
+    data: any[];
     testRun: TestRun
 }
 
@@ -309,7 +307,6 @@ export default class Reporter {
             pendingTestRunDonePromise:  Reporter._createPendingPromise(),
             pendingTestRunStartPromise: Reporter._createPendingPromise(),
             browsers:                   [],
-            reportData:                 [],
         };
     }
 
@@ -319,11 +316,11 @@ export default class Reporter {
         return task.tests.map(test => Reporter._createTestItem(test, runsPerTest));
     }
 
-    private static _createTestRunInfo (reportItem: TestInfo): TestRunInfo {
+    private static _createTestRunInfo (reportItem: TestInfo, testRun: TestRun): TestRunInfo {
         return {
             errs:           sortBy(reportItem.errs, ['userAgent', 'code']),
             warnings:       reportItem.warnings,
-            reportData:     reportItem.reportData,
+            reportData:     testRun.reportDataLog ? testRun.reportDataLog.data : [],
             durationMs:     +new Date() - (reportItem.startTime as number), //eslint-disable-line  @typescript-eslint/no-extra-parens
             unstable:       reportItem.unstable,
             screenshotPath: reportItem.screenshotPath as string,
@@ -415,7 +412,7 @@ export default class Reporter {
         }
 
         if (!testItem.testRunInfo) {
-            testItem.testRunInfo = Reporter._createTestRunInfo(testItem);
+            testItem.testRunInfo = Reporter._createTestRunInfo(testItem, testRun);
 
             if (testItem.test.skip)
                 taskInfo.skipped++;
@@ -560,7 +557,6 @@ export default class Reporter {
         reportItem.unstable    = reportItem.unstable || testRun.unstable;
         reportItem.errs        = reportItem.errs.concat(testRun.errs);
         reportItem.warnings    = testRun.warningLog ? union(reportItem.warnings, testRun.warningLog.messages) : [];
-        reportItem.reportData  = testRun.reportDataLog ? testRun.reportDataLog.data : [];
 
         if (testRun.quarantine) {
             reportItem.quarantine = reportItem.quarantine || {};
