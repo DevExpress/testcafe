@@ -12,7 +12,6 @@ const messageSandbox = eventSandbox.message;
 
 const MOUSE_EVENT_OPTIONS = {
     clickCount: 1,
-    button:     'left',
 };
 
 const CALCULATE_TOP_LEFT_POINT_REQUEST_CMD  = 'proxyless|calculate-top-left-point|request';
