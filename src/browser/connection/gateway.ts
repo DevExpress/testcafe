@@ -18,32 +18,44 @@ import PROXYLESS_ERROR_ROUTE from '../../proxyless/error-route';
 import { initSelector } from '../../test-run/commands/validations/initializers';
 import TestRun from '../../test-run';
 
+export interface BrowserConnectionGatewayOptions {
+    retryTestPages: boolean;
+    proxyless: boolean;
+}
+
+const DEFAULT_BROWSER_CONNECTION_GATEWAY_OPTIONS = {
+    retryTestPages: false,
+    proxyless:      false,
+};
+
 export default class BrowserConnectionGateway {
     private _connections: Dictionary<BrowserConnection> = {};
     private _remotesQueue: RemotesQueue;
     public readonly connectUrl: string;
-    public retryTestPages: boolean;
-    private readonly proxyless: boolean;
+    private readonly _options: BrowserConnectionGatewayOptions;
     public readonly proxy: Proxy;
 
-    public constructor (proxy: Proxy, options: { retryTestPages: boolean; proxyless: boolean }) {
+    public constructor (proxy: Proxy, options: BrowserConnectionGatewayOptions) {
         this._remotesQueue  = new RemotesQueue();
         this.connectUrl     = proxy.resolveRelativeServiceUrl(SERVICE_ROUTES.connect);
-        this.retryTestPages = options.retryTestPages;
-        this.proxyless      = options.proxyless;
+        this._options       = this._calculateResultOptions(options);
         this.proxy          = proxy;
 
         this._registerRoutes(proxy);
     }
 
-    private _dispatch (url: string, proxy: Proxy, handler: Function, method = 'GET', shouldAcceptCrossOrigin?: boolean): void {
+    private _calculateResultOptions (options: BrowserConnectionGatewayOptions): BrowserConnectionGatewayOptions {
+        return Object.assign({}, DEFAULT_BROWSER_CONNECTION_GATEWAY_OPTIONS, options);
+    }
+
+    private _dispatch (url: string, proxy: Proxy, handler: Function, method = 'GET'): void {
         // @ts-ignore Need to improve typings of the 'testcafe-hammerhead' module
         proxy[method](url, (req: IncomingMessage, res: ServerResponse, serverInfo, params: Dictionary<string>) => {
             const connection = this._connections[params.id];
 
             preventCaching(res);
 
-            if (shouldAcceptCrossOrigin)
+            if (this._options.proxyless)
                 acceptCrossOrigin(res);
 
             if (connection)
@@ -62,20 +74,20 @@ export default class BrowserConnectionGateway {
         } = loadAssets();
 
         this._dispatch(`${SERVICE_ROUTES.connect}/{id}`, proxy, BrowserConnectionGateway._onConnection);
-        this._dispatch(`${SERVICE_ROUTES.heartbeat}/{id}`, proxy, BrowserConnectionGateway._onHeartbeat, 'GET', this.proxyless);
+        this._dispatch(`${SERVICE_ROUTES.heartbeat}/{id}`, proxy, BrowserConnectionGateway._onHeartbeat, 'GET');
         this._dispatch(`${SERVICE_ROUTES.idle}/{id}`, proxy, BrowserConnectionGateway._onIdle);
         this._dispatch(`${SERVICE_ROUTES.idleForced}/{id}`, proxy, BrowserConnectionGateway._onIdleForced);
         this._dispatch(`${SERVICE_ROUTES.status}/{id}`, proxy, BrowserConnectionGateway._onStatusRequest);
-        this._dispatch(`${SERVICE_ROUTES.statusDone}/{id}`, proxy, BrowserConnectionGateway._onStatusRequestOnTestDone, 'GET', this.proxyless);
+        this._dispatch(`${SERVICE_ROUTES.statusDone}/{id}`, proxy, BrowserConnectionGateway._onStatusRequestOnTestDone, 'GET');
         this._dispatch(`${SERVICE_ROUTES.initScript}/{id}`, proxy, BrowserConnectionGateway._onInitScriptRequest);
         this._dispatch(`${SERVICE_ROUTES.initScript}/{id}`, proxy, BrowserConnectionGateway._onInitScriptResponse, 'POST');
-        this._dispatch(`${SERVICE_ROUTES.activeWindowId}/{id}`, proxy, BrowserConnectionGateway._onGetActiveWindowIdRequest, 'GET', this.proxyless);
-        this._dispatch(`${SERVICE_ROUTES.activeWindowId}/{id}`, proxy, BrowserConnectionGateway._onSetActiveWindowIdRequest, 'POST', this.proxyless);
+        this._dispatch(`${SERVICE_ROUTES.activeWindowId}/{id}`, proxy, BrowserConnectionGateway._onGetActiveWindowIdRequest, 'GET');
+        this._dispatch(`${SERVICE_ROUTES.activeWindowId}/{id}`, proxy, BrowserConnectionGateway._onSetActiveWindowIdRequest, 'POST');
         this._dispatch(`${SERVICE_ROUTES.closeWindow}/{id}`, proxy, BrowserConnectionGateway._onCloseWindowRequest, 'POST');
         this._dispatch(`${SERVICE_ROUTES.openFileProtocol}/{id}`, proxy, BrowserConnectionGateway._onOpenFileProtocolRequest, 'POST');
-        this._dispatch(`${SERVICE_ROUTES.dispatchProxylessEvent}/{id}`, proxy, BrowserConnectionGateway._onDispatchProxylessEvent, 'POST', this.proxyless);
-        this._dispatch(`${SERVICE_ROUTES.parseSelector}/{id}`, proxy, BrowserConnectionGateway._parseSelector, 'POST', this.proxyless);
-        this._dispatch(`${SERVICE_ROUTES.dispatchProxylessEventSequence}/{id}`, proxy, BrowserConnectionGateway._onDispatchProxylessEventSequence, 'POST', this.proxyless);
+        this._dispatch(`${SERVICE_ROUTES.dispatchProxylessEvent}/{id}`, proxy, BrowserConnectionGateway._onDispatchProxylessEvent, 'POST');
+        this._dispatch(`${SERVICE_ROUTES.parseSelector}/{id}`, proxy, BrowserConnectionGateway._parseSelector, 'POST');
+        this._dispatch(`${SERVICE_ROUTES.dispatchProxylessEventSequence}/{id}`, proxy, BrowserConnectionGateway._onDispatchProxylessEventSequence, 'POST');
 
         proxy.GET(SERVICE_ROUTES.connect, (req: IncomingMessage, res: ServerResponse) => this._connectNextRemoteBrowser(req, res));
         proxy.GET(SERVICE_ROUTES.connectWithTrailingSlash, (req: IncomingMessage, res: ServerResponse) => this._connectNextRemoteBrowser(req, res));
@@ -85,7 +97,7 @@ export default class BrowserConnectionGateway {
         proxy.GET(SERVICE_ROUTES.assets.styles, { content: idlePageStyle, contentType: 'text/css' });
         proxy.GET(SERVICE_ROUTES.assets.logo, { content: idlePageLogo, contentType: 'image/svg+xml' });
 
-        if (this.proxyless) {
+        if (this._options.proxyless) {
             proxy.GET(PROXYLESS_ERROR_ROUTE, (req: IncomingMessage, res: ServerResponse) => {
                 res.writeHead(200, { 'Content-Type': 'text/html' });
                 res.end(EMPTY_PAGE_MARKUP);
@@ -311,10 +323,20 @@ export default class BrowserConnectionGateway {
     public async close (): Promise<void> {
         for (const id in this._connections)
             await this._connections[id].close();
+
+        this.proxy.close();
     }
 
     public getConnections (): Dictionary<BrowserConnection> {
         return this._connections;
+    }
+
+    public get proxyless (): boolean {
+        return this._options.proxyless;
+    }
+
+    public get retryTestPages (): boolean {
+        return this._options.retryTestPages;
     }
 }
 

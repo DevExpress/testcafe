@@ -154,9 +154,15 @@ export default class Bootstrapper {
         if (!browserInfo)
             return [];
 
-        return browserInfo
-            .map(browser => times(this.concurrency, () => new BrowserConnection(
-                this.browserConnectionGateway, { ...browser }, false, this.disableMultipleWindows, this.proxyless, this.messageBus)));
+        return browserInfo.map(browser => times(this.concurrency, () => {
+            const options = {
+                disableMultipleWindows: this.disableMultipleWindows,
+                developmentMode:        this.configuration.getOption(OPTION_NAMES.developmentMode) as boolean,
+                proxyless:              this.configuration.getOption(OPTION_NAMES.experimentalProxyless) as boolean,
+            };
+
+            return new BrowserConnection(this.browserConnectionGateway, { ...browser }, false, options, this.messageBus);
+        }));
     }
 
     private _getBrowserSetOptions (): BrowserSetOptions {
@@ -201,7 +207,7 @@ export default class Bootstrapper {
 
     private async _compileTests ({ sourceList, compilerOptions, runnableConfigurationId }: CompilerArguments): Promise<Test[]> {
         const baseUrl          = this.configuration.getOption(OPTION_NAMES.baseUrl) as string;
-        const experimentalEsm  = this.configuration.getOption(OPTION_NAMES.experimentalEsm) as boolean;
+        const experimentalEsm  = this.configuration.getOption(OPTION_NAMES.experimentalEsm);
 
         if (this.compilerService) {
             await this.compilerService.init();

@@ -43,6 +43,7 @@ import { CONFIGURATION_EXTENSIONS } from './formats';
 import { GeneralError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
 import { LOCALHOST_NAMES } from '../utils/localhost-names';
+import { BrowserConnectionGatewayOptions } from '../browser/connection/gateway';
 
 const BASE_CONFIGURATION_FILENAME = '.testcaferc';
 const CONFIGURATION_FILENAMES     = CONFIGURATION_EXTENSIONS.map(ext => `${BASE_CONFIGURATION_FILENAME}${ext}`);
@@ -72,7 +73,7 @@ const OPTION_INIT_FLAG_NAMES = [
 
 interface TestCafeAdditionalStartOptions {
     retryTestPages: boolean;
-    ssl: string;
+    ssl: object;
     developmentMode: boolean;
     cache: boolean;
     disableHttp2: boolean;
@@ -166,21 +167,28 @@ export default class TestCafeConfiguration extends Configuration {
 
         const result: TestCafeStartOptions = {
             hostname,
-            port1: this.getOption(OPTION_NAMES.port1) as number,
-            port2: this.getOption(OPTION_NAMES.port2) as number,
+            port1: this.getOption(OPTION_NAMES.port1),
+            port2: this.getOption(OPTION_NAMES.port2),
 
             options: {
-                ssl:                this.getOption(OPTION_NAMES.ssl) as string,
-                developmentMode:    this.getOption(OPTION_NAMES.developmentMode) as boolean,
-                retryTestPages:     this.getOption(OPTION_NAMES.retryTestPages) as boolean,
-                cache:              this.getOption(OPTION_NAMES.cache) as boolean,
-                disableHttp2:       this.getOption(OPTION_NAMES.disableHttp2) as boolean,
-                disableCrossDomain: this.getOption(OPTION_NAMES.disableCrossDomain) as boolean,
+                ssl:                this.getOption(OPTION_NAMES.ssl),
+                developmentMode:    this.getOption(OPTION_NAMES.developmentMode),
+                retryTestPages:     this.getOption(OPTION_NAMES.retryTestPages),
+                cache:              this.getOption(OPTION_NAMES.cache),
+                disableHttp2:       this.getOption(OPTION_NAMES.disableHttp2),
+                disableCrossDomain: this.getOption(OPTION_NAMES.disableCrossDomain),
                 proxyless,
             },
         };
 
         return result;
+    }
+
+    public get browserConnectionGatewayOptions (): BrowserConnectionGatewayOptions {
+        return {
+            retryTestPages: this.getOption(OPTION_NAMES.retryTestPages),
+            proxyless:      this.getOption(OPTION_NAMES.experimentalProxyless),
+        };
     }
 
     private _checkUnsecureDataInJSONConfiguration (opts: any): void {

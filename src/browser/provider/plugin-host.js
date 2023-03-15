@@ -166,4 +166,8 @@ export default class BrowserProviderPluginHost {
     async getOSInfo (/*browserId*/) {
         return null;
     }
+
+    supportProxyless () {
+        return false;
+    }
 }

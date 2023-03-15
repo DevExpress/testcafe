@@ -1,8 +1,8 @@
-const expect              = require('chai').expect;
+const { expect }          = require('chai');
 const proxyquire          = require('proxyquire');
 const sinon               = require('sinon');
-const resolve             = require('path').resolve;
-const assertAPIError      = require('./helpers/assert-runtime-error').assertAPIError;
+const { resolve }         = require('path');
+const { assertAPIError }  = require('./helpers/assert-runtime-error');
 const compile             = require('./helpers/compile');
 const OPTION_NAMES        = require('../../lib/configuration/option-names');
 const Compiler            = require('../../lib/compiler');

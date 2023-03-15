@@ -1,42 +1,29 @@
-const { expect }              = require('chai');
-const { noop }                = require('lodash');
-const BrowserConnection       = require('../../lib/browser/connection');
-const Test                    = require('../../lib/api/structure/test');
-const Bootstrapper            = require('../../lib/runner/bootstrapper');
-const delay                   = require('../../lib/utils/delay');
+const { expect }        = require('chai');
+const BrowserConnection = require('../../lib/browser/connection');
+const Bootstrapper      = require('../../lib/runner/bootstrapper');
 
-const { browserConnectionGatewayMock } = require('./helpers/mocks');
+const {
+    browserConnectionGatewayMock,
+    configurationMock,
+    compilerServiceMock,
+    createBrowserProviderMock,
+} = require('./helpers/mocks');
 
 describe('Bootstrapper', () => {
     describe('.createRunnableConfiguration()', () => {
-        const compilerService = {
-            init:     noop,
-            getTests: async () => {
-                await delay(1500);
-
-                return [ new Test({ currentFixture: void 0 }) ];
-            },
-            setUserVariables: noop,
-        };
-        const configuration = {
-            getOption: () => {},
-        };
         let bootstrapper = null;
 
         beforeEach(() => {
-            bootstrapper = new Bootstrapper({ browserConnectionGatewayMock, compilerService, configuration });
+            bootstrapper = new Bootstrapper({
+                browserConnectionGateway: browserConnectionGatewayMock,
+                configuration:            configurationMock,
+                compilerService:          compilerServiceMock,
+            });
 
             bootstrapper.browserInitTimeout           = 100;
             bootstrapper.TESTS_COMPILATION_UPPERBOUND = 0;
 
-            const provider = {
-                openBrowser:       noop,
-                isLocalBrowser:    noop,
-                isHeadlessBrowser: () => true,
-                closeBrowser:      noop,
-            };
-
-            bootstrapper.browsers = [ new BrowserConnection(browserConnectionGatewayMock, { provider }) ];
+            bootstrapper.browsers = [ new BrowserConnection(browserConnectionGatewayMock, { provider: createBrowserProviderMock({ local: false }) }) ];
         });
 
         it('Browser connection error message should include hint that tests compilation takes too long', async function () {

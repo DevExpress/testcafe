@@ -18,7 +18,15 @@ const reporter = createReporter({
 function createConnection (browser) {
     return browserProviderPool
         .getBrowserInfo(browser)
-        .then(browserInfo => new BrowserConnection(testCafe.browserConnectionGateway, browserInfo, false, void 0, config.proxyless));
+        .then(browserInfo => {
+            const options = {
+                disableMultipleWindows: false,
+                proxyless:              config.proxyless,
+                developmentMode:        config.devMode,
+            };
+
+            return new BrowserConnection(testCafe.browserConnectionGateway, browserInfo, false, options);
+        });
 }
 
 const initializeConnectionLowHeartbeatTimeout = connection => {

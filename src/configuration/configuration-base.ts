@@ -101,7 +101,7 @@ export default class Configuration {
         });
     }
 
-    public getOption (key: string): OptionValue {
+    protected _getOption (key: string): OptionValue {
         if (!key)
             return void 0;
 
@@ -111,6 +111,10 @@ export default class Configuration {
             return void 0;
 
         return option.value;
+    }
+
+    public getOption<Type> (key: string): Type {
+        return this._getOption(key) as Type;
     }
 
     public getOptions (predicate?: (name: string, option: Option) => boolean): Dictionary<OptionValue> {
@@ -196,16 +200,16 @@ export default class Configuration {
         }
     }
 
-    private static _hasExtention (filePath: string | undefined, extention: string): boolean {
+    private static _hasExtension (filePath: string | undefined, extention: string): boolean {
         return !!filePath && extname(filePath) === extention;
     }
 
     protected _isJSConfiguration (filePath = this.filePath): boolean {
-        return Configuration._hasExtention(filePath, JS_CONFIGURATION_EXTENSION);
+        return Configuration._hasExtension(filePath, JS_CONFIGURATION_EXTENSION);
     }
 
     protected _isJSONConfiguration (filePath = this.filePath): boolean {
-        return Configuration._hasExtention(filePath, JSON_CONFIGURATION_EXTENSION);
+        return Configuration._hasExtension(filePath, JSON_CONFIGURATION_EXTENSION);
     }
 
     public _readJsConfigurationFileContent (filePath = this.filePath): object | null {

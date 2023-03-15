@@ -55,7 +55,15 @@ function getBrowserInfo (settings) {
 
             return browserProviderPool
                 .getBrowserInfo(settings.browserName)
-                .then(browserInfo => new BrowserConnection(testCafe.browserConnectionGateway, browserInfo, true, false, config.proxyless));
+                .then(browserInfo => {
+                    const options = {
+                        disableMultipleWindows: false,
+                        proxyless:              config.proxyless,
+                        developmentMode:        config.devMode,
+                    };
+
+                    return new BrowserConnection(testCafe.browserConnectionGateway, browserInfo, true, options);
+                });
         })
         .then(connection => {
             return {

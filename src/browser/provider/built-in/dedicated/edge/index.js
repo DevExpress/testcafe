@@ -7,4 +7,8 @@ export default {
     async _createRunTimeInfo (hostName, configString, disableMultipleWindows) {
         return EdgeRunTimeInfo.create(hostName, configString, disableMultipleWindows);
     },
+
+    supportProxyless () {
+        return true;
+    },
 };

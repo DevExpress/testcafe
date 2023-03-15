@@ -24,30 +24,24 @@ const { noop }                = require('lodash');
 const Test                    = require('../../lib/api/structure/test');
 const TestCafeConfiguration   = require('../../lib/configuration/testcafe-configuration');
 
-const { browserConnectionGatewayMock } = require('./helpers/mocks');
-
+const {
+    browserConnectionGatewayMock,
+    browserSetMock,
+    configurationMock,
+    createBrowserProviderMock,
+} = require('./helpers/mocks');
 const createConfigFile = (configPath, options) => {
     options = options || {};
     fs.writeFileSync(configPath, JSON.stringify(options));
 };
 
 describe('Runner', () => {
-    let testCafe                  = null;
-    let runner                    = null;
-    let connection                = null;
-    let origRemoteBrowserProvider = null;
+    let testCafe                    = null;
+    let runner                      = null;
+    let connection                  = null;
+    let originRemoteBrowserProvider = null;
 
     const BROWSER_NAME = `${isAlpine() ? 'chromium' : 'chrome'}:headless`;
-
-    const remoteBrowserProviderMock = {
-        openBrowser () {
-            return Promise.resolve();
-        },
-
-        closeBrowser () {
-            return Promise.resolve();
-        },
-    };
 
     before(() => {
         return createTestCafe('127.0.0.1', 1335, 1336)
@@ -57,9 +51,9 @@ describe('Runner', () => {
                 return browserProviderPool.getProvider('remote');
             })
             .then(remoteBrowserProvider => {
-                origRemoteBrowserProvider = remoteBrowserProvider;
+                originRemoteBrowserProvider = remoteBrowserProvider;
 
-                browserProviderPool.addProvider('remote', remoteBrowserProviderMock);
+                browserProviderPool.addProvider('remote', createBrowserProviderMock());
 
                 return testCafe.createBrowserConnection();
             })
@@ -72,7 +66,7 @@ describe('Runner', () => {
     });
 
     after(async () => {
-        browserProviderPool.addProvider('remote', origRemoteBrowserProvider);
+        browserProviderPool.addProvider('remote', originRemoteBrowserProvider);
 
         await connection.close();
 
@@ -624,9 +618,7 @@ describe('Runner', () => {
             runner.bootstrapper._getBrowserConnections = () => {
                 runner.bootstrapper._getBrowserConnections = storedGetBrowserConnectionsFn;
 
-                return Promise.resolve({
-                    browserConnectionGroups: [],
-                });
+                return Promise.resolve(browserSetMock);
             };
 
             runner._runTask = ({ tests }) => {
@@ -1127,7 +1119,11 @@ describe('Runner', () => {
                     '../browser/connection': BrowserConnectionMock,
                 });
 
-                return new BootstrapperMock({ browserConnectionGateway: browserConnectionGatewayMock, compilerService });
+                return new BootstrapperMock({
+                    browserConnectionGateway: browserConnectionGatewayMock,
+                    configuration:            configurationMock,
+                    compilerService,
+                });
             }
 
             function createMockRunner () {

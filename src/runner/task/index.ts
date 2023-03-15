@@ -35,7 +35,7 @@ export default class Task extends AsyncEventEmitter {
     public readonly screenshots: Screenshots;
     public readonly fixtureHookController: FixtureHookController;
     private readonly _pendingBrowserJobs: BrowserJob[];
-    private readonly _clientScriptRoutes: string[];
+    private _clientScriptRoutes: string[] = [];
     public readonly testStructure: ReportedTestStructureItem[];
     public readonly videos?: Videos;
     private readonly _compilerService?: CompilerService;
@@ -79,8 +79,9 @@ export default class Task extends AsyncEventEmitter {
 
         this.fixtureHookController = new FixtureHookController(tests, browserConnectionGroups.length);
         this._pendingBrowserJobs   = this._createBrowserJobs(proxy, this.opts);
-        this._clientScriptRoutes   = clientScriptsRouting.register(proxy, tests, !!this.opts.experimentalProxyless);
         this.testStructure         = this._prepareTestStructure(tests);
+
+        this.registerClientScriptRouting(!!this.opts.experimentalProxyless);
 
         if (this.opts.videoPath) {
             const { videoPath, videoOptions, videoEncodingOptions } = this.opts;
@@ -172,6 +173,10 @@ export default class Task extends AsyncEventEmitter {
 
             return job;
         });
+    }
+
+    public registerClientScriptRouting (isProxyless: boolean): void {
+        this._clientScriptRoutes = clientScriptsRouting.register(this._proxy, this.tests, isProxyless);
     }
 
     public unRegisterClientScriptRouting (): void {
