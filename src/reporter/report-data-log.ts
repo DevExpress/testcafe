@@ -13,8 +13,8 @@ export default class ReportDataLog {
     public callback?: ReportDataLogCallback;
 
     public constructor (callback?: ReportDataLogCallback) {
-        this._data = [];
-        this.callback   = callback;
+        this._data    = [];
+        this.callback = callback;
     }
 
     public get data (): any[] {
@@ -28,10 +28,9 @@ export default class ReportDataLog {
         this._data.push(...data);
     }
 
-    public static createAddDataCallback (messageBus?: MessageBus | object, testRun?: TestRun): ReportDataLogCallback {
-        return async (data: any) => {
-            if (messageBus && messageBus instanceof MessageBus)
-                await messageBus.emit('report-data', { data, testRun });
+    public static createAddDataCallback (messageBus: MessageBus, testRun: TestRun): ReportDataLogCallback {
+        return async (data: any[]) => {
+            await messageBus.emit('report-data', { data, testRun });
         };
     }
 }
