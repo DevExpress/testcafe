@@ -28,9 +28,10 @@ export default class ReportDataLog {
         this._data.push(...data);
     }
 
-    public static createAddDataCallback (messageBus: MessageBus, testRun: TestRun): ReportDataLogCallback {
+    public static createAddDataCallback (messageBus: MessageBus | undefined, testRun: TestRun): ReportDataLogCallback {
         return async (data: any[]) => {
-            await messageBus.emit('report-data', { data, testRun });
+            if (messageBus)
+                await messageBus.emit('report-data', { data, testRun });
         };
     }
 }

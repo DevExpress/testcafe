@@ -7,8 +7,7 @@ test('Run t.report action twice', async t => {
 });
 
 test('Run t.report action with object val', async t => {
-    await t.report('Report 1');
-    await t.report({ 'reportResult': 'test' });
+    await t.report('Report 1').report({ 'reportResult': 'test' });
 });
 
 test('Run t.report action with multiple args', async t => {
