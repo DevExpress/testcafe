@@ -51,7 +51,7 @@ async function getConfiguration (args) {
     else {
         // NOTE: Positional arguments support is left only for backward compatibility.
         // It should be removed in future TestCafe versions.
-        // All new APIs should be enabled trough the configuration object in the upper clause.
+        // All new APIs should be enabled through the configuration object in the upper clause.
         // Please do not add new APIs here.
         const [hostname, port1, port2, ssl, developmentMode, retryTestPages, cache, configFile] = args;
 
