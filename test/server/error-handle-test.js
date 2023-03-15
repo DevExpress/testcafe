@@ -1,4 +1,3 @@
-const EventEmitter        = require('events');
 const { expect }          = require('chai');
 const { TEST_RUN_ERRORS } = require('../../lib/errors/types');
 const handleErrors        = require('../../lib/utils/handle-errors');
@@ -9,15 +8,7 @@ const AsyncEventEmitter   = require('../../lib/utils/async-event-emitter');
 const delay               = require('../../lib/utils/delay');
 const semver              = require('semver');
 
-class ConfigurationMock {
-    getOption () {
-        return null;
-    }
-
-    getOptions () {
-        return {};
-    }
-}
+const { configurationMock, browserSetMock } = require('./helpers/mocks');
 
 class TaskMock extends AsyncEventEmitter {
     constructor () {
@@ -29,15 +20,9 @@ class TaskMock extends AsyncEventEmitter {
     unRegisterClientScriptRouting () {}
 }
 
-class BrowserSetMock extends EventEmitter {
-    dispose () {
-        return Promise.resolve();
-    }
-}
-
 class RunnerMock extends Runner {
     constructor () {
-        super({ configuration: new ConfigurationMock() });
+        super({ configuration: configurationMock });
     }
 
     _createTask () {
@@ -170,7 +155,7 @@ describe('Global error handlers', () => {
 
         const { completionPromise } = runner._runTask({
             reporters:  [],
-            browserSet: new BrowserSetMock(),
+            browserSet: browserSetMock,
             testedApp:  null,
         });
 

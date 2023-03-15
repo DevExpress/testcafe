@@ -7,22 +7,16 @@ const COMMAND                 = require('../../lib/browser/connection/command');
 const browserProviderPool     = require('../../lib/browser/provider/pool');
 const BrowserConnectionStatus = require('../../lib/browser/connection/status');
 
+const { createBrowserProviderMock } = require('./helpers/mocks');
+
 const promisedRequest = promisify(request);
 
 describe('Browser connection', function () {
-    let testCafe                  = null;
-    let connection                = null;
-    let origRemoteBrowserProvider = null;
+    let testCafe                    = null;
+    let connection                  = null;
+    let originRemoteBrowserProvider = null;
 
-    const remoteBrowserProviderMock = {
-        openBrowser: function () {
-            return Promise.resolve();
-        },
-
-        closeBrowser: function () {
-            return Promise.resolve();
-        },
-    };
+    const remoteBrowserProviderMock = createBrowserProviderMock();
 
     before(function () {
         this.timeout(20000);
@@ -34,14 +28,14 @@ describe('Browser connection', function () {
                 return browserProviderPool.getProvider('remote');
             })
             .then(function (remoteBrowserProvider) {
-                origRemoteBrowserProvider = remoteBrowserProvider;
+                originRemoteBrowserProvider = remoteBrowserProvider;
 
                 browserProviderPool.addProvider('remote', remoteBrowserProviderMock);
             });
     });
 
     after(function () {
-        browserProviderPool.addProvider('remote', origRemoteBrowserProvider);
+        browserProviderPool.addProvider('remote', originRemoteBrowserProvider);
 
         return testCafe.close();
     });
