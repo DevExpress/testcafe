@@ -17,7 +17,6 @@ import {
     StopInternalFromFrameMessage,
     TYPE as MESSAGE_TYPE,
 } from './driver-link/messages';
-import AxisValues from '../core/utils/values/axis-values';
 
 const messageSandbox = eventSandbox.message;
 
@@ -29,8 +28,6 @@ export default class IframeDriver extends Driver {
         this.parentDriverLink          = new ParentIframeDriverLink(window.parent);
 
         this._initParentDriverListening();
-
-        this.leftTopPoint = new AxisValues(0, 0);
     }
 
     // Errors handling
@@ -70,8 +67,7 @@ export default class IframeDriver extends Driver {
                         this.lastParentDriverMessageId = msg.id;
 
                         this.readyPromise.then(() => {
-                            this.speed        = msg.testSpeed;
-                            this.leftTopPoint = msg.leftTopPoint;
+                            this.speed = msg.testSpeed;
 
                             this.parentDriverLink.sendConfirmationMessage(msg.id);
                             this._onCommand(msg.command);

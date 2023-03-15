@@ -217,7 +217,9 @@ export default class MoveAutomation {
             const events: any[] = [];
 
             await mouseMoveStep(mouseMoveOptions, nativeMethods.dateNow, async currPosition => {
-                events.push(this.proxylessInput?.createMouseMoveEvent(currPosition));
+                const moveEvent = await this.proxylessInput?.createMouseMoveEvent(currPosition);
+
+                events.push(moveEvent);
 
                 return nextTick();
             });
