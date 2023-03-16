@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <button id="btn1">button 1</button>
+    <button id="btn2">button 2</button>
+
+    <script>
+        window.log = { };
+
+        function handler (e) {
+            window.log[e.type + ':' + e.which] = true;
+        }
+
+        const btn1 = document.querySelector('#btn1');
+        const btn2 = document.querySelector('#btn2');
+
+        btn1.addEventListener('mouseenter', handler);
+        btn1.addEventListener('mouseleave', handler);
+        btn1.addEventListener('mousemove', handler);
+        btn1.addEventListener('mouseover', handler);
+        btn1.addEventListener('mouseout', handler);
+        btn1.addEventListener('mousedown', handler);
+        btn1.addEventListener('mouseup', handler);
+        btn1.addEventListener('click', handler);
+    </script>
+</body>
+</html>
