@@ -1,9 +1,10 @@
-const path               = require('path');
-const { expect }         = require('chai');
-const isCI               = require('is-ci');
-const config             = require('../../config');
-const { createReporter } = require('../../utils/reporter');
-const testInfo           = require('./test-info');
+const path                = require('path');
+const { expect }          = require('chai');
+const isCI                = require('is-ci');
+const config              = require('../../config');
+const { createReporter }  = require('../../utils/reporter');
+const testInfo            = require('./test-info');
+const { skipInProxyless } = require('../../utils/skip-in');
 
 
 if (config.useLocalBrowsers) {
@@ -41,7 +42,7 @@ if (config.useLocalBrowsers) {
                 })
                 .browsers(browsers)
                 .concurrency(concurrency)
-                .run();
+                .run({ experimentalProxyless: config.proxyless });
         }
 
         function createConnections (count) {
@@ -53,6 +54,7 @@ if (config.useLocalBrowsers) {
 
             function addConnection (connection) {
                 connections.push(connection);
+
                 return connections;
             }
 
@@ -178,7 +180,8 @@ if (config.useLocalBrowsers) {
                 });
         });
 
-        it('Should fail if number of remotes is not divisible by concurrency', function () {
+        // NOTE: the 'remote' connection cannot be proxyless.
+        skipInProxyless('Should fail if number of remotes is not divisible by concurrency', function () {
             return createConnections(3)
                 .then(function (connections) {
                     return run(connections, 2, './testcafe-fixtures/concurrent-test.js');

@@ -78,7 +78,7 @@ if (config.useLocalBrowsers && !config.hasBrowser('ie')) {
                     end:   noop,
                 })
                 .browsers(browsers)
-                .run();
+                .run({ experimentalProxyless: config.proxyless });
         }
 
         before(function () {

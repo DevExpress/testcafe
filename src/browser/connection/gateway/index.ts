@@ -1,22 +1,27 @@
-import loadAssets from '../../load-assets';
+import loadAssets from '../../../load-assets';
 import {
     respond404,
     respond500,
     respondWithJSON,
     redirect,
     preventCaching,
-} from '../../utils/http';
+} from '../../../utils/http';
 
-import RemotesQueue from './remotes-queue';
+import RemotesQueue from '../remotes-queue';
 import { Proxy, acceptCrossOrigin } from 'testcafe-hammerhead';
-import { Dictionary } from '../../configuration/interfaces';
-import BrowserConnection from './index';
+import { Dictionary } from '../../../configuration/interfaces';
+import BrowserConnection from '../index';
 import { IncomingMessage, ServerResponse } from 'http';
-import SERVICE_ROUTES from './service-routes';
-import EMPTY_PAGE_MARKUP from '../../proxyless/empty-page-markup';
-import PROXYLESS_ERROR_ROUTE from '../../proxyless/error-route';
-import { initSelector } from '../../test-run/commands/validations/initializers';
-import TestRun from '../../test-run';
+import SERVICE_ROUTES from '../service-routes';
+import EMPTY_PAGE_MARKUP from '../../../proxyless/empty-page-markup';
+import PROXYLESS_ERROR_ROUTE from '../../../proxyless/error-route';
+import { initSelector } from '../../../test-run/commands/validations/initializers';
+import TestRun from '../../../test-run';
+import { TestCafeStartOptions } from '../../../configuration/testcafe-configuration';
+import BrowserConnectionGatewayStatus from './status';
+import { GeneralError } from '../../../errors/runtime';
+import { RUNTIME_ERRORS } from '../../../errors/types';
+import { EventEmitter } from 'events';
 
 export interface BrowserConnectionGatewayOptions {
     retryTestPages: boolean;
@@ -28,20 +33,22 @@ const DEFAULT_BROWSER_CONNECTION_GATEWAY_OPTIONS = {
     proxyless:      false,
 };
 
-export default class BrowserConnectionGateway {
+export default class BrowserConnectionGateway extends EventEmitter {
     private _connections: Dictionary<BrowserConnection> = {};
     private _remotesQueue: RemotesQueue;
-    public readonly connectUrl: string;
+    public connectUrl: string;
     private readonly _options: BrowserConnectionGatewayOptions;
     public readonly proxy: Proxy;
+    private _status: BrowserConnectionGatewayStatus;
 
     public constructor (proxy: Proxy, options: BrowserConnectionGatewayOptions) {
+        super();
+
         this._remotesQueue  = new RemotesQueue();
-        this.connectUrl     = proxy.resolveRelativeServiceUrl(SERVICE_ROUTES.connect);
+        this.connectUrl     = '';
         this._options       = this._calculateResultOptions(options);
         this.proxy          = proxy;
-
-        this._registerRoutes(proxy);
+        this._status        = BrowserConnectionGatewayStatus.uninitialized;
     }
 
     private _calculateResultOptions (options: BrowserConnectionGatewayOptions): BrowserConnectionGatewayOptions {
@@ -335,8 +342,32 @@ export default class BrowserConnectionGateway {
         return this._options.proxyless;
     }
 
+    public get status (): BrowserConnectionGatewayStatus {
+        return this._status;
+    }
+
     public get retryTestPages (): boolean {
         return this._options.retryTestPages;
+    }
+
+    public initialize (options: TestCafeStartOptions): void {
+        if (this._status === BrowserConnectionGatewayStatus.initialized)
+            throw new GeneralError(RUNTIME_ERRORS.proxyInitializedMoreThanOnce);
+
+        this.proxy.start(options);
+
+        this._registerRoutes(this.proxy);
+
+        this.connectUrl = this.proxy.resolveRelativeServiceUrl(SERVICE_ROUTES.connect);
+        this._status    = BrowserConnectionGatewayStatus.initialized;
+
+        this.emit('initialized');
+    }
+
+    public switchToProxyless (): void {
+        this._options.proxyless = true;
+
+        this.proxy.switchToProxyless();
     }
 }
 

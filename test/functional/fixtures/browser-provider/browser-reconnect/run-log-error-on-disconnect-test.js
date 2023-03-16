@@ -1,6 +1,7 @@
 const path               = require('path');
 const createTestCafe     = require('../../../../../lib');
 const { createReporter } = require('../../../utils/reporter');
+const config             = require('../../../config');
 
 let testcafe               = null;
 const shouldAttachReporter = !!process.env.CUSTOM_REPORTER;
@@ -23,7 +24,7 @@ createTestCafe()
                 return testName === 'Should log error on browser disconnect';
             })
             .reporter(shouldAttachReporter ? reporter : [])
-            .run();
+            .run({ experimentalProxyless: config.proxyless });
     })
     .catch(function () {
         return testcafe.close();

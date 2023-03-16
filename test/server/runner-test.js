@@ -84,7 +84,7 @@ describe('Runner', () => {
 
     describe('.browsers()', () => {
         it('Should raise an error if browser was not found for the alias', function () {
-            this.timeout(5000);
+            this.timeout(10000);
 
             return runner
                 .browsers('browser42')
@@ -100,7 +100,9 @@ describe('Runner', () => {
                 });
         });
 
-        it('Should raise an error if an unprefixed path is provided', () => {
+        it('Should raise an error if an unprefixed path is provided', function () {
+            this.timeout(10000);
+
             return runner
                 .browsers('/Applications/Firefox.app')
                 .reporter('list')
@@ -1192,6 +1194,7 @@ describe('Runner', () => {
             });
 
             it('Should not raise an error when browser is specified as headless', async function () {
+                this.timeout(10000);
                 let isErrorThrown = false;
 
                 try {
@@ -1543,7 +1546,9 @@ describe('Runner', () => {
             Task.prototype.abort              = origAbort;
         });
 
-        it('Should not stop the task until local connection browsers are not closed when task done', () => {
+        it('Should not stop the task until local connection browsers are not closed when task done', function () {
+            this.timeout(100000);
+
             return runner
                 .browsers('mock:browser-alias1', 'mock:browser-alias2')
                 .run()

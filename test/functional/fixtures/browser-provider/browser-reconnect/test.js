@@ -25,7 +25,11 @@ function createConnection (browser) {
                 developmentMode:        config.devMode,
             };
 
-            return new BrowserConnection(testCafe.browserConnectionGateway, browserInfo, false, options);
+            const connnection = new BrowserConnection(testCafe.browserConnectionGateway, browserInfo, false, options);
+
+            connnection.initialize();
+
+            return connnection;
         });
 }
 
@@ -67,7 +71,7 @@ function run (pathToTest, filter, initializeConnection = initializeConnectionLow
                 .filter(testName => testName === filter)
                 .reporter(reporter)
                 .browsers(connection)
-                .run();
+                .run({ experimentalProxyless: config.proxyless });
         });
 }
 

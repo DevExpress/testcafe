@@ -6,10 +6,14 @@ const { EventEmitter } = require('events');
 const browserConnectionGatewayMock = {
     startServingConnection: noop,
     stopServingConnection:  noop,
+    initialize:             noop,
+    switchToProxyless:      noop,
     getConnections:         () => ({}),
 
     proxy: {
         resolveRelativeServiceUrl: noop,
+        start:                     noop,
+        switchToProxyless:         noop,
     },
 };
 
@@ -24,7 +28,8 @@ class BrowserSetMock extends EventEmitter {
 }
 
 const configurationMock = {
-    getOption: noop,
+    getOption:         noop,
+    calculateHostname: noop,
 
     startOptions: {
         hostname: 'localhost',

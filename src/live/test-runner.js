@@ -101,7 +101,7 @@ class LiveModeRunner extends Runner {
                 delete this._running;
             });
 
-        this.opts = Object.assign({}, this.opts, options);
+        this._options = Object.assign({}, this._options, options);
 
         this._setConfigurationOptions()
             .then(() => this._setBootstrapperOptions())

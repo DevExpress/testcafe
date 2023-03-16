@@ -183,7 +183,6 @@ export default class BrowserConnection extends EventEmitter {
         this.pendingTestRunInfo     = null;
         this._options               = this._calculateResultOptions(options);
 
-        this._buildCommunicationUrls(gateway.proxy);
         this._setEventHandlers();
 
         BrowserConnectionTracker.add(this);
@@ -191,9 +190,6 @@ export default class BrowserConnection extends EventEmitter {
         this.previousActiveWindowId = null;
 
         this.browserConnectionGateway.startServingConnection(this);
-
-        // NOTE: Give a caller time to assign event listeners
-        process.nextTick(() => this._runBrowser());
     }
 
     private _calculateResultOptions (options: Partial<BrowserConnectionOptions>): BrowserConnectionOptions {
@@ -659,5 +655,11 @@ export default class BrowserConnection extends EventEmitter {
         return this.status === BrowserConnectionStatus.ready ||
             this.status === BrowserConnectionStatus.opened ||
             this.status === BrowserConnectionStatus.closing;
+    }
+
+    public initialize (): void {
+        this._buildCommunicationUrls(this.browserConnectionGateway.proxy);
+
+        process.nextTick(() => this._runBrowser());
     }
 }
