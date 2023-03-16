@@ -15,7 +15,7 @@ test(`Should has the "which" property equal to "0" for move events`, async t => 
         'mouseup:1',
         'click:1',
         'mouseout:0',
-        'mouseleave:0'
+        'mouseleave:0',
     ]);
 });
 
