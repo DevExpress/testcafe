@@ -52,6 +52,7 @@ interface TaskInfo {
 }
 
 interface TestInfo {
+    reportData: Dictionary<any[]>;
     fixture: Fixture;
     test: Test;
     testRunIds: string[];
@@ -86,7 +87,7 @@ interface BrowserRunInfo extends Browser {
 interface TestRunInfo {
     errs: TestRunErrorFormattableAdapter[];
     warnings: string[];
-    reportData: any[];
+    reportData: Dictionary<any[]>;
     durationMs: number;
     unstable: boolean;
     screenshotPath: string;
@@ -307,6 +308,7 @@ export default class Reporter {
             pendingTestRunDonePromise:  Reporter._createPendingPromise(),
             pendingTestRunStartPromise: Reporter._createPendingPromise(),
             browsers:                   [],
+            reportData:                 {},
         };
     }
 
@@ -316,11 +318,11 @@ export default class Reporter {
         return task.tests.map(test => Reporter._createTestItem(test, runsPerTest));
     }
 
-    private static _createTestRunInfo (reportItem: TestInfo, testRun: TestRun): TestRunInfo {
+    private static _createTestRunInfo (reportItem: TestInfo): TestRunInfo {
         return {
             errs:           sortBy(reportItem.errs, ['userAgent', 'code']),
             warnings:       reportItem.warnings,
-            reportData:     testRun.reportDataLog ? testRun.reportDataLog.data : [],
+            reportData:     reportItem.reportData,
             durationMs:     +new Date() - (reportItem.startTime as number), //eslint-disable-line  @typescript-eslint/no-extra-parens
             unstable:       reportItem.unstable,
             screenshotPath: reportItem.screenshotPath as string,
@@ -412,7 +414,7 @@ export default class Reporter {
         }
 
         if (!testItem.testRunInfo) {
-            testItem.testRunInfo = Reporter._createTestRunInfo(testItem, testRun);
+            testItem.testRunInfo = Reporter._createTestRunInfo(testItem);
 
             if (testItem.test.skip)
                 taskInfo.skipped++;
@@ -553,10 +555,12 @@ export default class Reporter {
 
         reportItem.browsers.push(browser);
 
-        reportItem.pendingRuns = isTestRunStoppedTaskExecution ? 0 : reportItem.pendingRuns - 1;
-        reportItem.unstable    = reportItem.unstable || testRun.unstable;
-        reportItem.errs        = reportItem.errs.concat(testRun.errs);
-        reportItem.warnings    = testRun.warningLog ? union(reportItem.warnings, testRun.warningLog.messages) : [];
+        reportItem.pendingRuns            = isTestRunStoppedTaskExecution ? 0 : reportItem.pendingRuns - 1;
+        reportItem.unstable               = reportItem.unstable || testRun.unstable;
+        reportItem.errs                   = reportItem.errs.concat(testRun.errs);
+        reportItem.warnings               = testRun.warningLog ? union(reportItem.warnings, testRun.warningLog.messages) : [];
+        reportItem.reportData             = reportItem.reportData || {};
+        reportItem.reportData[testRun.id] = testRun.reportDataLog.data;
 
         if (testRun.quarantine) {
             reportItem.quarantine = reportItem.quarantine || {};
@@ -645,15 +649,43 @@ export default class Reporter {
         (this.taskInfo.pendingTaskDonePromise.resolve as Function)();
     }
 
+    private _prepareReportDataEventArgs (testRun: TestRun): any {
+        const { test, reportDataLog, browser, id } = testRun;
+        const fixture                              = test.fixture;
+
+        const testInfo = {
+            name: test.name,
+            id:   test.id,
+            meta: test.meta,
+        };
+
+        const fixtureInfo = {
+            name: fixture?.name,
+            id:   fixture?.id,
+            meta: fixture?.meta,
+            path: fixture?.path,
+        };
+
+        return {
+            reportData: reportDataLog.data,
+            test:       testInfo,
+            fixture:    fixtureInfo,
+            testRunId:  id,
+            browser,
+        };
+    }
+
     private async _onReportDataHandler ({ testRun, data }: ReportDataEventArgs): Promise<void> {
         if (!this.taskInfo)
             return;
+
+        const testRunInfo = this._prepareReportDataEventArgs(testRun);
 
         await this.dispatchToPlugin({
             method:        ReporterPluginMethod.reportData as string,
             initialObject: this.taskInfo.task,
             args:          [
-                testRun,
+                testRunInfo,
                 ...data,
             ],
         });

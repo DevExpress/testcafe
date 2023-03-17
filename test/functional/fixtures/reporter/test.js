@@ -889,83 +889,58 @@ const experimentalDebug = !!process.env.EXPERIMENTAL_DEBUG;
     });
 
     describe('Report Data', () => {
-        let dataResult = null;
-        let reporter   = null;
+        let reportDataInfos = {};
+        let testDoneInfos   = {};
+        let reporter        = null;
 
         const createReportDataReporter = () => {
-            dataResult = {
-                reportDataInfos: {},
-                testDoneList:    {},
-            };
-
             return createReporter({
-                reportData: (testRun, ...data) => {
-                    const testName = testRun.test.name;
+                reportData: ({ browser }, ...data) => {
+                    const alias = browser.alias;
 
-                    if (!dataResult.reportDataInfos[testName])
-                        dataResult.reportDataInfos[testName] = [];
+                    if (!reportDataInfos[alias])
+                        reportDataInfos[alias] = [];
 
-                    dataResult.reportDataInfos[testName].push(...data);
+                    reportDataInfos[alias].push(data);
                 },
-                reportTestDone: (name, { reportData }) => {
-                    dataResult.testDoneList[name] = reportData;
+                reportTestDone: (name, { reportData, browsers }) => {
+                    browsers.forEach(({ testRunId, alias }) => {
+                        testDoneInfos[alias] = reportData[testRunId];
+                    });
                 },
             });
         };
 
-        const expectedReports = {
-            'Run t.report action twice':              [['Report 1', 'Report 2'], 'Report 3'],
-            'Run t.report action with multiple args': ['Report 1', 'Report2', { 'reportResult': 'test' }, 'Report 3', 'Report 4'],
-            'Run t.report action with object val':    ['Report 1', { 'reportResult': 'test' }],
-        };
-
-
         beforeEach(() => {
+            reportDataInfos = {};
+            testDoneInfos   = {};
+
             reporter = createReportDataReporter();
         });
 
-        it('Should raise reportData twice', async () => {
-            const testName = 'Run t.report action twice';
+        it('Should raise reportData twice with different argument count and types', async () => {
+            const expectedReportData = [1, true, 'string', { 'reportResult': 'test' }];
 
-            await runTests('testcafe-fixtures/report-data-test.js', testName, {
+            await runTests('testcafe-fixtures/report-data-test.js', 'Run t.report action with object val', {
                 reporter,
             });
 
-            expect(dataResult.testDoneList).eql({ [testName]: expectedReports[testName] });
-            expect(dataResult.reportDataInfos).eql({ [testName]: expectedReports[testName] });
-        });
+            const reportDataBrowserInfos = Object.entries(reportDataInfos);
+            const testDoneBrowserInfos   = Object.entries(testDoneInfos);
 
-        it('Should raise reportData with object value', async () => {
-            const testName = 'Run t.report action with object val';
+            expect(reportDataBrowserInfos.length).eql(config.browsers.length);
+            expect(testDoneBrowserInfos.length).eql(config.browsers.length);
 
-            await runTests('testcafe-fixtures/report-data-test.js', testName, {
-                reporter,
+            reportDataBrowserInfos.forEach(([alias, reportData]) => {
+                expect(reportData.flat()).eql(testDoneInfos[alias]);
             });
 
-            expect(dataResult.testDoneList).eql({ [testName]: expectedReports[testName] });
-            expect(dataResult.reportDataInfos).eql({ [testName]: expectedReports[testName] });
-        });
+            testDoneBrowserInfos.forEach(([, reportData]) => {
+                const [, ...rest] = reportData;
 
-        it('Should raise reportData with multiple args', async () => {
-            const testName = 'Run t.report action with multiple args';
-
-            await runTests('testcafe-fixtures/report-data-test.js', testName, {
-                reporter,
+                expect(rest).eql(expectedReportData);
             });
-
-            expect(dataResult.testDoneList).eql({ [testName]: expectedReports[testName] });
-            expect(dataResult.reportDataInfos).eql({ [testName]: expectedReports[testName] });
         });
-
-        it('Should collect info from different tests', async () => {
-            await runTests('testcafe-fixtures/report-data-test.js', null, {
-                reporter,
-            });
-
-            expect(dataResult.testDoneList).eql(expectedReports);
-            expect(dataResult.reportDataInfos).eql(expectedReports);
-        });
-
     });
 
     describe('Warnings', () => {
