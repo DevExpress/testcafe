@@ -650,8 +650,8 @@ export default class Reporter {
     }
 
     private _prepareReportDataEventArgs (testRun: TestRun): any {
-        const { test, reportDataLog, browser, id } = testRun;
-        const fixture                              = test.fixture;
+        const { test, browser, id } = testRun;
+        const fixture               = test.fixture;
 
         const testInfo = {
             name: test.name,
@@ -667,10 +667,9 @@ export default class Reporter {
         };
 
         return {
-            reportData: reportDataLog.data,
-            test:       testInfo,
-            fixture:    fixtureInfo,
-            testRunId:  id,
+            test:      testInfo,
+            fixture:   fixtureInfo,
+            testRunId: id,
             browser,
         };
     }
