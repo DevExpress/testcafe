@@ -784,7 +784,10 @@ describe('Reporter', () => {
                                 run: 'run-001',
                             },
                         },
-                        reportData: [],
+                        reportData: {
+                            'f1t1':   [],
+                            'f1t1ff': [],
+                        },
                     },
                     {
                         run: 'run-001',
@@ -878,7 +881,10 @@ describe('Reporter', () => {
                                 run: 'run-001',
                             },
                         },
-                        reportData: [],
+                        reportData: {
+                            f1t2:   [],
+                            f1t2ff: [],
+                        },
                     },
                     {
                         run: 'run-001',
@@ -944,7 +950,10 @@ describe('Reporter', () => {
                                 run: 'run-001',
                             },
                         },
-                        reportData: [],
+                        reportData: {
+                            f1t3:   [],
+                            f1t3ff: [],
+                        },
                     },
                     {
                         run: 'run-001',
@@ -1020,7 +1029,10 @@ describe('Reporter', () => {
                                 run: 'run-002',
                             },
                         },
-                        reportData: [],
+                        reportData: {
+                            f2t1:   [],
+                            f2t1ff: [],
+                        },
                     },
                     {
                         run: 'run-001',
@@ -1086,7 +1098,10 @@ describe('Reporter', () => {
                                 run: 'run-002',
                             },
                         },
-                        reportData: [],
+                        reportData: {
+                            f2t2:   [],
+                            f2t2ff: [],
+                        },
                     },
                     {
                         run: 'run-001',
@@ -1164,7 +1179,10 @@ describe('Reporter', () => {
                             path: './file2.js',
                             meta: null,
                         },
-                        reportData: [],
+                        reportData: {
+                            f3t1:   [],
+                            f3t1ff: [],
+                        },
                     },
                     {
                         run: 'run-001',
@@ -1228,7 +1246,10 @@ describe('Reporter', () => {
                             path: './file2.js',
                             meta: null,
                         },
-                        reportData: [],
+                        reportData: {
+                            f3t2:   [],
+                            f3t2ff: [],
+                        },
                     },
                     {
                         run: 'run-001',
@@ -1292,7 +1313,10 @@ describe('Reporter', () => {
                             path: './file2.js',
                             meta: null,
                         },
-                        reportData: [],
+                        reportData: {
+                            f3t3:   [],
+                            f3t3ff: [],
+                        },
                     },
                     {
                         run: 'run-001',
@@ -1396,7 +1420,7 @@ describe('Reporter', () => {
                     [
                         { testRunId: 'f1t2-id1', videoPath: 'f1t2-path1' },
                         { testRunId: 'f1t2-id2', videoPath: 'f1t2-path2' },
-                    ]]
+                    ]],
                 );
             });
     });
