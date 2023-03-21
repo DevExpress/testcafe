@@ -193,7 +193,12 @@ test('Non-element node snapshots', async t => {
         .expect(doc.hasChildElements).ok()
         .expect(doc.textContent).eql(null);
 
-    const textNode = await Selector(() => document.body.childNodes[0])();
+    const textNode = await Selector(() => {
+        if (document.body.childNodes.length)
+            return document.body.childNodes[0];
+
+        throw new Error();
+    })();
 
     await t
         .expect(textNode.nodeType).eql(3)

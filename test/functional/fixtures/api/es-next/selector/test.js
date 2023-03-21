@@ -143,7 +143,7 @@ describe('[API] Selector', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Cannot use "shadowRoot" as a target', Object.assign({ shouldFail: true, skip: ['ie', 'edge'] }, DEFAULT_RUN_OPTIONS))
             .catch(function (errs) {
                 expect(errs[0]).contains('The specified selector is expected to match a DOM element, but it matches a document fragment node.');
-                expect(errs[0]).contains('> 1116 |    await t.click(shadowRoot);');
+                expect(errs[0]).contains('> 1121 |    await t.click(shadowRoot);');
             });
     });
 
