@@ -28,16 +28,6 @@ const DEBUG_GLOB_2 = [
     ...SCREENSHOT_TESTS_GLOB.map(glob => `!${glob}`),
 ];
 
-const PROXYLESS_TESTS_GLOB = [
-    ...TESTS_GLOB,
-    '!test/functional/fixtures/regression/gh-1311/test.js',
-    '!test/functional/fixtures/hammerhead/gh-2622/test.js',
-    '!test/functional/fixtures/regression/gh-2861/test.js',
-    '!test/functional/fixtures/regression/gh-423/test.js',
-    '!test/functional/fixtures/regression/gh-5886/test.js',
-    '!test/functional/fixtures/regression/hammerhead/gh-2350/test.js',
-];
-
 module.exports = {
     TESTS_GLOB,
     LEGACY_TESTS_GLOB,
@@ -47,6 +37,5 @@ module.exports = {
     DEBUG_GLOB_1,
     DEBUG_GLOB_2,
     SCREENSHOT_TESTS_GLOB,
-    PROXYLESS_TESTS_GLOB,
     HEADED_CHROME_FIREFOX_TESTS_GLOB,
 };

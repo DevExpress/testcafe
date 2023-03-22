@@ -1,3 +1,5 @@
+const { skipInProxyless } = require('../../../utils/skip-in');
+
 describe('[Regression](GH-423)', function () {
     it('Should raise click event except in Firefox if target element appends child after mousedown', function () {
         return runTests('testcafe-fixtures/index.test.js', 'Raise click if target appends child', { skip: ['firefox', 'firefox-osx'] });
@@ -19,7 +21,7 @@ describe('[Regression](GH-423)', function () {
         return runTests('testcafe-fixtures/index.test.js', "Don't raise click if target parent changed", { skip: ['firefox', 'firefox-osx'] });
     });
 
-    it("Shouldn't raise click if target appends editable form element", function () {
+    skipInProxyless("Shouldn't raise click if target appends editable form element", function () {
         return runTests('testcafe-fixtures/index.test.js', "Don't raise click event if target appends input element");
     });
 });
