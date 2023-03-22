@@ -15,11 +15,11 @@ import { getTestFileCompilers, initTestFileCompilers } from './compilers';
 const SOURCE_CHUNK_LENGTH = 1000;
 
 export default class Compiler {
-    constructor (sources, compilerOptions, { isCompilerServiceMode, baseUrl, experimentalEsm } = {} ) {
+    constructor (sources, compilerOptions, { isCompilerServiceMode, baseUrl, esm } = {} ) {
         this.sources = sources;
-        this.experimentalEsm = experimentalEsm;
+        this.esm = esm;
 
-        initTestFileCompilers(compilerOptions, { isCompilerServiceMode, baseUrl, experimentalEsm });
+        initTestFileCompilers(compilerOptions, { isCompilerServiceMode, baseUrl, esm });
     }
 
     static getSupportedTestFileExtensions () {
@@ -59,7 +59,7 @@ export default class Compiler {
     }
 
     async _precompileFiles (compiler, testFilesInfo) {
-        if (!compiler.canPrecompile || this.experimentalEsm && compiler.canCompileInEsm)
+        if (!compiler.canPrecompile || this.esm && compiler.canCompileInEsm)
             return;
 
         const precompiledCode = await compiler.precompile(testFilesInfo);
@@ -87,7 +87,7 @@ export default class Compiler {
     }
 
     async _getTests ({ compiler, filename, code, compiledCode }) {
-        if (compiledCode || this.experimentalEsm && compiler.canCompileInEsm)
+        if (compiledCode || this.esm && compiler.canCompileInEsm)
             return await compiler.execute(compiledCode, filename);
 
         return await compiler.compile(code, filename);

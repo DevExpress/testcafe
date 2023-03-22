@@ -20,12 +20,12 @@ function getPresetEnvForClientFunctionOpts () {
     };
 }
 
-function getModuleResolverOpts (experimentalEsm) {
+function getModuleResolverOpts (esm) {
     return {
         resolvePath (source) {
             //NOTE: Prevent module caching to import 'fixture' and 'test' in ESM mode.
             if (source === 'testcafe')
-                return getExportableLibPath(experimentalEsm);
+                return getExportableLibPath(esm);
 
             return source;
         },
@@ -56,7 +56,7 @@ function getPresetReact () {
 }
 
 // NOTE: lazy load heavy dependencies
-export default function loadLibs ({ isCompilerServiceMode, experimentalEsm } = {}) {
+export default function loadLibs ({ isCompilerServiceMode, esm } = {}) {
     return {
         babel:                      require('@babel/core'),
         presetStage2:               require('./preset-stage-2'),
@@ -64,8 +64,8 @@ export default function loadLibs ({ isCompilerServiceMode, experimentalEsm } = {
         transformRuntime:           [require('@babel/plugin-transform-runtime'), getTransformRuntimeOpts()],
         transformForOfAsArray:      [require('@babel/plugin-transform-for-of'), getTransformForOfOptions()],
         presetEnvForClientFunction: [require('@babel/preset-env'), getPresetEnvForClientFunctionOpts()],
-        presetEnvForTestCode:       [require('@babel/preset-env'), getPresetEnvForTestCodeOpts(isCompilerServiceMode || experimentalEsm)],
-        moduleResolver:             [require('babel-plugin-module-resolver'), getModuleResolverOpts(experimentalEsm)],
+        presetEnvForTestCode:       [require('@babel/preset-env'), getPresetEnvForTestCodeOpts(isCompilerServiceMode || esm)],
+        moduleResolver:             [require('babel-plugin-module-resolver'), getModuleResolverOpts(esm)],
         presetReact:                getPresetReact(),
         proposalPrivateMethods:     [require('@babel/plugin-proposal-private-methods'), { loose: true }],
         proposalClassProperties:    [require('@babel/plugin-proposal-class-properties'), { loose: true }],

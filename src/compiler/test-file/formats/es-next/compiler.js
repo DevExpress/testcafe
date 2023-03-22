@@ -13,7 +13,7 @@ eval("");
 
 export default class ESNextTestFileCompiler extends APIBasedTestFileCompilerBase {
 
-    static getBabelOptions (filename, code, { isCompilerServiceMode, experimentalEsm } = {}) {
+    static getBabelOptions (filename, code, { isCompilerServiceMode, esm } = {}) {
         const {
             presetStage2,
             presetFlow,
@@ -23,7 +23,7 @@ export default class ESNextTestFileCompiler extends APIBasedTestFileCompilerBase
             moduleResolver,
             proposalPrivateMethods,
             proposalClassProperties,
-        } = loadBabelLibs({ isCompilerServiceMode, experimentalEsm });
+        } = loadBabelLibs({ isCompilerServiceMode, esm });
 
         const opts = Object.assign({}, BASE_BABEL_OPTIONS, {
             presets:    [presetStage2, presetEnvForTestCode, presetReact],
@@ -44,7 +44,7 @@ export default class ESNextTestFileCompiler extends APIBasedTestFileCompilerBase
         if (this.cache[filename])
             return this.cache[filename];
 
-        if (this.isCompilerServiceMode || this.experimentalEsm)
+        if (this.isCompilerServiceMode || this.esm)
             code += DISABLE_V8_OPTIMIZATION_CODE;
 
         const opts     = ESNextTestFileCompiler.getBabelOptions(filename, code, this);
@@ -62,7 +62,7 @@ export default class ESNextTestFileCompiler extends APIBasedTestFileCompilerBase
             [Extensions.cjs]: (code, filename) => this._compileCode(code, filename),
         };
 
-        if (this.experimentalEsm)
+        if (this.esm)
             requireCompilers[Extensions.mjs] = (code, filename) => this._compileCode(code, filename);
 
         return requireCompilers;

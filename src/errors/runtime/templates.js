@@ -142,7 +142,7 @@ export default {
     [RUNTIME_ERRORS.invalidCommandInJsonCompiler]:                   `TestCafe terminated the test run. The "{path}" file contains an unknown Chrome User Flow action "{action}". Remove the action to continue. Refer to the following article for the definitive list of supported Chrome User Flow actions: https://testcafe.io/documentation/403998/guides/experimental-capabilities/chrome-replay-support#supported-replay-actions`,
     [RUNTIME_ERRORS.invalidCustomActionsOptionType]:                 `The value of the customActions option does not belong to type Object. Refer to the following article for custom action setup instructions: ${ DOCUMENTATION_LINKS.CUSTOM_ACTIONS }`,
     [RUNTIME_ERRORS.invalidCustomActionType]:                        `TestCafe cannot parse the "{actionName}" action, because the action definition is invalid. Format the definition in accordance with the custom actions guide: ${ DOCUMENTATION_LINKS.CUSTOM_ACTIONS }`,
-    [RUNTIME_ERRORS.cannotImportESMInCommonsJS]:                     'Cannot import the {esModule} ECMAScript module from {targetFile}. Use a dynamic import() statement or enable the --experimental-esm CLI flag.',
+    [RUNTIME_ERRORS.cannotImportESMInCommonsJS]:                     'Cannot import the {esModule} ECMAScript module from {targetFile}. Use a dynamic import() statement or enable the --esm CLI flag.',
     [RUNTIME_ERRORS.proxyInitializedMoreThanOnce]:                   'The proxy was initialized more than once.',
     [RUNTIME_ERRORS.setProxylessForUnsupportedBrowsers]:             'The "proxyless" mode is not supported in the {browsers} browser{ending}.',
 };

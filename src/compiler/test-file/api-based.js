@@ -38,14 +38,14 @@ const Module = module.constructor;
 const errRequireEsmErrorCode = 'ERR_REQUIRE_ESM';
 
 export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
-    constructor ({ isCompilerServiceMode, baseUrl, experimentalEsm }) {
+    constructor ({ isCompilerServiceMode, baseUrl, esm }) {
         super({ baseUrl });
 
         this.isCompilerServiceMode = isCompilerServiceMode;
         this.cache                 = Object.create(null);
         this.origRequireExtensions = Object.create(null);
         this.cachePrefix           = nanoid(7);
-        this.experimentalEsm       = experimentalEsm;
+        this.esm                   = esm;
     }
 
     static _getNodeModulesLookupPath (filename) {
@@ -67,7 +67,7 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
     }
 
     async _execAsModule (code, filename) {
-        if (this.experimentalEsm) {
+        if (this.esm) {
             const fileUrl = url.pathToFileURL(filename);
 
             //NOTE: It is necessary to prevent module caching during live mode.
@@ -255,7 +255,7 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
             this._removeRequireHook();
             stackCleaningHook.enabled = false;
 
-            if (!this.experimentalEsm)
+            if (!this.esm)
                 this._removeGlobalAPI();
         }
 

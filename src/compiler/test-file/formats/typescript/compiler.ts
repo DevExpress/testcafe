@@ -45,12 +45,12 @@ interface RequireCompilers {
     [extension: string]: RequireCompilerFunction;
 }
 
-function testcafeImportPathReplacer<T extends Node> (experimentalEsm?: boolean): TransformerFactory<T> {
+function testcafeImportPathReplacer<T extends Node> (esm?: boolean): TransformerFactory<T> {
     return context => {
         const visit: Visitor = (node): VisitResult<Node> => {
             // @ts-ignore
             if (node.parent?.kind === SyntaxKind.ImportDeclaration && node.kind === SyntaxKind.StringLiteral && node.text === 'testcafe') {
-                const libPath = getExportableLibPath(experimentalEsm);
+                const libPath = getExportableLibPath(esm);
 
                 return tsFactory.createStringLiteral(libPath);
             }
@@ -95,8 +95,8 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
     private readonly _compilerPath: string;
     private readonly _customCompilerOptions?: object;
 
-    public constructor (compilerOptions?: TypeScriptCompilerOptions, { isCompilerServiceMode, baseUrl, experimentalEsm }: OptionalCompilerArguments = {}) {
-        super({ isCompilerServiceMode, baseUrl, experimentalEsm });
+    public constructor (compilerOptions?: TypeScriptCompilerOptions, { isCompilerServiceMode, baseUrl, esm }: OptionalCompilerArguments = {}) {
+        super({ isCompilerServiceMode, baseUrl, esm });
 
         // NOTE: At present, it's necessary create an instance TypeScriptTestFileCompiler
         // to collect a list of supported test file extensions.
@@ -107,7 +107,7 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
         const configPath = compilerOptions && compilerOptions.configPath || null;
 
         this._customCompilerOptions = compilerOptions && compilerOptions.options;
-        this._tsConfig              = new TypescriptConfiguration(configPath, isCompilerServiceMode || experimentalEsm);
+        this._tsConfig              = new TypescriptConfiguration(configPath, isCompilerServiceMode || esm);
         this._compilerPath          = TypeScriptTestFileCompiler._getCompilerPath(compilerOptions);
     }
 
@@ -211,9 +211,9 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
     }
 
     private _getTypescriptTransformers (): TransformerFactory<SourceFile>[] {
-        const transformers: TransformerFactory<SourceFile>[] = [testcafeImportPathReplacer(this.experimentalEsm)];
+        const transformers: TransformerFactory<SourceFile>[] = [testcafeImportPathReplacer(this.esm)];
 
-        if (this.isCompilerServiceMode || this.experimentalEsm)
+        if (this.isCompilerServiceMode || this.esm)
             transformers.push(disableV8OptimizationCodeAppender());
 
         return transformers;
@@ -247,7 +247,7 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
             [Extensions.jsx]: (code, filename) => ESNextTestFileCompiler.prototype._compileCode.call(this, code, filename),
         };
 
-        if (this.experimentalEsm)
+        if (this.esm)
             requireCompilers[Extensions.mjs] = (code, filename) => ESNextTestFileCompiler.prototype._compileCode.call(this, code, filename);
 
         return requireCompilers;

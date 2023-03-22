@@ -322,7 +322,7 @@ class CompilerService implements CompilerProtocol {
     }
 
     public async getTests ({ sourceList, compilerOptions, runnableConfigurationId }: CompilerArguments, baseUrl?: string): Promise<Units> {
-        const compiler = new Compiler(sourceList, compilerOptions, { isCompilerServiceMode: true, baseUrl, experimentalEsm: false });
+        const compiler = new Compiler(sourceList, compilerOptions, { isCompilerServiceMode: true, baseUrl, esm: false });
 
         const tests   = await compiler.getTests();
         const units   = flattenTestStructure(tests);
