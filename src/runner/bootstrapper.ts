@@ -276,6 +276,14 @@ export default class Bootstrapper {
 
         if (this.hooks.request)
             assertRequestHookType(flatten(castArray(this.hooks.request)));
+
+        if (this.hooks.reporter) {
+            assertType(is.nonNullObject, 'reporter', 'The hook' , this.hooks.reporter);
+
+            Object.values(this.hooks.reporter).forEach(hook => {
+                // assertType(is.function, )
+            })
+        }
     }
 
     private _setGlobalHooksToTests (tests: Test[]): void {

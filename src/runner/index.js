@@ -605,6 +605,7 @@ export default class Runner extends EventEmitter {
         await this._turnOnScreenshotsIfNeeded();
 
         const reporterPlugins = await Reporter.getReporterPlugins(this.configuration.getOption(OPTION_NAMES.reporter));
+        // const onBeforeWriteHooks = this.bootstrapper.hooks.
 
         this._reporters = reporterPlugins.map(reporter => new Reporter(reporter.plugin, this._messageBus, reporter.outStream, reporter.name));
 

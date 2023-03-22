@@ -24,11 +24,16 @@ interface TestingEntryHooks {
     after?: Function;
 }
 
+interface ReporterHooks {
+    onBeforeWrite?: Function
+}
+
 interface GlobalHooks {
     testRun?: TestingEntryHooks;
     fixture?: TestingEntryHooks;
     test?: TestingEntryHooks;
     request?: typeof RequestHook[] | typeof RequestHook;
+    reporter?: { [reporterName: string]: ReporterHooks }
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

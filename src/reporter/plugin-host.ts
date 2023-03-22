@@ -48,7 +48,7 @@ export default class ReporterPluginHost {
         this[stream]            = outStream || process.stdout;
         this[wordWrapEnabled]   = false;
         this[indent]            = 0;
-        this._onBeforeWriteHook = onBeforeWriteHook || ((e) => {
+        this._onBeforeWriteHook = onBeforeWriteHook?.bind(this) || ((e) => {
             console.log(e.initiator);
         });
 
