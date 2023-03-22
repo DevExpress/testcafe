@@ -918,10 +918,10 @@ const experimentalDebug = !!process.env.EXPERIMENTAL_DEBUG;
             reporter = createReportDataReporter();
         });
 
-        it('Should raise reportData twice with different argument count and types', async () => {
+        it('Should raise "reportData" event', async () => {
             const expectedReportData = [1, true, 'string', { 'reportResult': 'test' }];
 
-            await runTests('testcafe-fixtures/report-data-test.js', 'Run t.report action with object val', {
+            await runTests('testcafe-fixtures/report-data-test.js', 'Run t.report action', {
                 reporter,
             });
 

@@ -25,7 +25,6 @@ async function errorCheck (t) {
 
 test('Simple test', async t => {
     await t.wait(1);
-    await t.report();
 });
 
 test('Simple command test', async t => {
