@@ -1,5 +1,6 @@
 import chalk, { Chalk } from 'chalk';
 import indentString from 'indent-string';
+import callsite from 'callsite';
 
 import {
     identity,
@@ -17,6 +18,8 @@ import { Writable } from 'stream';
 import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapter';
 import REPORTER_SYMBOLS from '../reporter/symbols';
 import { ReporterSymbols } from './interfaces';
+import { OnBeforeWriteHook, WriteInfo } from './index';
+import ReporterPluginMethod from './plugin-methods';
 
 // NOTE: we should not expose internal state to
 // the plugin, to avoid accidental rewrites.
@@ -37,13 +40,17 @@ export default class ReporterPluginHost {
     private [wordWrapEnabled]: boolean;
     private [indent]: number;
     private [errorDecorator]: Record<string, Function>;
+    private _onBeforeWriteHook: OnBeforeWriteHook | undefined;
 
-    public constructor (plugin: any, outStream?: Writable, name?: string) {
-        this.name             = name;
-        this.streamController = null;
-        this[stream]          = outStream || process.stdout;
-        this[wordWrapEnabled] = false;
-        this[indent]          = 0;
+    public constructor (plugin: any, outStream?: Writable, name?: string, onBeforeWriteHook?: OnBeforeWriteHook) {
+        this.name               = name;
+        this.streamController   = null;
+        this[stream]            = outStream || process.stdout;
+        this[wordWrapEnabled]   = false;
+        this[indent]            = 0;
+        this._onBeforeWriteHook = onBeforeWriteHook || ((e) => {
+            console.log(e.initiator);
+        });
 
         const useColors = this[stream] === process.stdout && chalk.enabled && !plugin.noColors;
 
@@ -141,7 +148,14 @@ export default class ReporterPluginHost {
         else
             text = this.indentString(text, this[indent]);
 
-        this._writeToUniqueStream(text);
+        if (this._onBeforeWriteHook) {
+            const writeInfo = this._createBeforeWriteInfo(text);
+
+            this._onBeforeWriteHook(writeInfo);
+            this._writeToUniqueStream(writeInfo.formattedText);
+        }
+        else
+            this._writeToUniqueStream(text);
 
         return this;
     }
@@ -156,6 +170,22 @@ export default class ReporterPluginHost {
         this[indent] = val;
 
         return this;
+    }
+
+    private _createBeforeWriteInfo (formattedText: string): WriteInfo {
+        const pluginMethods = Object.keys(ReporterPluginMethod)
+        const initiatorSite = callsite().find(site => pluginMethods.some(methodName => methodName === site?.getFunctionName()));
+        const initiator     = initiatorSite ? initiatorSite.getFunctionName() : '';
+
+        return {
+            formatOptions: {
+                indent:      this[indent],
+                useWordWrap: this[wordWrapEnabled],
+            },
+            formattedText,
+            initiator,
+            data:          {},
+        }
     }
 
     private _writeToUniqueStream (text: string): void {

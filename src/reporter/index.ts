@@ -130,6 +130,17 @@ interface ReportDataEventArgs {
     testRun: TestRun
 }
 
+export interface WriteInfo {
+    initiator: string;
+    formattedText: string;
+    formatOptions: {
+        useWordWrap: boolean;
+        indent: number;
+    }
+    data: undefined | object;
+}
+export type OnBeforeWriteHook = (e: WriteInfo) => void;
+
 const debugLog = debug('testcafe:reporter');
 
 export default class Reporter {
@@ -139,8 +150,8 @@ export default class Reporter {
     public taskInfo: TaskInfo | null;
     public readonly outStream: Writable;
 
-    public constructor (plugin: ReporterPlugin, messageBus: MessageBus, outStream: Writable, name: string) {
-        this.plugin     = new ReporterPluginHost(plugin, outStream, name);
+    public constructor (plugin: ReporterPlugin, messageBus: MessageBus, outStream: Writable, name: string, onBeforeWriteHook: OnBeforeWriteHook) {
+        this.plugin     = new ReporterPluginHost(plugin, outStream, name, onBeforeWriteHook);
         this.messageBus = messageBus;
 
         this.disposed  = false;
