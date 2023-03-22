@@ -343,6 +343,8 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
     }
 
     public async start (): Promise<void> {
+        this._stopped = false;
+
         // NOTE: We are forced to handle all requests and responses at once
         // because CDP API does not allow specifying request filtering behavior for different handlers.
         await this._client.Fetch.enable({
@@ -362,6 +364,9 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
         });
 
         this._client.Page.on('frameNavigated', async (event: FrameNavigatedEvent) => {
+            if (this._stopped)
+                return;
+
             requestPipelineLogger('%f', event);
 
             if (!this._topFrameNavigation(event)
@@ -378,10 +383,16 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
         });
 
         this._client.Page.on('frameStartedLoading', async () => {
+            if (this._stopped)
+                return;
+
             await this._updateCurrentFrameTree();
         });
 
         this._client.Network.on('loadingFailed', async (event: LoadingFailedEvent) => {
+            if (this._stopped)
+                return;
+
             requestPipelineLogger('%l', event);
 
             this._failedRequestIds.push(event.requestId);
@@ -399,12 +410,11 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
         });
     }
 
-    public stop (): void {
+    public async stop (): Promise<void> {
         this._stopped = true;
-    }
 
-    public async dispose (): Promise<void> {
         await this._client.Fetch.disable();
+        await this._client.Security.disable();
     }
 
     private _createContinueEventArgs (event: Protocol.Fetch.RequestPausedEvent, reqOpts: any): ContinueRequestArgs {

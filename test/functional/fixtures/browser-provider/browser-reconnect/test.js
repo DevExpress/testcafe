@@ -1,10 +1,11 @@
-const path                = require('path');
-const { spawn }           = require('child_process');
-const { expect }          = require('chai');
-const config              = require('../../../config');
-const browserProviderPool = require('../../../../../lib/browser/provider/pool');
-const BrowserConnection   = require('../../../../../lib/browser/connection');
-const { createReporter }  = require('../../../utils/reporter');
+const path                                   = require('path');
+const { spawn }                              = require('child_process');
+const { expect }                             = require('chai');
+const config                                 = require('../../../config');
+const browserProviderPool                    = require('../../../../../lib/browser/provider/pool');
+const BrowserConnection                      = require('../../../../../lib/browser/connection');
+const { createReporter }                     = require('../../../utils/reporter');
+const setNativeAutomationForRemoteConnection = require('../../../utils/set-native-automation-for-remote-connection');
 
 const setNativeAutomationForRemoteConnection = require('../../../utils/set-native-automation-for-remote-connection');
 
@@ -76,7 +77,7 @@ function run (pathToTest, filter, initializeConnection = initializeConnectionLow
                 .filter(testName => testName === filter)
                 .reporter(reporter)
                 .browsers(connection)
-                .run({ nativeAutomation: config.nativeAutomation });
+                .run({ disableNativeAutomation: !config.nativeAutomation });
         });
 }
 

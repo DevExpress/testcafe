@@ -936,7 +936,7 @@ describe('Runner', () => {
                         .browsers(brokenConnection)
                         .reporter('json')
                         .src('test/server/data/test-suites/basic/testfile2.js')
-                        .run();
+                        .run({ disableNativeAutomation: true });
 
                     function check () {
                         setTimeout(() => {
@@ -1216,13 +1216,17 @@ describe('Runner', () => {
                 let isErrorThrown = false;
 
                 try {
+                    runnerLinux.configuration.mergeOptions({
+                        disableNativeAutomation: true,
+                    });
+
                     await runnerLinux.browsers([new BrowserConnection(browserConnectionGatewayMock, browserInfo)]);
                     await runnerLinux._setConfigurationOptions();
                     await runnerLinux._setBootstrapperOptions();
                     await runnerLinux._validateRunOptions();
                     await runnerLinux._createRunnableConfiguration();
                 }
-                catch {
+                catch (err) {
                     isErrorThrown = true;
                 }
 
@@ -1551,7 +1555,7 @@ describe('Runner', () => {
 
             return runner
                 .browsers('mock:browser-alias1', 'mock:browser-alias2')
-                .run()
+                .run({ disableNativeAutomation: true })
                 .then(() => {
                     expect(closeCalled).eql(2);
                 });
@@ -1570,7 +1574,7 @@ describe('Runner', () => {
 
                     return runner
                         .browsers(brokenConnection, 'mock:browser-alias')
-                        .run();
+                        .run({ disableNativeAutomation: true });
                 })
                 .then(() => {
                     throw new Error('Promise rejection expected');
@@ -1607,7 +1611,7 @@ describe('Runner', () => {
 
                     return runner
                         .browsers(remoteConnection)
-                        .run();
+                        .run({ disableNativeAutomation: true });
                 })
                 .then(() => {
                     expect(remoteConnection.idle).to.be.true;
@@ -1640,7 +1644,7 @@ describe('Runner', () => {
 
                     return runner
                         .browsers('mock:browser-alias1', remoteConnection)
-                        .run()
+                        .run({ disableNativeAutomation: true })
                         .cancel();
                 })
                 .then(() => {
@@ -1659,6 +1663,7 @@ describe('Runner', () => {
             .src('/path-to-test')
             .browsers('remote')
             .reporter('json');
+
         await runner._setConfigurationOptions();
         await runner._setBootstrapperOptions();
 
@@ -1706,7 +1711,7 @@ describe('Runner', () => {
             return runner
                 .src('./test/server/data/test-suites/basic/testfile1.js')
                 .browsers(['warningProvider:browser-alias1', 'warningProvider:browser-alias2'])
-                .run()
+                .run({ disableNativeAutomation: true })
                 .then(() => {
                     throw new Error('Promise rejection expected');
                 })
@@ -1720,7 +1725,7 @@ describe('Runner', () => {
             return runner
                 .src('./test/server/data/test-suites/basic/testfile1.js')
                 .browsers(['warningProvider:browser-alias1', 'warningProvider:browser-alias2'])
-                .run()
+                .run({ disableNativeAutomation: true })
                 .then(() => {
                     throw new Error('Promise rejection expected');
                 })
@@ -1747,7 +1752,7 @@ describe('Runner', () => {
                 .src('./test/server/data/test-suites/basic/testfile1.js')
                 .browsers(['warningProvider:browser-alias1'])
                 .concurrency(4)
-                .run({ browserInitTimeout: 100 })
+                .run({ browserInitTimeout: 100, disableNativeAutomation: true })
                 .then(() => {
                     throw new Error('Promise rejection expected');
                 })

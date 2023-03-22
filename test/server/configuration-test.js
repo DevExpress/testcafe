@@ -1,6 +1,5 @@
 /*eslint-disable no-console */
-const { cloneDeep, noop } = require('lodash');
-
+const { noop }   = require('lodash');
 const { expect } = require('chai');
 const fs         = require('fs');
 const tmp        = require('tmp');
@@ -104,19 +103,18 @@ describe('TestCafeConfiguration', function () {
 
         describe('Init', () => {
             describe('Exists', () => {
-                it('Config is not well-formed', () => {
+                it('Config is not well-formed', async () => {
                     const filePath = testCafeConfiguration.defaultPaths[jsonConfigIndex];
 
                     fs.writeFileSync(filePath, '{');
                     consoleWrapper.wrap();
 
-                    return testCafeConfiguration.init()
-                        .then(() => {
-                            consoleWrapper.unwrap();
+                    await testCafeConfiguration.init();
 
-                            expect(testCafeConfiguration.getOption('hostname')).eql(void 0);
-                            expect(consoleWrapper.messages.log).contains(`Failed to parse the '${testCafeConfiguration.defaultPaths[jsonConfigIndex]}' file.`);
-                        });
+                    consoleWrapper.unwrap();
+
+                    expect(testCafeConfiguration.getOption('hostname')).eql(void 0);
+                    expect(consoleWrapper.messages.log).contains(`Failed to parse the '${testCafeConfiguration.defaultPaths[jsonConfigIndex]}' file.`);
                 });
 
                 it('Options', () => {
@@ -364,15 +362,14 @@ describe('TestCafeConfiguration', function () {
                 });
             });
 
-            it("File doesn't exists", () => {
+            it("File doesn't exists", async () => {
                 fs.unlinkSync(TestCafeConfiguration.FILENAMES[jsonConfigIndex]);
 
-                const defaultOptions = cloneDeep(testCafeConfiguration._options);
+                const defaultOptions = Object.assign({}, testCafeConfiguration._options);
 
-                return testCafeConfiguration.init()
-                    .then(() => {
-                        expect(testCafeConfiguration._options).to.deep.equal(defaultOptions);
-                    });
+                await testCafeConfiguration.init();
+
+                expect(testCafeConfiguration._options).to.deep.equal(defaultOptions);
             });
 
             it('Explicitly specified configuration file doesn\'t exist', async () => {
@@ -677,18 +674,17 @@ describe('TypeScriptConfiguration', function () {
         expect(message).eql(`"${nonExistingConfiguration.defaultPaths[jsConfigIndex]}" is not a valid TypeScript configuration file.`);
     });
 
-    it('Config is not well-formed', () => {
+    it('Config is not well-formed', async () => {
         fs.writeFileSync(tsConfigPath, '{');
         consoleWrapper.wrap();
 
-        return typeScriptConfiguration.init()
-            .then(() => {
-                consoleWrapper.unwrap();
-                fs.unlinkSync(tsConfigPath);
+        await typeScriptConfiguration.init();
 
-                expect(typeScriptConfiguration.getOption('hostname')).eql(void 0);
-                expect(consoleWrapper.messages.log).contains(`Failed to parse the '${typeScriptConfiguration.filePath}' file.`);
-            });
+        consoleWrapper.unwrap();
+        fs.unlinkSync(tsConfigPath);
+
+        expect(typeScriptConfiguration.getOption('hostname')).eql(void 0);
+        expect(consoleWrapper.messages.log).contains(`Failed to parse the '${typeScriptConfiguration.filePath}' file.`);
     });
 
     describe('With configuration file', () => {

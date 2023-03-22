@@ -37,6 +37,7 @@ export default abstract class TestingUnit extends BaseUnit {
     public apiMethodWasCalled: FlagList;
     public apiOrigin: Function;
     public skipJsErrorsOptions?: boolean | SkipJsErrorsOptionsObject | SkipJsErrorsCallback| SkipJsErrorsCallbackWithOptionsObject;
+    public isNativeAutomation: boolean;
 
     protected constructor (testFile: TestFile, unitType: UnitType, pageUrl: string, baseUrl?: string) {
         super(unitType);
@@ -55,6 +56,7 @@ export default abstract class TestingUnit extends BaseUnit {
 
         this.disablePageReloads = void 0;
         this.disablePageCaching = false;
+        this.isNativeAutomation = true;
 
         this.apiMethodWasCalled = new FlagList([OPTION_NAMES.clientScripts, OPTION_NAMES.requestHooks]);
 
@@ -147,6 +149,12 @@ export default abstract class TestingUnit extends BaseUnit {
 
     private _disablePageCaching$getter (): Function {
         this.disablePageCaching = true;
+
+        return this.apiOrigin;
+    }
+
+    private _disableNativeAutomation$getter (): Function {
+        this.isNativeAutomation = false;
 
         return this.apiOrigin;
     }

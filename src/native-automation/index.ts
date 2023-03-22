@@ -39,21 +39,26 @@ export default class NativeAutomation {
         this.sessionStorage.on('contextStorageTestRunDone', this._onContextStorageTestRunDoneHandler.bind(this));
     }
 
+    private _removeEventListeners (): void {
+        this.sessionStorage.off('contextStorageSync', this._onContextStorageSynHandler);
+        this.sessionStorage.off('contextStorageTestRunDone', this._onContextStorageTestRunDoneHandler);
+    }
+
     public async start (): Promise<void> {
         for (const apiSystem of this.apiSystems)
             await apiSystem.start();
 
         this._addEventListeners();
 
-        nativeAutomationLogger('nativeAutomation initialized');
+        nativeAutomationLogger('nativeAutomation started.');
     }
+    public async stop (): Promise<void> {
+        for (const apiSystem of this.apiSystems)
+            await apiSystem.stop();
 
-    public async dispose (): Promise<void> {
-        this.requestPipeline.stop();
+        this._removeEventListeners();
 
-        await this.requestPipeline.dispose();
-
-        nativeAutomationLogger('nativeAutomation disposed');
+        nativeAutomationLogger('nativeAutomation stopped.');
     }
 
     public get apiSystems (): NativeAutomationApiBase [] {

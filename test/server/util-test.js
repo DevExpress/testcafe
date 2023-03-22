@@ -24,6 +24,7 @@ const diff                             = require('../../lib/utils/diff');
 const { generateScreenshotMark }       = require('../../lib/screenshots/utils');
 const getViewPortWidth                 = require('../../lib/utils/get-viewport-width');
 const TEST_RUN_PHASE                   = require('../../lib/test-run/phase');
+const isNativeAutomation               = require('../../lib/native-automation/utils/is-native-automation');
 const {
     replaceLeadingSpacesWithNbsp,
     markup,
@@ -705,5 +706,29 @@ describe('Utils', () => {
                 expect(vm).true;
             }));
         });
+    });
+
+    it('isNativeAutomation', () => {
+        const testMock = {
+            isNativeAutomation: true,
+        };
+
+        const optsMock = {
+            disableNativeAutomation: true,
+        };
+
+        // NOTE: flag on the whole run level
+        expect(isNativeAutomation(testMock, optsMock)).to.be.false;
+
+        // NOTE: test.disableNativeAutomation/fixture.disableNativeAutomation
+        testMock.isNativeAutomation = false;
+
+        expect(isNativeAutomation(testMock, optsMock)).to.be.false;
+
+        // NOTE: without flags
+        testMock.isNativeAutomation      = true;
+        optsMock.disableNativeAutomation = false;
+
+        expect(isNativeAutomation(testMock, optsMock)).to.be.true;
     });
 });

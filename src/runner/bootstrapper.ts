@@ -184,17 +184,16 @@ export default class Bootstrapper {
 
             this.browserConnectionGateway.initialize(this.configuration.startOptions);
         }
-
-        if (this.nativeAutomation)
-            this.browserConnectionGateway.switchToNativeAutomation();
     }
 
     private _calculateIsNativeAutomation (remotes: BrowserConnection[]): void {
+        // NOTE: nativeAutomation is the default mode in regular mode.
+        // Inability to start in the native automation mode will be asserted later.
         // If there are remote connections, we should switch to legacy run mode.
         if (remotes.length)
-            this.configuration.mergeOptions({ nativeAutomation: false });
+            this.configuration.mergeOptions({ disableNativeAutomation: true });
 
-        this.nativeAutomation = !!this.configuration.getOption(OPTION_NAMES.nativeAutomation);
+        this.nativeAutomation = !this.configuration.getOption(OPTION_NAMES.disableNativeAutomation);
     }
 
     private async _getBrowserConnections (browserInfo: BrowserInfoSource[]): Promise<BrowserSet> {

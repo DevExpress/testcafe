@@ -83,9 +83,6 @@ function createTestRunControllerMock (screenshots, warningLog) {
         _proxy: {
             setMode: noop,
         },
-        _opts: {
-            nativeAutomation: false,
-        },
     };
 }
 

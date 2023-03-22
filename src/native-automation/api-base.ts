@@ -19,6 +19,10 @@ export default class NativeAutomationApiBase {
         throw notImplementedError();
     }
 
+    public async stop (): Promise<void> {
+        throw notImplementedError();
+    }
+
     protected get _testRun (): TestRun {
         return this._browserConnection.getCurrentTestRun() as TestRun;
     }

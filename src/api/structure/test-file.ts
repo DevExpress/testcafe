@@ -33,6 +33,9 @@ export default class TestFile extends BaseUnit {
 
             if (!test.disablePageCaching)
                 test.disablePageCaching = testFixture.disablePageCaching;
+
+            if (test.isNativeAutomation && !testFixture.isNativeAutomation)
+                test.isNativeAutomation = testFixture.isNativeAutomation;
         });
 
         return this.collectedTests;

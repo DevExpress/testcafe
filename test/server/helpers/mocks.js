@@ -29,6 +29,7 @@ class BrowserSetMock extends EventEmitter {
 
 const configurationMock = {
     getOption:         noop,
+    mergeOptions:      noop,
     calculateHostname: noop,
     mergeOptions:      noop,
 

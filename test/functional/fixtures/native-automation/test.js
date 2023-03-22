@@ -2,18 +2,21 @@ const createTestCafe = require('../../../../lib');
 const path           = require('path');
 const config         = require('../../config.js');
 
-let testCafe = null;
+let testCafeInstance = null;
 
-async function runTest ({ browsers, test, nativeAutomation }) {
-    const runner = testCafe.createRunner();
-    const source = path.join(__dirname, './testcafe-fixtures/index.js');
+async function runTest ({ browsers, src = './testcafe-fixtures/index.js', test, disableNativeAutomation = false }) {
+    const runner = testCafeInstance.createRunner();
+    const source = path.join(__dirname, src);
 
     const failedCount = await runner.browsers(browsers)
         .src(source)
         .filter(testName => {
-            return testName ? test === testName : true;
+            if (!test)
+                return true;
+
+            return test === testName;
         })
-        .run({ nativeAutomation });
+        .run({ disableNativeAutomation });
 
     if (failedCount)
         throw new Error('Error has occurred.');
@@ -27,19 +30,27 @@ const thereAreAllRequiredBrowsers = REQUIRED_BROWSERS.every(requiredBrowser => c
 if (thereAreAllRequiredBrowsers) {
     describe('Native automation', function () {
         beforeEach(async () => {
-            testCafe = await createTestCafe('127.0.0.1', 1335, 1336);
+            testCafeInstance = await createTestCafe('127.0.0.1', 1335, 1336);
         });
 
         afterEach(async () => {
-            await testCafe.close();
+            await testCafeInstance.close();
         });
 
-        it('Disabled by-default', function () {
-            return runTest({ browsers: 'chrome', test: 'Disabled' });
+        it('Enabled by-default', function () {
+            return runTest({ browsers: 'chrome', test: 'native url' });
         });
 
-        it('Enabled with the "nativeAutomation" option', function () {
-            return runTest({ browsers: 'chrome', test: 'Enabled', nativeAutomation: true });
+        it('Disabled with the "disableNativeAutomation" option', function () {
+            return runTest({ browsers: 'chrome', test: 'proxy url', disableNativeAutomation: true });
+        });
+
+        it('fixture.disableNativeAutomation', function () {
+            return runTest({ browsers: 'chrome', src: './testcafe-fixtures/fixture-api.js', test: 'proxy url' });
+        });
+
+        it('test.disableNativeAutomation', function () {
+            return runTest({ browsers: 'chrome', src: './testcafe-fixtures/test-api.js', test: 'proxy url' });
         });
     });
 }

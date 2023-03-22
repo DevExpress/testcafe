@@ -1,17 +1,19 @@
-const path                       = require('path');
-const SlConnector                = require('saucelabs-connector');
-const BsConnector                = require('browserstack-connector');
-const caller                     = require('caller');
-const promisifyEvent             = require('promisify-event');
-const createTestCafe             = require('../../lib');
-const browserProviderPool        = require('../../lib/browser/provider/pool');
-const BrowserConnection          = require('../../lib/browser/connection');
-const config                     = require('./config.js');
-const site                       = require('./site');
-const RemoteConnector            = require('./remote-connector');
-const getTestError               = require('./get-test-error.js');
-const { createSimpleTestStream } = require('./utils/stream');
-const BrowserConnectionStatus    = require('../../lib/browser/connection/status');
+const path                                   = require('path');
+const SlConnector                            = require('saucelabs-connector');
+const BsConnector                            = require('browserstack-connector');
+const caller                                 = require('caller');
+const promisifyEvent                         = require('promisify-event');
+const createTestCafe                         = require('../../lib');
+const browserProviderPool                    = require('../../lib/browser/provider/pool');
+const BrowserConnection                      = require('../../lib/browser/connection');
+const config                                 = require('./config.js');
+const site                                   = require('./site');
+const RemoteConnector                        = require('./remote-connector');
+const getTestError                           = require('./get-test-error.js');
+const { createSimpleTestStream }             = require('./utils/stream');
+const BrowserConnectionStatus                = require('../../lib/browser/connection/status');
+const setNativeAutomationForRemoteConnection = require('./utils/set-native-automation-for-remote-connection');
+
 
 const setNativeAutomationForRemoteConnection = require('./utils/set-native-automation-for-remote-connection');
 
@@ -324,7 +326,7 @@ before(function () {
                         runExecutionTimeout,
                         baseUrl,
                         customActions,
-                        nativeAutomation: config.nativeAutomation,
+                        disableNativeAutomation: !config.nativeAutomation,
                     })
                     .then(failedCount => {
                         if (customReporters)

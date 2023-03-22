@@ -58,11 +58,8 @@ export default {
 
     async _setupNativeAutomation ({ browserId, browserClient, runtimeInfo, nativeAutomationOptions }) {
         const cdpClient = await browserClient.getActiveClient();
-        const nativeAutomation = new NativeAutomation(browserId, cdpClient, nativeAutomationOptions);
 
-        await nativeAutomation.start();
-
-        runtimeInfo.nativeAutomation = nativeAutomation;
+        runtimeInfo.nativeAutomation = new NativeAutomation(browserId, cdpClient, nativeAutomationOptions);
     },
 
     async openBrowser (browserId, pageUrl, config, additionalOptions) {
@@ -102,8 +99,7 @@ export default {
 
         this._setUserAgentMetaInfoForEmulatingDevice(browserId, runtimeInfo.config);
 
-        if (additionalOptions.nativeAutomation)
-            await this._setupNativeAutomation({ browserId, browserClient, runtimeInfo, nativeAutomationOptions: toNativeAutomationSetupOptions(additionalOptions) });
+        await this._setupNativeAutomation({ browserId, browserClient, runtimeInfo, nativeAutomationOptions: toNativeAutomationSetupOptions(additionalOptions) });
 
         chromeBrowserProviderLogger('browser opened %s', browserId);
     },

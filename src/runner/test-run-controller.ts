@@ -16,9 +16,10 @@ import { Quarantine } from '../utils/get-options/quarantine';
 import MessageBus from '../utils/message-bus';
 import TestRunHookController from './test-run-hook-controller';
 import * as clientScriptsRouting from '../custom-client-scripts/routing';
-import debug from 'debug';
-import { RUNTIME_ERRORS } from '../errors/types';
 import { GeneralError } from '../errors/runtime';
+import { RUNTIME_ERRORS } from '../errors/types';
+import isNativeAutomation from '../native-automation/utils/is-native-automation';
+import debug from 'debug';
 
 const DISCONNECT_THRESHOLD = 3;
 
@@ -42,6 +43,7 @@ export default class TestRunController extends AsyncEventEmitter {
     private readonly _testRunHook: TestRunHookController;
     private clientScriptRoutes: string[] = [];
     private isNativeAutomation = false;
+    private isNativeAutomationStarted = false;
 
     public constructor ({
         test,
@@ -99,6 +101,8 @@ export default class TestRunController extends AsyncEventEmitter {
             screenshotCapturer,
             startRunExecutionTime,
         });
+
+        this._proxy.setMode(this.isNativeAutomation);
 
         this.clientScriptRoutes = clientScriptsRouting.register(this._proxy, this.test, this.isNativeAutomation);
 
@@ -192,6 +196,12 @@ export default class TestRunController extends AsyncEventEmitter {
 
         await this.emit('test-run-done');
 
+        if (this.isNativeAutomationStarted) {
+            const nativeAutomation = this.testRun.browserConnection.getNativeAutomation();
+
+            await nativeAutomation.stop();
+        }
+
         debugLogger('done');
     }
 
@@ -244,9 +254,21 @@ export default class TestRunController extends AsyncEventEmitter {
     }
 
     private async _handleNativeAutomationMode (connection: BrowserConnection): Promise<void> {
-        this.isNativeAutomation = !!this._opts.nativeAutomation;
+        this.isNativeAutomation = isNativeAutomation(this.test, this._opts);
 
         const supportNativeAutomation = connection.supportNativeAutomation();
+
+        if (supportNativeAutomation) {
+            const nativeAutomation = connection.getNativeAutomation();
+
+            if (this.isNativeAutomation) {
+                await nativeAutomation.start();
+
+                this.isNativeAutomationStarted = true;
+            }
+            else
+                await nativeAutomation.stop();
+        }
 
         if (!this.isNativeAutomation || supportNativeAutomation)
             return;

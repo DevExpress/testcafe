@@ -26,7 +26,7 @@ class BaseTestRunMock extends TestRun {
             browserConnection:  {},
             screenshotCapturer: {},
             globalWarningLog:   {},
-            opts:               {},
+            opts:               { disableNativeAutomation: true },
         }, init);
 
         super(init);

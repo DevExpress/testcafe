@@ -78,7 +78,7 @@ if (config.useLocalBrowsers && !config.hasBrowser('ie')) {
                     end:   noop,
                 })
                 .browsers(browsers)
-                .run({ nativeAutomation: config.nativeAutomation });
+                .run({ disableNativeAutomation: !config.nativeAutomation });
         }
 
         before(function () {

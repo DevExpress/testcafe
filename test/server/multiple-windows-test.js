@@ -8,7 +8,7 @@ class TestRunMock extends BaseTestRunMock {
         super({
             test:              { id: 'test-id', name: 'test-name', isLegacy: isLegacy, fixture: { path: 'dummy', id: 'fixture-id', name: 'fixture-name' } },
             browserConnection: { activeWindowId: activeWindowId },
-            opts:              { disableMultipleWindows: disableMultipleWindows },
+            opts:              { disableMultipleWindows: disableMultipleWindows, disableNativeAutomation: true },
         });
     }
 }

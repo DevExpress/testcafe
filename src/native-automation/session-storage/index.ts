@@ -17,11 +17,10 @@ export default class SessionStorage extends NativeAutomationApiBase {
         super(browserId, client, options);
 
         this._eventEmitter = new AsyncEventEmitter();
-
     }
 
-    private async _onTestRunDoneHandler (testRun: TestRun): Promise<void> {
-        await this._eventEmitter.emit('contextStorageTestRunDone', { testRunId: testRun.id });
+    private _onTestRunDoneHandler (testRun: TestRun): void {
+        this._eventEmitter.emit('contextStorageTestRunDone', { testRunId: testRun.id });
     }
 
     private _addTestRunEventListeners (messageBus: MessageBus): void {
@@ -37,8 +36,17 @@ export default class SessionStorage extends NativeAutomationApiBase {
         });
     }
 
+    public removeEventListeners (): void {
+        if (this._browserConnection.messageBus)
+            this._browserConnection.messageBus.off('test-run-done', this._onTestRunDoneHandler);
+    }
+
     public on (eventName: string, listener: (eventData?: any) => any): Emittery.UnsubscribeFn {
         return this._eventEmitter.on(eventName, listener);
+    }
+
+    public off (eventName: string, listener: (eventData?: any) => any): void {
+        this._eventEmitter.off(eventName, listener);
     }
 
     public async start (): Promise<void> {
@@ -53,5 +61,11 @@ export default class SessionStorage extends NativeAutomationApiBase {
                 this._eventEmitter.emit('contextStorageSync', { sessionStorage: data, testRunId, frameDriverId });
             }
         });
+    }
+
+    public async stop (): Promise<void> {
+        this.removeEventListeners();
+
+        await this._client.Runtime.removeBinding({ name: NATIVE_AUTOMATION_STORAGE_BINDING });
     }
 }
