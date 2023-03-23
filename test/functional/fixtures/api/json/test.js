@@ -1,6 +1,6 @@
 const { expect }          = require('chai');
 const path                = require('path');
-const { skipInProxyless } = require("../../../utils/skip-in");
+const { skipInProxyless } = require('../../../utils/skip-in');
 
 describe('[API] DevTools Compiler', function () {
     it('Should make click on a button', function () {
