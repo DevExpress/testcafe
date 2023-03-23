@@ -1,6 +1,5 @@
 const { expect }          = require('chai');
 const path                = require('path');
-const { skipInProxyless } = require('../../../utils/skip-in');
 
 describe('[API] DevTools Compiler', function () {
     it('Should make click on a button', function () {
@@ -58,7 +57,7 @@ describe('[API] DevTools Compiler', function () {
         return runTests('./testcafe-fixtures/wait-for-element-test.json', null, { only: 'chrome' });
     });
 
-    skipInProxyless('Should switch to iframe', function () {
+    it('Should switch to iframe', function () {
         return runTests('./testcafe-fixtures/iframe-test.json', null, { only: 'chrome' });
     });
 
@@ -80,7 +79,7 @@ describe('[API] DevTools Compiler', function () {
             });
     });
 
-    skipInProxyless('Should click inside shadow DOM', function () {
+    it('Should click inside shadow DOM', function () {
         return runTests('./testcafe-fixtures/shadow-dom-test.json', null, {
             only:       'chrome',
             shouldFail: true,
