@@ -282,7 +282,7 @@ export default class Bootstrapper {
 
             Object.entries(this.hooks.reporter?.onBeforeWrite).forEach(([reporterName, hook]) => {
                 assertType(is.function, hook, `The reporter.onBeforeWrite.${reporterName}`);
-            })
+            });
         }
     }
 

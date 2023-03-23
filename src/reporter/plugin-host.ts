@@ -172,7 +172,7 @@ export default class ReporterPluginHost {
     }
 
     private _createBeforeWriteInfo (formattedText: string): WriteInfo {
-        const pluginMethods = Object.keys(ReporterPluginMethod)
+        const pluginMethods = Object.keys(ReporterPluginMethod);
         const initiatorSite = callsite().find(site => pluginMethods.some(methodName => methodName === site?.getFunctionName()));
         const initiator     = initiatorSite ? initiatorSite.getFunctionName() : '';
 
@@ -183,8 +183,8 @@ export default class ReporterPluginHost {
             },
             formattedText,
             initiator,
-            data:          {},
-        }
+            data: {},
+        };
     }
 
     private _writeToUniqueStream (text: string): void {
@@ -224,7 +224,7 @@ export default class ReporterPluginHost {
     public async reportWarnings (/* warnings */): Promise<void> { // eslint-disable-line @typescript-eslint/no-empty-function
     }
 
-    private _initPluginHooks (reporterHooks: ReporterPluginHooks | undefined) {
+    private _initPluginHooks (reporterHooks: ReporterPluginHooks | undefined): void {
         if (!reporterHooks)
             return;
 

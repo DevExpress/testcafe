@@ -707,7 +707,7 @@ export default class Reporter {
 
     private _resolvePluginHooks (reporterHooks: ReporterHooks|undefined, name: string): ReporterPluginHooks | undefined {
         if (!reporterHooks)
-            return;
+            return void 0;
 
         const resultHooks: ReporterPluginHooks = {};
 
