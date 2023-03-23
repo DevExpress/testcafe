@@ -18,7 +18,7 @@ import { Writable } from 'stream';
 import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapter';
 import REPORTER_SYMBOLS from '../reporter/symbols';
 import { ReporterSymbols } from './interfaces';
-import { OnBeforeWriteHook, WriteInfo } from './index';
+import { ReporterPluginHooks, WriteInfo } from './index';
 import ReporterPluginMethod from './plugin-methods';
 
 // NOTE: we should not expose internal state to
@@ -40,17 +40,16 @@ export default class ReporterPluginHost {
     private [wordWrapEnabled]: boolean;
     private [indent]: number;
     private [errorDecorator]: Record<string, Function>;
-    private _onBeforeWriteHook: OnBeforeWriteHook | undefined;
+    private _hooks: ReporterPluginHooks | undefined;
 
-    public constructor (plugin: any, outStream?: Writable, name?: string, onBeforeWriteHook?: OnBeforeWriteHook) {
-        this.name               = name;
-        this.streamController   = null;
-        this[stream]            = outStream || process.stdout;
-        this[wordWrapEnabled]   = false;
-        this[indent]            = 0;
-        this._onBeforeWriteHook = onBeforeWriteHook?.bind(this) || ((e) => {
-            console.log(e.initiator);
-        });
+    public constructor (plugin: any, outStream?: Writable, name?: string, reporterHooks?: ReporterPluginHooks) {
+        this.name             = name;
+        this.streamController = null;
+        this[stream]          = outStream || process.stdout;
+        this[wordWrapEnabled] = false;
+        this[indent]          = 0;
+
+        this._initPluginHooks(reporterHooks);
 
         const useColors = this[stream] === process.stdout && chalk.enabled && !plugin.noColors;
 
@@ -148,10 +147,10 @@ export default class ReporterPluginHost {
         else
             text = this.indentString(text, this[indent]);
 
-        if (this._onBeforeWriteHook) {
+        if (this._hooks?.onBeforeWrite) {
             const writeInfo = this._createBeforeWriteInfo(text);
 
-            this._onBeforeWriteHook(writeInfo);
+            this._hooks.onBeforeWrite(writeInfo);
             this._writeToUniqueStream(writeInfo.formattedText);
         }
         else
@@ -223,6 +222,18 @@ export default class ReporterPluginHost {
 
     // NOTE: It's an optional method
     public async reportWarnings (/* warnings */): Promise<void> { // eslint-disable-line @typescript-eslint/no-empty-function
+    }
+
+    private _initPluginHooks (reporterHooks: ReporterPluginHooks | undefined) {
+        if (!reporterHooks)
+            return;
+
+        this._hooks = Object.entries(reporterHooks).reduce((previousValue, [hookName, hook]) => {
+            if (hook)
+                previousValue[hookName as keyof ReporterPluginHooks] = hook.bind(this);
+
+            return previousValue;
+        }, {} as ReporterPluginHooks);
     }
 
     // NOTE: It's an optional method

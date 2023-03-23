@@ -25,7 +25,7 @@ interface TestingEntryHooks {
 }
 
 interface ReporterHooks {
-    onBeforeWrite?: Function
+    onBeforeWrite?: { [reporterName: string]: Function }
 }
 
 interface GlobalHooks {
@@ -33,7 +33,7 @@ interface GlobalHooks {
     fixture?: TestingEntryHooks;
     test?: TestingEntryHooks;
     request?: typeof RequestHook[] | typeof RequestHook;
-    reporter?: { [reporterName: string]: ReporterHooks }
+    reporter?: ReporterHooks
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

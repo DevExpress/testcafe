@@ -139,7 +139,10 @@ export interface WriteInfo {
     }
     data: undefined | object;
 }
-export type OnBeforeWriteHook = (e: WriteInfo) => void;
+
+export interface ReporterPluginHooks {
+    onBeforeWrite?: Function;
+}
 
 const debugLog = debug('testcafe:reporter');
 
@@ -150,13 +153,14 @@ export default class Reporter {
     public taskInfo: TaskInfo | null;
     public readonly outStream: Writable;
 
-    public constructor (plugin: ReporterPlugin, messageBus: MessageBus, outStream: Writable, name: string, onBeforeWriteHook: OnBeforeWriteHook) {
-        this.plugin     = new ReporterPluginHost(plugin, outStream, name, onBeforeWriteHook);
-        this.messageBus = messageBus;
+    public constructor (plugin: ReporterPlugin, messageBus: MessageBus, outStream: Writable, name: string, reporterHooks?: ReporterHooks) {
+        const pluginHooks = this._resolvePluginHooks(reporterHooks, name);
 
-        this.disposed  = false;
-        this.taskInfo  = null;
-        this.outStream = outStream;
+        this.plugin     = new ReporterPluginHost(plugin, outStream, name, pluginHooks);
+        this.messageBus = messageBus;
+        this.disposed   = false;
+        this.taskInfo   = null;
+        this.outStream  = outStream;
 
         this._assignMessageBusEventHandlers();
     }
@@ -699,5 +703,17 @@ export default class Reporter {
                 ...data,
             ],
         });
+    }
+
+    private _resolvePluginHooks (reporterHooks: ReporterHooks|undefined, name: string): ReporterPluginHooks | undefined {
+        if (!reporterHooks)
+            return;
+
+        const resultHooks: ReporterPluginHooks = {};
+
+        if (reporterHooks.onBeforeWrite && reporterHooks.onBeforeWrite[name])
+            resultHooks.onBeforeWrite = reporterHooks.onBeforeWrite[name];
+
+        return resultHooks;
     }
 }

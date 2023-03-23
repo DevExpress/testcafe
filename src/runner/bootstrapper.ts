@@ -277,11 +277,11 @@ export default class Bootstrapper {
         if (this.hooks.request)
             assertRequestHookType(flatten(castArray(this.hooks.request)));
 
-        if (this.hooks.reporter) {
-            assertType(is.nonNullObject, 'reporter', 'The hook' , this.hooks.reporter);
+        if (this.hooks.reporter?.onBeforeWrite) {
+            assertType(is.nonNullObject, 'onBeforeWrite', 'The reporter.onBeforeWrite', this.hooks.reporter.onBeforeWrite);
 
-            Object.values(this.hooks.reporter).forEach(hook => {
-                // assertType(is.function, )
+            Object.entries(this.hooks.reporter?.onBeforeWrite).forEach(([reporterName, hook]) => {
+                assertType(is.function, hook, `The reporter.onBeforeWrite.${reporterName}`);
             })
         }
     }
