@@ -18,7 +18,7 @@ if (config.useLocalBrowsers) {
                         .createRunner()
                         .browsers('chrome:headless')
                         .src(path.join(__dirname, './testcafe-fixtures/index.js'))
-                        .run();
+                        .run({ experimentalProxyless: config.proxyless });
                 })
                 .then(failed => {
                     failedCount = failed;

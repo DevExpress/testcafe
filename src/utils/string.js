@@ -47,7 +47,7 @@ export function wordWrap (str, indent, width) {
 
 export function splitQuotedText (str, splitChar, quotes = '"\'') {
     let currentPart = '';
-    const parts       = [];
+    const parts     = [];
     let quoteChar   = null;
 
     for (let i = 0; i < str.length; i++) {

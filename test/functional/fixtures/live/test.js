@@ -48,7 +48,7 @@ class RunnerMock extends LiveModeRunner {
 }
 
 function createTestCafeInstance (opts = {}) {
-    return createTestCafe({ experimentalProxyless: config.proxyless, ...opts })
+    return createTestCafe({ ...opts })
         .then(tc => {
             cafe = tc;
         });
@@ -96,7 +96,7 @@ if (config.useLocalBrowsers) {
                         }, 1000);
                     });
 
-                    return runner.run();
+                    return runner.run({ experimentalProxyless: config.proxyless });
                 })
                 .then(() => {
                     expect(helper.counter).eql(config.browsers.length * helper.testCount * runCount);
@@ -117,7 +117,8 @@ if (config.useLocalBrowsers) {
                     });
 
                     return runner.run({
-                        quarantineMode: true,
+                        quarantineMode:        true,
+                        experimentalProxyless: config.proxyless,
                     });
                 })
                 .then(() => {
@@ -144,7 +145,7 @@ if (config.useLocalBrowsers) {
                         }, 1000);
                     });
 
-                    return runner.run();
+                    return runner.run({ experimentalProxyless: config.proxyless });
                 })
                 .then(() => {
                     return cafe.close();
@@ -173,7 +174,7 @@ if (config.useLocalBrowsers) {
                                 return runner
                                     .browsers(config.browsers.map(browserInfo => browserInfo.browserName))
                                     .src(path.join(__dirname, '/testcafe-fixtures/test-2.js'))
-                                    .run()
+                                    .run({ experimentalProxyless: config.proxyless })
                                     .then(() => {
                                         return cafe.close();
                                     })
@@ -184,7 +185,7 @@ if (config.useLocalBrowsers) {
                     }, 10000);
 
                     return runner
-                        .run();
+                        .run({ experimentalProxyless: config.proxyless });
                 });
 
             return promise;
@@ -233,7 +234,7 @@ if (config.useLocalBrowsers) {
             });
 
             return runner
-                .run()
+                .run({ experimentalProxyless: config.proxyless })
                 .then(() => {
                     return cafe.close();
                 });
@@ -251,7 +252,7 @@ if (config.useLocalBrowsers) {
                 }, 1000);
             });
 
-            await runner.run();
+            await runner.run({ experimentalProxyless: config.proxyless });
 
             return cafe.close();
         });
@@ -287,7 +288,7 @@ if (config.useLocalBrowsers) {
                         expect(inTestProcessName).eql(ProcessTitle.service);
                     }, 1000);
 
-                    return runner.run();
+                    return runner.run({ experimentalProxyless: config.proxyless });
                 })
                 .then(() => {
                     if (fs.existsSync(markerFile))

@@ -1,8 +1,8 @@
 const createTestCafe = require('../../../../../');
-const sinon = require('sinon');
-const assert = require('assert');
-const config = require('../../../config');
-const VideoRecorder = require('../../../../../lib/video-recorder/process');
+const sinon          = require('sinon');
+const assert         = require('assert');
+const config         = require('../../../config');
+const VideoRecorder  = require('../../../../../lib/video-recorder/process');
 
 if (config.useLocalBrowsers) {
     describe('FFMPEG shouldn\'t run, when fixture skipped', () => {
@@ -28,7 +28,7 @@ if (config.useLocalBrowsers) {
                         .src('test/functional/fixtures/video-recording/skip/fixture.test.js')
                         .browsers('chrome')
                         .video('reports')
-                        .run();
+                        .run({ experimentalProxyless: config.proxyless });
                 })
                 .then(async () => {
                     testcafe.close();

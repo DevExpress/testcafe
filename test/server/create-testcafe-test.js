@@ -29,6 +29,7 @@ describe('TestCafe factory function', function () {
     afterEach(function () {
         if (server) {
             server.close();
+
             server = null;
         }
 
@@ -94,6 +95,9 @@ describe('TestCafe factory function', function () {
     it("Should raise error if specified hostname doesn't resolve to the current machine", function () {
         return getTestCafe('example.org')
             .then(function () {
+                return testCafe.createBrowserConnection();
+            })
+            .then(function () {
                 throw new Error('Promise rejection expected');
             })
             .catch(function (err) {
@@ -114,6 +118,9 @@ describe('TestCafe factory function', function () {
         };
 
         return getTestCafe('localhost', 1338, 1339, sslOptions)
+            .then(() => {
+                return testCafe.createBrowserConnection();
+            })
             .then(() => {
                 expect(testCafe.proxy.server1.key).eql(sslOptions.key);
                 expect(testCafe.proxy.server1.cert).eql(sslOptions.cert);

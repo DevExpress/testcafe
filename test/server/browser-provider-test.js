@@ -74,7 +74,9 @@ describe('Browser provider', function () {
             });
         });
 
-        it( 'Should get full info for all browsers', async () => {
+        it( 'Should get full info for all browsers', async function () {
+            this.timeout(10000);
+
             const browserInfoProperties = [
                 'provider',
                 'providerName',
@@ -82,7 +84,7 @@ describe('Browser provider', function () {
                 'browserOption',
             ];
 
-            const browsersInfo = await browserProviderPool.getBrowserInfo( 'all' );
+            const browsersInfo = await browserProviderPool.getBrowserInfo('all');
 
             browsersInfo.forEach( item => {
                 browserInfoProperties.forEach(porp => {

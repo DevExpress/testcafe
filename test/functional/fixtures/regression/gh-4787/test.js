@@ -53,7 +53,7 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
                         .src(path.join(__dirname, './testcafe-fixtures/index.js'))
                         .browsers(['chrome', 'firefox'])
                         .reporter(reporter)
-                        .run();
+                        .run({ experimentalProxyless: config.proxyless });
                 })
                 .then(() => {
                     return cafe.close();

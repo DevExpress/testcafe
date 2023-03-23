@@ -44,6 +44,7 @@ import { GeneralError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
 import { LOCALHOST_NAMES } from '../utils/localhost-names';
 import { BrowserConnectionGatewayOptions } from '../browser/connection/gateway';
+import { getValidHostname } from './utils';
 
 const BASE_CONFIGURATION_FILENAME = '.testcaferc';
 const CONFIGURATION_FILENAMES     = CONFIGURATION_EXTENSIONS.map(ext => `${BASE_CONFIGURATION_FILENAME}${ext}`);
@@ -71,7 +72,10 @@ const OPTION_INIT_FLAG_NAMES = [
     OPTION_NAMES.disableCrossDomain,
 ];
 
-interface TestCafeAdditionalStartOptions {
+export interface TestCafeStartOptions {
+    hostname: string;
+    port1: number;
+    port2: number;
     retryTestPages: boolean;
     ssl: object;
     developmentMode: boolean;
@@ -81,14 +85,9 @@ interface TestCafeAdditionalStartOptions {
     disableCrossDomain: boolean;
 }
 
-interface TestCafeStartOptions {
-    hostname?: string;
-    port1?: number;
-    port2?: number;
-    options: TestCafeAdditionalStartOptions;
-}
-
 type BrowserInfoSource = BrowserInfo | BrowserConnection;
+
+type CalculateHostnameFn = (hostname: string) => Promise<string>;
 
 export default class TestCafeConfiguration extends Configuration {
     protected readonly _isExplicitConfig: boolean;
@@ -159,29 +158,18 @@ export default class TestCafeConfiguration extends Configuration {
     }
 
     public get startOptions (): TestCafeStartOptions {
-        const proxyless = this.getOption(OPTION_NAMES.experimentalProxyless) as boolean;
-        let hostname    = this.getOption(OPTION_NAMES.hostname) as string;
-
-        if (!hostname && proxyless)
-            hostname = LOCALHOST_NAMES.LOCALHOST;
-
-        const result: TestCafeStartOptions = {
-            hostname,
-            port1: this.getOption(OPTION_NAMES.port1),
-            port2: this.getOption(OPTION_NAMES.port2),
-
-            options: {
-                ssl:                this.getOption(OPTION_NAMES.ssl),
-                developmentMode:    this.getOption(OPTION_NAMES.developmentMode),
-                retryTestPages:     this.getOption(OPTION_NAMES.retryTestPages),
-                cache:              this.getOption(OPTION_NAMES.cache),
-                disableHttp2:       this.getOption(OPTION_NAMES.disableHttp2),
-                disableCrossDomain: this.getOption(OPTION_NAMES.disableCrossDomain),
-                proxyless,
-            },
+        return {
+            hostname:           this.getOption(OPTION_NAMES.hostname),
+            port1:              this.getOption(OPTION_NAMES.port1),
+            port2:              this.getOption(OPTION_NAMES.port2),
+            ssl:                this.getOption(OPTION_NAMES.ssl),
+            developmentMode:    this.getOption(OPTION_NAMES.developmentMode),
+            retryTestPages:     this.getOption(OPTION_NAMES.retryTestPages),
+            cache:              this.getOption(OPTION_NAMES.cache),
+            disableHttp2:       this.getOption(OPTION_NAMES.disableHttp2),
+            disableCrossDomain: this.getOption(OPTION_NAMES.disableCrossDomain),
+            proxyless:          this.getOption(OPTION_NAMES.experimentalProxyless),
         };
-
-        return result;
     }
 
     public get browserConnectionGatewayOptions (): BrowserConnectionGatewayOptions {
@@ -337,5 +325,24 @@ export default class TestCafeConfiguration extends Configuration {
 
     public static get FILENAMES (): string[] {
         return CONFIGURATION_FILENAMES;
+    }
+
+    public async ensureHostname (calculateFn: CalculateHostnameFn = getValidHostname): Promise<void> {
+        let hostname = this.getOption<string>(OPTION_NAMES.hostname);
+
+        hostname = await calculateFn(hostname);
+
+        this.mergeOptions({ hostname });
+    }
+
+    public async calculateHostname ({ proxyless } = { proxyless: false }): Promise<void> {
+        await this.ensureHostname(async hostname => {
+            if (proxyless)
+                hostname = hostname || LOCALHOST_NAMES.LOCALHOST;
+            else
+                hostname = await getValidHostname(hostname);
+
+            return hostname;
+        });
     }
 }

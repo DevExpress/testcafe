@@ -185,4 +185,6 @@ export const RUNTIME_ERRORS = {
     invalidCustomActionsOptionType:                     'E1079',
     invalidCustomActionType:                            'E1080',
     cannotImportESMInCommonsJS:                         'E1081',
+    proxyInitializedMoreThanOnce:                       'E1082',
+    setProxylessForUnsupportedBrowsers:                 'E1083',
 };

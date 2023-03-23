@@ -113,6 +113,9 @@ function openRemoteBrowsers () {
 }
 
 function waitUtilBrowserConnectionOpened (connection) {
+    if (connection.status === BrowserConnectionStatus.uninitialized)
+        connection.initialize();
+
     const connectedPromise = connection.status === BrowserConnectionStatus.opened
         ? Promise.resolve()
         : promisifyEvent(connection, 'opened');
@@ -161,10 +164,8 @@ before(function () {
         developmentMode: devMode,
 
         retryTestPages,
-
-        experimentalProxyless: config.proxyless,
-        experimentalDebug:     !!process.env.EXPERIMENTAL_DEBUG,
-        userVariables:         {
+        experimentalDebug: !!process.env.EXPERIMENTAL_DEBUG,
+        userVariables:     {
             url:             'localhost',
             port:            1337,
             isUserVariables: true,
@@ -191,8 +192,13 @@ before(function () {
             if (isBrowserStack || !USE_PROVIDER_POOL)
                 mocha.timeout(0);
 
-            if (USE_PROVIDER_POOL)
-                return Promise.resolve();
+            if (USE_PROVIDER_POOL) {
+                return testCafe._initializeBrowserConnectionGateway()
+                    .then(() => {
+                        if (config.proxyless)
+                            testCafe.browserConnectionGateway.switchToProxyless();
+                    });
+            }
 
             return openRemoteBrowsers();
         })
@@ -320,6 +326,7 @@ before(function () {
                         runExecutionTimeout,
                         baseUrl,
                         customActions,
+                        experimentalProxyless: config.proxyless,
                     })
                     .then(failedCount => {
                         if (customReporters)
