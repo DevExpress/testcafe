@@ -3,7 +3,6 @@ const { expect } = require('chai');
 const {
     skipInExperimentalDebug,
     skipInProxylessOrExperimentalDebug,
-    skipInProxyless,
 } = require('../../../../utils/skip-in');
 
 describe('Request Hooks', () => {
@@ -101,7 +100,7 @@ describe('Request Hooks', () => {
             return runTests('./testcafe-fixtures/api/request-hook-events.js', null, { only: 'chrome' });
         });
 
-        skipInProxylessOrExperimentalDebug('Correct execution order for addRequestHooks/removeRequestHooks sequence (GH-3861)', () => {
+        skipInExperimentalDebug('Correct execution order for addRequestHooks/removeRequestHooks sequence (GH-3861)', () => {
             return runTests('./testcafe-fixtures/api/gh-3861.js', null, { only: 'chrome' });
         });
 
