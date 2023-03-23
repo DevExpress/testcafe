@@ -1,7 +1,6 @@
 const { expect }                     = require('chai');
 const config                         = require('../../../../config');
 const { errorInEachBrowserContains } = require('../../../../assertion-helper');
-const { skipInProxyless }            = require('../../../../utils/skip-in');
 
 // NOTE: we set selectorTimeout to a large value in some tests to wait for
 // an iframe to load on the farm (it is fast locally but can take some time on the farm)
@@ -106,7 +105,7 @@ const isRemoteTask = config.currentEnvironmentName === config.testingEnvironment
                 });
         });
 
-        skipInProxyless('Should fail if an error occurred while switching to clean run (GH-5278)', function () {
+        it('Should fail if an error occurred while switching to clean run (GH-5278)', function () {
             return runTests('./testcafe-fixtures/error-on-switching-to-clean-run-test.js', null, { shouldFail: true })
                 .catch(function (errs) {
                     errorInEachBrowserContains(errs, 'Error in Role initializer - Failed to load the page at "https://non-existing-url.com/"', 0);
