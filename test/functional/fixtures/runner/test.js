@@ -8,7 +8,7 @@ function run (browsers, testFile) {
         .createRunner()
         .src(path.join(__dirname, testFile))
         .browsers(browsers)
-        .run({ experimentalProxyless: config.proxyless });
+        .run({ proxyless: config.proxyless });
 }
 
 describe('Runner', () => {

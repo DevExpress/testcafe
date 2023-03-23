@@ -375,7 +375,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     public isProxyless (): boolean {
-        return !!this.opts.experimentalProxyless;
+        return !!this.opts.proxyless;
     }
 
     private _getRequestHookEventProvider (): RequestHookEventProvider {

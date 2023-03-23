@@ -1847,10 +1847,10 @@ describe('API', function () {
                     test: 42,
                 },
 
-                developmentMode:       true,
-                retryTestPages:        true,
-                disableHttp2:          true,
-                experimentalProxyless: true,
+                developmentMode: true,
+                retryTestPages:  true,
+                disableHttp2:    true,
+                proxyless:       true,
             });
 
             const configuration = TestCafe.firstCall.args[0];
@@ -1862,7 +1862,7 @@ describe('API', function () {
             expect(configuration.getOption(OPTION_NAMES.developmentMode)).be.true;
             expect(configuration.getOption(OPTION_NAMES.retryTestPages)).be.true;
             expect(configuration.getOption(OPTION_NAMES.disableHttp2)).be.true;
-            expect(configuration.getOption(OPTION_NAMES.experimentalProxyless)).be.true;
+            expect(configuration.getOption(OPTION_NAMES.proxyless)).be.true;
         });
     });
 });

@@ -20,7 +20,7 @@ const runTestsLocal = (testName) => {
         .filter(test => {
             return testName ? test === testName : true;
         })
-        .run({ experimentalProxyless: config.proxyless })
+        .run({ proxyless: config.proxyless })
         .then(failedCount => {
             const taskReport = JSON.parse(stream.data);
             const testReport = taskReport.fixtures.length === 1 ?

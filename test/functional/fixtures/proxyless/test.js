@@ -5,7 +5,7 @@ const config         = require('../../config.js');
 
 let testCafe = null;
 
-async function runTest ({ browsers, test, experimentalProxyless }) {
+async function runTest ({ browsers, test, proxyless }) {
     const runner = testCafe.createRunner();
     const source = path.join(__dirname, './testcafe-fixtures/index.js');
 
@@ -14,7 +14,7 @@ async function runTest ({ browsers, test, experimentalProxyless }) {
         .filter(testName => {
             return testName ? test === testName : true;
         })
-        .run({ experimentalProxyless });
+        .run({ proxyless });
 
     if (failedCount)
         throw new Error('Error has occurred.');
@@ -39,14 +39,14 @@ if (thereAreAllRequiredBrowsers) {
             return runTest({ browsers: 'chrome', test: 'Disabled' });
         });
 
-        it('Enabled with the "experimentalProxyless" option', function () {
-            return runTest({ browsers: 'chrome', test: 'Enabled', experimentalProxyless: true });
+        it('Enabled with the "proxyless" option', function () {
+            return runTest({ browsers: 'chrome', test: 'Enabled', proxyless: true });
         });
 
         it('Should throw error on running with unsupported browser', function () {
             let errorIsRaised = false;
 
-            return runTest({ browsers: ['chrome', 'firefox'], test: 'Disabled', experimentalProxyless: true })
+            return runTest({ browsers: ['chrome', 'firefox'], test: 'Disabled', proxyless: true })
                 .catch(err => {
                     errorIsRaised = true;
 

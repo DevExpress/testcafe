@@ -68,7 +68,7 @@ const OPTION_INIT_FLAG_NAMES = [
     OPTION_NAMES.retryTestPages,
     OPTION_NAMES.cache,
     OPTION_NAMES.disableHttp2,
-    OPTION_NAMES.experimentalProxyless,
+    OPTION_NAMES.proxyless,
     OPTION_NAMES.disableCrossDomain,
 ];
 
@@ -113,7 +113,7 @@ export default class TestCafeConfiguration extends Configuration {
 
         await this.asyncMergeOptions(options);
 
-        const proxyless = this.getOption(OPTION_NAMES.experimentalProxyless);
+        const proxyless = this.getOption(OPTION_NAMES.proxyless);
 
         if (proxyless)
             this._ensureOptionWithValue(OPTION_NAMES.hostname, LOCALHOST_NAMES.LOCALHOST, OptionSource.Input);
@@ -168,14 +168,14 @@ export default class TestCafeConfiguration extends Configuration {
             cache:              this.getOption(OPTION_NAMES.cache),
             disableHttp2:       this.getOption(OPTION_NAMES.disableHttp2),
             disableCrossDomain: this.getOption(OPTION_NAMES.disableCrossDomain),
-            proxyless:          this.getOption(OPTION_NAMES.experimentalProxyless),
+            proxyless:          this.getOption(OPTION_NAMES.proxyless),
         };
     }
 
     public get browserConnectionGatewayOptions (): BrowserConnectionGatewayOptions {
         return {
             retryTestPages: this.getOption(OPTION_NAMES.retryTestPages),
-            proxyless:      this.getOption(OPTION_NAMES.experimentalProxyless),
+            proxyless:      this.getOption(OPTION_NAMES.proxyless),
         };
     }
 
@@ -277,7 +277,7 @@ export default class TestCafeConfiguration extends Configuration {
         this._ensureOptionWithValue(OPTION_NAMES.developmentMode, DEFAULT_DEVELOPMENT_MODE, OptionSource.Configuration);
         this._ensureOptionWithValue(OPTION_NAMES.retryTestPages, DEFAULT_RETRY_TEST_PAGES, OptionSource.Configuration);
         this._ensureOptionWithValue(OPTION_NAMES.disableHttp2, DEFAULT_DISABLE_HTTP2, OptionSource.Configuration);
-        this._ensureOptionWithValue(OPTION_NAMES.experimentalProxyless, DEFAULT_PROXYLESS, OptionSource.Configuration);
+        this._ensureOptionWithValue(OPTION_NAMES.proxyless, DEFAULT_PROXYLESS, OptionSource.Configuration);
         this._ensureOptionWithValue(OPTION_NAMES.disableCrossDomain, DEFAULT_DISABLE_CROSS_DOMAIN, OptionSource.Configuration);
 
         this._ensureScreenshotOptions();
