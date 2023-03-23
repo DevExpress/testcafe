@@ -7,7 +7,7 @@ describe('[API] DevTools Compiler', function () {
         return runTests('./testcafe-fixtures/click-test.json', null, { only: 'chrome' });
     });
 
-    skipInProxyless('Should make hover on a button', function () {
+    it('Should make hover on a button', function () {
         return runTests('./testcafe-fixtures/hover-test.json', null, { only: 'chrome' });
     });
 

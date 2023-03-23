@@ -81,11 +81,11 @@ describe('Request Hooks', () => {
                 });
         });
 
-        skipInProxyless('Execution order', () => {
+        it('Execution order', () => {
             return runTests('./testcafe-fixtures/api/execution-order.js', null, { only: 'chrome' });
         });
 
-        skipInProxyless("Test's request hooks should not override the fixture's request hooks (GH-4122)", () => {
+        it("Test's request hooks should not override the fixture's request hooks (GH-4122)", () => {
             return runTests('./testcafe-fixtures/api/i4122.js', null, { only: 'chrome' });
         });
 
@@ -97,7 +97,7 @@ describe('Request Hooks', () => {
             return runTests('./testcafe-fixtures/api/change-remove-response-headers.js', null, { only: 'chrome' });
         });
 
-        skipInProxyless('Request hook events should be represented as appropriate classes', () => {
+        it('Request hook events should be represented as appropriate classes', () => {
             return runTests('./testcafe-fixtures/api/request-hook-events.js', null, { only: 'chrome' });
         });
 
