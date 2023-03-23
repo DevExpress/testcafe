@@ -5,7 +5,7 @@ const ServiceHost = require('./data/ipc-proxy/host');
 describe('IPC Proxy', () => {
     let serviceHost = null;
 
-    afterEach(async function () {
+    afterEach(async () => {
         if (serviceHost)
             await serviceHost.close();
     });
