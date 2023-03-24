@@ -347,7 +347,7 @@ export default class TestRun extends AsyncEventEmitter {
         this.debugging               = this.opts.debugMode as boolean;
         this.debugOnFail             = this.opts.debugOnFail as boolean;
         this.disableDebugBreakpoints = false;
-        this.debugReporterPluginHost = new ReporterPluginHost({ noColors: false }, void 0, void 0, void 0);
+        this.debugReporterPluginHost = new ReporterPluginHost({ noColors: false });
 
         this.browserManipulationQueue = new BrowserManipulationQueue(browserConnection, screenshotCapturer, this.warningLog);
 
