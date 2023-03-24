@@ -4,6 +4,7 @@ const { skipInProxyless } = require('../../../../utils/skip-in');
 
 describe('[API] Upload', function () {
     describe('t.setFilesToUpload', function () {
+        // NOTE: file uploading is not supported yet
         skipInProxyless('Should upload the specified file', function () {
             return runTests('./testcafe-fixtures/upload-test.js', 'Upload the file', { only: 'chrome' });
         });

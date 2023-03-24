@@ -92,7 +92,7 @@ test('Bottom-right', async t => {
 });
 
 test
-    .page('../pages/same-domain-iframe.html')
+    .page('http://localhost:3000/fixtures/api/es-next/take-screenshot/pages/same-domain-iframe.html')
     ('Same-domain iframe', async t => {
         await t
             .switchToIframe('iframe')
@@ -100,7 +100,7 @@ test
     });
 
 test
-    .page('../pages/nested-iframe.html')
+    .page('http://localhost:3000/fixtures/api/es-next/take-screenshot/pages/nested-iframe.html')
     ('Nested iframes', async t => {
         await t
             .switchToIframe('iframe')
@@ -109,7 +109,7 @@ test
     });
 
 test
-    .page('../pages/nested-iframe.html')
+    .page('http://localhost:3000/fixtures/api/es-next/take-screenshot/pages/nested-iframe.html')
     ('Rescroll parents', async t => {
         await t
             .switchToIframe('iframe')
@@ -124,7 +124,7 @@ test
     });
 
 test
-    .page('../pages/cross-domain-iframe.html')
+    .page('http://localhost:3000/fixtures/api/es-next/take-screenshot/pages/cross-domain-iframe.html')
     ('Cross-domain iframe', async t => {
         await t
             .switchToIframe('iframe')
@@ -140,7 +140,7 @@ test('Negative scroll target', async t => {
 });
 
 test
-    .page('../pages/element-bottom-right.html')
+    .page('http://localhost:3000/fixtures/api/es-next/take-screenshot/pages/element-bottom-right.html')
     (`Bottom-right element`, async t => {
         await t.takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.name + '.png');
     });

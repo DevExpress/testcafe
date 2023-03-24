@@ -2,6 +2,8 @@ const { skipInProxyless } = require('../../../../utils/skip-in');
 
 describe("Should provide a valid value for the 'document.title' property", () => {
     describe('Initial value', () => {
+        // NOTE: in the proxy mode we have some additional scripts for processing document.title
+        // we do not have these scripts in the proxyless mode yet
         skipInProxyless('script before and after <title>', () => {
             return runTests('./testcafe-fixtures/index.js', 'script before and after <title>');
         });
@@ -19,6 +21,8 @@ describe("Should provide a valid value for the 'document.title' property", () =>
         return runTests('./testcafe-fixtures/index.js', 'empty value');
     });
 
+    // NOTE: in the proxy mode we have some additional scripts for processing document.title
+    // we do not have these scripts in the proxyless mode yet
     skipInProxyless('Change value', () => {
         return runTests('./testcafe-fixtures/index.js', 'change value');
     });

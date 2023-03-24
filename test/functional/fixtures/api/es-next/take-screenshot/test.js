@@ -333,6 +333,7 @@ describe('[API] t.takeElementScreenshot()', function () {
     afterEach(assertionHelper.removeScreenshotDir);
 
     if (config.useLocalBrowsers) {
+        // NOTE: is the problem not in taking screenshot but in overrided scroll automation?
         skipInProxyless('Should take screenshot of an element', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Element',
                 { setScreenshotPath: true })
@@ -344,6 +345,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                 });
         });
 
+        // NOTE: is the problem not in taking screenshot but in overrided scroll automation?
         skipInProxyless('Should save screenshots to default dir with custom path specified', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Element')
                 .then(function () {
@@ -552,7 +554,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                 });
         });
 
-        skipInProxyless('Should capture screenshot of the element inside a same-domain iframe', function () {
+        it('Should capture screenshot of the element inside a same-domain iframe', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Same-domain iframe',
                 { setScreenshotPath: true })
                 .then(function () {
@@ -563,7 +565,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                 });
         });
 
-        skipInProxyless('Should capture screenshot of the element inside a nested iframe', function () {
+        it('Should capture screenshot of the element inside a nested iframe', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Nested iframes',
                 { setScreenshotPath: true })
                 .then(function () {
@@ -574,7 +576,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                 });
         });
 
-        skipInProxyless('Should capture screenshot of the element inside a cross-domain iframe', function () {
+        it('Should capture screenshot of the element inside a cross-domain iframe', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Cross-domain iframe',
                 { setScreenshotPath: true })
                 .then(function () {
@@ -585,7 +587,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                 });
         });
 
-        skipInProxyless("Shouldn't scroll parent frames multiple times", function () {
+        it("Shouldn't scroll parent frames multiple times", function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Rescroll parents',
                 { setScreenshotPath: true })
                 .then(function () {

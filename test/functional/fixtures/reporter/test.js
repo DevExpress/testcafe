@@ -946,6 +946,9 @@ const experimentalDebug = !!process.env.EXPERIMENTAL_DEBUG;
             });
         }
 
+        // NOTE: the `event.isSameOriginPolicyFailed` property return `false` in the proxyless mode,
+        // but in the proxy mode it returns `true`
+        // the problem is only with warning log, but not with request mock
         skipInProxyless('Should get warning for request hook', async () => {
             await runTests('./testcafe-fixtures/failed-cors-validation.js', 'Failed CORS validation', {
                 only: 'chrome',
@@ -1163,6 +1166,7 @@ const experimentalDebug = !!process.env.EXPERIMENTAL_DEBUG;
             });
     });
 
+    // NOTE: this test hangs in proxyless for unknown reasons
     skipInProxyless('Should raise an error when uncaught exception occurred in any reporter method', async () => {
         function createReporterWithBrokenMethod (method) {
             const base = {
@@ -1212,7 +1216,7 @@ const experimentalDebug = !!process.env.EXPERIMENTAL_DEBUG;
             });
     });
 
-    skipInProxyless('Should set options _hasTaskErrors to the runner if an error occurs', async () => {
+    it('Should set options _hasTaskErrors to the runner if an error occurs', async () => {
         try {
             await runTests('testcafe-fixtures/index-test.js', 'Simple command err test', { only: ['chrome'], shouldFail: true });
         }
