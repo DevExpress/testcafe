@@ -12,6 +12,7 @@ describe('Basic and NTLM authentications', function () {
         return runTests('./testcafe-fixtures/basic-auth-with-correct-credentials-test.js');
     });
 
+    // NOTE: NTLM authentication is not supported yet
     skipInProxyless('Should authenticate on a "NTLM" server with correct credentials', function () {
         return runTests('./testcafe-fixtures/ntlm-auth-check-username-test.js');
     });
@@ -29,6 +30,7 @@ describe('Basic and NTLM authentications', function () {
             return runTests('./testcafe-fixtures/basic-auth-with-correct-credentials-test.js', null, { useProxy: TRANSPARENT_PROXY_URL });
         });
 
+        // NOTE: NTLM authentication is not supported yet
         skipInProxyless('Should authenticate on a "NTLM" server with correct credentials', function () {
             return runTests('./testcafe-fixtures/ntlm-auth-check-username-test.js', null, { useProxy: TRANSPARENT_PROXY_URL });
         });

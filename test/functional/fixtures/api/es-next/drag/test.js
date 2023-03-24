@@ -137,6 +137,7 @@ describe('[API] Drag actions', function () {
             return runTests('./testcafe-fixtures/drag-and-drop-test.js', 'try to drop to undroppable', { skip: ['iphone', 'ipad', 'android'] });
         });
 
+        // NOTE: Slightly difference in link.href. Probably related to link attribute overriding
         skipInProxyless('Should reproduce native browser behavior', function () {
             return runTests('./testcafe-fixtures/drag-and-drop-test.js', 'drag link and image', { only: ['chrome'] });
         });

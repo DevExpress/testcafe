@@ -25,6 +25,7 @@ describe('TestRun - Driver protocol', function () {
             });
     });
 
+    // NOTE: at this moment page events which come from real user are not prevented
     skipInProxyless('Driver should prevent a real action', function () {
         return runTests('./testcafe-fixtures/prevent-real-action-test.js', 'Perform native click');
     });
@@ -34,6 +35,7 @@ describe('TestRun - Driver protocol', function () {
             return runTests('./testcafe-fixtures/driver-test.js', 'Mixed execution order');
         });
 
+        // NOTE: this test just is not designed for using in the proxyless mode (see the next ones)
         skipInProxyless('Should clear out the localStorage and sessionStorage after test (GH-1546)(proxy)', function () {
             return runTests('./testcafe-fixtures/clear-and-lock-storages.js');
         });
