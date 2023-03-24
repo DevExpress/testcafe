@@ -605,11 +605,24 @@ export default class Runner extends EventEmitter {
         await this._turnOnScreenshotsIfNeeded();
 
         const reporterPlugins = await Reporter.getReporterPlugins(this.configuration.getOption(OPTION_NAMES.reporter));
-        const reporterHooks = this.bootstrapper.hooks?.reporter;
+        const reporterHooks   = this.configuration.getOption(OPTION_NAMES.hooks)?.reporter;
+
+        if (reporterHooks)
+            this._assertReporterHooks(reporterHooks);
 
         this._reporters = reporterPlugins.map(reporter => new Reporter(reporter.plugin, this._messageBus, reporter.outStream, reporter.name, reporterHooks));
 
         await Promise.all(this._reporters.map(reporter => reporter.init()));
+    }
+
+    _assertReporterHooks (hooks) {
+        if (hooks?.onBeforeWrite) {
+            assertType(is.nonNullObject, 'onBeforeWrite', 'The reporter.onBeforeWrite', hooks.onBeforeWrite);
+
+            Object.entries(hooks?.onBeforeWrite).forEach(([reporterName, hook]) => {
+                assertType(is.function, reporterName, `The reporter.onBeforeWrite.${reporterName}`, hook);
+            });
+        }
     }
 
     async _prepareOptions (options) {

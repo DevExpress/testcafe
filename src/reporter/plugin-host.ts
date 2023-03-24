@@ -49,8 +49,6 @@ export default class ReporterPluginHost {
         this[wordWrapEnabled] = false;
         this[indent]          = 0;
 
-        this._initPluginHooks(reporterHooks);
-
         const useColors = this[stream] === process.stdout && chalk.enabled && !plugin.noColors;
 
         this.chalk         = new chalk.constructor({ enabled: useColors });
@@ -59,6 +57,8 @@ export default class ReporterPluginHost {
         this.symbols       = Object.assign({}, REPORTER_SYMBOLS);
 
         assignIn(this, plugin);
+
+        this._initPluginHooks(reporterHooks);
 
         this[errorDecorator] = this.createErrorDecorator();
     }
@@ -141,14 +141,14 @@ export default class ReporterPluginHost {
         return this;
     }
 
-    public write (text: string): ReporterPluginHost {
+    public write (text: string, data?: any, initiator?: string): ReporterPluginHost {
         if (this[wordWrapEnabled])
             text = this.wordWrap(text, this[indent], this.viewportWidth);
         else
             text = this.indentString(text, this[indent]);
 
         if (this._hooks?.onBeforeWrite) {
-            const writeInfo = this._createBeforeWriteInfo(text);
+            const writeInfo = this._createBeforeWriteInfo(text, data, initiator);
 
             this._hooks.onBeforeWrite(writeInfo);
             this._writeToUniqueStream(writeInfo.formattedText);
@@ -171,10 +171,8 @@ export default class ReporterPluginHost {
         return this;
     }
 
-    private _createBeforeWriteInfo (formattedText: string): WriteInfo {
-        const pluginMethods = Object.keys(ReporterPluginMethod);
-        const initiatorSite = callsite().find(site => pluginMethods.some(methodName => methodName === site?.getFunctionName()));
-        const initiator     = initiatorSite ? initiatorSite.getFunctionName() : '';
+    private _createBeforeWriteInfo (formattedText: string, data: any, initiator: string | undefined): WriteInfo {
+        initiator = initiator || this._getWriteInitiatorEvent();
 
         return {
             formatOptions: {
@@ -183,8 +181,16 @@ export default class ReporterPluginHost {
             },
             formattedText,
             initiator,
-            data: {},
+            data,
         };
+    }
+
+    private _getWriteInitiatorEvent (): string {
+        const pluginMethods = Object.keys(ReporterPluginMethod);
+        const funcNames = callsite().map(site => site.getFunctionName());
+        const initiator = funcNames.find(funcName => pluginMethods.some(methodName => methodName === funcName));
+
+        return initiator || '';
     }
 
     private _writeToUniqueStream (text: string): void {
