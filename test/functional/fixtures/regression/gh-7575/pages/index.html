@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>gh-7575</title>
+</head>
+<body>
+<button>Click me</button>
+
+<script>
+    function makeRequest () {
+        const xhr = new XMLHttpRequest();
+
+        xhr.open('GET', '/?' + Date.now());
+        xhr.setRequestHeader('Authorization', 'test');
+        xhr.send();
+    }
+
+    const btn = document.querySelector('button');
+
+    btn.addEventListener('click', makeRequest);
+</script>
+</body>
+</html>
