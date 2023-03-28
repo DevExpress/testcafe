@@ -71,7 +71,7 @@ function run (pathToTest, filter, initializeConnection = initializeConnectionLow
                 .filter(testName => testName === filter)
                 .reporter(reporter)
                 .browsers(connection)
-                .run({ experimentalProxyless: config.proxyless });
+                .run({ proxyless: config.proxyless });
         });
 }
 

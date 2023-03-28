@@ -44,7 +44,7 @@ enum OptionNames {
     debugLogger = 'debugLogger',
     disableMultipleWindows = 'disableMultipleWindows',
     disableHttp2 = 'disableHttp2',
-    experimentalProxyless = 'experimentalProxyless',
+    proxyless = 'proxyless',
     experimentalDebug = 'experimentalDebug',
     compilerOptions = 'compilerOptions',
     pageRequestTimeout = 'pageRequestTimeout',

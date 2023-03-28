@@ -50,7 +50,7 @@ async function run ({ src, browsers, retryTestPages, reporter }) {
     if (reporter)
         runner.reporter(reporter);
 
-    await runner.run({ experimentalProxyless: config.proxyless });
+    await runner.run({ proxyless: config.proxyless });
 
     await testcafe.close();
 }

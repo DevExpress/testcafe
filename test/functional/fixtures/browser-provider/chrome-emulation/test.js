@@ -20,7 +20,7 @@ if (config.useLocalBrowsers && config.hasBrowser('chrome')) {
                     .filter(fixtureName => fixtureName === 'Check presence of touch event handlers')
                     .reporter('minimal', createNullStream())
                     .browsers(browserAlias)
-                    .run({ experimentalProxyless: config.proxyless });
+                    .run({ proxyless: config.proxyless });
 
                 expect(failedCount).eql(0);
             }
@@ -50,7 +50,7 @@ if (config.useLocalBrowsers && config.hasBrowser('chrome')) {
                 .src(path.join(__dirname, './testcafe-fixtures/index-test.js'))
                 .reporter(reporter)
                 .browsers('chrome:headless:emulation:device=iphone X --no-sandbox')
-                .run({ experimentalProxyless: config.proxyless });
+                .run({ proxyless: config.proxyless });
 
             expect(prettyUserAgents.length).eql(1);
             expect(prettyUserAgents[0]).endsWith('(Emulating iPhone X)');

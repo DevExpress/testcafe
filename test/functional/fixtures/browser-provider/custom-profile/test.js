@@ -15,7 +15,7 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers && !config.hasBrowser
                 .src(path.join(__dirname, './testcafe-fixtures/index-test.js'))
                 .reporter('minimal', createNullStream())
                 .browsers('chrome:userProfile', 'firefox:userProfile')
-                .run({ experimentalProxyless: config.proxyless })
+                .run({ proxyless: config.proxyless })
                 .then(failedCount => {
                     expect(failedCount).eql(0);
                 });
@@ -30,7 +30,7 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers && !config.hasBrowser
                         .src(path.join(__dirname, './testcafe-fixtures/index-test.js'))
                         .reporter('minimal', createNullStream())
                         .browsers(`chrome --user-data-dir=${chromeProfile.name}`, `firefox -profile ${firefoxProfile.name}`)
-                        .run({ experimentalProxyless: config.proxyless });
+                        .run({ proxyless: config.proxyless });
                 })
                 .then(failedCount => {
                     expect(failedCount).eql(0);

@@ -27,7 +27,7 @@ if (config.useLocalBrowsers) {
                         .src(fixturePath)
                         .browsers(browsers)
                         .screenshots(SCREENSHOTS_PATH)
-                        .run({ experimentalProxyless: config.proxyless });
+                        .run({ proxyless: config.proxyless });
                 })
                 .then(failedCount => {
                     expect(failedCount).eql(0);
