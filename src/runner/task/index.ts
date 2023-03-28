@@ -132,7 +132,8 @@ export default class Task extends AsyncEventEmitter {
     }
 
     private _prepareTestStructure (tests: Test[]): ReportedTestStructureItem[] {
-        const groups = groupBy(tests, 'fixture.id');
+        // @ts-ignore
+        const groups = groupBy<Test>(tests, 'fixture.id');
 
         return Object.keys(groups).map(fixtureId => {
             const testsByGroup = groups[fixtureId];

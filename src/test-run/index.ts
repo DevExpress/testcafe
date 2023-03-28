@@ -823,7 +823,7 @@ export default class TestRun extends AsyncEventEmitter {
     public normalizeRequestHookErrors (): void {
         const requestHookErrors = remove(this.errs, e =>
             (e as unknown as TestRunErrorBase).code === TEST_RUN_ERRORS.requestHookNotImplementedError ||
-            (e as unknown as TestRunErrorBase).code === TEST_RUN_ERRORS.requestHookUnhandledError);
+            (e as unknown as TestRunErrorBase).code === TEST_RUN_ERRORS.requestHookUnhandledError) as unknown as RequestHookBaseError[];
 
         if (!requestHookErrors.length)
             return;
@@ -835,7 +835,7 @@ export default class TestRun extends AsyncEventEmitter {
                 return err.hookClassName + err.methodName;
             })
             .sortBy(['hookClassName', 'methodName'])
-            .value();
+            .value() as unknown as TestRunErrorFormattableAdapter[];
 
         this.errs = this.errs.concat(uniqRequestHookErrors);
     }
