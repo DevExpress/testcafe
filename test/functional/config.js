@@ -259,7 +259,7 @@ module.exports = {
         return this.currentEnvironment.browsers.some(browser => browser.alias.includes(alias));
     },
 
-    get experimentalESM () {
+    get esm () {
         return !!process.env.NODE_OPTIONS && process.env.NODE_OPTIONS.includes('--experimental-loader');
     },
 };

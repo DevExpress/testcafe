@@ -257,7 +257,7 @@ if (config.useLocalBrowsers) {
             return cafe.close();
         });
 
-        (process.env.TESTING_ENVIRONMENT === 'local-headless-chrome' && !config.experimentalESM ? it : it.skip)('Experimental debug', () => {
+        (process.env.TESTING_ENVIRONMENT === 'local-headless-chrome' && !config.esm ? it : it.skip)('Experimental debug', () => {
             const markerFile = path.join(__dirname, 'testcafe-fixtures', '.test-completed.marker');
 
             return createTestCafeInstance({

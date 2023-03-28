@@ -859,7 +859,7 @@ describe('CLI argument parser', function () {
             { long: '--proxyless' },
             { long: '--base-url' },
             { long: '--disable-cross-domain' },
-            { long: '--experimental-esm' },
+            { long: '--esm' },
         ];
 
         const parser  = new CliArgumentParser('');

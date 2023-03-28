@@ -170,7 +170,7 @@ before(function () {
             port:            1337,
             isUserVariables: true,
         },
-        experimentalEsm: config.experimentalESM,
+        esm: config.esm,
     };
 
     return createTestCafe(testCafeOptions)

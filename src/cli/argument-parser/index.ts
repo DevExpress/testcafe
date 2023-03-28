@@ -202,6 +202,7 @@ export default class CLIArgumentParser {
             .option('--disable-http2', 'force the proxy to issue HTTP/1.1 requests')
             .option('--cache', 'cache web assets between test runs')
             .option('--base-url <url>', 'set the base url for the test run')
+            .option('--esm', 'enable ESM module support')
 
             // NOTE: these options will be handled by chalk internally
             .option('--color', 'force TestCafe to format CLI output with color')
@@ -209,7 +210,6 @@ export default class CLIArgumentParser {
 
             // NOTE: Temporarily exclude experimental options from --help output
             .addOption(new Option('--experimental-debug', 'enable experimental the debug mode').hideHelp())
-            .addOption(new Option('--experimental-esm', 'enable experimental the esm mode').hideHelp())
             .addOption(new Option('--disable-cross-domain', 'experimental').hideHelp())
             .action((opts: CommandLineOptions) => {
                 this.opts = opts;

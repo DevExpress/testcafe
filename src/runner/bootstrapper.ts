@@ -243,8 +243,8 @@ export default class Bootstrapper {
     }
 
     private async _compileTests ({ sourceList, compilerOptions, runnableConfigurationId }: CompilerArguments): Promise<Test[]> {
-        const baseUrl          = this.configuration.getOption(OPTION_NAMES.baseUrl) as string;
-        const experimentalEsm  = this.configuration.getOption(OPTION_NAMES.experimentalEsm);
+        const baseUrl = this.configuration.getOption(OPTION_NAMES.baseUrl) as string;
+        const esm     = this.configuration.getOption(OPTION_NAMES.esm);
 
         if (this.compilerService) {
             await this.compilerService.init();
@@ -253,7 +253,7 @@ export default class Bootstrapper {
             return this.compilerService.getTests({ sourceList, compilerOptions, runnableConfigurationId }, baseUrl);
         }
 
-        const compiler = new Compiler(sourceList, compilerOptions, { baseUrl, isCompilerServiceMode: false, experimentalEsm });
+        const compiler = new Compiler(sourceList, compilerOptions, { baseUrl, isCompilerServiceMode: false, esm });
 
         return compiler.getTests();
     }
