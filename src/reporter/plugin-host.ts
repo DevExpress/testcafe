@@ -141,14 +141,14 @@ export default class ReporterPluginHost {
         return this;
     }
 
-    public write (text: string, data?: any, initiator?: string): ReporterPluginHost {
+    public write (text: string, data?: any): ReporterPluginHost {
         if (this[wordWrapEnabled])
             text = this.wordWrap(text, this[indent], this.viewportWidth);
         else
             text = this.indentString(text, this[indent]);
 
         if (this._hooks?.onBeforeWrite) {
-            const writeInfo = this._createBeforeWriteInfo(text, data, initiator);
+            const writeInfo = this._createBeforeWriteInfo(text, data);
 
             this._hooks.onBeforeWrite(writeInfo);
             this._writeToUniqueStream(writeInfo.formattedText);
@@ -171,8 +171,8 @@ export default class ReporterPluginHost {
         return this;
     }
 
-    private _createBeforeWriteInfo (formattedText: string, data: any, initiator: string | undefined): WriteInfo {
-        initiator = initiator || this._getWriteInitiatorEvent();
+    private _createBeforeWriteInfo (formattedText: string, data: any = {}): WriteInfo {
+        const initiator = data.initiator || this._getWriteInitiatorEvent();
 
         return {
             formatOptions: {

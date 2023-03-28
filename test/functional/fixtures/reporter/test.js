@@ -1,13 +1,14 @@
-const { expect }                = require('chai');
-const fs                        = require('fs');
-const generateReporter          = require('./reporter');
-const { createReporter }        = require('../../utils/reporter');
-const { createWarningReporter } = require('../../utils/warning-reporter');
-const ReporterPluginMethod      = require('../../../../lib/reporter/plugin-methods');
-const assertionHelper           = require('../../assertion-helper.js');
-const path                      = require('path');
+const { expect }                 = require('chai');
+const fs                         = require('fs');
+const generateReporter           = require('./reporter');
+const { createReporter }         = require('../../utils/reporter');
+const { createWarningReporter }  = require('../../utils/warning-reporter');
+const ReporterPluginMethod       = require('../../../../lib/reporter/plugin-methods');
+const assertionHelper            = require('../../assertion-helper.js');
+const path                       = require('path');
 const config                     = require('../../config');
 const { skipInNativeAutomation } = require('../../utils/skip-in');
+const { noop }                   = require('lodash');
 
 const {
     createSimpleTestStream,
@@ -1190,80 +1191,55 @@ const experimentalDebug = !!process.env.EXPERIMENTAL_DEBUG;
 
     describe('Reporter Hooks', () => {
         it('Should handle onBeforeWrite hook', () => {
+            let pluginContextProp       = {};
+            const writeData             = { prop: true };
+            const result                = {};
+            const expectedOutput        = `formattedText\nformattedText\nformattedText\n`;
+            const expectedFormatOptions = { indent: 3, useWordWrap: true };
+            const expectedResult = {
+                reportTaskStart: {
+                    data:          writeData,
+                    formatOptions: expectedFormatOptions,
+                },
+                reportTestDone: {
+                    data:          writeData,
+                    formatOptions: expectedFormatOptions,
+                },
+                customMethod: {
+                    data:          { ...writeData, initiator: 'customMethod' },
+                    formatOptions: expectedFormatOptions,
+                },
+            };
+
             function custom () {
                 return {
-                    taskInfo: { prop: 'val' },
-                    reportTaskStart (...args) {
-                        this.setIndent(3).write('unFormattedText', args);
+                    taskInfo:           { prop: 'val' },
+                    reportTaskDone:     noop,
+                    reportFixtureStart: noop,
+                    reportTaskStart () {
+                        this.useWordWrap(true).setIndent(3).write('unFormattedText', writeData);
                     },
-                    reportFixtureStart (...args) {
-                        this.useWordWrap(true).write('unFormattedText', args);
+                    reportTestDone: function () {
+                        this.write('unFormattedText', writeData);
+                        this.customMethod();
                     },
-                    reportTestStart (...args) {
-                        this.useWordWrap(false).write('unFormattedText', args);
-                    },
-                    reportTestActionStart (...args) {
-                        this.setIndent(0).write('unFormattedText', args);
-                    },
-                    reportTestActionDone (...args) {
-                        this.write('unFormattedText', args);
-                    },
-                    reportTestDone (...args) {
-                        this.write('unFormattedText', args);
-                    },
-                    reportTaskDone (...args) {
-                        this.write('unFormattedText', args);
-                    },
-                    reportWarnings (...args) {
-                        this.write('unFormattedText', args);
+                    customMethod () {
+                        this.write('unFormattedText', { ...writeData, initiator: 'customMethod' });
                     },
                 };
             }
 
-            let pluginContextProp = {};
-            const result          = {};
-            const expectedDataArguments = {
-                reportTaskStart: {
-                    data:          5,
-                    formatOptions: { indent: 3, useWordWrap: false },
-                },
-                reportFixtureStart: {
-                    data:          3,
-                    formatOptions: { indent: 3, useWordWrap: true },
-                },
-                reportTestStart: {
-                    data:          3,
-                    formatOptions: { indent: 3, useWordWrap: false },
-                },
-                reportTestActionStart: {
-                    data:          2,
-                    formatOptions: { indent: 0, useWordWrap: false },
-                },
-                reportTestActionDone: {
-                    data:          2,
-                    formatOptions: { indent: 0, useWordWrap: false },
-                },
-                reportTestDone: {
-                    data:          3,
-                    formatOptions: { indent: 0, useWordWrap: false },
-                },
-                reportTaskDone: {
-                    data:          4,
-                    formatOptions: { indent: 0, useWordWrap: false },
-                },
-            };
-            const expectedOutput = `formattedText\nformattedText\nformattedText\nformattedText\nformattedText\nformattedText\nformattedText\n`;
             const onBeforeWriteHook = function (writeInfo) {
                 const { initiator, data, formatOptions } = writeInfo;
 
                 writeInfo.formattedText = 'formattedText\n';
                 result[initiator]       = {
-                    data: data?.length,
+                    data,
                     formatOptions,
                 };
-                pluginContextProp = this.taskInfo;
+                pluginContextProp       = this.taskInfo;
             };
-            const outStream             = createSimpleTestStream();
+            const outStream         = createSimpleTestStream();
 
             return runTests('testcafe-fixtures/reporter-init-method.js', null, {
                 reporter: [{ name: custom, output: outStream }],
@@ -1276,7 +1252,7 @@ const experimentalDebug = !!process.env.EXPERIMENTAL_DEBUG;
                 },
             })
                 .then(() => {
-                    expect(result).eql(expectedDataArguments);
+                    expect(result).eql(expectedResult);
                     expect(pluginContextProp).eql({ prop: 'val' });
                     expect(outStream.data).eql(expectedOutput);
                 });
