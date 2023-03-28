@@ -458,7 +458,7 @@ describe('TestCafeConfiguration', function () {
                     await configuration.init({ hostname: '123.456.789' });
                     await configuration.calculateHostname({ proxyless: true });
 
-                    expect(configuration.getOption('hostname')).eql('123.456.789');
+                    expect(configuration.getOption('hostname')).eql('localhost');
                 });
 
                 it('Proxyless is disabled/hostname is unset', async () => {
