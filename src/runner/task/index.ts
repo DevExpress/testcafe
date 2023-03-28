@@ -135,7 +135,7 @@ export default class Task extends AsyncEventEmitter {
         const groups = groupBy(tests, 'fixture.id');
 
         return Object.keys(groups).map(fixtureId => {
-            const testsByGroup = groups[fixtureId];
+            const testsByGroup = groups[fixtureId] as Test[];
             const fixture      = testsByGroup[0].fixture as Fixture;
 
             return {
