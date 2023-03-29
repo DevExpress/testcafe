@@ -41,9 +41,11 @@ const Server = module.exports = function (port, basePath) {
     const server = this;
 
     this.app       = express().use(bodyParser.urlencoded({ extended: false }));
-    this.appServer = http.createServer(this.app).listen(port);
+    this.appServer = http.createServer(this.app);
     this.sockets   = [];
     this.basePath  = basePath;
+
+    this.appServer.listen(port);
 
     this.app.use(bodyParser.json());
 
