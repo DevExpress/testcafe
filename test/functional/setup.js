@@ -379,6 +379,7 @@ after(async function () {
     console.log(`file: setup.js:375 -> process._getActiveHandles().length:`, process._getActiveHandles().length);
     for (const iterator of process._getActiveHandles()) {
         console.log(`file: setup.js:381 -> iterator.toString():`, iterator.toString());
+        console.log(`file: setup.js:381 -> Object.getPrototypeOf(iterator).constructor.name:`, Object.getPrototypeOf(iterator)?.constructor?.name || 'Do not have prototype');
         console.log(`file: setup.js:381 -> iterator._connectionKey:`, iterator._connectionKey);    
     }
 
