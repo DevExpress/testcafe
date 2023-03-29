@@ -8,7 +8,6 @@ import config from '../../../../../config.js';
 import { join } from 'path';
 import getOSInfo from 'get-os-info';
 
-
 // NOTE: to preserve callsites, add new tests AFTER the existing ones
 fixture `Take a screenshot`
     .page `../pages/index.html`;
