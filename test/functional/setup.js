@@ -1,3 +1,4 @@
+/* eslint-disable */
 const path                       = require('path');
 const SlConnector                = require('saucelabs-connector');
 const BsConnector                = require('browserstack-connector');
@@ -132,11 +133,14 @@ function waitUntilBrowsersConnected () {
 }
 
 async function closeRemoteBrowsers () {
+    console.log(`file: setup.js:136 -> closeRemoteBrowsers -> closeRemoteBrowsers:`, closeRemoteBrowsers);
     const closeBrowserPromises = browserInstances.map(browser => connector.stopBrowser(isBrowserStack ? browser.id : browser));
 
     await Promise.all(closeBrowserPromises);
+    console.log(`file: setup.js:140 -> closeRemoteBrowsers -> after closeBrowserPromises`);
 
     await connector.disconnect();
+    console.log(`file: setup.js:143 -> closeRemoteBrowsers -> after disconnect`);
 }
 
 function closeLocalBrowsers () {
@@ -170,7 +174,7 @@ before(function () {
             port:            1337,
             isUserVariables: true,
         },
-        esm: config.esm,
+        experimentalEsm: config.experimentalESM,
     };
 
     return createTestCafe(testCafeOptions)
@@ -326,7 +330,7 @@ before(function () {
                         runExecutionTimeout,
                         baseUrl,
                         customActions,
-                        proxyless: config.proxyless,
+                        experimentalProxyless: config.proxyless,
                     })
                     .then(failedCount => {
                         if (customReporters)
@@ -352,27 +356,48 @@ before(function () {
 
 beforeEach(function () {
     global.currentTest = this.currentTest;
+    console.log(`file: setup.js:358 -> beforeEach -> process._getActiveHandles().length:`, process._getActiveHandles().length);
+});
+
+afterEach(function () {
+    console.log(`file: setup.js:362 -> afterEach -> process._getActiveHandles().length:`, process._getActiveHandles().length);
 });
 
 after(async function () {
     this.timeout(60000);
+    console.log(`file: setup.js -> line 380 -> after`);
 
     testCafe.close();
+    console.log(`file: setup.js -> line 364 -> testCafe.close();`);
     site.destroy();
+    console.log(`file: setup.js -> line 366 -> site.destroy();`);
 
     delete global.testcafe;
     delete global.runTests;
     delete global.testReport;
 
+    console.log(`file: setup.js:375 -> process._getActiveHandles().length:`, process._getActiveHandles().length);
+    for (const iterator of process._getActiveHandles()) {
+        console.log(`file: setup.js:381 -> iterator.toString():`, iterator.toString());
+        console.log(`file: setup.js:381 -> iterator._connectionKey:`, iterator._connectionKey);    
+    }
+
+    console.log(`file: setup.js -> line 373 -> USE_PROVIDER_POOL`, USE_PROVIDER_POOL);
     if (!USE_PROVIDER_POOL) {
         // TODO: we should determine the reason why Browserstack browser hangs at the end
         // HACK: the timeout prevents tests from failing when we can't close Browserstack browsers
         await Promise.race([
             closeRemoteBrowsers(),
-            new Promise(resolve => setTimeout(resolve, 57000)),
+            new Promise(resolve => setTimeout(() => {
+                console.log(`file: setup.js -> line 381 -> timeout`); 
+
+                resolve()
+            }, 57000)),
         ]);
     }
     else
         await closeLocalBrowsers();
+
+    console.log(`file: setup.js -> line 393 -> browser closed;`); 
 });
 
