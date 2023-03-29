@@ -1,7 +1,7 @@
 import { ClientFunction } from 'testcafe';
 import { parseUserAgent } from '../../../../../../../lib/utils/parse-user-agent.js';
 import config from '../../../../../config.js';
-import getOSInfo from 'get-os-info';
+import { getOSInfo } from 'get-os-info';
 
 fixture `Browser information in headless Chrome`;
 
