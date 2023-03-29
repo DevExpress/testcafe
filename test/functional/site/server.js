@@ -1,3 +1,4 @@
+/* eslint-disable */
 const express               = require('express');
 const http                  = require('http');
 const path                  = require('path');
@@ -51,11 +52,16 @@ const Server = module.exports = function (port, basePath) {
     const handler = function (socket) {
         server.sockets.push(socket);
         socket.on('close', function () {
+            console.log(`file: server.js:56 -> socket.on('close')`);
             server.sockets.splice(server.sockets.indexOf(socket), 1);
         });
     };
 
     this.appServer.on('connection', handler);
+
+    this.appServer.on('this.appServer', () => {
+        console.log(`file: server.js:65 -> this.appServer.on -> appServer.on('this.appServer')`);
+    })
 };
 
 Server.prototype._setupRoutes = function () {
@@ -191,8 +197,14 @@ Server.prototype._setupRoutes = function () {
 };
 
 Server.prototype.close = function () {
-    this.appServer.close();
-    this.sockets.forEach(function (socket) {
-        socket.destroy();
-    });
+    console.log(`file: server.js:203 -> this.appServer.close -> this.appServer.getConnections(callback)`, this.appServer.getConnections((...args) => {
+        console.log(`file: server.js:203 -> console.log -> args:`, args);
+
+        this.appServer.close((...args) => {
+            console.log(`file: server.js:203 -> this.appServer.close -> args:`, args);
+        });
+        this.sockets.forEach(function (socket) {
+            socket.destroy();
+        });
+    }));
 };
