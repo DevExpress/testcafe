@@ -144,6 +144,14 @@ export interface ReporterPluginHooks {
     onBeforeWrite?: Function;
 }
 
+export interface ReporterOptions {
+    name: string;
+    plugin: ReporterPlugin;
+    messageBus: MessageBus;
+    outStream: Writable;
+    reporterPluginHooks?: ReporterPluginHooks
+}
+
 const debugLog = debug('testcafe:reporter');
 
 export default class Reporter {
@@ -153,10 +161,8 @@ export default class Reporter {
     public taskInfo: TaskInfo | null;
     public readonly outStream: Writable;
 
-    public constructor (plugin: ReporterPlugin, messageBus: MessageBus, outStream: Writable, name: string, reporterHooks?: ReporterHooks) {
-        const pluginHooks = this._resolvePluginHooks(reporterHooks, name);
-
-        this.plugin     = new ReporterPluginHost(plugin, outStream, name, pluginHooks);
+    public constructor ({ name, plugin, outStream, messageBus, reporterPluginHooks }: ReporterOptions) {
+        this.plugin     = new ReporterPluginHost(plugin, outStream, name, reporterPluginHooks);
         this.messageBus = messageBus;
         this.disposed   = false;
         this.taskInfo   = null;

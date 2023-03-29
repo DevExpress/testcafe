@@ -610,9 +610,31 @@ export default class Runner extends EventEmitter {
         if (reporterHooks)
             this._assertReporterHooks(reporterHooks);
 
-        this._reporters = reporterPlugins.map(reporter => new Reporter(reporter.plugin, this._messageBus, reporter.outStream, reporter.name, reporterHooks));
+        this._reporters = reporterPlugins.map(reporter => {
+            const reporterOptions = {
+                plugin:              reporter.plugin,
+                messageBus:          this._messageBus,
+                outStream:           reporter.outStream,
+                name:                reporter.name,
+                reporterPluginHooks: this._resolvePluginHooks(reporter.name, reporterHooks),
+            };
+
+            return new Reporter(reporterOptions);
+        });
 
         await Promise.all(this._reporters.map(reporter => reporter.init()));
+    }
+
+    _resolvePluginHooks (name, reporterHooks) {
+        if (!reporterHooks)
+            return void 0;
+
+        const resultHooks = {};
+
+        if (reporterHooks.onBeforeWrite && reporterHooks.onBeforeWrite[name])
+            resultHooks.onBeforeWrite = reporterHooks.onBeforeWrite[name];
+
+        return resultHooks;
     }
 
     _assertReporterHooks (hooks) {

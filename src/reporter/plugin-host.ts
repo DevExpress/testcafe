@@ -42,7 +42,7 @@ export default class ReporterPluginHost {
     private [errorDecorator]: Record<string, Function>;
     private _hooks: ReporterPluginHooks | undefined;
 
-    public constructor (plugin: any, outStream?: Writable, name?: string, reporterHooks?: ReporterPluginHooks) {
+    public constructor (plugin: any, outStream?: Writable, name?: string, pluginHooks?: ReporterPluginHooks) {
         this.name             = name;
         this.streamController = null;
         this[stream]          = outStream || process.stdout;
@@ -58,7 +58,7 @@ export default class ReporterPluginHost {
 
         assignIn(this, plugin);
 
-        this._initPluginHooks(reporterHooks);
+        this._initPluginHooks(pluginHooks);
 
         this[errorDecorator] = this.createErrorDecorator();
     }
