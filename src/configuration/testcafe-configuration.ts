@@ -112,11 +112,6 @@ export default class TestCafeConfiguration extends Configuration {
         }
 
         await this.asyncMergeOptions(options);
-
-        const proxyless = this.getOption(OPTION_NAMES.proxyless);
-
-        if (proxyless)
-            this._ensureOptionWithValue(OPTION_NAMES.hostname, LOCALHOST_NAMES.LOCALHOST, OptionSource.Input);
     }
 
     public async asyncMergeOptions (options?: Dictionary<object>): Promise<void> {
@@ -338,7 +333,7 @@ export default class TestCafeConfiguration extends Configuration {
     public async calculateHostname ({ proxyless } = { proxyless: false }): Promise<void> {
         await this.ensureHostname(async hostname => {
             if (proxyless)
-                hostname = hostname || LOCALHOST_NAMES.LOCALHOST;
+                hostname = LOCALHOST_NAMES.LOCALHOST;
             else
                 hostname = await getValidHostname(hostname);
 
