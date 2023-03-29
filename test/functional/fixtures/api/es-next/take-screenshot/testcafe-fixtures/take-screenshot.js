@@ -6,6 +6,7 @@ import sanitizeFilename from 'sanitize-filename';
 import { readPngFile } from '../../../../../../../lib/utils/promisified-functions.js';
 import config from '../../../../../config.js';
 import { join } from 'path';
+import getOSInfo from 'get-os-info';
 
 
 // NOTE: to preserve callsites, add new tests AFTER the existing ones
@@ -61,7 +62,8 @@ test('Take screenshots with same path', async t => {
 
 test('Take screenshots for reporter', async t => {
     const ua            = await getUserAgent();
-    const safeUserAgent = sanitizeFilename(parseUserAgent(ua).prettyUserAgent).replace(/\s+/g, '_');
+    const osInfo        = await getOSInfo();
+    const safeUserAgent = sanitizeFilename(parseUserAgent(ua, osInfo).prettyUserAgent).replace(/\s+/g, '_');
 
     quarantineScope[safeUserAgent] = quarantineScope[safeUserAgent] || {};
 
