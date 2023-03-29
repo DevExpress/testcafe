@@ -10,40 +10,30 @@ const delay                           = require('../../lib/utils/delay');
 const { ReporterPluginError }         = require('../../lib/errors/runtime');
 const WarningLog                      = require('../../lib/notifications/warning-log');
 const util                            = require('util');
-const getBrowser                      = require('../../lib/utils/get-browser');
 
 
-describe.only('Reporter', () => {
+describe('Reporter', () => {
     const screenshotDir = '/screenshots/1445437598847';
 
     const browserMocks = [
         {
-            alias:           'Chrome',
-            userAgent:       'Chrome',
-            parsedUserAgent: {},
-            headless:        false,
+            alias:     'Chrome',
+            userAgent: 'Chrome',
+            headless:  false,
         },
         {
-            alias:           'Firefox',
-            userAgent:       'Firefox',
-            parsedUserAgent: {},
-            headless:        false,
+            alias:     'Firefox',
+            userAgent: 'Firefox',
+            headless:  false,
         },
     ];
 
     const browserConnectionMocks = [
         {
-            browserInfo:    browserMocks[0],
             userAgent:      'Chrome',
-            connectionInfo: 'Chrome Ubuntu',
-            isHeadlessBrowser: () => false,
-
         },
         {
-            browserInfo:    browserMocks[1],
             userAgent:      'Firefox',
-            connectionInfo: 'Firefox Ubuntu',
-            isHeadlessBrowser: () => false,
         },
     ];
 
@@ -74,12 +64,12 @@ describe.only('Reporter', () => {
 
     const testMocks = [
         {
-            id:            'idf1t1',
-            name:          'fixture1test1',
-            pageUrl:       'urlf1t1',
-            fixture:       fixtureMocks[0],
-            skip:          false,
-            screenshots:   [{
+            id:          'idf1t1',
+            name:        'fixture1test1',
+            pageUrl:     'urlf1t1',
+            fixture:     fixtureMocks[0],
+            skip:        false,
+            screenshots: [{
                 testRunId:         'idf1t1-1',
                 screenshotPath:    'screenshot1.png',
                 thumbnailPath:     'thumbnail1.png',
@@ -93,12 +83,12 @@ describe.only('Reporter', () => {
             },
         },
         {
-            id:            'idf1t2',
-            name:          'fixture1test2',
-            pageUrl:       'urlf1t2',
-            fixture:       fixtureMocks[0],
-            skip:          false,
-            screenshots:   [{
+            id:          'idf1t2',
+            name:        'fixture1test2',
+            pageUrl:     'urlf1t2',
+            fixture:     fixtureMocks[0],
+            skip:        false,
+            screenshots: [{
                 testRunId:         'idf1t2-1',
                 screenshotPath:    'screenshot1.png',
                 thumbnailPath:     'thumbnail1.png',
@@ -202,7 +192,7 @@ describe.only('Reporter', () => {
                     { testRunId: 'secondRunId', errors: [] },
                 ],
             },
-            browser:           getBrowser(browserConnectionMocks[0]),
+            browser: browserMocks[0],
         },
 
         //fixture1test2
@@ -212,7 +202,7 @@ describe.only('Reporter', () => {
             unstable:          false,
             browserConnection: browserConnectionMocks[0],
             warningLog:        { messages: [] },
-            browser:           getBrowser(browserConnectionMocks[0]),
+            browser:           browserMocks[0],
 
             errs: [
                 { text: 'err1' },
@@ -228,7 +218,7 @@ describe.only('Reporter', () => {
             browserConnection: browserConnectionMocks[0],
             errs:              [],
             warningLog:        { messages: [] },
-            browser:           getBrowser(browserConnectionMocks[0]),
+            browser:           browserMocks[0],
         },
 
         //fixture2test1
@@ -239,7 +229,7 @@ describe.only('Reporter', () => {
             browserConnection: browserConnectionMocks[0],
             errs:              [],
             warningLog:        { messages: [] },
-            browser:           getBrowser(browserConnectionMocks[0]),
+            browser:           browserMocks[0],
         },
 
         //fixture2test2
@@ -250,7 +240,7 @@ describe.only('Reporter', () => {
             browserConnection: browserConnectionMocks[0],
             errs:              [],
             warningLog:        { messages: [] },
-            browser:           getBrowser(browserConnectionMocks[0]),
+            browser:           browserMocks[0],
         },
 
         //fixture3test1
@@ -261,7 +251,7 @@ describe.only('Reporter', () => {
             browserConnection: browserConnectionMocks[0],
             errs:              [],
             warningLog:        { messages: [] },
-            browser:           getBrowser(browserConnectionMocks[0]),
+            browser:           browserMocks[0],
         },
 
         //fixture3test2
@@ -272,7 +262,7 @@ describe.only('Reporter', () => {
             browserConnection: browserConnectionMocks[0],
             errs:              [],
             warningLog:        { messages: [] },
-            browser:           getBrowser(browserConnectionMocks[0]),
+            browser:           browserMocks[0],
         },
 
         //fixture3test3
@@ -283,7 +273,7 @@ describe.only('Reporter', () => {
             browserConnection: browserConnectionMocks[0],
             errs:              [],
             warningLog:        { messages: ['warning2'] },
-            browser:           getBrowser(browserConnectionMocks[0]),
+            browser:           browserMocks[0],
         },
     ];
 
@@ -302,7 +292,7 @@ describe.only('Reporter', () => {
                     { testRunId: 'secondRunId', errors: [] },
                 ],
             },
-            browser:           getBrowser(browserConnectionMocks[1]),
+            browser: browserMocks[1],
         },
 
         // 'fixture1test2
@@ -313,7 +303,7 @@ describe.only('Reporter', () => {
             browserConnection: browserConnectionMocks[1],
             errs:              [{ text: 'err1' }],
             warningLog:        { messages: [] },
-            browser:           getBrowser(browserConnectionMocks[1]),
+            browser:           browserMocks[1],
         },
 
         //fixture1test3
@@ -324,7 +314,7 @@ describe.only('Reporter', () => {
             browserConnection: browserConnectionMocks[1],
             errs:              [],
             warningLog:        { messages: [] },
-            browser:           getBrowser(browserConnectionMocks[1]),
+            browser:           browserMocks[1],
         },
 
         //fixture2test1
@@ -335,7 +325,7 @@ describe.only('Reporter', () => {
             browserConnection: browserConnectionMocks[1],
             errs:              [],
             warningLog:        { messages: [] },
-            browser:           getBrowser(browserConnectionMocks[1]),
+            browser:           browserMocks[1],
         },
 
         //fixture2test2
@@ -346,7 +336,7 @@ describe.only('Reporter', () => {
             browserConnection: browserConnectionMocks[1],
             errs:              [],
             warningLog:        { messages: [] },
-            browser:           getBrowser(browserConnectionMocks[1]),
+            browser:           browserMocks[1],
         },
 
         //fixture3test1
@@ -357,7 +347,7 @@ describe.only('Reporter', () => {
             browserConnection: browserConnectionMocks[1],
             errs:              [{ text: 'err1' }],
             warningLog:        { messages: ['warning1'] },
-            browser:           getBrowser(browserConnectionMocks[1]),
+            browser:           browserMocks[1],
         },
 
         //fixture3test2
@@ -368,7 +358,7 @@ describe.only('Reporter', () => {
             browserConnection: browserConnectionMocks[1],
             errs:              [],
             warningLog:        { messages: [] },
-            browser:           getBrowser(browserConnectionMocks[1]),
+            browser:           browserMocks[1],
         },
 
         //fixture3test3
@@ -379,7 +369,7 @@ describe.only('Reporter', () => {
             browserConnection: browserConnectionMocks[1],
             errs:              [],
             warningLog:        { messages: ['warning2', 'warning3'] },
-            browser:           getBrowser(browserConnectionMocks[1]),
+            browser:           browserMocks[1],
         },
     ];
 
@@ -390,8 +380,7 @@ describe.only('Reporter', () => {
     });
 
     class ScreenshotsMock {
-        constructor () {
-        }
+        constructor () {}
 
         getScreenshotsInfo (testMock) {
             return testMock.screenshots;
@@ -536,9 +525,7 @@ describe.only('Reporter', () => {
 
                 reportFixtureStart: function () {
                     return delay(1000)
-                        .then(() => log.push({
-                            method: 'reportFixtureStart', args: Array.prototype.slice.call(arguments),
-                        }));
+                        .then(() => log.push({ method: 'reportFixtureStart', args: Array.prototype.slice.call(arguments) }));
                 },
 
                 reportTestStart: function (...args) {
@@ -559,7 +546,7 @@ describe.only('Reporter', () => {
 
                     // NOTE: replace durationMs
                     args[1].durationMs = 74000;
-                    args[1].browsers   = sortBy(args[1].browsers, ['alias']);
+                    args[1].browsers = sortBy(args[1].browsers, ['alias']);
 
                     return delay(1000)
                         .then(() => log.push({ method: 'reportTestDone', args: args }));
@@ -583,8 +570,8 @@ describe.only('Reporter', () => {
                 args:   [
                     new Date('1970-01-01T00:00:00.000Z'),
                     [
-                        'Chrome Ubuntu',
-                        'Firefox Ubuntu',
+                        'Chrome',
+                        'Firefox',
                     ],
                     7,
                     [
@@ -713,8 +700,8 @@ describe.only('Reporter', () => {
                             'f1t1',
                             'f1t1ff',
                         ],
-                        startTime:  new Date('1970-01-01T00:00:00.000Z'),
-                        skipped:    false,
+                        startTime: new Date('1970-01-01T00:00:00.000Z'),
+                        skipped:   false,
                     },
                 ],
             },
@@ -725,12 +712,12 @@ describe.only('Reporter', () => {
                 args:   [
                     'fixture1test1',
                     {
-                        errs:           [],
-                        warnings:       [],
-                        durationMs:     74000,
-                        unstable:       true,
-                        skipped:        false,
-                        quarantine:     {
+                        errs:       [],
+                        warnings:   [],
+                        durationMs: 74000,
+                        unstable:   true,
+                        skipped:    false,
+                        quarantine: {
                             1:             { passed: false },
                             2:             { passed: true },
                             'firstRunId':  { passed: false, errors: ['1', '2'] },
@@ -745,9 +732,9 @@ describe.only('Reporter', () => {
                             takenOnFail:       false,
                             quarantineAttempt: 2,
                         }],
-                        videos:         [],
-                        testId:         'idf1t1',
-                        browsers:       [
+                        videos:   [],
+                        testId:   'idf1t1',
+                        browsers: [
                             {
                                 alias:                        'Chrome',
                                 userAgent:                    'Chrome',
@@ -757,7 +744,6 @@ describe.only('Reporter', () => {
                                     'firstRunId',
                                     'secondRunId',
                                 ],
-                                prettyUserAgent: "Chrome Ubuntu",
                             },
                             {
                                 alias:                        'Firefox',
@@ -768,10 +754,9 @@ describe.only('Reporter', () => {
                                     'firstRunId',
                                     'secondRunId',
                                 ],
-                                prettyUserAgent: "Firefox Ubuntu",
                             },
                         ],
-                        fixture:        {
+                        fixture: {
                             id:   'fid1',
                             name: 'fixture1',
                             path: './file1.js',
@@ -800,8 +785,8 @@ describe.only('Reporter', () => {
                             'f1t2',
                             'f1t2ff',
                         ],
-                        startTime:  new Date('1970-01-01T00:00:00.000Z'),
-                        skipped:    false,
+                        startTime: new Date('1970-01-01T00:00:00.000Z'),
+                        skipped:   false,
                     },
                 ],
             },
@@ -848,25 +833,23 @@ describe.only('Reporter', () => {
                             takenOnFail:       true,
                             quarantineAttempt: null,
                         }],
-                        videos:         [],
-                        testId:         'idf1t2',
-                        browsers:       [
+                        videos:   [],
+                        testId:   'idf1t2',
+                        browsers: [
                             {
                                 alias:     'Chrome',
                                 userAgent: 'Chrome',
                                 headless:  false,
                                 testRunId: 'f1t2',
-                                prettyUserAgent: "Chrome Ubuntu",
                             },
                             {
                                 alias:     'Firefox',
                                 userAgent: 'Firefox',
                                 headless:  false,
                                 testRunId: 'f1t2ff',
-                                prettyUserAgent: "Firefox Ubuntu",
                             },
                         ],
-                        fixture:        {
+                        fixture: {
                             id:   'fid1',
                             name: 'fixture1',
                             path: './file1.js',
@@ -895,8 +878,8 @@ describe.only('Reporter', () => {
                             'f1t3',
                             'f1t3ff',
                         ],
-                        startTime:  new Date('1970-01-01T00:00:00.000Z'),
-                        skipped:    false,
+                        startTime: new Date('1970-01-01T00:00:00.000Z'),
+                        skipped:   false,
                     },
                 ],
             },
@@ -923,17 +906,15 @@ describe.only('Reporter', () => {
                                 userAgent: 'Chrome',
                                 headless:  false,
                                 testRunId: 'f1t3',
-                                prettyUserAgent: "Chrome Ubuntu",
                             },
                             {
                                 alias:     'Firefox',
                                 userAgent: 'Firefox',
                                 headless:  false,
                                 testRunId: 'f1t3ff',
-                                prettyUserAgent: "Firefox Ubuntu",
                             },
                         ],
-                        fixture:        {
+                        fixture: {
                             id:   'fid1',
                             name: 'fixture1',
                             path: './file1.js',
@@ -972,8 +953,8 @@ describe.only('Reporter', () => {
                             'f2t1',
                             'f2t1ff',
                         ],
-                        startTime:  new Date('1970-01-01T00:00:00.000Z'),
-                        skipped:    false,
+                        startTime: new Date('1970-01-01T00:00:00.000Z'),
+                        skipped:   false,
                     },
                 ],
             },
@@ -1000,17 +981,15 @@ describe.only('Reporter', () => {
                                 userAgent: 'Chrome',
                                 headless:  false,
                                 testRunId: 'f2t1',
-                                prettyUserAgent: "Chrome Ubuntu",
                             },
                             {
                                 alias:     'Firefox',
                                 userAgent: 'Firefox',
                                 headless:  false,
                                 testRunId: 'f2t1ff',
-                                prettyUserAgent: "Firefox Ubuntu",
                             },
                         ],
-                        fixture:        {
+                        fixture: {
                             id:   'fid2',
                             name: 'fixture2',
                             path: './file1.js',
@@ -1039,8 +1018,8 @@ describe.only('Reporter', () => {
                             'f2t2',
                             'f2t2ff',
                         ],
-                        startTime:  new Date('1970-01-01T00:00:00.000Z'),
-                        skipped:    false,
+                        startTime: new Date('1970-01-01T00:00:00.000Z'),
+                        skipped:   false,
                     },
                 ],
             },
@@ -1067,17 +1046,15 @@ describe.only('Reporter', () => {
                                 userAgent: 'Chrome',
                                 headless:  false,
                                 testRunId: 'f2t2',
-                                prettyUserAgent: "Chrome Ubuntu",
                             },
                             {
                                 alias:     'Firefox',
                                 userAgent: 'Firefox',
                                 headless:  false,
                                 testRunId: 'f2t2ff',
-                                prettyUserAgent: "Firefox Ubuntu",
                             },
                         ],
-                        fixture:        {
+                        fixture: {
                             id:   'fid2',
                             name: 'fixture2',
                             path: './file1.js',
@@ -1114,8 +1091,8 @@ describe.only('Reporter', () => {
                             'f3t1',
                             'f3t1ff',
                         ],
-                        startTime:  new Date('1970-01-01T00:00:00.000Z'),
-                        skipped:    false,
+                        startTime: new Date('1970-01-01T00:00:00.000Z'),
+                        skipped:   false,
                     },
                 ],
             },
@@ -1148,17 +1125,15 @@ describe.only('Reporter', () => {
                                 userAgent: 'Chrome',
                                 headless:  false,
                                 testRunId: 'f3t1',
-                                prettyUserAgent: "Chrome Ubuntu",
                             },
                             {
                                 alias:     'Firefox',
                                 userAgent: 'Firefox',
                                 headless:  false,
                                 testRunId: 'f3t1ff',
-                                prettyUserAgent: "Firefox Ubuntu",
                             },
                         ],
-                        fixture:        {
+                        fixture: {
                             id:   'fid3',
                             name: 'fixture3',
                             path: './file2.js',
@@ -1185,8 +1160,8 @@ describe.only('Reporter', () => {
                             'f3t2',
                             'f3t2ff',
                         ],
-                        startTime:  new Date('1970-01-01T00:00:00.000Z'),
-                        skipped:    true,
+                        startTime: new Date('1970-01-01T00:00:00.000Z'),
+                        skipped:   true,
                     },
                 ],
             },
@@ -1213,17 +1188,15 @@ describe.only('Reporter', () => {
                                 userAgent: 'Chrome',
                                 headless:  false,
                                 testRunId: 'f3t2',
-                                prettyUserAgent: "Chrome Ubuntu",
                             },
                             {
                                 alias:     'Firefox',
                                 userAgent: 'Firefox',
                                 headless:  false,
                                 testRunId: 'f3t2ff',
-                                prettyUserAgent: "Firefox Ubuntu",
                             },
                         ],
-                        fixture:        {
+                        fixture: {
                             id:   'fid3',
                             name: 'fixture3',
                             path: './file2.js',
@@ -1250,8 +1223,8 @@ describe.only('Reporter', () => {
                             'f3t3',
                             'f3t3ff',
                         ],
-                        startTime:  new Date('1970-01-01T00:00:00.000Z'),
-                        skipped:    false,
+                        startTime: new Date('1970-01-01T00:00:00.000Z'),
+                        skipped:   false,
                     },
                 ],
             },
@@ -1278,17 +1251,15 @@ describe.only('Reporter', () => {
                                 userAgent: 'Chrome',
                                 headless:  false,
                                 testRunId: 'f3t3',
-                                prettyUserAgent: "Chrome Ubuntu",
                             },
                             {
                                 alias:     'Firefox',
                                 userAgent: 'Firefox',
                                 headless:  false,
                                 testRunId: 'f3t3ff',
-                                prettyUserAgent: "Firefox Ubuntu",
                             },
                         ],
-                        fixture:        {
+                        fixture: {
                             id:   'fid3',
                             name: 'fixture3',
                             path: './file2.js',
@@ -1397,7 +1368,7 @@ describe.only('Reporter', () => {
                     [
                         { testRunId: 'f1t2-id1', videoPath: 'f1t2-path1' },
                         { testRunId: 'f1t2-id2', videoPath: 'f1t2-path2' },
-                    ]],
+                    ]]
                 );
             });
     });
