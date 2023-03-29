@@ -41,11 +41,9 @@ const Server = module.exports = function (port, basePath) {
     const server = this;
 
     this.app       = express().use(bodyParser.urlencoded({ extended: false }));
-    this.appServer = http.createServer(this.app);
+    this.appServer = http.createServer(this.app).listen(port);
     this.sockets   = [];
     this.basePath  = basePath;
-
-    this.appServer.listen(port);
 
     this.app.use(bodyParser.json());
 
@@ -205,6 +203,7 @@ Server.prototype.close = function () {
     this.appServer.close((...args) => {
         console.log(`file: server.js:203 -> this.appServer.close -> args:`, args);
     });
+    console.log(`file: server.js:209 -> this.sockets.length:`, this.sockets.length);
     this.sockets.forEach(function (socket) {
         socket.destroy();
     });
