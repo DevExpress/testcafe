@@ -133,8 +133,6 @@ export default class BrowserConnection extends EventEmitter {
     public dispatchProxylessEventSequenceRelativeUrl = '';
     public parseSelectorRelativeUrl = '';
     private readonly debugLogger: debug.Debugger;
-    private osInfo: OSInfo | null = null;
-
     public readonly warningLog: WarningLog;
     private _messageBus?: MessageBus;
     private readonly _options: BrowserConnectionOptions;
@@ -481,20 +479,6 @@ export default class BrowserConnection extends EventEmitter {
         return userAgent;
     }
 
-    public get connectionInfo (): string {
-        if (!this.osInfo)
-            return this.userAgent;
-
-        const { name, version } = this.browserInfo.parsedUserAgent;
-        let connectionInfo      = calculatePrettyUserAgent({ name, version }, this.osInfo);
-        const metaInfo          = this.browserInfo.userAgentProviderMetaInfo || extractMetaInfo(this.browserInfo.parsedUserAgent.prettyUserAgent);
-
-        if (metaInfo)
-            connectionInfo += ` (${ metaInfo })`;
-
-        return connectionInfo;
-    }
-
     public get retryTestPages (): boolean {
         return this.browserConnectionGateway.retryTestPages;
     }
@@ -543,9 +527,10 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     public async establish (userAgent: string): Promise<void> {
+        const osInfo = await this.provider.getOSInfo(this.id);
+
         this.status                      = BrowserConnectionStatus.ready;
-        this.browserInfo.parsedUserAgent = parseUserAgent(userAgent);
-        this.osInfo                      = await this.provider.getOSInfo(this.id);
+        this.browserInfo.parsedUserAgent = parseUserAgent(userAgent, osInfo);
 
         this._waitForHeartbeat();
         this.emit('ready');
@@ -565,7 +550,7 @@ export default class BrowserConnection extends EventEmitter {
 
     public renderIdlePage (): string {
         return Mustache.render(IDLE_PAGE_TEMPLATE as string, {
-            userAgent:           this.connectionInfo,
+            userAgent:           this.userAgent,
             statusUrl:           this.statusUrl,
             heartbeatUrl:        this.heartbeatUrl,
             initScriptUrl:       this.initScriptUrl,
