@@ -5,7 +5,6 @@ const DEFAULT_NAME            = 'Other';
 const DEFAULT_VERSION         = '0.0';
 const DEFAULT_PLATFORM_TYPE   = DEFAULT_NAME.toLowerCase();
 const EMPTY_PARSED_USER_AGENT = Bowser.parse(' ');
-const META_INFO_REGEX = /\([^(|^)]*\)/;
 
 interface ParsedComponent {
     name: string;
@@ -55,15 +54,6 @@ function calculateEngine (engineDetails: Bowser.Parser.EngineDetails): ParsedCom
 
 export function calculatePrettyUserAgent (browser: ParsedComponent, os: ParsedComponent): string {
     return `${browser.name} ${browser.version} / ${os.name} ${os.version}`;
-}
-
-export function extractMetaInfo (prettyUserAgent: string): string {
-    const parenthesisExpressions = prettyUserAgent.match(META_INFO_REGEX);
-
-    if (!parenthesisExpressions || !parenthesisExpressions.length)
-        return '';
-
-    return parenthesisExpressions[parenthesisExpressions.length - 1].replace(/[()]/g, '');
 }
 
 export function parseUserAgent (userAgent = '', osInfo?: OSInfo): ParsedUserAgent {

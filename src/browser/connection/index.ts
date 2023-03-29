@@ -4,8 +4,6 @@ import { EventEmitter } from 'events';
 import Mustache from 'mustache';
 import { pull as remove } from 'lodash';
 import {
-    calculatePrettyUserAgent,
-    extractMetaInfo,
     ParsedUserAgent,
     parseUserAgent,
 } from '../../utils/parse-user-agent';
@@ -21,7 +19,6 @@ import BrowserConnectionGateway from './gateway';
 import BrowserJob from '../../runner/browser-job';
 import WarningLog from '../../notifications/warning-log';
 import BrowserProvider from '../provider';
-import { OSInfo } from 'get-os-info';
 import SERVICE_ROUTES from './service-routes';
 import {
     BROWSER_RESTART_TIMEOUT,
