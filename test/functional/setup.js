@@ -378,12 +378,12 @@ after(async function () {
     delete global.testReport;
 
     wtf.dump();
-    console.log(`file: setup.js:375 -> process._getActiveHandles().length:`, process._getActiveHandles().length);
-    for (const iterator of process._getActiveHandles()) {
-        console.log(`file: setup.js:381 -> iterator.toString():`, iterator.toString());
-        console.log(`file: setup.js:381 -> Object.getPrototypeOf(iterator).constructor.name:`, Object.getPrototypeOf(iterator)?.constructor?.name || 'Do not have prototype');
-        console.log(`file: setup.js:381 -> iterator._connectionKey:`, iterator._connectionKey);    
-    }
+    // console.log(`file: setup.js:375 -> process._getActiveHandles().length:`, process._getActiveHandles().length);
+    // for (const iterator of process._getActiveHandles()) {
+    //     console.log(`file: setup.js:381 -> iterator.toString():`, iterator.toString());
+    //     console.log(`file: setup.js:381 -> Object.getPrototypeOf(iterator).constructor.name:`, Object.getPrototypeOf(iterator)?.constructor?.name || 'Do not have prototype');
+    //     console.log(`file: setup.js:381 -> iterator._connectionKey:`, iterator._connectionKey);    
+    // }
 
     console.log(`file: setup.js -> line 373 -> USE_PROVIDER_POOL`, USE_PROVIDER_POOL);
     if (!USE_PROVIDER_POOL) {
