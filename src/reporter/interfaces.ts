@@ -10,6 +10,7 @@ export interface ReporterPlugin {
     reportTestDone(): void;
     reportTaskDone(): void;
     reportWarnings?(): void;
+    reportData? (): void
 }
 
 export interface ReporterSource {

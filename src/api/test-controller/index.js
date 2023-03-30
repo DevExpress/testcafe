@@ -57,6 +57,7 @@ import {
     SkipJsErrorsCommand,
     AddRequestHooksCommand,
     RemoveRequestHooksCommand,
+    ReportCommand,
 } from '../../test-run/commands/actions';
 
 import {
@@ -627,6 +628,10 @@ export default class TestController {
         hooks = flattenDeep(hooks);
 
         return this.enqueueCommand(RemoveRequestHooksCommand, { hooks });
+    }
+
+    [delegatedAPI(ReportCommand.methodName)] (...args) {
+        return this.enqueueCommand(ReportCommand, { args });
     }
 
     static enableDebugForNonDebugCommands () {

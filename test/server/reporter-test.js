@@ -189,6 +189,7 @@ describe('Reporter', () => {
             browserConnection: browserConnectionMocks[0],
             errs:              [],
             warningLog:        { messages: [] },
+            reportDataLog:     { data: [] },
             quarantine:        {
                 attempts: [
                     { testRunId: 'firstRunId', errors: ['1', '2'] },
@@ -205,6 +206,7 @@ describe('Reporter', () => {
             unstable:          false,
             browserConnection: browserConnectionMocks[0],
             warningLog:        { messages: [] },
+            reportDataLog:     { data: [] },
             browser:           browserMocks[0],
 
             errs: [
@@ -221,6 +223,7 @@ describe('Reporter', () => {
             browserConnection: browserConnectionMocks[0],
             errs:              [],
             warningLog:        { messages: [] },
+            reportDataLog:     { data: [] },
             browser:           browserMocks[0],
         },
 
@@ -232,6 +235,7 @@ describe('Reporter', () => {
             browserConnection: browserConnectionMocks[0],
             errs:              [],
             warningLog:        { messages: [] },
+            reportDataLog:     { data: [] },
             browser:           browserMocks[0],
         },
 
@@ -243,6 +247,7 @@ describe('Reporter', () => {
             browserConnection: browserConnectionMocks[0],
             errs:              [],
             warningLog:        { messages: [] },
+            reportDataLog:     { data: [] },
             browser:           browserMocks[0],
         },
 
@@ -254,6 +259,7 @@ describe('Reporter', () => {
             browserConnection: browserConnectionMocks[0],
             errs:              [],
             warningLog:        { messages: [] },
+            reportDataLog:     { data: [] },
             browser:           browserMocks[0],
         },
 
@@ -265,6 +271,7 @@ describe('Reporter', () => {
             browserConnection: browserConnectionMocks[0],
             errs:              [],
             warningLog:        { messages: [] },
+            reportDataLog:     { data: [] },
             browser:           browserMocks[0],
         },
 
@@ -276,6 +283,7 @@ describe('Reporter', () => {
             browserConnection: browserConnectionMocks[0],
             errs:              [],
             warningLog:        { messages: ['warning2'] },
+            reportDataLog:     { data: [] },
             browser:           browserMocks[0],
         },
     ];
@@ -289,6 +297,7 @@ describe('Reporter', () => {
             browserConnection: browserConnectionMocks[1],
             errs:              [],
             warningLog:        { messages: [] },
+            reportDataLog:     { data: [] },
             quarantine:        {
                 attempts: [
                     { testRunId: 'firstRunId', errors: ['1', '2'] },
@@ -306,6 +315,7 @@ describe('Reporter', () => {
             browserConnection: browserConnectionMocks[1],
             errs:              [{ text: 'err1' }],
             warningLog:        { messages: [] },
+            reportDataLog:     { data: [] },
             browser:           browserMocks[1],
         },
 
@@ -317,6 +327,7 @@ describe('Reporter', () => {
             browserConnection: browserConnectionMocks[1],
             errs:              [],
             warningLog:        { messages: [] },
+            reportDataLog:     { data: [] },
             browser:           browserMocks[1],
         },
 
@@ -328,6 +339,7 @@ describe('Reporter', () => {
             browserConnection: browserConnectionMocks[1],
             errs:              [],
             warningLog:        { messages: [] },
+            reportDataLog:     { data: [] },
             browser:           browserMocks[1],
         },
 
@@ -339,6 +351,7 @@ describe('Reporter', () => {
             browserConnection: browserConnectionMocks[1],
             errs:              [],
             warningLog:        { messages: [] },
+            reportDataLog:     { data: [] },
             browser:           browserMocks[1],
         },
 
@@ -350,6 +363,7 @@ describe('Reporter', () => {
             browserConnection: browserConnectionMocks[1],
             errs:              [{ text: 'err1' }],
             warningLog:        { messages: ['warning1'] },
+            reportDataLog:     { data: [] },
             browser:           browserMocks[1],
         },
 
@@ -361,6 +375,7 @@ describe('Reporter', () => {
             browserConnection: browserConnectionMocks[1],
             errs:              [],
             warningLog:        { messages: [] },
+            reportDataLog:     { data: [] },
             browser:           browserMocks[1],
         },
 
@@ -372,6 +387,7 @@ describe('Reporter', () => {
             browserConnection: browserConnectionMocks[1],
             errs:              [],
             warningLog:        { messages: ['warning2', 'warning3'] },
+            reportDataLog:     { data: [] },
             browser:           browserMocks[1],
         },
     ];
@@ -498,7 +514,7 @@ describe('Reporter', () => {
 
         createReporter(messageBus);
 
-        expect(messageBus.listenerCount()).eql(8);
+        expect(messageBus.listenerCount()).eql(9);
         expect(messageBus.listenerCount('warning-add')).eql(1);
         expect(messageBus.listenerCount('start')).eql(1);
         expect(messageBus.listenerCount('test-run-start')).eql(1);
@@ -507,6 +523,7 @@ describe('Reporter', () => {
         expect(messageBus.listenerCount('test-action-done')).eql(1);
         expect(messageBus.listenerCount('done')).eql(1);
         expect(messageBus.listenerCount('unhandled-rejection')).eql(1);
+        expect(messageBus.listenerCount('report-data')).eql(1);
     });
 
     it('Should analyze task progress and call appropriate plugin methods', function () {
@@ -767,6 +784,10 @@ describe('Reporter', () => {
                                 run: 'run-001',
                             },
                         },
+                        reportData: {
+                            'f1t1':   [],
+                            'f1t1ff': [],
+                        },
                     },
                     {
                         run: 'run-001',
@@ -860,6 +881,10 @@ describe('Reporter', () => {
                                 run: 'run-001',
                             },
                         },
+                        reportData: {
+                            f1t2:   [],
+                            f1t2ff: [],
+                        },
                     },
                     {
                         run: 'run-001',
@@ -924,6 +949,10 @@ describe('Reporter', () => {
                             meta: {
                                 run: 'run-001',
                             },
+                        },
+                        reportData: {
+                            f1t3:   [],
+                            f1t3ff: [],
                         },
                     },
                     {
@@ -1000,6 +1029,10 @@ describe('Reporter', () => {
                                 run: 'run-002',
                             },
                         },
+                        reportData: {
+                            f2t1:   [],
+                            f2t1ff: [],
+                        },
                     },
                     {
                         run: 'run-001',
@@ -1064,6 +1097,10 @@ describe('Reporter', () => {
                             meta: {
                                 run: 'run-002',
                             },
+                        },
+                        reportData: {
+                            f2t2:   [],
+                            f2t2ff: [],
                         },
                     },
                     {
@@ -1142,6 +1179,10 @@ describe('Reporter', () => {
                             path: './file2.js',
                             meta: null,
                         },
+                        reportData: {
+                            f3t1:   [],
+                            f3t1ff: [],
+                        },
                     },
                     {
                         run: 'run-001',
@@ -1205,6 +1246,10 @@ describe('Reporter', () => {
                             path: './file2.js',
                             meta: null,
                         },
+                        reportData: {
+                            f3t2:   [],
+                            f3t2ff: [],
+                        },
                     },
                     {
                         run: 'run-001',
@@ -1267,6 +1312,10 @@ describe('Reporter', () => {
                             name: 'fixture3',
                             path: './file2.js',
                             meta: null,
+                        },
+                        reportData: {
+                            f3t3:   [],
+                            f3t3ff: [],
                         },
                     },
                     {
@@ -1371,7 +1420,7 @@ describe('Reporter', () => {
                     [
                         { testRunId: 'f1t2-id1', videoPath: 'f1t2-path1' },
                         { testRunId: 'f1t2-id2', videoPath: 'f1t2-path2' },
-                    ]]
+                    ]],
                 );
             });
     });
