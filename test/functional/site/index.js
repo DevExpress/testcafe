@@ -9,7 +9,7 @@ const invalidCertificateHttpsServer = require('./invalid-certificate-https-serve
 let server1 = null;
 let server2 = null;
 
-exports.create = function (ports, viewsPath, wtf) {
+exports.create = function (ports, viewsPath) {
     server1 = new Server(ports.server1, viewsPath);
     server2 = new Server(ports.server2, viewsPath);
 
@@ -24,7 +24,7 @@ exports.create = function (ports, viewsPath, wtf) {
     // wtf.dump();
 };
 
-exports.destroy = function (wtf) {
+exports.destroy = function () {
     // wtf.dump();
     console.log('Close 1 server');
     server1.close();

@@ -58,10 +58,6 @@ const Server = module.exports = function (port, basePath) {
     };
 
     this.appServer.on('connection', handler);
-
-    this.appServer.on('this.appServer', () => {
-        console.log(`file: server.js:65 -> this.appServer.on -> appServer.on('this.appServer')`);
-    })
 };
 
 Server.prototype._setupRoutes = function () {
@@ -198,7 +194,7 @@ Server.prototype._setupRoutes = function () {
 
 Server.prototype.close = function () {
     console.log(`file: server.js:200 -> close`);
-    this.appServer.closeAllConnections();
+    // this.appServer.closeAllConnections();
     this.appServer.close((...args) => {
         console.log(`file: server.js:203 -> this.appServer.close -> args:`, args);
     });

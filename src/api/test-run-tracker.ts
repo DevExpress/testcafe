@@ -82,7 +82,7 @@ class TestRunTracker extends EventEmitter {
     }
 
     public clearTimers (): void {
-        console.log(`file: test-run-tracker.ts:81 -> TestRunTracker -> clearTimers -> this.timers:`, this.timers);
+        console.log(`file: test-run-tracker.ts:81 -> TestRunTracker -> clearTimers -> this.timers.length:`, this.timers.length);
         this.timers.forEach(timer => {
             if (timer.type === Timers.immediate && timer.timer instanceof NodeJS.Immediate)
                 clearImmediate(timer.timer);
