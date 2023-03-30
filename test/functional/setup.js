@@ -398,7 +398,7 @@ after(async function () {
                 console.log(`file: setup.js -> line 381 -> timeout`); 
 
                 resolve()
-            }, 57000)),
+            }, 50000)),
         ]);
     }
     else
