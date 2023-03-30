@@ -25,6 +25,7 @@ exports.create = function (ports, viewsPath, wtf) {
 };
 
 exports.destroy = function (wtf) {
+    wtf.dump();
     console.log('Close 1 server');
     server1.close();
     wtf.dump();
