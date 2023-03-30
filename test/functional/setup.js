@@ -189,7 +189,7 @@ before(function () {
 
             process.stdout.write('Running tests in browsers: ' + aliases.join(', ') + '\n');
 
-            site.create(config.site.ports, config.site.viewsPath);
+            site.create(config.site.ports, config.site.viewsPath, wtf);
 
             // NOTE: we need to disable this particular timeout for preventing mocha timeout
             // error while establishing connection to Sauce Labs. If connection wouldn't be
@@ -370,7 +370,7 @@ after(async function () {
 
     await testCafe.close();
     console.log(`file: setup.js -> line 364 -> testCafe.close();`);
-    site.destroy();
+    site.destroy(wtf);
     console.log(`file: setup.js -> line 366 -> site.destroy();`);
 
     delete global.testcafe;
