@@ -1,3 +1,4 @@
+/* eslint-disable */
 import getStackFrames from 'callsite';
 import { EventEmitter } from 'events';
 import TestRun from '../test-run';
@@ -9,15 +10,17 @@ const STACK_CAPACITY   = 5000;
 class TestRunTracker extends EventEmitter {
     private enabled: boolean;
     public activeTestRuns: { [id: string]: TestRun | TestRunProxy };
+    private timeouts: number[];
 
     public constructor () {
         super();
 
         this.enabled = false;
         this.activeTestRuns = {};
+        this.timeouts = [];
     }
 
-    private _createContextSwitchingFunctionHook (ctxSwitchingFn: Function, patchedArgsCount: number): any {
+    private _createContextSwitchingFunctionHook (ctxSwitchingFn: Function, patchedArgsCount: number, isTimer = false): any {
         const tracker = this;
 
         return function () {
@@ -30,8 +33,14 @@ class TestRunTracker extends EventEmitter {
                 }
             }
 
+            //@ts-ignore
+            const res = ctxSwitchingFn.apply(this, arguments);
+
+            if (isTimer)
+                tracker.timeouts.push(res);
+
             // @ts-ignore
-            return ctxSwitchingFn.apply(this, arguments);
+            return res;
         };
     }
 
@@ -54,8 +63,8 @@ class TestRunTracker extends EventEmitter {
 
     public ensureEnabled (): void {
         if (!this.enabled) {
-            global.setTimeout   = this._createContextSwitchingFunctionHook(global.setTimeout, 1);
-            global.setInterval  = this._createContextSwitchingFunctionHook(global.setInterval, 1);
+            global.setTimeout   = this._createContextSwitchingFunctionHook(global.setTimeout, 1, true);
+            global.setInterval  = this._createContextSwitchingFunctionHook(global.setInterval, 1, true);
             global.setImmediate = this._createContextSwitchingFunctionHook(global.setImmediate, 1);
             process.nextTick    = this._createContextSwitchingFunctionHook(process.nextTick, 1);
 
@@ -64,6 +73,13 @@ class TestRunTracker extends EventEmitter {
 
             this.enabled = true;
         }
+    }
+
+    public clearTimeouts (): void {
+        console.log(`file: test-run-tracker.ts:81 -> TestRunTracker -> clearTimeouts -> this.timeouts:`, this.timeouts);
+        this.timeouts.forEach(item => {
+            clearTimeout(item);
+        });
     }
 
     public addTrackingMarkerToFunction (testRunId: string, fn: Function, context?: any): Function {
