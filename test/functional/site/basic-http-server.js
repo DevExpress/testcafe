@@ -23,13 +23,14 @@ class BasicHttpServer {
         if (!this.server)
             return;
 
-        // this.server.close();
 
-        // this.sockets.forEach(socket => {
-        //     socket.destroy();
-        // });
+        this.sockets.forEach(socket => {
+            socket.destroy();
+        });
 
         this.server.closeAllConnections();
+
+        this.server.close();
     }
 }
 
