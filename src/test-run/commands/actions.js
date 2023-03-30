@@ -813,3 +813,16 @@ export class RemoveRequestHooksCommand extends ActionCommandBase {
     }
 }
 
+export class ReportCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.report);
+
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.report, validateProperties);
+    }
+
+    getAssignableProperties () {
+        return [
+            { name: 'args', required: true },
+        ];
+    }
+}

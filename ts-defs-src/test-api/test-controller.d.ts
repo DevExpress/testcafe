@@ -548,6 +548,13 @@ interface TestController {
      * @param options - Error skipping conditions: a Boolean flag, an Object with options, or a callback function that defines custom error skipping logic.
      */
     skipJsErrors (options?: boolean | SkipJsErrorsOptionsObject | SkipJsErrorsCallback | SkipJsErrorsCallbackWithOptionsObject): TestControllerPromise;
+
+    /**
+     * Pass additional data to the reporter.
+     *
+     * @param args - Any user data.
+     */
+    report (...args: any[]): TestControllerPromise;
 }
 
 interface TestControllerPromise<T=any> extends TestController, Promise<T> {

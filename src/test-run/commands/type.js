@@ -72,4 +72,5 @@ export default {
     addRequestHooks:                     'add-request-hooks',
     removeRequestHooks:                  'remove-request-hooks',
     runCustomAction:                     'run-custom-action',
+    report:                              'report',
 };

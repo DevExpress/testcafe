@@ -888,6 +888,61 @@ const experimentalDebug = !!process.env.EXPERIMENTAL_DEBUG;
         });
     });
 
+    describe('Report Data', () => {
+        let reportDataInfos = {};
+        let testDoneInfos   = {};
+        let reporter        = null;
+
+        const createReportDataReporter = () => {
+            return createReporter({
+                reportData: ({ browser }, ...data) => {
+                    const alias = browser.alias;
+
+                    if (!reportDataInfos[alias])
+                        reportDataInfos[alias] = [];
+
+                    reportDataInfos[alias].push(data);
+                },
+                reportTestDone: (name, { reportData, browsers }) => {
+                    browsers.forEach(({ testRunId, alias }) => {
+                        testDoneInfos[alias] = reportData[testRunId];
+                    });
+                },
+            });
+        };
+
+        beforeEach(() => {
+            reportDataInfos = {};
+            testDoneInfos   = {};
+
+            reporter = createReportDataReporter();
+        });
+
+        it('Should raise "reportData" event', async () => {
+            const expectedReportData = [1, true, 'string', { 'reportResult': 'test' }];
+
+            await runTests('testcafe-fixtures/report-data-test.js', 'Run t.report action', {
+                reporter,
+            });
+
+            const reportDataBrowserInfos = Object.entries(reportDataInfos);
+            const testDoneBrowserInfos   = Object.entries(testDoneInfos);
+
+            expect(reportDataBrowserInfos.length).eql(config.browsers.length);
+            expect(testDoneBrowserInfos.length).eql(config.browsers.length);
+
+            reportDataBrowserInfos.forEach(([alias, reportData]) => {
+                expect(reportData.flat()).eql(testDoneInfos[alias]);
+            });
+
+            testDoneBrowserInfos.forEach(([, reportData]) => {
+                const [, ...rest] = reportData;
+
+                expect(rest).eql(expectedReportData);
+            });
+        });
+    });
+
     describe('Warnings', () => {
         let warningResult          = {};
         let reporter               = null;
