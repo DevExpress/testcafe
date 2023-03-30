@@ -65,7 +65,7 @@ class TestRunTracker extends EventEmitter {
         if (!this.enabled) {
             global.setTimeout   = this._createContextSwitchingFunctionHook(global.setTimeout, 1, true);
             global.setInterval  = this._createContextSwitchingFunctionHook(global.setInterval, 1, true);
-            global.setImmediate = this._createContextSwitchingFunctionHook(global.setImmediate, 1);
+            global.setImmediate = this._createContextSwitchingFunctionHook(global.setImmediate, 1, true);
             process.nextTick    = this._createContextSwitchingFunctionHook(process.nextTick, 1);
 
             global.Promise.prototype.then  = this._createContextSwitchingFunctionHook(global.Promise.prototype.then, 2);
