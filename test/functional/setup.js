@@ -14,7 +14,6 @@ const SafariConnector            = require('./safari-connector');
 const getTestError               = require('./get-test-error.js');
 const { createSimpleTestStream } = require('./utils/stream');
 const BrowserConnectionStatus    = require('../../lib/browser/connection/status');
-const wtf                        = require('wtfnode');
 
 let testCafe     = null;
 let browsersInfo = null;
@@ -380,7 +379,7 @@ after(async function () {
     delete global.runTests;
     delete global.testReport;
 
-    wtf.dump();
+    global.wtf.dump();
     // console.log(`file: setup.js:375 -> process._getActiveHandles().length:`, process._getActiveHandles().length);
     // for (const iterator of process._getActiveHandles()) {
     //     console.log(`file: setup.js:381 -> iterator.toString():`, iterator.toString());
@@ -404,6 +403,8 @@ after(async function () {
     else
         await closeLocalBrowsers();
 
+    
     console.log(`file: setup.js -> line 393 -> browser closed;`); 
+    global.wtf.dump();
 });
 

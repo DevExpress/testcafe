@@ -30,6 +30,9 @@ const testFunctional                = require('./gulp/helpers/test-functional');
 const testClient                    = require('./gulp/helpers/test-client');
 const moduleExportsTransform        = require('./gulp/helpers/module-exports-transform');
 const createPackageFilesForTests    = require('./gulp/helpers/create-package-files-for-tests');
+const wtf                           = require('wtfnode');
+
+global.wtf = wtf;
 
 const {
     TESTS_GLOB,
