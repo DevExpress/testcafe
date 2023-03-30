@@ -84,11 +84,11 @@ class TestRunTracker extends EventEmitter {
     public clearTimers (): void {
         console.log(`file: test-run-tracker.ts:81 -> TestRunTracker -> clearTimers -> this.timers.length:`, this.timers.length);
         this.timers.forEach(timer => {
-            if (timer.type === Timers.immediate && timer.timer instanceof NodeJS.Immediate)
+            if (timer.type === Timers.immediate)//@ts-ignore
                 clearImmediate(timer.timer);
-            if (timer.type === Timers.interval && timer.timer instanceof NodeJS.Timeout)
+            if (timer.type === Timers.interval)//@ts-ignore
                 clearInterval(timer.timer);
-            if (timer.type === Timers.timeout && timer.timer instanceof NodeJS.Timeout)
+            if (timer.type === Timers.timeout)//@ts-ignore
                 clearTimeout(timer.timer);
         });
     }
