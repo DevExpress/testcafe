@@ -21,31 +21,31 @@ exports.create = function (ports, viewsPath, wtf) {
     invalidCertificateHttpsServer.start(ports.invalidCertificateHttpsServer);
 
     console.log('Create servers');
-    wtf.dump();
+    // wtf.dump();
 };
 
 exports.destroy = function (wtf) {
-    wtf.dump();
+    // wtf.dump();
     console.log('Close 1 server');
     server1.close();
-    wtf.dump();
+    // wtf.dump();
     console.log('Close 2 server');
     server2.close();
-    wtf.dump();
+    // wtf.dump();
 
     console.log('Close basicAuthServer server');
     basicAuthServer.shutdown();
-    wtf.dump();
+    // wtf.dump();
     console.log('Close ntlmAuthServer server');
     ntlmAuthServer.shutdown();
-    wtf.dump();
+    // wtf.dump();
     console.log('Close trustedProxyServer server');
     trustedProxyServer.shutdown();
-    wtf.dump();
+    // wtf.dump();
     console.log('Close transparentProxyServer server');
     transparentProxyServer.shutdown();
-    wtf.dump();
+    // wtf.dump();
     console.log('Close invalidCertificateHttpsServer server');
     invalidCertificateHttpsServer.shutdown();
-    wtf.dump();
+    // wtf.dump();
 };

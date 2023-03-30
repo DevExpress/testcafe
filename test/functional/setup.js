@@ -368,8 +368,11 @@ after(async function () {
     this.timeout(60000);
     console.log(`file: setup.js -> line 380 -> after`);
 
+    wtf.dump();
+
     await testCafe.close();
     console.log(`file: setup.js -> line 364 -> testCafe.close();`);
+    wtf.dump();
     site.destroy(wtf);
     console.log(`file: setup.js -> line 366 -> site.destroy();`);
 
