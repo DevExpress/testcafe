@@ -9,7 +9,7 @@ const Mustache              = require('mustache');
 const { readFile }          = require('../../../lib/utils/promisified-functions');
 const quarantineModeTracker = require('../quarantine-mode-tracker');
 const { parseUserAgent }    = require('../../../lib/utils/parse-user-agent');
-const apiRouter             = require('./api.js');
+const setupApiRoutes        = require('./api.js');
 
 const storage = multer.memoryStorage();
 const upload  = multer({ storage: storage });
@@ -44,6 +44,7 @@ const Server = module.exports = function (port, basePath) {
     this.appServer = http.createServer(this.app).listen(port);
     this.sockets   = [];
     this.basePath  = basePath;
+    this.timeouts  = [];
 
     this.app.use(bodyParser.json());
 
@@ -67,7 +68,7 @@ const Server = module.exports = function (port, basePath) {
 Server.prototype._setupRoutes = function () {
     const server = this;
 
-    this.app.use('/api', apiRouter);
+    setupApiRoutes(this);
 
     this.app.get('/download', function (req, res) {
         const filePath = path.join(server.basePath, '../../package.json');
@@ -129,9 +130,11 @@ Server.prototype._setupRoutes = function () {
                 if (shouldCachePage(reqPath))
                     res.setHeader('cache-control', 'max-age=3600');
 
-                setTimeout(function () {
+                const timeout = setTimeout(function () {
                     res.send(content);
                 }, delay);
+
+                server.timeouts.push(timeout);
             })
             .catch(function () {
                 res.status(404);
@@ -181,9 +184,11 @@ Server.prototype._setupRoutes = function () {
     this.app.post('/xhr/:delay', function (req, res) {
         const delay = req.params.delay || 0;
 
-        setTimeout(function () {
+        const timeout = setTimeout(function () {
             res.send(delay.toString());
         }, delay);
+
+        server.timeouts.push(timeout);
     });
 
     this.app.post('/echo-custom-request-headers-in-response-headers', (req, res) => {
@@ -198,6 +203,12 @@ Server.prototype._setupRoutes = function () {
 
 Server.prototype.close = function () {
     console.log(`file: server.js:200 -> close`);
+
+    console.log(`file: server.js:210 -> this.timeouts:`, this.timeouts);
+    this.timeouts.forEach(timeoutId => {
+        clearTimeout(timeoutId);
+    })
+    
     this.appServer.closeAllConnections();
     this.appServer.close((...args) => {
         console.log(`file: server.js:203 -> this.appServer.close -> args:`, args);
