@@ -197,15 +197,13 @@ Server.prototype._setupRoutes = function () {
 };
 
 Server.prototype.close = function () {
-    console.log(`file: server.js:200 -> close:`);
-    // console.log(`file: server.js:203 -> this.app:`, this.app);
-    // console.log(`file: server.js:203 -> this.appServer:`, this.appServer);
-    // this.appServer.closeAllConnections();
-    // console.log(`file: server.js:209 -> this.sockets.length:`, this.sockets.length);
-    // this.sockets.forEach(function (socket) {
-    //     socket.destroy();
-    // });
+    console.log(`file: server.js:200 -> close`);
+    this.appServer.closeAllConnections();
+    console.log(`file: server.js:209 -> this.sockets.length:`, this.sockets.length);
     // this.appServer.close((...args) => {
     //     console.log(`file: server.js:203 -> this.appServer.close -> args:`, args);
+    // });
+    // this.sockets.forEach(function (socket) {
+    //     socket.destroy();
     // });
 };
