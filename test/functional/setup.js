@@ -365,7 +365,7 @@ afterEach(function () {
 });
 
 after(async function () {
-    this.timeout(120000);
+    this.timeout(60000);
     console.log(`file: setup.js -> line 380 -> after`);
 
     wtf.dump();

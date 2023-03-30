@@ -33,83 +33,77 @@ const responses = {
     }),
 };
 
-function setupApiRoutes (server) {
-    router.get('/data', (req, res) => {
-        res.send(responses.handleGetResult(req));
+router.get('/data', (req, res) => {
+    res.send(responses.handleGetResult(req));
+});
+
+router.get('/data/text', (req, res) => {
+    res.send(JSON.stringify(responses.handleGetResult(req).data));
+});
+
+router.get('/data/file', (req, res) => {
+    const pathFile = path.resolve('test/file');
+
+    fs.writeFileSync(pathFile, JSON.stringify(responses.handleGetResult(req).data));
+    res.sendFile(pathFile);
+    fs.rm(pathFile, {
+        force: true,
+    }, noop);
+});
+
+router.get('/data/loading', (req, res) => {
+    setTimeout(() => {
+        Object.assign(responses.loadingResult, responses.handleGetResult(req).data);
+    }, 100);
+
+    res.send(responses.loadingResult);
+});
+
+router.get('/hanging', () => { });
+
+router.get('/cookies', (req, res) => {
+    res.cookie('cookieName', 'cookieValue');
+    res.send();
+});
+
+router.post('/auth/basic', (req, res) => {
+    res.send({
+        token: req.rawHeaders[req.rawHeaders.indexOf('authorization') + 1],
     });
+});
 
-    router.get('/data/text', (req, res) => {
-        res.send(JSON.stringify(responses.handleGetResult(req).data));
+router.post('/auth/proxy/basic', (req, res) => {
+    res.send({
+        token: req.rawHeaders[req.rawHeaders.indexOf('proxy-authorization') + 1],
     });
+});
 
-    router.get('/data/file', (req, res) => {
-        const pathFile = path.resolve('test/file');
+router.post('/auth/bearer', (req, res) => {
+    res.send(req.rawHeaders[req.rawHeaders.indexOf('authorization') + 1] ? 'authorized' : 'un-authorized');
+});
 
-        fs.writeFileSync(pathFile, JSON.stringify(responses.handleGetResult(req).data));
-        res.sendFile(pathFile);
-        fs.rm(pathFile, {
-            force: true,
-        }, noop);
-    });
+router.post('/auth/key', (req, res) => {
+    res.send(req.rawHeaders[req.rawHeaders.indexOf('API-KEY') + 1] ? 'authorized' : 'un-authorized');
+});
 
-    router.get('/data/loading', (req, res) => {
-        const timeout = setTimeout(() => {
-            Object.assign(responses.loadingResult, responses.handleGetResult(req).data);
-        }, 100);
+router.post('/data', (req, res) => {
+    res.send(responses.handlePostResult(req.body));
+});
 
-        server.timeouts.push(timeout);
+router.delete('/data/:dataId', (req, res) => {
+    res.send(responses.handleDeleteResult(req.params));
+});
 
-        res.send(responses.loadingResult);
-    });
+router.put('/data', (req, res) => {
+    res.send(responses.handlePutResult(req.body));
+});
 
-    router.get('/hanging', () => { });
+router.patch('/data', (req, res) => {
+    res.send(responses.handlePatchResult(req.body));
+});
 
-    router.get('/cookies', (req, res) => {
-        res.cookie('cookieName', 'cookieValue');
-        res.send();
-    });
+router.head('/data', (req, res) => {
+    res.send();
+});
 
-    router.post('/auth/basic', (req, res) => {
-        res.send({
-            token: req.rawHeaders[req.rawHeaders.indexOf('authorization') + 1],
-        });
-    });
-
-    router.post('/auth/proxy/basic', (req, res) => {
-        res.send({
-            token: req.rawHeaders[req.rawHeaders.indexOf('proxy-authorization') + 1],
-        });
-    });
-
-    router.post('/auth/bearer', (req, res) => {
-        res.send(req.rawHeaders[req.rawHeaders.indexOf('authorization') + 1] ? 'authorized' : 'un-authorized');
-    });
-
-    router.post('/auth/key', (req, res) => {
-        res.send(req.rawHeaders[req.rawHeaders.indexOf('API-KEY') + 1] ? 'authorized' : 'un-authorized');
-    });
-
-    router.post('/data', (req, res) => {
-        res.send(responses.handlePostResult(req.body));
-    });
-
-    router.delete('/data/:dataId', (req, res) => {
-        res.send(responses.handleDeleteResult(req.params));
-    });
-
-    router.put('/data', (req, res) => {
-        res.send(responses.handlePutResult(req.body));
-    });
-
-    router.patch('/data', (req, res) => {
-        res.send(responses.handlePatchResult(req.body));
-    });
-
-    router.head('/data', (req, res) => {
-        res.send();
-    });
-
-    server.app.use('/api', router);
-}
-
-module.exports = setupApiRoutes;
+module.exports = router;
