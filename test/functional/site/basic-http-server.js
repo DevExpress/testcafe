@@ -29,7 +29,7 @@ class BasicHttpServer {
         //     socket.destroy();
         // });
 
-        this.appServer.closeAllConnections();
+        this.server.closeAllConnections();
     }
 }
 
