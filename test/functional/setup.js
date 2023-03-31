@@ -43,7 +43,7 @@ const REMOTE_CONNECTORS_MAP = {
     [config.browserProviderNames.browserstack]: BsConnector,
     [config.browserProviderNames.sauceLabs]:    SlConnector,
     [config.browserProviderNames.remote]:       RemoteConnector,
-    [config.browserProviderNames.safari]:       SafariConnector,
+    // [config.browserProviderNames.safari]:       SafariConnector,
 };
 
 const USE_PROVIDER_POOL = config.useLocalBrowsers || isBrowserStack;

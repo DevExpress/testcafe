@@ -4,7 +4,7 @@ const browserProviderNames = {
     sauceLabs:    'sauceLabs',
     browserstack: 'browserstack',
     remote:       'remote',
-    safari:       'safari',
+    // safari:       'safari',
 };
 
 const testingEnvironmentNames = {
@@ -130,10 +130,7 @@ testingEnvironments[testingEnvironmentNames.localHeadlessChrome] = {
 };
 
 testingEnvironments[testingEnvironmentNames.localSafari] = {
-    remote:   true,
-    provider: browserProviderNames.safari,
-
-    safari: {},
+    isLocalBrowsers: true,
 
     browsers: [
         {
