@@ -14,6 +14,7 @@ const SafariConnector            = require('./safari-connector');
 const getTestError               = require('./get-test-error.js');
 const { createSimpleTestStream } = require('./utils/stream');
 const BrowserConnectionStatus    = require('../../lib/browser/connection/status');
+const testRunTracker             = require('../../lib/api/test-run-tracker');
 
 let testCafe     = null;
 let browsersInfo = null;
@@ -387,6 +388,8 @@ after(async function () {
     //     console.log(`file: setup.js:381 -> iterator._connectionKey:`, iterator._connectionKey);    
     // }
 
+    testRunTracker.clearTimers();
+
     console.log(`file: setup.js -> line 373 -> USE_PROVIDER_POOL`, USE_PROVIDER_POOL);
     if (!USE_PROVIDER_POOL) {
         // TODO: we should determine the reason why Browserstack browser hangs at the end
@@ -409,7 +412,8 @@ after(async function () {
     else
         await closeLocalBrowsers();
 
-    
+    testRunTracker.clearTimers();
+
     console.log(`file: setup.js -> line 393 -> browser closed;`); 
     global.wtf.dump();
 });
