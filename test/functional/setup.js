@@ -409,11 +409,11 @@ after(async function () {
         console.log('after Promise.race');
         clearTimeout(timer);
     }
-        
-    await closeLocalBrowsers();
+    else
+        await closeLocalBrowsers();
         
     console.log(`file: setup.js:430 -> browsersInfo:`, browsersInfo);
-    
+
     global.testRunTracker = testRunTracker;
 
     testRunTracker.clearTimers();
