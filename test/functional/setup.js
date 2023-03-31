@@ -411,7 +411,8 @@ after(async function () {
     }
     else
         await closeLocalBrowsers();
-
+        
+    console.log(`file: setup.js:430 -> browsersInfo:`, browsersInfo);
     testRunTracker.clearTimers();
 
     console.log(`file: setup.js -> line 393 -> browser closed;`); 
