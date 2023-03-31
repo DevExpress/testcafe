@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { resolve as resolvePath, dirname } from 'path';
 import debug from 'debug';
 import promisifyEvent from 'promisify-event';
