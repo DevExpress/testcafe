@@ -75,6 +75,7 @@ jobs:
       TEST_GROUPS_COUNT: ${{ inputs.matrix-jobs-count }}
       TEST_GROUP_NUMBER: ${{ matrix.test-group }}
       DISPLAY: ${{ inputs.display }}
+      DEBUG: 'testcafe:test:functional:safari-connector'
     outputs:
       # Matrix jobs cannot collect outputs about each of them automatically. It rewrites the same outputs. Improve it once it will be possible.
       test-1: "${{ steps.save-result.outputs.test_1 }}"
