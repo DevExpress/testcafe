@@ -119,7 +119,7 @@ export default class TestCafe {
     }
 
     async close () {
-        console.trace();
+        // console.trace();
         console.log(`file: testcafe.js:137 -> TestCafe -> close -> this.closed:`, this.closed);
         if (this.closed)
             return;
