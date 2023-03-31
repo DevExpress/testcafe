@@ -418,13 +418,13 @@ after(async function () {
     console.log(`file: setup.js -> line 393 -> browser closed;`); 
     global.wtf.dump();
     
-    console.log('awaiting', new Date());
+    // console.log('awaiting', new Date());
 
-    await new Promise(resolve => setTimeout(resolve, 10000));
+    // await new Promise(resolve => setTimeout(resolve, 10000));
 
-    console.log('after awaiting', new Date());
+    // console.log('after awaiting', new Date());
 
-    global.wtf.dump();
+    // global.wtf.dump();
 
 });
 
