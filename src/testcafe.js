@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { GeneralError } from './errors/runtime';
 import { RUNTIME_ERRORS } from './errors/types';
 import CONTENT_TYPES from './assets/content-types';
@@ -118,6 +119,7 @@ export default class TestCafe {
     }
 
     async close () {
+        console.log(`file: testcafe.js:137 -> TestCafe -> close -> this.closed:`, this.closed);
         if (this.closed)
             return;
 
