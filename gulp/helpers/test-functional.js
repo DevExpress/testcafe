@@ -4,7 +4,6 @@ const getTimeout     = require('./get-timeout');
 const chai           = require('chai');
 const globby         = require('globby');
 const Mocha          = require('mocha');
-const testRunTracker = require('../../lib/api/test-run-tracker');
 
 const {
     TESTS_GLOB,
@@ -81,7 +80,7 @@ module.exports = async function testFunctional (src, testingEnvironmentName, { e
 
     console.log('Mocha was finished');
     global.wtf.dump();
-    testRunTracker.clearTimers();
+    global.testRunTracker.clearTimers();
     console.log('After clearing timeouts');
     global.wtf.dump();
 
