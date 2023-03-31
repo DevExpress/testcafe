@@ -1,3 +1,4 @@
+/* eslint-disable */
 const { castArray }  = require('lodash');
 const getTimeout     = require('./get-timeout');
 const chai           = require('chai');
@@ -69,6 +70,7 @@ module.exports = async function testFunctional (src, testingEnvironmentName, { e
 
     return new Promise((resolve, reject) => {
         mocha.run((code) => {
+            console.log(`file: test-functional.js:72 -> mocha.run -> code:`, code);
             if (code)
                 reject();
 
