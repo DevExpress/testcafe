@@ -404,7 +404,11 @@ gulp.step('test-functional-local-safari-run', () => {
     return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localSafari);
 });
 
-gulp.task('test-functional-local-safari', gulp.series('prepare-tests', 'test-functional-local-safari-run'));
+gulp.step('test-functional-local-safari-check', () => {
+    global.wtf.dump();
+});
+
+gulp.task('test-functional-local-safari', gulp.series('prepare-tests', 'test-functional-local-safari-run', 'test-functional-local-safari-check'));
 
 gulp.step('test-functional-remote-run', () => {
     if (QR_CODE)

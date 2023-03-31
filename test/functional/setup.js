@@ -370,7 +370,7 @@ after(async function () {
 
     // wtf.dump();
 
-    wtf.dump();
+    global.wtf.dump();
     site.destroy();
     console.log(`file: setup.js -> line 366 -> site.destroy();`);
     await testCafe.close();
