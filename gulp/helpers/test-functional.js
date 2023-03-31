@@ -54,8 +54,8 @@ module.exports = async function testFunctional (src, testingEnvironmentName, { e
     tests.unshift(SETUP_TESTS_GLOB);
 
     const opts = {
-        reporter: 'mocha-reporter-spec-with-retries',
-        timeout:  getTimeout(3 * 60 * 1000),
+        // reporter: 'mocha-reporter-spec-with-retries',
+        // timeout:  getTimeout(3 * 60 * 1000),
     };
 
     if (process.env.RETRY_FAILED_TESTS === 'true')
