@@ -53,7 +53,7 @@ const Server = module.exports = function (port, basePath) {
         server.sockets.push(socket);
         socket.on('close', function () {
             console.log(`file: server.js:56 -> socket.on('close')`);
-            console.log(`file: server.js:57 -> socket:`, socket);
+            // console.log(`file: server.js:57 -> socket:`, socket);
             server.sockets.splice(server.sockets.indexOf(socket), 1);
         });
     };
