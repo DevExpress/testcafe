@@ -105,7 +105,7 @@ export default class Runner extends EventEmitter {
 
         await this._finalizeCompilerServiceState(task, runnableConfigurationId);
         await this._disposeAssets(browserSet, reporters, testedApp);
-        testRunTracker.clearTimers();
+        // testRunTracker.clearTimers();
     }
 
     _disposeAssets (browserSet, reporters, testedApp) {

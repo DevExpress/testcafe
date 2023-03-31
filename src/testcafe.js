@@ -5,6 +5,7 @@ import OPTION_NAMES from './configuration/option-names';
 import * as INJECTABLES from './assets/injectables';
 import { setupSourceMapSupport } from './utils/setup-sourcemap-support';
 import BrowserConnectionGatewayStatus from './browser/connection/gateway/status';
+import testRunTracker from './api/test-run-tracker';
 
 const lazyRequire              = require('import-lazy')(require);
 const hammerhead               = lazyRequire('testcafe-hammerhead');
@@ -130,5 +131,7 @@ export default class TestCafe {
             this.compilerService.stop();
 
         await this.browserConnectionGateway.close();
+
+        testRunTracker.clearTimers();
     }
 }
