@@ -15,6 +15,6 @@ jobs:
   test:
     uses: ./.github/workflows/test-functional.yml
     with:
-      test-script: 'npx gulp test-functional-local-safari-run --steps-as-tasks'
+      test-script: 'npx gulp test-functional-local-safari'
       os: 'macos-12'
       node-version: 18

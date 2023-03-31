@@ -408,7 +408,7 @@ gulp.step('test-functional-local-safari-check', () => {
     global.wtf.dump();
 });
 
-gulp.task('test-functional-local-safari', gulp.series('prepare-tests', 'test-functional-local-safari-run', 'test-functional-local-safari-check'));
+gulp.task('test-functional-local-safari', gulp.series('test-functional-local-safari-run', 'test-functional-local-safari-check'));
 
 gulp.step('test-functional-remote-run', () => {
     if (QR_CODE)
