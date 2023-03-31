@@ -391,14 +391,20 @@ after(async function () {
     if (!USE_PROVIDER_POOL) {
         // TODO: we should determine the reason why Browserstack browser hangs at the end
         // HACK: the timeout prevents tests from failing when we can't close Browserstack browsers
+        let timer;
         await Promise.race([
             closeRemoteBrowsers(),
-            new Promise(resolve => setTimeout(() => {
-                console.log(`file: setup.js -> line 381 -> timeout`); 
-
-                resolve()
-            }, 30000)),
+            new Promise(resolve => {
+                timer = setTimeout(() => {
+                    console.log(`file: setup.js -> line 381 -> timeout`); 
+    
+                    resolve()
+                }, 30000);
+            }),
         ]);
+
+        console.log('after Promise.race');
+        clearTimeout(timer);
     }
     else
         await closeLocalBrowsers();
