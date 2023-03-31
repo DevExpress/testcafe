@@ -52,9 +52,9 @@ export async function safeFulfillRequest (client: ProtocolApi, fulfillInfo: Fulf
     });
 }
 
-export async function safeContinueRequest (client: ProtocolApi, event: RequestPausedEvent): Promise<void> {
+export async function safeContinueRequest (client: ProtocolApi, event: RequestPausedEvent, postData? : string): Promise<void> {
     await connectionResetGuard(async () => {
-        await client.Fetch.continueRequest({ requestId: event.requestId });
+        await client.Fetch.continueRequest({ requestId: event.requestId, postData });
     }, err => {
         requestPipelineLogger(`Fetch.continueRequest. Unhandled error %s during processing %r`, err, event);
     });
