@@ -1,3 +1,4 @@
+/* eslint-disable */
 const gulp                          = require('gulp');
 const gulpStep                      = require('gulp-step');
 const data                          = require('gulp-data');
@@ -392,7 +393,14 @@ gulp.step('test-functional-local-headless-chrome-run', () => {
     return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localHeadlessChrome);
 });
 
-gulp.task('test-functional-local-headless-chrome', gulp.series('prepare-tests', 'prepare-functional-tests', 'test-functional-local-headless-chrome-run', 'clean-functional-tests'));
+gulp.step('after-test', () => {
+    console.log('after-test');
+    global.wtf.dump();
+
+    return Promise.resolve();
+});
+
+gulp.task('test-functional-local-headless-chrome', gulp.series('after-test', 'prepare-functional-tests', 'test-functional-local-headless-chrome-run', 'clean-functional-tests'));
 
 gulp.step('test-functional-local-headless-firefox-run', () => {
     return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localHeadlessFirefox);
@@ -404,7 +412,7 @@ gulp.step('test-functional-local-safari-run', () => {
     return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localSafari);
 });
 
-gulp.task('test-functional-local-safari', gulp.series('prepare-tests', 'test-functional-local-safari-run'));
+gulp.task('test-functional-local-safari', gulp.series('test-functional-local-safari-run', 'after-test'));
 
 gulp.step('test-functional-remote-run', () => {
     if (QR_CODE)
