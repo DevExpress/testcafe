@@ -88,6 +88,8 @@ describe('CLI', () => {
                 '\n' +
                 'Press any key to retry.',
             ]);
+
+            fakeTimer.clearTimer();
         });
 
         it('Should return an error if the timeout expires and no permissions granted', async () => {
@@ -128,6 +130,8 @@ describe('CLI', () => {
                 '\n' +
                 'Press any key to retry.',
             ]);
+
+            fakeTimer.clearTimer();
         });
 
         it('Should throw if an unexpected error occurs', async () => {
@@ -173,6 +177,8 @@ describe('CLI', () => {
             expect(TimerConstructor.callCount).equal(0);
             expect(getAnyKey.callCount).equal(0);
             expect(log.write.callCount).equal(0);
+
+            fakeTimer.clearTimer();
         });
     });
 });

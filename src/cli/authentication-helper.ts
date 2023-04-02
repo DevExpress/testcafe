@@ -51,10 +51,10 @@ export default async function authenticationHelper <T, E extends Error> (
 
         await Promise.race([timer.promise, getAnyKey()]);
 
-        timer.clearTimer();
-
         ({ result, error } = await checkAuthentication(action, errorClass));
     }
+
+    timer.clearTimer();
 
     return { result, error };
 }
