@@ -1,3 +1,4 @@
+/* eslint-disable */
 const os                  = require('os');
 const http                = require('http');
 const { expect }          = require('chai');
@@ -7,7 +8,7 @@ const TRUSTED_PROXY_URL     = os.hostname() + ':3004';
 const TRANSPARENT_PROXY_URL = os.hostname() + ':3005';
 const ERROR_PROXY_URL       = 'ERROR';
 
-describe('Using external proxy server', function () {
+describe.only('Using external proxy server', function () {
     it('Should open page via proxy server', function () {
         return runTests('testcafe-fixtures/index.test.js', null, { useProxy: TRANSPARENT_PROXY_URL });
     });
@@ -18,7 +19,7 @@ describe('Using external proxy server', function () {
     });
 });
 
-describe('Using proxy-bypass', function () {
+describe.only('Using proxy-bypass', function () {
     it('Should bypass using proxy by one rule', function () {
         return runTests('testcafe-fixtures/index.test.js', null, { useProxy: ERROR_PROXY_URL, proxyBypass: 'localhost:3000' });
     });

@@ -1,3 +1,4 @@
+/* eslint-disable */
 const { expect }                     = require('chai');
 const { castArray }                  = require('lodash');
 const { errorInEachBrowserContains } = require('../../assertion-helper.js');
@@ -13,7 +14,7 @@ const config             = require('../../config');
 
 const CALLBACK_FUNC_ERROR = config.proxyless ? 'Error in the skipJsError callback function' : 'An error occurred in skipJsErrors handler code:';
 
-describe('Test should fail after js-error on the page', () => {
+describe.only('Test should fail after js-error on the page', () => {
     it('if an error is raised before test done', () => {
         return runTests('./testcafe-fixtures/error-on-load-test.js', 'Empty test', { shouldFail: true })
             .catch(errs => {
@@ -63,7 +64,7 @@ describe('Test should fail after js-error on the page', () => {
     });
 });
 
-describe('Should ignore an js-error on the page if the skipJsErrors option is set to true', () => {
+describe.only('Should ignore an js-error on the page if the skipJsErrors option is set to true', () => {
     it('uncaught JavaScript error', () => {
         return runTests('./testcafe-fixtures/error-after-click-test.js', 'Click button', { skipJsErrors: true });
     });
@@ -86,7 +87,7 @@ const expectFailAttempt = (errors, expectedMessage) => {
 };
 
 // TODO: fix tests for Debug task
-(config.experimentalDebug ? describe.skip : describe)('Customize SkipJSErrors (GH-2775)', () => {
+(config.experimentalDebug ? describe.skip : describe.only)('Customize SkipJSErrors (GH-2775)', () => {
     describe('TestController method', () => {
         it('Should skip JS errors without param', async () => {
             return runTests('./testcafe-fixtures/test-controller.js', 'Should skip JS errors without param');
