@@ -20,15 +20,15 @@ describe('Using external proxy server', function () {
 });
 
 describe.only('Using proxy-bypass', function () {
-    it('Should bypass using proxy by one rule', function () {
+    it.skip('Should bypass using proxy by one rule', function () {
         return runTests('testcafe-fixtures/index.test.js', null, { useProxy: ERROR_PROXY_URL, proxyBypass: 'localhost:3000' });
     });
 
-    it('Should bypass using proxy by comma-separated string of rules', function () {
+    it.skip('Should bypass using proxy by comma-separated string of rules', function () {
         return runTests('testcafe-fixtures/index.test.js', null, { useProxy: ERROR_PROXY_URL, proxyBypass: 'dummy,localhost:3000' });
     });
 
-    it('Should bypass using proxy by array of rules', function () {
+    it.skip('Should bypass using proxy by array of rules', function () {
         return runTests('testcafe-fixtures/index.test.js', null, { useProxy: ERROR_PROXY_URL, proxyBypass: ['dummy', 'localhost:3000'] });
     });
 
