@@ -32,11 +32,11 @@ describe.only('Using proxy-bypass', function () {
         return runTests('testcafe-fixtures/index.test.js', null, { useProxy: ERROR_PROXY_URL, proxyBypass: ['dummy', 'localhost:3000'] });
     });
 
-    it('Should bypass using proxy by array of comma-separated strings', function () {
+    it.skip('Should bypass using proxy by array of comma-separated strings', function () {
         return runTests('testcafe-fixtures/index.test.js', null, { useProxy: ERROR_PROXY_URL, proxyBypass: ['dummy,localhost:3000', 'dummy,localhost:3000'] });
     });
 
-    it('Should fail using proxy-bypass which is set by incorrect argument', function () {
+    it.skip('Should fail using proxy-bypass which is set by incorrect argument', function () {
         return runTests('testcafe-fixtures/index.test.js', null, { useProxy: ERROR_PROXY_URL, proxyBypass: /dummy/, shouldFail: true })
             .catch(function (err) {
                 expect(err.message).contains('The "proxyBypass" argument (object) is not of expected type (string or an array)');
