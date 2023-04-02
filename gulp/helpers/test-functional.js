@@ -24,14 +24,9 @@ function getGroupOfTests (tests, groupNumber, groupsCount) {
     let testFragment = Math.ceil(tests.length / groupsCount);
     testFragment     = Math.ceil(testFragment / groupsCount);
 
-    const indent     = testFragment;
-
-    testFragment     = Math.ceil(testFragment / groupsCount);
-
-
     const testFragmentSize       = Math.ceil(testFragment / groupsCount);
-    const testFragmentStartIndex = indent + testFragmentSize * (groupNumber - 1);
-    const testFragmentEndIndex   = indent + testFragmentSize * groupNumber;
+    const testFragmentStartIndex = testFragmentSize * (groupNumber - 1);
+    const testFragmentEndIndex   = testFragmentSize * groupNumber;
 
     return tests.slice(testFragmentStartIndex, testFragmentEndIndex);
 }
