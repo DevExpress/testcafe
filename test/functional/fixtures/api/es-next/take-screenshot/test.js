@@ -51,8 +51,7 @@ const getReporter = function (scope) {
     });
 };
 
-/* eslint-disable */
-describe.only('[API] t.takeScreenshot()', function () {
+describe('[API] t.takeScreenshot()', function () {
     afterEach(assertionHelper.removeScreenshotDir);
 
     if (config.useLocalBrowsers) {
@@ -330,8 +329,7 @@ describe.only('[API] t.takeScreenshot()', function () {
     }
 });
 
-/* eslint-disable */
-describe.only('[API] t.takeElementScreenshot()', function () {
+describe('[API] t.takeElementScreenshot()', function () {
     afterEach(assertionHelper.removeScreenshotDir);
 
     if (config.useLocalBrowsers) {

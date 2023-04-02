@@ -8,8 +8,7 @@ const REPORT_SCREENSHOT_PATH_TEXT_RE     = /___test-screenshots___[\\/]\d{4,4}-\
 const ERROR_SCREENSHOT_PATH_RE           = /Screenshot: .*?___test-screenshots___[\\/]\d{4,4}-\d{2,2}-\d{2,2}_\d{2,2}-\d{2,2}-\d{2,2}[\\/]test-1[\\/]\S+[\\/]errors[\\/]\d.png/;
 const QUARANTINE_MODE_SCREENSHOT_PATH_RE = /Screenshot: .*?___test-screenshots___[\\/]\d{4,4}-\d{2,2}-\d{2,2}_\d{2,2}-\d{2,2}-\d{2,2}[\\/]test-1[\\/]run-3[\\/]\S+[\\/]errors[\\/]\d.png/;
 
-/* eslint-disable */
-describe.only('Screenshots on fails', function () {
+describe('Screenshots on fails', function () {
     afterEach(assertionHelper.removeScreenshotDir);
 
     if (config.useLocalBrowsers) {
