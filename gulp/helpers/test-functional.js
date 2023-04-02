@@ -21,7 +21,9 @@ function shouldAddTakeScreenshotTestGlob (glob) {
 }
 
 function getGroupOfTests (tests, groupNumber, groupsCount) {
-    const testFragmentSize       = Math.ceil(tests.length / groupsCount);
+    const testFragment           = Math.ceil(tests.length / groupsCount);
+
+    const testFragmentSize       = Math.ceil(testFragment / groupsCount);
     const testFragmentStartIndex = testFragmentSize * (groupNumber - 1);
     const testFragmentEndIndex   = testFragmentSize * groupNumber;
 
