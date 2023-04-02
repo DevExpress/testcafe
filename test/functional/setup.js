@@ -357,11 +357,11 @@ before(function () {
 
 beforeEach(function () {
     global.currentTest = this.currentTest;
-    console.log(`file: setup.js:358 -> beforeEach -> process._getActiveHandles().length:`, process._getActiveHandles().length);
+    // console.log(`file: setup.js:358 -> beforeEach -> process._getActiveHandles().length:`, process._getActiveHandles().length);
 });
 
 afterEach(function () {
-    console.log(`file: setup.js:362 -> afterEach -> process._getActiveHandles().length:`, process._getActiveHandles().length);
+    // console.log(`file: setup.js:362 -> afterEach -> process._getActiveHandles().length:`, process._getActiveHandles().length);
 });
 
 after(async function () {
