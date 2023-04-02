@@ -53,6 +53,7 @@ describe.only('Using proxy-bypass', function () {
         return runTests('testcafe-fixtures/bypass-page-proxy-request.test.js', null, { useProxy: 'localhost:3006', proxyBypass: 'localhost:3000' })
             .then(() => {
                 server.close();
+                server.closeAllConnections();
             });
     });
 });
