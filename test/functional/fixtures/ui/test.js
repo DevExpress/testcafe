@@ -1,7 +1,6 @@
 const config = require('../../config');
 
-/* eslint-disable */
-describe.only('TestCafe UI', () => {
+describe('TestCafe UI', () => {
     describe('Status Bar', () => {
         it('Should display correct status', () => {
             return runTests('./testcafe-fixtures/status-bar-test.js', 'Show status prefix', { assertionTimeout: 3000 });
