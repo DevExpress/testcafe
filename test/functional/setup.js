@@ -401,7 +401,7 @@ after(async function () {
 
     // testRunTracker.clearTimers();
 
-    console.log(`file: setup.js -> line 393 -> browser closed;`); 
-    global.wtf.dump();
+    // console.log(`file: setup.js -> line 393 -> browser closed;`); 
+    // global.wtf.dump();
 });
 
