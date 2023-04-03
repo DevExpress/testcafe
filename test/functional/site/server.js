@@ -197,14 +197,15 @@ Server.prototype.close = async function () {
     console.log(`file: server.js:200 -> close`);
     // this.appServer.closeAllConnections();
 
+    console.log(`file: server.js:209 -> this.sockets.length:`, this.sockets.length);
+    this.sockets.forEach(function (socket) {
+        socket.destroy();
+    });
+
     await new Promise(resolve => {
         this.appServer.close((...args) => {
             console.log(`file: server.js:203 -> this.appServer.close -> args:`, args);
             resolve();
         });
     })
-    console.log(`file: server.js:209 -> this.sockets.length:`, this.sockets.length);
-    this.sockets.forEach(function (socket) {
-        socket.destroy();
-    });
 };
