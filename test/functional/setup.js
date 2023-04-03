@@ -58,7 +58,7 @@ function getBrowserInfo (settings) {
                 .then(browserInfo => {
                     const options = {
                         disableMultipleWindows: false,
-                        proxyless:              config.proxyless,
+                        proxyless:              config.nativeAutomation,
                         developmentMode:        config.devMode,
                     };
 
@@ -195,7 +195,7 @@ before(function () {
             if (USE_PROVIDER_POOL) {
                 return testCafe._initializeBrowserConnectionGateway()
                     .then(() => {
-                        if (config.proxyless)
+                        if (config.nativeAutomation)
                             testCafe.browserConnectionGateway.switchToProxyless();
                     });
             }
@@ -326,7 +326,7 @@ before(function () {
                         runExecutionTimeout,
                         baseUrl,
                         customActions,
-                        nativeAutomation: config.proxyless,
+                        nativeAutomation: config.nativeAutomation,
                     })
                     .then(failedCount => {
                         if (customReporters)

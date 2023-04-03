@@ -19,7 +19,7 @@ if (isLocalChrome) {
                     return testCafe.createRunner()
                         .browsers(`chrome${headless} --window-size=1,1`)
                         .src(path.join(__dirname, './testcafe-fixtures/index.js'))
-                        .run({ nativeAutomation: config.proxyless });
+                        .run({ nativeAutomation: config.nativeAutomation });
                 })
                 .then(failed => {
                     failedCount = failed;

@@ -4,8 +4,8 @@ const { expect }                = require('chai');
 const config                    = require('../../../../config.js');
 const assertionHelper           = require('../../../../assertion-helper.js');
 const { createReporter }        = require('../../../../utils/reporter');
-const { createWarningReporter } = require('../../../../utils/warning-reporter');
-const { skipInProxyless }       = require('../../../../utils/skip-in');
+const { createWarningReporter }  = require('../../../../utils/warning-reporter');
+const { skipInNativeAutomation } = require('../../../../utils/skip-in');
 
 const SCREENSHOTS_PATH                   = path.resolve(assertionHelper.SCREENSHOTS_PATH);
 const THUMBNAILS_DIR_NAME                = assertionHelper.THUMBNAILS_DIR_NAME;
@@ -334,7 +334,7 @@ describe('[API] t.takeElementScreenshot()', function () {
 
     if (config.useLocalBrowsers) {
         // NOTE: is the problem not in taking screenshot but in overrided scroll automation?
-        skipInProxyless('Should take screenshot of an element', function () {
+        skipInNativeAutomation('Should take screenshot of an element', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Element',
                 { setScreenshotPath: true })
                 .then(function () {
@@ -346,7 +346,7 @@ describe('[API] t.takeElementScreenshot()', function () {
         });
 
         // NOTE: is the problem not in taking screenshot but in overrided scroll automation?
-        skipInProxyless('Should save screenshots to default dir with custom path specified', function () {
+        skipInNativeAutomation('Should save screenshots to default dir with custom path specified', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Element')
                 .then(function () {
                     expect(assertionHelper.checkScreenshotsCreated({ baseDir: 'screenshots', customPath: 'custom' })).eql(true);

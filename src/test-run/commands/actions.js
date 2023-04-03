@@ -139,7 +139,7 @@ function initSkipJsErrorsOptions (name, val, initOptions, validate = true) {
     else if (isSkipJsErrorsOptionsObject(val))
         val = new SkipJsErrorsOptions(val, validate);
 
-    return prepareSkipJsErrorsOptions(val, initOptions.testRun.isProxyless());
+    return prepareSkipJsErrorsOptions(val);
 }
 
 // Commands

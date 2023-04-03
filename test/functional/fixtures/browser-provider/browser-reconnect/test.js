@@ -21,7 +21,7 @@ function createConnection (browser) {
         .then(browserInfo => {
             const options = {
                 disableMultipleWindows: false,
-                proxyless:              config.proxyless,
+                proxyless:              config.nativeAutomation,
                 developmentMode:        config.devMode,
             };
 
@@ -71,7 +71,7 @@ function run (pathToTest, filter, initializeConnection = initializeConnectionLow
                 .filter(testName => testName === filter)
                 .reporter(reporter)
                 .browsers(connection)
-                .run({ nativeAutomation: config.proxyless });
+                .run({ nativeAutomation: config.nativeAutomation });
         });
 }
 

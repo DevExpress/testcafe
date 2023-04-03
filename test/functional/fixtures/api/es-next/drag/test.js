@@ -1,5 +1,5 @@
-const { skipInProxyless } = require('../../../../utils/skip-in');
-const { expect }          = require('chai');
+const { skipInNativeAutomation } = require('../../../../utils/skip-in');
+const { expect }                 = require('chai');
 
 
 describe('[API] Drag actions', function () {
@@ -138,7 +138,7 @@ describe('[API] Drag actions', function () {
         });
 
         // NOTE: Slightly difference in link.href. Probably related to link attribute overriding
-        skipInProxyless('Should reproduce native browser behavior', function () {
+        skipInNativeAutomation('Should reproduce native browser behavior', function () {
             return runTests('./testcafe-fixtures/drag-and-drop-test.js', 'drag link and image', { only: ['chrome'] });
         });
 

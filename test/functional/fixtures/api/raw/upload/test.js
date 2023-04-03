@@ -1,11 +1,11 @@
-const { skipInProxyless }            = require('../../../../utils/skip-in');
-const { expect }                     = require('chai');
+const { skipInNativeAutomation } = require('../../../../utils/skip-in');
+const { expect }                 = require('chai');
 const { errorInEachBrowserContains } = require('../../../../assertion-helper.js');
 
 
 describe('[Raw API] Upload', function () {
     // NOTE: file uploading is not supported yet
-    skipInProxyless('Should upload a file', function () {
+    skipInNativeAutomation('Should upload a file', function () {
         return runTests('./testcafe-fixtures/upload.testcafe', 'Upload a file', { shouldFail: true })
             .catch(function (errs) {
                 errorInEachBrowserContains(errs, 'File uploaded', 0);
@@ -28,7 +28,7 @@ describe('[Raw API] Upload', function () {
     });
 
     // NOTE: file uploading is not supported yet
-    skipInProxyless('Should upload files', function () {
+    skipInNativeAutomation('Should upload files', function () {
         return runTests('./testcafe-fixtures/upload.testcafe', 'Upload files', { shouldFail: true })
             .catch(function (errs) {
                 errorInEachBrowserContains(errs, 'Files uploaded', 0);

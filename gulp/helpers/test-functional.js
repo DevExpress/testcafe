@@ -35,7 +35,7 @@ module.exports = async function testFunctional (src, testingEnvironmentName, { e
         process.env.EXPERIMENTAL_DEBUG = 'true';
 
     if (isProxyless)
-        process.env.PROXYLESS = 'true';
+        process.env.NATIVE_AUTOMATION = 'true';
 
     if (!process.env.BROWSERSTACK_NO_LOCAL)
         process.env.BROWSERSTACK_NO_LOCAL = 1;

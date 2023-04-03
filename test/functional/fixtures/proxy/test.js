@@ -1,7 +1,7 @@
 const os                  = require('os');
 const http                = require('http');
-const { expect }          = require('chai');
-const { skipInProxyless } = require('../../utils/skip-in');
+const { expect }                 = require('chai');
+const { skipInNativeAutomation } = require('../../utils/skip-in');
 
 const TRUSTED_PROXY_URL     = os.hostname() + ':3004';
 const TRANSPARENT_PROXY_URL = os.hostname() + ':3005';
@@ -13,7 +13,7 @@ describe('Using external proxy server', function () {
     });
 
     // NOTE: The `--proxy` flag is not supported in the proxyless mode.
-    skipInProxyless('Should open restricted page via trusted proxy server', function () {
+    skipInNativeAutomation('Should open restricted page via trusted proxy server', function () {
         return runTests('testcafe-fixtures/restricted-page.test.js', null, { useProxy: TRUSTED_PROXY_URL });
     });
 });
@@ -43,7 +43,7 @@ describe('Using proxy-bypass', function () {
     });
 
     // NOTE: The `--proxy` flag is not supported in the proxyless mode.
-    skipInProxyless('Should open page without proxy but get resource with proxy', function () {
+    skipInNativeAutomation('Should open page without proxy but get resource with proxy', function () {
         const server = http.createServer(function (req, res) {
             res.write('document.getElementById(\'result\').innerHTML = \'proxy\'');
             res.end();

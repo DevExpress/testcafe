@@ -1,16 +1,16 @@
 const config = require('../config');
 
-const skipInProxyless                    = config.proxyless ? it.skip : it;
-const skipInExperimentalDebug            = config.experimentalDebug ? it.skip : it;
-const skipInProxylessOrExperimentalDebug = config.proxyless || config.experimentalDebug ? it.skip : it;
-const skipDescribeInProxyless            = config.proxyless ? describe.skip : describe;
-const onlyInProxyless                    = config.proxyless ? it : it.skip;
+const skipInNativeAutomation  = config.nativeAutomation ? it.skip : it;
+const skipInExperimentalDebug                   = config.experimentalDebug ? it.skip : it;
+const skipInNativeAutomationOrExperimentalDebug = config.nativeAutomation || config.experimentalDebug ? it.skip : it;
+const skipDescribeInNativeAutomation            = config.nativeAutomation ? describe.skip : describe;
+const onlyInNativeAutomation                    = config.nativeAutomation ? it : it.skip;
 
 module.exports = {
-    skipInProxyless,
+    skipInNativeAutomation,
     skipInExperimentalDebug,
-    skipDescribeInProxyless,
-    skipInProxylessOrExperimentalDebug,
-    onlyInProxyless,
+    skipDescribeInNativeAutomation,
+    skipInNativeAutomationOrExperimentalDebug,
+    onlyInNativeAutomation,
 };
 

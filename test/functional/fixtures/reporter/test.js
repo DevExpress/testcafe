@@ -6,8 +6,8 @@ const { createWarningReporter } = require('../../utils/warning-reporter');
 const ReporterPluginMethod      = require('../../../../lib/reporter/plugin-methods');
 const assertionHelper           = require('../../assertion-helper.js');
 const path                      = require('path');
-const config                    = require('../../config');
-const { skipInProxyless }       = require('../../utils/skip-in');
+const config                     = require('../../config');
+const { skipInNativeAutomation } = require('../../utils/skip-in');
 
 const {
     createSimpleTestStream,
@@ -1004,7 +1004,7 @@ const experimentalDebug = !!process.env.EXPERIMENTAL_DEBUG;
         // NOTE: the `event.isSameOriginPolicyFailed` property return `false` in the proxyless mode,
         // but in the proxy mode it returns `true`
         // the problem is only with warning log, but not with request mock
-        skipInProxyless('Should get warning for request hook', async () => {
+        skipInNativeAutomation('Should get warning for request hook', async () => {
             await runTests('./testcafe-fixtures/failed-cors-validation.js', 'Failed CORS validation', {
                 only: 'chrome',
                 reporter,
@@ -1222,7 +1222,7 @@ const experimentalDebug = !!process.env.EXPERIMENTAL_DEBUG;
     });
 
     // NOTE: this test hangs in proxyless for unknown reasons
-    skipInProxyless('Should raise an error when uncaught exception occurred in any reporter method', async () => {
+    skipInNativeAutomation('Should raise an error when uncaught exception occurred in any reporter method', async () => {
         function createReporterWithBrokenMethod (method) {
             const base = {
                 async reportTaskStart () {},

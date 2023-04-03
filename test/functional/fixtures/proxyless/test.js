@@ -26,7 +26,7 @@ const currentBrowsers   = config.browsers.map(browser => browser.alias);
 const thereAreAllRequiredBrowsers = REQUIRED_BROWSERS.every(requiredBrowser => currentBrowsers.includes(requiredBrowser));
 
 if (thereAreAllRequiredBrowsers) {
-    describe('Proxyless', function () {
+    describe('Native automation', function () {
         beforeEach(async () => {
             testCafe = await createTestCafe('127.0.0.1', 1335, 1336);
         });
