@@ -25,16 +25,16 @@ class BasicHttpServer {
             return;
 
         // this.server.closeAllConnections();
-
-        this.sockets.forEach(socket => {
-            socket.destroy();
-        });
         
         await new Promise(resolve => {
             this.server.close((...args) => {
                 console.log(`file: basic-http-server.js:32 -> BasicHttpServer -> this.server.close -> args:`, args);
                 resolve();
             });
+        });
+
+        this.sockets.forEach(socket => {
+            socket.destroy();
         });
     }
 }
