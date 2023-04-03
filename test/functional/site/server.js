@@ -10,6 +10,8 @@ const { readFile }          = require('../../../lib/utils/promisified-functions'
 const quarantineModeTracker = require('../quarantine-mode-tracker');
 const { parseUserAgent }    = require('../../../lib/utils/parse-user-agent');
 const apiRouter             = require('./api.js');
+const semver                = require('semver');
+
 
 const storage = multer.memoryStorage();
 const upload  = multer({ storage: storage });
@@ -47,7 +49,7 @@ const Server = module.exports = function (port, basePath) {
 
     this._setupRoutes();
 
-    if (process.semver.lt(process.version, '18.2.0'))
+    if (semver.lt(process.version, '18.2.0'))
         this._setSocketsHook();
 };
 
@@ -199,7 +201,7 @@ Server.prototype._setupRoutes = function () {
 Server.prototype.close = async function () {
     console.log(`file: server.js:200 -> close`);
 
-    if (process.semver.gte(process.version, '18.2.0'))
+    if (semver.gte(process.version, '18.2.0'))
         this.appServer.closeAllConnections();
     else {
         console.log(`file: server.js:208 -> this.sockets.length:`, this.sockets.length);

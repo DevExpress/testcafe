@@ -1,4 +1,7 @@
 /* eslint-disable */
+const semver = require('semver');
+
+
 class BasicHttpServer {
     constructor () {
         this.server  = null;
@@ -9,7 +12,7 @@ class BasicHttpServer {
         if (!this.server)
             return;
 
-        if (process.semver.lt(process.version, '18.2.0'))
+        if (semver.lt(process.version, '18.2.0'))
             this._setSocketsHook();
     }
 
@@ -29,7 +32,7 @@ class BasicHttpServer {
         if (!this.server)
             return;
 
-        if (process.semver.gte(process.version, '18.2.0'))
+        if (semver.gte(process.version, '18.2.0'))
             this.server.closeAllConnections();
         else {
             console.log(`file: basic-http-server.js:38 -> BasicHttpServer -> this.sockets.length:`, this.sockets.length);
