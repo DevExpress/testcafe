@@ -82,10 +82,10 @@ module.exports = async function testFunctional (src, testingEnvironmentName, { e
     });
 
     console.log('Mocha was finished');
-    // global.wtf.dump();
+    global.wtf.dump();
     global.testRunTracker.clearTimers();
     console.log('After clearing timeouts');
-    // global.wtf.dump();
+    global.wtf.dump();
 
     return new Promise((resolve) => resolve());
 };
