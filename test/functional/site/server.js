@@ -38,7 +38,7 @@ const shouldCachePage = function (reqUrl) {
 };
 
 const Server = module.exports = function (port, basePath) {
-    // const server = this;
+    const server = this;
 
     this.app       = express().use(bodyParser.urlencoded({ extended: false }));
     this.appServer = http.createServer(this.app).listen(port);
