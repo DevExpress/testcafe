@@ -368,7 +368,7 @@ after(async function () {
     // global.wtf.dump();
     await testCafe.close();
     console.log(`file: setup.js -> line 364 -> testCafe.close();`);
-    site.destroy();
+    await site.destroy();
     console.log(`file: setup.js -> line 366 -> site.destroy();`);
 
     delete global.testcafe;

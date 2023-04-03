@@ -24,13 +24,13 @@ exports.create = function (ports, viewsPath) {
     // wtf.dump();
 };
 
-exports.destroy = function () {
-    server1.close();
-    server2.close();
+exports.destroy = async function () {
+    await server1.close();
+    await server2.close();
 
-    basicAuthServer.shutdown();
-    ntlmAuthServer.shutdown();
-    trustedProxyServer.shutdown();
-    transparentProxyServer.shutdown();
-    invalidCertificateHttpsServer.shutdown();
+    await basicAuthServer.shutdown();
+    await ntlmAuthServer.shutdown();
+    await trustedProxyServer.shutdown();
+    await transparentProxyServer.shutdown();
+    await invalidCertificateHttpsServer.shutdown();
 };

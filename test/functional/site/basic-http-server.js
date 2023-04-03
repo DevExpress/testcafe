@@ -20,14 +20,17 @@ class BasicHttpServer {
         // });
     }
 
-    shutdown () {
+    async shutdown () {
         if (!this.server)
             return;
 
         this.server.closeAllConnections();
 
-        this.server.close((...args) => {
-            console.log(`file: basic-http-server.js:32 -> BasicHttpServer -> this.server.close -> args:`, args);
+        return new Promise(resolve => {
+            this.server.close((...args) => {
+                console.log(`file: basic-http-server.js:32 -> BasicHttpServer -> this.server.close -> args:`, args);
+                resolve();
+            });
         });
         // this.sockets.forEach(socket => {
         //     socket.destroy();
