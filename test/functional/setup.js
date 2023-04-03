@@ -363,9 +363,6 @@ after(async function () {
     this.timeout(60000);
     console.log(`file: setup.js -> line 380 -> after`);
 
-    // wtf.dump();
-
-    // global.wtf.dump();
     await testCafe.close();
     console.log(`file: setup.js -> line 364 -> testCafe.close();`);
     await site.destroy();
@@ -374,10 +371,6 @@ after(async function () {
     delete global.testcafe;
     delete global.runTests;
     delete global.testReport;
-
-    // global.wtf.dump();
-
-    // testRunTracker.clearTimers();
 
     console.log(`file: setup.js -> line 373 -> USE_PROVIDER_POOL`, USE_PROVIDER_POOL);
     if (!USE_PROVIDER_POOL) {
@@ -394,13 +387,7 @@ after(async function () {
     }
     else
         await closeLocalBrowsers();
-        
-    // console.log(`file: setup.js:430 -> browsersInfo:`, browsersInfo);
 
     testRunTracker.clearTimers();
-    // testRunTracker.clearTimers();
-
-    // console.log(`file: setup.js -> line 393 -> browser closed;`); 
-    // global.wtf.dump();
 });
 
