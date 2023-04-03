@@ -42,23 +42,23 @@ const Server = module.exports = function (port, basePath) {
 
     this.app       = express().use(bodyParser.urlencoded({ extended: false }));
     this.appServer = http.createServer(this.app).listen(port);
-    // this.sockets   = [];
+    this.sockets   = [];
     this.basePath  = basePath;
 
     this.app.use(bodyParser.json());
 
     this._setupRoutes();
 
-    // const handler = function (socket) {
-    //     server.sockets.push(socket);
-    //     socket.on('close', function () {
-    //         console.log(`file: server.js:56 -> socket.on('close')`);
-    //         // console.log(`file: server.js:57 -> socket:`, socket);
-    //         server.sockets.splice(server.sockets.indexOf(socket), 1);
-    //     });
-    // };
+    const handler = function (socket) {
+        server.sockets.push(socket);
+        socket.on('close', function () {
+            console.log(`file: server.js:56 -> socket.on('close')`);
+            // console.log(`file: server.js:57 -> socket:`, socket);
+            server.sockets.splice(server.sockets.indexOf(socket), 1);
+        });
+    };
 
-    // this.appServer.on('connection', handler);
+    this.appServer.on('connection', handler);
 };
 
 Server.prototype._setupRoutes = function () {
@@ -195,16 +195,16 @@ Server.prototype._setupRoutes = function () {
 
 Server.prototype.close = async function () {
     console.log(`file: server.js:200 -> close`);
-    this.appServer.closeAllConnections();
+    // this.appServer.closeAllConnections();
 
-    return new Promise(resolve => {
+    await new Promise(resolve => {
         this.appServer.close((...args) => {
             console.log(`file: server.js:203 -> this.appServer.close -> args:`, args);
             resolve();
         });
     })
-    // console.log(`file: server.js:209 -> this.sockets.length:`, this.sockets.length);
-    // this.sockets.forEach(function (socket) {
-    //     socket.destroy();
-    // });
+    console.log(`file: server.js:209 -> this.sockets.length:`, this.sockets.length);
+    this.sockets.forEach(function (socket) {
+        socket.destroy();
+    });
 };

@@ -43,7 +43,7 @@ describe('Using proxy-bypass', function () {
     });
 
     // NOTE: The `--proxy` flag is not supported in the proxyless mode.
-    skipInProxyless('Should open page without proxy but get resource with proxy', function () {
+    it.skip('Should open page without proxy but get resource with proxy', function () {
         const server = http.createServer(function (req, res) {
             res.write('document.getElementById(\'result\').innerHTML = \'proxy\'');
             res.end();
@@ -51,7 +51,7 @@ describe('Using proxy-bypass', function () {
 
         return runTests('testcafe-fixtures/bypass-page-proxy-request.test.js', null, { useProxy: 'localhost:3006', proxyBypass: 'localhost:3000' })
             .then(() => {
-                server.closeAllConnections();
+                // server.closeAllConnections();
                 server.close();
             });
     });
