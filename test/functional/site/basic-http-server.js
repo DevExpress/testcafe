@@ -27,7 +27,7 @@ class BasicHttpServer {
         this.server.closeAllConnections();
 
         this.server.close((...args) => {
-            console.log(`file: server.js:203 -> this.appServer.close -> args:`, args);
+            console.log(`file: basic-http-server.js:32 -> BasicHttpServer -> this.server.close -> args:`, args);
         });
         // this.sockets.forEach(socket => {
         //     socket.destroy();
