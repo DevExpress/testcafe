@@ -361,7 +361,6 @@ beforeEach(function () {
 
 after(async function () {
     this.timeout(60000);
-    console.log(`file: setup.js -> line 380 -> after`);
 
     await testCafe.close();
     console.log(`file: setup.js -> line 364 -> testCafe.close();`);
@@ -379,7 +378,7 @@ after(async function () {
         let timer;
         await Promise.race([
             closeRemoteBrowsers(),
-            new Promise(resolve => setTimeout(resolve, 57000)),
+            new Promise(resolve => timer = setTimeout(resolve, 57000)),
         ]);
 
         console.log('after Promise.race');

@@ -1,4 +1,3 @@
-/* eslint-disable */
 const Server                        = require('./server');
 const basicAuthServer               = require('./basic-auth-server');
 const ntlmAuthServer                = require('./ntlm-auth-server');
@@ -19,9 +18,6 @@ exports.create = function (ports, viewsPath) {
     trustedProxyServer.start(ports.trustedProxyServer);
     transparentProxyServer.start(ports.transparentProxyServer);
     invalidCertificateHttpsServer.start(ports.invalidCertificateHttpsServer);
-
-    console.log('Create servers');
-    // wtf.dump();
 };
 
 exports.destroy = async function () {

@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { resolve as resolvePath, dirname } from 'path';
 import debug from 'debug';
 import promisifyEvent from 'promisify-event';
@@ -53,7 +52,6 @@ import logEntry from '../utils/log-entry';
 import MessageBus from '../utils/message-bus';
 import getEnvOptions from '../dashboard/get-env-options';
 import { validateSkipJsErrorsOptionValue } from '../utils/get-options/skip-js-errors';
-import testRunTracker from '../api/test-run-tracker';
 
 const DEBUG_LOGGER            = debug('testcafe:runner');
 const DASHBOARD_REPORTER_NAME = 'dashboard';
@@ -106,7 +104,6 @@ export default class Runner extends EventEmitter {
 
         await this._finalizeCompilerServiceState(task, runnableConfigurationId);
         await this._disposeAssets(browserSet, reporters, testedApp);
-        // testRunTracker.clearTimers();
     }
 
     _disposeAssets (browserSet, reporters, testedApp) {
