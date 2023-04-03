@@ -42,7 +42,7 @@ export async function startOnDocker (pageUrl, { browserName, config, cdpPort, te
         ({ tabs, error } = await tryListTabs(cdpPort));
     }
 
-    // timer.clearTimer();
+    timer.clearTimer();
 
     if (error)
         throw error;

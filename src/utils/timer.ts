@@ -18,7 +18,7 @@ export default class Timer {
         this.expired = true;
     }
 
-    // public clearTimer (): void {
-    //     clearTimeout(this.timerId);
-    // }
+    public clearTimer (): void {
+        clearTimeout(this.timerId);
+    }
 }

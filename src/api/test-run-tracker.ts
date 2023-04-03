@@ -7,22 +7,22 @@ import TestRunProxy from '../services/compiler/test-run-proxy';
 const TRACKING_MARK_RE = /^\$\$testcafe_test_run\$\$(\S+)\$\$$/;
 const STACK_CAPACITY   = 5000;
 
-// enum Timers { 'immediate', 'interval', 'timeout' };
+enum Timers { 'immediate', 'interval', 'timeout' };
 
 class TestRunTracker extends EventEmitter {
     private enabled: boolean;
     public activeTestRuns: { [id: string]: TestRun | TestRunProxy };
-    // private timers: { timer: NodeJS.Immediate | NodeJS.Timeout, type: Timers }[];
+    private timers: { timer: NodeJS.Immediate | NodeJS.Timeout, type: Timers }[];
 
     public constructor () {
         super();
 
         this.enabled = false;
         this.activeTestRuns = {};
-        // this.timers = [];
+        this.timers = [];
     }
 
-    private _createContextSwitchingFunctionHook (ctxSwitchingFn: Function, patchedArgsCount: number): any {
+    private _createContextSwitchingFunctionHook (ctxSwitchingFn: Function, patchedArgsCount: number, timer?: Timers): any {
         const tracker = this;
 
         return function () {
@@ -38,12 +38,12 @@ class TestRunTracker extends EventEmitter {
             //@ts-ignore
             const res = ctxSwitchingFn.apply(this, arguments);
 
-            // if (!!timer) {
-            //     tracker.timers.push({
-            //         timer: res,
-            //         type: timer,
-            //     });
-            // }
+            if (!!timer) {
+                tracker.timers.push({
+                    timer: res,
+                    type: timer,
+                });
+            }
 
             // @ts-ignore
             return res;
@@ -69,9 +69,9 @@ class TestRunTracker extends EventEmitter {
 
     public ensureEnabled (): void {
         if (!this.enabled) {
-            global.setTimeout   = this._createContextSwitchingFunctionHook(global.setTimeout, 1);
-            global.setInterval  = this._createContextSwitchingFunctionHook(global.setInterval, 1);
-            global.setImmediate = this._createContextSwitchingFunctionHook(global.setImmediate, 1);
+            global.setTimeout   = this._createContextSwitchingFunctionHook(global.setTimeout, 1, Timers.timeout);
+            global.setInterval  = this._createContextSwitchingFunctionHook(global.setInterval, 1, Timers.interval);
+            global.setImmediate = this._createContextSwitchingFunctionHook(global.setImmediate, 1, Timers.immediate);
             process.nextTick    = this._createContextSwitchingFunctionHook(process.nextTick, 1);
 
             global.Promise.prototype.then  = this._createContextSwitchingFunctionHook(global.Promise.prototype.then, 2);
@@ -81,17 +81,17 @@ class TestRunTracker extends EventEmitter {
         }
     }
 
-    // public clearTimers (): void {
-    //     console.log(`file: test-run-tracker.ts:81 -> TestRunTracker -> clearTimers -> this.timers.length:`, this.timers.length);
-    //     this.timers.forEach(timer => {
-    //         if (timer.type === Timers.immediate)//@ts-ignore
-    //             clearImmediate(timer.timer);
-    //         if (timer.type === Timers.interval)//@ts-ignore
-    //             clearInterval(timer.timer);
-    //         if (timer.type === Timers.timeout)//@ts-ignore
-    //             clearTimeout(timer.timer);
-    //     });
-    // }
+    public clearTimers (): void {
+        console.log(`file: test-run-tracker.ts:81 -> TestRunTracker -> clearTimers -> this.timers.length:`, this.timers.length);
+        this.timers.forEach(timer => {
+            if (timer.type === Timers.immediate)//@ts-ignore
+                clearImmediate(timer.timer);
+            if (timer.type === Timers.interval)//@ts-ignore
+                clearInterval(timer.timer);
+            if (timer.type === Timers.timeout)//@ts-ignore
+                clearTimeout(timer.timer);
+        });
+    }
 
     public addTrackingMarkerToFunction (testRunId: string, fn: Function, context?: any): Function {
         const markerFactoryBody = `

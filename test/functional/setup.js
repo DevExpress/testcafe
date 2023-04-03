@@ -397,7 +397,7 @@ after(async function () {
         
     // console.log(`file: setup.js:430 -> browsersInfo:`, browsersInfo);
 
-    // global.testRunTracker = testRunTracker;
+    global.testRunTracker = testRunTracker;
 
     // testRunTracker.clearTimers();
 
