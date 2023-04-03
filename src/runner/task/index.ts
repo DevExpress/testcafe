@@ -81,7 +81,7 @@ export default class Task extends AsyncEventEmitter {
         this._pendingBrowserJobs   = this._createBrowserJobs(proxy, this.opts);
         this.testStructure         = this._prepareTestStructure(tests);
 
-        this.registerClientScriptRouting(!!this.opts.proxyless);
+        this.registerClientScriptRouting(!!this.opts.nativeAutomation);
 
         if (this.opts.videoPath) {
             const { videoPath, videoOptions, videoEncodingOptions } = this.opts;

@@ -210,7 +210,7 @@ export default class Bootstrapper {
         if (remotes && remotes.length % this.concurrency)
             throw new GeneralError(RUNTIME_ERRORS.cannotDivideRemotesCountByConcurrency);
 
-        this.proxyless = this.configuration.getOption(OPTION_NAMES.proxyless);
+        this.proxyless = this.configuration.getOption(OPTION_NAMES.nativeAutomation);
 
         await this._setupProxy();
 

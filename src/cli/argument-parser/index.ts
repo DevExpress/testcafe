@@ -167,7 +167,7 @@ export default class CLIArgumentParser {
             .option('--test-meta <key=value[,key2=value2,...]>', 'filter tests by metadata')
             .option('--fixture-meta <key=value[,key2=value2,...]>', 'filter fixtures by metadata')
             .option('--debug-on-fail', 'pause tests on failure')
-            .option('--proxyless', 'enable proxyless mode')
+            .option('--native-automation', 'enable native automation')
             .option('--app-init-delay <ms>', 'specify your application`s initialization time')
             .option('--selector-timeout <ms>', 'specify the maximum Selector resolution time')
             .option('--assertion-timeout <ms>', 'specify the maximum Assertion resolution time')

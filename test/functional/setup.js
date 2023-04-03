@@ -326,7 +326,7 @@ before(function () {
                         runExecutionTimeout,
                         baseUrl,
                         customActions,
-                        proxyless: config.proxyless,
+                        nativeAutomation: config.proxyless,
                     })
                     .then(failedCount => {
                         if (customReporters)

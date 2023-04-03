@@ -20,7 +20,7 @@ const runTestsLocal = (testName) => {
         .filter(test => {
             return testName ? test === testName : true;
         })
-        .run({ proxyless: config.proxyless })
+        .run({ nativeAutomation: config.proxyless })
         .then(failedCount => {
             const taskReport = JSON.parse(stream.data);
             const testReport = taskReport.fixtures.length === 1 ?

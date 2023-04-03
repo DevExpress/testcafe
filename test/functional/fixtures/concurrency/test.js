@@ -42,7 +42,7 @@ if (config.useLocalBrowsers) {
                 })
                 .browsers(browsers)
                 .concurrency(concurrency)
-                .run({ proxyless: config.proxyless });
+                .run({ nativeAutomation: config.proxyless });
         }
 
         function createConnections (count) {

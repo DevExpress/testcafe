@@ -28,7 +28,7 @@ if (config.useLocalBrowsers) {
                         .src('test/functional/fixtures/video-recording/skip/fixture.test.js')
                         .browsers('chrome')
                         .video('reports')
-                        .run({ proxyless: config.proxyless });
+                        .run({ nativeAutomation: config.proxyless });
                 })
                 .then(async () => {
                     testcafe.close();
