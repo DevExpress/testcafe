@@ -144,5 +144,5 @@ export default {
     [RUNTIME_ERRORS.invalidCustomActionType]:                        `TestCafe cannot parse the "{actionName}" action, because the action definition is invalid. Format the definition in accordance with the custom actions guide: ${ DOCUMENTATION_LINKS.CUSTOM_ACTIONS }`,
     [RUNTIME_ERRORS.cannotImportESMInCommonsJS]:                     'Cannot import the {esModule} ECMAScript module from {targetFile}. Use a dynamic import() statement or enable the --esm CLI flag.',
     [RUNTIME_ERRORS.proxyInitializedMoreThanOnce]:                   'The proxy was initialized more than once.',
-    [RUNTIME_ERRORS.setProxylessForUnsupportedBrowsers]:             'The "proxyless" mode is not supported in the {browsers} browser{ending}.',
+    [RUNTIME_ERRORS.setProxylessForUnsupportedBrowsers]:             'The following browser(s) do not support the Native Automation mode: {browsers}.',
 };

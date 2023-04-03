@@ -50,7 +50,7 @@ if (thereAreAllRequiredBrowsers) {
                 .catch(err => {
                     errorIsRaised = true;
 
-                    expect(err.message).eql('The "proxyless" mode is not supported in the "firefox" browser.');
+                    expect(err.message).eql('The following browser(s) do not support the Native Automation mode: "firefox".');
                 })
                 .then(() => {
                     if (!errorIsRaised)
