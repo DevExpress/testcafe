@@ -118,7 +118,7 @@ if (config.useLocalBrowsers) {
 
                     return runner.run({
                         quarantineMode: true,
-                        proxyless:      config.proxyless,
+                        nativeAutomation: config.proxyless,
                     });
                 })
                 .then(() => {
