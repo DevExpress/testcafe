@@ -10,7 +10,7 @@ import userVariables from './api/user-variables';
 const lazyRequire   = require('import-lazy')(require);
 const TestCafe      = lazyRequire('./testcafe');
 const endpointUtils = lazyRequire('endpoint-utils');
-const setupExitHook = lazyRequire('async-exit-hook');
+// const setupExitHook = lazyRequire('async-exit-hook');
 
 // Validations
 async function getValidHostname (hostname) {
@@ -92,7 +92,7 @@ async function createTestCafe (...args) {
 
     const testcafe = new TestCafe(configuration);
 
-    setupExitHook(cb => testcafe.close().then(cb));
+    // setupExitHook(cb => testcafe.close().then(cb));
 
     return testcafe;
 }

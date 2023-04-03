@@ -1,7 +1,7 @@
 import debug from 'debug';
 import os from 'os';
 import path from 'path';
-import setupExitHook from 'async-exit-hook';
+// import setupExitHook from 'async-exit-hook';
 import tmp from 'tmp';
 import makeDir from 'make-dir';
 import LockFile from './lockfile';
@@ -114,4 +114,4 @@ export default class TempDirectory {
 // NOTE: exposed for testing purposes
 TempDirectory.TEMP_DIRECTORIES_ROOT = TESTCAFE_TMP_DIRS_ROOT;
 
-setupExitHook(TempDirectory.disposeDirectoriesSync);
+// setupExitHook(TempDirectory.disposeDirectoriesSync);
