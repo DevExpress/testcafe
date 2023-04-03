@@ -401,13 +401,13 @@ after(async function () {
     else
         await closeLocalBrowsers();
         
-    console.log(`file: setup.js:430 -> browsersInfo:`, browsersInfo);
+    // console.log(`file: setup.js:430 -> browsersInfo:`, browsersInfo);
 
     // global.testRunTracker = testRunTracker;
 
     // testRunTracker.clearTimers();
 
-    console.log(`file: setup.js -> line 393 -> browser closed;`); 
-    global.wtf.dump();
+    // console.log(`file: setup.js -> line 393 -> browser closed;`); 
+    // global.wtf.dump();
 });
 
