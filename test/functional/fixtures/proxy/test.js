@@ -1,4 +1,3 @@
-/* eslint-disable */
 const os                  = require('os');
 const http                = require('http');
 const { expect }          = require('chai');
@@ -8,7 +7,7 @@ const TRUSTED_PROXY_URL     = os.hostname() + ':3004';
 const TRANSPARENT_PROXY_URL = os.hostname() + ':3005';
 const ERROR_PROXY_URL       = 'ERROR';
 
-describe.only('Using external proxy server', function () {
+describe('Using external proxy server', function () {
     it('Should open page via proxy server', function () {
         return runTests('testcafe-fixtures/index.test.js', null, { useProxy: TRANSPARENT_PROXY_URL });
     });
@@ -19,24 +18,24 @@ describe.only('Using external proxy server', function () {
     });
 });
 
-describe.skip('Using proxy-bypass', function () {
-    it.skip('Should bypass using proxy by one rule', function () {
+describe('Using proxy-bypass', function () {
+    it('Should bypass using proxy by one rule', function () {
         return runTests('testcafe-fixtures/index.test.js', null, { useProxy: ERROR_PROXY_URL, proxyBypass: 'localhost:3000' });
     });
 
-    it.skip('Should bypass using proxy by comma-separated string of rules', function () {
+    it('Should bypass using proxy by comma-separated string of rules', function () {
         return runTests('testcafe-fixtures/index.test.js', null, { useProxy: ERROR_PROXY_URL, proxyBypass: 'dummy,localhost:3000' });
     });
 
-    it.skip('Should bypass using proxy by array of rules', function () {
+    it('Should bypass using proxy by array of rules', function () {
         return runTests('testcafe-fixtures/index.test.js', null, { useProxy: ERROR_PROXY_URL, proxyBypass: ['dummy', 'localhost:3000'] });
     });
 
-    it.skip('Should bypass using proxy by array of comma-separated strings', function () {
+    it('Should bypass using proxy by array of comma-separated strings', function () {
         return runTests('testcafe-fixtures/index.test.js', null, { useProxy: ERROR_PROXY_URL, proxyBypass: ['dummy,localhost:3000', 'dummy,localhost:3000'] });
     });
 
-    it.skip('Should fail using proxy-bypass which is set by incorrect argument', function () {
+    it('Should fail using proxy-bypass which is set by incorrect argument', function () {
         return runTests('testcafe-fixtures/index.test.js', null, { useProxy: ERROR_PROXY_URL, proxyBypass: /dummy/, shouldFail: true })
             .catch(function (err) {
                 expect(err.message).contains('The "proxyBypass" argument (object) is not of expected type (string or an array)');
@@ -53,7 +52,7 @@ describe.skip('Using proxy-bypass', function () {
         return runTests('testcafe-fixtures/bypass-page-proxy-request.test.js', null, { useProxy: 'localhost:3006', proxyBypass: 'localhost:3000' })
             .then(() => {
                 server.close();
-                server.closeAllConnections();
+                // server.closeAllConnections();
             });
     });
 });
