@@ -17,3 +17,4 @@ jobs:
     with:
       test-script: 'npx gulp test-functional-local-safari-run --steps-as-tasks'
       os: 'macos-12'
+      node-version: 18

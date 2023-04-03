@@ -9,6 +9,11 @@ class BasicHttpServer {
         if (!this.server)
             return;
 
+        if (process.semver.lt(process.version, '18.2.0'))
+            this._setSocketsHook();
+    }
+
+    _setSocketsHook () {
         const self = this;
 
         this.server.on('connection', (socket) => {
@@ -24,17 +29,20 @@ class BasicHttpServer {
         if (!this.server)
             return;
 
-        // this.server.closeAllConnections();
+        if (process.semver.gte(process.version, '18.2.0'))
+            this.server.closeAllConnections();
+        else {
+            console.log(`file: basic-http-server.js:38 -> BasicHttpServer -> this.sockets.length:`, this.sockets.length);
+            this.sockets.forEach(function (socket) {
+                socket.destroy();
+            });
+        }
         
         await new Promise(resolve => {
             this.server.close((...args) => {
                 console.log(`file: basic-http-server.js:32 -> BasicHttpServer -> this.server.close -> args:`, args);
                 resolve();
             });
-        });
-
-        this.sockets.forEach(socket => {
-            socket.destroy();
         });
     }
 }

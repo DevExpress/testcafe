@@ -38,8 +38,6 @@ const shouldCachePage = function (reqUrl) {
 };
 
 const Server = module.exports = function (port, basePath) {
-    const server = this;
-
     this.app       = express().use(bodyParser.urlencoded({ extended: false }));
     this.appServer = http.createServer(this.app).listen(port);
     this.sockets   = [];
@@ -49,17 +47,22 @@ const Server = module.exports = function (port, basePath) {
 
     this._setupRoutes();
 
+    if (process.semver.lt(process.version, '18.2.0'))
+        this._setSocketsHook();
+};
+
+Server.prototype._setSocketsHook = function () {
+    const server = this;
+
     const handler = function (socket) {
         server.sockets.push(socket);
         socket.on('close', function () {
-            console.log(`file: server.js:56 -> socket.on('close')`);
-            // console.log(`file: server.js:57 -> socket:`, socket);
             server.sockets.splice(server.sockets.indexOf(socket), 1);
         });
     };
-
+    
     this.appServer.on('connection', handler);
-};
+}
 
 Server.prototype._setupRoutes = function () {
     const server = this;
@@ -195,7 +198,15 @@ Server.prototype._setupRoutes = function () {
 
 Server.prototype.close = async function () {
     console.log(`file: server.js:200 -> close`);
-    // this.appServer.closeAllConnections();
+
+    if (process.semver.gte(process.version, '18.2.0'))
+        this.appServer.closeAllConnections();
+    else {
+        console.log(`file: server.js:208 -> this.sockets.length:`, this.sockets.length);
+        this.sockets.forEach(function (socket) {
+            socket.destroy();
+        });
+    }
 
     await new Promise(resolve => {
         this.appServer.close((...args) => {
@@ -203,8 +214,4 @@ Server.prototype.close = async function () {
             resolve();
         });
     })
-    console.log(`file: server.js:209 -> this.sockets.length:`, this.sockets.length);
-    this.sockets.forEach(function (socket) {
-        socket.destroy();
-    });
 };
