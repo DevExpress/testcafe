@@ -25,27 +25,12 @@ exports.create = function (ports, viewsPath) {
 };
 
 exports.destroy = function () {
-    // wtf.dump();
-    console.log('Close 1 server');
     server1.close();
-    // wtf.dump();
-    console.log('Close 2 server');
     server2.close();
-    // wtf.dump();
 
-    console.log('Close basicAuthServer server');
     basicAuthServer.shutdown();
-    // wtf.dump();
-    console.log('Close ntlmAuthServer server');
     ntlmAuthServer.shutdown();
-    // wtf.dump();
-    console.log('Close trustedProxyServer server');
     trustedProxyServer.shutdown();
-    // wtf.dump();
-    console.log('Close transparentProxyServer server');
     transparentProxyServer.shutdown();
-    // wtf.dump();
-    console.log('Close invalidCertificateHttpsServer server');
     invalidCertificateHttpsServer.shutdown();
-    // wtf.dump();
 };

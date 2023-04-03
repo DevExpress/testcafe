@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { GeneralError } from './errors/runtime';
 import { RUNTIME_ERRORS } from './errors/types';
 import embeddingUtils from './embedding-utils';
@@ -93,19 +92,7 @@ async function createTestCafe (...args) {
 
     const testcafe = new TestCafe(configuration);
 
-    // setupExitHook(cb => {
-    //     console.log(`file: index.js:98 -> createTestCafe -> setupExitHook:`);
-
-    //     return testcafe.close()
-    //         .then((...exitArgs) => {
-    //             console.log(`file: index.js:100 -> .then -> then:`);
-    //             return cb(...exitArgs);
-    //         })
-    //         .catch(err => {
-    //             console.log(`file: index.js:105 -> createTestCafe -> catch:`);
-    //             console.log(err);
-    //         });
-    // });
+    setupExitHook(cb => testcafe.close().then(cb));
 
     return testcafe;
 }

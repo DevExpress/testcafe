@@ -357,11 +357,6 @@ before(function () {
 
 beforeEach(function () {
     global.currentTest = this.currentTest;
-    // console.log(`file: setup.js:358 -> beforeEach -> process._getActiveHandles().length:`, process._getActiveHandles().length);
-});
-
-afterEach(function () {
-    // console.log(`file: setup.js:362 -> afterEach -> process._getActiveHandles().length:`, process._getActiveHandles().length);
 });
 
 after(async function () {
@@ -370,25 +365,19 @@ after(async function () {
 
     // wtf.dump();
 
-    global.wtf.dump();
-    site.destroy();
-    console.log(`file: setup.js -> line 366 -> site.destroy();`);
+    // global.wtf.dump();
     await testCafe.close();
     console.log(`file: setup.js -> line 364 -> testCafe.close();`);
+    site.destroy();
+    console.log(`file: setup.js -> line 366 -> site.destroy();`);
 
     delete global.testcafe;
     delete global.runTests;
     delete global.testReport;
 
-    global.wtf.dump();
-    // console.log(`file: setup.js:375 -> process._getActiveHandles().length:`, process._getActiveHandles().length);
-    // for (const iterator of process._getActiveHandles()) {
-    //     console.log(`file: setup.js:381 -> iterator.toString():`, iterator.toString());
-    //     console.log(`file: setup.js:381 -> Object.getPrototypeOf(iterator).constructor.name:`, Object.getPrototypeOf(iterator)?.constructor?.name || 'Do not have prototype');
-    //     console.log(`file: setup.js:381 -> iterator._connectionKey:`, iterator._connectionKey);    
-    // }
+    // global.wtf.dump();
 
-    testRunTracker.clearTimers();
+    // testRunTracker.clearTimers();
 
     console.log(`file: setup.js -> line 373 -> USE_PROVIDER_POOL`, USE_PROVIDER_POOL);
     if (!USE_PROVIDER_POOL) {
@@ -409,25 +398,16 @@ after(async function () {
         console.log('after Promise.race');
         clearTimeout(timer);
     }
-    // else
+    else
         await closeLocalBrowsers();
         
     console.log(`file: setup.js:430 -> browsersInfo:`, browsersInfo);
 
-    global.testRunTracker = testRunTracker;
+    // global.testRunTracker = testRunTracker;
 
-    testRunTracker.clearTimers();
+    // testRunTracker.clearTimers();
 
     console.log(`file: setup.js -> line 393 -> browser closed;`); 
     global.wtf.dump();
-    
-    // console.log('awaiting', new Date());
-
-    // await new Promise(resolve => setTimeout(resolve, 10000));
-
-    // console.log('after awaiting', new Date());
-
-    // global.wtf.dump();
-
 });
 

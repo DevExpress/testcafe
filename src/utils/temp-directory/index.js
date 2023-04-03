@@ -1,4 +1,3 @@
-/* eslint-disable */
 import debug from 'debug';
 import os from 'os';
 import path from 'path';
@@ -115,4 +114,4 @@ export default class TempDirectory {
 // NOTE: exposed for testing purposes
 TempDirectory.TEMP_DIRECTORIES_ROOT = TESTCAFE_TMP_DIRS_ROOT;
 
-// setupExitHook(TempDirectory.disposeDirectoriesSync);
+setupExitHook(TempDirectory.disposeDirectoriesSync);

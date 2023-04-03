@@ -54,7 +54,7 @@ export default async function authenticationHelper <T, E extends Error> (
         ({ result, error } = await checkAuthentication(action, errorClass));
     }
 
-    timer.clearTimer();
+    // timer.clearTimer();
 
     return { result, error };
 }

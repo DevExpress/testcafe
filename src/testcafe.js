@@ -135,6 +135,6 @@ export default class TestCafe {
 
         await this.browserConnectionGateway.close();
 
-        testRunTracker.clearTimers();
+        // testRunTracker.clearTimers();
     }
 }
