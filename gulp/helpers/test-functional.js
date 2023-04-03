@@ -71,7 +71,7 @@ module.exports = async function testFunctional (src, testingEnvironmentName, { e
         mocha.addFile(file);
     });
 
-    await new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         mocha.run((code) => {
             console.log(`file: test-functional.js:72 -> mocha.run -> code:`, code);
             if (code)
@@ -80,12 +80,4 @@ module.exports = async function testFunctional (src, testingEnvironmentName, { e
             resolve();
         });
     });
-
-    // console.log('Mocha was finished');
-    // global.wtf.dump();
-    global.testRunTracker.clearTimers();
-    // console.log('After clearing timeouts');
-    // global.wtf.dump();
-
-    return new Promise((resolve) => resolve());
 };
