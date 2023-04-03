@@ -1,6 +1,6 @@
 const config = require('../config');
 
-const skipInNativeAutomation  = config.nativeAutomation ? it.skip : it;
+const skipInNativeAutomation                    = config.nativeAutomation ? it.skip : it;
 const skipInExperimentalDebug                   = config.experimentalDebug ? it.skip : it;
 const skipInNativeAutomationOrExperimentalDebug = config.nativeAutomation || config.experimentalDebug ? it.skip : it;
 const skipDescribeInNativeAutomation            = config.nativeAutomation ? describe.skip : describe;
