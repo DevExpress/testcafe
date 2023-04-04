@@ -1,8 +1,8 @@
-const path                = require('path');
-const { expect }          = require('chai');
-const isCI                = require('is-ci');
-const config              = require('../../config');
-const { createReporter }  = require('../../utils/reporter');
+const path                       = require('path');
+const { expect }                 = require('chai');
+const isCI                       = require('is-ci');
+const config                     = require('../../config');
+const { createReporter }         = require('../../utils/reporter');
 const testInfo                   = require('./test-info');
 const { skipInNativeAutomation } = require('../../utils/skip-in');
 

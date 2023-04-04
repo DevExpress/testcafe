@@ -27,14 +27,14 @@ function getGroupOfTests (tests, groupNumber, groupsCount) {
     return tests.slice(testFragmentStartIndex, testFragmentEndIndex);
 }
 
-module.exports = async function testFunctional (src, testingEnvironmentName, { experimentalDebug, isProxyless } = {}) {
+module.exports = async function testFunctional (src, testingEnvironmentName, { experimentalDebug, nativeAutomation } = {}) {
     process.env.TESTING_ENVIRONMENT       = testingEnvironmentName;
     process.env.BROWSERSTACK_USE_AUTOMATE = 1;
 
     if (experimentalDebug)
         process.env.EXPERIMENTAL_DEBUG = 'true';
 
-    if (isProxyless)
+    if (nativeAutomation)
         process.env.NATIVE_AUTOMATION = 'true';
 
     if (!process.env.BROWSERSTACK_NO_LOCAL)

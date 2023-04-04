@@ -1,5 +1,5 @@
-const os                  = require('os');
-const http                = require('http');
+const os                         = require('os');
+const http                       = require('http');
 const { expect }                 = require('chai');
 const { skipInNativeAutomation } = require('../../utils/skip-in');
 
