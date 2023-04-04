@@ -27,7 +27,7 @@ if (config.useLocalBrowsers) {
                         .src(fixturePath)
                         .browsers(browsers)
                         .screenshots(SCREENSHOTS_PATH)
-                        .run({ proxyless: config.proxyless });
+                        .run({ nativeAutomation: config.nativeAutomation });
                 })
                 .then(failedCount => {
                     expect(failedCount).eql(0);

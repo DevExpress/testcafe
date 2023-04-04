@@ -11,7 +11,7 @@ const {
 const { createReporter } = require('../../utils/reporter');
 const config             = require('../../config');
 
-const CALLBACK_FUNC_ERROR = config.proxyless ? 'Error in the skipJsError callback function' : 'An error occurred in skipJsErrors handler code:';
+const CALLBACK_FUNC_ERROR = config.nativeAutomation ? 'Error in the skipJsError callback function' : 'An error occurred in skipJsErrors handler code:';
 
 describe('Test should fail after js-error on the page', () => {
     it('if an error is raised before test done', () => {

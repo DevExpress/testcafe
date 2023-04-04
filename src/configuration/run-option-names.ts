@@ -21,6 +21,6 @@ export default [
     OPTION_NAMES.pageRequestTimeout,
     OPTION_NAMES.ajaxRequestTimeout,
     OPTION_NAMES.retryTestPages,
-    OPTION_NAMES.proxyless,
+    OPTION_NAMES.nativeAutomation,
     OPTION_NAMES.baseUrl,
 ];

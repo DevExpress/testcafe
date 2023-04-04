@@ -10,7 +10,7 @@ module.exports = {
     developmentMode:   config.devMode,
     retryTestPages:    config.retryTestPages,
     experimentalDebug: !!process.env.EXPERIMENTAL_DEBUG,
-    isProxyless:       config.isProxyless,
+    nativeAutomation:  config.nativeAutomation,
     src:               path.resolve('./test/functional/fixtures/api/es-next/global-hooks/testcafe-fixtures/test-run-test.js'),
     selectorTimeout:   200,
     assertionTimeout:  1000,

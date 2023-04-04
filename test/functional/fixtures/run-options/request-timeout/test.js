@@ -1,9 +1,9 @@
-const { expect }          = require('chai');
-const { skipDescribeInProxyless } = require('../../../utils/skip-in');
+const { expect }                         = require('chai');
+const { skipDescribeInNativeAutomation } = require('../../../utils/skip-in');
 
 // NOTE: CDP doesn't support request timeouts out of the box.
 // We have decided not to implement such functionality until it is supported in CDP.
-skipDescribeInProxyless('Request timeout', () => {
+skipDescribeInNativeAutomation('Request timeout', () => {
     describe('Test level', () => {
         it('Page request timeout', () => {
             return runTests('testcafe-fixtures/test-level.js', 'page request timeout', { only: 'chrome', shouldFail: true })

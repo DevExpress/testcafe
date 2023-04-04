@@ -96,7 +96,7 @@ if (config.useLocalBrowsers) {
                         }, 1000);
                     });
 
-                    return runner.run({ proxyless: config.proxyless });
+                    return runner.run({ nativeAutomation: config.nativeAutomation });
                 })
                 .then(() => {
                     expect(helper.counter).eql(config.browsers.length * helper.testCount * runCount);
@@ -117,8 +117,8 @@ if (config.useLocalBrowsers) {
                     });
 
                     return runner.run({
-                        quarantineMode: true,
-                        proxyless:      config.proxyless,
+                        quarantineMode:   true,
+                        nativeAutomation: config.nativeAutomation,
                     });
                 })
                 .then(() => {
@@ -145,7 +145,7 @@ if (config.useLocalBrowsers) {
                         }, 1000);
                     });
 
-                    return runner.run({ proxyless: config.proxyless });
+                    return runner.run({ nativeAutomation: config.nativeAutomation });
                 })
                 .then(() => {
                     return cafe.close();
@@ -174,7 +174,7 @@ if (config.useLocalBrowsers) {
                                 return runner
                                     .browsers(config.browsers.map(browserInfo => browserInfo.browserName))
                                     .src(path.join(__dirname, '/testcafe-fixtures/test-2.js'))
-                                    .run({ proxyless: config.proxyless })
+                                    .run({ nativeAutomation: config.nativeAutomation })
                                     .then(() => {
                                         return cafe.close();
                                     })
@@ -185,7 +185,7 @@ if (config.useLocalBrowsers) {
                     }, 10000);
 
                     return runner
-                        .run({ proxyless: config.proxyless });
+                        .run({ nativeAutomation: config.nativeAutomation });
                 });
 
             return promise;
@@ -234,7 +234,7 @@ if (config.useLocalBrowsers) {
             });
 
             return runner
-                .run({ proxyless: config.proxyless })
+                .run({ nativeAutomation: config.nativeAutomation })
                 .then(() => {
                     return cafe.close();
                 });
@@ -252,7 +252,7 @@ if (config.useLocalBrowsers) {
                 }, 1000);
             });
 
-            await runner.run({ proxyless: config.proxyless });
+            await runner.run({ nativeAutomation: config.nativeAutomation });
 
             return cafe.close();
         });
@@ -288,7 +288,7 @@ if (config.useLocalBrowsers) {
                         expect(inTestProcessName).eql(ProcessTitle.service);
                     }, 1000);
 
-                    return runner.run({ proxyless: config.proxyless });
+                    return runner.run({ nativeAutomation: config.nativeAutomation });
                 })
                 .then(() => {
                     if (fs.existsSync(markerFile))

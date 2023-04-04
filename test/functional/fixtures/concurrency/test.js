@@ -1,10 +1,10 @@
-const path                = require('path');
-const { expect }          = require('chai');
-const isCI                = require('is-ci');
-const config              = require('../../config');
-const { createReporter }  = require('../../utils/reporter');
-const testInfo            = require('./test-info');
-const { skipInProxyless } = require('../../utils/skip-in');
+const path                       = require('path');
+const { expect }                 = require('chai');
+const isCI                       = require('is-ci');
+const config                     = require('../../config');
+const { createReporter }         = require('../../utils/reporter');
+const testInfo                   = require('./test-info');
+const { skipInNativeAutomation } = require('../../utils/skip-in');
 
 
 if (config.useLocalBrowsers) {
@@ -42,7 +42,7 @@ if (config.useLocalBrowsers) {
                 })
                 .browsers(browsers)
                 .concurrency(concurrency)
-                .run({ proxyless: config.proxyless });
+                .run({ nativeAutomation: config.nativeAutomation });
         }
 
         function createConnections (count) {
@@ -144,7 +144,7 @@ if (config.useLocalBrowsers) {
 
         // TODO: stabilize test on Firefox
         // NOTE: Skip the test for proxyless mode
-        const needSkip = config.hasBrowser('firefox') || config.proxyless;
+        const needSkip = config.hasBrowser('firefox') || config.nativeAutomation;
 
         (needSkip ? it.skip : it)('Should run tests concurrently with Role', function () {
             return run('chrome:headless --no-sandbox', 2, './testcafe-fixtures/role-test.js')
@@ -181,7 +181,7 @@ if (config.useLocalBrowsers) {
         });
 
         // NOTE: the 'remote' connection cannot be proxyless.
-        skipInProxyless('Should fail if number of remotes is not divisible by concurrency', function () {
+        skipInNativeAutomation('Should fail if number of remotes is not divisible by concurrency', function () {
             return createConnections(3)
                 .then(function (connections) {
                     return run(connections, 2, './testcafe-fixtures/concurrent-test.js');

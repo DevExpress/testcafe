@@ -4,7 +4,7 @@ const logger = RequestLogger(void 0, {
     logRequestHeaders: true,
 });
 
-fixture `GH-7575 - Authorization header should not be modified in the proxyless mode`
+fixture `GH-7575 - Authorization header should not be modified in the native automation mode`
     .page `http://localhost:3000/fixtures/regression/gh-7575/pages/index.html`;
 
 test(`Send XHR`, async t => {

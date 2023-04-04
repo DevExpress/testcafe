@@ -94,11 +94,11 @@ describe('TestCafeConfiguration', function () {
                     'testMeta':    { test: 'meta' },
                     'fixtureMeta': { fixture: 'meta' },
                 },
-                'clientScripts': 'test-client-script.js',
-                'disableHttp2':  true,
-                'proxyless':     true,
-                'baseUrl':       'localhost:3000',
-                'skipJsErrors':  { message: '/testRegex/i', stack: 'testRegex' },
+                'clientScripts':    'test-client-script.js',
+                'disableHttp2':     true,
+                'nativeAutomation': true,
+                'baseUrl':          'localhost:3000',
+                'skipJsErrors':     { message: '/testRegex/i', stack: 'testRegex' },
             });
         });
 
@@ -140,7 +140,7 @@ describe('TestCafeConfiguration', function () {
                             expect(testCafeConfiguration.getOption('filter').fixtureMeta).to.be.deep.equal({ fixture: 'meta' });
                             expect(testCafeConfiguration.getOption('clientScripts')).eql([ 'test-client-script.js' ]);
                             expect(testCafeConfiguration.getOption('disableHttp2')).to.be.true;
-                            expect(testCafeConfiguration.getOption('proxyless')).to.be.true;
+                            expect(testCafeConfiguration.getOption('nativeAutomation')).to.be.true;
                             expect(testCafeConfiguration.getOption('baseUrl')).eql('localhost:3000');
                             expect(testCafeConfiguration.getOption('skipJsErrors')).to.be.deep.equal({ message: '/testRegex/i', stack: 'testRegex' });
                         });
@@ -447,28 +447,28 @@ describe('TestCafeConfiguration', function () {
                     await del(configuration.defaultPaths);
                 });
 
-                it('Proxyless is enabled/hostname is unset', async () => {
+                it('Native automation is enabled/hostname is unset', async () => {
                     await configuration.init();
                     await configuration.calculateHostname({ proxyless: true });
 
                     expect(configuration.getOption('hostname')).eql('localhost');
                 });
 
-                it('Proxyless is enabled/hostname is set', async () => {
+                it('Native automation is enabled/hostname is set', async () => {
                     await configuration.init({ hostname: '123.456.789' });
                     await configuration.calculateHostname({ proxyless: true });
 
                     expect(configuration.getOption('hostname')).eql('localhost');
                 });
 
-                it('Proxyless is disabled/hostname is unset', async () => {
+                it('Native automation is disabled/hostname is unset', async () => {
                     await configuration.init();
                     await configuration.calculateHostname({ proxyless: false });
 
                     expect(configuration.getOption('hostname')).eql('calculated-hostname');
                 });
 
-                it('Proxyless is disabled/hostname is set', async () => {
+                it('Native automation is disabled/hostname is set', async () => {
                     await configuration.init({ hostname: '123.456.789' });
                     await configuration.calculateHostname({ proxyless: false });
 

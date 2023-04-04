@@ -16,7 +16,7 @@ import { RUNTIME_ERRORS } from '../errors/types';
 import TestedApp from './tested-app';
 import parseFileList from '../utils/parse-file-list';
 import loadClientScripts from '../custom-client-scripts/load';
-import { getConcatenatedValuesString, getPluralSuffix } from '../utils/string';
+import { getConcatenatedValuesString } from '../utils/string';
 import { ReporterSource } from '../reporter/interfaces';
 import ClientScript from '../custom-client-scripts/client-script';
 import ClientScriptInit from '../custom-client-scripts/client-script-init';
@@ -201,7 +201,7 @@ export default class Bootstrapper {
             .map(connection => connection.browserInfo.providerName);
 
         if (unsupportedBrowsers.length)
-            throw new GeneralError(RUNTIME_ERRORS.setProxylessForUnsupportedBrowsers, getConcatenatedValuesString(unsupportedBrowsers), getPluralSuffix(unsupportedBrowsers));
+            throw new GeneralError(RUNTIME_ERRORS.setProxylessForUnsupportedBrowsers, getConcatenatedValuesString(unsupportedBrowsers));
     }
 
     private async _getBrowserConnections (browserInfo: BrowserInfoSource[]): Promise<BrowserSet> {
@@ -210,7 +210,7 @@ export default class Bootstrapper {
         if (remotes && remotes.length % this.concurrency)
             throw new GeneralError(RUNTIME_ERRORS.cannotDivideRemotesCountByConcurrency);
 
-        this.proxyless = this.configuration.getOption(OPTION_NAMES.proxyless);
+        this.proxyless = this.configuration.getOption(OPTION_NAMES.nativeAutomation);
 
         await this._setupProxy();
 

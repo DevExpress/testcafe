@@ -2,7 +2,7 @@ const { expect } = require('chai');
 
 const {
     skipInExperimentalDebug,
-    skipInProxylessOrExperimentalDebug,
+    skipInNativeAutomationOrExperimentalDebug,
 } = require('../../../../utils/skip-in');
 
 describe('Request Hooks', () => {
@@ -11,7 +11,7 @@ describe('Request Hooks', () => {
             return runTests('./testcafe-fixtures/request-mock/basic.js', 'Basic', { only: 'chrome' });
         });
 
-        skipInProxylessOrExperimentalDebug('Request failed the CORS validation', () => {
+        skipInNativeAutomationOrExperimentalDebug('Request failed the CORS validation', () => {
             return runTests('./testcafe-fixtures/request-mock/failed-cors-validation.js', 'Failed CORS validation', { only: 'chrome' })
                 .then(() => {
                     expect(testReport.warnings).eql([

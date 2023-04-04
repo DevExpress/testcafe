@@ -213,8 +213,8 @@ module.exports = {
         return process.env.DEV_MODE === 'true';
     },
 
-    get proxyless () {
-        return process.env.PROXYLESS === 'true';
+    get nativeAutomation () {
+        return process.env.NATIVE_AUTOMATION === 'true';
     },
 
     get retryTestPages () {

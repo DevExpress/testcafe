@@ -1,6 +1,6 @@
-const { expect }                     = require('chai');
-const { errorInEachBrowserContains } = require('../../../../assertion-helper.js');
-const { skipDescribeInProxyless }    = require('../../../../utils/skip-in');
+const { expect }                         = require('chai');
+const { errorInEachBrowserContains }     = require('../../../../assertion-helper.js');
+const { skipDescribeInNativeAutomation } = require('../../../../utils/skip-in');
 
 // NOTE: we set selectorTimeout to a large value in some tests to wait for
 // an iframe to load on the farm (it is fast locally but can take some time on the farm)
@@ -149,7 +149,7 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
         });
     });
 
-    skipDescribeInProxyless('Page errors handling', function () {
+    skipDescribeInNativeAutomation('Page errors handling', function () {
         it('Should fail if an error occurs in a same-domain iframe while an action is being executed', function () {
             return runTests('./testcafe-fixtures/page-errors-test.js', 'Error in a same-domain iframe', DEFAULT_FAILED_RUN_OPTIONS)
                 .catch(function (errs) {

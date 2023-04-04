@@ -5,7 +5,7 @@ const config         = require('../../config.js');
 
 let testCafe = null;
 
-async function runTest ({ browsers, test, proxyless }) {
+async function runTest ({ browsers, test, nativeAutomation }) {
     const runner = testCafe.createRunner();
     const source = path.join(__dirname, './testcafe-fixtures/index.js');
 
@@ -14,7 +14,7 @@ async function runTest ({ browsers, test, proxyless }) {
         .filter(testName => {
             return testName ? test === testName : true;
         })
-        .run({ proxyless });
+        .run({ nativeAutomation });
 
     if (failedCount)
         throw new Error('Error has occurred.');
@@ -26,7 +26,7 @@ const currentBrowsers   = config.browsers.map(browser => browser.alias);
 const thereAreAllRequiredBrowsers = REQUIRED_BROWSERS.every(requiredBrowser => currentBrowsers.includes(requiredBrowser));
 
 if (thereAreAllRequiredBrowsers) {
-    describe('Proxyless', function () {
+    describe('Native automation', function () {
         beforeEach(async () => {
             testCafe = await createTestCafe('127.0.0.1', 1335, 1336);
         });
@@ -39,18 +39,18 @@ if (thereAreAllRequiredBrowsers) {
             return runTest({ browsers: 'chrome', test: 'Disabled' });
         });
 
-        it('Enabled with the "proxyless" option', function () {
-            return runTest({ browsers: 'chrome', test: 'Enabled', proxyless: true });
+        it('Enabled with the "nativeAutomation" option', function () {
+            return runTest({ browsers: 'chrome', test: 'Enabled', nativeAutomation: true });
         });
 
         it('Should throw error on running with unsupported browser', function () {
             let errorIsRaised = false;
 
-            return runTest({ browsers: ['chrome', 'firefox'], test: 'Disabled', proxyless: true })
+            return runTest({ browsers: ['chrome', 'firefox'], test: 'Disabled', nativeAutomation: true })
                 .catch(err => {
                     errorIsRaised = true;
 
-                    expect(err.message).eql('The "proxyless" mode is not supported in the "firefox" browser.');
+                    expect(err.message).eql('The following browser(s) do not support the Native Automation mode: "firefox".');
                 })
                 .then(() => {
                     if (!errorIsRaised)
