@@ -550,9 +550,9 @@ interface TestController {
     skipJsErrors (options?: boolean | SkipJsErrorsOptionsObject | SkipJsErrorsCallback | SkipJsErrorsCallbackWithOptionsObject): TestControllerPromise;
 
     /**
-     * Pass additional data to the reporter.
+     * Pass custom data to the reporter.
      *
-     * @param args - Any user data.
+     * @param args - The data you want to report.
      */
     report (...args: any[]): TestControllerPromise;
 }
