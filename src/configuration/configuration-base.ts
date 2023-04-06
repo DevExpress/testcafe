@@ -17,7 +17,7 @@ import renderTemplate from '../utils/render-template';
 import WARNING_MESSAGES from '../notifications/warning-message';
 import log from '../cli/log';
 import { Dictionary } from './interfaces';
-import { JS_CONFIGURATION_EXTENSION, JSON_CONFIGURATION_EXTENSION } from './formats';
+import { JS_CONFIGURATION_EXTENSION, JSON_CONFIGURATION_EXTENSION, CJS_CONFIGURATION_EXTENSION } from './formats';
 
 const DEBUG_LOGGER = debug('testcafe:configuration');
 
@@ -205,7 +205,7 @@ export default class Configuration {
     }
 
     protected _isJSConfiguration (filePath = this.filePath): boolean {
-        return Configuration._hasExtension(filePath, JS_CONFIGURATION_EXTENSION);
+        return Configuration._hasExtension(filePath, JS_CONFIGURATION_EXTENSION) || Configuration._hasExtension(filePath, CJS_CONFIGURATION_EXTENSION);
     }
 
     protected _isJSONConfiguration (filePath = this.filePath): boolean {
