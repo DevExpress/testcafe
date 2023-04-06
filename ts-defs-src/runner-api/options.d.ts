@@ -267,6 +267,10 @@ interface RunOptions {
      * Disables support for multi-window testing in Chrome and Firefox. Use this option if you encounter compatibility issues with your existing tests.
      */
     disableMultipleWindows: boolean;
+    /**
+     * Enables native automation of Chromium-based browsers. Use this option to speed up browser automation and increase test stability.
+     */
+    nativeAutomation: boolean;
 }
 
 interface StartOptions {
@@ -279,7 +283,6 @@ interface StartOptions {
     cache: boolean;
     configFile: string;
     disableHttp2: boolean;
-    nativeAutomation: boolean;
 }
 
 interface ColorOutputOptions {
