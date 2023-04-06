@@ -1919,7 +1919,7 @@ export default class Driver extends serviceUtils.EventEmitter {
             nativeAutomation,
         });
 
-        this.nativeDialogsTracker   = new NativeDialogTracker(this.contextStorage, { nativeAutomation: nativeAutomation, dialogHandler });
+        this.nativeDialogsTracker   = new NativeDialogTracker(this.contextStorage, { nativeAutomation, dialogHandler });
         this.statusBar              = new testCafeUI.StatusBar(this.runInfo.userAgent, this.runInfo.fixtureName, this.runInfo.testName, this.contextStorage);
         this.selectorInspectorPanel = new testCafeUI.SelectorInspectorPanel(this.statusBar);
 

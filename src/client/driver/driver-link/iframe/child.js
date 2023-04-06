@@ -30,9 +30,9 @@ import sendConfirmationMessage from '../send-confirmation-message';
 
 export default class ChildIframeDriverLink {
     constructor (driverWindow, driverId, dispatchNativeAutomationEventUrls) {
-        this.driverWindow               = driverWindow;
-        this.driverIframe               = domUtils.findIframeByWindow(driverWindow);
-        this.driverId                   = driverId;
+        this.driverWindow                      = driverWindow;
+        this.driverIframe                      = domUtils.findIframeByWindow(driverWindow);
+        this.driverId                          = driverId;
         this.iframeAvailabilityTimeout         = 0;
         this.dispatchNativeAutomationEventUrls = dispatchNativeAutomationEventUrls;
     }
