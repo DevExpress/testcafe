@@ -68,9 +68,9 @@ module.exports = async function testFunctional (src, testingEnvironmentName, { e
     });
 
     return new Promise((resolve, reject) => {
-        mocha.run((code) => {
-            if (code)
-                reject();
+        mocha.run(err => {
+            if (err)
+                reject(err);
 
             resolve();
         });

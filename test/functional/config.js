@@ -4,7 +4,6 @@ const browserProviderNames = {
     sauceLabs:    'sauceLabs',
     browserstack: 'browserstack',
     remote:       'remote',
-    safari:       'safari',
 };
 
 const testingEnvironmentNames = {
@@ -14,7 +13,6 @@ const testingEnvironmentNames = {
     localBrowsersChromeFirefox:  'local-browsers-chrome-firefox',
     localBrowsers:               'local-browsers',
     localChrome:                 'local-chrome',
-    localSafari:                 'local-safari',
     localHeadlessChrome:         'local-headless-chrome',
     localHeadlessFirefox:        'local-headless-firefox',
     remote:                      'remote',
@@ -33,6 +31,10 @@ testingEnvironments[testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers] = {
     },
 
     browsers: [
+        {
+            browserName: 'browserstack:safari',
+            alias:       'safari',
+        },
         {
             browserName: 'browserstack:edge:OS X Monterey',
             alias:       'edge',
@@ -125,21 +127,6 @@ testingEnvironments[testingEnvironmentNames.localHeadlessChrome] = {
             browserName: 'chrome:headless --no-sandbox',
             userAgent:   'headlesschrome',
             alias:       'chrome',
-        },
-    ],
-};
-
-testingEnvironments[testingEnvironmentNames.localSafari] = {
-    remote:   true,
-    provider: browserProviderNames.safari,
-
-    safari: {},
-
-    browsers: [
-        {
-            browserName: 'safari',
-            userAgent:   'safari',
-            alias:       'safari',
         },
     ],
 };

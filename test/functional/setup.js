@@ -9,7 +9,6 @@ const BrowserConnection          = require('../../lib/browser/connection');
 const config                     = require('./config.js');
 const site                       = require('./site');
 const RemoteConnector            = require('./remote-connector');
-const SafariConnector            = require('./safari-connector');
 const getTestError               = require('./get-test-error.js');
 const { createSimpleTestStream } = require('./utils/stream');
 const BrowserConnectionStatus    = require('../../lib/browser/connection/status');
@@ -41,7 +40,6 @@ const REMOTE_CONNECTORS_MAP = {
     [config.browserProviderNames.browserstack]: BsConnector,
     [config.browserProviderNames.sauceLabs]:    SlConnector,
     [config.browserProviderNames.remote]:       RemoteConnector,
-    [config.browserProviderNames.safari]:       SafariConnector,
 };
 
 const USE_PROVIDER_POOL = config.useLocalBrowsers || isBrowserStack;
