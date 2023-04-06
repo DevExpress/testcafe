@@ -614,7 +614,7 @@ export default class TestRun extends AsyncEventEmitter {
         const skipJsErrors = this._prepareSkipJsErrorsOption();
 
         return Mustache.render(TEST_RUN_TEMPLATE, {
-            testRunId:                                        JSON.stringify(this.session.id),
+            testRunId:                                               JSON.stringify(this.session.id),
             browserId:                                               JSON.stringify(this.browserConnection.id),
             activeWindowId:                                          JSON.stringify(this.activeWindowId),
             browserHeartbeatRelativeUrl:                             JSON.stringify(this.browserConnection.heartbeatRelativeUrl),
@@ -636,10 +636,10 @@ export default class TestRun extends AsyncEventEmitter {
             skipJsErrors:                                            JSON.stringify(skipJsErrors),
             retryTestPages:                                          this.opts.retryTestPages,
             speed:                                                   this.speed,
-            dialogHandler:              JSON.stringify(this.activeDialogHandler),
-            canUseDefaultWindowActions: JSON.stringify(await this.browserConnection.canUseDefaultWindowActions()),
-            nativeAutomation:           JSON.stringify(this.isNativeAutomation()),
-            domain:                     JSON.stringify(this.browserConnection.browserConnectionGateway.proxy.server1Info.domain),
+            dialogHandler:                                           JSON.stringify(this.activeDialogHandler),
+            canUseDefaultWindowActions:                              JSON.stringify(await this.browserConnection.canUseDefaultWindowActions()),
+            nativeAutomation:                                        JSON.stringify(this.isNativeAutomation()),
+            domain:                                                  JSON.stringify(this.browserConnection.browserConnectionGateway.proxy.server1Info.domain),
         });
     }
 

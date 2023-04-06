@@ -128,10 +128,10 @@ export default class BrowserConnection extends EventEmitter {
     public statusDoneRelativeUrl = '';
     public idleRelativeUrl = '';
     public openFileProtocolRelativeUrl = '';
-    public openFileProtocolUrl                       = '';
-    public dispatchNativeAutomationEventRelativeUrl         = '';
+    public openFileProtocolUrl = '';
+    public dispatchNativeAutomationEventRelativeUrl = '';
     public dispatchNativeAutomationEventSequenceRelativeUrl = '';
-    public parseSelectorRelativeUrl                         = '';
+    public parseSelectorRelativeUrl = '';
     private readonly debugLogger: debug.Debugger;
     private osInfo: OSInfo | null = null;
 

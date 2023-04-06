@@ -16,7 +16,6 @@ import { WindowDimentionsInfo } from '../interfaces';
 import getLocalOSInfo, { OSInfo } from 'get-os-info';
 import { OpenBrowserAdditionalOptions } from '../../shared/types';
 import { EventType } from '../../native-automation/types';
-import { NativeAutomationRoleProvider } from '../../test-run/role-provider';
 
 
 const DEBUG_LOGGER = debug('testcafe:browser:provider');

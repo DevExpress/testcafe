@@ -45,7 +45,6 @@ import { resendAuthRequest } from './resendAuthRequest';
 import TestRunBridge from './test-run-bridge';
 import NativeAutomationRequestContextInfo from './context-info';
 import { failedToFindDNSError, sslCertificateError } from '../errors';
-import { NativeAutomationRoleProvider } from '../../test-run/role-provider';
 
 
 const ALL_REQUEST_RESPONSES = { requestStage: 'Request' } as RequestPattern;

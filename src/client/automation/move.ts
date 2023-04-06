@@ -30,7 +30,6 @@ import createEventSequence from './playback/move/event-sequence/create-event-seq
 import sendRequestToFrame from '../core/utils/send-request-to-frame';
 import NativeAutomationInput from '../../native-automation/client/input';
 import mouseMoveStep from './playback/move/mouse-move-step';
-import { NativeAutomationRoleProvider } from '../../test-run/role-provider';
 
 const MOVE_REQUEST_CMD  = 'automation|move|request';
 const MOVE_RESPONSE_CMD = 'automation|move|response';
