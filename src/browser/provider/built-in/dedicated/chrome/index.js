@@ -10,10 +10,10 @@ import {
 } from './local-chrome';
 import { GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from '../../../utils/client-functions';
 import { BrowserClient } from './cdp-client';
-import { dispatchEvent as dispatchProxylessEvent, navigateTo } from '../../../../../proxyless/utils/cdp';
-import Proxyless from '../../../../../proxyless';
+import { dispatchEvent as dispatchNativeAutomationEvent, navigateTo } from '../../../../../native-automation/utils/cdp';
+import NativeAutomation from '../../../../../native-automation';
 import { chromeBrowserProviderLogger } from '../../../../../utils/debug-loggers';
-import { EventType } from '../../../../../proxyless/types';
+import { EventType } from '../../../../../native-automation/types';
 import delay from '../../../../../utils/delay';
 
 const MIN_AVAILABLE_DIMENSION = 50;
@@ -55,16 +55,16 @@ export default {
         this.setUserAgentMetaInfo(browserId, metaInfo, options);
     },
 
-    async _setupProxyless ({ browserId, browserClient, runtimeInfo, proxylessOptions }) {
+    async _setupNativeAutomation ({ browserId, browserClient, runtimeInfo, nativeAutomationOptions }) {
         const cdpClient = await browserClient.getActiveClient();
-        const proxyless = new Proxyless(browserId, cdpClient);
+        const nativeAutomation = new NativeAutomation(browserId, cdpClient);
 
-        await proxyless.init(proxylessOptions);
+        await nativeAutomation.init(nativeAutomationOptions);
 
-        runtimeInfo.proxyless = proxyless;
+        runtimeInfo.nativeAutomation = nativeAutomation;
     },
 
-    async openBrowser (browserId, pageUrl, config, { disableMultipleWindows, proxyless }) {
+    async openBrowser (browserId, pageUrl, config, { disableMultipleWindows, nativeAutomation }) {
         const parsedPageUrl = parseUrl(pageUrl);
         const runtimeInfo   = await this._createRunTimeInfo(parsedPageUrl.hostname, config, disableMultipleWindows);
 
@@ -101,8 +101,8 @@ export default {
 
         this._setUserAgentMetaInfoForEmulatingDevice(browserId, runtimeInfo.config);
 
-        if (proxyless)
-            await this._setupProxyless({ browserId, browserClient, runtimeInfo, proxylessOptions: proxyless });
+        if (nativeAutomation)
+            await this._setupNativeAutomation({ browserId, browserClient, runtimeInfo, nativeAutomationOptions: nativeAutomation });
 
         chromeBrowserProviderLogger('browser opened %s', browserId);
     },
@@ -110,8 +110,8 @@ export default {
     async closeBrowser (browserId, closingInfo = {}) {
         const runtimeInfo = this.openedBrowsers[browserId];
 
-        if (runtimeInfo.proxyless)
-            await runtimeInfo.proxyless.dispose();
+        if (runtimeInfo.nativeAutomation)
+            await runtimeInfo.nativeAutomation.dispose();
 
         if (runtimeInfo.browserClient.isHeadlessTab())
             await runtimeInfo.browserClient.closeTab();
@@ -190,24 +190,24 @@ export default {
         await navigateTo(cdpClient, url);
     },
 
-    async dispatchProxylessEvent (browserId, type, options) {
+    async dispatchNativeAutomationEvent (browserId, type, options) {
         const cdpClient = await this._getActiveCDPClient(browserId);
 
-        await dispatchProxylessEvent(cdpClient, type, options);
+        await dispatchNativeAutomationEvent(cdpClient, type, options);
     },
 
-    async dispatchProxylessEventSequence (browserId, eventSequence) {
+    async dispatchNativeAutomationEventSequence (browserId, eventSequence) {
         const cdpClient = await this._getActiveCDPClient(browserId);
 
         for (const event of eventSequence) {
             if (event.type === EventType.Delay)
                 await delay(event.options.delay);
             else
-                await dispatchProxylessEvent(cdpClient, event.type, event.options);
+                await dispatchNativeAutomationEvent(cdpClient, event.type, event.options);
         }
     },
 
-    supportProxyless () {
+    supportNativeAutomation () {
         return true;
     },
 };

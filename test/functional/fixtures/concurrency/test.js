@@ -143,7 +143,7 @@ if (config.useLocalBrowsers) {
         }
 
         // TODO: stabilize test on Firefox
-        // NOTE: Skip the test for proxyless mode
+        // NOTE: Skip the test for nativeAutomation mode
         const needSkip = config.hasBrowser('firefox') || config.nativeAutomation;
 
         (needSkip ? it.skip : it)('Should run tests concurrently with Role', function () {
@@ -180,7 +180,7 @@ if (config.useLocalBrowsers) {
                 });
         });
 
-        // NOTE: the 'remote' connection cannot be proxyless.
+        // NOTE: the 'remote' connection cannot be nativeAutomation.
         skipInNativeAutomation('Should fail if number of remotes is not divisible by concurrency', function () {
             return createConnections(3)
                 .then(function (connections) {

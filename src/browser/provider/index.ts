@@ -15,7 +15,8 @@ import { Dictionary } from '../../configuration/interfaces';
 import { WindowDimentionsInfo } from '../interfaces';
 import getLocalOSInfo, { OSInfo } from 'get-os-info';
 import { OpenBrowserAdditionalOptions } from '../../shared/types';
-import { EventType } from '../../proxyless/types';
+import { EventType } from '../../native-automation/types';
+import { NativeAutomationRoleProvider } from '../../test-run/role-provider';
 
 
 const DEBUG_LOGGER = debug('testcafe:browser:provider');
@@ -451,15 +452,15 @@ export default class BrowserProvider {
         await this.plugin.closeBrowserChildWindow(browserId);
     }
 
-    public async dispatchProxylessEvent (browserId: string, type: EventType, options: any): Promise<void> {
-        await this.plugin.dispatchProxylessEvent(browserId, type, options);
+    public async dispatchNativeAutomationEvent (browserId: string, type: EventType, options: any): Promise<void> {
+        await this.plugin.dispatchNativeAutomationEvent(browserId, type, options);
     }
 
-    public async dispatchProxylessEventSequence (browserId: string, sequence: []): Promise<void> {
-        await this.plugin.dispatchProxylessEventSequence(browserId, sequence);
+    public async dispatchNativeAutomationEventSequence (browserId: string, sequence: []): Promise<void> {
+        await this.plugin.dispatchNativeAutomationEventSequence(browserId, sequence);
     }
 
-    public supportProxyless (): boolean {
-        return this.plugin.supportProxyless();
+    public supportNativeAutomation (): boolean {
+        return this.plugin.supportNativeAutomation();
     }
 }

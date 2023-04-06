@@ -9,9 +9,9 @@ import { getDefaultAutomationOffsets } from '../../../core/utils/offsets';
 import AutomationSettings from '../../settings';
 import getKeyProperties from '../../utils/get-key-properties';
 import cursor from '../../cursor';
-import ProxylessInput from '../../../../proxyless/client/input';
+import NativeAutomationInput from '../../../../native-automation/client/input';
 import getKeyInfo from '../press/get-key-info';
-import CDPEventDescriptor from '../../../../proxyless/client/event-descriptor';
+import CDPEventDescriptor from '../../../../native-automation/client/event-descriptor';
 
 const Promise               = hammerhead.Promise;
 const extend                = hammerhead.utils.extend;
@@ -28,7 +28,7 @@ const SPECIAL_KEYS    = testCafeCore.KEY_MAPS.specialKeys;
 
 
 export default class TypeAutomation {
-    constructor (element, text, typeOptions, dispatchProxylessEventFn) {
+    constructor (element, text, typeOptions, dispatchNativeAutomationEventFn) {
         this.element    = TypeAutomation.findTextEditableChild(element) || element;
         this.typingText = text.toString();
 
@@ -62,7 +62,7 @@ export default class TypeAutomation {
             simulateTypeChar: true,
         };
 
-        this.proxylessInput = dispatchProxylessEventFn ? new ProxylessInput(dispatchProxylessEventFn) : null;
+        this.nativeAutomationInput = dispatchNativeAutomationEventFn ? new NativeAutomationInput(dispatchNativeAutomationEventFn) : null;
     }
 
     static findTextEditableChild (element) {
@@ -138,7 +138,7 @@ export default class TypeAutomation {
                 modifiers: this.modifiers,
             });
 
-            cursor.shouldRender = !this.proxylessInput;
+            cursor.shouldRender = !this.nativeAutomationInput;
 
             const clickAutomation = new ClickAutomation(this.element, clickOptions, window, cursor);
 
@@ -175,10 +175,10 @@ export default class TypeAutomation {
                 textSelection.deleteSelectionContents(this.element, true);
         }
 
-        if (this._canUseProxylessInput()) {
+        if (this._canUseNativeAutomationInput()) {
             const eventSequence = this._calculateCDPEventSequence();
 
-            return this.proxylessInput.executeEventSequence(eventSequence);
+            return this.nativeAutomationInput.executeEventSequence(eventSequence);
         }
 
         return promiseUtils.whilst(() => !this._isTypingFinished(), () => this._typingStep());
@@ -211,15 +211,15 @@ export default class TypeAutomation {
         return eventSequence;
     }
 
-    _canUseProxylessInput () {
-        if (!this.proxylessInput)
+    _canUseNativeAutomationInput () {
+        if (!this.nativeAutomationInput)
             return false;
 
         // NOTE: 'paste' is a synthetic option that don't have equivalent for native user action.
         if (this.paste)
             return false;
 
-        // NOTE: Type to non text-editable and content-editable elements are not supported in the proxyless mode.
+        // NOTE: Type to non text-editable and content-editable elements are not supported in the native automation mode.
         // In this case, TestCafe just set element value with raising events.
         if (!domUtils.isTextEditableElement(this.element)
             && domUtils.isInputElement(this.element)

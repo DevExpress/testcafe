@@ -9,7 +9,7 @@ import FrameTree = Protocol.Page.FrameTree;
 import FulfillRequestRequest = Protocol.Fetch.FulfillRequestRequest;
 import RequestPattern = Protocol.Fetch.RequestPattern;
 import CertificateErrorEvent = Protocol.Security.CertificateErrorEvent;
-import ProxylessRequestHookEventProvider from '../request-hooks/event-provider';
+import NativeAutomationRequestHookEventProvider from '../request-hooks/event-provider';
 import ResourceInjector, { ResourceInjectorOptions } from '../resource-injector';
 import { convertToHeaderEntries } from '../utils/headers';
 
@@ -35,16 +35,17 @@ import {
     StoragesSnapshot,
 } from 'testcafe-hammerhead';
 
-import ProxylessPipelineContext from '../request-hooks/pipeline-context';
-import { ProxylessSetupOptions } from '../../shared/types';
-import DEFAULT_PROXYLESS_SETUP_OPTIONS from '../default-setup-options';
+import NativeAutomationPipelineContext from '../request-hooks/pipeline-context';
+import { NativeAutomationSetupOptions } from '../../shared/types';
+import DEFAULT_NATIVE_AUTOMATION_SETUP_OPTIONS from '../default-setup-options';
 import getSpecialRequestHandler from './special-handlers';
 import { safeContinueRequest, safeContinueResponse } from './safe-api';
-import ProxylessApiBase from '../api-base';
+import NativeAutomationApiBase from '../api-base';
 import { resendAuthRequest } from './resendAuthRequest';
 import TestRunBridge from './test-run-bridge';
-import ProxylessRequestContextInfo from './context-info';
+import NativeAutomationRequestContextInfo from './context-info';
 import { failedToFindDNSError, sslCertificateError } from '../errors';
+import { NativeAutomationRoleProvider } from '../../test-run/role-provider';
 
 
 const ALL_REQUEST_RESPONSES = { requestStage: 'Request' } as RequestPattern;
@@ -52,14 +53,14 @@ const ALL_REQUEST_REQUESTS  = { requestStage: 'Response' } as RequestPattern;
 
 const ALL_REQUESTS_DATA = [ALL_REQUEST_REQUESTS, ALL_REQUEST_RESPONSES];
 
-export default class ProxylessRequestPipeline extends ProxylessApiBase {
+export default class NativeAutomationRequestPipeline extends NativeAutomationApiBase {
     private readonly _testRunBridge: TestRunBridge;
-    private readonly _contextInfo: ProxylessRequestContextInfo;
-    public readonly requestHookEventProvider: ProxylessRequestHookEventProvider;
+    private readonly _contextInfo: NativeAutomationRequestContextInfo;
+    public readonly requestHookEventProvider: NativeAutomationRequestHookEventProvider;
     public restoringStorages: StoragesSnapshot | null;
     public contextStorage: SessionStorageInfo | null;
     private readonly _resourceInjector: ResourceInjector;
-    private _options: ProxylessSetupOptions;
+    private _options: NativeAutomationSetupOptions;
     private readonly _specialServiceRoutes: SpecialServiceRoutes;
     private _stopped: boolean;
     private _currentFrameTree: FrameTree | null;
@@ -70,11 +71,11 @@ export default class ProxylessRequestPipeline extends ProxylessApiBase {
         super(browserId, client);
 
         this._testRunBridge           = new TestRunBridge(browserId);
-        this._contextInfo             = new ProxylessRequestContextInfo(this._testRunBridge);
+        this._contextInfo             = new NativeAutomationRequestContextInfo(this._testRunBridge);
         this._specialServiceRoutes    = this._getSpecialServiceRoutes();
-        this.requestHookEventProvider = new ProxylessRequestHookEventProvider();
+        this.requestHookEventProvider = new NativeAutomationRequestHookEventProvider();
         this._resourceInjector        = new ResourceInjector(this._testRunBridge);
-        this._options                 = DEFAULT_PROXYLESS_SETUP_OPTIONS;
+        this._options                 = DEFAULT_NATIVE_AUTOMATION_SETUP_OPTIONS;
         this._stopped                 = false;
         this._currentFrameTree        = null;
         this._failedRequestIds        = [];
@@ -102,7 +103,7 @@ export default class ProxylessRequestPipeline extends ProxylessApiBase {
         };
     }
 
-    private async _handleMockErrorIfNecessary (pipelineContext: ProxylessPipelineContext, event: RequestPausedEvent): Promise<void> {
+    private async _handleMockErrorIfNecessary (pipelineContext: NativeAutomationPipelineContext, event: RequestPausedEvent): Promise<void> {
         if (!pipelineContext.mock.hasError)
             return;
 
@@ -111,7 +112,7 @@ export default class ProxylessRequestPipeline extends ProxylessApiBase {
         requestPipelineMockLogger('%s\n%s', event.networkId, pipelineContext.mock.error);
     }
 
-    private async _handleMockResponse (mockedResponse: IncomingMessageLike, pipelineContext: ProxylessPipelineContext, event: RequestPausedEvent): Promise<void> {
+    private async _handleMockResponse (mockedResponse: IncomingMessageLike, pipelineContext: NativeAutomationPipelineContext, event: RequestPausedEvent): Promise<void> {
         const mockedResponseBodyStr = (mockedResponse.getBody() as Buffer).toString();
 
         const fulfillInfo = {
@@ -319,8 +320,8 @@ export default class ProxylessRequestPipeline extends ProxylessApiBase {
         return this._currentFrameTree.frame.id !== frameId;
     }
 
-    public async init (options?: ProxylessSetupOptions): Promise<void> {
-        this._options = options as ProxylessSetupOptions;
+    public async init (options?: NativeAutomationSetupOptions): Promise<void> {
+        this._options = options as NativeAutomationSetupOptions;
 
         this._resourceInjector.setOptions(this._createResourceInjectorOptions());
 

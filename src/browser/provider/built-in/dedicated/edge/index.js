@@ -8,7 +8,7 @@ export default {
         return EdgeRunTimeInfo.create(hostName, configString, disableMultipleWindows);
     },
 
-    supportProxyless () {
+    supportNativeAutomation () {
         return true;
     },
 };

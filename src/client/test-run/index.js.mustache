@@ -8,35 +8,35 @@
     if (!origin)
         origin = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
 
-    var proxyless = {{{proxyless}}};
+    var nativeAutomation = {{{nativeAutomation}}};
 
-    if (proxyless)
+    if (nativeAutomation)
         origin = {{{domain}}};
 
-    var testRunId                                = {{{testRunId}}};
-    var browserId                                = {{{browserId}}};
-    var activeWindowId                           = {{{activeWindowId}}};
-    var selectorTimeout                          = {{{selectorTimeout}}};
-    var pageLoadTimeout                          = {{{pageLoadTimeout}}};
-    var childWindowReadyTimeout                  = {{{childWindowReadyTimeout}}};
-    var retryTestPages                           = {{{retryTestPages}}};
-    var speed                                    = {{{speed}}};
-    var browserHeartbeatUrl                      = origin + {{{browserHeartbeatRelativeUrl}}};
-    var browserStatusUrl                         = origin + {{{browserStatusRelativeUrl}}};
-    var browserStatusDoneUrl                     = origin + {{{browserStatusDoneRelativeUrl}}};
-    var browserIdleUrl                           = origin + {{{browserIdleRelativeUrl}}};
-    var browserOpenFileProtocolUrl               = origin + {{{browserOpenFileProtocolRelativeUrl}}};
-    var browserActiveWindowIdUrl                 = origin + {{{browserActiveWindowIdUrl}}};
-    var browserCloseWindowUrl                    = origin + {{{browserCloseWindowUrl}}};
-    var browserDispatchProxylessEventUrl         = origin + {{{browserDispatchProxylessEventRelativeUrl}}};
-    var browserDispatchProxylessEventSequenceUrl = origin + {{{browserDispatchProxylessEventSequenceRelativeUrl}}};
-    var browserParseSelectorUrl                  = origin + {{{browserParseSelectorUrl}}};
-    var skipJsErrors                             = {{{skipJsErrors}}};
-    var dialogHandler                            = {{{dialogHandler}}};
-    var userAgent                                = {{{userAgent}}};
-    var fixtureName                              = {{{fixtureName}}};
-    var testName                                 = {{{testName}}};
-    var canUseDefaultWindowActions               = {{{canUseDefaultWindowActions}}};
+    var testRunId                                       = {{{testRunId}}};
+    var browserId                                       = {{{browserId}}};
+    var activeWindowId                                  = {{{activeWindowId}}};
+    var selectorTimeout                                 = {{{selectorTimeout}}};
+    var pageLoadTimeout                                 = {{{pageLoadTimeout}}};
+    var childWindowReadyTimeout                         = {{{childWindowReadyTimeout}}};
+    var retryTestPages                                  = {{{retryTestPages}}};
+    var speed                                           = {{{speed}}};
+    var browserHeartbeatUrl                             = origin + {{{browserHeartbeatRelativeUrl}}};
+    var browserStatusUrl                                = origin + {{{browserStatusRelativeUrl}}};
+    var browserStatusDoneUrl                            = origin + {{{browserStatusDoneRelativeUrl}}};
+    var browserIdleUrl                                  = origin + {{{browserIdleRelativeUrl}}};
+    var browserOpenFileProtocolUrl                      = origin + {{{browserOpenFileProtocolRelativeUrl}}};
+    var browserActiveWindowIdUrl                        = origin + {{{browserActiveWindowIdUrl}}};
+    var browserCloseWindowUrl                           = origin + {{{browserCloseWindowUrl}}};
+    var browserDispatchNativeAutomationEventUrl         = origin + {{{browserDispatchNativeAutomationEventRelativeUrl}}};
+    var browserDispatchNativeAutomationEventSequenceUrl = origin + {{{browserDispatchNativeAutomationEventSequenceRelativeUrl}}};
+    var browserParseSelectorUrl                         = origin + {{{browserParseSelectorUrl}}};
+    var skipJsErrors                                    = {{{skipJsErrors}}};
+    var dialogHandler                                   = {{{dialogHandler}}};
+    var userAgent                                       = {{{userAgent}}};
+    var fixtureName                                     = {{{fixtureName}}};
+    var testName                                        = {{{testName}}};
+    var canUseDefaultWindowActions                      = {{{canUseDefaultWindowActions}}};
 
     var ClientDriver = window['%testCafeDriver%'];
     var driver       = new ClientDriver(testRunId,
@@ -48,8 +48,8 @@
             activeWindowId:                 browserActiveWindowIdUrl,
             closeWindow:                    browserCloseWindowUrl,
             openFileProtocolUrl:            browserOpenFileProtocolUrl,
-            dispatchProxylessEvent:         browserDispatchProxylessEventUrl,
-            dispatchProxylessEventSequence: browserDispatchProxylessEventSequenceUrl,
+            dispatchNativeAutomationEvent:  browserDispatchNativeAutomationEventUrl,
+            dispatchNativeAutomationEventSequence: browserDispatchNativeAutomationEventSequenceUrl,
             parseSelector:                  browserParseSelectorUrl,
         },
         {
@@ -67,7 +67,7 @@
             retryTestPages:             retryTestPages,
             speed:                      speed,
             canUseDefaultWindowActions: canUseDefaultWindowActions,
-            proxyless:                  proxyless,
+            nativeAutomation:                  nativeAutomation,
         }
     );
 

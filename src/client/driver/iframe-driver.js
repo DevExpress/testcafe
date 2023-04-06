@@ -101,16 +101,16 @@ export default class IframeDriver extends Driver {
     }
 
     async _init () {
-        const { id, dispatchProxylessEventUrls } = await this.parentDriverLink.establishConnection();
+        const { id, dispatchNativeAutomationEventUrls } = await this.parentDriverLink.establishConnection();
 
         this.contextStorage = new ContextStorage(window, {
-            testRunId: id,
-            windowId:  this.windowId,
-            proxyless: this.options.proxyless,
+            testRunId:        id,
+            windowId:         this.windowId,
+            nativeAutomation: this.options.nativeAutomation,
         });
 
-        this.communicationUrls.dispatchProxylessEvent         = dispatchProxylessEventUrls.single;
-        this.communicationUrls.dispatchProxylessEventSequence = dispatchProxylessEventUrls.sequence;
+        this.communicationUrls.dispatchNativeAutomationEvent         = dispatchNativeAutomationEventUrls.single;
+        this.communicationUrls.dispatchNativeAutomationEventSequence = dispatchNativeAutomationEventUrls.sequence;
 
         if (this._failIfClientCodeExecutionIsInterrupted())
             return;
@@ -129,8 +129,8 @@ export default class IframeDriver extends Driver {
     // API
     start () {
         this.nativeDialogsTracker = new IframeNativeDialogTracker({
-            dialogHandler: this.options.dialogHandler,
-            proxyless:     this.options.proxyless,
+            dialogHandler:    this.options.dialogHandler,
+            nativeAutomation: this.options.nativeAutomation,
         });
 
         this.statusBar = new IframeStatusBar();

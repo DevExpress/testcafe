@@ -39,7 +39,7 @@ import {
 import COMMAND_TYPE from '../../../../test-run/commands/type';
 import { ActionCommandBase } from '../../../../test-run/commands/base';
 import { Automation } from '../../../automation/types';
-import { DispatchEventFn } from '../../../../proxyless/client/types';
+import { DispatchEventFn } from '../../../../native-automation/client/types';
 
 
 ActionExecutor.ACTIONS_HANDLERS[COMMAND_TYPE.dispatchEvent] = {
@@ -54,7 +54,7 @@ ActionExecutor.ACTIONS_HANDLERS[COMMAND_TYPE.dispatchEvent] = {
 };
 
 ActionExecutor.ACTIONS_HANDLERS[COMMAND_TYPE.pressKey] = {
-    create: (command, [], dispatchProxylessEventFn?: DispatchEventFn) => new PressAutomation(parseKeySequence(command.keys).combinations, command.options, dispatchProxylessEventFn), // eslint-disable-line no-empty-pattern
+    create: (command, [], dispatchNativeAutomationEventFn?: DispatchEventFn) => new PressAutomation(parseKeySequence(command.keys).combinations, command.options, dispatchNativeAutomationEventFn), // eslint-disable-line no-empty-pattern
 
     ensureCmdArgs: command => {
         const parsedKeySequence = parseKeySequence(command.keys);
@@ -65,11 +65,11 @@ ActionExecutor.ACTIONS_HANDLERS[COMMAND_TYPE.pressKey] = {
 };
 
 ActionExecutor.ACTIONS_HANDLERS[COMMAND_TYPE.click] = {
-    create: (command, elements, dispatchProxylessEventFn?: DispatchEventFn) => {
+    create: (command, elements, dispatchNativeAutomationEventFn?: DispatchEventFn) => {
         if (/option|optgroup/.test(domUtils.getTagName(elements[0])))
             return new SelectChildClickAutomation(elements[0], command.options);
 
-        return new ClickAutomation(elements[0], command.options, window, cursor, dispatchProxylessEventFn);
+        return new ClickAutomation(elements[0], command.options, window, cursor, dispatchNativeAutomationEventFn);
     },
 };
 
@@ -82,8 +82,8 @@ ActionExecutor.ACTIONS_HANDLERS[COMMAND_TYPE.doubleClick] = {
 };
 
 ActionExecutor.ACTIONS_HANDLERS[COMMAND_TYPE.hover] = {
-    create: (command, elements, dispatchProxylessEventFn?: DispatchEventFn) => {
-        return new HoverAutomation(elements[0], command.options, dispatchProxylessEventFn);
+    create: (command, elements, dispatchNativeAutomationEventFn?: DispatchEventFn) => {
+        return new HoverAutomation(elements[0], command.options, dispatchNativeAutomationEventFn);
     },
 };
 
@@ -120,7 +120,7 @@ ActionExecutor.ACTIONS_HANDLERS[COMMAND_TYPE.scrollIntoView] = {
 
 ActionExecutor.ACTIONS_HANDLERS[COMMAND_TYPE.typeText] = {
     // eslint-disable-next-line no-restricted-properties
-    create: (command, elements, dispatchProxylessEventFn?: DispatchEventFn) => new TypeAutomation(elements[0], command.text, command.options, dispatchProxylessEventFn),
+    create: (command, elements, dispatchNativeAutomationEventFn?: DispatchEventFn) => new TypeAutomation(elements[0], command.text, command.options, dispatchNativeAutomationEventFn),
 };
 
 

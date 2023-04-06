@@ -1,7 +1,7 @@
 import Protocol from 'devtools-protocol';
 import RequestPausedEvent = Protocol.Fetch.RequestPausedEvent;
 import { ProtocolApi } from 'chrome-remote-interface';
-import { ProxylessSetupOptions } from '../shared/types';
+import { NativeAutomationSetupOptions } from '../shared/types';
 import { StoragesSnapshot } from 'testcafe-hammerhead';
 import { Dictionary } from '../configuration/interfaces';
 
@@ -18,8 +18,8 @@ export interface DocumentResourceInfo {
 }
 
 export interface RequestHandler {
-    condition: (event: RequestPausedEvent, options?: ProxylessSetupOptions, serviceRoutes?: SpecialServiceRoutes) => boolean;
-    handler: (event: RequestPausedEvent, client: ProtocolApi, options?: ProxylessSetupOptions) => Promise<void>;
+    condition: (event: RequestPausedEvent, options?: NativeAutomationSetupOptions, serviceRoutes?: SpecialServiceRoutes) => boolean;
+    handler: (event: RequestPausedEvent, client: ProtocolApi, options?: NativeAutomationSetupOptions) => Promise<void>;
 }
 
 export interface InjectableResourcesOptions {

@@ -16,7 +16,7 @@ import {
     DEFAULT_DISABLE_CROSS_DOMAIN,
     DEFAULT_DISABLE_HTTP2,
     DEFAULT_FILTER_FN,
-    DEFAULT_PROXYLESS,
+    DEFAULT_NATIVE_AUTOMATION,
     DEFAULT_RETRY_TEST_PAGES,
     DEFAULT_SCREENSHOT_THUMBNAILS,
     DEFAULT_SOURCE_DIRECTORIES,
@@ -81,7 +81,7 @@ export interface TestCafeStartOptions {
     developmentMode: boolean;
     cache: boolean;
     disableHttp2: boolean;
-    proxyless: boolean;
+    nativeAutomation: boolean;
     disableCrossDomain: boolean;
 }
 
@@ -163,14 +163,14 @@ export default class TestCafeConfiguration extends Configuration {
             cache:              this.getOption(OPTION_NAMES.cache),
             disableHttp2:       this.getOption(OPTION_NAMES.disableHttp2),
             disableCrossDomain: this.getOption(OPTION_NAMES.disableCrossDomain),
-            proxyless:          this.getOption(OPTION_NAMES.nativeAutomation),
+            nativeAutomation:   this.getOption(OPTION_NAMES.nativeAutomation),
         };
     }
 
     public get browserConnectionGatewayOptions (): BrowserConnectionGatewayOptions {
         return {
-            retryTestPages: this.getOption(OPTION_NAMES.retryTestPages),
-            proxyless:      this.getOption(OPTION_NAMES.nativeAutomation),
+            retryTestPages:   this.getOption(OPTION_NAMES.retryTestPages),
+            nativeAutomation: this.getOption(OPTION_NAMES.nativeAutomation),
         };
     }
 
@@ -272,7 +272,7 @@ export default class TestCafeConfiguration extends Configuration {
         this._ensureOptionWithValue(OPTION_NAMES.developmentMode, DEFAULT_DEVELOPMENT_MODE, OptionSource.Configuration);
         this._ensureOptionWithValue(OPTION_NAMES.retryTestPages, DEFAULT_RETRY_TEST_PAGES, OptionSource.Configuration);
         this._ensureOptionWithValue(OPTION_NAMES.disableHttp2, DEFAULT_DISABLE_HTTP2, OptionSource.Configuration);
-        this._ensureOptionWithValue(OPTION_NAMES.nativeAutomation, DEFAULT_PROXYLESS, OptionSource.Configuration);
+        this._ensureOptionWithValue(OPTION_NAMES.nativeAutomation, DEFAULT_NATIVE_AUTOMATION, OptionSource.Configuration);
         this._ensureOptionWithValue(OPTION_NAMES.disableCrossDomain, DEFAULT_DISABLE_CROSS_DOMAIN, OptionSource.Configuration);
 
         this._ensureScreenshotOptions();
@@ -330,9 +330,9 @@ export default class TestCafeConfiguration extends Configuration {
         this.mergeOptions({ hostname });
     }
 
-    public async calculateHostname ({ proxyless } = { proxyless: false }): Promise<void> {
+    public async calculateHostname ({ nativeAutomation } = { nativeAutomation: false }): Promise<void> {
         await this.ensureHostname(async hostname => {
-            if (proxyless)
+            if (nativeAutomation)
                 hostname = LOCALHOST_NAMES.LOCALHOST;
             else
                 hostname = await getValidHostname(hostname);

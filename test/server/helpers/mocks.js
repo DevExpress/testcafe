@@ -7,13 +7,13 @@ const browserConnectionGatewayMock = {
     startServingConnection: noop,
     stopServingConnection:  noop,
     initialize:             noop,
-    switchToProxyless:      noop,
+    switchToNativeAutomation:      noop,
     getConnections:         () => ({}),
 
     proxy: {
         resolveRelativeServiceUrl: noop,
         start:                     noop,
-        switchToProxyless:         noop,
+        switchToNativeAutomation:         noop,
     },
 };
 

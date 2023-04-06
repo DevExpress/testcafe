@@ -93,7 +93,7 @@ export default class TestCafe {
 
     // API
     async createBrowserConnection () {
-        // NOTE: 'remote' browser connection cannot be proxyless.
+        // NOTE: 'remote' browser connection cannot be native automation.
         const browserInfo = await browserProviderPool.getBrowserInfo('remote');
 
         await this._initializeBrowserConnectionGateway();

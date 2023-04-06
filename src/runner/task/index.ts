@@ -175,8 +175,8 @@ export default class Task extends AsyncEventEmitter {
         });
     }
 
-    public registerClientScriptRouting (isProxyless: boolean): void {
-        this._clientScriptRoutes = clientScriptsRouting.register(this._proxy, this.tests, isProxyless);
+    public registerClientScriptRouting (isNativeAutomation: boolean): void {
+        this._clientScriptRoutes = clientScriptsRouting.register(this._proxy, this.tests, isNativeAutomation);
     }
 
     public unRegisterClientScriptRouting (): void {

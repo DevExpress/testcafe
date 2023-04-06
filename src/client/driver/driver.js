@@ -209,7 +209,7 @@ export default class Driver extends serviceUtils.EventEmitter {
 
         pageUnloadBarrier.init();
 
-        if (!this.options.proxyless)
+        if (!this.options.nativeAutomation)
             preventRealEvents();
 
         hammerhead.on(hammerhead.EVENTS.uncaughtJsError, err => this._onJsError(err));
@@ -263,7 +263,7 @@ export default class Driver extends serviceUtils.EventEmitter {
     }
 
     _getCurrentWindowId () {
-        if (this.options.proxyless)
+        if (this.options.nativeAutomation)
             return this.runInfo.activeWindowId;
 
         const currentUrl     = window.location.toString();
@@ -309,7 +309,7 @@ export default class Driver extends serviceUtils.EventEmitter {
     }
 
     _unlockPageAfterTestIsDone () {
-        if (!this.options.proxyless)
+        if (!this.options.nativeAutomation)
             disableRealEventsPreventing();
 
         return Promise.resolve();
@@ -534,8 +534,8 @@ export default class Driver extends serviceUtils.EventEmitter {
             const driverId = `${this.testRunId}-${generateId()}`;
 
             childIframeDriverLink = new ChildIframeDriverLink(driverWindow, driverId, {
-                single:   this.communicationUrls.dispatchProxylessEvent,
-                sequence: this.communicationUrls.dispatchProxylessEventSequence,
+                single:   this.communicationUrls.dispatchNativeAutomationEvent,
+                sequence: this.communicationUrls.dispatchNativeAutomationEventSequence,
             });
 
             this.childIframeDriverLinks.push(childIframeDriverLink);
@@ -941,7 +941,7 @@ export default class Driver extends serviceUtils.EventEmitter {
             .then(() => {
                 this.contextStorage.setItem(this.EXECUTING_IN_IFRAME_FLAG, true);
 
-                return this.activeChildIframeDriverLink.executeCommand(command, this.speed, this.options.proxyless);
+                return this.activeChildIframeDriverLink.executeCommand(command, this.speed, this.options.nativeAutomation);
             })
             .then(status => this._onCommandExecutedInIframe(status))
             .catch(err => this._onCommandExecutedInIframe(new DriverStatus({
@@ -1163,14 +1163,14 @@ export default class Driver extends serviceUtils.EventEmitter {
             messageSandbox.sendServiceMsg(msg, this.childIframeDriverLinks[i].driverWindow);
     }
 
-    createDispatchProxylessEventFunctions () {
-        return this.options.proxyless ? {
-            single:   this._createDispatchProxylessEventFn('dispatchProxylessEvent'),
-            sequence: this._createDispatchProxylessEventFn('dispatchProxylessEventSequence'),
+    createDispatchNativeAutomationEventFunctions () {
+        return this.options.nativeAutomation ? {
+            single:   this._createDispatchNativeAutomationEventFn('dispatchNativeAutomationEvent'),
+            sequence: this._createDispatchNativeAutomationEventFn('dispatchNativeAutomationEventSequence'),
         } : null;
     }
 
-    _createDispatchProxylessEventFn (name) {
+    _createDispatchNativeAutomationEventFn (name) {
         return nativeMethods.functionBind.call(
             browser[name],
             browser[name],
@@ -1191,10 +1191,10 @@ export default class Driver extends serviceUtils.EventEmitter {
         };
 
         const executor = new ActionExecutor(command, {
-            globalSelectorTimeout:    this.options.selectorTimeout,
-            testSpeed:                this.speed,
-            executeSelectorFn:        executeSelectorCb,
-            dispatchProxylessEventFn: this.createDispatchProxylessEventFunctions(),
+            globalSelectorTimeout:           this.options.selectorTimeout,
+            testSpeed:                       this.speed,
+            executeSelectorFn:               executeSelectorCb,
+            dispatchNativeAutomationEventFn: this.createDispatchNativeAutomationEventFunctions(),
         });
 
         const warnings = [];
@@ -1254,7 +1254,7 @@ export default class Driver extends serviceUtils.EventEmitter {
     _onNavigateToCommand (command) {
         this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, true);
 
-        if (this.options.proxyless && isFileProtocol(command.url))
+        if (this.options.nativeAutomation && isFileProtocol(command.url))
             browser.redirectUsingCdp(command, hammerhead.createNativeXHR, this.communicationUrls.openFileProtocolUrl);
         else {
             executeNavigateToCommand(command)
@@ -1525,7 +1525,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         };
 
         return browser
-            .checkStatus(urls, hammerhead.createNativeXHR, { manualRedirect: true, proxyless: this.options.proxyless })
+            .checkStatus(urls, hammerhead.createNativeXHR, { manualRedirect: true, nativeAutomation: this.options.nativeAutomation })
             .then(({ command }) => {
                 const isSessionChange = command.testRunId !== this.testRunId;
 
@@ -1911,22 +1911,22 @@ export default class Driver extends serviceUtils.EventEmitter {
     }
 
     _init () {
-        const { proxyless, dialogHandler, speed } = this.options;
+        const { nativeAutomation, dialogHandler, speed } = this.options;
 
         this.contextStorage = new ContextStorage(window, {
             testRunId: this.testRunId,
             windowId:  this.windowId,
-            proxyless,
+            nativeAutomation,
         });
 
-        this.nativeDialogsTracker   = new NativeDialogTracker(this.contextStorage, { proxyless, dialogHandler });
+        this.nativeDialogsTracker   = new NativeDialogTracker(this.contextStorage, { nativeAutomation: nativeAutomation, dialogHandler });
         this.statusBar              = new testCafeUI.StatusBar(this.runInfo.userAgent, this.runInfo.fixtureName, this.runInfo.testName, this.contextStorage);
         this.selectorInspectorPanel = new testCafeUI.SelectorInspectorPanel(this.statusBar);
 
         const self = this;
 
         this.statusBar.on(this.statusBar.UNLOCK_PAGE_BTN_CLICK, () => {
-            if (!self.options.proxyless)
+            if (!self.options.nativeAutomation)
                 disableRealEventsPreventing();
         });
 

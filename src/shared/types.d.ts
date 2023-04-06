@@ -44,12 +44,12 @@ interface NextTestRunInfo {
     url: string;
 }
 
-interface ProxylessSetupOptions {
+interface NativeAutomationSetupOptions {
     serviceDomains: string[];
     developmentMode: boolean;
 }
 
 interface OpenBrowserAdditionalOptions {
     disableMultipleWindows: boolean;
-    proxyless?: ProxylessSetupOptions;
+    nativeAutomation?: NativeAutomationSetupOptions;
 }

@@ -12,7 +12,7 @@ describe('Using external proxy server', function () {
         return runTests('testcafe-fixtures/index.test.js', null, { useProxy: TRANSPARENT_PROXY_URL });
     });
 
-    // NOTE: The `--proxy` flag is not supported in the proxyless mode.
+    // NOTE: The `--proxy` flag is not supported in the nativeAutomation mode.
     skipInNativeAutomation('Should open restricted page via trusted proxy server', function () {
         return runTests('testcafe-fixtures/restricted-page.test.js', null, { useProxy: TRUSTED_PROXY_URL });
     });
@@ -42,7 +42,7 @@ describe('Using proxy-bypass', function () {
             });
     });
 
-    // NOTE: The `--proxy` flag is not supported in the proxyless mode.
+    // NOTE: The `--proxy` flag is not supported in the nativeAutomation mode.
     skipInNativeAutomation('Should open page without proxy but get resource with proxy', function () {
         const server = http.createServer(function (req, res) {
             res.write('document.getElementById(\'result\').innerHTML = \'proxy\'');

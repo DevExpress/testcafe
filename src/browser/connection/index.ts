@@ -37,7 +37,7 @@ import TestRun from '../../test-run';
 import { TestRun as LegacyTestRun } from 'testcafe-legacy-api';
 import { Proxy } from 'testcafe-hammerhead';
 import { NextTestRunInfo, OpenBrowserAdditionalOptions } from '../../shared/types';
-import { EventType } from '../../proxyless/types';
+import { EventType } from '../../native-automation/types';
 
 const getBrowserConnectionDebugScope = (id: string): string => `testcafe:browser:connection:${id}`;
 
@@ -89,13 +89,13 @@ export interface BrowserInfo {
 export interface BrowserConnectionOptions {
     disableMultipleWindows: boolean;
     developmentMode: boolean;
-    proxyless: boolean;
+    nativeAutomation: boolean;
 }
 
 const DEFAULT_BROWSER_CONNECTION_OPTIONS = {
     disableMultipleWindows: false,
     developmentMode:        false,
-    proxyless:              false,
+    nativeAutomation:       false,
 };
 
 export default class BrowserConnection extends EventEmitter {
@@ -128,10 +128,10 @@ export default class BrowserConnection extends EventEmitter {
     public statusDoneRelativeUrl = '';
     public idleRelativeUrl = '';
     public openFileProtocolRelativeUrl = '';
-    public openFileProtocolUrl = '';
-    public dispatchProxylessEventRelativeUrl = '';
-    public dispatchProxylessEventSequenceRelativeUrl = '';
-    public parseSelectorRelativeUrl = '';
+    public openFileProtocolUrl                       = '';
+    public dispatchNativeAutomationEventRelativeUrl         = '';
+    public dispatchNativeAutomationEventSequenceRelativeUrl = '';
+    public parseSelectorRelativeUrl                         = '';
     private readonly debugLogger: debug.Debugger;
     private osInfo: OSInfo | null = null;
 
@@ -208,9 +208,9 @@ export default class BrowserConnection extends EventEmitter {
         this.activeWindowIdUrl                         = `${SERVICE_ROUTES.activeWindowId}/${this.id}`;
         this.closeWindowUrl                            = `${SERVICE_ROUTES.closeWindow}/${this.id}`;
         this.openFileProtocolRelativeUrl               = `${SERVICE_ROUTES.openFileProtocol}/${this.id}`;
-        this.dispatchProxylessEventRelativeUrl         = `${SERVICE_ROUTES.dispatchProxylessEvent}/${this.id}`;
-        this.dispatchProxylessEventSequenceRelativeUrl = `${SERVICE_ROUTES.dispatchProxylessEventSequence}/${this.id}`;
-        this.parseSelectorRelativeUrl                  = `${SERVICE_ROUTES.parseSelector}/${this.id}`;
+        this.dispatchNativeAutomationEventRelativeUrl         = `${SERVICE_ROUTES.dispatchNativeAutomationEvent}/${this.id}`;
+        this.dispatchNativeAutomationEventSequenceRelativeUrl = `${SERVICE_ROUTES.dispatchNativeAutomationEventSequence}/${this.id}`;
+        this.parseSelectorRelativeUrl                         = `${SERVICE_ROUTES.parseSelector}/${this.id}`;
 
         this.idleUrl             = proxy.resolveRelativeServiceUrl(this.idleRelativeUrl);
         this.heartbeatUrl        = proxy.resolveRelativeServiceUrl(this.heartbeatRelativeUrl);
@@ -269,8 +269,8 @@ export default class BrowserConnection extends EventEmitter {
             disableMultipleWindows: this._options.disableMultipleWindows,
         } as OpenBrowserAdditionalOptions;
 
-        if (this._options.proxyless) {
-            options.proxyless = {
+        if (this._options.nativeAutomation) {
+            options.nativeAutomation = {
                 serviceDomains: [
                     this.browserConnectionGateway.proxy.server1Info.domain,
                     this.browserConnectionGateway.proxy.server2Info.domain,
@@ -571,7 +571,7 @@ export default class BrowserConnection extends EventEmitter {
             initScriptUrl:       this.initScriptUrl,
             openFileProtocolUrl: this.openFileProtocolUrl,
             retryTestPages:      !!this.browserConnectionGateway.retryTestPages,
-            proxyless:           this._options.proxyless,
+            nativeAutomation:    this._options.nativeAutomation,
         });
     }
 
@@ -639,12 +639,12 @@ export default class BrowserConnection extends EventEmitter {
         return this.provider.openFileProtocol(this.id, url);
     }
 
-    public async dispatchProxylessEvent (type: EventType, options: any): Promise<void> {
-        return this.provider.dispatchProxylessEvent(this.id, type, options);
+    public async dispatchNativeAutomationEvent (type: EventType, options: any): Promise<void> {
+        return this.provider.dispatchNativeAutomationEvent(this.id, type, options);
     }
 
-    public async dispatchProxylessEventSequence (eventSequence: []): Promise<void> {
-        return this.provider.dispatchProxylessEventSequence(this.id, eventSequence);
+    public async dispatchNativeAutomationEventSequence (eventSequence: []): Promise<void> {
+        return this.provider.dispatchNativeAutomationEventSequence(this.id, eventSequence);
     }
 
     public async canUseDefaultWindowActions (): Promise<boolean> {

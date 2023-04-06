@@ -1001,7 +1001,7 @@ const experimentalDebug = !!process.env.EXPERIMENTAL_DEBUG;
             });
         }
 
-        // NOTE: the `event.isSameOriginPolicyFailed` property return `false` in the proxyless mode,
+        // NOTE: the `event.isSameOriginPolicyFailed` property return `false` in the nativeAutomation mode,
         // but in the proxy mode it returns `true`
         // the problem is only with warning log, but not with request mock
         skipInNativeAutomation('Should get warning for request hook', async () => {
@@ -1221,7 +1221,7 @@ const experimentalDebug = !!process.env.EXPERIMENTAL_DEBUG;
             });
     });
 
-    // NOTE: this test hangs in proxyless for unknown reasons
+    // NOTE: this test hangs in nativeAutomation for unknown reasons
     skipInNativeAutomation('Should raise an error when uncaught exception occurred in any reporter method', async () => {
         function createReporterWithBrokenMethod (method) {
             const base = {

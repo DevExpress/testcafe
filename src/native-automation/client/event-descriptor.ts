@@ -14,8 +14,8 @@ const MOUSE_EVENT_OPTIONS = {
     clickCount: 1,
 };
 
-const CALCULATE_TOP_LEFT_POINT_REQUEST_CMD  = 'proxyless|calculate-top-left-point|request';
-const CALCULATE_TOP_LEFT_POINT_RESPONSE_CMD = 'proxyless|calculate-top-left-point|response';
+const CALCULATE_TOP_LEFT_POINT_REQUEST_CMD  = 'native-automation|calculate-top-left-point|request';
+const CALCULATE_TOP_LEFT_POINT_RESPONSE_CMD = 'native-automation|calculate-top-left-point|response';
 
 function getLeftTopPoint (driverIframe: any): AxisValuesData<number> {
     const rect     = driverIframe.getBoundingClientRect();

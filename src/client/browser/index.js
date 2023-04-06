@@ -117,7 +117,7 @@ export function redirect (command, createXHR, openFileProtocolUrl) {
         document.location = command.url;
 }
 
-function proxylessCheckRedirecting ({ result }) {
+function nativeAutomationCheckRedirecting ({ result }) {
     if (result.cmd === COMMAND.idle)
         return regularCheckRedirecting(result);
 
@@ -131,9 +131,9 @@ function regularCheckRedirecting (result) {
         && !isCurrentLocation(result.url);
 }
 
-async function getStatus ({ statusUrl, openFileProtocolUrl }, createXHR, { manualRedirect, proxyless } = {}) {
+async function getStatus ({ statusUrl, openFileProtocolUrl }, createXHR, { manualRedirect, nativeAutomation } = {}) {
     const result      = await sendXHR(statusUrl, createXHR);
-    const redirecting = proxyless ? proxylessCheckRedirecting({ result }) : regularCheckRedirecting(result);
+    const redirecting = nativeAutomation ? nativeAutomationCheckRedirecting({ result }) : regularCheckRedirecting(result);
 
     if (redirecting && !manualRedirect)
         redirect(result, createXHR, openFileProtocolUrl);
@@ -202,7 +202,7 @@ export function closeWindow (closeWindowUrl, createXHR, windowId) {
     });
 }
 
-export async function dispatchProxylessEvent (dispatchProxylessEventUrl, testCafeUI, createXHR, type, options) {
+export async function dispatchNativeAutomationEvent (dispatchNativeAutomationEventUrl, testCafeUI, createXHR, type, options) {
     await testCafeUI.hide();
 
     const data = JSON.stringify({ //eslint-disable-line no-restricted-globals
@@ -210,7 +210,7 @@ export async function dispatchProxylessEvent (dispatchProxylessEventUrl, testCaf
         options,
     });
 
-    await sendXHR(dispatchProxylessEventUrl, createXHR, {
+    await sendXHR(dispatchNativeAutomationEventUrl, createXHR, {
         method: 'POST',
         data,
     });
@@ -218,10 +218,10 @@ export async function dispatchProxylessEvent (dispatchProxylessEventUrl, testCaf
     await testCafeUI.show();
 }
 
-export async function dispatchProxylessEventSequence (dispatchProxylessEventSequenceUrl, testCafeUI, createXHR, sequence) {
+export async function dispatchNativeAutomationEventSequence (dispatchNativeAutomationEventSequenceUrl, testCafeUI, createXHR, sequence) {
     await testCafeUI.hide();
 
-    await sendXHR(dispatchProxylessEventSequenceUrl, createXHR, {
+    await sendXHR(dispatchNativeAutomationEventSequenceUrl, createXHR, {
         method: 'POST',
         data:   JSON.stringify(sequence), //eslint-disable-line no-restricted-globals
     });

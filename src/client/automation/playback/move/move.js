@@ -2,7 +2,7 @@ import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import { MoveOptions } from '../../../../test-run/commands/options';
 import cursor from '../../cursor';
-import ProxylessInput from '../../../../proxyless/client/input';
+import NativeAutomationInput from '../../../../native-automation/client/input';
 
 
 import getLineRectIntersection from './get-line-rect-intersection';
@@ -22,7 +22,7 @@ const styleUtils         = testCafeCore.styleUtils;
 const MOVE_REQUEST_CMD  = 'automation|move|request';
 const MOVE_RESPONSE_CMD = 'automation|move|response';
 
-function onMoveToIframeRequest (e, dispatchProxylessEventFn) {
+function onMoveToIframeRequest (e, dispatchNativeAutomationEventFn) {
     const iframePoint                 = new AxisValues(e.message.endX, e.message.endY);
     const iframeWin                   = e.source;
     const iframe                      = domUtils.findIframeByWindow(iframeWin);
@@ -60,12 +60,12 @@ function onMoveToIframeRequest (e, dispatchProxylessEventFn) {
     };
 
     if (cursor.getActiveWindow(window) !== iframeWin) {
-        let proxylessInput = null;
+        let nativeAutomationInput = null;
 
-        if (dispatchProxylessEventFn)
-            proxylessInput = new ProxylessInput(dispatchProxylessEventFn);
+        if (dispatchNativeAutomationEventFn)
+            nativeAutomationInput = new NativeAutomationInput(dispatchNativeAutomationEventFn);
 
-        MoveAutomation.create(iframe, moveOptions, window, cursor, proxylessInput)
+        MoveAutomation.create(iframe, moveOptions, window, cursor, nativeAutomationInput)
             .then(moveAutomation => {
                 return moveAutomation.run();
             })
@@ -159,7 +159,7 @@ messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
             // @ts-ignore
             const driver = window['%testCafeDriverInstance%'];
 
-            onMoveToIframeRequest(e, e.message.proxylessMove && driver.createDispatchProxylessEventFunctions());
+            onMoveToIframeRequest(e, e.message.nativeAutomationMove && driver.createDispatchNativeAutomationEventFunctions());
         }
         else {
             hammerhead.on(hammerhead.EVENTS.beforeUnload, () => messageSandbox.sendServiceMsg({ cmd: MOVE_RESPONSE_CMD }, e.source));

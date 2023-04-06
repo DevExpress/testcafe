@@ -1,7 +1,7 @@
 const { skipDescribeInNativeAutomation } = require('../../../utils/skip-in');
 
 // NOTE: This test suit tests localStorage synchronisation between windows. We didn't support multiple windows in CDP yet.
-// We need to turn on these tests and implement cache-control response header in proxyless once multiple windows are supported.
+// We need to turn on these tests and implement cache-control response header in nativeAutomation once multiple windows are supported.
 
 skipDescribeInNativeAutomation('Disable page caching', () => {
     it('Test run', () => {
