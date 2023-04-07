@@ -118,8 +118,6 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
 
         // NOTE: only for legacy API
         this._ensureWindowAndCursorForLegacyTests(this);
-
-        this.cursor.shouldRender = !this.nativeAutomationInput;
     }
 
     private _ensureWindowAndCursorForLegacyTests (automation: VisibleElementAutomation): void {

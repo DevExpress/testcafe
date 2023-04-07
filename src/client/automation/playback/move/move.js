@@ -32,8 +32,6 @@ function onMoveToIframeRequest (e, dispatchNativeAutomationEventFn) {
     const iframePointRelativeToParent = positionUtils.getIframePointRelativeToParentFrame(iframePoint, iframeWin);
     const cursorPosition              = cursor.getPosition();
 
-    cursor.shouldRender = e.message.shouldRender;
-
     const intersectionPoint = positionUtils.isInRectangle(cursorPosition, iframeRectangle) ? cursorPosition :
         getLineRectIntersection(cursorPosition, iframePointRelativeToParent, iframeRectangle);
 

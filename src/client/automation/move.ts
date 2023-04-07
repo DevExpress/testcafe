@@ -266,7 +266,6 @@ export default class MoveAutomation {
             endY:         endPoint.y,
             modifiers:    this.modifiers,
             speed:        this.speed,
-            shouldRender: this.cursor.shouldRender,
             nativeAutomationMove,
         };
 
