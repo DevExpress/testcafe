@@ -1,4 +1,7 @@
-export const JS_CONFIGURATION_EXTENSION   = '.js';
-export const JSON_CONFIGURATION_EXTENSION = '.json';
-export const CJS_CONFIGURATION_EXTENSION = '.cjs';
-export const CONFIGURATION_EXTENSIONS     = [JS_CONFIGURATION_EXTENSION, JSON_CONFIGURATION_EXTENSION, CJS_CONFIGURATION_EXTENSION];
+enum Extensions {
+    json = '.json',
+    js = '.js',
+    cjs = '.cjs',
+}
+
+export default Extensions;

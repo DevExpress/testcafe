@@ -39,7 +39,7 @@ import { DEPRECATED, getDeprecationMessage } from '../notifications/deprecated';
 import WarningLog from '../notifications/warning-log';
 import browserProviderPool from '../browser/provider/pool';
 import BrowserConnection, { BrowserConnectionOptions, BrowserInfo } from '../browser/connection';
-import { CONFIGURATION_EXTENSIONS } from './formats';
+import Extensions from './formats';
 import { GeneralError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
 import { LOCALHOST_NAMES } from '../utils/localhost-names';
@@ -47,7 +47,7 @@ import { BrowserConnectionGatewayOptions } from '../browser/connection/gateway';
 import { getValidHostname } from './utils';
 
 const BASE_CONFIGURATION_FILENAME = '.testcaferc';
-const CONFIGURATION_FILENAMES     = CONFIGURATION_EXTENSIONS.map(ext => `${BASE_CONFIGURATION_FILENAME}${ext}`);
+const CONFIGURATION_FILENAMES     = (Object.keys(Extensions) as Array<keyof typeof Extensions>).map(ext => `${BASE_CONFIGURATION_FILENAME}${ext}`);
 
 const DEFAULT_SCREENSHOTS_DIRECTORY = 'screenshots';
 
