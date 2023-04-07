@@ -1,6 +1,6 @@
 import { StateSnapshot } from 'testcafe-hammerhead';
 import TestRun from './index';
-import { CdpCookieProvider } from '../proxyless/cookie-provider';
+import { CdpCookieProvider } from '../native-automation/cookie-provider';
 import SessionController from './session-controller';
 
 export interface RoleProvider {
@@ -20,7 +20,7 @@ class RoleProviderBase {
     }
 }
 
-export class ProxylessRoleProvider extends RoleProviderBase implements RoleProvider {
+export class NativeAutomationRoleProvider extends RoleProviderBase implements RoleProvider {
     private _cookieProvider: CdpCookieProvider;
 
     constructor (testRun: TestRun) {

@@ -449,28 +449,28 @@ describe('TestCafeConfiguration', function () {
 
                 it('Native automation is enabled/hostname is unset', async () => {
                     await configuration.init();
-                    await configuration.calculateHostname({ proxyless: true });
+                    await configuration.calculateHostname({ nativeAutomation: true });
 
                     expect(configuration.getOption('hostname')).eql('localhost');
                 });
 
                 it('Native automation is enabled/hostname is set', async () => {
                     await configuration.init({ hostname: '123.456.789' });
-                    await configuration.calculateHostname({ proxyless: true });
+                    await configuration.calculateHostname({ nativeAutomation: true });
 
                     expect(configuration.getOption('hostname')).eql('localhost');
                 });
 
                 it('Native automation is disabled/hostname is unset', async () => {
                     await configuration.init();
-                    await configuration.calculateHostname({ proxyless: false });
+                    await configuration.calculateHostname({ nativeAutomation: false });
 
                     expect(configuration.getOption('hostname')).eql('calculated-hostname');
                 });
 
                 it('Native automation is disabled/hostname is set', async () => {
                     await configuration.init({ hostname: '123.456.789' });
-                    await configuration.calculateHostname({ proxyless: false });
+                    await configuration.calculateHostname({ nativeAutomation: false });
 
                     expect(configuration.getOption('hostname')).eql('123.456.789');
                 });

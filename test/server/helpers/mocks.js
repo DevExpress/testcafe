@@ -4,16 +4,16 @@ const Test             = require('../../../lib/api/structure/test');
 const { EventEmitter } = require('events');
 
 const browserConnectionGatewayMock = {
-    startServingConnection: noop,
-    stopServingConnection:  noop,
-    initialize:             noop,
-    switchToProxyless:      noop,
-    getConnections:         () => ({}),
+    startServingConnection:   noop,
+    stopServingConnection:    noop,
+    initialize:               noop,
+    switchToNativeAutomation: noop,
+    getConnections:           () => ({}),
 
     proxy: {
         resolveRelativeServiceUrl: noop,
         start:                     noop,
-        switchToProxyless:         noop,
+        switchToNativeAutomation:  noop,
     },
 };
 

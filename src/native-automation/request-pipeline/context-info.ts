@@ -1,5 +1,5 @@
 import { Dictionary } from '../../configuration/interfaces';
-import ProxylessPipelineContext from '../request-hooks/pipeline-context';
+import NativeAutomationPipelineContext from '../request-hooks/pipeline-context';
 import RequestPausedEventBasedEventFactory from '../request-hooks/event-factory/request-paused-event-based';
 import Protocol from 'devtools-protocol';
 import RequestPausedEvent = Protocol.Fetch.RequestPausedEvent;
@@ -10,12 +10,12 @@ import { BaseRequestHookEventFactory } from 'testcafe-hammerhead';
 import FrameNavigatedEventBasedEventFactory from '../request-hooks/event-factory/frame-navigated-event-based';
 
 export interface ContextData {
-    pipelineContext: ProxylessPipelineContext;
+    pipelineContext: NativeAutomationPipelineContext;
     eventFactory: BaseRequestHookEventFactory;
 }
 
-export default class ProxylessRequestContextInfo {
-    private readonly _pipelineContexts: Dictionary<ProxylessPipelineContext>;
+export default class NativeAutomationRequestContextInfo {
+    private readonly _pipelineContexts: Dictionary<NativeAutomationPipelineContext>;
     private readonly _eventFactories: Dictionary<BaseRequestHookEventFactory>;
     private readonly _testRunBridge: TestRunBridge;
 
@@ -25,8 +25,8 @@ export default class ProxylessRequestContextInfo {
         this._testRunBridge    = testRunBridge;
     }
 
-    private _createPipelineContext (requestId: string): ProxylessPipelineContext {
-        const pipelineContext = new ProxylessPipelineContext(requestId);
+    private _createPipelineContext (requestId: string): NativeAutomationPipelineContext {
+        const pipelineContext = new NativeAutomationPipelineContext(requestId);
 
         this._pipelineContexts[requestId] = pipelineContext;
 
@@ -62,7 +62,7 @@ export default class ProxylessRequestContextInfo {
         delete this._eventFactories[requestId];
     }
 
-    public getPipelineContext (requestId: string): ProxylessPipelineContext {
+    public getPipelineContext (requestId: string): NativeAutomationPipelineContext {
         return this._pipelineContexts[requestId];
     }
 

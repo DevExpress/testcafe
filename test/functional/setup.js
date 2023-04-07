@@ -58,7 +58,7 @@ function getBrowserInfo (settings) {
                 .then(browserInfo => {
                     const options = {
                         disableMultipleWindows: false,
-                        proxyless:              config.nativeAutomation,
+                        nativeAutomation:       config.nativeAutomation,
                         developmentMode:        config.devMode,
                     };
 
@@ -196,7 +196,7 @@ before(function () {
                 return testCafe._initializeBrowserConnectionGateway()
                     .then(() => {
                         if (config.nativeAutomation)
-                            testCafe.browserConnectionGateway.switchToProxyless();
+                            testCafe.browserConnectionGateway.switchToNativeAutomation();
                     });
             }
 

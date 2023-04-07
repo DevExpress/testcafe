@@ -4,7 +4,7 @@ import { SimulatedKeyInfo } from './key-press/utils';
 import { DispatchEventFn } from './types';
 import CDPEventDescriptor from './event-descriptor';
 
-export default class ProxylessInput {
+export default class NativeAutomationInput {
     private readonly _dispatchEventFn: DispatchEventFn;
     constructor (dispatchEventFn: DispatchEventFn) {
         this._dispatchEventFn = dispatchEventFn;

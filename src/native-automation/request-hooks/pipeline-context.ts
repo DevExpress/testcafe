@@ -1,6 +1,6 @@
 import { BaseRequestPipelineContext } from 'testcafe-hammerhead';
 
-export default class ProxylessPipelineContext extends BaseRequestPipelineContext {
+export default class NativeAutomationPipelineContext extends BaseRequestPipelineContext {
     public constructor (requestId: string) {
         super(requestId);
     }

@@ -10,7 +10,7 @@ const getParsedUrl = ClientFunction(() => {
 });
 
 fixture `Fixture`
-    .page('http://localhost:3000/fixtures/proxyless/pages/index.html');
+    .page('http://localhost:3000/fixtures/native-automation/pages/index.html');
 
 test('Disabled', async t => {
     const parsedUrl = await getParsedUrl();

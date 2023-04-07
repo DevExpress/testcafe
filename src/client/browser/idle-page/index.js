@@ -23,12 +23,12 @@ class IdlePage {
             openFileProtocolUrl: this.communicationUrls.openFileProtocolUrl,
         };
 
-        let { command } = await browser.checkStatus(urls, createXHR, { proxyless: this.options.proxyless });
+        let { command } = await browser.checkStatus(urls, createXHR, { nativeAutomation: this.options.nativeAutomation });
 
         while (command.cmd === COMMAND.idle) {
             await browser.delay(CHECK_STATUS_DELAY);
 
-            ({ command } = await browser.checkStatus(urls, createXHR, { proxyless: this.options.proxyless }));
+            ({ command } = await browser.checkStatus(urls, createXHR, { nativeAutomation: this.options.nativeAutomation }));
         }
     }
 

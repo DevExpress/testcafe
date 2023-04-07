@@ -35,17 +35,17 @@ describe('TestRun - Driver protocol', function () {
             return runTests('./testcafe-fixtures/driver-test.js', 'Mixed execution order');
         });
 
-        // NOTE: this test just is not designed for using in the proxyless mode (see the next ones)
+        // NOTE: this test just is not designed for using in the nativeAutomation mode (see the next ones)
         skipInNativeAutomation('Should clear out the localStorage and sessionStorage after test (GH-1546)(proxy)', function () {
             return runTests('./testcafe-fixtures/clear-and-lock-storages.js');
         });
 
         onlyInNativeAutomation('Should clear out the localStorage and sessionStorage after test (GH-1546)(native automation)', function () {
-            return runTests('./testcafe-fixtures/clear-and-lock-storages-proxyless-part-1.js');
+            return runTests('./testcafe-fixtures/clear-and-lock-storages-native-automation-part-1.js');
         });
 
         onlyInNativeAutomation('Should clear out the localStorage and sessionStorage for multiple domains(native automation)', function () {
-            return runTests('./testcafe-fixtures/clear-and-lock-storages-proxyless-part-2.js');
+            return runTests('./testcafe-fixtures/clear-and-lock-storages-native-automation-part-2.js');
         });
     });
 });

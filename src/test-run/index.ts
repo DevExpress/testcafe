@@ -136,13 +136,13 @@ import { StoragesProviderFactory } from './storages/factory';
 import wrapCustomAction from '../api/wrap-custom-action';
 
 import {
-    ProxylessRoleProvider,
+    NativeAutomationRoleProvider,
     ProxyRoleProvider,
     RoleProvider,
 } from './role-provider';
 
-import ProxylessRequestPipeline from '../proxyless/request-pipeline';
-import Proxyless from '../proxyless';
+import NativeAutomationRequestPipeline from '../native-automation/request-pipeline';
+import NativeAutomation from '../native-automation';
 import ReportDataLog from '../reporter/report-data-log';
 
 const lazyRequire                 = require('import-lazy')(require);
@@ -371,41 +371,41 @@ export default class TestRun extends AsyncEventEmitter {
         this._requestHookEventProvider = this._getRequestHookEventProvider();
         this._roleProvider             = this._getRoleProvider();
 
-        this.cookieProvider    = CookieProviderFactory.create(this, this.isProxyless() as boolean);
-        this._storagesProvider = StoragesProviderFactory.create(this, this.isProxyless() as boolean);
+        this.cookieProvider    = CookieProviderFactory.create(this, this.isNativeAutomation() as boolean);
+        this._storagesProvider = StoragesProviderFactory.create(this, this.isNativeAutomation() as boolean);
 
         this._addInjectables();
     }
 
-    public isProxyless (): boolean {
+    public isNativeAutomation (): boolean {
         return !!this.opts.nativeAutomation;
     }
 
     private _getRequestHookEventProvider (): RequestHookEventProvider {
-        if (!this.isProxyless())
+        if (!this.isNativeAutomation())
             return this.session.requestHookEventProvider;
 
-        return this._proxylessRequestPipeline.requestHookEventProvider;
+        return this._nativeAutomationRequestPipeline.requestHookEventProvider;
     }
 
     public saveStoragesSnapshot (storageSnapshot: StoragesSnapshot): void {
-        if (this.isProxyless())
-            this._proxylessRequestPipeline.restoringStorages = storageSnapshot;
+        if (this.isNativeAutomation())
+            this._nativeAutomationRequestPipeline.restoringStorages = storageSnapshot;
     }
 
-    private get _proxylessRequestPipeline (): ProxylessRequestPipeline {
-        return this._proxyless.requestPipeline;
+    private get _nativeAutomationRequestPipeline (): NativeAutomationRequestPipeline {
+        return this._nativeAutomation.requestPipeline;
     }
 
-    private get _proxyless (): Proxyless {
+    private get _nativeAutomation (): NativeAutomation {
         const runtimeInfo = this.browserConnection.provider.plugin.openedBrowsers[this.browserConnection.id];
 
-        return runtimeInfo.proxyless;
+        return runtimeInfo.nativeAutomation;
     }
 
     private _getRoleProvider (): RoleProvider {
-        if (this.isProxyless())
-            return new ProxylessRoleProvider(this);
+        if (this.isNativeAutomation())
+            return new NativeAutomationRoleProvider(this);
 
         return new ProxyRoleProvider(this);
     }
@@ -614,44 +614,44 @@ export default class TestRun extends AsyncEventEmitter {
         const skipJsErrors = this._prepareSkipJsErrorsOption();
 
         return Mustache.render(TEST_RUN_TEMPLATE, {
-            testRunId:                                        JSON.stringify(this.session.id),
-            browserId:                                        JSON.stringify(this.browserConnection.id),
-            activeWindowId:                                   JSON.stringify(this.activeWindowId),
-            browserHeartbeatRelativeUrl:                      JSON.stringify(this.browserConnection.heartbeatRelativeUrl),
-            browserStatusRelativeUrl:                         JSON.stringify(this.browserConnection.statusRelativeUrl),
-            browserStatusDoneRelativeUrl:                     JSON.stringify(this.browserConnection.statusDoneRelativeUrl),
-            browserIdleRelativeUrl:                           JSON.stringify(this.browserConnection.idleRelativeUrl),
-            browserActiveWindowIdUrl:                         JSON.stringify(this.browserConnection.activeWindowIdUrl),
-            browserCloseWindowUrl:                            JSON.stringify(this.browserConnection.closeWindowUrl),
-            browserOpenFileProtocolRelativeUrl:               JSON.stringify(this.browserConnection.openFileProtocolRelativeUrl),
-            browserDispatchProxylessEventRelativeUrl:         JSON.stringify(this.browserConnection.dispatchProxylessEventRelativeUrl),
-            browserDispatchProxylessEventSequenceRelativeUrl: JSON.stringify(this.browserConnection.dispatchProxylessEventSequenceRelativeUrl),
-            browserParseSelectorUrl:                          JSON.stringify(this.browserConnection.parseSelectorRelativeUrl),
-            userAgent:                                        JSON.stringify(this.browserConnection.userAgent),
-            testName:                                         JSON.stringify(this.test.name),
-            fixtureName:                                      JSON.stringify((this.test.fixture as Fixture).name),
-            selectorTimeout:                                  this.opts.selectorTimeout,
-            pageLoadTimeout:                                  this.pageLoadTimeout,
-            childWindowReadyTimeout:                          CHILD_WINDOW_READY_TIMEOUT,
-            skipJsErrors:                                     JSON.stringify(skipJsErrors),
-            retryTestPages:                                   this.opts.retryTestPages,
-            speed:                                            this.speed,
-            dialogHandler:                                    JSON.stringify(this.activeDialogHandler),
-            canUseDefaultWindowActions:                       JSON.stringify(await this.browserConnection.canUseDefaultWindowActions()),
-            proxyless:                                        JSON.stringify(this.isProxyless()),
-            domain:                                           JSON.stringify(this.browserConnection.browserConnectionGateway.proxy.server1Info.domain),
+            testRunId:                                               JSON.stringify(this.session.id),
+            browserId:                                               JSON.stringify(this.browserConnection.id),
+            activeWindowId:                                          JSON.stringify(this.activeWindowId),
+            browserHeartbeatRelativeUrl:                             JSON.stringify(this.browserConnection.heartbeatRelativeUrl),
+            browserStatusRelativeUrl:                                JSON.stringify(this.browserConnection.statusRelativeUrl),
+            browserStatusDoneRelativeUrl:                            JSON.stringify(this.browserConnection.statusDoneRelativeUrl),
+            browserIdleRelativeUrl:                                  JSON.stringify(this.browserConnection.idleRelativeUrl),
+            browserActiveWindowIdUrl:                                JSON.stringify(this.browserConnection.activeWindowIdUrl),
+            browserCloseWindowUrl:                                   JSON.stringify(this.browserConnection.closeWindowUrl),
+            browserOpenFileProtocolRelativeUrl:                      JSON.stringify(this.browserConnection.openFileProtocolRelativeUrl),
+            browserDispatchNativeAutomationEventRelativeUrl:         JSON.stringify(this.browserConnection.dispatchNativeAutomationEventRelativeUrl),
+            browserDispatchNativeAutomationEventSequenceRelativeUrl: JSON.stringify(this.browserConnection.dispatchNativeAutomationEventSequenceRelativeUrl),
+            browserParseSelectorUrl:                                 JSON.stringify(this.browserConnection.parseSelectorRelativeUrl),
+            userAgent:                                               JSON.stringify(this.browserConnection.userAgent),
+            testName:                                                JSON.stringify(this.test.name),
+            fixtureName:                                             JSON.stringify((this.test.fixture as Fixture).name),
+            selectorTimeout:                                         this.opts.selectorTimeout,
+            pageLoadTimeout:                                         this.pageLoadTimeout,
+            childWindowReadyTimeout:                                 CHILD_WINDOW_READY_TIMEOUT,
+            skipJsErrors:                                            JSON.stringify(skipJsErrors),
+            retryTestPages:                                          this.opts.retryTestPages,
+            speed:                                                   this.speed,
+            dialogHandler:                                           JSON.stringify(this.activeDialogHandler),
+            canUseDefaultWindowActions:                              JSON.stringify(await this.browserConnection.canUseDefaultWindowActions()),
+            nativeAutomation:                                        JSON.stringify(this.isNativeAutomation()),
+            domain:                                                  JSON.stringify(this.browserConnection.browserConnectionGateway.proxy.server1Info.domain),
         });
     }
 
     public async getIframePayloadScript (): Promise<string> {
         return Mustache.render(IFRAME_TEST_RUN_TEMPLATE, {
-            testRunId:       JSON.stringify(this.session.id),
-            selectorTimeout: this.opts.selectorTimeout,
-            pageLoadTimeout: this.pageLoadTimeout,
-            retryTestPages:  !!this.opts.retryTestPages,
-            speed:           this.speed,
-            dialogHandler:   JSON.stringify(this.activeDialogHandler),
-            proxyless:       JSON.stringify(this.isProxyless()),
+            testRunId:        JSON.stringify(this.session.id),
+            selectorTimeout:  this.opts.selectorTimeout,
+            pageLoadTimeout:  this.pageLoadTimeout,
+            retryTestPages:   !!this.opts.retryTestPages,
+            speed:            this.speed,
+            dialogHandler:    JSON.stringify(this.activeDialogHandler),
+            nativeAutomation: JSON.stringify(this.isNativeAutomation()),
         });
     }
 

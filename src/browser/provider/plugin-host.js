@@ -167,7 +167,7 @@ export default class BrowserProviderPluginHost {
         return null;
     }
 
-    supportProxyless () {
+    supportNativeAutomation () {
         return false;
     }
 }

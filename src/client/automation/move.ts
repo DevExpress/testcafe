@@ -28,7 +28,7 @@ import Cursor from './cursor/cursor';
 import getDevicePoint from './utils/get-device-point';
 import createEventSequence from './playback/move/event-sequence/create-event-sequence';
 import sendRequestToFrame from '../core/utils/send-request-to-frame';
-import ProxylessInput from '../../proxyless/client/input';
+import NativeAutomationInput from '../../native-automation/client/input';
 import mouseMoveStep from './playback/move/mouse-move-step';
 
 const MOVE_REQUEST_CMD  = 'automation|move|request';
@@ -54,7 +54,7 @@ export default class MoveAutomation {
     private readonly skipScrolling: boolean;
     private skipDefaultDragBehavior: boolean;
     private firstMovingStepOccured: boolean;
-    private readonly proxylessInput: ProxylessInput | null;
+    private readonly nativeAutomationInput: NativeAutomationInput | null;
 
 
     protected constructor (el: HTMLElement,
@@ -62,7 +62,7 @@ export default class MoveAutomation {
         moveOptions: MoveOptions,
         win: Window,
         cursor: Cursor,
-        proxylessInput: ProxylessInput | null = null) {
+        nativeAutomationInput: NativeAutomationInput | null = null) {
 
         this.touchMode = utils.featureDetection.isTouchDevice;
         this.moveEvent = this.touchMode ? 'touchmove' : 'mousemove';
@@ -81,7 +81,7 @@ export default class MoveAutomation {
         this.skipScrolling           = moveOptions.skipScrolling;
         this.skipDefaultDragBehavior = moveOptions.skipDefaultDragBehavior;
         this.speed                   = moveOptions.speed;
-        this.proxylessInput          = proxylessInput || null;
+        this.nativeAutomationInput          = nativeAutomationInput || null;
 
         this.firstMovingStepOccured  = false;
     }
@@ -90,10 +90,10 @@ export default class MoveAutomation {
         moveOptions: MoveOptions,
         win: Window,
         cursor: Cursor,
-        proxylessInput: ProxylessInput | null = null): Promise<MoveAutomation> {
+        nativeAutomationInput: NativeAutomationInput | null = null): Promise<MoveAutomation> {
         const { element, offset } = await MoveAutomation.getTarget(el, win, new AxisValues(moveOptions.offsetX, moveOptions.offsetY));
 
-        return new MoveAutomation(element, offset, moveOptions, win, cursor, proxylessInput);
+        return new MoveAutomation(element, offset, moveOptions, win, cursor, nativeAutomationInput);
     }
 
     private static getTarget (element: HTMLElement, window: Window, offset: AxisValuesData<number>): Promise<MoveAutomationTarget> {
@@ -213,18 +213,18 @@ export default class MoveAutomation {
             needMoveImmediately: this._needMoveCursorImmediately(),
         };
 
-        if (this.proxylessInput) {
+        if (this.nativeAutomationInput) {
             const events: any[] = [];
 
             await mouseMoveStep(mouseMoveOptions, nativeMethods.dateNow, async currPosition => {
-                const moveEvent = await this.proxylessInput?.createMouseMoveEvent(currPosition);
+                const moveEvent = await this.nativeAutomationInput?.createMouseMoveEvent(currPosition);
 
                 events.push(moveEvent);
 
                 return nextTick();
             });
 
-            await this.proxylessInput.executeEventSequence(events);
+            await this.nativeAutomationInput.executeEventSequence(events);
 
             await this.cursor.move(endPoint);
         }
@@ -249,7 +249,7 @@ export default class MoveAutomation {
         return scrollAutomation.run();
     }
 
-    private _moveToCurrentFrame (endPoint: AxisValues<number>, proxylessMove: boolean): Promise<void> {
+    private _moveToCurrentFrame (endPoint: AxisValues<number>, nativeAutomationMove: boolean): Promise<void> {
         if (this.cursor.isActive(this.window))
             return Promise.resolve();
 
@@ -267,7 +267,7 @@ export default class MoveAutomation {
             modifiers:    this.modifiers,
             speed:        this.speed,
             shouldRender: this.cursor.shouldRender,
-            proxylessMove,
+            nativeAutomationMove,
         };
 
         return Promise.resolve()
@@ -320,7 +320,7 @@ export default class MoveAutomation {
                 if (!boundary.contains(endPoint))
                     return void 0;
 
-                return this._moveToCurrentFrame(endPoint, !!this.proxylessInput)
+                return this._moveToCurrentFrame(endPoint, !!this.nativeAutomationInput)
                     .then(() => this._move(endPoint));
             });
     }

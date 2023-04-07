@@ -1,18 +1,18 @@
 import { ProtocolApi } from 'chrome-remote-interface';
-import ProxylessRequestPipeline from './request-pipeline';
+import NativeAutomationRequestPipeline from './request-pipeline';
 import addCustomDebugFormatters from './add-custom-debug-formatters';
-import { ProxylessSetupOptions } from '../shared/types';
-import { proxylessLogger } from '../utils/debug-loggers';
+import { NativeAutomationSetupOptions } from '../shared/types';
+import { nativeAutomationLogger } from '../utils/debug-loggers';
 import SessionStorage from './session-storage';
 
-export default class Proxyless {
+export default class NativeAutomation {
     private readonly _client: ProtocolApi;
     public readonly requestPipeline;
     public readonly sessionStorage: SessionStorage;
 
     public constructor (browserId: string, client: ProtocolApi) {
         this._client         = client;
-        this.requestPipeline = new ProxylessRequestPipeline(browserId, client);
+        this.requestPipeline = new NativeAutomationRequestPipeline(browserId, client);
         this.sessionStorage  = new SessionStorage(browserId, client);
 
         this.sessionStorage.on('contextStorageSync', ({ sessionStorage, testRunId, frameDriverId }) => {
@@ -31,16 +31,16 @@ export default class Proxyless {
         addCustomDebugFormatters();
     }
 
-    public async init (options: ProxylessSetupOptions): Promise<void> {
-        const proxylessSystems = [
+    public async init (options: NativeAutomationSetupOptions): Promise<void> {
+        const nativeAutomationSystems = [
             this.requestPipeline,
             this.sessionStorage,
         ];
 
-        for (const api of proxylessSystems)
+        for (const api of nativeAutomationSystems)
             await api.init(options);
 
-        proxylessLogger('proxyless initialized');
+        nativeAutomationLogger('nativeAutomation initialized');
     }
 
     public async dispose (): Promise<void> {
@@ -48,6 +48,6 @@ export default class Proxyless {
 
         await this.requestPipeline.dispose();
 
-        proxylessLogger('proxyless disposed');
+        nativeAutomationLogger('nativeAutomation disposed');
     }
 }

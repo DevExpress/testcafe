@@ -94,7 +94,7 @@ export default class Bootstrapper {
     public tsConfigPath?: string;
     public clientScripts: ClientScriptInit[];
     public disableMultipleWindows: boolean;
-    public proxyless: boolean;
+    public nativeAutomation: boolean;
     public compilerOptions?: CompilerOptions;
     public browserInitTimeout?: number;
     public hooks?: GlobalHooks;
@@ -119,7 +119,7 @@ export default class Bootstrapper {
         this.tsConfigPath             = void 0;
         this.clientScripts            = [];
         this.disableMultipleWindows   = false;
-        this.proxyless                = false;
+        this.nativeAutomation         = false;
         this.compilerOptions          = void 0;
         this.debugLogger              = debug(DEBUG_SCOPE);
         this.warningLog               = new WarningLog(null, WarningLog.createAddWarningCallback(messageBus));
@@ -159,7 +159,7 @@ export default class Bootstrapper {
             const options = {
                 disableMultipleWindows: this.disableMultipleWindows,
                 developmentMode:        this.configuration.getOption(OPTION_NAMES.developmentMode) as boolean,
-                proxyless:              this.proxyless,
+                nativeAutomation:       this.nativeAutomation,
             };
 
             const connection = new BrowserConnection(this.browserConnectionGateway, { ...browser }, false, options, this.messageBus);
@@ -182,26 +182,26 @@ export default class Bootstrapper {
         if (this.browserConnectionGateway.status === BrowserConnectionGatewayStatus.initialized)
             return;
 
-        await this.configuration.calculateHostname({ proxyless: this.proxyless });
+        await this.configuration.calculateHostname({ nativeAutomation: this.nativeAutomation });
 
         this.browserConnectionGateway.initialize(this.configuration.startOptions);
 
-        if (this.proxyless)
-            this.browserConnectionGateway.switchToProxyless();
+        if (this.nativeAutomation)
+            this.browserConnectionGateway.switchToNativeAutomation();
     }
 
-    private assertUnsupportedBrowsersForProxylessMode (automatedBrowserConnections: BrowserConnection[][]): void {
-        if (!this.proxyless)
+    private assertUnsupportedBrowsersForNativeAutomationMode (automatedBrowserConnections: BrowserConnection[][]): void {
+        if (!this.nativeAutomation)
             return;
 
         const unsupportedBrowsers = flatten(automatedBrowserConnections)
             .filter(connection => {
-                return !connection.provider.supportProxyless();
+                return !connection.provider.supportNativeAutomation();
             })
             .map(connection => connection.browserInfo.providerName);
 
         if (unsupportedBrowsers.length)
-            throw new GeneralError(RUNTIME_ERRORS.setProxylessForUnsupportedBrowsers, getConcatenatedValuesString(unsupportedBrowsers));
+            throw new GeneralError(RUNTIME_ERRORS.setNativeAutomationForUnsupportedBrowsers, getConcatenatedValuesString(unsupportedBrowsers));
     }
 
     private async _getBrowserConnections (browserInfo: BrowserInfoSource[]): Promise<BrowserSet> {
@@ -210,13 +210,13 @@ export default class Bootstrapper {
         if (remotes && remotes.length % this.concurrency)
             throw new GeneralError(RUNTIME_ERRORS.cannotDivideRemotesCountByConcurrency);
 
-        this.proxyless = this.configuration.getOption(OPTION_NAMES.nativeAutomation);
+        this.nativeAutomation = this.configuration.getOption(OPTION_NAMES.nativeAutomation);
 
         await this._setupProxy();
 
         let browserConnections = this._createAutomatedConnections(automated);
 
-        this.assertUnsupportedBrowsersForProxylessMode(browserConnections);
+        this.assertUnsupportedBrowsersForNativeAutomationMode(browserConnections);
 
         remotes.forEach(remoteConnection => {
             remoteConnection.messageBus = this.messageBus;

@@ -2,14 +2,14 @@ import debug from 'debug';
 
 const testcafeLogger = debug('testcafe');
 
-const proxylessLogger                      = testcafeLogger.extend('proxyless');
-const requestPipelineLogger                = proxylessLogger.extend('request-pipeline');
+const nativeAutomationLogger               = testcafeLogger.extend('native-automation');
+const requestPipelineLogger                = nativeAutomationLogger.extend('request-pipeline');
 const requestPipelineMockLogger            = requestPipelineLogger.extend('mock');
 const requestPipelineInternalRequestLogger = requestPipelineLogger.extend('internal-request');
 const requestPipelineServiceRequestLogger  = requestPipelineLogger.extend('service-request');
 const requestPipelineOtherRequestLogger    = requestPipelineLogger.extend('other-request');
-const resourceInjectorLogger               = proxylessLogger.extend('resource-injector');
-const requestHooksLogger                   = proxylessLogger.extend('request-hooks');
+const resourceInjectorLogger               = nativeAutomationLogger.extend('resource-injector');
+const requestHooksLogger                   = nativeAutomationLogger.extend('request-hooks');
 const requestHooksEventProviderLogger      = requestHooksLogger.extend('event-provider');
 
 const browserLogger               = testcafeLogger.extend('browser');
@@ -17,7 +17,7 @@ const browserProviderLogger       = browserLogger.extend('provider');
 const chromeBrowserProviderLogger = browserProviderLogger.extend('chrome');
 
 export {
-    proxylessLogger,
+    nativeAutomationLogger,
     requestPipelineLogger,
     resourceInjectorLogger,
     chromeBrowserProviderLogger,

@@ -12,10 +12,10 @@ import supportedShortcutHandlers from './shortcuts';
 import { getActualKeysAndEventKeyProperties, getDeepActiveElement } from './utils';
 import AutomationSettings from '../../settings';
 import isIframeWindow from '../../../../utils/is-window-in-iframe';
-import ProxylessInput from '../../../../proxyless/client/input';
-import { changeLetterCaseIfNecessary, getSimulatedKeyInfo } from '../../../../proxyless/client/key-press/utils';
-import { getModifiersBit } from '../../../../proxyless/client/utils';
-import CDPEventDescriptor from '../../../../proxyless/client/event-descriptor';
+import NativeAutomationInput from '../../../../native-automation/client/input';
+import { changeLetterCaseIfNecessary, getSimulatedKeyInfo } from '../../../../native-automation/client/key-press/utils';
+import { getModifiersBit } from '../../../../native-automation/client/utils';
+import CDPEventDescriptor from '../../../../native-automation/client/event-descriptor';
 
 const Promise        = hammerhead.Promise;
 const browserUtils   = hammerhead.utils.browser;
@@ -41,7 +41,7 @@ messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
 });
 
 export default class PressAutomation {
-    constructor (keyCombinations, options, dispatchProxylessEventFn) {
+    constructor (keyCombinations, options, dispatchNativeAutomationEventFn) {
         this.keyCombinations         = keyCombinations;
         this.isSelectElement         = false;
         this.pressedKeyString        = '';
@@ -49,8 +49,8 @@ export default class PressAutomation {
         this.shortcutHandlers        = null;
         this.topSameDomainDocument   = domUtils.getTopSameDomainWindow(window).document;
         this.automationSettings      = new AutomationSettings(options.speed);
-        this.options                 = options;
-        this.proxylessInput          = dispatchProxylessEventFn ? new ProxylessInput(dispatchProxylessEventFn) : null;
+        this.options               = options;
+        this.nativeAutomationInput = dispatchNativeAutomationEventFn ? new NativeAutomationInput(dispatchNativeAutomationEventFn) : null;
     }
 
     static _getKeyPressSimulators (keyCombination) {
@@ -215,10 +215,10 @@ export default class PressAutomation {
             return sendRequestToFrame(msg, PRESS_RESPONSE_CMD, nativeMethods.contentWindowGetter.call(activeElement));
         }
 
-        if (this.proxylessInput) {
+        if (this.nativeAutomationInput) {
             const eventSequence = this._calculateCDPEventSequence();
 
-            return this.proxylessInput.executeEventSequence(eventSequence);
+            return this.nativeAutomationInput.executeEventSequence(eventSequence);
         }
 
         return promiseUtils.each(this.keyCombinations, combination => {

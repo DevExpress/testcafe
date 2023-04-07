@@ -86,7 +86,7 @@ interface CommandLineOptions {
     videoEncodingOptions?: string | Dictionary<number | string | boolean>;
     compilerOptions?: string | Dictionary<number | string | boolean>;
     configFile?: string;
-    proxyless?: boolean;
+    nativeAutomation?: boolean;
     v8Flags?: string[];
     dashboardOptions?: string | Dictionary<string | boolean | number>;
     baseUrl?: string;

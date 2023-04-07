@@ -3,7 +3,7 @@ import BrowserConnection from '../browser/connection';
 import TestRun from '../test-run';
 import { notImplementedError } from './errors';
 
-export default class ProxylessApiBase {
+export default class NativeAutomationApiBase {
     protected readonly _client: ProtocolApi;
     protected readonly _browserConnection: BrowserConnection;
 

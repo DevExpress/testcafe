@@ -6,9 +6,9 @@ import TestRun from './';
 const ACTIVE_SESSIONS_MAP = {};
 const UPLOADS_DIR_NAME = '_uploads_';
 
-// NOTE: Proxyless cookie implementation doesn't require client-server communication.
+// NOTE: Native Automation cookie implementation doesn't require client-server communication.
 // This stub was created to reduce conditional logic in connected classes.
-class ProxylessCookieStub {
+class NativeAutomationCookieStub {
     getClientString () {
         return '';
     }
@@ -60,7 +60,7 @@ export default class SessionController extends Session {
     }
 
     createCookies () {
-        return this.options.proxyless ? new ProxylessCookieStub() : super.createCookies();
+        return this.options.nativeAutomation ? new NativeAutomationCookieStub() : super.createCookies();
     }
 
     // API
@@ -88,7 +88,7 @@ export default class SessionController extends Session {
                     disablePageCaching:   testRun.disablePageCaching,
                     allowMultipleWindows: TestRun.isMultipleWindowsAllowed(testRun),
                     requestTimeout:       testRun.requestTimeout,
-                    proxyless:            testRun.opts.nativeAutomation,
+                    nativeAutomation:     testRun.opts.nativeAutomation,
                 };
 
                 if (options.allowMultipleWindows)

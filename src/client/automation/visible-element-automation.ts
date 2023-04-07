@@ -27,8 +27,8 @@ import ScrollAutomation from '../core/scroll/index';
 import { Dictionary } from '../../configuration/interfaces';
 import ensureMouseEventAfterScroll from './utils/ensure-mouse-event-after-scroll';
 import WARNING_TYPES from '../../shared/warnings/types';
-import ProxylessInput from '../../proxyless/client/input';
-import { DispatchEventFn } from '../../proxyless/client/types';
+import NativeAutomationInput from '../../native-automation/client/input';
+import { DispatchEventFn } from '../../native-automation/client/types';
 
 
 const AVAILABLE_OFFSET_DEEP = 2;
@@ -99,9 +99,9 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
     private readonly WARNING_EVENT: string;
     protected automationSettings: AutomationSettings;
     protected readonly options: OffsetOptions;
-    protected readonly proxylessInput: ProxylessInput | null;
+    protected readonly nativeAutomationInput: NativeAutomationInput | null;
 
-    protected constructor (element: HTMLElement, offsetOptions: OffsetOptions, win: Window, cursor: Cursor, dispatchProxylessEventFn?: DispatchEventFn) {
+    protected constructor (element: HTMLElement, offsetOptions: OffsetOptions, win: Window, cursor: Cursor, dispatchNativeAutomationEventFn?: DispatchEventFn) {
         super();
 
         this.TARGET_ELEMENT_FOUND_EVENT = 'automation|target-element-found-event';
@@ -114,12 +114,12 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
         this.window  = win;
         this.cursor  = cursor;
 
-        this.proxylessInput = dispatchProxylessEventFn ? new ProxylessInput(dispatchProxylessEventFn) : null;
+        this.nativeAutomationInput = dispatchNativeAutomationEventFn ? new NativeAutomationInput(dispatchNativeAutomationEventFn) : null;
 
         // NOTE: only for legacy API
         this._ensureWindowAndCursorForLegacyTests(this);
 
-        this.cursor.shouldRender = !this.proxylessInput;
+        this.cursor.shouldRender = !this.nativeAutomationInput;
     }
 
     private _ensureWindowAndCursorForLegacyTests (automation: VisibleElementAutomation): void {
@@ -127,8 +127,8 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
         automation.cursor = cursorInstance;
     }
 
-    protected canUseProxylessEventSimulator (element: HTMLElement | null): boolean {
-        return !!this.proxylessInput
+    protected canUseNativeAutomationEventSimulator (element: HTMLElement | null): boolean {
+        return !!this.nativeAutomationInput
             && !!element
             && domUtils.getTagName(element) !== 'select';
     }
@@ -141,7 +141,7 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
 
     private async _moveToElement (): Promise<void> {
         const moveOptions    = new MoveOptions(utils.extend({ skipScrolling: true }, this.options), false);
-        const moveAutomation = await MoveAutomation.create(this.element, moveOptions, this.window, this.cursor, this.proxylessInput);
+        const moveAutomation = await MoveAutomation.create(this.element, moveOptions, this.window, this.cursor, this.nativeAutomationInput);
 
         return moveAutomation // eslint-disable-line consistent-return
             .run()

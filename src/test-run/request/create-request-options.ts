@@ -169,7 +169,7 @@ function getProxyUrl (testRun: TestRun, url: string, withCredentials?: boolean):
     }, testRun, true)) as Promise<string>;
 }
 
-async function resolvePoxylessUrlParts (url: URL): Promise<{ hostname: string; protocol: string; port: string; href: string; partAfterHost: string }> {
+async function resolveNativeAutomationUrlParts (url: URL): Promise<{ hostname: string; protocol: string; port: string; href: string; partAfterHost: string }> {
     const {
         href,
         hostname,
@@ -194,7 +194,7 @@ async function resolvePoxyUrlParts (testRun: TestRun, url: URL, withCredentials:
 }
 
 function resolveUrlParts (testRun: TestRun, url: URL, withCredentials: boolean): Promise<{ hostname: string; protocol: string; port: string; href: string; partAfterHost: string }> {
-    return testRun.isProxyless() ? resolvePoxylessUrlParts(url) : resolvePoxyUrlParts(testRun, url, withCredentials);
+    return testRun.isNativeAutomation() ? resolveNativeAutomationUrlParts(url) : resolvePoxyUrlParts(testRun, url, withCredentials);
 }
 
 export async function createRequestOptions (currentPageUrl: URL, testRun: TestRun, options: ExternalRequestOptions, callsite: CallsiteRecord | null): Promise<RequestOptions> {

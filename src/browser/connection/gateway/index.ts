@@ -13,8 +13,8 @@ import { Dictionary } from '../../../configuration/interfaces';
 import BrowserConnection from '../index';
 import { IncomingMessage, ServerResponse } from 'http';
 import SERVICE_ROUTES from '../service-routes';
-import EMPTY_PAGE_MARKUP from '../../../proxyless/empty-page-markup';
-import PROXYLESS_ERROR_ROUTE from '../../../proxyless/error-route';
+import EMPTY_PAGE_MARKUP from '../../../native-automation/empty-page-markup';
+import NATIVE_AUTOMATION_ERROR_ROUTE from '../../../native-automation/error-route';
 import { initSelector } from '../../../test-run/commands/validations/initializers';
 import TestRun from '../../../test-run';
 import { TestCafeStartOptions } from '../../../configuration/testcafe-configuration';
@@ -25,12 +25,12 @@ import { EventEmitter } from 'events';
 
 export interface BrowserConnectionGatewayOptions {
     retryTestPages: boolean;
-    proxyless: boolean;
+    nativeAutomation: boolean;
 }
 
 const DEFAULT_BROWSER_CONNECTION_GATEWAY_OPTIONS = {
-    retryTestPages: false,
-    proxyless:      false,
+    retryTestPages:   false,
+    nativeAutomation: false,
 };
 
 export default class BrowserConnectionGateway extends EventEmitter {
@@ -62,7 +62,7 @@ export default class BrowserConnectionGateway extends EventEmitter {
 
             preventCaching(res);
 
-            if (this._options.proxyless)
+            if (this._options.nativeAutomation)
                 acceptCrossOrigin(res);
 
             if (connection)
@@ -92,9 +92,9 @@ export default class BrowserConnectionGateway extends EventEmitter {
         this._dispatch(`${SERVICE_ROUTES.activeWindowId}/{id}`, proxy, BrowserConnectionGateway._onSetActiveWindowIdRequest, 'POST');
         this._dispatch(`${SERVICE_ROUTES.closeWindow}/{id}`, proxy, BrowserConnectionGateway._onCloseWindowRequest, 'POST');
         this._dispatch(`${SERVICE_ROUTES.openFileProtocol}/{id}`, proxy, BrowserConnectionGateway._onOpenFileProtocolRequest, 'POST');
-        this._dispatch(`${SERVICE_ROUTES.dispatchProxylessEvent}/{id}`, proxy, BrowserConnectionGateway._onDispatchProxylessEvent, 'POST');
+        this._dispatch(`${SERVICE_ROUTES.dispatchNativeAutomationEvent}/{id}`, proxy, BrowserConnectionGateway._onDispatchNativeAutomationEvent, 'POST');
         this._dispatch(`${SERVICE_ROUTES.parseSelector}/{id}`, proxy, BrowserConnectionGateway._parseSelector, 'POST');
-        this._dispatch(`${SERVICE_ROUTES.dispatchProxylessEventSequence}/{id}`, proxy, BrowserConnectionGateway._onDispatchProxylessEventSequence, 'POST');
+        this._dispatch(`${SERVICE_ROUTES.dispatchNativeAutomationEventSequence}/{id}`, proxy, BrowserConnectionGateway._onDispatchNativeAutomationEventSequence, 'POST');
 
         proxy.GET(SERVICE_ROUTES.connect, (req: IncomingMessage, res: ServerResponse) => this._connectNextRemoteBrowser(req, res));
         proxy.GET(SERVICE_ROUTES.connectWithTrailingSlash, (req: IncomingMessage, res: ServerResponse) => this._connectNextRemoteBrowser(req, res));
@@ -104,8 +104,8 @@ export default class BrowserConnectionGateway extends EventEmitter {
         proxy.GET(SERVICE_ROUTES.assets.styles, { content: idlePageStyle, contentType: 'text/css' });
         proxy.GET(SERVICE_ROUTES.assets.logo, { content: idlePageLogo, contentType: 'image/svg+xml' });
 
-        if (this._options.proxyless) {
-            proxy.GET(PROXYLESS_ERROR_ROUTE, (req: IncomingMessage, res: ServerResponse) => {
+        if (this._options.nativeAutomation) {
+            proxy.GET(NATIVE_AUTOMATION_ERROR_ROUTE, (req: IncomingMessage, res: ServerResponse) => {
                 res.writeHead(200, { 'Content-Type': 'text/html' });
                 res.end(EMPTY_PAGE_MARKUP);
             });
@@ -244,12 +244,12 @@ export default class BrowserConnectionGateway extends EventEmitter {
         }
     }
 
-    private static _onDispatchProxylessEvent (req: IncomingMessage, res: ServerResponse, connection: BrowserConnection): void {
+    private static _onDispatchNativeAutomationEvent (req: IncomingMessage, res: ServerResponse, connection: BrowserConnection): void {
         if (BrowserConnectionGateway._ensureConnectionReady(res, connection)) {
             BrowserConnectionGateway._fetchRequestData(req, data => {
                 const { type, options } = JSON.parse(data);
 
-                connection.dispatchProxylessEvent(type, options)
+                connection.dispatchNativeAutomationEvent(type, options)
                     .then(() => {
                         respondWithJSON(res);
                     });
@@ -257,12 +257,12 @@ export default class BrowserConnectionGateway extends EventEmitter {
         }
     }
 
-    private static _onDispatchProxylessEventSequence (req: IncomingMessage, res: ServerResponse, connection: BrowserConnection): void {
+    private static _onDispatchNativeAutomationEventSequence (req: IncomingMessage, res: ServerResponse, connection: BrowserConnection): void {
         if (BrowserConnectionGateway._ensureConnectionReady(res, connection)) {
             BrowserConnectionGateway._fetchRequestData(req, data => {
                 const eventSequence = JSON.parse(data);
 
-                connection.dispatchProxylessEventSequence(eventSequence)
+                connection.dispatchNativeAutomationEventSequence(eventSequence)
                     .then(() => {
                         respondWithJSON(res);
                     });
@@ -338,8 +338,8 @@ export default class BrowserConnectionGateway extends EventEmitter {
         return this._connections;
     }
 
-    public get proxyless (): boolean {
-        return this._options.proxyless;
+    public get nativeAutomation (): boolean {
+        return this._options.nativeAutomation;
     }
 
     public get status (): BrowserConnectionGatewayStatus {
@@ -364,10 +364,10 @@ export default class BrowserConnectionGateway extends EventEmitter {
         this.emit('initialized');
     }
 
-    public switchToProxyless (): void {
-        this._options.proxyless = true;
+    public switchToNativeAutomation (): void {
+        this._options.nativeAutomation = true;
 
-        this.proxy.switchToProxyless();
+        this.proxy.switchToNativeAutomation();
     }
 }
 

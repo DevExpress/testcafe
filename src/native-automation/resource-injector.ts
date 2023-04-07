@@ -71,7 +71,7 @@ export default class ResourceInjector {
         const currentTestRun = this._testRunBridge.getCurrentTestRun();
         const value = JSON.stringify(contextStorage?.[currentTestRun.id] || '');
 
-        return `Object.defineProperty(window, '%proxylessContextStorage%', { configurable: true, value: ${value} });`;
+        return `Object.defineProperty(window, '%nativeAutomationContextStorage%', { configurable: true, value: ${value} });`;
     }
 
     private _getRestoreStoragesScript (restoringStorages: StoragesSnapshot | null | undefined): string {

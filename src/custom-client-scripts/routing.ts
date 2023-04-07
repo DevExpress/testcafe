@@ -19,7 +19,7 @@ export function isLegacyTest (test: TestItem): test is LegacyTest {
     return !!(test as LegacyTest).isLegacy;
 }
 
-export function register (proxy: Proxy, tests: Test[], proxyless: boolean): string[] {
+export function register (proxy: Proxy, tests: Test[], nativeAutomation: boolean): string[] {
     const routes: string[] = [];
 
     tests.forEach(test => {
@@ -30,7 +30,7 @@ export function register (proxy: Proxy, tests: Test[], proxyless: boolean): stri
             const route = getCustomClientScriptUrl(script as ClientScript);
 
             proxy.GET(route, {
-                content:     getCustomClientScriptCode(script as ClientScript, proxyless),
+                content:     getCustomClientScriptCode(script as ClientScript, nativeAutomation),
                 contentType: CONTENT_TYPES.javascript,
             });
 

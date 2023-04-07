@@ -5,9 +5,9 @@ import delay from '../../../core/utils/delay';
 // @ts-ignore
 import { utils, Promise } from '../../deps/hammerhead';
 import { createMouseClickStrategy, MouseClickStrategy } from './browser-click-strategy';
-import ProxylessInput from '../../../../proxyless/client/input';
+import NativeAutomationInput from '../../../../native-automation/client/input';
 import { setCaretPosition } from '../../utils/utils';
-import { DispatchEventFn } from '../../../../proxyless/client/types';
+import { DispatchEventFn } from '../../../../native-automation/client/types';
 
 export interface MouseClickEventState {
     mousedownPrevented: boolean;
@@ -22,23 +22,23 @@ export default class ClickAutomation extends VisibleElementAutomation {
     private modifiers: Modifiers;
     public strategy: MouseClickStrategy;
 
-    protected constructor (element: HTMLElement, clickOptions: ClickOptions, win: Window, cursor: Cursor, dispatchProxylessEventFn?: DispatchEventFn) {
-        super(element, clickOptions, win, cursor, dispatchProxylessEventFn);
+    protected constructor (element: HTMLElement, clickOptions: ClickOptions, win: Window, cursor: Cursor, dispatchNativeAutomationEventFn?: DispatchEventFn) {
+        super(element, clickOptions, win, cursor, dispatchNativeAutomationEventFn);
 
         this.modifiers = clickOptions.modifiers;
         this.strategy  = createMouseClickStrategy(this.element, clickOptions.caretPos);
     }
 
     private _mousedown (eventArgs: MouseEventArgs): Promise<void> {
-        if (this.canUseProxylessEventSimulator(eventArgs.element))
-            return (this.proxylessInput as ProxylessInput).mouseDown(eventArgs);
+        if (this.canUseNativeAutomationEventSimulator(eventArgs.element))
+            return (this.nativeAutomationInput as NativeAutomationInput).mouseDown(eventArgs);
 
         return this.strategy.mousedown(eventArgs);
     }
 
     private _mouseup (element: HTMLElement, eventArgs: MouseEventArgs): Promise<MouseEventArgs> {
-        if (this.canUseProxylessEventSimulator(eventArgs.element)) {
-            return (this.proxylessInput as ProxylessInput).mouseUp(eventArgs)
+        if (this.canUseNativeAutomationEventSimulator(eventArgs.element)) {
+            return (this.nativeAutomationInput as NativeAutomationInput).mouseUp(eventArgs)
                 .then(result => {
                     const caretPos = (this.options as ClickOptions).caretPos;
 

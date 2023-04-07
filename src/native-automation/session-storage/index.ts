@@ -1,14 +1,14 @@
 import { ProtocolApi } from 'chrome-remote-interface';
 import Protocol from 'devtools-protocol';
-import ProxylessApiBase from '../api-base';
+import NativeAutomationApiBase from '../api-base';
 import BindingCalledEvent = Protocol.Runtime.BindingCalledEvent;
 import AsyncEventEmitter from '../../utils/async-event-emitter';
 import Emittery from 'emittery';
 import MessageBus from '../../utils/message-bus';
 
-const PROXYLESS_STORAGE_BINDING = 'PROXYLESS_STORAGE_BINDING';
+const NATIVE_AUTOMATION_STORAGE_BINDING = 'NATIVE_AUTOMATION_STORAGE_BINDING';
 
-export default class SessionStorage extends ProxylessApiBase {
+export default class SessionStorage extends NativeAutomationApiBase {
     private _eventEmitter: AsyncEventEmitter;
 
     constructor (browserId: string, client: ProtocolApi) {
@@ -35,10 +35,10 @@ export default class SessionStorage extends ProxylessApiBase {
     }
 
     public async init (): Promise<void> {
-        await this._client.Runtime.addBinding({ name: PROXYLESS_STORAGE_BINDING });
+        await this._client.Runtime.addBinding({ name: NATIVE_AUTOMATION_STORAGE_BINDING });
 
         await this._client.Runtime.on('bindingCalled', (event: BindingCalledEvent) => {
-            if (event.name === PROXYLESS_STORAGE_BINDING) {
+            if (event.name === NATIVE_AUTOMATION_STORAGE_BINDING) {
                 const { testRunId, frameDriverId, data } = JSON.parse(event.payload);
 
                 this._eventEmitter.emit('contextStorageSync', { sessionStorage: data, testRunId, frameDriverId });

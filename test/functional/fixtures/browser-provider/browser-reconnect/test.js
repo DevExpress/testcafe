@@ -21,7 +21,7 @@ function createConnection (browser) {
         .then(browserInfo => {
             const options = {
                 disableMultipleWindows: false,
-                proxyless:              config.nativeAutomation,
+                nativeAutomation:       config.nativeAutomation,
                 developmentMode:        config.devMode,
             };
 

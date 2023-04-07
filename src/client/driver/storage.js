@@ -4,7 +4,7 @@ const JSON          = hammerhead.json;
 const nativeMethods = hammerhead.nativeMethods;
 
 const STORAGE_KEY_PREFIX    = 'testcafe|driver|';
-const PROXYLESS_STORAGE_KEY = '%proxylessContextStorage%';
+const NATIVE_AUTOMATION_STORAGE_KEY = '%nativeAutomationContextStorage%';
 
 
 class StorageStrategyBase {
@@ -72,7 +72,7 @@ class StorageStrategyProxy extends StorageStrategyBase {
     }
 }
 
-class StorageStrategyProxyless extends StorageStrategyBase {
+class StorageStrategyNativeAutomation extends StorageStrategyBase {
     constructor (window, testRunId) {
         super();
 
@@ -83,16 +83,16 @@ class StorageStrategyProxyless extends StorageStrategyBase {
     }
 
     _getData () {
-        return window[PROXYLESS_STORAGE_KEY]?.[this.frameId];
+        return window[NATIVE_AUTOMATION_STORAGE_KEY]?.[this.frameId];
     }
 
     _deleteData () {
-        window[PROXYLESS_STORAGE_KEY] = null;
+        window[NATIVE_AUTOMATION_STORAGE_KEY] = null;
     }
 
     save (data) {
-        if (window.PROXYLESS_STORAGE_BINDING) {
-            window.PROXYLESS_STORAGE_BINDING(JSON.stringify({
+        if (window.NATIVE_AUTOMATION_STORAGE_BINDING) {
+            window.NATIVE_AUTOMATION_STORAGE_BINDING(JSON.stringify({
                 testRunId:     this.testRunId,
                 frameDriverId: this.frameId,
                 data:          JSON.stringify(data),
@@ -102,14 +102,14 @@ class StorageStrategyProxyless extends StorageStrategyBase {
 }
 
 export default class Storage {
-    constructor (window, { testRunId, windowId, proxyless }) {
-        this.strategy  = this._createStorageStrategy(proxyless, window, testRunId, windowId);
+    constructor (window, { testRunId, windowId, nativeAutomation }) {
+        this.strategy  = this._createStorageStrategy(nativeAutomation, window, testRunId, windowId);
         this.data      = this.strategy.loadFromStorage();
         this.testRunId = testRunId;
     }
 
-    _createStorageStrategy (proxyless, window, testRunId, windowId) {
-        return proxyless ? new StorageStrategyProxyless(window, testRunId, windowId) : new StorageStrategyProxy(window, testRunId, windowId);
+    _createStorageStrategy (nativeAutomation, window, testRunId, windowId) {
+        return nativeAutomation ? new StorageStrategyNativeAutomation(window, testRunId, windowId) : new StorageStrategyProxy(window, testRunId, windowId);
     }
 
     save () {

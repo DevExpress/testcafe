@@ -58,7 +58,7 @@ describe('[API] DevTools Compiler', function () {
         return runTests('./testcafe-fixtures/wait-for-element-test.json', null, { only: 'chrome' });
     });
 
-    // NOTE: Flacky, can hang in proxyless mode
+    // NOTE: Flacky, can hang in nativeAutomation mode
     skipInNativeAutomation('Should switch to iframe', function () {
         return runTests('./testcafe-fixtures/iframe-test.json', null, { only: 'chrome' });
     });
