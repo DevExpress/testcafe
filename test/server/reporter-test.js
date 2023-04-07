@@ -30,13 +30,10 @@ describe('Reporter', () => {
 
     const browserConnectionMocks = [
         {
-            userAgent:      'Chrome',
-            connectionInfo: 'Chrome',
-
+            userAgent: 'Chrome',
         },
         {
-            userAgent:      'Firefox',
-            connectionInfo: 'Firefox',
+            userAgent: 'Firefox',
         },
     ];
 

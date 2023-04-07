@@ -472,7 +472,7 @@ export default class Reporter {
         const startTime              = task.startTime;
         const browserConnectionsInfo = ([] as BrowserConnection[])
             .concat(...task.browserConnectionGroups)
-            .map(connection => connection.connectionInfo);
+            .map(connection => connection.userAgent);
         const first                  = this.taskInfo.testQueue[0];
 
         const taskProperties = {

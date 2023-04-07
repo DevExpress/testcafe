@@ -4,8 +4,6 @@ import { EventEmitter } from 'events';
 import Mustache from 'mustache';
 import { pull as remove } from 'lodash';
 import {
-    calculatePrettyUserAgent,
-    extractMetaInfo,
     ParsedUserAgent,
     parseUserAgent,
 } from '../../utils/parse-user-agent';
@@ -21,7 +19,6 @@ import BrowserConnectionGateway from './gateway';
 import BrowserJob from '../../runner/browser-job';
 import WarningLog from '../../notifications/warning-log';
 import BrowserProvider from '../provider';
-import { OSInfo } from 'get-os-info';
 import SERVICE_ROUTES from './service-routes';
 import {
     BROWSER_RESTART_TIMEOUT,
@@ -133,8 +130,6 @@ export default class BrowserConnection extends EventEmitter {
     public dispatchProxylessEventSequenceRelativeUrl = '';
     public parseSelectorRelativeUrl = '';
     private readonly debugLogger: debug.Debugger;
-    private osInfo: OSInfo | null = null;
-
     public readonly warningLog: WarningLog;
     private _messageBus?: MessageBus;
     private readonly _options: BrowserConnectionOptions;
@@ -481,20 +476,6 @@ export default class BrowserConnection extends EventEmitter {
         return userAgent;
     }
 
-    public get connectionInfo (): string {
-        if (!this.osInfo)
-            return this.userAgent;
-
-        const { name, version } = this.browserInfo.parsedUserAgent;
-        let connectionInfo      = calculatePrettyUserAgent({ name, version }, this.osInfo);
-        const metaInfo          = this.browserInfo.userAgentProviderMetaInfo || extractMetaInfo(this.browserInfo.parsedUserAgent.prettyUserAgent);
-
-        if (metaInfo)
-            connectionInfo += ` (${ metaInfo })`;
-
-        return connectionInfo;
-    }
-
     public get retryTestPages (): boolean {
         return this.browserConnectionGateway.retryTestPages;
     }
@@ -543,9 +524,10 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     public async establish (userAgent: string): Promise<void> {
+        const osInfo = await this.provider.getOSInfo(this.id);
+
         this.status                      = BrowserConnectionStatus.ready;
-        this.browserInfo.parsedUserAgent = parseUserAgent(userAgent);
-        this.osInfo                      = await this.provider.getOSInfo(this.id);
+        this.browserInfo.parsedUserAgent = parseUserAgent(userAgent, osInfo);
 
         this._waitForHeartbeat();
         this.emit('ready');
@@ -565,7 +547,7 @@ export default class BrowserConnection extends EventEmitter {
 
     public renderIdlePage (): string {
         return Mustache.render(IDLE_PAGE_TEMPLATE as string, {
-            userAgent:           this.connectionInfo,
+            userAgent:           this.userAgent,
             statusUrl:           this.statusUrl,
             heartbeatUrl:        this.heartbeatUrl,
             initScriptUrl:       this.initScriptUrl,

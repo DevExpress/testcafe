@@ -10,5 +10,8 @@ interface Browser extends ParsedUserAgent {
 export default function getBrowser (browserConnection: BrowserConnection): Browser {
     const { browserInfo: { parsedUserAgent, alias } } = browserConnection;
 
-    return assign({}, parsedUserAgent, { alias, headless: browserConnection.isHeadlessBrowser() });
+    return assign({}, parsedUserAgent, {
+        alias,
+        headless: browserConnection.isHeadlessBrowser(),
+    });
 }
