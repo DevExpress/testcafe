@@ -149,7 +149,7 @@
     "testcafe-reporter-json": "^2.1.0",
     "testcafe-reporter-list": "^2.1.0",
     "testcafe-reporter-minimal": "^2.1.0",
-    "testcafe-reporter-spec": "^2.1.1",
+    "testcafe-reporter-spec": "^2.2.0",
     "testcafe-reporter-xunit": "^2.2.1",
     "testcafe-safe-storage": "^1.1.1",
     "testcafe-selector-generator": "^0.1.0",
