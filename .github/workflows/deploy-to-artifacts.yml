@@ -144,7 +144,7 @@ jobs:
             tasks.push('test-functional-local-debug-2.yml');
             tasks.push('test-functional-local-firefox.yml');
             tasks.push('test-functional-local-multiple-windows.yml');
-            tasks.push('test-functional-local-proxyless.yml');
+            tasks.push('test-functional-local-native-automation.yml');
             tasks.push('test-functional-local-headed-browsers.yml');
             tasks.push('test-functional-local-legacy.yml');
             tasks.push('test-functional-local-safari.yml');

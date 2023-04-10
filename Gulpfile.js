@@ -445,11 +445,11 @@ gulp.task('test-functional-local-debug-1', gulp.series('prepare-tests', 'test-fu
 
 gulp.task('test-functional-local-debug-2', gulp.series('prepare-tests', 'test-functional-local-debug-run-2'));
 
-gulp.step('test-functional-local-proxyless-run', () => {
+gulp.step('test-functional-local-native-automation-run', () => {
     return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localHeadlessChrome, { nativeAutomation: true });
 });
 
-gulp.task('test-functional-local-proxyless', gulp.series('prepare-tests', 'test-functional-local-proxyless-run'));
+gulp.task('test-functional-local-native-automation', gulp.series('prepare-tests', 'test-functional-local-native-automation-run'));
 
 gulp.task('docker-build', done => {
     childProcess.execSync('npm pack', { env: process.env }).toString();
