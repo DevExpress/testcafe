@@ -12,9 +12,9 @@ const RECOGNITION_INCREMENT = browserUtils.isIE ? 1 : 0;
 export default {
     move (position) {
         const msg = {
-            cmd:          CURSOR_UI_MESSAGES.moveRequest,
-            x:            position.x + RECOGNITION_INCREMENT,
-            y:            position.y + RECOGNITION_INCREMENT,
+            cmd: CURSOR_UI_MESSAGES.moveRequest,
+            x:   position.x + RECOGNITION_INCREMENT,
+            y:   position.y + RECOGNITION_INCREMENT,
         };
 
         return sendRequestToFrame(msg, CURSOR_UI_MESSAGES.moveResponse, window.parent);

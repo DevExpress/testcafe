@@ -259,13 +259,13 @@ export default class MoveAutomation {
         let iframeUnderCursor: boolean | null = null;
 
         const msg: any = {
-            cmd:          MOVE_REQUEST_CMD,
-            startX:       x,
-            startY:       y,
-            endX:         endPoint.x,
-            endY:         endPoint.y,
-            modifiers:    this.modifiers,
-            speed:        this.speed,
+            cmd:       MOVE_REQUEST_CMD,
+            startX:    x,
+            startY:    y,
+            endX:      endPoint.x,
+            endY:      endPoint.y,
+            modifiers: this.modifiers,
+            speed:     this.speed,
             nativeAutomationMove,
         };
 
