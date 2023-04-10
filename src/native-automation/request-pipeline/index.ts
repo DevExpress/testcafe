@@ -33,6 +33,7 @@ import {
     isRedirectStatusCode,
     SPECIAL_BLANK_PAGE,
     StoragesSnapshot,
+    injectUpload,
 } from 'testcafe-hammerhead';
 
 import NativeAutomationPipelineContext from '../request-hooks/pipeline-context';
@@ -279,7 +280,7 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
             const pipelineContext = this._contextInfo.getPipelineContext(event.networkId as string);
 
             if (!pipelineContext || !pipelineContext.mock)
-                await safeContinueRequest(this._client, event);
+                await safeContinueRequest(this._client, event, this._getUploadPostData(event));
             else {
                 const mockedResponse = await pipelineContext.getMockResponse();
 
@@ -296,6 +297,17 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
         }
         else
             await this._tryRespondToOtherRequest(event);
+    }
+
+    private _getUploadPostData (event: Protocol.Fetch.RequestPausedEvent): string | undefined {
+        if (!event.request.postData)
+            return void 0;
+
+        const contentTypeHeader = event.request.headers['Content-Type'] as string;
+        const postData          = Buffer.from(event.request.postData, 'utf-8');
+        const bodyWithUploads   = injectUpload(contentTypeHeader, postData);
+
+        return bodyWithUploads ? bodyWithUploads.toString('base64') : void 0;
     }
 
     private _topFrameNavigation (event: FrameNavigatedEvent): boolean {

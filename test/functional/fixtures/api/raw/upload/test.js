@@ -1,11 +1,9 @@
-const { skipInNativeAutomation } = require('../../../../utils/skip-in');
-const { expect }                 = require('chai');
+const { expect }                     = require('chai');
 const { errorInEachBrowserContains } = require('../../../../assertion-helper.js');
 
 
 describe('[Raw API] Upload', function () {
-    // NOTE: file uploading is not supported yet
-    skipInNativeAutomation('Should upload a file', function () {
+    it('Should upload a file', function () {
         return runTests('./testcafe-fixtures/upload.testcafe', 'Upload a file', { shouldFail: true })
             .catch(function (errs) {
                 errorInEachBrowserContains(errs, 'File uploaded', 0);
@@ -27,8 +25,7 @@ describe('[Raw API] Upload', function () {
             });
     });
 
-    // NOTE: file uploading is not supported yet
-    skipInNativeAutomation('Should upload files', function () {
+    it('Should upload files', function () {
         return runTests('./testcafe-fixtures/upload.testcafe', 'Upload files', { shouldFail: true })
             .catch(function (errs) {
                 errorInEachBrowserContains(errs, 'Files uploaded', 0);
