@@ -138,8 +138,6 @@ export default class TypeAutomation {
                 modifiers: this.modifiers,
             });
 
-            cursor.shouldRender = !this.nativeAutomationInput;
-
             const clickAutomation = new ClickAutomation(this.element, clickOptions, window, cursor);
 
             return clickAutomation

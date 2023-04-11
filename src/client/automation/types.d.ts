@@ -24,5 +24,4 @@ export interface CursorUI {
     leftButtonDown(): Promise<void>;
     rightButtonDown(): Promise<void>;
     buttonUp(): Promise<void>;
-    shouldRender: boolean;
 }

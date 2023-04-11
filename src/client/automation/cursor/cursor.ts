@@ -47,14 +47,6 @@ export default class Cursor {
         return new AxisValues(this._x, this._y);
     }
 
-    public get shouldRender (): boolean {
-        return this._ui.shouldRender;
-    }
-
-    public set shouldRender (val: boolean) {
-        this._ui.shouldRender = val;
-    }
-
     public move (point: AxisValuesData<number>): Promise<void> {
         this._x = point.x;
         this._y = point.y;
