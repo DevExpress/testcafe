@@ -140,9 +140,6 @@ jobs:
             tasks.push('test-server-minimal.yml');
             tasks.push('test-server-latest.yml');
 
-            // Temporary disable
-            // tasks.push('test-cdp.yml');
-
             await Promise.all(tasks.map(task => dispatchWorkflow(task)));
 
       - uses: DevExpress/testcafe-build-system/actions/set-status@main
