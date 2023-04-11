@@ -8,6 +8,7 @@ on:
         type: string
       node-version:
         required: false
+        type: string
         default: 16
       is-docker:
         required: false
