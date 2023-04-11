@@ -205,7 +205,7 @@ export default class Configuration {
     }
 
     protected _isJSConfiguration (filePath = this.filePath): boolean {
-        return Configuration._hasExtension(filePath, Extensions.js) || Configuration._hasExtension(filePath, Extensions.cjs);
+        return Configuration._hasExtension(filePath, Extensions.js) || Configuration._hasExtension(filePath, Extensions.cjs);
     }
 
     protected _isJSONConfiguration (filePath = this.filePath): boolean {
