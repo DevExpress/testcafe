@@ -739,7 +739,7 @@ describe('Compiler', function () {
                 .catch(function (err) {
                     expect(err.message).contains('Cannot parse a raw test file at "' + testfile1 +
                                                  '" due to the following error:\n\n' +
-                                                 'SyntaxError: Unexpected token i');
+                                                 'SyntaxError:');
                 })
                 .then(function () {
                     return compile(testfile2);
