@@ -105,7 +105,7 @@ Review the following article to learn how TestCafe Studio can fit into any workf
 
 ### Installation
 
-Ensure that [Node.js](https://nodejs.org/) ([Current or Active LTS](https://github.com/nodejs/Release#release-phases) is recommended, version 18 at minimum) and [npm](https://www.npmjs.com/) are installed on your computer before running it:
+Ensure that you run [Node.js](https://nodejs.org/) version 16 or higher, and run the following command:
 
 ```sh
 npm install -g testcafe
