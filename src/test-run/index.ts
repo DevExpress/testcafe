@@ -1584,11 +1584,12 @@ export default class TestRun extends AsyncEventEmitter {
             return;
 
         await this.compilerService.initializeTestRunData({
-            testRunId:      this.id,
-            testId:         this.test.id,
-            browser:        this.browser,
-            activeWindowId: this.activeWindowId,
-            messageBus:     this._messageBus,
+            testRunId:          this.id,
+            testId:             this.test.id,
+            browser:            this.browser,
+            activeWindowId:     this.activeWindowId,
+            isNativeAutomation: this.isNativeAutomation(),
+            messageBus:         this._messageBus,
         });
     }
 

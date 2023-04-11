@@ -76,6 +76,7 @@ import TestRunProxy from '../../services/compiler/test-run-proxy';
 import {
     MultipleWindowsModeIsDisabledError,
     MultipleWindowsModeIsNotAvailableInRemoteBrowserError,
+    MultipleWindowsModeIsNotSupportedInNativeAutomationModeError,
 } from '../../errors/test-run';
 
 import { AssertionCommand } from '../../test-run/commands/assertion';
@@ -186,6 +187,9 @@ export default class TestController {
 
     _validateMultipleWindowCommand (apiMethodName) {
         const { disableMultipleWindows, activeWindowId } = this.testRun;
+
+        if (this.testRun.isNativeAutomation())
+            throw new MultipleWindowsModeIsNotSupportedInNativeAutomationModeError(apiMethodName);
 
         if (disableMultipleWindows)
             throw new MultipleWindowsModeIsDisabledError(apiMethodName);

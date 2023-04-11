@@ -92,6 +92,7 @@ export interface InitializeTestRunDataArguments extends TestRunLocator {
     browser: Browser;
     activeWindowId: string | null;
     messageBus?: MessageBus;
+    isNativeAutomation: boolean;
 }
 
 export interface RoleLocator {

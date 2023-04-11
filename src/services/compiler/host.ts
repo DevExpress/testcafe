@@ -467,10 +467,10 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
         await this.emit('removeRequestEventListeners', { rules });
     }
 
-    public async initializeTestRunData ({ testRunId, testId, browser, activeWindowId, messageBus }: InitializeTestRunDataArguments): Promise<void> {
+    public async initializeTestRunData ({ testRunId, testId, browser, activeWindowId, messageBus, isNativeAutomation }: InitializeTestRunDataArguments): Promise<void> {
         const { proxy } = await this._getRuntime();
 
-        return proxy.call(this.initializeTestRunData, { testRunId, testId, browser, activeWindowId, messageBus });
+        return proxy.call(this.initializeTestRunData, { testRunId, testId, browser, activeWindowId, messageBus, isNativeAutomation });
     }
 
     public async getAssertionActualValue ({ testRunId, commandId }: CommandLocator): Promise<unknown> {

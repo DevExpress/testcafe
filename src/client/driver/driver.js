@@ -62,6 +62,7 @@ import {
     CannotCloseWindowWithoutParentError,
     WindowNotFoundError,
     CannotRestoreChildWindowError,
+    MultipleWindowsModeIsNotSupportedInNativeAutomationModeError,
 } from '../../shared/errors';
 
 
@@ -216,6 +217,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         hammerhead.on(hammerhead.EVENTS.unhandledRejection, err => this._onJsError(err));
         hammerhead.on(hammerhead.EVENTS.consoleMethCalled, e => this._onConsoleMessage(e));
         hammerhead.on(hammerhead.EVENTS.beforeFormSubmit, e => this._onFormSubmit(e));
+        hammerhead.on(hammerhead.EVENTS.beforeWindowOpened, e => this._onBeforeChildWindowOpened(e));
         hammerhead.on(hammerhead.EVENTS.windowOpened, e => this._onChildWindowOpened(e));
 
         this.setCustomCommandHandlers(COMMAND_TYPE.unlockPage, () => this._unlockPageAfterTestIsDone());
@@ -409,6 +411,17 @@ export default class Driver extends serviceUtils.EventEmitter {
                     executionError:  new CannotSwitchToWindowError(),
                 }));
             });
+    }
+
+    _onBeforeChildWindowOpened (e) {
+        if (this.options.nativeAutomation) {
+            this._onReady(new DriverStatus({
+                isCommandResult: true,
+                executionError:  new MultipleWindowsModeIsNotSupportedInNativeAutomationModeError(),
+            }));
+
+            e.isPrevented = true;
+        }
     }
 
     _onChildWindowOpened (e) {
