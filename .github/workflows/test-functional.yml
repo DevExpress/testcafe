@@ -149,8 +149,6 @@ jobs:
             const statuses = ${{ toJSON(needs.test.outputs.*) }};
 
             for (let i = 0; i < ${{ inputs.matrix-jobs-count }}; i++) {
-              console.log(statuses[i]);
-              console.log(statuses[i] === 'success');
               if (statuses[i] !== 'success')
                 return 'failure';
             }
