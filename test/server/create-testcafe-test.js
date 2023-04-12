@@ -1,29 +1,42 @@
-const { expect }            = require('chai');
-const url                   = require('url');
-const net                   = require('net');
-const path                  = require('path');
-const createTestCafe        = require('../../lib/');
-const exportableLib         = require('../../lib/api/exportable-lib');
-const selfSignedCertificate = require('openssl-self-signed-certificate');
+const { expect } = require("chai");
+const url = require("url");
+const net = require("net");
+const path = require("path");
+const createTestCafe = require("../../lib/");
+const exportableLib = require("../../lib/api/exportable-lib");
+const selfSignedCertificate = require("openssl-self-signed-certificate");
 
-const {
-    CONFIGURATION_EXTENSIONS,
-    JS_CONFIGURATION_EXTENSION,
-    JSON_CONFIGURATION_EXTENSION,
-} = require('../../lib/configuration/formats');
+const Extensions = require("../../lib/configuration/formats");
 
-const jsConfigIndex   = CONFIGURATION_EXTENSIONS.indexOf(JS_CONFIGURATION_EXTENSION);
-const jsonConfigIndex = CONFIGURATION_EXTENSIONS.indexOf(JSON_CONFIGURATION_EXTENSION);
+const jsConfigIndex = Extensions.js;
+const jsonConfigIndex = Extensions.json;
 
-describe('TestCafe factory function', function () {
+describe("TestCafe factory function", function () {
     let testCafe = null;
-    let server   = null;
+    let server = null;
 
-    function getTestCafe (hostname, port1, port2, ssl, developmentMode, retryTestPages, cache, configPath) {
-        return createTestCafe(hostname, port1, port2, ssl, developmentMode, retryTestPages, cache, configPath)
-            .then(tc => {
-                testCafe = tc;
-            });
+    function getTestCafe(
+        hostname,
+        port1,
+        port2,
+        ssl,
+        developmentMode,
+        retryTestPages,
+        cache,
+        configPath
+    ) {
+        return createTestCafe(
+            hostname,
+            port1,
+            port2,
+            ssl,
+            developmentMode,
+            retryTestPages,
+            cache,
+            configPath
+        ).then((tc) => {
+            testCafe = tc;
+        });
     }
 
     afterEach(function () {
@@ -40,40 +53,40 @@ describe('TestCafe factory function', function () {
         return promisedClose;
     });
 
-    it('Should automatically assign host and ports if they are not specified', function () {
+    it("Should automatically assign host and ports if they are not specified", function () {
         return getTestCafe()
             .then(function () {
                 return testCafe.createBrowserConnection();
             })
             .then(function (bc) {
                 const bcUrl = url.parse(bc.url);
-                const port  = parseInt(bcUrl.port, 10);
+                const port = parseInt(bcUrl.port, 10);
 
-                expect(bcUrl.hostname).not.eql('undefined');
-                expect(bcUrl.hostname).not.eql('null');
+                expect(bcUrl.hostname).not.eql("undefined");
+                expect(bcUrl.hostname).not.eql("null");
                 expect(isNaN(port)).to.be.false;
 
                 return bc.close();
             });
     });
 
-    it('Should accept custom port and hostname', function () {
-        return getTestCafe('localhost', 1338)
+    it("Should accept custom port and hostname", function () {
+        return getTestCafe("localhost", 1338)
             .then(function () {
                 return testCafe.createBrowserConnection();
             })
             .then(function (bc) {
                 const bcUrl = url.parse(bc.url);
-                const port  = parseInt(bcUrl.port, 10);
+                const port = parseInt(bcUrl.port, 10);
 
-                expect(bcUrl.hostname).eql('localhost');
+                expect(bcUrl.hostname).eql("localhost");
                 expect(port).eql(1338);
 
                 return bc.close();
             });
     });
 
-    it('Should raise error if specified port is not free', function () {
+    it("Should raise error if specified port is not free", function () {
         const serverListen = new Promise(function (resolve) {
             server = net.createServer();
 
@@ -85,39 +98,43 @@ describe('TestCafe factory function', function () {
                 return getTestCafe(null, 1337, 1338);
             })
             .then(function () {
-                throw new Error('Promise rejection expected');
+                throw new Error("Promise rejection expected");
             })
             .catch(function (err) {
-                expect(err.message).eql('Port 1337 is occupied by another process.');
+                expect(err.message).eql(
+                    "Port 1337 is occupied by another process."
+                );
             });
     });
 
     it("Should raise error if specified hostname doesn't resolve to the current machine", function () {
-        return getTestCafe('example.org')
+        return getTestCafe("example.org")
             .then(function () {
                 return testCafe.createBrowserConnection();
             })
             .then(function () {
-                throw new Error('Promise rejection expected');
+                throw new Error("Promise rejection expected");
             })
             .catch(function (err) {
-                expect(err.message).eql('Cannot resolve hostname "example.org".');
+                expect(err.message).eql(
+                    'Cannot resolve hostname "example.org".'
+                );
             });
     });
 
-    it('Should contain embedding utils and common runtime functions', function () {
+    it("Should contain embedding utils and common runtime functions", function () {
         expect(createTestCafe.embeddingUtils).to.be.ok;
         expect(createTestCafe.Role).eql(exportableLib.Role);
         expect(createTestCafe.ClientFunction).eql(exportableLib.ClientFunction);
     });
 
-    it('Should pass sslOptions to proxy', () => {
+    it("Should pass sslOptions to proxy", () => {
         const sslOptions = {
-            key:  selfSignedCertificate.key,
+            key: selfSignedCertificate.key,
             cert: selfSignedCertificate.cert,
         };
 
-        return getTestCafe('localhost', 1338, 1339, sslOptions)
+        return getTestCafe("localhost", 1338, 1339, sslOptions)
             .then(() => {
                 return testCafe.createBrowserConnection();
             })
@@ -129,29 +146,44 @@ describe('TestCafe factory function', function () {
             });
     });
 
-    describe('Custom Testcafe Config Path', () => {
-        it('Reverts back to default when not specified', () => {
-            const defaultConfigJSONFile = '.testcaferc.json';
-            const defaultConfigJsFile   = '.testcaferc.js';
+    describe("Custom Testcafe Config Path", () => {
+        it("Reverts back to default when not specified", () => {
+            const defaultConfigJSONFile = ".testcaferc.json";
+            const defaultConfigJsFile = ".testcaferc.js";
 
-            return getTestCafe('localhost', 1338, 1339)
-                .then(() => {
-                    expect(path.basename(testCafe.configuration.defaultPaths[jsConfigIndex])).eql(defaultConfigJsFile);
-                    expect(path.basename(testCafe.configuration.defaultPaths[jsonConfigIndex])).eql(defaultConfigJSONFile);
-                });
+            return getTestCafe("localhost", 1338, 1339).then(() => {
+                expect(
+                    path.basename(
+                        testCafe.configuration.defaultPaths[jsConfigIndex]
+                    )
+                ).eql(defaultConfigJsFile);
+                expect(
+                    path.basename(
+                        testCafe.configuration.defaultPaths[jsonConfigIndex]
+                    )
+                ).eql(defaultConfigJSONFile);
+            });
         });
 
-        it('Works when created using null', () => {
-            const defaultConfigJSONFile = '.testcaferc.json';
-            const defaultConfigJsFile   = '.testcaferc.js';
+        it("Works when created using null", () => {
+            const defaultConfigJSONFile = ".testcaferc.json";
+            const defaultConfigJsFile = ".testcaferc.js";
 
             return createTestCafe(null)
-                .then(tc => {
+                .then((tc) => {
                     testCafe = tc;
                 })
                 .then(() => {
-                    expect(path.basename(testCafe.configuration.defaultPaths[jsConfigIndex])).eql(defaultConfigJsFile);
-                    expect(path.basename(testCafe.configuration.defaultPaths[jsonConfigIndex])).eql(defaultConfigJSONFile);
+                    expect(
+                        path.basename(
+                            testCafe.configuration.defaultPaths[jsConfigIndex]
+                        )
+                    ).eql(defaultConfigJsFile);
+                    expect(
+                        path.basename(
+                            testCafe.configuration.defaultPaths[jsonConfigIndex]
+                        )
+                    ).eql(defaultConfigJSONFile);
                 });
         });
     });
