@@ -136,7 +136,7 @@ $(document).ready(function () {
         runPressAutomation('ctrl+a backspace', function () {
             equal(keydownCount, 3, 'keydown event raises twice');
             equal(keyupCount, 3, 'keyup event raises twice');
-            equal(keypressCount, browserUtils.isFirefox ? 2 : 0, 'keypress event raises twice');
+            equal(keypressCount, 0, 'keypress event is not raised');
             start();
         });
     });
