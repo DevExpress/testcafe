@@ -37,7 +37,7 @@ on:
       timeout:
         required: false
         type: number
-        default: 60
+        default: 25
       is-docker:
         required: false
         type: boolean
