@@ -414,14 +414,15 @@ export default class Driver extends serviceUtils.EventEmitter {
     }
 
     _onBeforeChildWindowOpened (e) {
-        if (this.options.nativeAutomation) {
-            this._onReady(new DriverStatus({
-                isCommandResult: true,
-                executionError:  new MultipleWindowsModeIsNotSupportedInNativeAutomationModeError(),
-            }));
+        if (!this.options.nativeAutomation)
+            return;
 
-            e.isPrevented = true;
-        }
+        this._onReady(new DriverStatus({
+            isCommandResult: true,
+            executionError:  new MultipleWindowsModeIsNotSupportedInNativeAutomationModeError(),
+        }));
+
+        e.isPrevented = true;
     }
 
     _onChildWindowOpened (e) {
