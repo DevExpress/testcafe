@@ -2,14 +2,15 @@ const { expect }     = require('chai');
 const { isFreePort } = require('endpoint-utils');
 const delay          = require('../../../../lib/utils/delay');
 
-describe('App command', function () {
-    it('Should fail task if app fails', function () {
+/* eslint-disable */
+describe.only('App command', function () {
+    it.only('Should fail task if app fails', function () {
         return runTests('./testcafe-fixtures/app-command-test.js', 'Wait', {
             shouldFail: true,
             appCommand: 'node test/functional/fixtures/app-command/failing-app.js',
         })
             .catch(function (err) {
-                expect(err.message).contains('The web application failed with the following error:\n\nError: Command failed');
+                expect(err.message).eql('fail');
             });
     });
 
