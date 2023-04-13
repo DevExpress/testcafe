@@ -37,6 +37,10 @@ export default class NativeAutomationInput {
         return this._dispatchEventFn.sequence(eventSequence);
     }
 
+    public async executeInsertText (text: string): Promise<any> {
+        return this._dispatchEventFn.single(EventType.InsertText, { text });
+    }
+
     public async createMouseMoveEvent (currPosition: AxisValuesData<number>): Promise<any> {
         const options = await CDPEventDescriptor.createMouseEventOptions('mouseMoved', {
             options: {

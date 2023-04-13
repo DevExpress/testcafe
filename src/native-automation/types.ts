@@ -37,4 +37,5 @@ export enum EventType {
     Keyboard,
     Touch,
     Delay,
+    InsertText,
 }

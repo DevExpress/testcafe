@@ -31,6 +31,9 @@ export async function dispatchEvent (client: ProtocolApi, type: EventType, optio
         case EventType.Keyboard:
             await client.Input.dispatchKeyEvent(options);
             break;
+        case EventType.InsertText:
+            await client.Input.insertText({ text: options.text });
+            break;
         case EventType.Touch:
             await client.Input.dispatchTouchEvent(options);
             break;

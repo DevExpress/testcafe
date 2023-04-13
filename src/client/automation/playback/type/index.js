@@ -174,6 +174,9 @@ export default class TypeAutomation {
         }
 
         if (this._canUseNativeAutomationInput()) {
+            if (this.paste)
+                return this.nativeAutomationInput.executeInsertText(this.typingText);
+
             const eventSequence = this._calculateCDPEventSequence();
 
             return this.nativeAutomationInput.executeEventSequence(eventSequence);
@@ -211,10 +214,6 @@ export default class TypeAutomation {
 
     _canUseNativeAutomationInput () {
         if (!this.nativeAutomationInput)
-            return false;
-
-        // NOTE: 'paste' is a synthetic option that don't have equivalent for native user action.
-        if (this.paste)
             return false;
 
         // NOTE: Type to non text-editable and content-editable elements are not supported in the native automation mode.
