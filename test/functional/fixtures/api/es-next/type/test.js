@@ -7,6 +7,10 @@ describe('[API] t.typeText()', function () {
         return runTests('./testcafe-fixtures/type-test.js', 'Type text in input', { only: 'chrome' });
     });
 
+    it('Should type text in input with the `paste` option enabled', function () {
+        return runTests('./testcafe-fixtures/type-test.js', 'Enable the `paste` option', { only: 'chrome' });
+    });
+
     it('Should validate options', function () {
         return runTests('./testcafe-fixtures/type-test.js', 'Incorrect action options', {
             shouldFail: true,

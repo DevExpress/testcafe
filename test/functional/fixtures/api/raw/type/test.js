@@ -1,3 +1,4 @@
+const { skipInNativeAutomation } = require('../../../../utils/skip-in');
 const expect                     = require('chai').expect;
 const errorInEachBrowserContains = require('../../../../assertion-helper.js').errorInEachBrowserContains;
 
@@ -9,7 +10,7 @@ describe('[Raw API] Type action', function () {
             });
     });
 
-    it("Should type all text in one keystroke if using 'paste' option", function () {
+    skipInNativeAutomation("Should type all text in one keystroke if using 'paste' option", function () {
         return runTests('./testcafe-fixtures/type.testcafe', 'Type with paste option', { shouldFail: true })
             .catch(function (errs) {
                 errorInEachBrowserContains(errs, 'Type block in one keystroke raised', 0);
