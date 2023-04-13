@@ -1,4 +1,4 @@
-Multi-window mode is not supported in the Native Automation mode. To run test in multiple windows, please remove the "--native-automation" option.
+The Native Automation mode does not support the use of multiple browser windows. Remove the "native automation" option to continue.
 
 Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>

@@ -407,7 +407,7 @@ export default {
     `,
 
     [TEST_RUN_ERRORS.multipleWindowsModeIsNotSupportedInNativeAutomationError]: () => `
-        Multi-window mode is not supported in the Native Automation mode. To run test in multiple windows, please remove the "--native-automation" option.
+        The Native Automation mode does not support the use of multiple browser windows. Remove the "native automation" option to continue.
     `,
 
     [TEST_RUN_ERRORS.cannotCloseWindowWithoutParent]: () => `
