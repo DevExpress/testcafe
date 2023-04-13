@@ -1,4 +1,4 @@
-name: Test Server (LTS)
+name: Test Server (latest)
 
 on:
   workflow_dispatch:
@@ -16,4 +16,5 @@ jobs:
     uses: ./.github/workflows/test-server.yml
     with:
       test-script: 'npx gulp test-server-run --steps-as-tasks'
-      node-version: 18
+      node-version: 'latest'
+    secrets: inherit

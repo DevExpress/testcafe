@@ -1,4 +1,4 @@
-name: Test Server (Stable)
+name: Test Server (Minimum)
 
 on:
   workflow_dispatch:

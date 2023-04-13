@@ -5,6 +5,7 @@ const SelectorBuilder         = require('../../lib/client-functions/selectors/se
 const assertThrow             = require('./helpers/assert-runtime-error').assertThrow;
 const TestController          = require('../../lib/api/test-controller');
 const path                    = require('path');
+const semver                  = require('semver');
 
 const testRunMock = {
     test: {
@@ -3004,7 +3005,7 @@ describe('Test run commands', () => {
                     isTestCafeError: true,
                     argumentName:    'actual',
                     actualValue:     'invalid js code',
-                    errMsg:          'Unexpected identifier',
+                    errMsg:          semver.gte(process.version, '19.0.0') ? "Unexpected identifier 'js'" : 'Unexpected identifier',
                     code:            'E59',
                     callsite:        null,
                     originError:     null,
