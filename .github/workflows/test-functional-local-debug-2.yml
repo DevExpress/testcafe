@@ -17,4 +17,5 @@ jobs:
     with:
       test-script: 'npx gulp test-functional-local-debug-run-2 --steps-as-tasks'
       display: ':99.0'
+      timeout: 35
     secrets: inherit
