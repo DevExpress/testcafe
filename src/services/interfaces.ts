@@ -11,5 +11,6 @@ export interface TestRunProxyInit {
     browser: Browser;
     activeWindowId: null | string;
     messageBus?: MessageBus;
+    isNativeAutomation: boolean;
 }
 

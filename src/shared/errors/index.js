@@ -469,3 +469,9 @@ export class UncaughtErrorInNativeDialogHandler extends TestRunErrorBase {
         this.pageUrl    = url;
     }
 }
+
+export class MultipleWindowsModeIsNotSupportedInNativeAutomationModeError extends TestRunErrorBase {
+    constructor () {
+        super(TEST_RUN_ERRORS.multipleWindowsModeIsNotSupportedInNativeAutomationError);
+    }
+}

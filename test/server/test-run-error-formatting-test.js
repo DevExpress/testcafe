@@ -88,6 +88,7 @@ const {
     MultipleWindowsModeIsDisabledError,
     CannotCloseWindowWithoutParentError,
     MultipleWindowsModeIsNotAvailableInRemoteBrowserError,
+    MultipleWindowsModeIsNotSupportedInNativeAutomationModeError,
     CannotRestoreChildWindowError,
     TimeoutError,
     ActionCookieArgumentError,
@@ -768,6 +769,10 @@ describe('Error formatting', () => {
 
         it('Should format "multipleWindowsModeIsNotSupportedInRemoteBrowserError"', () => {
             assertErrorMessage('multiple-windows-mode-is-not-available-in-remote-browser-error', new MultipleWindowsModeIsNotAvailableInRemoteBrowserError('openWindow'));
+        });
+
+        it('Should format "multipleWindowsModeIsNotSupportedInNativeAutomationError"', () => {
+            assertErrorMessage('multiple-windows-mode-is-not-supported-in-native-automation-error', new MultipleWindowsModeIsNotSupportedInNativeAutomationModeError('openWindow'));
         });
 
         it('Should format "cannotRestoreChildWindowError"', () => {

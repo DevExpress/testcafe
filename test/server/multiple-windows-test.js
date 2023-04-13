@@ -41,4 +41,18 @@ describe('Multiple windows', () => {
             expect(err.code).eql(TEST_RUN_ERRORS.multipleWindowsModeIsNotSupportedInRemoteBrowserError);
         }
     });
+
+    it('Not allowed in Native Automation', async () => {
+        const testRun        = new TestRunMock();
+        const testController = new TestController(testRun);
+
+        testRun.opts.nativeAutomation = true;
+
+        try {
+            await testController.openWindow('http://example.com');
+        }
+        catch (err) {
+            expect(err.code).eql(TEST_RUN_ERRORS.multipleWindowsModeIsNotSupportedInNativeAutomationError);
+        }
+    });
 });

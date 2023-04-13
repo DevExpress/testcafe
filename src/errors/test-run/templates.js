@@ -406,6 +406,10 @@ export default {
         Multi-window mode is supported only in locally-installed Chrome, Chromium, Edge 84+ and Firefox. Run tests in these browsers to use the "${err.methodName}" method.
     `,
 
+    [TEST_RUN_ERRORS.multipleWindowsModeIsNotSupportedInNativeAutomationError]: () => `
+        The Native Automation mode does not support the use of multiple browser windows. Remove the "native automation" option to continue.
+    `,
+
     [TEST_RUN_ERRORS.cannotCloseWindowWithoutParent]: () => `
         Cannot close the window because it does not have a parent. The parent window was closed or you are attempting to close the root browser window where tests were launched.
     `,
