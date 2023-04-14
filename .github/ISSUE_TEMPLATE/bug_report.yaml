@@ -9,7 +9,7 @@ body:
 
         Make sure that you tried using the latest [TestCafe](https://github.com/DevExpress/testcafe/releases) version, where this behavior might have been already addressed.
 
-        If you use Chromium-based browsers for testing check if the problem reproduces in [Natvie Automation Mode](https://testcafe.io/documentation/404237/guides/intermediate-guides/native-automation-mode).
+        If your tests run in Chromium-based browsers, check if the [Native Automation Mode](https://testcafe.io/documentation/404237/guides/intermediate-guides/native-automation-mode) resolves the issue.
 
         Before submitting an issue, please check existing issues in [this repository](https://github.com/DevExpress/testcafe/issues) in case a similar issue exists or was already addressed. This may save your time (and ours).
   
