@@ -1,4 +1,4 @@
-name: Test Server (latest)
+name: Test Server (Latest)
 
 on:
   workflow_dispatch:
