@@ -5,7 +5,7 @@ const path                  = require('path');
 const createTestCafe        = require('../../lib/');
 const exportableLib         = require('../../lib/api/exportable-lib');
 const selfSignedCertificate = require('openssl-self-signed-certificate');
-const Extensions            = require("../../lib/configuration/formats");
+const Extensions            = require('../../lib/configuration/formats');
 
 const jsConfigIndex = Extensions.js;
 const jsonConfigIndex = Extensions.json;
