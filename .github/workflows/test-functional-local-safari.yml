@@ -15,5 +15,5 @@ jobs:
   test:
     uses: ./.github/workflows/test-functional.yml
     with:
-      test-script: 'node node_modules/gulp/bin/gulp gulp test-functional-local-safari-run --steps-as-tasks'
+      test-script: 'node node_modules/gulp/bin/gulp test-functional-local-safari-run --steps-as-tasks'
       os: 'macos-latest'
