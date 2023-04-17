@@ -387,3 +387,36 @@ test('Should execute a GET HTTPS request', async (t) => {
             position: 'CTO',
         });
 });
+
+
+test('Should execute a GET HTTPS request with method in lowercase', async (t) => {
+    const {
+        status,
+        statusText,
+        headers,
+        body,
+    } = await t.request(HTTPS_API_URL, {
+        method: 'get',
+    });
+
+    await t
+        .expect(status).eql(200)
+        .expect(statusText).eql('OK')
+        .expect(headers).contains({ 'content-type': 'application/json; charset=utf-8' })
+        .expect(body).eql({
+            name:     'John Hearts',
+            position: 'CTO',
+        });
+});
+
+test('Should set a content type for POST request', async (t) => {
+    const options = {
+        method: 'POST',
+    };
+
+    const data = await t.request(`${API_URL}/request-info`, options);
+
+    await t.expect(data.body.headers['content-type']).eql('application/x-www-form-urlencoded');
+});
+
+

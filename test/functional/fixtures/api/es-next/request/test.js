@@ -141,6 +141,14 @@ describe('Request', () => {
             return runTests('testcafe-fixtures/request-test.js', 'Should execute a request with relative url');
         });
 
+        it('Should execute a GET HTTPS request with method in lowercase', function () {
+            return runTests('testcafe-fixtures/request-test.js', 'Should execute a GET HTTPS request with method in lowercase');
+        });
+
+        it('Should set a content type for POST request', function () {
+            return runTests('testcafe-fixtures/request-test.js', 'Should set a content type for POST request');
+        });
+
         if (config.useLocalBrowsers) {
             it('Should rise request runtime error', function () {
                 return runTests('testcafe-fixtures/request-test.js', 'Should rise request runtime error', { shouldFail: true })
