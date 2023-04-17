@@ -93,10 +93,9 @@ function changeHeaderNamesToLowercase (headers: OutgoingHttpHeaders): OutgoingHt
 }
 
 async function prepareHeaders (options: ExternalRequestOptions, currentPageUrl: URL, url: URL, body: Buffer, testRun: TestRun, withCredentials: boolean): Promise<OutgoingHttpHeaders> {
-    const { host, origin } = url;
+    const { host, origin }                      = url;
     const { method, proxy, auth, headers = {} } = options;
-
-    const preparedHeaders: OutgoingHttpHeaders = Object.assign({}, DEFAULT_ACCEPT, changeHeaderNamesToLowercase(headers));
+    const preparedHeaders: OutgoingHttpHeaders  = Object.assign({}, DEFAULT_ACCEPT, changeHeaderNamesToLowercase(headers));
 
     preparedHeaders[HTTP_HEADERS.host]          = host;
     preparedHeaders[HTTP_HEADERS.origin]        = origin;
