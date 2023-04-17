@@ -18,7 +18,6 @@ import { getModifiersBit } from '../../../../native-automation/client/utils';
 import CDPEventDescriptor from '../../../../native-automation/client/event-descriptor';
 
 const Promise        = hammerhead.Promise;
-const browserUtils   = hammerhead.utils.browser;
 const messageSandbox = hammerhead.eventSandbox.message;
 const nativeMethods  = hammerhead.nativeMethods;
 
@@ -131,8 +130,9 @@ export default class PressAutomation {
         const currentShortcutHandler = this.shortcutHandlers[this.pressedKeyString];
         let keyPressPrevented      = false;
 
-        // NOTE: B254435
-        if (!currentShortcutHandler || browserUtils.isFirefox || keyPressSimulator.key === 'enter')
+        // NOTE: Old firefox prevented shortcut keys via preventDefault(B254435).
+        // Now this behavior the same as in other modern browsers
+        if (!currentShortcutHandler || keyPressSimulator.key === 'enter')
             keyPressPrevented = !keyPressSimulator.press(this.modifiersState);
 
         if ((!keyPressPrevented || this.isSelectElement) && currentShortcutHandler) {

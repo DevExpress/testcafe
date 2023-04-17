@@ -308,9 +308,6 @@ $(document).ready(function () {
             { type: 'keydown', keyCode: KEYCODES.end, ctrlKey: true },
         ];
 
-        if (browserUtils.isFirefox)
-            expectedEvents.push({ type: 'keypress', keyCode: KEYCODES.end, charCode: KEYCODES.end, ctrlKey: true });
-
         expectedEvents.push({ type: 'keyup', keyCode: KEYCODES.end, ctrlKey: true });
         expectedEvents.push({ type: 'keyup', keyCode: KEYCODES.ctrl });
 
@@ -371,7 +368,7 @@ $(document).ready(function () {
 
         runPressAutomation('ctrl+a', function () {
             runPressAutomation('delete', function () {
-                equal(input.value, browserUtils.isFirefox ? value : '');
+                equal(input.value, '');
 
                 start();
             });
