@@ -28,7 +28,7 @@ import { GetProxyUrlCommand } from '../commands/actions';
 import { CallsiteRecord } from 'callsite-record';
 
 const DEFAULT_ACCEPT            = { [HTTP_HEADERS.accept]: `${CONTENT_TYPES.json}, ${CONTENT_TYPES.textPlain}, ${CONTENT_TYPES.all}` };
-const METHODS_WITH_CONTENT_TYPE = ['post', 'put', 'patch'];
+const METHODS_WITH_CONTENT_TYPE = ['POST', 'PUT', 'PATCH'];
 const DEFAULT_REQUEST_METHOD    = 'GET';
 const DEFAULT_PROTOCOL          = 'http:';
 
@@ -92,8 +92,9 @@ function changeHeaderNamesToLowercase (headers: OutgoingHttpHeaders): OutgoingHt
     return lowerCaseHeaders;
 }
 
-async function prepareHeaders (headers: OutgoingHttpHeaders, currentPageUrl: URL, url: URL, body: Buffer, testRun: TestRun, withCredentials: boolean, options: ExternalRequestOptions): Promise<OutgoingHttpHeaders> {
+async function prepareHeaders (options: ExternalRequestOptions, currentPageUrl: URL, url: URL, body: Buffer, testRun: TestRun, withCredentials: boolean): Promise<OutgoingHttpHeaders> {
     const { host, origin } = url;
+    const { method, proxy, auth, headers = {} } = options;
 
     const preparedHeaders: OutgoingHttpHeaders = Object.assign({}, DEFAULT_ACCEPT, changeHeaderNamesToLowercase(headers));
 
@@ -101,14 +102,14 @@ async function prepareHeaders (headers: OutgoingHttpHeaders, currentPageUrl: URL
     preparedHeaders[HTTP_HEADERS.origin]        = origin;
     preparedHeaders[HTTP_HEADERS.contentLength] = body.length;
 
-    if (headers.method && METHODS_WITH_CONTENT_TYPE.includes(String(headers.method)))
-        preparedHeaders[HTTP_HEADERS.contentType] = CONTENT_TYPES.urlencoded;
+    if (method && METHODS_WITH_CONTENT_TYPE.includes(String(method)))
+        preparedHeaders[HTTP_HEADERS.contentType] = preparedHeaders[HTTP_HEADERS.contentType] || CONTENT_TYPES.urlencoded;
 
-    if (options.auth && withCredentials)
-        preparedHeaders[HTTP_HEADERS.authorization] = getAuthString(options.auth);
+    if (auth && withCredentials)
+        preparedHeaders[HTTP_HEADERS.authorization] = getAuthString(auth);
 
-    if (options.proxy?.auth)
-        preparedHeaders[HTTP_HEADERS.proxyAuthorization] = getAuthString(options.proxy.auth);
+    if (proxy?.auth)
+        preparedHeaders[HTTP_HEADERS.proxyAuthorization] = getAuthString(proxy.auth);
 
     if (withCredentials) {
         const currentPageCookies = await testRun.cookieProvider.getCookieHeader(currentPageUrl.href, currentPageUrl.hostname);
@@ -199,11 +200,12 @@ function resolveUrlParts (testRun: TestRun, url: URL, withCredentials: boolean):
 
 export async function createRequestOptions (currentPageUrl: URL, testRun: TestRun, options: ExternalRequestOptions, callsite: CallsiteRecord | null): Promise<RequestOptions> {
     options.headers = options.headers || {};
+    options.method  = options.method?.toUpperCase() || DEFAULT_REQUEST_METHOD;
 
     const url             = await prepareUrl(testRun, currentPageUrl, options.url, callsite);
     const withCredentials = !currentPageUrl.host || sameOriginCheck(currentPageUrl.href, url.href) || options.withCredentials || false;
     const body            = transformBody(options.headers, options.body);
-    const headers         = await prepareHeaders(options.headers, currentPageUrl, url, body, testRun, withCredentials, options);
+    const headers         = await prepareHeaders(options, currentPageUrl, url, body, testRun, withCredentials);
     let auth              = options.auth;
 
     const {
@@ -222,7 +224,7 @@ export async function createRequestOptions (currentPageUrl: URL, testRun: TestRu
     }
 
     const requestParams: RequestOptionsParams = {
-        method:         options.method || DEFAULT_REQUEST_METHOD,
+        method:         options.method,
         url:            href,
         protocol:       protocol,
         hostname:       hostname,

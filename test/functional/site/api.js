@@ -90,6 +90,12 @@ router.post('/data', (req, res) => {
     res.send(responses.handlePostResult(req.body));
 });
 
+router.post('/request-info', (req, res) => {
+    res.send({
+        headers: req.headers,
+    });
+});
+
 router.delete('/data/:dataId', (req, res) => {
     res.send(responses.handleDeleteResult(req.params));
 });
