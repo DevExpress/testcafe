@@ -13,7 +13,6 @@ import Protocol from 'devtools-protocol';
 import RequestPausedEvent = Protocol.Fetch.RequestPausedEvent;
 import Request = Protocol.Network.Request;
 import HeaderEntry = Protocol.Fetch.HeaderEntry;
-import { fromBase64String } from '../../utils/string';
 import { StatusCodes } from 'http-status-codes';
 import { convertToOutgoingHttpHeaders, lowerCaseHeaderNames } from '../../utils/headers';
 
@@ -57,7 +56,7 @@ export default class RequestPausedEventBasedEventFactory extends BaseRequestHook
 
     private static _getRequestData (request: Request): Buffer {
         if (request.postData)
-            return fromBase64String(request.postData);
+            return Buffer.from(request.postData);
 
         return Buffer.alloc(0);
     }
