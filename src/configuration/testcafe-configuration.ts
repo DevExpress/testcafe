@@ -47,8 +47,7 @@ import { BrowserConnectionGatewayOptions } from '../browser/connection/gateway';
 import { getValidHostname } from './utils';
 
 const BASE_CONFIGURATION_FILENAME = '.testcaferc';
-const CONFIGURATION_FILENAMES     = (Object.keys(Extensions) as Array<keyof typeof Extensions>).map(ext => `${BASE_CONFIGURATION_FILENAME}${ext}`);
-
+const CONFIGURATION_FILENAMES     = (Object.keys(Extensions) as Array<keyof typeof Extensions>).map(ext => `${BASE_CONFIGURATION_FILENAME}${Extensions[ext]}`);
 const DEFAULT_SCREENSHOTS_DIRECTORY = 'screenshots';
 
 const OPTION_FLAG_NAMES = [

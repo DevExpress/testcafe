@@ -35,8 +35,8 @@ const createJsConfig = (path, options) => {
     fs.writeFileSync(path, `module.exports = ${JSON.stringify(options)}`);
 };
 
-const jsConfigIndex = Extensions.js;
-const jsonConfigIndex = Extensions.json;
+const jsConfigIndex = TestCafeConfiguration.FILENAMES.findIndex(file=>file.includes(Extensions.js));
+const jsonConfigIndex = TestCafeConfiguration.FILENAMES.findIndex(file=>file.includes(Extensions.json));
 
 const createJsTestCafeConfigurationFile   = createJsConfig.bind(null, TestCafeConfiguration.FILENAMES[jsConfigIndex]);
 const createJSONTestCafeConfigurationFile = createJSONConfig.bind(null, TestCafeConfiguration.FILENAMES[jsonConfigIndex]);

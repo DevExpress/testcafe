@@ -1,6 +1,6 @@
 enum Extensions {
-    json = '.json',
     js = '.js',
+    json = '.json',
     cjs = '.cjs',
 }
 

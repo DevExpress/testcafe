@@ -2,13 +2,20 @@ const { expect }            = require('chai');
 const url                   = require('url');
 const net                   = require('net');
 const path                  = require('path');
+const proxyquire            = require('proxyquire');
 const createTestCafe        = require('../../lib/');
 const exportableLib         = require('../../lib/api/exportable-lib');
 const selfSignedCertificate = require('openssl-self-signed-certificate');
 const Extensions            = require('../../lib/configuration/formats');
 
-const jsConfigIndex = Extensions.js;
-const jsonConfigIndex = Extensions.json;
+const TestCafeConfiguration = proxyquire('../../lib/configuration/testcafe-configuration', {
+    './utils': {
+        getValidHostname: hostname => hostname || 'calculated-hostname',
+    },
+});
+
+const jsConfigIndex = TestCafeConfiguration.FILENAMES.findIndex(file=>file.includes(Extensions.js));
+const jsonConfigIndex = TestCafeConfiguration.FILENAMES.findIndex(file=>file.includes(Extensions.json));
 
 describe('TestCafe factory function', function () {
     let testCafe = null;
