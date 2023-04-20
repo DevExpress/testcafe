@@ -13,7 +13,7 @@ class TestRunTracker extends EventEmitter {
     public constructor () {
         super();
 
-        this.enabled = false;
+        this.enabled        = false;
         this.activeTestRuns = {};
     }
 

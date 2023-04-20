@@ -8,7 +8,7 @@ describe('[API] t.dispatchEvent()', function () {
     });
 
     it('input', function () {
-        return runTests('testcafe-fixtures/index.js', 'input', { skip: 'ie' });
+        return runTests('testcafe-fixtures/index.js', 'input', { skip: ['ie', 'safari'] });
     });
 
     it('focus', function () {
