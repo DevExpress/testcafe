@@ -10,6 +10,7 @@ import BrowserConnectionGateway from '../browser/connection/gateway';
 interface TestCafe {
     browserConnectionGateway: BrowserConnectionGateway;
     createBrowserConnection(): Promise<BrowserConnection>;
+    initializeBrowserConnectionGateway(): Promise<void>;
 }
 
 export default async function (testCafe: TestCafe, remoteCount: number, showQRCode: boolean): Promise<BrowserConnection[]> {
@@ -27,6 +28,8 @@ export default async function (testCafe: TestCafe, remoteCount: number, showQRCo
 
         if (showQRCode)
             log.write('You can either enter the URL or scan the QR-code.');
+
+        await testCafe.initializeBrowserConnectionGateway();
 
         const connectionUrl = testCafe.browserConnectionGateway.connectUrl;
 

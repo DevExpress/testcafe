@@ -169,8 +169,7 @@ export default class TestCafeConfiguration extends Configuration {
 
     public get browserConnectionGatewayOptions (): BrowserConnectionGatewayOptions {
         return {
-            retryTestPages:   this.getOption(OPTION_NAMES.retryTestPages),
-            nativeAutomation: this.getOption(OPTION_NAMES.nativeAutomation),
+            retryTestPages: this.getOption(OPTION_NAMES.retryTestPages),
         };
     }
 

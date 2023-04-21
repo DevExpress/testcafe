@@ -15,10 +15,12 @@ import CompilerService from '../services/compiler/host';
 import { Quarantine } from '../utils/get-options/quarantine';
 import MessageBus from '../utils/message-bus';
 import TestRunHookController from './test-run-hook-controller';
+import * as clientScriptsRouting from '../custom-client-scripts/routing';
+import debug from 'debug';
 
 const DISCONNECT_THRESHOLD = 3;
 
-
+const debugLogger = debug('testcafe:runner:test-run-controller');
 export default class TestRunController extends AsyncEventEmitter {
     private readonly _quarantine: null | Quarantine;
     private _disconnectionCount: number;
@@ -35,6 +37,7 @@ export default class TestRunController extends AsyncEventEmitter {
     private readonly compilerService?: CompilerService;
     private readonly _messageBus: MessageBus;
     private readonly _testRunHook: TestRunHookController;
+    private clientScriptRoutes: string[] = [];
 
     public constructor ({
         test,
@@ -91,6 +94,8 @@ export default class TestRunController extends AsyncEventEmitter {
             screenshotCapturer,
             startRunExecutionTime,
         });
+
+        this.clientScriptRoutes = clientScriptsRouting.register(this._proxy, this.test, this.testRun.isNativeAutomation);
 
         await this.testRun.initialize();
 
@@ -175,6 +180,8 @@ export default class TestRunController extends AsyncEventEmitter {
         // To keep a sequence after fixture hook execution we use completion queue.
         await this._fixtureHookController.runFixtureAfterHookIfNecessary(this.testRun);
         await this._testRunHook.runTestRunAfterHookIfNecessary(this.testRun);
+
+        clientScriptsRouting.unRegister(this._proxy, this.clientScriptRoutes);
 
         this.done = true;
 

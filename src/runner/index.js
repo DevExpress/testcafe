@@ -98,7 +98,6 @@ export default class Runner extends EventEmitter {
 
     async _disposeTaskAndRelatedAssets (task, browserSet, reporters, testedApp, runnableConfigurationId) {
         task.abort();
-        task.unRegisterClientScriptRouting();
         task.clearListeners();
         this._messageBus.abort();
 
@@ -250,8 +249,6 @@ export default class Runner extends EventEmitter {
         task.on('error', stopHandlingTestErrors);
 
         const onTaskCompleted = () => {
-            task.unRegisterClientScriptRouting();
-
             completed = true;
         };
 

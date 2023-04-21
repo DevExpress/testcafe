@@ -5,7 +5,6 @@ import BrowserJob from '../browser-job';
 import Screenshots from '../../screenshots';
 import WarningLog from '../../notifications/warning-log';
 import FixtureHookController from '../fixture-hook-controller';
-import * as clientScriptsRouting from '../../custom-client-scripts/routing';
 import Videos from '../../video-recorder/videos';
 import TestRun from '../../test-run';
 import { Proxy } from 'testcafe-hammerhead';
@@ -35,7 +34,6 @@ export default class Task extends AsyncEventEmitter {
     public readonly screenshots: Screenshots;
     public readonly fixtureHookController: FixtureHookController;
     private readonly _pendingBrowserJobs: BrowserJob[];
-    private _clientScriptRoutes: string[] = [];
     public readonly testStructure: ReportedTestStructureItem[];
     public readonly videos?: Videos;
     private readonly _compilerService?: CompilerService;
@@ -80,8 +78,6 @@ export default class Task extends AsyncEventEmitter {
         this.fixtureHookController = new FixtureHookController(tests, browserConnectionGroups.length);
         this._pendingBrowserJobs   = this._createBrowserJobs(proxy, this.opts);
         this.testStructure         = this._prepareTestStructure(tests);
-
-        this.registerClientScriptRouting(!!this.opts.nativeAutomation);
 
         if (this.opts.videoPath) {
             const { videoPath, videoOptions, videoEncodingOptions } = this.opts;
@@ -173,14 +169,6 @@ export default class Task extends AsyncEventEmitter {
 
             return job;
         });
-    }
-
-    public registerClientScriptRouting (isNativeAutomation: boolean): void {
-        this._clientScriptRoutes = clientScriptsRouting.register(this._proxy, this.tests, isNativeAutomation);
-    }
-
-    public unRegisterClientScriptRouting (): void {
-        clientScriptsRouting.unRegister(this._proxy, this._clientScriptRoutes);
     }
 
     // API

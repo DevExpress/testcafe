@@ -210,4 +210,10 @@ export default {
     supportNativeAutomation () {
         return true;
     },
+
+    getNativeAutomation (browserId) {
+        const runtimeInfo = this.openedBrowsers[browserId];
+
+        return runtimeInfo.nativeAutomation;
+    },
 };

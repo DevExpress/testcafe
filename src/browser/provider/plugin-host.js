@@ -170,4 +170,8 @@ export default class BrowserProviderPluginHost {
     supportNativeAutomation () {
         return false;
     }
+
+    getNativeAutomation (/*browserId*/) {
+        return null;
+    }
 }

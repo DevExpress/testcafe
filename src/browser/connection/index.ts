@@ -35,6 +35,7 @@ import { TestRun as LegacyTestRun } from 'testcafe-legacy-api';
 import { Proxy } from 'testcafe-hammerhead';
 import { NextTestRunInfo, OpenBrowserAdditionalOptions } from '../../shared/types';
 import { EventType } from '../../native-automation/types';
+import NativeAutomation from '../../native-automation';
 
 const getBrowserConnectionDebugScope = (id: string): string => `testcafe:browser:connection:${id}`;
 
@@ -643,5 +644,13 @@ export default class BrowserConnection extends EventEmitter {
         this._buildCommunicationUrls(this.browserConnectionGateway.proxy);
 
         process.nextTick(() => this._runBrowser());
+    }
+
+    public supportNativeAutomation (): boolean {
+        return this.provider.supportNativeAutomation();
+    }
+
+    public getNativeAutomation (): NativeAutomation {
+        return this.provider.getNativeAutomation(this.id);
     }
 }

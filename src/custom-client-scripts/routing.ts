@@ -19,23 +19,21 @@ export function isLegacyTest (test: TestItem): test is LegacyTest {
     return !!(test as LegacyTest).isLegacy;
 }
 
-export function register (proxy: Proxy, tests: Test[], nativeAutomation: boolean): string[] {
+export function register (proxy: Proxy, test: Test, nativeAutomation: boolean): string[] {
     const routes: string[] = [];
 
-    tests.forEach(test => {
-        if (isLegacyTest(test))
-            return;
+    if (isLegacyTest(test))
+        return routes;
 
-        test.clientScripts.forEach((script: ClientScriptInit) => {
-            const route = getCustomClientScriptUrl(script as ClientScript);
+    test.clientScripts.forEach((script: ClientScriptInit) => {
+        const route = getCustomClientScriptUrl(script as ClientScript);
 
-            proxy.GET(route, {
-                content:     getCustomClientScriptCode(script as ClientScript, nativeAutomation),
-                contentType: CONTENT_TYPES.javascript,
-            });
-
-            routes.push(route);
+        proxy.GET(route, {
+            content:     getCustomClientScriptCode(script as ClientScript, nativeAutomation),
+            contentType: CONTENT_TYPES.javascript,
         });
+
+        routes.push(route);
     });
 
     return routes;

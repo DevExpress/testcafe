@@ -25,12 +25,10 @@ import { EventEmitter } from 'events';
 
 export interface BrowserConnectionGatewayOptions {
     retryTestPages: boolean;
-    nativeAutomation: boolean;
 }
 
 const DEFAULT_BROWSER_CONNECTION_GATEWAY_OPTIONS = {
     retryTestPages:   false,
-    nativeAutomation: false,
 };
 
 export default class BrowserConnectionGateway extends EventEmitter {
@@ -61,9 +59,7 @@ export default class BrowserConnectionGateway extends EventEmitter {
             const connection = this._connections[params.id];
 
             preventCaching(res);
-
-            if (this._options.nativeAutomation)
-                acceptCrossOrigin(res);
+            acceptCrossOrigin(res);
 
             if (connection)
                 handler(req, res, connection);
@@ -103,13 +99,10 @@ export default class BrowserConnectionGateway extends EventEmitter {
         proxy.GET(SERVICE_ROUTES.assets.index, { content: idlePageScript, contentType: 'application/x-javascript' });
         proxy.GET(SERVICE_ROUTES.assets.styles, { content: idlePageStyle, contentType: 'text/css' });
         proxy.GET(SERVICE_ROUTES.assets.logo, { content: idlePageLogo, contentType: 'image/svg+xml' });
-
-        if (this._options.nativeAutomation) {
-            proxy.GET(NATIVE_AUTOMATION_ERROR_ROUTE, (req: IncomingMessage, res: ServerResponse) => {
-                res.writeHead(200, { 'Content-Type': 'text/html' });
-                res.end(EMPTY_PAGE_MARKUP);
-            });
-        }
+        proxy.GET(NATIVE_AUTOMATION_ERROR_ROUTE, (req: IncomingMessage, res: ServerResponse) => {
+            res.writeHead(200, { 'Content-Type': 'text/html' });
+            res.end(EMPTY_PAGE_MARKUP);
+        });
     }
 
     // Helpers
@@ -338,10 +331,6 @@ export default class BrowserConnectionGateway extends EventEmitter {
         return this._connections;
     }
 
-    public get nativeAutomation (): boolean {
-        return this._options.nativeAutomation;
-    }
-
     public get status (): BrowserConnectionGatewayStatus {
         return this._status;
     }
@@ -365,8 +354,6 @@ export default class BrowserConnectionGateway extends EventEmitter {
     }
 
     public switchToNativeAutomation (): void {
-        this._options.nativeAutomation = true;
-
         this.proxy.switchToNativeAutomation();
     }
 }

@@ -191,7 +191,7 @@ before(function () {
                 mocha.timeout(0);
 
             if (USE_PROVIDER_POOL) {
-                return testCafe._initializeBrowserConnectionGateway()
+                return testCafe.initializeBrowserConnectionGateway()
                     .then(() => {
                         if (config.nativeAutomation)
                             testCafe.browserConnectionGateway.switchToNativeAutomation();

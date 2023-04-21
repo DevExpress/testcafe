@@ -398,9 +398,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     private get _nativeAutomation (): NativeAutomation {
-        const runtimeInfo = this.browserConnection.provider.plugin.openedBrowsers[this.browserConnection.id];
-
-        return runtimeInfo.nativeAutomation;
+        return this.browserConnection.getNativeAutomation();
     }
 
     private _getRoleProvider (): RoleProvider {
