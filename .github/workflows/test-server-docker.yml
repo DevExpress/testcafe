@@ -16,5 +16,4 @@ jobs:
     uses: ./.github/workflows/test-server.yml
     with:
       test-script: 'npx gulp docker-server-test-run --steps-as-tasks'
-      node-version: 14
       is-docker: true
