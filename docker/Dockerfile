@@ -9,7 +9,7 @@ ENV ALPINE_REPOS="\
  --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/\
  --repository http://dl-cdn.alpinelinux.org/alpine/edge/main/\
  --repository http://dl-cdn.alpinelinux.org/alpine/v3.11/community/\
- --repository http://dl-cdn.alpinelinux.org/alpine/v3.11/main/\
+ --repository http://dl-cdn.alpinelinux.org/alpine/v3.17/main/\
 "
 
 RUN apk --no-cache $ALPINE_REPOS upgrade && \
