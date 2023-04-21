@@ -16,6 +16,5 @@ jobs:
     uses: ./.github/workflows/test-functional.yml
     with:
       test-script: 'npx gulp docker-functional-test-run --steps-as-tasks'
-      node-version: 14
       retry_failed_tests: false
       is-docker: true
