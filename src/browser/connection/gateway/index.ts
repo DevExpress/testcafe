@@ -28,7 +28,7 @@ export interface BrowserConnectionGatewayOptions {
 }
 
 const DEFAULT_BROWSER_CONNECTION_GATEWAY_OPTIONS = {
-    retryTestPages:   false,
+    retryTestPages: false,
 };
 
 export default class BrowserConnectionGateway extends EventEmitter {

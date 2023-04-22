@@ -322,7 +322,7 @@ export default class BrowserProvider {
         return await this.plugin.getOSInfo(browserId);
     }
 
-    public async openBrowser (browserId: string, pageUrl: string, browserOption: unknown, additionalOptions: OpenBrowserAdditionalOptions = { disableMultipleWindows: false }): Promise<void> {
+    public async openBrowser (browserId: string, pageUrl: string, browserOption: unknown, additionalOptions: OpenBrowserAdditionalOptions): Promise<void> {
         await this.plugin.openBrowser(browserId, pageUrl, browserOption, additionalOptions);
 
         await this._ensureRetryTestPagesWarning(browserId);

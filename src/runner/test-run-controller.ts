@@ -21,6 +21,7 @@ import debug from 'debug';
 const DISCONNECT_THRESHOLD = 3;
 
 const debugLogger = debug('testcafe:runner:test-run-controller');
+
 export default class TestRunController extends AsyncEventEmitter {
     private readonly _quarantine: null | Quarantine;
     private _disconnectionCount: number;
@@ -186,6 +187,8 @@ export default class TestRunController extends AsyncEventEmitter {
         this.done = true;
 
         await this.emit('test-run-done');
+
+        debugLogger('done');
     }
 
     private async _emitTestRunStart (): Promise<void> {
@@ -237,6 +240,8 @@ export default class TestRunController extends AsyncEventEmitter {
     }
 
     public async start (connection: BrowserConnection, startRunExecutionTime?: Date): Promise<string | null> {
+        debugLogger('start');
+
         const testRun = await this._createTestRun(connection, startRunExecutionTime);
 
         const hookOk = await this._testRunHook.runTestRunBeforeHookIfNecessary(testRun)

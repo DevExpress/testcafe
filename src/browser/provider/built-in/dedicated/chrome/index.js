@@ -15,6 +15,7 @@ import NativeAutomation from '../../../../../native-automation';
 import { chromeBrowserProviderLogger } from '../../../../../utils/debug-loggers';
 import { EventType } from '../../../../../native-automation/types';
 import delay from '../../../../../utils/delay';
+import { toNativeAutomationSetupOptions } from '../../../../../native-automation/utils/convert';
 
 const MIN_AVAILABLE_DIMENSION = 50;
 
@@ -64,9 +65,9 @@ export default {
         runtimeInfo.nativeAutomation = nativeAutomation;
     },
 
-    async openBrowser (browserId, pageUrl, config, { disableMultipleWindows, nativeAutomation }) {
+    async openBrowser (browserId, pageUrl, config, additionalOptions) {
         const parsedPageUrl = parseUrl(pageUrl);
-        const runtimeInfo   = await this._createRunTimeInfo(parsedPageUrl.hostname, config, disableMultipleWindows);
+        const runtimeInfo   = await this._createRunTimeInfo(parsedPageUrl.hostname, config, additionalOptions.disableMultipleWindows);
 
         runtimeInfo.browserName = this._getBrowserName();
         runtimeInfo.browserId   = browserId;
@@ -88,7 +89,7 @@ export default {
         runtimeInfo.activeWindowId    = null;
         runtimeInfo.windowDescriptors = {};
 
-        if (!disableMultipleWindows)
+        if (!additionalOptions.disableMultipleWindows)
             runtimeInfo.activeWindowId = this.calculateWindowId();
 
         const browserClient = new BrowserClient(runtimeInfo);
@@ -101,8 +102,8 @@ export default {
 
         this._setUserAgentMetaInfoForEmulatingDevice(browserId, runtimeInfo.config);
 
-        if (nativeAutomation)
-            await this._setupNativeAutomation({ browserId, browserClient, runtimeInfo, nativeAutomationOptions: nativeAutomation });
+        if (additionalOptions.nativeAutomation)
+            await this._setupNativeAutomation({ browserId, browserClient, runtimeInfo, nativeAutomationOptions: toNativeAutomationSetupOptions(additionalOptions) });
 
         chromeBrowserProviderLogger('browser opened %s', browserId);
     },

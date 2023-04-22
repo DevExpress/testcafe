@@ -49,7 +49,7 @@ interface NativeAutomationSetupOptions {
     developmentMode: boolean;
 }
 
-interface OpenBrowserAdditionalOptions {
+interface OpenBrowserAdditionalOptions extends NativeAutomationSetupOptions {
     disableMultipleWindows: boolean;
-    nativeAutomation?: NativeAutomationSetupOptions;
+    nativeAutomation: boolean;
 }

@@ -261,22 +261,15 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     private _getAdditionalBrowserOptions (): OpenBrowserAdditionalOptions {
-        const options = {
+        return {
             disableMultipleWindows: this._options.disableMultipleWindows,
-        } as OpenBrowserAdditionalOptions;
-
-        if (this._options.nativeAutomation) {
-            options.nativeAutomation = {
-                serviceDomains: [
-                    this.browserConnectionGateway.proxy.server1Info.domain,
-                    this.browserConnectionGateway.proxy.server2Info.domain,
-                ],
-
-                developmentMode: this._options.developmentMode,
-            };
-        }
-
-        return options;
+            nativeAutomation:       this._options.nativeAutomation,
+            developmentMode:        this._options.developmentMode,
+            serviceDomains:         [
+                this.browserConnectionGateway.proxy.server1Info.domain,
+                this.browserConnectionGateway.proxy.server2Info.domain,
+            ],
+        };
     }
 
     private async _runBrowser (): Promise<void> {
