@@ -56,7 +56,7 @@ if (config.useLocalBrowsers) {
                 const result = await runInCLI({
                     testFile: 'test/functional/fixtures/regression/gh-2546/testcafe-fixtures/uncaughtException.js',
                     browsers: '"chrome:headless --no-sandbox"',
-                    args: ['--disable-native-automation'],
+                    args:     ['--disable-native-automation'],
                 });
 
                 expect(result.stdout).contains('Uncaught exception');
@@ -68,7 +68,7 @@ if (config.useLocalBrowsers) {
                 const result = await runInCLI({
                     testFile: 'test/functional/fixtures/regression/gh-2546/testcafe-fixtures/uncaughtException.js',
                     browsers: '"chrome:headless --no-sandbox"',
-                    args: ['--skip-uncaught-errors', '--disable-native-automation'],
+                    args:     ['--skip-uncaught-errors', '--disable-native-automation'],
                 });
 
                 expect(result.error).is.null;

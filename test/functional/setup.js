@@ -13,6 +13,8 @@ const getTestError               = require('./get-test-error.js');
 const { createSimpleTestStream } = require('./utils/stream');
 const BrowserConnectionStatus    = require('../../lib/browser/connection/status');
 
+const setNativeAutomationForRemoteConnection = require('./utils/set-native-automation-for-remote-connection');
+
 let testCafe     = null;
 let browsersInfo = null;
 
@@ -191,11 +193,7 @@ before(function () {
                 mocha.timeout(0);
 
             if (USE_PROVIDER_POOL) {
-                return testCafe.initializeBrowserConnectionGateway()
-                    .then(() => {
-                        if (config.nativeAutomation)
-                            testCafe.browserConnectionGateway.switchToNativeAutomation();
-                    });
+                return testCafe.initializeBrowserConnectionGateway();
             }
 
             return openRemoteBrowsers();
@@ -288,6 +286,9 @@ before(function () {
                     runner.reporter(customReporters);
                 else
                     runner.reporter('json', stream);
+
+                if (config.nativeAutomation)
+                    setNativeAutomationForRemoteConnection(runner);
 
                 return runner
                     .useProxy(proxy, proxyBypass)
