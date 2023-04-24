@@ -1,6 +1,5 @@
 const createTestCafe = require('../../../../lib');
 const path           = require('path');
-const { expect }     = require('chai');
 const config         = require('../../config.js');
 
 let testCafe = null;
@@ -41,21 +40,6 @@ if (thereAreAllRequiredBrowsers) {
 
         it('Enabled with the "nativeAutomation" option', function () {
             return runTest({ browsers: 'chrome', test: 'Enabled', nativeAutomation: true });
-        });
-
-        it('Should throw error on running with unsupported browser', function () {
-            let errorIsRaised = false;
-
-            return runTest({ browsers: ['chrome', 'firefox'], test: 'Disabled', nativeAutomation: true })
-                .catch(err => {
-                    errorIsRaised = true;
-
-                    expect(err.message).eql('The following browser(s) do not support the Native Automation mode: "firefox".');
-                })
-                .then(() => {
-                    if (!errorIsRaised)
-                        throw new Error('Promise rejection expected');
-                });
         });
     });
 }

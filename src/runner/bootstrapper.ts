@@ -190,18 +190,12 @@ export default class Bootstrapper {
             this.browserConnectionGateway.switchToNativeAutomation();
     }
 
-    private assertUnsupportedBrowsersForNativeAutomationMode (automatedBrowserConnections: BrowserConnection[][]): void {
-        if (!this.nativeAutomation)
-            return;
+    private _calculateIsNativeAutomation (remotes: BrowserConnection[]): void {
+        // If there are remote connections, we should switch to legacy run mode.
+        if (remotes.length)
+            this.configuration.mergeOptions({ nativeAutomation: true });
 
-        const unsupportedBrowsers = flatten(automatedBrowserConnections)
-            .filter(connection => {
-                return !connection.provider.supportNativeAutomation();
-            })
-            .map(connection => connection.browserInfo.providerName);
-
-        if (unsupportedBrowsers.length)
-            throw new GeneralError(RUNTIME_ERRORS.setNativeAutomationForUnsupportedBrowsers, getConcatenatedValuesString(unsupportedBrowsers));
+        this.nativeAutomation = !!this.configuration.getOption(OPTION_NAMES.nativeAutomation);
     }
 
     private async _getBrowserConnections (browserInfo: BrowserInfoSource[]): Promise<BrowserSet> {
@@ -210,13 +204,11 @@ export default class Bootstrapper {
         if (remotes && remotes.length % this.concurrency)
             throw new GeneralError(RUNTIME_ERRORS.cannotDivideRemotesCountByConcurrency);
 
-        this.nativeAutomation = this.configuration.getOption(OPTION_NAMES.nativeAutomation);
+        this._calculateIsNativeAutomation(remotes);
 
         await this._setupProxy();
 
         let browserConnections = this._createAutomatedConnections(automated);
-
-        this.assertUnsupportedBrowsersForNativeAutomationMode(browserConnections);
 
         remotes.forEach(remoteConnection => {
             remoteConnection.messageBus = this.messageBus;

@@ -17,6 +17,8 @@ import MessageBus from '../utils/message-bus';
 import TestRunHookController from './test-run-hook-controller';
 import * as clientScriptsRouting from '../custom-client-scripts/routing';
 import debug from 'debug';
+import { RUNTIME_ERRORS } from '../errors/types';
+import { GeneralError } from '../errors/runtime';
 
 const DISCONNECT_THRESHOLD = 3;
 
@@ -39,6 +41,7 @@ export default class TestRunController extends AsyncEventEmitter {
     private readonly _messageBus: MessageBus;
     private readonly _testRunHook: TestRunHookController;
     private clientScriptRoutes: string[] = [];
+    private isNativeAutomation = false;
 
     public constructor ({
         test,
@@ -239,8 +242,21 @@ export default class TestRunController extends AsyncEventEmitter {
         return this._fixtureHookController.isTestBlocked(this.test);
     }
 
+    private async _handleNativeAutomationMode (connection: BrowserConnection): Promise<void> {
+        this.isNativeAutomation = !!this._opts.nativeAutomation;
+
+        const supportNativeAutomation = connection.supportNativeAutomation();
+
+        if (!this.isNativeAutomation || supportNativeAutomation)
+            return;
+
+        throw new GeneralError(RUNTIME_ERRORS.setNativeAutomationForUnsupportedBrowsers, connection.browserInfo.providerName);
+    }
+
     public async start (connection: BrowserConnection, startRunExecutionTime?: Date): Promise<string | null> {
         debugLogger('start');
+
+        await this._handleNativeAutomationMode(connection);
 
         const testRun = await this._createTestRun(connection, startRunExecutionTime);
 

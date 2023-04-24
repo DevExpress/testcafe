@@ -194,7 +194,7 @@ async function resolvePoxyUrlParts (testRun: TestRun, url: URL, withCredentials:
 }
 
 function resolveUrlParts (testRun: TestRun, url: URL, withCredentials: boolean): Promise<{ hostname: string; protocol: string; port: string; href: string; partAfterHost: string }> {
-    return testRun.isNativeAutomation() ? resolveNativeAutomationUrlParts(url) : resolvePoxyUrlParts(testRun, url, withCredentials);
+    return testRun.isNativeAutomation ? resolveNativeAutomationUrlParts(url) : resolvePoxyUrlParts(testRun, url, withCredentials);
 }
 
 export async function createRequestOptions (currentPageUrl: URL, testRun: TestRun, options: ExternalRequestOptions, callsite: CallsiteRecord | null): Promise<RequestOptions> {

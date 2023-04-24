@@ -180,6 +180,7 @@ interface TestRunInit {
     compilerService?: CompilerService;
     messageBus?: MessageBus;
     startRunExecutionTime?: Date;
+    nativeAutomation: boolean;
 }
 
 interface DriverTask {
@@ -285,8 +286,9 @@ export default class TestRun extends AsyncEventEmitter {
     public readonly startRunExecutionTime?: Date;
     private readonly _requestHookEventProvider: RequestHookEventProvider;
     private readonly _roleProvider: RoleProvider;
+    public readonly isNativeAutomation: boolean;
 
-    public constructor ({ test, browserConnection, screenshotCapturer, globalWarningLog, opts, compilerService, messageBus, startRunExecutionTime }: TestRunInit) {
+    public constructor ({ test, browserConnection, screenshotCapturer, globalWarningLog, opts, compilerService, messageBus, startRunExecutionTime, nativeAutomation }: TestRunInit) {
         super();
 
         this[testRunMarker]    = true;
@@ -312,6 +314,7 @@ export default class TestRun extends AsyncEventEmitter {
 
         this.disablePageReloads = test.disablePageReloads || opts.disablePageReloads as boolean && test.disablePageReloads !== false;
         this.disablePageCaching = test.disablePageCaching || opts.disablePageCaching as boolean;
+        this.isNativeAutomation = nativeAutomation;
 
         this.disableMultipleWindows = opts.disableMultipleWindows as boolean;
 
@@ -371,25 +374,21 @@ export default class TestRun extends AsyncEventEmitter {
         this._requestHookEventProvider = this._getRequestHookEventProvider();
         this._roleProvider             = this._getRoleProvider();
 
-        this.cookieProvider    = CookieProviderFactory.create(this, this.isNativeAutomation() as boolean);
-        this._storagesProvider = StoragesProviderFactory.create(this, this.isNativeAutomation() as boolean);
+        this.cookieProvider    = CookieProviderFactory.create(this, this.isNativeAutomation);
+        this._storagesProvider = StoragesProviderFactory.create(this, this.isNativeAutomation);
 
         this._addInjectables();
     }
 
-    public isNativeAutomation (): boolean {
-        return !!this.opts.nativeAutomation;
-    }
-
     private _getRequestHookEventProvider (): RequestHookEventProvider {
-        if (!this.isNativeAutomation())
+        if (!this.isNativeAutomation)
             return this.session.requestHookEventProvider;
 
         return this._nativeAutomationRequestPipeline.requestHookEventProvider;
     }
 
     public saveStoragesSnapshot (storageSnapshot: StoragesSnapshot): void {
-        if (this.isNativeAutomation())
+        if (this.isNativeAutomation)
             this._nativeAutomationRequestPipeline.restoringStorages = storageSnapshot;
     }
 
@@ -402,7 +401,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     private _getRoleProvider (): RoleProvider {
-        if (this.isNativeAutomation())
+        if (this.isNativeAutomation)
             return new NativeAutomationRoleProvider(this);
 
         return new ProxyRoleProvider(this);
@@ -636,7 +635,7 @@ export default class TestRun extends AsyncEventEmitter {
             speed:                                                   this.speed,
             dialogHandler:                                           JSON.stringify(this.activeDialogHandler),
             canUseDefaultWindowActions:                              JSON.stringify(await this.browserConnection.canUseDefaultWindowActions()),
-            nativeAutomation:                                        JSON.stringify(this.isNativeAutomation()),
+            nativeAutomation:                                        JSON.stringify(this.isNativeAutomation),
             domain:                                                  JSON.stringify(this.browserConnection.browserConnectionGateway.proxy.server1Info.domain),
         });
     }
@@ -649,7 +648,7 @@ export default class TestRun extends AsyncEventEmitter {
             retryTestPages:   !!this.opts.retryTestPages,
             speed:            this.speed,
             dialogHandler:    JSON.stringify(this.activeDialogHandler),
-            nativeAutomation: JSON.stringify(this.isNativeAutomation()),
+            nativeAutomation: JSON.stringify(this.isNativeAutomation),
         });
     }
 
@@ -1586,7 +1585,7 @@ export default class TestRun extends AsyncEventEmitter {
             testId:             this.test.id,
             browser:            this.browser,
             activeWindowId:     this.activeWindowId,
-            isNativeAutomation: this.isNativeAutomation(),
+            isNativeAutomation: this.isNativeAutomation,
             messageBus:         this._messageBus,
         });
     }
