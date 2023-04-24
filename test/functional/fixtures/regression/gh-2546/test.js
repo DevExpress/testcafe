@@ -4,6 +4,7 @@ const { exec }           = require('child_process');
 const config             = require('../../../config');
 const unhandledRejection = require('./unhandled-rejection');
 const semver             = require('semver');
+const runInCLI           = require('../../../utils/run-in-cli');
 
 if (config.useLocalBrowsers) {
     describe('[Regression](GH-2546)', function () {
@@ -50,36 +51,27 @@ if (config.useLocalBrowsers) {
             });
         }
 
-        it('Should fail on uncaught exception when skipUncaughtErrors is false', function () {
-            const testcafePath = path.resolve('bin/testcafe');
-            const testFilePath = path.resolve('test/functional/fixtures/regression/gh-2546/testcafe-fixtures/uncaughtException.js');
-            const browsers     = '"chrome:headless --no-sandbox"';
-            const command      = `node ${testcafePath} ${browsers} ${testFilePath}`;
-
-            return new Promise(resolve => {
-                exec(command, (error, stdout) => {
-                    resolve({ error, stdout });
+        describe('CLI', () => {
+            it('Should fail on uncaught exception when skipUncaughtErrors is false', async function () {
+                const result = await runInCLI({
+                    testFile: 'test/functional/fixtures/regression/gh-2546/testcafe-fixtures/uncaughtException.js',
+                    browsers: '"chrome:headless --no-sandbox"',
+                    args: ['--disable-native-automation'],
                 });
-            }).then(value => {
-                expect(value.stdout).contains('Uncaught exception');
-                expect(value.stdout).contains('unhandled');
-                expect(value.error).is.not.null;
+
+                expect(result.stdout).contains('Uncaught exception');
+                expect(result.stdout).contains('unhandled');
+                expect(result.error).is.not.null;
             });
-        });
 
-        it('Should not fail on uncaught promise rejection when skipUncaughtErrors is true', function () {
-            const testcafePath = path.resolve('bin/testcafe');
-            const testFilePath = path.resolve('test/functional/fixtures/regression/gh-2546/testcafe-fixtures/uncaughtException.js');
-            const browsers     = '"chrome:headless --no-sandbox"';
-            const args         = '--skip-uncaught-errors';
-            const command      = `node ${testcafePath} ${browsers} ${testFilePath} ${args}`;
-
-            return new Promise(resolve => {
-                exec(command, (error, stdout) => {
-                    resolve({ error, stdout });
+            it('Should not fail on uncaught promise rejection when skipUncaughtErrors is true', async function () {
+                const result = await runInCLI({
+                    testFile: 'test/functional/fixtures/regression/gh-2546/testcafe-fixtures/uncaughtException.js',
+                    browsers: '"chrome:headless --no-sandbox"',
+                    args: ['--skip-uncaught-errors', '--disable-native-automation'],
                 });
-            }).then(value => {
-                expect(value.error).is.null;
+
+                expect(result.error).is.null;
             });
         });
 
