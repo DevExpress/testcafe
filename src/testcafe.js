@@ -98,7 +98,7 @@ export default class TestCafe {
 
         await this.initializeBrowserConnectionGateway();
 
-        const connection = new BrowserConnection(this.browserConnectionGateway, browserInfo, true);
+        const connection = new BrowserConnection(this.browserConnectionGateway, browserInfo, true, this.configuration.remoteBrowserConnectionOptions);
 
         connection.initialize();
 
