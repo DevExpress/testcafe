@@ -2,17 +2,20 @@ import { ProtocolApi } from 'chrome-remote-interface';
 import BrowserConnection from '../browser/connection';
 import TestRun from '../test-run';
 import { notImplementedError } from './errors';
+import { NativeAutomationInitOptions } from '../shared/types';
 
 export default class NativeAutomationApiBase {
     protected readonly _client: ProtocolApi;
     protected readonly _browserConnection: BrowserConnection;
+    protected readonly options: NativeAutomationInitOptions;
 
-    constructor (browserId: string, client: ProtocolApi) {
-        this._client = client;
+    constructor (browserId: string, client: ProtocolApi, options: NativeAutomationInitOptions) {
+        this._client            = client;
         this._browserConnection = BrowserConnection.getById(browserId) as BrowserConnection;
+        this.options            = options;
     }
 
-    public async init (): Promise<void> {
+    public async start (): Promise<void> {
         throw notImplementedError();
     }
 

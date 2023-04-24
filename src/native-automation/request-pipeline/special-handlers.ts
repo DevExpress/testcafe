@@ -8,7 +8,7 @@ import {
     requestPipelineLogger,
     requestPipelineServiceRequestLogger,
 } from '../../utils/debug-loggers';
-import { NativeAutomationSetupOptions } from '../../shared/types';
+import { NativeAutomationInitOptions } from '../../shared/types';
 import { isRequest } from '../utils/cdp';
 import { FAVICON_CONTENT_TYPE_HEADER } from './constants';
 import { StatusCodes } from 'http-status-codes';
@@ -32,7 +32,7 @@ const internalRequest = {
 } as RequestHandler;
 
 const serviceRequest = {
-    condition: (event: RequestPausedEvent, options: NativeAutomationSetupOptions, serviceRoutes: SpecialServiceRoutes): boolean => {
+    condition: (event: RequestPausedEvent, options: NativeAutomationInitOptions, serviceRoutes: SpecialServiceRoutes): boolean => {
         const url = event.request.url;
 
         // NOTE: the service 'Error page' should be proxied.
@@ -58,7 +58,7 @@ const defaultFaviconRequest = {
 
         return parsedUrl.pathname === DEFAULT_FAVICON_PATH;
     },
-    handler: async (event: RequestPausedEvent, client: ProtocolApi, options: NativeAutomationSetupOptions): Promise<void> => {
+    handler: async (event: RequestPausedEvent, client: ProtocolApi, options: NativeAutomationInitOptions): Promise<void> => {
         requestPipelineLogger('%r', event);
 
         if (isRequest(event))
@@ -86,7 +86,7 @@ const SPECIAL_REQUEST_HANDLERS = [
     defaultFaviconRequest,
 ];
 
-export default function getSpecialRequestHandler (event: RequestPausedEvent, options?: NativeAutomationSetupOptions, serviceRoutes?: SpecialServiceRoutes): any {
+export default function getSpecialRequestHandler (event: RequestPausedEvent, options?: NativeAutomationInitOptions, serviceRoutes?: SpecialServiceRoutes): any {
     const specialRequestHandler = SPECIAL_REQUEST_HANDLERS.find(h => h.condition(event, options, serviceRoutes));
 
     return specialRequestHandler ? specialRequestHandler.handler : null;

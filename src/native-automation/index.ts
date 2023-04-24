@@ -1,7 +1,7 @@
 import { ProtocolApi } from 'chrome-remote-interface';
 import NativeAutomationRequestPipeline from './request-pipeline';
 import addCustomDebugFormatters from './add-custom-debug-formatters';
-import { NativeAutomationSetupOptions } from '../shared/types';
+import { NativeAutomationInitOptions } from '../shared/types';
 import { nativeAutomationLogger } from '../utils/debug-loggers';
 import SessionStorage from './session-storage';
 
@@ -9,11 +9,13 @@ export default class NativeAutomation {
     private readonly _client: ProtocolApi;
     public readonly requestPipeline;
     public readonly sessionStorage: SessionStorage;
+    private readonly options: NativeAutomationInitOptions;
 
-    public constructor (browserId: string, client: ProtocolApi) {
+    public constructor (browserId: string, client: ProtocolApi, options: NativeAutomationInitOptions) {
         this._client         = client;
-        this.requestPipeline = new NativeAutomationRequestPipeline(browserId, client);
-        this.sessionStorage  = new SessionStorage(browserId, client);
+        this.options         = options;
+        this.requestPipeline = new NativeAutomationRequestPipeline(browserId, client, options);
+        this.sessionStorage  = new SessionStorage(browserId, client, options);
 
         this.sessionStorage.on('contextStorageSync', ({ sessionStorage, testRunId, frameDriverId }) => {
             if (sessionStorage) {
@@ -31,14 +33,14 @@ export default class NativeAutomation {
         addCustomDebugFormatters();
     }
 
-    public async init (options: NativeAutomationSetupOptions): Promise<void> {
+    public async start (): Promise<void> {
         const nativeAutomationSystems = [
             this.requestPipeline,
             this.sessionStorage,
         ];
 
         for (const api of nativeAutomationSystems)
-            await api.init(options);
+            await api.start();
 
         nativeAutomationLogger('nativeAutomation initialized');
     }

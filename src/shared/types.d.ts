@@ -44,12 +44,12 @@ interface NextTestRunInfo {
     url: string;
 }
 
-interface NativeAutomationSetupOptions {
+interface NativeAutomationInitOptions {
     serviceDomains: string[];
     developmentMode: boolean;
 }
 
-interface OpenBrowserAdditionalOptions extends NativeAutomationSetupOptions {
+interface OpenBrowserAdditionalOptions extends NativeAutomationInitOptions {
     disableMultipleWindows: boolean;
     nativeAutomation: boolean;
 }

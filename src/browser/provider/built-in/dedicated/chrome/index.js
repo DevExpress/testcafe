@@ -58,9 +58,9 @@ export default {
 
     async _setupNativeAutomation ({ browserId, browserClient, runtimeInfo, nativeAutomationOptions }) {
         const cdpClient = await browserClient.getActiveClient();
-        const nativeAutomation = new NativeAutomation(browserId, cdpClient);
+        const nativeAutomation = new NativeAutomation(browserId, cdpClient, nativeAutomationOptions);
 
-        await nativeAutomation.init(nativeAutomationOptions);
+        await nativeAutomation.start();
 
         runtimeInfo.nativeAutomation = nativeAutomation;
     },
