@@ -4,6 +4,7 @@ import addCustomDebugFormatters from './add-custom-debug-formatters';
 import { NativeAutomationInitOptions } from '../shared/types';
 import { nativeAutomationLogger } from '../utils/debug-loggers';
 import SessionStorage from './session-storage';
+import NativeAutomationApiBase from './api-base';
 
 export default class NativeAutomation {
     private readonly _client: ProtocolApi;
@@ -34,13 +35,8 @@ export default class NativeAutomation {
     }
 
     public async start (): Promise<void> {
-        const nativeAutomationSystems = [
-            this.requestPipeline,
-            this.sessionStorage,
-        ];
-
-        for (const api of nativeAutomationSystems)
-            await api.start();
+        for (const apiSystem of this.apiSystems)
+            await apiSystem.start();
 
         nativeAutomationLogger('nativeAutomation initialized');
     }
@@ -51,5 +47,12 @@ export default class NativeAutomation {
         await this.requestPipeline.dispose();
 
         nativeAutomationLogger('nativeAutomation disposed');
+    }
+
+    public get apiSystems (): NativeAutomationApiBase [] {
+        return [
+            this.requestPipeline,
+            this.sessionStorage,
+        ];
     }
 }
