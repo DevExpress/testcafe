@@ -111,7 +111,7 @@ export default class ClientScript {
     }
 
     private _calculateHash (): void {
-        this.hash = createHash('md5').update(this.content).digest();
+        this.hash = createHash('sha256').update(this.content).digest();
     }
 
     private _contentToString (): string {
