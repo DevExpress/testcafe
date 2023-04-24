@@ -193,7 +193,7 @@ export default class Bootstrapper {
     private _calculateIsNativeAutomation (remotes: BrowserConnection[]): void {
         // If there are remote connections, we should switch to legacy run mode.
         if (remotes.length)
-            this.configuration.mergeOptions({ nativeAutomation: true });
+            this.configuration.mergeOptions({ nativeAutomation: false });
 
         this.nativeAutomation = !!this.configuration.getOption(OPTION_NAMES.nativeAutomation);
     }

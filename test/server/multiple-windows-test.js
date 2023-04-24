@@ -46,7 +46,7 @@ describe('Multiple windows', () => {
         const testRun        = new TestRunMock();
         const testController = new TestController(testRun);
 
-        testRun.opts.nativeAutomation = true;
+        testRun.isNativeAutomation = true;
 
         try {
             await testController.openWindow('http://example.com');
