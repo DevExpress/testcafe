@@ -18,25 +18,32 @@ export default class NativeAutomation {
         this.requestPipeline = new NativeAutomationRequestPipeline(browserId, client, options);
         this.sessionStorage  = new SessionStorage(browserId, client, options);
 
-        this.sessionStorage.on('contextStorageSync', ({ sessionStorage, testRunId, frameDriverId }) => {
-            if (sessionStorage) {
-                this.requestPipeline.contextStorage = this.requestPipeline.contextStorage || {};
-                this.requestPipeline.contextStorage[testRunId] = this.requestPipeline.contextStorage[testRunId] || {};
-                this.requestPipeline.contextStorage[testRunId][frameDriverId] = sessionStorage;
-            }
-        });
-
-        this.sessionStorage.on('contextStorageTestRunDone', ({ testRunId }) => {
-            if (this.requestPipeline.contextStorage)
-                delete this.requestPipeline.contextStorage[testRunId];
-        });
-
         addCustomDebugFormatters();
+    }
+
+    private _onContextStorageSynHandler ({ sessionStorage, testRunId, frameDriverId }: any): void {
+        if (sessionStorage) {
+            this.requestPipeline.contextStorage                           = this.requestPipeline.contextStorage || {};
+            this.requestPipeline.contextStorage[testRunId]                = this.requestPipeline.contextStorage[testRunId] || {};
+            this.requestPipeline.contextStorage[testRunId][frameDriverId] = sessionStorage;
+        }
+    }
+
+    private _onContextStorageTestRunDoneHandler ({ testRunId }: any): void {
+        if (this.requestPipeline.contextStorage)
+            delete this.requestPipeline.contextStorage[testRunId];
+    }
+
+    private _addEventListeners (): void {
+        this.sessionStorage.on('contextStorageSync', this._onContextStorageSynHandler.bind(this));
+        this.sessionStorage.on('contextStorageTestRunDone', this._onContextStorageTestRunDoneHandler.bind(this));
     }
 
     public async start (): Promise<void> {
         for (const apiSystem of this.apiSystems)
             await apiSystem.start();
+
+        this._addEventListeners();
 
         nativeAutomationLogger('nativeAutomation initialized');
     }
