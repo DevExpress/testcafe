@@ -250,6 +250,8 @@ export default class TestRunController extends AsyncEventEmitter {
         if (!this.isNativeAutomation || supportNativeAutomation)
             return;
 
+        await this._messageBus.emit('before-test-run-created-error');
+
         throw new GeneralError(RUNTIME_ERRORS.setNativeAutomationForUnsupportedBrowsers, connection.browserInfo.providerName);
     }
 

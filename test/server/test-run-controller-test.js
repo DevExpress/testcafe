@@ -9,9 +9,8 @@ describe('TestRunController', () => {
         };
 
         const browserConnectionMock = {
-            provider: {
-                supportNativeAutomation: () => false,
-            },
+            supportNativeAutomation: () => false,
+
             browserInfo: {
                 providerName: 'testBrowser',
             },
@@ -23,16 +22,17 @@ describe('TestRunController', () => {
 
         const testRunController = new TestRunController({
             test:       testMock,
-            opts:       {},
             messageBus: messageBusMock,
+            opts:       {
+                nativeAutomation: true,
+            },
         });
 
         try {
             await testRunController.start(browserConnectionMock);
         }
         catch (err) {
-            expect(err.message).to.equal('The "testBrowser" do not support the Native Automation mode. Use the "disable native automation" option to use the legacy run mode');
+            expect(err.message).to.equal('The "testBrowser" do not support the Native Automation mode. Remove the "native automation" option to continue.');
         }
-
     });
 });

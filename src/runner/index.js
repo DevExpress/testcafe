@@ -245,7 +245,7 @@ export default class Runner extends EventEmitter {
         }
 
         this._messageBus.on('done', stopHandlingTestErrors);
-
+        this._messageBus.on('before-test-run-created-error', stopHandlingTestErrors);
         task.on('error', stopHandlingTestErrors);
 
         const onTaskCompleted = () => {
