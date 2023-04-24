@@ -95,6 +95,7 @@ export default class TestRunController extends AsyncEventEmitter {
             opts:              this._opts,
             compilerService:   this.compilerService,
             messageBus:        this._messageBus,
+            nativeAutomation:  this.isNativeAutomation,
             screenshotCapturer,
             startRunExecutionTime,
         });

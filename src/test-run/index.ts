@@ -635,7 +635,7 @@ export default class TestRun extends AsyncEventEmitter {
             speed:                                                   this.speed,
             dialogHandler:                                           JSON.stringify(this.activeDialogHandler),
             canUseDefaultWindowActions:                              JSON.stringify(await this.browserConnection.canUseDefaultWindowActions()),
-            nativeAutomation:                                        JSON.stringify(this.isNativeAutomation),
+            nativeAutomation:                                        this.isNativeAutomation,
             domain:                                                  JSON.stringify(this.browserConnection.browserConnectionGateway.proxy.server1Info.domain),
         });
     }
