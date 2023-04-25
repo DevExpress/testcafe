@@ -100,7 +100,7 @@ export default class TestRunController extends AsyncEventEmitter {
             startRunExecutionTime,
         });
 
-        this.clientScriptRoutes = clientScriptsRouting.register(this._proxy, this.test, this._opts.nativeAutomation as boolean);
+        this.clientScriptRoutes = clientScriptsRouting.register(this._proxy, this.test, this.isNativeAutomation);
 
         await this.testRun.initialize();
 

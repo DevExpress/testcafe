@@ -179,12 +179,11 @@ export default class Bootstrapper {
     }
 
     private async _setupProxy (): Promise<void> {
-        if (this.browserConnectionGateway.status === BrowserConnectionGatewayStatus.initialized)
-            return;
+        if (this.browserConnectionGateway.status === BrowserConnectionGatewayStatus.uninitialized) {
+            await this.configuration.calculateHostname({ nativeAutomation: this.nativeAutomation });
 
-        await this.configuration.calculateHostname({ nativeAutomation: this.nativeAutomation });
-
-        this.browserConnectionGateway.initialize(this.configuration.startOptions);
+            this.browserConnectionGateway.initialize(this.configuration.startOptions);
+        }
 
         if (this.nativeAutomation)
             this.browserConnectionGateway.switchToNativeAutomation();

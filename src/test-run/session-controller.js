@@ -88,7 +88,7 @@ export default class SessionController extends Session {
                     disablePageCaching:   testRun.disablePageCaching,
                     allowMultipleWindows: TestRun.isMultipleWindowsAllowed(testRun),
                     requestTimeout:       testRun.requestTimeout,
-                    nativeAutomation:     testRun.opts.nativeAutomation,
+                    nativeAutomation:     testRun.isNativeAutomation,
                 };
 
                 if (options.allowMultipleWindows)
