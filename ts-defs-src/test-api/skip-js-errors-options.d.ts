@@ -1,7 +1,7 @@
 // SkipJsErrors API
 //----------------------------------------------------------------------------------------------------------------------
 
-type SkipJsErrorsCallback = (opts?: {message: string; stack: string; pageUrl: string }) => boolean;
+type SkipJsErrorsCallback = (opts?: {message?: string; stack: string; pageUrl: string }) => boolean;
 
 interface SkipJsErrorsCallbackWithOptionsObject {
     fn: SkipJsErrorsCallback;
