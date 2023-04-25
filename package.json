@@ -191,6 +191,7 @@
     "chai-string": "^1.5.0",
     "chrome-launcher": "^0.15.0",
     "connect": "^3.4.0",
+    "cors": "^2.8.5",
     "cross-env": "^7.0.3",
     "devtools-protocol": "0.0.1109433",
     "dom-walk": "^0.1.1",

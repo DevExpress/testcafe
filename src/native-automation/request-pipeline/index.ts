@@ -21,7 +21,13 @@ import {
 } from '../utils/cdp';
 
 import ERROR_ROUTE from '../error-route';
-import { SessionStorageInfo, SpecialServiceRoutes } from '../types';
+
+import {
+    ContinueRequestArgs,
+    SessionStorageInfo,
+    SpecialServiceRoutes,
+} from '../types';
+
 import {
     requestPipelineLogger,
     requestPipelineMockLogger,
@@ -280,7 +286,7 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
             const pipelineContext = this._contextInfo.getPipelineContext(event.networkId as string);
 
             if (!pipelineContext || !pipelineContext.mock)
-                await safeContinueRequest(this._client, event, this._getUploadPostData(event));
+                await safeContinueRequest(this._client, event, this._createContinueEventArgs(event, pipelineContext.reqOpts));
             else {
                 const mockedResponse = await pipelineContext.getMockResponse();
 
@@ -398,5 +404,39 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
 
     public async dispose (): Promise<void> {
         await this._client.Fetch.disable();
+    }
+
+    private _createContinueEventArgs (event: Protocol.Fetch.RequestPausedEvent, reqOpts: any): ContinueRequestArgs {
+        const url  = new URL(event.request.url);
+        const host = url.host;
+
+        let hostModified = false;
+        let portModified = false;
+
+        if (url.hostname !== reqOpts.hostname) {
+            url.hostname = reqOpts.hostname;
+            hostModified = true;
+        }
+
+        if (url.port !== reqOpts.port) {
+            url.port     = reqOpts.port;
+            portModified = true;
+        }
+
+        if (host !== reqOpts.host) {
+            const { port, hostname } = new URL(reqOpts.protocol + '//' + reqOpts.host);
+
+            if (!hostModified)
+                url.hostname = hostname;
+
+            if (!portModified)
+                url.port = port;
+        }
+
+        return {
+            postData: this._getUploadPostData(event),
+            url:      url.toString(),
+            method:   reqOpts.method,
+        };
     }
 }

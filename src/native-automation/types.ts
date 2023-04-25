@@ -39,3 +39,9 @@ export enum EventType {
     Delay,
     InsertText,
 }
+
+export interface ContinueRequestArgs {
+    postData?: string;
+    method?: string;
+    url?: string;
+}
