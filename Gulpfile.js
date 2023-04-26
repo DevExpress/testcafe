@@ -27,7 +27,6 @@ const { exitDomains, enterDomains } = require('./gulp/helpers/domain');
 const getTimeout                    = require('./gulp/helpers/get-timeout');
 const promisifyStream               = require('./gulp/helpers/promisify-stream');
 const testFunctional                = require('./gulp/helpers/test-functional');
-const testClient                    = require('./gulp/helpers/test-client');
 const moduleExportsTransform        = require('./gulp/helpers/module-exports-transform');
 const createPackageFilesForTests    = require('./gulp/helpers/create-package-files-for-tests');
 
@@ -39,15 +38,6 @@ const {
     DEBUG_GLOB_2,
     HEADED_CHROME_FIREFOX_TESTS_GLOB,
 } = require('./gulp/constants/functional-test-globs');
-
-const {
-    CLIENT_TESTS_SETTINGS,
-    CLIENT_TESTS_LOCAL_SETTINGS,
-    CLIENT_TESTS_LEGACY_SETTINGS,
-    CLIENT_TESTS_SAUCELABS_SETTINGS,
-    CLIENT_TESTS_DESKTOP_BROWSERS,
-    CLIENT_TESTS_MOBILE_BROWSERS,
-} = require('./gulp/constants/client-test-settings');
 
 const readFile = promisify(fs.readFile);
 
@@ -304,24 +294,42 @@ gulp.step('test-server-bootstrap', gulp.series('prepare-tests', 'test-server-run
 gulp.task('test-server', gulp.parallel('check-licenses', 'test-server-bootstrap'));
 
 gulp.step('test-client-run', () => {
+    const testClient                = require('./gulp/helpers/test-client');
+    const { CLIENT_TESTS_SETTINGS } = require('./gulp/constants/client-test-settings');
+
     return testClient('test/client/fixtures/**/*-test.js', CLIENT_TESTS_SETTINGS);
 });
 
 gulp.task('test-client', gulp.series('prepare-tests', 'test-client-run'));
 
 gulp.step('test-client-local-run', () => {
+    const testClient                      = require('./gulp/helpers/test-client');
+    const { CLIENT_TESTS_LOCAL_SETTINGS } = require('./gulp/constants/client-test-settings');
+
     return testClient('test/client/fixtures/**/*-test.js', CLIENT_TESTS_LOCAL_SETTINGS, {}, true);
 });
 
 gulp.task('test-client-local', gulp.series('prepare-tests', 'test-client-local-run'));
 
 gulp.step('test-client-legacy-run', () => {
+    const testClient                       = require('./gulp/helpers/test-client');
+    const { CLIENT_TESTS_LEGACY_SETTINGS } = require('./gulp/constants/client-test-settings');
+
     return testClient('test/client/legacy-fixtures/**/*-test.js', CLIENT_TESTS_LEGACY_SETTINGS);
 });
 
 gulp.task('test-client-legacy', gulp.series('prepare-tests', 'test-client-legacy-run'));
 
 gulp.step('test-client-travis-run', () => {
+    const testClient = require('./gulp/helpers/test-client');
+
+    const {
+        CLIENT_TESTS_SETTINGS,
+        CLIENT_TESTS_SAUCELABS_SETTINGS,
+        CLIENT_TESTS_DESKTOP_BROWSERS,
+    } = require('./gulp/constants/client-test-settings');
+
+
     const saucelabsSettings = CLIENT_TESTS_SAUCELABS_SETTINGS;
 
     saucelabsSettings.browsers = CLIENT_TESTS_DESKTOP_BROWSERS;
@@ -332,6 +340,15 @@ gulp.step('test-client-travis-run', () => {
 gulp.task('test-client-travis', gulp.series('prepare-tests', 'test-client-travis-run'));
 
 gulp.step('test-client-travis-mobile-run', () => {
+    const testClient = require('./gulp/helpers/test-client');
+
+    const {
+        CLIENT_TESTS_SETTINGS,
+        CLIENT_TESTS_SAUCELABS_SETTINGS,
+        CLIENT_TESTS_MOBILE_BROWSERS,
+    } = require('./gulp/constants/client-test-settings');
+
+
     const saucelabsSettings = CLIENT_TESTS_SAUCELABS_SETTINGS;
 
     saucelabsSettings.browsers = CLIENT_TESTS_MOBILE_BROWSERS;
@@ -342,6 +359,14 @@ gulp.step('test-client-travis-mobile-run', () => {
 gulp.task('test-client-travis-mobile', gulp.series('prepare-tests', 'test-client-travis-mobile-run'));
 
 gulp.step('test-client-legacy-travis-run', () => {
+    const testClient = require('./gulp/helpers/test-client');
+
+    const {
+        CLIENT_TESTS_LEGACY_SETTINGS,
+        CLIENT_TESTS_SAUCELABS_SETTINGS,
+        CLIENT_TESTS_DESKTOP_BROWSERS,
+    } = require('./gulp/constants/client-test-settings');
+
     const saucelabsSettings = CLIENT_TESTS_SAUCELABS_SETTINGS;
 
     saucelabsSettings.browsers = CLIENT_TESTS_DESKTOP_BROWSERS;
@@ -352,6 +377,14 @@ gulp.step('test-client-legacy-travis-run', () => {
 gulp.task('test-client-legacy-travis', gulp.series('prepare-tests', 'test-client-legacy-travis-run'));
 
 gulp.step('test-client-legacy-travis-mobile-run', () => {
+    const testClient = require('./gulp/helpers/test-client');
+
+    const {
+        CLIENT_TESTS_LEGACY_SETTINGS,
+        CLIENT_TESTS_SAUCELABS_SETTINGS,
+        CLIENT_TESTS_MOBILE_BROWSERS,
+    } = require('./gulp/constants/client-test-settings');
+
     const saucelabsSettings = CLIENT_TESTS_SAUCELABS_SETTINGS;
 
     saucelabsSettings.browsers = CLIENT_TESTS_MOBILE_BROWSERS;

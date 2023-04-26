@@ -20,7 +20,7 @@ const testFileWithSkippedTestPath              = path.resolve('test/server/data/
 const externalModulePath         = path.resolve('test/server/data/test-suites/live/module.js');
 const externalCommonJsModulePath = path.resolve('test/server/data/test-suites/live/commonjs-module.js');
 
-const DOCKER_TESTCAFE_FOLDER_REGEXP = /^\/usr\/lib\/node_modules\/testcafe/;
+const DOCKER_TESTCAFE_FOLDER_REGEXP = /^\/usr\/local\/lib\/node_modules\/testcafe/;
 
 
 class FileWatcherMock extends FileWatcher {
