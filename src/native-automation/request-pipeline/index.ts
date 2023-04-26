@@ -407,36 +407,36 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
     }
 
     private _createContinueEventArgs (event: Protocol.Fetch.RequestPausedEvent, reqOpts: any): ContinueRequestArgs {
-        const url  = new URL(event.request.url);
-        const host = url.host;
+        const modifiedUrl  = new URL(event.request.url);
+        const host         = modifiedUrl.host;
 
         let hostModified = false;
         let portModified = false;
 
-        if (url.hostname !== reqOpts.hostname) {
-            url.hostname = reqOpts.hostname;
-            hostModified = true;
+        if (modifiedUrl.hostname !== reqOpts.hostname) {
+            modifiedUrl.hostname = reqOpts.hostname;
+            hostModified         = true;
         }
 
-        if (url.port !== reqOpts.port) {
-            url.port     = reqOpts.port;
-            portModified = true;
+        if (modifiedUrl.port !== reqOpts.port) {
+            modifiedUrl.port = reqOpts.port;
+            portModified     = true;
         }
 
         if (host !== reqOpts.host) {
             const { port, hostname } = new URL(reqOpts.protocol + '//' + reqOpts.host);
 
             if (!hostModified)
-                url.hostname = hostname;
+                modifiedUrl.hostname = hostname;
 
             if (!portModified)
-                url.port = port;
+                modifiedUrl.port = port;
         }
 
-        return {
-            postData: this._getUploadPostData(event),
-            url:      url.toString(),
-            method:   reqOpts.method,
-        };
+        const postData = this._getUploadPostData(event);
+        const url      = modifiedUrl.toString() !== event.request.url ? modifiedUrl.toString() : void 0;
+        const method   = reqOpts.method;
+
+        return { postData, url, method };
     }
 }
