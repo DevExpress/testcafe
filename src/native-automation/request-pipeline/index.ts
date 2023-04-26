@@ -181,14 +181,9 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
 
         const modified = await this.requestHookEventProvider.onResponse(event, resourceInfo.body, this._contextInfo, this._client);
 
-        if (event.resourceType !== 'Document') {
-            const continueResponseRequest = this._createContinueResponseRequest(event, modified);
+        const contentType = event.responseHeaders?.find(h => h.name === 'content-type')?.value || '';
 
-            await safeContinueResponse(this._client, continueResponseRequest);
-
-            this._contextInfo.dispose(getRequestId(event));
-        }
-        else {
+        if (event.resourceType === 'Document' && contentType.includes('text/html')) {
             const fulfillInfo = {
                 requestId:       event.requestId,
                 responseHeaders: event.responseHeaders,
@@ -220,6 +215,13 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
             this._contextInfo.dispose(getRequestId(event));
 
             this.restoringStorages = null;
+        }
+        else {
+            const continueResponseRequest = this._createContinueResponseRequest(event, modified);
+
+            await safeContinueResponse(this._client, continueResponseRequest);
+
+            this._contextInfo.dispose(getRequestId(event));
         }
     }
 
