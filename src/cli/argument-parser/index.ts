@@ -456,10 +456,11 @@ export default class CLIArgumentParser {
 
         if (optionIndex > -1) {
             const isNotLastOption        = optionIndex < argv.length - 1;
-            const isBooleanValueProvided = typeof convertToBestFitType(argv[optionIndex + 1]) === 'boolean';
+            const possibleValue          = argv[optionIndex + 1];
+            const isBooleanValueProvided = typeof convertToBestFitType(possibleValue) === 'boolean';
             const shouldMoveOptionToEnd  = isNotLastOption &&
                 !isBooleanValueProvided &&
-                !subOptionsNames.some(opt => argv[optionIndex + 1].startsWith(opt));
+                !subOptionsNames.some(opt => possibleValue.startsWith(opt));
 
             if (shouldMoveOptionToEnd)
                 argv.push(argv.splice(optionIndex, 1)[0]);
