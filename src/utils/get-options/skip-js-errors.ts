@@ -18,16 +18,16 @@ export function validateSkipJsErrorsOptionValue (options: boolean | Dictionary<u
     return void 0;
 }
 
-export async function getSkipJsErrorsOptions (optionName: string, options: string | boolean | Dictionary<string | RegExp>): Promise<Dictionary<RegExp | string> | boolean> {
-    const onOptionParsed = async (key: string, value: string | RegExp): Promise<string | RegExp> => {
+export async function getSkipJsErrorsOptions (optionName: string, options: string | boolean | Dictionary<string | RegExp>): Promise<Dictionary<string> | boolean> {
+    const onOptionParsed = async (key: string, value: string): Promise<string> => {
         if (!key || !value)
             throw new GeneralError(RUNTIME_ERRORS.optionValueIsNotValidKeyValue, optionName);
 
         return value;
     };
-    const validator = (opts: Dictionary<RegExp | string>): void => validateSkipJsErrorsOptionsObject(opts, GeneralError);
+    const validator = (opts: Dictionary<string>): void => validateSkipJsErrorsOptionsObject(opts, GeneralError);
 
-    return await getBooleanOrObjectOption<RegExp | string>(optionName, options, {
+    return await getBooleanOrObjectOption<string>(optionName, options, {
         onOptionParsed,
         skipOptionValueTypeConversion: true,
     }, validator);
