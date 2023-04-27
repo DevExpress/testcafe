@@ -58,11 +58,8 @@ export default {
 
     async _setupNativeAutomation ({ browserId, browserClient, runtimeInfo, nativeAutomationOptions }) {
         const cdpClient = await browserClient.getActiveClient();
-        const nativeAutomation = new NativeAutomation(browserId, cdpClient, nativeAutomationOptions);
 
-        await nativeAutomation.start();
-
-        runtimeInfo.nativeAutomation = nativeAutomation;
+        runtimeInfo.nativeAutomation = new NativeAutomation(browserId, cdpClient, nativeAutomationOptions);
     },
 
     async openBrowser (browserId, pageUrl, config, additionalOptions) {
@@ -110,9 +107,6 @@ export default {
 
     async closeBrowser (browserId, closingInfo = {}) {
         const runtimeInfo = this.openedBrowsers[browserId];
-
-        if (runtimeInfo.nativeAutomation)
-            await runtimeInfo.nativeAutomation.dispose();
 
         if (runtimeInfo.browserClient.isHeadlessTab())
             await runtimeInfo.browserClient.closeTab();

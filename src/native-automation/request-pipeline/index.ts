@@ -51,12 +51,16 @@ import { resendAuthRequest } from './resendAuthRequest';
 import TestRunBridge from './test-run-bridge';
 import NativeAutomationRequestContextInfo from './context-info';
 import { failedToFindDNSError, sslCertificateError } from '../errors';
-
+import delay from '../../utils/delay';
+import promisifyEvent from 'promisify-event';
+import { EventEmitter } from 'events';
 
 const ALL_REQUEST_RESPONSES = { requestStage: 'Request' } as RequestPattern;
 const ALL_REQUEST_REQUESTS  = { requestStage: 'Response' } as RequestPattern;
 
 const ALL_REQUESTS_DATA = [ALL_REQUEST_REQUESTS, ALL_REQUEST_RESPONSES];
+
+const STATUS_DONE_REQUEST_COMPLETED_TIMEOUT = 5000;
 
 export default class NativeAutomationRequestPipeline extends NativeAutomationApiBase {
     private readonly _testRunBridge: TestRunBridge;
@@ -66,7 +70,6 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
     public contextStorage: SessionStorageInfo | null;
     private readonly _resourceInjector: ResourceInjector;
     private readonly _specialServiceRoutes: SpecialServiceRoutes;
-    private _stopped: boolean;
     private _currentFrameTree: FrameTree | null;
     private readonly _failedRequestIds: string[];
     private _pendingCertificateError: CertificateErrorEvent | null;
@@ -342,26 +345,30 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
         return this._currentFrameTree.frame.id !== frameId;
     }
 
-    public async start (): Promise<void> {
-        // NOTE: We are forced to handle all requests and responses at once
-        // because CDP API does not allow specifying request filtering behavior for different handlers.
-        await this._client.Fetch.enable({
-            patterns: ALL_REQUESTS_DATA,
-        });
+    private _waitForStatusDoneRequestCompleted (): Promise<void> {
+        return Promise.race([
+            delay(STATUS_DONE_REQUEST_COMPLETED_TIMEOUT),
+            promisifyEvent(this as unknown as EventEmitter, 'status-done-request-handled'),
+        ]);
+    }
 
+    protected async _addCDPEventListeners (): Promise<void> {
         this._client.Fetch.on('requestPaused', async (event: RequestPausedEvent) => {
-            if (this._stopped)
-                return;
-
             const specialRequestHandler = getSpecialRequestHandler(event, this.options, this._specialServiceRoutes);
 
             if (specialRequestHandler)
                 await specialRequestHandler(event, this._client, this.options);
             else
                 await this._handleOtherRequests(event);
+
+            if (this._stopped && this._testRunBridge.isStatusDoneRoute(event.request.url))
+                await this.emit('status-done-request-handled');
         });
 
         this._client.Page.on('frameNavigated', async (event: FrameNavigatedEvent) => {
+            if (this._stopped)
+                return;
+
             requestPipelineLogger('%f', event);
 
             if (!this._topFrameNavigation(event)
@@ -378,10 +385,16 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
         });
 
         this._client.Page.on('frameStartedLoading', async () => {
+            if (this._stopped)
+                return;
+
             await this._updateCurrentFrameTree();
         });
 
         this._client.Network.on('loadingFailed', async (event: LoadingFailedEvent) => {
+            if (this._stopped)
+                return;
+
             requestPipelineLogger('%l', event);
 
             this._failedRequestIds.push(event.requestId);
@@ -390,21 +403,36 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
                 this._contextInfo.dispose(event.requestId);
         });
 
-        await this._client.Page.setBypassCSP({ enabled: true });
-
-        await this._client.Security.enable();
-
         this._client.Security.on('certificateError', async (event: CertificateErrorEvent) => {
             this._pendingCertificateError = event;
         });
     }
 
-    public stop (): void {
-        this._stopped = true;
+    public async start (): Promise<void> {
+        await super.start();
+
+        // NOTE: We are forced to handle all requests and responses at once
+        // because CDP API does not allow specifying request filtering behavior for different handlers.
+        await this._client.Fetch.enable({
+            patterns: ALL_REQUESTS_DATA,
+        });
+
+        await this._client.Page.setBypassCSP({ enabled: true });
+        await this._client.Security.enable();
+
+        requestPipelineLogger('start');
     }
 
-    public async dispose (): Promise<void> {
+    public async stop (): Promise<void> {
+        await super.stop();
+
+        await this._client.Page.setBypassCSP({ enabled: false });
+        await this._client.Security.disable();
+
+        await this._waitForStatusDoneRequestCompleted();
         await this._client.Fetch.disable();
+
+        requestPipelineLogger('stop');
     }
 
     private _createContinueEventArgs (event: Protocol.Fetch.RequestPausedEvent, reqOpts: any): ContinueRequestArgs {

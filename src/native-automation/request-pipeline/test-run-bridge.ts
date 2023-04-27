@@ -2,6 +2,7 @@ import TestRun from '../../test-run';
 import BrowserConnection from '../../browser/connection';
 import { UserScript } from 'testcafe-hammerhead';
 import { InjectableResourcesOptions } from '../types';
+import SERVICE_ROUTES from '../../browser/connection/service-routes';
 
 export default class TestRunBridge {
     private readonly _browserId: string;
@@ -46,5 +47,12 @@ export default class TestRunBridge {
             windowId,
             isIframe,
         });
+    }
+
+    public isStatusDoneRoute (route: string): boolean {
+        const browserConnection = this.getBrowserConnection();
+        const statusDonePostfix           = `${SERVICE_ROUTES.statusDone}/${browserConnection.id}`;
+
+        return route.endsWith(statusDonePostfix);
     }
 }

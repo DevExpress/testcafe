@@ -4,6 +4,7 @@ const testcafeLogger = debug('testcafe');
 
 const nativeAutomationLogger               = testcafeLogger.extend('native-automation');
 const requestPipelineLogger                = nativeAutomationLogger.extend('request-pipeline');
+const sessionStorageLogger                 = nativeAutomationLogger.extend('session-storage');
 const requestPipelineMockLogger            = requestPipelineLogger.extend('mock');
 const requestPipelineInternalRequestLogger = requestPipelineLogger.extend('internal-request');
 const requestPipelineServiceRequestLogger  = requestPipelineLogger.extend('service-request');
@@ -16,6 +17,10 @@ const browserLogger               = testcafeLogger.extend('browser');
 const browserProviderLogger       = browserLogger.extend('provider');
 const chromeBrowserProviderLogger = browserProviderLogger.extend('chrome');
 
+const runnerLogger = testcafeLogger.extend('runner');
+
+const testRunControllerLogger = runnerLogger.extend('test-run-controller');
+
 export {
     nativeAutomationLogger,
     requestPipelineLogger,
@@ -26,4 +31,6 @@ export {
     requestPipelineInternalRequestLogger,
     requestPipelineServiceRequestLogger,
     requestPipelineOtherRequestLogger,
+    sessionStorageLogger,
+    testRunControllerLogger,
 };

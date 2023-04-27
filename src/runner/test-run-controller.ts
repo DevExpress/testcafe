@@ -16,13 +16,11 @@ import { Quarantine } from '../utils/get-options/quarantine';
 import MessageBus from '../utils/message-bus';
 import TestRunHookController from './test-run-hook-controller';
 import * as clientScriptsRouting from '../custom-client-scripts/routing';
-import debug from 'debug';
 import { RUNTIME_ERRORS } from '../errors/types';
 import { GeneralError } from '../errors/runtime';
+import { testRunControllerLogger } from '../utils/debug-loggers';
 
 const DISCONNECT_THRESHOLD = 3;
-
-const debugLogger = debug('testcafe:runner:test-run-controller');
 
 export default class TestRunController extends AsyncEventEmitter {
     private readonly _quarantine: null | Quarantine;
@@ -42,6 +40,7 @@ export default class TestRunController extends AsyncEventEmitter {
     private readonly _testRunHook: TestRunHookController;
     private clientScriptRoutes: string[] = [];
     private isNativeAutomation = false;
+    private isNativeAutomationStarted = false;
 
     public constructor ({
         test,
@@ -192,7 +191,10 @@ export default class TestRunController extends AsyncEventEmitter {
 
         await this.emit('test-run-done');
 
-        debugLogger('done');
+        if (this.isNativeAutomationStarted)
+            await this._stopNativeAutomation(this.testRun.browserConnection);
+
+        testRunControllerLogger('done');
     }
 
     private async _emitTestRunStart (): Promise<void> {
@@ -243,10 +245,29 @@ export default class TestRunController extends AsyncEventEmitter {
         return this._fixtureHookController.isTestBlocked(this.test);
     }
 
+    private async _startNativeAutomation (connection: BrowserConnection): Promise<void> {
+        const nativeAutomation = connection.getNativeAutomation();
+
+        await nativeAutomation.start();
+
+        this.isNativeAutomationStarted = true;
+    }
+
+    private async _stopNativeAutomation (connection: BrowserConnection): Promise<void> {
+        const nativeAutomation = connection.getNativeAutomation();
+
+        await nativeAutomation.stop();
+
+        this.isNativeAutomationStarted = false;
+    }
+
     private async _handleNativeAutomationMode (connection: BrowserConnection): Promise<void> {
         this.isNativeAutomation = !!this._opts.nativeAutomation;
 
         const supportNativeAutomation = connection.supportNativeAutomation();
+
+        if (supportNativeAutomation && this.isNativeAutomation)
+            await this._startNativeAutomation(connection);
 
         if (!this.isNativeAutomation || supportNativeAutomation)
             return;
@@ -257,7 +278,7 @@ export default class TestRunController extends AsyncEventEmitter {
     }
 
     public async start (connection: BrowserConnection, startRunExecutionTime?: Date): Promise<string | null> {
-        debugLogger('start');
+        testRunControllerLogger('before start');
 
         await this._handleNativeAutomationMode(connection);
 
