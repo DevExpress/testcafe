@@ -679,6 +679,17 @@ describe('CLI argument parser', function () {
             });
     });
 
+    it('Should parse bool false value for booleanOrObject options', async () => {
+        async function checkCliArgs (argsString) {
+            const parser = await parse(argsString);
+
+            expect(parser.opts.quarantineMode).equal(false);
+            expect(parser.opts.skipJsErrors).equal(false);
+        }
+
+        await checkCliArgs('chrome -q false test.js -e false');
+    });
+
     describe('Quarantine Option', function () {
         it('Should parse quarantine arguments', async () => {
             async function checkCliArgs (argsString) {
@@ -691,16 +702,6 @@ describe('CLI argument parser', function () {
 
             await checkCliArgs('-q attemptLimit=5,successThreshold=1');
             await checkCliArgs('--quarantine-mode attemptLimit=5,successThreshold=1');
-        });
-
-        it('Should parse bool false quarantine argument', async () => {
-            async function checkCliArgs (argsString) {
-                const parser = await parse(argsString);
-
-                expect(parser.opts.quarantineMode).equal(false);
-            }
-
-            await checkCliArgs('-q false chrome');
         });
 
         it('Should pass if only "successThreshold" is provided', async () => {

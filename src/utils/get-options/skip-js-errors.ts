@@ -1,9 +1,12 @@
-import baseGetOptions from './base';
-import { SKIP_JS_ERRORS_CALLBACK_WITH_OPTIONS_OPTION_NAMES, SKIP_JS_ERRORS_OPTIONS_OBJECT_OPTION_NAMES } from '../../configuration/skip-js-errors-option-names';
+import {
+    SKIP_JS_ERRORS_CALLBACK_WITH_OPTIONS_OPTION_NAMES,
+    SKIP_JS_ERRORS_OPTIONS_OBJECT_OPTION_NAMES,
+} from '../../configuration/skip-js-errors-option-names';
 import { RUNTIME_ERRORS } from '../../errors/types';
 import { GeneralError } from '../../errors/runtime';
 import { Dictionary } from '../../configuration/interfaces';
 import { isSkipJsErrorsCallbackWithOptionsObject, isSkipJsErrorsOptionsObject } from '../../api/skip-js-errors';
+import { getBooleanOrObjectOption } from './boolean-or-object-option';
 
 export function validateSkipJsErrorsOptionValue (options: boolean | Dictionary<unknown> | SkipJsErrorsOptionsObject | SkipJsErrorsCallback | SkipJsErrorsCallbackWithOptionsObject, ErrorCtor: any): void {
     if (isSkipJsErrorsCallbackWithOptionsObject(options))
@@ -15,22 +18,19 @@ export function validateSkipJsErrorsOptionValue (options: boolean | Dictionary<u
     return void 0;
 }
 
-export async function getSkipJsErrorsOptions (optionName: string, options: string | boolean | Dictionary<string | RegExp>): Promise<Dictionary<RegExp|string> | boolean> {
-    if (typeof options === 'boolean')
-        return options;
+export async function getSkipJsErrorsOptions (optionName: string, options: string | boolean | Dictionary<string | RegExp>): Promise<Dictionary<RegExp | string> | boolean> {
+    const onOptionParsed = async (key: string, value: string | RegExp): Promise<string | RegExp> => {
+        if (!key || !value)
+            throw new GeneralError(RUNTIME_ERRORS.optionValueIsNotValidKeyValue, optionName);
 
-    const parsedOptions = await baseGetOptions(options as Dictionary<string>, {
-        async onOptionParsed (key: string, value: string | RegExp) {
-            if (!key || !value)
-                throw new GeneralError(RUNTIME_ERRORS.optionValueIsNotValidKeyValue, optionName);
+        return value;
+    };
+    const validator = (opts: Dictionary<RegExp | string>): void => validateSkipJsErrorsOptionsObject(opts, GeneralError);
 
-            return value;
-        },
-    });
-
-    validateSkipJsErrorsOptionsObject(parsedOptions, GeneralError);
-
-    return parsedOptions;
+    return await getBooleanOrObjectOption<RegExp | string>(optionName, options, {
+        onOptionParsed,
+        skipOptionValueTypeConversion: true,
+    }, validator);
 }
 
 function _isSkipJsErrorsOptionsObjectOption (option: string): option is SKIP_JS_ERRORS_OPTIONS_OBJECT_OPTION_NAMES {

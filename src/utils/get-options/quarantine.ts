@@ -1,10 +1,9 @@
-import baseGetOptions from './base';
 import QUARANTINE_OPTION_NAMES from '../../configuration/quarantine-option-names';
 import { RUNTIME_ERRORS } from '../../errors/types';
 import { GeneralError } from '../../errors/runtime';
 import { Dictionary } from '../../configuration/interfaces';
 import TestRunErrorFormattableAdapter from '../../errors/test-run/formattable-adapter';
-import convertToBestFitType from '../convert-to-best-fit-type';
+import { getBooleanOrObjectOption } from './boolean-or-object-option';
 
 const DEFAULT_ATTEMPT_LIMIT = 5;
 const DEFAULT_THRESHOLD     = 3;
@@ -35,25 +34,17 @@ export function validateQuarantineOptions (options: Dictionary<string | number>)
 }
 
 export async function getQuarantineOptions (optionName: string, options: string | boolean | Dictionary<string | number>): Promise<Dictionary<number> | boolean> {
-    options = convertToBestFitType(options);
+    const onOptionParsed = async (key: string, value: string): Promise<number> => {
+        if (!key || !value)
+            throw new GeneralError(RUNTIME_ERRORS.optionValueIsNotValidKeyValue, optionName);
 
-    if (typeof options === 'boolean')
-        return options;
+        return Number(value);
+    };
 
-    const parsedOptions = await baseGetOptions(options, {
+    return await getBooleanOrObjectOption<number>(optionName, options, {
+        onOptionParsed,
         skipOptionValueTypeConversion: true,
-
-        async onOptionParsed (key: string, value: string) {
-            if (!key || !value)
-                throw new GeneralError(RUNTIME_ERRORS.optionValueIsNotValidKeyValue, optionName);
-
-            return Number(value);
-        },
-    });
-
-    validateQuarantineOptions(parsedOptions);
-
-    return parsedOptions;
+    }, validateQuarantineOptions);
 }
 
 

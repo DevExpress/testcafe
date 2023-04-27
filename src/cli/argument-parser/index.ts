@@ -350,7 +350,7 @@ export default class CLIArgumentParser {
     }
 
     private async _parseSkipJsErrorsOptions (): Promise<void> {
-        if (this.opts.skipJsErrors)
+        if (this.opts.skipJsErrors !== void 0)
             this.opts.skipJsErrors = await getSkipJsErrorsOptions('--skip-js-errors', this.opts.skipJsErrors);
     }
 
