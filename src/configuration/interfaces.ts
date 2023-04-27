@@ -18,7 +18,7 @@ export interface SkipJsErrorsOptionsObject {
     pageUrl?: string | RegExp;
 }
 
-export type SkipJsErrorsCallback = (opts?: { message: string; stack: string; pageUrl: string }) => boolean;
+export type SkipJsErrorsCallback = (opts?: { message?: string; stack: string; pageUrl: string }) => boolean;
 
 export interface SkipJsErrorsCallbackWithOptionsObject {
     fn: SkipJsErrorsCallback;
