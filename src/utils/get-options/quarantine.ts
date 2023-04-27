@@ -4,6 +4,7 @@ import { RUNTIME_ERRORS } from '../../errors/types';
 import { GeneralError } from '../../errors/runtime';
 import { Dictionary } from '../../configuration/interfaces';
 import TestRunErrorFormattableAdapter from '../../errors/test-run/formattable-adapter';
+import convertToBestFitType from '../convert-to-best-fit-type';
 
 const DEFAULT_ATTEMPT_LIMIT = 5;
 const DEFAULT_THRESHOLD     = 3;
@@ -34,8 +35,10 @@ export function validateQuarantineOptions (options: Dictionary<string | number>)
 }
 
 export async function getQuarantineOptions (optionName: string, options: string | boolean | Dictionary<string | number>): Promise<Dictionary<number> | boolean> {
+    options = convertToBestFitType(options);
+
     if (typeof options === 'boolean')
-        return true;
+        return options;
 
     const parsedOptions = await baseGetOptions(options, {
         skipOptionValueTypeConversion: true,

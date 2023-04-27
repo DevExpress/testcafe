@@ -38,6 +38,7 @@ import { parsePortNumber, parseList } from './parse-utils';
 import COMMAND_NAMES from './command-names';
 import { SendReportState } from '../../dashboard/interfaces';
 import { SKIP_JS_ERRORS_OPTIONS_OBJECT_OPTION_NAMES } from '../../configuration/skip-js-errors-option-names';
+import convertToBestFitType from '../../utils/convert-to-best-fit-type';
 
 const REMOTE_ALIAS_RE = /^remote(?::(\d*))?$/;
 
@@ -344,7 +345,7 @@ export default class CLIArgumentParser {
     }
 
     private async _parseQuarantineOptions (): Promise<void> {
-        if (this.opts.quarantineMode)
+        if (this.opts.quarantineMode !== void 0)
             this.opts.quarantineMode = await getQuarantineOptions('--quarantine-mode', this.opts.quarantineMode);
     }
 
@@ -454,8 +455,10 @@ export default class CLIArgumentParser {
             el => optionNames.some(opt => el.startsWith(opt)));
 
         if (optionIndex > -1) {
-            const isNotLastOption       = optionIndex < argv.length - 1;
-            const shouldMoveOptionToEnd = isNotLastOption &&
+            const isNotLastOption        = optionIndex < argv.length - 1;
+            const isBooleanValueProvided = typeof convertToBestFitType(argv[optionIndex + 1]) === 'boolean';
+            const shouldMoveOptionToEnd  = isNotLastOption &&
+                !isBooleanValueProvided &&
                 !subOptionsNames.some(opt => argv[optionIndex + 1].startsWith(opt));
 
             if (shouldMoveOptionToEnd)

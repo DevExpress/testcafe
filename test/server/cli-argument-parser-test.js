@@ -693,6 +693,16 @@ describe('CLI argument parser', function () {
             await checkCliArgs('--quarantine-mode attemptLimit=5,successThreshold=1');
         });
 
+        it('Should parse bool false quarantine argument', async () => {
+            async function checkCliArgs (argsString) {
+                const parser = await parse(argsString);
+
+                expect(parser.opts.quarantineMode).equal(false);
+            }
+
+            await checkCliArgs('-q false chrome');
+        });
+
         it('Should pass if only "successThreshold" is provided', async () => {
             async function checkCliArgs (argsString) {
                 const parser = await parse(argsString);
