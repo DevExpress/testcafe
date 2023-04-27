@@ -16,6 +16,7 @@ import { WindowDimentionsInfo } from '../interfaces';
 import getLocalOSInfo, { OSInfo } from 'get-os-info';
 import { OpenBrowserAdditionalOptions } from '../../shared/types';
 import { EventType } from '../../native-automation/types';
+import NativeAutomation from '../../native-automation';
 
 
 const DEBUG_LOGGER = debug('testcafe:browser:provider');
@@ -321,7 +322,7 @@ export default class BrowserProvider {
         return await this.plugin.getOSInfo(browserId);
     }
 
-    public async openBrowser (browserId: string, pageUrl: string, browserOption: unknown, additionalOptions: OpenBrowserAdditionalOptions = { disableMultipleWindows: false }): Promise<void> {
+    public async openBrowser (browserId: string, pageUrl: string, browserOption: unknown, additionalOptions: OpenBrowserAdditionalOptions): Promise<void> {
         await this.plugin.openBrowser(browserId, pageUrl, browserOption, additionalOptions);
 
         await this._ensureRetryTestPagesWarning(browserId);
@@ -461,5 +462,9 @@ export default class BrowserProvider {
 
     public supportNativeAutomation (): boolean {
         return this.plugin.supportNativeAutomation();
+    }
+
+    public getNativeAutomation (browserId: string): NativeAutomation {
+        return this.plugin.getNativeAutomation(browserId);
     }
 }

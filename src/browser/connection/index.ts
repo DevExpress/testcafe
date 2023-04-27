@@ -35,6 +35,7 @@ import { TestRun as LegacyTestRun } from 'testcafe-legacy-api';
 import { Proxy } from 'testcafe-hammerhead';
 import { NextTestRunInfo, OpenBrowserAdditionalOptions } from '../../shared/types';
 import { EventType } from '../../native-automation/types';
+import NativeAutomation from '../../native-automation';
 
 const getBrowserConnectionDebugScope = (id: string): string => `testcafe:browser:connection:${id}`;
 
@@ -260,22 +261,15 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     private _getAdditionalBrowserOptions (): OpenBrowserAdditionalOptions {
-        const options = {
+        return {
             disableMultipleWindows: this._options.disableMultipleWindows,
-        } as OpenBrowserAdditionalOptions;
-
-        if (this._options.nativeAutomation) {
-            options.nativeAutomation = {
-                serviceDomains: [
-                    this.browserConnectionGateway.proxy.server1Info.domain,
-                    this.browserConnectionGateway.proxy.server2Info.domain,
-                ],
-
-                developmentMode: this._options.developmentMode,
-            };
-        }
-
-        return options;
+            nativeAutomation:       this._options.nativeAutomation,
+            developmentMode:        this._options.developmentMode,
+            serviceDomains:         [
+                this.browserConnectionGateway.proxy.server1Info.domain,
+                this.browserConnectionGateway.proxy.server2Info.domain,
+            ],
+        };
     }
 
     private async _runBrowser (): Promise<void> {
@@ -643,5 +637,13 @@ export default class BrowserConnection extends EventEmitter {
         this._buildCommunicationUrls(this.browserConnectionGateway.proxy);
 
         process.nextTick(() => this._runBrowser());
+    }
+
+    public supportNativeAutomation (): boolean {
+        return this.provider.supportNativeAutomation();
+    }
+
+    public getNativeAutomation (): NativeAutomation {
+        return this.provider.getNativeAutomation(this.id);
     }
 }

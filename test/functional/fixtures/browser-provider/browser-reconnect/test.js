@@ -6,6 +6,7 @@ const browserProviderPool = require('../../../../../lib/browser/provider/pool');
 const BrowserConnection   = require('../../../../../lib/browser/connection');
 const { createReporter }  = require('../../../utils/reporter');
 
+const setNativeAutomationForRemoteConnection = require('../../../utils/set-native-automation-for-remote-connection');
 
 let errors = null;
 
@@ -65,8 +66,12 @@ function run (pathToTest, filter, initializeConnection = initializeConnectionLow
             return connections;
         })
         .then(connection => {
-            return testCafe
-                .createRunner()
+            const runner = testCafe.createRunner();
+
+            if (config.nativeAutomation)
+                setNativeAutomationForRemoteConnection(runner);
+
+            return runner
                 .src(src)
                 .filter(testName => testName === filter)
                 .reporter(reporter)

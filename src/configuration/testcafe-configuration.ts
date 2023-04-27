@@ -38,7 +38,7 @@ import CustomizableCompilers from './customizable-compilers';
 import { DEPRECATED, getDeprecationMessage } from '../notifications/deprecated';
 import WarningLog from '../notifications/warning-log';
 import browserProviderPool from '../browser/provider/pool';
-import BrowserConnection, { BrowserInfo } from '../browser/connection';
+import BrowserConnection, { BrowserConnectionOptions, BrowserInfo } from '../browser/connection';
 import { CONFIGURATION_EXTENSIONS } from './formats';
 import { GeneralError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
@@ -169,8 +169,15 @@ export default class TestCafeConfiguration extends Configuration {
 
     public get browserConnectionGatewayOptions (): BrowserConnectionGatewayOptions {
         return {
-            retryTestPages:   this.getOption(OPTION_NAMES.retryTestPages),
-            nativeAutomation: this.getOption(OPTION_NAMES.nativeAutomation),
+            retryTestPages: this.getOption(OPTION_NAMES.retryTestPages),
+        };
+    }
+
+    public get remoteBrowserConnectionOptions (): BrowserConnectionOptions {
+        return {
+            disableMultipleWindows: true,
+            nativeAutomation:       false,
+            developmentMode:        this.getOption(OPTION_NAMES.developmentMode),
         };
     }
 

@@ -10,11 +10,24 @@ const {
     writePng,
     deleteFile,
     readPng,
-}               = require('../../lib/utils/promisified-functions');
-const WarningLog                 = require('../../lib/notifications/warning-log');
+} = require('../../lib/utils/promisified-functions');
+
+const WarningLog = require('../../lib/notifications/warning-log');
 
 
 const filePath = resolve(process.cwd(), `temp${nanoid(7)}`, 'temp.png');
+
+const EMPTY_PROVIDER = {
+    takeScreenshot: () => noop,
+};
+
+const BROWSER_INFO = {
+    parsedUserAgent: {
+        os: {
+            name: 'os-name',
+        },
+    },
+};
 
 class CapturerMock extends Capturer {
     constructor (provider) {
@@ -47,16 +60,40 @@ class ScreenshotsMock extends Screenshots {
     }
 }
 
-const emptyProvider = {
-    takeScreenshot: () => {
-    },
-};
+function createScreenshotsMock () {
+    return new ScreenshotsMock({
+        enabled:     true,
+        path:        process.cwd(),
+        pathPattern: '',
+        fullPage:    false,
+    });
+}
+
+function createTestRunControllerMock (screenshots, warningLog) {
+    return {
+        _screenshots: screenshots,
+        test:         { fixture: {}, clientScripts: [] },
+        emit:         noop,
+        _warningLog:  warningLog,
+        _testRunCtor: function ({ browserConnection }) {
+            this.id                = 'test-run-id';
+            this.browserConnection = browserConnection;
+            this.initialize        = noop;
+        },
+        _proxy: {
+            setMode: noop,
+        },
+        _opts: {
+            nativeAutomation: false,
+        },
+    };
+}
 
 describe('Capturer', () => {
     it('Taking screenshots does not create a directory if provider does not', async () => {
         let errCode = null;
 
-        const capturer = new CapturerMock(emptyProvider);
+        const capturer = new CapturerMock(EMPTY_PROVIDER);
 
         await capturer._takeScreenshot({ filePath });
 
@@ -71,34 +108,13 @@ describe('Capturer', () => {
     });
 
     it('Screenshot properties for reporter', async () => {
-        const screenshots = new ScreenshotsMock({
-            enabled:     true,
-            path:        process.cwd(),
-            pathPattern: '',
-            fullPage:    false,
-        });
-
-        const testRunControllerMock = {
-            _screenshots: screenshots,
-            test:         { fixture: {} },
-            emit:         noop,
-            _testRunCtor: function ({ browserConnection }) {
-                this.id                = 'test-run-id';
-                this.browserConnection = browserConnection;
-                this.initialize        = noop;
-            },
-        };
+        const screenshots           = createScreenshotsMock();
+        const testRunControllerMock = createTestRunControllerMock(screenshots);
 
         await TestRunController.prototype._createTestRun.call(testRunControllerMock, {
             id:          'browser-connection-id',
-            provider:    emptyProvider,
-            browserInfo: {
-                parsedUserAgent: {
-                    os: {
-                        name: 'os-name',
-                    },
-                },
-            },
+            provider:    EMPTY_PROVIDER,
+            browserInfo: BROWSER_INFO,
         });
 
         await screenshots.capturer._capture(false, {
@@ -119,15 +135,9 @@ describe('Capturer', () => {
     });
 
     it('Should not delete screenshot if unable to locate the page area', async () => {
-        const warningLog = new WarningLog();
-        const customPath = `${nanoid(7)}screenshot.png`;
-
-        const screenshots = new ScreenshotsMock({
-            enabled:     true,
-            path:        process.cwd(),
-            pathPattern: '',
-            fullPage:    false,
-        });
+        const warningLog  = new WarningLog();
+        const customPath  = `${nanoid(7)}screenshot.png`;
+        const screenshots = createScreenshotsMock();
 
         const providerMock = {
             takeScreenshot: async (_, path) => {
@@ -138,30 +148,14 @@ describe('Capturer', () => {
             },
         };
 
-        const testRunControllerMock = {
-            _screenshots: screenshots,
-            test:         { fixture: {} },
-            emit:         noop,
-            _warningLog:  warningLog,
-            _testRunCtor: function ({ browserConnection }) {
-                this.id                = 'test-run-id';
-                this.browserConnection = browserConnection;
-                this.initialize        = noop;
-            },
-        };
+        const testRunControllerMock = createTestRunControllerMock(screenshots, warningLog);
 
         await screenshots._onMessageBusStart();
 
         await TestRunController.prototype._createTestRun.call(testRunControllerMock, {
             id:          'browser-connection-id',
             provider:    providerMock,
-            browserInfo: {
-                parsedUserAgent: {
-                    os: {
-                        name: 'os-name',
-                    },
-                },
-            },
+            browserInfo: BROWSER_INFO,
         });
 
         await screenshots.capturer._capture(false, {

@@ -84,7 +84,7 @@ export default class TestCafe {
         return newRunner;
     }
 
-    async _initializeBrowserConnectionGateway () {
+    async initializeBrowserConnectionGateway () {
         await this.configuration.ensureHostname();
 
         if (this.browserConnectionGateway.status === BrowserConnectionGatewayStatus.uninitialized)
@@ -96,9 +96,9 @@ export default class TestCafe {
         // NOTE: 'remote' browser connection cannot be native automation.
         const browserInfo = await browserProviderPool.getBrowserInfo('remote');
 
-        await this._initializeBrowserConnectionGateway();
+        await this.initializeBrowserConnectionGateway();
 
-        const connection = new BrowserConnection(this.browserConnectionGateway, browserInfo, true);
+        const connection = new BrowserConnection(this.browserConnectionGateway, browserInfo, true, this.configuration.remoteBrowserConnectionOptions);
 
         connection.initialize();
 

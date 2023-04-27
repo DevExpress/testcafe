@@ -37,8 +37,7 @@ import {
 } from 'testcafe-hammerhead';
 
 import NativeAutomationPipelineContext from '../request-hooks/pipeline-context';
-import { NativeAutomationSetupOptions } from '../../shared/types';
-import DEFAULT_NATIVE_AUTOMATION_SETUP_OPTIONS from '../default-setup-options';
+import { NativeAutomationInitOptions } from '../../shared/types';
 import getSpecialRequestHandler from './special-handlers';
 import { safeContinueRequest, safeContinueResponse } from './safe-api';
 import NativeAutomationApiBase from '../api-base';
@@ -60,34 +59,40 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
     public restoringStorages: StoragesSnapshot | null;
     public contextStorage: SessionStorageInfo | null;
     private readonly _resourceInjector: ResourceInjector;
-    private _options: NativeAutomationSetupOptions;
     private readonly _specialServiceRoutes: SpecialServiceRoutes;
     private _stopped: boolean;
     private _currentFrameTree: FrameTree | null;
     private readonly _failedRequestIds: string[];
     private _pendingCertificateError: CertificateErrorEvent | null;
 
-    public constructor (browserId: string, client: ProtocolApi) {
-        super(browserId, client);
+    public constructor (browserId: string, client: ProtocolApi, options: NativeAutomationInitOptions) {
+        super(browserId, client, options);
 
         this._testRunBridge           = new TestRunBridge(browserId);
         this._contextInfo             = new NativeAutomationRequestContextInfo(this._testRunBridge);
         this._specialServiceRoutes    = this._getSpecialServiceRoutes();
         this.requestHookEventProvider = new NativeAutomationRequestHookEventProvider();
         this._resourceInjector        = new ResourceInjector(this._testRunBridge);
-        this._options                 = DEFAULT_NATIVE_AUTOMATION_SETUP_OPTIONS;
         this._stopped                 = false;
         this._currentFrameTree        = null;
         this._failedRequestIds        = [];
         this.restoringStorages        = null;
         this.contextStorage           = null;
         this._pendingCertificateError = null;
+
+        this._setOptionsForResourceInjector();
+    }
+
+    private _setOptionsForResourceInjector (): void {
+        const options = this._createResourceInjectorOptions();
+
+        this._resourceInjector.setOptions(options);
     }
 
     private _createResourceInjectorOptions (): ResourceInjectorOptions {
         return {
             specialServiceRoutes: this._specialServiceRoutes,
-            developmentMode:      this._options.developmentMode,
+            developmentMode:      this.options.developmentMode,
         };
     }
 
@@ -331,11 +336,7 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
         return this._currentFrameTree.frame.id !== frameId;
     }
 
-    public async init (options?: NativeAutomationSetupOptions): Promise<void> {
-        this._options = options as NativeAutomationSetupOptions;
-
-        this._resourceInjector.setOptions(this._createResourceInjectorOptions());
-
+    public async start (): Promise<void> {
         // NOTE: We are forced to handle all requests and responses at once
         // because CDP API does not allow specifying request filtering behavior for different handlers.
         await this._client.Fetch.enable({
@@ -346,10 +347,10 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
             if (this._stopped)
                 return;
 
-            const specialRequestHandler = getSpecialRequestHandler(event, this._options, this._specialServiceRoutes);
+            const specialRequestHandler = getSpecialRequestHandler(event, this.options, this._specialServiceRoutes);
 
             if (specialRequestHandler)
-                await specialRequestHandler(event, this._client, this._options);
+                await specialRequestHandler(event, this._client, this.options);
             else
                 await this._handleOtherRequests(event);
         });

@@ -46,7 +46,7 @@ class TestRunProxy extends AsyncEventEmitter {
     private readonly assertionCommands: Map<string, AssertionCommand>;
     private readonly switchToWindowByPredicateCommands: Map<string, SwitchToWindowByPredicateCommand>;
     private readonly asyncJsExpressionCallsites: Map<string, CallsiteRecord>;
-    private readonly _isNativeAutomation: boolean;
+    public readonly isNativeAutomation: boolean;
     public readonly browser: Browser;
     public readonly disableMultipleWindows: boolean;
     public activeWindowId: null | string;
@@ -70,7 +70,7 @@ class TestRunProxy extends AsyncEventEmitter {
         this.warningLog                        = new WarningLog(null, WarningLog.createAddWarningCallback(messageBus));
         this.disableMultipleWindows            = options.disableMultipleWindows as boolean;
         this.activeWindowId                    = activeWindowId;
-        this._isNativeAutomation               = isNativeAutomation;
+        this.isNativeAutomation                = isNativeAutomation;
 
         testRunTracker.addActiveTestRun(this);
 
@@ -219,10 +219,6 @@ class TestRunProxy extends AsyncEventEmitter {
         const command = this.switchToWindowByPredicateCommands.get(commandId) as SwitchToWindowByPredicateCommand;
 
         return command.checkWindow({ title, url });
-    }
-
-    public isNativeAutomation (): boolean {
-        return this._isNativeAutomation;
     }
 }
 

@@ -1799,18 +1799,27 @@ describe('API', function () {
     });
 
     describe('createTestCafe', () => {
-        it('Should accept configuration as an arguments array', async () => {
+        function getMockedCreateTestCafe () {
             const TestCafe = sinon.stub().returns({});
 
             const createTestCafe = proxyquire('../..', {
                 './testcafe':      TestCafe,
                 'async-exit-hook': () => {},
 
-                'endpoint-utils': {
-                    isMyHostname: sinon.stub().resolves(true),
-                    isFreePort:   sinon.stub().resolves(true),
+                './configuration/utils': {
+                    getValidHostname: val => val,
+                    getValidPort:     val => val,
                 },
             });
+
+            return {
+                TestCafe,
+                createTestCafe,
+            };
+        }
+
+        it('Should accept configuration as an arguments array', async () => {
+            const { createTestCafe, TestCafe } = getMockedCreateTestCafe();
 
             await createTestCafe('my-host', 1337, 1338, { test: 42 }, true, true);
 
@@ -1826,17 +1835,7 @@ describe('API', function () {
         });
 
         it('Should accept configuration as an object', async () => {
-            const TestCafe = sinon.stub().returns({});
-
-            const createTestCafe = proxyquire('../..', {
-                './testcafe':      TestCafe,
-                'async-exit-hook': () => {},
-
-                'endpoint-utils': {
-                    isMyHostname: sinon.stub().resolves(true),
-                    isFreePort:   sinon.stub().resolves(true),
-                },
-            });
+            const { createTestCafe, TestCafe } = getMockedCreateTestCafe();
 
             await createTestCafe({
                 hostname: 'my-host',
