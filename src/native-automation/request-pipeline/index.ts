@@ -46,6 +46,7 @@ import { resendAuthRequest } from './resendAuthRequest';
 import TestRunBridge from './test-run-bridge';
 import NativeAutomationRequestContextInfo from './context-info';
 import { failedToFindDNSError, sslCertificateError } from '../errors';
+import CONTENT_TYPES from '../../assets/content-types';
 
 
 const ALL_REQUEST_RESPONSES = { requestStage: 'Request' } as RequestPattern;
@@ -181,9 +182,7 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
 
         const modified = await this.requestHookEventProvider.onResponse(event, resourceInfo.body, this._contextInfo, this._client);
 
-        const contentType = event.responseHeaders?.find(h => h.name === 'content-type')?.value || '';
-
-        if (event.resourceType === 'Document' && contentType.includes('text/html')) {
+        if (this._needInjectResources(event)) {
             const fulfillInfo = {
                 requestId:       event.requestId,
                 responseHeaders: event.responseHeaders,
@@ -223,6 +222,28 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
 
             this._contextInfo.dispose(getRequestId(event));
         }
+    }
+
+    private _needInjectResources (event: Protocol.Fetch.RequestPausedEvent): boolean {
+        if (event.resourceType !== 'Document')
+            return false;
+
+        const contentType = event.responseHeaders
+            ?.find(header => header.name.toLowerCase() === 'content-type')
+            ?.value;
+
+        return !contentType || this._isHtmlPageContentType(contentType);
+    }
+
+    private _isHtmlPageContentType (contentType: string): boolean {
+        const contentTypes = [CONTENT_TYPES.textHtml, CONTENT_TYPES.xhtml];
+
+        for (const type of contentTypes) {
+            if (contentType.includes(type))
+                return true;
+        }
+
+        return false;
     }
 
     private async _tryAuthorizeWithHttpBasicAuthCredentials (event: RequestPausedEvent, fulfillInfo: FulfillRequestRequest): Promise<void> {
