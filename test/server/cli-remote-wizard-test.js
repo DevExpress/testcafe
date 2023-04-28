@@ -1,5 +1,4 @@
 const EventEmitter           = require('events');
-const { noop }               = require('lodash');
 const { expect }             = require('chai');
 const proxyquire             = require('proxyquire');
 const sinon                  = require('sinon');
