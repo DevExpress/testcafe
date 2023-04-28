@@ -1,6 +1,7 @@
 const express               = require('express');
 const http                  = require('http');
 const path                  = require('path');
+const cors                  = require('cors');
 const bodyParser            = require('body-parser');
 const { readSync }          = require('read-file-relative');
 const multer                = require('multer');
@@ -8,7 +9,6 @@ const Mustache              = require('mustache');
 const { readFile }          = require('../../../lib/utils/promisified-functions');
 const quarantineModeTracker = require('../quarantine-mode-tracker');
 const { parseUserAgent }    = require('../../../lib/utils/parse-user-agent');
-const apiRouter             = require('./api.js');
 
 const storage = multer.memoryStorage();
 const upload  = multer({ storage: storage });
@@ -36,7 +36,7 @@ const shouldCachePage = function (reqUrl) {
     return NON_CACHEABLE_PAGES.every(pagePrefix => !reqUrl.startsWith(pagePrefix));
 };
 
-const Server = module.exports = function (port, basePath) {
+const Server = module.exports = function (port, basePath, apiRouter) {
     const server = this;
 
     this.app       = express().use(bodyParser.urlencoded({ extended: false }));
@@ -44,9 +44,11 @@ const Server = module.exports = function (port, basePath) {
     this.sockets   = [];
     this.basePath  = basePath;
 
+    this.app.use(cors());
+
     this.app.use(bodyParser.json());
 
-    this._setupRoutes();
+    this._setupRoutes(apiRouter);
 
     const handler = function (socket) {
         server.sockets.push(socket);
@@ -58,7 +60,7 @@ const Server = module.exports = function (port, basePath) {
     this.appServer.on('connection', handler);
 };
 
-Server.prototype._setupRoutes = function () {
+Server.prototype._setupRoutes = function (apiRouter) {
     const server = this;
 
     this.app.use('/api', apiRouter);

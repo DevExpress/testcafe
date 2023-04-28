@@ -49,7 +49,7 @@ export default class NativeAutomationRequestHookEventProvider extends RequestHoo
         let modified = false;
 
         if (!this.hasRequestEventListeners())
-            return modified;
+            return false;
 
         const { pipelineContext, eventFactory } = contextInfo.getContextData(event);
 

@@ -21,7 +21,13 @@ import {
 } from '../utils/cdp';
 
 import ERROR_ROUTE from '../error-route';
-import { SessionStorageInfo, SpecialServiceRoutes } from '../types';
+
+import {
+    ContinueRequestArgs,
+    SessionStorageInfo,
+    SpecialServiceRoutes,
+} from '../types';
+
 import {
     requestPipelineLogger,
     requestPipelineMockLogger,
@@ -285,7 +291,7 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
             const pipelineContext = this._contextInfo.getPipelineContext(event.networkId as string);
 
             if (!pipelineContext || !pipelineContext.mock)
-                await safeContinueRequest(this._client, event, this._getUploadPostData(event));
+                await safeContinueRequest(this._client, event, this._createContinueEventArgs(event, pipelineContext.reqOpts));
             else {
                 const mockedResponse = await pipelineContext.getMockResponse();
 
@@ -399,5 +405,39 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
 
     public async dispose (): Promise<void> {
         await this._client.Fetch.disable();
+    }
+
+    private _createContinueEventArgs (event: Protocol.Fetch.RequestPausedEvent, reqOpts: any): ContinueRequestArgs {
+        const modifiedUrl  = new URL(event.request.url);
+        const host         = modifiedUrl.host;
+
+        let hostModified = false;
+        let portModified = false;
+
+        if (modifiedUrl.hostname !== reqOpts.hostname) {
+            modifiedUrl.hostname = reqOpts.hostname;
+            hostModified         = true;
+        }
+
+        if (modifiedUrl.port !== reqOpts.port) {
+            modifiedUrl.port = reqOpts.port;
+            portModified     = true;
+        }
+
+        if (host !== reqOpts.host) {
+            const { port, hostname } = new URL(reqOpts.protocol + '//' + reqOpts.host);
+
+            if (!hostModified)
+                modifiedUrl.hostname = hostname;
+
+            if (!portModified)
+                modifiedUrl.port = port;
+        }
+
+        const postData = this._getUploadPostData(event);
+        const url      = modifiedUrl.toString() !== event.request.url ? modifiedUrl.toString() : void 0;
+        const method   = reqOpts.method;
+
+        return { postData, url, method };
     }
 }
