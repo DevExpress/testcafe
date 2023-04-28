@@ -235,7 +235,7 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
         if (contentType)
             return contentTypeUtils.isPage(contentType);
 
-        return false;
+        return true;
     }
 
     private async _tryAuthorizeWithHttpBasicAuthCredentials (event: RequestPausedEvent, fulfillInfo: FulfillRequestRequest): Promise<void> {
