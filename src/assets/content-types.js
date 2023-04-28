@@ -9,5 +9,4 @@ export default {
     textHtml:   'text/html',
     textPlain:  'text/plain',
     urlencoded: 'application/x-www-form-urlencoded',
-    xhtml:      'application/xhtml+xml',
 };

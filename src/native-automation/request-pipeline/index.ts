@@ -34,6 +34,7 @@ import {
     SPECIAL_BLANK_PAGE,
     StoragesSnapshot,
     injectUpload,
+    contentTypeUtils,
 } from 'testcafe-hammerhead';
 
 import NativeAutomationPipelineContext from '../request-hooks/pipeline-context';
@@ -46,7 +47,6 @@ import { resendAuthRequest } from './resendAuthRequest';
 import TestRunBridge from './test-run-bridge';
 import NativeAutomationRequestContextInfo from './context-info';
 import { failedToFindDNSError, sslCertificateError } from '../errors';
-import CONTENT_TYPES from '../../assets/content-types';
 
 
 const ALL_REQUEST_RESPONSES = { requestStage: 'Request' } as RequestPattern;
@@ -232,16 +232,8 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
             ?.find(header => header.name.toLowerCase() === 'content-type')
             ?.value;
 
-        return !contentType || this._isHtmlPageContentType(contentType);
-    }
-
-    private _isHtmlPageContentType (contentType: string): boolean {
-        const contentTypes = [CONTENT_TYPES.textHtml, CONTENT_TYPES.xhtml];
-
-        for (const type of contentTypes) {
-            if (contentType.includes(type))
-                return true;
-        }
+        if (contentType)
+            return contentTypeUtils.isPage(contentType);
 
         return false;
     }
