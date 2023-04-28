@@ -85,7 +85,7 @@ export class BrowserClient {
         if (this._runtimeInfo.activeWindowId)
             tabs = tabs.filter(t => t.title.includes(this._runtimeInfo.activeWindowId));
 
-        return tabs[0];
+        return tabs.filter(t => !t.url.includes('devtools'))[0];
     }
 
     private _checkDropOfPerformance (method: CheckedCDPMethod, elapsedTime: [number, number]): void {
