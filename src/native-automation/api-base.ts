@@ -8,6 +8,7 @@ export default class NativeAutomationApiBase extends AsyncEventEmitter {
     protected readonly _client: ProtocolApi;
     protected readonly _browserConnection: BrowserConnection;
     protected readonly options: NativeAutomationInitOptions;
+    protected readonly browserId: string;
     protected _stopped: boolean;
     private _cdpEventsInitialized: boolean;
 
@@ -17,6 +18,7 @@ export default class NativeAutomationApiBase extends AsyncEventEmitter {
         this._client               = client;
         this._browserConnection    = BrowserConnection.getById(browserId) as BrowserConnection;
         this.options               = options;
+        this.browserId             = browserId;
         this._stopped              = true;
         this._cdpEventsInitialized = false;
     }

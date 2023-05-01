@@ -10,23 +10,28 @@ import { ContinueRequestArgs } from '../types';
 
 const INVALID_INTERCEPTED_RESPONSE_ERROR_MSG = 'Invalid InterceptionId.';
 
+export async function safeApiCall (fn: () => Promise<void>, isExpectedErrFn?: (err: any) => boolean, handleErrorFn?: (err: any) => void): Promise<void> {
+    try {
+        await fn();
+    }
+    catch (err: any) {
+        if (!isExpectedErrFn || isExpectedErrFn(err))
+            return;
+
+        if (handleErrorFn)
+            handleErrorFn(err);
+
+        throw err;
+    }
+}
+
 // In some cases (a request was aborted, any page that initiated the request doesn't exist, etc.)
 // Chrome Debug Protocol doesn't allow to continue request pipeline
 // and raises the "Invalid InterceptionId" error.
 // We use the simplest way to fix it - omit such an error.
 
 async function connectionResetGuard (handleRequestFn: () => Promise<void>, handleErrorFn: (err: any) => void): Promise<void> {
-    try {
-        await handleRequestFn();
-    }
-    catch (err: any) {
-        if (err.message === INVALID_INTERCEPTED_RESPONSE_ERROR_MSG)
-            return;
-
-        handleErrorFn(err);
-
-        throw err;
-    }
+    await safeApiCall(handleRequestFn, err => err.message === INVALID_INTERCEPTED_RESPONSE_ERROR_MSG, handleErrorFn);
 }
 
 export async function safeContinueResponse (client: ProtocolApi, data: RequestPausedEvent | ContinueResponseRequest): Promise<void> {

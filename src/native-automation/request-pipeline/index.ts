@@ -45,7 +45,11 @@ import {
 import NativeAutomationPipelineContext from '../request-hooks/pipeline-context';
 import { NativeAutomationInitOptions } from '../../shared/types';
 import getSpecialRequestHandler from './special-handlers';
-import { safeContinueRequest, safeContinueResponse } from './safe-api';
+import {
+    safeApiCall,
+    safeContinueRequest,
+    safeContinueResponse,
+} from './safe-api';
 import NativeAutomationApiBase from '../api-base';
 import { resendAuthRequest } from './resendAuthRequest';
 import TestRunBridge from './test-run-bridge';
@@ -354,15 +358,25 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
 
     protected async _addCDPEventListeners (): Promise<void> {
         this._client.Fetch.on('requestPaused', async (event: RequestPausedEvent) => {
-            const specialRequestHandler = getSpecialRequestHandler(event, this.options, this._specialServiceRoutes);
+            await safeApiCall(async () => {
+                requestPipelineLogger('occurred %r', event);
 
-            if (specialRequestHandler)
-                await specialRequestHandler(event, this._client, this.options);
-            else
-                await this._handleOtherRequests(event);
+                const specialRequestHandler = getSpecialRequestHandler(event, this.options, this._specialServiceRoutes);
 
-            if (this._stopped && this._testRunBridge.isStatusDoneRoute(event.request.url))
-                await this.emit('status-done-request-handled');
+                if (specialRequestHandler)
+                    await specialRequestHandler(event, this._client, this.options);
+                else
+                    await this._handleOtherRequests(event);
+
+                if (this._stopped && this._testRunBridge.isStatusDoneRoute(event.request.url))
+                    await this.emit('status-done-request-handled');
+
+                requestPipelineLogger('handled %r', event);
+            }, (err: any) => {
+                console.log('Error in request pipeline:');// eslint-disable-line no-console
+                console.log(err);// eslint-disable-line no-console
+                return true;
+            });
         });
 
         this._client.Page.on('frameNavigated', async (event: FrameNavigatedEvent) => {
@@ -404,11 +418,16 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
         });
 
         this._client.Security.on('certificateError', async (event: CertificateErrorEvent) => {
+            if (this._stopped)
+                return;
+
             this._pendingCertificateError = event;
         });
     }
 
     public async start (): Promise<void> {
+        requestPipelineLogger('starting %s', this.browserId);
+
         await super.start();
 
         // NOTE: We are forced to handle all requests and responses at once
@@ -420,19 +439,33 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
         await this._client.Page.setBypassCSP({ enabled: true });
         await this._client.Security.enable();
 
-        requestPipelineLogger('start');
+        requestPipelineLogger('started %s', this.browserId);
     }
 
     public async stop (): Promise<void> {
+        requestPipelineLogger('stopping %s', this.browserId);
+
         await super.stop();
 
         await this._client.Page.setBypassCSP({ enabled: false });
         await this._client.Security.disable();
 
         await this._waitForStatusDoneRequestCompleted();
-        await this._client.Fetch.disable();
 
-        requestPipelineLogger('stop');
+        requestPipelineLogger('before Fetch.disable');
+        // NOTE: Sometimes request can go to the handler during Fetch.disable call.
+        // It causes the crash of API. The single way to handle it - wrap to the try/catch.
+        await safeApiCall(async () => {
+            await this._client.Fetch.disable();
+        }, (err: any) => {
+            console.log('Fetch.disable error');// eslint-disable-line no-console
+            console.log(err);// eslint-disable-line no-console
+            return true;
+        });
+
+        requestPipelineLogger('after Fetch.disable');
+
+        requestPipelineLogger('stopped %s', this.browserId);
     }
 
     private _createContinueEventArgs (event: Protocol.Fetch.RequestPausedEvent, reqOpts: any): ContinueRequestArgs {
