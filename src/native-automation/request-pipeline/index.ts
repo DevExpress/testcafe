@@ -456,10 +456,14 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
         // NOTE: Sometimes request can go to the handler during Fetch.disable call.
         // It causes the crash of API. The single way to handle it - wrap to the try/catch.
         await safeApiCall(async () => {
+            // @ts-ignore
+            console.log('Fetch.disable', this._client.webSocketUrl);// eslint-disable-line no-console
             await this._client.Fetch.disable();
         }, (err: any) => {
             console.log('Fetch.disable error');// eslint-disable-line no-console
             console.log(err);// eslint-disable-line no-console
+            // @ts-ignore
+            console.log(this._client.webSocketUrl);// eslint-disable-line no-console
             return true;
         });
 

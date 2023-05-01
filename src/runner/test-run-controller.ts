@@ -189,10 +189,10 @@ export default class TestRunController extends AsyncEventEmitter {
 
         this.done = true;
 
-        await this.emit('test-run-done');
-
         if (this.isNativeAutomationStarted)
             await this._stopNativeAutomation(this.testRun.browserConnection);
+
+        await this.emit('test-run-done');
 
         testRunControllerLogger('done');
     }

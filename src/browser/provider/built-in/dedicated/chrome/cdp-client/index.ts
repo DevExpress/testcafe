@@ -103,7 +103,12 @@ export class BrowserClient {
 
     private async _createClient (): Promise<remoteChrome.ProtocolApi> {
         const target                     = await this._getActiveTab();
-        const client                     = await remoteChrome({ target, port: this._runtimeInfo.cdpPort });
+        const client                     = await remoteChrome({
+            target,
+            port:  this._runtimeInfo.cdpPort,
+            local: true,
+        });
+
         const { Page, Network, Runtime } = client;
 
         this._clients[this._clientKey] = new ProtocolApiInfo(client);

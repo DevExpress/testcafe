@@ -14,6 +14,7 @@ declare module 'chrome-remote-interface' {
 
         export interface ConstructorOptions extends GenericConnectionOptions {
             target: TargetInfo;
+            local?: boolean;
         }
 
         export interface CloseTabOptions extends GenericConnectionOptions {
