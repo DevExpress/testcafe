@@ -71,8 +71,8 @@ export default class NativeAutomation {
 
     public get apiSystems (): NativeAutomationApiBase [] {
         return [
-            this.requestPipeline,
             this.sessionStorage,
+            this.requestPipeline,
         ];
     }
 }
