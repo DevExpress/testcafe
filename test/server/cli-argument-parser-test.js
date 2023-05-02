@@ -1,11 +1,14 @@
-const { expect }        = require('chai');
-const path              = require('path');
-const fs                = require('fs');
-const tmp               = require('tmp');
-const { find }          = require('lodash');
-const CliArgumentParser = require('../../lib/cli/argument-parser');
-const { nanoid }        = require('nanoid');
-const runOptionNames    = require('../../lib/configuration/run-option-names');
+const { expect }                  = require('chai');
+const path                        = require('path');
+const fs                          = require('fs');
+const tmp                         = require('tmp');
+const { find }                    = require('lodash');
+const CliArgumentParser           = require('../../lib/cli/argument-parser');
+const { nanoid }                  = require('nanoid');
+const runOptionNames              = require('../../lib/configuration/run-option-names');
+const shouldMoveOptionToEnd       =  require('../../lib/cli/utils/should-move-option-to-end');
+const QUARANTINE_OPTION_NAMES     = require('../../lib/configuration/quarantine-option-names');
+const { SKIP_JS_ERRORS_OPTIONS_OBJECT_OPTION_NAMES } = require('../../lib/configuration/skip-js-errors-option-names');
 
 describe('CLI argument parser', function () {
     this.timeout(10000);
@@ -688,6 +691,22 @@ describe('CLI argument parser', function () {
         }
 
         await checkCliArgs('chrome -q false test.js -e false');
+    });
+
+    it('Should move booleanOrObject option to the end in no value provided', async () => {
+        const quarantineOptions   = Object.values(QUARANTINE_OPTION_NAMES);
+        const skipJsErrorsOptions = Object.values(SKIP_JS_ERRORS_OPTIONS_OBJECT_OPTION_NAMES);
+
+        function checkOption (args, optionName, subOptions) {
+            const optionIndex = args.indexOf(optionName);
+
+            return shouldMoveOptionToEnd(args, optionIndex, subOptions);
+        }
+
+        expect(checkOption(['-q', 'attemptLimit=5', 'chrome'], '-q', quarantineOptions)).eql(false);
+        expect(checkOption(['-e', 'message=test', 'chrome'], '-e', skipJsErrorsOptions)).eql(false);
+        expect(checkOption(['-q', 'chrome', 'test.js'], '-q', quarantineOptions)).eql(true);
+        expect(checkOption(['-e', 'chrome', 'test.js'], '-e', skipJsErrorsOptions)).eql(true);
     });
 
     describe('Quarantine Option', function () {
