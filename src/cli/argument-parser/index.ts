@@ -38,6 +38,7 @@ import { parsePortNumber, parseList } from './parse-utils';
 import COMMAND_NAMES from './command-names';
 import { SendReportState } from '../../dashboard/interfaces';
 import { SKIP_JS_ERRORS_OPTIONS_OBJECT_OPTION_NAMES } from '../../configuration/skip-js-errors-option-names';
+import shouldMoveOptionToEnd from '../utils/should-move-option-to-end';
 
 const REMOTE_ALIAS_RE = /^remote(?::(\d*))?$/;
 
@@ -344,12 +345,12 @@ export default class CLIArgumentParser {
     }
 
     private async _parseQuarantineOptions (): Promise<void> {
-        if (this.opts.quarantineMode)
+        if (this.opts.quarantineMode !== void 0)
             this.opts.quarantineMode = await getQuarantineOptions('--quarantine-mode', this.opts.quarantineMode);
     }
 
     private async _parseSkipJsErrorsOptions (): Promise<void> {
-        if (this.opts.skipJsErrors)
+        if (this.opts.skipJsErrors !== void 0)
             this.opts.skipJsErrors = await getSkipJsErrorsOptions('--skip-js-errors', this.opts.skipJsErrors);
     }
 
@@ -453,14 +454,8 @@ export default class CLIArgumentParser {
         const optionIndex = argv.findIndex(
             el => optionNames.some(opt => el.startsWith(opt)));
 
-        if (optionIndex > -1) {
-            const isNotLastOption       = optionIndex < argv.length - 1;
-            const shouldMoveOptionToEnd = isNotLastOption &&
-                !subOptionsNames.some(opt => argv[optionIndex + 1].startsWith(opt));
-
-            if (shouldMoveOptionToEnd)
-                argv.push(argv.splice(optionIndex, 1)[0]);
-        }
+        if (optionIndex > -1 && shouldMoveOptionToEnd(argv, optionIndex, subOptionsNames))
+            argv.push(argv.splice(optionIndex, 1)[0]);
     }
 
     public async parse (argv: string[]): Promise<void> {
