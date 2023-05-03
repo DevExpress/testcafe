@@ -24,6 +24,8 @@ import ScreencastFrameEvent = Protocol.Page.ScreencastFrameEvent;
 const DEBUG_SCOPE = (id: string): string => `testcafe:browser:provider:built-in:chrome:browser-client:${id}`;
 const DOWNLOADS_DIR = path.join(os.homedir(), 'Downloads');
 
+const DEVTOOLS_TAB_URL_REGEX = /^devtools:\/\/devtools/;
+
 const debugLog = debug('testcafe:browser:provider:built-in:dedicated:chrome');
 
 class ProtocolApiInfo {
@@ -76,7 +78,7 @@ export class BrowserClient {
     private async _getTabs (): Promise<remoteChrome.TargetInfo[]> {
         const tabs = await remoteChrome.List({ port: this._runtimeInfo.cdpPort });
 
-        return tabs.filter(t => t.type === 'page');
+        return tabs.filter(t => t.type === 'page' && !DEVTOOLS_TAB_URL_REGEX.test(t.url));
     }
 
     private async _getActiveTab (): Promise<remoteChrome.TargetInfo> {

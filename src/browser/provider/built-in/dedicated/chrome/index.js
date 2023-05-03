@@ -65,6 +65,13 @@ export default {
         runtimeInfo.nativeAutomation = nativeAutomation;
     },
 
+    async _startChrome (runtimeInfo, pageUrl) {
+        if (runtimeInfo.isContainerized)
+            await startLocalChromeOnDocker(pageUrl, runtimeInfo);
+        else
+            await startLocalChrome(pageUrl, runtimeInfo);
+    },
+
     async openBrowser (browserId, pageUrl, config, additionalOptions) {
         const parsedPageUrl = parseUrl(pageUrl);
         const runtimeInfo   = await this._createRunTimeInfo(parsedPageUrl.hostname, config, additionalOptions.disableMultipleWindows);
@@ -78,11 +85,7 @@ export default {
         };
 
         //NOTE: A not-working tab is opened when the browser start in the docker so we should create a new tab.
-        if (runtimeInfo.isContainerized)
-            await startLocalChromeOnDocker(pageUrl, runtimeInfo);
-        else
-            await startLocalChrome(pageUrl, runtimeInfo);
-
+        await this._startChrome(runtimeInfo, pageUrl);
         await this.waitForConnectionReady(browserId);
 
         runtimeInfo.viewportSize      = await this.runInitScript(browserId, GET_WINDOW_DIMENSIONS_INFO_SCRIPT);
