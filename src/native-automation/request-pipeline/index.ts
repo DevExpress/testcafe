@@ -40,6 +40,7 @@ import {
     SPECIAL_BLANK_PAGE,
     StoragesSnapshot,
     injectUpload,
+    contentTypeUtils,
 } from 'testcafe-hammerhead';
 
 import NativeAutomationPipelineContext from '../request-hooks/pipeline-context';
@@ -192,14 +193,7 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
 
         const modified = await this.requestHookEventProvider.onResponse(event, resourceInfo.body, this._contextInfo, this._client);
 
-        if (event.resourceType !== 'Document') {
-            const continueResponseRequest = this._createContinueResponseRequest(event, modified);
-
-            await safeContinueResponse(this._client, continueResponseRequest);
-
-            this._contextInfo.dispose(getRequestId(event));
-        }
-        else {
+        if (this._needInjectResources(event)) {
             const fulfillInfo = {
                 requestId:       event.requestId,
                 responseHeaders: event.responseHeaders,
@@ -232,6 +226,27 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
 
             this.restoringStorages = null;
         }
+        else {
+            const continueResponseRequest = this._createContinueResponseRequest(event, modified);
+
+            await safeContinueResponse(this._client, continueResponseRequest);
+
+            this._contextInfo.dispose(getRequestId(event));
+        }
+    }
+
+    private _needInjectResources (event: Protocol.Fetch.RequestPausedEvent): boolean {
+        if (event.resourceType !== 'Document')
+            return false;
+
+        const contentType = event.responseHeaders
+            ?.find(header => header.name.toLowerCase() === 'content-type')
+            ?.value;
+
+        if (contentType)
+            return contentTypeUtils.isPage(contentType);
+
+        return true;
     }
 
     private async _tryAuthorizeWithHttpBasicAuthCredentials (event: RequestPausedEvent, fulfillInfo: FulfillRequestRequest): Promise<void> {
