@@ -36,7 +36,9 @@ test('Should skip JS errors with callback function returning Promise', async t =
 });
 
 test('Should skip JS errors without param', async t => {
-    await t.skipJsErrors();
+    await t
+        .skipJsErrors()
+        .click('button');
 });
 
 test('Should skip JS errors if some SkipJsErrorsCallbackOptions prop is string containing RegExp', async t => {

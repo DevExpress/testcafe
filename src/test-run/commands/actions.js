@@ -764,7 +764,7 @@ export class SkipJsErrorsCommand extends ActionCommandBase {
 
     getAssignableProperties () {
         return [
-            { name: 'options', type: skipJsErrorOptions, init: initSkipJsErrorsOptions, required: false },
+            { name: 'options', type: skipJsErrorOptions, init: initSkipJsErrorsOptions, required: false, defaultValue: true },
         ];
     }
 }
