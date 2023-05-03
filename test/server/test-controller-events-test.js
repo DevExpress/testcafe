@@ -148,8 +148,8 @@ let testController = null;
 let task           = null;
 let messageBus     = null;
 
-const initializeReporter = (reporter) => {
-    return new Reporter(reporter, messageBus);
+const initializeReporter = (plugin) => {
+    return new Reporter({ plugin, messageBus });
 };
 
 describe('TestController action events', () => {

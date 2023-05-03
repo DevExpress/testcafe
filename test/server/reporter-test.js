@@ -504,7 +504,7 @@ describe('Reporter', () => {
 
     it('MessageBus events', () => {
         function createReporter (messageBus) {
-            return new Reporter({}, messageBus);
+            return new Reporter({ plugin: {}, messageBus });
         }
 
         const messageBus = new MessageBus();
@@ -530,55 +530,60 @@ describe('Reporter', () => {
 
         function createReporter () {
             return new Reporter({
-                reportTaskStart: function (...args) {
-                    expect(args[0]).to.be.a('date');
+                plugin: {
+                    reportTaskStart: function (...args) {
+                        expect(args[0]).to.be.a('date');
 
-                    // NOTE: replace startTime
-                    args[0] = new Date('Thu Jan 01 1970 00:00:00 UTC');
+                        // NOTE: replace startTime
+                        args[0] = new Date('Thu Jan 01 1970 00:00:00 UTC');
 
-                    return delay(1000)
-                        .then(() => log.push({ method: 'reportTaskStart', args: args }));
+                        return delay(1000)
+                            .then(() => log.push({ method: 'reportTaskStart', args: args }));
+                    },
+
+                    reportFixtureStart: function () {
+                        return delay(1000)
+                            .then(() => log.push({
+                                method: 'reportFixtureStart', args: Array.prototype.slice.call(arguments),
+                            }));
+                    },
+
+                    reportTestStart: function (...args) {
+                        expect(args[0]).to.be.an('string');
+                        expect(args[2].startTime).to.be.a('date');
+
+                        args[2].testRunIds = args[2].testRunIds.sort();
+
+                        // NOTE: replace startTime
+                        args[2].startTime = new Date('Thu Jan 01 1970 00:00:00 UTC');
+
+                        return delay(1000)
+                            .then(() => log.push({ method: 'reportTestStart', args: args }));
+                    },
+
+                    reportTestDone: function (...args) {
+                        expect(args[1].durationMs).to.be.an('number');
+
+                        // NOTE: replace durationMs
+                        args[1].durationMs = 74000;
+                        args[1].browsers   = sortBy(args[1].browsers, ['alias']);
+
+                        return delay(1000)
+                            .then(() => log.push({ method: 'reportTestDone', args: args }));
+                    },
+
+                    reportTaskDone: function (...args) {
+                        expect(args[0]).to.be.a('date');
+
+                        // NOTE: replace endTime
+                        args[0] = new Date('Thu Jan 01 1970 00:15:25 UTC');
+
+                        return delay(1000)
+                            .then(() => log.push({ method: 'reportTaskDone', args: args }));
+                    },
                 },
-
-                reportFixtureStart: function () {
-                    return delay(1000)
-                        .then(() => log.push({ method: 'reportFixtureStart', args: Array.prototype.slice.call(arguments) }));
-                },
-
-                reportTestStart: function (...args) {
-                    expect(args[0]).to.be.an('string');
-                    expect(args[2].startTime).to.be.a('date');
-
-                    args[2].testRunIds = args[2].testRunIds.sort();
-
-                    // NOTE: replace startTime
-                    args[2].startTime = new Date('Thu Jan 01 1970 00:00:00 UTC');
-
-                    return delay(1000)
-                        .then(() => log.push({ method: 'reportTestStart', args: args }));
-                },
-
-                reportTestDone: function (...args) {
-                    expect(args[1].durationMs).to.be.an('number');
-
-                    // NOTE: replace durationMs
-                    args[1].durationMs = 74000;
-                    args[1].browsers = sortBy(args[1].browsers, ['alias']);
-
-                    return delay(1000)
-                        .then(() => log.push({ method: 'reportTestDone', args: args }));
-                },
-
-                reportTaskDone: function (...args) {
-                    expect(args[0]).to.be.a('date');
-
-                    // NOTE: replace endTime
-                    args[0] = new Date('Thu Jan 01 1970 00:15:25 UTC');
-
-                    return delay(1000)
-                        .then(() => log.push({ method: 'reportTaskDone', args: args }));
-                },
-            }, taskMock._messageBus);
+                messageBus: taskMock._messageBus,
+            });
         }
 
         const expectedLog = [
@@ -1355,7 +1360,7 @@ describe('Reporter', () => {
 
     it('Should disable colors if plugin has "noColors" flag', () => {
         const taskMock = new TaskMock();
-        const reporter = new Reporter({ noColors: true }, taskMock._messageBus);
+        const reporter = new Reporter({ plugin: { noColors: true }, messageBus: taskMock._messageBus });
 
         expect(reporter.plugin.chalk.enabled).to.be.false;
     });
@@ -1389,14 +1394,17 @@ describe('Reporter', () => {
 
         function createReporter () {
             return new Reporter({
-                reportTaskStart:    noop,
-                reportTaskDone:     noop,
-                reportFixtureStart: noop,
-                reportTestStart:    noop,
-                reportTestDone:     (name, testRunInfo) => {
-                    videoLog.push(testRunInfo.videos);
+                plugin: {
+                    reportTaskStart:    noop,
+                    reportTaskDone:     noop,
+                    reportFixtureStart: noop,
+                    reportTestStart:    noop,
+                    reportTestDone:     (name, testRunInfo) => {
+                        videoLog.push(testRunInfo.videos);
+                    },
                 },
-            }, taskMock._messageBus);
+                messageBus: taskMock._messageBus,
+            });
         }
 
         createReporter();
@@ -1432,7 +1440,7 @@ describe('Reporter', () => {
                 };
             }
 
-            return new Reporter(reporterObject, task._messageBus, null, 'customReporter');
+            return new Reporter({ plugin: reporterObject, messageBus: task._messageBus, name: 'customReporter' });
         }
 
         const taskMock = new TaskMock();
@@ -1454,10 +1462,13 @@ describe('Reporter', () => {
     it('More tolerant error handling for reporter plugin methods', async () => {
         const taskMock = new TaskMock();
         const reporter = new Reporter({
-            [ReporterPluginMethod.reportTaskStart]: (error) => {
-                throw error;
+            plugin: {
+                [ReporterPluginMethod.reportTaskStart]: (error) => {
+                    throw error;
+                },
             },
-        }, taskMock._messageBus, null, 'customReporter');
+            messageBus: taskMock._messageBus, name: 'customReporter',
+        });
 
         const errs = [
             void 0,

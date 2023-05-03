@@ -130,6 +130,28 @@ interface ReportDataEventArgs {
     testRun: TestRun
 }
 
+export interface WriteInfo {
+    initiator: string;
+    formattedText: string;
+    formatOptions: {
+        useWordWrap: boolean;
+        indent: number;
+    }
+    data: undefined | object;
+}
+
+export interface ReporterPluginHooks {
+    onBeforeWrite?: Function;
+}
+
+export interface ReporterOptions {
+    name: string;
+    plugin: ReporterPlugin;
+    messageBus: MessageBus;
+    outStream: Writable;
+    reporterPluginHooks?: ReporterPluginHooks
+}
+
 const debugLog = debug('testcafe:reporter');
 
 export default class Reporter {
@@ -139,13 +161,12 @@ export default class Reporter {
     public taskInfo: TaskInfo | null;
     public readonly outStream: Writable;
 
-    public constructor (plugin: ReporterPlugin, messageBus: MessageBus, outStream: Writable, name: string) {
-        this.plugin     = new ReporterPluginHost(plugin, outStream, name);
+    public constructor ({ name, plugin, outStream, messageBus, reporterPluginHooks }: ReporterOptions) {
+        this.plugin     = new ReporterPluginHost(plugin, outStream, name, reporterPluginHooks);
         this.messageBus = messageBus;
-
-        this.disposed  = false;
-        this.taskInfo  = null;
-        this.outStream = outStream;
+        this.disposed   = false;
+        this.taskInfo   = null;
+        this.outStream  = outStream;
 
         this._assignMessageBusEventHandlers();
     }
@@ -688,5 +709,17 @@ export default class Reporter {
                 ...data,
             ],
         });
+    }
+
+    private _resolvePluginHooks (reporterHooks: ReporterHooks|undefined, name: string): ReporterPluginHooks | undefined {
+        if (!reporterHooks)
+            return void 0;
+
+        const resultHooks: ReporterPluginHooks = {};
+
+        if (reporterHooks.onBeforeWrite && reporterHooks.onBeforeWrite[name])
+            resultHooks.onBeforeWrite = reporterHooks.onBeforeWrite[name];
+
+        return resultHooks;
     }
 }

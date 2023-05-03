@@ -1,13 +1,14 @@
-const { expect }                = require('chai');
-const fs                        = require('fs');
-const generateReporter          = require('./reporter');
-const { createReporter }        = require('../../utils/reporter');
-const { createWarningReporter } = require('../../utils/warning-reporter');
-const ReporterPluginMethod      = require('../../../../lib/reporter/plugin-methods');
-const assertionHelper           = require('../../assertion-helper.js');
-const path                      = require('path');
+const { expect }                 = require('chai');
+const fs                         = require('fs');
+const generateReporter           = require('./reporter');
+const { createReporter }         = require('../../utils/reporter');
+const { createWarningReporter }  = require('../../utils/warning-reporter');
+const ReporterPluginMethod       = require('../../../../lib/reporter/plugin-methods');
+const assertionHelper            = require('../../assertion-helper.js');
+const path                       = require('path');
 const config                     = require('../../config');
 const { skipInNativeAutomation } = require('../../utils/skip-in');
+const { noop }                   = require('lodash');
 
 const {
     createSimpleTestStream,
@@ -1186,6 +1187,117 @@ const experimentalDebug = !!process.env.EXPERIMENTAL_DEBUG;
             assertionHelper.removeScreenshotDir('screenshots');
         });
 
+    });
+
+    describe('Reporter Hooks', () => {
+        it('Should handle onBeforeWrite hook', () => {
+            let pluginContextProp       = {};
+            const writeData             = { prop: true };
+            const result                = {};
+            const expectedOutput        = `formattedText\nformattedText\nformattedText\n`;
+            const expectedFormatOptions = { indent: 3, useWordWrap: true };
+            const expectedResult = {
+                reportTaskStart: {
+                    data:          writeData,
+                    formatOptions: expectedFormatOptions,
+                },
+                reportTestDone: {
+                    data:          writeData,
+                    formatOptions: expectedFormatOptions,
+                },
+                customMethod: {
+                    data:          { ...writeData, initiator: 'customMethod' },
+                    formatOptions: expectedFormatOptions,
+                },
+            };
+
+            function custom () {
+                return {
+                    taskInfo:           { prop: 'val' },
+                    reportTaskDone:     noop,
+                    reportFixtureStart: noop,
+                    reportTaskStart () {
+                        this.useWordWrap(true).setIndent(3).write('unFormattedText', writeData);
+                    },
+                    reportTestDone: function () {
+                        this.write('unFormattedText', writeData);
+                        this.customMethod();
+                    },
+                    customMethod () {
+                        this.write('unFormattedText', { ...writeData, initiator: 'customMethod' });
+                    },
+                };
+            }
+
+            const onBeforeWriteHook = function (writeInfo) {
+                const { initiator, data, formatOptions } = writeInfo;
+
+                writeInfo.formattedText = 'formattedText\n';
+                result[initiator]       = {
+                    data,
+                    formatOptions,
+                };
+                pluginContextProp       = this.taskInfo;
+            };
+            const outStream         = createSimpleTestStream();
+
+            return runTests('testcafe-fixtures/reporter-init-method.js', null, {
+                reporter: [{ name: custom, output: outStream }],
+                hooks:    {
+                    reporter: {
+                        onBeforeWrite: {
+                            'custom': onBeforeWriteHook,
+                        },
+                    },
+                },
+            })
+                .then(() => {
+                    expect(result).eql(expectedResult);
+                    expect(pluginContextProp).eql({ prop: 'val' });
+                    expect(outStream.data).eql(expectedOutput);
+                });
+
+        });
+        it('Should throw an error if hooks.reporter option is not of object type', async () => {
+            try {
+                await runTests('testcafe-fixtures/reporter-init-method.js', null, {
+                    shouldFail: true,
+                    hooks:      {
+                        reporter: {
+                            onBeforeWrite: 'stringTypeHook',
+                        },
+                    },
+                });
+
+                throw new Error('Promise rejection expected');
+            }
+            catch (err) {
+                expect(err.message).eql(`Cannot prepare tests due to the following error:\n\n`
+                    + `The reporter.onBeforeWrite (string) is not of expected type (non-null object).`);
+            }
+
+        });
+        it('Should throw an error if onBeforeWrite hook is not of function type', async () => {
+            try {
+                await runTests('testcafe-fixtures/reporter-init-method.js', null, {
+                    shouldFail: true,
+                    hooks:      {
+                        reporter: {
+                            onBeforeWrite: {
+                                'custom': 'stringTypeHook',
+                            },
+                        },
+                    },
+                });
+
+                throw new Error('Promise rejection expected');
+            }
+            catch (err) {
+                expect(err.message).eql(`Cannot prepare tests due to the following error:\n\n`
+                    + `The reporter.onBeforeWrite.custom (string) is not of expected type (function).`);
+            }
+
+        });
     });
 
     it('Should call the "init" method of reporters if it\'s defined', function () {
