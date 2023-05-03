@@ -20,12 +20,7 @@ const { DEFAULT_TYPESCRIPT_COMPILER_OPTIONS } = require('../../lib/configuration
 const RunnerCtor                              = require('../../lib/runner');
 const OptionNames                             = require('../../lib/configuration/option-names');
 const consoleWrapper                          = require('./helpers/console-wrapper');
-
-const {
-    CONFIGURATION_EXTENSIONS,
-    JS_CONFIGURATION_EXTENSION,
-    JSON_CONFIGURATION_EXTENSION,
-} = require('../../lib/configuration/formats');
+const Extensions                              = require('../../lib/configuration/formats');
 
 const tsConfigPath           = 'tsconfig.json';
 const customTSConfigFilePath = 'custom-config.json';
@@ -40,8 +35,8 @@ const createJsConfig = (path, options) => {
     fs.writeFileSync(path, `module.exports = ${JSON.stringify(options)}`);
 };
 
-const jsConfigIndex   = CONFIGURATION_EXTENSIONS.indexOf(JS_CONFIGURATION_EXTENSION);
-const jsonConfigIndex = CONFIGURATION_EXTENSIONS.indexOf(JSON_CONFIGURATION_EXTENSION);
+const jsConfigIndex = TestCafeConfiguration.FILENAMES.findIndex(file=>file.includes(Extensions.js));
+const jsonConfigIndex = TestCafeConfiguration.FILENAMES.findIndex(file=>file.includes(Extensions.json));
 
 const createJsTestCafeConfigurationFile   = createJsConfig.bind(null, TestCafeConfiguration.FILENAMES[jsConfigIndex]);
 const createJSONTestCafeConfigurationFile = createJSONConfig.bind(null, TestCafeConfiguration.FILENAMES[jsonConfigIndex]);
