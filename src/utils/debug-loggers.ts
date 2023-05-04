@@ -17,6 +17,10 @@ const browserLogger               = testcafeLogger.extend('browser');
 const browserProviderLogger       = browserLogger.extend('provider');
 const chromeBrowserProviderLogger = browserProviderLogger.extend('chrome');
 
+const runnerLogger = testcafeLogger.extend('runner');
+
+const testRunControllerLogger = runnerLogger.extend('test-run-controller');
+
 export {
     nativeAutomationLogger,
     requestPipelineLogger,
@@ -28,4 +32,5 @@ export {
     requestPipelineServiceRequestLogger,
     requestPipelineOtherRequestLogger,
     requestPipelineContextLogger,
+    testRunControllerLogger,
 };

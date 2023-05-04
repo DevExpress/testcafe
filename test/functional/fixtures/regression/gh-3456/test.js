@@ -27,7 +27,7 @@ if (config.useLocalBrowsers) {
                         .src(fixturePath)
                         .browsers(browsers)
                         .screenshots(SCREENSHOTS_PATH)
-                        .run({ nativeAutomation: config.nativeAutomation });
+                        .run({ disableNativeAutomation: !config.nativeAutomation });
                 })
                 .then(failedCount => {
                     expect(failedCount).eql(0);

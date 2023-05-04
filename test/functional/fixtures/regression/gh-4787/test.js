@@ -53,7 +53,7 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
                         .src(path.join(__dirname, './testcafe-fixtures/index.js'))
                         .browsers(['chrome', 'firefox'])
                         .reporter(reporter)
-                        .run({ nativeAutomation: config.nativeAutomation });
+                        .run({ disableNativeAutomation: !config.nativeAutomation });
                 })
                 .then(() => {
                     return cafe.close();

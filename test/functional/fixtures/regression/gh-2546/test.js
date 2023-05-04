@@ -1,6 +1,4 @@
-const path               = require('path');
 const { expect }         = require('chai');
-const { exec }           = require('child_process');
 const config             = require('../../../config');
 const unhandledRejection = require('./unhandled-rejection');
 const semver             = require('semver');
@@ -73,22 +71,17 @@ if (config.useLocalBrowsers) {
 
                 expect(result.error).is.null;
             });
-        });
 
-        it('Should handle errors in the exception handler', () => {
-            const testcafePath = path.resolve('bin/testcafe');
-            const testFilePath = path.resolve('test/functional/fixtures/regression/gh-2546/testcafe-fixtures/uncaughtExceptionInHandler.js');
-            const browsers     = '"chrome:headless --no-sandbox"';
-            const command      = `node ${testcafePath} ${browsers} ${testFilePath}`;
-
-            return new Promise(resolve => {
-                exec(command, (error, stdout) => {
-                    resolve({ error, stdout });
+            it('Should handle errors in the exception handler', async () => {
+                const result = await runInCLI({
+                    testFile: 'test/functional/fixtures/regression/gh-2546/testcafe-fixtures/uncaughtExceptionInHandler.js',
+                    browsers: '"chrome:headless --no-sandbox"',
+                    args:     ['--disable-native-automation'],
                 });
-            }).then(value => {
-                expect(value.stdout).contains('Exception in the code');
-                expect(value.stdout).contains('Exception in the handler');
-                expect(value.error).is.not.null;
+
+                expect(result.stdout).contains('Exception in the code');
+                expect(result.stdout).contains('Exception in the handler');
+                expect(result.error).is.not.null;
             });
         });
     });

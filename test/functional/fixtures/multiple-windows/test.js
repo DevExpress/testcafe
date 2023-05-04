@@ -49,7 +49,7 @@ describe('Multiple windows', () => {
         });
     });
 
-    describe('Cookie synchonization', () => {
+    describe('Cookie synchronization', () => {
         it('cross-domain', () => {
             return runTests('testcafe-fixtures/cookie-synchronization/cross-domain.js', null, { only: 'chrome' });
         });
@@ -81,7 +81,7 @@ describe('Multiple windows', () => {
                 return testCafeInstance.createRunner()
                     .browsers(`chrome:headless`)
                     .src(fullTestPath)
-                    .run();
+                    .run({ disableNativeAutomation: true });
             })
             .then(() => {
                 return testCafeInstance.close();
@@ -352,7 +352,7 @@ describe('Multiple windows', () => {
                         .createRunner()
                         .src(path.join(__dirname, './testcafe-fixtures/features/emulation.js'))
                         .browsers('chrome:emulation:device=iphone X')
-                        .run();
+                        .run({ disableNativeAutomation: true });
                 })
                 .then(failedCount => {
                     expect(failedCount).eql(0);
@@ -374,7 +374,7 @@ describe('Multiple windows', () => {
                         .src(path.join(__dirname, './testcafe-fixtures/api/api-test.js'))
                         .filter(testName => testName === 'Resize multiple windows')
                         .browsers(browser)
-                        .run();
+                        .run({ disableNativeAutomation: true });
                 })
                 .then(failedCount => {
                     expect(failedCount).eql(0);
