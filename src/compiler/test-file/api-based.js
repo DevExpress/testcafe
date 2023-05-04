@@ -20,7 +20,6 @@ import stackCleaningHook from '../../errors/stack-cleaning-hook';
 import NODE_MODULES from '../../utils/node-modules-folder-name';
 import cacheProxy from './cache-proxy';
 import exportableLib from '../../api/exportable-lib';
-import TEST_FILE_TEMP_VARIABLE_NAME from './test-file-temp-variable-name';
 import addExportAPI from './add-export-api';
 import url from 'url';
 import PREVENT_MODULE_CACHING_SUFFIX from '../prevent-module-caching-suffix';

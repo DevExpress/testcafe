@@ -8,7 +8,6 @@ import {
     flattenDeep as flatten,
     pull as remove,
     isFunction,
-    uniq,
     castArray,
     merge,
 } from 'lodash';
@@ -95,7 +94,7 @@ export default class Runner extends EventEmitter {
         return testedApp ? testedApp.kill().catch(e => DEBUG_LOGGER(e)) : Promise.resolve();
     }
 
-    async _disposeTaskAndRelatedAssets (task, browserSet, reporters, testedApp, runnableConfigurationId) {
+    async _disposeTaskAndRelatedAssets (task, browserSet, reporters, testedApp) {
         task.abort();
         task.clearListeners();
         this._messageBus.abort();

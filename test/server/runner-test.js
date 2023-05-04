@@ -20,8 +20,6 @@ const { RUNTIME_ERRORS }      = require('../../lib/errors/types');
 const { createReporter }      = require('../functional/utils/reporter');
 const proxyquire              = require('proxyquire');
 const BrowserConnectionStatus = require('../../lib/browser/connection/status');
-const { noop }                = require('lodash');
-const Test                    = require('../../lib/api/structure/test');
 const TestCafeConfiguration   = require('../../lib/configuration/testcafe-configuration');
 
 const {
@@ -1203,7 +1201,7 @@ describe('Runner', () => {
                 expect(isErrorThrown).to.be.false;
             });
 
-            it.only('Should not raise an error when remote browser is passed as BrowserConnection', async function () {
+            it('Should not raise an error when remote browser is passed as BrowserConnection', async function () {
                 const browserInfo = await browserProviderPool.getBrowserInfo('remote');
                 let isErrorThrown = false;
 

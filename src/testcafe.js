@@ -13,7 +13,6 @@ const errorHandlers            = lazyRequire('./utils/handle-errors');
 const BrowserConnectionGateway = lazyRequire('./browser/connection/gateway');
 const BrowserConnection        = lazyRequire('./browser/connection');
 const browserProviderPool      = lazyRequire('./browser/provider/pool');
-const CompilerHost             = lazyRequire('./services/compiler/host');
 const Runner                   = lazyRequire('./runner');
 const LiveModeRunner           = lazyRequire('./live/test-runner');
 
