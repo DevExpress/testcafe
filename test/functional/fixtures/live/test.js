@@ -55,13 +55,12 @@ function createTestCafeInstance (opts = {}) {
 }
 
 function createLiveModeRunner (tc, src) {
-    const { proxy, browserConnectionGateway, configuration, compilerService } = tc;
+    const { proxy, browserConnectionGateway, configuration } = tc;
 
     const runner = new RunnerMock({
         proxy,
         browserConnectionGateway,
         configuration: configuration.clone(),
-        compilerService,
     });
 
     tc.runners.push(runner);

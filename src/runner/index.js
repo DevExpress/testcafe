@@ -57,17 +57,16 @@ const DEBUG_LOGGER            = debug('testcafe:runner');
 const DASHBOARD_REPORTER_NAME = 'dashboard';
 
 export default class Runner extends EventEmitter {
-    constructor ({ proxy, browserConnectionGateway, configuration, compilerService }) {
+    constructor ({ proxy, browserConnectionGateway, configuration }) {
         super();
 
         this._messageBus         = new MessageBus();
         this.proxy               = proxy;
-        this.bootstrapper        = this._createBootstrapper(browserConnectionGateway, compilerService, this._messageBus, configuration);
+        this.bootstrapper        = this._createBootstrapper(browserConnectionGateway, this._messageBus, configuration);
         this.pendingTaskPromises = [];
         this.configuration       = configuration;
         this.isCli               = configuration._options && configuration._options.isCli;
         this.warningLog          = new WarningLog(null, WarningLog.createAddWarningCallback(this._messageBus));
-        this.compilerService     = compilerService;
         this._options            = {};
         this._hasTaskErrors      = false;
         this._reporters          = null;
@@ -80,8 +79,8 @@ export default class Runner extends EventEmitter {
         ]);
     }
 
-    _createBootstrapper (browserConnectionGateway, compilerService, messageBus, configuration) {
-        return new Bootstrapper({ browserConnectionGateway, compilerService, messageBus, configuration });
+    _createBootstrapper (browserConnectionGateway, messageBus, configuration) {
+        return new Bootstrapper({ browserConnectionGateway, messageBus, configuration });
     }
 
     _disposeBrowserSet (browserSet) {
@@ -101,7 +100,6 @@ export default class Runner extends EventEmitter {
         task.clearListeners();
         this._messageBus.abort();
 
-        await this._finalizeCompilerServiceState(task, runnableConfigurationId);
         await this._disposeAssets(browserSet, reporters, testedApp);
     }
 
@@ -137,20 +135,6 @@ export default class Runner extends EventEmitter {
         this.pendingTaskPromises.push(promise);
 
         return promise;
-    }
-
-    async _finalizeCompilerServiceState (task, runnableConfigurationId) {
-        if (!this.compilerService)
-            return;
-
-        await this.compilerService?.removeUnitsFromState({ runnableConfigurationId });
-
-        // NOTE: In some cases (browser restart, stop task on first fail, etc.),
-        // the fixture contexts may not be deleted.
-        // We remove all fixture context at the end of test execution to clean forgotten contexts.
-        const fixtureIds = uniq(task.tests.map(test => test.fixture.id));
-
-        await this.compilerService.removeFixtureCtxsFromState({ fixtureIds });
     }
 
     // Run task
@@ -207,7 +191,6 @@ export default class Runner extends EventEmitter {
         }
 
         await this._disposeAssets(browserSet, reporters, testedApp);
-        await this._finalizeCompilerServiceState(task, runnableConfigurationId);
 
         if (streamController.multipleStreamError)
             throw streamController.multipleStreamError;
@@ -222,7 +205,6 @@ export default class Runner extends EventEmitter {
             proxy,
             opts,
             runnerWarningLog: warningLog,
-            compilerService:  this.compilerService,
             messageBus:       this._messageBus,
         });
     }
@@ -668,8 +650,6 @@ export default class Runner extends EventEmitter {
 
             dashboardUrl: this._getDashboardUrl(),
         };
-
-        await this.bootstrapper.compilerService?.setOptions({ value: resultOptions });
 
         return {
             browserSet,

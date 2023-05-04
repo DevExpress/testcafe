@@ -1096,12 +1096,6 @@ describe('Runner', () => {
         });
 
         describe('On Linux without a graphics subsystem', () => {
-            const compilerService          = {
-                init:             noop,
-                getTests:         () => [new Test({ currentFixture: void 0 })],
-                setUserVariables: noop,
-            };
-
             let runnerLinux = null;
 
             class BrowserConnectionMock extends BrowserConnection {
@@ -1125,7 +1119,6 @@ describe('Runner', () => {
                 return new BootstrapperMock({
                     browserConnectionGateway: browserConnectionGatewayMock,
                     configuration:            configurationMock,
-                    compilerService,
                 });
             }
 
@@ -1139,7 +1132,6 @@ describe('Runner', () => {
                     proxy:                    testCafe.proxy,
                     browserConnectionGateway: browserConnectionGatewayMock,
                     configuration:            testCafe.configuration.clone(),
-                    compilerService:          compilerService,
                 });
 
                 runnerLocal.bootstrapper = setupBootstrapper();
