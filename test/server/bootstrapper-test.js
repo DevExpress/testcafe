@@ -5,7 +5,6 @@ const Bootstrapper      = require('../../lib/runner/bootstrapper');
 const {
     browserConnectionGatewayMock,
     configurationMock,
-    compilerServiceMock,
     createBrowserProviderMock,
 } = require('./helpers/mocks');
 
@@ -17,7 +16,6 @@ describe('Bootstrapper', () => {
             bootstrapper = new Bootstrapper({
                 browserConnectionGateway: browserConnectionGatewayMock,
                 configuration:            configurationMock,
-                compilerService:          compilerServiceMock,
             });
 
             bootstrapper.browserInitTimeout           = 100;

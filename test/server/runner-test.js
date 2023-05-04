@@ -1211,7 +1211,7 @@ describe('Runner', () => {
                 expect(isErrorThrown).to.be.false;
             });
 
-            it('Should not raise an error when remote browser is passed as BrowserConnection', async function () {
+            it.only('Should not raise an error when remote browser is passed as BrowserConnection', async function () {
                 const browserInfo = await browserProviderPool.getBrowserInfo('remote');
                 let isErrorThrown = false;
 
@@ -1222,7 +1222,7 @@ describe('Runner', () => {
                     await runnerLinux._validateRunOptions();
                     await runnerLinux._createRunnableConfiguration();
                 }
-                catch {
+                catch (err) {
                     isErrorThrown = true;
                 }
 

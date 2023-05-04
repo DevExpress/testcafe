@@ -1,14 +1,13 @@
 import getStackFrames from 'callsite';
 import { EventEmitter } from 'events';
 import TestRun from '../test-run';
-import TestRunProxy from '../services/compiler/test-run-proxy';
 
 const TRACKING_MARK_RE = /^\$\$testcafe_test_run\$\$(\S+)\$\$$/;
 const STACK_CAPACITY   = 5000;
 
 class TestRunTracker extends EventEmitter {
     private enabled: boolean;
-    public activeTestRuns: { [id: string]: TestRun | TestRunProxy };
+    public activeTestRuns: { [id: string]: TestRun };
 
     public constructor () {
         super();
@@ -103,7 +102,7 @@ class TestRunTracker extends EventEmitter {
         return null;
     }
 
-    public resolveContextTestRun (): TestRun | TestRunProxy | null {
+    public resolveContextTestRun (): TestRun | null {
         const testRunId = this.getContextTestRunId();
 
         if (testRunId)
@@ -112,7 +111,7 @@ class TestRunTracker extends EventEmitter {
         return null;
     }
 
-    public addActiveTestRun (testRun: TestRun | TestRunProxy): void {
+    public addActiveTestRun (testRun: TestRun): void {
         this.activeTestRuns[testRun.id] = testRun;
 
         testRun.onAny((eventName: string, eventData: unknown) => this.emit(eventName, { testRun, data: eventData }));

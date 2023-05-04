@@ -43,9 +43,6 @@ import {
     SPECIAL_ERROR_PAGE,
     RequestFilterRule,
     InjectableResources,
-    RequestEvent,
-    ConfigureResponseEvent,
-    ResponseEvent,
     RequestHookMethodError,
     StoragesSnapshot,
     RequestHookEventProvider,
@@ -82,12 +79,10 @@ import {
 
 import { RUNTIME_ERRORS, TEST_RUN_ERRORS } from '../errors/types';
 import processTestFnError from '../errors/process-test-fn-error';
-import RequestHookMethodNames from '../api/request-hooks/hook-method-names';
 import { createReplicator, SelectorNodeTransform } from '../client-functions/replicator';
 import Test from '../api/structure/test';
 import Capturer from '../screenshots/capturer';
 import { Dictionary } from '../configuration/interfaces';
-import CompilerService from '../services/compiler/host';
 import SessionController from './session-controller';
 import TestController from '../api/test-controller';
 import BrowserManipulationQueue from './browser-manipulation-queue';
@@ -116,8 +111,6 @@ import {
     ExecuteSelectorCommand,
 } from './commands/observation';
 
-import { RE_EXECUTABLE_PROMISE_MARKER_DESCRIPTION } from '../services/serialization/replicator/transforms/re-executable-promise-transform/marker';
-import ReExecutablePromise from '../utils/re-executable-promise';
 import addRenderedWarning from '../notifications/add-rendered-warning';
 import getBrowser from '../utils/get-browser';
 import AssertionExecutor from '../assertions/executor';
@@ -163,13 +156,6 @@ const CHILD_WINDOW_READY_TIMEOUT      = 30 * 1000;
 
 const ALL_DRIVER_TASKS_ADDED_TO_QUEUE_EVENT = 'all-driver-tasks-added-to-queue';
 
-const COMPILER_SERVICE_EVENTS = [
-    'setMock',
-    'setConfigureResponseEventOptions',
-    'setHeaderOnConfigureResponseEvent',
-    'removeHeaderOnConfigureResponseEvent',
-];
-
 
 interface TestRunInit {
     test: Test;
@@ -177,7 +163,6 @@ interface TestRunInit {
     screenshotCapturer: Capturer;
     globalWarningLog: WarningLog;
     opts: Dictionary<OptionValue>;
-    compilerService?: CompilerService;
     messageBus?: MessageBus;
     startRunExecutionTime?: Date;
     nativeAutomation: boolean;
@@ -273,7 +258,6 @@ export default class TestRun extends AsyncEventEmitter {
     public quarantine: Quarantine | null;
     private readonly debugLogger: any;
     public observedCallsites: ObservedCallsitesStorage;
-    public readonly compilerService?: CompilerService;
     private readonly replicator: any;
     private disconnected: boolean;
     private errScreenshotPath: string | null;
@@ -288,7 +272,7 @@ export default class TestRun extends AsyncEventEmitter {
     private readonly _roleProvider: RoleProvider;
     public readonly isNativeAutomation: boolean;
 
-    public constructor ({ test, browserConnection, screenshotCapturer, globalWarningLog, opts, compilerService, messageBus, startRunExecutionTime, nativeAutomation }: TestRunInit) {
+    public constructor ({ test, browserConnection, screenshotCapturer, globalWarningLog, opts, messageBus, startRunExecutionTime, nativeAutomation }: TestRunInit) {
         super();
 
         this[testRunMarker]    = true;
@@ -361,7 +345,6 @@ export default class TestRun extends AsyncEventEmitter {
         this.debugLogger = this.opts.debugLogger;
 
         this.observedCallsites          = new ObservedCallsitesStorage();
-        this.compilerService            = compilerService;
         this.asyncJsExpressionCallsites = new Map<string, CallsiteRecord>();
 
         this.replicator = createReplicator([ new SelectorNodeTransform() ]);
@@ -527,18 +510,6 @@ export default class TestRun extends AsyncEventEmitter {
         }));
     }
 
-    private async _initRequestHookForCompilerService (hookId: string, hookClassName: string, rules: RequestFilterRule[]): Promise<void> {
-        const testId = this.test.id;
-
-        await Promise.all(rules.map(rule => {
-            return this._requestHookEventProvider.addRequestEventListeners(rule, {
-                onRequest:           (event: RequestEvent) => this.compilerService?.onRequestHookEvent({ testId, hookId, name: RequestHookMethodNames.onRequest, eventData: event }),
-                onConfigureResponse: (event: ConfigureResponseEvent) => this.compilerService?.onRequestHookEvent({ testId, hookId, name: RequestHookMethodNames._onConfigureResponse, eventData: event }),
-                onResponse:          (event: ResponseEvent) => this.compilerService?.onRequestHookEvent({ testId, hookId, name: RequestHookMethodNames.onResponse, eventData: event }),
-            }, err => this._onRequestHookMethodError(err, hookClassName));
-        }));
-    }
-
     private _onRequestHookMethodError (event: RequestHookMethodError, hookClassName: string): void {
         let err: Error | TestRunErrorBase            = event.error;
         const isRequestHookNotImplementedMethodError = (err as unknown as TestRunErrorBase)?.code === TEST_RUN_ERRORS.requestHookNotImplementedError;
@@ -563,36 +534,8 @@ export default class TestRun extends AsyncEventEmitter {
         }));
     }
 
-    private _subscribeOnCompilerServiceEvents (): void {
-        COMPILER_SERVICE_EVENTS.forEach(eventName => {
-            if (this.compilerService) {
-                this.compilerService.on(eventName, async args => {
-                    // @ts-ignore
-                    await this.session[eventName](...args);
-                });
-            }
-        });
-
-        if (this.compilerService) {
-            this.compilerService.on('addRequestEventListeners', async ({ hookId, hookClassName, rules }) => {
-                await this._initRequestHookForCompilerService(hookId, hookClassName, rules);
-            });
-
-            this.compilerService.on('removeRequestEventListeners', async ({ rules }) => {
-                await this._detachRequestEventListeners(rules);
-            });
-        }
-    }
-
     private async _initRequestHooks (): Promise<void> {
-        if (this.compilerService) {
-            this._subscribeOnCompilerServiceEvents();
-            await Promise.all(this.test.requestHooks.map(hook => {
-                return this._initRequestHookForCompilerService(hook.id, hook._className, hook._requestFilterRules);
-            }));
-        }
-        else
-            await Promise.all(this.test.requestHooks.map(hook => this._initRequestHook(hook)));
+        await Promise.all(this.test.requestHooks.map(hook => this._initRequestHook(hook)));
     }
 
     private _prepareSkipJsErrorsOption (): boolean | ExecuteClientFunctionCommand {
@@ -722,16 +665,6 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     private async _finalizeTestRun (id: string): Promise<void> {
-        if (this.compilerService) {
-            const warnings = await this.compilerService.getWarningMessages({ testRunId: id });
-
-            warnings.forEach(warning => {
-                this.warningLog.addWarning(warning);
-            });
-
-            await this.compilerService.removeTestRunFromState({ testRunId: id });
-        }
-
         testRunTracker.removeActiveTestRun(id);
     }
 
@@ -890,7 +823,7 @@ export default class TestRun extends AsyncEventEmitter {
         if (this.debugLogger)
             this.debugLogger.showBreakpoint(this.session.id, this.browserConnection.userAgent, callsite, error);
 
-        this.debugging = await this._internalExecuteCommand(new serviceCommands.SetBreakpointCommand(!!error, !!this.compilerService), callsite) as boolean;
+        this.debugging = await this._internalExecuteCommand(new serviceCommands.SetBreakpointCommand(!!error), callsite) as boolean;
     }
 
     private _removeAllNonServiceTasks (): void {
@@ -1032,64 +965,19 @@ export default class TestRun extends AsyncEventEmitter {
         if (resultVariableName)
             expression = `${resultVariableName} = ${expression}, ${resultVariableName}`;
 
-        if (this.compilerService) {
-            return this.compilerService.executeJsExpression({
-                expression,
-                testRunId: this.id,
-                options:   { skipVisibilityCheck: false },
-            });
-        }
-
         return executeJsExpression(expression, this, { skipVisibilityCheck: false });
     }
 
     private async _executeAsyncJsExpression (command: ExecuteAsyncExpressionCommand, callsite?: string): Promise<unknown> {
-        if (this.compilerService) {
-            this.asyncJsExpressionCallsites.clear();
-
-            return this.compilerService.executeAsyncJsExpression({
-                expression: command.expression,
-                testRunId:  this.id,
-                callsite,
-            });
-        }
-
         return executeAsyncJsExpression(command.expression, this, callsite);
     }
 
-    private _redirectReExecutablePromiseExecutionToCompilerService (command: AssertionCommand): void {
-        if (!this.compilerService)
-            return;
-
-        const self = this;
-
-        command.actual = ReExecutablePromise.fromFn(async () => {
-            return self.compilerService?.getAssertionActualValue({
-                testRunId: self.id,
-                commandId: command.id,
-            });
-        });
-    }
-
-    private _redirectAssertionFnExecutionToCompilerService (executor: AssertionExecutor): void {
-        executor.fn = () => {
-            return this.compilerService?.executeAssertionFn({
-                testRunId: this.id,
-                commandId: executor.command.id,
-            });
-        };
-    }
-
     private async _executeAssertion (command: AssertionCommand, callsite: CallsiteRecord): Promise<void> {
-        if (command.actual === Symbol.for(RE_EXECUTABLE_PROMISE_MARKER_DESCRIPTION))
-            this._redirectReExecutablePromiseExecutionToCompilerService(command);
-
         const assertionTimeout = getAssertionTimeout(command, this.opts);
         const executor         = new AssertionExecutor(command, assertionTimeout, callsite);
 
         executor.once('start-assertion-retries', (timeout: number) => this._internalExecuteCommand(new serviceCommands.ShowAssertionRetriesStatusCommand(timeout)));
         executor.once('end-assertion-retries', (success: boolean) => this._internalExecuteCommand(new serviceCommands.HideAssertionRetriesStatusCommand(success)));
-        executor.once('non-serializable-actual-value', this._redirectAssertionFnExecutionToCompilerService);
 
         const executeFn = this.decoratePreventEmitActionEvents(() => executor.run(), { prevent: true });
 
@@ -1162,7 +1050,7 @@ export default class TestRun extends AsyncEventEmitter {
 
             (command as any).options.confidential = isPasswordInput(node);
         }
-        else if (command instanceof ExecuteClientFunctionCommandBase && !!this.compilerService && !this._clientEnvironmentPrepared) {
+        else if (command instanceof ExecuteClientFunctionCommandBase && !this._clientEnvironmentPrepared) {
             this._clientEnvironmentPrepared = true;
 
             await this._internalExecuteCommand(new serviceCommands.PrepareClientEnvironmentInDebugMode(command.esmRuntime));
@@ -1280,7 +1168,7 @@ export default class TestRun extends AsyncEventEmitter {
             // NOTE: In regular mode, it's possible to debug tests only using TestCafe UI ('Resume' and 'Next step' buttons).
             // So, we should warn on trying to debug in headless mode.
             // In compiler service mode, we can debug even in headless mode using any debugging tools. So, in this case, the warning is excessive.
-            const canDebug = !!this.compilerService || !this.browserConnection.isHeadlessBrowser();
+            const canDebug = !this.browserConnection.isHeadlessBrowser();
 
             if (canDebug)
                 return await this._enqueueSetBreakpointCommand(callsite as CallsiteRecord, void 0);
@@ -1401,21 +1289,9 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     private async _cleanUpCtxs (): Promise<void> {
-        if (this.compilerService) {
-            await this.compilerService.setCtx({
-                testRunId: this.id,
-                value:     Object.create(null),
-            });
-            await this.compilerService.setFixtureCtx({
-                testRunId: this.id,
-                value:     Object.create(null),
-            });
-        }
-        else {
-            this.ctx        = Object.create(null);
-            this.fixtureCtx = Object.create(null);
-            this.testRunCtx = Object.create(null);
-        }
+        this.ctx        = Object.create(null);
+        this.fixtureCtx = Object.create(null);
+        this.testRunCtx = Object.create(null);
     }
 
     public async switchToCleanRun (url: string): Promise<void> {
@@ -1514,15 +1390,6 @@ export default class TestRun extends AsyncEventEmitter {
                     title: wnd.title,
                 };
 
-                if (this.compilerService) {
-                    const compilerServicePredicateData = Object.assign(predicateData, {
-                        testRunId: this.id,
-                        commandId: command.id,
-                    });
-
-                    return this.compilerService.checkWindow(compilerServicePredicateData);
-                }
-
                 return command.checkWindow(predicateData);
             }
             catch (e: any) {
@@ -1574,20 +1441,7 @@ export default class TestRun extends AsyncEventEmitter {
 
     public async initialize (): Promise<void> {
         await this._clearCookiesAndStorages();
-
         await this._initRequestHooks();
-
-        if (!this.compilerService)
-            return;
-
-        await this.compilerService.initializeTestRunData({
-            testRunId:          this.id,
-            testId:             this.test.id,
-            browser:            this.browser,
-            activeWindowId:     this.activeWindowId,
-            isNativeAutomation: this.isNativeAutomation,
-            messageBus:         this._messageBus,
-        });
     }
 
     private async _clearCookiesAndStorages (): Promise<void> {

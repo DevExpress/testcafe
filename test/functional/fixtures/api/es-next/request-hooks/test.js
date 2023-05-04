@@ -1,17 +1,13 @@
-const { expect } = require('chai');
-
-const {
-    skipInExperimentalDebug,
-    skipInNativeAutomationOrExperimentalDebug,
-} = require('../../../../utils/skip-in');
+const { expect }                 = require('chai');
+const { skipInNativeAutomation } = require('../../../../utils/skip-in');
 
 describe('Request Hooks', () => {
     describe('RequestMock', () => {
-        skipInExperimentalDebug('Basic', () => {
+        it('Basic', () => {
             return runTests('./testcafe-fixtures/request-mock/basic.js', 'Basic', { only: 'chrome' });
         });
 
-        skipInNativeAutomationOrExperimentalDebug('Request failed the CORS validation', () => {
+        skipInNativeAutomation('Request failed the CORS validation', () => {
             return runTests('./testcafe-fixtures/request-mock/failed-cors-validation.js', 'Failed CORS validation', { only: 'chrome' })
                 .then(() => {
                     expect(testReport.warnings).eql([
@@ -20,11 +16,11 @@ describe('Request Hooks', () => {
                 });
         });
 
-        skipInExperimentalDebug('Asynchronous response function (GH-4467)', () => {
+        it('Asynchronous response function (GH-4467)', () => {
             return runTests('./testcafe-fixtures/request-mock/async-response-function.js', null, { only: 'chrome' });
         });
 
-        skipInExperimentalDebug("Handle error in 'respond' function (GH-6703)", () => {
+        it("Handle error in 'respond' function (GH-6703)", () => {
             return runTests('./testcafe-fixtures/request-mock/respond-error.js', null, { only: 'chrome', shouldFail: true })
                 .catch(() => {
                     expect(testReport.errs.length).eql(1);
@@ -54,17 +50,17 @@ describe('Request Hooks', () => {
             return runTests('./testcafe-fixtures/request-logger/request-filter-rule-predicate.js', null, { only: 'chrome' });
         });
 
-        skipInExperimentalDebug('Log mocked requests', () => {
+        it('Log mocked requests', () => {
             return runTests('./testcafe-fixtures/request-logger/mocked-requests.js', null, { only: 'chrome' });
         });
     });
 
     describe('API', () => {
-        skipInExperimentalDebug('Add/remove request hooks', () => {
+        it('Add/remove request hooks', () => {
             return runTests('./testcafe-fixtures/api/add-remove-request-hook.js', 'Test', { only: 'chrome' });
         });
 
-        skipInExperimentalDebug('Conditional adding', () => {
+        it('Conditional adding', () => {
             return runTests('./testcafe-fixtures/api/conditional-adding.js', 'Conditional adding');
         });
 
@@ -88,7 +84,7 @@ describe('Request Hooks', () => {
             return runTests('./testcafe-fixtures/api/i4122.js', null, { only: 'chrome' });
         });
 
-        skipInExperimentalDebug('Async predicate for request filter rules', () => {
+        it('Async predicate for request filter rules', () => {
             return runTests('./testcafe-fixtures/api/request-filter-rule-async-predicate.js', null, { only: 'chrome' });
         });
 
@@ -100,7 +96,7 @@ describe('Request Hooks', () => {
             return runTests('./testcafe-fixtures/api/request-hook-events.js', null, { only: 'chrome' });
         });
 
-        skipInExperimentalDebug('Correct execution order for addRequestHooks/removeRequestHooks sequence (GH-3861)', () => {
+        it('Correct execution order for addRequestHooks/removeRequestHooks sequence (GH-3861)', () => {
             return runTests('./testcafe-fixtures/api/gh-3861.js', null, { only: 'chrome' });
         });
 

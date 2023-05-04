@@ -11,7 +11,6 @@ import WarningLog from '../notifications/warning-log';
 import FixtureHookController from './fixture-hook-controller';
 import { Dictionary } from '../configuration/interfaces';
 import { ActionEventArg, TestRunControllerInit } from './interfaces';
-import CompilerService from '../services/compiler/host';
 import { Quarantine } from '../utils/get-options/quarantine';
 import MessageBus from '../utils/message-bus';
 import TestRunHookController from './test-run-hook-controller';
@@ -37,7 +36,6 @@ export default class TestRunController extends AsyncEventEmitter {
     private readonly _testRunCtor: LegacyTestRun['constructor'] | TestRun['constructor'];
     public testRun: null | LegacyTestRun | TestRun;
     public done: boolean;
-    private readonly compilerService?: CompilerService;
     private readonly _messageBus: MessageBus;
     private readonly _testRunHook: TestRunHookController;
     private clientScriptRoutes: string[] = [];
@@ -52,7 +50,6 @@ export default class TestRunController extends AsyncEventEmitter {
         fixtureHookController,
         opts,
         testRunHook,
-        compilerService,
         messageBus,
     }: TestRunControllerInit) {
         super();
@@ -73,7 +70,6 @@ export default class TestRunController extends AsyncEventEmitter {
         this.done                = false;
         this._quarantine         = this._opts.quarantineMode ? new Quarantine() : null;
         this._disconnectionCount = 0;
-        this.compilerService     = compilerService;
         this._messageBus         = messageBus;
     }
 
@@ -93,7 +89,6 @@ export default class TestRunController extends AsyncEventEmitter {
             browserConnection: connection,
             globalWarningLog:  this._warningLog,
             opts:              this._opts,
-            compilerService:   this.compilerService,
             messageBus:        this._messageBus,
             nativeAutomation:  this.isNativeAutomation,
             screenshotCapturer,

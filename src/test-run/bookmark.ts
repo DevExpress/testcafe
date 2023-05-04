@@ -50,31 +50,13 @@ export default class TestRunBookmark {
     }
 
     private async _initCtxs (): Promise<void> {
-        if (this.testRun.compilerService) {
-            this.ctx        = await this.testRun.compilerService.getCtx({ testRunId: this.testRun.id });
-            this.fixtureCtx = await this.testRun.compilerService.getFixtureCtx({ testRunId: this.testRun.id });
-        }
-        else {
-            this.ctx        = this.testRun.ctx;
-            this.fixtureCtx = this.testRun.fixtureCtx as object;
-        }
+        this.ctx        = this.testRun.ctx;
+        this.fixtureCtx = this.testRun.fixtureCtx as object;
     }
 
     private async _restoreCtxs (): Promise<void> {
-        if (this.testRun.compilerService) {
-            await this.testRun.compilerService.setCtx({
-                testRunId: this.testRun.id,
-                value:     this.ctx as object,
-            });
-            await this.testRun.compilerService.setFixtureCtx({
-                testRunId: this.testRun.id,
-                value:     this.fixtureCtx as object,
-            });
-        }
-        else {
-            this.testRun.ctx        = this.ctx as object;
-            this.testRun.fixtureCtx = this.fixtureCtx;
-        }
+        this.testRun.ctx        = this.ctx as object;
+        this.testRun.fixtureCtx = this.fixtureCtx;
     }
 
     public async init (): Promise<void> {

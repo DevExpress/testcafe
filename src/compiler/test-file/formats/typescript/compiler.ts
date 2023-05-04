@@ -95,8 +95,8 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
     private readonly _compilerPath: string;
     private readonly _customCompilerOptions?: object;
 
-    public constructor (compilerOptions?: TypeScriptCompilerOptions, { isCompilerServiceMode, baseUrl, esm }: OptionalCompilerArguments = {}) {
-        super({ isCompilerServiceMode, baseUrl, esm });
+    public constructor (compilerOptions?: TypeScriptCompilerOptions, { baseUrl, esm }: OptionalCompilerArguments = {}) {
+        super({ baseUrl, esm });
 
         // NOTE: At present, it's necessary create an instance TypeScriptTestFileCompiler
         // to collect a list of supported test file extensions.
@@ -107,7 +107,7 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
         const configPath = compilerOptions && compilerOptions.configPath || null;
 
         this._customCompilerOptions = compilerOptions && compilerOptions.options;
-        this._tsConfig              = new TypescriptConfiguration(configPath, isCompilerServiceMode || esm);
+        this._tsConfig              = new TypescriptConfiguration(configPath, esm);
         this._compilerPath          = TypeScriptTestFileCompiler._getCompilerPath(compilerOptions);
     }
 
@@ -213,7 +213,7 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
     private _getTypescriptTransformers (): TransformerFactory<SourceFile>[] {
         const transformers: TransformerFactory<SourceFile>[] = [testcafeImportPathReplacer(this.esm)];
 
-        if (this.isCompilerServiceMode || this.esm)
+        if (this.esm)
             transformers.push(disableV8OptimizationCodeAppender());
 
         return transformers;

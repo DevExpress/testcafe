@@ -38,10 +38,9 @@ const Module = module.constructor;
 const errRequireEsmErrorCode = 'ERR_REQUIRE_ESM';
 
 export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
-    constructor ({ isCompilerServiceMode, baseUrl, esm }) {
+    constructor ({ baseUrl, esm }) {
         super({ baseUrl });
 
-        this.isCompilerServiceMode = isCompilerServiceMode;
         this.cache                 = Object.create(null);
         this.origRequireExtensions = Object.create(null);
         this.cachePrefix           = nanoid(7);
@@ -154,10 +153,7 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
                 if (APIBasedTestFileCompilerBase._isNodeModulesDep(filename) && hadGlobalAPI)
                     this._removeGlobalAPI();
 
-                if (this.isCompilerServiceMode)
-                    this._compileExternalModuleInEsmMode(mod, filename, requireCompilers[ext], origExt);
-                else
-                    this._compileExternalModule(mod, filename, requireCompilers[ext], origExt);
+                this._compileExternalModule(mod, filename, requireCompilers[ext], origExt);
 
                 if (hadGlobalAPI && !this._hasGlobalAPI())
                     this._addGlobalAPI(testFile);
@@ -214,10 +210,7 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
     }
 
     _addExportAPI (testFile) {
-        if (this.isCompilerServiceMode)
-            this._addExportAPIInCompilerServiceMode(testFile);
-        else
-            addExportAPI(testFile, exportableLib, { baseUrl: this.baseUrl });
+        addExportAPI(testFile, exportableLib, { baseUrl: this.baseUrl });
     }
 
     _removeGlobalAPI () {

@@ -56,7 +56,7 @@ function getPresetReact () {
 }
 
 // NOTE: lazy load heavy dependencies
-export default function loadLibs ({ isCompilerServiceMode, esm } = {}) {
+export default function loadLibs ({ esm } = {}) {
     return {
         babel:                      require('@babel/core'),
         presetStage2:               require('./preset-stage-2'),
@@ -64,7 +64,7 @@ export default function loadLibs ({ isCompilerServiceMode, esm } = {}) {
         transformRuntime:           [require('@babel/plugin-transform-runtime'), getTransformRuntimeOpts()],
         transformForOfAsArray:      [require('@babel/plugin-transform-for-of'), getTransformForOfOptions()],
         presetEnvForClientFunction: [require('@babel/preset-env'), getPresetEnvForClientFunctionOpts()],
-        presetEnvForTestCode:       [require('@babel/preset-env'), getPresetEnvForTestCodeOpts(isCompilerServiceMode || esm)],
+        presetEnvForTestCode:       [require('@babel/preset-env'), getPresetEnvForTestCodeOpts(esm)],
         moduleResolver:             [require('babel-plugin-module-resolver'), getModuleResolverOpts(esm)],
         presetReact:                getPresetReact(),
         proposalPrivateMethods:     [require('@babel/plugin-proposal-private-methods'), { loose: true }],

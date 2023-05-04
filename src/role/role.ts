@@ -40,31 +40,10 @@ export default class Role extends EventEmitter {
             return;
 
         this.stateSnapshot = await testRun.getStateSnapshot();
-
-        await testRun?.compilerService?.updateRoleProperty({
-            roleId: this.id,
-            name:   'stateSnapshot',
-            value:  this.stateSnapshot,
-        });
     }
 
-    private _wrapTestFn (testRun: TestRun): void {
-        this._initFn = () => {
-            return testRun.compilerService?.executeRoleInitFn({
-                testRunId: testRun.id,
-                roleId:    this.id,
-            });
-        };
-    }
-
-    private async _setInitError (err: Error, testRun: TestRun): Promise<void> {
+    private async _setInitError (err: Error): Promise<void> {
         this.initErr = err;
-
-        await testRun?.compilerService?.updateRoleProperty({
-            roleId: this.id,
-            name:   'initErr',
-            value:  this.initErr,
-        });
     }
 
     private async _executeInitFn (testRun: TestRun): Promise<void> {
@@ -72,9 +51,6 @@ export default class Role extends EventEmitter {
             return;
 
         try {
-            if (testRun.compilerService)
-                this._wrapTestFn(testRun);
-
             let fn = (): Promise<void> => (this._initFn as Function)(testRun);
 
             fn = testRun.decoratePreventEmitActionEvents(fn, { prevent: false });
@@ -83,7 +59,7 @@ export default class Role extends EventEmitter {
             await fn();
         }
         catch (err: any) {
-            await this._setInitError(err, testRun);
+            await this._setInitError(err);
         }
     }
 
@@ -92,7 +68,7 @@ export default class Role extends EventEmitter {
             await testRun.switchToCleanRun(this.loginUrl as string);
         }
         catch (err: any) {
-            await this._setInitError(err, testRun);
+            await this._setInitError(err);
         }
     }
 
@@ -108,12 +84,6 @@ export default class Role extends EventEmitter {
 
         this.phase = RolePhase.initialized;
 
-        await testRun.compilerService?.updateRoleProperty({
-            roleId: this.id,
-            name:   'phase',
-            value:  this.phase,
-        });
-
         this.emit('initialized');
     }
 
@@ -126,12 +96,6 @@ export default class Role extends EventEmitter {
             this.redirectUrl = this.redirectUrl || {};
             (this.redirectUrl as RedirectUrl)[testRun.test.id] = currentUrl;
         }
-
-        await testRun.compilerService?.updateRoleProperty({
-            roleId: this.id,
-            name:   'redirectUrl',
-            value:  this.redirectUrl,
-        });
     }
 
     public static from (init: unknown): Role | null {

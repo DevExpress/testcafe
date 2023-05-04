@@ -6,8 +6,6 @@ import ReExecutablePromise from '../utils/re-executable-promise';
 import getFn from './get-fn';
 import { AssertionCommand } from '../test-run/commands/assertion';
 import { CallsiteRecord } from 'callsite-record';
-import { FUNCTION_MARKER_DESCRIPTION } from '../services/serialization/replicator/transforms/function-marker-transform/marker';
-import { PROMISE_MARKER_DESCRIPTION } from '../services/serialization/replicator/transforms/promise-marker-transform/marker';
 
 const ASSERTION_DELAY = 200;
 
@@ -43,8 +41,7 @@ export default class AssertionExecutor extends EventEmitter {
     }
 
     private _isPromise (val: unknown): boolean {
-        return isThennable(val) ||
-            val === Symbol.for(PROMISE_MARKER_DESCRIPTION);
+        return isThennable(val);
     }
 
     private _getTimeLeft (): number {
@@ -86,16 +83,7 @@ export default class AssertionExecutor extends EventEmitter {
         };
     }
 
-    private _onBeforeRun (): void {
-        if (this.command.actual !== Symbol.for(FUNCTION_MARKER_DESCRIPTION))
-            return;
-
-        this.emit('non-serializable-actual-value', this);
-    }
-
     public async run (): Promise<void> {
-        this._onBeforeRun();
-
         this.startTime = new Date().getTime();
 
         try {

@@ -22,7 +22,6 @@ import ClientScript from '../custom-client-scripts/client-script';
 import ClientScriptInit from '../custom-client-scripts/client-script-init';
 import BrowserConnectionGateway from '../browser/connection/gateway';
 import { CompilerArguments } from '../compiler/interfaces';
-import CompilerService from '../services/compiler/host';
 import Test from '../api/structure/test';
 import { BootstrapperInit, BrowserSetOptions } from './interfaces';
 import WarningLog from '../notifications/warning-log';
@@ -35,7 +34,6 @@ import wrapTestFunction from '../api/wrap-test-function';
 import { assertType, is } from '../errors/runtime/type-assertions';
 import { generateUniqueId } from 'testcafe-hammerhead';
 import assertRequestHookType from '../api/request-hooks/assert-type';
-import userVariables from '../api/user-variables';
 import OPTION_NAMES from '../configuration/option-names';
 import TestCafeConfiguration from '../configuration/testcafe-configuration';
 import BrowserConnectionGatewayStatus from '../browser/connection/gateway/status';
@@ -99,15 +97,13 @@ export default class Bootstrapper {
     public browserInitTimeout?: number;
     public hooks?: GlobalHooks;
     public configuration: TestCafeConfiguration;
-
-    private readonly compilerService?: CompilerService;
     private readonly debugLogger: debug.Debugger;
     private readonly warningLog: WarningLog;
     private readonly messageBus: MessageBus;
 
     private readonly TESTS_COMPILATION_UPPERBOUND: number;
 
-    public constructor ({ browserConnectionGateway, compilerService, messageBus, configuration }: BootstrapperInit) {
+    public constructor ({ browserConnectionGateway, messageBus, configuration }: BootstrapperInit) {
         this.browserConnectionGateway = browserConnectionGateway;
         this.concurrency              = 1;
         this.sources                  = [];
@@ -123,7 +119,6 @@ export default class Bootstrapper {
         this.compilerOptions          = void 0;
         this.debugLogger              = debug(DEBUG_SCOPE);
         this.warningLog               = new WarningLog(null, WarningLog.createAddWarningCallback(messageBus));
-        this.compilerService          = compilerService;
         this.messageBus               = messageBus;
         this.configuration            = configuration;
 
@@ -233,18 +228,10 @@ export default class Bootstrapper {
         });
     }
 
-    private async _compileTests ({ sourceList, compilerOptions, runnableConfigurationId }: CompilerArguments): Promise<Test[]> {
-        const baseUrl = this.configuration.getOption(OPTION_NAMES.baseUrl) as string;
-        const esm     = this.configuration.getOption(OPTION_NAMES.esm);
-
-        if (this.compilerService) {
-            await this.compilerService.init();
-            await this.compilerService.setUserVariables(userVariables.value);
-
-            return this.compilerService.getTests({ sourceList, compilerOptions, runnableConfigurationId }, baseUrl);
-        }
-
-        const compiler = new Compiler(sourceList, compilerOptions, { baseUrl, isCompilerServiceMode: false, esm });
+    private async _compileTests ({ sourceList, compilerOptions }: CompilerArguments): Promise<Test[]> {
+        const baseUrl    = this.configuration.getOption(OPTION_NAMES.baseUrl) as string;
+        const esm              = this.configuration.getOption(OPTION_NAMES.esm);
+        const compiler = new Compiler(sourceList, compilerOptions, { baseUrl, esm });
 
         return compiler.getTests();
     }

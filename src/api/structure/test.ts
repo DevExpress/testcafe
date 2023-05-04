@@ -15,12 +15,10 @@ import ClientScriptInit from '../../custom-client-scripts/client-script-init';
 import { SPECIAL_BLANK_PAGE } from 'testcafe-hammerhead';
 import { TestTimeouts } from './interfaces';
 import TestTimeout from './test-timeout';
-import ESM_RUNTIME_HOLDER_NAME from '../../services/compiler/esm-runtime-holder-name';
 
 interface TestInitOptions {
     testFile: TestFile;
     baseUrl?: string;
-    isCompilerServiceMode?: boolean;
 }
 
 export default class Test extends TestingUnit {
@@ -31,10 +29,8 @@ export default class Test extends TestingUnit {
     public globalBeforeFn: Function | null;
     public globalAfterFn: Function | null;
     public timeouts: TestTimeouts | null;
-    private readonly _isCompilerService: boolean;
-    public readonly esmRuntime: string;
 
-    public constructor (testFile: TestFile, isCompilerServiceMode = false, baseUrl?: string, returnApiOrigin = true) {
+    public constructor (testFile: TestFile, baseUrl?: string, returnApiOrigin = true) {
         // NOTE: 'fixture' directive can be missing
         const fixture = testFile.currentFixture as Fixture;
         const pageUrl = fixture?.pageUrl || SPECIAL_BLANK_PAGE;
@@ -49,20 +45,14 @@ export default class Test extends TestingUnit {
         this.globalAfterFn  = null;
         this.timeouts       = null;
 
-        this._isCompilerService = isCompilerServiceMode;
-
         this._initFixture(testFile);
-
-        // NOTE: This is internal data of 'esm' module
-        // @ts-ignore
-        this.esmRuntime = global[ESM_RUNTIME_HOLDER_NAME] || null;
 
         if (returnApiOrigin)
             return this.apiOrigin as unknown as Test;
     }
 
-    public static init ({ testFile, baseUrl, isCompilerServiceMode }: TestInitOptions): Test {
-        return TestingUnit.init(Test, testFile, isCompilerServiceMode, baseUrl) as unknown as Test;
+    public static init ({ testFile, baseUrl }: TestInitOptions): Test {
+        return TestingUnit.init(Test, testFile, baseUrl) as unknown as Test;
     }
 
     private _initFixture (testFile: TestFile): void {
@@ -78,9 +68,6 @@ export default class Test extends TestingUnit {
     }
 
     protected _add (name: string, fn: Function): Function {
-        if (this._isCompilerService && !this.fixture)
-            this._initFixture(this.testFile);
-
         assertType(is.string, 'apiOrigin', 'The test name', name);
         assertType(is.function, 'apiOrigin', 'The test body', fn);
         assertType(is.nonNullObject, 'apiOrigin', `The fixture of '${name}' test`, this.fixture);
