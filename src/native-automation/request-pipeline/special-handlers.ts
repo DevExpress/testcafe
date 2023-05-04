@@ -23,8 +23,10 @@ import {
 
 
 const internalRequest = {
-    condition: (event: RequestPausedEvent): boolean => !event.networkId && event.resourceType !== 'Document',
-    handler:   async (event: RequestPausedEvent, client: ProtocolApi): Promise<void> => {
+    condition: (event: RequestPausedEvent): boolean => {
+        return !event.networkId && event.resourceType !== 'Document' && !event.request.url;
+    },
+    handler: async (event: RequestPausedEvent, client: ProtocolApi): Promise<void> => {
         requestPipelineInternalRequestLogger('%r', event);
 
         await safeFailRequest(client, event);
