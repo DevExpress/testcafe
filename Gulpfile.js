@@ -289,9 +289,9 @@ gulp.step('test-server-run', () => {
     }
 });
 
-gulp.step('test-server-bootstrap', gulp.series(/*'prepare-tests',*/ 'test-server-run'));
+gulp.step('test-server-bootstrap', gulp.series('prepare-tests', 'test-server-run'));
 
-gulp.task('test-server', gulp.parallel(/*'check-licenses',*/ 'test-server-bootstrap'));
+gulp.task('test-server', gulp.parallel('check-licenses', 'test-server-bootstrap'));
 
 gulp.step('test-client-run', () => {
     const testClient                = require('./gulp/helpers/test-client');
