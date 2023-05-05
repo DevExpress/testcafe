@@ -85,8 +85,7 @@ const expectFailAttempt = (errors, expectedMessage) => {
     });
 };
 
-// TODO: fix tests for Debug task
-(config.experimentalDebug ? describe.skip : describe)('Customize SkipJSErrors (GH-2775)', () => {
+describe('Customize SkipJSErrors (GH-2775)', () => {
     describe('TestController method', () => {
         it('Should skip JS errors without param', async () => {
             return runTests('./testcafe-fixtures/test-controller.js', 'Should skip JS errors without param');

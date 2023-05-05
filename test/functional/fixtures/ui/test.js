@@ -1,5 +1,3 @@
-const config = require('../../config');
-
 describe('TestCafe UI', () => {
     describe('Status Bar', () => {
         it('Should display correct status', () => {
@@ -11,10 +9,6 @@ describe('TestCafe UI', () => {
         });
 
         it('Should hide the status bar even if document was hidden during initialization (GH-7384)', function () {
-            // NOTE: the test needs direct access to the CDP client through the test controller
-            if (config.experimentalDebug)
-                this.skip();
-
             return runTests('./testcafe-fixtures/status-bar-test.js', 'Hide status bar after mouse move', { only: ['chrome'] });
         });
     });
@@ -22,9 +16,6 @@ describe('TestCafe UI', () => {
     describe('Selector Inspector', () => {
         function runTestCafeTest (testName) {
             it (testName, function () {
-                if (config.experimentalDebug)
-                    this.skip();
-
                 return runTests('./testcafe-fixtures/selector-inspector-test.js', testName, { skip: ['ie', 'android', 'ipad', 'iphone'] });
             });
         }

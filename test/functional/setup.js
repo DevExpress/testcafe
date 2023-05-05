@@ -164,8 +164,7 @@ before(function () {
         developmentMode: devMode,
 
         retryTestPages,
-        experimentalDebug: !!process.env.EXPERIMENTAL_DEBUG,
-        userVariables:     {
+        userVariables: {
             url:             'localhost',
             port:            1337,
             isUserVariables: true,

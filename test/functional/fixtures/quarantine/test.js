@@ -2,7 +2,6 @@ const { expect }         = require('chai');
 const config             = require('../../config');
 const { createReporter } = require('../../utils/reporter');
 
-const experimentalDebug = !!process.env.EXPERIMENTAL_DEBUG;
 
 const getFailureCount = (results, testRunIds) => {
     return Object.keys(results).filter(key => testRunIds.includes(key) && !results[key].passed).length;
@@ -27,8 +26,7 @@ const getReporter = function (scope) {
     });
 };
 
-// NOTE: Temporary turn-off quarantine tests for experimental debug mode.
-if (config.useLocalBrowsers && !experimentalDebug) {
+if (config.useLocalBrowsers) {
     describe('Using quarantineMode', function () {
         it('Should attempt to run tests up to the failedThreshold amount (attemptLimit (10) - successThreshold (3 by default) + 1 = 8)', function () {
             const result   = {};

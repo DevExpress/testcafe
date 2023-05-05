@@ -27,12 +27,9 @@ function getGroupOfTests (tests, groupNumber, groupsCount) {
     return tests.slice(testFragmentStartIndex, testFragmentEndIndex);
 }
 
-module.exports = async function testFunctional (src, testingEnvironmentName, { experimentalDebug, nativeAutomation } = {}) {
+module.exports = async function testFunctional (src, testingEnvironmentName, { nativeAutomation } = {}) {
     process.env.TESTING_ENVIRONMENT       = testingEnvironmentName;
     process.env.BROWSERSTACK_USE_AUTOMATE = 1;
-
-    if (experimentalDebug)
-        process.env.EXPERIMENTAL_DEBUG = 'true';
 
     if (nativeAutomation)
         process.env.NATIVE_AUTOMATION = 'true';
