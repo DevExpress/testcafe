@@ -190,7 +190,7 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         });
 
         Object.defineProperty(global, 'test', {
-            get:          () => new Test(testFile, false, this.baseUrl),
+            get:          () => new Test(testFile, this.baseUrl),
             configurable: true,
         });
     }
