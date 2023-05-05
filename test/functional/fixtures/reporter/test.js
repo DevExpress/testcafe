@@ -607,12 +607,9 @@ const del                = require('del');
         it('Should not add action information in report if action was emitted after test done (GH-5650)', () => {
             return runTests('testcafe-fixtures/index-test.js', 'Action done after test done', generateRunOptions(log))
                 .then(() => {
-                    const EXECUTE_CLIENT_FUNCTION_ACTION_RECORD = { name: 'execute-client-function', action: 'start' };
-                    const WAIT_ACTION_RECORD                    = { name: 'wait', action: 'start' };
-
                     const EXPECTED_LOG = [
-                        EXECUTE_CLIENT_FUNCTION_ACTION_RECORD,
-                        WAIT_ACTION_RECORD,
+                        { name: 'wait', action: 'start' },
+                        { name: 'execute-client-function', action: 'start' },
                         {
                             name:    'execute-client-function',
                             action:  'done',
