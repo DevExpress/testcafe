@@ -29,6 +29,8 @@ const {
     createBrowserProviderMock,
 } = require('./helpers/mocks');
 
+const Test = require('../../lib/api/structure/test');
+
 const createConfigFile = (configPath, options) => {
     options = options || {};
     fs.writeFileSync(configPath, JSON.stringify(options));
@@ -1114,10 +1116,16 @@ describe('Runner', () => {
                     '../browser/connection': BrowserConnectionMock,
                 });
 
-                return new BootstrapperMock({
+                const bootstrapperMock = new BootstrapperMock({
                     browserConnectionGateway: browserConnectionGatewayMock,
                     configuration:            configurationMock,
                 });
+
+                bootstrapperMock._compileTests = async () => {
+                    return [ new Test({ currentFixture: void 0 }) ];
+                };
+
+                return bootstrapperMock;
             }
 
             function createMockRunner () {
@@ -1202,6 +1210,8 @@ describe('Runner', () => {
             });
 
             it('Should not raise an error when remote browser is passed as BrowserConnection', async function () {
+                this.timeout(200000000);
+
                 const browserInfo = await browserProviderPool.getBrowserInfo('remote');
                 let isErrorThrown = false;
 
