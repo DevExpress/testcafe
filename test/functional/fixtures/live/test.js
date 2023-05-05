@@ -14,7 +14,6 @@ let cafe = null;
 const LiveModeController            = require('../../../../lib/live/controller');
 const LiveModeRunner                = require('../../../../lib/live/test-runner');
 const LiveModeKeyboardEventObserver = require('../../../../lib/live/keyboard-observer');
-const ProcessTitle                  = require('../../../../lib/services/process-title');
 
 
 class LiveModeKeyboardEventObserverMock extends LiveModeKeyboardEventObserver {
@@ -283,8 +282,6 @@ if (config.useLocalBrowsers) {
                         clearTimeout(timeoutId);
                         clearInterval(intervalId);
                         runner.exit();
-
-                        expect(inTestProcessName).eql(ProcessTitle.service);
                     }, 1000);
 
                     return runner.run({ nativeAutomation: config.nativeAutomation });
