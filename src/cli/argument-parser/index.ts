@@ -97,7 +97,6 @@ interface CommandLineOptions {
 export default class CLIArgumentParser {
     private cwd: string;
     private remoteCount: number;
-    public isDashboardCommand: boolean;
     public sendReportState: SendReportState;
     public opts: CommandLineOptions;
     public args: string[];
@@ -109,8 +108,7 @@ export default class CLIArgumentParser {
         this.opts        = {};
         this.args        = [];
 
-        this.isDashboardCommand = false;
-        this.testCafeCommand    = this._addTestCafeCommand();
+        this.testCafeCommand = this._addTestCafeCommand();
 
         this._patchHelpOutput(this.testCafeCommand);
         CLIArgumentParser._setupRootCommand();
