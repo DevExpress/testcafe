@@ -905,7 +905,7 @@ describe('CLI argument parser', function () {
         }
 
         const expectedRunOptionsCount   = 22;
-        const expectedOtherOptionsCount = 38;
+        const expectedOtherOptionsCount = 37;
         const otherOptionsCount         = options.length - expectedRunOptionsCount;
 
         expect(runOptionNames.length).eql(expectedRunOptionsCount, ADD_TO_RUN_OPTIONS_WARNING);
