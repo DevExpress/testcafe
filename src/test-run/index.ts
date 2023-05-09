@@ -1165,9 +1165,6 @@ export default class TestRun extends AsyncEventEmitter {
             return null;
 
         if (command.type === COMMAND_TYPE.debug) {
-            // NOTE: In regular mode, it's possible to debug tests only using TestCafe UI ('Resume' and 'Next step' buttons).
-            // So, we should warn on trying to debug in headless mode.
-            // In compiler service mode, we can debug even in headless mode using any debugging tools. So, in this case, the warning is excessive.
             const canDebug = !this.browserConnection.isHeadlessBrowser();
 
             if (canDebug)

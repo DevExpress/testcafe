@@ -229,8 +229,8 @@ export default class Bootstrapper {
     }
 
     private async _compileTests ({ sourceList, compilerOptions }: CompilerArguments): Promise<Test[]> {
-        const baseUrl    = this.configuration.getOption(OPTION_NAMES.baseUrl) as string;
-        const esm              = this.configuration.getOption(OPTION_NAMES.esm);
+        const baseUrl  = this.configuration.getOption(OPTION_NAMES.baseUrl) as string;
+        const esm      = this.configuration.getOption(OPTION_NAMES.esm);
         const compiler = new Compiler(sourceList, compilerOptions, { baseUrl, esm });
 
         return compiler.getTests();

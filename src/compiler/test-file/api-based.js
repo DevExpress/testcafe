@@ -109,23 +109,6 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
             this._compileModule(mod, filename, requireCompiler, origExt);
     }
 
-    _compileExternalModuleInEsmMode (mod, filename, requireCompiler, origExt) {
-        if (!origExt)
-            origExt = this.origRequireExtensions['.js'];
-
-        if (!APIBasedTestFileCompilerBase._isNodeModulesDep(filename) &&
-            !APIBasedTestFileCompilerBase._isTestCafeLibDep(filename)) {
-            global.customExtensionHook = () => {
-                global.customExtensionHook = null;
-
-                this._compileModule(mod, filename, requireCompiler);
-            };
-        }
-
-        return origExt(mod, filename);
-    }
-
-
     _compileModule (mod, filename, requireCompiler) {
         const code         = readFileSync(filename).toString();
         const compiledCode = requireCompiler(stripBom(code), filename);
