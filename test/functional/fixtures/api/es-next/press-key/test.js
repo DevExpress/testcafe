@@ -56,5 +56,13 @@ describe('[API] t.pressKey', function () {
         it('Ctrl+a, delete', function () {
             return runTests('./testcafe-fixtures/press-various-keys-test.js', 'Ctrl+a, delete', { only: 'chrome' });
         });
+
+        it('Ctrl+s', function () {
+            return runTests('./testcafe-fixtures/press-various-keys-test.js', 'Ctrl+s', { only: 'chrome' });
+        });
+
+        it('Alt+s', function () {
+            return runTests('./testcafe-fixtures/press-various-keys-test.js', 'Alt+s', { only: 'chrome' });
+        });
     });
 });

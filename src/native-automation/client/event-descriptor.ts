@@ -1,5 +1,6 @@
 import { EventType } from '../types';
 import { SimulatedKeyInfo } from './key-press/utils';
+import { KeyModifierValues } from './types';
 // @ts-ignore
 import { utils, eventSandbox } from '../../client/core/deps/hammerhead';
 import { calculateKeyModifiersValue, calculateMouseButtonValue } from './utils';
@@ -69,7 +70,7 @@ export default class CDPEventDescriptor {
         if (options.isNewLine)
             return '\r';
 
-        if (options.keyProperty.length === 1)
+        if (options.keyProperty.length === 1 && ![KeyModifierValues.ctrl, KeyModifierValues.alt, KeyModifierValues.meta].includes(options.modifiers))
             return options.keyProperty;
 
         return '';
