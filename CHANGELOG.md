@@ -1,5 +1,109 @@
 # Changelog
 
+## v2.6.0 (2023-05-11)
+
+TestCafe v2.6.0 introduces two enhancements: a new hook that allows users to modify reporter output, and support for JavaScript configuration files with the `.cjs` extension.
+
+### New reporter hook
+
+The [onBeforeWrite](https://testcafe.io/documentation/404388/guides/advanced-guides/modify-reporter-output) hook allows you to modify the output of a reporter.
+
+If you want your test reports to include custom content, you can create a custom reporter from scratch. However, this approach takes time and effort. Use the `onBeforeWrite` hook if you want to make minor changes to the output of an existing reporter.
+
+Define an `onBeforeWrite` hook in a JavaScript configuration file. The following hook adds the duration in milliseconds to every test entry in the report:
+
+```js
+//.testcaferc.js or .testcaferc.cjs
+function onBeforeWriteHook(writeInfo) { // This function will fire every time the reporter calls the "write" method.
+    if (writeInfo.initiator === 'reportTestDone') { // The "initiator" property contains the name of the reporter event that triggered the hook.
+         const {
+            name,
+            testRunInfo,
+            meta
+        } = writeInfo.data || {}; // If you attached this hook to a compatible reporter (such as "spec" or "list"), the hook can process data related to the event.
+        const testDuration = testRunInfo.durationMs; // Save the duration of the test.
+        writeInfo.formattedText = writeInfo.formattedText + ' (' + testDuration + 'ms)'; // Add test duration to the reporter output.
+    };
+}
+
+
+module.exports = { // Attach the hook
+    hooks: {
+        reporter: {
+            onBeforeWrite: {
+                'spec': onBeforeWriteHook, // This hook will fire when you use the default "spec" reporter.
+            },
+        },
+    },
+};
+```
+
+![Reporter hook demonstration](https://testcafe.io/images/reporter-hook.png)
+
+### CJS support
+
+If you run TestCafe v2.6.0 and higher, you can now use a configuration file with the `.cjs` file extension. TestCafe detects the `.testcaferc.cjs` file on startup, alongside its `.js` and `.json` counterparts.
+
+[TestCafe configuration files](https://testcafe.io/documentation/402638/reference/configuration-file) **only** support CommonJS syntax. Meanwhile, modern JavaScript tools often default to ESM syntax. If a JavaScript project is of type `module`, Node.js expects the project's `.js` files to contain ESM syntax.
+
+Use the `.cjs` configuration file extension to let Node.js know that the file contains CommonJS syntax.
+
+Many thanks to the TestCafe contributor Damien Guérin ([@gigaga](https://github.com/DevExpress/testcafe/pull/7614)) for the implementation of this capability.
+
+### Bug fixes
+
+* If you call the `t.skipJsErrors` method without arguments, TestCafe passes a `false` value to the method. This behavior is inconsistent with similar methods of a greater scope --- `test.skipJsErrors` and `fixture.skipJsErrors` ([#7648](https://github.com/DevExpress/testcafe/issues/7648)).
+* Users cannot disable the "quarantine mode" or "skipJsErrors" settings from the command line ([#7077](https://github.com/DevExpress/testcafe/issues/7077)).
+* TestCafe incorrectly processes exceptions of types other than `Error` ([#7627](https://github.com/DevExpress/testcafe/issues/7627)).
+* TestCafe does not consistently execute the `t.pressKey` action in Mozilla Firefox. Attempts to press the "backspace" key and the "tab" key, among others, may fail. ([#7623](https://github.com/DevExpress/testcafe/pull/7623))
+* When TestCafe runs in Native Automation mode, it incorrectly executes some instances of the `t.request` method. ([#7609](https://github.com/DevExpress/testcafe/issues/7609))
+* The TestCafe proxy incorrectly processes private class properties in client-side scripts, which leads to page load failure ([#7632](https://github.com/DevExpress/testcafe/issues/7632), PR by [@sorin-davidoi](https://github.com/sorin-davidoi)).
+
+## v2.5.0 (2023-04-06)
+
+TestCafe v2.5.0 introduces three major enhancements:
+* The new `t.report` method passes custom data to the test reporter.
+* The new `--native-automation` flag enables TestCafe to automate all Chromium-based browsers with the native CDP protocol.
+* The new `--esm` flag allows users to import ESM modules in test files.
+
+### t.report
+
+Include the [t.report()](https://testcafe.io/documentation/404350/reference/test-api/testcontroller/report) method in your test to pass custom data to the reporter.
+
+Specify arguments of any type (string, array, Object, etc). Separate arguments with a comma:
+
+```js
+await
+    t.report( 
+        'text', 
+        {'key': 'value'},
+        ['arrayItem1', 'arrayItem2']
+    );
+```
+
+The default `spec` reporter displays custom data after test completion, once for each browser that runs the test.
+
+![Report with custom data](https://testcafe.io/images/treport.png)
+
+### CDP Automation: Now Stable
+
+TestCafe v2.2.0 introduced an experimental [proxyless mode](https://testcafe.io/documentation/404237/guides/intermediate-guides/native-automation-mode) that automated Google Chrome with the native CDP protocol.
+
+For the v2.5.0 release, the TestCafe team addressed most issues that our users discovered when the capability was "experimental", and gave it a new name --- Native Automation mode.
+
+Unlike its predecessor, the Native Automation mode supports **all** Chromium-based browsers, including Microsoft Edge. Enable the `nativeAutomation` option in the [command line interface](https://testcafe.io/documentation/402639/reference/command-line-interface#--native-automation), the [configuration file](https://testcafe.io/documentation/402638/reference/configuration-file#nativeautomation), or the [runner.run()](https://testcafe.io/documentation/402655/reference/testcafe-api/runner/run#nativeautomation) function to try this capability. 
+
+> [!IMPORTANT]
+> TestCafe v2.5.0 removed the `experimentalProxyless` option from the [createTestCafe](https://testcafe.io/documentation/402662/reference/testcafe-api/global/createtestcafe) function. Use the [runner.run()](https://testcafe.io/documentation/402655/reference/testcafe-api/runner/run#nativeautomation) function to enable Native Automation mode from the TestCafe Test Runner API.
+
+### ESM Module Support: Now Stable
+
+TestCafe v2.5.0 **drops** the `experimental` prefix from the `--esm` [CLI flag](https://testcafe.io/documentation/402639/reference/command-line-interface#--esm). Enable the `--esm` flag to import modules that do not support CommonJS.
+
+```sh
+testcafe chrome test.js --esm
+```
+
 ## v2.4.0 (2023-03-06)
 TestCafe v2.4.0 introduces the Visual Selector Debugger. You can now create and debug Selector queries in the browser window.
 
