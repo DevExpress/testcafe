@@ -8,6 +8,7 @@ import TestRunBridge from './test-run-bridge';
 import { getRequestId, isRequestPausedEvent } from '../utils/cdp';
 import { BaseRequestHookEventFactory } from 'testcafe-hammerhead';
 import FrameNavigatedEventBasedEventFactory from '../request-hooks/event-factory/frame-navigated-event-based';
+import { requestPipelineContextLogger } from '../../utils/debug-loggers';
 
 export interface ContextData {
     pipelineContext: NativeAutomationPipelineContext;
@@ -53,6 +54,8 @@ export default class NativeAutomationRequestContextInfo {
         const eventFactory    = this._createEventFactory(event);
 
         pipelineContext.setRequestOptions(eventFactory);
+
+        requestPipelineContextLogger('initialized %s', requestId);
     }
     public dispose (requestId?: string): void {
         if (!requestId)
@@ -60,6 +63,8 @@ export default class NativeAutomationRequestContextInfo {
 
         delete this._pipelineContexts[requestId];
         delete this._eventFactories[requestId];
+
+        requestPipelineContextLogger('disposed %s', requestId);
     }
 
     public getPipelineContext (requestId: string): NativeAutomationPipelineContext {

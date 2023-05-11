@@ -31,6 +31,10 @@ describe('Request Hooks', () => {
         it('Should not raise an error if response has 500 status code (GH-7213)', () => {
             return runTests('./testcafe-fixtures/request-mock/500-status-code.js', null, { only: 'chrome' });
         });
+
+        it('Delayed response (GH-7683)', function () {
+            return runTests('./testcafe-fixtures/request-mock/delayed-response.js', null, { only: 'chrome' });
+        });
     });
 
     describe('RequestLogger', () => {

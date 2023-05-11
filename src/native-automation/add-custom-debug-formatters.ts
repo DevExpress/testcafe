@@ -4,6 +4,7 @@ import RequestPausedEvent = Protocol.Fetch.RequestPausedEvent;
 import FrameNavigatedEvent = Protocol.Page.FrameNavigatedEvent;
 import LoadingFailedEvent = Protocol.Network.LoadingFailedEvent;
 import { isRequest } from './utils/cdp';
+import util from 'util';
 
 
 export default function (): void {
@@ -18,6 +19,6 @@ export default function (): void {
     };
 
     debug.formatters.l = (event: LoadingFailedEvent): string => {
-        return `loadingFailed ${event.requestId} ${event.errorText}`;
+        return `loadingFailed ${util.inspect(event)}`;
     };
 }
