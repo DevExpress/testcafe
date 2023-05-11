@@ -9,7 +9,6 @@ import correctBrowsersAndSources from './correct-browsers-and-sources';
 import createTestCafe from '../';
 import debug from 'debug';
 import logEntry from '../utils/log-entry';
-import dashboardIntegration from '../dashboard';
 
 const LOGGER = debug('testcafe:cli');
 
@@ -144,12 +143,6 @@ async function runTests (argParser) {
     exit(failed);
 }
 
-async function runDashboardIntegration (state) {
-    await dashboardIntegration(state);
-
-    exit(0);
-}
-
 async function listBrowsers (providerName) {
     const provider = await browserProviderPool.getProvider(providerName);
 
@@ -186,9 +179,7 @@ async function listBrowsers (providerName) {
 
         logEntry(LOGGER, argParser.opts);
 
-        if (argParser.isDashboardCommand)
-            await runDashboardIntegration(argParser.sendReportState);
-        else if (argParser.opts.listBrowsers)
+        if (argParser.opts.listBrowsers)
             await listBrowsers(argParser.opts.providerName);
         else
             await runTests(argParser);
