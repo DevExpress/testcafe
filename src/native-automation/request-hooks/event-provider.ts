@@ -53,6 +53,10 @@ export default class NativeAutomationRequestHookEventProvider extends RequestHoo
 
         const { pipelineContext, eventFactory } = contextInfo.getContextData(event);
 
+        // NOTE: A long request can be responded after the test is finished.
+        if (!eventFactory)
+            return false;
+
         (eventFactory as RequestPausedEventBasedEventFactory).update(event);
 
         await pipelineContext.onRequestHookConfigureResponse(this, eventFactory);

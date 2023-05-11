@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>Delayed response</h1>
+    <div id="resultDiv"></div>
+    <script>
+        const resultDiv = document.getElementById('resultDiv');
+
+        fetch('/data')
+            .then(res => res.text())
+            .then(data => {
+                resultDiv.innerText = data;
+            })
+            .catch(err => {
+                resultDiv.innerText = err.toString();
+            });
+    </script>
+</body>
+</html>

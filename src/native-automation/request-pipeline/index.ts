@@ -125,6 +125,9 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
     }
 
     private async _handleMockResponse (mockedResponse: IncomingMessageLike, pipelineContext: NativeAutomationPipelineContext, event: RequestPausedEvent): Promise<void> {
+        if (this._stopped)
+            return;
+
         const mockedResponseBodyStr = (mockedResponse.getBody() as Buffer).toString();
 
         const fulfillInfo = {
@@ -143,7 +146,7 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
             }, this._client);
         }
 
-        requestPipelineMockLogger(`Mock request ${event.requestId}`);
+        requestPipelineMockLogger(`sent mocked response for the ${event.requestId}`);
     }
 
     private _createContinueResponseRequest (event: RequestPausedEvent, modified: boolean): ContinueResponseRequest {
@@ -308,6 +311,8 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
             if (!pipelineContext || !pipelineContext.mock)
                 await safeContinueRequest(this._client, event, this._createContinueEventArgs(event, pipelineContext.reqOpts));
             else {
+                requestPipelineMockLogger('begin mocking request %r', event);
+
                 const mockedResponse = await pipelineContext.getMockResponse();
 
                 await this._handleMockErrorIfNecessary(pipelineContext, event);
@@ -319,6 +324,8 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
                 await this._handleMockResponse(mockedResponse, pipelineContext, event);
 
                 this._contextInfo.dispose(getRequestId(event));
+
+                requestPipelineMockLogger('end mocking request %r', event);
             }
         }
         else

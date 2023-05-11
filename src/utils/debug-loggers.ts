@@ -4,6 +4,7 @@ const testcafeLogger = debug('testcafe');
 
 const nativeAutomationLogger               = testcafeLogger.extend('native-automation');
 const requestPipelineLogger                = nativeAutomationLogger.extend('request-pipeline');
+const requestPipelineContextLogger         = requestPipelineLogger.extend('context');
 const requestPipelineMockLogger            = requestPipelineLogger.extend('mock');
 const requestPipelineInternalRequestLogger = requestPipelineLogger.extend('internal-request');
 const requestPipelineServiceRequestLogger  = requestPipelineLogger.extend('service-request');
@@ -26,4 +27,5 @@ export {
     requestPipelineInternalRequestLogger,
     requestPipelineServiceRequestLogger,
     requestPipelineOtherRequestLogger,
+    requestPipelineContextLogger,
 };
