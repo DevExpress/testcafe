@@ -1,11 +1,12 @@
 const { expect }        = require('chai');
 const BrowserConnection = require('../../lib/browser/connection');
 const Bootstrapper      = require('../../lib/runner/bootstrapper');
+const Test              = require('../../lib/api/structure/test');
+const delay             = require('../../lib/utils/delay');
 
 const {
     browserConnectionGatewayMock,
     configurationMock,
-    compilerServiceMock,
     createBrowserProviderMock,
 } = require('./helpers/mocks');
 
@@ -17,13 +18,18 @@ describe('Bootstrapper', () => {
             bootstrapper = new Bootstrapper({
                 browserConnectionGateway: browserConnectionGatewayMock,
                 configuration:            configurationMock,
-                compilerService:          compilerServiceMock,
             });
 
             bootstrapper.browserInitTimeout           = 100;
             bootstrapper.TESTS_COMPILATION_UPPERBOUND = 0;
 
             bootstrapper.browsers = [ new BrowserConnection(browserConnectionGatewayMock, { provider: createBrowserProviderMock({ local: false }) }) ];
+
+            bootstrapper._compileTests = async () => {
+                await delay(1500);
+
+                return [ new Test({ currentFixture: void 0 }) ];
+            };
         });
 
         it('Browser connection error message should include hint that tests compilation takes too long', async function () {

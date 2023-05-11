@@ -154,8 +154,7 @@ if (config.useLocalBrowsers) {
                 });
         });
 
-        // TODO: fix test for Debug task
-        (config.experimentalDebug ? it.skip : it)('Should record video with quarantine mode enabled (multiple attempts)', () => {
+        it('Should record video with quarantine mode enabled (multiple attempts)', () => {
             const errs   = {};
             const videos = [];
 

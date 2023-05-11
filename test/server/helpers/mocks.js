@@ -1,6 +1,4 @@
 const { noop }         = require('lodash');
-const delay            = require('../../../lib/utils/delay');
-const Test             = require('../../../lib/api/structure/test');
 const { EventEmitter } = require('events');
 
 const browserConnectionGatewayMock = {
@@ -48,20 +46,9 @@ function createBrowserProviderMock ({ local, headless } = { local: false, headle
     };
 }
 
-const compilerServiceMock = {
-    init:     noop,
-    getTests: async () => {
-        await delay(1500);
-
-        return [ new Test({ currentFixture: void 0 }) ];
-    },
-    setUserVariables: noop,
-};
-
 module.exports = {
     browserConnectionGatewayMock,
     browserSetMock: new BrowserSetMock(),
     configurationMock,
     createBrowserProviderMock,
-    compilerServiceMock,
 };

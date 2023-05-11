@@ -208,10 +208,6 @@ module.exports = {
         return this.currentEnvironment.retryTestPages;
     },
 
-    get experimentalDebug () {
-        return !!process.env.EXPERIMENTAL_DEBUG;
-    },
-
     testingEnvironmentNames,
     testingEnvironments,
     browserProviderNames,

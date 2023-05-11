@@ -1,9 +1,8 @@
 const config                    = require('../../../config');
 const { expect }                = require('chai');
-const experimentalDebug         = !!process.env.EXPERIMENTAL_DEBUG;
 const { createWarningReporter } = require('../../../utils/warning-reporter');
 
-if (config.useHeadlessBrowsers && !experimentalDebug) {
+if (config.useHeadlessBrowsers) {
     describe('[Regression](GH-2846)', function () {
         it('Should add warning on t.debug', function () {
             const { reporter, assertReporterWarnings, warningResult } = createWarningReporter();

@@ -9,8 +9,6 @@ const { createWarningReporter }  = require('../../utils/warning-reporter');
 
 const SCREENSHOTS_PATH = config.testScreenshotsDir;
 
-const experimentalDebug = !!process.env.EXPERIMENTAL_DEBUG;
-
 let testCafeInstance = null;
 
 async function assertScreenshotColor (fileName, pixel) {
@@ -104,15 +102,13 @@ describe('Multiple windows', () => {
         return runTests('testcafe-fixtures/cookie-synchronization/same-domain.js', null, { only: 'chrome' });
     });
 
-    if (!experimentalDebug) {
-        it('Should continue debugging when a child window closes', () => {
-            // NOTE: This test imitates the user clicks for TestCafe's debug UI.
-            // This scenario is not suitable for a run in compiler service due to
-            // the compiler service tests execute in the headless chrome
-            // and TestCafe's debug UI is not visible for end-user.
-            return runTests('testcafe-fixtures/debug-synchronization.js', null, { only: 'chrome' });
-        });
-    }
+    it('Should continue debugging when a child window closes', () => {
+        // NOTE: This test imitates the user clicks for TestCafe's debug UI.
+        // This scenario is not suitable for a run in compiler service due to
+        // the compiler service tests execute in the headless chrome
+        // and TestCafe's debug UI is not visible for end-user.
+        return runTests('testcafe-fixtures/debug-synchronization.js', null, { only: 'chrome' });
+    });
 
     it('Should make screenshots of different windows', () => {
         return runTests('testcafe-fixtures/features/screenshots.js', null, { setScreenshotPath: true })
@@ -345,8 +341,7 @@ describe('Multiple windows', () => {
         });
     });
 
-    // TODO: Stabilize test in the Debug mode
-    (config.experimentalDebug ? describe.skip : describe)('Emulation', () => {
+    describe('Emulation', () => {
         it('Should resize window when emulating device', async () => {
             return createTestCafe('127.0.0.1', 1335, 1336)
                 .then(tc => {
@@ -367,8 +362,7 @@ describe('Multiple windows', () => {
         });
     });
 
-    // TODO: Stabilize test in the Debug mode
-    (config.experimentalDebug ? describe.skip : describe)('Resize', () => {
+    describe('Resize', () => {
         function runTestsResize (browser) {
             return createTestCafe('127.0.0.1', 1335, 1336)
                 .then(tc => {

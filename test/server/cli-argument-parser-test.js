@@ -880,7 +880,6 @@ describe('CLI argument parser', function () {
             { long: '--disable-screenshots' },
             { long: '--screenshots-full-page' },
             { long: '--disable-multiple-windows' },
-            { long: '--experimental-debug' },
             { long: '--compiler-options' },
             { long: '--page-request-timeout' },
             { long: '--ajax-request-timeout' },
@@ -906,7 +905,7 @@ describe('CLI argument parser', function () {
         }
 
         const expectedRunOptionsCount   = 22;
-        const expectedOtherOptionsCount = 38;
+        const expectedOtherOptionsCount = 37;
         const otherOptionsCount         = options.length - expectedRunOptionsCount;
 
         expect(runOptionNames.length).eql(expectedRunOptionsCount, ADD_TO_RUN_OPTIONS_WARNING);

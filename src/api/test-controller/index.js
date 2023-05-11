@@ -5,7 +5,6 @@ import {
     assign,
     isNil as isNullOrUndefined,
     flattenDeep,
-    noop,
     castArray,
 } from 'lodash';
 
@@ -71,7 +70,6 @@ import {
 import { WaitCommand, DebugCommand } from '../../test-run/commands/observation';
 import { createExecutionContext as createContext } from './execution-context';
 import { isSelector } from '../../client-functions/types';
-import TestRunProxy from '../../services/compiler/test-run-proxy';
 
 import {
     MultipleWindowsModeIsDisabledError,
@@ -281,7 +279,7 @@ export default class TestController {
         const controller = this;
         const callsite = getCallsiteForMethod(RequestCommand.methodName);
 
-        if (!controller.testRun || controller.testRun instanceof TestRunProxy)
+        if (!controller.testRun)
             throw new RequestRuntimeError(callsite, RUNTIME_ERRORS.requestCannotResolveTestRun);
 
         return function (...args) {
@@ -601,7 +599,7 @@ export default class TestController {
         // NOTE: do not need to enqueue the Debug command if we are in debugging mode.
         // The Debug command will be executed by CDP.
         // Also, we are forced to add empty function to the execution chain to preserve it.
-        return this.isCompilerServiceMode() ? this._enqueueTask(DebugCommand.methodName, noop) : this.enqueueCommand(DebugCommand);
+        return this.enqueueCommand(DebugCommand);
     }
 
     [delegatedAPI(SetTestSpeedCommand.methodName)] (speed) {
@@ -647,10 +645,6 @@ export default class TestController {
     }
 
     shouldStop (command) {
-        // NOTE: should never stop in not compliler debugging mode
-        if (!this.isCompilerServiceMode())
-            return false;
-
         // NOTE: should always stop on Debug command
         if (command === 'debug')
             return true;
@@ -664,11 +658,6 @@ export default class TestController {
 
         return false;
     }
-
-    isCompilerServiceMode () {
-        return this.testRun instanceof TestRunProxy;
-    }
-
 }
 
 TestController.API_LIST = getDelegatedAPIList(TestController.prototype);

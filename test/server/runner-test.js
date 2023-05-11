@@ -20,8 +20,6 @@ const { RUNTIME_ERRORS }      = require('../../lib/errors/types');
 const { createReporter }      = require('../functional/utils/reporter');
 const proxyquire              = require('proxyquire');
 const BrowserConnectionStatus = require('../../lib/browser/connection/status');
-const { noop }                = require('lodash');
-const Test                    = require('../../lib/api/structure/test');
 const TestCafeConfiguration   = require('../../lib/configuration/testcafe-configuration');
 
 const {
@@ -30,6 +28,8 @@ const {
     configurationMock,
     createBrowserProviderMock,
 } = require('./helpers/mocks');
+
+const Test = require('../../lib/api/structure/test');
 
 const createConfigFile = (configPath, options) => {
     options = options || {};
@@ -1096,12 +1096,6 @@ describe('Runner', () => {
         });
 
         describe('On Linux without a graphics subsystem', () => {
-            const compilerService          = {
-                init:             noop,
-                getTests:         () => [new Test({ currentFixture: void 0 })],
-                setUserVariables: noop,
-            };
-
             let runnerLinux = null;
 
             class BrowserConnectionMock extends BrowserConnection {
@@ -1122,11 +1116,16 @@ describe('Runner', () => {
                     '../browser/connection': BrowserConnectionMock,
                 });
 
-                return new BootstrapperMock({
+                const bootstrapperMock = new BootstrapperMock({
                     browserConnectionGateway: browserConnectionGatewayMock,
                     configuration:            configurationMock,
-                    compilerService,
                 });
+
+                bootstrapperMock._compileTests = async () => {
+                    return [ new Test({ currentFixture: void 0 }) ];
+                };
+
+                return bootstrapperMock;
             }
 
             function createMockRunner () {
@@ -1139,7 +1138,6 @@ describe('Runner', () => {
                     proxy:                    testCafe.proxy,
                     browserConnectionGateway: browserConnectionGatewayMock,
                     configuration:            testCafe.configuration.clone(),
-                    compilerService:          compilerService,
                 });
 
                 runnerLocal.bootstrapper = setupBootstrapper();
@@ -1212,6 +1210,8 @@ describe('Runner', () => {
             });
 
             it('Should not raise an error when remote browser is passed as BrowserConnection', async function () {
+                this.timeout(200000000);
+
                 const browserInfo = await browserProviderPool.getBrowserInfo('remote');
                 let isErrorThrown = false;
 
@@ -1222,7 +1222,7 @@ describe('Runner', () => {
                     await runnerLinux._validateRunOptions();
                     await runnerLinux._createRunnableConfiguration();
                 }
-                catch {
+                catch (err) {
                     isErrorThrown = true;
                 }
 

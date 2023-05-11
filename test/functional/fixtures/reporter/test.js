@@ -18,7 +18,6 @@ const {
 const runTestsWithConfig = require('../../utils/run-tests-with-config');
 const del                = require('del');
 
-const experimentalDebug = !!process.env.EXPERIMENTAL_DEBUG;
 
 (config.hasBrowser('chrome') ? describe : describe.skip)('Reporter', () => {
     const stdoutWrite = process.stdout.write;
@@ -608,14 +607,9 @@ const experimentalDebug = !!process.env.EXPERIMENTAL_DEBUG;
         it('Should not add action information in report if action was emitted after test done (GH-5650)', () => {
             return runTests('testcafe-fixtures/index-test.js', 'Action done after test done', generateRunOptions(log))
                 .then(() => {
-                    const EXECUTE_CLIENT_FUNCTION_ACTION_RECORD = { name: 'execute-client-function', action: 'start' };
-                    const WAIT_ACTION_RECORD                    = { name: 'wait', action: 'start' };
-
-                    // NOTE: Due to an additional internal command in debug mode,
-                    // the events execution order is different.
                     const EXPECTED_LOG = [
-                        experimentalDebug ? WAIT_ACTION_RECORD : EXECUTE_CLIENT_FUNCTION_ACTION_RECORD,
-                        experimentalDebug ? EXECUTE_CLIENT_FUNCTION_ACTION_RECORD : WAIT_ACTION_RECORD,
+                        { name: 'wait', action: 'start' },
+                        { name: 'execute-client-function', action: 'start' },
                         {
                             name:    'execute-client-function',
                             action:  'done',
@@ -953,27 +947,23 @@ const experimentalDebug = !!process.env.EXPERIMENTAL_DEBUG;
             ({ reporter, assertReporterWarnings, warningResult } = createWarningReporter());
         });
 
-        if (!config.experimentalDebug) {
-            //TODO: Debug mode loses synchronization with unwaiting async function. This bug need to fix.
+        it('Should get warning for TestRun', async () => {
+            try {
+                await runTests('testcafe-fixtures/index-test.js', 'Asynchronous method', {
+                    reporter,
+                    shouldFail: true,
+                });
 
-            it('Should get warning for TestRun', async () => {
-                try {
-                    await runTests('testcafe-fixtures/index-test.js', 'Asynchronous method', {
-                        reporter,
-                        shouldFail: true,
-                    });
+                throw new Error('Promise rejection expected');
+            }
+            catch (err) {
+                expect(warningResult.warnings[0].message).to.include("An asynchronous method that you do not await includes an assertion. Inspect that method's execution chain and add the 'await' keyword where necessary.");
+                expect(warningResult.warnings[0].testRunId).to.be.a('string');
+                expect(warningResult.warnings[0].testRunId).to.not.empty;
 
-                    throw new Error('Promise rejection expected');
-                }
-                catch (err) {
-                    expect(warningResult.warnings[0].message).to.include("An asynchronous method that you do not await includes an assertion. Inspect that method's execution chain and add the 'await' keyword where necessary.");
-                    expect(warningResult.warnings[0].testRunId).to.be.a('string');
-                    expect(warningResult.warnings[0].testRunId).to.not.empty;
-
-                    assertReporterWarnings('ok');
-                }
-            });
-        }
+                assertReporterWarnings('ok');
+            }
+        });
 
         if (config.useLocalBrowsers) {
             it('Should get warning for Task', async () => {

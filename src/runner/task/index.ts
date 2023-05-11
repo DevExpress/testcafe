@@ -19,7 +19,6 @@ import BrowserConnection from '../../browser/connection';
 import Test from '../../api/structure/test';
 import { VideoOptions } from '../../video-recorder/interfaces';
 import TaskPhase from './phase';
-import CompilerService from '../../services/compiler/host';
 import Fixture from '../../api/structure/fixture';
 import MessageBus from '../../utils/message-bus';
 
@@ -36,7 +35,6 @@ export default class Task extends AsyncEventEmitter {
     private readonly _pendingBrowserJobs: BrowserJob[];
     public readonly testStructure: ReportedTestStructureItem[];
     public readonly videos?: Videos;
-    private readonly _compilerService?: CompilerService;
     private readonly _messageBus: MessageBus;
     public startTime?: Date;
 
@@ -46,7 +44,6 @@ export default class Task extends AsyncEventEmitter {
         proxy,
         opts,
         runnerWarningLog,
-        compilerService,
         messageBus,
     }: TaskInit) {
         super({ captureRejections: true });
@@ -58,7 +55,6 @@ export default class Task extends AsyncEventEmitter {
         this.opts                    = opts;
         this._proxy                  = proxy;
         this.warningLog              = new WarningLog(null, WarningLog.createAddWarningCallback(messageBus));
-        this._compilerService        = compilerService;
         this._messageBus             = messageBus;
 
         this.warningLog.copyFrom(runnerWarningLog);
@@ -158,7 +154,6 @@ export default class Task extends AsyncEventEmitter {
                 screenshots:           this.screenshots,
                 warningLog:            this.warningLog,
                 fixtureHookController: this.fixtureHookController,
-                compilerService:       this._compilerService,
                 messageBus:            this._messageBus,
                 proxy,
                 opts,

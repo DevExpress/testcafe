@@ -6,10 +6,9 @@ const {
 } = require('./actions');
 
 const { expect }         = require('chai');
-const config             = require('../../config');
 const { createReporter } = require('../../utils/reporter');
 
-(config.experimentalDebug ? describe.skip : describe)('[API] Custom Actions', function () {
+describe('[API] Custom Actions', function () {
     it('Should run custom click action', function () {
         return runTests('./testcafe-fixtures/index.js', 'Should run custom click action', { customActions: { clickBySelector } });
     });

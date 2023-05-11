@@ -5,7 +5,6 @@ export interface CompilerArguments {
 }
 
 export interface OptionalCompilerArguments {
-    isCompilerServiceMode?: boolean;
     baseUrl?: string;
     esm?: boolean;
 }

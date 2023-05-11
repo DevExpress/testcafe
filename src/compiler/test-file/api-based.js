@@ -20,7 +20,6 @@ import stackCleaningHook from '../../errors/stack-cleaning-hook';
 import NODE_MODULES from '../../utils/node-modules-folder-name';
 import cacheProxy from './cache-proxy';
 import exportableLib from '../../api/exportable-lib';
-import TEST_FILE_TEMP_VARIABLE_NAME from './test-file-temp-variable-name';
 import addExportAPI from './add-export-api';
 import url from 'url';
 import PREVENT_MODULE_CACHING_SUFFIX from '../prevent-module-caching-suffix';
@@ -38,10 +37,9 @@ const Module = module.constructor;
 const errRequireEsmErrorCode = 'ERR_REQUIRE_ESM';
 
 export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
-    constructor ({ isCompilerServiceMode, baseUrl, esm }) {
+    constructor ({ baseUrl, esm }) {
         super({ baseUrl });
 
-        this.isCompilerServiceMode = isCompilerServiceMode;
         this.cache                 = Object.create(null);
         this.origRequireExtensions = Object.create(null);
         this.cachePrefix           = nanoid(7);
@@ -111,23 +109,6 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
             this._compileModule(mod, filename, requireCompiler, origExt);
     }
 
-    _compileExternalModuleInEsmMode (mod, filename, requireCompiler, origExt) {
-        if (!origExt)
-            origExt = this.origRequireExtensions['.js'];
-
-        if (!APIBasedTestFileCompilerBase._isNodeModulesDep(filename) &&
-            !APIBasedTestFileCompilerBase._isTestCafeLibDep(filename)) {
-            global.customExtensionHook = () => {
-                global.customExtensionHook = null;
-
-                this._compileModule(mod, filename, requireCompiler);
-            };
-        }
-
-        return origExt(mod, filename);
-    }
-
-
     _compileModule (mod, filename, requireCompiler) {
         const code         = readFileSync(filename).toString();
         const compiledCode = requireCompiler(stripBom(code), filename);
@@ -154,10 +135,7 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
                 if (APIBasedTestFileCompilerBase._isNodeModulesDep(filename) && hadGlobalAPI)
                     this._removeGlobalAPI();
 
-                if (this.isCompilerServiceMode)
-                    this._compileExternalModuleInEsmMode(mod, filename, requireCompilers[ext], origExt);
-                else
-                    this._compileExternalModule(mod, filename, requireCompilers[ext], origExt);
+                this._compileExternalModule(mod, filename, requireCompilers[ext], origExt);
 
                 if (hadGlobalAPI && !this._hasGlobalAPI())
                     this._addGlobalAPI(testFile);
@@ -195,29 +173,13 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         });
 
         Object.defineProperty(global, 'test', {
-            get:          () => new Test(testFile, false, this.baseUrl),
+            get:          () => new Test(testFile, this.baseUrl),
             configurable: true,
         });
     }
 
-    _addExportAPIInCompilerServiceMode (testFile) {
-        // 'esm' library has an issue with loading modules
-        // in case of the combination of require and import directives.
-        // This hack allowing achieve the desired behavior.
-        const exportableLibPath = require.resolve('../../api/exportable-lib');
-
-        delete require.cache[exportableLibPath];
-
-        global[TEST_FILE_TEMP_VARIABLE_NAME] = { testFile, baseUrl: this.baseUrl };
-
-        require('../../api/exportable-lib');
-    }
-
     _addExportAPI (testFile) {
-        if (this.isCompilerServiceMode)
-            this._addExportAPIInCompilerServiceMode(testFile);
-        else
-            addExportAPI(testFile, exportableLib, { baseUrl: this.baseUrl });
+        addExportAPI(testFile, exportableLib, { baseUrl: this.baseUrl });
     }
 
     _removeGlobalAPI () {

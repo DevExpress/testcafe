@@ -45,7 +45,6 @@ enum OptionNames {
     disableMultipleWindows = 'disableMultipleWindows',
     disableHttp2 = 'disableHttp2',
     nativeAutomation = 'nativeAutomation',
-    experimentalDebug = 'experimentalDebug',
     compilerOptions = 'compilerOptions',
     pageRequestTimeout = 'pageRequestTimeout',
     ajaxRequestTimeout = 'ajaxRequestTimeout',

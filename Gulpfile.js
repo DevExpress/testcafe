@@ -34,8 +34,6 @@ const {
     TESTS_GLOB,
     LEGACY_TESTS_GLOB,
     MULTIPLE_WINDOWS_TESTS_GLOB,
-    DEBUG_GLOB_1,
-    DEBUG_GLOB_2,
     HEADED_CHROME_FIREFOX_TESTS_GLOB,
 } = require('./gulp/constants/functional-test-globs');
 
@@ -459,18 +457,6 @@ gulp.step('test-functional-local-chrome-firefox-headed-run', () => {
 });
 
 gulp.task('test-functional-local-chrome-firefox-headed', gulp.series('prepare-tests', 'test-functional-local-chrome-firefox-headed-run'));
-
-gulp.step('test-functional-local-debug-run-1', () => {
-    return testFunctional(DEBUG_GLOB_1, functionalTestConfig.testingEnvironmentNames.localHeadlessChrome, { experimentalDebug: true });
-});
-
-gulp.step('test-functional-local-debug-run-2', () => {
-    return testFunctional(DEBUG_GLOB_2, functionalTestConfig.testingEnvironmentNames.localHeadlessChrome, { experimentalDebug: true });
-});
-
-gulp.task('test-functional-local-debug-1', gulp.series('prepare-tests', 'test-functional-local-debug-run-1'));
-
-gulp.task('test-functional-local-debug-2', gulp.series('prepare-tests', 'test-functional-local-debug-run-2'));
 
 gulp.step('test-functional-local-native-automation-run', () => {
     return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localHeadlessChrome, { nativeAutomation: true });

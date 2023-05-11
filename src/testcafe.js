@@ -13,7 +13,6 @@ const errorHandlers            = lazyRequire('./utils/handle-errors');
 const BrowserConnectionGateway = lazyRequire('./browser/connection/gateway');
 const BrowserConnection        = lazyRequire('./browser/connection');
 const browserProviderPool      = lazyRequire('./browser/provider/pool');
-const CompilerHost             = lazyRequire('./services/compiler/host');
 const Runner                   = lazyRequire('./runner');
 const LiveModeRunner           = lazyRequire('./live/test-runner');
 
@@ -37,12 +36,6 @@ export default class TestCafe {
         this.browserConnectionGateway.on('initialized', () => {
             this._registerAssets(developmentMode);
         });
-
-        if (configuration.getOption(OPTION_NAMES.experimentalDebug)) {
-            const v8Flags = configuration.getOption(OPTION_NAMES.v8Flags);
-
-            this.compilerService = new CompilerHost({ developmentMode, v8Flags });
-        }
     }
 
     _registerAssets (developmentMode) {
@@ -76,7 +69,6 @@ export default class TestCafe {
             proxy:                    this.proxy,
             browserConnectionGateway: this.browserConnectionGateway,
             configuration:            this.configuration.clone(OPTION_NAMES.hooks),
-            compilerService:          this.compilerService,
         });
 
         this.runners.push(newRunner);
@@ -125,10 +117,6 @@ export default class TestCafe {
         await Promise.all(this.runners.map(runner => runner.stop()));
 
         await browserProviderPool.dispose();
-
-        if (this.compilerService)
-            this.compilerService.stop();
-
         await this.browserConnectionGateway.close();
     }
 }

@@ -15,11 +15,11 @@ import { getTestFileCompilers, initTestFileCompilers } from './compilers';
 const SOURCE_CHUNK_LENGTH = 1000;
 
 export default class Compiler {
-    constructor (sources, compilerOptions, { isCompilerServiceMode, baseUrl, esm } = {} ) {
+    constructor (sources, compilerOptions, { baseUrl, esm } = {} ) {
         this.sources = sources;
         this.esm = esm;
 
-        initTestFileCompilers(compilerOptions, { isCompilerServiceMode, baseUrl, esm });
+        initTestFileCompilers(compilerOptions, { baseUrl, esm });
     }
 
     static getSupportedTestFileExtensions () {

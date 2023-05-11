@@ -14,7 +14,6 @@ let cafe = null;
 const LiveModeController            = require('../../../../lib/live/controller');
 const LiveModeRunner                = require('../../../../lib/live/test-runner');
 const LiveModeKeyboardEventObserver = require('../../../../lib/live/keyboard-observer');
-const ProcessTitle                  = require('../../../../lib/services/process-title');
 
 
 class LiveModeKeyboardEventObserverMock extends LiveModeKeyboardEventObserver {
@@ -55,13 +54,12 @@ function createTestCafeInstance (opts = {}) {
 }
 
 function createLiveModeRunner (tc, src) {
-    const { proxy, browserConnectionGateway, configuration, compilerService } = tc;
+    const { proxy, browserConnectionGateway, configuration } = tc;
 
     const runner = new RunnerMock({
         proxy,
         browserConnectionGateway,
         configuration: configuration.clone(),
-        compilerService,
     });
 
     tc.runners.push(runner);
@@ -255,47 +253,6 @@ if (config.useLocalBrowsers) {
             await runner.run({ nativeAutomation: config.nativeAutomation });
 
             return cafe.close();
-        });
-
-        (process.env.TESTING_ENVIRONMENT === 'local-headless-chrome' && !config.esm ? it : it.skip)('Experimental debug', () => {
-            const markerFile = path.join(__dirname, 'testcafe-fixtures', '.test-completed.marker');
-
-            return createTestCafeInstance({
-                experimentalDebug: true,
-            })
-                .then(() => {
-                    const runner = createLiveModeRunner(cafe, '/testcafe-fixtures/experimental-debug.js', [config.currentEnvironment.browsers[0].browserName]);
-
-                    const timeoutId = setTimeout(() => {
-                        clearInterval(intervalId); // eslint-disable-line @typescript-eslint/no-use-before-define
-                        runner.exit();
-
-                        expect.fail('Marker file not found.');
-                    }, 20000);
-
-                    const intervalId = setInterval(async () => {
-                        if (!fs.existsSync(markerFile))
-                            return;
-
-                        const inTestProcessName = fs.readFileSync(markerFile).toString();
-
-                        await new Promise(resolve => setTimeout(resolve, 3000));
-
-                        clearTimeout(timeoutId);
-                        clearInterval(intervalId);
-                        runner.exit();
-
-                        expect(inTestProcessName).eql(ProcessTitle.service);
-                    }, 1000);
-
-                    return runner.run({ nativeAutomation: config.nativeAutomation });
-                })
-                .then(() => {
-                    if (fs.existsSync(markerFile))
-                        fs.unlinkSync(markerFile);
-
-                    return cafe.close();
-                });
         });
     });
 }

@@ -1476,31 +1476,19 @@ export default class Driver extends serviceUtils.EventEmitter {
             });
     }
 
-    _onSetBreakpointCommand ({ isTestError, inCompilerService }) {
+    _onSetBreakpointCommand ({ isTestError }) {
         const showDebuggingStatusPromise = this.statusBar.showDebuggingStatus(isTestError);
 
         this.selectorInspectorPanel.show();
 
-        if (inCompilerService) {
-            showDebuggingStatusPromise.then(debug => {
-                this.debug = debug;
-            });
+        showDebuggingStatusPromise.then(debug => {
+            const stopAfterNextAction = debug === STATUS_BAR_DEBUG_ACTION.step;
 
             this._onReady(new DriverStatus({
                 isCommandResult: true,
-                result:          true,
+                result:          stopAfterNextAction,
             }));
-        }
-        else {
-            showDebuggingStatusPromise.then(debug => {
-                const stopAfterNextAction = debug === STATUS_BAR_DEBUG_ACTION.step;
-
-                this._onReady(new DriverStatus({
-                    isCommandResult: true,
-                    result:          stopAfterNextAction,
-                }));
-            });
-        }
+        });
     }
 
     _onDisableDebugCommand () {

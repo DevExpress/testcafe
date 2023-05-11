@@ -10,7 +10,6 @@ import WarningLog from '../notifications/warning-log';
 import FixtureHookController from './fixture-hook-controller';
 import { Dictionary } from '../configuration/interfaces';
 import BrowserJobResult from './browser-job-result';
-import CompilerService from '../services/compiler/host';
 import { BrowserJobInit } from './interfaces';
 import MessageBus from '../utils/message-bus';
 import TestRunHookController from './test-run-hook-controller';
@@ -54,7 +53,6 @@ export default class BrowserJob extends AsyncEventEmitter {
         warningLog,
         fixtureHookController,
         opts,
-        compilerService,
         messageBus,
     }: BrowserJobInit) {
         super();
@@ -74,7 +72,7 @@ export default class BrowserJob extends AsyncEventEmitter {
         this._messageBus           = messageBus;
         this._testRunHook          = new TestRunHookController(tests, (opts.hooks as GlobalHooks)?.testRun);
 
-        this._testRunControllerQueue = tests.map((test, index) => this._createTestRunController(test, index, compilerService));
+        this._testRunControllerQueue = tests.map((test, index) => this._createTestRunController(test, index));
 
         this._completionQueue = [];
         this._reportsPending  = [];
@@ -86,7 +84,7 @@ export default class BrowserJob extends AsyncEventEmitter {
         this.browserConnections.map(bc => bc.once('error', this._connectionErrorListener));
     }
 
-    private _createTestRunController (test: Test, index: number, compilerService?: CompilerService): TestRunController {
+    private _createTestRunController (test: Test, index: number): TestRunController {
         const testRunController = new TestRunController({
             test,
             index:                 index + 1,
@@ -96,7 +94,6 @@ export default class BrowserJob extends AsyncEventEmitter {
             fixtureHookController: this.fixtureHookController,
             opts:                  this._opts,
             messageBus:            this._messageBus,
-            compilerService,
             testRunHook:           this._testRunHook,
         });
 
