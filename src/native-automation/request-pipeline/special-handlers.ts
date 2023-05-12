@@ -17,9 +17,15 @@ import { toBase64String } from '../utils/string';
 import {
     safeContinueRequest,
     safeContinueResponse,
-    safeFailRequest,
     safeFulfillRequest,
 } from './safe-api';
+
+async function handleRequestPauseEvent (event: RequestPausedEvent, client: ProtocolApi): Promise<void> {
+    if (isRequest(event))
+        await safeContinueRequest(client, event);
+    else
+        await safeContinueResponse(client, event);
+}
 
 
 const internalRequest = {
@@ -27,7 +33,7 @@ const internalRequest = {
     handler:   async (event: RequestPausedEvent, client: ProtocolApi): Promise<void> => {
         requestPipelineInternalRequestLogger('%r', event);
 
-        await safeFailRequest(client, event);
+        await handleRequestPauseEvent(event, client);
     },
 } as RequestHandler;
 
@@ -45,10 +51,7 @@ const serviceRequest = {
     handler: async (event: RequestPausedEvent, client: ProtocolApi): Promise<void> => {
         requestPipelineServiceRequestLogger('%r', event);
 
-        if (isRequest(event))
-            await safeContinueRequest(client, event);
-        else
-            await safeContinueResponse(client, event);
+        await handleRequestPauseEvent(event, client);
     },
 } as RequestHandler;
 
