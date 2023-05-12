@@ -217,7 +217,7 @@ export default class MoveAutomation {
             const events: any[] = [];
 
             await mouseMoveStep(mouseMoveOptions, nativeMethods.dateNow, async currPosition => {
-                const moveEvent = await this.nativeAutomationInput?.createMouseMoveEvent(currPosition);
+                const moveEvent = await this.nativeAutomationInput?.createMouseMoveEvent(currPosition, this.modifiers);
 
                 events.push(moveEvent);
 

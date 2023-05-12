@@ -3,6 +3,7 @@ import { AxisValuesData } from '../../client/core/utils/values/axis-values';
 import { SimulatedKeyInfo } from './key-press/utils';
 import { DispatchEventFn } from './types';
 import CDPEventDescriptor from './event-descriptor';
+import { Modifiers } from '../../test-run/commands/options';
 
 export default class NativeAutomationInput {
     private readonly _dispatchEventFn: DispatchEventFn;
@@ -41,12 +42,13 @@ export default class NativeAutomationInput {
         return this._dispatchEventFn.single(EventType.InsertText, { text });
     }
 
-    public async createMouseMoveEvent (currPosition: AxisValuesData<number>): Promise<any> {
+    public async createMouseMoveEvent (currPosition: AxisValuesData<number>, modifiers: Modifiers): Promise<any> {
         const options = await CDPEventDescriptor.createMouseEventOptions('mouseMoved', {
             options: {
                 clientX: currPosition.x,
                 clientY: currPosition.y,
                 button:  'none',
+                ...modifiers,
             },
         });
 
