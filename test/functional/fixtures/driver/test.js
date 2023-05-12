@@ -30,7 +30,7 @@ describe('TestRun - Driver protocol', function () {
         return runTests('./testcafe-fixtures/prevent-real-action-test.js', 'Perform native click');
     });
 
-    describe('Regression', function () {
+    describe.only('Regression', function () {
         it('Should allow mixed execution order (GH-564)', function () {
             return runTests('./testcafe-fixtures/driver-test.js', 'Mixed execution order');
         });
@@ -46,6 +46,10 @@ describe('TestRun - Driver protocol', function () {
 
         onlyInNativeAutomation('Should clear out the localStorage and sessionStorage for multiple domains(native automation)', function () {
             return runTests('./testcafe-fixtures/clear-and-lock-storages-native-automation-part-2.js');
+        });
+
+        it('Should force page reload if url has # in Native Automation', function () {
+            return runTests('./testcafe-fixtures/page-url-with-hash.js');
         });
     });
 });
