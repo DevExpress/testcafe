@@ -118,12 +118,12 @@ export function redirect (command, opts) {
 }
 
 function setLocation (command, opts) {
-    const hashIndex         = command.url.indexOf('#');
-    const sameUrlBeforeHash = hashIndex !== -1 && command.url.slice(0, hashIndex) === LOCATION_HREF.slice(0, hashIndex);
+    const hashIndex       = command.url.indexOf('#');
+    const onlyHashChanged = hashIndex !== -1 && command.url.slice(0, hashIndex) === LOCATION_HREF.slice(0, hashIndex);
 
     document.location = command.url;
 
-    if (opts.nativeAutomation && sameUrlBeforeHash)
+    if (opts.nativeAutomation && onlyHashChanged)
         document.location.reload();
 }
 

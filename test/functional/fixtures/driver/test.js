@@ -30,7 +30,7 @@ describe('TestRun - Driver protocol', function () {
         return runTests('./testcafe-fixtures/prevent-real-action-test.js', 'Perform native click');
     });
 
-    describe.only('Regression', function () {
+    describe('Regression', function () {
         it('Should allow mixed execution order (GH-564)', function () {
             return runTests('./testcafe-fixtures/driver-test.js', 'Mixed execution order');
         });
