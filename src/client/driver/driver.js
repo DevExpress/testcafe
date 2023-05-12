@@ -1535,7 +1535,13 @@ export default class Driver extends serviceUtils.EventEmitter {
                     storages.clear();
                     storages.lock();
 
-                    browser.redirect(command, hammerhead.createNativeXHR, this.communicationUrls.openFileProtocolUrl);
+                    const opts = {
+                        createXHR:           hammerhead.createNativeXHR,
+                        openFileProtocolUrl: this.communicationUrls.openFileProtocolUrl,
+                        nativeAutomation:    this.options.nativeAutomation,
+                    };
+
+                    browser.redirect(command, opts);
                 }
                 else {
                     this.contextStorage.setItem(TEST_DONE_SENT_FLAG, false);
