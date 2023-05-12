@@ -20,7 +20,7 @@ import {
     safeFulfillRequest,
 } from './safe-api';
 
-async function ignoreRequestPausedEvent (event: RequestPausedEvent, client: ProtocolApi): Promise<void> {
+async function handleRequestPauseEvent (event: RequestPausedEvent, client: ProtocolApi): Promise<void> {
     if (isRequest(event))
         await safeContinueRequest(client, event);
     else
@@ -33,7 +33,7 @@ const internalRequest = {
     handler:   async (event: RequestPausedEvent, client: ProtocolApi): Promise<void> => {
         requestPipelineInternalRequestLogger('%r', event);
 
-        await ignoreRequestPausedEvent(event, client);
+        await handleRequestPauseEvent(event, client);
     },
 } as RequestHandler;
 
@@ -51,7 +51,7 @@ const serviceRequest = {
     handler: async (event: RequestPausedEvent, client: ProtocolApi): Promise<void> => {
         requestPipelineServiceRequestLogger('%r', event);
 
-        await ignoreRequestPausedEvent(event, client);
+        await handleRequestPauseEvent(event, client);
     },
 } as RequestHandler;
 

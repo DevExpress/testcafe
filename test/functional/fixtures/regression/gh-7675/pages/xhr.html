@@ -8,7 +8,7 @@
 <h1>Worker</h1>
 <script>
     function handleWorkerMessage (msg) {
-        document.querySelector('h1').innerHTML = msg.data.foo
+        document.querySelector('h1').innerHTML = msg.data.foo;
     }
 
     const worker = new Worker('http://localhost:3000/fixtures/regression/gh-7675/pages/worker2.js');
