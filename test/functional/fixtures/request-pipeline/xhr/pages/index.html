@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>XMLHttpRequest</title>
+</head>
+<body>
+<form action="submit.html">
+  <input type="button" id="test-header" value="test-header"/>
+  <input type="button" id="auth-header" value="auth-header"/>
+  <input type="button" id="delay" value="delay"/>
+</form>
+
+<script>
+    document.querySelector('#test-header').addEventListener('click', () => {
+      const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/xhr/test-header');
+        xhr.setRequestHeader('test', 'test-string');
+        xhr.withCredentials = true;
+        xhr.send();
+
+        xhr.onload = function() {
+          if (xhr.status = 200) { 
+            const xhrResultDiv = document.createElement('div');
+
+            xhrResultDiv.id          = 'xhr-result';
+            xhrResultDiv.textContent = xhr.responseText;
+
+            document.body.appendChild(xhrResultDiv);
+          }
+        };
+    })
+
+    document.querySelector('#auth-header').addEventListener('click', () => {
+      const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/xhr/auth-header');
+        xhr.setRequestHeader('authorization', 'authorization-string');
+        xhr.send();
+
+        xhr.onload = function() {
+          if (xhr.status = 200) { 
+            const xhrResultDiv = document.createElement('div');
+
+            xhrResultDiv.id          = 'xhr-result';
+            xhrResultDiv.textContent = xhr.getResponseHeader('authorization');
+
+            debugger;
+
+            document.body.appendChild(xhrResultDiv);
+          }
+        };
+    })
+
+    document.querySelector('#delay').addEventListener('click', () => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/xhr/1000', true);
+        xhr.send();
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState != 4) return;
+
+            if (xhr.status === 200) {
+                const xhrResultDiv = document.createElement('div');
+
+                xhrResultDiv.id          = 'xhr-result';
+                xhrResultDiv.textContent = xhr.responseText;
+
+                xhrResultDiv.addEventListener('click', function () {
+                    throw new Error('Xhr requests are finished');
+                });
+
+                document.body.appendChild(xhrResultDiv);
+            }
+        }
+    });
+</script>
+</body>
+</html>
