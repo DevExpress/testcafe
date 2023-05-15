@@ -19,5 +19,5 @@ jobs:
       os: 'browserstack'
       max-parallel-jobs: 1
       use-public-hostname: true
-      timeout: 120
+      timeout: 35
     secrets: inherit
