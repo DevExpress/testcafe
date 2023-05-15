@@ -2,7 +2,7 @@ import { EventType } from '../types';
 import { SimulatedKeyInfo } from './key-press/utils';
 import { KeyModifierValues } from './types';
 // @ts-ignore
-import { utils, eventSandbox } from '../../client/core/deps/hammerhead';
+import { utils, eventSandbox, nativeMethods } from '../../client/core/deps/hammerhead';
 import { calculateKeyModifiersValue, calculateMouseButtonValue } from './utils';
 import { AxisValuesData } from '../../client/core/utils/values/axis-values';
 import sendRequestToFrame from '../../client/core/utils/send-request-to-frame';
@@ -66,11 +66,17 @@ async function calculateIFrameTopLeftPoint (): Promise<AxisValuesData<number>> {
 }
 
 export default class CDPEventDescriptor {
+    private static _isNonCharKeyModifier (modifiers: number): boolean {
+        const nonCharModifiers = [KeyModifierValues.ctrl, KeyModifierValues.alt, KeyModifierValues.meta];
+
+        return nativeMethods.arrayIndexOf.call(nonCharModifiers, modifiers) > -1;
+    }
+
     private static _getKeyDownEventText (options: SimulatedKeyInfo): any {
         if (options.isNewLine)
             return '\r';
 
-        if (options.keyProperty.length === 1 && ![KeyModifierValues.ctrl, KeyModifierValues.alt, KeyModifierValues.meta].includes(options.modifiers))
+        if (options.keyProperty.length === 1 && CDPEventDescriptor._isNonCharKeyModifier(options.modifiers))
             return options.keyProperty;
 
         return '';
