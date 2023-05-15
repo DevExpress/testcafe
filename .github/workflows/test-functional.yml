@@ -18,10 +18,6 @@ on:
         required: false
         type: number
         default: 3
-      max-parallel-jobs:
-        required: false
-        type: number
-        default: 3
       display:
         required: false
         type: string
@@ -63,7 +59,6 @@ jobs:
     runs-on: ${{ inputs.os }}
     continue-on-error: true
     strategy:
-      max-parallel: ${{ inputs.max-parallel-jobs }}
       matrix:
         test-group: ${{ fromJSON(needs.prepare-matrix.outputs.matrix) }}
     environment: test-functional
@@ -137,7 +132,7 @@ jobs:
   get-result-status:
     if: ${{ !cancelled() }}
     needs: test
-    runs-on: ${{ inputs.os }}
+    runs-on: ubuntu-latest
     outputs:
       status: ${{ steps.status.outputs.result }}
     steps:
@@ -158,7 +153,7 @@ jobs:
   set-result-status:
     if: always()
     needs: get-result-status
-    runs-on: ${{ inputs.os }}
+    runs-on: ubuntu-latest
     steps:
       - uses: DevExpress/testcafe-build-system/actions/set-status@main
         if: always()
