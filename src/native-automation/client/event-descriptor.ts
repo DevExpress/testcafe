@@ -2,12 +2,14 @@ import { EventType } from '../types';
 import { SimulatedKeyInfo } from './key-press/utils';
 import { KeyModifierValues } from './types';
 // @ts-ignore
-import { utils, eventSandbox, nativeMethods } from '../../client/core/deps/hammerhead';
+import hammerhead from '../../client/core/deps/hammerhead';
 import { calculateKeyModifiersValue, calculateMouseButtonValue } from './utils';
 import { AxisValuesData } from '../../client/core/utils/values/axis-values';
 import sendRequestToFrame from '../../client/core/utils/send-request-to-frame';
 import { findIframeByWindow } from '../../client/core/utils/dom';
 import { getBordersWidthFloat, getElementPaddingFloat } from '../../client/core/utils/style';
+
+const { utils, eventSandbox, nativeMethods } = hammerhead;
 
 const messageSandbox = eventSandbox.message;
 
@@ -76,7 +78,7 @@ export default class CDPEventDescriptor {
         if (options.isNewLine)
             return '\r';
 
-        if (options.keyProperty.length === 1 && CDPEventDescriptor._isNonCharKeyModifier(options.modifiers))
+        if (options.keyProperty.length === 1 && !CDPEventDescriptor._isNonCharKeyModifier(options.modifiers))
             return options.keyProperty;
 
         return '';
