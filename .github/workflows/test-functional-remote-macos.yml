@@ -17,7 +17,6 @@ jobs:
     with:
       test-script: 'npx gulp test-functional-travis-desktop-osx-and-ms-edge-run --steps-as-tasks'
       os: 'browserstack'
-      max-parallel-jobs: 1
       use-public-hostname: true
       timeout: 35
     secrets: inherit

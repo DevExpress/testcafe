@@ -63,6 +63,11 @@ jobs:
           name: docker
           path: ${{steps.package-name.outputs.packageName}}.tar
 
+      - uses: DevExpress/testcafe-build-system/actions/set-status@main
+        if: failure() || cancelled()
+        with:
+          status: 'failure'
+
   changes:
     # TODO: currently cannot generate a list of changes after rebase
     runs-on: ubuntu-latest
@@ -83,9 +88,13 @@ jobs:
           name: changes
           path: changes.txt
 
+      - uses: DevExpress/testcafe-build-system/actions/set-status@main
+        if: failure() || cancelled()
+        with:
+          status: 'failure'
+
   test:
     needs: [build, changes]
-    if: ${{ !cancelled() && !failure() }}
     runs-on: ubuntu-latest
     environment: CI
     steps:
