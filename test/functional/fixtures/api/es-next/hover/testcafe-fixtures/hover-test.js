@@ -6,7 +6,7 @@ fixture `Hover`
 test('Hover over elements', async t => {
     await t
         .hover('#point')
-        .hover('#container', { offsetX: 150, offsetY: 50 })
+        .hover('#container', { offsetX: 150, offsetY: 50, modifiers: { alt: true, ctrl: true, meta: true, shift: true } })
         .hover('#content1')
         .hover('#content1', { offsetY: 55 })
         .hover('#content2')
@@ -15,8 +15,8 @@ test('Hover over elements', async t => {
 
     const eventsLog   = (await t.eval(() => window.eventLog)).join(',');
     const expectedLog = [
-        'mouseover:container:container',
-        'mouseenter:container:container',
+        'mouseover:container:container:alt:ctrl:meta:shift',
+        'mouseenter:container:container:alt:ctrl:meta:shift',
         'mouseout:container:container',
         'mouseover:content1:content1',
         'mouseover:content1:child1',

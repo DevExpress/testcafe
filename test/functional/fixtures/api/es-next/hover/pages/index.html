@@ -63,7 +63,18 @@
     const content2    = document.getElementById('content2');
 
     function eventHandler (e) {
-        window.eventLog.push(e.type + ':' + e.target.id + ':' + e.currentTarget.id);
+        let modifiers = '';
+
+        if (e.altKey)
+            modifiers += ':alt';
+        if (e.ctrlKey)
+            modifiers += ':ctrl';
+        if (e.metaKey)
+            modifiers += ':meta';
+        if (e.shiftKey)
+            modifiers += ':shift';
+
+        window.eventLog.push(e.type + ':' + e.target.id + ':' + e.currentTarget.id + modifiers);
     }
 
     function listenElementEvents (element) {
