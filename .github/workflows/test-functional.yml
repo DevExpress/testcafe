@@ -40,7 +40,6 @@ on:
         default: false
 env:
   NO_CACHE: ${{ secrets.NO_CACHE }}
-  MATRIX_RESULT_FILE: 'matrix-result'
 
 jobs:
   prepare-matrix:
