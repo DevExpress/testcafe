@@ -5,7 +5,7 @@ describe('XHR', () => {
         return runTests('./testcafe-fixtures/index.js', 'Click test header button');
     });
 
-    it('Should authorization prefix for authorization header', () => {
+    it('Should not return authorization prefix for the authorization header', () => {
         return runTests('./testcafe-fixtures/index.js', 'Click auth header button');
     });
 
