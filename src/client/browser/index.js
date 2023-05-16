@@ -104,17 +104,27 @@ export function stopInitScriptExecution () {
     allowInitScriptExecution = false;
 }
 
-export function redirectUsingCdp (command, createXHR, openFileProtocolUrl) {
+export function redirectUsingCdp (command, { openFileProtocolUrl, createXHR }) {
     sendXHR(openFileProtocolUrl, createXHR, { method: 'POST', data: JSON.stringify({ url: command.url }) }); //eslint-disable-line no-restricted-globals
 }
 
-export function redirect (command, createXHR, openFileProtocolUrl) {
+export function redirect (command, opts) {
     stopInitScriptExecution();
 
     if (isFileProtocol(command.url))
-        redirectUsingCdp(command, createXHR, openFileProtocolUrl);
+        redirectUsingCdp(command, opts);
     else
-        document.location = command.url;
+        setLocation(command, opts);
+}
+
+function setLocation (command, opts) {
+    const hashIndex       = command.url.indexOf('#');
+    const onlyHashChanged = hashIndex !== -1 && command.url.slice(0, hashIndex) === LOCATION_HREF.slice(0, hashIndex);
+
+    document.location = command.url;
+
+    if (opts.nativeAutomation && onlyHashChanged)
+        document.location.reload();
 }
 
 function nativeAutomationCheckRedirecting ({ result }) {
@@ -136,7 +146,7 @@ async function getStatus ({ statusUrl, openFileProtocolUrl }, createXHR, { manua
     const redirecting = nativeAutomation ? nativeAutomationCheckRedirecting({ result }) : regularCheckRedirecting(result);
 
     if (redirecting && !manualRedirect)
-        redirect(result, createXHR, openFileProtocolUrl);
+        redirect(result, { createXHR, openFileProtocolUrl, nativeAutomation });
 
     return { command: result, redirecting };
 }

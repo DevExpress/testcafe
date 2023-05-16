@@ -47,5 +47,9 @@ describe('TestRun - Driver protocol', function () {
         onlyInNativeAutomation('Should clear out the localStorage and sessionStorage for multiple domains(native automation)', function () {
             return runTests('./testcafe-fixtures/clear-and-lock-storages-native-automation-part-2.js');
         });
+
+        it('Should force page reload if url has # in Native Automation', function () {
+            return runTests('./testcafe-fixtures/page-url-with-hash.js');
+        });
     });
 });

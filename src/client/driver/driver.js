@@ -1268,8 +1268,14 @@ export default class Driver extends serviceUtils.EventEmitter {
     _onNavigateToCommand (command) {
         this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, true);
 
-        if (this.options.nativeAutomation && isFileProtocol(command.url))
-            browser.redirectUsingCdp(command, hammerhead.createNativeXHR, this.communicationUrls.openFileProtocolUrl);
+        if (this.options.nativeAutomation && isFileProtocol(command.url)) {
+            const redirectOpts = {
+                createXHR:           hammerhead.createNativeXHR,
+                openFileProtocolUrl: this.communicationUrls.openFileProtocolUrl,
+            };
+
+            browser.redirectUsingCdp(command, redirectOpts);
+        }
         else {
             executeNavigateToCommand(command)
                 .then(driverStatus => {
@@ -1535,7 +1541,13 @@ export default class Driver extends serviceUtils.EventEmitter {
                     storages.clear();
                     storages.lock();
 
-                    browser.redirect(command, hammerhead.createNativeXHR, this.communicationUrls.openFileProtocolUrl);
+                    const redirectOpts = {
+                        createXHR:           hammerhead.createNativeXHR,
+                        openFileProtocolUrl: this.communicationUrls.openFileProtocolUrl,
+                        nativeAutomation:    this.options.nativeAutomation,
+                    };
+
+                    browser.redirect(command, redirectOpts);
                 }
                 else {
                     this.contextStorage.setItem(TEST_DONE_SENT_FLAG, false);
