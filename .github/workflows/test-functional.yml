@@ -43,7 +43,7 @@ env:
 
 jobs:
   prepare-matrix:
-    runs-on: ${{ inputs.os }}
+    runs-on: ubuntu-latest
     outputs:
       matrix: "${{ steps.generate-matrix.outputs.result }}"
     steps:
