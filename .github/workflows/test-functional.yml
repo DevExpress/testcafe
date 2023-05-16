@@ -160,5 +160,5 @@ jobs:
           status: ${{ needs.get-result-status.outputs.status || 'failure' }}
 
       - name: Exit with error
-        if: ${{ needs.get-result-status.outputs.status == 'failure' }}
+        if: ${{ needs.get-result-status.outputs.status != 'success' }}
         run: exit 1
