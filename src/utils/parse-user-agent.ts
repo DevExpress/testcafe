@@ -62,7 +62,7 @@ function calculateParsedUserAgent (userAgent: string): Bowser.Parser.ParsedResul
         return EMPTY_PARSED_USER_AGENT;
 
     // The 'bowser' module incorrectly determine the headless edge browser.
-    // Since this module is abandoned, we are forced to fix it in our side.
+    // Since this module is abandoned, we are forced to fix it on our side.
     const isHeadlessEdge  = HEADLESS_EDGE.regExp.test(userAgent);
     const parsedUserAgent = Bowser.parse(userAgent);
 
