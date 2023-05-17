@@ -174,6 +174,15 @@ Server.prototype._setupRoutes = function (apiRouter) {
         res.end(Mustache.render(UPLOAD_SUCCESS_PAGE_TEMPLATE, { uploadedDataArray: filesData }));
     });
 
+    this.app.post('/xhr/test-header', function (req, res) {
+        res.send(req.headers.test);
+    });
+
+    this.app.post('/xhr/auth-header', function (req, res) {
+        res.setHeader('authorization', 'authorization-string');
+        res.send();
+    });
+
     this.app.post('/xhr/:delay', function (req, res) {
         const delay = req.params.delay || 0;
 
