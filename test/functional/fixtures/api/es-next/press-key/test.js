@@ -1,5 +1,7 @@
 const { expect } = require('chai');
 
+const { onlyInNativeAutomation } = require('../../../../utils/skip-in');
+
 describe('[API] t.pressKey', function () {
     it('Should press keys', function () {
         return runTests('./testcafe-fixtures/press-key-test.js', 'Press keys', { only: 'chrome' });
@@ -55,6 +57,14 @@ describe('[API] t.pressKey', function () {
 
         it('Ctrl+a, delete', function () {
             return runTests('./testcafe-fixtures/press-various-keys-test.js', 'Ctrl+a, delete', { only: 'chrome' });
+        });
+
+        onlyInNativeAutomation('Ctrl+s', function () {
+            return runTests('./testcafe-fixtures/press-various-keys-test.js', 'Ctrl+s', { only: 'chrome' });
+        });
+
+        onlyInNativeAutomation('Alt+s', function () {
+            return runTests('./testcafe-fixtures/press-various-keys-test.js', 'Alt+s', { only: 'chrome' });
         });
     });
 });

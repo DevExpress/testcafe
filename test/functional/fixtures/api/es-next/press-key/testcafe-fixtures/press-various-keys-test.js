@@ -88,3 +88,19 @@ test('Ctrl+a, delete', async () => {
 
     await t.expect(getInputValue()).eql('');
 });
+
+test('Ctrl+s', async () => {
+    await checkPressedKeyCombination({
+        keyCombination:     'ctrl+s',
+        expectedInputValue: '',
+        expectedEventLog:   'keydown: Control; keydown: s; keyup: s; keyup: Control;',
+    });
+});
+
+test('Alt+s', async () => {
+    await checkPressedKeyCombination({
+        keyCombination:     'alt+s',
+        expectedInputValue: '',
+        expectedEventLog:   'keydown: Alt; keydown: s; keyup: s; keyup: Alt;',
+    });
+});
