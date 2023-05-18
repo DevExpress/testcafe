@@ -2,14 +2,12 @@ import { resolve as resolvePath, dirname } from 'path';
 import debug from 'debug';
 import promisifyEvent from 'promisify-event';
 import { EventEmitter } from 'events';
-import DashboardConfigStorage from '../dashboard/config-storage';
 
 import {
     flattenDeep as flatten,
     pull as remove,
     isFunction,
     castArray,
-    merge,
 } from 'lodash';
 
 import Bootstrapper from './bootstrapper';
@@ -49,7 +47,6 @@ import detectDisplay from '../utils/detect-display';
 import { validateQuarantineOptions } from '../utils/get-options/quarantine';
 import logEntry from '../utils/log-entry';
 import MessageBus from '../utils/message-bus';
-import getEnvOptions from '../dashboard/get-env-options';
 import { validateSkipJsErrorsOptionValue } from '../utils/get-options/skip-js-errors';
 
 const DEBUG_LOGGER            = debug('testcafe:runner');
@@ -523,28 +520,6 @@ export default class Runner extends EventEmitter {
         this.bootstrapper.configuration          = this.configuration;
     }
 
-    async _addDashboardReporterIfNeeded () {
-        const dashboardOptions = await this._getDashboardOptions();
-        let reporterOptions    = this.configuration.getOption(OPTION_NAMES.reporter);
-
-        // NOTE: we should send reports when sendReport is undefined
-        // TODO: make this option binary instead of tri-state
-        if (!dashboardOptions.token || dashboardOptions.sendReport === false)
-            return;
-
-        if (!reporterOptions)
-            reporterOptions = [];
-
-        const dashboardReporter = reporterOptions.find(reporter => reporter.name === DASHBOARD_REPORTER_NAME);
-
-        if (!dashboardReporter)
-            reporterOptions.push({ name: DASHBOARD_REPORTER_NAME, options: dashboardOptions });
-        else
-            dashboardReporter.options = dashboardOptions;
-
-        this.configuration.mergeOptions({ [OPTION_NAMES.reporter]: reporterOptions });
-    }
-
     _turnOnScreenshotsIfNeeded () {
         const { takeOnFails } = this._getScreenshotOptions();
         const reporterOptions = this.configuration.getOption(OPTION_NAMES.reporter);
@@ -579,7 +554,6 @@ export default class Runner extends EventEmitter {
     }
 
     async _prepareReporters () {
-        await this._addDashboardReporterIfNeeded();
         await this._turnOnScreenshotsIfNeeded();
 
         const reporterPlugins = await Reporter.getReporterPlugins(this.configuration.getOption(OPTION_NAMES.reporter));
@@ -659,22 +633,6 @@ export default class Runner extends EventEmitter {
             options:                 resultOptions,
             reporters:               this._reporters,
         };
-    }
-
-    async _getDashboardOptions () {
-        const storageOptions = await this._loadDashboardOptionsFromStorage();
-        const configOptions  = this.configuration.getOption(OPTION_NAMES.dashboard);
-        const envOptions     = getEnvOptions();
-
-        return merge({}, storageOptions, configOptions, envOptions);
-    }
-
-    async _loadDashboardOptionsFromStorage () {
-        const storage = new DashboardConfigStorage();
-
-        await storage.load();
-
-        return storage.options;
     }
 
     async _prepareClientScripts (tests, clientScripts) {
