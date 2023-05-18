@@ -133,6 +133,18 @@ describe('Utils', () => {
                     userAgent:       'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.130 Electron/7.1.7 Safari/537.36',
                 },
             },
+            {
+                sourceUA: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/113.0.1774.42 Safari/537.36 HeadlessEdg/113.0.1774.42',
+                expected: {
+                    'engine':          { 'name': 'Blink', 'version': '0.0' },
+                    'name':            'Microsoft Edge',
+                    'os':              { 'name': 'Windows', 'version': '10' },
+                    'platform':        'desktop',
+                    'prettyUserAgent': 'Microsoft Edge 113.0.1774.42 / Windows 10',
+                    'userAgent':       'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/113.0.1774.42 Safari/537.36 HeadlessEdg/113.0.1774.42',
+                    'version':         '113.0.1774.42',
+                },
+            },
         ];
 
         testCases.forEach(testCase => {
