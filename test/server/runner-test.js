@@ -3,7 +3,6 @@ const path                    = require('path');
 const { expect }              = require('chai');
 const fs                      = require('fs');
 const del                     = require('del');
-const { sign: createJWT }     = require('jsonwebtoken');
 const request                 = require('request');
 const { times, uniqBy }       = require('lodash');
 const consoleWrapper          = require('./helpers/console-wrapper');
