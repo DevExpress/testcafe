@@ -36,7 +36,6 @@ import { extractNodeProcessArguments } from '../node-arguments-filter';
 import getTestcafeVersion from '../../utils/get-testcafe-version';
 import { parsePortNumber, parseList } from './parse-utils';
 import COMMAND_NAMES from './command-names';
-import { SendReportState } from '../../dashboard/interfaces';
 import { SKIP_JS_ERRORS_OPTIONS_OBJECT_OPTION_NAMES } from '../../configuration/skip-js-errors-option-names';
 import shouldMoveOptionToEnd from '../utils/should-move-option-to-end';
 
@@ -97,7 +96,6 @@ interface CommandLineOptions {
 export default class CLIArgumentParser {
     private cwd: string;
     private remoteCount: number;
-    public sendReportState: SendReportState;
     public opts: CommandLineOptions;
     public args: string[];
     private readonly testCafeCommand: Command;

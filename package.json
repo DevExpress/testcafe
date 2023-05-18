@@ -145,7 +145,6 @@
     "testcafe-browser-tools": "2.0.23",
     "testcafe-hammerhead": "31.4.1",
     "testcafe-legacy-api": "5.1.6",
-    "testcafe-reporter-dashboard": "^0.2.10",
     "testcafe-reporter-json": "^2.1.0",
     "testcafe-reporter-list": "^2.2.0",
     "testcafe-reporter-minimal": "^2.2.0",
