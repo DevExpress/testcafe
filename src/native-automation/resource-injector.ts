@@ -22,6 +22,7 @@ import { redirect, navigateTo } from './utils/cdp';
 import {
     DocumentResourceInfo,
     InjectableResourcesOptions,
+    SessionId,
     SessionStorageInfo,
     SpecialServiceRoutes,
 } from './types';
@@ -134,14 +135,14 @@ export default class ResourceInjector {
         return stringifyHeaderValues(headers);
     }
 
-    private async _fulfillRequest (client: ProtocolApi, fulfillRequestInfo: FulfillRequestRequest, body: string): Promise<void> {
+    private async _fulfillRequest (client: ProtocolApi, fulfillRequestInfo: FulfillRequestRequest, body: string, sessionId: SessionId): Promise<void> {
         await safeFulfillRequest(client, {
             requestId:       fulfillRequestInfo.requestId,
             responseCode:    fulfillRequestInfo.responseCode || StatusCodes.OK,
             responsePhrase:  fulfillRequestInfo.responsePhrase,
             responseHeaders: this._processResponseHeaders(fulfillRequestInfo.responseHeaders),
             body:            toBase64String(body),
-        });
+        }, sessionId);
     }
 
     public async redirectToErrorPage (client: ProtocolApi, err: Error, url: string): Promise<void> {
@@ -210,7 +211,7 @@ export default class ResourceInjector {
         });
     }
 
-    public async processHTMLPageContent (fulfillRequestInfo: FulfillRequestRequest, injectableResourcesOptions: InjectableResourcesOptions, client: ProtocolApi): Promise<void> {
+    public async processHTMLPageContent (fulfillRequestInfo: FulfillRequestRequest, injectableResourcesOptions: InjectableResourcesOptions, client: ProtocolApi, sessionId: SessionId): Promise<void> {
         const injectableResources = await this._prepareInjectableResources(injectableResourcesOptions);
 
         // NOTE: an unhandled exception interrupts the test execution,
@@ -224,12 +225,12 @@ export default class ResourceInjector {
                 this._getPageInjectableResourcesOptions(injectableResourcesOptions),
             );
 
-            await this._fulfillRequest(client, fulfillRequestInfo, updatedResponseStr);
+            await this._fulfillRequest(client, fulfillRequestInfo, updatedResponseStr, sessionId);
         }
     }
 
-    public async processNonProxiedContent (fulfillRequestInfo: FulfillRequestRequest, client: ProtocolApi): Promise<void> {
-        await this._fulfillRequest(client, fulfillRequestInfo, fulfillRequestInfo.body as string);
+    public async processNonProxiedContent (fulfillRequestInfo: FulfillRequestRequest, client: ProtocolApi, sessionId: SessionId): Promise<void> {
+        await this._fulfillRequest(client, fulfillRequestInfo, fulfillRequestInfo.body as string, sessionId);
     }
 
     private _getPageInjectableResourcesOptions (injectableResourcesOptions: InjectableResourcesOptions): PageRestoreStoragesOptions | undefined {

@@ -1,7 +1,11 @@
 import Protocol from 'devtools-protocol';
 import RequestPausedEvent = Protocol.Fetch.RequestPausedEvent;
 import { DEFAULT_FAVICON_PATH } from '../../assets/injectables';
-import { RequestHandler, SpecialServiceRoutes } from '../types';
+import {
+    RequestHandler,
+    SessionId,
+    SpecialServiceRoutes,
+} from '../types';
 import { ProtocolApi } from 'chrome-remote-interface';
 import {
     requestPipelineInternalRequestLogger,
@@ -20,20 +24,20 @@ import {
     safeFulfillRequest,
 } from './safe-api';
 
-async function handleRequestPauseEvent (event: RequestPausedEvent, client: ProtocolApi): Promise<void> {
+async function handleRequestPauseEvent (event: RequestPausedEvent, client: ProtocolApi, sessionId: SessionId): Promise<void> {
     if (isRequest(event))
-        await safeContinueRequest(client, event);
+        await safeContinueRequest(client, event, sessionId);
     else
-        await safeContinueResponse(client, event);
+        await safeContinueResponse(client, event, sessionId);
 }
 
 
 const internalRequest = {
-    condition: (event: RequestPausedEvent): boolean => !event.networkId && event.resourceType !== 'Document',
-    handler:   async (event: RequestPausedEvent, client: ProtocolApi): Promise<void> => {
+    condition: (event: RequestPausedEvent): boolean => !event.networkId && event.resourceType !== 'Document' && !event.request.url,
+    handler:   async (event: RequestPausedEvent, client: ProtocolApi, options: NativeAutomationInitOptions, sessionId: SessionId): Promise<void> => {
         requestPipelineInternalRequestLogger('%r', event);
 
-        await handleRequestPauseEvent(event, client);
+        await handleRequestPauseEvent(event, client, sessionId);
     },
 } as RequestHandler;
 
@@ -48,10 +52,10 @@ const serviceRequest = {
 
         return options.serviceDomains.some(domain => url.startsWith(domain));
     },
-    handler: async (event: RequestPausedEvent, client: ProtocolApi): Promise<void> => {
+    handler: async (event: RequestPausedEvent, client: ProtocolApi, options: NativeAutomationInitOptions, sessionId: SessionId): Promise<void> => {
         requestPipelineServiceRequestLogger('%r', event);
 
-        await handleRequestPauseEvent(event, client);
+        await handleRequestPauseEvent(event, client, sessionId);
     },
 } as RequestHandler;
 
@@ -61,11 +65,11 @@ const defaultFaviconRequest = {
 
         return parsedUrl.pathname === DEFAULT_FAVICON_PATH;
     },
-    handler: async (event: RequestPausedEvent, client: ProtocolApi, options: NativeAutomationInitOptions): Promise<void> => {
+    handler: async (event: RequestPausedEvent, client: ProtocolApi, options: NativeAutomationInitOptions, sessionId: SessionId): Promise<void> => {
         requestPipelineLogger('%r', event);
 
         if (isRequest(event))
-            await safeContinueRequest(client, event);
+            await safeContinueRequest(client, event, sessionId);
         else {
             if (event.responseStatusCode === StatusCodes.NOT_FOUND) { // eslint-disable-line no-lonely-if
                 const { favIcon } = loadAssets(options.developmentMode);
@@ -75,10 +79,10 @@ const defaultFaviconRequest = {
                     responseCode:    StatusCodes.OK,
                     responseHeaders: [ FAVICON_CONTENT_TYPE_HEADER ],
                     body:            toBase64String(favIcon),
-                });
+                }, sessionId);
             }
             else
-                await safeContinueResponse(client, event);
+                await safeContinueResponse(client, event, sessionId);
         }
     },
 } as RequestHandler;
