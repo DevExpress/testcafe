@@ -378,11 +378,17 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
             flatten:                true,
         });
 
+        // NOTE: We need to enable the Fetch domain for iframe targets
+        // to intercept some requests. We need to use the `sessionId` option
+        // in continueRequest/continueResponse/fulfillRequest methods
         await this._client.Target.on('attachedToTarget', async event => {
             // @ts-ignore
-            await this._client.Fetch.enable({ patterns: ALL_REQUESTS_DATA }, event.sessionId);
-            // @ts-ignore
             await this._client.Runtime.runIfWaitingForDebugger(event.sessionId);
+
+            if (event.targetInfo.type !== 'worker')
+                // @ts-ignore
+                await this._client.Fetch.enable({ patterns: ALL_REQUESTS_DATA }, event.sessionId);
+
         });
 
         // @ts-ignore
