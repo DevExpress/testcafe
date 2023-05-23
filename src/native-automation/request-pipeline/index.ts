@@ -24,6 +24,7 @@ import ERROR_ROUTE from '../error-route';
 
 import {
     ContinueRequestArgs,
+    SessionId,
     SessionStorageInfo,
     SpecialServiceRoutes,
 } from '../types';
@@ -124,7 +125,7 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
         requestPipelineMockLogger('%s\n%s', event.networkId, pipelineContext.mock.error);
     }
 
-    private async _handleMockResponse (mockedResponse: IncomingMessageLike, pipelineContext: NativeAutomationPipelineContext, event: RequestPausedEvent): Promise<void> {
+    private async _handleMockResponse (mockedResponse: IncomingMessageLike, pipelineContext: NativeAutomationPipelineContext, event: RequestPausedEvent, sessionId: SessionId): Promise<void> {
         if (this._stopped)
             return;
 
@@ -138,12 +139,12 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
         };
 
         if (pipelineContext.reqOpts.isAjax)
-            await this._resourceInjector.processNonProxiedContent(fulfillInfo, this._client);
+            await this._resourceInjector.processNonProxiedContent(fulfillInfo, this._client, sessionId);
         else {
             await this._resourceInjector.processHTMLPageContent(fulfillInfo, {
                 isIframe:       false,
                 contextStorage: this.contextStorage,
-            }, this._client);
+            }, this._client, sessionId);
         }
 
         requestPipelineMockLogger(`sent mocked response for the ${event.requestId}`);
@@ -175,9 +176,9 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
         return pipelineContext.injectableUserScripts;
     }
 
-    private async _respondToOtherRequest (event: RequestPausedEvent): Promise<void> {
+    private async _respondToOtherRequest (event: RequestPausedEvent, sessionId: SessionId): Promise<void> {
         if (isRedirectStatusCode(event.responseStatusCode)) {
-            await safeContinueResponse(this._client, { requestId: event.requestId });
+            await safeContinueResponse(this._client, { requestId: event.requestId }, sessionId);
 
             return;
         }
@@ -223,7 +224,7 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
                     contextStorage:    this.contextStorage,
                     userScripts,
                 },
-                this._client);
+                this._client, sessionId);
 
             this._contextInfo.dispose(getRequestId(event));
 
@@ -232,7 +233,7 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
         else {
             const continueResponseRequest = this._createContinueResponseRequest(event, modified);
 
-            await safeContinueResponse(this._client, continueResponseRequest);
+            await safeContinueResponse(this._client, continueResponseRequest, sessionId);
 
             this._contextInfo.dispose(getRequestId(event));
         }
@@ -277,7 +278,7 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
         return new Error(event.responseErrorReason);
     }
 
-    private async _tryRespondToOtherRequest (event: RequestPausedEvent): Promise<void> {
+    private async _tryRespondToOtherRequest (event: RequestPausedEvent, sessionId: SessionId): Promise<void> {
         try {
             if (event.responseErrorReason && this._shouldRedirectToErrorPage(event)) {
                 const error = this._createError(event);
@@ -285,7 +286,7 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
                 await this._resourceInjector.redirectToErrorPage(this._client, error, event.request.url);
             }
             else
-                await this._respondToOtherRequest(event);
+                await this._respondToOtherRequest(event, sessionId);
         }
         catch (err) {
             if (event.networkId && this._failedRequestIds.includes(event.networkId)) {
@@ -298,7 +299,7 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
         }
     }
 
-    private async _handleOtherRequests (event: RequestPausedEvent): Promise<void> {
+    private async _handleOtherRequests (event: RequestPausedEvent, sessionId: SessionId): Promise<void> {
         requestPipelineOtherRequestLogger('%r', event);
 
         if (!event.responseErrorReason && (isRequest(event) || isRedirectStatusCode(event.responseStatusCode))) {
@@ -306,10 +307,10 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
 
             await this.requestHookEventProvider.onRequest(event, this._contextInfo);
 
-            const pipelineContext = this._contextInfo.getPipelineContext(event.networkId as string);
+            const pipelineContext = this._contextInfo.getPipelineContext(getRequestId(event));
 
             if (!pipelineContext || !pipelineContext.mock)
-                await safeContinueRequest(this._client, event, this._createContinueEventArgs(event, pipelineContext.reqOpts));
+                await safeContinueRequest(this._client, event, sessionId, this._createContinueEventArgs(event, pipelineContext.reqOpts));
             else {
                 requestPipelineMockLogger('begin mocking request %r', event);
 
@@ -321,7 +322,7 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
 
                 await this.requestHookEventProvider.onResponse(mockedResponseEvent, mockedResponse.getBody(), this._contextInfo, this._client);
 
-                await this._handleMockResponse(mockedResponse, pipelineContext, event);
+                await this._handleMockResponse(mockedResponse, pipelineContext, event, sessionId);
 
                 this._contextInfo.dispose(getRequestId(event));
 
@@ -329,7 +330,7 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
             }
         }
         else
-            await this._tryRespondToOtherRequest(event);
+            await this._tryRespondToOtherRequest(event, sessionId);
     }
 
     private _getUploadPostData (event: Protocol.Fetch.RequestPausedEvent): string | undefined {
@@ -371,16 +372,36 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
             patterns: ALL_REQUESTS_DATA,
         });
 
-        this._client.Fetch.on('requestPaused', async (event: RequestPausedEvent) => {
+        await this._client.Target.setAutoAttach({
+            autoAttach:             true,
+            waitForDebuggerOnStart: true,
+            flatten:                true,
+        });
+
+        // NOTE: We need to enable the Fetch domain for iframe targets
+        // to intercept some requests. We need to use the `sessionId` option
+        // in continueRequest/continueResponse/fulfillRequest methods
+        await this._client.Target.on('attachedToTarget', async event => {
+            // @ts-ignore
+            await this._client.Runtime.runIfWaitingForDebugger(event.sessionId);
+
+            if (event.targetInfo.type !== 'worker')
+                // @ts-ignore
+                await this._client.Fetch.enable({ patterns: ALL_REQUESTS_DATA }, event.sessionId);
+
+        });
+
+        // @ts-ignore
+        this._client.Fetch.on('requestPaused', async (event: RequestPausedEvent, sessionId: SessionId) => {
             if (this._stopped)
                 return;
 
             const specialRequestHandler = getSpecialRequestHandler(event, this.options, this._specialServiceRoutes);
 
             if (specialRequestHandler)
-                await specialRequestHandler(event, this._client, this.options);
+                await specialRequestHandler(event, this._client, this.options, sessionId);
             else
-                await this._handleOtherRequests(event);
+                await this._handleOtherRequests(event, sessionId);
         });
 
         this._client.Page.on('frameNavigated', async (event: FrameNavigatedEvent) => {

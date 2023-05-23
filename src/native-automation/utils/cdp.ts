@@ -67,7 +67,8 @@ export function createRequestPausedEventForResponse (mockedResponse: IncomingMes
 
 export function getRequestId (event: RequestPausedEvent | FrameNavigatedEvent): string {
     if (isRequestPausedEvent(event))
-        return event.networkId as string;
+        // NOTE: the `networkId` field can be missing
+        return event.networkId as string || event.requestId;
 
     return event.frame.loaderId;
 }

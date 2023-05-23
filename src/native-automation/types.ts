@@ -45,3 +45,5 @@ export interface ContinueRequestArgs {
     method?: string;
     url?: string;
 }
+
+export type SessionId = string | undefined;

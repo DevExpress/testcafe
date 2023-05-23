@@ -6,7 +6,7 @@ import FulfillRequestRequest = Protocol.Fetch.FulfillRequestRequest;
 import ContinueResponseRequest = Protocol.Fetch.ContinueResponseRequest;
 import ErrorReason = Protocol.Network.ErrorReason;
 import { isRequestPausedEvent } from '../utils/cdp';
-import { ContinueRequestArgs } from '../types';
+import { ContinueRequestArgs, SessionId } from '../types';
 
 const INVALID_INTERCEPTED_RESPONSE_ERROR_MSG = 'Invalid InterceptionId.';
 
@@ -29,7 +29,7 @@ async function connectionResetGuard (handleRequestFn: () => Promise<void>, handl
     }
 }
 
-export async function safeContinueResponse (client: ProtocolApi, data: RequestPausedEvent | ContinueResponseRequest): Promise<void> {
+export async function safeContinueResponse (client: ProtocolApi, data: RequestPausedEvent | ContinueResponseRequest, sessionId: SessionId): Promise<void> {
     const isPausedEvent = isRequestPausedEvent(data);
 
     await connectionResetGuard(async () => {
@@ -37,7 +37,8 @@ export async function safeContinueResponse (client: ProtocolApi, data: RequestPa
             ? { requestId: data.requestId }
             : data;
 
-        await client.Fetch.continueResponse(param);
+        // @ts-ignore
+        await client.Fetch.continueResponse(param, sessionId);
     }, err => {
         const formatter = isPausedEvent ? '%r' : '%s';
 
@@ -45,19 +46,21 @@ export async function safeContinueResponse (client: ProtocolApi, data: RequestPa
     });
 }
 
-export async function safeFulfillRequest (client: ProtocolApi, fulfillInfo: FulfillRequestRequest): Promise<void> {
+export async function safeFulfillRequest (client: ProtocolApi, fulfillInfo: FulfillRequestRequest, sessionId: SessionId): Promise<void> {
     await connectionResetGuard(async () => {
-        await client.Fetch.fulfillRequest(fulfillInfo);
+        // @ts-ignore
+        await client.Fetch.fulfillRequest(fulfillInfo, sessionId);
     }, err => {
         requestPipelineLogger(`Fetch.fulfillRequest. Unhandled error %s during processing %s`, err, fulfillInfo.requestId);
     });
 }
 
-export async function safeContinueRequest (client: ProtocolApi, event: RequestPausedEvent, continueRequestArgs?: ContinueRequestArgs): Promise<void> {
+export async function safeContinueRequest (client: ProtocolApi, event: RequestPausedEvent, sessionId: SessionId, continueRequestArgs?: ContinueRequestArgs): Promise<void> {
     const { postData, method, url } = continueRequestArgs || {};
 
     await connectionResetGuard(async () => {
-        await client.Fetch.continueRequest({ requestId: event.requestId, postData, method, url });
+        // @ts-ignore
+        await client.Fetch.continueRequest({ requestId: event.requestId, postData, method, url }, sessionId);
     }, err => {
         requestPipelineLogger(`Fetch.continueRequest. Unhandled error %s during processing %r`, err, event);
     });
