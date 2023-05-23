@@ -1,10 +1,14 @@
 const CLIENT_MESSAGES = require('../../lib/test-run/client-messages');
+const RequestHook     = require('../../lib/api/request-hooks/hook');
 const { expect }      = require('chai');
 
 const {
     PressKeyCommand,
     ExecuteAsyncExpressionCommand,
     ExecuteExpressionCommand,
+    AddRequestHooksCommand,
+    RemoveRequestHooksCommand,
+    RecorderCommand,
 } = require('../../lib/test-run/commands/actions');
 
 const { WaitCommand } = require('../../lib/test-run/commands/observation');
@@ -19,6 +23,12 @@ class TestRunMock extends BaseTestRunMock {
     _executeAsyncJsExpression () {
         return 'async expression result';
     }
+}
+
+class MockRequestHook extends RequestHook {
+    onRequest () {}
+
+    onResponse () {}
 }
 
 const testRunMock = new TestRunMock();
@@ -107,6 +117,27 @@ describe('Driver task queue', () => {
         imitateCommandResolvingFromClient();
 
         await Promise.all(commandExecutionPromises);
+
+        expect(driverTaskQueueLength).eql(0);
+        expect(realDriverTaskQueueLength).eql(0);
+    });
+
+    it('Should return real queue length after hooks commands are added', async () => {
+        const hook = new MockRequestHook();
+
+        const commandExecutionPromises = [
+            testRunMock.executeCommand(new AddRequestHooksCommand({ hooks: [ hook ] })),
+            testRunMock.executeCommand(new RemoveRequestHooksCommand({ hooks: [ hook ] })),
+            testRunMock.executeCommand(new RecorderCommand({ subtype: 'record' })),
+            testRunMock.executeCommand(new RecorderCommand({ subtype: 'record' })),
+        ];
+
+        imitateCommandResolvingFromClient();
+
+        await Promise.all(commandExecutionPromises);
+
+        const driverTaskQueueLength     = testRunMock.driverTaskQueue.length;
+        const realDriverTaskQueueLength = await testRunMock.driverTaskQueueLength;
 
         expect(driverTaskQueueLength).eql(0);
         expect(realDriverTaskQueueLength).eql(0);
