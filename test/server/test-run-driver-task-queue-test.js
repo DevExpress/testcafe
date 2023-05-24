@@ -25,7 +25,7 @@ class TestRunMock extends BaseTestRunMock {
     }
 }
 
-class MockRequestHook extends RequestHook {
+class EmptyRequestHook extends RequestHook {
     onRequest () {}
 
     onResponse () {}
@@ -123,7 +123,7 @@ describe('Driver task queue', () => {
     });
 
     it('Should return real queue length after hooks commands are added', async () => {
-        const hook = new MockRequestHook();
+        const hook = new EmptyRequestHook();
 
         const commandExecutionPromises = [
             testRunMock.executeCommand(new AddRequestHooksCommand({ hooks: [ hook ] })),
