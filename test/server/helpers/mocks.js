@@ -1,18 +1,21 @@
 const { noop }         = require('lodash');
 const { EventEmitter } = require('events');
 
+const proxyMock = {
+    resolveRelativeServiceUrl: noop,
+    start:                     noop,
+    switchToNativeAutomation:  noop,
+    GET:                       noop,
+    POST:                      noop,
+};
+
 const browserConnectionGatewayMock = {
     startServingConnection:   noop,
     stopServingConnection:    noop,
     initialize:               noop,
     switchToNativeAutomation: noop,
     getConnections:           () => ({}),
-
-    proxy: {
-        resolveRelativeServiceUrl: noop,
-        start:                     noop,
-        switchToNativeAutomation:  noop,
-    },
+    proxy:                    proxyMock,
 };
 
 class BrowserSetMock extends EventEmitter {
@@ -51,4 +54,5 @@ module.exports = {
     browserSetMock: new BrowserSetMock(),
     configurationMock,
     createBrowserProviderMock,
+    proxyMock,
 };

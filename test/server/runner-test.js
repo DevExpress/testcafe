@@ -1526,7 +1526,7 @@ describe('Runner', () => {
         expect(runner.configuration.getOption('reporter')).eql([{ name: 'json', output: void 0 }]);
     });
 
-    describe('"Unable to establish one or more of the specifed browser connections" error message', function () {
+    describe('"Unable to establish one or more of the specified browser connections" error message', function () {
         const warningProvider = {
             openBrowser (browserId, _, browserName) {
                 this.reportWarning(browserId, `some warning from "${browserName}"`);

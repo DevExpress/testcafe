@@ -19,8 +19,6 @@ import { initSelector } from '../../../test-run/commands/validations/initializer
 import TestRun from '../../../test-run';
 import { TestCafeStartOptions } from '../../../configuration/testcafe-configuration';
 import BrowserConnectionGatewayStatus from './status';
-import { GeneralError } from '../../../errors/runtime';
-import { RUNTIME_ERRORS } from '../../../errors/types';
 import { EventEmitter } from 'events';
 
 export interface BrowserConnectionGatewayOptions {
@@ -340,8 +338,9 @@ export default class BrowserConnectionGateway extends EventEmitter {
     }
 
     public initialize (options: TestCafeStartOptions): void {
+        // NOTE: Initialize only once in case of multiple runners.
         if (this._status === BrowserConnectionGatewayStatus.initialized)
-            throw new GeneralError(RUNTIME_ERRORS.proxyInitializedMoreThanOnce);
+            return;
 
         this.proxy.start(options);
 
