@@ -142,7 +142,7 @@
     "set-cookie-parser": "^2.5.1",
     "source-map-support": "^0.5.16",
     "strip-bom": "^2.0.0",
-    "testcafe-browser-tools": "https://github.com/aleks-pro/temp/raw/main/testcafe-browser-tools-2.0.23.6.tgz",
+    "testcafe-browser-tools": "https://github.com/aleks-pro/temp/raw/main/testcafe-browser-tools-with-binaries-from-npm.tgz",
     "testcafe-hammerhead": "31.4.1",
     "testcafe-legacy-api": "5.1.6",
     "testcafe-reporter-json": "^2.1.0",
@@ -158,7 +158,6 @@
     "typescript": "4.7.4",
     "unquote": "^1.1.1",
     "url-to-options": "^2.0.0"
-
   },
   "devDependencies": {
     "@ffmpeg-installer/ffmpeg": "^1.0.17",
