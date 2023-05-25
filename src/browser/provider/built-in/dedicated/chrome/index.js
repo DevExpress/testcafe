@@ -106,7 +106,7 @@ export default {
         this._setUserAgentMetaInfoForEmulatingDevice(browserId, runtimeInfo.config);
 
         if (additionalOptions.nativeAutomation)
-            await this._setupNativeAutomation({ browserId, browserClient, runtimeInfo, nativeAutomationOptions: toNativeAutomationSetupOptions(additionalOptions) });
+            await this._setupNativeAutomation({ browserId, browserClient, runtimeInfo, nativeAutomationOptions: toNativeAutomationSetupOptions(additionalOptions, config.headless) });
 
         chromeBrowserProviderLogger('browser opened %s', browserId);
     },
