@@ -142,7 +142,7 @@
     "set-cookie-parser": "^2.5.1",
     "source-map-support": "^0.5.16",
     "strip-bom": "^2.0.0",
-    "testcafe-browser-tools": "2.0.23",
+    "testcafe-browser-tools": "https://github.com/aleks-pro/temp/raw/main/testcafe-browser-tools-2.0.23.6.tgz",
     "testcafe-hammerhead": "31.4.1",
     "testcafe-legacy-api": "5.1.6",
     "testcafe-reporter-json": "^2.1.0",
