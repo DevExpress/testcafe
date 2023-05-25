@@ -86,5 +86,7 @@ export function isExecutableOnClientCommand (command) {
            command.type !== TYPE.useRole &&
            command.type !== TYPE.assertion &&
            command.type !== TYPE.executeExpression &&
-           command.type !== TYPE.executeAsyncExpression;
+           command.type !== TYPE.executeAsyncExpression &&
+           command.type !== TYPE.addRequestHooks &&
+           command.type !== TYPE.removeRequestHooks;
 }

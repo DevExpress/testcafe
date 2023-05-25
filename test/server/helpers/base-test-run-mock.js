@@ -22,7 +22,9 @@ const TestRun = proxyquire('../../../lib/test-run/index', {
 class BaseTestRunMock extends TestRun {
     constructor (init = {}) {
         init = Object.assign({
-            test:               {},
+            test: {
+                requestHooks: [],
+            },
             browserConnection:  {},
             screenshotCapturer: {},
             globalWarningLog:   {},
@@ -35,6 +37,10 @@ class BaseTestRunMock extends TestRun {
     _addInjectables () {}
 
     _initRequestHooks () {}
+
+    _initRequestHook () {}
+
+    _disposeRequestHook () {}
 
     get id () {
         return 'id';
