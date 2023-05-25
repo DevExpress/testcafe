@@ -376,6 +376,7 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
             autoAttach:             true,
             waitForDebuggerOnStart: true,
             flatten:                true,
+            filter:                 [{ type: 'iframe' }],
         });
 
         // NOTE: We need to enable the Fetch domain for iframe targets
@@ -385,10 +386,8 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
             // @ts-ignore
             await this._client.Runtime.runIfWaitingForDebugger(event.sessionId);
 
-            if (event.targetInfo.type !== 'worker')
-                // @ts-ignore
-                await this._client.Fetch.enable({ patterns: ALL_REQUESTS_DATA }, event.sessionId);
-
+            // @ts-ignore
+            await this._client.Fetch.enable({ patterns: ALL_REQUESTS_DATA }, event.sessionId);
         });
 
         // @ts-ignore
