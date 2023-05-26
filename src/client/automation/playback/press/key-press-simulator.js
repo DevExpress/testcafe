@@ -145,7 +145,7 @@ export default class KeyPressSimulator {
 
 
         // NOTE: in some browsers we should emulate click on active input element while pressing "space" key
-        const emulateClick = !browserUtils.isFirefox && !browserUtils.isSafari &&
+        const emulateClick = !browserUtils.isSafari &&
                            (!browserUtils.isChrome || browserUtils.version >= 53);
 
         if (emulateClick && raiseDefault && this.sanitizedKey === 'space' &&
