@@ -378,7 +378,7 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
         if (!this.options.isHeadless) {
             await this._client.Target.setAutoAttach({
                 autoAttach:             true,
-                waitForDebuggerOnStart: !this.options.isHeadless,
+                waitForDebuggerOnStart: true,
                 flatten:                true,
             });
 
@@ -389,10 +389,8 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
                 if (event.targetInfo.type !== 'iframe')
                     return;
 
-                if (!this.options.isHeadless) {
-                    // @ts-ignore
-                    await this._client.Runtime.runIfWaitingForDebugger(event.sessionId);
-                }
+                // @ts-ignore
+                await this._client.Runtime.runIfWaitingForDebugger(event.sessionId);
 
                 // @ts-ignore
                 await this._client.Fetch.enable({ patterns: ALL_REQUESTS_DATA }, event.sessionId);
