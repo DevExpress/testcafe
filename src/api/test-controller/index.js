@@ -85,7 +85,7 @@ import { RequestRuntimeError } from '../../errors/runtime';
 import { RUNTIME_ERRORS } from '../../errors/types';
 import CustomActions from './custom-actions';
 import delegatedAPI from './delegated-api';
-import { buildFixtureInfo, buildTestInfo } from '../../utils/build-test-info';
+import { getTestRunFixtureInfo, getTestRunTestInfo } from '../../utils/get-testrun-test-and-fixture-info';
 
 const originalThen = Promise.resolve().then;
 
@@ -229,11 +229,11 @@ export default class TestController {
     }
 
     _test$getter () {
-        return buildTestInfo(this.testRun);
+        return getTestRunTestInfo(this.testRun);
     }
 
     _fixture$getter () {
-        return buildFixtureInfo(this.testRun);
+        return getTestRunFixtureInfo(this.testRun);
     }
 
     [delegatedAPI(DispatchEventCommand.methodName)] (selector, eventName, options = {}) {
