@@ -21,7 +21,7 @@ export default class NativeAutomation {
         addCustomDebugFormatters();
     }
 
-    private _onContextStorageSynHandler ({ sessionStorage, testRunId, frameDriverId }: any): void {
+    private _onContextStorageSyncHandler ({ sessionStorage, testRunId, frameDriverId }: any): void {
         if (sessionStorage) {
             this.requestPipeline.contextStorage                           = this.requestPipeline.contextStorage || {};
             this.requestPipeline.contextStorage[testRunId]                = this.requestPipeline.contextStorage[testRunId] || {};
@@ -35,7 +35,7 @@ export default class NativeAutomation {
     }
 
     private _addEventListeners (): void {
-        this.sessionStorage.on('contextStorageSync', this._onContextStorageSynHandler.bind(this));
+        this.sessionStorage.on('contextStorageSync', this._onContextStorageSyncHandler.bind(this));
         this.sessionStorage.on('contextStorageTestRunDone', this._onContextStorageTestRunDoneHandler.bind(this));
     }
 

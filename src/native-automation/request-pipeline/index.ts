@@ -372,24 +372,30 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
             patterns: ALL_REQUESTS_DATA,
         });
 
-        await this._client.Target.setAutoAttach({
-            autoAttach:             true,
-            waitForDebuggerOnStart: true,
-            flatten:                true,
-        });
+        // NOTE: these issues exist only in headless mode:
+        // https://github.com/DevExpress/testcafe/issues/7640#issuecomment-1538220298
+        // https://github.com/DevExpress/testcafe-private/issues/190
+        if (!this.options.isHeadless) {
+            await this._client.Target.setAutoAttach({
+                autoAttach:             true,
+                waitForDebuggerOnStart: true,
+                flatten:                true,
+            });
 
-        // NOTE: We need to enable the Fetch domain for iframe targets
-        // to intercept some requests. We need to use the `sessionId` option
-        // in continueRequest/continueResponse/fulfillRequest methods
-        await this._client.Target.on('attachedToTarget', async event => {
-            // @ts-ignore
-            await this._client.Runtime.runIfWaitingForDebugger(event.sessionId);
+            // NOTE: We need to enable the Fetch domain for iframe targets
+            // to intercept some requests. We need to use the `sessionId` option
+            // in continueRequest/continueResponse/fulfillRequest methods
+            await this._client.Target.on('attachedToTarget', async event => {
+                if (event.targetInfo.type !== 'iframe')
+                    return;
 
-            if (event.targetInfo.type !== 'worker')
+                // @ts-ignore
+                await this._client.Runtime.runIfWaitingForDebugger(event.sessionId);
+
                 // @ts-ignore
                 await this._client.Fetch.enable({ patterns: ALL_REQUESTS_DATA }, event.sessionId);
-
-        });
+            });
+        }
 
         // @ts-ignore
         this._client.Fetch.on('requestPaused', async (event: RequestPausedEvent, sessionId: SessionId) => {
