@@ -1,5 +1,26 @@
 # Changelog
 
+## v2.6.1 (2023-05-29)
+
+TestCafe v2.6.1 retires **Experimental Debug** mode, and introduces a number of important bug fixes.
+
+### Removed: Experimental debug mode
+
+TestCafe v1.18.0 introduced [Experimental Debug mode](https://testcafe.io/403664/release-notes/framework/2021-12-22-testcafe-v1-18-0-released) --- a way to debug Selectors and Client Functions in the text editor. TestCafe v2.4.0 shipped with the [Visual Selector Debugger](https://testcafe.io/documentation/404288/guides/intermediate-guides/visual-selector-debugger), which allows users to troubleshoot Selector queries directly in the browser.
+
+The two capabilities serve the same purpose, but the Visual Selector Debugger is more user-friendly. As such, beginning with TestCafe v2.6.1, the framework **no longer includes** Experimental Debug mode. Thank you to all the TestCafe users who tried out the capability.
+
+### Bug fixes
+
+* When TestCafe runs in Native Automation mode, Request Hooks yield an error ([#7683](https://github.com/DevExpress/testcafe/issues/7683)).
+* When TestCafe runs in Native Automation mode, the framework incorrectly processes pages with the pound sign ("#") in the URL ([#7652](https://github.com/DevExpress/testcafe/issues/7652)).
+* TestCafe incorrectly handles XHR headers in Native Automation mode ([#7664](https://github.com/DevExpress/testcafe/issues/7664), [#7686](https://github.com/DevExpress/testcafe/issues/7686), [#7645](https://github.com/DevExpress/testcafe/issues/7645)).
+* TestCafe reports an incorrect browser alias when it runs tests in Microsoft Edge ([#7647](https://github.com/DevExpress/testcafe/issues/7647)).
+* TestCafe fails to intercept all HTTP requests when it runs in Native Automation mode. ([#7640](https://github.com/DevExpress/testcafe/issues/7640)).
+* TestCafe cannot resize browser windows in the latest version of Chrome for macOS ([#7684](https://github.com/DevExpress/testcafe/issues/7684)).
+* TestCafe incorrectly processes client-side styles, causing slowdowns and errors ([#6726](https://github.com/DevExpress/testcafe/issues/6726), [#6747](https://github.com/DevExpress/testcafe/issues/6747)).
+* TestCafe crashes when you use the TestCafe Test Runner API to launch multiple tests simultaneously ([#7711](https://github.com/DevExpress/testcafe/issues/7711)).
+
 ## v2.6.0 (2023-05-11)
 
 TestCafe v2.6.0 introduces two enhancements: a new hook that allows users to modify reporter output, and support for JavaScript configuration files with the `.cjs` extension.

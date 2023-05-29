@@ -869,7 +869,7 @@ describe('Compiler', function () {
                         stackTop: stack,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'SyntaxError: ' + dep + ': Unexpected token, expected "{" (1:7)',
+                                 'SyntaxError: ' + dep + ": Unexpected keyword 'export'. (1:7)",
                     }, true);
                 });
         });
@@ -965,7 +965,7 @@ describe('Compiler', function () {
                         stackTop: null,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'SyntaxError: ' + testfile + ': Unexpected token, expected "{" (1:7)',
+                                 'SyntaxError: ' + testfile + ": Unexpected keyword 'export'. (1:7)",
                     }, true);
                 });
         });
