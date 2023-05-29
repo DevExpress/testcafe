@@ -85,7 +85,7 @@ import { RequestRuntimeError } from '../../errors/runtime';
 import { RUNTIME_ERRORS } from '../../errors/types';
 import CustomActions from './custom-actions';
 import delegatedAPI from './delegated-api';
-import { buildFixtureInfo, buildTestInfo } from "../../utils/build-test-info";
+import { buildFixtureInfo, buildTestInfo } from '../../utils/build-test-info';
 
 const originalThen = Promise.resolve().then;
 
@@ -165,7 +165,7 @@ export default class TestController {
     enqueueCommand (CmdCtor, cmdArgs, validateCommandFn, callsite) {
         callsite = callsite || getCallsiteForMethod(CmdCtor.methodName);
 
-        const command  = this._createCommand(CmdCtor, cmdArgs, callsite);
+        const command = this._createCommand(CmdCtor, cmdArgs, callsite);
 
         if (typeof validateCommandFn === 'function')
             validateCommandFn(this, command, callsite);
@@ -284,7 +284,7 @@ export default class TestController {
 
     _createRequestFunction (bindOptions = {}) {
         const controller = this;
-        const callsite = getCallsiteForMethod(RequestCommand.methodName);
+        const callsite   = getCallsiteForMethod(RequestCommand.methodName);
 
         if (!controller.testRun)
             throw new RequestRuntimeError(callsite, RUNTIME_ERRORS.requestCannotResolveTestRun);
@@ -505,7 +505,7 @@ export default class TestController {
     }
 
     [delegatedAPI(CloseWindowCommand.methodName)] (window) {
-        const windowId      = window?.id || null;
+        const windowId = window?.id || null;
 
         this._validateMultipleWindowCommand(CloseWindowCommand.methodName);
 
