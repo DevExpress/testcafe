@@ -4,6 +4,7 @@ import Test from '../api/structure/test';
 import Fixture from '../api/structure/fixture';
 import TestRun from '../test-run';
 import executeFnWithTimeout from '../utils/execute-fn-with-timeout';
+import {buildFixtureInfo, buildTestInfo} from "../utils/build-test-info";
 
 interface FixtureState {
     started: boolean;
@@ -67,9 +68,11 @@ export default class FixtureHookController {
         item.runningFixtureBeforeHook = true;
 
         try {
-            await executeFnWithTimeout(fn, testRun.executionTimeout, item.fixtureCtx);
-        }
-        catch (err) {
+            await executeFnWithTimeout(fn, testRun.executionTimeout, item.fixtureCtx, {
+                fixture: buildFixtureInfo(testRun),
+                test: buildTestInfo(testRun),
+            });
+        } catch (err) {
             item.fixtureBeforeHookErr = processTestFnError(err);
         }
 
@@ -85,9 +88,11 @@ export default class FixtureHookController {
         testRun.phase = TEST_RUN_PHASE.inFixtureAfterHook;
 
         try {
-            await executeFnWithTimeout(fn, testRun.executionTimeout, item.fixtureCtx);
-        }
-        catch (err) {
+            await executeFnWithTimeout(fn, testRun.executionTimeout, item.fixtureCtx, {
+                fixture: buildFixtureInfo(testRun),
+                test: buildTestInfo(testRun),
+            });
+        } catch (err) {
             testRun.addError(processTestFnError(err));
         }
     }
