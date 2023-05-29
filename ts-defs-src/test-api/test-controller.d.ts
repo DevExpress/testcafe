@@ -101,6 +101,17 @@ interface CustomActions {
     [key: string]: (...args: any[]) => TestControllerPromise
 }
 
+interface TestInfo {
+    name: string;
+    meta: Metadata;
+}
+
+interface FixtureInfo {
+    name: string;
+    meta: Metadata;
+    path: string;
+}
+
 type ScrollPosition = 'top' | 'right' | 'bottom' | 'left' | 'topRight' | 'topLeft' | 'bottomRight' | 'bottomLeft' | 'center';
 
 interface TestController {
@@ -120,6 +131,14 @@ interface TestController {
      * Returns an object that contains registered custom actions.
      */
     readonly customActions: CustomActions;
+    /**
+     * Returns information about current test.
+     */
+    readonly test: TestInfo;
+    /**
+     * Returns information about current fixture.
+     */
+    readonly fixture: FixtureInfo;
     /**
      * Dispatches an event over a specified webpage element.
      *

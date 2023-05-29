@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const path       = require('path');
 
-describe.only('[API] Test Info', () => {
+describe('[API] Test Info', () => {
     it('Should pass correct test and fixture info to fixture hooks', () => {
         return runTests('./testcafe-fixtures/fixture-hooks.js', 'Fixture hooks');
     });
