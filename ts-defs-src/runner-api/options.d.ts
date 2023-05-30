@@ -268,9 +268,9 @@ interface RunOptions {
      */
     disableMultipleWindows: boolean;
     /**
-     * Enables native automation of Chromium-based browsers. Use this option to speed up browser automation and increase test stability.
+     * Disables native automation of Chromium-based browsers. Use this option to speed up browser automation and increase test stability.
      */
-    nativeAutomation: boolean;
+    disableNativeAutomation: boolean;
 }
 
 interface StartOptions {

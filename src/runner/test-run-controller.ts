@@ -15,13 +15,11 @@ import { Quarantine } from '../utils/get-options/quarantine';
 import MessageBus from '../utils/message-bus';
 import TestRunHookController from './test-run-hook-controller';
 import * as clientScriptsRouting from '../custom-client-scripts/routing';
-import debug from 'debug';
 import { RUNTIME_ERRORS } from '../errors/types';
 import { GeneralError } from '../errors/runtime';
+import { testRunControllerLogger } from '../utils/debug-loggers';
 
 const DISCONNECT_THRESHOLD = 3;
-
-const debugLogger = debug('testcafe:runner:test-run-controller');
 
 export default class TestRunController extends AsyncEventEmitter {
     private readonly _quarantine: null | Quarantine;
@@ -187,7 +185,7 @@ export default class TestRunController extends AsyncEventEmitter {
 
         await this.emit('test-run-done');
 
-        debugLogger('done');
+        testRunControllerLogger('done');
     }
 
     private async _emitTestRunStart (): Promise<void> {
@@ -239,7 +237,7 @@ export default class TestRunController extends AsyncEventEmitter {
     }
 
     private async _handleNativeAutomationMode (connection: BrowserConnection): Promise<void> {
-        this.isNativeAutomation = !!this._opts.nativeAutomation;
+        this.isNativeAutomation = !this._opts.disableNativeAutomation;
 
         const supportNativeAutomation = connection.supportNativeAutomation();
 
@@ -252,7 +250,7 @@ export default class TestRunController extends AsyncEventEmitter {
     }
 
     public async start (connection: BrowserConnection, startRunExecutionTime?: Date): Promise<string | null> {
-        debugLogger('start');
+        testRunControllerLogger('start');
 
         await this._handleNativeAutomationMode(connection);
 
