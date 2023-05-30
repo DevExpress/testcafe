@@ -7,6 +7,7 @@
 /// <reference path="selector.d.ts" />
 /// <reference path="request.d.ts" />
 /// <reference path="skip-js-errors-options.d.ts" />
+/// <reference path="test-info.d.ts" />
 // {{/allowReferences}}
 
 interface NativeDialogHistoryItem {
@@ -99,17 +100,6 @@ interface WindowFilterData {
 
 interface CustomActions {
     [key: string]: (...args: any[]) => TestControllerPromise
-}
-
-interface TestInfo {
-    name: string;
-    meta: Record<string, string>;
-}
-
-interface FixtureInfo {
-    name: string;
-    meta: Record<string, string>;
-    path: string;
 }
 
 type ScrollPosition = 'top' | 'right' | 'bottom' | 'left' | 'topRight' | 'topLeft' | 'bottomRight' | 'bottomLeft' | 'center';

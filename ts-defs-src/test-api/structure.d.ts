@@ -3,6 +3,7 @@
 /// <reference path="client-script.d.ts" />
 /// <reference path="test-controller.d.ts" />
 /// <reference path="skip-js-errors-options.d.ts" />
+/// <reference path="test-info.d.ts" />
 // {{/allowReferences}}
 
 interface HTTPAuthCredentials {
@@ -121,7 +122,7 @@ interface FixtureFn {
      *
      * @param data - Key-value pairs
      */
-    meta(data: object): this;
+    meta(data: Metadata): this;
     /**
      * Attaches hooks to all tests in the fixture
      *
@@ -209,7 +210,7 @@ interface TestFn {
      *
      * @param data - Key-value pairs
      */
-    meta(data: object): this;
+    meta(data: Metadata): this;
     /**
      * Attaches hooks to the test
      *
