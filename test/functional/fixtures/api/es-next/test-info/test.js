@@ -12,7 +12,7 @@ describe('[API] Test Info', () => {
         const fixtureInfo = {
             name: 'FixtureName2',
             meta: { fixtureMeta: 'v' },
-            path: path.resolve(__dirname, './testcafe-fixtures/runner-hooks.js'),
+            path: path.resolve('./test/functional/fixtures/api/es-next/test-info/testcafe-fixtures/runner-hooks.js'),
         };
         const testInfo    = {
             name: 'Runner hooks',

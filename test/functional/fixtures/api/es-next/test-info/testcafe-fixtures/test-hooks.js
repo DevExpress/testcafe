@@ -1,7 +1,9 @@
+import path from 'path';
+
 const fixtureInfo = {
     name: 'FixtureName1',
     meta: { fixtureMeta: 'v' },
-    path: __filename,
+    path: path.resolve('./test/functional/fixtures/api/es-next/test-info/testcafe-fixtures/test-hooks.js'),
 };
 const testInfo    = {
     name: 'Test hooks',

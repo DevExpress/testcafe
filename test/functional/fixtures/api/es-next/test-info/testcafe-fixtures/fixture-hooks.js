@@ -1,9 +1,10 @@
 import { expect } from 'chai';
+import path from 'path';
 
 const fixtureInfo = {
     name: 'FixtureName',
     meta: { fixtureMeta: 'v' },
-    path: __filename,
+    path: path.resolve('./test/functional/fixtures/api/es-next/test-info/testcafe-fixtures/fixture-hooks.js'),
 };
 const testInfo    = {
     name: 'Fixture hooks',
