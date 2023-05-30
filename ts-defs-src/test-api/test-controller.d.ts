@@ -103,12 +103,12 @@ interface CustomActions {
 
 interface TestInfo {
     name: string;
-    meta: Metadata;
+    meta: Record<string, string>;
 }
 
 interface FixtureInfo {
     name: string;
-    meta: Metadata;
+    meta: Record<string, string>;
     path: string;
 }
 
