@@ -36,7 +36,9 @@ export default {
     [RUNTIME_ERRORS.noTestsToRunDueFiltering]: 'No tests match your filter.\n' +
                                                `See ${DOCUMENTATION_LINKS.FILTER_SETTINGS}.`,
 
-    [RUNTIME_ERRORS.cannotFindReporterForAlias]:                         'The "{name}" reporter does not exist. Check the reporter parameter for errors.',
+    [RUNTIME_ERRORS.cannotFindReporterForAlias]:                         'An error occurred while loading the "{name}" reporter. Please check the reporter parameter for errors. Error details:\n' +
+                                                                         '\n' +
+                                                                         '{err}',
     [RUNTIME_ERRORS.multipleSameStreamReporters]:                        'Reporters cannot share output streams. The following reporters interfere with one another: "{reporters}".',
     [RUNTIME_ERRORS.optionValueIsNotValidRegExp]:                        'The "{optionName}" option does not contain a valid regular expression.',
     [RUNTIME_ERRORS.optionValueIsNotValidKeyValue]:                      'The "{optionName}" option does not contain a valid key-value pair.',

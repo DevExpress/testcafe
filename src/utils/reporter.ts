@@ -6,8 +6,8 @@ export function requireReporterPluginFactory (reporterName: string): ReporterPlu
     try {
         return require('testcafe-reporter-' + reporterName);
     }
-    catch (err) {
-        throw new GeneralError(RUNTIME_ERRORS.cannotFindReporterForAlias, reporterName);
+    catch (err: any) {
+        throw new GeneralError(RUNTIME_ERRORS.cannotFindReporterForAlias, reporterName, err.stack);
     }
 }
 
