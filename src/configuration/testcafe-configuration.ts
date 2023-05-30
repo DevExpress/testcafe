@@ -16,7 +16,7 @@ import {
     DEFAULT_DISABLE_CROSS_DOMAIN,
     DEFAULT_DISABLE_HTTP2,
     DEFAULT_FILTER_FN,
-    DEFAULT_NATIVE_AUTOMATION,
+    DEFAULT_DISABLE_NATIVE_AUTOMATION,
     DEFAULT_RETRY_TEST_PAGES,
     DEFAULT_SCREENSHOT_THUMBNAILS,
     DEFAULT_SOURCE_DIRECTORIES,
@@ -67,7 +67,7 @@ const OPTION_INIT_FLAG_NAMES = [
     OPTION_NAMES.retryTestPages,
     OPTION_NAMES.cache,
     OPTION_NAMES.disableHttp2,
-    OPTION_NAMES.nativeAutomation,
+    OPTION_NAMES.disableNativeAutomation,
     OPTION_NAMES.disableCrossDomain,
 ];
 
@@ -162,7 +162,7 @@ export default class TestCafeConfiguration extends Configuration {
             cache:              this.getOption(OPTION_NAMES.cache),
             disableHttp2:       this.getOption(OPTION_NAMES.disableHttp2),
             disableCrossDomain: this.getOption(OPTION_NAMES.disableCrossDomain),
-            nativeAutomation:   this.getOption(OPTION_NAMES.nativeAutomation),
+            nativeAutomation:   !this.getOption(OPTION_NAMES.disableNativeAutomation),
         };
     }
 
@@ -278,7 +278,7 @@ export default class TestCafeConfiguration extends Configuration {
         this._ensureOptionWithValue(OPTION_NAMES.developmentMode, DEFAULT_DEVELOPMENT_MODE, OptionSource.Configuration);
         this._ensureOptionWithValue(OPTION_NAMES.retryTestPages, DEFAULT_RETRY_TEST_PAGES, OptionSource.Configuration);
         this._ensureOptionWithValue(OPTION_NAMES.disableHttp2, DEFAULT_DISABLE_HTTP2, OptionSource.Configuration);
-        this._ensureOptionWithValue(OPTION_NAMES.nativeAutomation, DEFAULT_NATIVE_AUTOMATION, OptionSource.Configuration);
+        this._ensureOptionWithValue(OPTION_NAMES.disableNativeAutomation, DEFAULT_DISABLE_NATIVE_AUTOMATION, OptionSource.Configuration);
         this._ensureOptionWithValue(OPTION_NAMES.disableCrossDomain, DEFAULT_DISABLE_CROSS_DOMAIN, OptionSource.Configuration);
 
         this._ensureScreenshotOptions();

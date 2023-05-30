@@ -20,7 +20,7 @@ const runTestsLocal = (testName) => {
         .filter(test => {
             return testName ? test === testName : true;
         })
-        .run({ nativeAutomation: config.nativeAutomation })
+        .run({ disableNativeAutomation: !config.nativeAutomation })
         .then(failedCount => {
             const taskReport = JSON.parse(stream.data);
             const testReport = taskReport.fixtures.length === 1 ?
