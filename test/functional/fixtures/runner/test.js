@@ -8,7 +8,7 @@ function run (browsers, testFile) {
         .createRunner()
         .src(path.join(__dirname, testFile))
         .browsers(browsers)
-        .run({ disableNativeAutomation: !config.nativeAutomation });
+        .run({ nativeAutomation: config.nativeAutomation });
 }
 
 describe('Runner', () => {

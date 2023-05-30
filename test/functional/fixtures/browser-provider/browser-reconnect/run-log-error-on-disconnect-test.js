@@ -24,7 +24,7 @@ createTestCafe()
                 return testName === 'Should log error on browser disconnect';
             })
             .reporter(shouldAttachReporter ? reporter : [])
-            .run({ disableNativeAutomation: !config.nativeAutomation });
+            .run({ nativeAutomation: config.nativeAutomation });
     })
     .catch(function () {
         return testcafe.close();

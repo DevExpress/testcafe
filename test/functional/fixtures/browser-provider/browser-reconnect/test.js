@@ -76,7 +76,7 @@ function run (pathToTest, filter, initializeConnection = initializeConnectionLow
                 .filter(testName => testName === filter)
                 .reporter(reporter)
                 .browsers(connection)
-                .run({ disableNativeAutomation: !config.nativeAutomation });
+                .run({ nativeAutomation: config.nativeAutomation });
         });
 }
 

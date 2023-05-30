@@ -97,7 +97,6 @@ export default class BrowserConnectionGateway extends EventEmitter {
         proxy.GET(SERVICE_ROUTES.assets.index, { content: idlePageScript, contentType: 'application/x-javascript' });
         proxy.GET(SERVICE_ROUTES.assets.styles, { content: idlePageStyle, contentType: 'text/css' });
         proxy.GET(SERVICE_ROUTES.assets.logo, { content: idlePageLogo, contentType: 'image/svg+xml' });
-
         proxy.GET(NATIVE_AUTOMATION_ERROR_ROUTE, (req: IncomingMessage, res: ServerResponse) => {
             res.writeHead(200, { 'Content-Type': 'text/html' });
             res.end(EMPTY_PAGE_MARKUP);
@@ -351,6 +350,10 @@ export default class BrowserConnectionGateway extends EventEmitter {
         this._status    = BrowserConnectionGatewayStatus.initialized;
 
         this.emit('initialized');
+    }
+
+    public switchToNativeAutomation (): void {
+        this.proxy.switchToNativeAutomation();
     }
 }
 

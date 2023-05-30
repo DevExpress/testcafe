@@ -42,7 +42,7 @@ if (config.useLocalBrowsers) {
                 })
                 .browsers(browsers)
                 .concurrency(concurrency)
-                .run({ disableNativeAutomation: !config.nativeAutomation });
+                .run({ nativeAutomation: config.nativeAutomation });
         }
 
         function createConnections (count) {

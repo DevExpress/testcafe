@@ -783,7 +783,7 @@ describe('CLI argument parser', function () {
     });
 
     it('Should parse command line arguments', function () {
-        return parse('-r list -S -q -e message=/testMessage/i,stack=testStack,pageUrl=testPageUrl --hostname myhost --base-url localhost:3000 --proxy localhost:1234 --proxy-bypass localhost:5678 --qr-code --app run-app --speed 0.5 --debug-on-fail --disable-page-reloads --retry-test-pages --dev --sf --disable-page-caching --disable-http2 --disable-native-automation --disable-cross-domain ie test/server/data/file-list/file-1.js')
+        return parse('-r list -S -q -e message=/testMessage/i,stack=testStack,pageUrl=testPageUrl --hostname myhost --base-url localhost:3000 --proxy localhost:1234 --proxy-bypass localhost:5678 --qr-code --app run-app --speed 0.5 --debug-on-fail --disable-page-reloads --retry-test-pages --dev --sf --disable-page-caching --disable-http2 --native-automation --disable-cross-domain ie test/server/data/file-list/file-1.js')
             .then(parser => {
                 expect(parser.opts.browsers).eql(['ie']);
                 expect(parser.opts.src).eql(['test/server/data/file-list/file-1.js']);
@@ -810,7 +810,7 @@ describe('CLI argument parser', function () {
                 expect(parser.opts.retryTestPages).to.be.ok;
                 expect(parser.opts.disableHttp2).to.be.ok;
                 expect(parser.opts.disableCrossDomain).to.be.ok;
-                expect(parser.opts.disableNativeAutomation).to.be.ok;
+                expect(parser.opts.nativeAutomation).to.be.ok;
                 expect(parser.opts.baseUrl).eql('localhost:3000');
             });
     });
@@ -885,7 +885,7 @@ describe('CLI argument parser', function () {
             { long: '--ajax-request-timeout' },
             { long: '--cache' },
             { long: '--disable-http2' },
-            { long: '--disable-native-automation' },
+            { long: '--native-automation' },
             { long: '--base-url' },
             { long: '--disable-cross-domain' },
             { long: '--esm' },

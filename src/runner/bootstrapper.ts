@@ -92,6 +92,7 @@ export default class Bootstrapper {
     public tsConfigPath?: string;
     public clientScripts: ClientScriptInit[];
     public disableMultipleWindows: boolean;
+    public nativeAutomation: boolean;
     public compilerOptions?: CompilerOptions;
     public browserInitTimeout?: number;
     public hooks?: GlobalHooks;
@@ -114,6 +115,7 @@ export default class Bootstrapper {
         this.tsConfigPath             = void 0;
         this.clientScripts            = [];
         this.disableMultipleWindows   = false;
+        this.nativeAutomation         = false;
         this.compilerOptions          = void 0;
         this.debugLogger              = debug(DEBUG_SCOPE);
         this.warningLog               = new WarningLog(null, WarningLog.createAddWarningCallback(messageBus));
@@ -152,7 +154,7 @@ export default class Bootstrapper {
             const options = {
                 disableMultipleWindows: this.disableMultipleWindows,
                 developmentMode:        this.configuration.getOption(OPTION_NAMES.developmentMode) as boolean,
-                nativeAutomation:       !this.configuration.getOption(OPTION_NAMES.disableNativeAutomation),
+                nativeAutomation:       this.nativeAutomation,
             };
 
             const connection = new BrowserConnection(this.browserConnectionGateway, { ...browser }, false, options, this.messageBus);
@@ -172,23 +174,22 @@ export default class Bootstrapper {
     }
 
     private async _setupProxy (): Promise<void> {
-        if (this.browserConnectionGateway.status === BrowserConnectionGatewayStatus.initialized)
-            return;
+        if (this.browserConnectionGateway.status === BrowserConnectionGatewayStatus.uninitialized) {
+            await this.configuration.calculateHostname({ nativeAutomation: this.nativeAutomation });
 
-        await this.configuration.calculateHostname({ nativeAutomation: !this.configuration.getOption(OPTION_NAMES.disableNativeAutomation) });
+            this.browserConnectionGateway.initialize(this.configuration.startOptions);
+        }
 
-        this.browserConnectionGateway.initialize(this.configuration.startOptions);
+        if (this.nativeAutomation)
+            this.browserConnectionGateway.switchToNativeAutomation();
     }
 
-    private _hasNotSupportedBrowserInNativeAutomation (browserInfos: BrowserInfo[]): boolean {
-        return browserInfos.some(browserInfo => {
-            return !browserInfo.provider.supportNativeAutomation();
-        });
-    }
+    private _calculateIsNativeAutomation (remotes: BrowserConnection[]): void {
+        // If there are remote connections, we should switch to legacy run mode.
+        if (remotes.length)
+            this.configuration.mergeOptions({ nativeAutomation: false });
 
-    private _disableNativeAutomationIfNecessary (remotes: BrowserConnection[], automated: BrowserInfo[]): void {
-        if (remotes.length || this._hasNotSupportedBrowserInNativeAutomation(automated))
-            this.configuration.mergeOptions({ disableNativeAutomation: true });
+        this.nativeAutomation = !!this.configuration.getOption(OPTION_NAMES.nativeAutomation);
     }
 
     private async _getBrowserConnections (browserInfo: BrowserInfoSource[]): Promise<BrowserSet> {
@@ -197,7 +198,7 @@ export default class Bootstrapper {
         if (remotes && remotes.length % this.concurrency)
             throw new GeneralError(RUNTIME_ERRORS.cannotDivideRemotesCountByConcurrency);
 
-        this._disableNativeAutomationIfNecessary(remotes, automated);
+        this._calculateIsNativeAutomation(remotes);
 
         await this._setupProxy();
 

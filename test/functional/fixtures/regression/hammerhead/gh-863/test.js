@@ -79,7 +79,7 @@ async function run ({ src, browser }) {
     await testcafe.createRunner()
         .src(path.join(__dirname, src))
         .browsers(browser)
-        .run({ disableNativeAutomation: !config.nativeAutomation });
+        .run({ nativeAutomation: config.nativeAutomation });
 
     await testcafe.close();
 }
