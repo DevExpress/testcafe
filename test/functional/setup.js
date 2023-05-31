@@ -191,13 +191,8 @@ before(function () {
             if (isBrowserStack || !USE_PROVIDER_POOL)
                 mocha.timeout(0);
 
-            if (USE_PROVIDER_POOL) {
-                testCafe.configuration.mergeOptions({
-                    disableNativeAutomation: !config.nativeAutomation,
-                });
-
+            if (USE_PROVIDER_POOL)
                 return testCafe.initializeBrowserConnectionGateway();
-            }
 
             return openRemoteBrowsers();
         })

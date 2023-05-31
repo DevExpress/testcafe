@@ -40,14 +40,12 @@ export default class NativeAutomation {
     }
 
     public async start (): Promise<void> {
-        nativeAutomationLogger('starting');
-
         for (const apiSystem of this.apiSystems)
             await apiSystem.start();
 
         this._addEventListeners();
 
-        nativeAutomationLogger('started');
+        nativeAutomationLogger('nativeAutomation initialized');
     }
 
     public async dispose (): Promise<void> {

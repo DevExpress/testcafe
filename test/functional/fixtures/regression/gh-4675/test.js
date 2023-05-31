@@ -29,7 +29,7 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
                         .browsers(`chrome`)
                         .src(path.join(__dirname, './testcafe-fixtures/index.js'))
                         .reporter([customReporter('custom1'), customReporter('custom2')])
-                        .run({ disableNativeAutomation: !config.nativeAutomation });
+                        .run({ nativeAutomation: config.nativeAutomation });
                 })
                 .catch(err => {
                     error = err;

@@ -28,7 +28,7 @@ if (config.useLocalBrowsers) {
                         .src('test/functional/fixtures/video-recording/skip/fixture.test.js')
                         .browsers('chrome')
                         .video('reports')
-                        .run({ disableNativeAutomation: !config.nativeAutomation });
+                        .run({ nativeAutomation: config.nativeAutomation });
                 })
                 .then(async () => {
                     testcafe.close();

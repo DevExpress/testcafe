@@ -42,6 +42,7 @@ describe('TestController', () => {
             });
     });
 
+
     describe('Preparing cookies arguments', () => {
         it('Should prepare name and url arguments', () => {
             const args = ['cookie', 'url'];

@@ -1,4 +1,4 @@
-The Native Automation mode does not support the use of multiple browser windows. Use the "disable native automation" option to continue.
+The Native Automation mode does not support the use of multiple browser windows. Remove the "native automation" option to continue.
 
 Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>

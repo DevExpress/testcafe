@@ -50,7 +50,7 @@ async function run ({ src, browsers, retryTestPages, reporter }) {
     if (reporter)
         runner.reporter(reporter);
 
-    await runner.run({ disableNativeAutomation: !config.nativeAutomation });
+    await runner.run({ nativeAutomation: config.nativeAutomation });
 
     await testcafe.close();
 }

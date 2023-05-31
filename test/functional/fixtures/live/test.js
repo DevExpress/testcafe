@@ -94,7 +94,7 @@ if (config.useLocalBrowsers) {
                         }, 1000);
                     });
 
-                    return runner.run({ disableNativeAutomation: !config.nativeAutomation });
+                    return runner.run({ nativeAutomation: config.nativeAutomation });
                 })
                 .then(() => {
                     expect(helper.counter).eql(config.browsers.length * helper.testCount * runCount);
@@ -115,8 +115,8 @@ if (config.useLocalBrowsers) {
                     });
 
                     return runner.run({
-                        quarantineMode:          true,
-                        disableNativeAutomation: !config.nativeAutomation,
+                        quarantineMode:   true,
+                        nativeAutomation: config.nativeAutomation,
                     });
                 })
                 .then(() => {
@@ -143,7 +143,7 @@ if (config.useLocalBrowsers) {
                         }, 1000);
                     });
 
-                    return runner.run({ disableNativeAutomation: !config.nativeAutomation });
+                    return runner.run({ nativeAutomation: config.nativeAutomation });
                 })
                 .then(() => {
                     return cafe.close();
@@ -172,7 +172,7 @@ if (config.useLocalBrowsers) {
                                 return runner
                                     .browsers(config.browsers.map(browserInfo => browserInfo.browserName))
                                     .src(path.join(__dirname, '/testcafe-fixtures/test-2.js'))
-                                    .run({ disableNativeAutomation: !config.nativeAutomation })
+                                    .run({ nativeAutomation: config.nativeAutomation })
                                     .then(() => {
                                         return cafe.close();
                                     })
@@ -183,7 +183,7 @@ if (config.useLocalBrowsers) {
                     }, 10000);
 
                     return runner
-                        .run({ disableNativeAutomation: !config.nativeAutomation });
+                        .run({ nativeAutomation: config.nativeAutomation });
                 });
 
             return promise;
@@ -232,7 +232,7 @@ if (config.useLocalBrowsers) {
             });
 
             return runner
-                .run({ disableNativeAutomation: !config.nativeAutomation })
+                .run({ nativeAutomation: config.nativeAutomation })
                 .then(() => {
                     return cafe.close();
                 });
@@ -250,7 +250,7 @@ if (config.useLocalBrowsers) {
                 }, 1000);
             });
 
-            await runner.run({ disableNativeAutomation: !config.nativeAutomation });
+            await runner.run({ nativeAutomation: config.nativeAutomation });
 
             return cafe.close();
         });

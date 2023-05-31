@@ -17,7 +17,7 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
                     return testCafe.createRunner()
                         .browsers(`chrome`)
                         .src(path.join(__dirname, './testcafe-fixtures/index.js'))
-                        .run({ disableNativeAutomation: !config.nativeAutomation });
+                        .run({ nativeAutomation: config.nativeAutomation });
                 })
                 .then(failed => {
                     failedCount = failed;
