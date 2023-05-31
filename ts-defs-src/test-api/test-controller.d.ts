@@ -122,11 +122,11 @@ interface TestController {
      */
     readonly customActions: CustomActions;
     /**
-     * Returns information about current test.
+     * Returns information about the current test.
      */
     readonly test: TestInfo;
     /**
-     * Returns information about current fixture.
+     * Returns information about the current fixture.
      */
     readonly fixture: FixtureInfo;
     /**

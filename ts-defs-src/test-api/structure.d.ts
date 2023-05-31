@@ -66,16 +66,16 @@ interface FixtureFn {
      * Specifies the fixture hook that is executed before the start of the first test in the fixture.
      *
      * @param fn - An asynchronous hook function that contains initialization or clean-up code.
-     * @param fn `ctx` - A fixture context object used to share variables between fixture hooks and test code.
-     * @param fn `info` - An object that contains fixture information: name, meta and path.
+     * @param fn `ctx` - An object that you can use to store variables. Accessible in both fixture hooks and test code.
+     * @param fn `info` - An object that contains information about the fixture: its name, metadata and path.
      */
     before(fn: (ctx: {[key: string]: any}, info: FixtureInfo) => Promise<any>): this;
     /**
      * Specifies the fixture hook that is executed after the end of the last test in the fixture.
      *
      * @param fn - An asynchronous hook function that contains initialization or clean-up code.
-     * @param fn `ctx` - A fixture context object used to share variables between fixture hooks and test code.
-     * @param fn `info` - An object that contains fixture information: name, meta and path.
+     * @param fn `ctx` - An object that you can use to store variables. Accessible in both fixture hooks and test code.
+     * @param fn `info` - An object that contains information about the fixture: its name, metadata and path.
      */
     after(fn: (ctx: {[key: string]: any}, info: FixtureInfo) => Promise<any>): this;
     /**
