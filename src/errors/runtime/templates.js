@@ -35,10 +35,6 @@ export default {
 
     [RUNTIME_ERRORS.noTestsToRunDueFiltering]: 'No tests match your filter.\n' +
                                                `See ${DOCUMENTATION_LINKS.FILTER_SETTINGS}.`,
-
-    [RUNTIME_ERRORS.cannotFindReporterForAlias]:                         'An error occurred while loading the "{name}" reporter. Please check the reporter parameter for errors. Error details:\n' +
-                                                                         '\n' +
-                                                                         '{err}',
     [RUNTIME_ERRORS.multipleSameStreamReporters]:                        'Reporters cannot share output streams. The following reporters interfere with one another: "{reporters}".',
     [RUNTIME_ERRORS.optionValueIsNotValidRegExp]:                        'The "{optionName}" option does not contain a valid regular expression.',
     [RUNTIME_ERRORS.optionValueIsNotValidKeyValue]:                      'The "{optionName}" option does not contain a valid key-value pair.',
@@ -99,6 +95,14 @@ export default {
                                        '* add the path of the FFmpeg installation directory to the PATH environment variable,\n' +
                                        '* specify the path of the FFmpeg executable in the FFMPEG_PATH environment variable or the ffmpegPath option,\n' +
                                        '* install the @ffmpeg-installer/ffmpeg npm package.',
+
+    [RUNTIME_ERRORS.cannotReadConfigFile]: 'An error has occurred while reading the "{path}" configuration file. Error details:\n' +
+                                           '\n' +
+                                           '{err}',
+
+    [RUNTIME_ERRORS.cannotFindReporterForAlias]: 'An error occurred while loading the "{name}" reporter. Please check the reporter parameter for errors. Error details:\n' +
+                                                 '\n' +
+                                                 '{err}',
 
     [RUNTIME_ERRORS.cannotFindTypescriptConfigurationFile]:            '"{filePath}" is not a valid TypeScript configuration file.',
     [RUNTIME_ERRORS.clientScriptInitializerIsNotSpecified]:            'Initialize your client script with one of the following: a JavaScript script, a JavaScript file path, or the name of a JavaScript module.',

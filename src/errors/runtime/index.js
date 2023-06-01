@@ -1,6 +1,6 @@
 import TEMPLATES from './templates';
 import createStackFilter from '../create-stack-filter';
-import { getCallsiteForMethod } from '../get-callsite';
+import { getCallsiteForError, getCallsiteForMethod } from '../get-callsite';
 import renderTemplate from '../../utils/render-template';
 import renderCallsiteSync from '../../utils/render-callsite-sync';
 import { RUNTIME_ERRORS } from '../types';
@@ -10,6 +10,7 @@ import semver from 'semver';
 import { removePreventModuleCachingSuffix } from '../test-run/utils';
 
 const ERROR_SEPARATOR = '\n\n';
+const NO_STACK_AVAILABLE_MSG = 'No stack trace available for this error';
 
 class ProcessTemplateInstruction {
     constructor (processFn) {
@@ -187,3 +188,32 @@ export class ImportESMInCommonJSError extends GeneralError {
         return esModule;
     }
 }
+
+
+function getFormattedMessage (error, renderMessageOnly) {
+    if (renderMessageOnly)
+        return error.message;
+
+    const callsite                = getCallsiteForError(error);
+    const stackFilter             = createStackFilter();
+    const renderedCallsite  = callsite?.renderSync({ stackFilter }) || NO_STACK_AVAILABLE_MSG;
+
+    return `${error.message}\n\n${renderedCallsite}`;
+}
+
+export class ReadConfigFileError extends GeneralError {
+    constructor (originalError, filePath, renderCallsite) {
+        const formattedError = getFormattedMessage(originalError, !renderCallsite);
+
+        super(RUNTIME_ERRORS.cannotReadConfigFile, filePath, formattedError);
+    }
+}
+
+export class RequireReporterError extends GeneralError {
+    constructor (originalError, reporterName) {
+        const formattedError = getFormattedMessage(originalError);
+
+        super(RUNTIME_ERRORS.cannotFindReporterForAlias, reporterName, formattedError);
+    }
+}
+

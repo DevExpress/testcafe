@@ -1,13 +1,12 @@
 import { ReporterPluginFactory } from '../reporter/interfaces';
-import { GeneralError } from '../errors/runtime';
-import { RUNTIME_ERRORS } from '../errors/types';
+import { RequireReporterError } from '../errors/runtime';
 
 export function requireReporterPluginFactory (reporterName: string): ReporterPluginFactory {
     try {
         return require('testcafe-reporter-' + reporterName);
     }
     catch (err: any) {
-        throw new GeneralError(RUNTIME_ERRORS.cannotFindReporterForAlias, reporterName, err.stack);
+        throw new RequireReporterError(err, reporterName);
     }
 }
 

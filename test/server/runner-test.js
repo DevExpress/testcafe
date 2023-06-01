@@ -144,7 +144,7 @@ describe('Runner', () => {
     });
 
     describe('.reporter()', () => {
-        it.only('Should raise an error if reporter was not found for the alias', () => {
+        it('Should raise an error if reporter was not found for the alias', () => {
             return runner
                 .browsers(connection)
                 .reporter('reporter42')
