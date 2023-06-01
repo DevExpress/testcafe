@@ -12,7 +12,6 @@ import { addAPI, addCustomMethods } from './add-api';
 import createSnapshotMethods from './create-snapshot-methods';
 import prepareApiFnArgs from './prepare-api-args';
 import returnSinglePropMode from '../return-single-prop-mode';
-import selectorApiExecutionMode from '../selector-api-execution-mode';
 
 export default class SelectorBuilder extends ClientFunctionBuilder {
     constructor (fn, options, callsiteNames, callsite) {
@@ -215,18 +214,6 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
 
             if (this.options.customMethods)
                 addCustomMethods(snapshot, () => snapshot.selector, SelectorBuilder, this.options.customMethods);
-
-            if (selectorApiExecutionMode.isSync) {
-                addAPI(
-                    snapshot,
-                    () => snapshot.selector,
-                    SelectorBuilder,
-                    this.options.customDOMProperties,
-                    this.options.customMethods,
-                    this._getObservedCallsites(),
-                    true
-                );
-            }
         }
 
         return snapshot;
