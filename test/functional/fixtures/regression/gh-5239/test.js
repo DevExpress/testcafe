@@ -1,8 +1,9 @@
-const http               = require('http');
-const path               = require('path');
-const config             = require('../../../config');
-const createTestCafe     = require('../../../../../lib');
-const { getFreePort }    = require('endpoint-utils');
+const http                       = require('http');
+const path                       = require('path');
+const config                     = require('../../../config');
+const createTestCafe             = require('../../../../../lib');
+const { getFreePort }            = require('endpoint-utils');
+const { skipInNativeAutomation } = require('../../../utils/skip-in');
 
 const ERROR_RESPONSE_COUNT        = 8;
 const SIGNIFICANT_REQUEST_TIMEOUT = 200;
@@ -59,7 +60,7 @@ const isLocalChrome = config.useLocalBrowsers && config.browsers.some(browser =>
 
 describe('[Regression](GH-5239)', function () {
     if (isLocalChrome) {
-        it('Should make multiple request for the page if the server does not respond', async function () {
+        skipInNativeAutomation('Should make multiple request for the page if the server does not respond', async function () {
             this.timeout(30000);
 
             const server = await createServer();
