@@ -1,5 +1,14 @@
 # Changelog
 
+## v2.6.2 (2023-06-01)
+
+TestCafe v2.6.2 introduces a number of bug fixes.
+
+### Bug fixes
+
+* Internet Explorer 11 hangs because it cannot process client-side scripts that ship with TestCafe v2.6.1  ([#7741](https://github.com/DevExpress/testcafe/issues/7741)).
+* The `pressKey('space')` action doesn't affect checkbox status in Firefox ([#6969](https://github.com/DevExpress/testcafe/issues/6969)).
+
 ## v2.6.1 (2023-05-29)
 
 TestCafe v2.6.1 retires **Experimental Debug** mode, and introduces a number of important bug fixes.
