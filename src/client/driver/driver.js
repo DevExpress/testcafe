@@ -1614,23 +1614,6 @@ export default class Driver extends serviceUtils.EventEmitter {
         return !!this.contextStorage.getItem(this.PENDING_WINDOW_SWITCHING_FLAG);
     }
 
-    _onPrepareClientEnvironmentInDebugMode (command) {
-        // NOTE: repeat the function call wrapping produced by the 'esm' module on the client-side
-        // (same as on the server-side).
-        nativeMethods.objectDefineProperty(window, command.esmRuntime, {
-            value: {
-                g: window,
-                c: window.eval, //eslint-disable-line no-eval
-            },
-            configurable: true, // NOTE: for the 'disablePageReloads' option
-        });
-
-        this._onReady(new DriverStatus({
-            isCommandResult: true,
-            result:          true,
-        }));
-    }
-
     _isStatusWithCommandResultInPendingWindowSwitchingMode (status) {
         return status.isCommandResult && this._isPendingSwitchingWindow();
     }
@@ -1761,9 +1744,6 @@ export default class Driver extends serviceUtils.EventEmitter {
             this._onBackupStoragesCommand();
         else if (command.type === COMMAND_TYPE.closeChildWindowOnFileDownloading)
             this._closeChildWindowOnFileDownloading();
-
-        else if (command.type === COMMAND_TYPE.prepareClientEnvironmentInDebugMode)
-            this._onPrepareClientEnvironmentInDebugMode(command);
 
         else if (command.type === COMMAND_TYPE.getProxyUrl)
             this._onGetProxyUrlCommand(command);

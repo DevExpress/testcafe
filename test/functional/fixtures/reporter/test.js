@@ -608,8 +608,8 @@ const del                = require('del');
             return runTests('testcafe-fixtures/index-test.js', 'Action done after test done', generateRunOptions(log))
                 .then(() => {
                     const EXPECTED_LOG = [
-                        { name: 'wait', action: 'start' },
                         { name: 'execute-client-function', action: 'start' },
+                        { name: 'wait', action: 'start' },
                         {
                             name:    'execute-client-function',
                             action:  'done',

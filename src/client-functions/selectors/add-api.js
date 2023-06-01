@@ -11,7 +11,6 @@ import selectorTextFilter from './selector-text-filter';
 import selectorAttributeFilter from './selector-attribute-filter';
 import prepareApiFnArgs from './prepare-api-args';
 import { getCallsiteId } from '../../utils/callsite';
-import selectorApiExecutionMode from '../selector-api-execution-mode';
 
 const VISIBLE_PROP_NAME       = 'visible';
 const SNAPSHOT_PROP_PRIMITIVE = `[object ${ReExecutablePromise.name}]`;
@@ -89,23 +88,6 @@ async function getSnapshot (getSelector, callsite, SelectorBuilder, getVisibleVa
     return node;
 }
 
-function getSnapshotSync (getSelector, callsite, SelectorBuilder, getVisibleValueMode) {
-    let node       = null;
-    const selector = new SelectorBuilder(getSelector(), { getVisibleValueMode, needError: true }, { instantiation: 'Selector' }, callsite).getFunction();
-
-    try {
-        node = selector();
-    }
-
-    catch (err) {
-        err.callsite = callsite;
-
-        throw err;
-    }
-
-    return node;
-}
-
 function assertAddCustomDOMPropertiesOptions (properties) {
     assertType(is.nonNullObject, 'addCustomDOMProperties', 'The "addCustomDOMProperties" option', properties);
 
@@ -161,9 +143,6 @@ function addSnapshotProperties (obj, getSelector, SelectorBuilder, properties, o
             get: () => {
                 const callsite = getCallsiteForMethod('get');
 
-                if (selectorApiExecutionMode.isSync)
-                    return getSnapshotSync(getSelector, callsite, SelectorBuilder)[prop];
-
                 const propertyPromise = ReExecutablePromise.fromFn(async () => {
                     const snapshot = await getSnapshot(getSelector, callsite, SelectorBuilder);
 
@@ -194,12 +173,6 @@ function addVisibleProperty ({ obj, getSelector, SelectorBuilder }) {
     Object.defineProperty(obj, VISIBLE_PROP_NAME, {
         get: () => {
             const callsite = getCallsiteForMethod('get');
-
-            if (selectorApiExecutionMode.isSync) {
-                const snapshot = getSnapshotSync(getSelector, callsite, SelectorBuilder, true);
-
-                return !!snapshot && snapshot[VISIBLE_PROP_NAME];
-            }
 
             return ReExecutablePromise.fromFn(async () => {
                 const snapshot = await getSnapshot(getSelector, callsite, SelectorBuilder, true);
@@ -285,12 +258,6 @@ function addSnapshotPropertyShorthands ({ obj, getSelector, SelectorBuilder, cus
     obj.getStyleProperty = prop => {
         const callsite = getCallsiteForMethod('getStyleProperty');
 
-        if (selectorApiExecutionMode.isSync) {
-            const snapshot = getSnapshotSync(getSelector, callsite, SelectorBuilder);
-
-            return snapshot.style ? snapshot.style[prop] : void 0;
-        }
-
         return ReExecutablePromise.fromFn(async () => {
             const snapshot = await getSnapshot(getSelector, callsite, SelectorBuilder);
 
@@ -300,12 +267,6 @@ function addSnapshotPropertyShorthands ({ obj, getSelector, SelectorBuilder, cus
 
     obj.getAttribute = attrName => {
         const callsite = getCallsiteForMethod('getAttribute');
-
-        if (selectorApiExecutionMode.isSync) {
-            const snapshot = getSnapshotSync(getSelector, callsite, SelectorBuilder);
-
-            return getAttributeValue(snapshot.attributes, attrName);
-        }
 
         return ReExecutablePromise.fromFn(async () => {
             const snapshot = await getSnapshot(getSelector, callsite, SelectorBuilder);
@@ -317,12 +278,6 @@ function addSnapshotPropertyShorthands ({ obj, getSelector, SelectorBuilder, cus
     obj.hasAttribute = attrName => {
         const callsite = getCallsiteForMethod('hasAttribute');
 
-        if (selectorApiExecutionMode.isSync) {
-            const snapshot = getSnapshotSync(getSelector, callsite, SelectorBuilder);
-
-            return snapshot.attributes ? snapshot.attributes.hasOwnProperty(attrName) : false;
-        }
-
         return ReExecutablePromise.fromFn(async () => {
             const snapshot = await getSnapshot(getSelector, callsite, SelectorBuilder);
 
@@ -333,12 +288,6 @@ function addSnapshotPropertyShorthands ({ obj, getSelector, SelectorBuilder, cus
     obj.getBoundingClientRectProperty = prop => {
         const callsite = getCallsiteForMethod('getBoundingClientRectProperty');
 
-        if (selectorApiExecutionMode.isSync) {
-            const snapshot = getSnapshotSync(getSelector, callsite, SelectorBuilder);
-
-            return snapshot.boundingClientRect ? snapshot.boundingClientRect[prop] : void 0;
-        }
-
         return ReExecutablePromise.fromFn(async () => {
             const snapshot = await getSnapshot(getSelector, callsite, SelectorBuilder);
 
@@ -348,12 +297,6 @@ function addSnapshotPropertyShorthands ({ obj, getSelector, SelectorBuilder, cus
 
     obj.hasClass = name => {
         const callsite = getCallsiteForMethod('hasClass');
-
-        if (selectorApiExecutionMode.isSync) {
-            const snapshot = getSnapshotSync(getSelector, callsite, SelectorBuilder);
-
-            return snapshot.classNames ? snapshot.classNames.includes(name) : false;
-        }
 
         return ReExecutablePromise.fromFn(async () => {
             const snapshot = await getSnapshot(getSelector, callsite, SelectorBuilder);
@@ -380,29 +323,9 @@ function createCounter (getSelector, SelectorBuilder) {
     };
 }
 
-function createCounterSync (getSelector, SelectorBuilder) {
-    const builder  = new SelectorBuilder(getSelector(), { counterMode: true }, { instantiation: 'Selector' });
-    const counter  = builder.getFunction();
-    const callsite = getCallsiteForMethod('get');
-
-    return () => {
-        try {
-            return counter();
-        }
-
-        catch (err) {
-            err.callsite = callsite;
-            throw err;
-        }
-    };
-}
-
 function addCounterProperties ({ obj, getSelector, SelectorBuilder }) {
     Object.defineProperty(obj, 'count', {
         get: () => {
-            if (selectorApiExecutionMode.isSync)
-                return createCounterSync(getSelector, SelectorBuilder)();
-
             const counter = createCounter(getSelector, SelectorBuilder);
 
             return ReExecutablePromise.fromFn(() => counter());
@@ -411,9 +334,6 @@ function addCounterProperties ({ obj, getSelector, SelectorBuilder }) {
 
     Object.defineProperty(obj, 'exists', {
         get: () => {
-            if (selectorApiExecutionMode.isSync)
-                return createCounterSync(getSelector, SelectorBuilder)() > 0;
-
             const counter = createCounter(getSelector, SelectorBuilder);
 
             return ReExecutablePromise.fromFn(async () => await counter() > 0);
@@ -869,15 +789,12 @@ function addHierarchicalSelectors (options) {
     };
 }
 
-export function addAPI (selector, getSelector, SelectorBuilder, customDOMProperties, customMethods, observedCallsites, skipSnapshotProperties) {
+export function addAPI (selector, getSelector, SelectorBuilder, customDOMProperties, customMethods, observedCallsites) {
     const options = { obj: selector, getSelector, SelectorBuilder, customDOMProperties, customMethods, observedCallsites };
 
     addFilterMethods(options);
     addHierarchicalSelectors(options);
-
-    if (!skipSnapshotProperties)
-        addSnapshotPropertyShorthands(options);
-
+    addSnapshotPropertyShorthands(options);
     addCustomDOMPropertiesMethod(options);
     addCustomMethodsMethod(options);
     addCounterProperties(options);

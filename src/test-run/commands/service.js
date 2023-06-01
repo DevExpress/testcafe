@@ -45,10 +45,3 @@ export class GetActiveElementCommand {
         this.type = TYPE.getActiveElement;
     }
 }
-
-export class PrepareClientEnvironmentInDebugMode {
-    constructor (esmRuntime) {
-        this.type       = TYPE.prepareClientEnvironmentInDebugMode;
-        this.esmRuntime = esmRuntime;
-    }
-}

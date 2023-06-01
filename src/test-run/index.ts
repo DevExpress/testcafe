@@ -107,7 +107,6 @@ import TestRunPhase from './phase';
 
 import {
     ExecuteClientFunctionCommand,
-    ExecuteClientFunctionCommandBase,
     ExecuteSelectorCommand,
 } from './commands/observation';
 
@@ -264,7 +263,6 @@ export default class TestRun extends AsyncEventEmitter {
     private asyncJsExpressionCallsites: Map<string, CallsiteRecord>;
     public readonly browser: Browser;
     private readonly _messageBus?: MessageBus;
-    private _clientEnvironmentPrepared = false;
     public readonly cookieProvider: CookieProvider;
     private _storagesProvider: StoragesProvider;
     public readonly startRunExecutionTime?: Date;
@@ -1050,12 +1048,6 @@ export default class TestRun extends AsyncEventEmitter {
 
             (command as any).options.confidential = isPasswordInput(node);
         }
-        else if (command instanceof ExecuteClientFunctionCommandBase && !this._clientEnvironmentPrepared) {
-            this._clientEnvironmentPrepared = true;
-
-            await this._internalExecuteCommand(new serviceCommands.PrepareClientEnvironmentInDebugMode(command.esmRuntime));
-        }
-
     }
 
     public async _setBreakpointIfNecessary (command: CommandBase, callsite?: CallsiteRecord): Promise<void> {
