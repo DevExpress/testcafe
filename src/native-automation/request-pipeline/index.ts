@@ -310,7 +310,7 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
             const pipelineContext = this._contextInfo.getPipelineContext(getRequestId(event));
 
             if (!pipelineContext || !pipelineContext.mock)
-                await safeContinueRequest(this._client, event, sessionId, this._createContinueEventArgs(event, pipelineContext.reqOpts));
+                await safeContinueRequest(this._client, event, sessionId, this._createContinueEventArgs(event, pipelineContext?.reqOpts));
             else {
                 requestPipelineMockLogger('begin mocking request %r', event);
 
@@ -456,7 +456,10 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
         await this._client.Fetch.disable();
     }
 
-    private _createContinueEventArgs (event: Protocol.Fetch.RequestPausedEvent, reqOpts: any): ContinueRequestArgs {
+    private _getRequestOptionsModifiedByRequestHook (event: Protocol.Fetch.RequestPausedEvent, reqOpts: any): ContinueRequestArgs {
+        if (!reqOpts)
+            return {};
+
         const modifiedUrl  = new URL(event.request.url);
         const host         = modifiedUrl.host;
 
@@ -483,10 +486,20 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
                 modifiedUrl.port = port;
         }
 
-        const postData = this._getUploadPostData(event);
         const url      = modifiedUrl.toString() !== event.request.url ? modifiedUrl.toString() : void 0;
         const method   = reqOpts.method;
 
-        return { postData, url, method };
+        return { url, method };
+    }
+
+    private _createContinueEventArgs (event: Protocol.Fetch.RequestPausedEvent, reqOpts: any): ContinueRequestArgs {
+        const continueEventArgs = {
+            postData: this._getUploadPostData(event),
+        };
+
+        if (reqOpts)
+            Object.assign(continueEventArgs, this._getRequestOptionsModifiedByRequestHook(event, reqOpts));
+
+        return continueEventArgs;
     }
 }
