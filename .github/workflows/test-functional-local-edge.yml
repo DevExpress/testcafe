@@ -1,0 +1,19 @@
+name: Test Functional (Local Edge)
+
+on:
+  workflow_dispatch:
+    inputs:
+      sha:
+        description: 'The test commit SHA or ref'
+        required: true
+        default: 'master'
+      merged_sha:
+        description: 'The merge commit SHA'
+      deploy_run_id:
+        description: 'The ID of a deployment workspace run with artifacts'
+jobs:
+  test:
+    uses: ./.github/workflows/test-functional.yml
+    with:
+      os: 'windows-latest'
+      test-script: 'npx gulp test-functional-local-headless-edge-run --steps-as-tasks'
