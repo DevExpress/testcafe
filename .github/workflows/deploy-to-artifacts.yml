@@ -133,8 +133,9 @@ jobs:
             tasks.push('test-client-desktop.yml');
             tasks.push('test-client-mobile.yml');
             tasks.push('test-functional-docker.yml');
-            tasks.push('test-functional-local-chrome.yml');
             tasks.push('test-functional-local-esm.yml');
+            tasks.push('test-functional-local-chrome.yml');
+            tasks.push('test-functional-local-edge.yml');
             tasks.push('test-functional-local-firefox.yml');
             tasks.push('test-functional-local-multiple-windows.yml');
             tasks.push('test-functional-local-native-automation.yml');
