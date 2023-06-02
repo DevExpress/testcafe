@@ -216,7 +216,7 @@ export class ReadConfigFileError extends GeneralError {
     }
 }
 
-export class RequireReporterError extends GeneralError {
+export class AttachReporterError extends GeneralError {
     constructor (originalError, reporterName) {
         const formattedError = getFormattedMessage(originalError);
 

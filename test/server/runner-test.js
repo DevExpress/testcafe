@@ -5,6 +5,7 @@ const fs                      = require('fs');
 const del                     = require('del');
 const request                 = require('request');
 const { times, uniqBy }       = require('lodash');
+const stripAnsi               = require('strip-ansi');
 const consoleWrapper          = require('./helpers/console-wrapper');
 const isAlpine                = require('./helpers/is-alpine');
 const createTestCafe          = require('../../lib/');
@@ -20,6 +21,7 @@ const { createReporter }      = require('../functional/utils/reporter');
 const proxyquire              = require('proxyquire');
 const BrowserConnectionStatus = require('../../lib/browser/connection/status');
 const TestCafeConfiguration   = require('../../lib/configuration/testcafe-configuration');
+const fakeReporterWithError   = require('./data/reporter/fake-reporter-with-error');
 
 const {
     browserConnectionGatewayMock,
@@ -157,6 +159,32 @@ describe('Runner', () => {
                     expect(err.message.startsWith('An error occurred while loading the "reporter42" reporter. ' +
                                                   'Please check the reporter parameter for errors. Error details:')).to.be.true;
                     expect(err.message.endsWith('No stack trace available for this error')).to.be.true;
+                });
+        });
+
+        it('Should raise an error if reporter code contains an error', () => {
+            return runner
+                .browsers(connection)
+                .reporter(fakeReporterWithError)
+                .src('test/server/data/test-suites/basic/testfile2.js')
+                .run()
+                .then(() => {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(err => {
+                    expect(stripAnsi(err.message)).eql(
+                        'An error occurred while loading the "fakeReporter" reporter. Please check the reporter parameter for errors. Error details:' +
+                             '\n\n' +
+                             'undefProp is not defined' +
+                             '\n\n' +
+                             '   1 |module.exports = function fakeReporter() {\n' +
+                             '   2 |    return {\n' +
+                             ' > 3 |        someProp: undefProp\n' +
+                             '   4 |    }\n' +
+                             '   5 |}\n' +
+                             '   6 |\n\n' +
+                             `   at fakeReporter (${path.resolve('./test/server/data/reporter/fake-reporter-with-error.js')}:3:19)`
+                    );
                 });
         });
 
