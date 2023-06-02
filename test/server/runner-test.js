@@ -154,8 +154,9 @@ describe('Runner', () => {
                     throw new Error('Promise rejection expected');
                 })
                 .catch(err => {
-                    expect(err.message).eql('The "reporter42" reporter does not exist. ' +
-                                            'Check the reporter parameter for errors.');
+                    expect(err.message.startsWith('An error occurred while loading the "reporter42" reporter. ' +
+                                                  'Please check the reporter parameter for errors. Error details:')).to.be.true;
+                    expect(err.message.endsWith('No stack trace available for this error')).to.be.true;
                 });
         });
 

@@ -19,6 +19,7 @@ import log from '../cli/log';
 import { Dictionary } from './interfaces';
 import Extensions from './formats';
 import { ReadConfigFileError } from '../errors/runtime';
+import { RUNTIME_ERRORS } from '../errors/types';
 
 const DEBUG_LOGGER = debug('testcafe:configuration');
 
@@ -49,8 +50,8 @@ export default class Configuration {
         log.write(message);
     }
 
-    private static _throwReadConfigError (error: Error, path: string, renderCallsite: boolean): void {
-        const readConfigError = new ReadConfigFileError(error, path, renderCallsite);
+    private static _throwReadConfigError (code: string, error: Error, path: string, renderCallsite: boolean): void {
+        const readConfigError = new ReadConfigFileError(code, error, path, renderCallsite);
 
         DEBUG_LOGGER(readConfigError.message);
         DEBUG_LOGGER(error);
@@ -221,7 +222,7 @@ export default class Configuration {
                 return require(filePath);
             }
             catch (error: any) {
-                Configuration._throwReadConfigError(error, filePath, true);
+                Configuration._throwReadConfigError(RUNTIME_ERRORS.cannotReadConfigFile, error, filePath, true);
             }
         }
 
@@ -233,7 +234,7 @@ export default class Configuration {
             return await readFile(filePath);
         }
         catch (error: any) {
-            Configuration._throwReadConfigError(error, filePath || '', false);
+            Configuration._throwReadConfigError(RUNTIME_ERRORS.cannotReadConfigFile, error, filePath || '', false);
         }
 
         return null;
@@ -244,7 +245,7 @@ export default class Configuration {
             return JSON5.parse(configurationFileContent.toString());
         }
         catch (error: any) {
-            Configuration._throwReadConfigError(error, filePath || '', false);
+            Configuration._throwReadConfigError(RUNTIME_ERRORS.cannotParseConfigFile, error, filePath || '', false);
         }
 
         return null;

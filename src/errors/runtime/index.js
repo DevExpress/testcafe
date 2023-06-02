@@ -189,23 +189,30 @@ export class ImportESMInCommonJSError extends GeneralError {
     }
 }
 
-
 function getFormattedMessage (error, renderMessageOnly) {
     if (renderMessageOnly)
         return error.message;
 
-    const callsite                = getCallsiteForError(error);
-    const stackFilter             = createStackFilter();
-    const renderedCallsite  = callsite?.renderSync({ stackFilter }) || NO_STACK_AVAILABLE_MSG;
+    let formattedMessage = '';
 
-    return `${error.message}\n\n${renderedCallsite}`;
+    try {
+        const callsite         = getCallsiteForError(error);
+        const stackFilter      = createStackFilter();
+
+        formattedMessage = callsite?.renderSync({ stackFilter }) || NO_STACK_AVAILABLE_MSG;
+    }
+    catch (_) {
+        formattedMessage = NO_STACK_AVAILABLE_MSG;
+    }
+
+    return `${error.message}\n\n${formattedMessage}`;
 }
 
 export class ReadConfigFileError extends GeneralError {
-    constructor (originalError, filePath, renderCallsite) {
+    constructor (code, originalError, filePath, renderCallsite) {
         const formattedError = getFormattedMessage(originalError, !renderCallsite);
 
-        super(RUNTIME_ERRORS.cannotReadConfigFile, filePath, formattedError);
+        super(code, filePath, formattedError);
     }
 }
 

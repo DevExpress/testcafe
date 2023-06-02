@@ -188,4 +188,5 @@ export const RUNTIME_ERRORS = {
     cannotImportESMInCommonsJS:                         'E1081',
     setNativeAutomationForUnsupportedBrowsers:          'E1082',
     cannotReadConfigFile:                               'E1083',
+    cannotParseConfigFile:                              'E1084',
 };

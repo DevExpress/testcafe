@@ -100,6 +100,10 @@ export default {
                                            '\n' +
                                            '{err}',
 
+    [RUNTIME_ERRORS.cannotParseConfigFile]: 'Failed to parse the "{path}" configuration file. \n\nThis file is not a well-formed JSON file. Error details:\n' +
+                                           '\n' +
+                                           '{err}',
+
     [RUNTIME_ERRORS.cannotFindReporterForAlias]: 'An error occurred while loading the "{name}" reporter. Please check the reporter parameter for errors. Error details:\n' +
                                                  '\n' +
                                                  '{err}',
