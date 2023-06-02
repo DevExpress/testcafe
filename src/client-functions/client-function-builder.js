@@ -158,6 +158,13 @@ export default class ClientFunctionBuilder {
     }
 
     _processResult (result) {
+        // HACK: in some cases related to navigation from ClientFunction or removing target iframe for the ClientFunction
+        // we get an invalid result from the replicator on the client side.
+        // I didn't find a stable reproduction scenario.
+        // So, I just added a hack for this case.
+        if (result === null)
+            result = [result];
+
         return this.replicator.decode(result);
     }
 
