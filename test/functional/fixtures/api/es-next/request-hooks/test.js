@@ -57,6 +57,10 @@ describe('Request Hooks', () => {
         it('Log mocked requests', () => {
             return runTests('./testcafe-fixtures/request-logger/mocked-requests.js', null, { only: 'chrome' });
         });
+
+        it('Log response body for requests without response body (GH-7213)', () => {
+            return runTests('./testcafe-fixtures/request-logger/without-response-body.js', null, { only: 'chrome' });
+        });
     });
 
     describe('API', () => {
