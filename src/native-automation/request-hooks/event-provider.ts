@@ -24,7 +24,7 @@ export default class NativeAutomationRequestHookEventProvider extends RequestHoo
             return getResponseAsBuffer(responseObj);
         }
         catch {
-            // NOTE: The 'Fetch.getResponseBody' method crashes on Protobuf requests (https://protobuf.dev/).
+            // NOTE: The 'Fetch.getResponseBody' method crashes on some Protobuf requests (https://protobuf.dev/).
             // This is a bug of the Chrome DevTools Protocol.
             return Buffer.alloc(0);
         }
