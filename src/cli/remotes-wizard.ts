@@ -6,11 +6,13 @@ import dedent from 'dedent';
 
 import BrowserConnection from '../browser/connection';
 import BrowserConnectionGateway from '../browser/connection/gateway';
+import TestCafeConfiguration from '../configuration/testcafe-configuration';
 
 interface TestCafe {
     browserConnectionGateway: BrowserConnectionGateway;
     createBrowserConnection(): Promise<BrowserConnection>;
     initializeBrowserConnectionGateway(): Promise<void>;
+    configuration: TestCafeConfiguration;
 }
 
 export default async function (testCafe: TestCafe, remoteCount: number, showQRCode: boolean): Promise<BrowserConnection[]> {
@@ -28,6 +30,9 @@ export default async function (testCafe: TestCafe, remoteCount: number, showQRCo
 
         if (showQRCode)
             log.write('You can either enter the URL or scan the QR-code.');
+
+        // NOTE: 'remote' browser connection cannot be in the 'native automation' mode.
+        testCafe.configuration.mergeOptions({ disableNativeAutomation: true });
 
         await testCafe.initializeBrowserConnectionGateway();
 

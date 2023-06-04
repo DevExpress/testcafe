@@ -85,8 +85,10 @@ export default class TestCafe {
 
     // API
     async createBrowserConnection () {
-        // NOTE: 'remote' browser connection cannot be native automation.
         const browserInfo = await browserProviderPool.getBrowserInfo('remote');
+
+        // NOTE: 'remote' browser connection cannot be in the 'native automation' mode.
+        this.configuration.mergeOptions({ disableNativeAutomation: true });
 
         await this.initializeBrowserConnectionGateway();
 

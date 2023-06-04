@@ -32,7 +32,7 @@ describe('TestRunController', () => {
             await testRunController.start(browserConnectionMock);
         }
         catch (err) {
-            expect(err.message).to.equal('The "testBrowser" do not support the Native Automation mode. Remove the "native automation" option to continue.');
+            expect(err.message).to.equal('The "testBrowser" do not support the Native Automation mode. Use the "disable native automation" option to continue.');
         }
     });
 });

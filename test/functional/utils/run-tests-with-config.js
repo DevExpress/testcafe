@@ -8,7 +8,7 @@ module.exports = async (testName, configPath) => {
 
     const cafe        = await createTestCafe({ configFile: path.resolve(configPath) });
     const runner      = cafe.createRunner();
-    const failedCount = await runner.run({ nativeAutomation: config.nativeAutomation });
+    const failedCount = await runner.run({ disableNativeAutomation: !config.nativeAutomation });
 
     await cafe.close();
 

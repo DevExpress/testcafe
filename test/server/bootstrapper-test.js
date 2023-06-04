@@ -116,5 +116,45 @@ describe('Bootstrapper', () => {
                                         'The test.globalAfter hook (string) is not of expected type (function).');
             }
         });
+
+        it("Should disable native automation mode if it's necessary", async () => {
+            let remoteBrowserConnections    = [];
+            let automatedBrowserConnections = [];
+
+            const chromeBrowserInfoMock = {
+                provider: {
+                    supportNativeAutomation: () => true,
+                },
+            };
+
+            const firefoxBrowserInfoMock = {
+                provider: {
+                    supportNativeAutomation: () => false,
+                },
+            };
+
+            bootstrapper.configuration.clear();
+            bootstrapper._disableNativeAutomationIfNecessary(remoteBrowserConnections, automatedBrowserConnections);
+            expect(bootstrapper.configuration._mergedOptions).to.be.undefined;
+
+            remoteBrowserConnections = [{}];
+
+            bootstrapper._disableNativeAutomationIfNecessary(remoteBrowserConnections, automatedBrowserConnections);
+            expect(bootstrapper.configuration._mergedOptions).eql({ disableNativeAutomation: true });
+            bootstrapper.configuration.clear();
+
+            remoteBrowserConnections    = [];
+            automatedBrowserConnections = [chromeBrowserInfoMock];
+
+            bootstrapper._disableNativeAutomationIfNecessary(remoteBrowserConnections, automatedBrowserConnections);
+            expect(bootstrapper.configuration._mergedOptions).to.be.undefined;
+            bootstrapper.configuration.clear();
+
+            automatedBrowserConnections = [chromeBrowserInfoMock, firefoxBrowserInfoMock];
+
+            bootstrapper._disableNativeAutomationIfNecessary(remoteBrowserConnections, automatedBrowserConnections);
+            expect(bootstrapper.configuration._mergedOptions).eql({ disableNativeAutomation: true });
+            bootstrapper.configuration.clear();
+        });
     });
 });
