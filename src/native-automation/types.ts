@@ -44,6 +44,7 @@ export interface ContinueRequestArgs {
     postData?: string;
     method?: string;
     url?: string;
+    headers?: Protocol.Fetch.HeaderEntry[];
 }
 
 export type SessionId = string | undefined;

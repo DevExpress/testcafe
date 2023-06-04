@@ -488,8 +488,9 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
 
         const url      = modifiedUrl.toString() !== event.request.url ? modifiedUrl.toString() : void 0;
         const method   = reqOpts.method;
+        const headers  = this._formatHeadersForContinueResponse(event.request.headers);
 
-        return { url, method };
+        return { url, method, headers };
     }
 
     private _createContinueEventArgs (event: Protocol.Fetch.RequestPausedEvent, reqOpts: any): ContinueRequestArgs {
@@ -501,5 +502,14 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
             Object.assign(continueEventArgs, this._getRequestOptionsModifiedByRequestHook(event, reqOpts));
 
         return continueEventArgs;
+    }
+
+    private _formatHeadersForContinueResponse (headers: Protocol.Network.Headers): Protocol.Fetch.HeaderEntry[] {
+        const result = [];
+
+        for (const header in headers)
+            result.push({ name: header, value: headers[header] });
+
+        return result;
     }
 }

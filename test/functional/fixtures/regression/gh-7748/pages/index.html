@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<div id="target">
+</div>
+<script>
+    const res = fetch('http://localhost:3000/get-browser-name').then(async (data) => {
+        document.querySelector('#target').innerHTML = await data.text();
+    })
+</script>
+</body>
+</html>
