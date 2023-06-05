@@ -1,7 +1,7 @@
 import { RequestLogger, RequestHook } from 'testcafe';
 
 fixture`Set a Custom Referer`
-    .page`http://localhost:3000/fixtures/regression/gh-7748/pages/index.html`;
+    .page`http://localhost:3000/fixtures/regression/gh-7764/pages/index.html`;
 
 export class MyRequestHook extends RequestHook {
     constructor (requestFilterRules, responseEventConfigureOpts) {
@@ -18,7 +18,7 @@ export class MyRequestHook extends RequestHook {
 
 const hook = new MyRequestHook();
 
-const logger = RequestLogger('http://localhost:3000/fixtures/regression/gh-7748/pages/index.html', {
+const logger = RequestLogger('http://localhost:3000/fixtures/regression/gh-7764/pages/index.html', {
     logRequestHeaders: true,
 });
 
