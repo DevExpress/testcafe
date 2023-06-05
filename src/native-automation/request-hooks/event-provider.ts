@@ -17,9 +17,22 @@ export default class NativeAutomationRequestHookEventProvider extends RequestHoo
         return context.onResponseEventData.some((eventData: OnResponseEventData) => eventData.opts.includeBody);
     }
 
+    private static async _safeGetResponseBody (client: ProtocolApi, event: RequestPausedEvent): Promise<Buffer> {
+        try {
+            const responseObj = await client.Fetch.getResponseBody({ requestId: event.requestId });
+
+            return getResponseAsBuffer(responseObj);
+        }
+        catch {
+            // NOTE: The 'Fetch.getResponseBody' method crashes on some Protobuf requests (https://protobuf.dev/).
+            // This is a bug of the Chrome DevTools Protocol.
+            return Buffer.alloc(0);
+        }
+    }
+
     private static async _setResponseBody ({ pipelineContext, resourceBody, eventFactory, event, client }: { pipelineContext: NativeAutomationPipelineContext, resourceBody: Buffer | null, eventFactory: BaseRequestHookEventFactory, event: RequestPausedEvent, client: ProtocolApi }): Promise<void> {
         if (resourceBody?.length || isPreflightRequest(event)) {
-            (eventFactory as RequestPausedEventBasedEventFactory).setResponseBody(resourceBody as Buffer);
+            (eventFactory as RequestPausedEventBasedEventFactory).setResponseBody(resourceBody || Buffer.alloc(0));
 
             return;
         }
@@ -30,8 +43,7 @@ export default class NativeAutomationRequestHookEventProvider extends RequestHoo
         if (!hasOnResponseWithBody)
             return;
 
-        const responseObj  = await client.Fetch.getResponseBody({ requestId: event.requestId });
-        const responseBody = getResponseAsBuffer(responseObj);
+        const responseBody = await NativeAutomationRequestHookEventProvider._safeGetResponseBody(client, event);
 
         (eventFactory as RequestPausedEventBasedEventFactory).setResponseBody(responseBody);
     }

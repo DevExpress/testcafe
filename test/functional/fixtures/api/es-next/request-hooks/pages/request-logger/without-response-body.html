@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <button id="send-options-request">Send OPTIONS request</button>
+    <div id="options-status-request">...</div>
+    <button id="send-204-request">Send request with 204 status code</button>
+    <div id="204-status-request">...</div>
+    <script>
+        function sendXhrRequest (method, url, statusElement) {
+            const xhr = new XMLHttpRequest();
+
+            xhr.addEventListener('load', function () {
+                statusElement.textContent = 'Request completed';
+            });
+            xhr.addEventListener('error', function () {
+                statusElement.textContent = 'Request failed';
+            });
+            xhr.open(method, url);
+            xhr.send();
+        }
+
+        const sendOptionsRequestBtn   = document.getElementById('send-options-request');
+        const optionsStatusRequestDiv = document.getElementById('options-status-request');
+        const send204RequestBtn       = document.getElementById('send-204-request');
+        const status204RequestDiv     = document.getElementById('204-status-request');
+
+        sendOptionsRequestBtn.addEventListener('click', function () {
+            sendXhrRequest('OPTIONS', 'http://localhost:3000/options', optionsStatusRequestDiv);
+        });
+
+        send204RequestBtn.addEventListener('click', function () {
+            sendXhrRequest('GET', 'http://localhost:3000/204', status204RequestDiv);
+        });
+    </script>
+</body>
+</html>

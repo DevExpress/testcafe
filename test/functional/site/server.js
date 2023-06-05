@@ -113,6 +113,11 @@ Server.prototype._setupRoutes = function (apiRouter) {
         next();
     });
 
+    this.app.get('/204', function (req, res) {
+        res.status(204);
+        res.end();
+    });
+
     this.app.get('*', function (req, res) {
         const reqPath      = req.params[0] || '';
         const resourcePath = path.join(server.basePath, reqPath);
@@ -198,6 +203,10 @@ Server.prototype._setupRoutes = function (apiRouter) {
         });
 
         res.end();
+    });
+
+    this.app.options('/options', function (req, res) {
+        res.send();
     });
 };
 
