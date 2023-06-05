@@ -88,8 +88,6 @@ import delegatedAPI from './delegated-api';
 
 const originalThen = Promise.resolve().then;
 
-let inDebug = false;
-
 export default class TestController {
     constructor (testRun) {
         this._executionContext = null;
@@ -596,9 +594,6 @@ export default class TestController {
     }
 
     [delegatedAPI(DebugCommand.methodName)] () {
-        // NOTE: do not need to enqueue the Debug command if we are in debugging mode.
-        // The Debug command will be executed by CDP.
-        // Also, we are forced to add empty function to the execution chain to preserve it.
         return this.enqueueCommand(DebugCommand);
     }
 
@@ -635,28 +630,9 @@ export default class TestController {
     [delegatedAPI(ReportCommand.methodName)] (...args) {
         return this.enqueueCommand(ReportCommand, { args });
     }
-
-    static enableDebugForNonDebugCommands () {
-        inDebug = true;
-    }
-
-    static disableDebugForNonDebugCommands () {
-        inDebug = false;
-    }
-
     shouldStop (command) {
         // NOTE: should always stop on Debug command
-        if (command === 'debug')
-            return true;
-
-        // NOTE: should stop on other actions after the `Next Action` button is clicked
-        if (inDebug) {
-            inDebug = false;
-
-            return true;
-        }
-
-        return false;
+        return command === 'debug';
     }
 }
 

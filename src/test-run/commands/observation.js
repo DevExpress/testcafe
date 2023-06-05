@@ -67,12 +67,3 @@ export class DebugCommand extends ActionCommandBase {
         super(null, null, TYPE.debug);
     }
 }
-
-export class DisableDebugCommand extends ActionCommandBase {
-    static methodName = camelCase(TYPE.disableDebug);
-
-    constructor () {
-        super(null, null, TYPE.disableDebug);
-    }
-}
-

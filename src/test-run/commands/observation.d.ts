@@ -29,5 +29,3 @@ export class WaitCommand extends ActionCommandBase {
 }
 
 export class DebugCommand extends ActionCommandBase { }
-
-export class DisableDebugCommand extends ActionCommandBase { }

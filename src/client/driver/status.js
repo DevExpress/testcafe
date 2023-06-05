@@ -16,7 +16,6 @@ export default class DriverStatus extends Assignable {
         this.isPendingWindowSwitching              = false;
         this.isObservingFileDownloadingInNewWindow = false;
         this.isFirstRequestAfterWindowSwitching    = false;
-        this.debug                                 = '';
         this.warnings                              = null;
 
         this._assignFrom(obj, true);

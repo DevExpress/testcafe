@@ -1497,14 +1497,6 @@ export default class Driver extends serviceUtils.EventEmitter {
         });
     }
 
-    _onDisableDebugCommand () {
-        this.statusBar._resetState();
-
-        this._onReady(new DriverStatus({
-            isCommandResult: true,
-        }));
-    }
-
     _onSetTestSpeedCommand (command) {
         this.speed = command.speed;
 
@@ -1638,12 +1630,6 @@ export default class Driver extends serviceUtils.EventEmitter {
 
     // Routing
     _onReady (status) {
-        if (this.debug) {
-            status.debug = this.debug;
-
-            this.debug = null;
-        }
-
         if (this._isStatusWithCommandResultInPendingWindowSwitchingMode(status))
             this.emit(STATUS_WITH_COMMAND_RESULT_EVENT);
 
@@ -1679,9 +1665,6 @@ export default class Driver extends serviceUtils.EventEmitter {
 
         else if (command.type === COMMAND_TYPE.setBreakpoint)
             this._onSetBreakpointCommand(command);
-
-        else if (command.type === COMMAND_TYPE.disableDebug)
-            this._onDisableDebugCommand();
 
         else if (command.type === COMMAND_TYPE.switchToMainWindow)
             this._onSwitchToMainWindowCommand(command);

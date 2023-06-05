@@ -10,6 +10,4 @@ export default class TestController {
     public warningLog: WarningLog;
     public enqueueCommand (CmdCtor: unknown, cmdArgs: object, validateCommand: Function, callsite?: CallsiteRecord): () => Promise<unknown>;
     public checkForExcessiveAwaits (checkedCallsite: CallsiteRecord, { actionId }: CommandBase): void;
-    public static enableDebugForNonDebugCommands (): void;
-    public static disableDebugForNonDebugCommands (): void;
 }
