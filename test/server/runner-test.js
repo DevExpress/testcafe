@@ -156,9 +156,9 @@ describe('Runner', () => {
                     throw new Error('Promise rejection expected');
                 })
                 .catch(err => {
-                    expect(err.message.startsWith('An error occurred while loading the "reporter42" reporter. ' +
-                                                  'Please check the reporter parameter for errors. Error details:')).to.be.true;
-                    expect(err.message.endsWith('No stack trace available for this error')).to.be.true;
+                    expect(err.message).eql('An error occurred while loading the "reporter42" reporter. Please check the reporter parameter for errors. Error details:' +
+                                            '\n\n' +
+                                            'Cannot find module "testcafe-reporter-reporter42"');
                 });
         });
 

@@ -2,11 +2,13 @@ import { ReporterPluginFactory } from '../reporter/interfaces';
 import { AttachReporterError } from '../errors/runtime';
 
 export function requireReporterPluginFactory (reporterName: string): ReporterPluginFactory {
+    const reporterFullName = `testcafe-reporter-${reporterName}`;
+
     try {
-        return require('testcafe-reporter-' + reporterName);
+        return require(reporterFullName);
     }
     catch (err: any) {
-        throw new AttachReporterError(err, reporterName);
+        throw new AttachReporterError(err, reporterFullName);
     }
 }
 
