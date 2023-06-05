@@ -830,11 +830,6 @@ export default class TestRun extends AsyncEventEmitter {
         this.browserManipulationQueue.removeAllNonServiceManipulations();
     }
 
-    private _handleDebugState (driverStatus: DriverStatus): void {
-        if (driverStatus.debug)
-            this.emit(driverStatus.debug);
-    }
-
     // Current driver task
     public get currentDriverTask (): DriverTask {
         return this.driverTaskQueue[0];
@@ -925,8 +920,6 @@ export default class TestRun extends AsyncEventEmitter {
 
         this.consoleMessages.concat(driverStatus.consoleMessages);
 
-        this._handleDebugState(driverStatus);
-
         if (!currentTaskRejectedByError && driverStatus.isCommandResult) {
             if (isTestDone) {
                 this._resolveCurrentDriverTask();
@@ -1006,13 +999,6 @@ export default class TestRun extends AsyncEventEmitter {
 
         else if (command.type === COMMAND_TYPE.debug)
             this.debugging = true;
-
-        else if (command.type === COMMAND_TYPE.disableDebug) {
-            this.debugLogger.hideBreakpoint(this.session.id);
-
-            this.debugging = false;
-        }
-
     }
 
     private async _adjustScreenshotCommand (command: TakeScreenshotBaseCommand): Promise<void> {
