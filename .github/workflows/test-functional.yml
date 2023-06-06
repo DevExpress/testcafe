@@ -104,6 +104,7 @@ jobs:
 
       - name: Get npm cache directory
         id: npm-cache-dir
+        shell: bash
         run: |
           echo "dir=$(npm config get cache)" >> $GITHUB_OUTPUT
 
@@ -126,6 +127,7 @@ jobs:
       - name: Save result
         id: save-result
         if: always()
+        shell: bash
         run: echo "test_${{ matrix.test-group }}=${{ job.status }}" >> "$GITHUB_OUTPUT"
   
   get-result-status:

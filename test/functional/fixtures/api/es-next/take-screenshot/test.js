@@ -625,7 +625,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                 { setScreenshotPath: true })
                 .then(function () {
                     function referenceImagePathGetter (screenshotPath) {
-                        const referenceImageName = screenshotPath.match(/chrome|firefox/i) ? 'element' : 'element-bottom-right';
+                        const referenceImageName = screenshotPath.match(/chrome|firefox|edge/i) ? 'element' : 'element-bottom-right';
 
                         return path.join(__dirname, `./data/${referenceImageName}.png`);
                     }

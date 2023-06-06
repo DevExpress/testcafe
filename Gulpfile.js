@@ -422,6 +422,12 @@ gulp.step('test-functional-local-headless-chrome-run', () => {
 
 gulp.task('test-functional-local-headless-chrome', gulp.series('prepare-tests', 'prepare-functional-tests', 'test-functional-local-headless-chrome-run', 'clean-functional-tests'));
 
+gulp.step('test-functional-local-headless-edge-run', () => {
+    return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localHeadlessEdge);
+});
+
+gulp.task('test-functional-local-headless-edge', gulp.series('prepare-tests', 'test-functional-local-headless-edge-run'));
+
 gulp.step('test-functional-local-headless-firefox-run', () => {
     return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localHeadlessFirefox);
 });
