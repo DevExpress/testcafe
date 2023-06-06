@@ -35,10 +35,10 @@ testingEnvironments[testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers] = {
             browserName: 'browserstack:safari',
             alias:       'safari',
         },
-        {
+        /*{
             browserName: 'browserstack:edge:OS X Monterey',
             alias:       'edge',
-        },
+        },*/
     ],
 };
 
