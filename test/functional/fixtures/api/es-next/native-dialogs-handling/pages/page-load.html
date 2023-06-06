@@ -8,17 +8,51 @@
 <div id="result"></div>
 <div style="background-color: #6ab779; width: 100px; height: 100px;;"></div>
 <script>
-    const wasReloadedFlag = 'wasReloaded';
-    const wasReloaded = sessionStorage.getItem(wasReloadedFlag);
-    sessionStorage.setItem(wasReloadedFlag, true);
+    const currentDialogItemName = 'currentDialog';
+    const promptResultItem = 'promptResult';
+    const confirmResultItem = 'confirmResult';
+    const dialogs = {
+        alert:   'alert',
+        confirm: 'confirm',
+        prompt:  'prompt',
+        print:   'print',
+    }
+    const dialogsOrder = [
+        dialogs.alert,
+        dialogs.confirm,
+        dialogs.prompt,
+        dialogs.print,
+    ];
+    const currentDialog = sessionStorage.getItem(currentDialogItemName) || dialogsOrder[0];
 
-    if (!wasReloaded) {
+    function getNextDialog (currentDialog) {
+        return dialogsOrder[dialogsOrder.indexOf(currentDialog) + 1];
+    }
+
+    window.getDialogsResult = () => {
+        return {
+            prompt: sessionStorage.getItem(promptResultItem),
+            confirm: sessionStorage.getItem(confirmResultItem),
+        }
+    }
+
+    sessionStorage.setItem(currentDialogItemName, getNextDialog(currentDialog));
+
+    if (currentDialog === dialogs.alert) {
         alert('Alert!');
         document.location.reload();
     }
-    else {
-        document.getElementById('result').textContent = window.confirm('Confirm?');
-        sessionStorage.removeItem(wasReloadedFlag);
+    else if (currentDialog === dialogs.confirm) {
+        sessionStorage.setItem(confirmResultItem, window.confirm('Confirm?'));
+        document.location.reload();
+    }
+    else if (currentDialog === dialogs.prompt) {
+        sessionStorage.setItem(promptResultItem, window.prompt('Prompt'));
+        document.location.reload();
+    }
+    else if (currentDialog === dialogs.print) {
+        window.print();
+        sessionStorage.removeItem(currentDialogItemName);
     }
 </script>
 </body>

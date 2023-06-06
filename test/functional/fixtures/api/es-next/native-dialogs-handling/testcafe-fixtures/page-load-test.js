@@ -1,10 +1,9 @@
 import { ClientFunction } from 'testcafe';
-import { expect } from 'chai';
 
 fixture `Page load`;
 
 
-const getResult = ClientFunction(() => document.getElementById('result').textContent);
+const getResult = ClientFunction(() => window.getDialogsResult());
 const pageUrl   = 'http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/pages/page-load.html';
 
 
@@ -14,15 +13,30 @@ test('Expected dialogs after page load', async t => {
             if (type === 'confirm' && text === 'Confirm?')
                 return true;
 
+            if (type === 'prompt')
+                return 'PromptMsg';
+
             return null;
         })
         .navigateTo(pageUrl);
 
-    expect(await getResult()).equals('true');
+    await t.expect(await getResult()).eql({
+        prompt:  'PromptMsg',
+        confirm: 'true',
+    });
 
     const info = await t.getNativeDialogHistory();
 
-    expect(info).to.deep.equal([
+    await t.expect(info).eql([
+        {
+            type: 'print',
+            url:  pageUrl,
+        },
+        {
+            type: 'prompt',
+            text: 'Prompt',
+            url:  pageUrl,
+        },
         {
             type: 'confirm',
             text: 'Confirm?',

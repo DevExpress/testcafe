@@ -14,7 +14,7 @@ describe('Native dialogs handling', function () {
         return runTests('./testcafe-fixtures/native-dialogs-test.js', 'Null handler', { shouldFail: true })
             .catch(function (errs) {
                 errorInEachBrowserContains(errs, getNativeDialogNotHandledErrorText('alert', pageUrl), 0);
-                errorInEachBrowserContains(errs, '> 193 |        .click(\'#buttonAlert\');', 0);
+                errorInEachBrowserContains(errs, '> 226 |        .click(\'#buttonAlert\');', 0);
             });
     });
 
@@ -24,7 +24,7 @@ describe('Native dialogs handling', function () {
                 { shouldFail: true, skipJsErrors: true })
                 .catch(function (errs) {
                     errorInEachBrowserContains(errs, getNativeDialogNotHandledErrorText('confirm', pageUrl), 0);
-                    errorInEachBrowserContains(errs, '> 18 |    await t.click(\'#buttonConfirm\'); ', 0);
+                    errorInEachBrowserContains(errs, '> 17 |    await t.click(\'#buttonConfirm\'); ', 0);
                 });
         });
 
@@ -48,7 +48,7 @@ describe('Native dialogs handling', function () {
             return runTests('./testcafe-fixtures/native-dialogs-test.js', 'Confirm dialog with wrong text', { shouldFail: true })
                 .catch(function (errs) {
                     errorInEachBrowserContains(errs, getUncaughtErrorInNativeDialogHandlerText('confirm', 'Wrong dialog text', pageUrl), 0);
-                    errorInEachBrowserContains(errs, '> 83 |        .click(\'#buttonConfirm\');', 0);
+                    errorInEachBrowserContains(errs, '> 116 |        .click(\'#buttonConfirm\');', 0);
                 });
         });
 
@@ -56,8 +56,8 @@ describe('Native dialogs handling', function () {
             return runTests('./testcafe-fixtures/native-dialogs-test.js', 'No expected confirm after an action',
                 { shouldFail: true })
                 .catch(function (errs) {
-                    errorInEachBrowserContains(errs, 'AssertionError: expected 0 to equal 1', 0);
-                    errorInEachBrowserContains(errs, ' >  95 |    expect(info.length).equals(1);', 0);
+                    errorInEachBrowserContains(errs, 'AssertionError: expected 0 to deeply equal 1', 0);
+                    errorInEachBrowserContains(errs, ' > 128 |    await t.expect(info.length).eql(1);', 0);
                 });
         });
 
@@ -67,10 +67,23 @@ describe('Native dialogs handling', function () {
                 skip: 'safari,iphone,ipad',
             });
         });
+
+        it('Should fail if an unexpected print dialog appears after an action', function () {
+            return runTests('./testcafe-fixtures/native-dialogs-test.js', 'Print without handler',
+                { shouldFail: true, skipJsErrors: true })
+                .catch(function (errs) {
+                    errorInEachBrowserContains(errs, getNativeDialogNotHandledErrorText('print', pageUrl), 0);
+                    errorInEachBrowserContains(errs, '> 26 |    await t.click(\'#buttonPrint\'); ', 0);
+                });
+        });
+
+        it('Should pass if the expected print dialog appears after an action', function () {
+            return runTests('./testcafe-fixtures/native-dialogs-test.js', 'Expected print after an action');
+        });
     });
 
     describe('Dialogs appear after page load', function () {
-        it('Should pass if the expected confirm dialog appears after page load', function () {
+        it('Should pass if the expected confirm and print dialogs appear after page load', function () {
             return runTests('./testcafe-fixtures/page-load-test.js', 'Expected dialogs after page load');
         });
 
@@ -80,7 +93,7 @@ describe('Native dialogs handling', function () {
                 { shouldFail: true })
                 .catch(function (errs) {
                     errorInEachBrowserContains(errs, getNativeDialogNotHandledErrorText('alert', pageLoadingUrl), 0);
-                    errorInEachBrowserContains(errs, '> 42 |        await t.click(\'body\');', 0);
+                    errorInEachBrowserContains(errs, '> 56 |        await t.click(\'body\');', 0);
                 });
         });
     });
@@ -110,8 +123,8 @@ describe('Native dialogs handling', function () {
             return runTests('./testcafe-fixtures/native-dialogs-test.js', 'No expected alert during a wait action',
                 { shouldFail: true })
                 .catch(function (errs) {
-                    errorInEachBrowserContains(errs, 'AssertionError: expected 0 to equal 1', 0);
-                    errorInEachBrowserContains(errs, '> 163 |    expect(info.length).equals(1);', 0);
+                    errorInEachBrowserContains(errs, 'AssertionError: expected 0 to deeply equal 1', 0);
+                    errorInEachBrowserContains(errs, '> 196 |    await t.expect(info.length).eql(1);', 0);
                 });
         });
 
@@ -129,7 +142,7 @@ describe('Native dialogs handling', function () {
             return runTests('./testcafe-fixtures/native-dialogs-test.js', 'Dialog handler has wrong type', { shouldFail: true })
                 .catch(function (errs) {
                     errorInEachBrowserContains(errs, 'The native dialog handler is expected to be a function, ClientFunction or null, but it was number.', 0);
-                    errorInEachBrowserContains(errs, ' > 174 |    await t.setNativeDialogHandler(42);', 0);
+                    errorInEachBrowserContains(errs, ' > 207 |    await t.setNativeDialogHandler(42);', 0);
                 });
         });
 
@@ -137,7 +150,7 @@ describe('Native dialogs handling', function () {
             return runTests('./testcafe-fixtures/native-dialogs-test.js', 'Client function argument wrong type', { shouldFail: true })
                 .catch(function (errs) {
                     errorInEachBrowserContains(errs, 'Cannot initialize a ClientFunction because ClientFunction is number, and not a function.', 0);
-                    errorInEachBrowserContains(errs, ' > 178 |    await t.setNativeDialogHandler(ClientFunction(42));', 0);
+                    errorInEachBrowserContains(errs, ' > 211 |    await t.setNativeDialogHandler(ClientFunction(42));', 0);
                 });
         });
 
@@ -145,7 +158,7 @@ describe('Native dialogs handling', function () {
             return runTests('./testcafe-fixtures/native-dialogs-test.js', 'Selector as dialogHandler', { shouldFail: true })
                 .catch(function (errs) {
                     errorInEachBrowserContains(errs, 'The native dialog handler is expected to be a function, ClientFunction or null, but it was Selector.', 0);
-                    errorInEachBrowserContains(errs, '> 184 |    await t.setNativeDialogHandler(dialogHandler);', 0);
+                    errorInEachBrowserContains(errs, '> 217 |    await t.setNativeDialogHandler(dialogHandler);', 0);
                 });
         });
     });
