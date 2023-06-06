@@ -8,7 +8,7 @@ import getRenderers from '../../utils/get-renderes';
 import util from 'util';
 import semver from 'semver';
 import { removePreventModuleCachingSuffix } from '../test-run/utils';
-import REPORTER_MODULE_PREFIX from '../../reporter/prefix';
+import REPORTER_MODULE_PREFIX from '../../reporter/module-prefix';
 
 const ERROR_SEPARATOR        = '\n\n';
 const NO_STACK_AVAILABLE_MSG = 'No stack trace available for this error';

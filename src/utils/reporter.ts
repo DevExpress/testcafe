@@ -1,6 +1,6 @@
 import { ReporterPluginFactory } from '../reporter/interfaces';
 import { LoadReporterError } from '../errors/runtime';
-import REPORTER_MODULE_PREFIX from '../reporter/prefix';
+import REPORTER_MODULE_PREFIX from '../reporter/module-prefix';
 
 export function requireReporterPluginFactory (reporterName: string): ReporterPluginFactory {
     const reporterFullName = `${REPORTER_MODULE_PREFIX}${reporterName}`;
