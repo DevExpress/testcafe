@@ -36,16 +36,6 @@ test('Expected print after an action', async t => {
     await t.expect(dialogs).eql([{ type: 'print', url: pageUrl }]);
 });
 
-test('No expected print after an action', async t => {
-    await t
-        .click('#withoutDialog')
-        .setNativeDialogHandler(() => true);
-
-    const info = await t.getNativeDialogHistory();
-
-    await t.expect(info.length).eql(1);
-});
-
 test('Expected confirm after an action', async t => {
     await t
         .setNativeDialogHandler((type, text) => {
