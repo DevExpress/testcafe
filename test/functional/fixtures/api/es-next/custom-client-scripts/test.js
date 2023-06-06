@@ -1,7 +1,7 @@
 const path       = require('path');
 const { expect } = require('chai');
 
-describe('Custom client scripts', () => {
+describe.only('Custom client scripts', () => { // eslint-disable-line
     it('Runner', () => {
         return runTests('./testcafe-fixtures/runner.js', null, {
             clientScripts: 'test/functional/fixtures/api/es-next/custom-client-scripts/data/set-flag1.js',
