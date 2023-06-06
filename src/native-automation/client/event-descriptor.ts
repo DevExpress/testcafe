@@ -92,6 +92,7 @@ export default class CDPEventDescriptor {
             modifiers:             options.modifiers || 0,
             windowsVirtualKeyCode: options.keyCode,
             key:                   options.keyProperty,
+            commands:              options.commands,
             text,
         };
     }
