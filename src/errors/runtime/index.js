@@ -8,11 +8,11 @@ import getRenderers from '../../utils/get-renderes';
 import util from 'util';
 import semver from 'semver';
 import { removePreventModuleCachingSuffix } from '../test-run/utils';
+import REPORTER_MODULE_PREFIX from '../../reporter/prefix';
 
 const ERROR_SEPARATOR        = '\n\n';
 const NO_STACK_AVAILABLE_MSG = 'No stack trace available for this error';
 const MODULE_NOT_FOUND_CODE  = 'MODULE_NOT_FOUND';
-const REPORTER_MODULE_PREFIX = 'testcafe-reporter-';
 
 function formatErrorWithCallsite (error) {
     const callsite         = getCallsiteForError(error);
@@ -212,10 +212,10 @@ export class ReadConfigFileError extends GeneralError {
     }
 }
 
-export class AttachReporterError extends GeneralError {
+export class LoadReporterError extends GeneralError {
     constructor (originalError, reporterFullName) {
-        const reporterShortName      = AttachReporterError._ensureShortName(reporterFullName);
-        const formattedOriginalError = AttachReporterError._getFormattedMessage(originalError, reporterFullName);
+        const reporterShortName      = LoadReporterError._ensureShortName(reporterFullName);
+        const formattedOriginalError = LoadReporterError._getFormattedMessage(originalError, reporterFullName);
 
         super(RUNTIME_ERRORS.cannotFindReporterForAlias, reporterShortName, formattedOriginalError);
     }
@@ -232,17 +232,17 @@ export class AttachReporterError extends GeneralError {
     }
 
     static _getFormattedMessage (originalError, reporterFullName) {
-        const isModuleNotFoundError    = originalError.code && originalError.code === MODULE_NOT_FOUND_CODE;
+        const isModuleNotFoundError = originalError.code && originalError.code === MODULE_NOT_FOUND_CODE;
 
         if (!isModuleNotFoundError)
             return formatErrorWithCallsite(originalError);
 
         // NOTE: ModuleNotFound error "message" property have the following pattern <message>\nRequire stack:\n<line1>\n<line2>
-        // We don't need to show it if error was produced by require('testcafe-reporter-<name>') call. If it wasn't, we need to show full require stack
+        // We don't need to show require stack if error was produced by require('testcafe-reporter-<name>') call. If it wasn't, we need to show full require stack
         const errorText = originalError.message.split('\n')[0];
 
         if (errorText.includes(reporterFullName))
-            return AttachReporterError._getReporterModuleNotFoundMessage(reporterFullName);
+            return LoadReporterError._getReporterModuleNotFoundMessage(reporterFullName);
 
         return formatErrorWithCallsite(originalError);
     }

@@ -9,7 +9,7 @@ import { writable as isWritableStream } from 'is-stream';
 import ReporterPluginHost from './plugin-host';
 import ReporterPluginMethod from './plugin-methods';
 import formatCommand from './command/format-command';
-import { ReporterPluginError, AttachReporterError } from '../errors/runtime';
+import { ReporterPluginError, LoadReporterError } from '../errors/runtime';
 import Task from '../runner/task';
 import { Writable as WritableStream, Writable } from 'stream';
 import { WriteStream } from 'tty';
@@ -295,7 +295,7 @@ export default class Reporter {
                 };
             }
             catch (err) {
-                throw new AttachReporterError(err, processedName);
+                throw new LoadReporterError(err, processedName);
             }
         }));
     }
