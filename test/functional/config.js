@@ -14,6 +14,7 @@ const testingEnvironmentNames = {
     localBrowsers:               'local-browsers',
     localChrome:                 'local-chrome',
     localHeadlessChrome:         'local-headless-chrome',
+    localHeadlessEdge:           'local-headless-edge',
     localHeadlessFirefox:        'local-headless-firefox',
     remote:                      'remote',
     legacy:                      'legacy',
@@ -34,10 +35,6 @@ testingEnvironments[testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers] = {
         {
             browserName: 'browserstack:safari',
             alias:       'safari',
-        },
-        {
-            browserName: 'browserstack:edge:OS X Monterey',
-            alias:       'edge',
         },
     ],
 };
@@ -127,6 +124,21 @@ testingEnvironments[testingEnvironmentNames.localHeadlessChrome] = {
             browserName: 'chrome:headless --no-sandbox',
             userAgent:   'headlesschrome',
             alias:       'chrome',
+        },
+    ],
+};
+
+testingEnvironments[testingEnvironmentNames.localHeadlessEdge] = {
+    isLocalBrowsers:    true,
+    isHeadlessBrowsers: true,
+
+    retryTestPages: true,
+
+    browsers: [
+        {
+            platform:    'Windows 10',
+            browserName: 'edge:headless --no-sandbox',
+            alias:       'edge',
         },
     ],
 };
