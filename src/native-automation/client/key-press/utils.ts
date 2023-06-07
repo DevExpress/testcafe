@@ -25,8 +25,10 @@ export interface SimulatedKeyInfo {
 }
 
 function getKeyCombinationCommands (keyCombination: string, keyIndex: number): string[] {
-    if (keyIndex === 1 && SHORTCUT_TO_COMMANDS_MAP[keyCombination])
-        return [SHORTCUT_TO_COMMANDS_MAP[keyCombination]];
+    const sanitizedKeyCombination = keyCombination.toLowerCase();
+
+    if (keyIndex === 1 && SHORTCUT_TO_COMMANDS_MAP[sanitizedKeyCombination])
+        return [SHORTCUT_TO_COMMANDS_MAP[sanitizedKeyCombination]];
 
     return [];
 }
