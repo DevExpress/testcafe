@@ -14,7 +14,7 @@ import RequestPausedEvent = Protocol.Fetch.RequestPausedEvent;
 import Request = Protocol.Network.Request;
 import HeaderEntry = Protocol.Fetch.HeaderEntry;
 import { StatusCodes } from 'http-status-codes';
-import { convertToOutgoingHttpHeaders, lowerCaseHeaderNames } from '../../utils/headers';
+import { convertToOutgoingHttpHeaders } from '../../utils/headers';
 
 
 export default class RequestPausedEventBasedEventFactory extends BaseRequestHookEventFactory {
@@ -83,7 +83,7 @@ export default class RequestPausedEventBasedEventFactory extends BaseRequestHook
             userAgent: RequestInfo.getUserAgent(request.headers),
             url:       request.url,
             method:    request.method.toLowerCase(),
-            headers:   lowerCaseHeaderNames(request.headers),
+            headers:   request.headers,
             body:      RequestPausedEventBasedEventFactory._getRequestData(request),
             isAjax:    RequestPausedEventBasedEventFactory._getIsAjaxRequest(this._event),
         });
