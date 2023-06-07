@@ -85,6 +85,7 @@ import { RequestRuntimeError } from '../../errors/runtime';
 import { RUNTIME_ERRORS } from '../../errors/types';
 import CustomActions from './custom-actions';
 import delegatedAPI from './delegated-api';
+import { getFixtureInfo, getTestInfo } from '../../utils/get-test-and-fixture-info';
 
 const originalThen = Promise.resolve().then;
 
@@ -164,7 +165,7 @@ export default class TestController {
     enqueueCommand (CmdCtor, cmdArgs, validateCommandFn, callsite) {
         callsite = callsite || getCallsiteForMethod(CmdCtor.methodName);
 
-        const command  = this._createCommand(CmdCtor, cmdArgs, callsite);
+        const command = this._createCommand(CmdCtor, cmdArgs, callsite);
 
         if (typeof validateCommandFn === 'function')
             validateCommandFn(this, command, callsite);
@@ -227,6 +228,14 @@ export default class TestController {
         return this._customActions || new CustomActions(this, this.testRun.opts.customActions);
     }
 
+    _test$getter () {
+        return getTestInfo(this.testRun);
+    }
+
+    _fixture$getter () {
+        return getFixtureInfo(this.testRun);
+    }
+
     [delegatedAPI(DispatchEventCommand.methodName)] (selector, eventName, options = {}) {
         return this.enqueueCommand(DispatchEventCommand, { selector, eventName, options, relatedTarget: options.relatedTarget });
     }
@@ -275,7 +284,7 @@ export default class TestController {
 
     _createRequestFunction (bindOptions = {}) {
         const controller = this;
-        const callsite = getCallsiteForMethod(RequestCommand.methodName);
+        const callsite   = getCallsiteForMethod(RequestCommand.methodName);
 
         if (!controller.testRun)
             throw new RequestRuntimeError(callsite, RUNTIME_ERRORS.requestCannotResolveTestRun);
@@ -496,7 +505,7 @@ export default class TestController {
     }
 
     [delegatedAPI(CloseWindowCommand.methodName)] (window) {
-        const windowId      = window?.id || null;
+        const windowId = window?.id || null;
 
         this._validateMultipleWindowCommand(CloseWindowCommand.methodName);
 

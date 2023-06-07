@@ -1181,7 +1181,6 @@ const del                = require('del');
 
     describe('Reporter Hooks', () => {
         it('Should handle onBeforeWrite hook', () => {
-            let pluginContextProp       = {};
             const writeData             = { prop: true };
             const result                = {};
             const expectedOutput        = `formattedText\nformattedText\nformattedText\n`;
@@ -1203,7 +1202,6 @@ const del                = require('del');
 
             function custom () {
                 return {
-                    taskInfo:           { prop: 'val' },
                     reportTaskDone:     noop,
                     reportFixtureStart: noop,
                     reportTaskStart () {
@@ -1227,7 +1225,6 @@ const del                = require('del');
                     data,
                     formatOptions,
                 };
-                pluginContextProp       = this.taskInfo;
             };
             const outStream         = createSimpleTestStream();
 
@@ -1243,7 +1240,6 @@ const del                = require('del');
             })
                 .then(() => {
                     expect(result).eql(expectedResult);
-                    expect(pluginContextProp).eql({ prop: 'val' });
                     expect(outStream.data).eql(expectedOutput);
                 });
 

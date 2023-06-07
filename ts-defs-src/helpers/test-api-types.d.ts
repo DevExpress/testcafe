@@ -14,6 +14,7 @@
 // <reference path="../test-api/utility.d.ts" />
 // <reference path="../test-api/request.d.ts" />
 // <reference path="../test-api/skip-js-errors-options.d.ts" />
+// <reference path="../test-api/test-info.d.ts" />
 // {{/allowReferences}}
 // {{^allowReferences}}
 // {{>action-options.d.ts}}
@@ -30,4 +31,5 @@
 // {{>utility.d.ts}}
 // {{>request.d.ts}}
 // {{>skip-js-errors-options.d.ts}}
+// {{>test-info.d.ts}}
 // {{/allowReferences}}

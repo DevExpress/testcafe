@@ -6,6 +6,7 @@
 /// <reference path="../test-api/client-script.d.ts" />
 /// <reference path="../test-api/action-options.d.ts" />
 /// <reference path="../test-api/skip-js-errors-options.d.ts" />
+/// <reference path="../test-api/test-info.d.ts" />
 // {{/allowReferences}}
 
 type TlsOptions = import('tls').TlsOptions;
@@ -42,8 +43,6 @@ type CompilerOptions = {
 type ConcurrencyOption = number;
 
 type ClientScriptOptions = ClientScript | ClientScript [];
-
-type Metadata = Record<string, string>;
 
 /**
 * Allows you to select which tests should be run.

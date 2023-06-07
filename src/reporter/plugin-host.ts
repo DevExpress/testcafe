@@ -58,7 +58,7 @@ export default class ReporterPluginHost {
 
         assignIn(this, plugin);
 
-        this._initPluginHooks(pluginHooks);
+        this._hooks = pluginHooks;
 
         this[errorDecorator] = this.createErrorDecorator();
     }
@@ -228,18 +228,6 @@ export default class ReporterPluginHost {
 
     // NOTE: It's an optional method
     public async reportWarnings (/* warnings */): Promise<void> { // eslint-disable-line @typescript-eslint/no-empty-function
-    }
-
-    private _initPluginHooks (reporterHooks: ReporterPluginHooks | undefined): void {
-        if (!reporterHooks)
-            return;
-
-        this._hooks = Object.entries(reporterHooks).reduce((previousValue, [hookName, hook]) => {
-            if (hook)
-                previousValue[hookName as keyof ReporterPluginHooks] = hook.bind(this);
-
-            return previousValue;
-        }, {} as ReporterPluginHooks);
     }
 
     // NOTE: It's an optional method

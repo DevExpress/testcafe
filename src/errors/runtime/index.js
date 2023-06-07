@@ -1,6 +1,6 @@
 import TEMPLATES from './templates';
 import createStackFilter from '../create-stack-filter';
-import { getCallsiteForMethod } from '../get-callsite';
+import { getCallsiteForError, getCallsiteForMethod } from '../get-callsite';
 import renderTemplate from '../../utils/render-template';
 import renderCallsiteSync from '../../utils/render-callsite-sync';
 import { RUNTIME_ERRORS } from '../types';
@@ -8,8 +8,19 @@ import getRenderers from '../../utils/get-renderes';
 import util from 'util';
 import semver from 'semver';
 import { removePreventModuleCachingSuffix } from '../test-run/utils';
+import REPORTER_MODULE_PREFIX from '../../reporter/module-prefix';
 
-const ERROR_SEPARATOR = '\n\n';
+const ERROR_SEPARATOR        = '\n\n';
+const NO_STACK_AVAILABLE_MSG = 'No stack trace available for this error';
+const MODULE_NOT_FOUND_CODE  = 'MODULE_NOT_FOUND';
+
+function formatErrorWithCallsite (error) {
+    const callsite         = getCallsiteForError(error);
+    const stackFilter      = createStackFilter();
+    const formattedMessage = callsite?.renderSync({ stackFilter }) || NO_STACK_AVAILABLE_MSG;
+
+    return `${error.message}\n\n${formattedMessage}`;
+}
 
 class ProcessTemplateInstruction {
     constructor (processFn) {
@@ -69,7 +80,7 @@ export class APIError extends Error {
         if (typeof callsite === 'object')
             this.callsite = callsite;
         else
-            this.callsite   = getCallsiteForMethod(callsite);
+            this.callsite = getCallsiteForMethod(callsite);
 
         // NOTE: We need property getters here because callsite can be replaced by an external code.
         // See https://github.com/DevExpress/testcafe/blob/v1.0.0/src/compiler/test-file/formats/raw.js#L22
@@ -187,3 +198,53 @@ export class ImportESMInCommonJSError extends GeneralError {
         return esModule;
     }
 }
+
+export class ReadConfigFileError extends GeneralError {
+    constructor (code, originalError, filePath, renderCallsite) {
+        super(code, filePath, ReadConfigFileError._getFormattedMessage(originalError, renderCallsite));
+    }
+
+    static _getFormattedMessage (originalError, renderCallsite) {
+        if (!renderCallsite)
+            return originalError.message;
+
+        return formatErrorWithCallsite(originalError);
+    }
+}
+
+export class LoadReporterError extends GeneralError {
+    constructor (originalError, reporterFullName) {
+        const reporterShortName      = LoadReporterError._ensureShortName(reporterFullName);
+        const formattedOriginalError = LoadReporterError._getFormattedMessage(originalError, reporterFullName);
+
+        super(RUNTIME_ERRORS.cannotFindReporterForAlias, reporterShortName, formattedOriginalError);
+    }
+
+    static _ensureShortName (name) {
+        if (name && name.startsWith(REPORTER_MODULE_PREFIX))
+            return name.replace(REPORTER_MODULE_PREFIX, '');
+
+        return name;
+    }
+
+    static _getReporterModuleNotFoundMessage (reporterModuleName) {
+        return `Cannot find module "${reporterModuleName}"`;
+    }
+
+    static _getFormattedMessage (originalError, reporterFullName) {
+        const isModuleNotFoundError = originalError.code && originalError.code === MODULE_NOT_FOUND_CODE;
+
+        if (!isModuleNotFoundError)
+            return formatErrorWithCallsite(originalError);
+
+        // NOTE: ModuleNotFound error "message" property have the following pattern <message>\nRequire stack:\n<line1>\n<line2>
+        // We don't need to show require stack if error was produced by require('testcafe-reporter-<name>') call. If it wasn't, we need to show full require stack
+        const errorText = originalError.message.split('\n')[0];
+
+        if (errorText.includes(reporterFullName))
+            return LoadReporterError._getReporterModuleNotFoundMessage(reporterFullName);
+
+        return formatErrorWithCallsite(originalError);
+    }
+}
+

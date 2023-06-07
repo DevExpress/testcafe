@@ -7,6 +7,7 @@
 /// <reference path="selector.d.ts" />
 /// <reference path="request.d.ts" />
 /// <reference path="skip-js-errors-options.d.ts" />
+/// <reference path="test-info.d.ts" />
 // {{/allowReferences}}
 
 interface NativeDialogHistoryItem {
@@ -120,6 +121,14 @@ interface TestController {
      * Returns an object that contains registered custom actions.
      */
     readonly customActions: CustomActions;
+    /**
+     * Returns information about the current test.
+     */
+    readonly test: TestInfo;
+    /**
+     * Returns information about the current fixture.
+     */
+    readonly fixture: FixtureInfo;
     /**
      * Dispatches an event over a specified webpage element.
      *

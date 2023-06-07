@@ -101,16 +101,22 @@ describe('TestCafeConfiguration', function () {
             describe('Exists', () => {
                 it('Config is not well-formed', async () => {
                     const filePath = testCafeConfiguration.defaultPaths[jsonConfigIndex];
+                    let message     = '';
 
                     fs.writeFileSync(filePath, '{');
-                    consoleWrapper.wrap();
 
-                    await testCafeConfiguration.init();
+                    try {
+                        await testCafeConfiguration.init();
+                    }
+                    catch (err) {
+                        message = err.message;
+                    }
 
-                    consoleWrapper.unwrap();
-
-                    expect(testCafeConfiguration.getOption('hostname')).eql(void 0);
-                    expect(consoleWrapper.messages.log).contains(`Failed to parse the '${testCafeConfiguration.defaultPaths[jsonConfigIndex]}' file.`);
+                    expect(message).eql(
+                        `Failed to parse the "${filePath}" configuration file. \n\n` +
+                        `This file is not a well-formed JSON file. Error details:\n\n` +
+                        `JSON5: invalid end of input at 1:2`
+                    );
                 });
 
                 it('Options', () => {
@@ -671,16 +677,24 @@ describe('TypeScriptConfiguration', function () {
     });
 
     it('Config is not well-formed', async () => {
+        let message     = '';
+
         fs.writeFileSync(tsConfigPath, '{');
-        consoleWrapper.wrap();
 
-        await typeScriptConfiguration.init();
+        try {
+            await typeScriptConfiguration.init();
+        }
+        catch (err) {
+            message = err.message;
+        }
 
-        consoleWrapper.unwrap();
         fs.unlinkSync(tsConfigPath);
 
-        expect(typeScriptConfiguration.getOption('hostname')).eql(void 0);
-        expect(consoleWrapper.messages.log).contains(`Failed to parse the '${typeScriptConfiguration.filePath}' file.`);
+        expect(message).eql(
+            `Failed to parse the "${typeScriptConfiguration.filePath}" configuration file. \n\n` +
+            `This file is not a well-formed JSON file. Error details:\n\n` +
+            `JSON5: invalid end of input at 1:2`
+        );
     });
 
     describe('With configuration file', () => {

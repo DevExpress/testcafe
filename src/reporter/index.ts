@@ -9,7 +9,7 @@ import { writable as isWritableStream } from 'is-stream';
 import ReporterPluginHost from './plugin-host';
 import ReporterPluginMethod from './plugin-methods';
 import formatCommand from './command/format-command';
-import { ReporterPluginError } from '../errors/runtime';
+import { ReporterPluginError, LoadReporterError } from '../errors/runtime';
 import Task from '../runner/task';
 import { Writable as WritableStream, Writable } from 'stream';
 import { WriteStream } from 'tty';
@@ -287,11 +287,16 @@ export default class Reporter {
             const processedName = processReporterName(name);
             const outStream     = output ? await Reporter._ensureOutStream(output) : void 0;
 
-            return {
-                plugin: pluginFactory(options),
-                name:   processedName,
-                outStream,
-            };
+            try {
+                return {
+                    plugin: pluginFactory(options),
+                    name:   processedName,
+                    outStream,
+                };
+            }
+            catch (err) {
+                throw new LoadReporterError(err, processedName);
+            }
         }));
     }
 
@@ -709,17 +714,5 @@ export default class Reporter {
                 ...data,
             ],
         });
-    }
-
-    private _resolvePluginHooks (reporterHooks: ReporterHooks|undefined, name: string): ReporterPluginHooks | undefined {
-        if (!reporterHooks)
-            return void 0;
-
-        const resultHooks: ReporterPluginHooks = {};
-
-        if (reporterHooks.onBeforeWrite && reporterHooks.onBeforeWrite[name])
-            resultHooks.onBeforeWrite = reporterHooks.onBeforeWrite[name];
-
-        return resultHooks;
     }
 }
