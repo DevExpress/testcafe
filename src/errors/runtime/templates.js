@@ -46,19 +46,19 @@ export default {
     [RUNTIME_ERRORS.invalidConcurrencyFactor]:                           'The concurrency factor should be an integer greater than or equal to 1.',
     [RUNTIME_ERRORS.cannotDivideRemotesCountByConcurrency]:              'The number of remote browsers should be divisible by the concurrency factor.',
     [RUNTIME_ERRORS.cannotSetConcurrencyWithCDPPort]:                    'The value of the "concurrency" option includes the CDP port.',
-    [RUNTIME_ERRORS.portsOptionRequiresTwoNumbers]:                      'The "--ports" argument accepts two values at a time.',
+    [RUNTIME_ERRORS.portsOptionRequiresTwoNumbers]:                      'The "--ports" option requires two arguments.',
     [RUNTIME_ERRORS.portIsNotFree]:                                      'Port {portNum} is occupied by another process.',
     [RUNTIME_ERRORS.invalidHostname]:                                    'Cannot resolve hostname "{hostname}".',
     [RUNTIME_ERRORS.cannotFindSpecifiedTestSource]:                      'Cannot find a test file at "{path}".',
     [RUNTIME_ERRORS.clientFunctionCodeIsNotAFunction]:                   'Cannot initialize a ClientFunction because {#instantiationCallsiteName} is {type}, and not a function.',
     [RUNTIME_ERRORS.selectorInitializedWithWrongType]:                   'Cannot initialize a Selector because {#instantiationCallsiteName} is {type}, and not one of the following: a CSS selector string, a Selector object, a node snapshot, a function, or a Promise returned by a Selector.',
-    [RUNTIME_ERRORS.clientFunctionCannotResolveTestRun]:                 "{#instantiationCallsiteName} cannot implicitly resolve the test run in context of which it should be executed. If you need to call {#instantiationCallsiteName} from the Node.js API callback, pass the test controller manually via {#instantiationCallsiteName}'s `.with({ boundTestRun: t })` method first. Note that you cannot execute {#instantiationCallsiteName} outside the test code.",
-    [RUNTIME_ERRORS.requestCannotResolveTestRun]:                        "'request' cannot implicitly resolve the test run in context of which it should be executed. Note that you cannot execute 'request' in the experimental debug mode.",
+    [RUNTIME_ERRORS.clientFunctionCannotResolveTestRun]:                 "{#instantiationCallsiteName} does not have test controller access. To execute {#instantiationCallsiteName} from a Node.js API callback, use the `.with({ boundTestRun: t })` method to bind the test controller object to the function. Note that you cannot execute {#instantiationCallsiteName} outside test code.",
+    [RUNTIME_ERRORS.requestCannotResolveTestRun]:                        "'request' does not have test controller access.",
     [RUNTIME_ERRORS.regeneratorInClientFunctionCode]:                    `{#instantiationCallsiteName} code, arguments or dependencies cannot contain generators or "async/await" syntax (use Promises instead).`,
     [RUNTIME_ERRORS.invalidClientFunctionTestRunBinding]:                'Cannot resolve the "boundTestRun" option because its value is not a test controller.',
     [RUNTIME_ERRORS.invalidValueType]:                                   '{smthg} ({actual}) is not of expected type ({type}).',
     [RUNTIME_ERRORS.unsupportedUrlProtocol]:                             'Invalid {what}: "{url}". TestCafe cannot execute the test because the {what} includes the {protocol} protocol. TestCafe supports the following protocols: http://, https:// and file://.',
-    [RUNTIME_ERRORS.testControllerProxyCannotResolveTestRun]:            `Cannot implicitly resolve the test run in the context of which the test controller action should be executed. Use test function's 't' argument instead.`,
+    [RUNTIME_ERRORS.testControllerProxyCannotResolveTestRun]:            `The action does not have implicit test controller access. Reference the 't' object to gain it.`,
     [RUNTIME_ERRORS.timeLimitedPromiseTimeoutExpired]:                   'A Promise timed out.',
     [RUNTIME_ERRORS.cannotSetVideoOptionsWithoutBaseVideoPathSpecified]: 'You cannot manage advanced video parameters when the video recording capability is off. Specify the root storage folder for video content to enable video recording.',
     [RUNTIME_ERRORS.multipleAPIMethodCallForbidden]:                     'You cannot call the "{methodName}" method more than once. Specify an array of parameters instead.',
@@ -96,15 +96,15 @@ export default {
                                        '* specify the path of the FFmpeg executable in the FFMPEG_PATH environment variable or the ffmpegPath option,\n' +
                                        '* install the @ffmpeg-installer/ffmpeg npm package.',
 
-    [RUNTIME_ERRORS.cannotReadConfigFile]: 'An error has occurred while reading the "{path}" configuration file. Error details:\n' +
+    [RUNTIME_ERRORS.cannotReadConfigFile]: 'Failed to read the "{path}" configuration file from disk. Error details:\n' +
                                            '\n' +
                                            '{err}',
 
-    [RUNTIME_ERRORS.cannotParseConfigFile]: 'Failed to parse the "{path}" configuration file. \n\nThis file is not a well-formed JSON file. Error details:\n' +
+    [RUNTIME_ERRORS.cannotParseConfigFile]: 'Failed to parse the "{path}" configuration file. The file contains invalid JSON syntax. \n\n Error details:\n' +
                                            '\n' +
                                            '{err}',
 
-    [RUNTIME_ERRORS.cannotFindReporterForAlias]: 'An error occurred while loading the "{name}" reporter. Please check the reporter parameter for errors. Error details:\n' +
+    [RUNTIME_ERRORS.cannotFindReporterForAlias]: 'Failed to load the "{name}" reporter. Please check the parameter for errors. Error details:\n' +
                                                  '\n' +
                                                  '{err}',
 
@@ -121,7 +121,7 @@ export default {
     [RUNTIME_ERRORS.unexpectedIPCBodyPacket]:                          'Cannot create an IPC message due to an unexpected IPC body packet.',
     [RUNTIME_ERRORS.unexpectedIPCTailPacket]:                          'Cannot create an IPC message due to an unexpected IPC tail packet.',
     [RUNTIME_ERRORS.cannotRunLocalNonHeadlessBrowserWithoutDisplay]:
-        'Your Linux version does not have a graphic subsystem to run {browserAlias} with a GUI. ' +
+        'Your Linux installation does not have a graphic subsystem to run {browserAlias} with a GUI. ' +
         'You can launch the browser in headless mode. ' +
         'If you use a portable browser executable, ' +
         "specify the browser alias before the path instead of the 'path' prefix. " +
@@ -134,21 +134,21 @@ export default {
 
     [RUNTIME_ERRORS.cannotEnableRetryTestPagesOption]:
         'Cannot enable the \'retryTestPages\' option. Apply one of the following two solutions:\n' +
-        '-- set \'localhost\' as the value of the \'hostname\' option\n' +
+        '-- set the \'hostname\' option to \'localhost\'\n' +
         '-- run TestCafe over HTTPS\n',
 
     [RUNTIME_ERRORS.browserConnectionError]:               '{originErrorMessage}\n{numOfNotOpenedConnection} of {numOfAllConnections} browser connections have not been established:\n{listOfNotOpenedConnections}\n\nHints:\n{listOfHints}',
     [BrowserConnectionErrorHint.TooHighConcurrencyFactor]: 'The host machine may not be powerful enough to handle the specified concurrency factor ({concurrencyFactor}). ' +
-                                                           'Try to decrease the concurrency factor or allocate more computing resources to the host machine.',
-    [BrowserConnectionErrorHint.UseBrowserInitOption]:               'Increase the value of the "browserInitTimeout" option if it is too low (currently: {browserInitTimeoutMsg}). This option determines how long TestCafe waits for browsers to be ready.',
+                                                           'Decrease the concurrency factor or allocate more computing resources to the host machine.',
+    [BrowserConnectionErrorHint.UseBrowserInitOption]:               'Increase the Browser Initialization Timeout if its value is too low (currently: {browserInitTimeoutMsg}). The timeout determines how long TestCafe waits for browsers to be ready.',
     [BrowserConnectionErrorHint.RestErrorCauses]:                    'The error can also be caused by network issues or remote device failure. Make sure that your network connection is stable and you can reach the remote device.',
     [RUNTIME_ERRORS.cannotFindTestcafeConfigurationFile]:            'Cannot locate a TestCafe configuration file at {filePath}. Either the file does not exist, or the path is invalid.',
     [RUNTIME_ERRORS.dashboardTokenInJSON]:                           'Insecure token declaration: cannot declare a Dashboard token in a JSON configuration file. Use a JavaScript configuration file, or declare a Dashboard token with one of the following: the CLI, the Test Runner API, the TESTCAFE_DASHBOARD_TOKEN environment variable.',
     [RUNTIME_ERRORS.relativeBaseUrl]:                                'The value of the baseUrl argument cannot be relative: "{baseUrl}"',
-    [RUNTIME_ERRORS.requestUrlInvalidValueError]:                    'Requested url isn\'t valid ({actualValue}).',
+    [RUNTIME_ERRORS.requestUrlInvalidValueError]:                    'The request url is invalid ({actualValue}).',
     [RUNTIME_ERRORS.requestRuntimeError]:                            'The request was interrupted by an error:\n{message}',
     [RUNTIME_ERRORS.invalidSkipJsErrorsOptionsObjectProperty]:       `The "{optionName}" option does not exist. Use the following options to configure skipJsErrors: ${getConcatenatedValuesString(Object.keys(SKIP_JS_ERRORS_OPTIONS_OBJECT_OPTION_NAMES))}.`,
-    [RUNTIME_ERRORS.invalidSkipJsErrorsCallbackWithOptionsProperty]: `The "{optionName}" option does not exist. Use the following options to configure skipJsErrors callback: ${getConcatenatedValuesString(Object.keys(SKIP_JS_ERRORS_CALLBACK_WITH_OPTIONS_OPTION_NAMES))}.`,
+    [RUNTIME_ERRORS.invalidSkipJsErrorsCallbackWithOptionsProperty]: `The "{optionName}" option does not exist. Use the following options to configure skipJsErrors callbacks: ${getConcatenatedValuesString(Object.keys(SKIP_JS_ERRORS_CALLBACK_WITH_OPTIONS_OPTION_NAMES))}.`,
     [RUNTIME_ERRORS.invalidCommandInJsonCompiler]:                   `TestCafe terminated the test run. The "{path}" file contains an unknown Chrome User Flow action "{action}". Remove the action to continue. Refer to the following article for the definitive list of supported Chrome User Flow actions: https://testcafe.io/documentation/403998/guides/experimental-capabilities/chrome-replay-support#supported-replay-actions`,
     [RUNTIME_ERRORS.invalidCustomActionsOptionType]:                 `The value of the customActions option does not belong to type Object. Refer to the following article for custom action setup instructions: ${ DOCUMENTATION_LINKS.CUSTOM_ACTIONS }`,
     [RUNTIME_ERRORS.invalidCustomActionType]:                        `TestCafe cannot parse the "{actionName}" action, because the action definition is invalid. Format the definition in accordance with the custom actions guide: ${ DOCUMENTATION_LINKS.CUSTOM_ACTIONS }`,
