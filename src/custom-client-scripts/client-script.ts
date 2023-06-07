@@ -138,4 +138,8 @@ export default class ClientScript {
     public static get URL_UNIQUE_PART_LENGTH (): number {
         return URL_UNIQUE_PART_LENGTH;
     }
+
+    public getResultUrl (folderName: string): string {
+        return `/custom-client-scripts/${folderName}/${this.url}`;
+    }
 }

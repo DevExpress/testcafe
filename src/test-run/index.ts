@@ -50,7 +50,6 @@ import {
 
 import * as INJECTABLES from '../assets/injectables';
 import { findProblematicScripts } from '../custom-client-scripts/utils';
-import getCustomClientScriptUrl from '../custom-client-scripts/get-url';
 import { getPluralSuffix, getConcatenatedValuesString } from '../utils/string';
 
 import {
@@ -461,7 +460,7 @@ export default class TestRun extends AsyncEventEmitter {
         this.injectable.scripts.push(...INJECTABLES.SCRIPTS);
         this.injectable.userScripts.push(...this.test.clientScripts.map(script => {
             return {
-                url:  getCustomClientScriptUrl(script as ClientScript),
+                url:  (script as ClientScript).getResultUrl(this.id),
                 page: script.page as RequestFilterRule,
             };
         }));
