@@ -3,6 +3,7 @@
 /// <reference path="client-script.d.ts" />
 /// <reference path="test-controller.d.ts" />
 /// <reference path="skip-js-errors-options.d.ts" />
+/// <reference path="test-info.d.ts" />
 // {{/allowReferences}}
 
 interface HTTPAuthCredentials {
@@ -65,16 +66,18 @@ interface FixtureFn {
      * Specifies the fixture hook that is executed before the start of the first test in the fixture.
      *
      * @param fn - An asynchronous hook function that contains initialization or clean-up code.
-     * @param fn `ctx` - A fixture context object used to share variables between fixture hooks and test code.
+     * @param fn `ctx` - An object that you can use to store variables. Accessible in both fixture hooks and test code.
+     * @param fn `info` - An object that contains information about the fixture: its name, metadata and path.
      */
-    before(fn: (ctx: {[key: string]: any}) => Promise<any>): this;
+    before(fn: (ctx: {[key: string]: any}, info: FixtureInfo) => Promise<any>): this;
     /**
      * Specifies the fixture hook that is executed after the end of the last test in the fixture.
      *
      * @param fn - An asynchronous hook function that contains initialization or clean-up code.
-     * @param fn `ctx` - A fixture context object used to share variables between fixture hooks and test code.
+     * @param fn `ctx` - An object that you can use to store variables. Accessible in both fixture hooks and test code.
+     * @param fn `info` - An object that contains information about the fixture: its name, metadata and path.
      */
-    after(fn: (ctx: {[key: string]: any}) => Promise<any>): this;
+    after(fn: (ctx: {[key: string]: any}, info: FixtureInfo) => Promise<any>): this;
     /**
      * Specifies the hook that is executed on the start of each test in the fixture.
      *
@@ -119,7 +122,7 @@ interface FixtureFn {
      *
      * @param data - Key-value pairs
      */
-    meta(data: object): this;
+    meta(data: Metadata): this;
     /**
      * Attaches hooks to all tests in the fixture
      *
@@ -207,7 +210,7 @@ interface TestFn {
      *
      * @param data - Key-value pairs
      */
-    meta(data: object): this;
+    meta(data: Metadata): this;
     /**
      * Attaches hooks to the test
      *
