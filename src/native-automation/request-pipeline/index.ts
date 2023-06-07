@@ -60,6 +60,11 @@ const ALL_REQUEST_REQUESTS  = { requestStage: 'Response' } as RequestPattern;
 
 const ALL_REQUESTS_DATA = [ALL_REQUEST_REQUESTS, ALL_REQUEST_RESPONSES];
 
+const TARGET_INFO_TYPE = {
+    iframe: 'iframe',
+    worker: 'worker',
+};
+
 export default class NativeAutomationRequestPipeline extends NativeAutomationApiBase {
     private readonly _testRunBridge: TestRunBridge;
     private readonly _contextInfo: NativeAutomationRequestContextInfo;
@@ -372,9 +377,12 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
             patterns: ALL_REQUESTS_DATA,
         });
 
-        // NOTE: these issues exist only in headless mode:
+        // NOTE: these issues exist only in non-headless mode:
         // https://github.com/DevExpress/testcafe/issues/7640#issuecomment-1538220298
         // https://github.com/DevExpress/testcafe-private/issues/190
+        // https://github.com/DevExpress/testcafe/issues/7770
+        // There are not tests for this code. The above issues should be tested manually
+        // in case on any modifications
         if (!this.options.isHeadless) {
             await this._client.Target.setAutoAttach({
                 autoAttach:             true,
@@ -386,14 +394,19 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
             // to intercept some requests. We need to use the `sessionId` option
             // in continueRequest/continueResponse/fulfillRequest methods
             await this._client.Target.on('attachedToTarget', async event => {
-                if (event.targetInfo.type !== 'iframe')
+                const isIFrame = event.targetInfo.type === TARGET_INFO_TYPE.iframe;
+                const isWorker = event.targetInfo.type === TARGET_INFO_TYPE.worker;
+
+                if (!isIFrame && !isWorker)
                     return;
 
                 // @ts-ignore
                 await this._client.Runtime.runIfWaitingForDebugger(event.sessionId);
 
-                // @ts-ignore
-                await this._client.Fetch.enable({ patterns: ALL_REQUESTS_DATA }, event.sessionId);
+                if (isIFrame) {
+                    // @ts-ignore
+                    await this._client.Fetch.enable({ patterns: ALL_REQUESTS_DATA }, event.sessionId);
+                }
             });
         }
 
