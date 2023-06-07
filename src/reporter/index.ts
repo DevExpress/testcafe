@@ -715,16 +715,4 @@ export default class Reporter {
             ],
         });
     }
-
-    private _resolvePluginHooks (reporterHooks: ReporterHooks|undefined, name: string): ReporterPluginHooks | undefined {
-        if (!reporterHooks)
-            return void 0;
-
-        const resultHooks: ReporterPluginHooks = {};
-
-        if (reporterHooks.onBeforeWrite && reporterHooks.onBeforeWrite[name])
-            resultHooks.onBeforeWrite = reporterHooks.onBeforeWrite[name];
-
-        return resultHooks;
-    }
 }
