@@ -61,7 +61,7 @@ describe('Request', () => {
     it('Should rise an error if url is not valid', function () {
         return runTests('testcafe-fixtures/request-test.js', 'Should rise an error if url is not valid', { shouldFail: true })
             .catch(function (errs) {
-                expect(errs[0]).contains('Requested url isn\'t valid (crash).');
+                expect(errs[0]).contains('The request url is invalid (crash).');
                 expect(/await t.request\('crash'\)/.test(errs[0])).ok;
             });
     });

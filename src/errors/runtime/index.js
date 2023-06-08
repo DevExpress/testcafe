@@ -11,7 +11,7 @@ import { removePreventModuleCachingSuffix } from '../test-run/utils';
 import REPORTER_MODULE_PREFIX from '../../reporter/module-prefix';
 
 const ERROR_SEPARATOR        = '\n\n';
-const NO_STACK_AVAILABLE_MSG = 'No stack trace available for this error';
+const NO_STACK_AVAILABLE_MSG = 'No stack trace is available for this error';
 const MODULE_NOT_FOUND_CODE  = 'MODULE_NOT_FOUND';
 
 function formatErrorWithCallsite (error) {
@@ -57,7 +57,7 @@ export class TestCompilationError extends Error {
             data: [errorMessage],
         });
 
-        // NOTE: stack includes message as well.
+        // NOTE: The stack includes the error message.
         this.stack = renderTemplate(template, removePreventModuleCachingSuffix(originalError.stack));
     }
 }
@@ -82,7 +82,7 @@ export class APIError extends Error {
         else
             this.callsite = getCallsiteForMethod(callsite);
 
-        // NOTE: We need property getters here because callsite can be replaced by an external code.
+        // NOTE: Property getters are necessary because the callsite can be replaced with external code.
         // See https://github.com/DevExpress/testcafe/blob/v1.0.0/src/compiler/test-file/formats/raw.js#L22
         // Also we can't use an ES6 getter for the 'stack' property, because it will create a getter on the class prototype
         // that cannot override the instance property created by the Error parent class.
@@ -152,7 +152,7 @@ export class ReporterPluginError extends GeneralError {
         if (!err?.stack) {
             const inspectedObject = util.inspect(err);
 
-            return `No stack trace is available for a raised error.\nRaised error object inspection:\n${inspectedObject}`;
+            return `No stack trace is available for the raised error.\nError object inspection:\n${inspectedObject}`;
         }
 
         return err.stack;
@@ -237,8 +237,8 @@ export class LoadReporterError extends GeneralError {
         if (!isModuleNotFoundError)
             return formatErrorWithCallsite(originalError);
 
-        // NOTE: ModuleNotFound error "message" property have the following pattern <message>\nRequire stack:\n<line1>\n<line2>
-        // We don't need to show require stack if error was produced by require('testcafe-reporter-<name>') call. If it wasn't, we need to show full require stack
+        // NOTE: The "message" property of the ModuleNotFound error has the following pattern: <message>\nRequire stack:\n<line1>\n<line2>.
+        // We need to output the full "require" stack, unless "require('testcafe-reporter-<name>')" caused the error.
         const errorText = originalError.message.split('\n')[0];
 
         if (errorText.includes(reporterFullName))

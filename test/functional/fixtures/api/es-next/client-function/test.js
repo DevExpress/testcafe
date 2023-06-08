@@ -100,7 +100,7 @@ describe('[API] ClientFunction', function () {
                 only:       'chrome',
             }).catch(function (errs) {
                 expect(errs[0].indexOf(
-                    'ClientFunction cannot implicitly resolve the test run in context of which it should be executed.'
+                    'ClientFunction does not have test controller access.'
                 )).eql(0);
 
                 expect(errs[0]).contains(' > 42 |                await fn();');
