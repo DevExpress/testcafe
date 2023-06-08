@@ -32,6 +32,10 @@ describe('Native dialogs handling', function () {
             return runTests('./testcafe-fixtures/native-dialogs-test.js', 'Expected confirm after an action');
         });
 
+        it('Should pass if the expected geolocation dialog appears after an action', function () {
+            return runTests('./testcafe-fixtures/native-dialogs-test.js', 'Expected geolocation object and geolocation error returned after an action');
+        });
+
         it('Should pass if the expected confirm dialog appears after an action (with dependencies)', function () {
             return runTests('./testcafe-fixtures/native-dialogs-test.js', 'Expected confirm after an action (with dependencies)');
         });

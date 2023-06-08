@@ -36,6 +36,31 @@ test('Expected print after an action', async t => {
     await t.expect(dialogs).eql([{ type: 'print', url: pageUrl }]);
 });
 
+
+test('Expected geolocation object and geolocation error returned after an action', async t => {
+    await t
+        .setNativeDialogHandler((type) => {
+            if (type === 'geolocation')
+                return { timestamp: 12356, coords: {} };
+
+            return null;
+        })
+        .click('#buttonGeo')
+        .expect(getResult()).eql('{"timestamp":12356,"coords":{}}')
+        .setNativeDialogHandler((type) => {
+            if (type !== 'geolocation')
+                return null;
+
+            const err = new Error('Some error');
+
+            err.code = 1;
+
+            return err;
+        })
+        .click('#buttonGeo')
+        .expect(getResult()).eql('Some error');
+});
+
 test('Expected confirm after an action', async t => {
     await t
         .setNativeDialogHandler((type, text) => {
