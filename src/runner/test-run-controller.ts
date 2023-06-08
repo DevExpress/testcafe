@@ -4,7 +4,7 @@ import { TestRun as LegacyTestRun } from 'testcafe-legacy-api';
 import TestRun from '../test-run';
 import SessionController from '../test-run/session-controller';
 import BrowserConnection from '../browser/connection';
-import { Proxy } from 'testcafe-hammerhead';
+import { Proxy, generateUniqueId } from 'testcafe-hammerhead';
 import Test from '../api/structure/test';
 import Screenshots from '../screenshots';
 import WarningLog from '../notifications/warning-log';
@@ -38,6 +38,7 @@ export default class TestRunController extends AsyncEventEmitter {
     private readonly _testRunHook: TestRunHookController;
     private clientScriptRoutes: string[] = [];
     private isNativeAutomation = false;
+    public readonly id: string;
 
     public constructor ({
         test,
@@ -55,6 +56,7 @@ export default class TestRunController extends AsyncEventEmitter {
         this.test  = test;
         this.index = index;
         this._opts = opts;
+        this.id    = generateUniqueId();
 
         this._proxy                 = proxy;
         this._screenshots           = screenshots;
@@ -93,7 +95,12 @@ export default class TestRunController extends AsyncEventEmitter {
             startRunExecutionTime,
         });
 
-        this.clientScriptRoutes = clientScriptsRouting.register(this._proxy, this.test, this.isNativeAutomation);
+        this.clientScriptRoutes = clientScriptsRouting.register({
+            proxy:            this._proxy,
+            test:             this.test,
+            nativeAutomation: this.isNativeAutomation,
+            folderName:       this.testRun.id,
+        });
 
         await this.testRun.initialize();
 
@@ -185,7 +192,7 @@ export default class TestRunController extends AsyncEventEmitter {
 
         await this.emit('test-run-done');
 
-        testRunControllerLogger('done');
+        testRunControllerLogger('done %s', this.id);
     }
 
     private async _emitTestRunStart (): Promise<void> {
@@ -209,10 +216,10 @@ export default class TestRunController extends AsyncEventEmitter {
     private _testRunDisconnected (connection: BrowserConnection): Promise<void> {
         this._disconnectionCount++;
 
-        const disconnectionThresholdExceedeed = this._disconnectionCount >= DISCONNECT_THRESHOLD;
+        const disconnectionThresholdExceeded = this._disconnectionCount >= DISCONNECT_THRESHOLD;
 
         return connection
-            .processDisconnection(disconnectionThresholdExceedeed)
+            .processDisconnection(disconnectionThresholdExceeded)
             .then(() => {
                 return this._restartTest();
             });
@@ -250,7 +257,16 @@ export default class TestRunController extends AsyncEventEmitter {
     }
 
     public async start (connection: BrowserConnection, startRunExecutionTime?: Date): Promise<string | null> {
-        testRunControllerLogger('start');
+        testRunControllerLogger('start %s %O %O', this.id, {
+            test: {
+                name: this.test.name,
+                id:   this.test.id,
+            },
+            connection: {
+                userAgent: connection.userAgent,
+                id:        connection.id,
+            },
+        });
 
         await this._handleNativeAutomationMode(connection);
 
