@@ -1,6 +1,6 @@
-const { expect }          = require('chai');
-const config              = require('../../config.js');
-const assertionHelper     = require('../../assertion-helper.js');
+const { expect }      = require('chai');
+const config          = require('../../config.js');
+const assertionHelper = require('../../assertion-helper.js');
 
 const SCREENSHOT_PATH_MESSAGE_TEXT       = 'Screenshot: ___test-screenshots___';
 const REPORT_SCREENSHOT_PATH_TEXT_RE     = /___test-screenshots___[\\/]\d{4,4}-\d{2,2}-\d{2,2}_\d{2,2}-\d{2,2}-\d{2,2}[\\/]test-1/;
