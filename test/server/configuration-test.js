@@ -113,8 +113,7 @@ describe('TestCafeConfiguration', function () {
                     }
 
                     expect(message).eql(
-                        `Failed to parse the "${filePath}" configuration file. \n\n` +
-                        `This file is not a well-formed JSON file. Error details:\n\n` +
+                        `Failed to parse the "${filePath}" configuration file. The file contains invalid JSON syntax. \n\nError details:\n\n` +
                         `JSON5: invalid end of input at 1:2`
                     );
                 });
@@ -691,8 +690,8 @@ describe('TypeScriptConfiguration', function () {
         fs.unlinkSync(tsConfigPath);
 
         expect(message).eql(
-            `Failed to parse the "${typeScriptConfiguration.filePath}" configuration file. \n\n` +
-            `This file is not a well-formed JSON file. Error details:\n\n` +
+            `Failed to parse the "${typeScriptConfiguration.filePath}" configuration file. The file contains invalid JSON syntax. \n\n` +
+            `Error details:\n\n` +
             `JSON5: invalid end of input at 1:2`
         );
     });

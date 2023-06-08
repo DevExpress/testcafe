@@ -52,8 +52,8 @@ export default {
     [RUNTIME_ERRORS.cannotFindSpecifiedTestSource]:                      'Cannot find a test file at "{path}".',
     [RUNTIME_ERRORS.clientFunctionCodeIsNotAFunction]:                   'Cannot initialize a ClientFunction because {#instantiationCallsiteName} is {type}, and not a function.',
     [RUNTIME_ERRORS.selectorInitializedWithWrongType]:                   'Cannot initialize a Selector because {#instantiationCallsiteName} is {type}, and not one of the following: a CSS selector string, a Selector object, a node snapshot, a function, or a Promise returned by a Selector.',
-    [RUNTIME_ERRORS.clientFunctionCannotResolveTestRun]:                 "{#instantiationCallsiteName} does not have test controller access. To execute {#instantiationCallsiteName} from a Node.js API callback, bind the test controller object to the function with the `.with({ boundTestRun: t })` method. Note that you cannot execute {#instantiationCallsiteName} outside test code.",
-    [RUNTIME_ERRORS.requestCannotResolveTestRun]:                        "'request' does not have test controller access.",
+    [RUNTIME_ERRORS.clientFunctionCannotResolveTestRun]:                 '{#instantiationCallsiteName} does not have test controller access. To execute {#instantiationCallsiteName} from a Node.js API callback, bind the test controller object to the function with the `.with({ boundTestRun: t })` method. Note that you cannot execute {#instantiationCallsiteName} outside test code.',
+    [RUNTIME_ERRORS.requestCannotResolveTestRun]:                        '"request" does not have test controller access.',
     [RUNTIME_ERRORS.regeneratorInClientFunctionCode]:                    `{#instantiationCallsiteName} code, arguments or dependencies cannot contain generators or "async/await" syntax (use Promises instead).`,
     [RUNTIME_ERRORS.invalidClientFunctionTestRunBinding]:                'Cannot resolve the "boundTestRun" option because its value is not a test controller.',
     [RUNTIME_ERRORS.invalidValueType]:                                   '{smthg} ({actual}) is not of expected type ({type}).',
@@ -100,7 +100,7 @@ export default {
                                            '\n' +
                                            '{err}',
 
-    [RUNTIME_ERRORS.cannotParseConfigFile]: 'Failed to parse the "{path}" configuration file. The file contains invalid JSON syntax. \n\n Error details:\n' +
+    [RUNTIME_ERRORS.cannotParseConfigFile]: 'Failed to parse the "{path}" configuration file. The file contains invalid JSON syntax. \n\nError details:\n' +
                                            '\n' +
                                            '{err}',
 

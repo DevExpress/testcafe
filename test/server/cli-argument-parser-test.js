@@ -127,7 +127,7 @@ describe('CLI argument parser', function () {
         });
 
         it('Should raise error if "--ports" option has less than 2 ports specified', function () {
-            return assertRaisesError('--ports 1337', 'The "--ports" argument accepts two values at a time.');
+            return assertRaisesError('--ports 1337', 'The "--ports" option requires two arguments.');
         });
     });
 

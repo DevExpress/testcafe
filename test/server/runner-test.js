@@ -156,7 +156,7 @@ describe('Runner', () => {
                     throw new Error('Promise rejection expected');
                 })
                 .catch(err => {
-                    expect(err.message).eql('An error occurred while loading the "reporter42" reporter. Please check the reporter parameter for errors. Error details:' +
+                    expect(err.message).eql('Failed to load the "reporter42" reporter. Please check the parameter for errors. Error details:' +
                                             '\n\n' +
                                             'Cannot find module "testcafe-reporter-reporter42"');
                 });
@@ -173,7 +173,7 @@ describe('Runner', () => {
                 })
                 .catch(err => {
                     expect(stripAnsi(err.message)).eql(
-                        'An error occurred while loading the "fakeReporter" reporter. Please check the reporter parameter for errors. Error details:' +
+                        'Failed to load the "fakeReporter" reporter. Please check the parameter for errors. Error details:' +
                              '\n\n' +
                              'undefProp is not defined' +
                              '\n\n' +
@@ -411,7 +411,7 @@ describe('Runner', () => {
                 .catch(err => {
                     expect(err.message).eql(
                         'Cannot enable the \'retryTestPages\' option. Apply one of the following two solutions:\n' +
-                        '-- set \'localhost\' as the value of the \'hostname\' option\n' +
+                        '-- set the \'hostname\' option to \'localhost\'\n' +
                         '-- run TestCafe over HTTPS\n'
                     );
                 });
@@ -730,8 +730,8 @@ describe('Runner', () => {
                                             '1 of 1 browser connections have not been established:\n' +
                                             '- remote\n\n' +
                                             'Hints:\n' +
-                                            '- Increase the value of the "browserInitTimeout" option if it is too low ' +
-                                            '(currently: 0.1 seconds for all browsers). This option determines how long TestCafe waits for browsers to be ready.\n' +
+                                            '- Increase the Browser Initialization Timeout if its value is too low ' +
+                                            '(currently: 0.1 seconds for all browsers). The timeout determines how long TestCafe waits for browsers to be ready.\n' +
                                             '- The error can also be caused by network issues or remote device failure. ' +
                                             'Make sure that your network connection is stable and you can reach the remote device.');
                 });
@@ -1040,7 +1040,7 @@ describe('Runner', () => {
                     })
                     .catch((err) => {
                         expect(err.message).eql(
-                            `Your Linux version does not have a graphic subsystem to run ${browserName} with a GUI. ` +
+                            `Your Linux installation does not have a graphic subsystem to run ${browserName} with a GUI. ` +
                             'You can launch the browser in headless mode. ' +
                             'If you use a portable browser executable, ' +
                             "specify the browser alias before the path instead of the 'path' prefix. " +
@@ -1059,7 +1059,7 @@ describe('Runner', () => {
                     })
                     .catch((err) => {
                         expect(err.message).eql(
-                            'Your Linux version does not have a graphic subsystem to run {"path":"/non/exist"} with a GUI. ' +
+                            'Your Linux installation does not have a graphic subsystem to run {"path":"/non/exist"} with a GUI. ' +
                             'You can launch the browser in headless mode. ' +
                             'If you use a portable browser executable, ' +
                             `specify the browser alias before the path instead of the 'path' prefix. ` +
@@ -1611,9 +1611,9 @@ describe('Runner', () => {
                         'Hints:\n' +
                         '- some warning from "browser-alias1"\n' +
                         '- some warning from "browser-alias2"\n' +
-                        '- Increase the value of the "browserInitTimeout" option if it is too low ' +
+                        '- Increase the Browser Initialization Timeout if its value is too low ' +
                         '(currently: 2 minutes for local browsers and 6 minutes for remote browsers). ' +
-                        'This option determines how long TestCafe waits for browsers to be ready.\n' +
+                        'The timeout determines how long TestCafe waits for browsers to be ready.\n' +
                         '- The error can also be caused by network issues or remote device failure. ' +
                         'Make sure that your network connection is stable and you can reach the remote device.'
                     );
@@ -1631,7 +1631,7 @@ describe('Runner', () => {
                 })
                 .catch(err => {
                     expect(err.message).contains('The host machine may not be powerful enough to handle the specified concurrency factor (4). ' +
-                                                 'Try to decrease the concurrency factor or allocate more computing resources to the host machine.');
+                                                 'Decrease the concurrency factor or allocate more computing resources to the host machine.');
                 });
         });
     });

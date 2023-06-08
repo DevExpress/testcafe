@@ -488,7 +488,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'The "invalidProp" option does not exist. Use the following options to configure skipJsErrors callback: "fn" and "dependencies".',
+                                 'The "invalidProp" option does not exist. Use the following options to configure skipJsErrors callbacks: "fn" and "dependencies".',
 
                         callsite: '   1 |fixture`SkipJsErrors API`\n' +
                                   ' > 2 |    .skipJsErrors({ fn: () => true, invalidProp: false });\n' +
@@ -1668,7 +1668,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 "Cannot implicitly resolve the test run in the context of which the test controller action should be executed. Use test function's 't' argument instead.",
+                                 "The action does not have implicit test controller access. Reference the 't' object to gain it.",
 
                         callsite: '    1 |import { t } from \'testcafe\';\n' +
                                   '    2 |\n' +
