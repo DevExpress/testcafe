@@ -360,7 +360,6 @@ describe('Runner', () => {
             expect(runner._getScreenshotOptions()).eql({
                 path:        'path1',
                 pathPattern: 'pattern1',
-                takeOnFails: false,
             });
         });
 
@@ -376,7 +375,6 @@ describe('Runner', () => {
             expect(runner._getScreenshotOptions()).eql({
                 path:        'path2',
                 pathPattern: 'pattern2',
-                takeOnFails: false,
             });
         });
 

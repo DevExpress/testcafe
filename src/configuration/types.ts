@@ -9,7 +9,6 @@ interface ScreenshotOptionValue {
     pathPattern?: string;
     fullPage?: boolean;
     thumbnails?: boolean;
-    autoTakeOnFails?: boolean;
 }
 
 interface QuarantineOptionValue {
