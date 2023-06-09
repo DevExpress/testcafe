@@ -16,3 +16,4 @@ jobs:
     uses: ./.github/workflows/test-functional.yml
     with:
       test-script: 'npx gulp test-functional-local-native-automation-run --steps-as-tasks'
+      display: ':99.0'
