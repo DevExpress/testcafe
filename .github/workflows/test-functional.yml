@@ -97,14 +97,51 @@ jobs:
         with:
           node-version: ${{ inputs.node-version }}
 
-      - uses: DevExpress/testcafe-build-system/actions/read-artifacts@main
+      - if: ${{ inputs.node-version}}
+        uses: actions/setup-node@v3
+        with: 
+          node-version: ${{ inputs.node-version }}
+
+      - uses: actions/github-script@v6
         with:
-          package-name: 'testcafe'
-          is-docker: ${{ inputs.is-docker }}
+          script: |
+            const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+            let artifacts = {};
+
+            for(let i = 0;i<36&&!artifacts.total_count;i++,await delay(5000)) {
+              try {
+                ({ data: artifacts } = await github.rest.actions.listWorkflowRunArtifacts({
+                repo: context.repo.repo,
+                owner: context.repo.owner,
+                run_id: context.payload.inputs.deploy_run_id
+              }));
+              }
+              catch (e) {
+                console.log(e);
+              }
+            }
+
+            const isDocker     = ${{ inputs.is-docker == 'true' }};
+            const artifactName = isDocker ? 'docker' : 'npm';
+            const packageName  = isDocker ? 'docker.zip' : 'package.zip';
+
+            const { data: artifact } = await github.request(artifacts.artifacts.find(artifact=> artifact.name === artifactName).archive_download_url);
+            require('fs').writeFileSync(require('path').join(process.env.GITHUB_WORKSPACE, packageName), Buffer.from(artifact))
+
+      - if: ${{ inputs.is-docker == 'false' }}
+        run: |
+          7z e package.zip
+          7z e testcafe-*.tgz
+
+      - shell: bash
+        if: ${{ inputs.is-docker == 'true' }}
+        run: |
+          unzip docker.zip
+          docker load -i testcafe-*.tar
 
       - name: Get npm cache directory
         id: npm-cache-dir
-        shell: bash
         run: |
           echo "dir=$(npm config get cache)" >> $GITHUB_OUTPUT
 
@@ -127,7 +164,6 @@ jobs:
       - name: Save result
         id: save-result
         if: always()
-        shell: bash
         run: echo "test_${{ matrix.test-group }}=${{ job.status }}" >> "$GITHUB_OUTPUT"
   
   get-result-status:
