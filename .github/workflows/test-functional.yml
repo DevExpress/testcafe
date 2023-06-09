@@ -134,6 +134,8 @@ jobs:
           dir
           7z e testcafe-*.tgz
           dir
+          7z e testcafe-*.tar -y
+          dir
 
       - shell: bash
         if: ${{ inputs.is-docker == 'true' }}
