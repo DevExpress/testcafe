@@ -129,10 +129,10 @@ jobs:
             const { data: artifact } = await github.request(artifacts.artifacts.find(artifact=> artifact.name === artifactName).archive_download_url);
             require('fs').writeFileSync(require('path').join(process.env.GITHUB_WORKSPACE, packageName), Buffer.from(artifact))
 
-      - if: ${{ inputs.is-docker == 'false' }}
-        run: |
+      - run: |
           7z e package.zip
-          7z e testcafe-*.tgz
+          dir
+          7z e testcafe-*.tar
 
       - shell: bash
         if: ${{ inputs.is-docker == 'true' }}
