@@ -132,7 +132,8 @@ jobs:
       - run: |
           7z e package.zip
           dir
-          7z e testcafe-*.tar
+          7z e testcafe-*.tgz
+          dir
 
       - shell: bash
         if: ${{ inputs.is-docker == 'true' }}
