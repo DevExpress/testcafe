@@ -136,12 +136,19 @@ jobs:
 
       - run: |
           7z x package.zip
+          echo "Dir after extracting from package.zip"
           dir
+          echo "Extracting from testcafe-*.tgz"
           7z x testcafe-*.tgz
+          echo "Dir after extracting from testcafe-*.tgz"
           dir
+          echo "Extracting from testcafe-*.tar"
           7z x testcafe-*.tar -y
+          echo "Dir after extracting from testcafe-*.tar"
           dir
+          echo "Copying"
           xcopy package .\ /e /y
+          echo "Dir after copying"
           dir
 
       - shell: bash
