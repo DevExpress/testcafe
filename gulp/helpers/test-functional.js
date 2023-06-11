@@ -27,6 +27,7 @@ function getGroupOfTests (tests, groupNumber, groupsCount) {
     return tests.slice(testFragmentStartIndex, testFragmentEndIndex);
 }
 
+/* eslint-disable */
 module.exports = async function testFunctional (src, testingEnvironmentName, { nativeAutomation } = {}) {
     process.env.TESTING_ENVIRONMENT       = testingEnvironmentName;
     process.env.BROWSERSTACK_USE_AUTOMATE = 1;
@@ -34,8 +35,10 @@ module.exports = async function testFunctional (src, testingEnvironmentName, { n
     if (nativeAutomation)
         process.env.NATIVE_AUTOMATION = 'true';
 
+    console.log(`${new Date()} -> file: test-functional.js:76 -> testFunctional -> process.env.BROWSERSTACK_NO_LOCAL:`, process.env.BROWSERSTACK_NO_LOCAL);
     if (!process.env.BROWSERSTACK_NO_LOCAL)
         process.env.BROWSERSTACK_NO_LOCAL = 1;
+    console.log(`${new Date()} -> file: test-functional.js:76 -> testFunctional -> process.env.BROWSERSTACK_NO_LOCAL:`, process.env.BROWSERSTACK_NO_LOCAL);
 
     let tests = castArray(src);
 

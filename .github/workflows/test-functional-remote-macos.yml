@@ -19,4 +19,5 @@ jobs:
       os: 'browserstack'
       use-public-hostname: true
       timeout: 35
+      browserstack-no-local: 0
     secrets: inherit

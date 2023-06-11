@@ -38,6 +38,10 @@ on:
         required: false
         type: boolean
         default: false
+      browserstack-no-local:
+        required: false
+        type: number
+        default: 1
 env:
   NO_CACHE: ${{ secrets.NO_CACHE }}
 
@@ -64,6 +68,7 @@ jobs:
     env:
       BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
       BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+      BROWSERSTACK_NO_LOCAL: ${{ inputs.browserstack-no-local }}
       USE_PUBLIC_HOSTNAME: ${{ inputs.use-public-hostname }}
       RETRY_FAILED_TESTS: ${{ inputs.retry_failed_tests }}
       TEST_GROUPS_COUNT: ${{ inputs.matrix-jobs-count }}
