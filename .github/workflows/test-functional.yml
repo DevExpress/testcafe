@@ -162,7 +162,7 @@ jobs:
           unzip package.zip
           echo "Dir after unzip package.zip"
           dir
-          tar --strip-components=1 -xzf ${{ inputs.package-name }}-*.tgz
+          tar --strip-components=1 -xzf testcafe-*.tgz
           echo "Dir after tar --strip-components=1 -xzf"
           dir
 
