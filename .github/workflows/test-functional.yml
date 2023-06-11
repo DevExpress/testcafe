@@ -38,6 +38,10 @@ on:
         required: false
         type: boolean
         default: false
+      is-remote:
+        required: false
+        type: boolean
+        default: false
       browserstack-no-local:
         required: false
         type: number
@@ -150,12 +154,17 @@ jobs:
           xcopy package .\ /e /y
           echo "Dir after copying"
           dir
+        if: ${{ inputs.is-remote == 'true' }}
 
       - shell: bash
-        if: ${{ inputs.is-docker == 'true' }}
+        if: ${{ inputs.is-remote == 'false' }}
         run: |
-          unzip docker.zip
-          docker load -i testcafe-*.tar
+          unzip package.zip
+          echo "Dir after unzip package.zip"
+          dir
+          tar --strip-components=1 -xzf ${{ inputs.package-name }}-*.tgz
+          echo "Dir after tar --strip-components=1 -xzf"
+          dir
 
       - name: Get npm cache directory
         id: npm-cache-dir

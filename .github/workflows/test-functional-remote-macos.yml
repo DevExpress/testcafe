@@ -20,4 +20,5 @@ jobs:
       use-public-hostname: true
       timeout: 35
       browserstack-no-local: 0
+      is-remote: true
     secrets: inherit
