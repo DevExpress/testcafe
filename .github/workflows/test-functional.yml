@@ -154,10 +154,10 @@ jobs:
           xcopy package .\ /e /y
           echo "Dir after copying"
           dir
-        if: ${{ inputs.is-remote == 'true' }}
+        if: ${{ inputs.is-remote }}
 
       - shell: bash
-        if: ${{ inputs.is-remote == 'false' }}
+        if: ${{ !inputs.is-remote }}
         run: |
           unzip package.zip
           echo "Dir after unzip package.zip"
