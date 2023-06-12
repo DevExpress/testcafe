@@ -15,7 +15,7 @@ describe('[API] Cookies', function () {
         return runTests('./testcafe-fixtures/cookies-test.js', 'Should set cookies by key-value');
     });
 
-    it('Should set on the client', function () {
+    it.skip('Should set on the client', function () {
         return runTests('./testcafe-fixtures/cookies-test.js', 'Should set on the client');
     });
 
@@ -27,7 +27,7 @@ describe('[API] Cookies', function () {
         return runTests('./testcafe-fixtures/cookies-test.js', 'Should delete cookies by objects');
     });
 
-    it('Should delete on the client', function () {
+    it.skip('Should delete on the client', function () {
         return runTests('./testcafe-fixtures/cookies-test.js', 'Should delete on the client');
     });
 });

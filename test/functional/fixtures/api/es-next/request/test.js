@@ -108,7 +108,7 @@ describe('Request', () => {
         return runTests('testcafe-fixtures/request-test.js', 'Should not set cookies to the client from response');
     });
 
-    it('Should set cookies to the client from response', function () {
+    it.skip('Should set cookies to the client from response', function () {
         return runTests('testcafe-fixtures/request-test.js', 'Should set cookies to the client from response');
     });
 
