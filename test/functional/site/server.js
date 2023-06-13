@@ -77,6 +77,10 @@ Server.prototype._setupRoutes = function (apiRouter) {
         res.end(parsedUA.name);
     });
 
+    this.app.get('/trim-bom', (req, res) => {
+        res.send(`${String.fromCharCode(65279)}<html><head><meta charset="utf-8"></head><body><button>click me</button></body></html>`);
+    });
+
     this.app.get('/i4855', (req, res) => {
         res.send(`
             <html>
