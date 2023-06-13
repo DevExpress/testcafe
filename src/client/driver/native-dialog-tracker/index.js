@@ -94,19 +94,18 @@ export default class NativeDialogTracker {
                 this.contextStorage.save();
         });
 
-        this._overrideDialogMethods();
+        this._setDefaultDialogHandlers();
     }
 
-    _overrideDialogMethods () {
-        window.alert   = () => this._defaultDialogHandler('alert');
-        window.confirm = () => this._defaultDialogHandler('confirm');
-        window.prompt  = () => this._defaultDialogHandler('prompt');
-        window.print   = () => this._defaultDialogHandler('print');
+    _setDefaultDialogHandlers () {
+        NATIVE_DIALOG_TYPES.forEach(dialogType => {
+            window[dialogType] = () => this._defaultDialogHandler(dialogType);
+        });
 
-        this._overrideGeolocationDialog(() => this._defaultDialogHandler('geolocation'));
+        this._setGeolocationDialogHandler(() => this._defaultDialogHandler('geolocation'));
     }
 
-    _overrideGeolocationDialog (handler) {
+    _setGeolocationDialogHandler (handler) {
         const geolocation = window.navigator.geolocation;
 
         if (geolocation?.getCurrentPosition)
@@ -185,10 +184,10 @@ export default class NativeDialogTracker {
                 () => this._defaultDialogHandler(dialogType);
         });
 
-        this._overrideGeolocationDialog(this.dialogHandler
+        this._setGeolocationDialogHandler(this.dialogHandler
             ? this._createGeolocationHandler()
             : () => this._defaultDialogHandler('geolocation')
-        )
+        );
     }
 
     getUnexpectedDialogError () {

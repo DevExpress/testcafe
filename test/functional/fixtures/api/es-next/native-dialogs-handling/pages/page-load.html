@@ -9,19 +9,23 @@
 <div style="background-color: #6ab779; width: 100px; height: 100px;;"></div>
 <script>
     const currentDialogItemName = 'currentDialog';
-    const promptResultItem = 'promptResult';
-    const confirmResultItem = 'confirmResult';
-    const dialogs = {
-        alert:   'alert',
-        confirm: 'confirm',
-        prompt:  'prompt',
-        print:   'print',
-    }
-    const dialogsOrder = [
+    const promptResultItem      = 'promptResult';
+    const confirmResultItem     = 'confirmResult';
+    const geolocationResultItem = 'geoResult';
+
+    const dialogs       = {
+        alert:       'alert',
+        confirm:     'confirm',
+        prompt:      'prompt',
+        print:       'print',
+        geolocation: 'geolocation',
+    };
+    const dialogsOrder  = [
         dialogs.alert,
         dialogs.confirm,
         dialogs.prompt,
         dialogs.print,
+        dialogs.geolocation,
     ];
     const currentDialog = sessionStorage.getItem(currentDialogItemName) || dialogsOrder[0];
 
@@ -31,10 +35,11 @@
 
     window.getDialogsResult = () => {
         return {
-            prompt: sessionStorage.getItem(promptResultItem),
-            confirm: sessionStorage.getItem(confirmResultItem),
-        }
-    }
+            prompt:      sessionStorage.getItem(promptResultItem),
+            confirm:     sessionStorage.getItem(confirmResultItem),
+            geolocation: sessionStorage.getItem(geolocationResultItem),
+        };
+    };
 
     sessionStorage.setItem(currentDialogItemName, getNextDialog(currentDialog));
 
@@ -52,6 +57,10 @@
     }
     else if (currentDialog === dialogs.print) {
         window.print();
+        document.location.reload();
+    }
+    else if (currentDialog === dialogs.geolocation) {
+        window.navigator.geolocation.getCurrentPosition(geo => sessionStorage.setItem(geolocationResultItem, JSON.stringify(geo)));
         sessionStorage.removeItem(currentDialogItemName);
     }
 </script>

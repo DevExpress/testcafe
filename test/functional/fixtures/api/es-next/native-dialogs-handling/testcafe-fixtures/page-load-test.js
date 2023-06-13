@@ -1,6 +1,6 @@
 import { ClientFunction } from 'testcafe';
 
-fixture `Page load`;
+fixture`Page load`;
 
 
 const getResult = ClientFunction(() => window.getDialogsResult());
@@ -16,18 +16,26 @@ test('Expected dialogs after page load', async t => {
             if (type === 'prompt')
                 return 'PromptMsg';
 
+            if (type === 'geolocation')
+                return { geo: 'location' };
+
             return null;
         })
         .navigateTo(pageUrl);
 
     await t.expect(await getResult()).eql({
-        prompt:  'PromptMsg',
-        confirm: 'true',
+        prompt:      'PromptMsg',
+        confirm:     'true',
+        geolocation: '{"geo":"location"}',
     });
 
     const info = await t.getNativeDialogHistory();
 
     await t.expect(info).eql([
+        {
+            type: 'geolocation',
+            url:  pageUrl,
+        },
         {
             type: 'print',
             url:  pageUrl,
