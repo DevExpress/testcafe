@@ -7,6 +7,7 @@
 <body>
 <button id="buttonAlert">Alert</button>
 <button id="buttonConfirm">Confirm</button>
+<button id="buttonPrint">Print</button>
 
 <button id="buttonDialogAfterTimeoutWithRedirect">DialogAfterTimeoutWithRedirect</button>
 <button id="buttonDialogAfterTimeout">DialogAfterTimeout</button>
@@ -27,6 +28,10 @@
 
     document.getElementById('buttonConfirm').addEventListener('click', function () {
         document.getElementById('result').textContent = window.confirm('Confirm?');
+    });
+
+    document.getElementById('buttonPrint').addEventListener('click', function () {
+        window.print();
     });
 
     document.getElementById('buttonDialogAfterTimeout').addEventListener('click', function () {

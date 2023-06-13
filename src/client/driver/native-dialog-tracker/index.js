@@ -12,6 +12,7 @@ const APPEARED_DIALOGS                  = 'testcafe|native-dialog-tracker|appear
 const UNEXPECTED_DIALOG                 = 'testcafe|native-dialog-tracker|unexpected-dialog';
 const ERROR_IN_HANDLER                  = 'testcafe|native-dialog-tracker|error-in-handler';
 const GETTING_PAGE_URL_PROCESSED_SCRIPT = processScript('window.location.href');
+const NATIVE_DIALOG_TYPES               = ['alert', 'confirm', 'prompt', 'print'];
 
 
 export default class NativeDialogTracker {
@@ -97,6 +98,7 @@ export default class NativeDialogTracker {
         window.alert   = () => this._defaultDialogHandler('alert');
         window.confirm = () => this._defaultDialogHandler('confirm');
         window.prompt  = () => this._defaultDialogHandler('prompt');
+        window.print   = () => this._defaultDialogHandler('print');
     }
 
     _createDialogHandler (type) {
@@ -106,7 +108,7 @@ export default class NativeDialogTracker {
             this._addAppearedDialogs(type, text, url);
 
             const executor = new ClientFunctionExecutor(this.dialogHandler);
-            let result   = null;
+            let result     = null;
 
             try {
                 result = executor.fn.apply(window, [type, text, url]);
@@ -138,7 +140,7 @@ export default class NativeDialogTracker {
     setHandler (dialogHandler) {
         this.dialogHandler = dialogHandler;
 
-        ['alert', 'confirm', 'prompt'].forEach(dialogType => {
+        NATIVE_DIALOG_TYPES.forEach(dialogType => {
             window[dialogType] = this.dialogHandler ?
                 this._createDialogHandler(dialogType) :
                 () => this._defaultDialogHandler(dialogType);
