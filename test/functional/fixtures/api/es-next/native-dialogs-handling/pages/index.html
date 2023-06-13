@@ -30,7 +30,10 @@
     document.getElementById('buttonGeo').addEventListener('click', function () {
         window.navigator.geolocation.getCurrentPosition(
             (geo) => document.getElementById('result').textContent = JSON.stringify(geo),
-            (err) => document.getElementById('result').textContent = err.message,
+            (err) => document.getElementById('result').textContent = JSON.stringify({
+                message: err.message,
+                code:    err.code
+            }),
         )
     });
 

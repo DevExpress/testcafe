@@ -1,7 +1,7 @@
 import { ClientFunction, Selector } from 'testcafe';
 
-fixture`Native dialogs`
-    .page`http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/pages/index.html`;
+fixture `Native dialogs`
+    .page `http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/pages/index.html`;
 
 const getResult     = ClientFunction(() => document.getElementById('result').textContent);
 const pageUrl       = 'http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/pages/index.html';
@@ -55,7 +55,7 @@ test('Expected geolocation object and geolocation error returned after an action
             return err;
         })
         .click('#buttonGeo')
-        .expect(getResult()).eql('Some error');
+        .expect(getResult()).eql('{"message":"Some error","code":1}');
 
     const history = await t.getNativeDialogHistory();
 
