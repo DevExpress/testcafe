@@ -1,0 +1,13 @@
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        const iframe = document.createElement('iframe');
+
+        const url    = new URL(location.href);
+        url.hostname = url.hostname === 'localhost' ? '127.0.0.1' : 'localhost';
+        url.port     = '3000';
+        url.pathname = '/fixtures/regression/gh-7640-iframe/pages/frame.html';
+        iframe.src   = url.toString();
+
+        document.body.appendChild(iframe);
+    }, false);
+</script>

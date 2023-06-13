@@ -377,12 +377,7 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
             patterns: ALL_REQUESTS_DATA,
         });
 
-        // NOTE: these issues exist only in non-headless mode:
-        // https://github.com/DevExpress/testcafe/issues/7640#issuecomment-1538220298
-        // https://github.com/DevExpress/testcafe-private/issues/190
-        // https://github.com/DevExpress/testcafe/issues/7770
-        // There are not tests for this code. The above issues should be tested manually
-        // in case on any modifications
+        // NOTE: these issues exist only in non-headless mode
         if (!this.options.isHeadless) {
             await this._client.Target.setAutoAttach({
                 autoAttach:             true,

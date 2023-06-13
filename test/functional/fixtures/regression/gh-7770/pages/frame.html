@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Worker</title>
+</head>
+<body>
+<h1>Worker Frame</h1>
+<script>
+    function handleWorkerMessage (e) {
+        document.querySelector('h1').innerHTML = e.data;
+    }
+
+    const worker = new Worker('http://localhost:3000/fixtures/regression/gh-7770/pages/worker.js');
+
+    worker.addEventListener('message', handleWorkerMessage);
+
+    fetch('http://localhost:3000/?fromIFrame');
+</script>
+</body>
+</html>
