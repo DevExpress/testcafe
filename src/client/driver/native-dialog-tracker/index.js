@@ -120,9 +120,9 @@ export default class NativeDialogTracker {
 
     _createGeolocationHandler () {
         return (successCallback, failCallback) => {
-            const url  = NativeDialogTracker._getPageUrl();
-
-            const isFirstGeolocationRequest = !this.appearedDialogs.some(dialog => dialog.type === GEOLOCATION_DIALOG_TYPE && dialog.url === url);
+            const url                       = NativeDialogTracker._getPageUrl();
+            const isFirstGeolocationRequest = !this.appearedDialogs
+                .some(dialog => dialog.type === GEOLOCATION_DIALOG_TYPE && dialog.url === url);
 
             if (isFirstGeolocationRequest)
                 this._addAppearedDialogs(GEOLOCATION_DIALOG_TYPE, void 0, url);
