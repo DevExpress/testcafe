@@ -20,7 +20,7 @@ describe('[Regression](GH-7770)', function () {
             .then(failed => {
                 failedCount = failed;
 
-                return testCafe.close();
+                return testcafe.close();
             })
             .then(() => {
                 if (failedCount)
