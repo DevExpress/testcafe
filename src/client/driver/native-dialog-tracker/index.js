@@ -103,10 +103,14 @@ export default class NativeDialogTracker {
         window.prompt  = () => this._defaultDialogHandler('prompt');
         window.print   = () => this._defaultDialogHandler('print');
 
+        this._overrideGeolocationDialog(() => this._defaultDialogHandler('geolocation'));
+    }
+
+    _overrideGeolocationDialog (handler) {
         const geolocation = window.navigator.geolocation;
 
         if (geolocation?.getCurrentPosition)
-            geolocation.getCurrentPosition = () => this._defaultDialogHandler('geolocation');
+            geolocation.getCurrentPosition = handler;
     }
 
     _createDialogHandler (type) {
@@ -134,7 +138,10 @@ export default class NativeDialogTracker {
             const type = 'geolocation';
             const url  = NativeDialogTracker._getPageUrl();
 
-            this._addAppearedDialogs(void 0, void 0, url);
+            const isFirstGeolocationRequest = !this.appearedDialogs.some(dialog => dialog.type === type && dialog.url === url);
+
+            if (isFirstGeolocationRequest)
+                this._addAppearedDialogs(type, void 0, url);
 
             const executor = new ClientFunctionExecutor(this.dialogHandler);
             let result     = null;
@@ -178,11 +185,10 @@ export default class NativeDialogTracker {
                 () => this._defaultDialogHandler(dialogType);
         });
 
-        if (window.navigator.geolocation?.getCurrentPosition) {
-            window.navigator.geolocation.getCurrentPosition = this.dialogHandler
-                ? this._createGeolocationHandler()
-                : () => this._defaultDialogHandler('geolocation');
-        }
+        this._overrideGeolocationDialog(this.dialogHandler
+            ? this._createGeolocationHandler()
+            : () => this._defaultDialogHandler('geolocation')
+        )
     }
 
     getUnexpectedDialogError () {
