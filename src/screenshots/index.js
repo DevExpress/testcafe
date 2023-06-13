@@ -4,19 +4,10 @@ import Capturer from './capturer';
 import PathPattern from '../utils/path-pattern';
 import getCommonPath from '../utils/get-common-path';
 import DEFAULT_SCREENSHOT_EXTENSION from './default-extension';
-import TempDirectory from '../utils/temp-directory';
-import createSafeListener from '../utils/create-safe-listener';
-import debug from 'debug';
-import { EventEmitter } from 'events';
 
-const DEBUG_LOGGER = debug('testcafe:screenshots');
 
-const TEMP_DIR_PREFIX = 'screenshots';
-
-export default class Screenshots extends EventEmitter {
-    constructor ({ enabled, path, pathPattern, fullPage, thumbnails, autoTakeOnFails, messageBus }) {
-        super();
-
+export default class Screenshots {
+    constructor ({ enabled, path, pathPattern, fullPage, thumbnails }) {
         this.enabled            = enabled;
         this.screenshotsPath    = path;
         this.screenshotsPattern = pathPattern;
@@ -24,22 +15,6 @@ export default class Screenshots extends EventEmitter {
         this.thumbnails         = thumbnails;
         this.testEntries        = [];
         this.now                = moment();
-        this.tempDirectory      = new TempDirectory(TEMP_DIR_PREFIX);
-        this.autoTakeOnFails    = autoTakeOnFails;
-
-        this._assignEventHandlers(messageBus);
-    }
-
-    _createSafeListener (listener) {
-        return createSafeListener(this, listener, DEBUG_LOGGER);
-    }
-
-    _assignEventHandlers (messageBus) {
-        messageBus.once('start', this._createSafeListener(this._onMessageBusStart));
-    }
-
-    async _onMessageBusStart () {
-        await this.tempDirectory.init();
     }
 
     _addTestEntry (test) {
@@ -93,7 +68,7 @@ export default class Screenshots extends EventEmitter {
             parsedUserAgent:   connection.browserInfo.parsedUserAgent,
         });
 
-        return new Capturer(this.screenshotsPath, testEntry, connection, pathPattern, this.fullPage, this.thumbnails, warningLog, this.tempDirectory.path, this.autoTakeOnFails);
+        return new Capturer(this.screenshotsPath, testEntry, connection, pathPattern, this.fullPage, this.thumbnails, warningLog);
     }
 
     addTestRun (test, testRun) {

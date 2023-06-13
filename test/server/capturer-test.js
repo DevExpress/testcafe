@@ -42,8 +42,6 @@ class ScreenshotsMock extends Screenshots {
         super(options);
     }
 
-    _assignEventHandlers () {}
-
     createCapturerFor (test, testIndex, quarantine, connection, warningLog) {
         this.capturer = super.createCapturerFor(test, testIndex, quarantine, connection, warningLog);
 
@@ -126,7 +124,6 @@ describe('Capturer', () => {
             testRunId:         'test-run-id',
             actionId:          'action-id',
             screenshotPath:    join(process.cwd(), 'screenshot.png'),
-            screenshotData:    void 0,
             thumbnailPath:     join(process.cwd(), 'thumbnails', 'screenshot.png'),
             userAgent:         'user-agent',
             quarantineAttempt: 1,
@@ -149,8 +146,6 @@ describe('Capturer', () => {
         };
 
         const testRunControllerMock = createTestRunControllerMock(screenshots, warningLog);
-
-        await screenshots._onMessageBusStart();
 
         await TestRunController.prototype._createTestRun.call(testRunControllerMock, {
             id:          'browser-connection-id',

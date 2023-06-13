@@ -7,7 +7,6 @@ import {
     flattenDeep as flatten,
     pull as remove,
     isFunction,
-    castArray,
 } from 'lodash';
 
 import Bootstrapper from './bootstrapper';
@@ -49,8 +48,7 @@ import logEntry from '../utils/log-entry';
 import MessageBus from '../utils/message-bus';
 import { validateSkipJsErrorsOptionValue } from '../utils/get-options/skip-js-errors';
 
-const DEBUG_LOGGER            = debug('testcafe:runner');
-const DASHBOARD_REPORTER_NAME = 'dashboard';
+const DEBUG_LOGGER = debug('testcafe:runner');
 
 export default class Runner extends EventEmitter {
     constructor ({ proxy, browserConnectionGateway, configuration }) {
@@ -353,7 +351,7 @@ export default class Runner extends EventEmitter {
     }
 
     _getScreenshotOptions () {
-        let { path, pathPattern, takeOnFails } = this.configuration.getOption(OPTION_NAMES.screenshots) || {};
+        let { path, pathPattern } = this.configuration.getOption(OPTION_NAMES.screenshots) || {};
 
         if (!path)
             path = this.configuration.getOption(OPTION_NAMES.screenshotPath);
@@ -361,10 +359,7 @@ export default class Runner extends EventEmitter {
         if (!pathPattern)
             pathPattern = this.configuration.getOption(OPTION_NAMES.screenshotPathPattern);
 
-        if (!takeOnFails)
-            takeOnFails = false;
-
-        return { path, pathPattern, takeOnFails };
+        return { path, pathPattern };
     }
 
     _validateScreenshotOptions () {
@@ -520,14 +515,6 @@ export default class Runner extends EventEmitter {
         this.bootstrapper.configuration          = this.configuration;
     }
 
-    _turnOnScreenshotsIfNeeded () {
-        const { takeOnFails } = this._getScreenshotOptions();
-        const reporterOptions = this.configuration.getOption(OPTION_NAMES.reporter);
-
-        if (!takeOnFails && reporterOptions && castArray(reporterOptions).some(reporter => reporter.name === DASHBOARD_REPORTER_NAME))
-            this.configuration.mergeOptions({ [OPTION_NAMES.screenshots]: { takeOnFails: true, autoTakeOnFails: true } });
-    }
-
     _resetBeforeRun () {
         this.apiMethodWasCalled.reset();
         this._messageBus.clearListeners();
@@ -554,8 +541,6 @@ export default class Runner extends EventEmitter {
     }
 
     async _prepareReporters () {
-        await this._turnOnScreenshotsIfNeeded();
-
         const reporterPlugins = await Reporter.getReporterPlugins(this.configuration.getOption(OPTION_NAMES.reporter));
         const reporterHooks   = this.configuration.getOption(OPTION_NAMES.hooks)?.reporter;
 
