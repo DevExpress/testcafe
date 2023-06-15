@@ -3,6 +3,7 @@ const { cloneDeep, noop } = require('lodash');
 
 const { expect } = require('chai');
 const fs         = require('fs');
+const path       = require('path');
 const tmp        = require('tmp');
 const { nanoid } = require('nanoid');
 const del        = require('del');
@@ -25,14 +26,14 @@ const Extensions                              = require('../../lib/configuration
 const tsConfigPath           = 'tsconfig.json';
 const customTSConfigFilePath = 'custom-config.json';
 
-const createJSONConfig = (path, options) => {
+const createJSONConfig = (filePath, options) => {
     options = options || {};
-    fs.writeFileSync(path, JSON.stringify(options));
+    fs.writeFileSync(filePath, JSON.stringify(options));
 };
 
-const createJsConfig = (path, options) => {
+const createJsConfig = (filePath, options) => {
     options = options || {};
-    fs.writeFileSync(path, `module.exports = ${JSON.stringify(options)}`);
+    fs.writeFileSync(filePath, `module.exports = ${JSON.stringify(options)}`);
 };
 
 const jsConfigIndex = TestCafeConfiguration.FILENAMES.findIndex(file=>file.includes(Extensions.js));
@@ -115,6 +116,50 @@ describe('TestCafeConfiguration', function () {
                     expect(message).eql(
                         `Failed to parse the "${filePath}" configuration file. The file contains invalid JSON syntax. \n\nError details:\n\n` +
                         `JSON5: invalid end of input at 1:2`
+                    );
+                });
+
+                it('Non-existing module has been imported in config file', async () => {
+                    const filePath = testCafeConfiguration.defaultPaths[jsConfigIndex];
+                    let message     = '';
+
+                    fs.writeFileSync(filePath, 'const f=require("fake");module.exports={}');
+
+                    try {
+                        await testCafeConfiguration.init();
+                    }
+                    catch (err) {
+                        message = err.message;
+                    }
+
+                    expect(message).eql(
+                        `Failed to read the "${filePath}" configuration file from disk. Error details:\n\n` +
+                        `Cannot find module 'fake'\n` +
+                        `Require stack:\n` +
+                        `- ${filePath}`
+                    );
+                });
+
+                it('Non-existing module has been imported config file(depth 2)', async () => {
+                    const filePath   = path.resolve('./test/server/data/configuration/module-not-found/config.js');
+                    const modulePath = path.resolve('./test/server/data/configuration/module-not-found/module.js');
+                    let message      = '';
+
+                    const tcConfiguration = new TestCafeConfiguration(filePath);
+
+                    try {
+                        await tcConfiguration.init();
+                    }
+                    catch (err) {
+                        message = err.message;
+                    }
+
+                    expect(message).eql(
+                        `Failed to read the "${filePath}" configuration file from disk. Error details:\n\n` +
+                        `Cannot find module 'non-existing-module'\n` +
+                        `Require stack:\n` +
+                        `- ${modulePath}\n` +
+                        `- ${filePath}`
                     );
                 });
 

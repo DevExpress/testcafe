@@ -15,11 +15,36 @@ const NO_STACK_AVAILABLE_MSG = 'No stack trace is available for this error';
 const MODULE_NOT_FOUND_CODE  = 'MODULE_NOT_FOUND';
 
 function formatErrorWithCallsite (error) {
-    const callsite         = getCallsiteForError(error);
-    const stackFilter      = createStackFilter();
-    const formattedMessage = callsite?.renderSync({ stackFilter }) || NO_STACK_AVAILABLE_MSG;
+    let formattedMessage = '';
+
+    try {
+        const callsite    = getCallsiteForError(error);
+        const stackFilter = createStackFilter();
+
+        // NOTE: If file from stack doesn't exist an error will be raised here:
+        formattedMessage = callsite?.renderSync({ stackFilter }) || NO_STACK_AVAILABLE_MSG;
+    }
+    catch {
+        formattedMessage = NO_STACK_AVAILABLE_MSG;
+    }
 
     return `${error.message}\n\n${formattedMessage}`;
+}
+
+function isModuleNotFoundError (error) {
+    return error.code && error.code === MODULE_NOT_FOUND_CODE;
+}
+
+// NOTE: The "message" property of the ModuleNotFound error has the following pattern: <message>\nRequire stack:\n<line1>\n<line2>.
+// This code removes lines bellow the targetPath. In case of "require('testcafe-reporter-<name>')" it removes all the Require stack.
+function formatModuleNotFoundErrorRequireStack (message, targetPath) {
+    const messageLines    = message.split('\n');
+    const targetLineIndex = messageLines.findIndex(line => line.includes(targetPath));
+
+    if (targetLineIndex === -1)
+        return message;
+
+    return messageLines.slice(0, targetLineIndex + 1).join('\n');
 }
 
 class ProcessTemplateInstruction {
@@ -201,12 +226,15 @@ export class ImportESMInCommonJSError extends GeneralError {
 
 export class ReadConfigFileError extends GeneralError {
     constructor (code, originalError, filePath, renderCallsite) {
-        super(code, filePath, ReadConfigFileError._getFormattedMessage(originalError, renderCallsite));
+        super(code, filePath, ReadConfigFileError._getFormattedMessage(originalError, renderCallsite, filePath));
     }
 
-    static _getFormattedMessage (originalError, renderCallsite) {
+    static _getFormattedMessage (originalError, renderCallsite, filePath) {
         if (!renderCallsite)
             return originalError.message;
+
+        if (isModuleNotFoundError(originalError))
+            return formatModuleNotFoundErrorRequireStack(originalError.message, filePath);
 
         return formatErrorWithCallsite(originalError);
     }
@@ -227,22 +255,9 @@ export class LoadReporterError extends GeneralError {
         return name;
     }
 
-    static _getReporterModuleNotFoundMessage (reporterModuleName) {
-        return `Cannot find module "${reporterModuleName}"`;
-    }
-
     static _getFormattedMessage (originalError, reporterFullName) {
-        const isModuleNotFoundError = originalError.code && originalError.code === MODULE_NOT_FOUND_CODE;
-
-        if (!isModuleNotFoundError)
-            return formatErrorWithCallsite(originalError);
-
-        // NOTE: The "message" property of the ModuleNotFound error has the following pattern: <message>\nRequire stack:\n<line1>\n<line2>.
-        // We need to output the full "require" stack, unless "require('testcafe-reporter-<name>')" caused the error.
-        const errorText = originalError.message.split('\n')[0];
-
-        if (errorText.includes(reporterFullName))
-            return LoadReporterError._getReporterModuleNotFoundMessage(reporterFullName);
+        if (isModuleNotFoundError(originalError))
+            return formatModuleNotFoundErrorRequireStack(originalError.message, reporterFullName);
 
         return formatErrorWithCallsite(originalError);
     }
