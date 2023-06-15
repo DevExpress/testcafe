@@ -24,7 +24,7 @@ function formatErrorWithCallsite (error) {
         // NOTE: If file from stack doesn't exist an error will be raised here:
         formattedMessage = callsite?.renderSync({ stackFilter }) || NO_STACK_AVAILABLE_MSG;
     }
-    catch (_) {
+    catch {
         formattedMessage = NO_STACK_AVAILABLE_MSG;
     }
 
