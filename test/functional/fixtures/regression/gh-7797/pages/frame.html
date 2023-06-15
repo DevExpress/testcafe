@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>gh-7797</title>
+    <style>
+        button {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="logger"></div>
+    <button>click me</button>
+    <script>
+        document.querySelector('button').addEventListener('click', function () {
+            document.querySelector('#logger').innerText = 'click';
+        });
+    </script>
+</body>
+</html>
