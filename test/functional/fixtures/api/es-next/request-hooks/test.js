@@ -115,5 +115,9 @@ describe('Request Hooks', () => {
                     expect(testReport.errs[0]).contains('The hook (string) is not of expected type (RequestHook subclass).');
                 });
         });
+
+        it('Header names should be lowercased', () => {
+            return runTests('./testcafe-fixtures/api/header-names.js', null, { only: 'chrome' });
+        });
     });
 });

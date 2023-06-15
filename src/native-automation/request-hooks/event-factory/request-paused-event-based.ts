@@ -15,6 +15,7 @@ import Request = Protocol.Network.Request;
 import HeaderEntry = Protocol.Fetch.HeaderEntry;
 import { StatusCodes } from 'http-status-codes';
 import { convertToOutgoingHttpHeaders } from '../../utils/headers';
+import lowercaseObjectKeys from '../../../utils/lowercase-object-keys';
 
 
 export default class RequestPausedEventBasedEventFactory extends BaseRequestHookEventFactory {
@@ -83,7 +84,7 @@ export default class RequestPausedEventBasedEventFactory extends BaseRequestHook
             userAgent: RequestInfo.getUserAgent(request.headers),
             url:       request.url,
             method:    request.method.toLowerCase(),
-            headers:   request.headers,
+            headers:   Object.assign({}, lowercaseObjectKeys(request.headers)),
             body:      RequestPausedEventBasedEventFactory._getRequestData(request),
             isAjax:    RequestPausedEventBasedEventFactory._getIsAjaxRequest(this._event),
         });
@@ -100,7 +101,7 @@ export default class RequestPausedEventBasedEventFactory extends BaseRequestHook
             host:     parsedUrl.host,
             port:     parsedUrl.port,
             path:     parsedUrl.pathname,
-            headers:  this._event.request.headers,
+            headers:  Object.assign({}, lowercaseObjectKeys(this._event.request.headers)),
             body:     RequestPausedEventBasedEventFactory._getRequestData(this._event.request),
             isAjax:   RequestPausedEventBasedEventFactory._getIsAjaxRequest(this._event),
         };
