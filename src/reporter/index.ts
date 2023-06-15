@@ -76,7 +76,7 @@ interface FixtureInfo {
     id: string;
     name: string | null;
     path: string;
-    meta: Dictionary<string>;
+    meta: Metadata;
 }
 
 interface BrowserRunInfo extends Browser {
