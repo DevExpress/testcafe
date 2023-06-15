@@ -158,7 +158,30 @@ describe('Runner', () => {
                 .catch(err => {
                     expect(err.message).eql('Failed to load the "reporter42" reporter. Please check the parameter for errors. Error details:' +
                                             '\n\n' +
-                                            'Cannot find module "testcafe-reporter-reporter42"');
+                                            'Cannot find module \'testcafe-reporter-reporter42\'');
+                });
+        });
+
+        it('Should raise an ModuleNotFound error if reporter has non-existing import', () => {
+            const fakeReporter = function fake () {
+                this.nonExistingModule = require('non-existing-module');
+            };
+
+            return runner
+                .browsers(connection)
+                .reporter(fakeReporter)
+                .src('test/server/data/test-suites/basic/testfile2.js')
+                .run()
+                .then(() => {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(err => {
+                    expect(err.message.startsWith(
+                        'Failed to load the "fake" reporter. Please check the parameter for errors. Error details:' +
+                        '\n\n' +
+                        'Cannot find module \'non-existing-module\'\n' +
+                        'Require stack:\n'
+                    )).eql(true);
                 });
         });
 
