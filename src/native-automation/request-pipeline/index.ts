@@ -319,7 +319,7 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
             else {
                 requestPipelineMockLogger('begin mocking request %r', event);
 
-                const mockedResponse = await this._getMockResponse(pipelineContext);
+                const mockedResponse = await pipelineContext.getMockResponse();
 
                 await this._handleMockErrorIfNecessary(pipelineContext, event);
 
@@ -519,14 +519,5 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
             result.push({ name: header, value: headers[header] });
 
         return result;
-    }
-
-    private async _getMockResponse (pipelineContext: NativeAutomationPipelineContext): Promise<IncomingMessageLike> {
-        const response = await pipelineContext.getMockResponse();
-
-        if (typeof response.statusCode !== 'number')
-            response.statusCode = Number(response.statusCode);
-
-        return response;
     }
 }

@@ -31,7 +31,7 @@ const mock = RequestMock()
 
 class CustomRequestHook extends RequestHook {
     constructor () {
-        super(filterRequestPredicate);
+        super(filterRequestPredicate, { includeHeaders: true } );
 
         this.onResponseCallCountInternal = 0;
         this.requestHeaders             = null;
@@ -41,6 +41,7 @@ class CustomRequestHook extends RequestHook {
     async onRequest (e) {
         this.requestHeaders = e.requestOptions.headers;
     }
+
     async onResponse (e) {
         this.responseHeaders = e.headers;
 
@@ -75,5 +76,6 @@ test('header names should be lowercased', async t => {
     await t
         .expect(req1.request.headers['x-custom-request-header']).eql('value1')
         .expect(req1.response.headers['x-custom-response-header']).eql('value2')
-        .expect(customRequestHook.requestHeaders['x-custom-request-header']).eql('value1');
+        .expect(customRequestHook.requestHeaders['x-custom-request-header']).eql('value1')
+        .expect(customRequestHook.responseHeaders['x-custom-response-header']).eql('value2');
 });
