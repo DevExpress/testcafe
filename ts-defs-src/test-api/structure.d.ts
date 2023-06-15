@@ -116,7 +116,7 @@ interface FixtureFn {
      * @param key - The name of the metadata entry
      * @param value - The value of the metadata entry
      */
-    meta(key: string, value: string): this;
+    meta(key: string, value: unknown): this;
     /**
      * Specifies the additional information for all tests in the fixture. This information can be used in reports.
      *
@@ -204,7 +204,7 @@ interface TestFn {
      * @param key - The name of the metadata entry
      * @param value - The value of the metadata entry
      */
-    meta(key: string, value: string): this;
+    meta(key: string, value: unknown): this;
     /**
      * Specifies the additional information for the test. This information can be used in reports.
      *
