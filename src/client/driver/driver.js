@@ -1189,7 +1189,6 @@ export default class Driver extends serviceUtils.EventEmitter {
             browser[name],
             browser[name],
             this.communicationUrls[name],
-            testCafeUI,
             hammerhead.createNativeXHR);
     }
 
