@@ -109,7 +109,7 @@ export default class RequestPausedEventBasedEventFactory extends BaseRequestHook
         if (parsedUrl.username)
             requestParams.auth = parsedUrl.username + ':' + parsedUrl.password;
 
-        return new RequestOptions(requestParams);
+        return new RequestOptions(requestParams, true);
     }
 
     public createConfigureResponseEvent (rule: RequestFilterRule): ConfigureResponseEvent {

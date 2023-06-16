@@ -9,6 +9,7 @@ import FrameTree = Protocol.Page.FrameTree;
 import FulfillRequestRequest = Protocol.Fetch.FulfillRequestRequest;
 import RequestPattern = Protocol.Fetch.RequestPattern;
 import CertificateErrorEvent = Protocol.Security.CertificateErrorEvent;
+import HeaderEntry = Protocol.Fetch.HeaderEntry;
 import NativeAutomationRequestHookEventProvider from '../request-hooks/event-provider';
 import ResourceInjector, { ResourceInjectorOptions } from '../resource-injector';
 import { convertToHeaderEntries } from '../utils/headers';
@@ -468,37 +469,33 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
         if (!reqOpts)
             return {};
 
-        const modifiedUrl  = new URL(event.request.url);
-        const host         = modifiedUrl.host;
+        let modifierUrl: any = void 0;
 
-        let hostModified = false;
-        let portModified = false;
+        if (reqOpts._changedUrlProperties.length) {
+            modifierUrl = new URL(event.request.url);
 
-        if (modifiedUrl.hostname !== reqOpts.hostname) {
-            modifiedUrl.hostname = reqOpts.hostname;
-            hostModified         = true;
+            for (const propName of reqOpts._changedUrlProperties)
+                modifierUrl[propName] = reqOpts[propName];
+
+            modifierUrl = modifierUrl.toString();
         }
 
-        if (modifiedUrl.port !== reqOpts.port) {
-            modifiedUrl.port = reqOpts.port;
-            portModified     = true;
+        const headers = this._formatHeadersForContinueResponse(event.request.headers);
+
+        for (const changedHeader of reqOpts._changedHeaders) {
+            const targetHeader = headers.find(header => header.name.toLowerCase() === changedHeader.name) as HeaderEntry;
+
+            targetHeader.value = changedHeader.value;
         }
 
-        if (host !== reqOpts.host) {
-            const { port, hostname } = new URL(reqOpts.protocol + '//' + reqOpts.host);
+        for (const removedHeader of reqOpts._removedHeaders)
+            remove(headers, header => header.name === removedHeader.name);
 
-            if (!hostModified)
-                modifiedUrl.hostname = hostname;
-
-            if (!portModified)
-                modifiedUrl.port = port;
-        }
-
-        const url      = modifiedUrl.toString() !== event.request.url ? modifiedUrl.toString() : void 0;
-        const method   = reqOpts.method;
-        const headers  = this._formatHeadersForContinueResponse(event.request.headers);
-
-        return { url, method, headers };
+        return {
+            url:    modifierUrl,
+            method: reqOpts.method,
+            headers,
+        };
     }
 
     private _createContinueEventArgs (event: Protocol.Fetch.RequestPausedEvent, reqOpts: any): ContinueRequestArgs {
