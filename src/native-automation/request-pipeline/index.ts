@@ -489,7 +489,7 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
         }
 
         for (const removedHeader of reqOpts._removedHeaders)
-            remove(headers, header => header.name === removedHeader.name);
+            remove(headers, header => header.name.toLowerCase() === removedHeader.name);
 
         return {
             url:    modifierUrl,
