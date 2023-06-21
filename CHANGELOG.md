@@ -1,5 +1,74 @@
 # Changelog
 
+## v3.0.0 (2023-06-21)
+
+This major update includes two **breaking changes**:
+* TestCafe v3.0.0 uses native CDP automation to run tests in Chromium-based browsers.
+* TestCafe v3.0.0 removes support for Internet Explorer.
+
+Other changes include:
+* You can now access test and fixture data in hooks.
+* You can now dismiss the `print` dialog with the native dialog handler.
+
+### Native automation
+
+TestCafe v2.5.0 introduced an *experimental* mode that allows users to automate Chromium-based browsers, such as Google Chrome and Microsoft Edge, with the native CDP protocol. TestCafe v3.0.0 and up enables this capability out of the box.
+
+Native automation increases test quality, stability, and speed.
+
+* Read the ["TestCafe goes native"](https://testcafe.io/404431/resources/blog/2023-6-21-testcafe-goes-native) announcement for more information on the benefits of the new approach. 
+* Read the [Native Automation FAQ](https://testcafe.io/documentation/404237/guides/intermediate-guides/native-automation-mode) for more information on the practical aspects of this capability.
+
+### Access Test and Fixture data in hooks
+
+You can now access the following data in fixture hooks (`fixture.before`, `fixture.after`) :
+
+* Fixture name
+* Fixture metadata
+* Fixture path
+
+Test hooks (`fixture.beforeEach`, `fixture.afterEach`, `test.before`, `test.after`) can access fixture data **and** the following test data:
+
+* Test name
+* Test metadata
+
+```js
+fixture `Example Fixture`
+    .page `http://example.com`
+    .meta({ fixtureMeta: 'v' })
+    .before( async (ctx, info) => {
+        const fixtureName = info.name; /* Example Fixture */
+        const fixtureMeta = info.meta; /* { fixtureMeta: 'v' } */
+        const fixturePath = info.path /* /Users/dan/testcafe/fixture.js */
+    });
+    .beforeEach( async t => {
+        const fixtureName = t.fixture.name; /* Example Fixture */
+        const fixtureMeta = t.fixture.meta; /* { fixtureMeta: 'v' } */
+        const fixturePath = t.fixture.path /* /Users/dan/testcafe/fixture.js */
+        const testName = t.test.name; /* MyTest */
+        const testMeta = t.test.meta; /* { 'key': 'value' } */
+})
+```
+
+Read the [Hooks guide](https://testcafe.io/documentation/403435/guides/intermediate-guides/hooks#access-fixture-and-test-data-in-hooks) for more information.
+
+### Dismiss the print dialog
+
+You can now use the [t.setNativeDialogHandler](https://testcafe.io/documentation/402684/reference/test-api/testcontroller/setnativedialoghandler) method to dismiss the print dialog.
+
+### Removed: Internet Explorer support
+
+TestCafe v3.0.0 removes support for Internet Explorer 11, six months after the browser's official [retirement](https://techcommunity.microsoft.com/t5/windows-it-pro-blog/internet-explorer-11-desktop-app-retirement-faq/ba-p/2366549). The browser came out more than 9 years ago, and has a worldwide market of less than [0.5%](https://gs.statcounter.com/browser-market-share). It is survived by Edge, a popular Chromium-based browser that ships with modern versions of Windows.
+
+### Bug fixes
+
+* Some client functions yield a fatal error when the test navigates to a new page or removes an iframe ([#7707](https://github.com/DevExpress/testcafe/issues/7707)).
+* TestCafe fails to correctly modify certain request headers when it uses native automation ([#7748](https://github.com/DevExpress/testcafe/issues/7748)).
+* A bug in the CDP protocol causes TestCafe to incorrectly process request hooks ([#7743](https://github.com/DevExpress/testcafe/issues/7743)).
+* TestCafe outputs a vague error message if the framework fails to read or process the configuration file ([#7208](https://github.com/DevExpress/testcafe/issues/7208), [#6437](https://github.com/DevExpress/testcafe/issues/6437)).
+* TestCafe cannot select content with the "Ctrl+A" shortcut when the framework uses native automation ([#7667](https://github.com/DevExpress/testcafe/issues/7667)).
+* The Monaco editor does not display code completion hints when TestCafe automates it with CDP [#7770](https://github.com/DevExpress/testcafe/issues/7770).
+
 ## v2.6.2 (2023-06-01)
 
 TestCafe v2.6.2 introduces a number of bug fixes.
