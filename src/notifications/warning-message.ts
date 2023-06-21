@@ -30,7 +30,8 @@ export default {
                                  '\n' +
                                  '{err}',
 
-    problematicPathPatternPlaceholderForVideoRecording: 'The {placeholderList} path pattern placeholder{suffix} cannot be applied to the recorded video.\n' +
+    problematicPathPatternPlaceholderForVideoRecording: 'TestCafe could not apply the following video recording save path pattern{suffix}: {placeHolderPattern}.\n' +
+                                                        'You may encounter this behavior when you enable the "singleFile" video recording option and use test-specific path patterns.\n' +
                                                         '\n' +
                                                         'The placeholder{suffix} {verb} replaced with an empty string.',
 
