@@ -474,8 +474,8 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
         if (reqOpts._changedUrlProperties.length) {
             modifierUrl = new URL(event.request.url);
 
-            for (const propName of reqOpts._changedUrlProperties)
-                modifierUrl[propName] = reqOpts[propName];
+            for (const changedUrlProperty of reqOpts._changedUrlProperties)
+                modifierUrl[changedUrlProperty.name] = changedUrlProperty.value;
 
             modifierUrl = modifierUrl.toString();
         }
