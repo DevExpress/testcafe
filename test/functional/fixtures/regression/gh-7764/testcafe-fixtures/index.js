@@ -24,6 +24,6 @@ const logger = RequestLogger('http://localhost:3000/fixtures/regression/gh-7764/
 
 test
     .requestHooks([hook, logger])
-    ('Request logger should contain actual headers if RequestHook modified themd', async t => {
+    ('Request logger should contain actual headers if RequestHook modified them', async t => {
         await t.expect(logger.requests[0].request.headers['referer']).eql('http://my-modified-referer.com');
     });
