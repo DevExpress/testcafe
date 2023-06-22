@@ -121,7 +121,6 @@
         text-shadow: none;
         overflow: visible;
         float: none !important;
-        pointer-events: auto;
     }
 
     textarea, input, select,
@@ -329,6 +328,12 @@
 
         bottom: 0;
         width: 100%;
+
+        pointer-events: none;
+
+        &.status-bar-debugging {
+            pointer-events: auto;
+        }
 
         .status-bar {
             background-color: rgba(24, 40, 57, 0.85);

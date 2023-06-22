@@ -212,9 +212,7 @@ export function closeWindow (closeWindowUrl, createXHR, windowId) {
     });
 }
 
-export async function dispatchNativeAutomationEvent (dispatchNativeAutomationEventUrl, testCafeUI, createXHR, type, options) {
-    await testCafeUI.hide();
-
+export async function dispatchNativeAutomationEvent (dispatchNativeAutomationEventUrl, createXHR, type, options) {
     const data = JSON.stringify({ //eslint-disable-line no-restricted-globals
         type,
         options,
@@ -224,19 +222,13 @@ export async function dispatchNativeAutomationEvent (dispatchNativeAutomationEve
         method: 'POST',
         data,
     });
-
-    await testCafeUI.show();
 }
 
-export async function dispatchNativeAutomationEventSequence (dispatchNativeAutomationEventSequenceUrl, testCafeUI, createXHR, sequence) {
-    await testCafeUI.hide();
-
+export async function dispatchNativeAutomationEventSequence (dispatchNativeAutomationEventSequenceUrl, createXHR, sequence) {
     await sendXHR(dispatchNativeAutomationEventSequenceUrl, createXHR, {
         method: 'POST',
         data:   JSON.stringify(sequence), //eslint-disable-line no-restricted-globals
     });
-
-    await testCafeUI.show();
 }
 
 export function parseSelector (parseSelectorUrl, createXHR, selector) {

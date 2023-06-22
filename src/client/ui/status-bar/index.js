@@ -23,6 +23,7 @@ const arrayUtils   = testCafeCore.arrayUtils;
 
 
 const STATUS_BAR_CLASS                     = 'status-bar';
+const STATUS_BAR_DEBUGGING_CLASS           = 'status-bar-debugging';
 const ICON_CLASS                           = 'icon';
 const INFO_CONTAINER_CLASS                 = 'info-container';
 const INFO_TEXT_CONTAINER_CLASS            = 'info-text-container';
@@ -361,6 +362,8 @@ export default class StatusBar extends serviceUtils.EventEmitter {
     _resetState () {
         this.state.debugging = false;
 
+        shadowUI.removeClass(uiRoot.panelsContainer(), STATUS_BAR_DEBUGGING_CLASS);
+
         this.actionsContainer.style.display = 'none';
         this.unlockButton.style.display     = 'none';
 
@@ -407,6 +410,8 @@ export default class StatusBar extends serviceUtils.EventEmitter {
         return new Promise(resolve => {
             this.state.debugging = true;
             this.state.locked    = true;
+
+            shadowUI.addClass(uiRoot.panelsContainer(), STATUS_BAR_DEBUGGING_CLASS);
 
             if (isTestError) {
                 this.buttons.removeChild(this.nextButton);
