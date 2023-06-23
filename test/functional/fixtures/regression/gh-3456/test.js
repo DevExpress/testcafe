@@ -34,8 +34,8 @@ if (config.useLocalBrowsers) {
 
                     return assertionHelper.checkScreenshotsDimensions({ width: 501, height: 602 }, 2);
                 })
-                .then(dimensionsCorrect => {
-                    expect(dimensionsCorrect).eql(true);
+                .then(comparisonInfo => {
+                    expect(comparisonInfo.result).eql(true, JSON.stringify(comparisonInfo));
 
                     return assertionHelper.removeScreenshotDir();
                 })

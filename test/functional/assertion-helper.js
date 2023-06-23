@@ -322,13 +322,28 @@ exports.isScreenshotsEqual = function (customPath, referenceImagePathGetter) {
     });
 };
 
-exports.checkScreenshotsDimensions = function (dimensions, screenshotCount) {
-    return checkScreenshotImages(false, '', function (screenshotFilePath) {
+exports.checkScreenshotsDimensions = async function (dimensions, screenshotCount) {
+    const comparisonInfo = {
+        screenshots: [],
+    };
+
+    comparisonInfo.result = await checkScreenshotImages(false, '', function (screenshotFilePath) {
         return readPngFile(screenshotFilePath)
             .then(png => {
-                return dimensions.width === png.width && dimensions.height === png.height;
+                comparisonInfo.screenshots.push({
+                    path:       screenshotFilePath,
+                    dimensions: {
+                        width:  png.width,
+                        height: png.height,
+                    },
+                });
+
+                return dimensions.width === png.width
+                    && dimensions.height === png.height;
             });
     }, screenshotCount);
+
+    return comparisonInfo;
 };
 
 function removeDir (dirPath) {
