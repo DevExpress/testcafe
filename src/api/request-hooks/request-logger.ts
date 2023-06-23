@@ -18,7 +18,6 @@ import {
 } from './interfaces';
 
 import { Dictionary } from '../../configuration/interfaces';
-import lowercaseObjectKeys from '../../utils/lowercase-object-keys';
 
 
 const DEFAULT_OPTIONS: RequestHookLogOptions = {
@@ -94,7 +93,7 @@ class RequestLoggerImplementation extends RequestHook {
         };
 
         if (this._options.logRequestHeaders)
-            loggedReq.request.headers = Object.assign({}, lowercaseObjectKeys(event._requestInfo.headers as Dictionary<string>));
+            loggedReq.request.headers = Object.assign({}, event._requestInfo.headers);
 
         if (this._options.logRequestBody)
             loggedReq.request.body = this._options.stringifyRequestBody ? event._requestInfo.body.toString() : event._requestInfo.body;

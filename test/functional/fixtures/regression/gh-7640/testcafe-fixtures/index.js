@@ -7,7 +7,7 @@ class MyRequestHook extends RequestHook {
 
     async onRequest (e) {
         e.requestOptions.hostname = 'localhost';
-        e.requestOptions.port = 3001;
+        e.requestOptions.port     = 3001;
     }
 
     async onResponse () {
