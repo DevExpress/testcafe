@@ -1,5 +1,5 @@
 import { RequestMock } from 'testcafe';
-import { noop } from 'lodash';
+import lodash from 'lodash';
 
 const mock = RequestMock()
     .onRequestTo(/script.js/)
@@ -11,4 +11,4 @@ fixture `Fixture`
     .page('http://localhost:3000/fixtures/api/es-next/request-hooks/pages/request-mock/7823/index.html')
     .requestHooks(mock);
 
-test('Test', noop);
+test('Test', lodash.noop);
