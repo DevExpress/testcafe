@@ -35,6 +35,10 @@ describe('Request Hooks', () => {
         it('Delayed response (GH-7683)', function () {
             return runTests('./testcafe-fixtures/request-mock/delayed-response.js', null, { only: 'chrome' });
         });
+
+        it('Mocking non-AJAX javascript resource (GH-7823)', function () {
+            return runTests('./testcafe-fixtures/request-mock/7823.js', null, { only: 'chrome' });
+        });
     });
 
     describe('RequestLogger', () => {

@@ -144,7 +144,8 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
             body:            mockedResponseBodyStr,
         };
 
-        if (pipelineContext.reqOpts.isAjax)
+        if (pipelineContext.reqOpts.isAjax
+            || !NativeAutomationRequestPipeline._isPage(fulfillInfo.responseHeaders))
             await this._resourceInjector.processNonProxiedContent(fulfillInfo, this._client, sessionId);
         else {
             await this._resourceInjector.processHTMLPageContent(fulfillInfo, {
@@ -245,11 +246,8 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
         }
     }
 
-    private _needInjectResources (event: Protocol.Fetch.RequestPausedEvent): boolean {
-        if (event.resourceType !== 'Document')
-            return false;
-
-        const contentType = event.responseHeaders
+    private static _isPage (responseHeaders: HeaderEntry[] | undefined): boolean {
+        const contentType = responseHeaders
             ?.find(header => header.name.toLowerCase() === 'content-type')
             ?.value;
 
@@ -257,6 +255,13 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
             return contentTypeUtils.isPage(contentType);
 
         return true;
+    }
+
+    private _needInjectResources (event: Protocol.Fetch.RequestPausedEvent): boolean {
+        if (event.resourceType !== 'Document')
+            return false;
+
+        return NativeAutomationRequestPipeline._isPage(event.responseHeaders);
     }
 
     private async _tryAuthorizeWithHttpBasicAuthCredentials (event: RequestPausedEvent, fulfillInfo: FulfillRequestRequest): Promise<void> {
