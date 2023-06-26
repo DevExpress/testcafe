@@ -447,7 +447,6 @@ describe('Reporter', () => {
         src:                    ['test.js'],
         stopOnFirstFail:        false,
         takeScreenshotsOnFails: false,
-        dashboardUrl:           'https://example.com/path',
     };
 
     class TaskMock extends Task {
@@ -670,7 +669,6 @@ describe('Reporter', () => {
                             assertionTimeout:       3000,
                             browsers:               ['chrome', 'firefox'],
                             concurrency:            1,
-                            dashboardUrl:           'https://example.com/path',
                             debugMode:              false,
                             debugOnFail:            false,
                             developmentMode:        false,
@@ -693,8 +691,6 @@ describe('Reporter', () => {
                             stopOnFirstFail:        false,
                             takeScreenshotsOnFails: false,
                         },
-
-                        dashboardUrl: 'https://example.com/path',
                     },
                 ],
             },

@@ -520,12 +520,6 @@ export default class Runner extends EventEmitter {
         this._messageBus.clearListeners();
     }
 
-    _getDashboardUrl () {
-        const dashboardReporter = this._reporters.find(r => r.plugin.name === 'dashboard')?.plugin;
-
-        return dashboardReporter?.getReportUrl ? dashboardReporter.getReportUrl() : '';
-    }
-
     _prepareAndRunTask (options) {
         const messageBusErrorPromise = promisifyEvent(this._messageBus, 'error');
         const taskOptionsPromise     = this._getRunTaskOptions(options);
@@ -605,8 +599,6 @@ export default class Runner extends EventEmitter {
 
         const resultOptions = {
             ...this.configuration.getOptions(),
-
-            dashboardUrl: this._getDashboardUrl(),
         };
 
         return {

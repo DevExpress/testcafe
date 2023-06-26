@@ -20,7 +20,6 @@ import {
     getMetaOptions,
     getGrepOptions,
     getCompilerOptions,
-    getDashboardOptions,
 } from '../../utils/get-options';
 
 import getFilterFn from '../../utils/get-filter-fn';
@@ -88,7 +87,6 @@ interface CommandLineOptions {
     configFile?: string;
     nativeAutomation?: boolean;
     v8Flags?: string[];
-    dashboardOptions?: string | Dictionary<string | boolean | number>;
     baseUrl?: string;
     skipJsErrors?: boolean | Dictionary<RegExp | string>;
 }
@@ -428,11 +426,6 @@ export default class CLIArgumentParser {
         this.opts.compilerOptions = resultCompilerOptions;
     }
 
-    private async _parseDashboardOptions (): Promise<void> {
-        if (this.opts.dashboardOptions)
-            this.opts.dashboardOptions = await getDashboardOptions(this.opts.dashboardOptions as string);
-    }
-
     private _parseListBrowsers (): void {
         const listBrowserOption = this.opts.listBrowsers;
 
@@ -494,7 +487,6 @@ export default class CLIArgumentParser {
         await this._parseCompilerOptions();
         await this._parseSslOptions();
         await this._parseReporters();
-        await this._parseDashboardOptions();
     }
 
     public getRunOptions (): RunnerRunOptions {

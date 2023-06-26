@@ -21,6 +21,8 @@ const runnerLogger = testcafeLogger.extend('runner');
 
 const testRunControllerLogger = runnerLogger.extend('test-run-controller');
 
+const reporterLogger = testcafeLogger.extend('reporter');
+
 export {
     nativeAutomationLogger,
     requestPipelineLogger,
@@ -33,4 +35,5 @@ export {
     requestPipelineOtherRequestLogger,
     requestPipelineContextLogger,
     testRunControllerLogger,
+    reporterLogger,
 };

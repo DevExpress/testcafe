@@ -5,7 +5,6 @@ import getVideoOptions from './video';
 import getMetaOptions from './meta';
 import getGrepOptions from './grep';
 import getCompilerOptions from './compiler';
-import getDashboardOptions from './dashboard';
 import { getSkipJsErrorsOptions } from './skip-js-errors';
 
 export {
@@ -16,6 +15,5 @@ export {
     getMetaOptions,
     getGrepOptions,
     getCompilerOptions,
-    getDashboardOptions,
     getSkipJsErrorsOptions,
 };
