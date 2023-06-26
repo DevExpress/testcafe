@@ -175,7 +175,6 @@ export const RUNTIME_ERRORS = {
     invalidSuccessThresholdValue:                       'E1068',
     cannotSetConcurrencyWithCDPPort:                    'E1069',
     cannotFindTestcafeConfigurationFile:                'E1070',
-    dashboardTokenInJSON:                               'E1071',
     requestUrlInvalidValueError:                        'E1072',
     requestRuntimeError:                                'E1073',
     requestCannotResolveTestRun:                        'E1074',

@@ -52,7 +52,6 @@ enum OptionNames {
     userVariables = 'userVariables',
     v8Flags = 'v8Flags',
     hooks = 'hooks',
-    dashboard = 'dashboard',
     baseUrl = 'baseUrl',
     disableCrossDomain = 'disableCrossDomain',
     esm = 'esm',
