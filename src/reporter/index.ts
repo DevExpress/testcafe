@@ -33,7 +33,7 @@ import fs from 'fs';
 import MessageBus from '../utils/message-bus';
 import BrowserConnection from '../browser/connection';
 import { Dictionary } from '../configuration/interfaces';
-import { reportingLogger } from '../utils/debug-loggers';
+import { reporterLogger } from '../utils/debug-loggers';
 
 interface PendingPromise {
     resolve: Function | null;
@@ -194,7 +194,7 @@ export default class Reporter {
     }
 
     public async dispatchToPlugin ({ method, initialObject, args = [] }: PluginMethodArguments): Promise<void> {
-        reportingLogger('begin dispatchToPlugin method: %s\n%O', method, args);
+        reporterLogger('begin dispatchToPlugin method: %s\n%O', method, args);
 
         try {
             // @ts-ignore
@@ -207,8 +207,8 @@ export default class Reporter {
                 originalError,
             });
 
-            reportingLogger('Plugin error: %O', uncaughtError);
-            reportingLogger('Plugin error: initialObject: %O', initialObject);
+            reporterLogger('Plugin error: %O', uncaughtError);
+            reporterLogger('Plugin error: initialObject: %O', initialObject);
 
             if (initialObject)
                 await initialObject.emit('error', uncaughtError);
@@ -216,7 +216,7 @@ export default class Reporter {
                 throw uncaughtError;
         }
 
-        reportingLogger('end dispatchToPlugin method: %s', method);
+        reporterLogger('end dispatchToPlugin method: %s', method);
     }
 
     private _assignMessageBusEventHandlers (): void {
