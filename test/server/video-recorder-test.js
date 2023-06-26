@@ -163,7 +163,8 @@ describe('Video Recorder', () => {
 
         videoRecorder._addProblematicPlaceholdersWarning(['${TEST_INDEX}']);
         expect(warningLog.messages).eql([
-            'The "${TEST_INDEX}" path pattern placeholder cannot be applied to the recorded video.' +
+            'TestCafe could not apply the following video recording save path pattern: "${TEST_INDEX}".\n' +
+            'You may encounter this behavior when you enable the "singleFile" video recording option and use test-specific path patterns.' +
             '\n\n' +
             'The placeholder was replaced with an empty string.',
         ]);
@@ -171,7 +172,8 @@ describe('Video Recorder', () => {
 
         videoRecorder._addProblematicPlaceholdersWarning(['${TEST_INDEX}', '${FIXTURE}']);
         expect(warningLog.messages).eql([
-            'The "${TEST_INDEX}" and "${FIXTURE}" path pattern placeholders cannot be applied to the recorded video.' +
+            'TestCafe could not apply the following video recording save path patterns: "${TEST_INDEX}" and "${FIXTURE}".\n' +
+            'You may encounter this behavior when you enable the "singleFile" video recording option and use test-specific path patterns.' +
             '\n\n' +
             'The placeholders were replaced with an empty string.',
         ]);

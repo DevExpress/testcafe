@@ -205,7 +205,8 @@ if (config.useLocalBrowsers) {
                 },
             })
                 .catch(() => {
-                    expect(testReport.warnings).eql(['The "${TEST_INDEX}" path pattern placeholder cannot be applied to the recorded video.' +
+                    expect(testReport.warnings).eql(['TestCafe could not apply the following video recording save path pattern: "${TEST_INDEX}".\n' +
+                                                     'You may encounter this behavior when you enable the "singleFile" video recording option and use test-specific path patterns.' +
                                                      '\n\n' +
                                                      'The placeholder was replaced with an empty string.']);
                 });

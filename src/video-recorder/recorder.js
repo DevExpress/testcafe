@@ -68,7 +68,7 @@ export default class VideoRecorder extends EventEmitter {
         const suffix                        = getPluralSuffix(placeholders);
         const verb                          = getToBeInPastTense(placeholders);
 
-        this.warningLog.addWarning(WARNING_MESSAGES.problematicPathPatternPlaceholderForVideoRecording, problematicPlaceholderListStr, suffix, suffix, verb);
+        this.warningLog.addWarning(WARNING_MESSAGES.problematicPathPatternPlaceholderForVideoRecording, suffix, problematicPlaceholderListStr, suffix, verb);
     }
 
     _getTargetVideoPath (testRunRecorder) {
