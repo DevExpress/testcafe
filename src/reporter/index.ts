@@ -33,7 +33,7 @@ import fs from 'fs';
 import MessageBus from '../utils/message-bus';
 import BrowserConnection from '../browser/connection';
 import { Dictionary } from '../configuration/interfaces';
-import debug from 'debug';
+import { reportingLogger } from '../utils/debug-loggers';
 
 interface PendingPromise {
     resolve: Function | null;
@@ -152,8 +152,6 @@ export interface ReporterOptions {
     reporterPluginHooks?: ReporterPluginHooks
 }
 
-const debugLog = debug('testcafe:reporter');
-
 export default class Reporter {
     public readonly plugin: ReporterPluginHost;
     public readonly messageBus: MessageBus;
@@ -196,6 +194,8 @@ export default class Reporter {
     }
 
     public async dispatchToPlugin ({ method, initialObject, args = [] }: PluginMethodArguments): Promise<void> {
+        reportingLogger('begin dispatchToPlugin method: %s\n%O', method, args);
+
         try {
             // @ts-ignore
             await this.plugin[method](...args);
@@ -207,14 +207,16 @@ export default class Reporter {
                 originalError,
             });
 
-            debugLog('Plugin error: %O', uncaughtError);
-            debugLog('Plugin error: initialObject: %O', initialObject);
+            reportingLogger('Plugin error: %O', uncaughtError);
+            reportingLogger('Plugin error: initialObject: %O', initialObject);
 
             if (initialObject)
                 await initialObject.emit('error', uncaughtError);
             else
                 throw uncaughtError;
         }
+
+        reportingLogger('end dispatchToPlugin method: %s', method);
     }
 
     private _assignMessageBusEventHandlers (): void {
@@ -503,7 +505,6 @@ export default class Reporter {
 
         const taskProperties = {
             configuration: task.opts,
-            dashboardUrl:  task.opts.dashboardUrl,
         };
 
         await this.dispatchToPlugin({
