@@ -141,7 +141,7 @@
     "set-cookie-parser": "^2.5.1",
     "source-map-support": "^0.5.16",
     "strip-bom": "^2.0.0",
-    "testcafe-browser-tools": "2.0.25",
+    "testcafe-browser-tools": "2.0.26",
     "testcafe-hammerhead": "31.4.6",
     "testcafe-legacy-api": "5.1.6",
     "testcafe-reporter-json": "^2.1.0",
