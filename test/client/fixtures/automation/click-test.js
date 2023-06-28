@@ -463,7 +463,7 @@ $(document).ready(function () {
                 clicked = true;
             });
 
-        const click = new ClickAutomation($el[0], new ClickOptions({ offsetX: 5, offsetY: 5 }), window, cursor);
+        const click = new ClickAutomation($el[0], new ClickOptions({ }), window, cursor);
 
         click
             .run()
