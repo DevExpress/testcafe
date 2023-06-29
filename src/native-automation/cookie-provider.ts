@@ -117,7 +117,7 @@ export class CdpCookieProvider extends CookieProviderBase implements CookieProvi
             domain:   cookie.domain ?? hostname,
             path:     cookie.path ?? pathname,
             secure:   cookie.secure,
-            httpOnly: false,
+            httpOnly: cookie.httpOnly,
             sameSite: cookie.sameSite as CookieSameSite,
             expires:  cookie.expires?.getTime() || MAX_TIMESTAMP,
         };
