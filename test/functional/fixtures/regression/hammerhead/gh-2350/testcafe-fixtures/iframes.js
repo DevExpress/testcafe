@@ -10,8 +10,15 @@ const getNativeTitle = ClientFunction(() => {
 });
 
 test('test', async t => {
+    const nativeAutomation = t.testRun.opts.nativeAutomation;
+    const nativeTitle      = await getNativeTitle();
+
+    if (nativeAutomation)
+        await t.expect(nativeTitle).eql('Index page title');
+    else
+        await t.expect(nativeTitle).notEql('Index page title');
+
     await t
-        .expect(getNativeTitle()).notEql('Index page title')
         .switchToIframe('#withSrc')
         .expect(getNativeTitle()).eql('Iframe page title')
         .switchToMainWindow()
