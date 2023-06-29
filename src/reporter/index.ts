@@ -347,11 +347,15 @@ export default class Reporter {
     }
 
     private static _createTestRunInfo (reportItem: TestInfo): TestRunInfo {
+        const durationMs = !reportItem.test.skip
+            ? +new Date() - (reportItem.startTime as number) //eslint-disable-line  @typescript-eslint/no-extra-parens
+            : 0;
+
         return {
-            errs:           sortBy(reportItem.errs, ['userAgent', 'code']),
+            durationMs,
+            errs:           sortBy(reportItem.errs, [ 'userAgent', 'code' ]),
             warnings:       reportItem.warnings,
             reportData:     reportItem.reportData,
-            durationMs:     +new Date() - (reportItem.startTime as number), //eslint-disable-line  @typescript-eslint/no-extra-parens
             unstable:       reportItem.unstable,
             screenshotPath: reportItem.screenshotPath as string,
             screenshots:    reportItem.screenshots,
