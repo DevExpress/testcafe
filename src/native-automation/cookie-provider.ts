@@ -9,7 +9,7 @@ import CookieParam = Protocol.Network.CookieParam;
 import matchCollection from '../utils/match-collection';
 import { getActiveClient } from './utils/get-active-client';
 import { parse } from 'set-cookie-parser';
-import { castArray } from 'lodash';
+import { castArray, isMatch } from 'lodash';
 
 declare type CookieSameSite = 'Lax' | 'Strict' | 'None';
 
@@ -26,11 +26,25 @@ export class CdpCookieProvider extends CookieProviderBase implements CookieProvi
         return this.deleteCookies();
     }
 
-    async getCookies (externalCookies: ExternalCookies[]): Promise<ExternalCookies[]> {
+    async getCookies (externalCookies: ExternalCookies[], urls: string[] = []): Promise<ExternalCookies[]> {
         const client      = await this._getCdpClient();
         const { cookies } = await client.Storage.getCookies({});
+        const parsedUrls  = this._parseUrls(urls);
 
-        return (matchCollection(cookies, externalCookies) as Cookie[]).map(this._cdpCookieToExternalCookie);
+        return (matchCollection(cookies, externalCookies, (cookie: Protocol.Network.Cookie, cookieFilter: ExternalCookies) => {
+            const { domain, path } = cookieFilter;
+
+            if (domain && path || !parsedUrls.length)
+                return isMatch(cookie, cookieFilter);
+
+            for (const url of parsedUrls) {
+                if (isMatch(cookie, Object.assign({}, cookieFilter, { domain: url.domain, path: url.path })))
+                    return true;
+            }
+
+            return false;
+        }) as Cookie[])
+            .map(this._cdpCookieToExternalCookie);
     }
 
     async setCookies (cookies: string | string[] | CookieOptions[], url: string): Promise<void> {
