@@ -1,4 +1,3 @@
-/* eslint-disable */
 const path                      = require('path');
 const fs                        = require('fs');
 const { expect }                = require('chai');
@@ -328,7 +327,7 @@ describe('[API] t.takeScreenshot()', function () {
     }
 });
 
-describe.only('[API] t.takeElementScreenshot()', function () {
+describe('[API] t.takeElementScreenshot()', function () {
     afterEach(assertionHelper.removeScreenshotDir);
 
     if (config.useLocalBrowsers) {
