@@ -52,6 +52,10 @@ describe('[API] Upload', function () {
                     expect(errs[0]).contains(scannedFilePath2);
                 });
         });
+
+        it('Should have a valid value for the "input.value" property (GH-7832)', () => {
+            return runTests('./testcafe-fixtures/7832.js');
+        });
     });
 
     describe('t.clearUpload', function () {
