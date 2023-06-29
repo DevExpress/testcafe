@@ -134,7 +134,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
             name: testcafe-debug-log
-            path: testcafe-debug-log.log
+            path: testcafe-debug-log-${{ matrix.test-group }}.log
         if: always()
         
       - name: Save result
