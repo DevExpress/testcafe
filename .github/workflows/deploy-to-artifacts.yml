@@ -14,7 +14,7 @@ on:
       debug:
         required: false
         type: string
-        default: ''
+        default: 'testcafe*'
 
 jobs:
   build:
