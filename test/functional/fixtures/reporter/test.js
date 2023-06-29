@@ -1377,4 +1377,31 @@ const del                = require('del');
             expect(testCafe.runner._hasTaskErrors).eql(true);
         }
     });
+
+    it('[gh-7731] Should pass duration 0 for skipped tests', function () {
+        const reportTestDoneReporter = result => createReporter({
+            reportTestDone (name, { durationMs, skipped }) {
+                result.skipped    = result.skipped || [];
+                result.nonSkipped = result.nonSkipped || [];
+
+                if (skipped)
+                    result.skipped.push(durationMs);
+                else
+                    result.nonSkipped.push(durationMs);
+            },
+        });
+
+        const result = {};
+
+        return runTests('testcafe-fixtures/skipped-tests.js', null, {
+            reporter: [reportTestDoneReporter(result)],
+        })
+            .then(() => {
+                expect(result.skipped.length).eql(5);
+                expect(result.nonSkipped.length).eql(1);
+
+                result.skipped.forEach(dur => expect(dur).eql(0));
+                result.nonSkipped.forEach(dur => expect(dur).gt(0));
+            });
+    });
 });
