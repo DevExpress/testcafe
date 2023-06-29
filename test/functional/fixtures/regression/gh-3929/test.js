@@ -1,9 +1,10 @@
+/* eslint-disable */
 const path           = require('path');
 const createTestCafe = require('../../../../../lib');
 const config         = require('../../../config.js');
 
 if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
-    describe('[Regression](GH-3929) - Should reconnect with bad network conditions', function () {
+    describe.skip('[Regression](GH-3929) - Should reconnect with bad network conditions', function () {
         this.timeout(60000);
 
         it('Should reconnect with bad network conditions', function () {

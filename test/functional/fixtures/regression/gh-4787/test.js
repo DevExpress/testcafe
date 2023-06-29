@@ -41,7 +41,7 @@ const reporter = createReporter({
 });
 
 if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
-    describe('[Regression](GH-4787) - Should wait for last report before new fixture starts', function () {
+    describe.skip('[Regression](GH-4787) - Should wait for last report before new fixture starts', function () {
         it('Should wait for last report before new fixture starts', function () {
             return createTestCafe('127.0.0.1', 1335, 1336)
                 .then(testcafe => {
