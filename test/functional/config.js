@@ -13,6 +13,7 @@ const testingEnvironmentNames = {
     localBrowsersChromeFirefox:  'local-browsers-chrome-firefox',
     localBrowsers:               'local-browsers',
     localChrome:                 'local-chrome',
+    localSafari:                 'local-safari',
     localHeadlessChrome:         'local-headless-chrome',
     localHeadlessEdge:           'local-headless-edge',
     localHeadlessFirefox:        'local-headless-firefox',
@@ -79,6 +80,18 @@ testingEnvironments[testingEnvironmentNames.localBrowsers] = {
             platform:    'Windows 10',
             browserName: 'firefox',
             alias:       'firefox',
+        },
+    ],
+};
+
+testingEnvironments[testingEnvironmentNames.localSafari] = {
+    isLocalBrowsers: true,
+
+    browsers: [
+        {
+            browserName: 'safari',
+            userAgent:   'safari',
+            alias:       'safari',
         },
     ],
 };
