@@ -1,4 +1,3 @@
-/* eslint-disable */
 const path               = require('path');
 const { expect }         = require('chai');
 const createTestCafe     = require('../../../../../lib');
@@ -17,7 +16,7 @@ function customReporter (name) {
 let testCafe = null;
 
 if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
-    describe.skip('[Regression](GH-4675) - Should raise an error if several reporters are going to write to the stdout', function () {
+    describe('[Regression](GH-4675) - Should raise an error if several reporters are going to write to the stdout', function () {
         it('Should raise an error if several reporters are going to write to the stdout', function () {
             let error = null;
 
