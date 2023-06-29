@@ -1,5 +1,13 @@
 # Changelog
 
+## v3.0.1 (2023-06-29)
+
+### Bug fixes
+
+* The TestCafe status bar overlaps page elements, which leads to test execution issues ([#7797](https://github.com/DevExpress/testcafe/issues/7797))
+* TestCafe outputs an unhelpful warning message when it cannot apply the artifact path template ([#7256](https://github.com/DevExpress/testcafe/issues/7256))
+* A bug in the testcafe-browser-tools package causes TestCafe tests to hang on Ubuntu ([#7752](https://github.com/DevExpress/testcafe/issues/7752))
+
 ## v3.0.0 (2023-06-21)
 
 This major update includes two **breaking changes**:
