@@ -11,6 +11,10 @@ on:
         description: 'The merge commit SHA'
       deploy_run_id:
         description: 'The ID of a deployment workspace run with artifacts'
+      debug:
+        required: false
+        type: string
+        default: ''
 jobs:
   test:
     uses: ./.github/workflows/test-functional.yml
