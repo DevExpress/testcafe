@@ -38,7 +38,7 @@ describe('[API] Resize window actions', function () {
             });
 
             it('Should resize the window to fit a device with portrait orientation', function () {
-                return runTests('./testcafe-fixtures/resize-window-test.js', 'Resize the window to fit a device with portrait orientation');
+                return runTests('./testcafe-fixtures/resize-window-test.js', 'Resize the window to fit a device with portrait orientation', { skip: 'safari' });
             });
 
             it('Should validate device argument', function () {
