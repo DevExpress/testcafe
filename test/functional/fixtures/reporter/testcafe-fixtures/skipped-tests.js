@@ -4,19 +4,15 @@ test('Simple test', async t => {
     await t.wait(1);
     await t.report();
 });
-test.skip('Simple command err test', async t => {
+test.skip('Skipped test 1', async t => {
     await t.click('#non-existing-target');
 });
 
-test.skip('Complex command test', async () => {
+test.skip('Skipped test 2', async () => {
 });
 
-test.skip('Complex nested command test', async () => {
+test.skip('Skipped test 3', async () => {
 });
 
-test.skip('Complex nested command error', async () => {
-});
-
-test.skip('Simple assertion', async t => {
-    await t.expect(true).eql(true, 'assertion message', { timeout: 100 });
+test.skip('Skipped test 4', async () => {
 });

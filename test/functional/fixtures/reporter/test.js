@@ -1397,7 +1397,7 @@ const del                = require('del');
             reporter: [reportTestDoneReporter(result)],
         })
             .then(() => {
-                expect(result.skipped.length).eql(5);
+                expect(result.skipped.length).eql(4);
                 expect(result.nonSkipped.length).eql(1);
 
                 result.skipped.forEach(dur => expect(dur).eql(0));
