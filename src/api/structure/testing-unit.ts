@@ -13,7 +13,7 @@ import UnitType from './unit-type';
 import RequestHook from '../request-hooks/hook';
 import ClientScriptInit from '../../custom-client-scripts/client-script-init';
 import TestFile from './test-file';
-import { AuthCredentials, Metadata } from './interfaces';
+import { AuthCredentials } from './interfaces';
 import {
     Dictionary, SkipJsErrorsCallback, SkipJsErrorsCallbackWithOptionsObject,
 } from '../../configuration/interfaces';
