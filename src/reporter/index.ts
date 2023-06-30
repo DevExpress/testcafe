@@ -346,12 +346,19 @@ export default class Reporter {
         return task.tests.map(test => Reporter._createTestItem(test, runsPerTest));
     }
 
+    private static _getTestDuration (reportItem: TestInfo): number {
+        if (reportItem.test.skip)
+            return 0;
+
+        return +new Date() - (reportItem.startTime as number);
+    }
+
     private static _createTestRunInfo (reportItem: TestInfo): TestRunInfo {
         return {
-            errs:           sortBy(reportItem.errs, ['userAgent', 'code']),
+            errs:           sortBy(reportItem.errs, [ 'userAgent', 'code' ]),
             warnings:       reportItem.warnings,
             reportData:     reportItem.reportData,
-            durationMs:     +new Date() - (reportItem.startTime as number), //eslint-disable-line  @typescript-eslint/no-extra-parens
+            durationMs:     Reporter._getTestDuration(reportItem),
             unstable:       reportItem.unstable,
             screenshotPath: reportItem.screenshotPath as string,
             screenshots:    reportItem.screenshots,
