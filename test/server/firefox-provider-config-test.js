@@ -1,5 +1,5 @@
-const expect          = require('chai').expect;
-const OS              = require('os-family');
+const expect           = require('chai').expect;
+const osFamily         = require('os-family');
 const getFirefoxConfig = require('../../lib/browser/provider/built-in/dedicated/firefox/config.js');
 
 
@@ -29,7 +29,7 @@ describe('Firefox provider config parser', function () {
         expect(config.userProfile).to.be.true;
     });
 
-    if (OS.win) {
+    if (osFamily.win) {
         it('Should allow unescaped colon as disk/path separator on Windows', function () {
             const config = getFirefoxConfig('C:\\Firefox\\firefox.exe:userProfile');
 

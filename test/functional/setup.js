@@ -12,7 +12,7 @@ const RemoteConnector            = require('./remote-connector');
 const getTestError               = require('./get-test-error.js');
 const { createSimpleTestStream } = require('./utils/stream');
 const BrowserConnectionStatus    = require('../../lib/browser/connection/status');
-const OS                         = require('os-family');
+const osFamily                   = require('os-family');
 const { findWindow, errors }     = require('testcafe-browser-tools');
 const authenticationHelper       = require('../../lib/cli/authentication-helper');
 const isCI                       = require('is-ci');
@@ -84,7 +84,7 @@ function getBrowserInfo (settings) {
     return Promise
         .resolve()
         .then(() => {
-            if (OS.mac) {
+            if (osFamily.mac) {
                 return browserProviderPool
                     .getBrowserInfo(settings.browserName)
                     .then((browserInfo) => createTestcafeBrowserTools(browserInfo));

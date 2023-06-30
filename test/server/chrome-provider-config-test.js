@@ -1,5 +1,5 @@
 const expect          = require('chai').expect;
-const OS              = require('os-family');
+const osFamily        = require('os-family');
 const getChromeConfig = require('../../lib/browser/provider/built-in/dedicated/chrome/config.js');
 
 
@@ -80,7 +80,7 @@ describe('Chrome provider config parser', function () {
         expect(config.userProfile).to.be.true;
     });
 
-    if (OS.win) {
+    if (osFamily.win) {
         it('Should allow unescaped colon as disk/path separator on Windows', function () {
             const config = getChromeConfig('C:\\Chrome\\chrome.exe:headless');
 

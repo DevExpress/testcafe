@@ -4,7 +4,7 @@ const EventEmitter                     = require('events');
 const Module                           = require('module');
 const fs                               = require('fs');
 const del                              = require('del');
-const OS                               = require('os-family');
+const osFamily                         = require('os-family');
 const { expect }                       = require('chai');
 const { noop }                         = require('lodash');
 const proxyquire                       = require('proxyquire').noPreserveCache();
@@ -192,7 +192,7 @@ describe('Utils', () => {
                 'test/server/data/file-list/dir4/dir4-2/file-4-2-3.testcafe',
             ];
 
-            if (OS.win) {
+            if (osFamily.win) {
                 expectedFiles.push(
                     'test/server/data/file-list/dir5/file-5-1.js',
                     'test/server/data/file-list/dir6/file-6-1.js'
@@ -213,7 +213,7 @@ describe('Utils', () => {
                 'test/server/data/file-list/dir4/**/*/',
             ];
 
-            if (OS.win) {
+            if (osFamily.win) {
                 fileList.push(
                     'test\\server\\data\\file-list\\dir5\\*\\',
                     'test\\server\\data\\file-list\\dir6\\'
@@ -225,7 +225,7 @@ describe('Utils', () => {
             });
         });
 
-        if (OS.win) {
+        if (osFamily.win) {
             it('File on same drive but with different letter case in label (win only)', () => {
                 const { root, dir, base } = path.parse(process.cwd());
 

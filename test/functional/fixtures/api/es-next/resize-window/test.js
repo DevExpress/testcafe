@@ -1,5 +1,5 @@
 const expect                     = require('chai').expect;
-const OS                         = require('os-family');
+const osFamily                   = require('os-family');
 const config                     = require('../../../../config.js');
 const errorInEachBrowserContains = require('../../../../assertion-helper.js').errorInEachBrowserContains;
 
@@ -62,7 +62,7 @@ describe('[API] Resize window actions', function () {
             });
         });
 
-        if (OS.mac) {
+        if (osFamily.mac) {
             it('Should fail when the requested size exceeds the maximum available size', function () {
                 return runTests('./testcafe-fixtures/resize-window-test.js', 'Too big size', { shouldFail: true })
                     .catch(function (errs) {

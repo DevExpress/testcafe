@@ -8,7 +8,7 @@ const helper             = require('./test-helper');
 const { createReporter } = require('../../utils/reporter');
 const fs                 = require('fs');
 const del                = require('del');
-const OS                 = require('os-family');
+const osFamily           = require('os-family');
 
 let cafe = null;
 
@@ -240,7 +240,7 @@ if (config.useLocalBrowsers) {
         });
 
         // NOTE: This task must be run in headed browser. Otherwise, it will be passed even with incorrect result
-        (!config.useHeadlessBrowsers && !OS.mac ? it : it.skip)('Selector Inspector should indicate the correct number of elements matching the selector in live mode', async () => {
+        (!config.useHeadlessBrowsers && !osFamily.mac ? it : it.skip)('Selector Inspector should indicate the correct number of elements matching the selector in live mode', async () => {
             await createTestCafeInstance();
 
             const runner = createLiveModeRunner(cafe, '/testcafe-fixtures/selector-inspector.js');
