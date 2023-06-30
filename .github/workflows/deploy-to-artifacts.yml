@@ -147,7 +147,6 @@ jobs:
             // tasks.push('test-functional-local-native-automation.yml');
             // tasks.push('test-functional-local-headed-browsers.yml');
             // tasks.push('test-functional-local-legacy.yml');
-            // tasks.push('test-functional-remote-macos.yml');
             // tasks.push('test-functional-remote-mobile.yml');
             // tasks.push('test-server-docker.yml');
             // tasks.push('test-server-minimal.yml');

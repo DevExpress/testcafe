@@ -12,8 +12,7 @@ const TEST_WITH_IFRAME_FAILED_RUN_OPTIONS = {
     selectorTimeout: IFRAME_SELECTOR_TIMEOUT,
 };
 
-const isRemoteTask = config.currentEnvironmentName === config.testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers ||
-    config.currentEnvironmentName === config.testingEnvironmentNames.mobileBrowsers;
+const isRemoteTask = config.currentEnvironmentName === config.testingEnvironmentNames.mobileBrowsers;
 
 // TODO: IMPORTANT: Azure test tasks hang when a role is used in a test, fix it immediately
 (isRemoteTask ? describe.skip : describe)('[API] t.useRole()', function () {

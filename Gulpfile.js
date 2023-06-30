@@ -392,12 +392,6 @@ gulp.step('test-client-legacy-travis-mobile-run', () => {
 
 gulp.task('test-client-legacy-travis-mobile', gulp.series('prepare-tests', 'test-client-legacy-travis-mobile-run'));
 
-gulp.step('test-functional-travis-desktop-osx-and-ms-edge-run', () => {
-    return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers);
-});
-
-gulp.task('test-functional-travis-desktop-osx-and-ms-edge', gulp.series('prepare-tests', 'test-functional-travis-desktop-osx-and-ms-edge-run'));
-
 gulp.step('test-functional-travis-mobile-run', () => {
     return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.mobileBrowsers);
 });
