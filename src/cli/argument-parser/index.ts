@@ -32,7 +32,7 @@ import {
 } from '../../configuration/interfaces';
 import QUARANTINE_OPTION_NAMES from '../../configuration/quarantine-option-names';
 import { extractNodeProcessArguments } from '../node-arguments-filter';
-import getTestcafeVersion from '../../utils/get-testcafe-version';
+import { getTestCafeVersion } from '../../utils/get-testcafe-version';
 import { parsePortNumber, parseList } from './parse-utils';
 import COMMAND_NAMES from './command-names';
 import { SKIP_JS_ERRORS_OPTIONS_OBJECT_OPTION_NAMES } from '../../configuration/skip-js-errors-option-names';
@@ -138,7 +138,7 @@ export default class CLIArgumentParser {
 
         return (program as unknown as Command)
             .command(COMMAND_NAMES.TestCafe, { isDefault: true })
-            .version(getTestcafeVersion(), '-v, --version')
+            .version(getTestCafeVersion(), '-v, --version')
             .usage('[options] <comma-separated-browser-list> <file-or-glob ...>')
             .description(CLIArgumentParser._getDescription())
 

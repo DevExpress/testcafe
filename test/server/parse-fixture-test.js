@@ -102,6 +102,13 @@ describe('Should get structure of files (esnext and typescript common cases)', f
                     ]
                 ),
             ],
+            [
+                new Fixture('Fixture5', 35, 54, new Loc(3, 0, 3, 19), {},
+                    [
+                        new Test('Fixture5Test1', 56, 114, new Loc(5, 0, 7, 2), {}),
+                    ]
+                ),
+            ],
         ];
 
         return testJSFilesParser('./data/test-suites/basic', expectedStructure);

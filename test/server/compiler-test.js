@@ -93,7 +93,10 @@ describe('Compiler', function () {
             const sources = [
                 'test/server/data/test-suites/basic/testfile1.js',
                 'test/server/data/test-suites/basic/testfile2.js',
+                'test/server/data/test-suites/basic/testfile4.js',
             ];
+
+            const versionRegex = new RegExp(/.\..\..*/);
 
             return compile(sources)
                 .then(function (compiled) {
@@ -102,8 +105,8 @@ describe('Compiler', function () {
                     const tests     = compiled.tests;
                     const fixtures  = compiled.fixtures;
 
-                    expect(tests.length).eql(4);
-                    expect(fixtures.length).eql(3);
+                    expect(tests.length).eql(5);
+                    expect(fixtures.length).eql(4);
 
                     expect(fixtures[0].name).eql('Fixture1');
                     expect(fixtures[0].path).eql(testfile1);
@@ -134,12 +137,15 @@ describe('Compiler', function () {
                     }));
                 })
                 .then(function (results) {
+                    const resultVersion = results.pop();
+
                     expect(results).eql([
                         'F1T1: Hey from dep1',
                         'F1T2',
                         'F2T1',
                         'F3T1: Hey from dep1 and dep2',
                     ]);
+                    expect(versionRegex.test(resultVersion), 'returned version doesnt match the version pattern').eql(true);
                 });
         });
 
