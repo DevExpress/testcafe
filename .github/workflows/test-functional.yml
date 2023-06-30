@@ -137,7 +137,7 @@ jobs:
         with:
             name: testcafe-debug-log
             path: testcafe-debug-log-${{ matrix.test-group }}.log
-        if: always() && ${{ github.event.inputs.debug != '' }}
+        if: ${{ always() && github.event.inputs.debug != '' }}
         
       - name: Save result
         id: save-result
