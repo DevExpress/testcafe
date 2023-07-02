@@ -16,7 +16,8 @@ jobs:
     uses: ./.github/workflows/test-functional.yml
     with:
       test-script: 'npx gulp test-functional-travis-mobile-run --steps-as-tasks'
-      os: 'browserstack'
+      os: 'ubuntu-latest'
       use-public-hostname: true
       timeout: 35
+      is-browserstack: true
     secrets: inherit

@@ -38,6 +38,10 @@ on:
         required: false
         type: boolean
         default: false
+      is-browserstack:
+        required: false
+        type: boolean
+        default: false
 env:
   NO_CACHE: ${{ secrets.NO_CACHE }}
 
@@ -64,6 +68,7 @@ jobs:
     env:
       BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
       BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+      BROWSERSTACK_BUILD_NAME: ${{ format('{0} ({1})', github.workflow, github.run_id) }}
       USE_PUBLIC_HOSTNAME: ${{ inputs.use-public-hostname }}
       RETRY_FAILED_TESTS: ${{ inputs.retry_failed_tests }}
       TEST_GROUPS_COUNT: ${{ inputs.matrix-jobs-count }}
@@ -121,8 +126,22 @@ jobs:
       - run: npm install
         if: ${{ inputs.is-docker }}
 
+      - name: 'Start BrowserStackLocal Tunnel'
+        if: ${{ inputs.is-browserstack }}
+        uses: 'browserstack/github-actions/setup-local@master'
+        with:
+          local-testing: start
+          local-logging-level: all-logs
+          local-identifier: random
+
       - run: ${{ inputs.test-script }}
         timeout-minutes: ${{ inputs.timeout }}
+
+      - name: 'Stop BrowserStackLocal'
+        if: ${{ inputs.is-browserstack }}
+        uses: 'browserstack/github-actions/setup-local@master'
+        with:
+          local-testing: stop
         
       - name: Save result
         id: save-result
