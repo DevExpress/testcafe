@@ -1,7 +1,8 @@
 const os                         = require('os');
+const osFamily                   = require('os-family');
 const { skipInNativeAutomation } = require('../../../../utils/skip-in');
 
-const TRANSPARENT_PROXY_URL = os.hostname() + ':3005';
+const TRANSPARENT_PROXY_URL = (osFamily.mac ? 'localhost' : os.hostname()) + ':3005';
 
 describe('Basic and NTLM authentications', function () {
     it('Should not authenticate on a "basic" server with wrong credentials', function () {

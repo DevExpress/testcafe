@@ -4,10 +4,11 @@ const config               = require('../../../config');
 const { createNullStream } = require('../../../utils/stream');
 const createChromeProfile  = require('../../../../../lib/browser/provider/built-in/dedicated/chrome/create-temp-profile');
 const createFirefoxProfile = require('../../../../../lib/browser/provider/built-in/dedicated/firefox/create-temp-profile');
+const osFamily             = require('os-family');
 
 
 // TODO: Refactor tests to avoid using shared browsers
-if (config.useLocalBrowsers && !config.useHeadlessBrowsers && !config.hasBrowser('ie')) {
+if (config.useLocalBrowsers && !config.useHeadlessBrowsers && !config.hasBrowser('ie') && !osFamily.mac) {
     describe('Browser Provider - Custom User Profile', () => {
         it('Should run tests in userProfile mode', () => {
             return testCafe

@@ -3,10 +3,10 @@ const { expect }           = require('chai');
 const config               = require('../../../config');
 const { createNullStream } = require('../../../utils/stream');
 const { createReporter }   = require('../../../utils/reporter');
-const os                   = require('os-family');
+const osFamily             = require('os-family');
 const detectDisplay        = require('../../../../../lib/utils/detect-display');
 
-const isLinuxWithoutGUI = os.linux && !detectDisplay();
+const isLinuxWithoutGUI = osFamily.linux && !detectDisplay();
 
 
 // TODO: separate tests to avoid shared browsers that consume additional resources

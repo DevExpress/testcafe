@@ -12,6 +12,10 @@ const RemoteConnector            = require('./remote-connector');
 const getTestError               = require('./get-test-error.js');
 const { createSimpleTestStream } = require('./utils/stream');
 const BrowserConnectionStatus    = require('../../lib/browser/connection/status');
+const osFamily                   = require('os-family');
+const { findWindow, errors }     = require('testcafe-browser-tools');
+const authenticationHelper       = require('../../lib/cli/authentication-helper');
+const isCI                       = require('is-ci');
 
 const setNativeAutomationForRemoteConnection = require('./utils/set-native-automation-for-remote-connection');
 
@@ -46,9 +50,48 @@ const REMOTE_CONNECTORS_MAP = {
 
 const USE_PROVIDER_POOL = config.useLocalBrowsers || isBrowserStack;
 
+async function hasLocalBrowsers (browserInfo) {
+    for (const browser of browserInfo) {
+        if (browser instanceof BrowserConnection)
+            continue;
+
+        if (await browser.provider.isLocalBrowser(void 0, browser.browserName))
+            return true;
+    }
+
+    return false;
+}
+
+async function createTestcafeBrowserTools (browserInfo) {
+    const hasLocal = await hasLocalBrowsers([browserInfo]);
+
+    const { error } = await authenticationHelper(
+        () => findWindow(''),
+        errors.UnableToAccessScreenRecordingAPIError,
+        {
+            interactive: hasLocal && !isCI,
+        },
+    );
+
+    if (!error)
+        return;
+
+    if (hasLocal)
+        throw error;
+}
+
 function getBrowserInfo (settings) {
     return Promise
         .resolve()
+        .then(() => {
+            if (osFamily.mac) {
+                return browserProviderPool
+                    .getBrowserInfo(settings.browserName)
+                    .then((browserInfo) => createTestcafeBrowserTools(browserInfo));
+            }
+
+            return Promise.resolve();
+        })
         .then(() => {
             if (!USE_PROVIDER_POOL)
                 return testCafe.createBrowserConnection();

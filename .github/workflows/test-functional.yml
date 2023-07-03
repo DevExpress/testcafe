@@ -68,6 +68,7 @@ jobs:
       RETRY_FAILED_TESTS: ${{ inputs.retry_failed_tests }}
       TEST_GROUPS_COUNT: ${{ inputs.matrix-jobs-count }}
       TEST_GROUP_NUMBER: ${{ matrix.test-group }}
+      DEBUG: ${{ github.event.inputs.debug }}
       DISPLAY: ${{ inputs.display }}
     outputs:
       # Matrix jobs cannot collect outputs about each of them automatically. It rewrites the same outputs. Improve it once it will be possible.
@@ -75,7 +76,8 @@ jobs:
       test-2: "${{ steps.save-result.outputs.test_2 }}"
       test-3: "${{ steps.save-result.outputs.test_3 }}"
     steps:
-      - uses: DevExpress/testcafe-build-system/actions/set-status@main
+      - name: Set 'pending' status
+        uses: DevExpress/testcafe-build-system/actions/set-status@main
         with:
           status: 'pending'
 
@@ -121,8 +123,21 @@ jobs:
       - run: npm install
         if: ${{ inputs.is-docker }}
 
-      - run: ${{ inputs.test-script }}
+      - name: Add permissions on MacOS
+        run: |
+          sudo sqlite3 "$HOME/Library/Application Support/com.apple.TCC/TCC.db" "INSERT OR REPLACE INTO access VALUES('kTCCServiceAppleEvents','com.devexpress.testcafe-browser-tools',0,2,3,1,X'fade0c0000000068000000010000000700000007000000080000001443fa4ca5141baeda21aeca1f50894673b440d4690000000800000014f8afcf6e69791b283e55bd0b03e39e422745770e0000000800000014bf4fc1aed64c871a49fc6bc9dd3878ce5d4d17c6',NULL,0,'com.apple.Safari',X'fade0c000000002c00000001000000060000000200000010636f6d2e6170706c652e53616661726900000003',NULL,1687952810);"
+          sudo sqlite3 "/Library/Application Support/com.apple.TCC/TCC.db" "INSERT OR REPLACE INTO access VALUES('kTCCServiceScreenCapture','com.devexpress.testcafe-browser-tools',0,2,3,1,X'fade0c0000000068000000010000000700000007000000080000001443fa4ca5141baeda21aeca1f50894673b440d4690000000800000014f8afcf6e69791b283e55bd0b03e39e422745770e0000000800000014bf4fc1aed64c871a49fc6bc9dd3878ce5d4d17c6',NULL,0,'UNUSED',NULL,0,1687952810);"
+        if: ${{ contains(inputs.os, 'mac') }}
+
+      - run: ${{ inputs.test-script }} 2> testcafe-debug-log.log
         timeout-minutes: ${{ inputs.timeout }}
+
+      - name: Save debug log
+        uses: actions/upload-artifact@v3
+        with:
+            name: testcafe-debug-log
+            path: testcafe-debug-log-${{ matrix.test-group }}.log
+        if: ${{ always() && github.event.inputs.debug != '' }}
         
       - name: Save result
         id: save-result

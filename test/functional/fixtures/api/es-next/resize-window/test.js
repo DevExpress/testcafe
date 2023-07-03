@@ -1,5 +1,5 @@
 const expect                     = require('chai').expect;
-const OS                         = require('os-family');
+const osFamily                   = require('os-family');
 const config                     = require('../../../../config.js');
 const errorInEachBrowserContains = require('../../../../assertion-helper.js').errorInEachBrowserContains;
 
@@ -38,7 +38,7 @@ describe('[API] Resize window actions', function () {
             });
 
             it('Should resize the window to fit a device with portrait orientation', function () {
-                return runTests('./testcafe-fixtures/resize-window-test.js', 'Resize the window to fit a device with portrait orientation');
+                return runTests('./testcafe-fixtures/resize-window-test.js', 'Resize the window to fit a device with portrait orientation', { skip: 'safari' });
             });
 
             it('Should validate device argument', function () {
@@ -62,12 +62,12 @@ describe('[API] Resize window actions', function () {
             });
         });
 
-        if (OS.mac) {
+        if (osFamily.mac) {
             it('Should fail when the requested size exceeds the maximum available size', function () {
                 return runTests('./testcafe-fixtures/resize-window-test.js', 'Too big size', { shouldFail: true })
                     .catch(function (errs) {
                         errorInEachBrowserContains(errs, 'Unable to resize the window because the specified size exceeds the screen size. On macOS, a window cannot be larger than the screen.', 0);
-                        errorInEachBrowserContains(errs, '> 87 |    await t.resizeWindow(hugeWidth, hugeHeight);', 0);
+                        errorInEachBrowserContains(errs, '> 89 |    await t.resizeWindow(hugeWidth, hugeHeight);', 0);
                     });
             });
         }

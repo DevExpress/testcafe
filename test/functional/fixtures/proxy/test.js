@@ -1,10 +1,12 @@
 const os                         = require('os');
+const osFamily                   = require('os-family');
 const http                       = require('http');
 const { expect }                 = require('chai');
 const { skipInNativeAutomation } = require('../../utils/skip-in');
 
-const TRUSTED_PROXY_URL     = os.hostname() + ':3004';
-const TRANSPARENT_PROXY_URL = os.hostname() + ':3005';
+const PROXY_HOST            = osFamily.mac ? 'localhost' : os.hostname();
+const TRUSTED_PROXY_URL     = PROXY_HOST + ':3004';
+const TRANSPARENT_PROXY_URL = PROXY_HOST + ':3005';
 const ERROR_PROXY_URL       = 'ERROR';
 
 describe('Using external proxy server', function () {

@@ -1,4 +1,5 @@
 import os from 'os';
+import osFamily from 'os-family';
 
 const MAIN_DOMAIN         = 'localhost';
 const MAIN_PAGE_URL       = `http://${MAIN_DOMAIN}:3000/fixtures/request/pages/index.html`;
@@ -9,6 +10,7 @@ const API_AUTH_URL        = `${API_URL}/auth`;
 const EXTERNAL_DOMAIN     = '127.0.0.1';
 const EXTERNAL_PAGE_URL   = `http://${EXTERNAL_DOMAIN}:3001/fixtures/request/pages/index.html`;
 const HTTPS_API_URL       = `https://${MAIN_DOMAIN}:3007/data`;
+const PROXY_HOST          = osFamily.mac ? 'localhost' : os.hostname();
 
 fixture`Request`;
 
@@ -188,7 +190,7 @@ test('Should rise an error if url is not valid', async (t) => {
 test('Should execute request with proxy', async (t) => {
     const { body } = await t.request.get(API_DATA_URL, {
         proxy: {
-            host: os.hostname(),
+            host: PROXY_HOST,
             port: '3005',
         },
     });
@@ -202,7 +204,7 @@ test('Should execute request with proxy', async (t) => {
 test('Should execute basic auth with proxy', async (t) => {
     const options = {
         proxy: {
-            host: os.hostname(),
+            host: PROXY_HOST,
             port: '3005',
             auth: {
                 username: 'janedoe',

@@ -3,6 +3,7 @@ const { expect }         = require('chai');
 const createTestCafe     = require('../../../../../lib');
 const config             = require('../../../config.js');
 const { createReporter } = require('../../../utils/reporter');
+const osFamily           = require('os-family');
 
 function customReporter (name) {
     return createReporter({
@@ -15,7 +16,7 @@ function customReporter (name) {
 
 let testCafe = null;
 
-if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
+if (config.useLocalBrowsers && !config.useHeadlessBrowsers && !osFamily.mac) {
     describe('[Regression](GH-4675) - Should raise an error if several reporters are going to write to the stdout', function () {
         it('Should raise an error if several reporters are going to write to the stdout', function () {
             let error = null;

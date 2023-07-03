@@ -1,5 +1,5 @@
 const path       = require('path');
-const os         = require('os-family');
+const osFamily   = require('os-family');
 const { expect } = require('chai');
 const config     = require('../../config');
 
@@ -12,7 +12,7 @@ function run (browsers, testFile) {
 }
 
 describe('Runner', () => {
-    if (config.useLocalBrowsers && !config.useHeadlessBrowsers && os.linux) {
+    if (config.useLocalBrowsers && !config.useHeadlessBrowsers && osFamily.linux) {
         let originalDisplay = null;
 
         before(() => {

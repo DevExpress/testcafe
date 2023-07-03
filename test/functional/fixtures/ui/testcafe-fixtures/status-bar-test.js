@@ -1,6 +1,6 @@
 import { Selector, ClientFunction } from 'testcafe';
 import assert from 'assert';
-import OS from 'os-family';
+import osFamily from 'os-family';
 import { saveWindowState, restoreWindowState } from '../../../esm-utils/window-helpers.js';
 
 fixture `Status Bar`
@@ -79,7 +79,7 @@ test('Hide elements when resizing the window', async t => {
 
     let itemsVisibility = await getStatusBarItemsVisibility();
 
-    if (!OS.mac) {
+    if (!osFamily.mac) {
         await t
             .expect(itemsVisibility.userAgentVisible).ok()
             .expect(itemsVisibility.statusVisible).ok()

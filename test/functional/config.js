@@ -7,37 +7,20 @@ const browserProviderNames = {
 };
 
 const testingEnvironmentNames = {
-    osXDesktopAndMSEdgeBrowsers: 'osx-desktop-and-ms-edge-browsers',
-    mobileBrowsers:              'mobile-browsers',
-    localBrowsersIE:             'local-browsers-ie',
-    localBrowsersChromeFirefox:  'local-browsers-chrome-firefox',
-    localBrowsers:               'local-browsers',
-    localChrome:                 'local-chrome',
-    localHeadlessChrome:         'local-headless-chrome',
-    localHeadlessEdge:           'local-headless-edge',
-    localHeadlessFirefox:        'local-headless-firefox',
-    remote:                      'remote',
-    legacy:                      'legacy',
+    mobileBrowsers:             'mobile-browsers',
+    localBrowsersIE:            'local-browsers-ie',
+    localBrowsersChromeFirefox: 'local-browsers-chrome-firefox',
+    localBrowsers:              'local-browsers',
+    localChrome:                'local-chrome',
+    localSafari:                'local-safari',
+    localHeadlessChrome:        'local-headless-chrome',
+    localHeadlessEdge:          'local-headless-edge',
+    localHeadlessFirefox:       'local-headless-firefox',
+    remote:                     'remote',
+    legacy:                     'legacy',
 };
 
 const testingEnvironments = {};
-
-testingEnvironments[testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers] = {
-    jobName:  'functional tests - OS X desktop and MS edge browsers',
-    provider: browserProviderNames.browserstack,
-
-    browserstack: {
-        username:  process.env.BROWSER_STACK_USERNAME,
-        accessKey: process.env.BROWSER_STACK_ACCESS_KEY,
-    },
-
-    browsers: [
-        {
-            browserName: 'browserstack:safari',
-            alias:       'safari',
-        },
-    ],
-};
 
 testingEnvironments[testingEnvironmentNames.mobileBrowsers] = {
     jobName:  'functional tests - mobile browsers',
@@ -79,6 +62,18 @@ testingEnvironments[testingEnvironmentNames.localBrowsers] = {
             platform:    'Windows 10',
             browserName: 'firefox',
             alias:       'firefox',
+        },
+    ],
+};
+
+testingEnvironments[testingEnvironmentNames.localSafari] = {
+    isLocalBrowsers: true,
+
+    browsers: [
+        {
+            browserName: 'safari',
+            userAgent:   'safari',
+            alias:       'safari',
         },
     ],
 };

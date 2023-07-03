@@ -1,0 +1,24 @@
+name: Test Functional (Local Safari)	
+
+on:	
+  workflow_dispatch:	
+    inputs:	
+      sha:	
+        description: 'The test commit SHA or ref'	
+        required: true	
+        default: 'master'	
+      merged_sha:	
+        description: 'The merge commit SHA'	
+      deploy_run_id:	
+        description: 'The ID of a deployment workspace run with artifacts'	
+      debug:
+        required: false
+        type: string
+        default: ''
+jobs:	
+  test:	
+    uses: ./.github/workflows/test-functional.yml	
+    with:	
+      test-script: 'npx gulp test-functional-local-safari-run --steps-as-tasks'	
+      os: 'macos-13'
+      timeout: 40
