@@ -4,7 +4,7 @@ describe("Should provide a valid value for the 'document.title' property", () =>
     describe('Initial value', () => {
         // NOTE: in the proxy mode we have some additional scripts for processing document.title
         // we do not have these scripts in the nativeAutomation mode yet
-        skipInNativeAutomation('script before and after <title>', () => {
+        it('script before and after <title>', () => {
             return runTests('./testcafe-fixtures/index.js', 'script before and after <title>');
         });
 
