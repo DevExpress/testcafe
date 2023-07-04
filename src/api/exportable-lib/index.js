@@ -1,11 +1,11 @@
-const lazyRequire            = require('import-lazy')(require);
-const ClientFunctionBuilder  = lazyRequire('../../client-functions/client-function-builder');
-const SelectorBuilder        = lazyRequire('../../client-functions/selectors/selector-builder');
-const role                   = lazyRequire('../../role');
-const createRequestLogger    = lazyRequire('../request-hooks/request-logger');
-const createRequestMock      = lazyRequire('../request-hooks/request-mock/create-request-mock');
-const userVariables          = lazyRequire('../user-variables');
-const { getTestCafeVersion } = lazyRequire('../../utils/get-testcafe-version');
+const lazyRequire           = require('import-lazy')(require);
+const ClientFunctionBuilder = lazyRequire('../../client-functions/client-function-builder');
+const SelectorBuilder       = lazyRequire('../../client-functions/selectors/selector-builder');
+const role                  = lazyRequire('../../role');
+const createRequestLogger   = lazyRequire('../request-hooks/request-logger');
+const createRequestMock     = lazyRequire('../request-hooks/request-mock/create-request-mock');
+const userVariables         = lazyRequire('../user-variables');
+const getTestCafeVersion    = lazyRequire('../../utils/get-testcafe-version');
 
 // NOTE: We can't use lazy require for RequestHook, because it will break base class detection for inherited classes
 let RequestHook = null;
