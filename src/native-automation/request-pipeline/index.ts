@@ -490,7 +490,10 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
         for (const changedHeader of reqOpts._changedHeaders) {
             const targetHeader = headers.find(header => header.name.toLowerCase() === changedHeader.name) as HeaderEntry;
 
-            targetHeader.value = changedHeader.value;
+            if (targetHeader)
+                targetHeader.value = changedHeader.value;
+            else
+                headers.push({ name: changedHeader.name, value: changedHeader.value });
         }
 
         for (const removedHeader of reqOpts._removedHeaders)
