@@ -123,5 +123,9 @@ describe('Request Hooks', () => {
         it('Header names should be lowercased', () => {
             return runTests('./testcafe-fixtures/api/header-names.js', null, { only: 'chrome' });
         });
+
+        it('Set custom header on "onRequest" method (GH-7846)', () => {
+            return runTests('./testcafe-fixtures/api/7846.js', null, { only: 'chrome' });
+        });
     });
 });
