@@ -18,7 +18,7 @@ const compile             = require('./helpers/compile');
 const Module              = require('module');
 const toPosixPath         = require('../../lib/utils/to-posix-path');
 const BaseTestRunMock     = require('./helpers/base-test-run-mock');
-const getTestCafeVersion = require('../../lib/utils/get-testcafe-version');
+const getTestCafeVersion  = require('../../lib/utils/get-testcafe-version');
 
 const copy      = promisify(fs.copyFile);
 const remove    = promisify(fs.unlink);
