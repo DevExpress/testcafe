@@ -38,5 +38,5 @@ export {
     requestPipelineContextLogger,
     testRunControllerLogger,
     reporterLogger,
-    versionLogger
+    versionLogger,
 };

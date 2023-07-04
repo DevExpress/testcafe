@@ -18,6 +18,7 @@ const compile             = require('./helpers/compile');
 const Module              = require('module');
 const toPosixPath         = require('../../lib/utils/to-posix-path');
 const BaseTestRunMock     = require('./helpers/base-test-run-mock');
+const getTestCafeVersion = require('../../lib/utils/get-testcafe-version');
 
 const copy      = promisify(fs.copyFile);
 const remove    = promisify(fs.unlink);
@@ -96,7 +97,7 @@ describe('Compiler', function () {
                 'test/server/data/test-suites/basic/testfile4.js',
             ];
 
-            const versionRegex = new RegExp(/.\..\..*/);
+            const testcafeVersion = getTestCafeVersion();
 
             return compile(sources)
                 .then(function (compiled) {
@@ -137,15 +138,14 @@ describe('Compiler', function () {
                     }));
                 })
                 .then(function (results) {
-                    const resultVersion = results.pop();
-
                     expect(results).eql([
                         'F1T1: Hey from dep1',
                         'F1T2',
                         'F2T1',
                         'F3T1: Hey from dep1 and dep2',
+                        testcafeVersion,
                     ]);
-                    expect(versionRegex.test(resultVersion), 'returned version doesnt match the version pattern').eql(true);
+                    expect(results[results.length - 1]).to.be.a('string');
                 });
         });
 
