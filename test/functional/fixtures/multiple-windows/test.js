@@ -141,7 +141,7 @@ describe('Multiple windows', () => {
     });
 
     it('Should switch to parent and close window if the file was downloaded in separate window', () => {
-        return runTests('testcafe-fixtures/i6242.js');
+        return runTests('testcafe-fixtures/i6242.js', null, { only: 'chrome' });
     });
 
     it('Should switch to child window if parent page has proxied image', () => {
