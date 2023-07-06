@@ -273,9 +273,10 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
         const authRequest = await resendAuthRequest(event.request, credentials);
 
         if (typeof authRequest !== 'string' && !isUnauthorized(authRequest.status)) {
-            fulfillInfo.responseCode = authRequest.status;
-            fulfillInfo.body = authRequest.body.toString();
-            fulfillInfo.responsePhrase = authRequest.statusText;
+            fulfillInfo.responseCode    = authRequest.status;
+            fulfillInfo.body            = authRequest.body.toString();
+            fulfillInfo.responsePhrase  = authRequest.statusText;
+            fulfillInfo.responseHeaders = convertToHeaderEntries(authRequest.headers);
         }
     }
 

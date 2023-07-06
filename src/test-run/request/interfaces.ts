@@ -1,4 +1,8 @@
-import { IncomingMessage, OutgoingHttpHeaders } from 'http';
+import {
+    IncomingHttpHeaders,
+    IncomingMessage,
+    OutgoingHttpHeaders,
+} from 'http';
 import { Dictionary } from '../../configuration/interfaces';
 import { Buffer } from 'buffer';
 
@@ -36,6 +40,6 @@ export type ResponseBody = IncomingMessage | Buffer | object | string;
 export interface ResponseOptions {
     status: number;
     statusText: string;
-    headers: object;
+    headers: IncomingHttpHeaders;
     body: ResponseBody;
 }

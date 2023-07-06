@@ -10,7 +10,11 @@ describe('Basic and NTLM authentications', function () {
     });
 
     it('Should authenticate on a "basic" server with correct credentials', function () {
-        return runTests('./testcafe-fixtures/basic-auth-with-correct-credentials-test.js');
+        return runTests('./testcafe-fixtures/basic-auth-with-correct-credentials-test.js', 'Authenticate with correct credintials');
+    });
+
+    it('Should authenticate on a "basic" server with correct credentials and redirect', function () {
+        return runTests('./testcafe-fixtures/basic-auth-with-correct-credentials-test.js', 'Authenticate with correct credintials and redirect');
     });
 
     // NOTE: NTLM authentication is not supported yet
