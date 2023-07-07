@@ -295,7 +295,7 @@ gulp.step('test-client-run', () => {
     const testClient                = require('./gulp/helpers/test-client');
     const { CLIENT_TESTS_SETTINGS } = require('./gulp/constants/client-test-settings');
 
-    return testClient('test/client/fixtures/automation/focus-blur-change-test.js', CLIENT_TESTS_SETTINGS);
+    return testClient('test/client/fixtures/automation/click-test.js.js', CLIENT_TESTS_SETTINGS);
 });
 
 gulp.task('test-client', gulp.series('prepare-tests', 'test-client-run'));
