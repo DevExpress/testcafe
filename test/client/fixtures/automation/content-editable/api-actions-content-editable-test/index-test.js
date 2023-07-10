@@ -18,10 +18,12 @@ const domUtils          = testCafeCore.domUtils;
 const textSelection     = testCafeCore.textSelection;
 const parseKeySequence  = testCafeCore.parseKeySequence;
 
-const isMobileSafari = browserUtils.isSafari && featureDetection.isTouchDevice;
-const nextTestDelay  = isMobileSafari ? 200 : 30;
+const IS_MOBILE_SAFARI = browserUtils.isSafari && featureDetection.isTouchDevice;
+const NEXT_TEST_DELAY  = IS_MOBILE_SAFARI ? 200 : 30;
 
 testCafeCore.preventRealEvents();
+
+QUnit.config.testTimeout = 30000;
 
 $(document).ready(function () {
     // NOTE: https://github.com/DevExpress/testcafe/issues/2008
@@ -40,8 +42,8 @@ $(document).ready(function () {
     let sixthElementInnerHTML   = null;
     let seventhElementInnerHTML = null;
 
-    const startNext = function () {
-        window.setTimeout(start, nextTestDelay);
+    const startNext = function (delay) {
+        window.setTimeout(start, delay || NEXT_TEST_DELAY);
     };
 
     const firstNotWhiteSpaceSymbolIndex = function (value) {
@@ -157,7 +159,7 @@ $(document).ready(function () {
                 ok(clicked, 'click raised');
                 checkSelection($parent, $el[0].childNodes[0], 10, $el[0].childNodes[0], 10);
 
-                startNext();
+                startNext(IS_MOBILE_SAFARI && 700);
             });
     });
 
@@ -181,7 +183,7 @@ $(document).ready(function () {
                 ok(clicked, 'click raised');
                 checkSelection($parent, $parent[0].childNodes[5].childNodes[3].childNodes[0], 1, $parent[0].childNodes[5].childNodes[3].childNodes[0], 1);
 
-                startNext();
+                startNext(IS_MOBILE_SAFARI && 700);
             });
     });
 
