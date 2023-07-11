@@ -427,8 +427,7 @@ $(document).ready(function () {
         }, TEST_RESULT_TIMEOUT);
     });
 
-    // TODO: stabilize test on iOS
-    (isIOS ? QUnit.skip : asyncTest)('click on element in scrolled container', function () {
+    asyncTest('click on element in scrolled container', function () {
         let clicked = false;
 
         const $div = addDiv(200, 200)
