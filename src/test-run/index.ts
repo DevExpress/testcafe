@@ -265,6 +265,7 @@ export default class TestRun extends AsyncEventEmitter {
     public readonly cookieProvider: CookieProvider;
     private _storagesProvider: StoragesProvider;
     public readonly startRunExecutionTime?: Date;
+    public finishTime?: Date;
     private readonly _requestHookEventProvider: RequestHookEventProvider;
     private readonly _roleProvider: RoleProvider;
     public readonly isNativeAutomation: boolean;

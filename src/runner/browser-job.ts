@@ -143,6 +143,8 @@ export default class BrowserJob extends AsyncEventEmitter {
     }
 
     private async _onTestRunDone (testRunController: TestRunController): Promise<void> {
+        testRunController.testRun.finishTime = new Date();
+
         this._total++;
 
         if (!testRunController.testRun.errs.length)
