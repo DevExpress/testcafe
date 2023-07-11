@@ -16,7 +16,7 @@ testCafeCore.preventRealEvents();
 
 const IS_SAFARI_GREATER_THAN_15 = browserUtils.isSafari && parseFloat(browserUtils.fullVersion) >= '15.0';
 const IS_MOBILE_SAFARI          = browserUtils.isSafari && featureDetection.isTouchDevice;
-const NEXT_TEST_DELAY           = browserUtils.isIE || IS_MOBILE_SAFARI ? 30 : 200;
+const NEXT_TEST_DELAY           = browserUtils.isIE ? 30 : 200;
 const TEST_RESULT_TIMEOUT       = featureDetection.isTouchDevice ? 2500 : 500;
 
 QUnit.config.testTimeout = 30000;
