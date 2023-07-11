@@ -198,7 +198,7 @@ if (config.useLocalBrowsers) {
             const durationsInfo = [];
 
             const durationReporter = createReporter({
-                reportTestDone: function (name, {durationMs}) {
+                reportTestDone: function (name, { durationMs }) {
                     durationsInfo.push({ name, durationMs });
                 },
             });
