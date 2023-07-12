@@ -107,3 +107,9 @@ test('Click on an element with overlapped center', async t => {
 test('Click overlapped element', async t => {
     await t.click('.child1');
 }).page('http://localhost:3000/fixtures/api/es-next/click/pages/overlapped.html');
+
+test('Check click pressure', async t => {
+    await t.click('#statusBtn');
+
+    expect(await t.eval(() => window.pointerdownPressure)).gt(0);
+});

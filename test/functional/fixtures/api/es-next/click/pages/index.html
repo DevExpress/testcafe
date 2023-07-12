@@ -31,6 +31,12 @@
 
         status.textContent = 'Clicked!';
     });
+
+    document.querySelector('#statusBtn').addEventListener('pointerdown', function (e) {
+        window.pointerdownPressure = e.pressure;
+    });
+
+    window.pointerdownPressure = 0;
 </script>
 <!--Click shifted element-->
 <div id="shifted-element" style="background: green; width: 100px; height: 100px; transform: translateX(-60px);"></div>
