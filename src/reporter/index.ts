@@ -64,6 +64,7 @@ interface TestInfo {
     warnings: string[];
     unstable: boolean;
     startTime: null | number;
+    finishTime: null | number;
     testRunInfo: null | TestRunInfo;
     pendingRuns: number;
     pendingStarts: number;
@@ -330,6 +331,7 @@ export default class Reporter {
             warnings:                   [],
             unstable:                   false,
             startTime:                  null,
+            finishTime:                 null,
             testRunInfo:                null,
             pendingRuns:                runsPerTest,
             pendingStarts:              runsPerTest,
@@ -350,7 +352,9 @@ export default class Reporter {
         if (reportItem.test.skip)
             return 0;
 
-        return +new Date() - (reportItem.startTime as number);
+        const finishTime = reportItem.finishTime || +new Date();
+
+        return finishTime - (reportItem.startTime as number);
     }
 
     private static _createTestRunInfo (reportItem: TestInfo): TestRunInfo {
@@ -447,6 +451,9 @@ export default class Reporter {
 
             Object.assign(testItem.quarantine as object, testItemQuarantine);
         }
+
+        if (!testItem.finishTime)
+            testItem.finishTime = testRun.finishTime?.getTime() || null;
 
         if (!testItem.testRunInfo) {
             testItem.testRunInfo = Reporter._createTestRunInfo(testItem);

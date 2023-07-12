@@ -193,6 +193,29 @@ if (config.useLocalBrowsers) {
                     expect(error.message).eql('The number of remote browsers should be divisible by the concurrency factor.');
                 });
         });
+
+        it('Should display correct duration for the tests run in concurrency', function () {
+            const durationsInfo = [];
+
+            const durationReporter = createReporter({
+                reportTestDone: function (name, { durationMs }) {
+                    durationsInfo.push({ name, durationMs });
+                },
+            });
+
+            return run('chrome:headless --no-sandbox', 3, './testcafe-fixtures/duration-test.js', durationReporter)
+                .then(() => {
+                    const sortedByDuration = durationsInfo
+                        .sort((info1, info2) => info1.durationMs - info2.durationMs)
+                        .map(info => info.name);
+
+                    expect(sortedByDuration).eql([
+                        'Test 2',
+                        'Test 1',
+                        'Test 3',
+                    ]);
+                });
+        });
     });
 }
 
