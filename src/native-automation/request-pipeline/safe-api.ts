@@ -8,18 +8,25 @@ import ErrorReason = Protocol.Network.ErrorReason;
 import { isRequestPausedEvent } from '../utils/cdp';
 import { ContinueRequestArgs, SessionId } from '../types';
 
-const INVALID_INTERCEPTED_RESPONSE_ERROR_MSG = 'Invalid InterceptionId.';
+const INVALID_INTERCEPTED_RESPONSE_ERROR_MSG    = 'Invalid InterceptionId.';
+const SESSION_WITH_GIVEN_ID_NOT_FOUND_ERROR_MSG = 'Session with given id not found.';
 
 // In some cases (a request was aborted, any page that initiated the request doesn't exist, etc.)
 // Chrome Debug Protocol doesn't allow to continue request pipeline
 // and raises the "Invalid InterceptionId" error.
 // We use the simplest way to fix it - omit such an error.
 
+// The "Session not found" error can occur in iframes for unclear reasons.
+// We choose to ignore this type of error as well.
+
 async function connectionResetGuard (handleRequestFn: () => Promise<void>, handleErrorFn: (err: any) => void): Promise<void> {
     try {
         await handleRequestFn();
     }
     catch (err: any) {
+        if (err.message === SESSION_WITH_GIVEN_ID_NOT_FOUND_ERROR_MSG)
+            return;
+
         if (err.message === INVALID_INTERCEPTED_RESPONSE_ERROR_MSG)
             return;
 
