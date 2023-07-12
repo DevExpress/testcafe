@@ -62,6 +62,8 @@ const DEFAULT_RESOURCE_INJECTOR_OPTIONS = {
 export default class ResourceInjector {
     private _options: ResourceInjectorOptions;
     private readonly _testRunBridge: TestRunBridge;
+    private _additionalScripts: string[] = [];
+    private _additionalStylesheets: string[] = [];
 
     public constructor (testRunBridge: TestRunBridge) {
         this._options       = DEFAULT_RESOURCE_INJECTOR_OPTIONS;
@@ -110,10 +112,12 @@ export default class ResourceInjector {
         const injectableResources = {
             stylesheets: [
                 TESTCAFE_UI_STYLES,
+                ...this._additionalStylesheets,
             ],
             scripts: [
                 ...HAMMERHEAD_INJECTABLE_SCRIPTS.map(hs => getAssetPath(hs, this._options.developmentMode)),
                 ...SCRIPTS.map(s => getAssetPath(s, this._options.developmentMode)),
+                ...this._additionalScripts,
             ],
             embeddedScripts: [ this._getRestoreStoragesScript(restoringStorages), this._getRestoreContextStorageScript(contextStorage), taskScript],
             userScripts:     userScripts || [],
@@ -248,5 +252,10 @@ export default class ResourceInjector {
 
     public setOptions (options: ResourceInjectorOptions): void {
         this._options = options;
+    }
+    
+    public setAdditionalResources (scripts: string[], resources: string[]): void {
+        this._additionalScripts   = scripts;
+        this._additionalStylesheets = resources;
     }
 }
