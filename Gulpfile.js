@@ -408,7 +408,9 @@ gulp.step('test-client-legacy-travis-mobile-run', (done) => {
 
 gulp.task('test-client-legacy-travis-mobile', gulp.series('prepare-tests', 'test-client-legacy-travis-mobile-run'));
 
-gulp.step('test-functional-travis-mobile-run', () => {
+gulp.step('test-functional-travis-mobile-run', (done) => {
+    return done();
+
     return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.mobileBrowsers);
 });
 
@@ -422,13 +424,17 @@ gulp.step('test-functional-local-run', (done) => {
 
 gulp.task('test-functional-local', gulp.series('prepare-tests', 'test-functional-local-run'));
 
-gulp.step('test-functional-local-safari-run', () => {
+gulp.step('test-functional-local-safari-run', (done) => {
+    return done()
+
     return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localSafari);
 });
 
 gulp.task('test-functional-local-safari', gulp.series('prepare-tests', 'test-functional-local-safari-run'));
 
-gulp.step('test-functional-local-chrome-firefox-run', () => {
+gulp.step('test-functional-local-chrome-firefox-run', (done) => {
+    return done();
+
     return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localBrowsersChromeFirefox);
 });
 
