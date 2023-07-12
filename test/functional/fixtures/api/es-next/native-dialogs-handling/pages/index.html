@@ -8,6 +8,7 @@
 <button id="buttonAlert">Alert</button>
 <button id="buttonConfirm">Confirm</button>
 <button id="buttonPrint">Print</button>
+<button id="buttonGeo">Geolocation</button>
 
 <button id="buttonDialogAfterTimeoutWithRedirect">DialogAfterTimeoutWithRedirect</button>
 <button id="buttonDialogAfterTimeout">DialogAfterTimeout</button>
@@ -24,6 +25,16 @@
 <script>
     document.getElementById('buttonAlert').addEventListener('click', function () {
         window.alert('Alert!');
+    });
+
+    document.getElementById('buttonGeo').addEventListener('click', function () {
+        window.navigator.geolocation.getCurrentPosition(
+            (geo) => document.getElementById('result').textContent = JSON.stringify(geo),
+            (err) => document.getElementById('result').textContent = JSON.stringify({
+                message: err.message,
+                code:    err.code
+            }),
+        )
     });
 
     document.getElementById('buttonConfirm').addEventListener('click', function () {

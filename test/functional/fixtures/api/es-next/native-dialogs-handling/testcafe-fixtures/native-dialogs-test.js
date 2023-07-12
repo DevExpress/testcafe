@@ -3,11 +3,9 @@ import { ClientFunction, Selector } from 'testcafe';
 fixture `Native dialogs`
     .page `http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/pages/index.html`;
 
-
 const getResult     = ClientFunction(() => document.getElementById('result').textContent);
 const pageUrl       = 'http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/pages/index.html';
 const promptPageUrl = 'http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/pages/prompt.html';
-
 
 test('Without handler', async t => {
     const info = await t.getNativeDialogHistory();
@@ -16,7 +14,6 @@ test('Without handler', async t => {
 
     await t.click('#buttonConfirm');
 });
-
 
 test('Print without handler', async t => {
     const info = await t.getNativeDialogHistory();
@@ -34,6 +31,36 @@ test('Expected print after an action', async t => {
     const dialogs = await t.getNativeDialogHistory();
 
     await t.expect(dialogs).eql([{ type: 'print', url: pageUrl }]);
+});
+
+
+test('Expected geolocation object and geolocation error returned after an action', async t => {
+    await t
+        .setNativeDialogHandler((type) => {
+            if (type === 'geolocation')
+                return { timestamp: 12356, coords: {} };
+
+            return null;
+        })
+        .click('#buttonGeo')
+        .expect(getResult()).eql('{"timestamp":12356,"coords":{}}')
+        .setNativeDialogHandler((type) => {
+            if (type !== 'geolocation')
+                return null;
+
+            const err = new Error('Some error');
+
+            err.code = 1;
+
+            return err;
+        })
+        .click('#buttonGeo')
+        .expect(getResult()).eql('{"message":"Some error","code":1}');
+
+    const history = await t.getNativeDialogHistory();
+
+    // NOTE: Only one record must be added to the history, since dialog appears only on the first geolocation request
+    await t.expect(history).eql([{ type: 'geolocation', url: pageUrl }]);
 });
 
 test('Expected confirm after an action', async t => {

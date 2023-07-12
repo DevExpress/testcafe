@@ -13,7 +13,7 @@ const UNEXPECTED_DIALOG                 = 'testcafe|native-dialog-tracker|unexpe
 const ERROR_IN_HANDLER                  = 'testcafe|native-dialog-tracker|error-in-handler';
 const GETTING_PAGE_URL_PROCESSED_SCRIPT = processScript('window.location.href');
 const NATIVE_DIALOG_TYPES               = ['alert', 'confirm', 'prompt', 'print'];
-
+const GEOLOCATION_DIALOG_TYPE           = 'geolocation';
 
 export default class NativeDialogTracker {
     constructor (contextStorage, { dialogHandler } = {}) {
@@ -22,9 +22,6 @@ export default class NativeDialogTracker {
 
         this._init();
         this._initListening();
-
-        if (this.dialogHandler)
-            this.setHandler(dialogHandler);
     }
 
     get appearedDialogs () {
@@ -95,13 +92,13 @@ export default class NativeDialogTracker {
                 this.contextStorage.save();
         });
 
-        window.alert   = () => this._defaultDialogHandler('alert');
-        window.confirm = () => this._defaultDialogHandler('confirm');
-        window.prompt  = () => this._defaultDialogHandler('prompt');
-        window.print   = () => this._defaultDialogHandler('print');
+        this._setCustomOrDefaultHandler();
     }
 
     _createDialogHandler (type) {
+        if (type === GEOLOCATION_DIALOG_TYPE)
+            return this._createGeolocationHandler();
+
         return text => {
             const url = NativeDialogTracker._getPageUrl();
 
@@ -121,6 +118,32 @@ export default class NativeDialogTracker {
         };
     }
 
+    _createGeolocationHandler () {
+        return (successCallback, failCallback) => {
+            const url                       = NativeDialogTracker._getPageUrl();
+            const isFirstGeolocationRequest = !nativeMethods.arraySome
+                .call(this.appearedDialogs, dialog => dialog.type === GEOLOCATION_DIALOG_TYPE && dialog.url === url);
+
+            if (isFirstGeolocationRequest)
+                this._addAppearedDialogs(GEOLOCATION_DIALOG_TYPE, void 0, url);
+
+            const executor = new ClientFunctionExecutor(this.dialogHandler);
+            let result     = null;
+
+            try {
+                result = executor.fn.apply(window, [GEOLOCATION_DIALOG_TYPE, void 0, url]);
+            }
+            catch (err) {
+                this._onHandlerError(GEOLOCATION_DIALOG_TYPE, err.message || String(err), url);
+            }
+
+            if (result instanceof Error)
+                failCallback(result);
+            else
+                successCallback(result);
+        };
+    }
+
     // Overridable methods
     _defaultDialogHandler (type) {
         const url = NativeDialogTracker._getPageUrl();
@@ -136,15 +159,25 @@ export default class NativeDialogTracker {
         this.handlerError = this.handlerError || { type, message, url };
     }
 
+    _setCustomOrDefaultHandler () {
+        const geolocation      = window.navigator.geolocation;
+        const createDialogCtor = this.dialogHandler
+            ? dialogType => this._createDialogHandler(dialogType)
+            : dialogType => () => this._defaultDialogHandler(dialogType);
+
+        NATIVE_DIALOG_TYPES.forEach(dialogType => {
+            window[dialogType] = createDialogCtor(dialogType);
+        });
+
+        if (geolocation?.getCurrentPosition)
+            geolocation.getCurrentPosition = createDialogCtor(GEOLOCATION_DIALOG_TYPE);
+    }
+
     // API
     setHandler (dialogHandler) {
         this.dialogHandler = dialogHandler;
 
-        NATIVE_DIALOG_TYPES.forEach(dialogType => {
-            window[dialogType] = this.dialogHandler ?
-                this._createDialogHandler(dialogType) :
-                () => this._defaultDialogHandler(dialogType);
-        });
+        this._setCustomOrDefaultHandler();
     }
 
     getUnexpectedDialogError () {
