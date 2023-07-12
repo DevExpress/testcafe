@@ -12,8 +12,8 @@ const hammerhead       = window.getTestCafeModule('hammerhead');
 const browserUtils     = hammerhead.utils.browser;
 const featureDetection = hammerhead.utils.featureDetection;
 
-const isMobileSafari      = browserUtils.isSafari && featureDetection.isTouchDevice;
 const TEST_RESULT_TIMEOUT = featureDetection.isTouchDevice ? 2500 : 500;
+const IS_MOBILE_SAFARI    = browserUtils.isSafari && featureDetection.isTouchDevice;
 
 QUnit.config.testTimeout = 30000;
 
@@ -22,7 +22,7 @@ $(document).ready(function () {
     $('body').css('border', '0px');
 
     // NOTE: prevent auto scrolling
-    if (browserUtils.isSafari && featureDetection.isTouchDevice) {
+    if (IS_MOBILE_SAFARI) {
         const $meta = $('<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, shrink-to-fit=no">');
 
         $('head').append($meta);
@@ -33,6 +33,10 @@ $(document).ready(function () {
 
     //utils
     const isTouchDevice = featureDetection.isTouchDevice;
+
+    const startNext = function (delay) {
+        window.setTimeout(start, delay);
+    };
 
     const createDraggable = function (left, top, withGloballCoord) {
         const $draggable = $('<div></div>')
@@ -138,7 +142,7 @@ $(document).ready(function () {
                 .run()
                 .then(function () {
                     ok(isInTarget(draggable, target), 'element is in the target');
-                    start();
+                    startNext(IS_MOBILE_SAFARI && 700);
                 });
         }, TEST_RESULT_TIMEOUT);
     });
@@ -167,7 +171,7 @@ $(document).ready(function () {
     // This issue is not reproduced in real devices (checked with the devices from BrowserStack).
     // It can be partially fixed using the minimal test speed. But in this case, the test is still unstable.
     // We are forced to turn off it for mobile Safari. Try to turn on it in the future.
-    if (!isMobileSafari) {
+    if (!IS_MOBILE_SAFARI) {
         asyncTest('overlapped during dragging', function () {
             window.setTimeout(function () {
                 const draggable = createDraggable(100, 100)[0];
@@ -194,7 +198,7 @@ $(document).ready(function () {
     // This issue is not reproduced in real devices (checked with the devices from BrowserStack).
     // It can be partially fixed using the minimal test speed. But in this case, the test is still unstable.
     // We are forced to turn off it for mobile Safari. Try to turn on it in the future.
-    if (!isMobileSafari) {
+    if (!IS_MOBILE_SAFARI) {
         asyncTest('B253930 - Wrong playback of drag action on http://jqueryui.com/droppable/ in IE9', function () {
             const $draggable  = createDraggable(10, 10, true);
             const center      = getCenter($draggable[0]);

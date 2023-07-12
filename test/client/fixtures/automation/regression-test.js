@@ -26,6 +26,8 @@ const PressAutomation      = testCafeAutomation.Press;
 const getOffsetOptions     = testCafeAutomation.getOffsetOptions;
 const cursor               = testCafeAutomation.cursor;
 
+const IS_MOBILE_SAFARI = browserUtils.isSafari && featureDetection.isTouchDevice;
+
 testCafeCore.preventRealEvents();
 
 $(document).ready(function () {
@@ -141,11 +143,9 @@ $(document).ready(function () {
         return $draggable;
     };
 
-    const startNext = function () {
-        if (browserUtils.isIE) {
-            removeTestElements();
-            window.setTimeout(start, 30);
-        }
+    const startNext = function (delay) {
+        if (delay)
+            window.setTimeout(start, delay);
         else
             start();
     };
@@ -495,7 +495,7 @@ $(document).ready(function () {
 
         runClickAutomation($b[0], {}, function () {
             ok(clickRaised);
-            startNext();
+            startNext(IS_MOBILE_SAFARI && 500);
         });
     });
 
