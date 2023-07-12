@@ -4,6 +4,8 @@ import TestCafeConfiguration from './configuration/testcafe-configuration';
 import OPTION_NAMES from './configuration/option-names';
 import userVariables from './api/user-variables';
 import { getValidPort } from './configuration/utils';
+import getTestCafeVersion from './utils/get-testcafe-version';
+import { versionLogger } from './utils/debug-loggers';
 
 const lazyRequire   = require('import-lazy')(require);
 const TestCafe      = lazyRequire('./testcafe');
@@ -43,6 +45,8 @@ async function getConfiguration (args) {
 
 // API
 async function createTestCafe (...args) {
+    versionLogger(getTestCafeVersion());
+
     const configuration = await getConfiguration(args);
 
     const [port1, port2] = await Promise.all([

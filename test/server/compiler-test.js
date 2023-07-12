@@ -18,6 +18,7 @@ const compile             = require('./helpers/compile');
 const Module              = require('module');
 const toPosixPath         = require('../../lib/utils/to-posix-path');
 const BaseTestRunMock     = require('./helpers/base-test-run-mock');
+const getTestCafeVersion  = require('../../lib/utils/get-testcafe-version');
 
 const copy      = promisify(fs.copyFile);
 const remove    = promisify(fs.unlink);
@@ -93,7 +94,10 @@ describe('Compiler', function () {
             const sources = [
                 'test/server/data/test-suites/basic/testfile1.js',
                 'test/server/data/test-suites/basic/testfile2.js',
+                'test/server/data/test-suites/basic/testfile4.js',
             ];
+
+            const testcafeVersion = getTestCafeVersion();
 
             return compile(sources)
                 .then(function (compiled) {
@@ -102,8 +106,8 @@ describe('Compiler', function () {
                     const tests     = compiled.tests;
                     const fixtures  = compiled.fixtures;
 
-                    expect(tests.length).eql(4);
-                    expect(fixtures.length).eql(3);
+                    expect(tests.length).eql(5);
+                    expect(fixtures.length).eql(4);
 
                     expect(fixtures[0].name).eql('Fixture1');
                     expect(fixtures[0].path).eql(testfile1);
@@ -139,7 +143,9 @@ describe('Compiler', function () {
                         'F1T2',
                         'F2T1',
                         'F3T1: Hey from dep1 and dep2',
+                        testcafeVersion,
                     ]);
+                    expect(results[results.length - 1]).to.be.a('string');
                 });
         });
 

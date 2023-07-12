@@ -1,14 +1,15 @@
 const { expect }                 = require('chai');
 const fs                         = require('fs');
+const path                       = require('path');
+const { noop }                   = require('lodash');
 const generateReporter           = require('./reporter');
 const { createReporter }         = require('../../utils/reporter');
 const { createWarningReporter }  = require('../../utils/warning-reporter');
 const ReporterPluginMethod       = require('../../../../lib/reporter/plugin-methods');
 const assertionHelper            = require('../../assertion-helper.js');
-const path                       = require('path');
 const config                     = require('../../config');
 const { skipInNativeAutomation } = require('../../utils/skip-in');
-const { noop }                   = require('lodash');
+const getTestCafeVersion         = require('../../../../lib/utils/get-testcafe-version');
 
 const {
     createSimpleTestStream,
@@ -668,7 +669,7 @@ const del                = require('del');
             return runTests(
                 'testcafe-fixtures/index-test.js',
                 'The "typeText" action with the input[type=text] and the "confidential" flag set to true',
-                { reporter: generateReporter(log, { includeCommandInfo: true }) }
+                { reporter: generateReporter(log, { includeCommandInfo: true }) },
             ).then(() => {
                 expect(log).to.include.deep.members([
                     {
@@ -1160,7 +1161,7 @@ const del                = require('del');
                 });
             }
 
-            const actionIds = [];
+            const actionIds   = [];
             const screenshots = {};
 
             await runTests('./testcafe-fixtures/index-test.js', 'Take a screenshot on action and on error', {
@@ -1288,8 +1289,9 @@ const del                = require('del');
 
     it('Should call the "init" method of reporters if it\'s defined', function () {
         const reportInitSuccess = result => createReporter({
-            init () {
-                result.init = result.init || [];
+            init (version) {
+                result.init    = result.init || [];
+                result.version = version;
 
                 result.init.push(true);
             },
@@ -1316,6 +1318,7 @@ const del                = require('del');
             .then(() => {
                 expect(result.init).eql([true]);
                 expect(result.done).eql([true, true]);
+                expect(result.version).eql(getTestCafeVersion());
             });
     });
 
@@ -1345,7 +1348,7 @@ const del                = require('del');
                         reporter:     createReporterWithBrokenMethod(method),
                         shouldFail:   true,
                         tsConfigPath: 'path-to-ts-config',
-                    }
+                    },
                 );
 
                 throw new Error('Promise rejection expected');
@@ -1361,7 +1364,7 @@ const del                = require('del');
         return runTestsWithConfig('Simple test', './test/functional/fixtures/reporter/configs/xunit-config.js')
             .then(() => {
                 const pathReport = path.resolve(__dirname, 'report.xml');
-                const report = fs.readFileSync(pathReport).toString();
+                const report     = fs.readFileSync(pathReport).toString();
 
                 expect(report).contains('<?xml version="1.0" encoding="UTF-8" ?>');
 

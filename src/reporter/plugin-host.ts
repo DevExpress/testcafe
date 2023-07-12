@@ -222,7 +222,7 @@ export default class ReporterPluginHost {
     }
 
     // NOTE: It's an optional method
-    public async init (): Promise<void> { // eslint-disable-line @typescript-eslint/no-empty-function
+    public async init (/* testcafeVersion */): Promise<void> { // eslint-disable-line @typescript-eslint/no-empty-function
         // Optional
     }
 

@@ -515,6 +515,7 @@ describe('Runner', () => {
                 'test/server/data/test-suites/basic/testfile1.js',
                 'test/server/data/test-suites/basic/testfile2.js',
                 'test/server/data/test-suites/basic/testfile3.js',
+                'test/server/data/test-suites/basic/testfile4.js',
             ].map(file => path.resolve(cwd, file));
 
             runner.bootstrapper._getBrowserConnections = () => {

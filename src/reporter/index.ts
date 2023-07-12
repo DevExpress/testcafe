@@ -34,6 +34,7 @@ import MessageBus from '../utils/message-bus';
 import BrowserConnection from '../browser/connection';
 import { Dictionary } from '../configuration/interfaces';
 import { reporterLogger } from '../utils/debug-loggers';
+import getTestCafeVersion from '../utils/get-testcafe-version';
 
 interface PendingPromise {
     resolve: Function | null;
@@ -187,10 +188,12 @@ export default class Reporter {
     }
 
     public async init (): Promise<void> {
+        const testcafeVersion = getTestCafeVersion();
+
         await this.dispatchToPlugin({
             method:        ReporterPluginMethod.init,
             initialObject: null,
-            args:          [{}],
+            args:          [testcafeVersion],
         });
     }
 
