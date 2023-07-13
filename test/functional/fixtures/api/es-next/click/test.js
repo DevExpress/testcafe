@@ -1,4 +1,5 @@
-const expect = require('chai').expect;
+const { onlyInNativeAutomation } = require('../../../../utils/skip-in');
+const expect                     = require('chai').expect;
 
 //GH-1674
 const TEST_DURATION_BOUND = 10000;
@@ -233,5 +234,9 @@ describe('[API] t.click()', function () {
                     expect(errs[0]).to.match(/The action target \(<area .*>\) is invisible because its container \(<img .*>\) is too small to be visible: 0px x 0px./);
                 });
         });
+    });
+
+    onlyInNativeAutomation('Should set pressure in Native Automation', () => {
+        return runTests('./testcafe-fixtures/click-test.js', 'Check click pressure', { only: 'chrome' });
     });
 });

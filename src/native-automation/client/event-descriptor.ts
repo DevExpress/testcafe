@@ -15,6 +15,7 @@ const messageSandbox = eventSandbox.message;
 
 const MOUSE_EVENT_OPTIONS = {
     clickCount: 1,
+    force:      0.5,
 };
 
 const CALCULATE_TOP_LEFT_POINT_REQUEST_CMD  = 'native-automation|calculate-top-left-point|request';
