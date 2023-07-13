@@ -253,7 +253,7 @@ export default class ResourceInjector {
     public setOptions (options: ResourceInjectorOptions): void {
         this._options = options;
     }
-    
+
     public setAdditionalResources (scripts: string[], resources: string[]): void {
         this._additionalScripts   = scripts;
         this._additionalStylesheets = resources;

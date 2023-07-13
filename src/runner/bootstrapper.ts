@@ -102,6 +102,8 @@ export default class Bootstrapper {
 
     private readonly TESTS_COMPILATION_UPPERBOUND: number;
 
+    private allowRemoteNativeAutomation: boolean;
+
     public constructor ({ browserConnectionGateway, messageBus, configuration }: BootstrapperInit) {
         this.browserConnectionGateway = browserConnectionGateway;
         this.concurrency              = 1;
@@ -119,6 +121,8 @@ export default class Bootstrapper {
         this.warningLog               = new WarningLog(null, WarningLog.createAddWarningCallback(messageBus));
         this.messageBus               = messageBus;
         this.configuration            = configuration;
+
+        this.allowRemoteNativeAutomation = false;
 
         this.TESTS_COMPILATION_UPPERBOUND = 60;
     }
@@ -187,7 +191,7 @@ export default class Bootstrapper {
     }
 
     private _disableNativeAutomationIfNecessary (remotes: BrowserConnection[], automated: BrowserInfo[]): void {
-        if (remotes.length || this._hasNotSupportedBrowserInNativeAutomation(automated))
+        if (remotes.length && !this.allowRemoteNativeAutomation || this._hasNotSupportedBrowserInNativeAutomation(automated))
             this.configuration.mergeOptions({ disableNativeAutomation: true });
     }
 
@@ -421,5 +425,9 @@ export default class Bootstrapper {
         Object.values(connections).forEach(connection => {
             connection.assignTestRunStartEventListener();
         });
+    }
+
+    public setAllowRemoteNativeAutomation (): void {
+        this.allowRemoteNativeAutomation = true;
     }
 }
