@@ -427,7 +427,7 @@ export default class Bootstrapper {
         });
     }
 
-    public setAllowRemoteNativeAutomation (): void {
-        this.allowRemoteNativeAutomation = true;
+    public setAllowRemoteNativeAutomation (allow: boolean): void {
+        this.allowRemoteNativeAutomation = allow;
     }
 }
