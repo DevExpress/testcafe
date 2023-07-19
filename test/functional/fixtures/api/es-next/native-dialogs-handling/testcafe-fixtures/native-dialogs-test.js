@@ -260,9 +260,19 @@ test('Should not override getCurrentPosition method if it is overrided via clien
 
 test
     .clientScripts({
-        content: 'Geolocation.prototype.getCurrentPosition = success => success("client-scripts");',
+        content: 'window.navigator.geolocation.getCurrentPosition = success => success("client-scripts");',
     })
     ('Should not override getCurrentPosition method if it is overrided via client scripts', async t => {
+
+        await t.setNativeDialogHandler(() => 'handler value')
+            .expect(getGeolocation()).eql('client-scripts');
+    });
+
+test
+    .clientScripts({
+        content: 'Geolocation.prototype.getCurrentPosition = success => success("client-scripts");',
+    })
+    ('Should not override getCurrentPosition method if prototype is overrided via client scripts', async t => {
 
         await t.setNativeDialogHandler(() => 'handler value')
             .expect(getGeolocation()).eql('client-scripts');

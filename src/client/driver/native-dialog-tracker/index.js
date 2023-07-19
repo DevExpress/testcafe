@@ -115,7 +115,7 @@ export default class NativeDialogTracker {
         };
     }
 
-    _geolocationDialogHandler (successCallback, failCallback) {
+    _handleGeolocationDialog (successCallback, failCallback) {
         if (!this.dialogHandler) {
             this._defaultDialogHandler(GEOLOCATION_DIALOG_TYPE);
 
@@ -168,20 +168,29 @@ export default class NativeDialogTracker {
                 : () => this._defaultDialogHandler(dialogType);
         });
 
-        this._overrideGeolocationDialogIfNecessary();
+        this._setGeolocationDialogHandler();
     }
 
-    _overrideGeolocationDialogIfNecessary () {
-        const geolocation = window.Geolocation?.prototype;
+    _setGeolocationDialogHandler () {
+        const geolocationPrototype = window.Geolocation?.prototype;
+        const geolocationObject = window.navigator?.geolocation;
 
-        if (!geolocation?.getCurrentPosition)
+        // NOTE: We need to check if any mock already used by user because a lot of users used our workarounds before we introduced this dialog
+        // If such a mock is specified in geolocationPrototype or geolocationObject we need to skip our overriding
+        if (!this._shouldOverrideGeolocationDialog(geolocationPrototype) || !this._shouldOverrideGeolocationDialog(geolocationObject))
             return;
 
-        const isNativeMethod = nativeMethods.isNativeCode(geolocation.getCurrentPosition);
-        const isNativeDialogHandler = geolocation.getCurrentPosition === this._geolocationDialogHandler;
+        geolocationPrototype.getCurrentPosition = this._handleGeolocationDialog.bind(this);
+    }
 
-        if (isNativeMethod || isNativeDialogHandler)
-            geolocation.getCurrentPosition = this._geolocationDialogHandler.bind(this);
+    _shouldOverrideGeolocationDialog (geolocation) {
+        if (!geolocation?.getCurrentPosition)
+            return false;
+
+        const isNativeMethod        = nativeMethods.isNativeCode(geolocation.getCurrentPosition);
+        const isNativeDialogHandler = geolocation.getCurrentPosition === this._handleGeolocationDialog;
+
+        return isNativeMethod || isNativeDialogHandler;
     }
 
     // API

@@ -39,6 +39,10 @@ describe('Native dialogs handling', function () {
             return runTests('./testcafe-fixtures/native-dialogs-test.js', 'Should not override getCurrentPosition method if it is overrided via client function');
         });
 
+        it('Should not override getCurrentPosition method if prototype is overrided via client scripts', function () {
+            return runTests('./testcafe-fixtures/native-dialogs-test.js', 'Should not override getCurrentPosition method if prototype is overrided via client scripts');
+        });
+
         it('Should not override getCurrentPosition method if it is overrided via client scripts', function () {
             return runTests('./testcafe-fixtures/native-dialogs-test.js', 'Should not override getCurrentPosition method if it is overrided via client scripts');
         });
