@@ -173,7 +173,7 @@ export default class NativeDialogTracker {
 
     _setGeolocationDialogHandler () {
         const geolocationPrototype = window.Geolocation?.prototype;
-        const geolocationObject = window.navigator?.geolocation;
+        const geolocationObject    = window.navigator?.geolocation;
 
         // NOTE: We need to check if any mock already used by user because a lot of users used our workarounds before we introduced this dialog
         // If such a mock is specified in geolocationPrototype or geolocationObject we need to skip our overriding
