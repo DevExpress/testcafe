@@ -122,7 +122,7 @@ Server.prototype._setupRoutes = function (apiRouter) {
         res.end();
     });
 
-    this.app.get('/fixtures/regression/gh-7874/', (req, res, next) => {
+    this.app.get('/fixtures/regression/gh-7874/', (req, res) => {
         res.send(`
             <!DOCTYPE html>
             <html>
