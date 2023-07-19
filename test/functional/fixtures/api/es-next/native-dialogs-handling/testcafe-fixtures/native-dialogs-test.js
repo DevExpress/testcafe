@@ -260,7 +260,7 @@ test('Should not override getCurrentPosition method if it is overrided via clien
 
 test
     .clientScripts({
-        content: 'window.navigator.geolocation.getCurrentPosition = success => success("client-scripts");',
+        content: 'Geolocation.prototype.getCurrentPosition = success => success("client-scripts");',
     })
     ('Should not override getCurrentPosition method if it is overrided via client scripts', async t => {
 

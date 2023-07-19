@@ -172,7 +172,7 @@ export default class NativeDialogTracker {
     }
 
     _overrideGeolocationDialogIfNecessary () {
-        const geolocation = window.navigator.geolocation;
+        const geolocation = window.Geolocation?.prototype;
 
         if (!geolocation?.getCurrentPosition)
             return;
