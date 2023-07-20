@@ -2,7 +2,6 @@ const hammerhead       = window.getTestCafeModule('hammerhead');
 const browserUtils     = hammerhead.utils.browser;
 const nativeMethods    = hammerhead.nativeMethods;
 const focusBlurSandbox = hammerhead.eventSandbox.focusBlur;
-const eventSimulator   = hammerhead.eventSandbox.eventSimulator;
 
 const testCafeCore       = window.getTestCafeModule('testCafeCore');
 const testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
@@ -23,7 +22,6 @@ testCafeCore.preventRealEvents();
 const TEST_ELEMENT_CLASS = 'testElement';
 
 const testStartDelay = 25;
-const testEndDelay   = 25;
 
 let input1                           = null;
 let input2                           = null;
@@ -76,10 +74,7 @@ const startNext = function () {
     focusBlurSandbox.focus($('body')[0], function () {
         removeTestElements();
 
-        if (browserUtils.isIE)
-            setDoubleTimeout(start, testEndDelay);
-        else
-            start();
+        start();
     });
 };
 
@@ -268,53 +263,6 @@ asyncTest('B237366 - change event raising after sequential type actions', functi
     );
 });
 
-asyncTest('B237489 - act.press("left") does not work in IE', function () {
-    runAsyncTest(
-        function () {
-            const input = $('<input type="text"/>').addClass(TEST_ELEMENT_CLASS).appendTo('body')[0];
-
-            input.addEventListener('focus', function () {
-                ok(document.activeElement === input);
-            });
-
-            ok(document.activeElement !== input);
-
-            focusBlurSandbox.focus(input, function () {
-                expect(2);
-                startNext();
-            });
-        },
-        1000
-    );
-});
-
-if (browserUtils.isIE) {
-    asyncTest('B237603 - two synchronously called focus() methods should raise an event once', function () {
-        runAsyncTest(
-            function () {
-                focusBlurSandbox.focus(input2, function () {
-                    let focusCount = 0;
-
-                    input1.onfocus = function () {
-                        focusCount++;
-                    };
-
-                    input1.focus();
-                    input1.focus();
-
-                    ok(document.activeElement === input1);
-
-                    setDoubleTimeout(function () {
-                        ok(focusCount === 1);
-                        startNext();
-                    });
-                });
-            },
-            1000
-        );
-    });
-}
-
 asyncTest('B238617 - Label with "for" attribute focusing', function () {
     runAsyncTest(
         function () {
@@ -334,9 +282,7 @@ asyncTest('B238617 - Label with "for" attribute focusing', function () {
             focusBlurSandbox.focus($label[0], function () {
                 ok(!labelFocused, 'label focus handler checked after FocusBlur.focus()');
                 ok(inputFocused, 'input focus handler checked after FocusBlur.focus()');
-
-                if (!browserUtils.isIE)
-                    ok(document.activeElement === input2, 'document.activeElement checked after FocusBlur.focus()');
+                ok(document.activeElement === input2, 'document.activeElement checked after FocusBlur.focus()');
 
                 labelFocused = false;
                 inputFocused = false;
@@ -346,9 +292,7 @@ asyncTest('B238617 - Label with "for" attribute focusing', function () {
                 setDoubleTimeout(function () {
                     ok(!labelFocused, 'label focus handler checked after element.focus()');
                     ok(inputFocused, 'input focus handler checked after FocusBlur.focus()');
-
-                    if (!browserUtils.isIE)
-                        ok(document.activeElement === input2, 'document.activeElement checked after element.focus()');
+                    ok(document.activeElement === input2, 'document.activeElement checked after element.focus()');
 
                     startNext();
                 });
@@ -592,128 +536,6 @@ asyncTest('B253577 - Focus handlers should be executed synchronously after mouse
     }, 2000);
 });
 
-asyncTest('B253735 - Blur event is raised twice in IE if element has zero width and height', function () {
-    runAsyncTest(function () {
-        $(input2).blur(blurListener);
-
-        focusBlurSandbox.focus(input2, function () {
-            $(input2).width(0);
-            $(input2).height(0);
-            $(input2).css('border', '0px');
-            $(input2).css('margin', '0px');
-            $(input2).css('padding', '0px');
-
-            setDoubleTimeout(function () {
-                focusBlurSandbox.focus(input1, function () {
-                    setDoubleTimeout(function () {
-                        ok(!$(input2).is(':visible'), 'check that element becomes invisible because of zero rectangle');
-                        equal(input2BlurHandlersExecutedAmount, 1, 'blur handler executing checked');
-                        startNext();
-                    });
-                });
-            });
-        });
-    }, 2000);
-});
-
-if (browserUtils.isIE && browserUtils.version < 12) {
-    asyncTest('focus method must not have effect if it is called from focus event handler on its second phase (AT_TARGET) in IE', function () {
-        runAsyncTest(function () {
-            const $parentDiv  = $('<div tabindex="0"></div>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
-            const $childTable = $('<table><tbody><tr><td></td></tr></tbody></table>').addClass(TEST_ELEMENT_CLASS).appendTo($parentDiv);
-            const timeout     = 2000;
-
-            let startTime  = null;
-            let focusCount = 0;
-
-            const bindFocus = function (element) {
-                element.addEventListener('focus', function (e) {
-                    focusCount++;
-
-                    //this code prevent page hanging
-                    if (Date.now() - startTime < timeout) {
-                        if (document.activeElement !== this) {
-                            const savedActiveElement = document.activeElement;
-
-                            element.focus();
-                            const activeElementChanged = savedActiveElement !== document.activeElement;
-
-                            if (e.eventPhase === 2)
-                                ok(!activeElementChanged, 'check that active element was not changed after calling focus() on second event phase');
-                            else
-                                ok(activeElementChanged, 'check that active element was changed after calling focus()');
-                        }
-                    }
-                    else
-                        ok(false, 'timeout is exceeded');
-                }, true);
-            };
-
-
-            startTime = Date.now();
-            bindFocus($childTable[0]);
-            bindFocus($parentDiv[0]);
-
-            focusBlurSandbox.focus($childTable.find('td')[0], function () {
-                window.setTimeout(function () {
-                    //6 focus handlers must be called. 1 and 2 - on event capturing phase for parent and child.
-                    //3 - when parent calls focus for himself. 4,5 - when child calls focus for himself (handled by both parent and child)
-                    //6 - when parent calls focus for himself in the second time.
-                    equal(focusCount, 6, 'checked number of focus handlers executed');
-                    startNext();
-                }, 500);
-            });
-
-        }, 4000);
-    });
-}
-
-if (browserUtils.isIE) {
-    asyncTest('focus and blur methods must raise events asynchronously and change active element synchronously in IE', function () {
-        runAsyncTest(function () {
-            const $input = $('<input type="text"/>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
-
-            let focusHandled       = false;
-            let blurHandled        = false;
-            let savedActiveElement = document.activeElement;
-
-            $input.focus(function () {
-                focusHandled = true;
-            });
-
-            $input.blur(function () {
-                blurHandled = true;
-            });
-
-            $input[0].focus();
-
-            ok(savedActiveElement !==
-               document.activeElement, 'check that active element was changed synchronously after focus');
-
-            savedActiveElement = document.activeElement;
-
-            if (browserUtils.version < 12)
-                ok(!focusHandled, 'check that focus event was not raised synchronously after focus() method calling');
-
-            window.setTimeout(function () {
-                ok(focusHandled, 'check that focus event was raised');
-                $input[0].blur();
-
-                ok(savedActiveElement !==
-                   document.activeElement, 'check that active element was changed synchronously after blur');
-
-                if (browserUtils.version < 12)
-                    ok(!blurHandled, 'check that blur event was not raised synchronously after blur() method calling');
-
-                window.setTimeout(function () {
-                    ok(blur, 'check that blur event was raised');
-                    startNext();
-                }, 0);
-            }, 200);
-        }, 3000);
-    });
-}
-
 asyncTest('Change event not raised after press action if element was focused by client script', function () {
     runAsyncTest(function () {
         const pressAutomation = new PressAutomation(parseKeySequence('ctrl+a delete').combinations, {});
@@ -741,146 +563,6 @@ asyncTest('Change event not raised after press action if element was focused by 
         }, 200);
     }, 3000);
 });
-
-if (browserUtils.isIE) {
-    asyncTest('B254768 - Blur event should be raised after focus event, if element becomes invisible synchronously after focus() method executing', function () {
-        runAsyncTest(function () {
-            let focused   = false;
-            let blurred   = false;
-            let lastEvent = void 0;
-
-            input2.addEventListener('focus', function (e) {
-                focused   = true;
-                lastEvent = e.type;
-            });
-            input2.addEventListener('blur', function (e) {
-                blurred   = true;
-                lastEvent = e.type;
-            });
-
-            input2.focus();
-            input2.style.display = 'none';
-
-            window.setTimeout(function () {
-                ok(focused, 'focus raised');
-                ok(blurred, 'blur raised');
-                equal(lastEvent, 'blur', 'last raised event is blur');
-                startNext();
-            }, 200);
-
-        }, 3000);
-    });
-}
-
-asyncTest('B254775 - Click action on already focused element must not raise focus event even if element was blurred on mousedown in IE', function () {
-    runAsyncTest(function () {
-        let focused = false;
-        let blurred = false;
-
-        focusBlurSandbox.focus(input2, function () {
-            input2.addEventListener('focus', function () {
-                focused = true;
-            });
-            input2.addEventListener('blur', function () {
-                blurred = true;
-            });
-            input2.addEventListener('mousedown', function (e) {
-                e.target.blur();
-            });
-
-            runClickAutomation(input2, {})
-                .then(function () {
-                    ok(blurred, 'blur event was raised');
-
-                    if (browserUtils.isIE) {
-                        ok(!focused, 'focus event was not raised');
-                        ok(document.activeElement !== input2, 'element is not focused');
-                    }
-                    else {
-                        ok(focused, 'focus event was raised');
-                        ok(document.activeElement === input2, 'element is focused');
-                    }
-                    startNext();
-                });
-        });
-    }, 3000);
-});
-
-//NOTE: it's actual for IE only
-if (browserUtils.isIE) {
-    asyncTest('incorrect handlers queue bug (setTimeout)', function () {
-        runAsyncTest(function () {
-            const state = [];
-
-            input1.addEventListener('focus', function () {
-                state.push('3');
-
-                window.setTimeout(function () {
-                    state.push('7');
-                }, 0);
-
-                input2.focus();
-                state.push('4');
-            });
-
-            input2.addEventListener('focus', function () {
-                state.push('5');
-            });
-
-            state.push('1');
-
-            window.setTimeout(function () {
-                state.push('6');
-            }, 0);
-
-            input1.focus();
-
-            state.push('2');
-
-            window.setTimeout(function () {
-                if (browserUtils.version < 12)
-                    equal(state.join(''), '1234567');
-                else
-                    equal(state.join(''), '1354267');
-
-                startNext();
-            }, 200);
-        }, 3000);
-    });
-
-    asyncTest('incorrect handlers queue bug (setInterval)', function () {
-        runAsyncTest(function () {
-            let intervalFunctionCalled = false;
-            let focusRaised            = false;
-
-            window.setInterval(function () {
-                intervalFunctionCalled = true;
-            }, 0);
-
-            window.setTimeout(function () {
-                ok(intervalFunctionCalled, 'check that interval function was called');
-                intervalFunctionCalled = false;
-
-                input2.addEventListener('focus', function () {
-                    ok(!intervalFunctionCalled, 'check that interval function was not called before focus handler');
-                    focusRaised = true;
-                });
-
-                input2.focus();
-
-                if (browserUtils.version < 12)
-                    ok(!focusRaised, 'check that focus handler was not executed synchronously after focus() method calling');
-
-                window.setTimeout(function () {
-                    ok(focusRaised, 'check that focus handler was executed');
-                    ok(intervalFunctionCalled, 'check that interval function was called');
-
-                    startNext();
-                }, 100);
-            }, 100);
-        }, 3000);
-    });
-}
 
 asyncTest('change event must not be raised if element value was changed by blur handler (T110822)', function () {
     runAsyncTest(function () {
@@ -945,31 +627,6 @@ asyncTest('T229732 - Focus and blur events bubble but should not during test run
             });
         });
     }, 1000);
-});
-
-// TODO: fix test timeout for iOS
-(browserUtils.isIOS ? QUnit.skip : asyncTest)('T231934 - Native focus method raises event handlers twice in IE in recorder - TEST RUNNING', function () {
-    runAsyncTest(
-        function () {
-            let focusCount = 0;
-
-            input2.addEventListener('focus', function () {
-                focusCount++;
-            });
-
-            eventSimulator.focus(input2);
-            input1.focus();
-
-            input2.focus();
-
-            setDoubleTimeout(function () {
-                equal(focusCount, 2);
-
-                startNext();
-            }, 1000);
-        },
-        2000
-    );
 });
 
 asyncTest('Hidden input should not be focused after label click', function () {

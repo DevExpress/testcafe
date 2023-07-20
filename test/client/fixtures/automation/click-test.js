@@ -78,7 +78,7 @@ $(document).ready(function () {
     };
 
     const startNext = function () {
-        if (browserUtils.isIE || IS_MOBILE_SAFARI) {
+        if (IS_MOBILE_SAFARI) {
             removeTestElements();
             window.setTimeout(start, NEXT_TEST_DELAY);
         }
@@ -130,8 +130,7 @@ $(document).ready(function () {
     });
 
     QUnit.testDone(function () {
-        if (!browserUtils.isIE)
-            removeTestElements();
+        removeTestElements();
     });
 
     module('dom events tests');
@@ -848,42 +847,39 @@ $(document).ready(function () {
             });
     });
 
-    if (!browserUtils.isIE) {
-        asyncTest('click and mouseup events should have equal `timeStamp` properties', function () {
-            const target = document.createElement('div');
+    asyncTest('click and mouseup events should have equal `timeStamp` properties', function () {
+        const target = document.createElement('div');
 
-            target.className    = TEST_ELEMENT_CLASS;
-            target.style.width  = '10px';
-            target.style.height = '10px';
+        target.className    = TEST_ELEMENT_CLASS;
+        target.style.width  = '10px';
+        target.style.height = '10px';
 
-            document.body.appendChild(target);
+        document.body.appendChild(target);
 
-            let mouseUpTimeStamp = null;
-            let clickTimeStamp   = null;
+        let mouseUpTimeStamp = null;
+        let clickTimeStamp   = null;
 
-            target.addEventListener('mouseup', function (e) {
-                mouseUpTimeStamp = e.timeStamp;
-            });
-
-            target.addEventListener('click', function (e) {
-                clickTimeStamp = e.timeStamp;
-            });
-
-            const clickAutomation = new ClickAutomation(target, { }, window, cursor);
-
-            return clickAutomation
-                .run()
-                .then(function () {
-                    ok(typeof mouseUpTimeStamp === 'number');
-                    ok(typeof clickTimeStamp === 'number');
-
-                    equal(mouseUpTimeStamp, clickTimeStamp);
-
-                    startNext();
-                });
+        target.addEventListener('mouseup', function (e) {
+            mouseUpTimeStamp = e.timeStamp;
         });
-    }
 
+        target.addEventListener('click', function (e) {
+            clickTimeStamp = e.timeStamp;
+        });
+
+        const clickAutomation = new ClickAutomation(target, { }, window, cursor);
+
+        return clickAutomation
+            .run()
+            .then(function () {
+                ok(typeof mouseUpTimeStamp === 'number');
+                ok(typeof clickTimeStamp === 'number');
+
+                equal(mouseUpTimeStamp, clickTimeStamp);
+
+                startNext();
+            });
+    });
 
     module('regression');
 
@@ -951,46 +947,6 @@ $(document).ready(function () {
             .run()
             .then(function () {
                 equal(clickRaised, true, 'button clicked');
-                startNext();
-            });
-    });
-
-    asyncTest('B253520 - Blur event is not raised during click playback if previous active element becomes invisible via css on mousedown handler in IE9', function () {
-        const $input           = $('<input type="text"/>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
-        const $button          = $('<input type="button"/>').addClass(TEST_ELEMENT_CLASS).appendTo('body');
-        let inputBlurHandled   = false;
-
-        const waitUntilCssApply = function () {
-            if ($input[0].getBoundingClientRect().width > 0) {
-                const timeout      = 2;
-                const startSeconds = new Date().getSeconds();
-                const endSeconds   = (startSeconds + timeout) % 60;
-
-                while ($input[0].getBoundingClientRect().width > 0) {
-                    if (new Date().getSeconds() > endSeconds)
-                        break;
-                }
-            }
-        };
-
-        $input.blur(function () {
-            inputBlurHandled = true;
-        });
-
-        $button.mousedown(function () {
-            $input.css('display', 'none');
-            //sometimes (in IE9 for example) element becomes invisible not immediately after css set, we should stop our code and wait
-            waitUntilCssApply();
-        });
-
-        $input[0].focus();
-
-        const click = new ClickAutomation($button[0], new ClickOptions({ offsetX: 5, offsetY: 5 }), window, cursor);
-
-        click
-            .run()
-            .then(function () {
-                ok(inputBlurHandled, 'check that input blur event was handled');
                 startNext();
             });
     });
@@ -1140,18 +1096,10 @@ $(document).ready(function () {
                 equal(e.buttons, 0);
         };
 
-        if (browserUtils.isIE && browserUtils.version > 11) {
-            $el[0].onpointerdown = pointerHandler;
-            $el[0].onpointerup   = pointerHandler;
-        }
-        else {
-            $el[0].onmspointerdown = pointerHandler;
-            $el[0].onmspointerup   = pointerHandler;
-        }
+        $el[0].onmspointerdown = pointerHandler;
+        $el[0].onmspointerup   = pointerHandler;
 
-        if (browserUtils.isIE)
-            expect(16);
-        else if (browserUtils.isSafari)
+        if (browserUtils.isSafari)
             expect(7);
         else
             expect(10);
