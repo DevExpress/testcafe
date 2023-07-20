@@ -35,6 +35,22 @@ describe('Native dialogs handling', function () {
             return runTests('./testcafe-fixtures/native-dialogs-test.js', 'Expected geolocation object and geolocation error returned after an action');
         });
 
+        it('Should not override getCurrentPosition method if it is overrided via client function', function () {
+            return runTests('./testcafe-fixtures/native-dialogs-test.js', 'Should not override getCurrentPosition method if it is overrided via client function');
+        });
+
+        it('Should not override getCurrentPosition method if prototype is overrided via client scripts', function () {
+            return runTests('./testcafe-fixtures/native-dialogs-test.js', 'Should not override getCurrentPosition method if prototype is overrided via client scripts');
+        });
+
+        it('Should not override getCurrentPosition method if it is overrided via client scripts', function () {
+            return runTests('./testcafe-fixtures/native-dialogs-test.js', 'Should not override getCurrentPosition method if it is overrided via client scripts');
+        });
+
+        it('Should not override getCurrentPosition method if it is overrided on a page', function () {
+            return runTests('./testcafe-fixtures/native-dialogs-test.js', 'Should not override getCurrentPosition method if it is overrided on a page');
+        });
+
         it('Should pass if the expected confirm dialog appears after an action (with dependencies)', function () {
             return runTests('./testcafe-fixtures/native-dialogs-test.js', 'Expected confirm after an action (with dependencies)');
         });

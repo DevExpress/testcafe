@@ -242,3 +242,45 @@ test('Null handler', async t => {
         .setNativeDialogHandler(null)
         .click('#buttonAlert');
 });
+
+const getGeolocation = ClientFunction(() => new Promise((resolve, reject) =>
+    navigator.geolocation.getCurrentPosition(resolve, reject),
+));
+
+test('Should not override getCurrentPosition method if it is overrided via client function', async t => {
+    const overrideMethod = ClientFunction(() => {
+        window.navigator.geolocation.getCurrentPosition = success => success('client-function');
+    });
+
+    await overrideMethod();
+
+    await t.setNativeDialogHandler(() => 'handler value')
+        .expect(getGeolocation()).eql('client-function');
+});
+
+test
+    .clientScripts({
+        content: 'window.navigator.geolocation.getCurrentPosition = success => success("client-scripts");',
+    })
+    ('Should not override getCurrentPosition method if it is overrided via client scripts', async t => {
+
+        await t.setNativeDialogHandler(() => 'handler value')
+            .expect(getGeolocation()).eql('client-scripts');
+    });
+
+test
+    .clientScripts({
+        content: 'Geolocation.prototype.getCurrentPosition = success => success("client-scripts");',
+    })
+    ('Should not override getCurrentPosition method if prototype is overrided via client scripts', async t => {
+
+        await t.setNativeDialogHandler(() => 'handler value')
+            .expect(getGeolocation()).eql('client-scripts');
+    });
+
+test
+    .page('http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/pages/geolocation-overrided.html')
+    ('Should not override getCurrentPosition method if it is overrided on a page', async t => {
+        await t.setNativeDialogHandler(() => 'handler value')
+            .expect(getGeolocation()).eql('on-page');
+    });
