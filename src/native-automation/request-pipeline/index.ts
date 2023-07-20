@@ -257,11 +257,22 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
         return true;
     }
 
+    private static _isTextPage (responseHeaders: HeaderEntry[] | undefined): boolean {
+        const contentType = responseHeaders
+            ?.find(header => header.name.toLowerCase() === 'content-type')
+            ?.value;
+
+        if (contentType)
+            return contentTypeUtils.isTextPage(contentType);
+
+        return true;
+    }
+
     private _needInjectResources (event: Protocol.Fetch.RequestPausedEvent): boolean {
         if (event.resourceType !== 'Document')
             return false;
 
-        return NativeAutomationRequestPipeline._isPage(event.responseHeaders);
+        return NativeAutomationRequestPipeline._isPage(event.responseHeaders) || NativeAutomationRequestPipeline._isTextPage(event.responseHeaders);
     }
 
     private async _tryAuthorizeWithHttpBasicAuthCredentials (event: RequestPausedEvent, fulfillInfo: FulfillRequestRequest): Promise<void> {

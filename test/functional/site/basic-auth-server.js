@@ -19,6 +19,20 @@ class BasicAuthServer extends BasicHttpServer {
                 res.redirect('/');
         });
 
+        app.all('/text', function (req, res) {
+            const credentials = basicAuth(req);
+
+            res.header('Content-Type', 'text/plain');
+
+            if (!credentials || credentials.name !== 'username' || credentials.pass !== 'password') {
+                res.statusCode = 401;
+                res.setHeader('WWW-Authenticate', 'Basic realm="example"');
+                res.end('not authorizaed');
+            }
+            else
+                res.redirect('/');
+        });
+
         app.all('*', function (req, res) {
             const credentials = basicAuth(req);
 
