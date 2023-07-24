@@ -17,7 +17,7 @@ const IGNORED_ERROR_CODES = {
     SESSION_WITH_GIVEN_ID_NOT_FOUND: -32001,
 };
 
-async function connectionResetGuard (handleRequestFn: () => Promise<void>, handleErrorFn: (err: any) => void): Promise<void> {
+export async function connectionResetGuard (handleRequestFn: () => Promise<void>, handleErrorFn: (err: any) => void): Promise<void> {
     try {
         await handleRequestFn();
     }
