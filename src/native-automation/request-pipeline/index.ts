@@ -402,12 +402,17 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
                 if (!isIFrame && !isWorker)
                     return;
 
-                // @ts-ignore
-                await this._client.Runtime.runIfWaitingForDebugger(event.sessionId);
-
-                if (isIFrame) {
+                try {
                     // @ts-ignore
-                    await this._client.Fetch.enable({ patterns: ALL_REQUESTS_DATA }, event.sessionId);
+                    await this._client.Runtime.runIfWaitingForDebugger(event.sessionId);
+
+                    if (isIFrame) {
+                        // @ts-ignore
+                        await this._client.Fetch.enable({ patterns: ALL_REQUESTS_DATA }, event.sessionId);
+                    }
+                }
+                catch (err) {
+                    requestPipelineLogger(`Unhandled error %s during processing %r`, err, event);
                 }
             });
         }
