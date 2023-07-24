@@ -48,7 +48,11 @@ import {
 import NativeAutomationPipelineContext from '../request-hooks/pipeline-context';
 import { NativeAutomationInitOptions } from '../../shared/types';
 import getSpecialRequestHandler from './special-handlers';
-import { safeContinueRequest, safeContinueResponse } from './safe-api';
+import {
+    connectionResetGuard,
+    safeContinueRequest,
+    safeContinueResponse,
+} from './safe-api';
 import NativeAutomationApiBase from '../api-base';
 import { resendAuthRequest } from './resendAuthRequest';
 import TestRunBridge from './test-run-bridge';
@@ -402,13 +406,17 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
                 if (!isIFrame && !isWorker)
                     return;
 
-                // @ts-ignore
-                await this._client.Runtime.runIfWaitingForDebugger(event.sessionId);
-
-                if (isIFrame) {
+                await connectionResetGuard(async () => {
                     // @ts-ignore
-                    await this._client.Fetch.enable({ patterns: ALL_REQUESTS_DATA }, event.sessionId);
-                }
+                    await this._client.Runtime.runIfWaitingForDebugger(event.sessionId);
+
+                    if (isIFrame) {
+                        // @ts-ignore
+                        await this._client.Fetch.enable({ patterns: ALL_REQUESTS_DATA }, event.sessionId);
+                    }
+                }, err => {
+                    requestPipelineLogger(`Unhandled error %s during processing %s`, err, event);
+                });
             });
         }
 
