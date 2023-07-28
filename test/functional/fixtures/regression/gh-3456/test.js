@@ -11,7 +11,7 @@ if (config.useLocalBrowsers) {
         it(':headless', () => {
             const browsers = [
                 'chrome:headless --window-size=501,602',
-                'chrome --headless --window-size=501,602',
+                'chrome --headless=new --window-size=501,602',
             ];
 
             return createTestCafe('127.0.0.1', 1335, 1336)
