@@ -106,3 +106,21 @@
   unlabel:
     - 'STATE: PR Review Pending'
     - 'STATE: Need response'
+
+? 'STATE: Issue accepted'
+:
+  # Post a comment
+  comment: |
+    We appreciate you taking the time to share the information about this issue. We replicated it, and it is currently in our internal queue. Please note that the research may take time. We'll update this thread once we have news.
+  unlabel:
+    - 'STATE: Issue accepted'
+    - 'STATE: Need response'
+
+? 'STATE: Enhancement accepted'
+:
+  # Post a comment
+  comment: |
+    Thank you for bringing this to our attention. We will be happy to look into this enhancement. We'll update this thread once we have news to share. In the absence of communication from us, it's safe to assume that there are no updates.
+  unlabel:
+    - 'STATE: Enhancement accepted'
+    - 'STATE: Need response'
