@@ -49,10 +49,10 @@ jobs:
               }
             }
 
-            async function createIssue ({owner, repo, labels, summary, description, link, package = ''}) {
-              const title = `[${repo}] ${summary}`;
+            async function createIssue ({owner, repo, labels, originRepo, summary, description, link, package = ''}) {
+              const title = `[${originRepo}] ${summary}`;
               const body  = ''
-                + `#### Repository: \`${ repo }\`\n`
+                + `#### Repository: \`${ originRepo }\`\n`
                 + (!!package ? `#### Package: \`${ package }\`\n` : '')
                 + `#### Description:\n`
                 + `${ description }\n`
@@ -86,6 +86,7 @@ jobs:
               createIssue({ owner, 
                 repo:        '${{ secrets.SECURITY_ISSUE_REPO }}', 
                 labels:      [dependabotLabel, securityLabel], 
+                originRepo:  repo,
                 summary:     alert.security_advisory.summary, 
                 description: alert.security_advisory.description, 
                 link:        alert.html_url, 
@@ -100,6 +101,7 @@ jobs:
               createIssue({ owner, 
                 repo:        '${{ secrets.SECURITY_ISSUE_REPO }}', 
                 labels:      [codeqlLabel, securityLabel], 
+                originRepo:  repo,
                 summary:     alert.rule.description, 
                 description: alert.most_recent_instance.message.text, 
                 link:        alert.html_url, 
