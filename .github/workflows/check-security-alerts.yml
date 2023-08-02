@@ -20,7 +20,7 @@ jobs:
             const state           = 'open';
             const dependabotLabel = 'dependabot';
             const codeqlLabel     = 'codeql';
-            const securityLabel   = 'security';
+            const securityLabel   = 'security notification';
 
             async function getDependabotAlerts () {
               const dependabotListAlertsUrl  = `https://api.github.com/repos/${ owner }/${ repo }/dependabot/alerts?state=${ state }`;
