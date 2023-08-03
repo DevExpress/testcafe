@@ -142,7 +142,7 @@
     "source-map-support": "^0.5.16",
     "strip-bom": "^2.0.0",
     "testcafe-browser-tools": "2.0.26",
-    "testcafe-hammerhead": "https://github.com/Artem-Babich/test-packages/files/12092324/testcafe-hammerhead-31.4.11.tar.gz",
+    "testcafe-hammerhead": "31.4.12",
     "testcafe-legacy-api": "5.1.6",
     "testcafe-reporter-json": "^2.1.0",
     "testcafe-reporter-list": "^2.2.0",
