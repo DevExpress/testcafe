@@ -58,7 +58,6 @@ jobs:
           name: npm
           path: |
             ${{steps.package-name.outputs.packageName}}.tgz
-            package-lock.json
       - run: |
           npx gulp docker-build
           docker save -o ${{steps.package-name.outputs.packageName}}.tar ${{steps.package-name.outputs.imageName}}
