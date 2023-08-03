@@ -117,10 +117,10 @@
       }
       ]
   },
-  overrides: [
+  "overrides": [
     {
-      files: ["*.ts"],
-      rules: {
+      "files": ["*.ts"],
+      "rules": {
         "@typescript-eslint/explicit-function-return-type": [2, { "allowExpressions": true }],
         "@typescript-eslint/no-empty-function": 2,
         "prefer-spread": 2,
