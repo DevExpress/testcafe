@@ -19,12 +19,7 @@ $(document).ready(function () {
     let thirdElementInnerHTML  = null;
 
     const startNext = function () {
-        if (browserUtils.isIE) {
-            removeTestElements();
-            window.setTimeout(start, 30);
-        }
-        else
-            start();
+        start();
     };
 
     const removeTestElements = function () {
@@ -75,8 +70,7 @@ $(document).ready(function () {
     QUnit.testDone(function () {
         stateHelper.restoreState();
 
-        if (!browserUtils.isIE)
-            removeTestElements();
+        removeTestElements();
     });
 
     //tests

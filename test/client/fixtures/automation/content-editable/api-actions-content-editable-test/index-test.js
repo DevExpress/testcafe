@@ -449,8 +449,7 @@ $(document).ready(function () {
 
         let inputEventRaisedCount = 0;
 
-        // NOTE IE11 does not raise input event on contenteditable element
-        const expectedInputEventRaisedCount = browserUtils.isIE11 ? 0 : 12;
+        const expectedInputEventRaisedCount = 12;
 
         $el = $('#2');
 
@@ -480,8 +479,7 @@ $(document).ready(function () {
 
         let inputEventRaisedCount = 0;
 
-        // NOTE IE11 does not raise input event on contenteditable element
-        const expectedInputEventRaisedCount = !browserUtils.isIE11 ? 4 : 0;
+        const expectedInputEventRaisedCount = 4;
 
         $el = $('#8');
 
@@ -598,8 +596,7 @@ $(document).ready(function () {
         type
             .run()
             .then(function () {
-                expectedNode = browserUtils.isIE && browserUtils.version <
-                                                    12 ? $el[0].childNodes[2].childNodes[0] : $el[0].childNodes[1].childNodes[0];
+                expectedNode = $el[0].childNodes[1].childNodes[0];
                 checkSelection($el, expectedNode, expectedNode.length, expectedNode, expectedNode.length);
                 equal($.trim($el.text()), fixedText);
 
