@@ -122,6 +122,33 @@ Server.prototype._setupRoutes = function (apiRouter) {
         res.end();
     });
 
+    this.app.get('/fixtures/regression/gh-7874/', (req, res) => {
+        res.send(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="UTF-8">
+                <title>GH-7874</title>
+            </head>
+            <body>
+            <button onclick="btnClick()">Set Cookie</button>
+            <script>
+                function btnClick () {
+                    document.cookie = 'inPage=val;' + document.cookie;
+            
+                    fetch('http://localhost:3000/get-browser-name', {
+                        credentials: 'include'
+                    })
+                        .then(() => {
+                            console.log('finished');
+                        })
+                }
+            </script>
+            </body>
+            </html>
+        `);
+    });
+
     this.app.get('*', function (req, res) {
         const reqPath      = req.params[0] || '';
         const resourcePath = path.join(server.basePath, reqPath);
