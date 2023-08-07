@@ -101,13 +101,13 @@ $(document).ready(function () {
         $expectedFocusedElements.push($divWithTabIndex);
         $expectedFocusedElements.push($link);
 
-        if (!browserUtils.isIE && !browserUtils.isAndroid)
+        if (!browserUtils.isAndroid)
             $expectedFocusedElements.push($optionOneWithTabIdex);
 
         $expectedFocusedElements.push($divContentEditableWithTabIndex);
         $expectedFocusedElements.push($buttonInContentEditable);
 
-        if (!browserUtils.isIE && !browserUtils.isAndroid)
+        if (!browserUtils.isAndroid)
             $expectedFocusedElements.push($optionTwoWithTabIdex);
 
         $expectedFocusedElements.push($radioInput2);
@@ -222,106 +222,104 @@ $(document).ready(function () {
         pressShiftTabRecursive();
     });
 
-    if (!browserUtils.isIE11) {
-        module('shadow root');
+    module('shadow root');
 
-        asyncTest('tab', function () {
-            const btn1 = document.createElement('button'); // <button>not shadow - no tabIndex</button>
-            const btn2 = document.createElement('button'); // <button tabindex="1">not shadow - tabIndex === 1</button>
-            const div1 = document.createElement('div'); // <div style="width: 100px; height: 100px; border: 1px solid black;"></div>
-            const div2 = document.createElement('div'); // <div tabindex="4"></div>
-            const btn3 = document.createElement('button'); // <button tabindex="3">not shadow - tabIndex === 3</button>
-            const btn4 = document.createElement('button'); // <button>not shadow - no tabIndex</button>
+    asyncTest('tab', function () {
+        const btn1 = document.createElement('button'); // <button>not shadow - no tabIndex</button>
+        const btn2 = document.createElement('button'); // <button tabindex="1">not shadow - tabIndex === 1</button>
+        const div1 = document.createElement('div'); // <div style="width: 100px; height: 100px; border: 1px solid black;"></div>
+        const div2 = document.createElement('div'); // <div tabindex="4"></div>
+        const btn3 = document.createElement('button'); // <button tabindex="3">not shadow - tabIndex === 3</button>
+        const btn4 = document.createElement('button'); // <button>not shadow - no tabIndex</button>
 
-            btn1.innerHTML = 'not shadow - no tabIndex';
-            btn2.innerHTML = 'not shadow - tabIndex === 1';
-            btn3.innerHTML = 'not shadow - tabIndex === 3';
-            btn4.innerHTML = 'not shadow - no tabIndex';
+        btn1.innerHTML = 'not shadow - no tabIndex';
+        btn2.innerHTML = 'not shadow - tabIndex === 1';
+        btn3.innerHTML = 'not shadow - tabIndex === 3';
+        btn4.innerHTML = 'not shadow - no tabIndex';
 
-            div1.style.width = '100px;';
-            div1.style.height = '100px;';
-            div1.style.border = '1px solid black';
+        div1.style.width = '100px;';
+        div1.style.height = '100px;';
+        div1.style.border = '1px solid black';
 
-            btn2.setAttribute('tabindex', '1');
-            btn3.setAttribute('tabindex', '3');
-            div2.setAttribute('tabindex', '4');
+        btn2.setAttribute('tabindex', '1');
+        btn3.setAttribute('tabindex', '3');
+        div2.setAttribute('tabindex', '4');
 
-            // shadow root for non tabIndex div1
-            const btn5 = document.createElement('button');
-            const btn6 = document.createElement('button');
+        // shadow root for non tabIndex div1
+        const btn5 = document.createElement('button');
+        const btn6 = document.createElement('button');
 
-            btn5.innerHTML = 'shadow - no tabIndex';
-            btn5.id        = 'btnShadow_on_tabIndex_c2';
+        btn5.innerHTML = 'shadow - no tabIndex';
+        btn5.id        = 'btnShadow_on_tabIndex_c2';
 
-            btn6.innerHTML = 'shadow - tabIndex === 2';
-            btn6.id        = 'btnShadow_tabIndex2_c2';
+        btn6.innerHTML = 'shadow - tabIndex === 2';
+        btn6.id        = 'btnShadow_tabIndex2_c2';
 
-            btn6.setAttribute('tabindex', 2);
+        btn6.setAttribute('tabindex', 2);
 
-            div1.attachShadow({ mode: 'open' });
-            div1.shadowRoot.appendChild(btn5);
-            div1.shadowRoot.appendChild(btn6);
+        div1.attachShadow({ mode: 'open' });
+        div1.shadowRoot.appendChild(btn5);
+        div1.shadowRoot.appendChild(btn6);
 
-            // shadow root for tabIndex div2
+        // shadow root for tabIndex div2
 
-            const btn7 = document.createElement('button');
-            const btn8 = document.createElement('button');
+        const btn7 = document.createElement('button');
+        const btn8 = document.createElement('button');
 
-            btn7.innerHTML = 'shadow - no tabIndex';
-            btn8.innerHTML = 'shadow - tabIndex === 2';
+        btn7.innerHTML = 'shadow - no tabIndex';
+        btn8.innerHTML = 'shadow - tabIndex === 2';
 
-            btn8.setAttribute('tabindex', 2);
+        btn8.setAttribute('tabindex', 2);
 
-            div2.attachShadow({ mode: 'open' });
-            div2.shadowRoot.appendChild(btn7);
-            div2.shadowRoot.appendChild(btn8);
+        div2.attachShadow({ mode: 'open' });
+        div2.shadowRoot.appendChild(btn7);
+        div2.shadowRoot.appendChild(btn8);
 
-            document.body.appendChild(btn1);
-            document.body.appendChild(btn2);
-            document.body.appendChild(div1);
-            document.body.appendChild(div2);
-            document.body.appendChild(btn3);
-            document.body.appendChild(btn4);
+        document.body.appendChild(btn1);
+        document.body.appendChild(btn2);
+        document.body.appendChild(div1);
+        document.body.appendChild(div2);
+        document.body.appendChild(btn3);
+        document.body.appendChild(btn4);
 
-            function pressTabAndAssert (el1, el2) {
-                const pressAutomation = new PressAutomation(parseKeySequence('tab').combinations, {});
+        function pressTabAndAssert (el1, el2) {
+            const pressAutomation = new PressAutomation(parseKeySequence('tab').combinations, {});
 
-                return pressAutomation
-                    .run()
-                    .then(function () {
-                        equal(document.activeElement, el1);
-
-                        if (el2)
-                            equal(el1.shadowRoot.activeElement, el2);
-                    });
-            }
-
-            pressTabAndAssert(btn2)
+            return pressAutomation
+                .run()
                 .then(function () {
-                    return pressTabAndAssert(btn3);
-                })
-                .then(function () {
-                    return pressTabAndAssert(div2);
-                })
-                .then(function () {
-                    return pressTabAndAssert(div2, btn8);
-                })
-                .then(function () {
-                    return pressTabAndAssert(div2, btn7);
-                })
-                .then(function () {
-                    return pressTabAndAssert(btn1);
-                })
-                .then(function () {
-                    return pressTabAndAssert(div1, btn6);
-                })
-                .then(function () {
-                    return pressTabAndAssert(div1, btn5);
-                })
-                .then(function () {
-                    return pressTabAndAssert(btn4);
-                })
-                .then(start);
-        });
-    }
+                    equal(document.activeElement, el1);
+
+                    if (el2)
+                        equal(el1.shadowRoot.activeElement, el2);
+                });
+        }
+
+        pressTabAndAssert(btn2)
+            .then(function () {
+                return pressTabAndAssert(btn3);
+            })
+            .then(function () {
+                return pressTabAndAssert(div2);
+            })
+            .then(function () {
+                return pressTabAndAssert(div2, btn8);
+            })
+            .then(function () {
+                return pressTabAndAssert(div2, btn7);
+            })
+            .then(function () {
+                return pressTabAndAssert(btn1);
+            })
+            .then(function () {
+                return pressTabAndAssert(div1, btn6);
+            })
+            .then(function () {
+                return pressTabAndAssert(div1, btn5);
+            })
+            .then(function () {
+                return pressTabAndAssert(btn4);
+            })
+            .then(start);
+    });
 });

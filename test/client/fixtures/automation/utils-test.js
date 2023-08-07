@@ -1,5 +1,3 @@
-const hammerhead         = window.getTestCafeModule('hammerhead');
-const browserUtils       = hammerhead.utils.browser;
 const testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
 const MoveAutomation     = testCafeAutomation.MoveAutomation;
 const testCafeCore       = window.getTestCafeModule('testCafeCore');
@@ -44,10 +42,7 @@ test('Stringify element', function () {
     equal(stringifyElement(elementWithChildAndText), '<div>...</div>');
     equal(stringifyElement(elementWithNestedElementsAndBr), '<div id="root">...</div>');
 
-    //NOTE: IE change an order of the id and class
-    if (!browserUtils.isIE) {
-        const elementWithAttributes = $('<div id="element-id" class="element-class" data-property="element-data"/>')[0];
+    const elementWithAttributes = $('<div id="element-id" class="element-class" data-property="element-data"/>')[0];
 
-        equal(stringifyElement(elementWithAttributes), '<div id="element-id" class="element-class" data-property="element-data"></div>');
-    }
+    equal(stringifyElement(elementWithAttributes), '<div id="element-id" class="element-class" data-property="element-data"></div>');
 });

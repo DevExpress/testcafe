@@ -20,7 +20,7 @@ const getOffsetOptions           = testCafeAutomation.getOffsetOptions;
 const cursor                     = testCafeAutomation.cursor;
 
 const isMobileSafari = browserUtils.isSafari && featureDetection.isTouchDevice;
-const nextTestDelay  = browserUtils.isIE ? 30 : 200;
+const nextTestDelay  = 200;
 
 $(document).ready(function () {
     //consts
@@ -173,7 +173,7 @@ $(document).ready(function () {
     $('body').css('height', 1500);
 
     const startNext = function () {
-        if (browserUtils.isIE || isMobileSafari) {
+        if (isMobileSafari) {
             removeTestElements();
             window.setTimeout(start, nextTestDelay);
         }
@@ -377,28 +377,28 @@ $(document).ready(function () {
                 equal($select.selectedIndex, 0);
 
                 runPressAutomation('right', function () {
-                    equal($select.selectedIndex, browserUtils.isIE || notChangeInChrome ? 0 : 1);
+                    equal($select.selectedIndex, notChangeInChrome ? 0 : 1);
                     callback();
                 });
             },
 
             pressDownSecondTime: function (callback) {
                 runPressAutomation('right', function () {
-                    equal($select.selectedIndex, browserUtils.isIE || notChangeInChrome ? 0 : 3);
+                    equal($select.selectedIndex, notChangeInChrome ? 0 : 3);
                     callback();
                 });
             },
 
             pressUpFirstTime: function (callback) {
                 runPressAutomation('left', function () {
-                    equal($select.selectedIndex, browserUtils.isIE || notChangeInChrome ? 0 : 1);
+                    equal($select.selectedIndex, notChangeInChrome ? 0 : 1);
                     callback();
                 });
             },
 
             pressUpSecondTime: function () {
                 runPressAutomation('up', function () {
-                    equal($select.selectedIndex, browserUtils.isIE || notChangeInChrome ? 0 : 0);
+                    equal($select.selectedIndex, notChangeInChrome ? 0 : 0);
                     testCallback();
                 });
             },
@@ -439,8 +439,7 @@ $(document).ready(function () {
     };
 
     QUnit.testDone(function () {
-        if (!browserUtils.isIE)
-            removeTestElements();
+        removeTestElements();
 
         handlersLog = [];
     });
@@ -513,7 +512,7 @@ $(document).ready(function () {
 
                     pressRightAction: function (callback) {
                         runPressAutomation('right', function () {
-                            equal(select.selectedIndex, browserUtils.isIE ? 0 : 1);
+                            equal(select.selectedIndex, 1);
 
                             callback();
                         });
@@ -741,8 +740,6 @@ $(document).ready(function () {
             const select = createSelect();
 
             $(select).attr('size', '2');
-            //NOTE: IE11 sets selectedIndex = -1 after setting attribute size != 1
-            select.selectedIndex = 0;
 
             const selectOnFocusPromise = createOnFocusPromise(select);
 
@@ -758,8 +755,6 @@ $(document).ready(function () {
             const select = createSelect();
 
             $(select).attr('size', '2');
-            //NOTE: IE11 sets selectedIndex = -1 after setting attribute size != 1
-            select.selectedIndex = 0;
 
             const selectOnFocusPromise = createOnFocusPromise(select);
 
@@ -775,8 +770,6 @@ $(document).ready(function () {
             const select = createSelect();
 
             $(select).attr('size', '10');
-            //NOTE: IE11 sets selectedIndex = -1 after setting attribute size != 1
-            select.selectedIndex = 0;
 
             const selectOnFocusPromise = createOnFocusPromise(select);
 
@@ -792,8 +785,6 @@ $(document).ready(function () {
             const select = createSelect();
 
             $(select).attr('size', '10');
-            //NOTE: IE11 sets selectedIndex = -1 after setting attribute size != 1
-            select.selectedIndex = 0;
 
             const selectOnFocusPromise = createOnFocusPromise(select);
 
@@ -1122,7 +1113,7 @@ $(document).ready(function () {
             select.selectedIndex = 0;
 
             window.setTimeout(function () {
-                //NOTE: when setting the selected option, IE and Mozilla scroll the select
+                //NOTE: when setting the selected option, Mozilla scroll the select
                 $select.scrollTop(0);
 
                 runClickAutomation(group, {}, function () {
@@ -1148,7 +1139,7 @@ $(document).ready(function () {
             select.selectedIndex = 0;
 
             window.setTimeout(function () {
-                //NOTE: when setting the selected option, IE and Mozilla scroll the select
+                //NOTE: when setting the selected option, Mozilla scroll the select
                 $select.scrollTop(0);
 
                 runClickAutomation(option, {}, function () {
@@ -1174,7 +1165,7 @@ $(document).ready(function () {
             });
             $select.attr('size', '5');
             select.selectedIndex = 0;
-            //NOTE: when setting the selected option, IE and Mozilla scroll the select
+            //NOTE: when setting the selected option, Mozilla scroll the select
             $select.scrollTop(selectElementScroll);
 
             window.setTimeout(function () {
@@ -1239,7 +1230,7 @@ $(document).ready(function () {
             select.selectedIndex = 0;
 
             window.setTimeout(function () {
-                //NOTE: when setting the selected option, IE and Mozilla scroll the select
+                //NOTE: when setting the selected option, Mozilla scroll the select
                 $select.scrollTop(0);
 
                 runClickAutomation($newOption[0], {}, function () {
@@ -1273,7 +1264,7 @@ $(document).ready(function () {
             select.selectedIndex = 0;
 
             window.setTimeout(function () {
-                //NOTE: when setting the selected option, IE and Mozilla scroll the select
+                //NOTE: when setting the selected option, Mozilla scroll the select
                 $select.scrollTop(0);
 
                 runClickAutomation($newOptgroup[0], {}, function () {
@@ -1298,7 +1289,7 @@ $(document).ready(function () {
             select.selectedIndex = 0;
 
             window.setTimeout(function () {
-                //NOTE: when setting the selected option, IE and Mozilla scroll the select
+                //NOTE: when setting the selected option, Mozilla scroll the select
                 $select.scrollTop(0);
 
                 runClickAutomation($newOption[0], {}, function () {
@@ -1459,8 +1450,6 @@ $(document).ready(function () {
                 equal(select.selectedIndex, 2);
                 if (browserUtils.isFirefox)
                     equal(handlersLog.join(), 'select mousedown,select mouseup,select click,option mousedown,option mouseup,select input,select change,option click');
-                else if (browserUtils.isIE)
-                    equal(handlersLog.join(), 'select mousedown,select mouseup,select click,select mousedown,select mouseup,select change,option click');
                 else if (isMobileBrowser)
                     equal(handlersLog.join(), 'select mousedown,select mouseup,select click,select input,select change');
                 else
@@ -1489,8 +1478,6 @@ $(document).ready(function () {
 
                         if (browserUtils.isFirefox)
                             equal(handlersLog.join(), 'select mousedown,select mouseup,select click,option mousedown,option mouseup,select input,select change,option click,select mousedown,select mouseup,select click,option mousedown,option mouseup,option click');
-                        else if (browserUtils.isIE)
-                            equal(handlersLog.join(), 'select mousedown,select mouseup,select click,select mousedown,select mouseup,select change,option click,select mousedown,select mouseup,select click,select mousedown,select mouseup,option click');
                         else if (isMobileBrowser)
                             equal(handlersLog.join(), 'select mousedown,select mouseup,select click,select input,select change,select mousedown,select mouseup,select click');
                         else
@@ -1543,9 +1530,7 @@ $(document).ready(function () {
             'Click on option': function () {
                 runClickAutomation($option[0], {}, function () {
                     equal(select.selectedIndex, 2);
-                    if (browserUtils.isIE)
-                        equal(handlersLog.join(), 'select mousedown,select mouseup,select change,select click');
-                    else if (isMobileBrowser)
+                    if (isMobileBrowser)
                         equal(handlersLog.join(), 'select mousedown,select mouseup,select click,select input,select change');
                     else
                         equal(handlersLog.join(), 'option mousedown,option mouseup,select input,select change,option click');
@@ -1588,9 +1573,7 @@ $(document).ready(function () {
             'Click on option second time': function () {
                 runClickAutomation($option[0], {}, function () {
                     equal(select.selectedIndex, 2);
-                    if (browserUtils.isIE)
-                        equal(handlersLog.join(), 'select mousedown,select mouseup,select change,select click,select mousedown,select mouseup,select click');
-                    else if (isMobileBrowser)
+                    if (isMobileBrowser)
                         equal(handlersLog.join(), 'select mousedown,select mouseup,select click,select input,select change,select mousedown,select mouseup,select click');
                     else
                         equal(handlersLog.join(), 'option mousedown,option mouseup,select input,select change,option click,option mousedown,option mouseup,option click');
@@ -1611,20 +1594,6 @@ $(document).ready(function () {
         runClickAutomation(select, {}, function () {
             equal(handlersLog.join(), 'select mousedown,select mouseup,select click');
             startNext();
-        });
-    });
-
-    asyncTest('GH234 - Value of a <select> element must be updated before emitting "change" event in IE and Edge', function () {
-        const select = createSelect();
-
-        select.addEventListener('change', function () {
-            equal(select.value, 'three');
-            startNext();
-        });
-
-        runClickAutomation(select, {}, function () {
-            runClickAutomation(select.options[2], {}, function () {
-            });
         });
     });
 });

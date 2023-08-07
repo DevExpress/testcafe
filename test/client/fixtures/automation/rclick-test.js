@@ -31,12 +31,7 @@ $(document).ready(function () {
     };
 
     const startNext = function () {
-        if (browserUtils.isIE) {
-            removeTestElements();
-            window.setTimeout(start, 30);
-        }
-        else
-            start();
+        start();
     };
 
     const removeTestElements = function () {
@@ -45,8 +40,7 @@ $(document).ready(function () {
 
     //tests
     QUnit.testDone(function () {
-        if (!browserUtils.isIE)
-            removeTestElements();
+        removeTestElements();
     });
 
     module('dom events tests');
@@ -143,14 +137,8 @@ $(document).ready(function () {
                 equal(e.buttons, 0);
         };
 
-        if (browserUtils.isIE && browserUtils.version > 11) {
-            $el[0].onpointerdown = pointerHandler;
-            $el[0].onpointerup   = pointerHandler;
-        }
-        else {
-            $el[0].onmspointerdown = pointerHandler;
-            $el[0].onmspointerup   = pointerHandler;
-        }
+        $el[0].onmspointerdown = pointerHandler;
+        $el[0].onmspointerup   = pointerHandler;
 
         const rclick = new RClickAutomation($el[0], new ClickOptions({ offsetX: 5, offsetY: 5 }));
 
@@ -159,9 +147,7 @@ $(document).ready(function () {
             .then(function () {
                 ok(mousedownRaised && mousedownRaised && contextmenu, 'mouse events were raised');
 
-                if (browserUtils.isIE)
-                    expect(14);
-                else if (browserUtils.isSafari)
+                if (browserUtils.isSafari)
                     expect(7);
                 else
                     expect(10);
