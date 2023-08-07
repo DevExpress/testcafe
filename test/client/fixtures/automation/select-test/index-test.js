@@ -37,7 +37,7 @@ $(document).ready(function () {
 
     const startSelectEvent       = featureDetection.isTouchDevice ? 'ontouchstart' : 'onmousedown';
     const endSelectEvent         = featureDetection.isTouchDevice ? 'ontouchend' : 'onmouseup';
-    const checkScrollAfterSelect = !(browserUtils.isFirefox || browserUtils.isIE);
+    const checkScrollAfterSelect = !browserUtils.isFirefox;
 
     let mousedownOnInput    = false;
     let mouseupOnInput      = false;
@@ -165,11 +165,6 @@ $(document).ready(function () {
     };
 
     $('body').css('height', '1500px');
-
-    //NOTE: problem with window.top bodyMargin in IE9 if test 'runAll'
-    //because we can't determine that element is in qunit test iframe
-    if (browserUtils.isIE9)
-        $(window.top.document).find('body').css('marginTop', '0px');
 
     //tests
     QUnit.testStart(function () {

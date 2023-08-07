@@ -26,7 +26,7 @@ const parseKeySequence = testCafeCore.parseKeySequence;
 const getOffsetOptions = testCafeAutomation.getOffsetOptions;
 
 const isMobileSafari = browserUtils.isSafari && featureDetection.isTouchDevice;
-const nextTestDelay  = browserUtils.isIE ? 30 : 200;
+const nextTestDelay  = 200;
 
 $(document).ready(function () {
     //consts
@@ -42,10 +42,6 @@ $(document).ready(function () {
     };
 
     $('body').css('height', 1500);
-    //NOTE: problem with window.top bodyMargin in IE9 if test 'runAll'
-    //because we can't determine that element is in qunit test iframe
-    if (browserUtils.isIE9)
-        $(window.top.document).find('body').css('marginTop', '0px');
 
     const DRAGGABLE_BIND_FLAG      = 'tc-dbf-c56a4d91';
     const CURSOR_POSITION_PROPERTY = 'tc-cpp-ac4a65d4';
@@ -166,7 +162,7 @@ $(document).ready(function () {
     };
 
     const startNext = function (ms) {
-        if (browserUtils.isIE || isMobileSafari) {
+        if (isMobileSafari) {
             removeTestElements();
             window.setTimeout(start, ms || nextTestDelay);
         }
@@ -255,8 +251,7 @@ $(document).ready(function () {
     };
 
     QUnit.testDone(function () {
-        if (!browserUtils.isIE)
-            removeTestElements();
+        removeTestElements();
     });
 
     //tests
@@ -634,11 +629,11 @@ $(document).ready(function () {
 
             runPressAutomation(keys, function () {
                 equal(document.activeElement, input);
-                equal(changeCount, browserUtils.isIE ? 0 : 1);
+                equal(changeCount, 1);
 
                 runPressAutomation(keys, function () {
                     equal(document.activeElement, input);
-                    equal(changeCount, browserUtils.isIE ? 0 : 1);
+                    equal(changeCount, 1);
                     start();
                 });
             });

@@ -1,5 +1,4 @@
 const hammerhead       = window.getTestCafeModule('hammerhead');
-const browserUtils     = hammerhead.utils.browser;
 const featureDetection = hammerhead.utils.featureDetection;
 
 const testCafeCore  = window.getTestCafeModule('testCafeCore');
@@ -165,12 +164,7 @@ $(document).ready(function () {
     };
 
     const startNext = function () {
-        if (browserUtils.isIE) {
-            removeTestElements();
-            window.setTimeout(start, 30);
-        }
-        else
-            start();
+        start();
     };
 
     const removeTestElements = function () {
@@ -187,8 +181,7 @@ $(document).ready(function () {
     };
 
     QUnit.testDone(function () {
-        if (!browserUtils.isIE)
-            removeTestElements();
+        removeTestElements();
     });
 
     //tests

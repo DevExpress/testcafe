@@ -118,7 +118,7 @@ $(document).ready(function () {
 
                 equal(e.button, 0);
 
-                if (browserUtils.isIE || browserUtils.isFirefox)
+                if (browserUtils.isFirefox)
                     equal(e.buttons, 0);
             });
 
@@ -128,7 +128,7 @@ $(document).ready(function () {
 
                 equal(e.button, 0);
 
-                if (browserUtils.isIE || browserUtils.isFirefox)
+                if (browserUtils.isFirefox)
                     equal(e.buttons, 0);
             });
 
@@ -138,14 +138,8 @@ $(document).ready(function () {
                 equal(e.buttons, 0);
             };
 
-            if (browserUtils.isIE && browserUtils.version > 11) {
-                $el[0].onpointermove = pointerHandler;
-                $el[0].onpointerover = pointerHandler;
-            }
-            else {
-                $el[0].onmspointermove = pointerHandler;
-                $el[0].onmspointerover = pointerHandler;
-            }
+            $el[0].onmspointermove = pointerHandler;
+            $el[0].onmspointerover = pointerHandler;
 
             const hover = new HoverAutomation($el[0], new MouseOptions({ offsetX: 5, offsetY: 5 }));
 
@@ -157,10 +151,8 @@ $(document).ready(function () {
                     equal(mouseoverWhichParam, browserUtils.isWebKit ? 0 : 1);
                     equal(mouseenterWhichParam, browserUtils.isWebKit ? 0 : 1);
 
-                    if (browserUtils.isFirefox || browserUtils.isIE9)
+                    if (browserUtils.isFirefox)
                         expect(8);
-                    else if (browserUtils.isIE)
-                        expect(17);
                     else
                         expect(6);
                     start();
