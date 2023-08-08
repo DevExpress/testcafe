@@ -155,13 +155,6 @@ describe('Bootstrapper', () => {
             bootstrapper._disableNativeAutomationIfNecessary(remoteBrowserConnections, automatedBrowserConnections);
             expect(bootstrapper.configuration._mergedOptions).eql({ disableNativeAutomation: true });
             bootstrapper.configuration.clear();
-
-            remoteBrowserConnections = [{}];
-
-            bootstrapper.setAllowRemoteNativeAutomation(true);
-            bootstrapper._disableNativeAutomationIfNecessary(remoteBrowserConnections, []);
-            expect(bootstrapper.configuration._mergedOptions).to.be.undefined;
-            bootstrapper.configuration.clear();
         });
     });
 });

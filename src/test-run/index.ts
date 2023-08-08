@@ -458,14 +458,18 @@ export default class TestRun extends AsyncEventEmitter {
 
     private _addInjectables (): void {
         this._addClientScriptContentWarningsIfNecessary();
-        this.injectable.scripts.push(...INJECTABLES.SCRIPTS);
+
+        if (!this.isNativeAutomation) {
+            this.injectable.scripts.push(...INJECTABLES.SCRIPTS);
+            this.injectable.styles.push(INJECTABLES.TESTCAFE_UI_STYLES);
+        }
+
         this.injectable.userScripts.push(...this.test.clientScripts.map(script => {
             return {
                 url:  (script as ClientScript).getResultUrl(this.id),
                 page: script.page as RequestFilterRule,
             };
         }));
-        this.injectable.styles.push(INJECTABLES.TESTCAFE_UI_STYLES);
     }
 
     public get id (): string {
