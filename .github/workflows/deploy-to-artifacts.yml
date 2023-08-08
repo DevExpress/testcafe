@@ -11,10 +11,6 @@ on:
         description: 'The merge commit SHA'
       base_sha:
         description: 'The base commit SHA'
-      debug:
-        required: false
-        type: string
-        default: 'testcafe*'
 
 jobs:
   build:
@@ -109,12 +105,11 @@ jobs:
           github-token: ${{secrets.ACTIVE_TOKEN}}
           script: |
             function getInputs () {
-              const { sha, merged_sha, debug } = context.payload.inputs;
+              const { sha, merged_sha } = context.payload.inputs;
 
               return {
                 ...merged_sha ? { merged_sha } : {},
                 sha,
-                debug,
                 deploy_run_id: '${{github.run_id}}'
               }
             }
