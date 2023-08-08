@@ -12,7 +12,6 @@ import { addAPI, addCustomMethods } from './add-api';
 import createSnapshotMethods from './create-snapshot-methods';
 import prepareApiFnArgs from './prepare-api-args';
 import returnSinglePropMode from '../return-single-prop-mode';
-import escapeUnsafeChars from '../../utils/escape-unsafe-chars';
 
 export default class SelectorBuilder extends ClientFunctionBuilder {
     constructor (fn, options, callsiteNames, callsite) {
@@ -61,7 +60,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
             return this.options.sourceSelectorBuilder.compiledFnCode;
 
         const code = typeof this.fn === 'string' ?
-            `(function(){return document.querySelectorAll(${escapeUnsafeChars(JSON.stringify(this.fn))});});` :
+            `(function(){return document.querySelectorAll(${JSON.stringify(this.fn)});});` :
             super._getCompiledFnCode();
 
         if (code) {
