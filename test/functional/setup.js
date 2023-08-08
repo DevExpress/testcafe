@@ -17,6 +17,8 @@ const { findWindow, errors }     = require('testcafe-browser-tools');
 const authenticationHelper       = require('../../lib/cli/authentication-helper');
 const isCI                       = require('is-ci');
 
+const setNativeAutomationForRemoteConnection = require('./utils/set-native-automation-for-remote-connection');
+
 let testCafe     = null;
 let browsersInfo = null;
 
@@ -330,6 +332,9 @@ before(function () {
                     runner.reporter(customReporters);
                 else
                     runner.reporter('json', stream);
+
+                if (config.nativeAutomation)
+                    setNativeAutomationForRemoteConnection(runner);
 
                 return runner
                     .useProxy(proxy, proxyBypass)
