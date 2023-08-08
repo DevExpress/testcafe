@@ -96,7 +96,7 @@ export function markup (err, msgMarkup, errCallsite = '') {
             msgMarkup += `\n\n${callsiteMarkup}`;
     }
 
-    return removePreventModuleCachingSuffix(msgMarkup.replace('\t', '&nbsp;'.repeat(4)));
+    return removePreventModuleCachingSuffix(msgMarkup.replace(/\t/g, '&nbsp;'.repeat(4)));
 }
 
 export function renderDiff (diff) {
