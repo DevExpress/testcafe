@@ -142,7 +142,7 @@ jobs:
           local-logging-level: all-logs
           local-identifier: random
 
-      - run: ${{ inputs.test-script }} 2> testcafe-debug-log.log
+      - run: ${{ inputs.test-script }} 2> testcafe-debug-log-${{ matrix.test-group }}.log
         timeout-minutes: ${{ inputs.timeout }}
 
       - name: 'Stop BrowserStackLocal'
