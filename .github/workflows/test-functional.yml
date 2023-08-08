@@ -152,6 +152,7 @@ jobs:
           local-testing: stop
 
       - name: Save debug log
+        if: always()
         uses: actions/upload-artifact@v3
         with:
             name: testcafe-debug-log
