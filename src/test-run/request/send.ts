@@ -48,7 +48,7 @@ export async function sendRequestThroughAPI (testRun: TestRun, options: External
     const data = await send(requestOptions, options.rawResponse);
 
     if (typeof data === 'string')
-        throw new RequestRuntimeError(callsite, RUNTIME_ERRORS.requestRuntimeError, data.replace(/<.*?>/g, ''));
+        throw new RequestRuntimeError(callsite, RUNTIME_ERRORS.requestRuntimeError, data.replace(/<.*?(?:>|$)/g, ''));
 
     const setCookie  = (data.headers as IncomingHttpHeaders)[HTTP_HEADERS.setCookie];
     const sameOrigin = !currentPageUrl.host || sameOriginCheck(currentPageUrl.href, requestOptions.url);
