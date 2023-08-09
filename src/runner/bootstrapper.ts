@@ -189,7 +189,7 @@ export default class Bootstrapper {
     private _disableNativeAutomationIfNecessary (remotes: BrowserConnection[], automated: BrowserInfo[]): void {
         // NOTE: Hack for TestCafe Studio. By default, we don't support remotes browsers automation
         // But Studio can initialize remote connection(for recorder) with enabled automation.
-        const containsNotAutomatedRemotes = remotes.some(remote => !remote.getNativeAutomation());
+        const containsNotAutomatedRemotes = remotes.some(remote => !remote.isNativeAutomationEnabled());
 
         if (remotes.length && containsNotAutomatedRemotes || this._hasNotSupportedBrowserInNativeAutomation(automated))
             this.configuration.mergeOptions({ disableNativeAutomation: true });
