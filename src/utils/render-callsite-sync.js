@@ -1,4 +1,4 @@
-import { renderers as renderersRecord } from 'callsite-record';
+import { renderers as renderersRecord } from '@devexpress/callsite-record';
 import { renderers as renderersCommand } from './raw-command-callsite-record';
 
 

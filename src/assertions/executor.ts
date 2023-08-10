@@ -5,7 +5,7 @@ import { ExternalAssertionLibraryError, AssertionUnawaitedPromiseError } from '.
 import ReExecutablePromise from '../utils/re-executable-promise';
 import getFn from './get-fn';
 import { AssertionCommand } from '../test-run/commands/assertion';
-import { CallsiteRecord } from 'callsite-record';
+import { CallsiteRecord } from '@devexpress/callsite-record';
 
 const ASSERTION_DELAY = 200;
 

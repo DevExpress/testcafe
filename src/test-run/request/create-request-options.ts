@@ -25,7 +25,7 @@ import HTTP_HEADERS from '../../utils/http-headers';
 import { RUNTIME_ERRORS } from '../../errors/types';
 import { APIError } from '../../errors/runtime';
 import { GetProxyUrlCommand } from '../commands/actions';
-import { CallsiteRecord } from 'callsite-record';
+import { CallsiteRecord } from '@devexpress/callsite-record';
 
 const DEFAULT_ACCEPT            = { [HTTP_HEADERS.accept]: `${CONTENT_TYPES.json}, ${CONTENT_TYPES.textPlain}, ${CONTENT_TYPES.all}` };
 const METHODS_WITH_CONTENT_TYPE = ['POST', 'PUT', 'PATCH'];

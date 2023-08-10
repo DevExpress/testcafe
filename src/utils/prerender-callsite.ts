@@ -1,4 +1,4 @@
-import { CallsiteRecord } from 'callsite-record';
+import { CallsiteRecord } from '@devexpress/callsite-record';
 import renderCallsiteSync from './render-callsite-sync';
 import createStackFilter from '../errors/create-stack-filter';
 import { RawCommandCallsiteRecord } from './raw-command-callsite-record';
