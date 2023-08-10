@@ -56,7 +56,14 @@ export default class DevToolsTestFileCompiler extends RawTestFileCompiler {
     }
 
     _preProcess (code: string, filename: string): string | null {
-        const parsedCode = JSON.parse(code);
+        let parsedCode = null;
+
+        try {
+            parsedCode = JSON.parse(code);
+        }
+        catch (err) {
+            return null;
+        }
 
         this._fixture.name = parsedCode.title;
         this._test.name    = parsedCode.title;
