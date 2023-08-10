@@ -73,7 +73,7 @@ jobs:
       RETRY_FAILED_TESTS: ${{ inputs.retry_failed_tests }}
       TEST_GROUPS_COUNT: ${{ inputs.matrix-jobs-count }}
       TEST_GROUP_NUMBER: ${{ matrix.test-group }}
-      DEBUG: ${{ github.event.inputs.debug }}
+      DEBUG: 'testcafe*'
       DISPLAY: ${{ inputs.display }}
     outputs:
       # Matrix jobs cannot collect outputs about each of them automatically. It rewrites the same outputs. Improve it once it will be possible.
@@ -142,7 +142,7 @@ jobs:
           local-logging-level: all-logs
           local-identifier: random
 
-      - run: ${{ inputs.test-script }} 2> testcafe-debug-log.log
+      - run: ${{ inputs.test-script }} 2> testcafe-debug-log-${{ matrix.test-group }}.log
         timeout-minutes: ${{ inputs.timeout }}
 
       - name: 'Stop BrowserStackLocal'
@@ -152,11 +152,11 @@ jobs:
           local-testing: stop
 
       - name: Save debug log
+        if: always()
         uses: actions/upload-artifact@v3
         with:
             name: testcafe-debug-log
             path: testcafe-debug-log-${{ matrix.test-group }}.log
-        if: ${{ always() && github.event.inputs.debug != '' }}
         
       - name: Save result
         id: save-result
