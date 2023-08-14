@@ -12,8 +12,9 @@ test.page `http://localhost:3000/fixtures/api/es-next/browser-info/pages/index.h
     const parsedUserAgent = parseUserAgent(await userAgent(), osInfo);
     const currentBrowser  = config.currentEnvironment.browsers.find(browser => browser.userAgent === 'headlesschrome');
     const expected        = Object.assign({}, parsedUserAgent, {
-        alias:    currentBrowser.browserName,
-        headless: true,
+        alias:            currentBrowser.browserName,
+        headless:         true,
+        nativeAutomation: process.env.NATIVE_AUTOMATION === 'true',
     });
     const browserInfo     = t.browser;
 

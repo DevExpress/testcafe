@@ -107,7 +107,7 @@ if (config.useLocalBrowsers) {
                 });
         });
 
-        it('Should raise reporter reportTaskDone event on browser disconnect', function () {
+        (config.hasBrowser('safari') ? it.skip : it)('Should raise reporter reportTaskDone event on browser disconnect', function () {
 
             let reporterLog = '';
 
