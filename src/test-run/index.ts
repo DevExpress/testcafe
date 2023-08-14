@@ -281,7 +281,7 @@ export default class TestRun extends AsyncEventEmitter {
         this.test              = test;
         this.browserConnection = browserConnection;
         this.unstable          = false;
-        this.browser           = getBrowser(browserConnection);
+        this.browser           = getBrowser(browserConnection, nativeAutomation);
 
         this.phase = TestRunPhase.initial;
 

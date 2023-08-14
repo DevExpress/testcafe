@@ -142,7 +142,7 @@
     "source-map-support": "^0.5.16",
     "strip-bom": "^2.0.0",
     "testcafe-browser-tools": "2.0.26",
-    "testcafe-hammerhead": "31.4.12",
+    "testcafe-hammerhead": "31.4.15",
     "testcafe-legacy-api": "5.1.6",
     "testcafe-reporter-json": "^2.1.0",
     "testcafe-reporter-list": "^2.2.0",
@@ -160,7 +160,7 @@
   },
   "devDependencies": {
     "@ffmpeg-installer/ffmpeg": "^1.0.17",
-    "@ffprobe-installer/ffprobe": "^1.4.1",
+    "@ffprobe-installer/ffprobe": "^2.1.1",
     "@rollup/plugin-alias": "^3.1.1",
     "@rollup/plugin-commonjs": "^11.0.2",
     "@rollup/plugin-inject": "^4.0.2",
