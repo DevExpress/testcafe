@@ -5,7 +5,7 @@ import { createRequestOptions } from './create-request-options';
 import { processResponseData } from './process-response-data';
 import HTTP_HEADERS from '../../utils/http-headers';
 import { RequestRuntimeError } from '../../errors/runtime';
-import { CallsiteRecord } from 'callsite-record';
+import { CallsiteRecord } from '@devexpress/callsite-record';
 import { RUNTIME_ERRORS } from '../../errors/types';
 
 import {

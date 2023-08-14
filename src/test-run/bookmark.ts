@@ -17,7 +17,7 @@ import Role, { RedirectUrl } from '../role/role';
 import { DEFAULT_SPEED_VALUE } from '../configuration/default-values';
 import BrowserConsoleMessages from './browser-console-messages';
 import { CommandBase } from './commands/base';
-import { CallsiteRecord } from 'callsite-record';
+import { CallsiteRecord } from '@devexpress/callsite-record';
 
 export default class TestRunBookmark {
     private readonly testRun: TestRun;

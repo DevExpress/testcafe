@@ -19,7 +19,7 @@ import {
 } from '../../test-run/commands/assertion';
 import { AssertionWithoutMethodCallError } from '../../errors/test-run';
 import TestController from './index';
-import { CallsiteRecord } from 'callsite-record';
+import { CallsiteRecord } from '@devexpress/callsite-record';
 import { AssertionOptions } from '../../test-run/commands/options';
 import { isClientFunction, isSelector } from '../../client-functions/types';
 import addWarning from '../../notifications/add-rendered-warning';

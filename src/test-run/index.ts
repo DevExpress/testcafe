@@ -94,7 +94,7 @@ import DriverStatus from '../client/driver/status';
 import { CommandBase, ActionCommandBase } from './commands/base.js';
 import Role from '../role/role';
 import { TestRunErrorBase } from '../shared/errors';
-import { CallsiteRecord } from 'callsite-record';
+import { CallsiteRecord } from '@devexpress/callsite-record';
 import EventEmitter from 'events';
 import getAssertionTimeout from '../utils/get-options/get-assertion-timeout';
 import { AssertionCommand } from './commands/assertion';
