@@ -388,37 +388,34 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
             patterns: ALL_REQUESTS_DATA,
         });
 
-        // NOTE: these issues exist only in non-headless mode
-        if (!this.options.isHeadless) {
-            await this._client.Target.setAutoAttach({
-                autoAttach:             true,
-                waitForDebuggerOnStart: true,
-                flatten:                true,
-            });
+        await this._client.Target.setAutoAttach({
+            autoAttach:             true,
+            waitForDebuggerOnStart: true,
+            flatten:                true,
+        });
 
-            // NOTE: We need to enable the Fetch domain for iframe targets
-            // to intercept some requests. We need to use the `sessionId` option
-            // in continueRequest/continueResponse/fulfillRequest methods
-            await this._client.Target.on('attachedToTarget', async event => {
-                const isIFrame = event.targetInfo.type === TARGET_INFO_TYPE.iframe;
-                const isWorker = event.targetInfo.type === TARGET_INFO_TYPE.worker;
+        // NOTE: We need to enable the Fetch domain for iframe targets
+        // to intercept some requests. We need to use the `sessionId` option
+        // in continueRequest/continueResponse/fulfillRequest methods
+        await this._client.Target.on('attachedToTarget', async event => {
+            const isIFrame = event.targetInfo.type === TARGET_INFO_TYPE.iframe;
+            const isWorker = event.targetInfo.type === TARGET_INFO_TYPE.worker;
 
-                if (!isIFrame && !isWorker)
-                    return;
+            if (!isIFrame && !isWorker)
+                return;
 
-                await connectionResetGuard(async () => {
+            await connectionResetGuard(async () => {
+                // @ts-ignore
+                await this._client.Runtime.runIfWaitingForDebugger(event.sessionId);
+
+                if (isIFrame) {
                     // @ts-ignore
-                    await this._client.Runtime.runIfWaitingForDebugger(event.sessionId);
-
-                    if (isIFrame) {
-                        // @ts-ignore
-                        await this._client.Fetch.enable({ patterns: ALL_REQUESTS_DATA }, event.sessionId);
-                    }
-                }, err => {
-                    requestPipelineLogger(`Unhandled error %s during processing %s`, err, event);
-                });
+                    await this._client.Fetch.enable({ patterns: ALL_REQUESTS_DATA }, event.sessionId);
+                }
+            }, err => {
+                requestPipelineLogger(`Unhandled error %s during processing %s`, err, event);
             });
-        }
+        });
 
         // @ts-ignore
         this._client.Fetch.on('requestPaused', async (event: RequestPausedEvent, sessionId: SessionId) => {
