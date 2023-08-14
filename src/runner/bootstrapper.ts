@@ -187,8 +187,8 @@ export default class Bootstrapper {
     }
 
     private _disableNativeAutomationIfNecessary (remotes: BrowserConnection[], automated: BrowserInfo[]): void {
-        // NOTE: Hack for TestCafe Studio. By default, we don't support remotes browsers automation
-        // But Studio can initialize remote connection(for recorder) with enabled automation.
+        // NOTE: CDP API allows connecting only for the local browser. So, the 'remote' browser cannot be run in the 'nativeAutomation' mode.
+        // However, sometimes in tests or TestCafe Studio Recorder, we use the 'remote' browser connection as a local one.
         const containsNotAutomatedRemotes = remotes.some(remote => !remote.isNativeAutomationEnabled());
 
         if (remotes.length && containsNotAutomatedRemotes || this._hasNotSupportedBrowserInNativeAutomation(automated))
