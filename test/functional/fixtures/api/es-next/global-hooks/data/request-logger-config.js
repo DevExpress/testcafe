@@ -8,6 +8,7 @@ const url    = 'http://localhost:3000/fixtures/api/es-next/global-hooks/pages/in
 const logger = new RequestLogger(url);
 
 module.exports = {
+    ...config.currentEnvironment,
     hostname:         config.testCafe.hostname,
     port1:            1335,
     port2:            1336,
@@ -25,6 +26,5 @@ module.exports = {
         logger,
         url,
     },
-    ...config.currentEnvironment,
     browsers: 'chrome:headless',
 };
