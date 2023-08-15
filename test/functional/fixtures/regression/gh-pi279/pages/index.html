@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<a href="target.html" target="_blank">Open Link</a>
+<button>click me</button>
+<script>
+    document.querySelector('button').addEventListener('click', function () {
+        window.open('./target.html');
+    });
+</script>
+</body>
+</html>
