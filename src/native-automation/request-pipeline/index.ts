@@ -152,9 +152,12 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
             || !NativeAutomationRequestPipeline._isPage(fulfillInfo.responseHeaders))
             await this._resourceInjector.processNonProxiedContent(fulfillInfo, this._client, sessionId);
         else {
+            const userScripts = await this._getUserScripts(event);
+
             await this._resourceInjector.processHTMLPageContent(fulfillInfo, {
                 isIframe:       false,
                 contextStorage: this.contextStorage,
+                userScripts,
             }, this._client, sessionId);
         }
 
