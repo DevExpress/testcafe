@@ -260,5 +260,10 @@ module.exports = class MarionetteClient {
     async quit () {
         await this._request({ command: COMMANDS.quit });
     }
+
+    // NOTE: the method is required for the following test:
+    // test/functional/fixtures/multiple-windows/testcafe-fixtures/i6037.js
+    async closeBrowserChildWindow () {
+    }
 };
 
