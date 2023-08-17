@@ -16,4 +16,5 @@ jobs:
     uses: ./.github/workflows/test-client.yml
     with:
       test-script: 'npx gulp test-client-travis-run --steps-as-tasks'
+      browsers: '["microsoftedge", "chrome", "firefox", "safari"]'
     secrets: inherit

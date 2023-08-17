@@ -330,7 +330,12 @@ gulp.step('test-client-travis-run', () => {
 
     const saucelabsSettings = CLIENT_TESTS_SAUCELABS_SETTINGS;
 
-    saucelabsSettings.browsers = CLIENT_TESTS_DESKTOP_BROWSERS;
+    saucelabsSettings.browsers = CLIENT_TESTS_DESKTOP_BROWSERS.filter(browserInfo => {
+        if (!process.env.CLIENT_TESTS_CURRENT_BROWSER)
+            return true;
+
+        return browserInfo.browserName.toLowerCase() === process.env.CLIENT_TESTS_CURRENT_BROWSER;
+    });
 
     return testClient('test/client/fixtures/**/*-test.js', CLIENT_TESTS_SETTINGS, saucelabsSettings);
 });
@@ -349,7 +354,12 @@ gulp.step('test-client-travis-mobile-run', () => {
 
     const saucelabsSettings = CLIENT_TESTS_SAUCELABS_SETTINGS;
 
-    saucelabsSettings.browsers = CLIENT_TESTS_MOBILE_BROWSERS;
+    saucelabsSettings.browsers = CLIENT_TESTS_MOBILE_BROWSERS.filter(browserInfo => {
+        if (!process.env.CLIENT_TESTS_CURRENT_BROWSER)
+            return true;
+
+        return browserInfo.browserName.toLowerCase() === process.env.CLIENT_TESTS_CURRENT_BROWSER;
+    });
 
     return testClient('test/client/fixtures/**/*-test.js', CLIENT_TESTS_SETTINGS, saucelabsSettings);
 });

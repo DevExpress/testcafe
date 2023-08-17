@@ -6,13 +6,23 @@ on:
       test-script:
         required: true
         type: string
+      browsers:
+        required: true
+        type: string
 jobs:
   test:
     runs-on: ubuntu-latest
+    continue-on-error: true
+    strategy:
+      matrix:
+        browser: ${{ fromJSON(inputs.browsers) }}
     environment: test-client
     env:
       SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
       SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
+      CLIENT_TESTS_CURRENT_BROWSER: ${{ matrix.browser }}
+    outputs:
+      has-error: "${{ steps.has-error.outputs.value }}"
     steps:
       - uses: DevExpress/testcafe-build-system/actions/set-status@main
         with:
@@ -45,8 +55,21 @@ jobs:
       - run: ${{ inputs.test-script }}
         timeout-minutes: 60
 
+      - name: Has error
+        id: has-error
+        if: failure() || cancelled()
+        shell: bash
+        run: echo "value=true" >> "$GITHUB_OUTPUT"
+    
+  set-result-status:
+    if: always()
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
       - uses: DevExpress/testcafe-build-system/actions/set-status@main
-        if: always()
         with:
-          status: ${{ fromJSON('["failure", "success"]')[job.status == 'success'] }}
-          
+          status: ${{ needs.test.outputs.has-error && 'failure' || 'success' }}
+
+      - name: Exit with error
+        if: ${{ needs.test.outputs.has-error }}
+        run: exit 1
