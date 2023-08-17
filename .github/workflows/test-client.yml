@@ -12,6 +12,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    name: ${{ matrix.browser }}
     continue-on-error: true
     strategy:
       matrix:
