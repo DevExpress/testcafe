@@ -82,6 +82,10 @@ interface Browser {
      * Formatted string with the browser's and operating system's name and version.
      */
     prettyUserAgent: string;
+    /**
+     * Indicates whether TestCafe uses native automation.
+     */
+    nativeAutomation: boolean;
 }
 
 type WindowDescriptor = unknown;
