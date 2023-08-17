@@ -2,7 +2,7 @@
   "name": "testcafe",
   "description": "Automated browser testing for the modern web development stack.",
   "license": "MIT",
-  "version": "3.2.0-rc.2",
+  "version": "3.2.0",
   "author": {
     "name": "Developer Express Inc.",
     "url": "https://www.devexpress.com/"
