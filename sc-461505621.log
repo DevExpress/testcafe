@@ -1,0 +1,736 @@
+2023-08-17 15:00:21.619 [23360] Sauce Connect 4.6.3, build 5283 bb786fc 
+2023-08-17 15:00:21.623 [23360] Trying to autodetect proxy settings
+2023-08-17 15:00:21.637 [23360] Starting up; pid 23360
+2023-08-17 15:00:21.637 [23360] Command line arguments: C:\Users\popov.alexey\Desktop\web-developer\Frontend\projects\testcafe\node_modules\@belym.a.2105\sauce-tunnel\vendor\win32\bin\sc.exe -u testcafebot -k **** -i 461505621 
+2023-08-17 15:00:21.637 [23360] Log file: C:\Users\popov.alexey\Desktop\web-developer\Frontend\projects\testcafe\sc-461505621.log
+2023-08-17 15:00:21.637 [23360] Pid file: C:\Users\popov.alexey\AppData\Roaming/sc_client-461505621.pid
+2023-08-17 15:00:21.637 [23360] Timezone: EEST GMT offset: 3h
+2023-08-17 15:00:21.638 [23360] Using no proxy for connecting to Sauce Labs REST API.
+2023-08-17 15:00:22.134 [23360] ***********************************************************
+2023-08-17 15:00:22.134 [23360] WARNING: You are using Sauce Connect client version (4.6.3) that will reach its end of life on Nov 30, 2022. Please download the latest version from https://docs.saucelabs.com/secure-connections/sauce-connect/installation.
+2023-08-17 15:00:22.135 [23360] ***********************************************************
+2023-08-17 15:00:22.135 [23360] PROXY *** scproxy started ***
+2023-08-17 15:00:22.166 [23360] PROXY found DNS server 172.20.0.1
+2023-08-17 15:00:22.167 [23360] PROXY found DNS server 172.20.2.1
+2023-08-17 15:00:22.186 [23360] Started scproxy on port 56484.
+2023-08-17 15:00:22.186 [23360] Please wait for 'you may start your tests' to start your tests.
+2023-08-17 15:00:33.206 [23360] Secure remote tunnel VM provisioned.
+2023-08-17 15:00:33.206 [23360] Tunnel ID: eb2461a25fb741269a1d94a5fef660c7
+2023-08-17 15:00:33.904 [23360] Starting OCSP certificate check.
+2023-08-17 15:00:33.905 [23360] Using no proxy for connecting to http://ocsp.digicert.com.
+2023-08-17 15:00:34.050 [23360] Using no proxy for connecting to http://ocsp.digicert.com.
+2023-08-17 15:00:34.174 [23360] Reached a trusted CA. Certificate chain is verified.
+2023-08-17 15:00:34.175 [23360] Using no proxy for connecting to tunnel VM.
+2023-08-17 15:00:34.176 [23360] Selenium listener disabled.
+2023-08-17 15:00:34.176 [23360] Establishing secure TLS connection to tunnel...
+2023-08-17 15:00:34.226 [23360] [EVDNS] Added nameserver 172.20.0.1:53 as 36C11A10
+2023-08-17 15:00:34.226 [23360] [EVDNS] Added nameserver 172.20.2.1:53 as 36C12F50
+2023-08-17 15:00:34.227 [23360] MAIN connecting to maki3266.miso.saucelabs.com - maki3266.miso.saucelabs.com:443
+2023-08-17 15:00:34.505 [23360] MAIN connecting to KGP server maki3266.miso.saucelabs.com took 275 ms
+2023-08-17 15:00:35.846 [23360] PROXY 127.0.0.1:56535 (127.0.0.1) -> HEAD https://saucelabs.com/ (293 bytes)
+2023-08-17 15:00:35.849 [23360] PROXY resolved 'saucelabs.com' to '34.96.70.78:443'
+2023-08-17 15:00:36.429 [23360] Sauce Connect is up, you may start your tests.
+2023-08-17 15:00:44.890 [23360] PROXY 127.0.0.1:56614 (10.119.27.4) -> POST https://accounts.google.com/ListAccounts?gpsia=1&source=ChromiumBrowser&json=standard (714 bytes)
+2023-08-17 15:00:44.893 [23360] PROXY resolved 'accounts.google.com' to '142.250.201.13:443'
+2023-08-17 15:00:45.114 [23360] PROXY 127.0.0.1:56614 (10.119.27.4) <- 200 accounts.google.com:443 (1732 bytes)
+2023-08-17 15:00:45.338 [23360] PROXY 127.0.0.1:56614 (10.119.74.39) -> GET https://edge.microsoft.com/serviceexperimentation/v2/ (983 bytes)
+2023-08-17 15:00:45.341 [23360] PROXY resolved 'edge.microsoft.com' to '204.79.197.239:443'
+2023-08-17 15:00:45.446 [23360] PROXY 127.0.0.1:56641 (10.119.74.39) -> GET https://business.bing.com/api/v1/user/token/microsoftgraph?&clienttype=edge-omnibox (627 bytes)
+2023-08-17 15:00:45.472 [23360] PROXY 127.0.0.1:56640 (10.119.74.39) -> GET https://business.bing.com/work/api/v2/tenant/my/settingswithflights?&clienttype=edge-omnibox (636 bytes)
+2023-08-17 15:00:45.474 [23360] PROXY resolved 'business.bing.com' to '13.107.6.158:443'
+2023-08-17 15:00:45.476 [23360] PROXY resolved 'business.bing.com' to '13.107.6.158:443'
+2023-08-17 15:00:45.589 [23360] PROXY 127.0.0.1:56614 (10.119.74.39) <- 200 edge.microsoft.com:443 (665 bytes)
+2023-08-17 15:00:45.702 [23360] PROXY 127.0.0.1:56664 (10.119.53.59) -> POST http://ocsp.digicert.com/ (620 bytes)
+2023-08-17 15:00:45.708 [23360] PROXY resolved 'ocsp.digicert.com' to '192.229.221.95:80'
+2023-08-17 15:00:45.819 [23360] PROXY 127.0.0.1:56641 (10.119.74.39) <- 401 business.bing.com:443 (663 bytes)
+2023-08-17 15:00:45.842 [23360] PROXY 127.0.0.1:56664 (10.119.53.59) <- 200 ocsp.digicert.com:80 (737 bytes)
+2023-08-17 15:00:45.871 [23360] PROXY 127.0.0.1:56640 (10.119.74.39) <- 401 business.bing.com:443 (1348 bytes)
+2023-08-17 15:00:46.361 [23360] PROXY resolved 'ocsp.digicert.com' to '192.229.221.95:80'
+2023-08-17 15:00:46.363 [23360] PROXY 127.0.0.1:56681 (10.119.53.59) -> POST http://ocsp.digicert.com/ (620 bytes)
+2023-08-17 15:00:46.412 [23360] PROXY 127.0.0.1:56683 (10.119.74.39) -> POST https://nav-edge.smartscreen.microsoft.com/api/browser/edge/navigate/3 (1988 bytes)
+2023-08-17 15:00:46.426 [23360] PROXY 127.0.0.1:56641 (10.119.27.4) -> GET http://localhost:2000/start (897 bytes)
+2023-08-17 15:00:46.463 [23360] PROXY resolved 'nav-edge.smartscreen.microsoft.com' to '20.105.73.143:443'
+2023-08-17 15:00:46.473 [23360] PROXY 127.0.0.1:56641 error resolving hostname, ares status: 4
+2023-08-17 15:00:46.474 [23360] PROXY 127.0.0.1:56641 (10.119.27.4) <- localhost:2000 DNS error: Domain name not found (4)
+2023-08-17 15:00:46.495 [23360] PROXY 127.0.0.1:56681 (10.119.53.59) <- 200 ocsp.digicert.com:80 (737 bytes)
+2023-08-17 15:00:46.639 [23360] PROXY 127.0.0.1:56614 (10.119.74.39) -> GET http://localhost:2000/start (907 bytes)
+2023-08-17 15:00:46.644 [23360] PROXY 127.0.0.1:56614 error resolving hostname, ares status: 4
+2023-08-17 15:00:46.645 [23360] PROXY 127.0.0.1:56614 (10.119.74.39) <- localhost:2000 DNS error: Domain name not found (4)
+2023-08-17 15:00:46.753 [23360] PROXY 127.0.0.1:56683 (10.119.74.39) <- 200 nav-edge.smartscreen.microsoft.com:443 (2012 bytes)
+2023-08-17 15:00:46.814 [23360] PROXY 127.0.0.1:56681 (10.119.27.4) -> GET http://localhost:2000/favicon.ico (825 bytes)
+2023-08-17 15:00:46.818 [23360] PROXY 127.0.0.1:56681 error resolving hostname, ares status: 4
+2023-08-17 15:00:46.819 [23360] PROXY 127.0.0.1:56681 (10.119.27.4) <- localhost:2000 DNS error: Domain name not found (4)
+2023-08-17 15:00:46.837 [23360] PROXY 127.0.0.1:56697 (10.125.27.231) -> GET http://localhost:2000/start (605 bytes)
+2023-08-17 15:00:46.850 [23360] PROXY 127.0.0.1:56698 (10.119.53.59) -> POST http://r3.o.lencr.org/ (616 bytes)
+2023-08-17 15:00:46.851 [23360] PROXY 127.0.0.1:56697 error resolving hostname, ares status: 4
+2023-08-17 15:00:46.852 [23360] PROXY 127.0.0.1:56697 (10.125.27.231) <- localhost:2000 DNS error: Domain name not found (4)
+2023-08-17 15:00:47.016 [23360] PROXY 127.0.0.1:56700 (10.119.74.39) -> POST https://data-edge.smartscreen.microsoft.com/api/browser/edge/data/bloomfilter/x/3 (1551 bytes)
+2023-08-17 15:00:47.031 [23360] PROXY 127.0.0.1:56701 (10.119.74.39) -> POST https://data-edge.smartscreen.microsoft.com/api/browser/edge/data/settings/3 (1546 bytes)
+2023-08-17 15:00:47.044 [23360] PROXY 127.0.0.1:56702 (10.119.74.39) -> GET http://localhost:2000/favicon.ico (835 bytes)
+2023-08-17 15:00:47.057 [23360] PROXY 127.0.0.1:56699 (10.119.74.39) -> POST https://data-edge.smartscreen.microsoft.com/api/browser/edge/data/toptraffic/3 (1548 bytes)
+2023-08-17 15:00:47.059 [23360] PROXY resolved 'data-edge.smartscreen.microsoft.com' to '20.105.73.143:443'
+2023-08-17 15:00:47.060 [23360] PROXY 127.0.0.1:56702 error resolving hostname, ares status: 4
+2023-08-17 15:00:47.061 [23360] PROXY 127.0.0.1:56702 (10.119.74.39) <- localhost:2000 DNS error: Domain name not found (4)
+2023-08-17 15:00:47.069 [23360] PROXY resolved 'r3.o.lencr.org' to '195.14.151.148:80'
+2023-08-17 15:00:47.087 [23360] PROXY resolved 'data-edge.smartscreen.microsoft.com' to '20.105.73.143:443'
+2023-08-17 15:00:47.089 [23360] PROXY resolved 'data-edge.smartscreen.microsoft.com' to '20.105.73.143:443'
+2023-08-17 15:00:47.097 [23360] PROXY 127.0.0.1:56698 (10.119.53.59) <- 200 r3.o.lencr.org:80 (888 bytes)
+2023-08-17 15:00:47.290 [23360] PROXY 127.0.0.1:56709 (10.125.27.231) -> GET http://localhost:2000/favicon.ico (561 bytes)
+2023-08-17 15:00:47.295 [23360] PROXY 127.0.0.1:56709 error resolving hostname, ares status: 4
+2023-08-17 15:00:47.296 [23360] PROXY 127.0.0.1:56709 (10.125.27.231) <- localhost:2000 DNS error: Domain name not found (4)
+2023-08-17 15:00:47.338 [23360] PROXY 127.0.0.1:56700 (10.119.74.39) <- 200 data-edge.smartscreen.microsoft.com:443 (659 bytes)
+2023-08-17 15:00:47.579 [23360] PROXY 127.0.0.1:56701 (10.119.74.39) <- 200 data-edge.smartscreen.microsoft.com:443 (131092 bytes)
+2023-08-17 15:00:47.661 [23360] PROXY 127.0.0.1:56699 (10.119.74.39) <- 200 data-edge.smartscreen.microsoft.com:443 (461595 bytes)
+2023-08-17 15:00:48.655 [23360] PROXY 127.0.0.1:56698 (10.119.53.59) -> GET http://localhost:2000/start (663 bytes)
+2023-08-17 15:00:48.658 [23360] PROXY 127.0.0.1:56698 error resolving hostname, ares status: 4
+2023-08-17 15:00:48.659 [23360] PROXY 127.0.0.1:56698 (10.119.53.59) <- localhost:2000 DNS error: Domain name not found (4)
+2023-08-17 15:00:48.995 [23360] PROXY 127.0.0.1:56720 (10.119.53.59) -> GET http://localhost:2000/favicon.ico (602 bytes)
+2023-08-17 15:00:48.998 [23360] PROXY 127.0.0.1:56720 error resolving hostname, ares status: 4
+2023-08-17 15:00:48.999 [23360] PROXY 127.0.0.1:56720 (10.119.53.59) <- localhost:2000 DNS error: Domain name not found (4)
+2023-08-17 15:00:50.025 [23360] PROXY resolved 'edge.microsoft.com' to '204.79.197.239:443'
+2023-08-17 15:00:50.027 [23360] PROXY 127.0.0.1:56727 (10.119.74.39) -> GET https://edge.microsoft.com/abusiveadblocking/api/v1/blocklist (760 bytes)
+2023-08-17 15:00:50.189 [23360] PROXY resolved 'edge.microsoft.com' to '204.79.197.239:443'
+2023-08-17 15:00:50.192 [23360] PROXY 127.0.0.1:56730 (10.119.74.39) -> GET https://edge.microsoft.com/entityextractiontemplates/api/v1/assets/find-assets?name=arbitration_priority_list&version=2.*.*&channel=canary&key=d414dd4f9db345fa8003e32adc81b362 (734 bytes)
+2023-08-17 15:00:50.204 [23360] PROXY resolved 'edge.microsoft.com' to '204.79.197.239:443'
+2023-08-17 15:00:50.205 [23360] PROXY 127.0.0.1:56731 (10.119.74.39) -> GET https://edge.microsoft.com/entityextractiontemplates/api/v1/assets/find-assets?name=domains_config&version=2.*.*&channel=canary&key=d414dd4f9db345fa8003e32adc81b362 (945 bytes)
+2023-08-17 15:00:50.218 [23360] PROXY resolved 'edge.microsoft.com' to '204.79.197.239:443'
+2023-08-17 15:00:50.220 [23360] PROXY 127.0.0.1:56732 (10.119.74.39) -> GET https://edge.microsoft.com/entityextractiontemplates/api/v1/assets/find-assets?name=edge_hub_apps_manifest&version=4.7.*&channel=canary&key=d414dd4f9db345fa8003e32adc81b362 (722 bytes)
+2023-08-17 15:00:50.325 [23360] PROXY 127.0.0.1:56727 (10.119.74.39) <- 200 edge.microsoft.com:443 (29247 bytes)
+2023-08-17 15:00:50.418 [23360] PROXY 127.0.0.1:56731 (10.119.74.39) <- 200 edge.microsoft.com:443 (706 bytes)
+2023-08-17 15:00:50.469 [23360] PROXY 127.0.0.1:56732 (10.119.74.39) <- 200 edge.microsoft.com:443 (704 bytes)
+2023-08-17 15:00:50.595 [23360] PROXY 127.0.0.1:56730 (10.119.74.39) <- 200 edge.microsoft.com:443 (715 bytes)
+2023-08-17 15:00:51.363 [23360] PROXY 127.0.0.1:56740 (10.119.74.39) -> GET https://edgeservices.bing.com/edgesvc/shell?&lightschemeovr=1&FORM=SHORUN&udscs=1&udsnav=1&setlang=en-US&clientscopes=noheader,coauthor,chat,visibilitypm,docvisibility,channelunknown,&udsframed=1 (1635 bytes)
+2023-08-17 15:00:51.367 [23360] PROXY resolved 'edgeservices.bing.com' to '2.18.40.138:443'
+2023-08-17 15:00:51.754 [23360] PROXY 127.0.0.1:56740 (10.119.74.39) <- 200 edgeservices.bing.com:443 (40938 bytes)
+2023-08-17 15:00:51.988 [23360] PROXY 127.0.0.1:56740 (10.119.74.39) -> GET https://edgeservices.bing.com/rp/TbE9r2i8K-3X4Jg222iQY_f_7pQ.br.css (1830 bytes)
+2023-08-17 15:00:52.024 [23360] PROXY resolved 'edgeservices.bing.com' to '2.18.40.138:443'
+2023-08-17 15:00:52.026 [23360] PROXY 127.0.0.1:56742 (10.119.74.39) -> GET https://edgeservices.bing.com/rp/sKMD9beH8gtVDJ1_u4M6ZXNDOy8.br.css (1830 bytes)
+2023-08-17 15:00:52.057 [23360] PROXY 127.0.0.1:56740 (10.119.74.39) <- 200 edgeservices.bing.com:443 (1569 bytes)
+2023-08-17 15:00:52.164 [23360] PROXY 127.0.0.1:56742 (10.119.74.39) <- 200 edgeservices.bing.com:443 (2259 bytes)
+2023-08-17 15:00:52.264 [23360] PROXY 127.0.0.1:56740 (10.119.74.39) -> GET https://edgeservices.bing.com/rp/5_njacTHNI5UUdpA3bwOxQr_P0s.br.js (1851 bytes)
+2023-08-17 15:00:52.333 [23360] PROXY 127.0.0.1:56740 (10.119.74.39) <- 200 edgeservices.bing.com:443 (1052 bytes)
+2023-08-17 15:00:52.371 [23360] PROXY 127.0.0.1:56742 (10.119.74.39) -> GET https://edgeservices.bing.com/rp/TH8fT3nT8y791x11NM6LDPK-74U.br.js (1851 bytes)
+2023-08-17 15:00:52.515 [23360] PROXY 127.0.0.1:56742 (10.119.74.39) <- 200 edgeservices.bing.com:443 (4174 bytes)
+2023-08-17 15:00:52.539 [23360] PROXY 127.0.0.1:56740 (10.119.74.39) -> GET https://edgeservices.bing.com/rp/jGqrlcxepmhaIJKVUSFqCguDjNY.br.js (1851 bytes)
+2023-08-17 15:00:52.650 [23360] PROXY 127.0.0.1:56740 (10.119.74.39) <- 200 edgeservices.bing.com:443 (6463 bytes)
+2023-08-17 15:00:52.993 [23360] PROXY 127.0.0.1:56742 (10.119.74.39) -> GET https://edgeservices.bing.com/rp/b2PKPkozwSWxr6KVRh9XsIlmTLk.br.js (1851 bytes)
+2023-08-17 15:00:52.997 [23360] PROXY 127.0.0.1:56740 (10.119.74.39) -> GET https://edgeservices.bing.com/rp/Gass0juumFCN_7qHD2eljQzsu98.br.js (1851 bytes)
+2023-08-17 15:00:53.050 [23360] PROXY 127.0.0.1:56742 (10.119.74.39) <- 200 edgeservices.bing.com:443 (9175 bytes)
+2023-08-17 15:00:53.122 [23360] PROXY 127.0.0.1:56740 (10.119.74.39) <- 200 edgeservices.bing.com:443 (3717 bytes)
+2023-08-17 15:00:53.391 [23360] PROXY 127.0.0.1:56740 (10.119.74.39) -> GET https://edgeservices.bing.com/fd/ls/l?IG=89CF434CC0274CA2ABEC75EC9A4499F5&CID=0E558535E46863B3315E9645E51F6276&Type=Event.CPT&DATA={%22pp%22:{%22S%22:%22L%22,%22FC%22:1000,%22BC%22:1000,%22SE%22:-1,%22TC%22:-1,%22H%22:1398,%22BP%22:1398,%22CT%22:1399,%22IL%22:0},%22ad%22:[-1,-1,0,0,0,0,0],%22net%22:%22undefined%22}&P=UNSP&DA=DUBE01 (2134 bytes)
+2023-08-17 15:00:53.605 [23360] PROXY 127.0.0.1:56740 (10.119.74.39) <- 200 edgeservices.bing.com:443 (464 bytes)
+2023-08-17 15:00:54.036 [23360] PROXY resolved 'edgeservices.bing.com' to '2.18.40.138:443'
+2023-08-17 15:00:54.039 [23360] PROXY 127.0.0.1:56753 (10.119.74.39) -> GET https://edgeservices.bing.com/rp/h1dIjMpwerSArGmygbYcRo-DkFs.br.js (1856 bytes)
+2023-08-17 15:00:54.050 [23360] PROXY resolved 'edgeservices.bing.com' to '2.18.40.138:443'
+2023-08-17 15:00:54.052 [23360] PROXY 127.0.0.1:56752 (10.119.74.39) -> POST https://edgeservices.bing.com/fd/ls/lsp.aspx? (2254 bytes)
+2023-08-17 15:00:54.661 [23360] PROXY 127.0.0.1:56753 (10.119.74.39) <- 200 edgeservices.bing.com:443 (3402 bytes)
+2023-08-17 15:00:54.874 [23360] PROXY 127.0.0.1:56752 (10.119.74.39) <- 204 edgeservices.bing.com:443 (453 bytes)
+2023-08-17 15:00:54.894 [23360] PROXY 127.0.0.1:56753 (10.119.74.39) -> GET https://edgeservices.bing.com/rp/R14ozkkie30zM6FSjzwWFp8Ffzk.br.js (1816 bytes)
+2023-08-17 15:00:54.909 [23360] PROXY 127.0.0.1:56740 (10.119.74.39) -> GET https://edgeservices.bing.com/rp/afmuy94Os_msjUASAibqR7Q8x84.br.js (1816 bytes)
+2023-08-17 15:00:54.932 [23360] PROXY resolved 'edgeservices.bing.com' to '2.18.40.138:443'
+2023-08-17 15:00:54.934 [23360] PROXY 127.0.0.1:56757 (10.119.74.39) -> GET https://edgeservices.bing.com/rp/avd7Rr-t12JcT3bkdFyaKKLavZQ.br.js (1816 bytes)
+2023-08-17 15:00:54.950 [23360] PROXY 127.0.0.1:56753 (10.119.74.39) <- 200 edgeservices.bing.com:443 (9500 bytes)
+2023-08-17 15:00:54.959 [23360] PROXY 127.0.0.1:56740 (10.119.74.39) <- 200 edgeservices.bing.com:443 (2060 bytes)
+2023-08-17 15:00:55.509 [23360] PROXY 127.0.0.1:56757 (10.119.74.39) <- 200 edgeservices.bing.com:443 (1193 bytes)
+2023-08-17 15:00:55.760 [23360] PROXY resolved 'edgeservices.bing.com' to '2.18.40.138:443'
+2023-08-17 15:00:55.762 [23360] PROXY 127.0.0.1:56760 (10.119.74.39) -> POST https://edgeservices.bing.com/web/xls.aspx (3611 bytes)
+2023-08-17 15:00:55.763 [23360] PROXY 127.0.0.1:56740 (10.119.74.39) -> GET https://edgeservices.bing.com/ipv6test/test?FORM=MONITR (1803 bytes)
+2023-08-17 15:00:55.776 [23360] PROXY 127.0.0.1:56753 (10.119.74.39) -> GET https://www2.bing.com/ipv6test/test (1383 bytes)
+2023-08-17 15:00:55.789 [23360] PROXY resolved 'www2.bing.com' to '13.107.21.200:443'
+2023-08-17 15:00:55.939 [23360] PROXY 127.0.0.1:56740 (10.119.74.39) <- 200 edgeservices.bing.com:443 (1468 bytes)
+2023-08-17 15:00:56.044 [23360] PROXY 127.0.0.1:56753 (10.119.74.39) <- 200 www2.bing.com:443 (1635 bytes)
+2023-08-17 15:00:56.447 [23360] PROXY 127.0.0.1:56760 (10.119.74.39) <- 204 edgeservices.bing.com:443 (453 bytes)
+2023-08-17 15:00:57.056 [23360] PROXY 127.0.0.1:56760 (10.119.74.39) -> GET https://login.live.com/login.srf?wa=wsignin1.0&rpsnv=11&ct=1692273652&rver=6.0.5286.0&wp=MBI_SSL&wreply=https:%2F%2fwww.bing.com%2Fsecure%2FPassport.aspx%3Fpopup%3D1%26ssl%3D1&lc=4096&id=264960&checkda=1 (1380 bytes)
+2023-08-17 15:00:57.107 [23360] PROXY resolved 'login.live.com' to '20.190.177.22:443'
+2023-08-17 15:00:57.446 [23360] PROXY 127.0.0.1:56760 (10.119.74.39) <- 302 login.live.com:443 (1248 bytes)
+2023-08-17 15:00:57.668 [23360] PROXY 127.0.0.1:56760 (10.119.74.39) -> GET https://www.bing.com/secure/Passport.aspx?popup=1&ssl=1 (1660 bytes)
+2023-08-17 15:00:57.671 [23360] PROXY resolved 'www.bing.com' to '2.18.40.144:443'
+2023-08-17 15:00:57.971 [23360] PROXY 127.0.0.1:56760 (10.119.74.39) <- 200 www.bing.com:443 (1633 bytes)
+2023-08-17 15:01:03.028 [23360] PROXY resolved 'edgeservices.bing.com' to '2.18.40.138:443'
+2023-08-17 15:01:03.030 [23360] PROXY 127.0.0.1:56788 (10.119.74.39) -> POST https://edgeservices.bing.com/web/xls.aspx (4133 bytes)
+2023-08-17 15:01:03.215 [23360] PROXY 127.0.0.1:56788 (10.119.74.39) <- 204 edgeservices.bing.com:443 (453 bytes)
+2023-08-17 15:01:07.553 [23360] PROXY 127.0.0.1:56788 (10.119.53.59) -> GET https://aus5.mozilla.org/update/3/GMP/113.0/20230504192738/WINNT_x86_64-msvc-x64/en-US/release/Windows_NT%2010.0.0.0.19043.928%20(x64)/default/default/update.xml (691 bytes)
+2023-08-17 15:01:07.598 [23360] PROXY resolved 'aus5.mozilla.org' to '35.244.181.201:443'
+2023-08-17 15:01:07.927 [23360] PROXY 127.0.0.1:56788 (10.119.53.59) <- 200 aus5.mozilla.org:443 (1192 bytes)
+2023-08-17 15:01:08.173 [23360] PROXY resolved 'r3.o.lencr.org' to '195.14.151.148:80'
+2023-08-17 15:01:08.175 [23360] PROXY 127.0.0.1:56812 (10.119.53.59) -> POST http://r3.o.lencr.org/ (616 bytes)
+2023-08-17 15:01:08.191 [23360] PROXY 127.0.0.1:56812 (10.119.53.59) <- 200 r3.o.lencr.org:80 (888 bytes)
+2023-08-17 15:01:14.855 [23360] PROXY resolved 'aus5.mozilla.org' to '35.244.181.201:443'
+2023-08-17 15:01:14.857 [23360] PROXY 127.0.0.1:56812 (10.119.53.59) -> GET https://aus5.mozilla.org/update/3/SystemAddons/113.0/20230504192738/WINNT_x86_64-msvc-x64/en-US/release/Windows_NT%2010.0.0.0.19043.928%20(x64)/default/default/update.xml (700 bytes)
+2023-08-17 15:01:14.931 [23360] PROXY resolved 'r3.o.lencr.org' to '195.14.151.148:80'
+2023-08-17 15:01:14.933 [23360] PROXY 127.0.0.1:56836 (10.119.53.59) -> POST http://r3.o.lencr.org/ (616 bytes)
+2023-08-17 15:01:14.948 [23360] PROXY 127.0.0.1:56836 (10.119.53.59) <- 200 r3.o.lencr.org:80 (889 bytes)
+2023-08-17 15:01:15.189 [23360] PROXY 127.0.0.1:56812 (10.119.53.59) <- 200 aus5.mozilla.org:443 (781 bytes)
+2023-08-17 15:01:15.420 [23360] PROXY 127.0.0.1:56812 (10.119.53.59) -> GET https://archive.mozilla.org/pub/system-addons/addons-restricted-domains/addons-restricted-domains-1.0.0-build1/addons-restricted-domains.xpi (656 bytes)
+2023-08-17 15:01:15.470 [23360] PROXY resolved 'archive.mozilla.org' to '34.117.35.28:443'
+2023-08-17 15:01:15.667 [23360] PROXY 127.0.0.1:56812 (10.119.53.59) <- 200 archive.mozilla.org:443 (13663 bytes)
+2023-08-17 15:01:17.509 [23360] PROXY resolved 'r3.o.lencr.org' to '195.14.151.148:80'
+2023-08-17 15:01:17.510 [23360] PROXY 127.0.0.1:56848 (10.119.53.59) -> POST http://r3.o.lencr.org/ (616 bytes)
+2023-08-17 15:01:17.540 [23360] PROXY resolved 'r3.o.lencr.org' to '195.14.151.148:80'
+2023-08-17 15:01:17.542 [23360] PROXY 127.0.0.1:56849 (10.119.53.59) -> POST http://r3.o.lencr.org/ (616 bytes)
+2023-08-17 15:01:17.553 [23360] PROXY resolved 'r3.o.lencr.org' to '195.14.151.148:80'
+2023-08-17 15:01:17.554 [23360] PROXY 127.0.0.1:56850 (10.119.53.59) -> POST http://r3.o.lencr.org/ (616 bytes)
+2023-08-17 15:01:17.564 [23360] PROXY resolved 'r3.o.lencr.org' to '195.14.151.148:80'
+2023-08-17 15:01:17.565 [23360] PROXY 127.0.0.1:56852 (10.119.53.59) -> POST http://r3.o.lencr.org/ (616 bytes)
+2023-08-17 15:01:17.566 [23360] PROXY 127.0.0.1:56848 (10.119.53.59) <- 200 r3.o.lencr.org:80 (888 bytes)
+2023-08-17 15:01:17.576 [23360] PROXY resolved 'r3.o.lencr.org' to '195.14.151.148:80'
+2023-08-17 15:01:17.577 [23360] PROXY 127.0.0.1:56853 (10.119.53.59) -> POST http://r3.o.lencr.org/ (616 bytes)
+2023-08-17 15:01:17.588 [23360] PROXY 127.0.0.1:56849 (10.119.53.59) <- 200 r3.o.lencr.org:80 (888 bytes)
+2023-08-17 15:01:17.589 [23360] PROXY 127.0.0.1:56850 (10.119.53.59) <- 200 r3.o.lencr.org:80 (888 bytes)
+2023-08-17 15:01:17.590 [23360] PROXY 127.0.0.1:56852 (10.119.53.59) <- 200 r3.o.lencr.org:80 (888 bytes)
+2023-08-17 15:01:17.592 [23360] PROXY 127.0.0.1:56853 (10.119.53.59) <- 200 r3.o.lencr.org:80 (888 bytes)
+2023-08-17 15:01:44.572 [23360] PROXY resolved 'edge.microsoft.com' to '204.79.197.239:443'
+2023-08-17 15:01:44.575 [23360] PROXY 127.0.0.1:56972 (10.119.74.39) -> POST https://edge.microsoft.com/componentupdater/api/v1/update?cup2key=6:FnyvBUN_IqUH8n5b-pRMeD_ANcBc5GOeuGJQ6ngr4qw&cup2hreq=dd312ce386c5a952bae258cdfbc23089cbc62acad931810868abe9c3942dfcdd (9605 bytes)
+2023-08-17 15:01:47.915 [23360] PROXY 127.0.0.1:56972 (10.119.74.39) <- 200 edge.microsoft.com:443 (6612 bytes)
+2023-08-17 15:03:19.945 [23360] PROXY 127.0.0.1:57295 (10.119.74.39) -> GET https://edge.microsoft.com/extensiondiagnostic/v1/activitystatus?x=id%3Dahokoikenoafgppiblgpenaaaolecifn%26v%3D1.2.0&x=id%3Dbhmhibnbialendcafinliemndanacfaj%26v%3D1.4.12&x=id%3Dbobbggphonhgdonfdibkfipfepfcildj%26v%3D1.0.3&x=id%3Dceaifoolopnigfpidlheoagpheiplgii%26v%3D1.4.13&x=id%3Dcjneempfhkonkkbcmnfdibgobmhbagaj%26v%3D1.5.13&x=id%3Ddabfebgaghanlbehmkmaflipiohdimmc%26v%3D1.0.3&x=id%3Ddcaajljecejllikfgbhjdgeognacjkkp%26v%3D1.3.20&x=id%3Ddmbljphlfghcnbohaoffiedmodfmkmol%26v%3D1.0.3&x=id%3Dehlmnljdoejdahfjdfobmpfancoibmig%26v%3D1.3.14&x=id%3Deijpepilkjkofamihbmjcnihgpbebafj%26v%3D1.0.10&x=id%3Denkoeamdnimieoooocohgbdajhhkajko%26v%3D1.0.7&x=id%3Dfjngpfnaikknjdhkckmncgicobbkcnle%26v%3D1.1.11&x=id%3Dgbihlnbpmfkodghomcinpblknjhneknc%26v%3D1.4.9&x=id%3Dgbmoeijgfngecijpcnbooedokgafmmji%26v%3D1.7.0&x=id%3Dgecfnmoodchdkebjjffmdcmeghkflpib%26v%3D1.7.30&x=id%3Dgekagaaiohabmaknhkbaofhhedhelemf%26v%3D1.4.12&x=id%3Dghglcnachgghkhbafjogogiggghcpjig%26v%3D1.0.3&x=id%3Dhciemgmhplhpinoohcjpafmncmjapioh%26v%3D1.0.3&x=id%3Dhloomjjkinpbjldhobfkfdamkmikjmdo%26v%3D1.4.11&x=id%3Dhmlhageoffiiefnmojcgoagebofoifpl%26v%3D1.4.14&x=id%3Djbleckejnaboogigodiafflhkajdmpcl%26v%3D1.3.6&x=id%3Djlipacegilfgfpgkefbjcncbfcoeecgj%26v%3D1.0.5&x=id%3Djpfjdekhebcolnfkpicpciaknbgcdcbm%26v%3D1.0.3&x=id%3Dkfihiegbjaloebkmglnjnljoljgkkchm%26v%3D1.9.10&x=id%3Dkhffkadolmfbdgahbabbhipadklfmhgf%26v%3D1.5.14&x=id%3Dkjncpkplfnolibapodobnnjfgmjmiaba%26v%3D1.4.12&x=id%3Dkkobcodijbdelbnhbfkkfncbeildnpie%26v%3D1.0.3&x=id%3Dkmojgmpmopiiagdfbilgognmlegkonbk%26v%3D1.4.13&x=id%3Dnkbndigcebkoaejohleckhekfmcecfja%26v%3D1.6.8&x=id%3Dnnpnekncnhiglbokoiffmejlimgmgoam%26v%3D1.0.3&x=id%3Dofefcgjbeghpigppfmkologfjadafddi%26v%3D1.1.17&x=id%3Dojmnomejplkgljjhjindfoilnmobmihe%26v%3D1.0.12&x=id%3Dolkdlefmaniacnmgofabnpmomgcpdaip%26v%3D1.0.3&x=id%3Dolmhchkiafniffcaiciiomfdplnmklak%26v%3D1.5.4&x=id%3Dpencekojiebcjhifbkfdncgmmooepclc%26v%3D1.0.4&x=id%3Dppnnjfpaneghjbcepgedmlcgmfgkjhah%26v%3D1.0.3 (2529 bytes)
+2023-08-17 15:03:19.961 [23360] PROXY resolved 'edge.microsoft.com' to '13.107.21.239:443'
+2023-08-17 15:03:20.205 [23360] PROXY 127.0.0.1:57295 (10.119.74.39) <- 200 edge.microsoft.com:443 (3712 bytes)
+2023-08-17 15:03:40.855 [23360] PROXY 127.0.0.1:57295 (10.125.27.231) -> GET https://gspe35-ssl.ls.apple.com/geo_manifest/dynamic/config?application=geod&application_version=1&country_code=US&hardware=iMacPro1,1&os=osx&os_build=21G115&os_version=12.6 (600 bytes)
+2023-08-17 15:03:40.858 [23360] PROXY 127.0.0.1:57393 (10.125.27.231) -> POST https://gsp-ssl.ls.apple.com/ab.arpc (651 bytes)
+2023-08-17 15:03:40.894 [23360] PROXY resolved 'gsp-ssl.ls.apple.com' to '17.253.15.213:443'
+2023-08-17 15:03:40.916 [23360] PROXY resolved 'gspe35-ssl.ls.apple.com' to '2.20.40.159:443'
+2023-08-17 15:03:41.163 [23360] PROXY 127.0.0.1:57393 (10.125.27.231) <- 200 gsp-ssl.ls.apple.com:443 (557 bytes)
+2023-08-17 15:03:41.462 [23360] PROXY 127.0.0.1:57295 (10.125.27.231) <- 200 gspe35-ssl.ls.apple.com:443 (79636 bytes)
+2023-08-17 15:03:44.405 [23360] PROXY resolved 'edge.microsoft.com' to '13.107.21.239:443'
+2023-08-17 15:03:44.407 [23360] PROXY 127.0.0.1:57295 (10.119.74.39) -> GET https://edge.microsoft.com/entityextractiontemplates/api/v1/assets/find-assets?name=addressbar_uu_files.en-us&version=1.*.*&channel=canary&key=d414dd4f9db345fa8003e32adc81b362 (750 bytes)
+2023-08-17 15:03:44.666 [23360] PROXY 127.0.0.1:57295 (10.119.74.39) <- 200 edge.microsoft.com:443 (709 bytes)
+2023-08-17 15:04:38.535 [23360] PROXY 127.0.0.1:57574 (10.125.27.231) -> POST https://gsp64-ssl.ls.apple.com/hvr/v3/use (1034 bytes)
+2023-08-17 15:04:38.586 [23360] PROXY resolved 'gsp64-ssl.ls.apple.com' to '17.57.172.4:443'
+2023-08-17 15:04:39.326 [23360] PROXY 127.0.0.1:57574 (10.125.27.231) <- 200 gsp64-ssl.ls.apple.com:443 (269 bytes)
+2023-08-17 15:10:50.087 [23360] PROXY 127.0.0.1:58878 (10.119.74.39) -> GET https://edge.microsoft.com/entityextractiontemplates/api/v1/assets/find-assets?name=signal_triggers&version=1.10.*&channel=canary&key=d414dd4f9db345fa8003e32adc81b362 (748 bytes)
+2023-08-17 15:10:50.135 [23360] PROXY resolved 'edge.microsoft.com' to '204.79.197.239:443'
+2023-08-17 15:10:50.543 [23360] PROXY 127.0.0.1:58878 (10.119.74.39) <- 200 edge.microsoft.com:443 (696 bytes)
+2023-08-17 15:13:00.304 [23360] PROXY 127.0.0.1:59399 (10.119.40.154) -> POST https://accounts.google.com/ListAccounts?gpsia=1&source=ChromiumBrowser&json=standard (716 bytes)
+2023-08-17 15:13:00.308 [23360] PROXY resolved 'accounts.google.com' to '142.250.201.13:443'
+2023-08-17 15:13:00.547 [23360] PROXY 127.0.0.1:59399 (10.119.40.154) <- 200 accounts.google.com:443 (1770 bytes)
+2023-08-17 15:13:01.578 [23360] PROXY 127.0.0.1:59399 (10.119.40.154) -> GET http://localhost:2000/start (899 bytes)
+2023-08-17 15:13:01.582 [23360] PROXY 127.0.0.1:59399 error resolving hostname, ares status: 4
+2023-08-17 15:13:01.582 [23360] PROXY 127.0.0.1:59399 (10.119.40.154) <- localhost:2000 DNS error: Domain name not found (4)
+2023-08-17 15:13:01.966 [23360] PROXY 127.0.0.1:59411 (10.119.40.154) -> GET http://localhost:2000/favicon.ico (827 bytes)
+2023-08-17 15:13:01.969 [23360] PROXY 127.0.0.1:59411 error resolving hostname, ares status: 4
+2023-08-17 15:13:01.970 [23360] PROXY 127.0.0.1:59411 (10.119.40.154) <- localhost:2000 DNS error: Domain name not found (4)
+2023-08-17 15:13:02.197 [23360] PROXY 127.0.0.1:59412 (10.119.96.231) -> GET https://business.bing.com/work/api/v2/tenant/my/settingswithflights?&clienttype=edge-omnibox (637 bytes)
+2023-08-17 15:13:02.210 [23360] PROXY 127.0.0.1:59414 (10.119.96.231) -> GET https://edge.microsoft.com/serviceexperimentation/v2/ (984 bytes)
+2023-08-17 15:13:02.221 [23360] PROXY 127.0.0.1:59413 (10.119.96.231) -> GET https://business.bing.com/api/v1/user/token/microsoftgraph?&clienttype=edge-omnibox (628 bytes)
+2023-08-17 15:13:02.241 [23360] PROXY resolved 'business.bing.com' to '13.107.6.158:443'
+2023-08-17 15:13:02.242 [23360] PROXY resolved 'business.bing.com' to '13.107.6.158:443'
+2023-08-17 15:13:02.257 [23360] PROXY resolved 'edge.microsoft.com' to '204.79.197.239:443'
+2023-08-17 15:13:02.519 [23360] PROXY 127.0.0.1:59414 (10.119.96.231) <- 200 edge.microsoft.com:443 (665 bytes)
+2023-08-17 15:13:02.608 [23360] PROXY 127.0.0.1:59413 (10.119.96.231) <- 401 business.bing.com:443 (663 bytes)
+2023-08-17 15:13:02.634 [23360] PROXY 127.0.0.1:59412 (10.119.96.231) <- 401 business.bing.com:443 (1346 bytes)
+2023-08-17 15:13:03.246 [23360] PROXY 127.0.0.1:59425 (10.119.96.231) -> POST https://nav-edge.smartscreen.microsoft.com/api/browser/edge/navigate/3 (1989 bytes)
+2023-08-17 15:13:03.297 [23360] PROXY resolved 'nav-edge.smartscreen.microsoft.com' to '20.105.73.143:443'
+2023-08-17 15:13:03.446 [23360] PROXY 127.0.0.1:59413 (10.119.96.231) -> GET http://localhost:2000/start (908 bytes)
+2023-08-17 15:13:03.454 [23360] PROXY 127.0.0.1:59413 error resolving hostname, ares status: 4
+2023-08-17 15:13:03.455 [23360] PROXY 127.0.0.1:59413 (10.119.96.231) <- localhost:2000 DNS error: Domain name not found (4)
+2023-08-17 15:13:03.591 [23360] PROXY 127.0.0.1:59425 (10.119.96.231) <- 200 nav-edge.smartscreen.microsoft.com:443 (2012 bytes)
+2023-08-17 15:13:03.808 [23360] PROXY 127.0.0.1:59414 (10.119.96.231) -> GET http://localhost:2000/favicon.ico (836 bytes)
+2023-08-17 15:13:03.811 [23360] PROXY 127.0.0.1:59414 error resolving hostname, ares status: 4
+2023-08-17 15:13:03.812 [23360] PROXY 127.0.0.1:59414 (10.119.96.231) <- localhost:2000 DNS error: Domain name not found (4)
+2023-08-17 15:13:03.851 [23360] PROXY 127.0.0.1:59430 (10.119.96.231) -> POST https://data-edge.smartscreen.microsoft.com/api/browser/edge/data/toptraffic/3 (1549 bytes)
+2023-08-17 15:13:03.864 [23360] PROXY 127.0.0.1:59432 (10.119.96.231) -> POST https://data-edge.smartscreen.microsoft.com/api/browser/edge/data/settings/3 (1547 bytes)
+2023-08-17 15:13:03.877 [23360] PROXY 127.0.0.1:59431 (10.119.96.231) -> POST https://data-edge.smartscreen.microsoft.com/api/browser/edge/data/bloomfilter/x/3 (1552 bytes)
+2023-08-17 15:13:03.878 [23360] PROXY resolved 'data-edge.smartscreen.microsoft.com' to '20.105.73.143:443'
+2023-08-17 15:13:03.880 [23360] PROXY resolved 'data-edge.smartscreen.microsoft.com' to '20.105.73.143:443'
+2023-08-17 15:13:03.881 [23360] PROXY resolved 'data-edge.smartscreen.microsoft.com' to '20.105.73.143:443'
+2023-08-17 15:13:04.167 [23360] PROXY 127.0.0.1:59431 (10.119.96.231) <- 200 data-edge.smartscreen.microsoft.com:443 (659 bytes)
+2023-08-17 15:13:04.365 [23360] PROXY 127.0.0.1:59432 (10.119.96.231) <- 200 data-edge.smartscreen.microsoft.com:443 (131092 bytes)
+2023-08-17 15:13:04.461 [23360] PROXY 127.0.0.1:59430 (10.119.96.231) <- 200 data-edge.smartscreen.microsoft.com:443 (461595 bytes)
+2023-08-17 15:13:06.518 [23360] PROXY 127.0.0.1:59451 (10.125.17.246) -> GET http://localhost:2000/start (605 bytes)
+2023-08-17 15:13:06.521 [23360] PROXY 127.0.0.1:59451 error resolving hostname, ares status: 4
+2023-08-17 15:13:06.521 [23360] PROXY 127.0.0.1:59451 (10.125.17.246) <- localhost:2000 DNS error: Domain name not found (4)
+2023-08-17 15:13:06.803 [23360] PROXY resolved 'edge.microsoft.com' to '204.79.197.239:443'
+2023-08-17 15:13:06.806 [23360] PROXY 127.0.0.1:59452 (10.119.96.231) -> GET https://edge.microsoft.com/abusiveadblocking/api/v1/blocklist (785 bytes)
+2023-08-17 15:13:06.940 [23360] PROXY resolved 'edge.microsoft.com' to '204.79.197.239:443'
+2023-08-17 15:13:06.942 [23360] PROXY 127.0.0.1:59454 (10.119.96.231) -> GET https://edge.microsoft.com/entityextractiontemplates/api/v1/assets/find-assets?name=arbitration_priority_list&version=2.*.*&channel=canary&key=d414dd4f9db345fa8003e32adc81b362 (759 bytes)
+2023-08-17 15:13:06.953 [23360] PROXY resolved 'edge.microsoft.com' to '204.79.197.239:443'
+2023-08-17 15:13:06.954 [23360] PROXY 127.0.0.1:59455 (10.119.96.231) -> GET https://edge.microsoft.com/entityextractiontemplates/api/v1/assets/find-assets?name=edge_hub_apps_manifest&version=4.7.*&channel=canary&key=d414dd4f9db345fa8003e32adc81b362 (747 bytes)
+2023-08-17 15:13:06.966 [23360] PROXY resolved 'edge.microsoft.com' to '204.79.197.239:443'
+2023-08-17 15:13:06.967 [23360] PROXY 127.0.0.1:59456 (10.119.96.231) -> GET https://edge.microsoft.com/entityextractiontemplates/api/v1/assets/find-assets?name=domains_config&version=2.*.*&channel=canary&key=d414dd4f9db345fa8003e32adc81b362 (970 bytes)
+2023-08-17 15:13:06.996 [23360] PROXY 127.0.0.1:59460 (10.125.17.246) -> GET http://localhost:2000/favicon.ico (561 bytes)
+2023-08-17 15:13:06.999 [23360] PROXY 127.0.0.1:59460 error resolving hostname, ares status: 4
+2023-08-17 15:13:06.999 [23360] PROXY 127.0.0.1:59460 (10.125.17.246) <- localhost:2000 DNS error: Domain name not found (4)
+2023-08-17 15:13:07.070 [23360] PROXY 127.0.0.1:59452 (10.119.96.231) <- 200 edge.microsoft.com:443 (29247 bytes)
+2023-08-17 15:13:07.163 [23360] PROXY 127.0.0.1:59455 (10.119.96.231) <- 200 edge.microsoft.com:443 (703 bytes)
+2023-08-17 15:13:07.176 [23360] PROXY 127.0.0.1:59456 (10.119.96.231) <- 200 edge.microsoft.com:443 (706 bytes)
+2023-08-17 15:13:07.193 [23360] PROXY 127.0.0.1:59454 (10.119.96.231) <- 200 edge.microsoft.com:443 (715 bytes)
+2023-08-17 15:13:07.903 [23360] PROXY 127.0.0.1:59454 (10.119.96.231) -> GET https://edgeservices.bing.com/edgesvc/shell?&lightschemeovr=1&FORM=SHORUN&udscs=1&udsnav=1&setlang=en-US&clientscopes=noheader,coauthor,chat,visibilitypm,docvisibility,channelunknown,&udsframed=1 (1636 bytes)
+2023-08-17 15:13:07.965 [23360] PROXY resolved 'edgeservices.bing.com' to '2.18.40.143:443'
+2023-08-17 15:13:08.234 [23360] PROXY 127.0.0.1:59454 (10.119.96.231) <- 200 edgeservices.bing.com:443 (41208 bytes)
+2023-08-17 15:13:08.469 [23360] PROXY 127.0.0.1:59454 (10.119.96.231) -> GET https://edgeservices.bing.com/rp/TbE9r2i8K-3X4Jg222iQY_f_7pQ.br.css (1831 bytes)
+2023-08-17 15:13:08.487 [23360] PROXY resolved 'edgeservices.bing.com' to '2.18.40.143:443'
+2023-08-17 15:13:08.489 [23360] PROXY 127.0.0.1:59456 (10.119.96.231) -> GET https://edgeservices.bing.com/rp/sKMD9beH8gtVDJ1_u4M6ZXNDOy8.br.css (1831 bytes)
+2023-08-17 15:13:08.518 [23360] PROXY 127.0.0.1:59454 (10.119.96.231) <- 200 edgeservices.bing.com:443 (1569 bytes)
+2023-08-17 15:13:08.620 [23360] PROXY 127.0.0.1:59456 (10.119.96.231) <- 200 edgeservices.bing.com:443 (2259 bytes)
+2023-08-17 15:13:08.734 [23360] PROXY 127.0.0.1:59454 (10.119.96.231) -> GET https://edgeservices.bing.com/rp/5_njacTHNI5UUdpA3bwOxQr_P0s.br.js (1852 bytes)
+2023-08-17 15:13:08.784 [23360] PROXY 127.0.0.1:59454 (10.119.96.231) <- 200 edgeservices.bing.com:443 (1052 bytes)
+2023-08-17 15:13:08.827 [23360] PROXY 127.0.0.1:59456 (10.119.96.231) -> GET https://edgeservices.bing.com/rp/TH8fT3nT8y791x11NM6LDPK-74U.br.js (1852 bytes)
+2023-08-17 15:13:08.874 [23360] PROXY 127.0.0.1:59456 (10.119.96.231) <- 200 edgeservices.bing.com:443 (4174 bytes)
+2023-08-17 15:13:08.989 [23360] PROXY 127.0.0.1:59454 (10.119.96.231) -> GET https://edgeservices.bing.com/rp/jGqrlcxepmhaIJKVUSFqCguDjNY.br.js (1852 bytes)
+2023-08-17 15:13:09.047 [23360] PROXY 127.0.0.1:59454 (10.119.96.231) <- 200 edgeservices.bing.com:443 (6463 bytes)
+2023-08-17 15:13:09.081 [23360] PROXY 127.0.0.1:59456 (10.119.96.231) -> GET https://edgeservices.bing.com/rp/Gass0juumFCN_7qHD2eljQzsu98.br.js (1852 bytes)
+2023-08-17 15:13:09.127 [23360] PROXY 127.0.0.1:59456 (10.119.96.231) <- 200 edgeservices.bing.com:443 (3678 bytes)
+2023-08-17 15:13:09.167 [23360] PROXY 127.0.0.1:59473 (10.119.47.149) -> POST http://ocsp.digicert.com/ (621 bytes)
+2023-08-17 15:13:09.170 [23360] PROXY resolved 'ocsp.digicert.com' to '192.229.221.95:80'
+2023-08-17 15:13:09.265 [23360] PROXY 127.0.0.1:59454 (10.119.96.231) -> GET https://edgeservices.bing.com/rp/b2PKPkozwSWxr6KVRh9XsIlmTLk.br.js (1852 bytes)
+2023-08-17 15:13:09.315 [23360] PROXY 127.0.0.1:59454 (10.119.96.231) <- 200 edgeservices.bing.com:443 (9175 bytes)
+2023-08-17 15:13:09.319 [23360] PROXY 127.0.0.1:59473 (10.119.47.149) <- 200 ocsp.digicert.com:80 (737 bytes)
+2023-08-17 15:13:09.594 [23360] PROXY 127.0.0.1:59454 (10.119.96.231) -> GET https://edgeservices.bing.com/fd/ls/l?IG=6637B8D1DA924F55ADD5E38F90470441&CID=3B05E78AC3DB6AFE0140F4FAC2AC6BCC&Type=Event.CPT&DATA={%22pp%22:{%22S%22:%22L%22,%22FC%22:797,%22BC%22:797,%22SE%22:-1,%22TC%22:-1,%22H%22:1122,%22BP%22:1122,%22CT%22:1123,%22IL%22:0},%22ad%22:[-1,-1,0,0,0,0,0],%22net%22:%22undefined%22}&P=UNSP&DA=DUBE01 (2133 bytes)
+2023-08-17 15:13:09.699 [23360] PROXY resolved 'ocsp.digicert.com' to '192.229.221.95:80'
+2023-08-17 15:13:09.701 [23360] PROXY 127.0.0.1:59475 (10.119.47.149) -> POST http://ocsp.digicert.com/ (621 bytes)
+2023-08-17 15:13:09.711 [23360] PROXY 127.0.0.1:59454 (10.119.96.231) <- 200 edgeservices.bing.com:443 (462 bytes)
+2023-08-17 15:13:09.839 [23360] PROXY 127.0.0.1:59475 (10.119.47.149) <- 200 ocsp.digicert.com:80 (737 bytes)
+2023-08-17 15:13:10.143 [23360] PROXY 127.0.0.1:59483 (10.119.47.149) -> POST http://r3.o.lencr.org/ (617 bytes)
+2023-08-17 15:13:10.208 [23360] PROXY resolved 'r3.o.lencr.org' to '195.14.151.138:80'
+2023-08-17 15:13:10.228 [23360] PROXY 127.0.0.1:59483 (10.119.47.149) <- 200 r3.o.lencr.org:80 (888 bytes)
+2023-08-17 15:13:10.392 [23360] PROXY 127.0.0.1:59456 (10.119.96.231) -> GET https://edgeservices.bing.com/rp/h1dIjMpwerSArGmygbYcRo-DkFs.br.js (1857 bytes)
+2023-08-17 15:13:10.406 [23360] PROXY resolved 'edgeservices.bing.com' to '2.18.40.143:443'
+2023-08-17 15:13:10.407 [23360] PROXY 127.0.0.1:59486 (10.119.96.231) -> POST https://edgeservices.bing.com/fd/ls/lsp.aspx? (2251 bytes)
+2023-08-17 15:13:10.454 [23360] PROXY 127.0.0.1:59456 (10.119.96.231) <- 200 edgeservices.bing.com:443 (3258 bytes)
+2023-08-17 15:13:10.587 [23360] PROXY 127.0.0.1:59486 (10.119.96.231) <- 204 edgeservices.bing.com:443 (453 bytes)
+2023-08-17 15:13:10.666 [23360] PROXY 127.0.0.1:59456 (10.119.96.231) -> GET https://edgeservices.bing.com/rp/R14ozkkie30zM6FSjzwWFp8Ffzk.br.js (1817 bytes)
+2023-08-17 15:13:10.681 [23360] PROXY resolved 'edgeservices.bing.com' to '2.18.40.143:443'
+2023-08-17 15:13:10.683 [23360] PROXY 127.0.0.1:59452 (10.119.96.231) -> GET https://edgeservices.bing.com/rp/avd7Rr-t12JcT3bkdFyaKKLavZQ.br.js (1817 bytes)
+2023-08-17 15:13:10.694 [23360] PROXY resolved 'edgeservices.bing.com' to '2.18.40.143:443'
+2023-08-17 15:13:10.695 [23360] PROXY 127.0.0.1:59483 (10.119.96.231) -> GET https://edgeservices.bing.com/rp/afmuy94Os_msjUASAibqR7Q8x84.br.js (1817 bytes)
+2023-08-17 15:13:10.744 [23360] PROXY 127.0.0.1:59456 (10.119.96.231) <- 200 edgeservices.bing.com:443 (9500 bytes)
+2023-08-17 15:13:10.812 [23360] PROXY 127.0.0.1:59452 (10.119.96.231) <- 200 edgeservices.bing.com:443 (1193 bytes)
+2023-08-17 15:13:10.825 [23360] PROXY 127.0.0.1:59483 (10.119.96.231) <- 200 edgeservices.bing.com:443 (2177 bytes)
+2023-08-17 15:13:11.052 [23360] PROXY 127.0.0.1:59452 (10.119.96.231) -> GET https://edgeservices.bing.com/ipv6test/test?FORM=MONITR (1804 bytes)
+2023-08-17 15:13:11.066 [23360] PROXY resolved 'edgeservices.bing.com' to '2.18.40.143:443'
+2023-08-17 15:13:11.068 [23360] PROXY 127.0.0.1:59492 (10.119.96.231) -> POST https://edgeservices.bing.com/web/xls.aspx (3610 bytes)
+2023-08-17 15:13:11.080 [23360] PROXY 127.0.0.1:59456 (10.119.96.231) -> GET https://www2.bing.com/ipv6test/test (1384 bytes)
+2023-08-17 15:13:11.141 [23360] PROXY resolved 'www2.bing.com' to '204.79.197.200:443'
+2023-08-17 15:13:11.301 [23360] PROXY 127.0.0.1:59452 (10.119.96.231) <- 200 edgeservices.bing.com:443 (1468 bytes)
+2023-08-17 15:13:11.373 [23360] PROXY 127.0.0.1:59492 (10.119.96.231) <- 204 edgeservices.bing.com:443 (453 bytes)
+2023-08-17 15:13:11.416 [23360] PROXY 127.0.0.1:59456 (10.119.96.231) <- 200 www2.bing.com:443 (1635 bytes)
+2023-08-17 15:13:11.995 [23360] PROXY 127.0.0.1:59456 (10.119.47.149) -> GET http://localhost:2000/start (688 bytes)
+2023-08-17 15:13:11.998 [23360] PROXY 127.0.0.1:59456 error resolving hostname, ares status: 4
+2023-08-17 15:13:11.998 [23360] PROXY 127.0.0.1:59456 (10.119.47.149) <- localhost:2000 DNS error: Domain name not found (4)
+2023-08-17 15:13:12.440 [23360] PROXY 127.0.0.1:59492 (10.119.47.149) -> GET http://localhost:2000/favicon.ico (627 bytes)
+2023-08-17 15:13:12.443 [23360] PROXY 127.0.0.1:59492 error resolving hostname, ares status: 4
+2023-08-17 15:13:12.444 [23360] PROXY 127.0.0.1:59492 (10.119.47.149) <- localhost:2000 DNS error: Domain name not found (4)
+2023-08-17 15:13:12.457 [23360] PROXY 127.0.0.1:59452 (10.119.96.231) -> GET https://login.live.com/login.srf?wa=wsignin1.0&rpsnv=11&ct=1692274388&rver=6.0.5286.0&wp=MBI_SSL&wreply=https:%2F%2fwww.bing.com%2Fsecure%2FPassport.aspx%3Fpopup%3D1%26ssl%3D1&lc=4096&id=264960&checkda=1 (1381 bytes)
+2023-08-17 15:13:12.556 [23360] PROXY resolved 'login.live.com' to '40.126.53.16:443'
+2023-08-17 15:13:13.014 [23360] PROXY 127.0.0.1:59452 (10.119.96.231) <- 302 login.live.com:443 (1248 bytes)
+2023-08-17 15:13:13.241 [23360] PROXY 127.0.0.1:59452 (10.119.96.231) -> GET https://www.bing.com/secure/Passport.aspx?popup=1&ssl=1 (1661 bytes)
+2023-08-17 15:13:13.245 [23360] PROXY resolved 'www.bing.com' to '2.18.40.134:443'
+2023-08-17 15:13:13.439 [23360] PROXY 127.0.0.1:59452 (10.119.96.231) <- 200 www.bing.com:443 (1638 bytes)
+2023-08-17 15:13:18.408 [23360] PROXY resolved 'edgeservices.bing.com' to '2.18.40.143:443'
+2023-08-17 15:13:18.410 [23360] PROXY 127.0.0.1:59528 (10.119.96.231) -> POST https://edgeservices.bing.com/web/xls.aspx (4126 bytes)
+2023-08-17 15:13:18.595 [23360] PROXY 127.0.0.1:59528 (10.119.96.231) <- 204 edgeservices.bing.com:443 (453 bytes)
+2023-08-17 15:13:30.873 [23360] PROXY 127.0.0.1:59528 (10.119.47.149) -> GET https://aus5.mozilla.org/update/3/GMP/113.0/20230504192738/WINNT_x86_64-msvc-x64/en-US/release/Windows_NT%2010.0.0.0.19043.928%20(x64)/default/default/update.xml (692 bytes)
+2023-08-17 15:13:30.917 [23360] PROXY resolved 'aus5.mozilla.org' to '35.244.181.201:443'
+2023-08-17 15:13:31.112 [23360] PROXY 127.0.0.1:59528 (10.119.47.149) <- 200 aus5.mozilla.org:443 (1193 bytes)
+2023-08-17 15:13:31.366 [23360] PROXY resolved 'r3.o.lencr.org' to '195.14.151.138:80'
+2023-08-17 15:13:31.368 [23360] PROXY 127.0.0.1:59578 (10.119.47.149) -> POST http://r3.o.lencr.org/ (617 bytes)
+2023-08-17 15:13:31.398 [23360] PROXY 127.0.0.1:59578 (10.119.47.149) <- 200 r3.o.lencr.org:80 (888 bytes)
+2023-08-17 15:13:38.317 [23360] PROXY resolved 'aus5.mozilla.org' to '35.244.181.201:443'
+2023-08-17 15:13:38.319 [23360] PROXY 127.0.0.1:59578 (10.119.47.149) -> GET https://aus5.mozilla.org/update/3/SystemAddons/113.0/20230504192738/WINNT_x86_64-msvc-x64/en-US/release/Windows_NT%2010.0.0.0.19043.928%20(x64)/default/default/update.xml (701 bytes)
+2023-08-17 15:13:38.393 [23360] PROXY resolved 'r3.o.lencr.org' to '195.14.151.138:80'
+2023-08-17 15:13:38.395 [23360] PROXY 127.0.0.1:59611 (10.119.47.149) -> POST http://r3.o.lencr.org/ (617 bytes)
+2023-08-17 15:13:38.412 [23360] PROXY 127.0.0.1:59611 (10.119.47.149) <- 200 r3.o.lencr.org:80 (889 bytes)
+2023-08-17 15:13:38.650 [23360] PROXY 127.0.0.1:59578 (10.119.47.149) <- 200 aus5.mozilla.org:443 (781 bytes)
+2023-08-17 15:13:38.889 [23360] PROXY 127.0.0.1:59578 (10.119.47.149) -> GET https://archive.mozilla.org/pub/system-addons/addons-restricted-domains/addons-restricted-domains-1.0.0-build1/addons-restricted-domains.xpi (657 bytes)
+2023-08-17 15:13:38.892 [23360] PROXY resolved 'archive.mozilla.org' to '34.117.35.28:443'
+2023-08-17 15:13:39.086 [23360] PROXY 127.0.0.1:59578 (10.119.47.149) <- 200 archive.mozilla.org:443 (13665 bytes)
+2023-08-17 15:13:41.026 [23360] PROXY resolved 'r3.o.lencr.org' to '195.14.151.138:80'
+2023-08-17 15:13:41.028 [23360] PROXY 127.0.0.1:59625 (10.119.47.149) -> POST http://r3.o.lencr.org/ (617 bytes)
+2023-08-17 15:13:41.053 [23360] PROXY 127.0.0.1:59625 (10.119.47.149) <- 200 r3.o.lencr.org:80 (888 bytes)
+2023-08-17 15:13:41.067 [23360] PROXY resolved 'r3.o.lencr.org' to '195.14.151.138:80'
+2023-08-17 15:13:41.069 [23360] PROXY 127.0.0.1:59626 (10.119.47.149) -> POST http://r3.o.lencr.org/ (617 bytes)
+2023-08-17 15:13:41.079 [23360] PROXY resolved 'r3.o.lencr.org' to '195.14.151.138:80'
+2023-08-17 15:13:41.080 [23360] PROXY 127.0.0.1:59629 (10.119.47.149) -> POST http://r3.o.lencr.org/ (617 bytes)
+2023-08-17 15:13:41.090 [23360] PROXY resolved 'r3.o.lencr.org' to '195.14.151.138:80'
+2023-08-17 15:13:41.091 [23360] PROXY 127.0.0.1:59630 (10.119.47.149) -> POST http://r3.o.lencr.org/ (617 bytes)
+2023-08-17 15:13:41.101 [23360] PROXY resolved 'r3.o.lencr.org' to '195.14.151.138:80'
+2023-08-17 15:13:41.102 [23360] PROXY 127.0.0.1:59627 (10.119.47.149) -> POST http://r3.o.lencr.org/ (617 bytes)
+2023-08-17 15:13:41.121 [23360] PROXY 127.0.0.1:59629 (10.119.47.149) <- 200 r3.o.lencr.org:80 (888 bytes)
+2023-08-17 15:13:41.122 [23360] PROXY 127.0.0.1:59630 (10.119.47.149) <- 200 r3.o.lencr.org:80 (888 bytes)
+2023-08-17 15:13:41.123 [23360] PROXY 127.0.0.1:59626 (10.119.47.149) <- 200 r3.o.lencr.org:80 (888 bytes)
+2023-08-17 15:13:41.130 [23360] PROXY 127.0.0.1:59627 (10.119.47.149) <- 200 r3.o.lencr.org:80 (888 bytes)
+2023-08-17 15:14:01.376 [23360] PROXY resolved 'edge.microsoft.com' to '204.79.197.239:443'
+2023-08-17 15:14:01.378 [23360] PROXY 127.0.0.1:59729 (10.119.96.231) -> POST https://edge.microsoft.com/componentupdater/api/v1/update?cup2key=6:Hdz_jwEvfeDJyeYD89ZHc2QvemOJKk0GAARUcgFyWLc&cup2hreq=c8be4cf3d443a056895959f8105c95092a572e10248a6233759d1e0a5d976c5c (9603 bytes)
+2023-08-17 15:14:01.640 [23360] PROXY 127.0.0.1:59729 (10.119.96.231) <- 200 edge.microsoft.com:443 (6603 bytes)
+2023-08-17 15:14:17.806 [23360] PROXY resolved 'ocsp.digicert.com' to '192.229.221.95:80'
+2023-08-17 15:14:17.809 [23360] PROXY 127.0.0.1:59729 (10.125.17.246) -> GET http://ocsp.digicert.com/ME8wTTBLMEkwRzAHBgUrDgMCGgQUwS9Fdu0VWeywXbqJv52AeOUj1BMEFOWdWTCCR1jMrPoIVDaGezq1BE3wAhAFUsfv%2FuwpK6nxOHsHr5Kf (570 bytes)
+2023-08-17 15:14:17.946 [23360] PROXY 127.0.0.1:59729 (10.125.17.246) <- 200 ocsp.digicert.com:80 (1774 bytes)
+2023-08-17 15:14:18.193 [23360] PROXY 127.0.0.1:59729 (10.125.17.246) -> GET https://gspe1-ssl.ls.apple.com/pep/gcc (464 bytes)
+2023-08-17 15:14:18.206 [23360] PROXY 127.0.0.1:59626 (10.125.17.246) -> GET https://gspe35-ssl.ls.apple.com/geo_manifest/dynamic/config?application=geod&application_version=1&country_code=US&hardware=iMacPro1,1&os=osx&os_build=21G115&os_version=12.6 (600 bytes)
+2023-08-17 15:14:18.218 [23360] PROXY 127.0.0.1:59629 (10.125.17.246) -> GET https://configuration.ls.apple.com/config/defaults?os=macos&os_version=12.6&hardware=iMacPro1,1 (525 bytes)
+2023-08-17 15:14:18.257 [23360] PROXY resolved 'gspe1-ssl.ls.apple.com' to '2.16.149.160:443'
+2023-08-17 15:14:18.268 [23360] PROXY resolved 'gspe35-ssl.ls.apple.com' to '2.16.228.135:443'
+2023-08-17 15:14:18.291 [23360] PROXY resolved 'configuration.ls.apple.com' to '2.16.229.45:443'
+2023-08-17 15:14:18.442 [23360] PROXY 127.0.0.1:59729 (10.125.17.246) <- 200 gspe1-ssl.ls.apple.com:443 (126 bytes)
+2023-08-17 15:14:18.477 [23360] PROXY 127.0.0.1:59629 (10.125.17.246) <- 200 configuration.ls.apple.com:443 (2403 bytes)
+2023-08-17 15:14:18.563 [23360] PROXY 127.0.0.1:59626 (10.125.17.246) <- 200 gspe35-ssl.ls.apple.com:443 (79648 bytes)
+2023-08-17 15:14:18.790 [23360] PROXY resolved 'gspe35-ssl.ls.apple.com' to '2.16.228.135:443'
+2023-08-17 15:14:18.792 [23360] PROXY 127.0.0.1:59629 (10.125.17.246) -> GET https://gspe35-ssl.ls.apple.com/geo_manifest/dynamic/config?application=geod&application_version=1&country_code=CY&hardware=iMacPro1,1&os=osx&os_build=21G115&os_version=12.6 (600 bytes)
+2023-08-17 15:14:19.107 [23360] PROXY 127.0.0.1:59629 (10.125.17.246) <- 200 gspe35-ssl.ls.apple.com:443 (79648 bytes)
+2023-08-17 15:14:19.483 [23360] PROXY 127.0.0.1:59629 (10.125.17.246) -> GET https://gspe21-ssl.ls.apple.com/config/search-attribution-1031 (489 bytes)
+2023-08-17 15:14:19.497 [23360] PROXY 127.0.0.1:59729 (10.125.17.246) -> GET https://gspe21-ssl.ls.apple.com/stylesheet/default-37491.styl?accessKey=1692278657_0zjYZk2v4CxvP54X_%2BvgKozwlUHksMIEebBZhHRLXpcVwfWgGQObEnx0dVI2qfJnfjbPKGFIjqfxkIOcTm25x%2FTWkvo15IYc87Y6FlQ%3D%3D (623 bytes)
+2023-08-17 15:14:19.512 [23360] PROXY 127.0.0.1:59630 (10.125.17.246) -> GET https://gspe21-ssl.ls.apple.com/stylesheet/default-40064@2x.styl?accessKey=1692278657_KYNrkDlKbJx9QL5G_R8IQebrJipRcwgC2uE52uimv%2Bcx2EMqFLmv4dK18LpRajvi0LAQiVTuH9BOcIUVN7TLD3YmtUsCZiuQmpKhggg%3D%3D (624 bytes)
+2023-08-17 15:14:19.525 [23360] PROXY 127.0.0.1:59625 (10.125.17.246) -> GET https://gspe21-ssl.ls.apple.com/stylesheet/default-iosmac-5148@2x.styl?accessKey=1692278657_nBnZWMT3HXA6ndee_2EWdKFOsOEOcWF883aSINv%2FzTGSHOtcU4OQ62dhAVHGwW1THIJLnfSu41Ow1g5JgKGUW1mIHHR%2BkvzidCq36NVbUfPD60u6IRHPnN%2BjZej0%3D (652 bytes)
+2023-08-17 15:14:19.543 [23360] PROXY resolved 'gspe21-ssl.ls.apple.com' to '2.16.228.135:443'
+2023-08-17 15:14:19.544 [23360] PROXY resolved 'gspe21-ssl.ls.apple.com' to '2.16.228.135:443'
+2023-08-17 15:14:19.545 [23360] PROXY resolved 'gspe21-ssl.ls.apple.com' to '2.16.228.135:443'
+2023-08-17 15:14:19.546 [23360] PROXY resolved 'gspe21-ssl.ls.apple.com' to '2.16.228.135:443'
+2023-08-17 15:14:19.728 [23360] PROXY 127.0.0.1:59629 (10.125.17.246) <- 200 gspe21-ssl.ls.apple.com:443 (6521 bytes)
+2023-08-17 15:14:19.921 [23360] PROXY 127.0.0.1:59625 (10.125.17.246) <- 200 gspe21-ssl.ls.apple.com:443 (469860 bytes)
+2023-08-17 15:14:19.924 [23360] PROXY 127.0.0.1:59729 (10.125.17.246) <- 200 gspe21-ssl.ls.apple.com:443 (483483 bytes)
+2023-08-17 15:14:19.947 [23360] PROXY 127.0.0.1:59630 (10.125.17.246) <- 200 gspe21-ssl.ls.apple.com:443 (483938 bytes)
+2023-08-17 15:14:21.221 [23360] PROXY 127.0.0.1:59625 (10.125.17.246) -> GET https://gspe21-ssl.ls.apple.com/stylesheet/default-search-4249.styl?accessKey=1692278659_Hj1KnllN3EJSA5BW_FxXmAPldOMcr1cciE4vDs9U04VCd49DlRa%2FKPnQOjq8bvGKlI8xuPucJDXi8LhdZZKbMlvVU5li%2BtdSRbKrC9w%3D%3D (629 bytes)
+2023-08-17 15:14:21.228 [23360] PROXY 127.0.0.1:59630 (10.125.17.246) -> GET https://gspe21-ssl.ls.apple.com/stylesheet/default-iosmac-5151.styl?accessKey=1692278659_JqCmrOT2eMQAciXd_TPgSsbIjPCaWxy9%2BjFXS0oRhfR8z13%2FxWGhGY5qC%2FTzElzbPd5wrY3mEs7ioI4%2BpwaTWfICpaN8aCAYaJrHMlw%3D%3D (633 bytes)
+2023-08-17 15:14:21.279 [23360] PROXY 127.0.0.1:59625 (10.125.17.246) <- 200 gspe21-ssl.ls.apple.com:443 (4670 bytes)
+2023-08-17 15:14:21.317 [23360] PROXY 127.0.0.1:59729 (10.125.17.246) -> GET https://gspe21-ssl.ls.apple.com/stylesheet/globe-default-6995@2x.styl?accessKey=1692278659_gX0BqSZ6KKIJDaHv_bir1Ovs1y7nwbz4C5ItIvHKzJ7F8jQBfk5iCBryUoK5Nmmio7aCw7M%2FZZB0PRSXAKyMl5NoRrxLx%2BmCh83P3tosL6ZOFWrip4YKi9gP1zxA%3D (649 bytes)
+2023-08-17 15:14:21.345 [23360] PROXY 127.0.0.1:59630 (10.125.17.246) <- 200 gspe21-ssl.ls.apple.com:443 (469859 bytes)
+2023-08-17 15:14:21.385 [23360] PROXY 127.0.0.1:59729 (10.125.17.246) <- 200 gspe21-ssl.ls.apple.com:443 (102642 bytes)
+2023-08-17 15:14:21.588 [23360] PROXY 127.0.0.1:59625 (10.125.17.246) -> GET https://gspe21-ssl.ls.apple.com/stylesheet/globe-default-7021.styl?accessKey=1692278660_b2WG9zVuULPXSeMN_rCCWxAiL0vgS%2FbSl3Z7zYozCXh18Tq%2B%2FTUfkQYMtwZrirzMwbZK8Bldk9hAjLdZv8xk%2FS%2FsV6D44nPzwTdTaBQ%3D%3D (634 bytes)
+2023-08-17 15:14:21.674 [23360] PROXY 127.0.0.1:59625 (10.125.17.246) <- 200 gspe21-ssl.ls.apple.com:443 (102483 bytes)
+2023-08-17 15:14:21.997 [23360] PROXY 127.0.0.1:59729 (10.125.17.246) -> GET https://gspe21-ssl.ls.apple.com/stylesheet/globe-default-iosmac-1845@2x.styl?accessKey=1692278660_hfeAZpNdeg2pQpG4_HRXAMtLKXBui6j3gPb3bah9TcjUPaGzv2%2FiqXg2ANKZCDi2tKjbFYB8xNaEEDMzMd7NMtpNbqnf7Lyf4WOwxUsHbiCszdJTXplZ7majJ1FI%3D (654 bytes)
+2023-08-17 15:14:22.059 [23360] PROXY 127.0.0.1:59625 (10.125.17.246) -> GET https://gspe21-ssl.ls.apple.com/stylesheet/globe-default-iosmac-1857.styl?accessKey=1692278660_iKyyBq00nmd54ED8_WTebmWLhkiQ7hsbVqeVGItVjvUznqY%2Bt7zjQ8jTNyZg44H5STu%2FcBaaqxgO17HW6fqyVwxEU%2FMSmfIzT%2FSgypoAmBGWN4OXl2z2ahFPlES0%3D (657 bytes)
+2023-08-17 15:14:22.062 [23360] PROXY 127.0.0.1:59729 (10.125.17.246) <- 200 gspe21-ssl.ls.apple.com:443 (92431 bytes)
+2023-08-17 15:14:22.157 [23360] PROXY 127.0.0.1:59625 (10.125.17.246) <- 200 gspe21-ssl.ls.apple.com:443 (92090 bytes)
+2023-08-17 15:14:22.187 [23360] PROXY 127.0.0.1:59630 (10.125.17.246) -> GET https://gspe21-ssl.ls.apple.com/stylesheet/scene-886@2x.styl?accessKey=1692278660_0vxKNVXRBVziB8bQ_VvMJuspQX3C4GaM9WuKZuQhWXaG%2Bt3rsRKqQbKIWs25NHCGre2bWJEfsfyff22fMteoGyFGJ1ZeJOLwAQtFeMQ%3D%3D (620 bytes)
+2023-08-17 15:14:22.238 [23360] PROXY 127.0.0.1:59630 (10.125.17.246) <- 200 gspe21-ssl.ls.apple.com:443 (16078 bytes)
+2023-08-17 15:14:22.444 [23360] PROXY 127.0.0.1:59630 (10.125.17.246) -> GET https://gspe21-ssl.ls.apple.com/icon/Default-15908.iconmappack?accessKey=1692278660_noFJhWoAfBfyCQKi_I1AdESDg6Wv%2FGaaGdRAqvAGQ4VwBQFbDmHb8MkHOVgDYgAhGVgSJzdSrJmQAwrW1GC7eU97hKpzlyLq1%2FfmPtA%3D%3D (624 bytes)
+2023-08-17 15:14:22.514 [23360] PROXY 127.0.0.1:59630 (10.125.17.246) <- 200 gspe21-ssl.ls.apple.com:443 (142474 bytes)
+2023-08-17 15:14:22.532 [23360] PROXY 127.0.0.1:59625 (10.125.17.246) -> GET https://gspe21-ssl.ls.apple.com/icon/Default-17896@2x.iconmappack?accessKey=1692278660_Z9PHW5UeRI9gb0KV_CKhNU4PM4PkUmTFGP48NOPGUYX7jeqUBmq1wmQalLIH0PeezHvXOEdfPybDQXsuIFHGz9d9E2xnkZkCpxGgvvw%3D%3D (623 bytes)
+2023-08-17 15:14:22.580 [23360] PROXY 127.0.0.1:59729 (10.125.17.246) -> GET https://gspe21-ssl.ls.apple.com/icon/Default_Icons-14334@2x.icondatapack?accessKey=1692278661_qka6BD6FrV8LKRIW_GGvE8%2FRraz4VXDXKtaEwETnV5teiUjWapChjgf0Xe6Gc82044U%2Bok8%2F4X6RGc7lssiskblF3TGEENrxbrGuVuQz1hhO7WLhYrky%2FXgbfmoI%3D (656 bytes)
+2023-08-17 15:14:22.594 [23360] PROXY 127.0.0.1:59625 (10.125.17.246) <- 200 gspe21-ssl.ls.apple.com:443 (142472 bytes)
+2023-08-17 15:14:22.902 [23360] PROXY 127.0.0.1:59630 (10.125.17.246) -> GET https://gspe21-ssl.ls.apple.com/icon/Default_Icons-14361@2x.iconconfigpack?accessKey=1692278661_s7jojMn7HjfM8U6q_H41RgX3ywhv22xGHeFLwVnjJDb3%2FaWPxpVclqAd5rZLFJ6YZu2OlAZ3kQ0055EEUO9TTuntM%2FJXjofyO1HaJ8BcveCzzEPTBQ9fi30NMIkY%3D (654 bytes)
+2023-08-17 15:14:23.036 [23360] PROXY 127.0.0.1:59729 (10.125.17.246) <- 200 gspe21-ssl.ls.apple.com:443 (2832970 bytes)
+2023-08-17 15:14:23.077 [23360] PROXY 127.0.0.1:59625 (10.125.17.246) -> GET https://gspe21-ssl.ls.apple.com/icon/Default_Icons-14532.icondatapack?accessKey=1692278661_RJzwttZDJCivFwKE_zK06bl7g9C4GGpwiC%2BpWzZkXQketvL0SUdRdtCm7py50iGghaTuDxxkywMO1esOOLuUKMJSUFXBJ68DhPMt8PgsfOFnBGrnTIaGXRemPnpc%3D (647 bytes)
+2023-08-17 15:14:23.438 [23360] PROXY 127.0.0.1:59625 (10.125.17.246) <- 200 gspe21-ssl.ls.apple.com:443 (1149952 bytes)
+2023-08-17 15:14:23.455 [23360] PROXY 127.0.0.1:59630 (10.125.17.246) <- 200 gspe21-ssl.ls.apple.com:443 (1809434 bytes)
+2023-08-17 15:14:25.549 [23360] PROXY 127.0.0.1:59729 (10.125.17.246) -> GET https://gspe21-ssl.ls.apple.com/icon/Default_Icons-15283.iconconfigpack?accessKey=1692278663_vLkDZtQqFquueJqD_XDn5iI6c0sa7hl9ML2OGs2TpH0Zz9FF6LBrYVVF1Uf1Rk3hc9NHA0LliEi1poOCoh3pf03UM6OtiG6Jokvs2CTLG1FPuWG%2Fh9ZOi1DAI01Q%3D (649 bytes)
+2023-08-17 15:14:25.997 [23360] PROXY 127.0.0.1:59729 (10.125.17.246) <- 200 gspe21-ssl.ls.apple.com:443 (1773546 bytes)
+2023-08-17 15:14:27.676 [23360] PROXY 127.0.0.1:59630 (10.125.17.246) -> GET https://gspe21-ssl.ls.apple.com/icon/Default_Shields-1512.icondatapack?accessKey=1692278666_aUA75bkOb50Uylha_gwYoKjIByTpqrBp0K%2FxINpPTUdIFN4IipZyoZ%2F2qZCCFhVB1RUzfhJ1ycc%2BO4mO%2FG2iebay5eTXXl%2BidoNlgL%2BegmexMKMJ5PSE7NUiu%2BtA%3D (660 bytes)
+2023-08-17 15:14:27.757 [23360] PROXY 127.0.0.1:59630 (10.125.17.246) <- 200 gspe21-ssl.ls.apple.com:443 (241014 bytes)
+2023-08-17 15:14:27.772 [23360] PROXY 127.0.0.1:59625 (10.125.17.246) -> GET https://gspe21-ssl.ls.apple.com/icon/Default_Shields-1545.iconconfigpack?accessKey=1692278666_l57zP9ugfYdhH5Xx_s8E%2Brp1kH0pSSNcsOPCHMa3xiCZxfRFVhqMBquNszKh4ZI6w1OMlMFrGqOEp9uXRALPS5XZ1NLSOmI5%2Bfq1K%2Bni2ahNyRO5qnBtvmSxCceY%3D (654 bytes)
+2023-08-17 15:14:27.826 [23360] PROXY 127.0.0.1:59625 (10.125.17.246) <- 200 gspe21-ssl.ls.apple.com:443 (79909 bytes)
+2023-08-17 15:14:28.961 [23360] PROXY 127.0.0.1:59729 (10.125.17.246) -> GET https://gspe21-ssl.ls.apple.com/icon/Default_Shields-602@2x.icondatapack?accessKey=1692278667_85SO7YdOeNjMVjzb_F%2BOzm82dyFxLUDZiVrcYkRY0IpFkhOEZzdeqKM%2FLIdNzq%2F6aiZBlw9kLjdXCzqnf325GG6DciK3dMlN%2B1cYQRuDsYBa0xUScrAXtZaap%2Fz0%3D (658 bytes)
+2023-08-17 15:14:29.053 [23360] PROXY 127.0.0.1:59729 (10.125.17.246) <- 200 gspe21-ssl.ls.apple.com:443 (631951 bytes)
+2023-08-17 15:14:29.111 [23360] PROXY 127.0.0.1:59625 (10.125.17.246) -> GET https://gspe21-ssl.ls.apple.com/icon/Default_Shields-605@2x.iconconfigpack?accessKey=1692278667_HSSD2qHw3aJk31Tp_CrovGJLXpGjHeQaSGY%2Bt%2B7Y1WkR4429W2B%2F%2BPjQzcYm4D4gKzP0neKgWbIk2i9uLi2x7i42S1RZAqSijp0F9IWNFL0tMDyDb4VnC4QkAf78%3D (658 bytes)
+2023-08-17 15:14:29.156 [23360] PROXY 127.0.0.1:59630 (10.125.17.246) -> GET https://gspe21-ssl.ls.apple.com/icon/Guides_Icons_Default-284@2x.iconconfigpack?accessKey=1692278667_x4aBI857cYwwqfkd_o7RUnJ%2B%2BL3VmYEQydVBNwZ5uPDfUzFjcOGXA66svB%2BIVrGpYa9JmGxLdYVbYWUc6ZtpyEGt3Dkl3JfMHq794sWnILfL3YmQDf59CXP%2Bmx8s%3D (663 bytes)
+2023-08-17 15:14:29.164 [23360] PROXY 127.0.0.1:59625 (10.125.17.246) <- 200 gspe21-ssl.ls.apple.com:443 (82417 bytes)
+2023-08-17 15:14:29.204 [23360] PROXY 127.0.0.1:59630 (10.125.17.246) <- 200 gspe21-ssl.ls.apple.com:443 (6933 bytes)
+2023-08-17 15:14:29.561 [23360] PROXY 127.0.0.1:59729 (10.125.17.246) -> GET https://gspe21-ssl.ls.apple.com/icon/Guides_Icons_Default-285@2x.icondatapack?accessKey=1692278667_ran3dCoUJqRfzqQs_0W9bpyacRAFKIbCnm6HlHAWHV8n0vXnmFhkC8s64H7vIw2GC2kE7rHHD3ymfjUhP87wZ4xJthbEYVMzYPCcm30IzFJaaNk5Mv4LXo0kPYVI%3D (653 bytes)
+2023-08-17 15:14:29.735 [23360] PROXY 127.0.0.1:59630 (10.125.17.246) -> GET https://gspe21-ssl.ls.apple.com/icon/Guides_Icons_Default-289.iconconfigpack?accessKey=1692278668_Ov96YPeTc06lFlef_nUga%2FzNGSjPu7uPvEdsYxzGl93sTZUuu7GsykncCWcK85BhFyFP3pniU9jpnkS0dCEYZbzBnANB4QYaY9hOaoetG0NxAU3%2BcSBMe%2B9FVWZs%3D (658 bytes)
+2023-08-17 15:14:29.752 [23360] PROXY 127.0.0.1:59625 (10.125.17.246) -> GET https://gspe21-ssl.ls.apple.com/icon/Guides_Icons_Default-290.icondatapack?accessKey=1692278668_CdKCGTvJN04eGjeC_8jbccLZpQlS9EHemybWQK%2FUBaHqDICbOz7JLscy%2BJCc2sCSG3FsVuEE4d70TEtwiriebqHkiRoBa3T8bF7EXwqCUZ23M9iMWU27uyAQJlHc%3D (654 bytes)
+2023-08-17 15:14:29.782 [23360] PROXY 127.0.0.1:59630 (10.125.17.246) <- 200 gspe21-ssl.ls.apple.com:443 (6969 bytes)
+2023-08-17 15:14:30.233 [23360] PROXY 127.0.0.1:59625 (10.125.17.246) <- 200 gspe21-ssl.ls.apple.com:443 (3581910 bytes)
+2023-08-17 15:14:30.566 [23360] PROXY 127.0.0.1:59729 (10.125.17.246) <- 200 gspe21-ssl.ls.apple.com:443 (9631721 bytes)
+2023-08-17 15:14:31.119 [23360] PROXY 127.0.0.1:59630 (10.125.17.246) -> GET https://gspe21-ssl.ls.apple.com/texture/checker-1.png?accessKey=1692278669_2Ujf99hUtExAIKJZ_EkXerNnl8%2BAtiqw9VfhlDKS%2BLEVI3LQryOR6ydUNt2JYgkrAo8Jyd9yz9Fc4qwjRfaT2kQFh0JdYSPZYmxULnw%3D%3D (615 bytes)
+2023-08-17 15:14:31.168 [23360] PROXY 127.0.0.1:59630 (10.125.17.246) <- 200 gspe21-ssl.ls.apple.com:443 (535 bytes)
+2023-08-17 15:14:33.664 [23360] PROXY 127.0.0.1:59625 (10.125.17.246) -> GET https://gspe21-ssl.ls.apple.com/texture/checker-1@2x.png?accessKey=1692278672_F9RJd2hhfBYiolss_dz9WqN54nI46KonNqpLQbh42I9Yv0sJY010X6aDD%2BvSM698UMyZgXcLgOC%2F%2BLndLKF4bfPJbleaB8hbLcaTo5A%3D%3D (620 bytes)
+2023-08-17 15:14:33.718 [23360] PROXY 127.0.0.1:59625 (10.125.17.246) <- 200 gspe21-ssl.ls.apple.com:443 (679 bytes)
+2023-08-17 15:14:34.198 [23360] PROXY 127.0.0.1:59872 (10.125.17.246) -> POST https://gsp-ssl.ls.apple.com/ab.arpc (651 bytes)
+2023-08-17 15:14:34.277 [23360] PROXY resolved 'gsp-ssl.ls.apple.com' to '17.253.57.209:443'
+2023-08-17 15:14:34.540 [23360] PROXY 127.0.0.1:59872 (10.125.17.246) <- 200 gsp-ssl.ls.apple.com:443 (404 bytes)
+2023-08-17 15:14:34.545 [23360] PROXY 127.0.0.1:59729 (10.125.17.246) -> GET https://gspe21-ssl.ls.apple.com/texture/solid-fill-1.png?accessKey=1692278672_fBDo1QU4Z91JwNSU_i5ehlfBxVHVq%2BTTKQZ2d9aFvZ%2F7m7%2BbtOtECp1Zv%2B36oekkckb%2F23qEvnlevrd3pq7nwWOGZxu6UqYuatQPdUA%3D%3D (624 bytes)
+2023-08-17 15:14:34.559 [23360] PROXY 127.0.0.1:59625 (10.125.17.246) -> GET https://gspe21-ssl.ls.apple.com/texture/solid-fill-1@2x.png?accessKey=1692278672_ttThaJhUyyBxLcdI_EQGQGv0m%2BuQchko9jjkWZOerrspMbIzy38XEPDToSAAijWpu5OkgY0XtrW%2Bw1AP8mBlqJYGd81wmWZXgpqQBQg%3D%3D (621 bytes)
+2023-08-17 15:14:34.591 [23360] PROXY 127.0.0.1:59729 (10.125.17.246) <- 200 gspe21-ssl.ls.apple.com:443 (1151 bytes)
+2023-08-17 15:14:34.611 [23360] PROXY 127.0.0.1:59625 (10.125.17.246) <- 200 gspe21-ssl.ls.apple.com:443 (1152 bytes)
+2023-08-17 15:14:34.616 [23360] PROXY 127.0.0.1:59630 (10.125.17.246) -> GET https://gspe21-ssl.ls.apple.com/font/SFDisplayShields-Bold-1.otf?accessKey=1692278673_adsuYyWtJEdMcHGc_65lco405twG%2FEGdjjmp5PoCC8nA9BsMdDRO7wMfov867GeP0nvN9aRyQclP%2FWCDmmonOP7IyDf%2FGy0c95z7E%2BA%3D%3D (630 bytes)
+2023-08-17 15:14:34.668 [23360] PROXY 127.0.0.1:59630 (10.125.17.246) <- 200 gspe21-ssl.ls.apple.com:443 (4529 bytes)
+2023-08-17 15:14:34.917 [23360] PROXY 127.0.0.1:59630 (10.125.17.246) -> GET https://gspe21-ssl.ls.apple.com/xml/altitude-1120.xml?accessKey=1692278673_5JuooBUiZrpoQvP2_xD54baEX8oxI%2Fo5hVXR8%2FgIl18Wilb6Opsx0ya%2Bawiaia0YBVUzVH6t0QxXswYVqI1g5qBJi8HmYg6u2jLcsfA%3D%3D (617 bytes)
+2023-08-17 15:14:34.952 [23360] PROXY 127.0.0.1:59625 (10.125.17.246) -> GET https://gspe21-ssl.ls.apple.com/xml/supportedCountriesDirections-23.plist?accessKey=1692278673_pNjoLTvS24xAhDJz_UUHY%2B8AXAFD0BzRURPjWRBZ0zgHfcDWTf2ubu3NAc2MapIs76jUNIIkD0RucmtF0X7CZNr6u5LpvJNN1Aaw4Sn1qm8BdFwThEAU%2B6TBiBHo%3D (653 bytes)
+2023-08-17 15:14:34.979 [23360] PROXY 127.0.0.1:59630 (10.125.17.246) <- 200 gspe21-ssl.ls.apple.com:443 (34815 bytes)
+2023-08-17 15:14:35.006 [23360] PROXY 127.0.0.1:59729 (10.125.17.246) -> GET https://gspe21-ssl.ls.apple.com/xml/supportedCountriesEVDirections-16.plist?accessKey=1692278673_83kdKBJOLtCbIAIp_HXRlrAee3%2B63yNKiw0e4IDpqy29jU4zyRfeIrgUvwJexLoIiBki7ATG7cmtA76oEQMEiLDjOyVAQXngcQfgL9gnHuLFoSKGEGRmeYzezWzQ%3D (653 bytes)
+2023-08-17 15:14:35.045 [23360] PROXY 127.0.0.1:59625 (10.125.17.246) <- 200 gspe21-ssl.ls.apple.com:443 (878 bytes)
+2023-08-17 15:14:35.054 [23360] PROXY 127.0.0.1:59729 (10.125.17.246) <- 200 gspe21-ssl.ls.apple.com:443 (1108 bytes)
+2023-08-17 15:14:35.346 [23360] PROXY 127.0.0.1:59729 (10.125.17.246) -> GET https://gspe21-ssl.ls.apple.com/xml/supportedCountriesTraffic-7.plist?accessKey=1692278673_LebfU3JUpfUOOcxn_297zu%2BP%2Fu1rv2efrgbtY8%2BWDYhhFsMWe%2FuyU5O5KoLQiYUySkDYH7LMsL3r%2F1%2B0VM2MfLJVSxGcEQhdkTxXc2uontAPFtvKjZMgAUMQmrAM%3D (657 bytes)
+2023-08-17 15:14:35.373 [23360] PROXY 127.0.0.1:59625 (10.125.17.246) -> GET https://gspe21-ssl.ls.apple.com/other/publisher_attribution_manifest_index-62.pb?accessKey=1692278673_BPTZJd0532JVlNFj_ewnLzfNKBEgvpRSmYlLuYQqFTfB8Cq3TUltKGYGarMPysgViMdmvTUZJim1kC7C2eVAsQhGfxOlMMBJ3RC0UbfGGpsy527%2FqPTwv5Pmxmp0%3D (658 bytes)
+2023-08-17 15:14:35.377 [23360] PROXY 127.0.0.1:59630 (10.125.17.246) -> GET https://gspe21-ssl.ls.apple.com/other/publisher_attribution_dot_coms-75.pb?accessKey=1692278673_8OE3pBg3hIUmAOCq_CtCsg3NcX486M2%2FKrV08LjlOui1ySTDjkQn8r4vV54MBHQIPAiSXVlkc1yz1L8majGt%2BRBHPB0NRFX%2BV0DsLn3MYtaJWhZ2q2F9G9GDVbxE%3D (656 bytes)
+2023-08-17 15:14:35.393 [23360] PROXY 127.0.0.1:59729 (10.125.17.246) <- 200 gspe21-ssl.ls.apple.com:443 (712 bytes)
+2023-08-17 15:14:35.423 [23360] PROXY 127.0.0.1:59625 (10.125.17.246) <- 200 gspe21-ssl.ls.apple.com:443 (1634 bytes)
+2023-08-17 15:14:35.424 [23360] PROXY 127.0.0.1:59630 (10.125.17.246) <- 200 gspe21-ssl.ls.apple.com:443 (10558 bytes)
+2023-08-17 15:14:35.725 [23360] PROXY 127.0.0.1:59630 (10.125.17.246) -> GET https://gspe21-ssl.ls.apple.com/other/supportedEVInfo-20.json?accessKey=1692278674_hCvVMUEbzA13obeW_DQ11W1S%2BGqjPdkeEoayDm3v7KfO%2FbJ4Zr7NSsVdQhBo1cdFMMGfwwmQJyck5quxL1Mec3bMV0ANTkz4%2F6iAc9Q%3D%3D (625 bytes)
+2023-08-17 15:14:35.741 [23360] PROXY 127.0.0.1:59625 (10.125.17.246) -> GET https://gspe21-ssl.ls.apple.com/attributionlogo/tomtom-mask-3.png?accessKey=1692278674_QGlE2ORr8lPf0QCz_6G%2BBGwhQdgoVoZoIBTs9gbNjf3jtMw5b2tHhSpqQg4J%2FVM0WfeYAolKg2GQ37oigvpeQ6ksHpByo%2FFuQ8WUNSA%3D%3D (629 bytes)
+2023-08-17 15:14:35.761 [23360] PROXY 127.0.0.1:59729 (10.125.17.246) -> GET https://gspe21-ssl.ls.apple.com/attributionlogo/tomtom-mask-4@2x.png?accessKey=1692278674_an4uojU59u90OOzt_HkIBPso5UFF2x1c74CS4LU29%2BrCR0Wq4tiMQwivyJRdjyqe%2FigK%2FMu0StDHKFVni4CgOEqi40rh66ji4yv8l3w%3D%3D (632 bytes)
+2023-08-17 15:14:35.825 [23360] PROXY 127.0.0.1:59630 (10.125.17.246) <- 200 gspe21-ssl.ls.apple.com:443 (1083 bytes)
+2023-08-17 15:14:35.831 [23360] PROXY 127.0.0.1:59729 (10.125.17.246) <- 200 gspe21-ssl.ls.apple.com:443 (4218 bytes)
+2023-08-17 15:14:35.833 [23360] PROXY 127.0.0.1:59625 (10.125.17.246) <- 200 gspe21-ssl.ls.apple.com:443 (2259 bytes)
+2023-08-17 15:14:36.205 [23360] PROXY resolved 'gspe35-ssl.ls.apple.com' to '2.16.228.135:443'
+2023-08-17 15:14:36.207 [23360] PROXY 127.0.0.1:59729 (10.125.17.246) -> GET https://gspe35-ssl.ls.apple.com/geo_manifest/dynamic/config?application=geod&application_version=1&country_code=CY&hardware=iMacPro1,1&os=osx&os_build=21G115&os_version=12.6 (600 bytes)
+2023-08-17 15:14:36.487 [23360] PROXY 127.0.0.1:59729 (10.125.17.246) <- 200 gspe35-ssl.ls.apple.com:443 (79648 bytes)
+2023-08-17 15:15:11.701 [23360] PROXY 127.0.0.1:59729 (10.119.96.231) -> GET https://edge.microsoft.com/extensiondiagnostic/v1/activitystatus?x=id%3Dahokoikenoafgppiblgpenaaaolecifn%26v%3D1.2.0&x=id%3Dbhmhibnbialendcafinliemndanacfaj%26v%3D1.4.12&x=id%3Dbobbggphonhgdonfdibkfipfepfcildj%26v%3D1.0.3&x=id%3Dceaifoolopnigfpidlheoagpheiplgii%26v%3D1.4.13&x=id%3Dcjneempfhkonkkbcmnfdibgobmhbagaj%26v%3D1.5.13&x=id%3Ddabfebgaghanlbehmkmaflipiohdimmc%26v%3D1.0.3&x=id%3Ddcaajljecejllikfgbhjdgeognacjkkp%26v%3D1.3.20&x=id%3Ddmbljphlfghcnbohaoffiedmodfmkmol%26v%3D1.0.3&x=id%3Dehlmnljdoejdahfjdfobmpfancoibmig%26v%3D1.3.14&x=id%3Deijpepilkjkofamihbmjcnihgpbebafj%26v%3D1.0.10&x=id%3Denkoeamdnimieoooocohgbdajhhkajko%26v%3D1.0.7&x=id%3Dfjngpfnaikknjdhkckmncgicobbkcnle%26v%3D1.1.11&x=id%3Dgbihlnbpmfkodghomcinpblknjhneknc%26v%3D1.4.9&x=id%3Dgbmoeijgfngecijpcnbooedokgafmmji%26v%3D1.7.0&x=id%3Dgecfnmoodchdkebjjffmdcmeghkflpib%26v%3D1.7.30&x=id%3Dgekagaaiohabmaknhkbaofhhedhelemf%26v%3D1.4.12&x=id%3Dghglcnachgghkhbafjogogiggghcpjig%26v%3D1.0.3&x=id%3Dhciemgmhplhpinoohcjpafmncmjapioh%26v%3D1.0.3&x=id%3Dhloomjjkinpbjldhobfkfdamkmikjmdo%26v%3D1.4.11&x=id%3Dhmlhageoffiiefnmojcgoagebofoifpl%26v%3D1.4.14&x=id%3Djbleckejnaboogigodiafflhkajdmpcl%26v%3D1.3.6&x=id%3Djlipacegilfgfpgkefbjcncbfcoeecgj%26v%3D1.0.5&x=id%3Djpfjdekhebcolnfkpicpciaknbgcdcbm%26v%3D1.0.3&x=id%3Dkfihiegbjaloebkmglnjnljoljgkkchm%26v%3D1.9.10&x=id%3Dkhffkadolmfbdgahbabbhipadklfmhgf%26v%3D1.5.14&x=id%3Dkjncpkplfnolibapodobnnjfgmjmiaba%26v%3D1.4.12&x=id%3Dkkobcodijbdelbnhbfkkfncbeildnpie%26v%3D1.0.3&x=id%3Dkmojgmpmopiiagdfbilgognmlegkonbk%26v%3D1.4.13&x=id%3Dnkbndigcebkoaejohleckhekfmcecfja%26v%3D1.6.8&x=id%3Dnnpnekncnhiglbokoiffmejlimgmgoam%26v%3D1.0.3&x=id%3Dofefcgjbeghpigppfmkologfjadafddi%26v%3D1.1.17&x=id%3Dojmnomejplkgljjhjindfoilnmobmihe%26v%3D1.0.12&x=id%3Dolkdlefmaniacnmgofabnpmomgcpdaip%26v%3D1.0.3&x=id%3Dolmhchkiafniffcaiciiomfdplnmklak%26v%3D1.5.4&x=id%3Dpencekojiebcjhifbkfdncgmmooepclc%26v%3D1.0.4&x=id%3Dppnnjfpaneghjbcepgedmlcgmfgkjhah%26v%3D1.0.3 (2530 bytes)
+2023-08-17 15:15:11.746 [23360] PROXY resolved 'edge.microsoft.com' to '204.79.197.239:443'
+2023-08-17 15:15:12.012 [23360] PROXY 127.0.0.1:59729 (10.119.96.231) <- 200 edge.microsoft.com:443 (3712 bytes)
+2023-08-17 15:15:33.861 [23360] PROXY 127.0.0.1:60118 (10.125.17.246) -> POST https://gsp64-ssl.ls.apple.com/hvr/v3/use (1148 bytes)
+2023-08-17 15:15:33.911 [23360] PROXY resolved 'gsp64-ssl.ls.apple.com' to '17.36.206.8:443'
+2023-08-17 15:15:34.499 [23360] PROXY 127.0.0.1:60118 (10.125.17.246) <- 200 gsp64-ssl.ls.apple.com:443 (269 bytes)
+2023-08-17 15:16:01.226 [23360] PROXY resolved 'edge.microsoft.com' to '204.79.197.239:443'
+2023-08-17 15:16:01.228 [23360] PROXY 127.0.0.1:60118 (10.119.96.231) -> GET https://edge.microsoft.com/entityextractiontemplates/api/v1/assets/find-assets?name=addressbar_uu_files.en-us&version=1.*.*&channel=canary&key=d414dd4f9db345fa8003e32adc81b362 (751 bytes)
+2023-08-17 15:16:01.443 [23360] PROXY 127.0.0.1:60118 (10.119.96.231) <- 200 edge.microsoft.com:443 (708 bytes)
+2023-08-17 15:23:06.891 [23360] PROXY 127.0.0.1:62157 (10.119.96.231) -> GET https://edge.microsoft.com/entityextractiontemplates/api/v1/assets/find-assets?name=signal_triggers&version=1.10.*&channel=canary&key=d414dd4f9db345fa8003e32adc81b362 (749 bytes)
+2023-08-17 15:23:06.934 [23360] PROXY resolved 'edge.microsoft.com' to '204.79.197.239:443'
+2023-08-17 15:23:07.188 [23360] PROXY 127.0.0.1:62157 (10.119.96.231) <- 200 edge.microsoft.com:443 (696 bytes)
+2023-08-17 15:25:16.295 [23360] PROXY 127.0.0.1:62866 (10.100.29.70) -> POST https://accounts.google.com/ListAccounts?gpsia=1&source=ChromiumBrowser&json=standard (715 bytes)
+2023-08-17 15:25:16.347 [23360] PROXY resolved 'accounts.google.com' to '172.217.21.13:443'
+2023-08-17 15:25:16.582 [23360] PROXY 127.0.0.1:62866 (10.100.29.70) <- 200 accounts.google.com:443 (1838 bytes)
+2023-08-17 15:25:17.013 [23360] PROXY 127.0.0.1:62866 (10.100.29.246) -> GET https://edge.microsoft.com/serviceexperimentation/v2/ (980 bytes)
+2023-08-17 15:25:17.032 [23360] PROXY 127.0.0.1:62884 (10.100.29.246) -> GET https://business.bing.com/api/v1/user/token/microsoftgraph?&clienttype=edge-omnibox (628 bytes)
+2023-08-17 15:25:17.048 [23360] PROXY 127.0.0.1:62885 (10.100.29.246) -> GET https://business.bing.com/work/api/v2/tenant/my/settingswithflights?&clienttype=edge-omnibox (637 bytes)
+2023-08-17 15:25:17.050 [23360] PROXY resolved 'business.bing.com' to '13.107.6.158:443'
+2023-08-17 15:25:17.052 [23360] PROXY resolved 'business.bing.com' to '13.107.6.158:443'
+2023-08-17 15:25:17.057 [23360] PROXY resolved 'edge.microsoft.com' to '204.79.197.239:443'
+2023-08-17 15:25:17.303 [23360] PROXY 127.0.0.1:62866 (10.100.29.246) <- 200 edge.microsoft.com:443 (665 bytes)
+2023-08-17 15:25:17.474 [23360] PROXY 127.0.0.1:62884 (10.100.29.246) <- 401 business.bing.com:443 (663 bytes)
+2023-08-17 15:25:17.502 [23360] PROXY 127.0.0.1:62885 (10.100.29.246) <- 401 business.bing.com:443 (1348 bytes)
+2023-08-17 15:25:17.574 [23360] PROXY 127.0.0.1:62866 (10.100.29.70) -> GET http://localhost:2000/start (898 bytes)
+2023-08-17 15:25:17.578 [23360] PROXY 127.0.0.1:62866 error resolving hostname, ares status: 4
+2023-08-17 15:25:17.578 [23360] PROXY 127.0.0.1:62866 (10.100.29.70) <- localhost:2000 DNS error: Domain name not found (4)
+2023-08-17 15:25:17.984 [23360] PROXY 127.0.0.1:62884 (10.100.29.70) -> GET http://localhost:2000/favicon.ico (826 bytes)
+2023-08-17 15:25:17.987 [23360] PROXY 127.0.0.1:62884 error resolving hostname, ares status: 4
+2023-08-17 15:25:17.988 [23360] PROXY 127.0.0.1:62884 (10.100.29.70) <- localhost:2000 DNS error: Domain name not found (4)
+2023-08-17 15:25:18.083 [23360] PROXY 127.0.0.1:62894 (10.100.29.246) -> POST https://nav-edge.smartscreen.microsoft.com/api/browser/edge/navigate/3 (1989 bytes)
+2023-08-17 15:25:18.135 [23360] PROXY resolved 'nav-edge.smartscreen.microsoft.com' to '20.67.143.122:443'
+2023-08-17 15:25:18.302 [23360] PROXY 127.0.0.1:62897 (10.100.29.246) -> GET http://localhost:2000/start (908 bytes)
+2023-08-17 15:25:18.310 [23360] PROXY 127.0.0.1:62897 error resolving hostname, ares status: 4
+2023-08-17 15:25:18.310 [23360] PROXY 127.0.0.1:62897 (10.100.29.246) <- localhost:2000 DNS error: Domain name not found (4)
+2023-08-17 15:25:18.425 [23360] PROXY 127.0.0.1:62894 (10.100.29.246) <- 200 nav-edge.smartscreen.microsoft.com:443 (2012 bytes)
+2023-08-17 15:25:18.754 [23360] PROXY 127.0.0.1:62898 (10.100.29.246) -> GET http://localhost:2000/favicon.ico (836 bytes)
+2023-08-17 15:25:18.767 [23360] PROXY 127.0.0.1:62899 (10.100.29.246) -> POST https://data-edge.smartscreen.microsoft.com/api/browser/edge/data/toptraffic/3 (1549 bytes)
+2023-08-17 15:25:18.779 [23360] PROXY 127.0.0.1:62900 (10.100.29.246) -> POST https://data-edge.smartscreen.microsoft.com/api/browser/edge/data/bloomfilter/x/3 (1552 bytes)
+2023-08-17 15:25:18.781 [23360] PROXY 127.0.0.1:62898 error resolving hostname, ares status: 4
+2023-08-17 15:25:18.792 [23360] PROXY 127.0.0.1:62901 (10.100.29.246) -> POST https://data-edge.smartscreen.microsoft.com/api/browser/edge/data/settings/3 (1547 bytes)
+2023-08-17 15:25:18.794 [23360] PROXY resolved 'data-edge.smartscreen.microsoft.com' to '20.67.143.122:443'
+2023-08-17 15:25:18.795 [23360] PROXY 127.0.0.1:62898 (10.100.29.246) <- localhost:2000 DNS error: Domain name not found (4)
+2023-08-17 15:25:18.796 [23360] PROXY resolved 'data-edge.smartscreen.microsoft.com' to '20.67.143.122:443'
+2023-08-17 15:25:18.798 [23360] PROXY resolved 'data-edge.smartscreen.microsoft.com' to '20.67.143.122:443'
+2023-08-17 15:25:19.072 [23360] PROXY 127.0.0.1:62900 (10.100.29.246) <- 200 data-edge.smartscreen.microsoft.com:443 (659 bytes)
+2023-08-17 15:25:19.296 [23360] PROXY 127.0.0.1:62901 (10.100.29.246) <- 200 data-edge.smartscreen.microsoft.com:443 (131092 bytes)
+2023-08-17 15:25:19.369 [23360] PROXY 127.0.0.1:62899 (10.100.29.246) <- 200 data-edge.smartscreen.microsoft.com:443 (461595 bytes)
+2023-08-17 15:25:20.347 [23360] PROXY resolved 'edge.microsoft.com' to '204.79.197.239:443'
+2023-08-17 15:25:20.349 [23360] PROXY 127.0.0.1:62915 (10.100.29.246) -> GET https://edge.microsoft.com/abusiveadblocking/api/v1/blocklist (785 bytes)
+2023-08-17 15:25:20.361 [23360] PROXY resolved 'edge.microsoft.com' to '204.79.197.239:443'
+2023-08-17 15:25:20.363 [23360] PROXY 127.0.0.1:62916 (10.100.29.246) -> GET https://edge.microsoft.com/entityextractiontemplates/api/v1/assets/find-assets?name=arbitration_priority_list&version=2.*.*&channel=canary&key=d414dd4f9db345fa8003e32adc81b362 (759 bytes)
+2023-08-17 15:25:20.410 [23360] PROXY resolved 'edge.microsoft.com' to '204.79.197.239:443'
+2023-08-17 15:25:20.412 [23360] PROXY 127.0.0.1:62919 (10.100.29.246) -> GET https://edge.microsoft.com/entityextractiontemplates/api/v1/assets/find-assets?name=edge_hub_apps_manifest&version=4.7.*&channel=canary&key=d414dd4f9db345fa8003e32adc81b362 (747 bytes)
+2023-08-17 15:25:20.481 [23360] PROXY resolved 'edge.microsoft.com' to '204.79.197.239:443'
+2023-08-17 15:25:20.483 [23360] PROXY 127.0.0.1:62921 (10.100.29.246) -> GET https://edge.microsoft.com/entityextractiontemplates/api/v1/assets/find-assets?name=domains_config&version=2.*.*&channel=canary&key=d414dd4f9db345fa8003e32adc81b362 (970 bytes)
+2023-08-17 15:25:20.574 [23360] PROXY 127.0.0.1:62916 (10.100.29.246) <- 200 edge.microsoft.com:443 (714 bytes)
+2023-08-17 15:25:20.602 [23360] PROXY 127.0.0.1:62915 (10.100.29.246) <- 200 edge.microsoft.com:443 (29247 bytes)
+2023-08-17 15:25:20.657 [23360] PROXY 127.0.0.1:62919 (10.100.29.246) <- 200 edge.microsoft.com:443 (704 bytes)
+2023-08-17 15:25:20.691 [23360] PROXY 127.0.0.1:62921 (10.100.29.246) <- 200 edge.microsoft.com:443 (706 bytes)
+2023-08-17 15:25:21.495 [23360] PROXY 127.0.0.1:62921 (10.100.29.246) -> GET https://edgeservices.bing.com/edgesvc/shell?&lightschemeovr=1&FORM=SHORUN&udscs=1&udsnav=1&setlang=en-US&clientscopes=noheader,coauthor,chat,visibilitypm,docvisibility,channelunknown,&udsframed=1 (1632 bytes)
+2023-08-17 15:25:21.569 [23360] PROXY resolved 'edgeservices.bing.com' to '2.18.40.161:443'
+2023-08-17 15:25:21.927 [23360] PROXY 127.0.0.1:62921 (10.100.29.246) <- 200 edgeservices.bing.com:443 (40942 bytes)
+2023-08-17 15:25:22.203 [23360] PROXY 127.0.0.1:62921 (10.100.29.246) -> GET https://edgeservices.bing.com/rp/TbE9r2i8K-3X4Jg222iQY_f_7pQ.br.css (1827 bytes)
+2023-08-17 15:25:22.252 [23360] PROXY 127.0.0.1:62921 (10.100.29.246) <- 200 edgeservices.bing.com:443 (1605 bytes)
+2023-08-17 15:25:22.266 [23360] PROXY resolved 'edgeservices.bing.com' to '2.18.40.161:443'
+2023-08-17 15:25:22.267 [23360] PROXY 127.0.0.1:62919 (10.100.29.246) -> GET https://edgeservices.bing.com/rp/sKMD9beH8gtVDJ1_u4M6ZXNDOy8.br.css (1827 bytes)
+2023-08-17 15:25:22.403 [23360] PROXY 127.0.0.1:62919 (10.100.29.246) <- 200 edgeservices.bing.com:443 (2301 bytes)
+2023-08-17 15:25:22.486 [23360] PROXY 127.0.0.1:62921 (10.100.29.246) -> GET https://edgeservices.bing.com/rp/5_njacTHNI5UUdpA3bwOxQr_P0s.br.js (1848 bytes)
+2023-08-17 15:25:22.532 [23360] PROXY 127.0.0.1:62921 (10.100.29.246) <- 200 edgeservices.bing.com:443 (1051 bytes)
+2023-08-17 15:25:22.629 [23360] PROXY 127.0.0.1:62919 (10.100.29.246) -> GET https://edgeservices.bing.com/rp/TH8fT3nT8y791x11NM6LDPK-74U.br.js (1848 bytes)
+2023-08-17 15:25:22.680 [23360] PROXY 127.0.0.1:62919 (10.100.29.246) <- 200 edgeservices.bing.com:443 (11681 bytes)
+2023-08-17 15:25:22.753 [23360] PROXY 127.0.0.1:62921 (10.100.29.246) -> GET https://edgeservices.bing.com/rp/jGqrlcxepmhaIJKVUSFqCguDjNY.br.js (1848 bytes)
+2023-08-17 15:25:22.803 [23360] PROXY 127.0.0.1:62921 (10.100.29.246) <- 200 edgeservices.bing.com:443 (6462 bytes)
+2023-08-17 15:25:22.921 [23360] PROXY 127.0.0.1:62919 (10.100.29.246) -> GET https://edgeservices.bing.com/rp/Gass0juumFCN_7qHD2eljQzsu98.br.js (1848 bytes)
+2023-08-17 15:25:22.976 [23360] PROXY 127.0.0.1:62919 (10.100.29.246) <- 200 edgeservices.bing.com:443 (3677 bytes)
+2023-08-17 15:25:23.044 [23360] PROXY 127.0.0.1:62921 (10.100.29.246) -> GET https://edgeservices.bing.com/rp/b2PKPkozwSWxr6KVRh9XsIlmTLk.br.js (1848 bytes)
+2023-08-17 15:25:23.091 [23360] PROXY 127.0.0.1:62921 (10.100.29.246) <- 200 edgeservices.bing.com:443 (9174 bytes)
+2023-08-17 15:25:23.376 [23360] PROXY 127.0.0.1:62921 (10.100.29.246) -> GET https://edgeservices.bing.com/fd/ls/l?IG=874C55DF464A4742B3B09898A3D78AB4&CID=16A1AEC45CED6E630B52BDB45DFF6F89&Type=Event.CPT&DATA={%22pp%22:{%22S%22:%22L%22,%22FC%22:865,%22BC%22:865,%22SE%22:-1,%22TC%22:-1,%22H%22:1184,%22BP%22:1185,%22CT%22:1186,%22IL%22:0},%22ad%22:[-1,-1,0,0,0,0,0],%22net%22:%22undefined%22}&P=UNSP&DA=BNZE01 (2129 bytes)
+2023-08-17 15:25:23.473 [23360] PROXY 127.0.0.1:62921 (10.100.29.246) <- 200 edgeservices.bing.com:443 (463 bytes)
+2023-08-17 15:25:24.354 [23360] PROXY 127.0.0.1:62919 (10.100.29.246) -> GET https://edgeservices.bing.com/rp/h1dIjMpwerSArGmygbYcRo-DkFs.br.js (1853 bytes)
+2023-08-17 15:25:24.366 [23360] PROXY resolved 'edgeservices.bing.com' to '2.18.40.161:443'
+2023-08-17 15:25:24.367 [23360] PROXY 127.0.0.1:62940 (10.100.29.246) -> POST https://edgeservices.bing.com/fd/ls/lsp.aspx? (2254 bytes)
+2023-08-17 15:25:24.426 [23360] PROXY 127.0.0.1:62919 (10.100.29.246) <- 200 edgeservices.bing.com:443 (3041 bytes)
+2023-08-17 15:25:24.572 [23360] PROXY 127.0.0.1:62940 (10.100.29.246) <- 204 edgeservices.bing.com:443 (452 bytes)
+2023-08-17 15:25:24.655 [23360] PROXY 127.0.0.1:62919 (10.100.29.246) -> GET https://edgeservices.bing.com/rp/R14ozkkie30zM6FSjzwWFp8Ffzk.br.js (1813 bytes)
+2023-08-17 15:25:24.668 [23360] PROXY resolved 'edgeservices.bing.com' to '2.18.40.161:443'
+2023-08-17 15:25:24.669 [23360] PROXY 127.0.0.1:62915 (10.100.29.246) -> GET https://edgeservices.bing.com/rp/afmuy94Os_msjUASAibqR7Q8x84.br.js (1813 bytes)
+2023-08-17 15:25:24.722 [23360] PROXY resolved 'edgeservices.bing.com' to '2.18.40.161:443'
+2023-08-17 15:25:24.724 [23360] PROXY 127.0.0.1:62916 (10.100.29.246) -> GET https://edgeservices.bing.com/rp/avd7Rr-t12JcT3bkdFyaKKLavZQ.br.js (1813 bytes)
+2023-08-17 15:25:24.726 [23360] PROXY 127.0.0.1:62919 (10.100.29.246) <- 200 edgeservices.bing.com:443 (9499 bytes)
+2023-08-17 15:25:24.800 [23360] PROXY 127.0.0.1:62915 (10.100.29.246) <- 200 edgeservices.bing.com:443 (2059 bytes)
+2023-08-17 15:25:24.870 [23360] PROXY 127.0.0.1:62916 (10.100.29.246) <- 200 edgeservices.bing.com:443 (1192 bytes)
+2023-08-17 15:25:25.107 [23360] PROXY 127.0.0.1:62915 (10.100.29.246) -> GET https://edgeservices.bing.com/ipv6test/test?FORM=MONITR (1800 bytes)
+2023-08-17 15:25:25.119 [23360] PROXY resolved 'edgeservices.bing.com' to '2.18.40.161:443'
+2023-08-17 15:25:25.120 [23360] PROXY 127.0.0.1:62954 (10.100.29.246) -> POST https://edgeservices.bing.com/web/xls.aspx (3608 bytes)
+2023-08-17 15:25:25.239 [23360] PROXY 127.0.0.1:62919 (10.100.29.246) -> GET https://www2.bing.com/ipv6test/test (1380 bytes)
+2023-08-17 15:25:25.242 [23360] PROXY 127.0.0.1:62915 (10.100.29.246) <- 200 edgeservices.bing.com:443 (1467 bytes)
+2023-08-17 15:25:25.289 [23360] PROXY resolved 'www2.bing.com' to '204.79.197.200:443'
+2023-08-17 15:25:25.369 [23360] PROXY 127.0.0.1:62954 (10.100.29.246) <- 204 edgeservices.bing.com:443 (452 bytes)
+2023-08-17 15:25:25.546 [23360] PROXY 127.0.0.1:62919 (10.100.29.246) <- 200 www2.bing.com:443 (1635 bytes)
+2023-08-17 15:25:26.456 [23360] PROXY 127.0.0.1:62919 (10.100.29.246) -> GET https://login.live.com/login.srf?wa=wsignin1.0&rpsnv=11&ct=1692275122&rver=6.0.5286.0&wp=MBI_SSL&wreply=https:%2F%2fwww.bing.com%2Fsecure%2FPassport.aspx%3Fpopup%3D1%26ssl%3D1&lc=4096&id=264960&checkda=1 (1381 bytes)
+2023-08-17 15:25:26.530 [23360] PROXY resolved 'login.live.com' to '20.190.181.2:443'
+2023-08-17 15:25:26.934 [23360] PROXY 127.0.0.1:62954 (10.125.35.183) -> GET http://localhost:2000/start (605 bytes)
+2023-08-17 15:25:26.939 [23360] PROXY 127.0.0.1:62954 error resolving hostname, ares status: 4
+2023-08-17 15:25:26.940 [23360] PROXY 127.0.0.1:62954 (10.125.35.183) <- localhost:2000 DNS error: Domain name not found (4)
+2023-08-17 15:25:26.980 [23360] PROXY 127.0.0.1:62919 (10.100.29.246) <- 302 login.live.com:443 (1248 bytes)
+2023-08-17 15:25:27.294 [23360] PROXY 127.0.0.1:62919 (10.100.29.246) -> GET https://www.bing.com/secure/Passport.aspx?popup=1&ssl=1 (1661 bytes)
+2023-08-17 15:25:27.297 [23360] PROXY resolved 'www.bing.com' to '2.18.40.162:443'
+2023-08-17 15:25:27.421 [23360] PROXY 127.0.0.1:62915 (10.125.35.183) -> GET http://localhost:2000/favicon.ico (561 bytes)
+2023-08-17 15:25:27.425 [23360] PROXY 127.0.0.1:62915 error resolving hostname, ares status: 4
+2023-08-17 15:25:27.427 [23360] PROXY 127.0.0.1:62915 (10.125.35.183) <- localhost:2000 DNS error: Domain name not found (4)
+2023-08-17 15:25:27.489 [23360] PROXY 127.0.0.1:62919 (10.100.29.246) <- 200 www.bing.com:443 (1641 bytes)
+2023-08-17 15:25:29.401 [23360] PROXY 127.0.0.1:62976 (10.100.27.154) -> POST http://ocsp.digicert.com/ (621 bytes)
+2023-08-17 15:25:29.405 [23360] PROXY resolved 'ocsp.digicert.com' to '192.229.221.95:80'
+2023-08-17 15:25:29.543 [23360] PROXY 127.0.0.1:62976 (10.100.27.154) <- 200 ocsp.digicert.com:80 (737 bytes)
+2023-08-17 15:25:30.011 [23360] PROXY resolved 'ocsp.digicert.com' to '192.229.221.95:80'
+2023-08-17 15:25:30.014 [23360] PROXY 127.0.0.1:62980 (10.100.27.154) -> POST http://ocsp.digicert.com/ (621 bytes)
+2023-08-17 15:25:30.150 [23360] PROXY 127.0.0.1:62980 (10.100.27.154) <- 200 ocsp.digicert.com:80 (737 bytes)
+2023-08-17 15:25:30.539 [23360] PROXY 127.0.0.1:62984 (10.100.27.154) -> POST http://r3.o.lencr.org/ (617 bytes)
+2023-08-17 15:25:30.603 [23360] PROXY resolved 'r3.o.lencr.org' to '195.14.151.148:80'
+2023-08-17 15:25:30.631 [23360] PROXY 127.0.0.1:62984 (10.100.27.154) <- 200 r3.o.lencr.org:80 (888 bytes)
+2023-08-17 15:25:31.973 [23360] PROXY 127.0.0.1:62984 (10.100.27.154) -> GET http://localhost:2000/start (688 bytes)
+2023-08-17 15:25:31.977 [23360] PROXY 127.0.0.1:62984 error resolving hostname, ares status: 4
+2023-08-17 15:25:31.978 [23360] PROXY 127.0.0.1:62984 (10.100.27.154) <- localhost:2000 DNS error: Domain name not found (4)
+2023-08-17 15:25:32.388 [23360] PROXY resolved 'edgeservices.bing.com' to '2.18.40.161:443'
+2023-08-17 15:25:32.390 [23360] PROXY 127.0.0.1:62995 (10.100.29.246) -> POST https://edgeservices.bing.com/web/xls.aspx (4127 bytes)
+2023-08-17 15:25:32.476 [23360] PROXY 127.0.0.1:62997 (10.100.27.154) -> GET http://localhost:2000/favicon.ico (627 bytes)
+2023-08-17 15:25:32.479 [23360] PROXY 127.0.0.1:62997 error resolving hostname, ares status: 4
+2023-08-17 15:25:32.480 [23360] PROXY 127.0.0.1:62997 (10.100.27.154) <- localhost:2000 DNS error: Domain name not found (4)
+2023-08-17 15:25:32.591 [23360] PROXY 127.0.0.1:62995 (10.100.29.246) <- 204 edgeservices.bing.com:443 (452 bytes)
+2023-08-17 15:25:50.962 [23360] PROXY 127.0.0.1:62995 (10.100.27.154) -> GET https://aus5.mozilla.org/update/3/GMP/113.0/20230504192738/WINNT_x86_64-msvc-x64/en-US/release/Windows_NT%2010.0.0.0.19043.928%20(x64)/default/default/update.xml (692 bytes)
+2023-08-17 15:25:51.006 [23360] PROXY resolved 'aus5.mozilla.org' to '35.244.181.201:443'
+2023-08-17 15:25:51.418 [23360] PROXY 127.0.0.1:62995 (10.100.27.154) <- 200 aus5.mozilla.org:443 (1192 bytes)
+2023-08-17 15:25:51.754 [23360] PROXY resolved 'r3.o.lencr.org' to '195.14.151.148:80'
+2023-08-17 15:25:51.756 [23360] PROXY 127.0.0.1:63085 (10.100.27.154) -> POST http://r3.o.lencr.org/ (617 bytes)
+2023-08-17 15:25:51.783 [23360] PROXY 127.0.0.1:63085 (10.100.27.154) <- 200 r3.o.lencr.org:80 (888 bytes)
+2023-08-17 15:25:58.592 [23360] PROXY resolved 'aus5.mozilla.org' to '35.244.181.201:443'
+2023-08-17 15:25:58.594 [23360] PROXY 127.0.0.1:63085 (10.100.27.154) -> GET https://aus5.mozilla.org/update/3/SystemAddons/113.0/20230504192738/WINNT_x86_64-msvc-x64/en-US/release/Windows_NT%2010.0.0.0.19043.928%20(x64)/default/default/update.xml (701 bytes)
+2023-08-17 15:25:58.738 [23360] PROXY resolved 'r3.o.lencr.org' to '195.14.151.148:80'
+2023-08-17 15:25:58.740 [23360] PROXY 127.0.0.1:63131 (10.100.27.154) -> POST http://r3.o.lencr.org/ (617 bytes)
+2023-08-17 15:25:58.754 [23360] PROXY 127.0.0.1:63131 (10.100.27.154) <- 200 r3.o.lencr.org:80 (889 bytes)
+2023-08-17 15:25:58.784 [23360] PROXY 127.0.0.1:63085 (10.100.27.154) <- 200 aus5.mozilla.org:443 (782 bytes)
+2023-08-17 15:25:59.126 [23360] PROXY 127.0.0.1:63085 (10.100.27.154) -> GET https://archive.mozilla.org/pub/system-addons/addons-restricted-domains/addons-restricted-domains-1.0.0-build1/addons-restricted-domains.xpi (657 bytes)
+2023-08-17 15:25:59.129 [23360] PROXY resolved 'archive.mozilla.org' to '34.117.35.28:443'
+2023-08-17 15:25:59.326 [23360] PROXY 127.0.0.1:63085 (10.100.27.154) <- 200 archive.mozilla.org:443 (13663 bytes)
+2023-08-17 15:26:02.386 [23360] PROXY resolved 'r3.o.lencr.org' to '195.14.151.148:80'
+2023-08-17 15:26:02.388 [23360] PROXY 127.0.0.1:63153 (10.100.27.154) -> POST http://r3.o.lencr.org/ (617 bytes)
+2023-08-17 15:26:02.409 [23360] PROXY resolved 'r3.o.lencr.org' to '195.14.151.148:80'
+2023-08-17 15:26:02.410 [23360] PROXY 127.0.0.1:63154 (10.100.27.154) -> POST http://r3.o.lencr.org/ (617 bytes)
+2023-08-17 15:26:02.423 [23360] PROXY resolved 'r3.o.lencr.org' to '195.14.151.148:80'
+2023-08-17 15:26:02.425 [23360] PROXY 127.0.0.1:63156 (10.100.27.154) -> POST http://r3.o.lencr.org/ (617 bytes)
+2023-08-17 15:26:02.426 [23360] PROXY 127.0.0.1:63153 (10.100.27.154) <- 200 r3.o.lencr.org:80 (888 bytes)
+2023-08-17 15:26:02.438 [23360] PROXY resolved 'r3.o.lencr.org' to '195.14.151.148:80'
+2023-08-17 15:26:02.441 [23360] PROXY 127.0.0.1:63157 (10.100.27.154) -> POST http://r3.o.lencr.org/ (617 bytes)
+2023-08-17 15:26:02.453 [23360] PROXY resolved 'r3.o.lencr.org' to '195.14.151.148:80'
+2023-08-17 15:26:02.455 [23360] PROXY 127.0.0.1:63159 (10.100.27.154) -> POST http://r3.o.lencr.org/ (617 bytes)
+2023-08-17 15:26:02.457 [23360] PROXY 127.0.0.1:63154 (10.100.27.154) <- 200 r3.o.lencr.org:80 (888 bytes)
+2023-08-17 15:26:02.467 [23360] PROXY 127.0.0.1:63156 (10.100.27.154) <- 200 r3.o.lencr.org:80 (888 bytes)
+2023-08-17 15:26:02.469 [23360] PROXY 127.0.0.1:63157 (10.100.27.154) <- 200 r3.o.lencr.org:80 (888 bytes)
+2023-08-17 15:26:02.471 [23360] PROXY 127.0.0.1:63159 (10.100.27.154) <- 200 r3.o.lencr.org:80 (888 bytes)
+2023-08-17 15:26:16.746 [23360] PROXY resolved 'edge.microsoft.com' to '204.79.197.239:443'
+2023-08-17 15:26:16.748 [23360] PROXY 127.0.0.1:63217 (10.100.29.246) -> POST https://edge.microsoft.com/componentupdater/api/v1/update?cup2key=6:EN9oQobhcWTEIVdUHVs1V9W41UWwBXBbtbci-2PBsQE&cup2hreq=173b6bba925d937f68ab1719f12cd16471b0ef1539e4f0fb0faa2571fbdc898d (9608 bytes)
+2023-08-17 15:26:17.009 [23360] PROXY 127.0.0.1:63217 (10.100.29.246) <- 200 edge.microsoft.com:443 (6606 bytes)
+2023-08-17 15:26:31.159 [23360] PROXY resolved 'ocsp.digicert.com' to '192.229.221.95:80'
+2023-08-17 15:26:31.162 [23360] PROXY 127.0.0.1:63217 (10.125.35.183) -> GET http://ocsp.digicert.com/ME8wTTBLMEkwRzAHBgUrDgMCGgQUwS9Fdu0VWeywXbqJv52AeOUj1BMEFOWdWTCCR1jMrPoIVDaGezq1BE3wAhAFUsfv%2FuwpK6nxOHsHr5Kf (570 bytes)
+2023-08-17 15:26:31.306 [23360] PROXY 127.0.0.1:63217 (10.125.35.183) <- 200 ocsp.digicert.com:80 (1774 bytes)
+2023-08-17 15:26:31.954 [23360] PROXY 127.0.0.1:63217 (10.125.35.183) -> GET https://gspe1-ssl.ls.apple.com/pep/gcc (464 bytes)
+2023-08-17 15:26:31.966 [23360] PROXY 127.0.0.1:63156 (10.125.35.183) -> GET https://gspe35-ssl.ls.apple.com/geo_manifest/dynamic/config?application=geod&application_version=1&country_code=US&hardware=iMacPro1,1&os=osx&os_build=21G115&os_version=12.6 (600 bytes)
+2023-08-17 15:26:31.979 [23360] PROXY 127.0.0.1:63157 (10.125.35.183) -> GET https://configuration.ls.apple.com/config/defaults?os=macos&os_version=12.6&hardware=iMacPro1,1 (525 bytes)
+2023-08-17 15:26:32.016 [23360] PROXY resolved 'gspe1-ssl.ls.apple.com' to '2.16.149.160:443'
+2023-08-17 15:26:32.027 [23360] PROXY resolved 'gspe35-ssl.ls.apple.com' to '2.20.40.159:443'
+2023-08-17 15:26:32.029 [23360] PROXY resolved 'configuration.ls.apple.com' to '2.20.41.108:443'
+2023-08-17 15:26:32.193 [23360] PROXY 127.0.0.1:63217 (10.125.35.183) <- 200 gspe1-ssl.ls.apple.com:443 (126 bytes)
+2023-08-17 15:26:32.231 [23360] PROXY 127.0.0.1:63157 (10.125.35.183) <- 200 configuration.ls.apple.com:443 (2403 bytes)
+2023-08-17 15:26:32.287 [23360] PROXY 127.0.0.1:63156 (10.125.35.183) <- 200 gspe35-ssl.ls.apple.com:443 (79503 bytes)
+2023-08-17 15:26:32.547 [23360] PROXY resolved 'gspe35-ssl.ls.apple.com' to '2.20.40.159:443'
+2023-08-17 15:26:32.549 [23360] PROXY 127.0.0.1:63157 (10.125.35.183) -> GET https://gspe35-ssl.ls.apple.com/geo_manifest/dynamic/config?application=geod&application_version=1&country_code=CY&hardware=iMacPro1,1&os=osx&os_build=21G115&os_version=12.6 (600 bytes)
+2023-08-17 15:26:32.845 [23360] PROXY 127.0.0.1:63157 (10.125.35.183) <- 200 gspe35-ssl.ls.apple.com:443 (79636 bytes)
+2023-08-17 15:26:33.210 [23360] PROXY 127.0.0.1:63157 (10.125.35.183) -> GET https://gspe21-ssl.ls.apple.com/config/search-attribution-1031 (489 bytes)
+2023-08-17 15:26:33.243 [23360] PROXY 127.0.0.1:63217 (10.125.35.183) -> GET https://gspe21-ssl.ls.apple.com/stylesheet/default-40064@2x.styl?accessKey=1692279392_gNVrVlL4NW4NDFH5_abnvcIirC8Z3OsBTbFQcBmqFKnYpA7mnEFS6O5pI07LfIGwGpUQworoZwh9Lre9XcoyW1ObeLp4knGsZBb5WVQ%3D%3D (622 bytes)
+2023-08-17 15:26:33.264 [23360] PROXY 127.0.0.1:63154 (10.125.35.183) -> GET https://gspe21-ssl.ls.apple.com/stylesheet/default-37491.styl?accessKey=1692279392_q9b0pRp4JJQa3VkD_fPW98XVhP9l5xyQBccm0yZGsJtY36txQRBRb9yyXeORGeb1Ixaqm5slQIea5g%2FJItOFtV8rEOJBIZY0nCF5f%2FA%3D%3D (623 bytes)
+2023-08-17 15:26:33.277 [23360] PROXY 127.0.0.1:63153 (10.125.35.183) -> GET https://gspe21-ssl.ls.apple.com/stylesheet/default-iosmac-5148@2x.styl?accessKey=1692279392_aq9WOD8OiGeuxA12_Oi7UbC0G%2BM%2BCjwhOJa5NQrqRSqxZJXTNIyFZbvyI9Ed5yo5ilOMcfWo0RUcXz24po7Q%2FFvDXo5FbH8ZCnFJAVP1Mky%2Fa2Iol9ExlN2DOV7c%3D (654 bytes)
+2023-08-17 15:26:33.280 [23360] PROXY resolved 'gspe21-ssl.ls.apple.com' to '2.20.40.159:443'
+2023-08-17 15:26:33.281 [23360] PROXY resolved 'gspe21-ssl.ls.apple.com' to '2.20.40.159:443'
+2023-08-17 15:26:33.282 [23360] PROXY resolved 'gspe21-ssl.ls.apple.com' to '2.20.40.159:443'
+2023-08-17 15:26:33.283 [23360] PROXY resolved 'gspe21-ssl.ls.apple.com' to '2.20.40.159:443'
+2023-08-17 15:26:33.463 [23360] PROXY 127.0.0.1:63157 (10.125.35.183) <- 200 gspe21-ssl.ls.apple.com:443 (6521 bytes)
+2023-08-17 15:26:33.660 [23360] PROXY 127.0.0.1:63217 (10.125.35.183) <- 200 gspe21-ssl.ls.apple.com:443 (483794 bytes)
+2023-08-17 15:26:33.670 [23360] PROXY 127.0.0.1:63153 (10.125.35.183) <- 200 gspe21-ssl.ls.apple.com:443 (469704 bytes)
+2023-08-17 15:26:33.674 [23360] PROXY 127.0.0.1:63154 (10.125.35.183) <- 200 gspe21-ssl.ls.apple.com:443 (483327 bytes)
+2023-08-17 15:26:34.463 [23360] PROXY 127.0.0.1:63153 (10.125.35.183) -> GET https://gspe21-ssl.ls.apple.com/stylesheet/default-search-4249.styl?accessKey=1692279394_9tixDUk4kSVUg5zA_ZWMVBR7MWfmfjHEf6%2BQzd9n0p%2BW6MtS0f3deIxXpIeZhh4BlwTwz0odl8nelEVg0sf8lrN44Y1N%2BCWp6uog%2FLQ%3D%3D (633 bytes)
+2023-08-17 15:26:34.475 [23360] PROXY 127.0.0.1:63217 (10.125.35.183) -> GET https://gspe21-ssl.ls.apple.com/stylesheet/default-iosmac-5151.styl?accessKey=1692279394_mQgtU8sbvWyNgQE0_49q0DdBBe08ZoQV4Wnh0zyROi5G9AhYwZJmgxfWiqlz393CZBlFQfz0UpRJtLWQmMVrOnW8BnTvJY2vzC0kM8w%3D%3D (625 bytes)
+2023-08-17 15:26:34.513 [23360] PROXY 127.0.0.1:63154 (10.125.35.183) -> GET https://gspe21-ssl.ls.apple.com/stylesheet/globe-default-6995@2x.styl?accessKey=1692279394_WJt06wgo2TaqU50z_X%2F%2BqCKeUyaLXgNWennl54F82p8ke33xazFcvypErzCjG0qELa85Mlhu4tiatEam69QCNab35u5jdAJWuC71N6B8xN8Wq9FdfBNJ4fo8FPYg%3D (649 bytes)
+2023-08-17 15:26:34.527 [23360] PROXY 127.0.0.1:63153 (10.125.35.183) <- 200 gspe21-ssl.ls.apple.com:443 (4670 bytes)
+2023-08-17 15:26:34.567 [23360] PROXY 127.0.0.1:63154 (10.125.35.183) <- 200 gspe21-ssl.ls.apple.com:443 (102666 bytes)
+2023-08-17 15:26:34.837 [23360] PROXY 127.0.0.1:63154 (10.125.35.183) -> GET https://gspe21-ssl.ls.apple.com/stylesheet/globe-default-7021.styl?accessKey=1692279394_svv5ELXiz15KCSlr_KgP9LiqaKoY5q2l8yZWpFf5AZbD9exej7BUUEEkj6CWQtnTzx54O3Ic36KIg7liJpOgPxghN20mE4RlNQ7ELFg%3D%3D (624 bytes)
+2023-08-17 15:26:34.893 [23360] PROXY 127.0.0.1:63154 (10.125.35.183) <- 200 gspe21-ssl.ls.apple.com:443 (102507 bytes)
+2023-08-17 15:26:34.950 [23360] PROXY 127.0.0.1:63153 (10.125.35.183) -> GET https://gspe21-ssl.ls.apple.com/stylesheet/globe-default-iosmac-1845@2x.styl?accessKey=1692279394_TKiQjxSQgmGwTAsX_VA8rZg7rHDGNACDL5dLZxkIgLdt8b9yMDlKquRQTuOB%2FBsB3zZE3axFxO0hBk4EG3%2F5WiSDKkByg8IHko%2FoGRBPMiS6UcBdD4msCPeh7uZE%3D (658 bytes)
+2023-08-17 15:26:35.022 [23360] PROXY 127.0.0.1:63153 (10.125.35.183) <- 200 gspe21-ssl.ls.apple.com:443 (92443 bytes)
+2023-08-17 15:26:35.281 [23360] PROXY 127.0.0.1:63153 (10.125.35.183) -> GET https://gspe21-ssl.ls.apple.com/stylesheet/globe-default-iosmac-1857.styl?accessKey=1692279395_VpU673VO73gT2BD2_vvZuJOXkRNrPSoBAL791MP6pnx%2FYh2h3oyOE2XqYzDfdsvDAA%2BkOePi6rnj5CdVGtujb1C8coz9wYjU0OxRJhIElLvdkUdRmEzX%2FzLlNsN4%3D (655 bytes)
+2023-08-17 15:26:35.303 [23360] PROXY 127.0.0.1:63217 (10.125.35.183) <- 200 gspe21-ssl.ls.apple.com:443 (469847 bytes)
+2023-08-17 15:26:35.336 [23360] PROXY 127.0.0.1:63153 (10.125.35.183) <- 200 gspe21-ssl.ls.apple.com:443 (92102 bytes)
+2023-08-17 15:26:35.361 [23360] PROXY 127.0.0.1:63154 (10.125.35.183) -> GET https://gspe21-ssl.ls.apple.com/stylesheet/scene-886@2x.styl?accessKey=1692279395_mUGcwOK6Ufbslrnn_noW94FAnaEn8RO%2BQJXtutBBscFlLawYwWtQcDXw8%2BdIJj0mbcm50yTSPVG18CmMbFvtr5suI5oIvLfAB9yKxMA%3D%3D (622 bytes)
+2023-08-17 15:26:35.409 [23360] PROXY 127.0.0.1:63154 (10.125.35.183) <- 200 gspe21-ssl.ls.apple.com:443 (16078 bytes)
+2023-08-17 15:26:35.757 [23360] PROXY 127.0.0.1:63154 (10.125.35.183) -> GET https://gspe21-ssl.ls.apple.com/icon/Default-15908.iconmappack?accessKey=1692279395_wnMfKk3RkgS7dDAN_Ezeyo19LM0q0vDuX%2F4zZ4Tg42i1Iayjqw%2By56lY4UjxaXih5kEqNQqHveoNmy3tpgaSg9cKKl%2BosbYDeA3eRMA%3D%3D (626 bytes)
+2023-08-17 15:26:35.807 [23360] PROXY 127.0.0.1:63153 (10.125.35.183) -> GET https://gspe21-ssl.ls.apple.com/icon/Default-17896@2x.iconmappack?accessKey=1692279395_lXRlSsVzePz0iLtn_7eKcMkPKTZc086on3FIqPZ2pa6b1t%2BWspqk1LHfARP9QAkJ2ej97BvxXaHBlKwslbAEfovgHQyY5%2FHW15d0vfQ%3D%3D (627 bytes)
+2023-08-17 15:26:35.810 [23360] PROXY 127.0.0.1:63217 (10.125.35.183) -> GET https://gspe21-ssl.ls.apple.com/icon/Default_Icons-14334@2x.icondatapack?accessKey=1692279395_8QCm9XIwIM8nCvkk_5NaECdBfAajSYBJyIshPdl3VplBh3PN2CiksOk1bdIhavRFNIxwwniffjUd5KYaQsJM5LkqCbTu2dgM8Tv1YPaPYCHQoUqaSTQB5RFSZMkQ%3D (648 bytes)
+2023-08-17 15:26:35.825 [23360] PROXY 127.0.0.1:63154 (10.125.35.183) <- 200 gspe21-ssl.ls.apple.com:443 (142462 bytes)
+2023-08-17 15:26:35.898 [23360] PROXY 127.0.0.1:63153 (10.125.35.183) <- 200 gspe21-ssl.ls.apple.com:443 (142460 bytes)
+2023-08-17 15:26:36.133 [23360] PROXY 127.0.0.1:63217 (10.125.35.183) <- 200 gspe21-ssl.ls.apple.com:443 (2832886 bytes)
+2023-08-17 15:26:36.225 [23360] PROXY 127.0.0.1:63154 (10.125.35.183) -> GET https://gspe21-ssl.ls.apple.com/icon/Default_Icons-14361@2x.iconconfigpack?accessKey=1692279395_9bqTBoNdfjeyESRl_4wt7mUHmDrfAGtHPf3Z4L4OHpbdvaamDbDPOD05H46a7TMybIRa3zOnjgIX7VscE0D1nGB2khqCH6Pdz9nJhuNziVQla7PwO6JTDIDHB8cI%3D (650 bytes)
+2023-08-17 15:26:36.384 [23360] PROXY 127.0.0.1:63153 (10.125.35.183) -> GET https://gspe21-ssl.ls.apple.com/icon/Default_Icons-14532.icondatapack?accessKey=1692279396_ZJR82zjezcUplfCu_h3LhWvfDiCQkzdGjSHo85eq6gHbpsm%2BbFRaWwERgHFAHWjxNErdclVkQ%2BxQZR%2B1mXFrMReXK30JdB7hIzUxVM21XyzhcQlX5QQ%2FzCWHq64o%3D (653 bytes)
+2023-08-17 15:26:36.518 [23360] PROXY 127.0.0.1:63154 (10.125.35.183) <- 200 gspe21-ssl.ls.apple.com:443 (1809422 bytes)
+2023-08-17 15:26:36.606 [23360] PROXY 127.0.0.1:63153 (10.125.35.183) <- 200 gspe21-ssl.ls.apple.com:443 (1149400 bytes)
+2023-08-17 15:26:38.023 [23360] PROXY 127.0.0.1:63217 (10.125.35.183) -> GET https://gspe21-ssl.ls.apple.com/icon/Default_Icons-15283.iconconfigpack?accessKey=1692279397_aZRaxRQG3TxIw6H5_uTAc1f22xKQ8zdcZDcEOV5jUJ1g55iCFwh48VbqD4V4GLwlARmMb30gtmldpHsvnXACk%2FA0%2FaNM9M1aCdbOyU6OZmPXCbtCYPR8d8S%2FzOoI%3D (653 bytes)
+2023-08-17 15:26:38.359 [23360] PROXY 127.0.0.1:63217 (10.125.35.183) <- 200 gspe21-ssl.ls.apple.com:443 (1773534 bytes)
+2023-08-17 15:26:39.423 [23360] PROXY 127.0.0.1:63154 (10.125.35.183) -> GET https://gspe21-ssl.ls.apple.com/icon/Default_Shields-1512.icondatapack?accessKey=1692279399_gfPVrjkCzCUTt0ib_JZ8xKQmrvq86huNmqqMzPKaeNC2AkS6CG%2FhKa2YBYa2GjRnxxTqfTEq1E3BiwPUouttUiUpm2YE9IzW%2FJcN2tHYpx0B3lLHD%2FAAdUdECM9A%3D (652 bytes)
+2023-08-17 15:26:39.548 [23360] PROXY 127.0.0.1:63154 (10.125.35.183) <- 200 gspe21-ssl.ls.apple.com:443 (240894 bytes)
+2023-08-17 15:26:39.977 [23360] PROXY 127.0.0.1:63153 (10.125.35.183) -> GET https://gspe21-ssl.ls.apple.com/icon/Default_Shields-1545.iconconfigpack?accessKey=1692279399_ERVb13OuajCzLL1b_ixhyMVzShOw6wQDeM5wRkolm9R4dxJuXs%2ByUxdw53DmLv8OLJvhv4tCGpJf9q3qHcNoOzkErlhHof%2FIgWPk5tMOwnaEtd9utVvk%2BFD3ToII%3D (654 bytes)
+2023-08-17 15:26:40.050 [23360] PROXY 127.0.0.1:63153 (10.125.35.183) <- 200 gspe21-ssl.ls.apple.com:443 (79909 bytes)
+2023-08-17 15:26:41.053 [23360] PROXY 127.0.0.1:63153 (10.125.35.183) -> GET https://gspe21-ssl.ls.apple.com/icon/Default_Shields-602@2x.icondatapack?accessKey=1692279400_80BqThkYK1ZYPkAO_TWR%2B8Ec9PG6Npw8bJS5kRfAMcjh4wk6NSsKIvPrVqQmMd06k8U3buD%2F%2F1KGqCOPcTELZqyQya7MqJYQpa%2FIdNt8fdId4cWet7V33s2vFm5I%3D (656 bytes)
+2023-08-17 15:26:41.152 [23360] PROXY 127.0.0.1:63153 (10.125.35.183) <- 200 gspe21-ssl.ls.apple.com:443 (631939 bytes)
+2023-08-17 15:26:41.162 [23360] PROXY 127.0.0.1:63154 (10.125.35.183) -> GET https://gspe21-ssl.ls.apple.com/icon/Guides_Icons_Default-284@2x.iconconfigpack?accessKey=1692279400_JB0CgEsatR6dPGp1_ykeEBT6cP7PZYAXpAk8hHB0eUhMoFJGE43IDxRIS71QpPrqmc%2B3PrAGoZkidvqgOzHSTBnkfrvBrmml7PkQWV0oVJKCjhSO0LiItklYdqIA%3D (657 bytes)
+2023-08-17 15:26:41.174 [23360] PROXY 127.0.0.1:63217 (10.125.35.183) -> GET https://gspe21-ssl.ls.apple.com/icon/Default_Shields-605@2x.iconconfigpack?accessKey=1692279400_N4B2nmwThsngrCyA_dHaYRxb7c49VtKATgPWrpamXJU4pJwaf9uH3mVGi3uTm3NniVU8uqgEdMJh%2BSJ4OAW6%2BwRmfrBHMW3QeSU09ZjnysgZPlwHAXklY0HLl%2Bbs%3D (656 bytes)
+2023-08-17 15:26:41.207 [23360] PROXY 127.0.0.1:63154 (10.125.35.183) <- 200 gspe21-ssl.ls.apple.com:443 (6933 bytes)
+2023-08-17 15:26:41.223 [23360] PROXY 127.0.0.1:63217 (10.125.35.183) <- 200 gspe21-ssl.ls.apple.com:443 (82417 bytes)
+2023-08-17 15:26:41.760 [23360] PROXY 127.0.0.1:63217 (10.125.35.183) -> GET https://gspe21-ssl.ls.apple.com/icon/Guides_Icons_Default-285@2x.icondatapack?accessKey=1692279401_gHcE52IDErjLTZjy_%2Bjrv3yc5B1fy6FtD%2FhXB%2BXyaEYVV1%2B9808Fsw2JKpXu5ikDrRgPmpkmUnzBADs6apri2v3tr9DU3bFRxgoCTylD0bkhpgTUVrpu42iXvLm8%3D (661 bytes)
+2023-08-17 15:26:41.844 [23360] PROXY 127.0.0.1:63153 (10.125.35.183) -> GET https://gspe21-ssl.ls.apple.com/icon/Guides_Icons_Default-289.iconconfigpack?accessKey=1692279401_FDDRX0SYSZoLdwpP_Q%2B9JUxPKGg0ajzqi%2BM4EMFHNWmiItHIQe2WT24NNMJgJI%2BRo0NHC9jQN%2Fn%2F2kxXYxm2RMxJ06bZHRnGRWTXzuicPOuhW0FdwkwldUl6QDnI%3D (662 bytes)
+2023-08-17 15:26:41.873 [23360] PROXY 127.0.0.1:63154 (10.125.35.183) -> GET https://gspe21-ssl.ls.apple.com/icon/Guides_Icons_Default-290.icondatapack?accessKey=1692279401_JG2qquZ1skTevIpk_zgFLPoEo2AY%2BOl07CXfivI2dKejA5%2Bt4ZIfsd7PU%2FukDVPflyglAYv%2FhZs3c5g%2BcIoa1O47c53B7MyDIEcOIM1rSBjzm4uEAOFKs%2BUmp7pw%3D (662 bytes)
+2023-08-17 15:26:41.895 [23360] PROXY 127.0.0.1:63153 (10.125.35.183) <- 200 gspe21-ssl.ls.apple.com:443 (6969 bytes)
+2023-08-17 15:26:42.421 [23360] PROXY 127.0.0.1:63154 (10.125.35.183) <- 200 gspe21-ssl.ls.apple.com:443 (3581802 bytes)
+2023-08-17 15:26:42.699 [23360] PROXY 127.0.0.1:63153 (10.125.35.183) -> GET https://gspe21-ssl.ls.apple.com/texture/checker-1.png?accessKey=1692279402_KizBeSrA7Y2zvV17_NF8mLmT5cWN9iPKXA%2F0bB0LIafMr5Z6x89bSRaYtHDM7RfhHTo8ZIkrajx6s3e3RK%2FW9sQLGhAFtemG27BNtTw%3D%3D (615 bytes)
+2023-08-17 15:26:42.754 [23360] PROXY 127.0.0.1:63153 (10.125.35.183) <- 200 gspe21-ssl.ls.apple.com:443 (535 bytes)
+2023-08-17 15:26:42.877 [23360] PROXY 127.0.0.1:63217 (10.125.35.183) <- 200 gspe21-ssl.ls.apple.com:443 (9630761 bytes)
+2023-08-17 15:26:42.999 [23360] PROXY resolved 'edge.microsoft.com' to '204.79.197.239:443'
+2023-08-17 15:26:43.002 [23360] PROXY 127.0.0.1:63157 (10.100.29.246) -> GET https://edge.microsoft.com/extensiondiagnostic/v1/activitystatus?x=id%3Dahokoikenoafgppiblgpenaaaolecifn%26v%3D1.2.0&x=id%3Dbhmhibnbialendcafinliemndanacfaj%26v%3D1.4.12&x=id%3Dbobbggphonhgdonfdibkfipfepfcildj%26v%3D1.0.3&x=id%3Dceaifoolopnigfpidlheoagpheiplgii%26v%3D1.4.13&x=id%3Dcjneempfhkonkkbcmnfdibgobmhbagaj%26v%3D1.5.13&x=id%3Ddabfebgaghanlbehmkmaflipiohdimmc%26v%3D1.0.3&x=id%3Ddcaajljecejllikfgbhjdgeognacjkkp%26v%3D1.3.20&x=id%3Ddmbljphlfghcnbohaoffiedmodfmkmol%26v%3D1.0.3&x=id%3Dehlmnljdoejdahfjdfobmpfancoibmig%26v%3D1.3.14&x=id%3Deijpepilkjkofamihbmjcnihgpbebafj%26v%3D1.0.10&x=id%3Denkoeamdnimieoooocohgbdajhhkajko%26v%3D1.0.7&x=id%3Dfjngpfnaikknjdhkckmncgicobbkcnle%26v%3D1.1.11&x=id%3Dgbihlnbpmfkodghomcinpblknjhneknc%26v%3D1.4.9&x=id%3Dgbmoeijgfngecijpcnbooedokgafmmji%26v%3D1.7.0&x=id%3Dgecfnmoodchdkebjjffmdcmeghkflpib%26v%3D1.7.30&x=id%3Dgekagaaiohabmaknhkbaofhhedhelemf%26v%3D1.4.12&x=id%3Dghglcnachgghkhbafjogogiggghcpjig%26v%3D1.0.3&x=id%3Dhciemgmhplhpinoohcjpafmncmjapioh%26v%3D1.0.3&x=id%3Dhloomjjkinpbjldhobfkfdamkmikjmdo%26v%3D1.4.11&x=id%3Dhmlhageoffiiefnmojcgoagebofoifpl%26v%3D1.4.14&x=id%3Djbleckejnaboogigodiafflhkajdmpcl%26v%3D1.3.6&x=id%3Djlipacegilfgfpgkefbjcncbfcoeecgj%26v%3D1.0.5&x=id%3Djpfjdekhebcolnfkpicpciaknbgcdcbm%26v%3D1.0.3&x=id%3Dkfihiegbjaloebkmglnjnljoljgkkchm%26v%3D1.9.10&x=id%3Dkhffkadolmfbdgahbabbhipadklfmhgf%26v%3D1.5.14&x=id%3Dkjncpkplfnolibapodobnnjfgmjmiaba%26v%3D1.4.12&x=id%3Dkkobcodijbdelbnhbfkkfncbeildnpie%26v%3D1.0.3&x=id%3Dkmojgmpmopiiagdfbilgognmlegkonbk%26v%3D1.4.13&x=id%3Dnkbndigcebkoaejohleckhekfmcecfja%26v%3D1.6.8&x=id%3Dnnpnekncnhiglbokoiffmejlimgmgoam%26v%3D1.0.3&x=id%3Dofefcgjbeghpigppfmkologfjadafddi%26v%3D1.1.17&x=id%3Dojmnomejplkgljjhjindfoilnmobmihe%26v%3D1.0.12&x=id%3Dolkdlefmaniacnmgofabnpmomgcpdaip%26v%3D1.0.3&x=id%3Dolmhchkiafniffcaiciiomfdplnmklak%26v%3D1.5.4&x=id%3Dpencekojiebcjhifbkfdncgmmooepclc%26v%3D1.0.4&x=id%3Dppnnjfpaneghjbcepgedmlcgmfgkjhah%26v%3D1.0.3 (2530 bytes)
+2023-08-17 15:26:43.242 [23360] PROXY 127.0.0.1:63157 (10.100.29.246) <- 200 edge.microsoft.com:443 (3712 bytes)
+2023-08-17 15:26:47.334 [23360] PROXY 127.0.0.1:63154 (10.125.35.183) -> GET https://gspe21-ssl.ls.apple.com/texture/checker-1@2x.png?accessKey=1692279407_pOjhNUyBNgPpAHCL_x91wIo05B2%2FSObT%2Ba7Gqs3odDRrfzTafCiJ%2B8RxQER%2BbWMhL3WkBIMrb2l8tVKwNwVsyjaUmwYa2M3jRYU56aQ%3D%3D (622 bytes)
+2023-08-17 15:26:47.395 [23360] PROXY 127.0.0.1:63362 (10.125.35.183) -> POST https://gsp-ssl.ls.apple.com/ab.arpc (651 bytes)
+2023-08-17 15:26:47.397 [23360] PROXY 127.0.0.1:63154 (10.125.35.183) <- 200 gspe21-ssl.ls.apple.com:443 (679 bytes)
+2023-08-17 15:26:47.445 [23360] PROXY resolved 'gsp-ssl.ls.apple.com' to '17.253.15.215:443'
+2023-08-17 15:26:47.710 [23360] PROXY 127.0.0.1:63362 (10.125.35.183) <- 200 gsp-ssl.ls.apple.com:443 (404 bytes)
+2023-08-17 15:26:49.621 [23360] PROXY 127.0.0.1:63153 (10.125.35.183) -> GET https://gspe21-ssl.ls.apple.com/texture/solid-fill-1.png?accessKey=1692279409_Pat8rQAbygkDXQkj_%2Fejh0PkD3E%2BNmT9%2BOEK%2BJu%2B4STqdl5nj6jB7OI%2B92WNa5hzYcZzLjnaZ3aEr61e%2BE1GPHEl7fTIB%2BWg1Y1rjLQ%3D%3D (630 bytes)
+2023-08-17 15:26:49.666 [23360] PROXY 127.0.0.1:63153 (10.125.35.183) <- 200 gspe21-ssl.ls.apple.com:443 (1151 bytes)
+2023-08-17 15:26:50.123 [23360] KGP warning: no keepalive ack for 6s
+2023-08-17 15:26:50.971 [23360] PROXY 127.0.0.1:63217 (10.125.35.183) -> GET https://gspe21-ssl.ls.apple.com/font/SFDisplayShields-Bold-1.otf?accessKey=1692279410_THsVqWg4HVCPNGaB_1X3Qf6NVjE%2FB%2BVpHKI6DkR5QHXeBfBYS7v2HGQEDiPyeTG4PoqCXUss%2BZmVwj%2FMU5atp7oDDVApjLsqJrzBrmQ%3D%3D (630 bytes)
+2023-08-17 15:26:50.985 [23360] PROXY 127.0.0.1:63153 (10.125.35.183) -> GET https://gspe21-ssl.ls.apple.com/texture/solid-fill-1@2x.png?accessKey=1692279410_O703VHsXCFqMU5lR_CAADwXr%2FDVzrhqKloRpG6S8FBANf7CENCPxfWQuwVCK9Wm%2B44QRUFYD4Negbgfrdlal%2BuhE8Fd1Mayxcki35rw%3D%3D (623 bytes)
+2023-08-17 15:26:51.026 [23360] PROXY resolved 'gspe21-ssl.ls.apple.com' to '2.20.40.159:443'
+2023-08-17 15:26:51.028 [23360] PROXY 127.0.0.1:63362 (10.125.35.183) -> GET https://gspe21-ssl.ls.apple.com/xml/altitude-1120.xml?accessKey=1692279410_cQHkZNSPphSyhR4l_8LuzeQG%2Fq%2Bqicy7j5AgyC9K5LOCIgjFtahlME5ozAV4smD9J99Z8mQZklIRsqzfoS%2F2oPA3FADcF%2BM1PqlHkpg%3D%3D (619 bytes)
+2023-08-17 15:26:51.031 [23360] PROXY 127.0.0.1:63153 (10.125.35.183) <- 200 gspe21-ssl.ls.apple.com:443 (1152 bytes)
+2023-08-17 15:26:51.070 [23360] PROXY 127.0.0.1:63217 (10.125.35.183) <- 200 gspe21-ssl.ls.apple.com:443 (4529 bytes)
+2023-08-17 15:26:51.258 [23360] PROXY 127.0.0.1:63362 (10.125.35.183) <- 200 gspe21-ssl.ls.apple.com:443 (34815 bytes)
+2023-08-17 15:26:51.357 [23360] PROXY 127.0.0.1:63217 (10.125.35.183) -> GET https://gspe21-ssl.ls.apple.com/xml/supportedCountriesDirections-23.plist?accessKey=1692279411_kqko1UlrIffZ2bMi_QqOWqHbWZ6Xq8cgkyiVT2oK0797cAMleyurvYemEqC7KyrqOixJUg4T7IRPtqdI%2FStH%2B%2Bj3E6IoOE37GdQz3MFL3doZi%2BV0h4%2FBniZdex7Y%3D (659 bytes)
+2023-08-17 15:26:51.377 [23360] PROXY 127.0.0.1:63153 (10.125.35.183) -> GET https://gspe21-ssl.ls.apple.com/xml/supportedCountriesEVDirections-16.plist?accessKey=1692279411_UEGssR5NU59IpPIU_5bQyOg1wWgZkOYyeCWu%2Fagx%2BElR%2FYvtbsWUbff4Y2ERNMhJXOJYXGvxp68J5GwA%2BHKvw1SMEsISVUQ4pORjWK2saVa%2FYHH%2BvJGYx9stxiRg%3D (663 bytes)
+2023-08-17 15:26:51.406 [23360] PROXY 127.0.0.1:63217 (10.125.35.183) <- 200 gspe21-ssl.ls.apple.com:443 (878 bytes)
+2023-08-17 15:26:51.423 [23360] PROXY 127.0.0.1:63153 (10.125.35.183) <- 200 gspe21-ssl.ls.apple.com:443 (1108 bytes)
+2023-08-17 15:26:51.616 [23360] PROXY 127.0.0.1:63217 (10.125.35.183) -> GET https://gspe21-ssl.ls.apple.com/xml/supportedCountriesTraffic-7.plist?accessKey=1692279411_FlS1gY2y3COVQgfQ_tt1cR7XYVwazgO0y7GTMNvNc6OQ1sLZEaktGSVEnNBnJyMS9FGSrsLCvI4GWc7tREZdVmVsVSBBmcyQYUh%2BUHQGLc33yUjb4M5TT0OizsCc%3D (647 bytes)
+2023-08-17 15:26:51.683 [23360] PROXY 127.0.0.1:63217 (10.125.35.183) <- 200 gspe21-ssl.ls.apple.com:443 (712 bytes)
+2023-08-17 15:26:51.732 [23360] PROXY 127.0.0.1:63153 (10.125.35.183) -> GET https://gspe21-ssl.ls.apple.com/other/publisher_attribution_manifest_index-62.pb?accessKey=1692279411_QStcrACKFkHOBAVV_cDtbDm9UikJ3Rjp1nzB8QFvpgMMaB5%2FFkiGkrAlFw7qxzpt%2FH1wDTuecp%2FqCg1QpTNFzGoL1EKS%2Fm9IL%2BCFPbZddCgtp9ZhJxJ7TbhpPeUs%3D (666 bytes)
+2023-08-17 15:26:51.773 [23360] PROXY 127.0.0.1:63362 (10.125.35.183) -> GET https://gspe21-ssl.ls.apple.com/other/publisher_attribution_dot_coms-75.pb?accessKey=1692279411_hCwohB4wygbm9S2l_eaj9UelT8W%2F9DtYr6MbA0BlA7Wgdrovkkrw0ik192q8joR%2FXDqE0FRepuK8YmJZweEYiix%2F6sOKKEDmJWcGB58DqzQLXo2TTWwGl%2BUhzeHk%3D (658 bytes)
+2023-08-17 15:26:51.826 [23360] PROXY 127.0.0.1:63153 (10.125.35.183) <- 200 gspe21-ssl.ls.apple.com:443 (1634 bytes)
+2023-08-17 15:26:51.854 [23360] PROXY 127.0.0.1:63362 (10.125.35.183) <- 200 gspe21-ssl.ls.apple.com:443 (10558 bytes)
+2023-08-17 15:26:52.011 [23360] PROXY 127.0.0.1:63217 (10.125.35.183) -> GET https://gspe21-ssl.ls.apple.com/other/supportedEVInfo-20.json?accessKey=1692279411_SXe1nYqFi0BMpNy1_LRrLo02zLdWvdLe12T1ACjvdyPdEjNdX60TUUUgFnGxRb0x26xCHqJMk4ylUOUGeDF2Kc5B6MHCbOuKytzPVIA%3D%3D (619 bytes)
+2023-08-17 15:26:52.058 [23360] PROXY 127.0.0.1:63217 (10.125.35.183) <- 200 gspe21-ssl.ls.apple.com:443 (1083 bytes)
+2023-08-17 15:26:52.149 [23360] PROXY 127.0.0.1:63362 (10.125.35.183) -> GET https://gspe21-ssl.ls.apple.com/attributionlogo/tomtom-mask-3.png?accessKey=1692279411_byjbV8spixzPi96o_mXuc1%2BxgjOivV6H7NOzWiK6GCapL2%2B%2BXtM2U0SK9LX9FLts2aVTo472JjTCDRbYqP1Pnn%2BOCiIIwEZIwvsMArA%3D%3D (631 bytes)
+2023-08-17 15:26:52.182 [23360] PROXY 127.0.0.1:63153 (10.125.35.183) -> GET https://gspe21-ssl.ls.apple.com/attributionlogo/tomtom-mask-4@2x.png?accessKey=1692279411_xy8HGqM0hZcR4oQY_E58s2Vt7eB%2FQfk7ayPwCnkMm5H2r70T%2FstULq%2BBvzjoO82f5Z2e4uOeTCnPQ9GciwvzgIMBNajIZKwO9nLMQ3Q%3D%3D (632 bytes)
+2023-08-17 15:26:52.194 [23360] PROXY 127.0.0.1:63362 (10.125.35.183) <- 200 gspe21-ssl.ls.apple.com:443 (2259 bytes)
+2023-08-17 15:26:52.250 [23360] PROXY 127.0.0.1:63153 (10.125.35.183) <- 200 gspe21-ssl.ls.apple.com:443 (4218 bytes)
+2023-08-17 15:26:52.637 [23360] PROXY resolved 'gspe35-ssl.ls.apple.com' to '2.20.40.159:443'
+2023-08-17 15:26:52.638 [23360] PROXY 127.0.0.1:63153 (10.125.35.183) -> GET https://gspe35-ssl.ls.apple.com/geo_manifest/dynamic/config?application=geod&application_version=1&country_code=CY&hardware=iMacPro1,1&os=osx&os_build=21G115&os_version=12.6 (600 bytes)
+2023-08-17 15:26:53.085 [23360] PROXY 127.0.0.1:63153 (10.125.35.183) <- 200 gspe35-ssl.ls.apple.com:443 (79624 bytes)
+2023-08-17 15:27:50.363 [23360] PROXY 127.0.0.1:63653 (10.125.35.183) -> POST https://gsp64-ssl.ls.apple.com/hvr/v3/use (1119 bytes)
+2023-08-17 15:27:50.413 [23360] PROXY resolved 'gsp64-ssl.ls.apple.com' to '17.36.206.7:443'
+2023-08-17 15:27:50.993 [23360] PROXY 127.0.0.1:63653 (10.125.35.183) <- 200 gsp64-ssl.ls.apple.com:443 (269 bytes)
+2023-08-17 15:28:16.521 [23360] PROXY 127.0.0.1:63653 (10.100.29.246) -> GET https://edge.microsoft.com/entityextractiontemplates/api/v1/assets/find-assets?name=addressbar_uu_files.en-us&version=1.*.*&channel=canary&key=d414dd4f9db345fa8003e32adc81b362 (751 bytes)
+2023-08-17 15:28:16.525 [23360] PROXY resolved 'edge.microsoft.com' to '13.107.21.239:443'
+2023-08-17 15:28:16.778 [23360] PROXY 127.0.0.1:63653 (10.100.29.246) <- 200 edge.microsoft.com:443 (709 bytes)
+2023-08-17 15:32:16.239 [23360] Got signal interrupt

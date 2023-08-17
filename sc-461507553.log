@@ -1,0 +1,51 @@
+2023-08-17 15:32:33.154 [40988] Sauce Connect 4.6.3, build 5283 bb786fc 
+2023-08-17 15:32:33.158 [40988] Trying to autodetect proxy settings
+2023-08-17 15:32:33.166 [40988] Starting up; pid 40988
+2023-08-17 15:32:33.167 [40988] Command line arguments: C:\Users\popov.alexey\Desktop\web-developer\Frontend\projects\testcafe\node_modules\@belym.a.2105\sauce-tunnel\vendor\win32\bin\sc.exe -u testcafebot -k **** -i 461507553 
+2023-08-17 15:32:33.167 [40988] Log file: C:\Users\popov.alexey\Desktop\web-developer\Frontend\projects\testcafe\sc-461507553.log
+2023-08-17 15:32:33.167 [40988] Pid file: C:\Users\popov.alexey\AppData\Roaming/sc_client-461507553.pid
+2023-08-17 15:32:33.167 [40988] Timezone: EEST GMT offset: 3h
+2023-08-17 15:32:33.167 [40988] Using no proxy for connecting to Sauce Labs REST API.
+2023-08-17 15:32:33.515 [40988] ***********************************************************
+2023-08-17 15:32:33.515 [40988] WARNING: You are using Sauce Connect client version (4.6.3) that will reach its end of life on Nov 30, 2022. Please download the latest version from https://docs.saucelabs.com/secure-connections/sauce-connect/installation.
+2023-08-17 15:32:33.515 [40988] ***********************************************************
+2023-08-17 15:32:33.515 [40988] PROXY *** scproxy started ***
+2023-08-17 15:32:33.531 [40988] PROXY found DNS server 172.20.0.1
+2023-08-17 15:32:33.532 [40988] PROXY found DNS server 172.20.2.1
+2023-08-17 15:32:33.566 [40988] Started scproxy on port 64814.
+2023-08-17 15:32:33.566 [40988] Please wait for 'you may start your tests' to start your tests.
+2023-08-17 15:32:45.177 [40988] Secure remote tunnel VM provisioned.
+2023-08-17 15:32:45.178 [40988] Tunnel ID: 27081141e5b94b1dab6ba526cec4b08f
+2023-08-17 15:32:45.831 [40988] Starting OCSP certificate check.
+2023-08-17 15:32:45.831 [40988] Using no proxy for connecting to http://ocsp.digicert.com.
+2023-08-17 15:32:45.968 [40988] Using no proxy for connecting to http://ocsp.digicert.com.
+2023-08-17 15:32:46.095 [40988] Reached a trusted CA. Certificate chain is verified.
+2023-08-17 15:32:46.096 [40988] Using no proxy for connecting to tunnel VM.
+2023-08-17 15:32:46.097 [40988] Selenium listener disabled.
+2023-08-17 15:32:46.097 [40988] Establishing secure TLS connection to tunnel...
+2023-08-17 15:32:46.125 [40988] [EVDNS] Added nameserver 172.20.0.1:53 as 36B93408
+2023-08-17 15:32:46.126 [40988] [EVDNS] Added nameserver 172.20.2.1:53 as 36B93540
+2023-08-17 15:32:46.127 [40988] MAIN connecting to maki1328.miso.saucelabs.com - maki1328.miso.saucelabs.com:443
+2023-08-17 15:32:46.400 [40988] MAIN connecting to KGP server maki1328.miso.saucelabs.com took 270 ms
+2023-08-17 15:32:47.838 [40988] PROXY 127.0.0.1:64883 (127.0.0.1) -> HEAD https://saucelabs.com/ (293 bytes)
+2023-08-17 15:32:47.842 [40988] PROXY resolved 'saucelabs.com' to '34.96.70.78:443'
+2023-08-17 15:32:48.349 [40988] Sauce Connect is up, you may start your tests.
+2023-08-17 15:32:55.962 [40988] PROXY 127.0.0.1:64921 (10.100.19.116) -> POST https://accounts.google.com/ListAccounts?gpsia=1&source=ChromiumBrowser&json=standard (716 bytes)
+2023-08-17 15:32:55.966 [40988] PROXY resolved 'accounts.google.com' to '172.217.171.205:443'
+2023-08-17 15:32:56.193 [40988] PROXY 127.0.0.1:64921 (10.100.19.116) <- 200 accounts.google.com:443 (1708 bytes)
+2023-08-17 15:32:57.103 [40988] PROXY 127.0.0.1:64921 (10.100.19.116) -> GET http://localhost:2000/start (899 bytes)
+2023-08-17 15:32:57.106 [40988] PROXY 127.0.0.1:64921 error resolving hostname, ares status: 4
+2023-08-17 15:32:57.106 [40988] PROXY 127.0.0.1:64921 (10.100.19.116) <- localhost:2000 DNS error: Domain name not found (4)
+2023-08-17 15:32:57.520 [40988] PROXY 127.0.0.1:64928 (10.100.19.116) -> GET http://localhost:2000/favicon.ico (827 bytes)
+2023-08-17 15:32:57.523 [40988] PROXY 127.0.0.1:64928 error resolving hostname, ares status: 4
+2023-08-17 15:32:57.524 [40988] PROXY 127.0.0.1:64928 (10.100.19.116) <- localhost:2000 DNS error: Domain name not found (4)
+2023-08-17 15:45:08.772 [40988] PROXY 127.0.0.1:51874 (10.119.72.119) -> POST https://accounts.google.com/ListAccounts?gpsia=1&source=ChromiumBrowser&json=standard (716 bytes)
+2023-08-17 15:45:08.775 [40988] PROXY resolved 'accounts.google.com' to '142.250.201.13:443'
+2023-08-17 15:45:09.002 [40988] PROXY 127.0.0.1:51874 (10.119.72.119) <- 200 accounts.google.com:443 (1910 bytes)
+2023-08-17 15:45:10.695 [40988] PROXY 127.0.0.1:51874 (10.119.72.119) -> GET http://localhost:2000/start (899 bytes)
+2023-08-17 15:45:10.698 [40988] PROXY 127.0.0.1:51874 error resolving hostname, ares status: 4
+2023-08-17 15:45:10.698 [40988] PROXY 127.0.0.1:51874 (10.119.72.119) <- localhost:2000 DNS error: Domain name not found (4)
+2023-08-17 15:45:11.056 [40988] PROXY 127.0.0.1:51895 (10.119.72.119) -> GET http://localhost:2000/favicon.ico (827 bytes)
+2023-08-17 15:45:11.059 [40988] PROXY 127.0.0.1:51895 error resolving hostname, ares status: 4
+2023-08-17 15:45:11.060 [40988] PROXY 127.0.0.1:51895 (10.119.72.119) <- localhost:2000 DNS error: Domain name not found (4)
+2023-08-17 15:53:15.384 [40988] Got signal interrupt

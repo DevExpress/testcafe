@@ -1,0 +1,42 @@
+2023-08-17 15:54:13.399 [39696] Sauce Connect 4.6.3, build 5283 bb786fc 
+2023-08-17 15:54:13.403 [39696] Trying to autodetect proxy settings
+2023-08-17 15:54:13.414 [39696] Starting up; pid 39696
+2023-08-17 15:54:13.414 [39696] Command line arguments: C:\Users\popov.alexey\Desktop\web-developer\Frontend\projects\testcafe\node_modules\@belym.a.2105\sauce-tunnel\vendor\win32\bin\sc.exe -u testcafebot -k **** -i 461508853 
+2023-08-17 15:54:13.414 [39696] Log file: C:\Users\popov.alexey\Desktop\web-developer\Frontend\projects\testcafe\sc-461508853.log
+2023-08-17 15:54:13.414 [39696] Pid file: C:\Users\popov.alexey\AppData\Roaming/sc_client-461508853.pid
+2023-08-17 15:54:13.414 [39696] Timezone: EEST GMT offset: 3h
+2023-08-17 15:54:13.414 [39696] Using no proxy for connecting to Sauce Labs REST API.
+2023-08-17 15:54:13.765 [39696] ***********************************************************
+2023-08-17 15:54:13.765 [39696] WARNING: You are using Sauce Connect client version (4.6.3) that will reach its end of life on Nov 30, 2022. Please download the latest version from https://docs.saucelabs.com/secure-connections/sauce-connect/installation.
+2023-08-17 15:54:13.765 [39696] ***********************************************************
+2023-08-17 15:54:13.765 [39696] PROXY *** scproxy started ***
+2023-08-17 15:54:13.784 [39696] PROXY found DNS server 172.20.0.1
+2023-08-17 15:54:13.785 [39696] PROXY found DNS server 172.20.2.1
+2023-08-17 15:54:13.816 [39696] Started scproxy on port 54095.
+2023-08-17 15:54:13.816 [39696] Please wait for 'you may start your tests' to start your tests.
+2023-08-17 15:54:32.056 [39696] Secure remote tunnel VM provisioned.
+2023-08-17 15:54:32.056 [39696] Tunnel ID: f7d87bf5987349c9b0e0d1fe32d32a3b
+2023-08-17 15:54:32.732 [39696] Starting OCSP certificate check.
+2023-08-17 15:54:32.732 [39696] Using no proxy for connecting to http://ocsp.digicert.com.
+2023-08-17 15:54:32.886 [39696] Using no proxy for connecting to http://ocsp.digicert.com.
+2023-08-17 15:54:33.009 [39696] Reached a trusted CA. Certificate chain is verified.
+2023-08-17 15:54:33.010 [39696] Using no proxy for connecting to tunnel VM.
+2023-08-17 15:54:33.011 [39696] Selenium listener disabled.
+2023-08-17 15:54:33.011 [39696] Establishing secure TLS connection to tunnel...
+2023-08-17 15:54:33.036 [39696] [EVDNS] Added nameserver 172.20.0.1:53 as 02BFEEB0
+2023-08-17 15:54:33.037 [39696] [EVDNS] Added nameserver 172.20.2.1:53 as 36BD2FE8
+2023-08-17 15:54:33.038 [39696] MAIN connecting to maki3482.miso.saucelabs.com - maki3482.miso.saucelabs.com:443
+2023-08-17 15:54:33.318 [39696] MAIN connecting to KGP server maki3482.miso.saucelabs.com took 278 ms
+2023-08-17 15:54:34.727 [39696] PROXY 127.0.0.1:54185 (127.0.0.1) -> HEAD https://saucelabs.com/ (293 bytes)
+2023-08-17 15:54:34.730 [39696] PROXY resolved 'saucelabs.com' to '34.96.70.78:443'
+2023-08-17 15:54:35.265 [39696] Sauce Connect is up, you may start your tests.
+2023-08-17 15:54:43.636 [39696] PROXY 127.0.0.1:54223 (10.119.45.189) -> POST https://accounts.google.com/ListAccounts?gpsia=1&source=ChromiumBrowser&json=standard (716 bytes)
+2023-08-17 15:54:43.639 [39696] PROXY resolved 'accounts.google.com' to '142.250.201.13:443'
+2023-08-17 15:54:43.869 [39696] PROXY 127.0.0.1:54223 (10.119.45.189) <- 200 accounts.google.com:443 (1762 bytes)
+2023-08-17 15:54:44.971 [39696] PROXY 127.0.0.1:54223 (10.119.45.189) -> GET http://localhost:2000/start (899 bytes)
+2023-08-17 15:54:44.973 [39696] PROXY 127.0.0.1:54223 error resolving hostname, ares status: 4
+2023-08-17 15:54:44.974 [39696] PROXY 127.0.0.1:54223 (10.119.45.189) <- localhost:2000 DNS error: Domain name not found (4)
+2023-08-17 15:54:45.331 [39696] PROXY 127.0.0.1:54235 (10.119.45.189) -> GET http://localhost:2000/favicon.ico (827 bytes)
+2023-08-17 15:54:45.334 [39696] PROXY 127.0.0.1:54235 error resolving hostname, ares status: 4
+2023-08-17 15:54:45.335 [39696] PROXY 127.0.0.1:54235 (10.119.45.189) <- localhost:2000 DNS error: Domain name not found (4)
+2023-08-17 15:55:10.862 [39696] Got signal interrupt
