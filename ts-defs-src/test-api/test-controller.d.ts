@@ -83,7 +83,7 @@ interface Browser {
      */
     prettyUserAgent: string;
     /**
-     * Specifies whether the TestCafe uses native automation.
+     * Indicates whether TestCafe uses native automation.
      */
     nativeAutomation: boolean;
 }
