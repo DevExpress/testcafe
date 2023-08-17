@@ -1,5 +1,112 @@
 # Changelog
 
+## v3.2.0 (2023-08-17)
+
+TestCafe v3.2.0 allows you to check whether TestCafe uses native automation to control the browser.
+
+### Check your native automation status
+
+The `nativeAutomation` property of the [t.browser](https://testcafe.io/documentation/402712/reference/test-api/testcontroller/browser) object indicates whether TestCafe uses native automation to control the browser. The property's value is `true` when TestCafe uses native automation and `false` when TestCafe uses the Hammerhead proxy.
+
+You can check the browser's native automation status before you start the test:
+
+```js
+import { Selector } from 'testcafe';
+
+fixture`TestController.browser`
+    .page`https://example.com`;
+
+test('Native automation check', async t => {
+    await t.expect(t.browser.nativeAutomation).ok();
+    //the test continues only if you use native automation
+});
+```
+
+### Bug Fixes
+
+* TestCafe uses a version of the `error-stack-parser` package that contains a vulnerable dependency ([PR #7919](https://github.com/DevExpress/testcafe/pull/7919) by [@sethidden](https://github.com/sethidden)).
+* TestCafe does not clear cookie storage if a Role activation URL is the same as the page URL ([#7874](https://github.com/DevExpress/testcafe/issues/7874)).
+* [Native Automation] TestCafe incorrectly processes web pages with file inputs ([#7886](https://github.com/DevExpress/testcafe/issues/7886)).
+
+## v3.1.0 (2023-07-27)
+
+TestCafe v3.1.0 introduces two enhancements:
+
+* You can now respond to geolocation requests with the `t.setNativeDialogHandler` method.
+* Your tests and test reports can now reference a variable that stores the framework's version number.
+
+### Respond to geolocation requests
+
+> Main article: [t.setNativeDialogHandler](https://testcafe.io/documentation/402684/reference/test-api/testcontroller/setnativedialoghandler)
+
+Use the `t.setNativeDialogHandler` method to respond to `geolocation` requests. 
+
+* Return an `Error` type object to **Block** geolocation requests. 
+* Return an object with [coordinates](https://developer.mozilla.org/en-US/docs/Web/API/GeolocationPosition) to trigger the `success` callback of the [getCurrentPosition](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/getCurrentPosition) method.
+
+```js
+// Test
+test('Switch from "allow" to "block"', async t => {
+  await t
+    .setNativeDialogHandler((type) => {
+        if (type === 'geolocation')
+            return { timestamp: 12356, accuracy: 20, coords: {latitude: '34.15321262322903', longitude: '-118.25543996370723'}; // Passes this data to geolocation requests
+        return null;
+    });
+    .click('#buttonGeo')
+    .setNativeDialogHandler((type) => {
+        if (type !== 'geolocation')
+            return null;
+    
+        const err = new Error('Some error');
+    
+        err.code = 1;
+    
+        return err; // Blocks geolocation requests
+    })
+    .click('#buttonGeo');
+```
+
+### Reference the framework's version in tests and test reports
+
+> Main article: [Version Logger API](https://testcafe.io/documentation/404469/reference/version-logger-api)
+
+Earlier versions of TestCafe could output the framework's version number to the console:
+
+![CLI version](https://testcafe.io/images/testcafe-version.png)
+
+TestCafe 3.1.0 and up allows you to access the framework's version number in test code:
+
+```js
+import { version } from 'testcafe';
+console.log(`TestCafe version: ${version}`);
+```
+
+![API version](https://testcafe.io/images/output-testcafe-version.png)
+
+To access the framework's version number in your custom reporter, reference the first argument (`version`) of the `init` method:
+
+```js
+init (version) {
+   this
+      .write(`Using TestCafe ${version}`)
+      .newline()
+}
+```
+
+### Bug fixes
+
+* TestCafe incorrectly reports test duration in concurrency mode ([#1816](https://github.com/DevExpress/testcafe/issues/1816)).
+* TestCafe assigns a non-zero duration value to skipped tests, which leads to an unexpected increase in the total test run duration value ([#7731](https://github.com/DevExpress/testcafe/issues/7731)).
+* [Native Automation] The `setFileUpload` method does not work ([#7832](https://github.com/DevExpress/testcafe/issues/7832)).
+* [Native Automation] Request hooks cause tests to crash ([#7846](https://github.com/DevExpress/testcafe/issues/7846
+)).
+* [Native Automation] TestCafe overrides page titles ([#7833](https://github.com/DevExpress/testcafe/issues/7833)).
+* [Native Automation] If a website redirects the user to a new page before basic HTTP authentication is complete, the authentication process fails ([#7852](https://github.com/DevExpress/testcafe/issues/7852)).
+* [Native Automation] The `t.click` action fails if the event handler accounts for [pointer input pressure](https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent/pressure) ([#7867](https://github.com/DevExpress/testcafe/issues/7867)).
+* [Native Automation] TestCafe hangs when the browser yields a "Session with given ID not found" error ([#7865](https://github.com/DevExpress/testcafe/issues/7865),[#7810](https://github.com/DevExpress/testcafe/issues/7810)).
+* [Native Automation] TestCafe cannot set the `httpOnly` flag when you use the `t.setCookies` method ([#7793](https://github.com/DevExpress/testcafe/issues/7793)).
+
 ## v3.0.1 (2023-06-29)
 
 ### Bug fixes
