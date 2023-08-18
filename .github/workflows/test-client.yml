@@ -77,7 +77,7 @@ jobs:
       - name: Read test result
         id: test-result
         shell: bash
-        run: echo failure=$([ $(grep -h -v "success" test-result-*.txt | wc -l) -eq 0 ] && echo "true" || echo "false") >> "$GITHUB_OUTPUT"
+        run: echo failure=$([ $(grep -h -v "success" test-result-*.txt | wc -l) -eq 0 ] && echo "false" || echo "true") >> "$GITHUB_OUTPUT"
 
       - uses: DevExpress/testcafe-build-system/actions/set-status@main
         with:
