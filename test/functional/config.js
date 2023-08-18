@@ -212,7 +212,7 @@ module.exports = {
     },
 
     get retryTestPages () {
-        return this.currentEnvironment.retryTestPages;
+        return this.currentEnvironment.retryTestPages && !this.nativeAutomation;
     },
 
     testingEnvironmentNames,

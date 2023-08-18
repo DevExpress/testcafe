@@ -4,6 +4,7 @@ const path       = require('path');
 const { expect } = require('chai');
 
 module.exports = {
+    ...config.currentEnvironment,
     hostname:         config.testCafe.hostname,
     port1:            1335,
     port2:            1336,
@@ -33,6 +34,5 @@ module.exports = {
             },
         },
     },
-    ...config.currentEnvironment,
     browsers: config.currentEnvironment.browsers.map(item => item.browserName),
 };

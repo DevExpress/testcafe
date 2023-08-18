@@ -3,6 +3,7 @@ const config          = require('../../../../../config');
 const path            = require('path');
 
 module.exports = {
+    ...config.currentEnvironment,
     hostname:         config.testCafe.hostname,
     port1:            1335,
     port2:            1336,
@@ -37,6 +38,5 @@ module.exports = {
             },
         },
     },
-    ...config.currentEnvironment,
     browsers: 'chrome:headless',
 };

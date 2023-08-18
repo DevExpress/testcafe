@@ -12,6 +12,7 @@ const requestMock = RequestMock()
     .respond();
 
 module.exports = {
+    ...config.currentEnvironment,
     hostname:         config.testCafe.hostname,
     port1:            1335,
     port2:            1336,
@@ -25,6 +26,5 @@ module.exports = {
     hooks:            {
         request: requestMock,
     },
-    ...config.currentEnvironment,
     browsers: 'chrome:headless',
 };
