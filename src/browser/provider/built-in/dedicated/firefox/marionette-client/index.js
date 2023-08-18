@@ -260,5 +260,9 @@ module.exports = class MarionetteClient {
     async quit () {
         await this._request({ command: COMMANDS.quit });
     }
+
+    // NOTE: This method is empty because of the code structure
+    async closeBrowserChildWindow () {
+    }
 };
 
