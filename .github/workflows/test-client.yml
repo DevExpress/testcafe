@@ -22,8 +22,6 @@ jobs:
       SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
       SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
       CLIENT_TESTS_CURRENT_BROWSER: ${{ matrix.browser }}
-    outputs:
-      has-error: "${{ steps.has-error.outputs.value }}"
     steps:
       - uses: DevExpress/testcafe-build-system/actions/set-status@main
         with:
@@ -56,21 +54,35 @@ jobs:
       - run: ${{ inputs.test-script }}
         timeout-minutes: 60
 
-      - name: Has error
-        id: has-error
-        if: failure() || cancelled()
+      - name: Save result
+        if: always()
         shell: bash
-        run: echo "value=true" >> "$GITHUB_OUTPUT"
+        run: echo ${{job.status}} > test-result-${{ matrix.browser }}.txt
+
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: test-result
+          path: test-result-${{ matrix.browser }}.txt
     
   set-result-status:
     if: always()
     needs: test
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: test-result
+
+      - name: Read test result
+        id: test-result
+        shell: bash
+        run: echo failure=$([ $(grep -h -v "success" test-result-*.txt | wc -l) -eq 0 ] && echo "true" || echo "false") >> "$GITHUB_OUTPUT"
+
       - uses: DevExpress/testcafe-build-system/actions/set-status@main
         with:
-          status: ${{ needs.test.outputs.has-error && 'failure' || 'success' }}
+          status: ${{ fromJson(steps.test-result.outputs.failure) && 'failure' || 'success' }}
 
       - name: Exit with error
-        if: ${{ needs.test.outputs.has-error }}
+        if: ${{ fromJson(steps.test-result.outputs.failure) }}
         run: exit 1
