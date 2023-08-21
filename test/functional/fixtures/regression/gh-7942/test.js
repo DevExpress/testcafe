@@ -5,7 +5,7 @@ onlyDescribeInNativeAutomation('Should raise an error on running legacy tests in
     it('Should raise an error on running legacy tests in the native automation mode (GH-7942)', function () {
         return runTests('./testcafe-fixtures/legacy.test.js', null, { only: 'chrome', shouldFail: true })
             .catch(err => {
-                expect(err.message).eql('Cannot run legacy tests in the Native Automation mode. Use the "disable native automation" option to continue.');
+                expect(err.message).eql('TestCafe cannot run legacy tests in Native Automation mode. Disable native automation to continue.');
             });
     });
 });
