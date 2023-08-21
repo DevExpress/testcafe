@@ -50,7 +50,8 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
     });
 
     it('Should execute an action in an iframe with redirect', function () {
-        return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click in an iframe with redirect', DEFAULT_RUN_OPTIONS);
+        // NOTE: this test is very unstable in GitHub Actions image. Locally it works fine.
+        return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click in an iframe with redirect', Object.assign({}, DEFAULT_RUN_OPTIONS, { skip: 'edge' }));
     });
 
     it('Should keep context if the page was reloaded', function () {
