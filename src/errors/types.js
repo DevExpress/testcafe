@@ -188,4 +188,5 @@ export const RUNTIME_ERRORS = {
     setNativeAutomationForUnsupportedBrowsers:          'E1082',
     cannotReadConfigFile:                               'E1083',
     cannotParseConfigFile:                              'E1084',
+    cannotRunLegacyTestsInNativeAutomationMode:         'E1085',
 };

@@ -377,6 +377,23 @@ export default class Bootstrapper {
         return result;
     }
 
+    private async _assertNativeAutomationForLegacyTests (resources: BasicRuntimeResources): Promise<void> {
+        const isNativeAutomation = !this.configuration.getOption(OPTION_NAMES.disableNativeAutomation);
+
+        if (!isNativeAutomation)
+            return;
+
+        const hasLegacyTests = resources.tests.some(test => (test as any).isLegacy);
+
+        if (!hasLegacyTests)
+            return;
+
+        await resources.browserSet.dispose();
+        await resources.testedApp?.kill();
+
+        throw new GeneralError(RUNTIME_ERRORS.cannotRunLegacyTestsInNativeAutomationMode);
+    }
+
     private async _bootstrapParallel (browserInfo: BrowserInfoSource[], id: string): Promise<BasicRuntimeResources> {
         const bootstrappingPromises = {
             browserSet: this._getBrowserConnections(browserInfo),
@@ -397,11 +414,15 @@ export default class Bootstrapper {
         if (isPromiseError(browserSetResults) || isPromiseError(testResults) || isPromiseError(appResults))
             throw await this._getBootstrappingError(...bootstrappingResults);
 
-        return {
+        const resources = {
             browserSet: browserSetResults.result,
             tests:      testResults.result,
             testedApp:  appResults.result,
         };
+
+        await this._assertNativeAutomationForLegacyTests(resources);
+
+        return resources;
     }
 
     // API
