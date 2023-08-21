@@ -153,5 +153,5 @@ export default {
     [RUNTIME_ERRORS.invalidCustomActionType]:                        `TestCafe cannot parse the "{actionName}" action, because the action definition is invalid. Format the definition in accordance with the custom actions guide: ${ DOCUMENTATION_LINKS.CUSTOM_ACTIONS }`,
     [RUNTIME_ERRORS.cannotImportESMInCommonsJS]:                     'Cannot import the {esModule} ECMAScript module from {targetFile}. Use a dynamic import() statement or enable the --esm CLI flag.',
     [RUNTIME_ERRORS.setNativeAutomationForUnsupportedBrowsers]:      'The "{browser}" do not support the Native Automation mode. Use the "disable native automation" option to continue.',
-    [RUNTIME_ERRORS.cannotRunLegacyTestsInNativeAutomationMode]:     'Cannot run legacy tests in the Native Automation mode. Use the "disable native automation" option to continue.',
+    [RUNTIME_ERRORS.cannotRunLegacyTestsInNativeAutomationMode]:     'TestCafe cannot run legacy tests in Native Automation mode. Disable native automation to continue.',
 };
