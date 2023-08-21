@@ -158,7 +158,7 @@ jobs:
             name: testcafe-debug-log
             path: testcafe-debug-log-${{ matrix.test-group }}.log
 
-      - uses: Aleksey28/testcafe-build-system/actions/save-matrix-status@main
+      - uses: DevExpress/testcafe-build-system/actions/save-matrix-status@main
         if: always()
         with: 
           job-id: ${{ matrix.test-group }}
@@ -168,7 +168,7 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      - uses: Aleksey28/testcafe-build-system/actions/read-matrix-status@main
+      - uses: DevExpress/testcafe-build-system/actions/read-matrix-status@main
         id: matrix-status
 
       - uses: DevExpress/testcafe-build-system/actions/set-status@main
