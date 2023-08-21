@@ -157,44 +157,25 @@ jobs:
         with:
             name: testcafe-debug-log
             path: testcafe-debug-log-${{ matrix.test-group }}.log
-        
-      - name: Save result
-        id: save-result
+
+      - uses: Aleksey28/testcafe-build-system/actions/save-matrix-status@main
         if: always()
-        shell: bash
-        run: echo "test_${{ matrix.test-group }}=${{ job.status }}" >> "$GITHUB_OUTPUT"
-  
-  get-result-status:
-    if: ${{ !cancelled() }}
-    needs: test
-    runs-on: ubuntu-latest
-    outputs:
-      status: ${{ steps.status.outputs.result }}
-    steps:
-      - uses: actions/github-script@v6
-        id: status
-        with:
-          result-encoding: string
-          script: |
-            const statuses = ${{ toJSON(needs.test.outputs.*) }};
-
-            for (let i = 0; i < ${{ inputs.matrix-jobs-count }}; i++) {
-              if (statuses[i] !== 'success')
-                return 'failure';
-            }
-
-            return 'success';
+        with: 
+          job-id: ${{ matrix.test-group }}
 
   set-result-status:
     if: always()
-    needs: get-result-status
+    needs: test
     runs-on: ubuntu-latest
     steps:
+      - uses: Aleksey28/testcafe-build-system/actions/read-matrix-status@main
+        id: matrix-status
+
       - uses: DevExpress/testcafe-build-system/actions/set-status@main
         if: always()
         with:
-          status: ${{ needs.get-result-status.outputs.status || 'failure' }}
+          status: ${{ steps.matrix-status.outputs.status }}
 
       - name: Exit with error
-        if: ${{ needs.get-result-status.outputs.status != 'success' }}
+        if: ${{ steps.matrix-status.outputs.status != 'success' }}
         run: exit 1
