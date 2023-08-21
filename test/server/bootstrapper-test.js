@@ -133,11 +133,15 @@ describe('Bootstrapper', () => {
                 },
             };
 
+            const remoteBrowserConnectionMock = {
+                isNativeAutomationEnabled: () => false,
+            };
+
             bootstrapper.configuration.clear();
             bootstrapper._disableNativeAutomationIfNecessary(remoteBrowserConnections, automatedBrowserConnections);
             expect(bootstrapper.configuration._mergedOptions).to.be.undefined;
 
-            remoteBrowserConnections = [{}];
+            remoteBrowserConnections = [remoteBrowserConnectionMock];
 
             bootstrapper._disableNativeAutomationIfNecessary(remoteBrowserConnections, automatedBrowserConnections);
             expect(bootstrapper.configuration._mergedOptions).eql({ disableNativeAutomation: true });

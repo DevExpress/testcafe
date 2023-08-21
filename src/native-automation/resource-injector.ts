@@ -110,10 +110,12 @@ export default class ResourceInjector {
         const injectableResources = {
             stylesheets: [
                 TESTCAFE_UI_STYLES,
+                ...this._testRunBridge.getInjectableStyles(),
             ],
             scripts: [
                 ...HAMMERHEAD_INJECTABLE_SCRIPTS.map(hs => getAssetPath(hs, this._options.developmentMode)),
                 ...SCRIPTS.map(s => getAssetPath(s, this._options.developmentMode)),
+                ...this._testRunBridge.getInjectableScripts(),
             ],
             embeddedScripts: [ this._getRestoreStoragesScript(restoringStorages), this._getRestoreContextStorageScript(contextStorage), taskScript],
             userScripts:     userScripts || [],

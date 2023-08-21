@@ -646,4 +646,8 @@ export default class BrowserConnection extends EventEmitter {
     public getNativeAutomation (): NativeAutomation {
         return this.provider.getNativeAutomation(this.id);
     }
+
+    public isNativeAutomationEnabled (): boolean {
+        return this._options.nativeAutomation;
+    }
 }

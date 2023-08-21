@@ -32,6 +32,24 @@ export default class TestRunBridge {
         return currentTestRun.injectable.userScripts;
     }
 
+    public getInjectableScripts (): string[] {
+        const currentTestRun = this.getCurrentTestRun();
+
+        if (!currentTestRun)
+            return [];
+
+        return currentTestRun.injectable.scripts;
+    }
+
+    public getInjectableStyles (): string[] {
+        const currentTestRun = this.getCurrentTestRun();
+
+        if (!currentTestRun)
+            return [];
+
+        return currentTestRun.injectable.styles;
+    }
+
     public async getTaskScript ({ isIframe }: InjectableResourcesOptions): Promise<string> {
         const browserConnection = this.getBrowserConnection();
         const proxy             = browserConnection.browserConnectionGateway.proxy;
