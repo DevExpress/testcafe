@@ -54,35 +54,23 @@ jobs:
       - run: ${{ inputs.test-script }}
         timeout-minutes: 60
 
-      - name: Save result
+      - uses: Aleksey28/testcafe-build-system/actions/save-matrix-status@main
         if: always()
-        shell: bash
-        run: echo ${{job.status}} > test-result-${{ matrix.browser }}.txt
-
-      - uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: test-result
-          path: test-result-${{ matrix.browser }}.txt
+        with: 
+          job-id: ${{ matrix.browser }}
     
   set-result-status:
     if: always()
     needs: test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/download-artifact@v3
-        with:
-          name: test-result
-
-      - name: Read test result
-        id: test-result
-        shell: bash
-        run: echo failure=$([ $(grep -h -v "success" test-result-*.txt | wc -l) -eq 0 ] && echo "false" || echo "true") >> "$GITHUB_OUTPUT"
+      - uses: Aleksey28/testcafe-build-system/actions/read-matrix-status@main
+        id: matrix-status
 
       - uses: DevExpress/testcafe-build-system/actions/set-status@main
         with:
-          status: ${{ fromJson(steps.test-result.outputs.failure) && 'failure' || 'success' }}
+          status: ${{ steps.matrix-status.outputs.status }}
 
       - name: Exit with error
-        if: ${{ fromJson(steps.test-result.outputs.failure) }}
+        if: ${{ steps.matrix-status.outputs.status != 'success' }}
         run: exit 1
