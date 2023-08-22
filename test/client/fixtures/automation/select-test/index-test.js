@@ -91,9 +91,7 @@ $(document).ready(function () {
         equal(domUtils.getActiveElement(), el, 'selected element is active');
         equal(textSelection.getSelectionStart(el), start, 'start selection correct');
         equal(textSelection.getSelectionEnd(el), end, 'end selection correct');
-
-        if (!window.DIRECTION_ALWAYS_IS_FORWARD)
-            equal(textSelection.hasInverseSelection(el), inverse || false, 'selection direction correct');
+        equal(textSelection.hasInverseSelection(el), inverse || false, 'selection direction correct');
     }
 
     function restorePageState () {
@@ -300,7 +298,7 @@ $(document).ready(function () {
                 if (checkScrollAfterSelect)
                     ok(style.getElementScroll(input).left > 0);
 
-                expect((checkScrollAfterSelect ? 9 : 7) - Number(window.DIRECTION_ALWAYS_IS_FORWARD));
+                expect(checkScrollAfterSelect ? 9 : 7);
 
                 startNext();
             });
@@ -345,7 +343,7 @@ $(document).ready(function () {
                 if (checkScrollAfterSelect)
                     ok(style.getElementScroll(input).left < oldScroll);
 
-                expect((checkScrollAfterSelect ? 9 : 6) - Number(window.DIRECTION_ALWAYS_IS_FORWARD));
+                expect(checkScrollAfterSelect ? 9 : 6);
 
                 startNext();
             });
@@ -393,7 +391,7 @@ $(document).ready(function () {
                 if (checkScrollAfterSelect)
                     ok(style.getElementScroll(textarea).top > 0);
 
-                expect((checkScrollAfterSelect ? 9 : 7) - Number(window.DIRECTION_ALWAYS_IS_FORWARD));
+                expect(checkScrollAfterSelect ? 9 : 7);
 
                 startNext();
             });
@@ -439,7 +437,7 @@ $(document).ready(function () {
                 if (checkScrollAfterSelect)
                     ok(style.getElementScroll(textarea).top > 0);
 
-                expect((checkScrollAfterSelect ? 9 : 7) - Number(window.DIRECTION_ALWAYS_IS_FORWARD));
+                expect(checkScrollAfterSelect ? 9 : 7);
 
                 startNext();
             });
@@ -488,7 +486,7 @@ $(document).ready(function () {
                 if (checkScrollAfterSelect)
                     ok(style.getElementScroll(textarea).top < oldScroll);
 
-                expect((checkScrollAfterSelect ? 9 : 6) - Number(window.DIRECTION_ALWAYS_IS_FORWARD));
+                expect(checkScrollAfterSelect ? 9 : 6);
 
                 startNext();
             });
@@ -537,7 +535,7 @@ $(document).ready(function () {
                 if (checkScrollAfterSelect)
                     ok(style.getElementScroll(textarea).top < oldScroll);
 
-                expect((checkScrollAfterSelect ? 9 : 6) - Number(window.DIRECTION_ALWAYS_IS_FORWARD));
+                expect(checkScrollAfterSelect ? 9 : 6);
 
                 startNext();
             });
