@@ -1,6 +1,3 @@
-const hammerhead   = window.getTestCafeModule('hammerhead');
-const browserUtils = hammerhead.utils.browser;
-
 const testCafeCore = window.getTestCafeModule('testCafeCore');
 const arrayUtils   = testCafeCore.arrayUtils;
 
