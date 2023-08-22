@@ -139,11 +139,9 @@ test('isArray()', function () {
 test('from()', function () {
     deepEqual(arrayUtils.from('foo'), ['f', 'o', 'o']);
 
-    if (!browserUtils.isIE) {
-        deepEqual(arrayUtils.from(array, function (x) {
-            return x + x;
-        }), [2, 4, 6, 8, 10]);
-    }
+    deepEqual(arrayUtils.from(array, function (x) {
+        return x + x;
+    }), [2, 4, 6, 8, 10]);
 });
 
 test('find()', function () {

@@ -1,10 +1,8 @@
-const hammerhead    = window.getTestCafeModule('hammerhead');
-const browserUtils  = hammerhead.utils.browser;
 const testCafeCore  = window.getTestCafeModule('testCafeCore');
 const domUtils      = testCafeCore.domUtils;
 
 asyncTest('isIFrameWindowInDOM', function () {
-    expect(browserUtils.isIE ? 2 : 1);
+    expect(1);
 
     let messageCounter = 0;
 
@@ -17,15 +15,10 @@ asyncTest('isIFrameWindowInDOM', function () {
         if (messageCounter === 0) {
             equal(event.data, 'true');
 
-            const iFramePostMessage = iframe.contentWindow.postMessage.bind(iframe.contentWindow);
-
             document.body.removeChild(iframe);
 
             //NOTE: In WebKit, scripts cannot be executed in a removed iframe. Therefore, the test is finished here.
-            if (browserUtils.isIE)
-                iFramePostMessage('isIFrameWindowInDOM', '*');
-            else
-                finishTest();
+            finishTest();
         }
         else {
             equal(event.data, 'false');
