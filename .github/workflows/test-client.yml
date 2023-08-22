@@ -6,13 +6,22 @@ on:
       test-script:
         required: true
         type: string
+      browsers:
+        required: true
+        type: string
 jobs:
   test:
     runs-on: ubuntu-latest
+    name: ${{ matrix.browser }}
+    continue-on-error: true
+    strategy:
+      matrix:
+        browser: ${{ fromJSON(inputs.browsers) }}
     environment: test-client
     env:
       SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
       SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
+      CLIENT_TESTS_CURRENT_BROWSER: ${{ matrix.browser }}
     steps:
       - uses: DevExpress/testcafe-build-system/actions/set-status@main
         with:
@@ -45,8 +54,23 @@ jobs:
       - run: ${{ inputs.test-script }}
         timeout-minutes: 60
 
-      - uses: DevExpress/testcafe-build-system/actions/set-status@main
+      - uses: DevExpress/testcafe-build-system/actions/save-matrix-status@main
         if: always()
+        with: 
+          job-id: ${{ matrix.browser }}
+    
+  set-result-status:
+    if: always()
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: DevExpress/testcafe-build-system/actions/read-matrix-status@main
+        id: matrix-status
+
+      - uses: DevExpress/testcafe-build-system/actions/set-status@main
         with:
-          status: ${{ fromJSON('["failure", "success"]')[job.status == 'success'] }}
-          
+          status: ${{ steps.matrix-status.outputs.status }}
+
+      - name: Exit with error
+        if: ${{ steps.matrix-status.outputs.status != 'success' }}
+        run: exit 1
