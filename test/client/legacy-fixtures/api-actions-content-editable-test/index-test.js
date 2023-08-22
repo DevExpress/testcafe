@@ -226,12 +226,8 @@ $(document).ready(function () {
                 actionsAPI.select($el[0], -11);
             },
             function () {
-                if (browserUtils.isIE)
-                    checkSelection($el, $el[0].childNodes[0], 12, $el[0].childNodes[2], 8);
-                else {
-                    checkSelection($el, $el[0].childNodes[2], [8, 7], $el[0].childNodes[0], 12);
-                    equal(textSelection.hasInverseSelection($el[0]), true, 'selection direction correct');
-                }
+                checkSelection($el, $el[0].childNodes[2], [8, 7], $el[0].childNodes[0], 12);
+                equal(textSelection.hasInverseSelection($el[0]), true, 'selection direction correct');
             },
             correctTestWaitingTime(TEST_COMPLETE_WAITING_TIMEOUT)
         );
@@ -372,12 +368,8 @@ $(document).ready(function () {
                 actionsAPI.select(node, el);
             },
             function () {
-                if (browserUtils.isIE)
-                    checkSelection($parent, $parent[0].childNodes[1].childNodes[0], 0, $parent[0].childNodes[8], 13);
-                else {
-                    checkSelection($parent, $parent[0].childNodes[8], [13, 9], $parent[0].childNodes[1].childNodes[0], 0);
-                    equal(textSelection.hasInverseSelection($parent[0]), true, 'selection direction correct');
-                }
+                checkSelection($parent, $parent[0].childNodes[8], [13, 9], $parent[0].childNodes[1].childNodes[0], 0);
+                equal(textSelection.hasInverseSelection($parent[0]), true, 'selection direction correct');
             },
             correctTestWaitingTime(TEST_COMPLETE_WAITING_TIMEOUT)
         );
@@ -440,12 +432,8 @@ $(document).ready(function () {
                 actionsAPI.select($el1, $el2);
             },
             function () {
-                if (browserUtils.isIE)
-                    checkSelection($parent, $parent.find('del')[0].childNodes[0], 0, $parent.find('a')[1].childNodes[0], 4);
-                else {
-                    checkSelection($parent, $parent.find('a')[1].childNodes[0], 4, $parent.find('del')[0].childNodes[0], [0, 9]);
-                    equal(textSelection.hasInverseSelection($parent[0]), true, 'selection direction correct');
-                }
+                checkSelection($parent, $parent.find('a')[1].childNodes[0], 4, $parent.find('del')[0].childNodes[0], [0, 9]);
+                equal(textSelection.hasInverseSelection($parent[0]), true, 'selection direction correct');
             },
             correctTestWaitingTime(TEST_COMPLETE_WAITING_TIMEOUT)
         );
