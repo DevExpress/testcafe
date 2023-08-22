@@ -87,16 +87,12 @@ $(document).ready(function () {
             const emitter = new ScriptExecutionEmitter();
             const barrier = new ScriptExecutionBarrier(emitter);
 
-            let scriptCounter = 0;
-
             window.stopAppending      = false;
             window.appendCustomScript = function () {
                 const script        = document.createElement('script');
                 const scriptContent = encodeURIComponent('if(!window.stopAppending)window.appendCustomScript()');
 
-                // HACK: we should request different URLs to avoid caching of response in IE 10
-                script.src = '/xhr-test/' + scriptCounter + '?expectedResponse=' + scriptContent;
-                scriptCounter++;
+                script.src = '/xhr-test/50?expectedResponse=' + scriptContent;
 
                 document.body.appendChild(script);
             };
