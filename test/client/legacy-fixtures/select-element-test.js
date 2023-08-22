@@ -1,5 +1,4 @@
 const hammerhead       = window.getTestCafeModule('hammerhead');
-const browserUtils     = hammerhead.utils.browser;
 const featureDetection = hammerhead.utils.featureDetection;
 
 const testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
@@ -75,12 +74,7 @@ $(document).ready(function () {
     $('body').css('height', 1500);
 
     const startNext = function () {
-        if (browserUtils.isIE) {
-            removeTestElements();
-            window.setTimeout(start, 30);
-        }
-        else
-            start();
+        start();
     };
 
     const removeTestElements = function () {
@@ -88,8 +82,7 @@ $(document).ready(function () {
     };
 
     QUnit.testDone(function () {
-        if (!browserUtils.isIE)
-            removeTestElements();
+        removeTestElements();
 
         SETTINGS.ENABLE_SOURCE_INDEX = false;
     });

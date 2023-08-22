@@ -1,5 +1,3 @@
-const hammerhead   = window.getTestCafeModule('hammerhead');
-const browserUtils = hammerhead.utils.browser;
 
 const testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
 const getAutomations       = testCafeLegacyRunner.get('./automation-storage').getAutomations;
@@ -22,18 +20,8 @@ $(document).ready(function () {
 
     $(body).css('height', 1500);
 
-    //NOTE: problem with window.top bodyMargin in IE9 if test 'runAll'
-    //because we can't determine that element is in qunit test iframe
-    if (browserUtils.isIE9)
-        $(window.top.document).find('body').css('marginTop', '0px');
-
     const startNext = function () {
-        if (browserUtils.isIE) {
-            removeTestElements();
-            window.setTimeout(start, 30);
-        }
-        else
-            start();
+        start();
     };
 
     const removeTestElements = function () {
@@ -64,8 +52,7 @@ $(document).ready(function () {
     };
 
     QUnit.testDone(function () {
-        if (!browserUtils.isIE)
-            removeTestElements();
+        removeTestElements();
     });
 
     module('regression tests');

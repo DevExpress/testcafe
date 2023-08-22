@@ -1,8 +1,4 @@
-const hammerhead = window.getTestCafeModule('hammerhead');
-const hhsettings = hammerhead.settings.get();
-
 const testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');
-const COMMAND              = testCafeLegacyRunner.get('../test-run/command');
 const Runner               = testCafeLegacyRunner.get('./runner');
 const transport            = testCafeLegacyRunner.get('./transport');
 const StepIterator         = testCafeLegacyRunner.get('./step-iterator');
@@ -49,30 +45,6 @@ QUnit.testDone(function () {
 });
 
 module('Regression');
-
-asyncTest('T204773 - TestCafe - The assertion in last step with inIFrame wrapper works incorrect in IE browser', function () {
-    hhsettings.serviceMsgUrl = '/ping/500';
-
-    let assertionFailedMessageTime = null;
-
-    transport.asyncServiceMsg = function (msg) {
-        if (msg.cmd === COMMAND.assertionFailed)
-            assertionFailedMessageTime = Date.now();
-
-        if (msg.cmd === COMMAND.done)
-            ok(Date.now() - assertionFailedMessageTime >= 500);
-
-        savedAsyncServiceMsg.apply(transport, arguments);
-    };
-
-    testRunner._onAssertionFailed({ err: { message: 'err' } });
-
-    testRunner._onTestComplete({
-        callback: function () {
-            start();
-        },
-    });
-});
 
 asyncTest('Test iterator should not call Transport.fail twice (without screenshots)', function () {
     let transportFailCount = 0;
