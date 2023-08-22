@@ -230,9 +230,6 @@ $(document).ready(function () {
                     iframe.contentDocument.body.appendChild(link);
                     link.focus();
 
-                    return wait(0);
-                })
-                .then(function () {
                     equal(domUtils.getActiveElement(), iframe);
                     equal(domUtils.getActiveElement(iframe.contentDocument), link);
 
@@ -284,9 +281,6 @@ $(document).ready(function () {
                     iframe.contentDocument.body.appendChild(link);
                     link.focus();
 
-                    return wait(0);
-                })
-                .then(function () {
                     equal(domUtils.getActiveElement(), iframe);
                     equal(domUtils.getActiveElement(iframe.contentDocument), link);
 
