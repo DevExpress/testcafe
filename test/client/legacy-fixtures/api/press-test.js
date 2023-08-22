@@ -1,5 +1,4 @@
 const hammerhead    = window.getTestCafeModule('hammerhead');
-const browserUtils  = hammerhead.utils.browser;
 const iframeSandbox = hammerhead.sandbox.iframe;
 
 const testCafeCore  = window.getTestCafeModule('testCafeCore');
@@ -231,10 +230,6 @@ $(document).ready(function () {
                     iframe.contentDocument.body.appendChild(link);
                     link.focus();
 
-                    // NOTE: we need setTimeout to wait for focus in IE
-                    return wait(browserUtils.isIE ? 1000 : 0);
-                })
-                .then(function () {
                     equal(domUtils.getActiveElement(), iframe);
                     equal(domUtils.getActiveElement(iframe.contentDocument), link);
 
@@ -286,10 +281,6 @@ $(document).ready(function () {
                     iframe.contentDocument.body.appendChild(link);
                     link.focus();
 
-                    // NOTE: we need setTimeout to wait for focus in IE
-                    return wait(browserUtils.isIE ? 1000 : 0);
-                })
-                .then(function () {
                     equal(domUtils.getActiveElement(), iframe);
                     equal(domUtils.getActiveElement(iframe.contentDocument), link);
 

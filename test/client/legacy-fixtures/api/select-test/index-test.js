@@ -1,5 +1,4 @@
 const hammerhead       = window.getTestCafeModule('hammerhead');
-const browserUtils     = hammerhead.utils.browser;
 const featureDetection = hammerhead.utils.featureDetection;
 
 const testCafeCore  = window.getTestCafeModule('testCafeCore');
@@ -21,7 +20,7 @@ const initAutomation = testCafeLegacyRunner.get('./init-automation');
 initAutomation();
 
 const correctTestWaitingTime = function (time) {
-    if (featureDetection.isTouchDevice || featureDetection.hasTouchPoints)
+    if (featureDetection.isTouchDevice)
         return time * 2;
 
     return time;
@@ -213,11 +212,6 @@ $(document).ready(function () {
     }
 
     $('body').css('height', '1500px');
-
-    //NOTE: problem with window.top bodyMargin in IE9 if test 'runAll'
-    //because we can't determine that element is in qunit test iframe
-    if (browserUtils.isIE9)
-        $(window.top.document).find('body').css('marginTop', '0px');
 
     //tests
     QUnit.testStart(function () {

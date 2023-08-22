@@ -23,9 +23,6 @@ const correctTestWaitingTime = function (time) {
 };
 
 $(document).ready(function () {
-    // NOTE: remove this after fix IE tests in iFrame
-    $('body').css('border', '0px');
-
     // NOTE: prevent auto scrolling
     if (browserUtils.isSafari && featureDetection.isTouchDevice) {
         const $meta = $('<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, shrink-to-fit=no">');
