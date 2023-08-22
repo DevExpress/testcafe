@@ -1,5 +1,4 @@
 const hammerhead       = window.getTestCafeModule('hammerhead');
-const browserUtils     = hammerhead.utils.browser;
 const featureDetection = hammerhead.utils.featureDetection;
 
 const testCafeCore  = window.getTestCafeModule('testCafeCore');

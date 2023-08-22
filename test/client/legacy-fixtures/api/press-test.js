@@ -1,5 +1,4 @@
 const hammerhead    = window.getTestCafeModule('hammerhead');
-const browserUtils  = hammerhead.utils.browser;
 const iframeSandbox = hammerhead.sandbox.iframe;
 
 const testCafeCore  = window.getTestCafeModule('testCafeCore');
