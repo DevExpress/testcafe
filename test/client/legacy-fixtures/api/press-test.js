@@ -231,8 +231,7 @@ $(document).ready(function () {
                     iframe.contentDocument.body.appendChild(link);
                     link.focus();
 
-                    // NOTE: we need setTimeout to wait for focus in IE
-                    return wait(browserUtils.isIE ? 1000 : 0);
+                    return wait(0);
                 })
                 .then(function () {
                     equal(domUtils.getActiveElement(), iframe);
@@ -286,8 +285,7 @@ $(document).ready(function () {
                     iframe.contentDocument.body.appendChild(link);
                     link.focus();
 
-                    // NOTE: we need setTimeout to wait for focus in IE
-                    return wait(browserUtils.isIE ? 1000 : 0);
+                    return wait(0);
                 })
                 .then(function () {
                     equal(domUtils.getActiveElement(), iframe);

@@ -64,12 +64,7 @@ $(document).ready(function () {
     };
 
     const startNext = function () {
-        if (browserUtils.isIE) {
-            removeTestElements();
-            window.setTimeout(start, 30);
-        }
-        else
-            start();
+        start();
     };
 
     const runAsyncTest = function (actions, assertions, timeout) {
@@ -147,8 +142,7 @@ $(document).ready(function () {
     });
 
     QUnit.testDone(function () {
-        if (!browserUtils.isIE)
-            removeTestElements();
+        removeTestElements();
 
         SETTINGS.ENABLE_SOURCE_INDEX = false;
         currentErrorType             = null;
