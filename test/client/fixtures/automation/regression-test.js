@@ -734,9 +734,7 @@ $(document).ready(function () {
                 .then(function () {
                     equal(textSelection.getSelectionStart(input), startPos, 'start selection correct');
                     equal(textSelection.getSelectionEnd(input), endPos, 'end selection correct');
-
-                    if (!window.DIRECTION_ALWAYS_IS_FORWARD)
-                        equal(textSelection.hasInverseSelection(input), backward, 'selection direction correct');
+                    equal(textSelection.hasInverseSelection(input), backward, 'selection direction correct');
 
                     startNext();
                 });

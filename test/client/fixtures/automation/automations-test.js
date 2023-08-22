@@ -191,9 +191,7 @@ $(document).ready(function () {
         equal(domUtils.getActiveElement(), el, 'selected element is active');
         equal(textSelection.getSelectionStart(el), start, 'start selection correct');
         equal(textSelection.getSelectionEnd(el), end, 'end selection correct');
-
-        if (!window.DIRECTION_ALWAYS_IS_FORWARD)
-            equal(textSelection.hasInverseSelection(el), inverse, 'selection direction correct');
+        equal(textSelection.hasInverseSelection(el), inverse, 'selection direction correct');
     };
 
     const preventDefault = function (e) {

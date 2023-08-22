@@ -13,10 +13,9 @@
     }
 
     //Hammerhead setup
-    const hammerhead   = getTestCafeModule('hammerhead');
-    const INSTRUCTION  = hammerhead.PROCESSING_INSTRUCTIONS.dom.script;
-    const location     = 'http://localhost/sessionId/https://example.com';
-    const browserUtils = hammerhead.utils.browser;
+    const hammerhead  = getTestCafeModule('hammerhead');
+    const INSTRUCTION = hammerhead.PROCESSING_INSTRUCTIONS.dom.script;
+    const location    = 'http://localhost/sessionId/https://example.com';
 
     hammerhead.utils.destLocation.forceLocation(location);
 
@@ -72,24 +71,6 @@
     tcSettings.get().SELECTOR_TIMEOUT = 10000;
 
     sandboxedJQuery.init(window);
-
-    // NOTE: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/17477979/
-    window.DIRECTION_ALWAYS_IS_FORWARD = false;
-
-    if (browserUtils.isMSEdge && browserUtils.version >= 17) {
-        $(function () {
-            const nativeMethods = hammerhead.nativeMethods;
-            const input         = nativeMethods.createElement.call(document, 'input');
-
-            nativeMethods.appendChild.call(document.body, input);
-            nativeMethods.inputValueSetter.call(input, 'text');
-            nativeMethods.setSelectionRange.call(input, 0, 2, 'backward');
-
-            window.DIRECTION_ALWAYS_IS_FORWARD = input.selectionDirection === 'forward';
-
-            nativeMethods.removeChild.call(document.body, input);
-        });
-    }
 
     //Tests API
     window.getTestCafeModule = getTestCafeModule;
