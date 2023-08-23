@@ -108,7 +108,7 @@ describe('Customize SkipJSErrors (GH-2775)', () => {
         });
 
         it('Should skip JS errors with callback function returning Promise', async () => {
-            return runTests('./testcafe-fixtures/test-controller.js', 'Should skip JS errors with callback function returning Promise', { skip: ['ie'] });
+            return runTests('./testcafe-fixtures/test-controller.js', 'Should skip JS errors with callback function returning Promise');
         });
 
         it('Should skip first error and fail on second error when skipJsError method called twice', async () => {

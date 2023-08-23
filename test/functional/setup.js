@@ -145,7 +145,7 @@ function openRemoteBrowsers () {
 
             const openBrowserPromises = browsersInfo.map(browserInfo => {
                 return connector.startBrowser(browserInfo.settings, browserInfo.connection.url, buildInfo,
-                    isBrowserStack ? { openingTimeout: BROWSER_OPENING_TIMEOUT } : null);
+                    { openingTimeout: BROWSER_OPENING_TIMEOUT });
             });
 
             return Promise.all(openBrowserPromises);
