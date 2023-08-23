@@ -6,15 +6,6 @@ fixture `Selector`
 
 const getElementById = Selector(id => document.getElementById(id));
 
-const isIEFunction = ClientFunction(() => {
-    const userAgent = window.navigator.userAgent;
-    const appName   = window.navigator.appName;
-    const isIE11Re  = new RegExp('Trident/.*rv:([0-9]{1,}[.0-9]{0,})');
-
-    return appName === 'Microsoft Internet Explorer' ||
-           appName === 'Netscape' && isIE11Re.exec(userAgent) !== null;
-});
-
 test('HTMLElement snapshot basic properties', async t => {
     const el = await getElementById('htmlElement');
 
@@ -167,15 +158,11 @@ test('Input-specific element snapshot properties', async t => {
 });
 
 test('`innerText` element snapshot property', async t => {
-    const isIE    = await isIEFunction();
     let innerText = await getElementById('htmlElementWithInnerText').innerText;
 
     innerText = innerText.trim().replace(/\r\n/, '\n');
 
-    // NOTE: we have to use regexp because the innerText field
-    // returns a little bit different values in IE9 and other browsers
-    const expectedTextRe = isIE ? /^Hey\nyo test {2}42 test {2}'hey hey'; \.someClass \{ \}/ :
-        /^Hey\nyo test {1,2}test/;
+    const expectedTextRe = /^Hey\nyo test {1,2}test/;
 
     await t.expect(expectedTextRe.test(innerText.trim())).ok();
 });

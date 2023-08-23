@@ -4,7 +4,7 @@ const { checkUserAgent } = require('../../../../assertion-helper');
 
 describe('[API] ClientFunction', function () {
     it('Should be correctly dispatched to test run', function () {
-        const browsers = 'chrome,firefox,ie';
+        const browsers = 'chrome,firefox';
 
         return runTests('./testcafe-fixtures/client-fn-test.js', 'Dispatch', { shouldFail: true, only: browsers })
             .catch(function (errs) {

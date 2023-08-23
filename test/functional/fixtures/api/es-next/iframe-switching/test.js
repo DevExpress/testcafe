@@ -30,14 +30,14 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
     it('Should switch context between a shadow iframe and the main window', function () {
         return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click on an element in a shadow iframe and return to the main window', {
             ...DEFAULT_RUN_OPTIONS,
-            skip: ['ie', 'edge'],
+            skip: ['edge'],
         });
     });
 
     it('Should switch context between a nested shadow iframe and the main window', function () {
         return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click on element in a nested shadow iframe', {
             ...DEFAULT_RUN_OPTIONS,
-            skip: ['ie', 'edge'],
+            skip: ['edge'],
         });
     });
 
@@ -72,7 +72,7 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
     });
 
     it('Should work in an iframe with the srcdoc attribute', function () {
-        return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click in an iframe with the srcdoc attribute', { skip: 'ie', ...DEFAULT_RUN_OPTIONS });
+        return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click in an iframe with the srcdoc attribute', { ...DEFAULT_RUN_OPTIONS });
     });
 
     it('Correct execution order of "message" events in cross-domain iframe', function () {
