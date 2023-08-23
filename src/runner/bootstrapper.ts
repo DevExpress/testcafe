@@ -186,6 +186,10 @@ export default class Bootstrapper {
         });
     }
 
+    private getBrowsersWithUserProfileEnabled (browserInfos: BrowserInfo[]): BrowserInfo[] {
+        return browserInfos.filter(browserInfo => (browserInfo.browserOption as any)?.userProfile);
+    }
+
     private _disableNativeAutomationIfNecessary (remotes: BrowserConnection[], automated: BrowserInfo[]): void {
         // NOTE: CDP API allows connecting only for the local browser. So, the 'remote' browser cannot be run in the 'nativeAutomation' mode.
         // However, sometimes in tests or TestCafe Studio Recorder, we use the 'remote' browser connection as a local one.
@@ -203,6 +207,8 @@ export default class Bootstrapper {
 
         this._disableNativeAutomationIfNecessary(remotes, automated);
 
+        this._validateUserProfileOptionInNativeAutomation(automated);
+
         await this._setupProxy();
 
         let browserConnections = this._createAutomatedConnections(automated);
@@ -216,6 +222,17 @@ export default class Bootstrapper {
         browserConnections = browserConnections.concat(chunk(remotes, this.concurrency));
 
         return BrowserSet.from(browserConnections, this._getBrowserSetOptions());
+    }
+
+    protected _validateUserProfileOptionInNativeAutomation (automated: BrowserInfo[]): void {
+        const isNativeAutomation      = !this.configuration.getOption(OPTION_NAMES.disableNativeAutomation);
+        const browsersWithUserProfile = this.getBrowsersWithUserProfileEnabled(automated);
+
+        if (isNativeAutomation && browsersWithUserProfile.length) {
+            const browsers = browsersWithUserProfile.map(b => b.alias).join(', ');
+
+            throw new GeneralError(RUNTIME_ERRORS.setUserProfileInNativeAutomation, browsers);
+        }
     }
 
     private async _filterTests (tests: Test[], predicate: FilterFunction): Promise<Test[]> {

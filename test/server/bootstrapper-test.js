@@ -160,5 +160,35 @@ describe('Bootstrapper', () => {
             expect(bootstrapper.configuration._mergedOptions).eql({ disableNativeAutomation: true });
             bootstrapper.configuration.clear();
         });
+
+        it('Should throw an error if browser is opened with the "userProfile" option in the Native Automation mode', async function () {
+            try {
+                bootstrapper.browsers = [{
+                    alias:         'chrome',
+                    browserOption: { userProfile: true },
+                    provider:      {
+                        isLocalBrowser:          () => true,
+                        supportNativeAutomation: () => true,
+                    },
+                }, {
+                    alias:         'edge',
+                    browserOption: { userProfile: true },
+                    provider:      {
+                        isLocalBrowser:          () => true,
+                        supportNativeAutomation: () => true,
+                    },
+                }];
+
+                await bootstrapper.createRunnableConfiguration();
+
+                throw new Error('Promise rejection expected');
+            }
+            catch (err) {
+                expect(err.message).eql('The "userProfile" option is enabled for the following browsers: "chrome, edge".\n' +
+                                        'The "userProfile" option is not supported in the Native Automation mode.\n' +
+                                        'Use the "disable native automation" option or remove "userProfile" option to continue.'
+                );
+            }
+        });
     });
 });

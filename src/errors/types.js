@@ -189,4 +189,5 @@ export const RUNTIME_ERRORS = {
     cannotReadConfigFile:                               'E1083',
     cannotParseConfigFile:                              'E1084',
     cannotRunLegacyTestsInNativeAutomationMode:         'E1085',
+    setUserProfileInNativeAutomation:                   'E1086',
 };
