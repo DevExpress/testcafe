@@ -229,6 +229,8 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
 
             const userScripts = await this._getUserScripts(event);
 
+            requestPipelineOtherRequestLogger('fulfilling request info %O', event);
+
             await this._resourceInjector.processHTMLPageContent(
                 fulfillInfo,
                 {
@@ -272,6 +274,7 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
     }
 
     private async _tryAuthorizeWithHttpBasicAuthCredentials (event: RequestPausedEvent, fulfillInfo: FulfillRequestRequest): Promise<void> {
+        requestPipelineOtherRequestLogger('begin _tryAuthorizeWithHttpBasicAuthCredentials');
         const credentials = this._testRun.getAuthCredentials();
 
         if (!credentials)
@@ -285,6 +288,8 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
             fulfillInfo.responsePhrase  = authRequest.statusText;
             fulfillInfo.responseHeaders = convertToHeaderEntries(authRequest.headers);
         }
+
+        requestPipelineOtherRequestLogger('end _tryAuthorizeWithHttpBasicAuthCredentials');
     }
 
     private _createError (event: RequestPausedEvent): Error {
