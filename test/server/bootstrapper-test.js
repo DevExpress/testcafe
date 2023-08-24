@@ -184,9 +184,9 @@ describe('Bootstrapper', () => {
                 throw new Error('Promise rejection expected');
             }
             catch (err) {
-                expect(err.message).eql('When TestCafe uses native automation, it cannot apply the "userProfile" option. ' +
-                                        'To continue, disable native automation, or remove the "userProfile" suffix for ' +
-                                        'the following browsers: "chrome, edge".');
+                expect(err.message).eql('Cannot initialize the test run. When TestCafe uses native automation, it can only ' +
+                                        'launch browsers with an empty user profile. Disable native automation, or remove ' +
+                                        'the "userProfile" suffix from the following browser aliases: "chrome, edge".');
             }
         });
     });
