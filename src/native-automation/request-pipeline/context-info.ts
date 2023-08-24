@@ -64,7 +64,9 @@ export default class NativeAutomationRequestContextInfo {
         delete this._pipelineContexts[requestId];
         delete this._eventFactories[requestId];
 
-        requestPipelineContextLogger('disposed %s', requestId);
+        const err = new Error();
+
+        requestPipelineContextLogger('disposed %s\n%s', requestId, err.stack);
     }
 
     public getPipelineContext (requestId: string): NativeAutomationPipelineContext {

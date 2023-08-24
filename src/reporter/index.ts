@@ -35,6 +35,7 @@ import BrowserConnection from '../browser/connection';
 import { Dictionary } from '../configuration/interfaces';
 import { reporterLogger } from '../utils/debug-loggers';
 import getTestCafeVersion from '../utils/get-testcafe-version';
+import inspect from '../utils/inspect';
 
 interface PendingPromise {
     resolve: Function | null;
@@ -198,7 +199,7 @@ export default class Reporter {
     }
 
     public async dispatchToPlugin ({ method, initialObject, args = [] }: PluginMethodArguments): Promise<void> {
-        reporterLogger('begin dispatchToPlugin method: %s\n%O', method, args);
+        reporterLogger('begin dispatchToPlugin method: %s\n%O', method, inspect(args));
 
         try {
             // @ts-ignore

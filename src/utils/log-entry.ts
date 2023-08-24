@@ -5,6 +5,7 @@ import { Debugger } from 'debug';
 const OPTIONS = {
     isTestCafeInspect: true,
     compact:           false,
+    depth:             5,
 };
 
 export default function (logger: Debugger, data: unknown): void {
