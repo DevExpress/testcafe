@@ -3,9 +3,10 @@ const { expect }                 = require('chai');
 const createTestCafe             = require('../../../../../lib');
 const { onlyInNativeAutomation } = require('../../../utils/skip-in');
 
-const EXPECTED_ERROR = 'When TestCafe uses native automation, it cannot apply the "userProfile" option. ' +
-                       'To continue, disable native automation, or remove the "userProfile" suffix for ' +
-                       'the following browsers: "chrome:userProfile".';
+const EXPECTED_ERROR = 'Cannot initialize the test run.' + 
+'When TestCafe uses native automation, it can only launch browsers with an empty user profile.'+
+'Disable native automation, or remove the "userProfile" suffix from the following'+
+'browser aliases: "chrome:userProfile.',
 
 let testcafe = null;
 let error = null;
