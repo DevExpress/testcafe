@@ -154,5 +154,5 @@ export default {
     [RUNTIME_ERRORS.cannotImportESMInCommonsJS]:                     'Cannot import the {esModule} ECMAScript module from {targetFile}. Use a dynamic import() statement or enable the --esm CLI flag.',
     [RUNTIME_ERRORS.setNativeAutomationForUnsupportedBrowsers]:      'The "{browser}" do not support the Native Automation mode. Use the "disable native automation" option to continue.',
     [RUNTIME_ERRORS.cannotRunLegacyTestsInNativeAutomationMode]:     'TestCafe cannot run legacy tests in Native Automation mode. Disable native automation to continue.',
-    [RUNTIME_ERRORS.setUserProfileInNativeAutomation]:               'The "userProfile" option is enabled for the following browsers: "{browsers}".\nThe "userProfile" option is not supported in the Native Automation mode.\nUse the "disable native automation" option or remove "userProfile" option to continue.',
+    [RUNTIME_ERRORS.setUserProfileInNativeAutomation]:               'When TestCafe uses native automation, it cannot apply the "userProfile" option. To continue, disable native autiomation, or remove the "userProfile" suffix for the following browsers: "{browsers}".',
 };

@@ -37,7 +37,7 @@
   comment: |
     Thank you for submitting this issue. We would love to assist you and diagnose this issue. However, since your website sits behind a proxy and/or requires authentication, I will not be able to access it. Our policy prevents us from accessing a customer's internal resources without prior written approval from the entity that owns the server/web resource.
     
-    If you want us to research the problem further, we'll need access to the server/web resource. Please ask the website owner to send us ([support@devexpress.com](mailto:support@devexpress.com)) written confirmation. It must permit DevExpress personnel to remotely access the website and its internal resources for research/testing and debugging purposes.
+    If you want us to research the problem further, we'll need access to the server/web resource. Please ask the website owner to send us ([testcafeteam@devexpress.com](mailto:testcafeteam@devexpress.com)) written confirmation. It must permit DevExpress personnel to remotely access the website and its internal resources for research/testing and debugging purposes.
   label: 'STATE: Need clarification'
   unlabel: 
     - 'STATE: Need access confirmation'

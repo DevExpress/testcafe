@@ -554,7 +554,7 @@ $(document).ready(function () {
     });
 
     asyncTest('B254340 - type in input with type="email"', function () {
-        const initText     = 'support@devexpress.com';
+        const initText     = 'testcafeteam@devexpress.com';
         const newText      = 'new';
         const $input       = createInput('email').attr('value', initText);
         const caretPos     = 5;

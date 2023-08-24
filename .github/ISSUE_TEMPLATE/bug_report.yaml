@@ -46,7 +46,7 @@ body:
       label: What is your public website URL? (or attach your complete example)
       description: |
         Please share a public accessible URL to your application or attach a simple app which we can run.
-        Note: if your website requires any additional access procedures like authentication, please ask the website owner to send us a written confirmation at [support@devexpress.com](mailto:support@devexpress.com) in a free text form. It will allow the DevExpress staff to remotely access the website and its internal resources for research, testing, and debugging purposes.
+        Note: if your website requires any additional access procedures like authentication, please ask the website owner to send us a written confirmation at [testcafeteam@devexpress.com](mailto:testcafeteam@devexpress.com) in a free text form. It will allow the DevExpress staff to remotely access the website and its internal resources for research, testing, and debugging purposes.
         Note: If your website is not public and you can't share its URL, please refer to this article to learn how to create an example: [How To: Create a Minimal Working Example When You Submit an Issue](https://testcafe.io/402636/faq#how-to-create-a-minimal-working-example-when-you-submit-an-issue)
     validations:
       required: true
