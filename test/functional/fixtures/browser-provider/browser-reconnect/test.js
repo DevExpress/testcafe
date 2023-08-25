@@ -94,7 +94,13 @@ if (config.useLocalBrowsers) {
             let errLog = '';
 
             return new Promise(resolve => {
-                const proc = spawn(`node ${path.join(__dirname, 'run-log-error-on-disconnect-test.js')}`, { shell: true, env: { ...process.env, DEBUG: 'testcafe:hammerhead:*' } });
+                const proc = spawn(`node ${path.join(__dirname, 'run-log-error-on-disconnect-test.js')}`, {
+                    shell: true,
+                    env:   {
+                        ...process.env,
+                        DEBUG: 'testcafe:hammerhead:*',
+                    },
+                });
 
                 proc.stderr.on('data', data => {
                     errLog += data.toString('utf-8');
