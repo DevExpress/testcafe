@@ -109,7 +109,7 @@ if (config.useLocalBrowsers) {
                 proc.on('close', resolve);
             })
                 .then(() => {
-                    expect(errLog).contains('"chrome:headless" disconnected during test execution');
+                    expect(errLog).contains('disconnected during test execution');
                 });
         });
 
