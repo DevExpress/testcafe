@@ -184,10 +184,9 @@ describe('Bootstrapper', () => {
                 throw new Error('Promise rejection expected');
             }
             catch (err) {
-                expect(err.message).eql('The "userProfile" option is enabled for the following browsers: "chrome, edge".\n' +
-                                        'The "userProfile" option is not supported in the Native Automation mode.\n' +
-                                        'Use the "disable native automation" option or remove "userProfile" option to continue.'
-                );
+                expect(err.message).eql('Cannot initialize the test run. When TestCafe uses native automation, it can only ' +
+                                        'launch browsers with an empty user profile. Disable native automation, or remove ' +
+                                        'the "userProfile" suffix from the following browser aliases: "chrome, edge".');
             }
         });
     });
