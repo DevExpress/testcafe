@@ -107,7 +107,7 @@ if (config.useLocalBrowsers) {
                 });
         });
 
-        (config.hasBrowser('safari') ? it.skip : it)('Should raise reporter reportTaskDone event on browser disconnect', function () {
+        it('Should raise reporter reportTaskDone event on browser disconnect', function () {
 
             let reporterLog = '';
 
@@ -115,12 +115,16 @@ if (config.useLocalBrowsers) {
                 const proc = spawn(`node ${path.join(__dirname, 'run-log-error-on-disconnect-test.js')}`, {
                     shell: true,
                     env:   {
-                        ...process.env, CUSTOM_REPORTER: true,
+                        ...process.env,
+                        CUSTOM_REPORTER: true,
                     },
                 });
 
                 proc.stdout.on('data', data => {
                     reporterLog += data.toString('utf-8');
+                });
+
+                proc.stderr.on('data', () => {
                 });
 
                 proc.on('close', resolve);

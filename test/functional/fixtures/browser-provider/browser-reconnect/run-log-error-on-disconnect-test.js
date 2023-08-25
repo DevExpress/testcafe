@@ -5,6 +5,7 @@ const config             = require('../../../config');
 
 let testcafe               = null;
 const shouldAttachReporter = !!process.env.CUSTOM_REPORTER;
+const browsers             = config.currentEnvironment.browsers.map(browserInfo => browserInfo.browserName);
 
 const reporter = createReporter({
     reportTaskDone: () => {
@@ -18,7 +19,7 @@ createTestCafe()
 
         return testcafe
             .createRunner()
-            .browsers('chrome:headless')
+            .browsers(browsers)
             .src(path.join(__dirname, './testcafe-fixtures/index-test.js'))
             .filter(function (testName) {
                 return testName === 'Should log error on browser disconnect';
