@@ -3,9 +3,10 @@ const { expect }                 = require('chai');
 const createTestCafe             = require('../../../../../lib');
 const { onlyInNativeAutomation } = require('../../../utils/skip-in');
 
-const EXPECTED_ERROR = 'The "userProfile" option is enabled for the following browsers: "chrome:userProfile".\n' +
-                       'The "userProfile" option is not supported in the Native Automation mode.\n' +
-                       'Use the "disable native automation" option or remove "userProfile" option to continue.';
+const EXPECTED_ERROR = 'Cannot initialize the test run. ' +
+                       'When TestCafe uses native automation, it can only launch browsers with an empty user profile. ' +
+                       'Disable native automation, or remove the "userProfile" suffix from the following ' +
+                       'browser aliases: "chrome:userProfile, chrome:userProfile".';
 
 let testcafe = null;
 let error = null;
@@ -33,7 +34,7 @@ function runTests (browsers) {
 
 describe('[Regression](GH-7925) Browsers with "userProfile" option in Native Automation', function () {
     onlyInNativeAutomation('chrome:userProfile', function () {
-        return runTests(['chrome:userProfile'])
+        return runTests(['chrome:userProfile', 'chrome:userProfile'])
             .then(() => {
                 expect(error.message).contains(EXPECTED_ERROR);
             });
