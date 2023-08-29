@@ -75,11 +75,6 @@ jobs:
       TEST_GROUP_NUMBER: ${{ matrix.test-group }}
       DEBUG: 'testcafe*'
       DISPLAY: ${{ inputs.display }}
-    outputs:
-      # Matrix jobs cannot collect outputs about each of them automatically. It rewrites the same outputs. Improve it once it will be possible.
-      test-1: "${{ steps.save-result.outputs.test_1 }}"
-      test-2: "${{ steps.save-result.outputs.test_2 }}"
-      test-3: "${{ steps.save-result.outputs.test_3 }}"
     steps:
       - name: Set 'pending' status
         uses: DevExpress/testcafe-build-system/actions/set-status@main
