@@ -9,8 +9,6 @@ if (config.useLocalBrowsers) {
         it(`[Regression](GH-5449) Should not crash if TestCafe is created via "createTestCafe('null')"`, () => {
             let failedCount = 0;
 
-            const browsers = config.currentEnvironment.browsers.map(browserInfo => browserInfo.browserName);
-
             return createTestCafe(null)
                 .then(tc => {
                     testCafe = tc;
@@ -18,7 +16,7 @@ if (config.useLocalBrowsers) {
                 .then(() => {
                     return testCafe
                         .createRunner()
-                        .browsers(browsers)
+                        .browsers('chrome:headless')
                         .src(path.join(__dirname, './testcafe-fixtures/index.js'))
                         .run({ disableNativeAutomation: !config.nativeAutomation });
                 })
