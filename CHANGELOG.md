@@ -1,5 +1,18 @@
 # Changelog
 
+## v3.3.0 (2023-08-29)
+
+TestCafe v3.3.0 includes important bug fixes and quality of life improvements.
+
+### Bug Fixes
+
+* TestCafe terminates the test run when it attempts to parse an empty JSON file ([#7935](https://github.com/DevExpress/testcafe/issues/7935)).
+* Firefox throws an unexpected error when TestCafe attempts to close the browser window ([#7285](https://github.com/DevExpress/testcafe/issues/7285)).
+* [Native Automation] TestCafe ignores the `--disable-multiple-windows` option when you interact with a link that points to "target=_blank", or open a new window with the `window.open` method ([#7916](https://github.com/DevExpress/testcafe/issues/7916)).
+* [Native Automation] TestCafe ignores the clientScripts directive when you mock HTTP requests ([#7914](https://github.com/DevExpress/testcafe/issues/7914)).
+* [Native Automation] TestCafe hangs when it runs tests in the headless version of Google Chrome ([#7898](https://github.com/DevExpress/testcafe/issues/7898)).
+* [Native Automation] TestCafe doesn't throw an error when the user attempts to enable the `userProfile` option ([#7925](https://github.com/DevExpress/testcafe/issues/7925)).
+
 ## v3.2.0 (2023-08-17)
 
 TestCafe v3.2.0 allows you to check whether TestCafe uses native automation to control the browser.
