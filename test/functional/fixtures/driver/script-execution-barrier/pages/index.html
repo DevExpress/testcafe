@@ -40,7 +40,8 @@
         let scriptsCount = 0;
 
         function iterate () {
-            const addedScript = appendScript(1000);
+            // HACK: we should request different URLs to avoid caching of response
+            const addedScript = appendScript(1000 + scriptsCount);
 
             addedScript.onload = function () {
                 if (++scriptsCount < maxScriptsCount)
