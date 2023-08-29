@@ -99,6 +99,17 @@ jobs:
         with:
           node-version: ${{ inputs.node-version }}
 
+      # Remove after https://github.com/actions/runner-images/issues/8114 will be fixed
+      - name: Remove Google Chrome for Testing
+        if: ${{ contains(inputs.os, 'windows') }}
+        run: Remove-Item -Path "C:\Program Files\Google\Chrome" -Force -Recurse
+
+      - name: Install Google Chrome
+        if: ${{ contains(inputs.os, 'windows') }}
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
+
       - uses: DevExpress/testcafe-build-system/actions/read-artifacts@main
         with:
           package-name: 'testcafe'
