@@ -18,10 +18,6 @@ describe('[Regression](GH-1057) - hidden by fixed parent', function () {
 
 describe('[Regression](GH-1057) - hidden by fixed ancestor', function () {
     it('Should scroll to element if it is hidden by fixed ancestor', function () {
-        // NODE: here we skip edge because of https://github.com/DevExpress/testcafe/issues/2450
-        // during the test execution browser window is too small and it breaks scrolling to the element
-        return runTests('testcafe-fixtures/hiddenByFixedAncestor.js', null, {
-            skip: 'edge-legacy',
-        });
+        return runTests('testcafe-fixtures/hiddenByFixedAncestor.js', null);
     });
 });

@@ -13,32 +13,27 @@
     <h2>Prevent Input event on TextInput when type to input element</h2>
     <pre>
         Chrome/Edge. Typing is prevented and Input event is not raised
-        IE11/Firefox. Typing is not prevented. Input event is raised
+        Firefox. Typing is not prevented. Input event is raised
     </pre>
     <input id="simpleInput" />
     <h2>Prevent Input event and typing on simple ContentEditable div</h2>
     <pre>
         Chrome/Edge. Typing is prevented. Input event is not raised
-        IE11/Firefox. Typing is not prevented.
-        Input event is raised in firefox but is not raised in IE11 - it's a IE11 bug
+        Firefox. Typing is not prevented.
     </pre>
     <div contenteditable="true" id="simpleContentEditable"></div>
     <h2>Prevent Input event on TextInput event when type to element node</h2>
     <pre>
-        Not for IE11 because preventDefault will not prevent typing
         Not for Firefox because Firefox does not support TextInput event
     </pre>
     <div contenteditable="true" id="contentEditableWithElementNode"><p><br/></p></div>
     <h2>Modify text node of ContentEditable div on TextInput event and prevent Input event</h2>
     <pre>
-        Not for IE11 because is's not possible to prevent typing in IE11
         Not for Firefox because Firefox does not support TextInput event
     </pre>
     <div contenteditable="true" id="contentEditableWithModify"><p>A</p></div>
     <h2>Type to ContentEditable div when selected node was replaced on TextInput event</h2>
     <pre>
-        Not for IE11 because this test emulates behavior from https://github.com/DevExpress/testcafe/issues/1956.
-        This behavior is different in IE11
         Not for Firefox because Firefox does not support TextInput event
     </pre>
     <div contenteditable="true" id="contentEditableWithReplace"><p>B</p></div>

@@ -15,8 +15,6 @@
 <script>
     window.tableFocusEventCount = 0;
     window.tableBlurEventCount = 0;
-    window.firstTableDataFocusEventCount = 0;
-    window.secondTableDataFocusEventCount = 0;
 
     document.getElementById('table').addEventListener('focus', function () {
         window.tableFocusEventCount++;
@@ -24,14 +22,6 @@
 
     document.getElementById('table').addEventListener('blur', function () {
         window.tableBlurEventCount++;
-    });
-
-    document.getElementById('td1').addEventListener('focus', function () {
-        window.firstTableDataFocusEventCount++;
-    });
-
-    document.getElementById('td2').addEventListener('focus', function () {
-        window.secondTableDataFocusEventCount++;
     });
 </script>
 </body>

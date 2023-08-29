@@ -1,6 +1,6 @@
 const expect = require('chai').expect;
 
-const browsersWithLimitations = [ 'ie', 'firefox', 'firefox-osx' ];
+const browsersWithLimitations = ['firefox', 'firefox-osx' ];
 
 describe('Should support TextInput event[Regression](GH-1956)', function () {
     it('Prevent Input event on TextInput when type to input element', function () {
@@ -9,12 +9,12 @@ describe('Should support TextInput event[Regression](GH-1956)', function () {
             { skip: browsersWithLimitations });
     });
 
-    it('Prevent Input event on TextInput when type to input element IE11/Firefox', function () {
+    it('Prevent Input event on TextInput when type to input element Firefox', function () {
         return runTests('testcafe-fixtures/index.js',
-            'Prevent Input event on TextInput when type to input element IE11/Firefox',
-            { only: [ 'ie', 'firefox', 'firefox-osx' ], shouldFail: true })
+            'Prevent Input event on TextInput when type to input element Firefox',
+            { only: [ 'firefox', 'firefox-osx' ], shouldFail: true })
             .catch(function (errs) {
-                const errors = [ errs['ie'], errs['firefox'] ].filter(err => err);
+                const errors = [ errs['firefox'] ].filter(err => err);
 
                 errors.forEach(err => {
                     expect(err[0]).contains('Input event has raised');
@@ -28,15 +28,9 @@ describe('Should support TextInput event[Regression](GH-1956)', function () {
             { skip: browsersWithLimitations });
     });
 
-    it('Prevent Input event on TextInput when type to ContentEditable div IE11', function () {
-        return runTests('testcafe-fixtures/index.js',
-            'Prevent Input event on TextInput when type to ContentEditable div IE11/Firefox',
-            { only: [ 'ie' ] });
-    });
-
     it('Prevent Input event on TextInput when type to ContentEditable div Firefox', function () {
         return runTests('testcafe-fixtures/index.js',
-            'Prevent Input event on TextInput when type to ContentEditable div IE11/Firefox',
+            'Prevent Input event on TextInput when type to ContentEditable div Firefox',
             { only: [ 'firefox', 'firefox-osx' ], shouldFail: true })
             .catch(function (errs) {
                 expect(errs[0]).contains('Input event has raised');

@@ -54,7 +54,7 @@ test('nonamed - chrome', async t => {
     await testRadioButtons(t, 'up', [...radioButtonsCars].reverse());
 });
 
-test('nonamed - ie, firefox', async t => {
+test('nonamed - firefox', async t => {
     await testRadioButtonsNonamed(t, 'down', radioButtonsCars);
     await testRadioButtonsNonamed(t, 'right', radioButtonsCars);
     await testRadioButtonsNonamed(t, 'up', [...radioButtonsCars].reverse());
