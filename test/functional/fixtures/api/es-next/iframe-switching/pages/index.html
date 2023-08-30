@@ -15,23 +15,7 @@
 <iframe id="iframe" src="iframe.html" width="500px" height="300px"></iframe>
 <iframe id="invisible-iframe" style="visibility: hidden;"></iframe>
 <iframe name="long" id="slowly-loading-iframe" src="iframe.html?delay=1000" height="300px"></iframe>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // NOTE: if we add a slowly loading iframe via markup, IE9 sometimes raises the DOMContentLoaded
-        // event after this iframe is completely loaded (in other browsers, this event never waits for
-        // an iframe to load). To avoid this collision, we create the iframe on the DOMContentLoaded event.
-        // It helps us get rid of an unstable functional test in IE9.
-        const tooSlowlyLoadingIframe = document.createElement('iframe');
-
-        tooSlowlyLoadingIframe.id           = 'too-slowly-loading-iframe';
-        tooSlowlyLoadingIframe.src          = "iframe.html?delay=10000";
-        tooSlowlyLoadingIframe.style.width  = "500px";
-        tooSlowlyLoadingIframe.style.height = "300px";
-
-        document.body.insertBefore(tooSlowlyLoadingIframe, document.getElementById('slowly-loading-iframe'));
-    });
-</script>
+<iframe id="too-slowly-loading-iframe" src="iframe.html?delay=10000"></iframe>
 
 <script>
     document.getElementById('btn').addEventListener('click', function () {

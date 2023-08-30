@@ -62,7 +62,7 @@ describe('[API] test.before/test.after hooks', () => {
 
 describe('[API] t.ctx', () => {
     it('Should pass context object to tests and hooks', () => {
-        return runTests('./testcafe-fixtures/run-all.js', 't.ctx', { shouldFail: true, only: 'chrome,ie,firefox' })
+        return runTests('./testcafe-fixtures/run-all.js', 't.ctx', { shouldFail: true, only: 'chrome,firefox' })
             .catch(errs => {
                 const testedBrowsers = config.currentEnvironment.browsers;
 

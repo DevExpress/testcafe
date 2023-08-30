@@ -18,7 +18,7 @@ const isRemoteTask = config.currentEnvironmentName === config.testingEnvironment
 (isRemoteTask ? describe.skip : describe)('[API] t.useRole()', function () {
     // TODO: stabilize the test in Firefox
     (config.hasBrowser('firefox') ? it.skip : it)('Should initialize and switch roles', function () {
-        return runTests('./testcafe-fixtures/use-role-test.js', null, { only: 'chrome,ie,firefox' });
+        return runTests('./testcafe-fixtures/use-role-test.js', null, { only: 'chrome,firefox' });
     });
 
     it('Should switch to Role.anonymous()', function () {
@@ -55,7 +55,7 @@ const isRemoteTask = config.currentEnvironmentName === config.testingEnvironment
         it('Should fail all tests that use role with the initializer error', function () {
             return runTests('./testcafe-fixtures/init-error-test.js', null, {
                 shouldFail: true,
-                only:       'chrome,ie,firefox',
+                only:       'chrome,firefox',
             })
                 .catch(function (errs) {
                     const testedBrowsers = config.currentEnvironment.browsers;

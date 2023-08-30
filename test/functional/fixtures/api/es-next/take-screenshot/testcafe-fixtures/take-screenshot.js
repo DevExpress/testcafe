@@ -124,12 +124,9 @@ test
         const expectedWidth  = width - scrollbarSize;
         const expectedHeight = height - scrollbarSize;
 
-        // NOTE: IE clips screenshots not accurately
-        const accuracy = parseUserAgent(ua).name === 'Internet Explorer' ? 1 : 0;
-
         await t.expect(scrollbarSize).gt(0);
-        await t.expect(Math.abs(png.width - expectedWidth)).lte(accuracy);
-        await t.expect(Math.abs(png.height - expectedHeight)).lte(accuracy);
+        await t.expect(png.width).eql(expectedWidth);
+        await t.expect(png.height).eql(expectedHeight);
     });
 
 test('Should add default extension', async t => {
