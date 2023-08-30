@@ -331,7 +331,7 @@ before(function () {
                 if (customReporters)
                     runner.reporter(customReporters);
                 else
-                    runner.reporter('json', stream);
+                    runner.reporter('xunit', stream);
 
                 if (config.nativeAutomation)
                     setNativeAutomationForRemoteConnection(runner);
