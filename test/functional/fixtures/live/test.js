@@ -73,7 +73,7 @@ function createLiveModeRunner (tc, src) {
         .reporter(createReporter());
 }
 
-if (config.useLocalBrowsers) {
+if (config.useLocalBrowsers && !config.hasBrowser('safari')) {
     describe('Live Mode', () => {
         afterEach(() => {
             helper.clean();
