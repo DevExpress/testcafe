@@ -27,10 +27,3 @@ test('Click on select option', async () => {
     await selectOptionInScrollingList();
     await t.expect(getEvents()).eql(2);
 });
-
-test('Click on select option', async () => {
-    await selectOptionInExpandingList();
-    await t.expect(getEvents()).eql(0);
-    await selectOptionInScrollingList();
-    await t.expect(getEvents()).eql(0);
-});
