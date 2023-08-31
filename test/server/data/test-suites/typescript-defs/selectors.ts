@@ -155,8 +155,6 @@ test('Input-specific element snapshot properties', async t => {
 test('`innerText` element snapshot property', async() => {
     const el = await getElementById('htmlElementWithInnerText');
 
-    // NOTE: we have to use this regexp because the innerText field
-    // returns a little bit different values in IE9 and other browsers
     expect(/^Hey\nyo test {1,2}test( \u0000)?/.test(el.innerText.trim())).to.be.true;
 });
 

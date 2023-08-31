@@ -367,7 +367,7 @@ describe('TestCafeConfiguration', function () {
                         'port1':    1234,
                         'port2':    5678,
                         'src':      'path1/folder',
-                        'browser':  'ie',
+                        'browser':  'edge',
                     });
 
                     consoleWrapper.wrap();
@@ -933,7 +933,7 @@ describe('TypeScriptConfiguration', function () {
                 'port1':    1234,
                 'port2':    5678,
                 'src':      'path1/folder',
-                'browser':  'ie',
+                'browser':  'edge',
             };
 
             createJSONConfig(customConfigFile, options);
@@ -959,7 +959,7 @@ describe('TypeScriptConfiguration', function () {
                 'port1':    1234,
                 'port2':    5678,
                 'src':      'path1/folder',
-                'browser':  'ie',
+                'browser':  'edge',
             };
 
             createJsConfig(customConfigFile, options);
@@ -984,7 +984,7 @@ describe('TypeScriptConfiguration', function () {
                 'port1':    1234,
                 'port2':    5678,
                 'src':      'path1/folder',
-                'browser':  'ie',
+                'browser':  'edge',
             };
 
             createJSONConfig(defaultFileLocation, options);
