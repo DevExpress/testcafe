@@ -31,8 +31,4 @@ describe('[Legacy API] act.click()', function () {
                 expect(errs[0]).contains('act.click($input);');
             });
     });
-
-    it('Pointer events test (T191183) [ONLY:ie]', function () {
-        return runTests('testcafe-fixtures/click.test.js', 'Pointer events test (T191183)', { only: 'ie' });
-    });
 });
