@@ -8,7 +8,7 @@ const osFamily             = require('os-family');
 
 
 // TODO: Refactor tests to avoid using shared browsers
-if (config.useLocalBrowsers && !config.useHeadlessBrowsers && !config.hasBrowser('ie') && !osFamily.mac) {
+if (config.useLocalBrowsers && !config.useHeadlessBrowsers && !osFamily.mac) {
     describe('Browser Provider - Custom User Profile', () => {
         it('Should run tests in userProfile mode', () => {
             return testCafe

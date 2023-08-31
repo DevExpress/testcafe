@@ -8,7 +8,7 @@ const { noop }              = require('lodash');
 
 
 // TODO: Refactor tests to avoid shared browsers
-if (config.useLocalBrowsers && !config.hasBrowser('ie')) {
+if (config.useLocalBrowsers) {
     describe('Browser Provider - Job Results Reporting', function () {
         const BROWSER_OPENING_DELAY = 4000;
 

@@ -40,7 +40,7 @@
         let scriptsCount = 0;
 
         function iterate () {
-            // HACK: we should request different URLs to avoid caching of response in IE 10
+            // HACK: we should request different URLs to avoid caching of response
             const addedScript = appendScript(1000 + scriptsCount);
 
             addedScript.onload = function () {
