@@ -72,32 +72,32 @@ describe('CLI argument parser', function () {
 
     describe('Browser list', function () {
         it('Should be parsed as array of aliases or paths', function () {
-            return parse('path:"/Applications/Firefox.app",ie,chrome,firefox,')
+            return parse('path:"/Applications/Firefox.app",edge,chrome,firefox,')
                 .then(function (parser) {
-                    expect(parser.opts.browsers).eql(['path:/Applications/Firefox.app', 'ie', 'chrome', 'firefox']);
+                    expect(parser.opts.browsers).eql(['path:/Applications/Firefox.app', 'edge', 'chrome', 'firefox']);
                 });
         });
 
         it('Should accept "remote" alias', function () {
-            return parse('remote:12,ie,remote,chrome,remote:3')
+            return parse('remote:12,edge,remote,chrome,remote:3')
                 .then(function (parser) {
-                    expect(parser.opts.browsers).eql(['ie', 'chrome']);
+                    expect(parser.opts.browsers).eql(['edge', 'chrome']);
                     expect(parser.remoteCount).eql(16);
                 });
         });
 
         it('Should accept "all" alias', function () {
-            return parse('ie,chrome,all')
+            return parse('edge,chrome,all')
                 .then(function (parser) {
-                    expect(parser.opts.browsers).eql(['ie', 'chrome', 'all']);
+                    expect(parser.opts.browsers).eql(['edge', 'chrome', 'all']);
                 });
         });
 
         it('Should split browsers correctly if paths have commas and quotes', function () {
-            return parse('path:"/Apps,Libs/\'Firefox.app",ie,chrome,firefox,path:\'/Apps,Libs/"Chrome.app\'')
+            return parse('path:"/Apps,Libs/\'Firefox.app",edge,chrome,firefox,path:\'/Apps,Libs/"Chrome.app\'')
                 .then(function (parser) {
                     expect(parser.opts.browsers).eql([
-                        'path:/Apps,Libs/\'Firefox.app', 'ie', 'chrome', 'firefox',
+                        'path:/Apps,Libs/\'Firefox.app', 'edge', 'chrome', 'firefox',
                         'path:/Apps,Libs/"Chrome.app',
                     ]);
                 });
@@ -783,9 +783,9 @@ describe('CLI argument parser', function () {
     });
 
     it('Should parse command line arguments', function () {
-        return parse('-r list -S -q -e message=/testMessage/i,stack=testStack,pageUrl=testPageUrl --hostname myhost --base-url localhost:3000 --proxy localhost:1234 --proxy-bypass localhost:5678 --qr-code --app run-app --speed 0.5 --debug-on-fail --disable-page-reloads --retry-test-pages --dev --sf --disable-page-caching --disable-http2 --disable-native-automation --disable-cross-domain ie test/server/data/file-list/file-1.js')
+        return parse('-r list -S -q -e message=/testMessage/i,stack=testStack,pageUrl=testPageUrl --hostname myhost --base-url localhost:3000 --proxy localhost:1234 --proxy-bypass localhost:5678 --qr-code --app run-app --speed 0.5 --debug-on-fail --disable-page-reloads --retry-test-pages --dev --sf --disable-page-caching --disable-http2 --disable-native-automation --disable-cross-domain edge test/server/data/file-list/file-1.js')
             .then(parser => {
-                expect(parser.opts.browsers).eql(['ie']);
+                expect(parser.opts.browsers).eql(['edge']);
                 expect(parser.opts.src).eql(['test/server/data/file-list/file-1.js']);
                 expect(parser.opts.reporter[0].name).eql('list');
                 expect(parser.opts.hostname).eql('myhost');
@@ -913,7 +913,7 @@ describe('CLI argument parser', function () {
     });
 
     it('Run options', () => {
-        const argumentsString = 'ie,chrome test.js' + [
+        const argumentsString = 'edge,chrome test.js' + [
             '--debug-on-fail',
             '--skip-js-errors',
             '--skip-uncaught-errors',
