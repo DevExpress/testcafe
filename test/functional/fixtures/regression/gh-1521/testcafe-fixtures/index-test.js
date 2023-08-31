@@ -98,29 +98,6 @@ test
     });
 
 test
-    .page('http://localhost:3000/fixtures/regression/gh-1521/pages/svg-element.html')
-    ('Click on svg child', async t => {
-        // NOTE: it's a regression test created during gh-1521 development.
-        // Automations were waiting for a whole timeout when try to perform an
-        // action with a svg element every time. The test checks that now it's fixed.
-        const timeout = 5000;
-        const target  = Selector('#svg', { timeout });
-
-        await t.expect(target.visible).ok();
-
-        const startTime = Date.now();
-
-        await t.click(target);
-
-        const finishTime         = Date.now();
-        const documentClickCount = await t.eval(() => window.documentClickCount);
-
-        await t
-            .expect(finishTime - startTime).lt(timeout)
-            .expect(documentClickCount).eql(1);
-    });
-
-test
     .page('http://localhost:3000/fixtures/regression/gh-1521/pages/moving-element.html')
     ('Click on a moving element', async t => {
         const target = Selector('#target', { timeout: 5000 });

@@ -21,16 +21,9 @@ const selectOptionInScrollingList = async () => {
         .expect(scrollingSelect.value).eql('Tres');
 };
 
-test('Click on select option (Non IE)', async () => {
+test('Click on select option', async () => {
     await selectOptionInExpandingList();
     await t.expect(getEvents()).eql(1);
     await selectOptionInScrollingList();
     await t.expect(getEvents()).eql(2);
-});
-
-test('Click on select option (IE)', async () => {
-    await selectOptionInExpandingList();
-    await t.expect(getEvents()).eql(0);
-    await selectOptionInScrollingList();
-    await t.expect(getEvents()).eql(0);
 });

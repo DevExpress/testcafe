@@ -32,11 +32,6 @@ describe('[Regression](GH-1521)', function () {
         return runTests('testcafe-fixtures/index-test.js', 'Click on a moving element', { only: 'chrome' });
     });
 
-    it('Should not wait for a timeout when clicks on a child of svg element', function () {
-        // NOTE: ie regression test
-        return runTests('testcafe-fixtures/index-test.js', 'Click on svg child');
-    });
-
     it('Should not wait if the offset position of a fixed element is changing', function () {
         return runTests('testcafe-fixtures/index-test.js', 'Click on a fixed element', { only: 'chrome' });
     });

@@ -16,8 +16,8 @@ test('Prevent Input event on TextInput when type to input element', async t => {
         .expect(simpleInput.value).eql('');
 });
 
-// NOTE: IE11/Firefox. Typing is not prevented. Input event is raised
-test('Prevent Input event on TextInput when type to input element IE11/Firefox', async t => {
+// NOTE: Firefox. Typing is not prevented. Input event is raised
+test('Prevent Input event on TextInput when type to input element Firefox', async t => {
     await t
         .typeText(simpleInput, 'Hello')
         .expect(simpleInput.value).eql('Hello');
@@ -30,33 +30,28 @@ test('Prevent Input event on TextInput when type to ContentEditable div', async 
         .expect(simpleContentEditable.textContent).eql('');
 });
 
-// NOTE: IE11/Firefox. Typing is not prevented.
-// Input event is raised in firefox but is not raised in IE11 - it's a IE11 bug
-test('Prevent Input event on TextInput when type to ContentEditable div IE11/Firefox', async t => {
+// NOTE: Firefox. Typing is not prevented.
+test('Prevent Input event on TextInput when type to ContentEditable div Firefox', async t => {
     await t
         .typeText(simpleContentEditable, 'Hello')
         .expect(simpleContentEditable.textContent).eql('Hello');
 });
 
-// NOTE: Not for IE11 because preventDefault will not prevent typing
-// Not for Firefox because Firefox does not support TextInput event
+// NOTE: Not for Firefox because Firefox does not support TextInput event
 test('Prevent Input event on TextInput when type to element node', async t => {
     await t
         .typeText(contentEditableWithElementNode, 'Hello')
         .expect(contentEditableWithElementNode.textContent).eql('');
 });
 
-// NOTE: Not for IE11 because is's not possible to prevent typing in IE11
-// Not for Firefox because Firefox does not support TextInput event
+// NOTE: Not for Firefox because Firefox does not support TextInput event
 test('Modify text node of ContentEditable div on TextInput event and prevent Input event', async t => {
     await t
         .typeText(contentEditableWithModify, 'Hello')
         .expect(contentEditableWithModify.textContent).eql('AHello');
 });
 
-// NOTE: Not for IE11 because this test emulates behavior from https://github.com/DevExpress/testcafe/issues/1956.
-// This behavior is different in IE11
-// Not for Firefox because Firefox does not support TextInput event
+// NOTE: Not for Firefox because Firefox does not support TextInput event
 test('Type to ContentEditable div when selected node was replaced on TextInput event', async t => {
     await t
         .typeText(contentEditableWithReplace, 'Hello')
