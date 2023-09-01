@@ -42,7 +42,7 @@ const REMOTE_ALIAS_RE = /^remote(?::(\d*))?$/;
 
 const DESCRIPTION = dedent(`
 
-    To select a browser, specify an alias ("ie", "chrome", etc.) or the path to the browser executable. You can select more than one browser.
+    To select a browser, specify an alias ("edge", "chrome", etc.) or the path to the browser executable. You can select more than one browser.
 
     Use the "all" alias to run tests against all available browsers.
     Use the "remote" alias to run tests on remote devices, like smartphones or tablets. Specify the number of remote browsers after the semicolon ("remote:3").
