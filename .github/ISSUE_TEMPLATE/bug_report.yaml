@@ -129,7 +129,7 @@ body:
     attributes:
       label: Command-line arguments
       description: >
-        Example: testcafe ie,chrome -e test.js
+        Example: testcafe edge,chrome -e test.js
     validations:
       required: true
 
@@ -138,7 +138,7 @@ body:
     attributes:
       label: Browser name(s) and version(s)
       description: >
-        Example: IE 11, Chrome 69, Firefox 100, etc.
+        Example: Edge 116, Chrome 116, Firefox 117, etc.
     validations:
       required: false
 
