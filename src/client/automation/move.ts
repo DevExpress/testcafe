@@ -20,7 +20,7 @@ import * as domUtils from '../core/utils/dom';
 import * as styleUtils from '../core/utils/style';
 import * as positionUtils from '../core/utils/position';
 import * as eventUtils from '../core/utils/event';
-import ScrollAutomation from '../core/scroll';
+import ScrollAutomation from '../core/scroll/index';
 import getElementExceptUI from './utils/get-element-except-ui';
 import getAutomationPoint from './utils/get-automation-point';
 import AxisValues, { AxisValuesData } from '../core/utils/values/axis-values';
@@ -186,10 +186,6 @@ export default class MoveAutomation {
             // NOTE: in touch mode, events are simulated for the element for which mousedown was simulated (GH-372)
             .then((topElement: HTMLElement) => {
                 const currentElement = this._getCorrectedTopElement(topElement);
-
-                // NOTE: it can be null in IE
-                if (!currentElement)
-                    return null;
 
                 return this._emulateEvents(currentElement, currPosition);
             })
