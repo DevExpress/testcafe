@@ -6,7 +6,6 @@ import CURSOR_UI_MESSAGES from './messages';
 
 const Promise          = hammerhead.Promise;
 const shadowUI         = hammerhead.shadowUI;
-const browserUtils     = hammerhead.utils.browser;
 const featureDetection = hammerhead.utils.featureDetection;
 const messageSandbox   = hammerhead.eventSandbox.message;
 
@@ -55,9 +54,7 @@ const CursorUI = {
         this.cursorElement = document.createElement('div');
         shadowUI.addClass(this.cursorElement, CURSOR_CLASS);
 
-        // NOTE: For IE, we can't use the touch cursor in a cross-domain iframe
-        // because we won't be able to get an element under the cursor
-        if (featureDetection.isTouchDevice && !browserUtils.isIE) {
+        if (featureDetection.isTouchDevice) {
             shadowUI.addClass(this.cursorElement, TOUCH_CLASS);
 
             // NOTE: in touch mode, the pointer should be in the center of the cursor
