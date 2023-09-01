@@ -5,7 +5,6 @@ import path from 'path';
 import typescript from 'rollup-plugin-typescript2';
 import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
-import inject from '@rollup/plugin-inject';
 import alias from '@rollup/plugin-alias';
 
 
@@ -33,7 +32,6 @@ const COMMON_GLOBALS = {
 
 const EXTENDED_GLOBALS = {
     ...COMMON_GLOBALS,
-    'pinkie': 'window[\'%hammerhead%\'].Promise',
 };
 
 const GLOBALS = chunk => NO_HAMMERHEAD_CHUNKS.includes(chunk) ? COMMON_GLOBALS : EXTENDED_GLOBALS;
@@ -64,9 +62,6 @@ const CONFIG = CHUNK_NAMES.map(chunk => ({
         }),
         commonjs(),
         typescript({ include: ['*.+(j|t)s', '**/*.+(j|t)s', '../**/*.+(j|t)s'] }),
-
-        //NOTE: Need to keep this after the typescript plugin to allow using both async/await and TypeScript
-        inject({ Promise: 'pinkie' }),
     ],
 }));
 

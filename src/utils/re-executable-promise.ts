@@ -1,5 +1,3 @@
-// TODO: Fix https://github.com/DevExpress/testcafe/issues/4139 to get rid of Pinkie
-import Promise from 'pinkie';
 import { noop } from 'lodash';
 import testRunTracker from '../api/test-run-tracker';
 
