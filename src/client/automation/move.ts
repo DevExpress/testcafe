@@ -187,6 +187,9 @@ export default class MoveAutomation {
             .then((topElement: HTMLElement) => {
                 const currentElement = this._getCorrectedTopElement(topElement);
 
+                if (!currentElement)
+                    return null;
+
                 return this._emulateEvents(currentElement, currPosition);
             })
             .then(nextTick);
