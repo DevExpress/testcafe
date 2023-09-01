@@ -8,7 +8,6 @@ import nextTick from '../../core/utils/next-tick';
 const Promise = hammerhead.Promise;
 
 const extend         = hammerhead.utils.extend;
-const browserUtils   = hammerhead.utils.browser;
 const eventSimulator = hammerhead.eventSandbox.eventSimulator;
 
 const { domUtils, eventUtils, delay } = testCafeCore;
@@ -46,10 +45,7 @@ export default class RClickAutomation extends VisibleElementAutomation {
         // element, a selection position may be calculated incorrectly (by using the caretPos option).
         const elementForFocus = domUtils.isContentEditableElement(this.element) ? this.element : eventArgs.element;
 
-        // NOTE: IE doesn't perform focus if active element has been changed while executing mousedown
-        const simulateFocus = !browserUtils.isIE || this.eventState.activeElementBeforeMouseDown === domUtils.getActiveElement();
-
-        return focusAndSetSelection(elementForFocus, simulateFocus, this.caretPos)
+        return focusAndSetSelection(elementForFocus, true, this.caretPos)
             .then(() => nextTick());
     }
 
