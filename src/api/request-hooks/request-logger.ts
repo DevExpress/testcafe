@@ -80,6 +80,10 @@ class RequestLoggerImplementation extends RequestHook {
             throw new APIError('RequestLogger', RUNTIME_ERRORS.requestHookConfigureAPIError, 'RequestLogger', 'Cannot stringify the response body because it is not logged. Specify { logResponseBody: true } in log options.');
     }
 
+    private static _getInternalRequestKey ({ requestId, sessionId }: any): string {
+        return `${sessionId}:${requestId}`;
+    }
+
     public async onRequest (event: RequestEvent): Promise<void> {
         const loggedReq: LoggedRequest = {
             id:        event._requestInfo.requestId,
@@ -98,11 +102,11 @@ class RequestLoggerImplementation extends RequestHook {
         if (this._options.logRequestBody)
             loggedReq.request.body = this._options.stringifyRequestBody ? event._requestInfo.body.toString() : event._requestInfo.body;
 
-        this._internalRequests[loggedReq.id] = loggedReq;
+        this._internalRequests[RequestLoggerImplementation._getInternalRequestKey(event._requestInfo)] = loggedReq;
     }
 
     public async onResponse (event: ResponseEvent): Promise<void> {
-        const loggedReq = this._internalRequests[event.requestId];
+        const loggedReq = this._internalRequests[RequestLoggerImplementation._getInternalRequestKey(event)];
 
         // NOTE: If the 'clear' method is called during a long running request,
         // we should not save a response part - request part has been already removed.
