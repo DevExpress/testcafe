@@ -23,6 +23,10 @@ TestCafe is <strong>free</strong> and as easy to use as <strong>1-2-3</strong>:<
 </p>
 
 <p align="center">
+Changing this for assignment purposes.
+</p>
+
+<p align="center">
   <a href="https://testcafe.io">Homepage</a> &nbsp;&nbsp;•&nbsp;&nbsp;
   <a href="https://testcafe.io/documentation/402635/getting-started">Documentation</a> &nbsp;&nbsp;•&nbsp;&nbsp;
   <a href="https://testcafe.io/402636/faq">FAQ</a> &nbsp;&nbsp;•&nbsp;&nbsp;
