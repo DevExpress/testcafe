@@ -121,7 +121,7 @@ export default class RequestPausedEventBasedEventFactory extends BaseRequestHook
             statusCode:               this._event.responseStatusCode || StatusCodes.OK,
             headers:                  convertToOutgoingHttpHeaders(this._event.responseHeaders),
             body:                     this._responseBody,
-            sessionId:                '',
+            sessionId:                this._sessionId,
             requestId:                this._event.requestId,
             isSameOriginPolicyFailed: false,
         });
