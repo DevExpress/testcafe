@@ -1052,7 +1052,7 @@ describe('Compiler', function () {
                     const err             = errList.items[0];
                     const stack           = err.callsite.stackFrames.filter(createStackFilter(stackTraceLimit));
 
-                    expect(stack.length).eql(8);
+                    expect(stack.length).eql(7);
 
                     const lastStackItem = stack.pop();
 
