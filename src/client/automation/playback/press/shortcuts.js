@@ -491,8 +491,7 @@ function enter (element) {
 
     //submit form on enter pressed
     if (domUtils.isInputElement(element)) {
-        if (!browserUtils.isIE)
-            elementEditingWatcher.processElementChanging(element);
+        elementEditingWatcher.processElementChanging(element);
 
         const form = domUtils.getParents(element, 'form')[0];
 
