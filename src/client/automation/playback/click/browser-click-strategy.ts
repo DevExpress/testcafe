@@ -1,7 +1,6 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import { focusAndSetSelection } from '../../utils/utils';
-import nextTick from '../../../core/utils/next-tick';
 import createClickCommand from './click-command';
 
 import { MouseEventArgs } from '../../visible-element-automation';
@@ -82,10 +81,9 @@ export class MouseClickStrategy {
 
         this.activeElementBeforeMouseDown = activeElement;
 
-        // NOTE: In WebKit and IE, the mousedown event opens the select element's dropdown;
+        // NOTE: In WebKit, the mousedown event opens the select element's dropdown;
         // therefore, we should prevent mousedown and hide the dropdown (B236416).
-        const needCloseSelectDropDown = (browserUtils.isWebKit || browserUtils.isIE) &&
-            domUtils.isSelectElement(this.mouseDownElement);
+        const needCloseSelectDropDown = browserUtils.isWebKit && domUtils.isSelectElement(this.mouseDownElement);
 
         if (needCloseSelectDropDown)
             this._bindMousedownHandler();
@@ -115,8 +113,7 @@ export class MouseClickStrategy {
             listeners.removeInternalEventBeforeListener(window, ['mouseup'], getTimeStamp);
         };
 
-        if (!browserUtils.isIE)
-            listeners.addInternalEventBeforeListener(window, ['mouseup'], getTimeStamp);
+        listeners.addInternalEventBeforeListener(window, ['mouseup'], getTimeStamp);
 
         if (!this._isTouchEventWasCancelled())
             eventSimulator.mouseup(element, eventArgs.options);
@@ -174,21 +171,8 @@ export class MouseClickStrategy {
                 return;
             }
 
-            if (browserUtils.isIE && browserUtils.version < 12) {
-                // NOTE: In whatever way an element is blurred from the client script, the
-                // blur event is raised asynchronously in IE (in MSEdge focus/blur is sync)
-                nextTick()
-                    .then(() => {
-                        if (!this.eventState.blurRaised)
-                            eventSimulator.blur(element);
-
-                        resolve();
-                    });
-            }
-            else {
-                eventSimulator.blur(element);
-                resolve();
-            }
+            eventSimulator.blur(element);
+            resolve();
         });
     }
 
@@ -201,10 +185,7 @@ export class MouseClickStrategy {
         // element, a selection position may be calculated incorrectly (by using the caretPos option).
         const elementForFocus = domUtils.isContentEditableElement(this.element) ? this.element : eventArgs.element;
 
-        // NOTE: IE doesn't perform focus if active element has been changed while executing mousedown
-        const simulateFocus = !browserUtils.isIE || this.activeElementBeforeMouseDown === domUtils.getActiveElement();
-
-        return focusAndSetSelection(elementForFocus, simulateFocus, this.caretPos);
+        return focusAndSetSelection(elementForFocus, true, this.caretPos);
     }
 
     private _raiseTouchEvents (eventArgs: MouseEventArgs): void {
