@@ -35,27 +35,18 @@ export default class KeyPressSimulator {
         const isActiveElementEditable = domUtils.isEditableElement(element);
         const isStoredElementEditable = domUtils.isEditableElement(this.storedActiveElement);
 
-        // Unnecessary typing happens if an element was changed after the keydown/keypress event (T210448)
-        // In IE, this error may occur when we try to determine if the removed element is in an iframe
-        try {
-            if (elementChanged) {
-                const isActiveElementInIframe = domUtils.isElementInIframe(element);
-                const isStoredElementInIframe = domUtils.isElementInIframe(this.storedActiveElement);
+        if (elementChanged) {
+            const isActiveElementInIframe = domUtils.isElementInIframe(element);
+            const isStoredElementInIframe = domUtils.isElementInIframe(this.storedActiveElement);
 
-                const shouldTypeInWebKit = isActiveElementInIframe === isStoredElementInIframe || isStoredElementEditable;
+            const shouldTypeInWebKit = isActiveElementInIframe === isStoredElementInIframe || isStoredElementEditable;
 
-                shouldType = (!browserUtils.isFirefox || isStoredElementEditable) &&
-                             (!browserUtils.isWebKit || shouldTypeInWebKit);
-            }
+            shouldType = (!browserUtils.isFirefox || isStoredElementEditable) &&
+                          (!browserUtils.isWebKit || shouldTypeInWebKit);
         }
-        /*eslint-disable no-empty */
-        catch (err) {
-        }
-        /*eslint-disable no-empty */
-
 
         if (shouldType) {
-            if (!browserUtils.isIE && elementChanged && isStoredElementEditable && isActiveElementEditable)
+            if (elementChanged && isStoredElementEditable && isActiveElementEditable)
                 elementForTyping = this.storedActiveElement;
 
             typeText(elementForTyping, char);
