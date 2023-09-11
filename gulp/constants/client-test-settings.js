@@ -1,6 +1,6 @@
 const { assignIn } = require('lodash');
 
-const CLIENT_TEST_LOCAL_BROWSERS_ALIASES = ['ie', 'edge', 'chrome', 'firefox', 'safari'];
+const CLIENT_TEST_LOCAL_BROWSERS_ALIASES = ['edge', 'chrome', 'firefox', 'safari'];
 
 const CLIENT_TESTS_PATH        = 'test/client/fixtures';
 const CLIENT_TESTS_LEGACY_PATH = 'test/client/legacy-fixtures';
