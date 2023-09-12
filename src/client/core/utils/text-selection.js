@@ -1,133 +1,18 @@
 import hammerhead from '../deps/hammerhead';
 import * as domUtils from './dom';
 import * as contentEditable from './content-editable';
-import * as eventUtils from './event';
 
 
 const browserUtils     = hammerhead.utils.browser;
-const nativeMethods    = hammerhead.nativeMethods;
 const selectionSandbox = hammerhead.eventSandbox.selection;
 
 
-//NOTE: we can't determine selection direction in ie from dom api. Therefore we should listen selection changes,
-// and calculate direction using it.
 const BACKWARD_SELECTION_DIRECTION = 'backward';
 const FORWARD_SELECTION_DIRECTION  = 'forward';
 const NONE_SELECTION_DIRECTION     = 'none';
 
 
-let selectionDirection  = NONE_SELECTION_DIRECTION;
-let initialLeft         = 0;
-let initialTop          = 0;
-let lastSelectionHeight = 0;
-let lastSelectionLeft   = 0;
-let lastSelectionLength = 0;
-let lastSelectionTop    = 0;
-
-function stateChanged (left, top, height, width, selectionLength) {
-    if (!selectionLength) {
-        initialLeft        = left;
-        initialTop         = top;
-        selectionDirection = NONE_SELECTION_DIRECTION;
-    }
-    else {
-        switch (selectionDirection) {
-            case NONE_SELECTION_DIRECTION:
-                if (top === lastSelectionTop && (left === lastSelectionLeft || height > lastSelectionHeight))
-                    selectionDirection = FORWARD_SELECTION_DIRECTION;
-                else if (left < lastSelectionLeft || top < lastSelectionTop)
-                    selectionDirection = BACKWARD_SELECTION_DIRECTION;
-
-                break;
-
-            case FORWARD_SELECTION_DIRECTION:
-                if (left === lastSelectionLeft && top === lastSelectionTop ||
-                    left < lastSelectionLeft && height > lastSelectionHeight ||
-                    top === lastSelectionTop && height === lastSelectionHeight &&
-                    selectionLength > lastSelectionLength &&
-                    left + width !== initialLeft)
-                    break;
-                else if (left < lastSelectionLeft || top < lastSelectionTop)
-                    selectionDirection = BACKWARD_SELECTION_DIRECTION;
-
-                break;
-
-            case BACKWARD_SELECTION_DIRECTION:
-                if ((left < lastSelectionLeft || top < lastSelectionTop) && selectionLength > lastSelectionLength)
-                    break;
-                else if (top === initialTop && (left >= initialLeft || height > lastSelectionHeight))
-                    selectionDirection = FORWARD_SELECTION_DIRECTION;
-
-                break;
-        }
-    }
-
-    lastSelectionHeight = height;
-    lastSelectionLeft   = left;
-    lastSelectionLength = selectionLength;
-    lastSelectionTop    = top;
-}
-
-function onSelectionChange () {
-    let activeElement  = null;
-    let endSelection   = null;
-    let range          = null;
-    let rect           = null;
-    let startSelection = null;
-
-    try {
-        if (this.selection)
-            range = this.selection.createRange();
-        else {
-            //HACK: we need do this for IE11 because otherwise we can not get TextRange properties
-            activeElement = nativeMethods.documentActiveElementGetter.call(this);
-
-            if (!activeElement || !domUtils.isTextEditableElement(activeElement)) {
-                selectionDirection = NONE_SELECTION_DIRECTION;
-
-                return;
-            }
-
-            startSelection = getSelectionStart(activeElement);
-            endSelection   = getSelectionEnd(activeElement);
-
-            if (activeElement.createTextRange) {
-                range = activeElement.createTextRange();
-                range.collapse(true);
-                range.moveStart('character', startSelection);
-                range.moveEnd('character', endSelection - startSelection);
-            }
-            else if (document.createRange) {
-                //NOTE: for MSEdge
-                range = document.createRange();
-
-                const textNode = hammerhead.nativeMethods.nodeFirstChildGetter.call(activeElement);
-
-                range.setStart(textNode, startSelection);
-                range.setEnd(textNode, endSelection);
-                rect = range.getBoundingClientRect();
-            }
-        }
-    }
-    catch (e) {
-        //NOTE: in ie it raises error when there are not a real selection
-        selectionDirection = NONE_SELECTION_DIRECTION;
-
-        return;
-    }
-
-    const rangeLeft           = rect ? Math.ceil(rect.left) : range.offsetLeft;
-    const rangeTop            = rect ? Math.ceil(rect.top) : range.offsetTop;
-    const rangeHeight         = rect ? Math.ceil(rect.height) : range.boundingHeight;
-    const rangeWidth          = rect ? Math.ceil(rect.width) : range.boundingWidth;
-    const rangeHTMLTextLength = range.htmlText ? range.htmlText.length : 0;
-    const rangeTextLength     = rect ? range.toString().length : rangeHTMLTextLength;
-
-    stateChanged(rangeLeft, rangeTop, rangeHeight, rangeWidth, rangeTextLength);
-}
-
-if (browserUtils.isIE)
-    eventUtils.bind(document, 'selectionchange', onSelectionChange, true);
+let selectionDirection = NONE_SELECTION_DIRECTION;
 
 //utils for contentEditable
 function selectContentEditable (el, from, to, needFocus) {
@@ -212,7 +97,7 @@ function correctContentEditableSelectionBeforeDelete (el) {
             newEndOffset = endNode.nodeValue.length;
     }
 
-    if (browserUtils.isWebKit || browserUtils.isIE && browserUtils.version > 11) {
+    if (browserUtils.isWebKit) {
         if (newStartOffset !== null) {
             if (newStartOffset === 0)
                 startNode.nodeValue = startNode.nodeValue.substring(startNodeFirstNonWhitespaceSymbol);
@@ -369,15 +254,9 @@ export function selectByNodesAndOffsets (startPos, endPos, needFocus) {
     const selectionSetter = function () {
         selection.removeAllRanges();
 
-        //NOTE: For IE we can't create inverse selection
         if (!inverse) {
             range.setStart(startNode, startOffset);
             range.setEnd(endNode, endOffset);
-            selection.addRange(range);
-        }
-        else if (browserUtils.isIE) {
-            range.setStart(endNode, endOffset);
-            range.setEnd(startNode, startOffset);
             selection.addRange(range);
         }
         else {

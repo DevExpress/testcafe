@@ -243,9 +243,9 @@ export function scrollEditableElementByPoint (element, point) {
     const isTextarea     = domUtils.isTextAreaElement(element);
     const isInputElement = domUtils.isInputElement(element);
 
-    // NOTE: we don't need to scroll input elements in Mozilla and
-    // IE > 10 because it happens automatically on selection setting
-    if (isInputElement && (browserUtils.isFirefox || browserUtils.isIE && browserUtils.version > 10))
+    // NOTE: we don't need to scroll input elements in Mozilla
+    // because it happens automatically on selection setting
+    if (isInputElement && browserUtils.isFirefox)
         return;
 
     const elementOffset  = positionUtils.getOffsetPosition(element);
@@ -291,10 +291,9 @@ export function excludeElementScroll (element, point) {
     const elementScroll  = styleUtils.getElementScroll(element);
     const maxLeft        = elementOffset.left + elementBorders.left + element.clientWidth;
 
-    // NOTE: we can't know input elements' scroll value in Mozilla and
-    // IE > 10 (https://bugzilla.mozilla.org/show_bug.cgi?id=293186)
-    if (isInputElement && isTextEditable &&
-        (browserUtils.isFirefox || browserUtils.isIE && browserUtils.version > 10)) {
+    // NOTE: we can't know input elements' scroll value in Mozilla
+    // (https://bugzilla.mozilla.org/show_bug.cgi?id=293186)
+    if (isInputElement && isTextEditable && browserUtils.isFirefox) {
         return {
             x: Math.min(point.x, maxLeft),
             y: point.y,

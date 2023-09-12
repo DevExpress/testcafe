@@ -64,11 +64,10 @@ export default class SelectChildClickAutomation {
 
     _calculateEventArguments () {
         const childElement     = this.optionListExpanded ? selectController.getEmulatedChildElement(this.element) : this.element;
-        const parentSelectSize = styleUtils.getSelectElementSize(this.parentSelect) > 1;
 
         return {
             options: this.modifiers,
-            element: browserUtils.isIE && parentSelectSize ? this.parentSelect : childElement,
+            element: childElement,
         };
     }
 
@@ -123,12 +122,6 @@ export default class SelectChildClickAutomation {
             return this._focus();
         }
 
-        if (browserUtils.isIE) {
-            eventSimulator.mousedown(this.eventsArgs.element, this.eventsArgs.options);
-
-            return this._focus();
-        }
-
         // NOTE: In Chrome, document.activeElement is 'select' after mousedown. But we need to
         // raise blur and change the event for a previously active element during focus raising.
         // That's why we should change the event order and raise focus before mousedown.
@@ -150,22 +143,15 @@ export default class SelectChildClickAutomation {
     }
 
     _mouseup () {
-        const elementForMouseupEvent = browserUtils.isIE ? this.parentSelect : this.eventsArgs.element;
-
-        eventSimulator.mouseup(elementForMouseupEvent, this.eventsArgs.options);
-
-        if (browserUtils.isIE && this.clickCausesChange)
-            this.parentSelect.selectedIndex = this.childIndex;
+        eventSimulator.mouseup(this.eventsArgs.element, this.eventsArgs.options);
 
         const simulateInputEventOnValueChange = browserUtils.isFirefox || browserUtils.isSafari ||
                                                browserUtils.isChrome && browserUtils.version >= 53;
 
-        const simulateChangeEventOnValueChange = simulateInputEventOnValueChange || browserUtils.isIE;
-
         if (simulateInputEventOnValueChange && this.clickCausesChange)
             eventSimulator.input(this.parentSelect);
 
-        if (simulateChangeEventOnValueChange && this.clickCausesChange)
+        if (simulateInputEventOnValueChange && this.clickCausesChange)
             eventSimulator.change(this.parentSelect);
 
         return Promise.resolve();

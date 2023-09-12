@@ -373,10 +373,7 @@ exports.checkUserAgent = function (errs, alias) {
     const parsedUA = parseUserAgent(errs[0]);
     const prettyUA = parsedUA.prettyUserAgent.toLowerCase();
 
-    // NOTE: the "ie" alias corresponds to the "internet explorer" lowered part of a compact user agent string (GH-481)
-    const expectedBrowserName = alias === 'ie' ? 'internet explorer' : alias;
-
-    expect(prettyUA.indexOf(expectedBrowserName)).eql(0, prettyUA + ' doesn\'t start with "' + expectedBrowserName + '"');
+    expect(prettyUA.indexOf(alias)).eql(0, prettyUA + ' doesn\'t start with "' + alias + '"');
 };
 
 exports.SCREENSHOTS_PATH = SCREENSHOTS_PATH;

@@ -124,7 +124,7 @@ function simulateBeforeInput (element, text, needSimulate) {
     return true;
 }
 
-// NOTE: Typing can be prevented in Chrome/Edge but can not be prevented in IE11 or Firefox
+// NOTE: Typing can be prevented in Chrome/Edge but can not be prevented in Firefox
 // Firefox does not support TextInput event
 // Safari supports the TextInput event but has a bug: e.data is added to the node value.
 // So in Safari we need to call preventDefault in the last textInput handler but not prevent the Input event
@@ -155,7 +155,7 @@ function simulateTextInput (element, text) {
         eventSandbox.off(eventSandbox.EVENT_PREVENTED_EVENT, onSafariPreventTextInput);
     }
 
-    return isInputEventRequired || browserUtils.isIE11;
+    return isInputEventRequired;
 }
 
 function _typeTextToContentEditable (element, text) {
@@ -175,21 +175,11 @@ function _typeTextToContentEditable (element, text) {
         needRaiseInputEvent = false;
     };
 
-    // NOTE: IE11 raises the 'textinput' event many times after the element changed.
-    // The 'textinput' should be called only once
-
-    function onTextInput (event, dispatched, preventEvent) {
-        preventEvent();
-    }
-
-    // NOTE: IE11 does not raise input event when type to contenteditable
-
     const beforeContentChanged = () => {
         needProcessInput    = simulateTextInput(element, textInputData);
-        needRaiseInputEvent = needProcessInput && !browserUtils.isIE11;
+        needRaiseInputEvent = needProcessInput;
 
         listeners.addInternalEventBeforeListener(window, ['input'], onInput);
-        listeners.addInternalEventBeforeListener(window, ['textinput'], onTextInput);
     };
 
     const afterContentChanged = () => {
@@ -199,7 +189,6 @@ function _typeTextToContentEditable (element, text) {
                     eventSimulator.input(element, text);
 
                 listeners.removeInternalEventBeforeListener(window, ['input'], onInput);
-                listeners.removeInternalEventBeforeListener(window, ['textinput'], onTextInput);
             });
     };
 
@@ -212,7 +201,7 @@ function _typeTextToContentEditable (element, text) {
 
         // NOTE: after deleting the selection contents we should refresh the stored startNode because
         // contentEditable element's content could change and we can no longer find parent elements
-        // of the nodes. In MSEdge, 'parentElement' for the deleted element isn't undefined
+        // of the nodes.
         currentSelection = _updateSelectionAfterDeletionContent(element, currentSelection);
         startNode        = currentSelection.startPos.node;
     }
@@ -257,11 +246,11 @@ function _typeTextToTextEditable (element, text) {
     if (!needProcessInput)
         return;
 
-    // NOTE: the 'maxlength' attribute doesn't work in all browsers. IE still doesn't support input with the 'number' type
-    let elementMaxLength = !browserUtils.isIE && isInputTypeNumber ? null : parseInt(element.maxLength, 10);
+    // NOTE: the 'maxlength' attribute doesn't work in all browsers.
+    let elementMaxLength = isInputTypeNumber ? null : parseInt(element.maxLength, 10);
 
     if (elementMaxLength < 0)
-        elementMaxLength = browserUtils.isIE && browserUtils.version < 17 ? 0 : null;
+        elementMaxLength = null;
 
     const newElementValue = elementValue.substring(0, startSelection) + text + elementValue.substring(endSelection, elementValue.length);
 
