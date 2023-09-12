@@ -6,17 +6,11 @@ import {
 
 import scrollController from './scroll/controller';
 
-import { get, hasDimensions } from './utils/style';
-import { filter } from './utils/array';
-import {
-    isShadowUIElement,
-    isWindow,
-    getParents,
-} from './utils/dom';
+import { hasDimensions } from './utils/style';
+import { isShadowUIElement } from './utils/dom';
 
-const browserUtils   = utils.browser;
-const listeners      = eventSandbox.listeners;
-const eventSimulator = eventSandbox.eventSimulator;
+const browserUtils = utils.browser;
+const listeners    = eventSandbox.listeners;
 
 const PREVENTED_EVENTS = [
     'click', 'mousedown', 'mouseup', 'dblclick', 'contextmenu', 'mousemove', 'mouseover', 'mouseout',
@@ -47,35 +41,11 @@ function preventRealEventHandler (e, dispatched, preventDefault, cancelHandlers,
         }
 
         // NOTE: if an element loses focus because of becoming invisible, the blur event is
-        // raised. We must not prevent this blur event. In IE, an element loses focus only
-        // if the CSS 'display' property is set to 'none', other ways of making an element
-        // invisible don't lead to blurring (in MSEdge, focus/blur are sync).
-        if (e.type === 'blur') {
-            if (browserUtils.isIE && browserUtils.version < 12) {
-                const isWindowInstance   = isWindow(target);
-                const isElementInvisible = !isWindowInstance && get(target, 'display') === 'none';
-                let elementParents       = null;
-                let invisibleParents     = false;
-
-                if (!isWindowInstance && !isElementInvisible) {
-                    elementParents   = getParents(target);
-                    invisibleParents = filter(elementParents, parent => get(parent, 'display') === 'none');
-                }
-
-                if (isElementInvisible || invisibleParents.length) {
-                    // NOTE: In IE we should prevent the event and raise it on timeout. This is a fix for
-                    // the case when a focus event leads to the element disappearing. If we don't prevent
-                    // the blur event it will be raised before the previous focus event is raised (see B254768)
-                    eventSandbox.timers.deferFunction(() => {
-                        eventSimulator.blur(target);
-                    });
-                }
-            }
-            // NOTE: fix for a jQuery bug. An exception is raised when calling .is(':visible')
-            // for a window or document on page loading (when e.ownerDocument is null).
-            else if (target !== window && target !== window.document && !hasDimensions(target))
-                return;
-        }
+        // raised. We must not prevent this blur event.
+        // NOTE: fix for a jQuery bug. An exception is raised when calling .is(':visible')
+        // for a window or document on page loading (when e.ownerDocument is null).
+        if (e.type === 'blur' && target !== window && target !== window.document && !hasDimensions(target))
+            return;
 
         preventDefault();
     }
