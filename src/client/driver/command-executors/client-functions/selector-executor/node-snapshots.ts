@@ -9,12 +9,11 @@ import { utils } from '../../../deps/hammerhead';
 // @ts-ignore
 import { positionUtils } from '../../../deps/testcafe-core';
 
-
 const nodeSnapshotPropertyInitializers = {
     // eslint-disable-next-line no-restricted-properties
     childNodeCount:    (node: Node) => node.childNodes.length,
     hasChildNodes:     (node: Node) => !!nodeSnapshotPropertyInitializers.childNodeCount(node),
-    childElementCount: (node: Element) => node.children.length,
+    childElementCount: (node: Element) => node.children?.length || 0,
     // eslint-disable-next-line no-restricted-properties
     hasChildElements:  (node: Element) => !!nodeSnapshotPropertyInitializers.childElementCount(node),
 };
