@@ -32,7 +32,7 @@ Your complete test code (or attach your test files)
  
 * testcafe version:                   <!-- run `testcafe -v` -->
 * node.js version:                    <!-- run `node -v` -->
-* command-line arguments:  <!-- example: "testcafe ie,chrome -e test.js" -->
-* browser name and version: <!-- example: IE 11, Chrome 69, Firefox 100, etc. -->
+* command-line arguments:  <!-- example: "testcafe edge,chrome -e test.js" -->
+* browser name and version: <!-- example: Edge 116, Chrome 116, Firefox 117, etc. -->
 * platform and version:          <!-- example: "macOS 10.14, Windows, Linux Ubuntu 18.04.1, iOS 12 -->
 * other:                                   <!-- any notes you consider important -->

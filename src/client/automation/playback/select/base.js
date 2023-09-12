@@ -116,10 +116,9 @@ export default class SelectBaseAutomation extends VisibleElementAutomation {
             .then(args => {
                 this.eventArgs = args;
 
-                // NOTE: In WebKit and IE, the mousedown event opens the select element's dropdown;
+                // NOTE: In WebKit, the mousedown event opens the select element's dropdown;
                 // therefore, we should prevent mousedown and hide the dropdown (B236416).
-                const needCloseSelectDropDown = (browserUtils.isWebKit || browserUtils.isIE) &&
-                                              domUtils.isSelectElement(this.element);
+                const needCloseSelectDropDown = browserUtils.isWebKit && domUtils.isSelectElement(this.element);
 
                 if (needCloseSelectDropDown)
                     this._bindMousedownHandler();
