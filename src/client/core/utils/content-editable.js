@@ -292,15 +292,8 @@ function getSelectedPositionInParentByOffset (node, offset) {
     const childNodes         = nativeMethods.nodeChildNodesGetter.call(node);
     const childCount         = domUtils.getChildNodesLength(childNodes);
     let isSearchForLastChild = offset >= childCount;
-    let currentNode          = null;
-    let currentOffset        = null;
-
-    if (isSearchForLastChild)
-        currentNode = childNodes[childCount - 1];
-    else {
-        currentNode   = childNodes[offset];
-        currentOffset = 0;
-    }
+    let currentNode          = childNodes[offset];
+    let currentOffset        = 0;
 
     // NOTE: skip shadowUI elements
     if (domUtils.isShadowUIElement(currentNode)) {
