@@ -6,7 +6,6 @@ import * as domUtils from './dom';
 const Promise       = hammerhead.Promise;
 const nativeMethods = hammerhead.nativeMethods;
 const listeners     = hammerhead.eventSandbox.listeners;
-const browserUtils  = hammerhead.utils.browser;
 
 // Imported form the hammerhead
 export const BUTTON            = hammerhead.utils.event.BUTTON;
@@ -17,17 +16,11 @@ export const WHICH_PARAMETER   = hammerhead.utils.event.WHICH_PARAMETER;
 export const preventDefault = hammerhead.utils.event.preventDefault;
 
 export function bind (el, event, handler, useCapture) {
-    if (browserUtils.isIE11 && domUtils.isWindow(el))
-        nativeMethods.windowAddEventListener.call(el, event, handler, useCapture);
-    else
-        nativeMethods.addEventListener.call(el, event, handler, useCapture);
+    nativeMethods.addEventListener.call(el, event, handler, useCapture);
 }
 
 export function unbind (el, event, handler, useCapture) {
-    if (browserUtils.isIE11 && domUtils.isWindow(el))
-        nativeMethods.windowRemoveEventListener.call(el, event, handler, useCapture);
-    else
-        nativeMethods.removeEventListener.call(el, event, handler, useCapture);
+    nativeMethods.removeEventListener.call(el, event, handler, useCapture);
 }
 
 
