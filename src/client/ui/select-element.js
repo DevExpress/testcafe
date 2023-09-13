@@ -21,7 +21,7 @@ const selectController = testCafeCore.selectController;
 
 const OPTION_LIST_CLASS      = 'tcOptionList';
 const DISABLED_CLASS         = 'disabled';
-const MAX_OPTION_LIST_LENGTH = browserUtils.isIE ? 30 : 20;
+const MAX_OPTION_LIST_LENGTH = 20;
 
 
 function onDocumentMouseDown (e) {
@@ -57,32 +57,28 @@ function clickOnOption (optionIndex, isOptionDisabled) {
     const realOption       = curSelectEl.getElementsByTagName('option')[optionIndex];
     const clickLeadChanges = !isOptionDisabled && optionIndex !== curSelectIndex;
 
-    if (clickLeadChanges && !browserUtils.isIE)
+    if (clickLeadChanges)
         curSelectEl.selectedIndex = optionIndex;
 
-    if (!browserUtils.isFirefox && !browserUtils.isIE && clickLeadChanges) {
+    if (!browserUtils.isFirefox && clickLeadChanges) {
         eventSimulator.input(curSelectEl);
         eventSimulator.change(curSelectEl);
     }
 
-    if (browserUtils.isFirefox || browserUtils.isIE)
+    if (browserUtils.isFirefox)
         eventSimulator.mousedown(browserUtils.isFirefox ? realOption : curSelectEl);
 
     if (!featureDetection.isTouchDevice)
         eventSimulator.mouseup(browserUtils.isFirefox ? realOption : curSelectEl);
 
-    if ((browserUtils.isFirefox || browserUtils.isIE) && clickLeadChanges) {
-        if (browserUtils.isIE)
-            curSelectEl.selectedIndex = optionIndex;
-
-        if (!browserUtils.isIE)
-            eventSimulator.input(curSelectEl);
+    if (browserUtils.isFirefox && clickLeadChanges) {
+        eventSimulator.input(curSelectEl);
 
         eventSimulator.change(curSelectEl);
     }
 
     if (!featureDetection.isTouchDevice)
-        eventSimulator.click(browserUtils.isFirefox || browserUtils.isIE ? realOption : curSelectEl);
+        eventSimulator.click(browserUtils.isFirefox ? realOption : curSelectEl);
 
     if (!isOptionDisabled)
         collapseOptionList();
@@ -198,7 +194,7 @@ export function switchOptionsByKeys (element, command) {
     const optionListHidden = !styleUtils.hasDimensions(shadowUI.select('.' + OPTION_LIST_CLASS)[0]);
 
     if (/down|up/.test(command) ||
-        !browserUtils.isIE && (selectSize <= 1 || browserUtils.isFirefox) &&
+        (selectSize <= 1 || browserUtils.isFirefox) &&
         (optionListHidden || browserUtils.isFirefox) && /left|right/.test(command)) {
         const realOptions    = element.querySelectorAll('option');
         const enabledOptions = [];
@@ -216,8 +212,7 @@ export function switchOptionsByKeys (element, command) {
         if (nextIndex >= 0 && nextIndex < enabledOptions.length) {
             element.selectedIndex = arrayUtils.indexOf(realOptions, enabledOptions[nextIndex]);
 
-            if (!browserUtils.isIE)
-                eventSimulator.input(element);
+            eventSimulator.input(element);
 
             eventSimulator.change(element);
         }
