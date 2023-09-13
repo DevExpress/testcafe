@@ -33,8 +33,6 @@ export default function selectorTextFilter (node, index, originNode, textFilter)
 
     // Document
     if (node.nodeType === 9) {
-        // NOTE: latest version of Edge doesn't have `innerText` for `document`,
-        // `html` and `body`. So we check their children instead.
         const head = node.querySelector('head');
         const body = node.querySelector('body');
 
