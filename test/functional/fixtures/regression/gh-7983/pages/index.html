@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Test Framework</title>
+</head>
+
+<body>
+Host content
+<script>
+    function createIframe(container, iframeSource) {
+        const iframe = document.createElement('iframe');
+        container.appendChild(iframe);
+        iframe.src = iframeSource;
+        return iframe;
+    }
+
+    createIframe(document.body, './iframe.html');
+</script>
+</body>
+
+</html>
