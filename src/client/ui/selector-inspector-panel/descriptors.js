@@ -30,12 +30,23 @@ export const copyButton = {
     value: 'Copy',
 };
 
+export const hideButton = {
+    tag:   'input',
+    type:  'button',
+    value: 'Hide',
+    class: 'selector-panel-hide-button',
+}
+
 export const selectorsList = {
     class: 'selectors-list',
 };
 
 export const panel = {
     class: 'selector-inspector-panel',
+};
+
+export const panelContainer = {
+    class: 'selector-inspector-panel-container',
 };
 
 export const elementFrame = {

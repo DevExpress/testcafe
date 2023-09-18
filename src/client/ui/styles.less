@@ -577,7 +577,26 @@
             color: #283545;
             flex-wrap: nowrap;
             flex-direction: row;
-            justify-content: space-around;
+            justify-content: flex-end;
+            position: relative;
+
+            .selector-panel-hide-button {
+                border: 1px solid #283545;
+                position: absolute;
+                top: -25px;
+            }
+
+            .selector-inspector-panel-container {
+                display: flex;
+                flex-wrap: nowrap;
+                flex-direction: row;
+                flex-grow: 1;
+                margin-right: 5px;
+
+                .selector-input-container {
+                    margin: 0 5px;
+                }
+            }
 
             * {
                 display: flex;
