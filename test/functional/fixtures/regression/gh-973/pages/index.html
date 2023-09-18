@@ -24,49 +24,43 @@
 <div id='targetLowerRight' class="target" style="left:2000px; top:2000px;">Lower right target</div>
 <div class="peg" style="left:2700px; top:2700px;"></div>
 <script>
-    const userAgent = window.navigator.userAgent.toLocaleLowerCase();
-    const isIOS     = /(iphone|ipod|ipad)/.test(userAgent);
+    const nativeMethods        = window['%hammerhead%'].nativeMethods;
+    const originWindowScrollTo = nativeMethods.scrollTo;
 
-    // NOTE: Try to avoid odd scrolls in iOS on sauceLabs
-    if (isIOS) {
-        const nativeMethods        = window['%hammerhead%'].nativeMethods;
-        const originWindowScrollTo = nativeMethods.scrollTo;
+    let lastScrollTop        = window.scrollY;
+    let lastScrollLeft       = window.scrollX;
 
-        let lastScrollTop        = window.scrollY;
-        let lastScrollLeft       = window.scrollX;
+    nativeMethods.scrollTo = function () {
+        lastScrollLeft = arguments[0];
+        lastScrollTop  = arguments[1];
 
-        nativeMethods.scrollTo = function () {
-            lastScrollLeft = arguments[0];
-            lastScrollTop  = arguments[1];
+        originWindowScrollTo.apply(window, arguments);
+    };
 
-            originWindowScrollTo.apply(window, arguments);
-        };
+    window.addEventListener('scroll', function () {
+        if (window.scrollX !== lastScrollLeft || window.scrollY !== lastScrollTop)
+            window.scrollTo(lastScrollLeft, lastScrollTop);
+    });
 
-        window.addEventListener('scroll', function () {
-            if (window.scrollX !== lastScrollLeft || window.scrollY !== lastScrollTop)
-                window.scrollTo(lastScrollLeft, lastScrollTop);
-        });
+    Object.defineProperty(document.body, 'scrollTop', {
+        get: function () {
+            return window.scrollY;
+        },
 
-        Object.defineProperty(document.body, 'scrollTop', {
-            get: function () {
-                return window.scrollY;
-            },
+        set: function (y) {
+            window.scrollTo(window.scrollX, y);
+        }
+    });
 
-            set: function (y) {
-                window.scrollTo(window.scrollX, y);
-            }
-        });
+    Object.defineProperty(document.body, 'scrollLeft', {
+        get: function () {
+            return window.scrollX;
+        },
 
-        Object.defineProperty(document.body, 'scrollLeft', {
-            get: function () {
-                return window.scrollX;
-            },
-
-            set: function (x) {
-                window.scrollTo(x, window.scrollY);
-            }
-        });
-    }
+        set: function (x) {
+            window.scrollTo(x, window.scrollY);
+        }
+    });
 </script>
 </body>
 </html>

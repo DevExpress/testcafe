@@ -1,7 +1,6 @@
 const hostname = /true/.test(process.env.USE_PUBLIC_HOSTNAME) ? process.env.HOSTNAME : '127.0.0.1';
 
 const browserProviderNames = {
-    sauceLabs:    'sauceLabs',
     browserstack: 'browserstack',
     remote:       'remote',
 };

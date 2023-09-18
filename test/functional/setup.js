@@ -44,7 +44,6 @@ const REQUESTED_MACHINES_COUNT = environment.browsers.length;
 
 const REMOTE_CONNECTORS_MAP = {
     [config.browserProviderNames.browserstack]: BsConnector,
-    [config.browserProviderNames.sauceLabs]:    SlConnector,
     [config.browserProviderNames.remote]:       RemoteConnector,
 };
 
