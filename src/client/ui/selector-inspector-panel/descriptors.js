@@ -35,7 +35,7 @@ export const hideButton = {
     type:  'button',
     value: 'Hide',
     class: 'selector-panel-hide-button',
-}
+};
 
 export const selectorsList = {
     class: 'selectors-list',

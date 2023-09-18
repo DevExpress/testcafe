@@ -10,7 +10,7 @@ const nativeMethods = hammerhead.nativeMethods;
 const eventUtils = testCafeCore.eventUtils;
 
 const VALUES = {
-    show:   'Hide',
+    show: 'Hide',
     hide: 'Show',
 };
 
@@ -19,16 +19,15 @@ export class HideButton {
     constructor (element) {
         this.element       = createElementFromDescriptor(descriptors.hideButton);
         this.hideElement   = element;
-        this.isHide        = true
+        this.isHide        = true;
 
         eventUtils.bind(this.element, 'click', () => this._showAndHide());
     }
 
     _showAndHide () {
         this._changeAppearance(this.isHide ? VALUES.hide : VALUES.show, 'bold');
-        setStyles(this.hideElement,this.isHide ? {display: 'none'} : {display: 'flex'})
+        setStyles(this.hideElement, this.isHide ? { display: 'none' } : { display: 'flex' });
         this.isHide = !this.isHide;
-
     }
 
     _changeAppearance (value, fontWeight) {

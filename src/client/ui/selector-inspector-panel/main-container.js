@@ -7,6 +7,6 @@ export class MainContainer {
     constructor (...elements) {
         this.element = createElementFromDescriptor(panelContainer);
 
-        elements.forEach((el) => this.element.appendChild(el))
+        elements.forEach(el => this.element.appendChild(el));
     }
 }
