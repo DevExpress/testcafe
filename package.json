@@ -234,7 +234,6 @@
     "rollup": "2.16.1",
     "rollup-plugin-typescript2": "^0.32.1",
     "run-sequence": "^1.2.2",
-    "saucelabs-connector": "^1.0.0",
     "serve-static": "^1.10.0",
     "sinon": "^7.3.0",
     "stack-chain": "^2.0.0",
