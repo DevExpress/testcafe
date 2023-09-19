@@ -31,14 +31,17 @@ export const copyButton = {
 };
 
 export const hideButton = {
-    tag:   'input',
+    tag:   'button',
     type:  'button',
-    value: 'Hide',
     class: 'selector-panel-hide-button',
 };
 
 export const selectorsList = {
     class: 'selectors-list',
+};
+
+export const span = {
+    tag: 'span',
 };
 
 export const panel = {
