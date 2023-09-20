@@ -5,6 +5,11 @@ import roleMarker from './marker-symbol';
 import { nanoid } from 'nanoid';
 import TestRun from '../test-run';
 import TestCafeErrorList from '../errors/error-list';
+import {
+    getUrl,
+    assertRoleUrl,
+    isRelative,
+} from '../api/test-page-url';
 
 export interface RedirectUrl {
     [testId: string]: string;
@@ -65,6 +70,13 @@ export default class Role extends EventEmitter {
 
     private async _switchToCleanRun (testRun: TestRun): Promise<void> {
         try {
+            const baseUrl = testRun.baseUrl;
+
+            if (!baseUrl)
+                assertRoleUrl(this.loginUrl as string, 'role');
+            else if (isRelative(this.loginUrl as string))
+                this.loginUrl = getUrl(this.loginUrl as string, new URL(baseUrl as string));
+
             await testRun.switchToCleanRun(this.loginUrl as string);
         }
         catch (err: any) {

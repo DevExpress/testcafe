@@ -839,6 +839,10 @@ export default class TestRun extends AsyncEventEmitter {
         return this.driverTaskQueue[0];
     }
 
+    public get baseUrl (): OptionValue | string {
+        return this.opts.baseUrl || '';
+    }
+
     private _resolveCurrentDriverTask (result?: unknown): void {
         this.currentDriverTask.resolve(result);
         this.driverTaskQueue.shift();
