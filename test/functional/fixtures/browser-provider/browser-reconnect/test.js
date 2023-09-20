@@ -16,14 +16,14 @@ const reporter = createReporter({
     },
 });
 
-function createConnection (browser) {
+function createConnection (browser, devMode) {
     return browserProviderPool
         .getBrowserInfo(browser)
         .then(browserInfo => {
             const options = {
                 disableMultipleWindows: false,
                 nativeAutomation:       config.nativeAutomation,
-                developmentMode:        config.devMode,
+                developmentMode:        devMode,
             };
 
             const connnection = new BrowserConnection(testCafe.browserConnectionGateway, browserInfo, false, options);
@@ -55,11 +55,11 @@ const initializeConnectionHangOnRestart = connection => {
     };
 };
 
-function run (pathToTest, filter, initializeConnection = initializeConnectionLowHeartbeatTimeout) {
+function run (pathToTest, filter, devMode = config.devMode, initializeConnection = initializeConnectionLowHeartbeatTimeout) {
     const src          = path.join(__dirname, pathToTest);
     const browserNames = config.currentEnvironment.browsers.map(browser => browser.browserName || browser.alias);
 
-    return Promise.all(browserNames.map(browser => createConnection(browser)))
+    return Promise.all(browserNames.map(browser => createConnection(browser, devMode)))
         .then(connections => {
             connections.forEach(connection => initializeConnection(connection));
 
@@ -150,7 +150,14 @@ if (config.useLocalBrowsers) {
         });
 
         it('Should restart browser on timeout if the `closeBrowser` method hangs', function () {
-            return run('./testcafe-fixtures/index-test.js', 'Should restart browser on timeout if the `closeBrowser` method hangs', initializeConnectionHangOnRestart)
+            return run('./testcafe-fixtures/index-test.js', 'Should restart browser on timeout if the `closeBrowser` method hangs', config.devMode, initializeConnectionHangOnRestart)
+                .then(() => {
+                    expect(errors.length).eql(0);
+                });
+        });
+
+        it('Shouldn\'t restart browser when it does not respond and developmentMode on', function () {
+            return run('./testcafe-fixtures/index-test.js', 'Shouldn\'t restart browser when it does not respond and developmentMode on', true)
                 .then(() => {
                     expect(errors.length).eql(0);
                 });
