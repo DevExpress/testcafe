@@ -69,3 +69,15 @@ test('Should log error on browser disconnect', async t => {
         t.testRun.browserConnection.emit('error', new Error('force error'));
     }, 5000);
 });
+
+test('Shouldn\'t restart browser when it does not respond and developmentMode on', async t => {
+    const userAgent = await getUserAgent();
+
+    counter[userAgent] = counter[userAgent] || 0;
+
+    counter[userAgent]++;
+
+    await hang();
+
+    await t.expect(counter[userAgent]).eql(1);
+});
