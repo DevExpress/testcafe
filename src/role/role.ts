@@ -8,7 +8,6 @@ import TestCafeErrorList from '../errors/error-list';
 import {
     getUrl,
     assertRoleUrl,
-    isRelative,
 } from '../api/test-page-url';
 
 export interface RedirectUrl {
@@ -68,14 +67,17 @@ export default class Role extends EventEmitter {
         }
     }
 
+    private _prepareLoginUrl (loginUrl: string, baseUrl: string): string {
+        if (!baseUrl)
+            assertRoleUrl(loginUrl, 'role');
+
+        return getUrl(loginUrl, baseUrl ? new URL(baseUrl) : void 0);
+    }
+
     private async _switchToCleanRun (testRun: TestRun): Promise<void> {
         try {
-            const baseUrl = testRun.baseUrl;
-
-            if (!baseUrl)
-                assertRoleUrl(this.loginUrl as string, 'role');
-            else if (isRelative(this.loginUrl as string))
-                this.loginUrl = getUrl(this.loginUrl as string, new URL(baseUrl as string));
+            if (this.loginUrl)
+                this.loginUrl = this._prepareLoginUrl(this.loginUrl as string, testRun.baseUrl as string);
 
             await testRun.switchToCleanRun(this.loginUrl as string);
         }
