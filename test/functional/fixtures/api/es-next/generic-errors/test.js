@@ -17,7 +17,7 @@ describe('[API] Generic errors', function () {
             return runTests('testcafe-fixtures/role-initialized-with-relative-url.js', null,
                 { shouldFail: true, only: 'chrome' })
                 .catch(err => {
-                    expect(err.message).contains('You cannot specify relative login page URLs in the Role constructor. Use an absolute URL.');
+                    expect(err[0]).contains('You cannot specify relative login page URLs in the Role constructor without "baseUrl" in configuration file or cli command.');
                 });
         });
 

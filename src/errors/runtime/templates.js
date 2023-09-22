@@ -127,11 +127,8 @@ export default {
         "specify the browser alias before the path instead of the 'path' prefix. " +
         `For more information, see ${DOCUMENTATION_LINKS.HEADLESS_MODE}`,
 
-    [RUNTIME_ERRORS.uncaughtErrorInReporter]:
-        'The "{methodName}" method of the "{reporterName}" reporter produced an uncaught error. Error details:\n{originalError}',
-    [RUNTIME_ERRORS.roleInitializedWithRelativeUrl]:
-        'You cannot specify relative login page URLs in the Role constructor without "baseUrl" in configuration file or cli command.\n' +
-        'Use an absolute URL or add baseUrl in your configuration file or cli command.',
+    [RUNTIME_ERRORS.uncaughtErrorInReporter]:           'The "{methodName}" method of the "{reporterName}" reporter produced an uncaught error. Error details:\n{originalError}',
+    [RUNTIME_ERRORS.roleInitializedWithRelativeUrl]:    'You cannot specify relative login page URLs in the Role constructor without "baseUrl" in configuration file or cli command.\nUse an absolute URL or add baseUrl in your configuration file or cli command.',
     [RUNTIME_ERRORS.typeScriptCompilerLoadingError]:    'Cannot load the TypeScript compiler.\n{originErrorMessage}.',
     [RUNTIME_ERRORS.cannotCustomizeSpecifiedCompilers]: 'You cannot specify options for the {noncustomizableCompilerList} compiler{suffix}.',
 
