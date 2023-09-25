@@ -116,7 +116,7 @@ const isRemoteTask = config.currentEnvironmentName === config.testingEnvironment
     describe('URL is Role constructor', function () {
         it('Should throw "error in role initializer" without baseUrl and with relative path Role', () => {
             return runTests(
-                './testcafe-fixtures/role-url-test.js',
+                './testcafe-fixtures/role-with-baseurl-test.js',
                 'Should throw error in role initializer without baseUrl and with relative path Role',
                 {
                     shouldFail: true,
@@ -129,7 +129,7 @@ const isRemoteTask = config.currentEnvironmentName === config.testingEnvironment
 
         it('Should pass if `baseUrl` is set with relative path Role', () => {
             return runTests(
-                './testcafe-fixtures/role-url-test.js',
+                './testcafe-fixtures/role-with-baseurl-test.js',
                 'Use role with relative path and baseUrl',
                 {
                     baseUrl: 'http://localhost:3000/',
@@ -139,7 +139,7 @@ const isRemoteTask = config.currentEnvironmentName === config.testingEnvironment
 
         it('Should pass if `baseUrl` is set with absolute path Role', () => {
             return runTests(
-                './testcafe-fixtures/role-url-test.js',
+                './testcafe-fixtures/role-with-baseurl-test.js',
                 'Use role with absolute path and baseUrl',
                 {
                     baseUrl: 'http://localhost:3000/',
