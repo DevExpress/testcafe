@@ -44,6 +44,7 @@ export default class BrowserJob extends AsyncEventEmitter {
     private _resolveWaitingLastTestInFixture: Function | null;
     private readonly _messageBus: MessageBus;
     private readonly _testRunHook: TestRunHookController;
+    private _syncConection: string | null;
 
     public constructor ({
         tests,
@@ -71,6 +72,7 @@ export default class BrowserJob extends AsyncEventEmitter {
         this._result               = null;
         this._messageBus           = messageBus;
         this._testRunHook          = new TestRunHookController(tests, (opts.hooks as GlobalHooks)?.testRun);
+        this._syncConection    = null;
 
         this._testRunControllerQueue = tests.map((test, index) => this._createTestRunController(test, index));
 
@@ -205,6 +207,31 @@ export default class BrowserJob extends AsyncEventEmitter {
         return true;
     }
 
+    private _isRunWithSyncFixture (connectionId: string): boolean {
+        if (!this._syncConection)
+            return true;
+        
+        if (connectionId === this._syncConection)
+            return true;
+
+        return false;
+    }
+
+    private _concurrencyToggle (noConcurrency: boolean, connectionId: string): void {
+        if (!this._syncConection && !noConcurrency)
+            return;
+        
+        if (!this._syncConection && noConcurrency) {
+            this._syncConection = connectionId;
+            return;
+        }
+
+        if (this._syncConection && !noConcurrency) {
+            this._syncConection = null;
+            return;
+        }
+    }
+
     // API
     public get hasQueuedTestRuns (): boolean {
         return !!this._testRunControllerQueue.length;
@@ -217,12 +244,18 @@ export default class BrowserJob extends AsyncEventEmitter {
     public async popNextTestRunInfo (connection: BrowserConnection): Promise<NextTestRunInfo | null> {
         while (this._testRunControllerQueue.length) {
             const testRunController = this._testRunControllerQueue[0];
+            
+            const isRunWithSyncFixture = this._isRunWithSyncFixture(connection.id);
+
+            if (!isRunWithSyncFixture)
+                break;
 
             const isNextTestRunAvailable = await this._isNextTestRunAvailable(testRunController);
 
             if (!isNextTestRunAvailable)
                 break;
 
+            this._concurrencyToggle(testRunController.test.noConcurrency, connection.id);
             this._reportsPending.push(testRunController);
             this._testRunControllerQueue.shift();
             this._addToCompletionQueue(testRunController);

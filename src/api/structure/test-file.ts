@@ -3,7 +3,7 @@ import UnitType from './unit-type';
 import Fixture from './fixture';
 import Test from './test';
 
-const BORROWED_TEST_PROPERTIES = ['skip', 'only', 'pageUrl', 'authCredentials'];
+const BORROWED_TEST_PROPERTIES = ['skip', 'only', 'pageUrl', 'authCredentials', 'noConcurrency'];
 
 export default class TestFile extends BaseUnit {
     public filename: string;
