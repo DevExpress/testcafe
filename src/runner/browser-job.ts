@@ -210,7 +210,7 @@ export default class BrowserJob extends AsyncEventEmitter {
     private _isRunWithSyncFixture (connectionId: string): boolean {
         if (!this._syncConection)
             return true;
-        
+
         if (connectionId === this._syncConection)
             return true;
 
@@ -220,7 +220,7 @@ export default class BrowserJob extends AsyncEventEmitter {
     private _concurrencyToggle (noConcurrency: boolean, connectionId: string): void {
         if (!this._syncConection && !noConcurrency)
             return;
-        
+
         if (!this._syncConection && noConcurrency) {
             this._syncConection = connectionId;
             return;
@@ -244,7 +244,7 @@ export default class BrowserJob extends AsyncEventEmitter {
     public async popNextTestRunInfo (connection: BrowserConnection): Promise<NextTestRunInfo | null> {
         while (this._testRunControllerQueue.length) {
             const testRunController = this._testRunControllerQueue[0];
-            
+
             const isRunWithSyncFixture = this._isRunWithSyncFixture(connection.id);
 
             if (!isRunWithSyncFixture)
