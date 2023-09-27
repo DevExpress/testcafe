@@ -122,8 +122,8 @@ const isRemoteTask = config.currentEnvironmentName === config.testingEnvironment
                     shouldFail: true,
                 }
             )
-                .catch(err => {
-                    expect(err[0]).contains('You cannot specify relative login page URLs in the Role constructor without "baseUrl" in configuration file or cli command.');
+                .catch(errs => {
+                    expect(errs[0]).contains('Your Role includes a relative login page URL, but the "baseUrl" option is not set.');
                 });
         });
 
