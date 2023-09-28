@@ -34,7 +34,7 @@ fixture `fixture second with disable parallel`
 
 test('4 example', async t => {
     incConnection(t.testRun.browserConnection.id);
-    await t.wait(100);
+    await t.wait(1000);
 });
 
 test('5 example', async t => {

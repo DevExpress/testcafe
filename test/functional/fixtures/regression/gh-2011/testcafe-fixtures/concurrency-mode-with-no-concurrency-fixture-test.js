@@ -25,7 +25,7 @@ test('4 example', async t => {
     connectionId = t.testRun.browserConnection.id;
     connections++;
 
-    await t.wait(10000);
+    await t.wait(1000);
 });
 
 test('5 example', async t => {
