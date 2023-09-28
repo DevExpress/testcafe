@@ -128,10 +128,6 @@ describe('Browser connection', function () {
                     return urls.length;
                 },
 
-                isQuequesEmpty: function () {
-                    return false;
-                },
-
                 once: noop,
                 on:   noop,
 

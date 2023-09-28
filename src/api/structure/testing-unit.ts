@@ -51,7 +51,7 @@ export default abstract class TestingUnit extends BaseUnit {
         this.meta            = {};
         this.only            = false;
         this.skip            = false;
-        this.noConcurrency = false;
+        this.noConcurrency   = false;
         this.requestHooks    = [];
         this.clientScripts   = [];
 

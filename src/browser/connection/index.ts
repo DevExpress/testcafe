@@ -342,7 +342,7 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     private async _popNextTestRunInfo (): Promise<NextTestRunInfo | null> {
-        while (this.hasQueuedJobs && !this.currentJob.hasQueuedTestRuns && !this.currentJob.isQuequesEmpty())
+        while (this.hasQueuedJobs && !this.currentJob.hasQueuedTestRuns)
             this.jobQueue.shift();
 
         return this.hasQueuedJobs ? await this.currentJob.popNextTestRunInfo(this) : null;

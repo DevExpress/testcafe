@@ -1,5 +1,5 @@
-const path                       = require('path');
-const createTestCafe             = require('../../../../../lib');
+const path           = require('path');
+const createTestCafe = require('../../../../../lib');
 
 let testCafe = null;
 let runner   = null;
@@ -25,9 +25,9 @@ const run = (pathToTest, concurrency) => {
 };
 
 describe('[Regression](GH-2011)', function () {
-    
-    it('Should execute all fixture\'s test with disable parallel in one browser', function () {
-        return run('./testcafe-fixtures/concurrency-mode-with-no-concurrency-fixture-test.js', 2);
+
+    it('Should execute all fixture\'s test with noConcurrency in one browser', function () {
+        return run('./testcafe-fixtures/concurrency-mode-with-no-concurrency-fixture-test.js', 3);
     });
 
     it('Should execute all fixture\'s in different browser', function () {

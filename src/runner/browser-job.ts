@@ -23,7 +23,7 @@ interface BrowserJobResultInfo {
     data?: any;
 }
 
-interface noConcurrencyQueue {
+interface NoConcurrencyQueue {
     [key: string]: TestRunController[];
 }
 
@@ -48,7 +48,7 @@ export default class BrowserJob extends AsyncEventEmitter {
     private _resolveWaitingLastTestInFixture: Function | null;
     private readonly _messageBus: MessageBus;
     private readonly _testRunHook: TestRunHookController;
-    private _noConcurrencyQueue: noConcurrencyQueue;
+    private readonly _noConcurrencyQueue: NoConcurrencyQueue;
 
     public constructor ({
         tests,
@@ -170,7 +170,7 @@ export default class BrowserJob extends AsyncEventEmitter {
             }
         }
 
-        if (!this._completionQueue.length && !this.hasQueuedTestRuns && !this.isQuequesEmpty()) {
+        if (!this._completionQueue.length && !this.hasQueuedTestRuns) {
             if (!this._opts.live)
                 SessionController.closeSession(testRunController.testRun);
 
@@ -211,33 +211,36 @@ export default class BrowserJob extends AsyncEventEmitter {
         return true;
     }
 
-    private _getQueue (connectionId: string): TestRunController[] {
-        if (this._noConcurrencyQueue[connectionId] && this._noConcurrencyQueue[connectionId].length)
+    private _getTestControllerQueue (connectionId: string): TestRunController[] {
+        if (this._noConcurrencyQueue[connectionId]?.length)
             return this._noConcurrencyQueue[connectionId];
 
         return this._testRunControllerQueue;
     }
 
-    private _updateQueues (controller: TestRunController, connectionId: string): void {
-        const { test } = controller;
+    private _updateTestControllerQueues (controller: TestRunController, connectionId: string): void {
+        const { test }                   = controller;
         const { noConcurrency, fixture } = test;
 
-        if (!noConcurrency)
+        if (!noConcurrency || this._noConcurrencyQueue[connectionId]?.length)
             return;
-
-        if (this._noConcurrencyQueue[connectionId] && this._noConcurrencyQueue[connectionId].length)
-            return;
-
 
         const lastIndexFixture = this._testRunControllerQueue.findIndex(el => el.test.fixture?.id !== fixture?.id);
 
-        this._noConcurrencyQueue[connectionId] = this._testRunControllerQueue.slice(0, lastIndexFixture);
-        this._testRunControllerQueue = this._testRunControllerQueue.slice(lastIndexFixture);
+        this._noConcurrencyQueue[connectionId] = this._testRunControllerQueue.splice(0, lastIndexFixture);
     }
 
     // API
     public get hasQueuedTestRuns (): boolean {
-        return !!this._testRunControllerQueue.length;
+        if (this._testRunControllerQueue.length)
+            return true;
+
+        for (const connectionId in this._noConcurrencyQueue) {
+            if (this._noConcurrencyQueue[connectionId].length)
+                return true;
+        }
+
+        return false;
     }
 
     public get currentTestRun (): LegacyTestRun | TestRun | null {
@@ -245,8 +248,8 @@ export default class BrowserJob extends AsyncEventEmitter {
     }
 
     public async popNextTestRunInfo (connection: BrowserConnection): Promise<NextTestRunInfo | null> {
-        while (this.isQuequesEmpty()) {
-            const currentQueue = this._getQueue(connection.id);
+        while (this.hasQueuedTestRuns) {
+            const currentQueue      = this._getTestControllerQueue(connection.id);
             const testRunController = currentQueue[0];
 
             if (!testRunController)
@@ -259,8 +262,7 @@ export default class BrowserJob extends AsyncEventEmitter {
 
             this._reportsPending.push(testRunController);
             currentQueue.shift();
-            this._updateQueues(testRunController, connection.id);
-
+            this._updateTestControllerQueues(testRunController, connection.id);
             this._addToCompletionQueue(testRunController);
 
             if (this._status === BrowserJobStatus.initialized) {
@@ -283,18 +285,6 @@ export default class BrowserJob extends AsyncEventEmitter {
         }
 
         return null;
-    }
-
-    public isQuequesEmpty (): boolean {
-        if (this._testRunControllerQueue.length)
-            return true;
-
-        for (const connectionId in this._noConcurrencyQueue) {
-            if (this._noConcurrencyQueue[connectionId] && this._noConcurrencyQueue[connectionId].length)
-                return true;
-        }
-
-        return false;
     }
 
     public abort (): void {
