@@ -23,10 +23,6 @@ interface BrowserJobResultInfo {
     data?: any;
 }
 
-interface NoConcurrencyQueue {
-    [key: string]: TestRunController[];
-}
-
 enum BrowserJobStatus { initialized, starting, started }
 
 export default class BrowserJob extends AsyncEventEmitter {
@@ -48,7 +44,7 @@ export default class BrowserJob extends AsyncEventEmitter {
     private _resolveWaitingLastTestInFixture: Function | null;
     private readonly _messageBus: MessageBus;
     private readonly _testRunHook: TestRunHookController;
-    private readonly _noConcurrencyQueue: NoConcurrencyQueue;
+    private readonly _noConcurrencyQueue: Dictionary<TestRunController[]>;
 
     public constructor ({
         tests,
@@ -218,14 +214,11 @@ export default class BrowserJob extends AsyncEventEmitter {
         return this._testRunControllerQueue;
     }
 
-    private _updateTestControllerQueues (controller: TestRunController, connectionId: string): void {
-        const { test }                   = controller;
-        const { noConcurrency, fixture } = test;
-
-        if (!noConcurrency || this._noConcurrencyQueue[connectionId]?.length)
+    private _updateTestControllerQueues ({ test }: TestRunController, connectionId: string): void {
+        if (!test.noConcurrency || this._noConcurrencyQueue[connectionId]?.length)
             return;
 
-        const lastIndexFixture = this._testRunControllerQueue.findIndex(el => el.test.fixture?.id !== fixture?.id);
+        const lastIndexFixture = this._testRunControllerQueue.findIndex(el => el.test.fixture?.id !== test.fixture?.id);
 
         this._noConcurrencyQueue[connectionId] = this._testRunControllerQueue.splice(0, lastIndexFixture);
     }
