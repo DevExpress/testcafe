@@ -85,7 +85,7 @@
     "babel-plugin-syntax-trailing-function-commas": "^6.22.0",
     "bowser": "^2.8.1",
     "callsite": "^1.0.0",
-    "chai": "4.3.4",
+    "chai": "4.3.10",
     "chalk": "^2.3.0",
     "chrome-remote-interface": "^0.32.2",
     "coffeescript": "^2.3.1",
