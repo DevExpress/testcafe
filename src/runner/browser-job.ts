@@ -79,9 +79,9 @@ export default class BrowserJob extends AsyncEventEmitter {
 
         this._testRunControllerQueue = tests.map((test, index) => this._createTestRunController(test, index));
 
-        this._noConcurrencyQueue   = {};
-        this._completionQueue      = [];
-        this._reportsPending       = [];
+        this._noConcurrencyQueue = {};
+        this._completionQueue    = [];
+        this._reportsPending     = [];
 
         this._connectionErrorListener = (error: Error) => this._setResult(BrowserJobResult.errored, error);
 
