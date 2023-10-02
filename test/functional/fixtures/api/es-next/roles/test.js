@@ -118,10 +118,7 @@ const isRemoteTask = config.currentEnvironmentName === config.testingEnvironment
             return runTests(
                 './testcafe-fixtures/role-with-baseurl-test.js',
                 'Should throw error in role initializer without baseUrl and with relative path Role',
-                {
-                    shouldFail: true,
-                }
-            )
+                { shouldFail: true })
                 .catch(errs => {
                     expect(errs[0]).contains('Your Role includes a relative login page URL, but the "baseUrl" option is not set.');
                 });
@@ -131,20 +128,14 @@ const isRemoteTask = config.currentEnvironmentName === config.testingEnvironment
             return runTests(
                 './testcafe-fixtures/role-with-baseurl-test.js',
                 'Use role with relative path and baseUrl',
-                {
-                    baseUrl: 'http://localhost:3000/',
-                }
-            );
+                { baseUrl: 'http://localhost:3000/' });
         });
 
         it('Should pass if `baseUrl` is set with absolute path Role', () => {
             return runTests(
                 './testcafe-fixtures/role-with-baseurl-test.js',
                 'Use role with absolute path and baseUrl',
-                {
-                    baseUrl: 'http://localhost:3000/',
-                }
-            );
+                { baseUrl: 'http://localhost:3000/' });
         });
     });
 });

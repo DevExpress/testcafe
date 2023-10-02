@@ -13,16 +13,13 @@ const roleRel = Role('./fixtures/api/es-next/roles/pages/index.html', async t =>
 }, { preserveUrl: true });
 
 test('Should throw error in role initializer without baseUrl and with relative path Role', async t => {
-    await t
-        .useRole(roleRel);
+    await t.useRole(roleRel);
 });
 
 test('Use role with relative path and baseUrl', async t => {
-    await t
-        .useRole(roleRel);
+    await t.useRole(roleRel);
 });
 
 test('Use role with absolute path and baseUrl', async t => {
-    await t
-        .useRole(roleAbs);
+    await t.useRole(roleAbs);
 });
