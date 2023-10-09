@@ -1,24 +1,24 @@
-const { exec }            = require('child_process');
-const fs                  = require('fs');
-const os                  = require('os');
-const path                = require('path');
-const { promisify }       = require('util');
-const { expect }          = require('chai');
-const proxyquire          = require('proxyquire');
-const sinon               = require('sinon');
-const globby              = require('globby');
-const { nanoid }          = require('nanoid');
-const dedent              = require('dedent');
-const { TEST_RUN_ERRORS } = require('../../lib/errors/types');
-const exportableLib       = require('../../lib/api/exportable-lib');
-const createStackFilter   = require('../../lib/errors/create-stack-filter.js');
-const TestController      = require('../../lib/api/test-controller');
-const { assertError }     = require('./helpers/assert-runtime-error');
-const compile             = require('./helpers/compile');
-const Module              = require('module');
-const toPosixPath         = require('../../lib/utils/to-posix-path');
-const BaseTestRunMock     = require('./helpers/base-test-run-mock');
-const getTestCafeVersion  = require('../../lib/utils/get-testcafe-version');
+const { exec }                             = require('child_process');
+const fs                                   = require('fs');
+const os                                   = require('os');
+const path                                 = require('path');
+const { promisify }                        = require('util');
+const { expect }                           = require('chai');
+const proxyquire                           = require('proxyquire');
+const sinon                                = require('sinon');
+const globby                               = require('globby');
+const { nanoid }                           = require('nanoid');
+const dedent                               = require('dedent');
+const { TEST_RUN_ERRORS }                  = require('../../lib/errors/types');
+const exportableLib                        = require('../../lib/api/exportable-lib');
+const createStackFilter                    = require('../../lib/errors/create-stack-filter.js');
+const TestController                       = require('../../lib/api/test-controller');
+const { assertError }                      = require('./helpers/assert-runtime-error');
+const { compile, typeScriptTestFilenames } = require('./helpers/compile');
+const Module                               = require('module');
+const toPosixPath                          = require('../../lib/utils/to-posix-path');
+const BaseTestRunMock                      = require('./helpers/base-test-run-mock');
+const getTestCafeVersion                   = require('../../lib/utils/get-testcafe-version');
 
 const copy      = promisify(fs.copyFile);
 const remove    = promisify(fs.unlink);
@@ -255,6 +255,20 @@ describe('Compiler', function () {
                     expect(tests[0].name).eql('test');
                     expect(fixtures[0].name).eql('Library tests');
                 });
+        });
+
+        it('Should compile filename path to lower case', function () {
+            let sources = [
+                'test/server/data/tesT-suites/TypescriPt-basic/Testfile2.ts',
+                'test/sErver/data/tesT-suites/Typescript-Basic/Testfile2.ts',
+                'test/serveR/data/tesT-suites/Typescript-basic/Testfile2.ts'.toUpperCase(),
+            ];
+
+            sources = typeScriptTestFilenames(sources);
+
+            const isAllLetterLowerCase = sources.every(name => !/[A-Z]/gm.test(name));
+
+            expect(isAllLetterLowerCase).eql(true);
         });
 
         it('Should compile test files and their dependencies', function () {

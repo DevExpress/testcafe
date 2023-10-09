@@ -178,8 +178,15 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
             });
     }
 
+    protected _normalizeFilenames (filenames: string[]): string[] {
+        return filenames.map(name => TypeScriptTestFileCompiler._normalizeFilename(name));
+    }
+
     private _compileFilesToCache (ts: TypeScriptInstance, filenames: string[]): void {
         const opts    = this._tsConfig.getOptions() as Dictionary<CompilerOptionsValue>;
+
+        filenames = this._normalizeFilenames(filenames);
+
         const program = ts.createProgram([TypeScriptTestFileCompiler.tsDefsPath, ...filenames], opts);
 
         DEBUG_LOGGER('version: %s', ts.version);
@@ -225,7 +232,7 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
         // NOTE: lazy load the compiler
         const ts: TypeScriptInstance = this._loadTypeScriptCompiler();
         const filenames              = testFilesInfo.map(({ filename }) => filename);
-        const normalizedFilenames    = filenames.map(filename => TypeScriptTestFileCompiler._normalizeFilename(filename));
+        const normalizedFilenames    = this._normalizeFilenames(filenames);
         const normalizedFilenamesMap = zipObject(normalizedFilenames, filenames);
 
         const uncachedFiles = normalizedFilenames

@@ -1,8 +1,9 @@
-const { sortBy, castArray } = require('lodash');
-const { resolve }           = require('path');
-const Compiler              = require('../../../lib/compiler');
+const { sortBy, castArray }      = require('lodash');
+const { resolve }                = require('path');
+const Compiler                   = require('../../../lib/compiler');
+const TypeScriptTestFileCompiler = require('../../../lib/compiler/test-file/formats/typescript/compiler');
 
-module.exports = function compile (sources, compilerOptions, optionalCompilerArgs) {
+function compile (sources, compilerOptions, optionalCompilerArgs) {
     sources = castArray(sources).map(filename => resolve(filename));
 
     const compiler = new Compiler(sources, compilerOptions, optionalCompilerArgs );
@@ -22,4 +23,25 @@ module.exports = function compile (sources, compilerOptions, optionalCompilerArg
                 fixtures: sortBy(fixtures, 'name'),
             };
         });
+}
+
+class TypeScriptTestFileCompilerAnother extends TypeScriptTestFileCompiler {
+    constructor (compilerOptions = null, { baseUrl, esm } = {}) {
+        super(compilerOptions, { baseUrl, esm });
+    }
+
+    getFilesName (filenames) {
+        return this._normalizeFilenames(filenames);
+    }
+}
+
+function typeScriptTestFilenames (filenames) {
+    const typeScriptTestFileCompiler = new TypeScriptTestFileCompilerAnother();
+
+    return typeScriptTestFileCompiler.getFilesName(filenames);
+}
+
+module.exports = {
+    compile,
+    typeScriptTestFilenames,
 };
