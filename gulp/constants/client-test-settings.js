@@ -48,9 +48,9 @@ const CLIENT_TESTS_DESKTOP_BROWSERS = [
 
 const CLIENT_TESTS_MOBILE_BROWSERS = [
     {
-        platform:    'Linux',
-        browserName: 'android',
-        version:     '7.0',
+        platform:    'Android',
+        browserName: 'Chrome',
+        version:     '6.0',
         deviceName:  'Android Emulator',
     },
     {
