@@ -50,26 +50,25 @@ const CLIENT_TESTS_MOBILE_BROWSERS = [
     {
         platform:    'Android',
         browserName: 'Chrome',
-        version:     '6.0',
-        deviceName:  'Android Emulator',
+        deviceName:  'Android GoogleAPI Emulator',
     },
-    {
-        platform:    'iOS',
-        browserName: 'Safari',
-        // NOTE: https://github.com/DevExpress/testcafe/issues/471
-        // problem with extra scroll reproduced only on saucelabs
-        // virtual machines with ios device emulators
-        deviceName:  'iPhone Simulator',
-        // NOTE: Sauce Labs raises the 'Internal server error'
-        // on using iPhone Simulator with the latest version (15.4)
-        // So, we temporarily downgrade the version to 15.2
-        version:     '15.2',
-    },
+    // {
+    //     platform:    'iOS',
+    //     browserName: 'Safari',
+    //     // NOTE: https://github.com/DevExpress/testcafe/issues/471
+    //     // problem with extra scroll reproduced only on saucelabs
+    //     // virtual machines with ios device emulators
+    //     deviceName:  'iPhone Simulator',
+    //     // NOTE: Sauce Labs raises the 'Internal server error'
+    //     // on using iPhone Simulator with the latest version (15.4)
+    //     // So, we temporarily downgrade the version to 15.2
+    //     version:     '15.2',
+    // },
 ];
 
 const CLIENT_TESTS_SAUCELABS_SETTINGS = {
-    username:  process.env.SAUCE_USERNAME,
-    accessKey: process.env.SAUCE_ACCESS_KEY,
+    username:  'testcafebot',
+    accessKey: 'e0b93f57-bb49-4bdc-b030-3b1b96f2c1a2',
     build:     process.env.TRAVIS_BUILD_ID || '',
     tags:      [process.env.TRAVIS_BRANCH || 'master'],
     name:      'testcafe client tests',
