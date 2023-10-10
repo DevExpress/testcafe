@@ -50,7 +50,7 @@ const CLIENT_TESTS_MOBILE_BROWSERS = [
     {
         platform:    'Linux',
         browserName: 'android',
-        version:     '6.0',
+        version:     '7.0',
         deviceName:  'Android Emulator',
     },
     {
