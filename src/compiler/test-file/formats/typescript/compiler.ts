@@ -179,7 +179,10 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
     }
 
     private _compileFilesToCache (ts: TypeScriptInstance, filenames: string[]): void {
-        const opts    = this._tsConfig.getOptions() as Dictionary<CompilerOptionsValue>;
+        const opts = this._tsConfig.getOptions() as Dictionary<CompilerOptionsValue>;
+
+        filenames = filenames.map(name => TypeScriptTestFileCompiler._normalizeFilename(name));
+
         const program = ts.createProgram([TypeScriptTestFileCompiler.tsDefsPath, ...filenames], opts);
 
         DEBUG_LOGGER('version: %s', ts.version);
