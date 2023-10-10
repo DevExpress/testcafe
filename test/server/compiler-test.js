@@ -264,10 +264,15 @@ describe('Compiler', function () {
                 'test/serveR/data/tesT-suites/Typescript-basic/Testfile2.ts'.toUpperCase(),
             ];
 
+            // eslint-disable-next-line no-console
+            console.log(sources);
             sources = typeScriptTestFilenames(sources);
-
+            // eslint-disable-next-line no-console
+            console.log(sources);
             const isAllLetterLowerCase = sources.every(name => !/[A-Z]/gm.test(name));
 
+            // eslint-disable-next-line no-console
+            console.log(isAllLetterLowerCase);
             expect(isAllLetterLowerCase).eql(true);
         });
 
