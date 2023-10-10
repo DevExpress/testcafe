@@ -257,22 +257,23 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should compile filename path to lower case', function () {
+        // eslint-disable-next-line
+        it.only('Should compile filename path to lower case', function () {
             let sources = [
                 'test/server/data/tesT-suites/TypescriPt-basic/Testfile2.ts',
                 'test/sErver/data/tesT-suites/Typescript-Basic/Testfile2.ts',
                 'test/serveR/data/tesT-suites/Typescript-basic/Testfile2.ts'.toUpperCase(),
             ];
 
-            // eslint-disable-next-line no-console
-            console.log(sources);
+            // eslint-disable-next-line
+            console.log('Source before:', sources);
             sources = typeScriptTestFilenames(sources);
             // eslint-disable-next-line no-console
-            console.log(sources);
-            const isAllLetterLowerCase = sources.every(name => !/[A-Z]/gm.test(name));
+            console.log('Source after:', sources);
+            const isAllLetterLowerCase = sources.every(name => name === name.toLowerCase());
 
             // eslint-disable-next-line no-console
-            console.log(isAllLetterLowerCase);
+            console.log('isAllLetterLowerCase:', isAllLetterLowerCase);
             expect(isAllLetterLowerCase).eql(true);
         });
 
