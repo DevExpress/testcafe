@@ -1025,7 +1025,9 @@ describe('Compiler', function () {
         });
 
         it('Should raise an error if test file has a TypeScript error', function () {
-            const testfile = posixResolve('test/server/data/test-suites/typescript-compile-errors/testfile.ts');
+            let testfile = posixResolve('test/server/data/test-suites/typescript-compile-errors/testfile.ts');
+
+            testfile = testfile.toLowerCase();
 
             return compile(testfile)
                 .then(function () {
