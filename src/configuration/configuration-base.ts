@@ -1,5 +1,9 @@
-import { extname, isAbsolute } from 'path';
+
+import {
+    extname, isAbsolute,
+} from 'path';
 import debug from 'debug';
+
 import JSON5 from 'json5';
 
 import {
@@ -20,6 +24,7 @@ import { Dictionary } from './interfaces';
 import Extensions from './formats';
 import { ReadConfigFileError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
+
 
 const DEBUG_LOGGER = debug('testcafe:configuration');
 
@@ -155,6 +160,7 @@ export default class Configuration {
     }
 
     public async _load (): Promise<null | object> {
+
         if (!this.defaultPaths?.length)
             return null;
 
@@ -166,6 +172,8 @@ export default class Configuration {
 
             if (this._isJSConfiguration(filePath))
                 options = this._readJsConfigurationFileContent(filePath);
+            else if (this._isTSConfiguration(filePath))
+                options = await this._readTsConfigurationFileContent(filePath);
             else {
                 const configurationFileContent = await this._readConfigurationFileContent(filePath);
 
@@ -177,6 +185,7 @@ export default class Configuration {
         }));
 
         const existedConfigs = configs.filter(config => !!config.options);
+
 
         if (!existedConfigs.length)
             return null;
@@ -210,6 +219,10 @@ export default class Configuration {
         return Configuration._hasExtension(filePath, Extensions.js) || Configuration._hasExtension(filePath, Extensions.cjs);
     }
 
+    protected _isTSConfiguration (filePath = this.filePath): boolean {
+        return Configuration._hasExtension(filePath, Extensions.ts) || Configuration._hasExtension(filePath, Extensions.cjs);
+    }
+
     protected _isJSONConfiguration (filePath = this.filePath): boolean {
         return Configuration._hasExtension(filePath, Extensions.json);
     }
@@ -228,6 +241,24 @@ export default class Configuration {
 
         return null;
     }
+
+    public async _readTsConfigurationFileContent (filePath = this.filePath): Promise<object | null> {
+        if (filePath) {
+            delete require.cache[filePath];
+            const TypeScriptTestFileCompiler = require('../compiler/test-file/formats/typescript/compiler');
+            const compiler = new TypeScriptTestFileCompiler();
+
+            const precompiledCode = await compiler.precompile([{ filename: filePath }]);
+
+            await compiler.compile(precompiledCode?.[0], filePath);
+            const options = require(filePath);
+
+            return options;
+        }
+
+        return null;
+    }
+
 
     public async _readConfigurationFileContent (filePath = this.filePath): Promise<Buffer | null> {
         try {
