@@ -48,17 +48,10 @@ const CLIENT_TESTS_DESKTOP_BROWSERS = [
 
 const CLIENT_TESTS_MOBILE_BROWSERS = [
     {
-        platformName:             'Android',
-        browserName:              'Chrome',
-        'appium:deviceName':      'Android Emulator',
-        'appium:platformVersion': '6.0',
-        'appium:automationName':  'UiAutomator2',
-        'sauce:options':          {
-            appiumVersion:     '2.0.0',
-            build:             process.env.TRAVIS_BUILD_ID || '',
-            name:              'testcafe client tests',
-            deviceOrientation: 'PORTRAIT',
-        },
+        platform:    'Linux',
+        browserName: 'android',
+        // version:     '8.0',
+        deviceName:  'Android Emulator',
     },
     // {
     //     platform:    'iOS',
@@ -77,9 +70,9 @@ const CLIENT_TESTS_MOBILE_BROWSERS = [
 const CLIENT_TESTS_SAUCELABS_SETTINGS = {
     username:  process.env.SAUCE_USERNAME,
     accessKey: process.env.SAUCE_ACCESS_KEY,
-    // build:     process.env.TRAVIS_BUILD_ID || '',
+    build:     process.env.TRAVIS_BUILD_ID || '',
     tags:      [process.env.TRAVIS_BRANCH || 'master'],
-    // name:      'testcafe client tests',
+    name:      'testcafe client tests',
     timeout:   720,
 };
 
