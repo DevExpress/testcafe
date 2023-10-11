@@ -269,9 +269,9 @@ test('should hide panel', async t => {
 
         getHideButtonElements()
             .then(({ hideButton, hideButtonSpan }) => {
-                if (getComputedStyle(hideButtonSpan, '::after').content === '"Hide"')
+                if (getComputedStyle(hideButtonSpan, '::after').content === '"Hide Picker"')
                     click(hideButton);
-                if (getComputedStyle(hideButtonSpan, '::after').content === '"Show"')
+                if (getComputedStyle(hideButtonSpan, '::after').content === '"Show Picker"')
                     return getSelectorPanelContainer();
                 return Promise.resolve();
             })
