@@ -22,10 +22,10 @@ export default class SelectorInspectorPanel {
         const selectorInputContainer = new SelectorInputContainer();
         const copyButton             = new CopyButton(selectorInputContainer);
         const container              = new MainContainer(pickButton.element, selectorInputContainer.element, copyButton.element);
-        const hideButton             = new HideButton(this.element);
+        const hideButton             = new HideButton();
 
-        this.element.appendChild(container.element);
         this.element.appendChild(hideButton.element);
+        this.element.appendChild(container.element);
     }
 
     show () {

@@ -33,7 +33,7 @@ export const copyButton = {
 export const hideButton = {
     tag:   'button',
     type:  'button',
-    class: 'selector-panel-hide-button',
+    class: 'selector-panel-toggle-button',
 };
 
 export const selectorsList = {

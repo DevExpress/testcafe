@@ -6,19 +6,19 @@ import * as descriptors from './descriptors';
 const nativeMethods = hammerhead.nativeMethods;
 const eventUtils = testCafeCore.eventUtils;
 
-const SELECTOR_INSPECTOR_PANEL_HIDDEN_CLASSNAME = 'selector-inspector-panel--hidden-hammerhead-shadow-ui';
+const SELECTOR_INSPECTOR_BTN_SHOW_PANEL_CLASSNAME = 'selector-panel-toggle-button--show-hammerhead-shadow-ui';
 
 export class HideButton {
 
-    constructor (selectorInspectorPanel) {
+    constructor () {
         this.element = createElementFromDescriptor(descriptors.hideButton);
 
         this.element.appendChild(createElementFromDescriptor(descriptors.span));
 
-        eventUtils.bind(this.element, 'click', () => this._showAndHide(selectorInspectorPanel));
+        eventUtils.bind(this.element, 'click', () => this._showAndHide());
     }
 
-    _showAndHide (selectorInspectorPanel) {
-        nativeMethods.elementClassListGetter.call(selectorInspectorPanel).toggle(SELECTOR_INSPECTOR_PANEL_HIDDEN_CLASSNAME);
+    _showAndHide () {
+        nativeMethods.elementClassListGetter.call(this.element).toggle(SELECTOR_INSPECTOR_BTN_SHOW_PANEL_CLASSNAME);
     }
 }
