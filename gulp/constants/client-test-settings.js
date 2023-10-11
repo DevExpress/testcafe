@@ -48,23 +48,22 @@ const CLIENT_TESTS_DESKTOP_BROWSERS = [
 
 const CLIENT_TESTS_MOBILE_BROWSERS = [
     {
-        platform:    'Linux',
-        browserName: 'android',
-        version:     '6.0',
+        platform:    'Android',
+        browserName: 'Chrome',
         deviceName:  'Android Emulator',
     },
-    {
-        platform:    'iOS',
-        browserName: 'Safari',
-        // NOTE: https://github.com/DevExpress/testcafe/issues/471
-        // problem with extra scroll reproduced only on saucelabs
-        // virtual machines with ios device emulators
-        deviceName:  'iPhone Simulator',
-        // NOTE: Sauce Labs raises the 'Internal server error'
-        // on using iPhone Simulator with the latest version (15.4)
-        // So, we temporarily downgrade the version to 15.2
-        version:     '15.2',
-    },
+    // {
+    //     platform:    'iOS',
+    //     browserName: 'Safari',
+    //     // NOTE: https://github.com/DevExpress/testcafe/issues/471
+    //     // problem with extra scroll reproduced only on saucelabs
+    //     // virtual machines with ios device emulators
+    //     deviceName:  'iPhone Simulator',
+    //     // NOTE: Sauce Labs raises the 'Internal server error'
+    //     // on using iPhone Simulator with the latest version (15.4)
+    //     // So, we temporarily downgrade the version to 15.2
+    //     version:     '15.2',
+    // },
 ];
 
 const CLIENT_TESTS_SAUCELABS_SETTINGS = {
