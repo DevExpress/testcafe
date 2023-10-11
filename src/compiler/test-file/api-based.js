@@ -202,7 +202,9 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         this._setupRequireHook(testFile);
 
         try {
-            await this._execAsModule(compiledCode, filename);
+            const result = await this._execAsModule(compiledCode, filename);
+
+            debugger;
         }
         catch (err) {
             if (err.code === errRequireEsmErrorCode)

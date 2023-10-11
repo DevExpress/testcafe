@@ -20,6 +20,7 @@ import { Dictionary } from './interfaces';
 import Extensions from './formats';
 import { ReadConfigFileError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
+// import TypeScriptTestFileCompiler from '../compiler/test-file/formats/typescript/compiler';
 
 const DEBUG_LOGGER = debug('testcafe:configuration');
 
@@ -31,6 +32,7 @@ export default class Configuration {
 
     public constructor (configurationFilesNames: string | null | string[]) {
         this._options           = {};
+
         this._defaultPaths      = this._resolveFilePaths(configurationFilesNames);
         this._filePath          = this._defaultPaths?.[0];
         this._overriddenOptions = [];
@@ -164,14 +166,17 @@ export default class Configuration {
 
             let options = null as object | null;
 
-            if (this._isJSConfiguration(filePath))
-                options = this._readJsConfigurationFileContent(filePath);
-            else {
-                const configurationFileContent = await this._readConfigurationFileContent(filePath);
+            options = await this._readTSConfigurationFileContent(filePath);
 
-                if (configurationFileContent)
-                    options = this._parseConfigurationFileContent(configurationFileContent, filePath);
-            }
+
+            // if (this._isJSConfiguration(filePath))
+            //     options = this._readJsConfigurationFileContent(filePath);
+            // else {
+            //     const configurationFileContent = await this._readConfigurationFileContent(filePath);
+            //
+            //     if (configurationFileContent)
+            //         options = this._parseConfigurationFileContent(configurationFileContent, filePath);
+            // }
 
             return { filePath, options };
         }));
@@ -225,6 +230,41 @@ export default class Configuration {
                 Configuration._throwReadConfigError(RUNTIME_ERRORS.cannotReadConfigFile, error, filePath, true);
             }
         }
+
+        return null;
+    }
+
+    public async _readTSConfigurationFileContent (filePath = this.filePath): Promise<any> {
+        debugger;
+
+        const TypeScriptTestFileCompiler = require('../compiler/test-file/formats/typescript/compiler');
+
+        const compiler = new TypeScriptTestFileCompiler();
+
+        debugger;
+
+        const res = await compiler.precompile([{filename: filePath }]);
+
+        debugger;
+
+        const kek = await compiler.compile(res[0], filePath);
+
+        debugger;
+
+        const options = require(filePath!);
+
+        debugger;
+
+        // if (filePath) {
+        //     try {
+        //         delete require.cache[filePath];
+        //
+        //         return require(filePath);
+        //     }
+        //     catch (error: any) {
+        //         Configuration._throwReadConfigError(RUNTIME_ERRORS.cannotReadConfigFile, error, filePath, true);
+        //     }
+        // }
 
         return null;
     }
