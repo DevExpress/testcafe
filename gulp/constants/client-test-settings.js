@@ -48,7 +48,7 @@ const CLIENT_TESTS_DESKTOP_BROWSERS = [
 
 const CLIENT_TESTS_MOBILE_BROWSERS = [
     {
-        deviceName:      'Android GoogleAPI Emulator',
+        deviceName:      'Android Emulator',
         browserName:     'chrome',
         platformVersion: '7.1',
         platformName:    'Android',
