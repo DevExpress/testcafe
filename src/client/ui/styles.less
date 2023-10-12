@@ -569,7 +569,7 @@
             box-sizing: border-box;
             width: 100%;
             left: 0;
-            padding: 2px 76px 2px 2px;
+            padding: 2px;
             align-items: center;
             z-index: @rootZIndex - 3;
             background-color: #283545;
@@ -577,6 +577,25 @@
             flex-wrap: nowrap;
             flex-direction: row;
             position: relative;
+
+            .selector-panel-toggle-button {
+                cursor: pointer;
+                background: white;
+                padding: 1px 8px 3px 8px;
+                top: 2px;
+                border-radius: 4px;
+                overflow: hidden;
+
+                &:hover {
+                    background-color: #cfcfcf;
+                }
+
+                span::after {
+                    content: "Hide Picker";
+                    width: 100%;
+                    height: 100%;
+                }
+            }
 
             .selector-inspector-panel-container {
                 display: flex;
@@ -669,56 +688,35 @@
                     }
                 }
             }
-        }
 
-        .selector-panel-toggle-button {
-            background: white;
-            position: absolute;
-            height: 21px;
-            width: 70px;
-            padding: 3px 5px;
-            top: 2px;
-            right: 2px;
-            border-radius: 4px;
-            overflow: hidden;
-            z-index: @rootZIndex - 2;
+            &--hidden {
+                padding: 0;
 
-            &:hover {
-                background-color: #cfcfcf;
-            }
+                .selector-panel-toggle-button {
+                    background-color: #283545;
+                    color: white;
+                    font-weight: bold;
+                    position: absolute;
+                    top: -26px;
+                    right: 3px;
+                    z-index: @rootZIndex - 2;
 
-            span::after {
-                content: "Hide Picker";
-                cursor: pointer;
-                position: absolute;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 100%;
-                height: 100%;
-                left: 0;
-                top: 0;
-            }
+                    &:hover {
+                        background-color: #36B6E5;
+                    }
 
-            &--show {
-                background-color: #283545;
-                color: white;
-                font-weight: bold;
-                top: -24px;
-
-                &:hover {
-                    background-color: #36B6E5;
+                    span::after {
+                        content: "Show Picker";
+                    }
                 }
-    
-                span::after {
-                    content: "Show Picker";
-                }
-    
-                & ~ .selector-inspector-panel-container {
+
+                .selector-inspector-panel-container {
                     display: none;
                 }
             }
         }
+
+
     }
 
     .selectors-list {

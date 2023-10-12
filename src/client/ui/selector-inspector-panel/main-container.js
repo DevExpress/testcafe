@@ -1,7 +1,5 @@
 import { createElementFromDescriptor } from './utils/create-element-from-descriptor';
-
 import { panelContainer } from './descriptors';
-
 
 export class MainContainer {
     constructor (...elements) {

@@ -1,19 +1,15 @@
 import uiRoot from '../ui-root';
-
 import { createElementFromDescriptor } from './utils/create-element-from-descriptor';
 import { setStyles } from './utils/set-styles';
-
 import { panel } from './descriptors';
 import { PickButton } from './pick-button';
 import { SelectorInputContainer } from './selector-input-container';
 import { CopyButton } from './copy-button';
 import { HideButton } from './hide-button';
-import { elementPicker } from './element-picker';
 import { MainContainer } from './main-container';
 
 export default class SelectorInspectorPanel {
     element;
-    elementPicker = elementPicker;
 
     constructor () {
         this.element = createElementFromDescriptor(panel);
@@ -22,10 +18,10 @@ export default class SelectorInspectorPanel {
         const selectorInputContainer = new SelectorInputContainer();
         const copyButton             = new CopyButton(selectorInputContainer);
         const container              = new MainContainer(pickButton.element, selectorInputContainer.element, copyButton.element);
-        const hideButton             = new HideButton();
+        const hideButton             = new HideButton(this.element);
 
-        this.element.appendChild(hideButton.element);
         this.element.appendChild(container.element);
+        this.element.appendChild(hideButton.element);
     }
 
     show () {
