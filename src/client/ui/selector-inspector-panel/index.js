@@ -6,10 +6,12 @@ import { PickButton } from './pick-button';
 import { SelectorInputContainer } from './selector-input-container';
 import { CopyButton } from './copy-button';
 import { HideButton } from './hide-button';
+import { elementPicker } from './element-picker';
 import { MainContainer } from './main-container';
 
 export default class SelectorInspectorPanel {
     element;
+    elementPicker = elementPicker;
 
     constructor () {
         this.element = createElementFromDescriptor(panel);
