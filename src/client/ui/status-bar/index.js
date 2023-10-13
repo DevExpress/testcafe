@@ -12,7 +12,6 @@ const shadowUI         = hammerhead.shadowUI;
 const nativeMethods    = hammerhead.nativeMethods;
 const messageSandbox   = hammerhead.eventSandbox.message;
 const browserUtils     = hammerhead.utils.browser;
-const featureDetection = hammerhead.utils.featureDetection;
 const listeners        = hammerhead.eventSandbox.listeners;
 
 const styleUtils   = testCafeCore.styleUtils;
@@ -321,7 +320,7 @@ export default class StatusBar extends serviceUtils.EventEmitter {
     }
 
     _bindClickOnce (elements, handler) {
-        const eventName = featureDetection.isTouchDevice ? 'touchstart' : 'mousedown';
+        const eventName = 'mousedown';
 
         const downHandler = e => {
             const target          = nativeMethods.eventTargetGetter.call(e);
