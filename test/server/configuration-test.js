@@ -36,6 +36,19 @@ const createJsConfig = (filePath, options) => {
     fs.writeFileSync(filePath, `module.exports = ${JSON.stringify(options)}`);
 };
 
+const createTsConfig = (filePath, options) => {
+    options = options || {};
+    fs.writeFileSync(filePath, `
+    const fs         = require('fs');
+    const path       = require('path');
+    const { nanoid } = require('nanoid');
+    const jsCustomModule = require('./test/server/data/configuration/module/module.js');
+    const tsCustomModule = require('./test/server/data/configuration/typescript-module/module.ts');
+    
+    \n
+    module.exports = ${JSON.stringify(options)}`);
+};
+
 const jsConfigIndex = TestCafeConfiguration.FILENAMES.findIndex(file=>file.includes(Extensions.js));
 const jsonConfigIndex = TestCafeConfiguration.FILENAMES.findIndex(file=>file.includes(Extensions.json));
 
@@ -729,6 +742,116 @@ describe('TypeScriptConfiguration', function () {
         );
     });
 
+    describe('Custom Testcafe Config Path', () => {
+        let configuration;
+
+        afterEach(async () => {
+            await del(configuration.defaultPaths);
+        });
+
+        it('Custom config path is used', () => {
+            const customConfigFile = 'custom11.testcaferc.json';
+
+            const options = {
+                'hostname': '123.456.789',
+                'port1':    1234,
+                'port2':    5678,
+                'src':      'path1/folder',
+                'browser':  'edge',
+            };
+
+            createJSONConfig(customConfigFile, options);
+
+            configuration = new TestCafeConfiguration(customConfigFile);
+
+            return configuration.init()
+                .then(() => {
+                    expect(pathUtil.basename(configuration.filePath)).eql(customConfigFile);
+                    expect(configuration.getOption('hostname')).eql(options.hostname);
+                    expect(configuration.getOption('port1')).eql(options.port1);
+                    expect(configuration.getOption('port2')).eql(options.port2);
+                    expect(configuration.getOption('src')).eql([ options.src ]);
+                    expect(configuration.getOption('browser')).eql(options.browser);
+                });
+        });
+
+        it('Custom js config path is used', async () => {
+            const customConfigFile = 'custom11.testcaferc.js';
+
+            const options = {
+                'hostname': '123.456.789',
+                'port1':    1234,
+                'port2':    5678,
+                'src':      'path1/folder',
+                'browser':  'edge',
+            };
+
+            createJsConfig(customConfigFile, options);
+
+            configuration = new TestCafeConfiguration(customConfigFile);
+
+            await configuration.init();
+
+            expect(pathUtil.basename(configuration.filePath)).eql(customConfigFile);
+            expect(configuration.getOption('hostname')).eql(options.hostname);
+            expect(configuration.getOption('port1')).eql(options.port1);
+            expect(configuration.getOption('port2')).eql(options.port2);
+            expect(configuration.getOption('src')).eql([ options.src ]);
+            expect(configuration.getOption('browser')).eql(options.browser);
+        });
+
+        it('Custom ts config path is used', async () => {
+            const customConfigFile = 'custom11.testcaferc.ts';
+
+            const options = {
+                'hostname': '123.456.789',
+                'port1':    1234,
+                'port2':    5678,
+                'src':      'path1/folder',
+                'browser':  'edge',
+            };
+
+            createTsConfig(customConfigFile, options);
+
+            configuration = new TestCafeConfiguration(customConfigFile);
+
+            await configuration.init();
+
+            expect(pathUtil.basename(configuration.filePath)).eql(customConfigFile);
+            expect(configuration.getOption('hostname')).eql(options.hostname);
+            expect(configuration.getOption('port1')).eql(options.port1);
+            expect(configuration.getOption('port2')).eql(options.port2);
+            expect(configuration.getOption('src')).eql([ options.src ]);
+            expect(configuration.getOption('browser')).eql(options.browser);
+        });
+
+        it('Constructor should revert back to default when no custom config', () => {
+            const defaultFileLocation = '.testcaferc.json';
+
+            const options = {
+                'hostname': '123.456.789',
+                'port1':    1234,
+                'port2':    5678,
+                'src':      'path1/folder',
+                'browser':  'edge',
+            };
+
+            createJSONConfig(defaultFileLocation, options);
+
+            configuration = new TestCafeConfiguration();
+
+            return configuration.init()
+                .then(() => {
+                    expect(pathUtil.basename(configuration.filePath)).eql(defaultFileLocation);
+                    expect(configuration.getOption('hostname')).eql(options.hostname);
+                    expect(configuration.getOption('port1')).eql(options.port1);
+                    expect(configuration.getOption('port2')).eql(options.port2);
+                    expect(configuration.getOption('src')).eql([ options.src ]);
+                    expect(configuration.getOption('browser')).eql(options.browser);
+                });
+        });
+    });
+
     describe('With configuration file', () => {
         tmp.setGracefulCleanup();
 
@@ -915,91 +1038,6 @@ describe('TypeScriptConfiguration', function () {
 
                 expect(consoleWrapper.messages.log).contains('You cannot override the "target" compiler option in the TypeScript configuration file.');
             });
-        });
-    });
-
-    describe('Custom Testcafe Config Path', () => {
-        let configuration;
-
-        afterEach(async () => {
-            await del(configuration.defaultPaths);
-        });
-
-        it('Custom config path is used', () => {
-            const customConfigFile = 'custom11.testcaferc.json';
-
-            const options = {
-                'hostname': '123.456.789',
-                'port1':    1234,
-                'port2':    5678,
-                'src':      'path1/folder',
-                'browser':  'edge',
-            };
-
-            createJSONConfig(customConfigFile, options);
-
-            configuration = new TestCafeConfiguration(customConfigFile);
-
-            return configuration.init()
-                .then(() => {
-                    expect(pathUtil.basename(configuration.filePath)).eql(customConfigFile);
-                    expect(configuration.getOption('hostname')).eql(options.hostname);
-                    expect(configuration.getOption('port1')).eql(options.port1);
-                    expect(configuration.getOption('port2')).eql(options.port2);
-                    expect(configuration.getOption('src')).eql([ options.src ]);
-                    expect(configuration.getOption('browser')).eql(options.browser);
-                });
-        });
-
-        it('Custom js config path is used', async () => {
-            const customConfigFile = 'custom11.testcaferc.js';
-
-            const options = {
-                'hostname': '123.456.789',
-                'port1':    1234,
-                'port2':    5678,
-                'src':      'path1/folder',
-                'browser':  'edge',
-            };
-
-            createJsConfig(customConfigFile, options);
-
-            configuration = new TestCafeConfiguration(customConfigFile);
-
-            await configuration.init();
-
-            expect(pathUtil.basename(configuration.filePath)).eql(customConfigFile);
-            expect(configuration.getOption('hostname')).eql(options.hostname);
-            expect(configuration.getOption('port1')).eql(options.port1);
-            expect(configuration.getOption('port2')).eql(options.port2);
-            expect(configuration.getOption('src')).eql([ options.src ]);
-            expect(configuration.getOption('browser')).eql(options.browser);
-        });
-
-        it('Constructor should revert back to default when no custom config', () => {
-            const defaultFileLocation = '.testcaferc.json';
-
-            const options = {
-                'hostname': '123.456.789',
-                'port1':    1234,
-                'port2':    5678,
-                'src':      'path1/folder',
-                'browser':  'edge',
-            };
-
-            createJSONConfig(defaultFileLocation, options);
-
-            configuration = new TestCafeConfiguration();
-
-            return configuration.init()
-                .then(() => {
-                    expect(pathUtil.basename(configuration.filePath)).eql(defaultFileLocation);
-                    expect(configuration.getOption('hostname')).eql(options.hostname);
-                    expect(configuration.getOption('port1')).eql(options.port1);
-                    expect(configuration.getOption('port2')).eql(options.port2);
-                    expect(configuration.getOption('src')).eql([ options.src ]);
-                    expect(configuration.getOption('browser')).eql(options.browser);
-                });
         });
     });
 });
