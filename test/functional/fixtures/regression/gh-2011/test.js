@@ -26,11 +26,11 @@ const run = (pathToTest, concurrency) => {
 
 describe('[Regression](GH-2011)', function () {
 
-    it('Should execute all fixture\'s test with noConcurrency in one browser', function () {
-        return run('./testcafe-fixtures/concurrency-mode-with-no-concurrency-fixture-test.js', 3);
+    it('Should execute all fixture\'s test with disableConcurrency in one browser', function () {
+        return run('./testcafe-fixtures/concurrency-mode-with-disable-concurrency-fixture-test.js', 3);
     });
 
     it('Should execute all fixture\'s in different browser', function () {
-        return run('./testcafe-fixtures/concurrency-mode-with-no-concurrency-fixture-all-test.js', 3);
+        return run('./testcafe-fixtures/concurrency-mode-with-disable-concurrency-fixture-all-test.js', 3);
     });
 });

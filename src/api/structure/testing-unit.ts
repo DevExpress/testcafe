@@ -24,7 +24,7 @@ import { SkipJsErrorsArgumentApiError } from '../../errors/runtime';
 export default abstract class TestingUnit extends BaseUnit {
     public readonly testFile: TestFile;
     public name: string | null;
-    public noConcurrency: boolean;
+    public disableConcurrency: boolean;
     public pageUrl: string;
     public baseUrl: string | undefined;
     public authCredentials: null | AuthCredentials;
@@ -44,16 +44,16 @@ export default abstract class TestingUnit extends BaseUnit {
 
         this.testFile = testFile;
 
-        this.name            = null;
-        this.pageUrl         = pageUrl;
-        this.baseUrl         = baseUrl;
-        this.authCredentials = null;
-        this.meta            = {};
-        this.only            = false;
-        this.skip            = false;
-        this.noConcurrency   = false;
-        this.requestHooks    = [];
-        this.clientScripts   = [];
+        this.name               = null;
+        this.pageUrl            = pageUrl;
+        this.baseUrl            = baseUrl;
+        this.authCredentials    = null;
+        this.meta               = {};
+        this.only               = false;
+        this.skip               = false;
+        this.disableConcurrency = false;
+        this.requestHooks       = [];
+        this.clientScripts      = [];
 
         this.disablePageReloads = void 0;
         this.disablePageCaching = false;

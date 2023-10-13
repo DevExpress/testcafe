@@ -21,7 +21,7 @@ interface FixtureInitOptions {
 
 export default class Fixture extends TestingUnit {
     public path: string;
-    public noConcurrency: boolean;
+    public disableConcurrency: boolean;
     public beforeEachFn: Function | null;
     public afterEachFn: Function | null;
     public beforeFn: Function | null;
@@ -34,14 +34,14 @@ export default class Fixture extends TestingUnit {
 
         super(testFile, UnitType.fixture, pageUrl, baseUrl);
 
-        this.path           = testFile.filename;
-        this.beforeEachFn   = null;
-        this.afterEachFn    = null;
-        this.beforeFn       = null;
-        this.afterFn        = null;
-        this.globalBeforeFn = null;
-        this.globalAfterFn  = null;
-        this.noConcurrency  = false;
+        this.path               = testFile.filename;
+        this.beforeEachFn       = null;
+        this.afterEachFn        = null;
+        this.beforeFn           = null;
+        this.afterFn            = null;
+        this.globalBeforeFn     = null;
+        this.globalAfterFn      = null;
+        this.disableConcurrency = false;
 
         if (returnApiOrigin)
             return this.apiOrigin as unknown as Fixture;
@@ -62,8 +62,8 @@ export default class Fixture extends TestingUnit {
         return this.apiOrigin;
     }
 
-    private _noConcurrency$ (): Function {
-        this.noConcurrency = true;
+    private _disableConcurrency$ (): Function {
+        this.disableConcurrency = true;
 
         return this.apiOrigin;
     }

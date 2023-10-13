@@ -44,7 +44,7 @@ export default class BrowserJob extends AsyncEventEmitter {
     private _resolveWaitingLastTestInFixture: Function | null;
     private readonly _messageBus: MessageBus;
     private readonly _testRunHook: TestRunHookController;
-    private readonly _noConcurrencyQueue: Dictionary<TestRunController[]>;
+    private readonly _disableConcurrencyQueue: Dictionary<TestRunController[]>;
 
     public constructor ({
         tests,
@@ -75,9 +75,9 @@ export default class BrowserJob extends AsyncEventEmitter {
 
         this._testRunControllerQueue = tests.map((test, index) => this._createTestRunController(test, index));
 
-        this._noConcurrencyQueue = {};
-        this._completionQueue    = [];
-        this._reportsPending     = [];
+        this._disableConcurrencyQueue = {};
+        this._completionQueue         = [];
+        this._reportsPending          = [];
 
         this._connectionErrorListener = (error: Error) => this._setResult(BrowserJobResult.errored, error);
 
@@ -208,19 +208,19 @@ export default class BrowserJob extends AsyncEventEmitter {
     }
 
     private _getTestControllerQueue (connectionId: string): TestRunController[] {
-        if (this._noConcurrencyQueue[connectionId]?.length)
-            return this._noConcurrencyQueue[connectionId];
+        if (this._disableConcurrencyQueue[connectionId]?.length)
+            return this._disableConcurrencyQueue[connectionId];
 
         return this._testRunControllerQueue;
     }
 
     private _updateTestControllerQueues ({ test }: TestRunController, connectionId: string): void {
-        if (!test.noConcurrency || this._noConcurrencyQueue[connectionId]?.length)
+        if (!test.disableConcurrency || this._disableConcurrencyQueue[connectionId]?.length)
             return;
 
         const lastIndexFixture = this._testRunControllerQueue.findIndex(el => el.test.fixture?.id !== test.fixture?.id);
 
-        this._noConcurrencyQueue[connectionId] = this._testRunControllerQueue.splice(0, lastIndexFixture);
+        this._disableConcurrencyQueue[connectionId] = this._testRunControllerQueue.splice(0, lastIndexFixture);
     }
 
     // API
@@ -228,8 +228,8 @@ export default class BrowserJob extends AsyncEventEmitter {
         if (this._testRunControllerQueue.length)
             return true;
 
-        for (const connectionId in this._noConcurrencyQueue) {
-            if (this._noConcurrencyQueue[connectionId].length)
+        for (const connectionId in this._disableConcurrencyQueue) {
+            if (this._disableConcurrencyQueue[connectionId].length)
                 return true;
         }
 

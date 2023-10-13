@@ -33,7 +33,7 @@ fixture `fixture 1`
     .after(() => {
         assertSingleConnection(connectionsFixture1);
     })
-    .noConcurrency();
+    .disableConcurrency();
 
 for (let i = 0; i < TEST_COUNT; i++) {
     test(`fixture 1 - test ${i}`, async () => {
@@ -50,7 +50,7 @@ fixture `fixture 2`
     .after(() => {
         assertSingleConnection(connectionsFixture2);
     })
-    .noConcurrency();
+    .disableConcurrency();
 
 for (let i = 0; i < TEST_COUNT; i++) {
     test(`fixture 2 - test ${i}`, async () => {
@@ -67,7 +67,7 @@ fixture `fixture 3`
     .after(() => {
         assertSingleConnection(connectionsFixture3);
     })
-    .noConcurrency();
+    .disableConcurrency();
 
 for (let i = 0; i < TEST_COUNT; i++) {
     test(`fixture 3 - test ${i}`, async () => {
