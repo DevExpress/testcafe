@@ -256,3 +256,30 @@ test('should copy selector', async t => {
 
     await t.debug();
 });
+
+test('should hide panel', async t => {
+    await ClientFunction(() => {
+        const {
+            getHideButtonElements,
+            resumeTest,
+            click,
+            getSelectorPanelContainer,
+            getComputedStyle,
+        } = window;
+
+        getHideButtonElements()
+            .then(({ hideButton, hideButtonSpan }) => {
+                if (getComputedStyle(hideButtonSpan, '::after').content === '"Hide Picker"')
+                    click(hideButton);
+                if (getComputedStyle(hideButtonSpan, '::after').content === '"Show Picker"')
+                    return getSelectorPanelContainer();
+                return Promise.resolve();
+            })
+            .then(selectorPanelContainer => {
+                if (getComputedStyle(selectorPanelContainer).display === 'none')
+                    resumeTest();
+            });
+    })();
+
+    await t.debug();
+});

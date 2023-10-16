@@ -41,5 +41,7 @@ describe('TestCafe UI', () => {
         runTestCafeTest('should place a selector selected from the list in the input field');
 
         runTestCafeTest('should copy selector');
+
+        runTestCafeTest('should hide panel');
     });
 });
