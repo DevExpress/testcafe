@@ -1896,7 +1896,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         });
 
         this.nativeDialogsTracker   = new NativeDialogTracker(this.contextStorage, { nativeAutomation, dialogHandler });
-        this.statusBar              = new testCafeUI.StatusBar(this.runInfo.userAgent, this.runInfo.fixtureName, this.runInfo.testName, this.contextStorage);
+        this.statusBar              = new testCafeUI.StatusBar(this.runInfo.userAgent, this.runInfo.fixtureName, this.runInfo.testName, this.contextStorage, nativeAutomation);
         this.selectorInspectorPanel = new testCafeUI.SelectorInspectorPanel(this.statusBar);
 
         const self = this;
