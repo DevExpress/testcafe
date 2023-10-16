@@ -82,7 +82,15 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
 
             mod._compile(code, filename);
 
+            debugger;
+
+            Module._cache[filename] = mod;
+
             cacheProxy.stopExternalCaching();
+
+            this.emit('module-compiled', mod);
+
+            Module._cache[filename] = mod;
         }
     }
 
@@ -129,6 +137,12 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
             this.origRequireExtensions[ext] = origExt;
 
             require.extensions[ext] = (mod, filename) => {
+                console.log('require:', ext, filename);
+
+                if (ext === '.ts') {
+                    debugger;
+                }
+
                 const hadGlobalAPI = this._hasGlobalAPI();
 
                 // NOTE: remove global API so that it will be unavailable for the dependencies
@@ -247,6 +261,6 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
     }
 
     cleanUp () {
-        this.cache = {};
+        // this.cache = {};
     }
 }

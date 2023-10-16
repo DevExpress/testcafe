@@ -1,9 +1,12 @@
 import { escapeRegExp as escapeRe, flatten } from 'lodash';
 import { assertBaseUrl, getUrl } from '../../api/test-page-url';
 import { assertType, is } from '../../errors/runtime/type-assertions';
+import { EventEmitter } from 'events';
 
-export default class TestFileCompilerBase {
+export default class TestFileCompilerBase extends EventEmitter {
     constructor ({ baseUrl }) {
+        super();
+
         const escapedExt = flatten([this.getSupportedExtension()])
             .map(ext => escapeRe(ext))
             .join('|');

@@ -87,6 +87,8 @@ export default class Compiler {
     }
 
     async _getTests ({ compiler, filename, code, compiledCode }) {
+        debugger;
+
         if (compiledCode || this.esm && compiler.canCompileInEsm)
             return await compiler.execute(compiledCode, filename);
 
@@ -94,6 +96,8 @@ export default class Compiler {
     }
 
     async _compileTestFiles (filenames) {
+
+
         const testFilesInfo = await this._createTestFilesInfo(filenames);
         const compilerTasks = this._getCompilerTasks(testFilesInfo);
 

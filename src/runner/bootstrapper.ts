@@ -304,8 +304,8 @@ export default class Bootstrapper {
         const cwd        = process.cwd();
         const sourceList = await parseFileList(this.sources, cwd);
 
-        if (!sourceList.length)
-            throw new GeneralError(RUNTIME_ERRORS.testFilesNotFound, cwd, getConcatenatedValuesString(this.sources, '\n', ''));
+        // if (!sourceList.length)
+        //     throw new GeneralError(RUNTIME_ERRORS.testFilesNotFound, cwd, getConcatenatedValuesString(this.sources, '\n', ''));
 
         let tests = await guardTimeExecution(
             async () => await this._compileTests({ sourceList, compilerOptions: this.compilerOptions, runnableConfigurationId: id }),
@@ -324,14 +324,14 @@ export default class Bootstrapper {
         if (testsWithOnlyFlag.length)
             tests = testsWithOnlyFlag;
 
-        if (!tests.length)
-            throw new GeneralError(RUNTIME_ERRORS.noTestsToRun);
+        // if (!tests.length)
+        //     throw new GeneralError(RUNTIME_ERRORS.noTestsToRun);
 
         if (this.filter)
             tests = await this._filterTests(tests, this.filter);
 
-        if (!tests.length)
-            throw new GeneralError(RUNTIME_ERRORS.noTestsToRunDueFiltering);
+        // if (!tests.length)
+        //     throw new GeneralError(RUNTIME_ERRORS.noTestsToRunDueFiltering);
 
         this._setGlobalHooksToTests(tests);
 

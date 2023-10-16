@@ -250,9 +250,28 @@ export default class Configuration {
 
             const precompiledCode = await compiler.precompile([{ filename: filePath }]);
 
-            await compiler.compile(precompiledCode?.[0], filePath);
-            const options = require(filePath);
+            debugger;
 
+
+
+            debugger;
+
+            const waitUntilCompiled = new Promise((resolve, reject) => {
+                compiler.on('module-compiled', (mod:any) => {
+                    console.log('!!!!!!!!!!!!!');
+                    resolve(mod.exports);
+                });
+            });
+
+            await compiler.compile(precompiledCode?.[0], filePath);
+
+            // @ts-ignore
+            return waitUntilCompiled;
+
+            const options = require(filePath as string);
+
+
+            // return {};
             return options;
         }
 
