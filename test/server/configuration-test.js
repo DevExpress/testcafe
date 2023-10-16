@@ -800,7 +800,7 @@ describe('TypeScriptConfiguration', function () {
             expect(configuration.getOption('browser')).eql(options.browser);
         });
 
-        it('Custom ts config path is used', async () => {
+        it.only('Custom ts config path is used', async () => {
             const customConfigFile = 'custom11.testcaferc.ts';
 
             const options = {

@@ -254,12 +254,10 @@ export default class Configuration {
 
 
 
-            debugger;
-
             const waitUntilCompiled = new Promise((resolve, reject) => {
-                compiler.on('module-compiled', (mod:any) => {
+                compiler.on('module-compiled', (options) => {
                     console.log('!!!!!!!!!!!!!');
-                    resolve(mod.exports);
+                    resolve(options);
                 });
             });
 
@@ -268,11 +266,11 @@ export default class Configuration {
             // @ts-ignore
             return waitUntilCompiled;
 
-            const options = require(filePath as string);
+            // const options = require(filePath as string);
 
 
             // return {};
-            return options;
+            // return options;
         }
 
         return null;

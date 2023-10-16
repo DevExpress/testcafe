@@ -73,6 +73,8 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
             await eval(`import('${fileUrl}?${PREVENT_MODULE_CACHING_SUFFIX}=${Date.now()}')`);
         }
         else {
+            debugger;
+
             const mod = new Module(filename, module.parent);
 
             mod.filename = filename;
@@ -88,7 +90,7 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
 
             cacheProxy.stopExternalCaching();
 
-            this.emit('module-compiled', mod);
+            this.emit('module-compiled', mod.exports);
 
             Module._cache[filename] = mod;
         }
