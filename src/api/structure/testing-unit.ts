@@ -24,6 +24,7 @@ import { SkipJsErrorsArgumentApiError } from '../../errors/runtime';
 export default abstract class TestingUnit extends BaseUnit {
     public readonly testFile: TestFile;
     public name: string | null;
+    public disableConcurrency: boolean;
     public pageUrl: string;
     public baseUrl: string | undefined;
     public authCredentials: null | AuthCredentials;
@@ -43,15 +44,16 @@ export default abstract class TestingUnit extends BaseUnit {
 
         this.testFile = testFile;
 
-        this.name            = null;
-        this.pageUrl         = pageUrl;
-        this.baseUrl         = baseUrl;
-        this.authCredentials = null;
-        this.meta            = {};
-        this.only            = false;
-        this.skip            = false;
-        this.requestHooks    = [];
-        this.clientScripts   = [];
+        this.name               = null;
+        this.pageUrl            = pageUrl;
+        this.baseUrl            = baseUrl;
+        this.authCredentials    = null;
+        this.meta               = {};
+        this.only               = false;
+        this.skip               = false;
+        this.disableConcurrency = false;
+        this.requestHooks       = [];
+        this.clientScripts      = [];
 
         this.disablePageReloads = void 0;
         this.disablePageCaching = false;
@@ -107,6 +109,7 @@ export default abstract class TestingUnit extends BaseUnit {
 
         return this.apiOrigin;
     }
+
 
     private _skipJsErrors$ (options: boolean | SkipJsErrorsOptionsObject | SkipJsErrorsCallback | SkipJsErrorsCallbackWithOptionsObject = true): Function {
         assertType([ is.boolean, is.nonNullObject, is.function ], 'skipJsErrors', 'The skipJsErrors options argument', options);

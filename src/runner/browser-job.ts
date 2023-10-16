@@ -37,13 +37,14 @@ export default class BrowserJob extends AsyncEventEmitter {
     public readonly warningLog: WarningLog;
     public readonly fixtureHookController: FixtureHookController;
     private _result: BrowserJobResultInfo | null;
-    private readonly _testRunControllerQueue: TestRunController[];
+    private _testRunControllerQueue: TestRunController[];
     private readonly _reportsPending: TestRunController[];
     private readonly _connectionErrorListener: (error: Error) => void;
     private readonly _completionQueue: TestRunController[];
     private _resolveWaitingLastTestInFixture: Function | null;
     private readonly _messageBus: MessageBus;
     private readonly _testRunHook: TestRunHookController;
+    private readonly _disableConcurrencyQueue: Dictionary<TestRunController[]>;
 
     public constructor ({
         tests,
@@ -74,8 +75,9 @@ export default class BrowserJob extends AsyncEventEmitter {
 
         this._testRunControllerQueue = tests.map((test, index) => this._createTestRunController(test, index));
 
-        this._completionQueue = [];
-        this._reportsPending  = [];
+        this._disableConcurrencyQueue = {};
+        this._completionQueue         = [];
+        this._reportsPending          = [];
 
         this._connectionErrorListener = (error: Error) => this._setResult(BrowserJobResult.errored, error);
 
@@ -205,9 +207,33 @@ export default class BrowserJob extends AsyncEventEmitter {
         return true;
     }
 
+    private _getTestControllerQueue (connectionId: string): TestRunController[] {
+        if (this._disableConcurrencyQueue[connectionId]?.length)
+            return this._disableConcurrencyQueue[connectionId];
+
+        return this._testRunControllerQueue;
+    }
+
+    private _updateTestControllerQueues ({ test }: TestRunController, connectionId: string): void {
+        if (!test.disableConcurrency || this._disableConcurrencyQueue[connectionId]?.length)
+            return;
+
+        const lastIndexFixture = this._testRunControllerQueue.findIndex(el => el.test.fixture?.id !== test.fixture?.id);
+
+        this._disableConcurrencyQueue[connectionId] = this._testRunControllerQueue.splice(0, lastIndexFixture);
+    }
+
     // API
     public get hasQueuedTestRuns (): boolean {
-        return !!this._testRunControllerQueue.length;
+        if (this._testRunControllerQueue.length)
+            return true;
+
+        for (const connectionId in this._disableConcurrencyQueue) {
+            if (this._disableConcurrencyQueue[connectionId].length)
+                return true;
+        }
+
+        return false;
     }
 
     public get currentTestRun (): LegacyTestRun | TestRun | null {
@@ -215,8 +241,12 @@ export default class BrowserJob extends AsyncEventEmitter {
     }
 
     public async popNextTestRunInfo (connection: BrowserConnection): Promise<NextTestRunInfo | null> {
-        while (this._testRunControllerQueue.length) {
-            const testRunController = this._testRunControllerQueue[0];
+        while (this.hasQueuedTestRuns) {
+            const currentQueue      = this._getTestControllerQueue(connection.id);
+            const testRunController = currentQueue[0];
+
+            if (!testRunController)
+                break;
 
             const isNextTestRunAvailable = await this._isNextTestRunAvailable(testRunController);
 
@@ -224,7 +254,8 @@ export default class BrowserJob extends AsyncEventEmitter {
                 break;
 
             this._reportsPending.push(testRunController);
-            this._testRunControllerQueue.shift();
+            currentQueue.shift();
+            this._updateTestControllerQueues(testRunController, connection.id);
             this._addToCompletionQueue(testRunController);
 
             if (this._status === BrowserJobStatus.initialized) {
