@@ -128,7 +128,7 @@ export default {
         `For more information, see ${DOCUMENTATION_LINKS.HEADLESS_MODE}`,
 
     [RUNTIME_ERRORS.uncaughtErrorInReporter]:           'The "{methodName}" method of the "{reporterName}" reporter produced an uncaught error. Error details:\n{originalError}',
-    [RUNTIME_ERRORS.roleInitializedWithRelativeUrl]:    'You cannot specify relative login page URLs in the Role constructor. Use an absolute URL.',
+    [RUNTIME_ERRORS.roleInitializedWithRelativeUrl]:    'Your Role includes a relative login page URL, but the "baseUrl" option is not set.\nUse an absolute URL or add the baseUrl option to your configuration file or CLI launch string.',
     [RUNTIME_ERRORS.typeScriptCompilerLoadingError]:    'Cannot load the TypeScript compiler.\n{originErrorMessage}.',
     [RUNTIME_ERRORS.cannotCustomizeSpecifiedCompilers]: 'You cannot specify options for the {noncustomizableCompilerList} compiler{suffix}.',
 

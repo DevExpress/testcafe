@@ -44,7 +44,7 @@ export function getUrl (url: string, base?: URL): string {
         return resolveRelativeUrl(url, base);
     }
 
-    else if (isAbsolute(url))
+    if (isAbsolute(url))
         return pathToFileURL(url).toString();
 
     return ensureProtocol(url);
