@@ -9,10 +9,13 @@ on:
       browsers:
         required: true
         type: string
+      os:
+        required: true
+        type: string
 jobs:
   test:
     runs-on: ubuntu-latest
-    name: ${{ matrix.browser }}
+    name: ${{ matrix.os }}
     continue-on-error: true
     strategy:
       matrix:
@@ -22,6 +25,7 @@ jobs:
       SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
       SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
       CLIENT_TESTS_CURRENT_BROWSER: ${{ matrix.browser }}
+      TRAVIS: true
     steps:
       - uses: DevExpress/testcafe-build-system/actions/set-status@main
         with:
