@@ -52,6 +52,7 @@ const CLIENT_TESTS_MOBILE_BROWSERS = [
         browserName:     'chrome',
         platformVersion: '7.0',
         platformName:    'Android',
+        platform:        'Linux',
     },
     // {
     //     platform:    'iOS',
