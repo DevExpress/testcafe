@@ -358,7 +358,7 @@ gulp.step('test-client-travis-mobile-run', () => {
         if (!process.env.CLIENT_TESTS_CURRENT_BROWSER)
             return true;
 
-        return browserInfo.browserName.toLowerCase() === 'chrome';
+        return browserInfo.browserName.toLowerCase() === 'safari';
     });
 
     return testClient('test/client/fixtures/**/*-test.js', CLIENT_TESTS_SETTINGS, saucelabsSettings);
