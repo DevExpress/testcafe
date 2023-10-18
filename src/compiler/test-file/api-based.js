@@ -82,7 +82,11 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
 
             mod._compile(code, filename);
 
+            Module._cache[filename] = mod;
+
             cacheProxy.stopExternalCaching();
+
+            Module._cache[filename] = mod;
         }
     }
 

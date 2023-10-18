@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable no-debugger */
 
 import {
     extname, isAbsolute,
@@ -19,6 +21,7 @@ import OptionSource from './option-source';
 import resolvePathRelativelyCwd from '../utils/resolve-path-relatively-cwd';
 import renderTemplate from '../utils/render-template';
 import WARNING_MESSAGES from '../notifications/warning-message';
+import TypeScriptConfigurationCompiler from '../compiler/test-file/formats/typescript/configuration';
 import log from '../cli/log';
 import { Dictionary } from './interfaces';
 import Extensions from './formats';
@@ -42,7 +45,9 @@ export default class Configuration {
     }
 
     protected static _fromObj (obj: object): Dictionary<Option> {
+
         const result = Object.create(null);
+
 
         Object.entries(obj).forEach(([key, value]) => {
             result[key] = new Option(key, value);
@@ -245,13 +250,15 @@ export default class Configuration {
     public async _readTsConfigurationFileContent (filePath = this.filePath): Promise<object | null> {
         if (filePath) {
             delete require.cache[filePath];
-            const TypeScriptTestFileCompiler = require('../compiler/test-file/formats/typescript/compiler');
-            const compiler = new TypeScriptTestFileCompiler();
+            const compiler = new TypeScriptConfigurationCompiler();
 
             const precompiledCode = await compiler.precompile([{ filename: filePath }]);
 
+
             await compiler.compile(precompiledCode?.[0], filePath);
-            const options = require(filePath);
+
+
+            const options = require(filePath as string);
 
             return options;
         }
