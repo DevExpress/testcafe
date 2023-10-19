@@ -84,15 +84,7 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
 
             mod._compile(code, filename);
 
-            debugger;
-
-            Module._cache[filename] = mod;
-
             cacheProxy.stopExternalCaching();
-
-            this.emit('module-compiled', mod.exports);
-
-            Module._cache[filename] = mod;
 
             return mod;
         }
@@ -147,16 +139,16 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
                     debugger;
                 }
 
-                 // const hadGlobalAPI = this._hasGlobalAPI();
+                 const hadGlobalAPI = this._hasGlobalAPI();
 
                 // NOTE: remove global API so that it will be unavailable for the dependencies
-                // if (APIBasedTestFileCompilerBase._isNodeModulesDep(filename) && hadGlobalAPI)
-                //     this._removeGlobalAPI();
+                if (APIBasedTestFileCompilerBase._isNodeModulesDep(filename) && hadGlobalAPI)
+                    this._removeGlobalAPI();
 
                 this._compileExternalModule(mod, filename, requireCompilers[ext], origExt);
 
-                // if (hadGlobalAPI && !this._hasGlobalAPI())
-                //     this._addGlobalAPI(testFile);
+                if (hadGlobalAPI && !this._hasGlobalAPI())
+                    this._addGlobalAPI(testFile);
             };
         });
     }
@@ -209,48 +201,54 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         return global.fixture && global.test;
     }
 
-    async _runCompiledCode (testFile, compiledCode, filename) {
-        let compiledModule = null;
-
-        this._addGlobalAPI(testFile);
-        this._addExportAPI(testFile);
-
-        stackCleaningHook.enabled = true;
-
-        this._setupRequireHook(testFile);
-
-        try {
-            compiledModule = await this._execAsModule(compiledCode, filename);
-        }
-        catch (err) {
-            if (err.code === errRequireEsmErrorCode)
-                throw new ImportESMInCommonJSError(err, filename);
-
-            if (!(err instanceof APIError))
-                throw new TestCompilationError(stackCleaningHook.cleanError(err));
-
-            throw err;
-        }
-        finally {
-            this._removeRequireHook();
-            stackCleaningHook.enabled = false;
-
-            if (!this.esm)
-                this._removeGlobalAPI();
-        }
-
-        return compiledModule;
+    _runCompiledCode (testFile, compiledCode, filename) {
+        return this._execAsModule(compiledCode, filename);
     }
-
 
     precompile (testFilesInfo) {
         return this._compileCodeForTestFiles(testFilesInfo);
     }
 
     execute (compiledCode, filename) {
+        return this._runCompiledTestCode(compiledCode, filename);
+    }
+
+    async _runCompiledTestCode (compiledCode, filename) {
         const testFile = new TestFile(filename);
 
-        this._runCompiledCode(testFile, compiledCode, filename);
+        // override in child
+        this._addGlobalAPI(testFile);
+        this._addExportAPI(testFile);
+
+        // TODO research and extract/override if needed
+        stackCleaningHook.enabled = true;
+
+        this._setupRequireHook(testFile);
+
+        try {
+            await this._runCompiledCode(testFile, compiledCode, filename);
+        } catch (err) {
+            // TODO extract as method and override in child
+            if (err.code === errRequireEsmErrorCode) {
+                throw new ImportESMInCommonJSError(err, filename);
+            }
+
+            if (!(err instanceof APIError)) {
+                throw new TestCompilationError(stackCleaningHook.cleanError(err));
+            }
+
+            throw err;
+        } finally {
+            this._removeRequireHook();
+        }
+
+
+        // research
+        stackCleaningHook.enabled = false;
+
+        if (!this.esm) {
+            this._removeGlobalAPI();
+        }
 
         return testFile.getTests();
     }

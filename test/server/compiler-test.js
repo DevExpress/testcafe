@@ -1039,7 +1039,9 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Incorrect callsite stack in error report if "import" is used (GH-1226)', function () {
+        it.only('Incorrect callsite stack in error report if "import" is used (GH-1226)', function () {
+            debugger;
+
             return compile('test/server/data/test-suites/regression-gh-1226/testfile.js')
                 .then(compiled => {
                     return compiled.tests[0].fn(testRunMock);
@@ -1051,6 +1053,8 @@ describe('Compiler', function () {
                     const stackTraceLimit = 200;
                     const err             = errList.items[0];
                     const stack           = err.callsite.stackFrames.filter(createStackFilter(stackTraceLimit));
+
+                    debugger;
 
                     expect(stack.length).eql(8);
 
