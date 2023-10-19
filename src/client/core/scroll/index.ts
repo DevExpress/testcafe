@@ -266,8 +266,14 @@ export default class ScrollAutomation {
             .then(() => this._scrollWasPerformed);
     }
 
-    private static _getFixedAncestorOrSelf (element: Element): Node | null {
-        return domUtils.findParent(element, true, styleUtils.isFixedElement);
+    private static _getPinElementAncestorOrSelf (element: Element, styleUtilsMethod: Function): Node | null {
+        return domUtils.findParent(element, true, styleUtilsMethod);
+    }
+
+    private _isTargetElementObscuredInPointByElement (element: Element, styleUtilsMethod: Function): boolean {
+        const elementClosed = ScrollAutomation._getPinElementAncestorOrSelf(element, styleUtilsMethod);
+
+        return !!elementClosed && !elementClosed.contains(this._element);
     }
 
     private _isTargetElementObscuredInPoint (point: AxisValues<number>): boolean {
@@ -276,9 +282,8 @@ export default class ScrollAutomation {
         if (!elementInPoint)
             return false;
 
-        const fixedElement = ScrollAutomation._getFixedAncestorOrSelf(elementInPoint);
-
-        return !!fixedElement && !fixedElement.contains(this._element);
+        return this._isTargetElementObscuredInPointByElement(elementInPoint, styleUtils.isFixedElement) ||
+            this._isTargetElementObscuredInPointByElement(elementInPoint, styleUtils.isStickyElement);
     }
 
     public run (): Promise<boolean | Dictionary<any>> {
