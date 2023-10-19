@@ -88,8 +88,8 @@ const RENAMED_DEPENDENCIES_MAP = new Map([['testcafe', getExportableLibPath()]])
 
 const DEFAULT_TYPESCRIPT_COMPILER_PATH = 'typescript';
 
-export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompilerBase {
-    private static tsDefsPath = TypeScriptTestFileCompiler._getTSDefsPath();
+export class TypeScriptFileCompilerBase extends APIBasedTestFileCompilerBase {
+    private static tsDefsPath = TypeScriptFileCompilerBase._getTSDefsPath();
 
     private readonly _tsConfig: TypescriptConfiguration;
     private readonly _compilerPath: string;
@@ -98,7 +98,7 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
     public constructor (compilerOptions?: TypeScriptCompilerOptions, { baseUrl, esm }: OptionalCompilerArguments = {}) {
         super({ baseUrl, esm });
 
-        // NOTE: At present, it's necessary create an instance TypeScriptTestFileCompiler
+        // NOTE: At present, it's necessary create an instance TypeScriptFileCompilerBase
         // to collect a list of supported test file extensions.
         // So all compilers creates 2 times: first time - for collecting all supported file extensions,
         // second one - for compiling tests.
@@ -108,7 +108,7 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
 
         this._customCompilerOptions = compilerOptions && compilerOptions.options;
         this._tsConfig              = new TypescriptConfiguration(configPath, esm);
-        this._compilerPath          = TypeScriptTestFileCompiler._getCompilerPath(compilerOptions);
+        this._compilerPath          = TypeScriptFileCompilerBase._getCompilerPath(compilerOptions);
     }
 
     private static _getCompilerPath (compilerOptions?: TypeScriptCompilerOptions): string {
@@ -147,7 +147,7 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
     }
 
     private static _getTSDefsPath (): string {
-        return TypeScriptTestFileCompiler._normalizeFilename(path.resolve(__dirname, '../../../../../ts-defs/index.d.ts'));
+        return TypeScriptFileCompilerBase._normalizeFilename(path.resolve(__dirname, '../../../../../ts-defs/index.d.ts'));
     }
 
     private _reportErrors (diagnostics: Readonly<TypeScript.Diagnostic[]>): void {
@@ -180,7 +180,7 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
 
     private _compileFilesToCache (ts: TypeScriptInstance, filenames: string[]): void {
         const opts    = this._tsConfig.getOptions() as Dictionary<CompilerOptionsValue>;
-        const program = ts.createProgram([TypeScriptTestFileCompiler.tsDefsPath, ...filenames], opts);
+        const program = ts.createProgram([TypeScriptFileCompilerBase.tsDefsPath, ...filenames], opts);
 
         DEBUG_LOGGER('version: %s', ts.version);
         DEBUG_LOGGER('options: %O', opts);
@@ -202,7 +202,7 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
             if (!sources)
                 return;
 
-            const sourcePath = TypeScriptTestFileCompiler._normalizeFilename(sources[0].fileName);
+            const sourcePath = TypeScriptFileCompilerBase._normalizeFilename(sources[0].fileName);
 
             this.cache[sourcePath] = result;
         }, void 0, void 0, {
@@ -225,11 +225,11 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
         // NOTE: lazy load the compiler
         const ts: TypeScriptInstance = this._loadTypeScriptCompiler();
         const filenames              = testFilesInfo.map(({ filename }) => filename);
-        const normalizedFilenames    = filenames.map(filename => TypeScriptTestFileCompiler._normalizeFilename(filename));
+        const normalizedFilenames    = filenames.map(filename => TypeScriptFileCompilerBase._normalizeFilename(filename));
         const normalizedFilenamesMap = zipObject(normalizedFilenames, filenames);
 
         const uncachedFiles = normalizedFilenames
-            .filter(filename => filename !== TypeScriptTestFileCompiler.tsDefsPath && !this.cache[filename])
+            .filter(filename => filename !== TypeScriptFileCompilerBase.tsDefsPath && !this.cache[filename])
             .map(filename => normalizedFilenamesMap[filename]);
 
         if (uncachedFiles.length)
@@ -263,5 +263,28 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
 
     public getSupportedExtension (): string[] {
         return [Extensions.ts, Extensions.tsx];
+    }
+}
+
+export class TypeScriptTestFileCompiler extends TypeScriptFileCompilerBase {
+    //
+}
+
+export class TypeScriptConfigurationFileCompiler extends TypeScriptFileCompilerBase {
+    _addGlobalAPI () {
+    }
+
+    async compileConfiguration (filename: string) {
+        const [compiledCode] = await this.precompile([{ code: '', filename }]);
+
+        if (compiledCode) {
+            debugger;
+            const compiledConfigurationModule = await this._runCompiledCode({}, compiledCode, filename);
+            debugger;
+
+            return compiledConfigurationModule.exports;
+        }
+
+        return Promise.resolve();
     }
 }

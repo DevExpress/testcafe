@@ -24,6 +24,7 @@ import { Dictionary } from './interfaces';
 import Extensions from './formats';
 import { ReadConfigFileError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
+import { TypeScriptConfigurationFileCompiler } from '../compiler/test-file/formats/typescript/compiler';
 
 
 const DEBUG_LOGGER = debug('testcafe:configuration');
@@ -245,26 +246,27 @@ export default class Configuration {
     public async _readTsConfigurationFileContent (filePath = this.filePath): Promise<object | null> {
         if (filePath) {
             delete require.cache[filePath];
-            const TypeScriptTestFileCompiler = require('../compiler/test-file/formats/typescript/compiler');
-            const compiler = new TypeScriptTestFileCompiler();
 
-            const precompiledCode = await compiler.precompile([{ filename: filePath }]);
+            // TODO: change require to import
+            const { TypeScriptConfigurationFileCompiler } = require('../compiler/test-file/formats/typescript/compiler');
+
+            const compiler = new TypeScriptConfigurationFileCompiler();
+
+            // const waitUntilCompiled = new Promise((resolve, reject) => {
+            //     compiler.on('module-compiled', (options:any) => {
+            //         console.log('!!!!!!!!!!!!!');
+            //         resolve(options);
+            //     });
+            // });
 
             debugger;
 
+            const options = await compiler.compileConfiguration(filePath);
 
-
-            const waitUntilCompiled = new Promise((resolve, reject) => {
-                compiler.on('module-compiled', (options) => {
-                    console.log('!!!!!!!!!!!!!');
-                    resolve(options);
-                });
-            });
-
-            await compiler.compile(precompiledCode?.[0], filePath);
+            debugger;
 
             // @ts-ignore
-            return waitUntilCompiled;
+            return options;
 
             // const options = require(filePath as string);
 

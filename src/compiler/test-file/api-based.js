@@ -93,6 +93,8 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
             this.emit('module-compiled', mod.exports);
 
             Module._cache[filename] = mod;
+
+            return mod;
         }
     }
 
@@ -145,16 +147,16 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
                     debugger;
                 }
 
-                const hadGlobalAPI = this._hasGlobalAPI();
+                 // const hadGlobalAPI = this._hasGlobalAPI();
 
                 // NOTE: remove global API so that it will be unavailable for the dependencies
-                if (APIBasedTestFileCompilerBase._isNodeModulesDep(filename) && hadGlobalAPI)
-                    this._removeGlobalAPI();
+                // if (APIBasedTestFileCompilerBase._isNodeModulesDep(filename) && hadGlobalAPI)
+                //     this._removeGlobalAPI();
 
                 this._compileExternalModule(mod, filename, requireCompilers[ext], origExt);
 
-                if (hadGlobalAPI && !this._hasGlobalAPI())
-                    this._addGlobalAPI(testFile);
+                // if (hadGlobalAPI && !this._hasGlobalAPI())
+                //     this._addGlobalAPI(testFile);
             };
         });
     }
@@ -207,8 +209,8 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         return global.fixture && global.test;
     }
 
-    async _runCompiledCode (compiledCode, filename) {
-        const testFile = new TestFile(filename);
+    async _runCompiledCode (testFile, compiledCode, filename) {
+        let compiledModule = null;
 
         this._addGlobalAPI(testFile);
         this._addExportAPI(testFile);
@@ -218,7 +220,7 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         this._setupRequireHook(testFile);
 
         try {
-            await this._execAsModule(compiledCode, filename);
+            compiledModule = await this._execAsModule(compiledCode, filename);
         }
         catch (err) {
             if (err.code === errRequireEsmErrorCode)
@@ -237,7 +239,7 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
                 this._removeGlobalAPI();
         }
 
-        return testFile.getTests();
+        return compiledModule;
     }
 
 
@@ -246,7 +248,11 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
     }
 
     execute (compiledCode, filename) {
-        return this._runCompiledCode(compiledCode, filename);
+        const testFile = new TestFile(filename);
+
+        this._runCompiledCode(testFile, compiledCode, filename);
+
+        return testFile.getTests();
     }
 
     async compile (code, filename) {
@@ -257,6 +263,20 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
 
         return Promise.resolve();
     }
+
+    // async compileConfiguration (filename) {
+    //     const [compiledCode] = await this.precompile([{ code: '', filename }]);
+    //
+    //     if (compiledCode) {
+    //         debugger;
+    //         const compiledConfigurationModule = await this._runCompiledCode({}, compiledCode, filename);
+    //         debugger;
+    //
+    //         return compiledConfigurationModule.exports;
+    //     }
+    //
+    //     return Promise.resolve();
+    // }
 
     _hasTests (code) {
         return FIXTURE_RE.test(code) && TEST_RE.test(code);
