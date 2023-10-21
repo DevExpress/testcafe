@@ -2,7 +2,6 @@ import {
     extname, isAbsolute,
 } from 'path';
 import debug from 'debug';
-
 import JSON5 from 'json5';
 
 import {
@@ -24,7 +23,6 @@ import Extensions from './formats';
 import { ReadConfigFileError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
 
-
 const DEBUG_LOGGER = debug('testcafe:configuration');
 
 export default class Configuration {
@@ -41,9 +39,7 @@ export default class Configuration {
     }
 
     protected static _fromObj (obj: object): Dictionary<Option> {
-
         const result = Object.create(null);
-
 
         Object.entries(obj).forEach(([key, value]) => {
             result[key] = new Option(key, value);
@@ -161,7 +157,6 @@ export default class Configuration {
     }
 
     public async _load (): Promise<null | object> {
-
         if (!this.defaultPaths?.length)
             return null;
 
@@ -186,7 +181,6 @@ export default class Configuration {
         }));
 
         const existedConfigs = configs.filter(config => !!config.options);
-
 
         if (!existedConfigs.length)
             return null;
@@ -259,7 +253,6 @@ export default class Configuration {
 
         return null;
     }
-
 
     public async _readConfigurationFileContent (filePath = this.filePath): Promise<Buffer | null> {
         try {
