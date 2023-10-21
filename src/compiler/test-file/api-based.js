@@ -224,10 +224,8 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
             if (err.code === errRequireEsmErrorCode)
                 throw new ImportESMInCommonJSError(err, filename);
 
-
             if (!(err instanceof APIError))
                 throw new TestCompilationError(stackCleaningHook.cleanError(err));
-
 
             throw err;
         }
