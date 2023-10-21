@@ -1,6 +1,3 @@
-/* eslint-disable no-console */
-/* eslint-disable no-debugger */
-
 import {
     extname, isAbsolute,
 } from 'path';
@@ -21,7 +18,6 @@ import OptionSource from './option-source';
 import resolvePathRelativelyCwd from '../utils/resolve-path-relatively-cwd';
 import renderTemplate from '../utils/render-template';
 import WARNING_MESSAGES from '../notifications/warning-message';
-import TypeScriptConfigurationCompiler from '../compiler/test-file/formats/typescript/configuration';
 import log from '../cli/log';
 import { Dictionary } from './interfaces';
 import Extensions from './formats';
@@ -250,15 +246,13 @@ export default class Configuration {
     public async _readTsConfigurationFileContent (filePath = this.filePath): Promise<object | null> {
         if (filePath) {
             delete require.cache[filePath];
-            const compiler = new TypeScriptConfigurationCompiler();
 
-            const precompiledCode = await compiler.precompile([{ filename: filePath }]);
+            // TODO: change require to import
+            const TypeScriptFileCompiler = require('../compiler/test-file/formats/typescript/compiler');
 
+            const compiler = new TypeScriptFileCompiler();
 
-            await compiler.compile(precompiledCode?.[0], filePath);
-
-
-            const options = require(filePath as string);
+            const options = await compiler.compileConfiguration(filePath);
 
             return options;
         }
