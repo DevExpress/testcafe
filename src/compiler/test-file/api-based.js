@@ -82,12 +82,12 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
 
             mod._compile(code, filename);
 
-            Module._cache[filename] = mod;
-
             cacheProxy.stopExternalCaching();
 
-            Module._cache[filename] = mod;
+            return mod;
         }
+
+        return Promise.resolve();
     }
 
     _compileCode (code, filename) {
@@ -195,7 +195,19 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         return global.fixture && global.test;
     }
 
-    async _runCompiledCode (compiledCode, filename) {
+    _runCompiledCode (testFile, compiledCode, filename) {
+        return this._execAsModule(compiledCode, filename);
+    }
+
+    precompile (testFilesInfo) {
+        return this._compileCodeForTestFiles(testFilesInfo);
+    }
+
+    execute (compiledCode, filename) {
+        return this._runCompiledTestCode(compiledCode, filename);
+    }
+
+    async _runCompiledTestCode (compiledCode, filename) {
         const testFile = new TestFile(filename);
 
         this._addGlobalAPI(testFile);
@@ -206,35 +218,30 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         this._setupRequireHook(testFile);
 
         try {
-            await this._execAsModule(compiledCode, filename);
+            await this._runCompiledCode(testFile, compiledCode, filename);
         }
         catch (err) {
             if (err.code === errRequireEsmErrorCode)
                 throw new ImportESMInCommonJSError(err, filename);
 
+
             if (!(err instanceof APIError))
                 throw new TestCompilationError(stackCleaningHook.cleanError(err));
+
 
             throw err;
         }
         finally {
             this._removeRequireHook();
-            stackCleaningHook.enabled = false;
-
-            if (!this.esm)
-                this._removeGlobalAPI();
         }
 
+        stackCleaningHook.enabled = false;
+
+        if (!this.esm)
+            this._removeGlobalAPI();
+
+
         return testFile.getTests();
-    }
-
-
-    precompile (testFilesInfo) {
-        return this._compileCodeForTestFiles(testFilesInfo);
-    }
-
-    execute (compiledCode, filename) {
-        return this._runCompiledCode(compiledCode, filename);
     }
 
     async compile (code, filename) {
