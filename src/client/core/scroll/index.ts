@@ -266,14 +266,14 @@ export default class ScrollAutomation {
             .then(() => this._scrollWasPerformed);
     }
 
-    private static _getPinElementAncestorOrSelf (element: Element, styleUtilsMethod: Function): Node | null {
+    private static _getPinnedElementAncestorOrSelf (element: Element, styleUtilsMethod: Function): Node | null {
         return domUtils.findParent(element, true, styleUtilsMethod);
     }
 
     private _isTargetElementObscuredInPointByElement (element: Element, styleUtilsMethod: Function): boolean {
-        const elementClosed = ScrollAutomation._getPinElementAncestorOrSelf(element, styleUtilsMethod);
+        const pinnedElement = ScrollAutomation._getPinnedElementAncestorOrSelf(element, styleUtilsMethod);
 
-        return !!elementClosed && !elementClosed.contains(this._element);
+        return !!pinnedElement && !pinnedElement.contains(this._element);
     }
 
     private _isTargetElementObscuredInPoint (point: AxisValues<number>): boolean {
