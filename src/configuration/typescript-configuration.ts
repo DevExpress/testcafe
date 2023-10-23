@@ -12,6 +12,7 @@ import { GeneralError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
 import Option from './option';
 import OptionSource from './option-source';
+import { Dictionary } from './interfaces';
 
 const lazyRequire = require('import-lazy')(require);
 const typescript  = lazyRequire('typescript');
@@ -20,7 +21,12 @@ interface TypescriptConfigurationOptions {
     compilerOptions?: object;
 }
 
-export default class TypescriptConfiguration extends Configuration {
+export interface TypescriptConfigurationBase {
+    init (customCompilerOptions?: object): Promise<void>;
+    getOptions (predicate?: (name: string, option: Option) => boolean): Dictionary<OptionValue>;
+}
+
+export default class TypescriptConfiguration extends Configuration implements TypescriptConfigurationBase {
     private readonly basePath: string;
 
     public constructor (tsConfigPath: string | null, useEsmModules?: boolean) {
