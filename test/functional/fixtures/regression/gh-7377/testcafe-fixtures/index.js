@@ -6,7 +6,7 @@ fixture `fixture`
 const input = Selector('#input').find('input');
 
 
-test('test', async (t) => {
+test('Should scroll to the input and enter text into it', async (t) => {
     await t.typeText(input, 'test');
     await t.expect(input.value).eql('test');
 });
