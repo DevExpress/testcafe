@@ -452,12 +452,12 @@ describe('Compiler', function () {
             const ts            = require('typescript');
             const createProgram = sinon.stub().callsFake(ts.createProgram);
 
-            const TSCompilerBase = proxyquire('../../lib/compiler/test-file/formats/typescript/compiler-base', {
+            const TSCompilerBase = proxyquire('../../lib/compiler/test-file/formats/typescript/compiler', {
                 'typescript': { createProgram },
             });
 
-            const TSCompiler = proxyquire('../../lib/compiler/test-file/formats/typescript/compiler', {
-                './compiler-base': TSCompilerBase,
+            const TSCompiler = proxyquire('../../lib/compiler/test-file/formats/typescript/test-file-compiler', {
+                './compiler': TSCompilerBase,
             });
 
             const testData   = [{ filename: 'test/server/data/test-suites/typescript-basic/testfile1.ts', code: 'console.log(42)' }];

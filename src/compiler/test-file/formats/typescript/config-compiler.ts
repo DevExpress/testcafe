@@ -1,4 +1,5 @@
-import TypeScriptFileCompilerBase from './compiler-base';
+/* eslint-disable linebreak-style */
+import TypeScriptFileCompilerBase from './compiler';
 import { TypescriptConfigurationBase } from '../../../../configuration/typescript-configuration';
 import { Dictionary } from '../../../../configuration/interfaces';
 import { DEFAULT_TYPESCRIPT_COMPILER_OPTIONS } from '../../../../configuration/default-values';

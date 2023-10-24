@@ -1,11 +1,101 @@
-import TypeScriptFileCompilerBase from './compiler-base';
-import TypescriptConfiguration, {
-    TypescriptConfigurationBase,
-} from '../../../../configuration/typescript-configuration';
-import { TypeScriptCompilerOptions } from '../../../../configuration/interfaces';
-import { OptionalCompilerArguments } from '../../../interfaces';
+/* eslint-disable linebreak-style */
+import path from 'path';
+import { zipObject } from 'lodash';
+import OS from 'os-family';
+import APIBasedTestFileCompilerBase from '../../api-based';
+import ESNextTestFileCompiler from '../es-next/compiler';
+import { TypescriptConfigurationBase } from '../../../../configuration/typescript-configuration';
+import { GeneralError } from '../../../../errors/runtime';
+import { RUNTIME_ERRORS } from '../../../../errors/types';
+import debug from 'debug';
+import { isRelative } from '../../../../api/test-page-url';
+import getExportableLibPath from '../../get-exportable-lib-path';
+import DISABLE_V8_OPTIMIZATION_NOTE from '../../disable-v8-optimization-note';
 
-export default class TypeScriptTestFileCompiler extends TypeScriptFileCompilerBase {
+// NOTE: For type definitions only
+import TypeScript, {
+    CompilerOptionsValue,
+    SyntaxKind,
+    VisitResult,
+    Visitor,
+    Node,
+    visitEachChild,
+    visitNode,
+    TransformerFactory,
+    SourceFile,
+    addSyntheticLeadingComment,
+} from 'typescript';
+
+import { Dictionary, TypeScriptCompilerOptions } from '../../../../configuration/interfaces';
+import { OptionalCompilerArguments } from '../../../interfaces';
+import Extensions from '../extensions';
+
+declare type TypeScriptInstance = typeof TypeScript;
+
+const tsFactory = TypeScript.factory;
+
+interface TestFileInfo {
+    filename: string;
+}
+
+declare interface RequireCompilerFunction {
+    (code: string, filename: string): string;
+}
+
+interface RequireCompilers {
+    [extension: string]: RequireCompilerFunction;
+}
+
+function testcafeImportPathReplacer<T extends Node> (esm?: boolean): TransformerFactory<T> {
+    return context => {
+        const visit: Visitor = (node): VisitResult<Node> => {
+            // @ts-ignore
+            if (node.parent?.kind === SyntaxKind.ImportDeclaration && node.kind === SyntaxKind.StringLiteral && node.text === 'testcafe') {
+                const libPath = getExportableLibPath(esm);
+
+                return tsFactory.createStringLiteral(libPath);
+            }
+
+            return visitEachChild(node, child => visit(child), context);
+        };
+
+        return node => visitNode(node, visit);
+    };
+}
+
+function disableV8OptimizationCodeAppender<T extends Node> (): TransformerFactory<T> {
+    return () => {
+        const visit: Visitor = (node): VisitResult<Node> => {
+            const evalStatement = tsFactory.createExpressionStatement(tsFactory.createCallExpression(
+                tsFactory.createIdentifier('eval'),
+                void 0,
+                [tsFactory.createStringLiteral('')]
+            ));
+
+            const evalStatementWithComment = addSyntheticLeadingComment(evalStatement, SyntaxKind.MultiLineCommentTrivia, DISABLE_V8_OPTIMIZATION_NOTE, true);
+
+            // @ts-ignore
+            return tsFactory.updateSourceFile(node, [...node.statements, evalStatementWithComment]);
+        };
+
+        return node => visitNode(node, visit);
+    };
+}
+
+
+const DEBUG_LOGGER = debug('testcafe:compiler:typescript');
+
+const RENAMED_DEPENDENCIES_MAP = new Map([['testcafe', getExportableLibPath()]]);
+
+const DEFAULT_TYPESCRIPT_COMPILER_PATH = 'typescript';
+
+export default abstract class TypeScriptTestFileCompilerBase extends APIBasedTestFileCompilerBase {
+    private static tsDefsPath = TypeScriptTestFileCompilerBase._getTSDefsPath();
+
+    private readonly _tsConfig: TypescriptConfigurationBase;
+    private readonly _compilerPath: string;
+    private readonly _customCompilerOptions?: object;
+
     public constructor (compilerOptions?: TypeScriptCompilerOptions, { baseUrl, esm }: OptionalCompilerArguments = {}) {
         super({ baseUrl, esm });
 
