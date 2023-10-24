@@ -1,11 +1,100 @@
-import TypeScriptFileCompilerBase from './compiler-base';
-import TypescriptConfiguration, {
-    TypescriptConfigurationBase,
-} from '../../../../configuration/typescript-configuration';
-import { TypeScriptCompilerOptions } from '../../../../configuration/interfaces';
-import { OptionalCompilerArguments } from '../../../interfaces';
+import path from 'path';
+import { zipObject } from 'lodash';
+import OS from 'os-family';
+import APIBasedTestFileCompilerBase from '../../api-based';
+import ESNextTestFileCompiler from '../es-next/compiler';
+import { TypescriptConfigurationBase } from '../../../../configuration/typescript-configuration';
+import { GeneralError } from '../../../../errors/runtime';
+import { RUNTIME_ERRORS } from '../../../../errors/types';
+import debug from 'debug';
+import { isRelative } from '../../../../api/test-page-url';
+import getExportableLibPath from '../../get-exportable-lib-path';
+import DISABLE_V8_OPTIMIZATION_NOTE from '../../disable-v8-optimization-note';
 
-export default class TypeScriptTestFileCompiler extends TypeScriptFileCompilerBase {
+// NOTE: For type definitions only
+import TypeScript, {
+    CompilerOptionsValue,
+    SyntaxKind,
+    VisitResult,
+    Visitor,
+    Node,
+    visitEachChild,
+    visitNode,
+    TransformerFactory,
+    SourceFile,
+    addSyntheticLeadingComment,
+} from 'typescript';
+
+import { Dictionary, TypeScriptCompilerOptions } from '../../../../configuration/interfaces';
+import { OptionalCompilerArguments } from '../../../interfaces';
+import Extensions from '../extensions';
+
+declare type TypeScriptInstance = typeof TypeScript;
+
+const tsFactory = TypeScript.factory;
+
+interface TestFileInfo {
+    filename: string;
+}
+
+declare interface RequireCompilerFunction {
+    (code: string, filename: string): string;
+}
+
+interface RequireCompilers {
+    [extension: string]: RequireCompilerFunction;
+}
+
+function testcafeImportPathReplacer<T extends Node> (esm?: boolean): TransformerFactory<T> {
+    return context => {
+        const visit: Visitor = (node): VisitResult<Node> => {
+            // @ts-ignore
+            if (node.parent?.kind === SyntaxKind.ImportDeclaration && node.kind === SyntaxKind.StringLiteral && node.text === 'testcafe') {
+                const libPath = getExportableLibPath(esm);
+
+                return tsFactory.createStringLiteral(libPath);
+            }
+
+            return visitEachChild(node, child => visit(child), context);
+        };
+
+        return node => visitNode(node, visit);
+    };
+}
+
+function disableV8OptimizationCodeAppender<T extends Node> (): TransformerFactory<T> {
+    return () => {
+        const visit: Visitor = (node): VisitResult<Node> => {
+            const evalStatement = tsFactory.createExpressionStatement(tsFactory.createCallExpression(
+                tsFactory.createIdentifier('eval'),
+                void 0,
+                [tsFactory.createStringLiteral('')]
+            ));
+
+            const evalStatementWithComment = addSyntheticLeadingComment(evalStatement, SyntaxKind.MultiLineCommentTrivia, DISABLE_V8_OPTIMIZATION_NOTE, true);
+
+            // @ts-ignore
+            return tsFactory.updateSourceFile(node, [...node.statements, evalStatementWithComment]);
+        };
+
+        return node => visitNode(node, visit);
+    };
+}
+
+
+const DEBUG_LOGGER = debug('testcafe:compiler:typescript');
+
+const RENAMED_DEPENDENCIES_MAP = new Map([['testcafe', getExportableLibPath()]]);
+
+const DEFAULT_TYPESCRIPT_COMPILER_PATH = 'typescript';
+
+export default abstract class TypeScriptTestFileCompilerBase extends APIBasedTestFileCompilerBase {
+    private static tsDefsPath = TypeScriptTestFileCompilerBase._getTSDefsPath();
+
+    private readonly _tsConfig: TypescriptConfigurationBase;
+    private readonly _compilerPath: string;
+    private readonly _customCompilerOptions?: object;
+
     public constructor (compilerOptions?: TypeScriptCompilerOptions, { baseUrl, esm }: OptionalCompilerArguments = {}) {
         super({ baseUrl, esm });
 
@@ -18,9 +107,11 @@ export default class TypeScriptTestFileCompiler extends TypeScriptFileCompilerBa
         const configPath = compilerOptions && compilerOptions.configPath || null;
 
         this._customCompilerOptions = compilerOptions && compilerOptions.options;
-        this._tsConfig              = new TypescriptConfiguration(configPath, esm);
-        this._compilerPath          = TypeScriptTestFileCompiler._getCompilerPath(compilerOptions);
+        this._tsConfig              = this.createTypescriptConfiguration(configPath, esm);
+        this._compilerPath          = TypeScriptTestFileCompilerBase._getCompilerPath(compilerOptions);
     }
+
+    abstract createTypescriptConfiguration (configPath: string | null, esm?: boolean): TypescriptConfigurationBase;
 
     private static _getCompilerPath (compilerOptions?: TypeScriptCompilerOptions): string {
         let compilerPath = compilerOptions && compilerOptions.customCompilerModulePath;
@@ -58,7 +149,7 @@ export default class TypeScriptTestFileCompiler extends TypeScriptFileCompilerBa
     }
 
     private static _getTSDefsPath (): string {
-        return TypeScriptTestFileCompiler._normalizeFilename(path.resolve(__dirname, '../../../../../ts-defs/index.d.ts'));
+        return TypeScriptTestFileCompilerBase._normalizeFilename(path.resolve(__dirname, '../../../../../ts-defs/index.d.ts'));
     }
 
     private _reportErrors (diagnostics: Readonly<TypeScript.Diagnostic[]>): void {
@@ -90,11 +181,8 @@ export default class TypeScriptTestFileCompiler extends TypeScriptFileCompilerBa
     }
 
     private _compileFilesToCache (ts: TypeScriptInstance, filenames: string[]): void {
-        const opts = this._tsConfig.getOptions() as Dictionary<CompilerOptionsValue>;
-
-        filenames = filenames.map(name => TypeScriptTestFileCompiler._normalizeFilename(name));
-
-        const program = ts.createProgram([TypeScriptTestFileCompiler.tsDefsPath, ...filenames], opts);
+        const opts    = this._tsConfig.getOptions() as Dictionary<CompilerOptionsValue>;
+        const program = ts.createProgram([TypeScriptTestFileCompilerBase.tsDefsPath, ...filenames], opts);
 
         DEBUG_LOGGER('version: %s', ts.version);
         DEBUG_LOGGER('options: %O', opts);
@@ -116,7 +204,7 @@ export default class TypeScriptTestFileCompiler extends TypeScriptFileCompilerBa
             if (!sources)
                 return;
 
-            const sourcePath = TypeScriptTestFileCompiler._normalizeFilename(sources[0].fileName);
+            const sourcePath = TypeScriptTestFileCompilerBase._normalizeFilename(sources[0].fileName);
 
             this.cache[sourcePath] = result;
         }, void 0, void 0, {
@@ -139,11 +227,11 @@ export default class TypeScriptTestFileCompiler extends TypeScriptFileCompilerBa
         // NOTE: lazy load the compiler
         const ts: TypeScriptInstance = this._loadTypeScriptCompiler();
         const filenames              = testFilesInfo.map(({ filename }) => filename);
-        const normalizedFilenames    = filenames.map(filename => TypeScriptTestFileCompiler._normalizeFilename(filename));
+        const normalizedFilenames    = filenames.map(filename => TypeScriptTestFileCompilerBase._normalizeFilename(filename));
         const normalizedFilenamesMap = zipObject(normalizedFilenames, filenames);
 
         const uncachedFiles = normalizedFilenames
-            .filter(filename => filename !== TypeScriptTestFileCompiler.tsDefsPath && !this.cache[filename])
+            .filter(filename => filename !== TypeScriptTestFileCompilerBase.tsDefsPath && !this.cache[filename])
             .map(filename => normalizedFilenamesMap[filename]);
 
         if (uncachedFiles.length)

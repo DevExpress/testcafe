@@ -22,6 +22,7 @@ import { Dictionary } from './interfaces';
 import Extensions from './formats';
 import { ReadConfigFileError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
+import TypeScriptConfigurationCompiler from '../compiler/test-file/formats/typescript/config-compiler';
 
 const DEBUG_LOGGER = debug('testcafe:configuration');
 
@@ -241,10 +242,7 @@ export default class Configuration {
         if (filePath) {
             delete require.cache[filePath];
 
-            // TODO: change require to import
-            const TypeScriptFileCompiler = require('../compiler/test-file/formats/typescript/compiler');
-
-            const compiler = new TypeScriptFileCompiler();
+            const compiler = new TypeScriptConfigurationCompiler();
 
             const options = await compiler.compileConfiguration(filePath);
 
