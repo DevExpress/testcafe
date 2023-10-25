@@ -215,4 +215,20 @@ Object.assign(window, {
 
         return promise;
     },
+
+    async getHideButtonElements () {
+        const hideButton = await this.getElement('.selector-panel-toggle-button-hammerhead-shadow-ui');
+        const hideButtonSpan = await this.getElement('.selector-panel-toggle-button-hammerhead-shadow-ui span');
+
+        return {
+            hideButton,
+            hideButtonSpan,
+        };
+    },
+
+    async getSelectorPanelContainer () {
+        const selectorPanelContainer = await this.getElement('.selector-inspector-panel-container-hammerhead-shadow-ui');
+
+        return selectorPanelContainer;
+    },
 });

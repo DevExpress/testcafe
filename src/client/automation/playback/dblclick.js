@@ -7,10 +7,8 @@ import AutomationSettings from '../settings';
 import cursor from '../cursor/index';
 
 const featureDetection = hammerhead.utils.featureDetection;
-const browserUtils     = hammerhead.utils.browser;
 const eventSimulator   = hammerhead.eventSandbox.eventSimulator;
 
-const eventUtils = testCafeCore.eventUtils;
 const delay      = testCafeCore.delay;
 
 const FIRST_CLICK_DELAY = featureDetection.isTouchDevice ? 0 : 160;
@@ -52,10 +50,6 @@ export default class DblClickAutomation extends VisibleElementAutomation {
     }
 
     _secondClick (eventArgs) {
-        //NOTE: we should not call focus after the second mousedown (except in IE) because of the native browser behavior
-        if (browserUtils.isIE)
-            eventUtils.bind(document, 'focus', eventUtils.preventDefault, true);
-
         const clickOptions = new ClickOptions({
             offsetX:   eventArgs.screenPoint.x,
             offsetY:   eventArgs.screenPoint.y,
@@ -71,9 +65,6 @@ export default class DblClickAutomation extends VisibleElementAutomation {
                 // NOTE: We should raise the `dblclick` event on an element that
                 // has been actually clicked during the second click automation.
                 this.eventState.dblClickElement = clickAutomation.strategy.eventState.clickElement;
-
-                if (browserUtils.isIE)
-                    eventUtils.unbind(document, 'focus', eventUtils.preventDefault, true);
 
                 return clickEventArgs;
             });

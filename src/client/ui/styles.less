@@ -566,7 +566,6 @@
         }
 
         .selector-inspector-panel {
-            display: flex;
             box-sizing: border-box;
             width: 100%;
             left: 0;
@@ -577,7 +576,42 @@
             color: #283545;
             flex-wrap: nowrap;
             flex-direction: row;
-            justify-content: space-around;
+            position: relative;
+
+            .selector-panel-toggle-button {
+                cursor: pointer;
+                background: white;
+                padding: 1px 8px 3px 8px;
+                top: 2px;
+                border-radius: 4px;
+                overflow: hidden;
+
+                &:hover {
+                    background-color: #cfcfcf;
+                }
+
+                span::after {
+                    content: "Hide Picker";
+                    width: 100%;
+                    height: 100%;
+
+                    @media(max-width: 470px) {
+                        content: "Hide";
+                    }
+                }
+            }
+
+            .selector-inspector-panel-container {
+                display: flex;
+                flex-wrap: nowrap;
+                flex-direction: row;
+                flex-grow: 1;
+                margin-right: 5px;
+
+                .selector-input-container {
+                    margin: 0 5px;
+                }
+            }
 
             * {
                 display: flex;
@@ -642,6 +676,14 @@
                     &.not-found {
                         background-color: #777777;
                     }
+
+                    @media(max-width: 470px) {
+                        display: block;
+                        max-width: 70px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
                 }
 
                 .expand-selector-list {
@@ -658,7 +700,35 @@
                     }
                 }
             }
+
+            &--hidden {
+                padding: 0;
+
+                .selector-panel-toggle-button {
+                    background-color: #283545;
+                    color: white;
+                    font-weight: bold;
+                    position: absolute;
+                    top: -26px;
+                    right: 3px;
+                    z-index: @rootZIndex - 2;
+
+                    &:hover {
+                        background-color: #36B6E5;
+                    }
+
+                    span::after {
+                        content: "Show Picker";
+                    }
+                }
+
+                .selector-inspector-panel-container {
+                    display: none;
+                }
+            }
         }
+
+
     }
 
     .selectors-list {

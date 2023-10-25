@@ -1,14 +1,12 @@
 const hostname = /true/.test(process.env.USE_PUBLIC_HOSTNAME) ? process.env.HOSTNAME : '127.0.0.1';
 
 const browserProviderNames = {
-    sauceLabs:    'sauceLabs',
     browserstack: 'browserstack',
     remote:       'remote',
 };
 
 const testingEnvironmentNames = {
     mobileBrowsers:             'mobile-browsers',
-    localBrowsersIE:            'local-browsers-ie',
     localBrowsersChromeFirefox: 'local-browsers-chrome-firefox',
     localBrowsers:              'local-browsers',
     localChrome:                'local-chrome',
@@ -51,12 +49,6 @@ testingEnvironments[testingEnvironmentNames.localBrowsers] = {
             platform:    'Windows 10',
             browserName: 'chrome',
             alias:       'chrome',
-        },
-        {
-            platform:    'Windows 10',
-            browserName: 'ie',
-            version:     '11.0',
-            alias:       'ie',
         },
         {
             platform:    'Windows 10',

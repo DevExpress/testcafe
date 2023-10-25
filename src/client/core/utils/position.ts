@@ -65,8 +65,7 @@ export function getClientDimensions (target: HTMLElement): Dimensions {
 
 export function getElementFromPoint ({ x, y }: AxisValuesData<number>): Element | null {
     // @ts-ignore
-    const ieFn = document.getElementFromPoint;
-    const func = ieFn || document.elementFromPoint;
+    const func = document.elementFromPoint;
 
     let el: Element | null = null;
 

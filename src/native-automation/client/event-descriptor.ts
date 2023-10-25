@@ -119,6 +119,19 @@ export default class CDPEventDescriptor {
         }, MOUSE_EVENT_OPTIONS);
     }
 
+    public static async createTouchEventOptions (type: string, options: any): Promise<any> {
+        const { x, y } = await calculateIFrameTopLeftPoint();
+
+        return {
+            modifiers:   calculateKeyModifiersValue(options.options),
+            touchPoints: [{
+                x: options.options.clientX + x,
+                y: options.options.clientY + y,
+            }],
+            type,
+        };
+    }
+
     public static delay (delay: number): any {
         return {
             type:    EventType.Delay,

@@ -4,6 +4,9 @@ import { SimulatedKeyInfo } from './key-press/utils';
 import { DispatchEventFn } from './types';
 import CDPEventDescriptor from './event-descriptor';
 import { Modifiers } from '../../test-run/commands/options';
+import hammerhead from './deps/hammerhead';
+
+const TOUCH_MODE = hammerhead.utils.featureDetection.isTouchDevice;
 
 export default class NativeAutomationInput {
     private readonly _dispatchEventFn: DispatchEventFn;
@@ -11,16 +14,30 @@ export default class NativeAutomationInput {
         this._dispatchEventFn = dispatchEventFn;
     }
 
-    public async mouseDown (options: any): Promise<void> {
-        const eventOptions = await CDPEventDescriptor.createMouseEventOptions('mousePressed', options);
+    private async _executeTouchEvent (touchEvent: string, options: any): Promise<void> {
+        const eventOptions = await CDPEventDescriptor.createTouchEventOptions(touchEvent, options);
+
+        return this._dispatchEventFn.single(EventType.Touch, eventOptions);
+    }
+
+    private async _executeMouseEvent (mouseEvent: string, options: any): Promise<void> {
+        const eventOptions = await CDPEventDescriptor.createMouseEventOptions(mouseEvent, options);
 
         return this._dispatchEventFn.single(EventType.Mouse, eventOptions);
     }
 
-    public async mouseUp (options: any): Promise<void> {
-        const eventOptions = await CDPEventDescriptor.createMouseEventOptions('mouseReleased', options);
+    public async mouseDown (options: any): Promise<void> {
+        if (TOUCH_MODE)
+            return this._executeTouchEvent('touchStart', options);
 
-        return this._dispatchEventFn.single(EventType.Mouse, eventOptions);
+        return this._executeMouseEvent('mousePressed', options);
+    }
+
+    public async mouseUp (options: any): Promise<void> {
+        if (TOUCH_MODE)
+            return this._executeTouchEvent('touchEnd', options);
+
+        return this._executeMouseEvent('mouseReleased', options);
     }
 
     public keyDown (options: SimulatedKeyInfo): Promise<void> {

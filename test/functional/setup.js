@@ -1,5 +1,4 @@
 const path                       = require('path');
-const SlConnector                = require('saucelabs-connector');
 const BsConnector                = require('browserstack-connector');
 const caller                     = require('caller');
 const promisifyEvent             = require('promisify-event');
@@ -44,7 +43,6 @@ const REQUESTED_MACHINES_COUNT = environment.browsers.length;
 
 const REMOTE_CONNECTORS_MAP = {
     [config.browserProviderNames.browserstack]: BsConnector,
-    [config.browserProviderNames.sauceLabs]:    SlConnector,
     [config.browserProviderNames.remote]:       RemoteConnector,
 };
 

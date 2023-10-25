@@ -61,15 +61,16 @@ const ANIMATION_UPDATE_INTERVAL            = 10;
 const LOCAL_STORAGE_STATUS_PREFIX_ITEM     = '%testCafeStatusPrefix%';
 
 export default class StatusBar extends serviceUtils.EventEmitter {
-    constructor (userAgent, fixtureName, testName, contextStorage) {
+    constructor (userAgent, fixtureName, testName, contextStorage, nativeAutomation) {
         super();
 
         this.UNLOCK_PAGE_BTN_CLICK = 'testcafe|ui|status-bar|unlock-page-btn-click';
 
-        this.userAgent      = userAgent;
-        this.fixtureName    = fixtureName;
-        this.testName       = testName;
-        this.contextStorage = contextStorage;
+        this.userAgent        = userAgent;
+        this.fixtureName      = fixtureName;
+        this.testName         = testName;
+        this.contextStorage   = contextStorage;
+        this.nativeAutomation = nativeAutomation;
 
         this.statusBar        = null;
         this.infoContainer    = null;
@@ -321,7 +322,7 @@ export default class StatusBar extends serviceUtils.EventEmitter {
     }
 
     _bindClickOnce (elements, handler) {
-        const eventName = featureDetection.isTouchDevice ? 'touchstart' : 'mousedown';
+        const eventName = !this.nativeAutomation && featureDetection.isTouchDevice ? 'touchstart' : 'mousedown';
 
         const downHandler = e => {
             const target          = nativeMethods.eventTargetGetter.call(e);

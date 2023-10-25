@@ -1,20 +1,13 @@
-import hammerhead from '../deps/hammerhead';
 import { sendRequestToFrame } from '../deps/testcafe-core';
 import CURSOR_UI_MESSAGES from './messages';
 
-const browserUtils = hammerhead.utils.browser;
-
-// HACK: In most browsers, the iframe's getElementFromPoint function ignores elements
-// from the parent frame. But in IE it doesn't, and our cursor overlaps the target
-// element. So, we move the cursor to a position one pixel farther to avoid this.
-const RECOGNITION_INCREMENT = browserUtils.isIE ? 1 : 0;
 
 export default {
     move (position) {
         const msg = {
             cmd: CURSOR_UI_MESSAGES.moveRequest,
-            x:   position.x + RECOGNITION_INCREMENT,
-            y:   position.y + RECOGNITION_INCREMENT,
+            x:   position.x,
+            y:   position.y,
         };
 
         return sendRequestToFrame(msg, CURSOR_UI_MESSAGES.moveResponse, window.parent);

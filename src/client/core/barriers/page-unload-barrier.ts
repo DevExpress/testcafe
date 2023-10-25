@@ -2,18 +2,14 @@ import hammerhead from '../deps/hammerhead';
 import * as eventUtils from '../utils/event';
 import delay from '../utils/delay';
 import MESSAGE from '../../../test-run/client-messages';
-import { isAnchorElement } from '../utils/dom';
 
-const Promise       = hammerhead.Promise;
-const browserUtils  = hammerhead.utils.browser;
-const nativeMethods = hammerhead.nativeMethods;
-const transport     = hammerhead.transport;
+const Promise   = hammerhead.Promise;
+const transport = hammerhead.transport;
 
 
-const DEFAULT_BARRIER_TIMEOUT       = 400;
-const SHORT_WAIT_FOR_UNLOAD_TIMEOUT = 30;
-const FILE_DOWNLOAD_CHECK_DELAY     = 500;
-const MAX_UNLOADING_TIMEOUT         = 15_000;
+const DEFAULT_BARRIER_TIMEOUT   = 400;
+const FILE_DOWNLOAD_CHECK_DELAY = 500;
+const MAX_UNLOADING_TIMEOUT     = 15_000;
 
 
 let unloading = false;
@@ -22,48 +18,9 @@ let pageNavigationTriggeredListener = null as (() => void) | null;
 let pageNavigationTriggered         = false;
 
 function onBeforeUnload (): void {
-    if (browserUtils.isIE) {
-        prolongUnloadWaitingIeOnly(SHORT_WAIT_FOR_UNLOAD_TIMEOUT);
-        exceptFileDownloadingIeOnly();
-
-        return;
-    }
-
     unloading = true;
 }
 
-// NOTE: this variables are for IE only
-let waitingForUnload          = false;
-let waitingForUnloadTimeoutId = null as (() => void) | null;
-let waitingPromiseResolvers   = [] as (() => void)[];
-
-function prolongUnloadWaitingIeOnly (timeout: number): void {
-    if (waitingForUnloadTimeoutId)
-        nativeMethods.clearTimeout.call(window, waitingForUnloadTimeoutId);
-
-    waitingForUnload = true;
-
-    waitingForUnloadTimeoutId = nativeMethods.setTimeout.call(window, () => {
-        waitingForUnloadTimeoutId = null;
-        waitingForUnload          = false;
-
-        waitingPromiseResolvers.forEach(resolve => resolve());
-        waitingPromiseResolvers = [];
-    }, timeout);
-}
-
-function exceptFileDownloadingIeOnly (): void {
-    delay(0)
-        .then(() => {
-            // NOTE: except file downloading
-            if (document.readyState === 'loading') {
-                const activeElement = nativeMethods.documentActiveElementGetter.call(document);
-
-                if (!activeElement || !isAnchorElement(activeElement) || !activeElement.hasAttribute('download'))
-                    unloading = true;
-            }
-        });
-}
 
 function waitForFileDownload (): Promise<void> {
     return delay(FILE_DOWNLOAD_CHECK_DELAY)
@@ -104,17 +61,15 @@ export function wait (timeout?: number): Promise<void> {
     }
 
     const waitForUnloadingPromise = delay(timeout)
-        // eslint-disable-next-line consistent-return
         .then((): void | Promise<void> => {
-            if (unloading) {
-                return waitForFileDownload()
-                    .then(() => {
-                        unloading = false;
-                    });
-            }
+            if (!unloading)
+                return void 0;
 
-            if (waitingForUnload)
-                return new Promise((resolve: () => void) => waitingPromiseResolvers.push(resolve));
+            return waitForFileDownload()
+                .then(() => {
+                    unloading = false;
+                });
+
         });
 
     // NOTE: sometimes the page isn't actually unloaded after the beforeunload event

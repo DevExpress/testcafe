@@ -1,6 +1,6 @@
 const { assignIn } = require('lodash');
 
-const CLIENT_TEST_LOCAL_BROWSERS_ALIASES = ['ie', 'edge', 'chrome', 'firefox', 'safari'];
+const CLIENT_TEST_LOCAL_BROWSERS_ALIASES = ['edge', 'chrome', 'firefox', 'safari'];
 
 const CLIENT_TESTS_PATH        = 'test/client/fixtures';
 const CLIENT_TESTS_LEGACY_PATH = 'test/client/legacy-fixtures';
@@ -48,10 +48,10 @@ const CLIENT_TESTS_DESKTOP_BROWSERS = [
 
 const CLIENT_TESTS_MOBILE_BROWSERS = [
     {
-        platform:    'Linux',
-        browserName: 'android',
-        version:     '6.0',
-        deviceName:  'Android Emulator',
+        deviceName:      'Android GoogleAPI Emulator',
+        browserName:     'Chrome',
+        platformVersion: '7.1',
+        platformName:    'Android',
     },
     {
         platform:    'iOS',

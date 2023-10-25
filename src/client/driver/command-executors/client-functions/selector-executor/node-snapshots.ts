@@ -9,35 +9,13 @@ import { utils } from '../../../deps/hammerhead';
 // @ts-ignore
 import { positionUtils } from '../../../deps/testcafe-core';
 
-
 const nodeSnapshotPropertyInitializers = {
     // eslint-disable-next-line no-restricted-properties
-    childNodeCount: (node: Node) => node.childNodes.length,
-    hasChildNodes:  (node: Node) => !!nodeSnapshotPropertyInitializers.childNodeCount(node),
-
-    childElementCount: (node: Element) => {
-        const children = node.children;
-
-        if (children)
-            // eslint-disable-next-line no-restricted-properties
-            return children.length;
-
-        // NOTE: IE doesn't have `children` for non-element nodes =/
-        let childElementCount = 0;
-        // eslint-disable-next-line no-restricted-properties
-        const childNodeCount  = node.childNodes.length;
-
-        for (let i = 0; i < childNodeCount; i++) {
-            // eslint-disable-next-line no-restricted-properties
-            if (node.childNodes[i].nodeType === 1)
-                childElementCount++;
-        }
-
-        return childElementCount;
-    },
-
+    childNodeCount:    (node: Node) => node.childNodes.length,
+    hasChildNodes:     (node: Node) => !!nodeSnapshotPropertyInitializers.childNodeCount(node),
+    childElementCount: (node: Element) => node.children?.length || 0,
     // eslint-disable-next-line no-restricted-properties
-    hasChildElements: (node: Element) => !!nodeSnapshotPropertyInitializers.childElementCount(node),
+    hasChildElements:  (node: Element) => !!nodeSnapshotPropertyInitializers.childElementCount(node),
 };
 
 class BaseSnapshot {

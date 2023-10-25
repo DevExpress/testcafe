@@ -319,6 +319,9 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     private _waitForHeartbeat (): void {
+        if (this._options.developmentMode)
+            return;
+
         this.heartbeatTimeout = setTimeout(() => {
             const err = this._createBrowserDisconnectedError();
 

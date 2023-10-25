@@ -1,6 +1,5 @@
 import { assertType, is } from '../errors/runtime/type-assertions';
 import wrapTestFunction from '../api/wrap-test-function';
-import { getUrl, assertRoleUrl } from '../api/test-page-url';
 import Role from './role';
 
 interface RoleOptions {
@@ -15,9 +14,6 @@ export function createRole (loginUrl: string, initFn: Function, options: RoleOpt
     if (options.preserveUrl !== void 0)
         assertType(is.boolean, 'Role', 'The "preserveUrl" option', options.preserveUrl);
 
-    assertRoleUrl(loginUrl, 'Role');
-
-    loginUrl = getUrl(loginUrl);
     initFn   = wrapTestFunction(initFn);
 
     return new Role(loginUrl, initFn, options);

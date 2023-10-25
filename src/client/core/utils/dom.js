@@ -40,7 +40,6 @@ export const isMapElement                           = hammerhead.utils.dom.isMap
 export const isBodyElement                          = hammerhead.utils.dom.isBodyElement;
 export const isHtmlElement                          = hammerhead.utils.dom.isHtmlElement;
 export const isDocument                             = hammerhead.utils.dom.isDocument;
-export const isWindow                               = hammerhead.utils.dom.isWindow;
 export const isTextEditableInput                    = hammerhead.utils.dom.isTextEditableInput;
 export const isTextEditableElement                  = hammerhead.utils.dom.isTextEditableElement;
 export const isTextEditableElementAndEditingAllowed = hammerhead.utils.dom.isTextEditableElementAndEditingAllowed;
@@ -75,7 +74,7 @@ function canFocus (element, parent, tabIndex) {
     if (getElementStyleProperty(element, 'display') === 'none' || getElementStyleProperty(element, 'visibility') === 'hidden')
         return false;
 
-    if ((browserUtils.isIE || browserUtils.isAndroid) && isOptionElement(element))
+    if (browserUtils.isAndroid && isOptionElement(element))
         return false;
 
     if (tabIndex !== null && tabIndex < 0)
@@ -127,33 +126,23 @@ function filterFocusableElements (parent) {
     let tagName  = null;
     let tabIndex = null;
 
-    let needPush = false;
-
     for (let i = 0; i < allElements.length; i++) {
         element  = allElements[i];
         tagName  = getTagName(element);
         tabIndex = getTabIndexAttributeIntValue(element);
-        needPush = false;
 
         if (!canFocus(element, parent, tabIndex))
             continue;
 
-        if (inputElementsRegExp.test(tagName))
-            needPush = true;
-        else if (element.shadowRoot)
-            needPush = true;
-        else if (isIframeElement(element))
-            needPush = true;
-        else if (isAnchorElement(element) && element.hasAttribute('href'))
-            needPush = element.getAttribute('href') !== '' || !browserUtils.isIE || tabIndex !== null;
-
         const contentEditableAttr = element.getAttribute('contenteditable');
 
-        if (contentEditableAttr === '' || contentEditableAttr === 'true')
-            needPush = true;
-
-        if (tabIndex !== null)
-            needPush = true;
+        const needPush = inputElementsRegExp.test(tagName)
+                          || element.shadowRoot
+                          || isIframeElement(element)
+                          || isAnchorElement(element) && element.hasAttribute('href')
+                          || contentEditableAttr === ''
+                          || contentEditableAttr === 'true'
+                          || tabIndex !== null;
 
         if (needPush)
             focusableElements.push(element);
@@ -265,8 +254,6 @@ export function blocksImplicitSubmission (el) {
         inputTypeRegExp = /^(text|password|color|date|time|datetime|datetime-local|email|month|number|search|tel|url|week|image)$/i;
     else if (browserUtils.isFirefox)
         inputTypeRegExp = /^(text|password|date|time|datetime|datetime-local|email|month|number|search|tel|url|week|image)$/i;
-    else if (browserUtils.isIE)
-        inputTypeRegExp = /^(text|password|color|date|time|datetime|datetime-local|email|file|month|number|search|tel|url|week|image)$/i;
     else
         inputTypeRegExp = /^(text|password|datetime|email|number|search|tel|url|image)$/i;
 
@@ -358,11 +345,6 @@ export function remove (el) {
 }
 
 export function isIFrameWindowInDOM (win) {
-    //NOTE: In MS Edge, if an iframe is removed from DOM, the browser throws an exception when accessing window.top
-    //and window.frameElement. Fortunately, setTimeout is set to undefined in this case.
-    if (!win.setTimeout)
-        return false;
-
     let frameElement = null;
 
     try {
@@ -382,13 +364,7 @@ export function isIFrameWindowInDOM (win) {
 }
 
 export function isTopWindow (win) {
-    try {
-        //NOTE: MS Edge throws an exception when trying to access window.top from an iframe removed from DOM
-        return win.top === win;
-    }
-    catch (e) {
-        return false;
-    }
+    return win.top === win;
 }
 
 export function findIframeByWindow (iframeWindow) {
