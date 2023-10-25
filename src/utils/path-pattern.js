@@ -6,7 +6,8 @@ import EventEmitter from 'events';
 const DATE_FORMAT = 'YYYY-MM-DD';
 const TIME_FORMAT = 'HH-mm-ss';
 
-const ERRORS_FOLDER = 'errors';
+const ERRORS_FOLDER             = 'errors';
+const PATH_BEFORE_ERRORS_FOLDER = /(.*?)*(\/|\\)/gm;
 
 const PROBLEMATIC_PLACEHOLDER_VALUE = '';
 
@@ -82,6 +83,13 @@ export default class PathPattern extends EventEmitter {
         };
     }
 
+    _addErrorsPath (resultFilePath) {
+        if (~resultFilePath.search(PATH_BEFORE_ERRORS_FOLDER))
+            return resultFilePath.replace(PATH_BEFORE_ERRORS_FOLDER, match => `${match}${ERRORS_FOLDER}\\`);
+
+        return `${ERRORS_FOLDER}\\${resultFilePath}`;
+    }
+
     _buildPath (pattern, placeholderToDataMap, forError) {
         let resultFilePath            = pattern;
         const problematicPlaceholders = [];
@@ -92,12 +100,8 @@ export default class PathPattern extends EventEmitter {
             resultFilePath = resultFilePath.replace(findPlaceholderRegExp, () => {
                 if (placeholder === PLACEHOLDERS.FILE_INDEX) {
                     const getFileIndexFn = placeholderToDataMap[placeholder];
-                    let result           = getFileIndexFn(forError);
 
-                    if (forError)
-                        result = `${ERRORS_FOLDER}\\${result}`;
-
-                    return result;
+                    return getFileIndexFn(forError);
                 }
 
                 else if (placeholder === PLACEHOLDERS.USERAGENT) {
@@ -117,6 +121,9 @@ export default class PathPattern extends EventEmitter {
                 return calculatedValue;
             });
         }
+
+        if (forError)
+            resultFilePath = this._addErrorsPath(resultFilePath);
 
         if (problematicPlaceholders.length)
             this.emit('problematic-placeholders-found', { placeholders: problematicPlaceholders });
