@@ -1,4 +1,6 @@
 /* eslint-disable linebreak-style */
+/* eslint-disable no-console */
+/* eslint-disable no-debugger */
 import path from 'path';
 import { zipObject } from 'lodash';
 import OS from 'os-family';
@@ -94,9 +96,10 @@ export default abstract class TypeScriptTestFileCompilerBase extends APIBasedTes
 
     private readonly _tsConfig: TypescriptConfigurationBase;
     private readonly _compilerPath: string;
-    private readonly _customCompilerOptions?: object;
+    private _customCompilerOptions?: object;
+    private _customConfigurationCompilerOptions?: object;
 
-    public constructor (compilerOptions?: TypeScriptCompilerOptions, { baseUrl, esm }: OptionalCompilerArguments = {}) {
+    public constructor (compilerOptions?: TypeScriptCompilerOptions, { baseUrl, esm }: OptionalCompilerArguments = {}, configurationCompilerOptions?: object) {
         super({ baseUrl, esm });
 
         // NOTE: At present, it's necessary create an instance TypeScriptTestFileCompiler
@@ -107,6 +110,8 @@ export default abstract class TypeScriptTestFileCompilerBase extends APIBasedTes
 
         const configPath = compilerOptions && compilerOptions.configPath || null;
 
+        console.log('Configuration compiler options:');
+        debugger;
         this._customCompilerOptions = compilerOptions && compilerOptions.options;
         this._tsConfig              = new TypescriptConfiguration(configPath, esm);
         this._compilerPath          = TypeScriptTestFileCompiler._getCompilerPath(compilerOptions);
@@ -173,6 +178,7 @@ export default abstract class TypeScriptTestFileCompilerBase extends APIBasedTes
     }
 
     public _compileCodeForTestFiles (testFilesInfo: TestFileInfo[]): Promise<string[]> {
+        debugger;
         return this._tsConfig.init(this._customCompilerOptions)
             .then(() => {
                 return super._compileCodeForTestFiles(testFilesInfo);
@@ -186,6 +192,7 @@ export default abstract class TypeScriptTestFileCompilerBase extends APIBasedTes
 
         const program = ts.createProgram([TypeScriptTestFileCompiler.tsDefsPath, ...filenames], opts);
 
+        debugger;
         DEBUG_LOGGER('version: %s', ts.version);
         DEBUG_LOGGER('options: %O', opts);
 

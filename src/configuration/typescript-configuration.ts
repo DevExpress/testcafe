@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 import Configuration from './configuration-base';
 import {
     DEFAULT_TYPESCRIPT_COMPILER_OPTIONS,
@@ -23,7 +24,7 @@ interface TypescriptConfigurationOptions {
 
 export interface TypescriptConfigurationBase {
     init (customCompilerOptions?: object): Promise<void>;
-    getOptions (predicate?: (name: string, option: Option) => boolean): Dictionary<OptionValue>;
+    getOptions (predicate?: ((name: string, option: Option) => boolean) | object): Dictionary<OptionValue>;
 }
 
 export default class TypescriptConfiguration extends Configuration implements TypescriptConfigurationBase {
@@ -47,8 +48,10 @@ export default class TypescriptConfiguration extends Configuration implements Ty
     }
 
     public async init (customCompilerOptions?: object): Promise<void> {
-        const opts = await this._load() as TypescriptConfigurationOptions;
+        debugger;
+        const opts = await this._load(customCompilerOptions) as TypescriptConfigurationOptions;
 
+        debugger;
         if (opts && opts.compilerOptions) {
             const parsedOpts = this._parseOptions(opts);
 

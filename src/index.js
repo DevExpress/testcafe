@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable no-debugger */
 import embeddingUtils from './embedding-utils';
 import exportableLib from './api/exportable-lib';
 import TestCafeConfiguration from './configuration/testcafe-configuration';
@@ -15,6 +17,9 @@ const setupExitHook = lazyRequire('async-exit-hook');
 async function getConfiguration (args) {
     let configuration;
 
+    console.log('In get configuration');
+    console.log(args);
+    debugger;
     if (args.length === 1 && typeof args[0] === 'object') {
         configuration = new TestCafeConfiguration(args[0]?.configFile);
 
@@ -25,7 +30,7 @@ async function getConfiguration (args) {
         // It should be removed in future TestCafe versions.
         // All new APIs should be enabled through the configuration object in the upper clause.
         // Please do not add new APIs here.
-        const [hostname, port1, port2, ssl, developmentMode, retryTestPages, cache, configFile] = args;
+        const [hostname, port1, port2, ssl, developmentMode, retryTestPages, cache, configFile, compilerOptions] = args;
 
         configuration = new TestCafeConfiguration(configFile);
 
@@ -37,6 +42,7 @@ async function getConfiguration (args) {
             developmentMode,
             retryTestPages,
             cache,
+            compilerOptions,
         });
     }
 

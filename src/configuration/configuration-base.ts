@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable no-debugger */
 import {
     extname, isAbsolute,
 } from 'path';
@@ -157,7 +159,7 @@ export default class Configuration {
         return this._defaultPaths;
     }
 
-    public async _load (): Promise<null | object> {
+    public async _load (loadInfo: any): Promise<null | object> {
         if (!this.defaultPaths?.length)
             return null;
 
@@ -170,7 +172,7 @@ export default class Configuration {
             if (this._isJSConfiguration(filePath))
                 options = this._readJsConfigurationFileContent(filePath);
             else if (this._isTSConfiguration(filePath))
-                options = await this._readTsConfigurationFileContent(filePath);
+                options = await this._readTsConfigurationFileContent(filePath, loadInfo?.compilerOptions);
             else {
                 const configurationFileContent = await this._readConfigurationFileContent(filePath);
 
@@ -238,14 +240,14 @@ export default class Configuration {
         return null;
     }
 
-    public async _readTsConfigurationFileContent (filePath = this.filePath): Promise<object | null> {
+    public async _readTsConfigurationFileContent (filePath = this.filePath, loadOptions: any): Promise<object | null> {
         if (filePath) {
             delete require.cache[filePath];
-
-            const compiler = new TypeScriptConfigurationCompiler();
-
+            debugger;
+            const compiler = new TypeScriptConfigurationCompiler({}, {}, loadOptions?.typescript);
             const options = await compiler.compileConfiguration(filePath);
 
+            debugger;
             return options;
         }
 

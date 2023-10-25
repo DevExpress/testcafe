@@ -100,7 +100,7 @@ export default class TestCafeConfiguration extends Configuration {
     public async init (options?: Dictionary<object>): Promise<void> {
         await super.init();
 
-        const opts = await this._load();
+        const opts = await this._load(options);
 
         if (opts) {
             this._options = Configuration._fromObj(opts);
