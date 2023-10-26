@@ -96,10 +96,9 @@ export default abstract class TypeScriptTestFileCompilerBase extends APIBasedTes
 
     private readonly _tsConfig: TypescriptConfigurationBase;
     private readonly _compilerPath: string;
-    private _customCompilerOptions?: object;
-    private _customConfigurationCompilerOptions?: object;
+    private _customCompilerOptions?: Dictionary<boolean | number>;;
 
-    public constructor (compilerOptions?: TypeScriptCompilerOptions, { baseUrl, esm }: OptionalCompilerArguments = {}, configurationCompilerOptions?: object) {
+    public constructor (compilerOptions?: TypeScriptCompilerOptions, { baseUrl, esm }: OptionalCompilerArguments = {}) {
         super({ baseUrl, esm });
 
         // NOTE: At present, it's necessary create an instance TypeScriptTestFileCompiler

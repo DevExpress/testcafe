@@ -244,7 +244,7 @@ export default class Configuration {
         if (filePath) {
             delete require.cache[filePath];
             debugger;
-            const compiler = new TypeScriptConfigurationCompiler({}, {}, loadOptions?.typescript);
+            const compiler = new TypeScriptConfigurationCompiler(loadOptions?.typescript);
             const options = await compiler.compileConfiguration(filePath);
 
             debugger;
