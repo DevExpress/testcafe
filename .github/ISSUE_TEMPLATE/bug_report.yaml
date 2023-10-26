@@ -5,13 +5,13 @@ body:
   - type: markdown
     attributes:
       value: |
-        If you have all reproduction steps with a complete sample app, please share as many details as possible in the sections below.
+        Fill the template. Share as much information about the bug as you can. Create a minimal working example that allows the TestCafe team to reliably reproduce the bug.
 
-        Make sure that you tried using the latest [TestCafe](https://github.com/DevExpress/testcafe/releases) version, where this behavior might have been already addressed.
+        Use the latest [TestCafe](https://github.com/DevExpress/testcafe/releases) version - it includes more bug fixes.
 
-        If your tests run in Chromium-based browsers, check if the [Native Automation Mode](https://testcafe.io/documentation/404237/guides/intermediate-guides/native-automation-mode) resolves the issue.
+        If your tests run in Chromium-based browsers, turn [native automation](https://testcafe.io/documentation/404237/guides/intermediate-guides/native-automation-mode) on and off, to confirm that it doesn't affect the issue.
 
-        Before submitting an issue, please check existing issues in [this repository](https://github.com/DevExpress/testcafe/issues) in case a similar issue exists or was already addressed. This may save your time (and ours).
+        Before you submit an issue, please check [our GitHub repository](https://github.com/DevExpress/testcafe/issues) for similar tickets. This may save your time (and ours).
   
   - type: textarea
     id: scenario
@@ -43,11 +43,9 @@ body:
   - type: textarea
     id: url
     attributes:
-      label: What is your public website URL? (or attach your complete example)
+      label: What is the public URL of the test page? (attach your complete example)
       description: |
-        Please share a public accessible URL to your application or attach a simple app which we can run.
-        Note: if your website requires any additional access procedures like authentication, please ask the website owner to send us a written confirmation at [support@devexpress.com](mailto:support@devexpress.com) in a free text form. It will allow the DevExpress staff to remotely access the website and its internal resources for research, testing, and debugging purposes.
-        Note: If your website is not public and you can't share its URL, please refer to this article to learn how to create an example: [How To: Create a Minimal Working Example When You Submit an Issue](https://testcafe.io/402636/faq#how-to-create-a-minimal-working-example-when-you-submit-an-issue)
+        The TestCafe team needs to be able to reproduce the bug you encountered. Include a **public** test page URL in your example. Do not share any private data, such as the secret address of your staging server, or your access credentials. Refer to this article to learn how to create an example: [How To: Create a Minimal Working Example When You Submit an Issue](https://testcafe.io/402636/faq#how-to-create-a-minimal-working-example-when-you-submit-an-issue).
     validations:
       required: true
 
@@ -56,7 +54,7 @@ body:
     attributes:
       label: What is your TestCafe test code?
       description: >
-        Paste your complete test code including all the referenced modules if any.
+        Paste your complete test code including all the referenced modules, if any.
     validations:
       required: true
 
@@ -74,7 +72,7 @@ body:
     attributes:
       label: Your complete test report
       description: >
-        Paste your complete result test report here (even if it is huge).
+        Paste the complete test report here (even if it is huge).
     validations:
       required: false
 
