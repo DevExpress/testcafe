@@ -155,7 +155,7 @@ describe('Screenshots on fails', function () {
                     screenshotPathPatternOnFails: '${TEST}/errors/test-${FILE_INDEX}',
                 })
                 .catch(() => {
-                    const PATH_SCREENSHOOT_ERROR = path.join(SCREENSHOTS_PATH, `Screenshot on the assertion fail/test-errors/1.png`);
+                    const PATH_SCREENSHOOT_ERROR = path.join(SCREENSHOTS_PATH, `Screenshot on the assertion fail`, `errors`, `test-1.png`);
 
                     expect(fs.existsSync(PATH_SCREENSHOOT_ERROR)).eql(true);
                 });
