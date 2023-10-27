@@ -41,7 +41,7 @@ const CLIENT_TESTS_DESKTOP_BROWSERS = [
         browserName: 'firefox',
     },
     {
-        platform:    'macOS 12',
+        platform:    'macOS 13',
         browserName: 'safari',
     },
 ];
