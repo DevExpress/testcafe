@@ -83,7 +83,11 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
             mod._compile(code, filename);
 
             cacheProxy.stopExternalCaching();
+
+            return mod;
         }
+
+        return Promise.resolve();
     }
 
     _compileCode (code, filename) {
@@ -191,7 +195,12 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         return global.fixture && global.test;
     }
 
-    async _runCompiledCode (compiledCode, filename) {
+    _runCompiledCode (testFile, compiledCode, filename) {
+        return this._execAsModule(compiledCode, filename);
+    }
+
+
+    async _runCompiledTestCode (compiledCode, filename) {
         const testFile = new TestFile(filename);
 
         this._addGlobalAPI(testFile);
@@ -202,7 +211,7 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         this._setupRequireHook(testFile);
 
         try {
-            await this._execAsModule(compiledCode, filename);
+            await this._runCompiledCode(testFile, compiledCode, filename);
         }
         catch (err) {
             if (err.code === errRequireEsmErrorCode)
@@ -230,7 +239,7 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
     }
 
     execute (compiledCode, filename) {
-        return this._runCompiledCode(compiledCode, filename);
+        return this._runCompiledTestCode(compiledCode, filename);
     }
 
     async compile (code, filename) {

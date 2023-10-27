@@ -85,6 +85,7 @@ async function runTests (argParser) {
         v8Flags,
         disableCrossDomain,
         esm,
+        compilerOptions,
     } = opts;
 
     const testCafe = await createTestCafe({
@@ -102,6 +103,7 @@ async function runTests (argParser) {
         v8Flags,
         disableCrossDomain,
         esm,
+        compilerOptions,
     });
 
     const correctedBrowsersAndSources = await correctBrowsersAndSources(argParser, testCafe.configuration);
