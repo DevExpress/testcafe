@@ -22,10 +22,6 @@ jobs:
       SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
       SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
       CLIENT_TESTS_CURRENT_BROWSER: ${{ matrix.browser }}
-      # NOTE: Test server on Android Emulator 7.1 and later can be accessed only via hostname.
-      # We are forced to add this variable to say the 'qunit-harness' module uses the hostname for the test server URL.
-      # https://github.com/AlexanderMoskovkin/qunit-harness/blob/master/src/index.js#L119
-      TRAVIS: true
     steps:
       - uses: DevExpress/testcafe-build-system/actions/set-status@main
         with:
