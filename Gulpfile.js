@@ -354,7 +354,7 @@ gulp.step('test-client-travis-mobile-run', () => {
     // NOTE: Test server on Android Emulator 7.1 and later can be accessed only via hostname.
     // We are forced to add this variable to say the 'qunit-harness' module uses the hostname for the test server URL.
     // https://github.com/AlexanderMoskovkin/qunit-harness/blob/master/src/index.js#L119
-    process.env.TRAVIS = true
+    process.env.TRAVIS = true;
 
     const saucelabsSettings = CLIENT_TESTS_SAUCELABS_SETTINGS;
 
