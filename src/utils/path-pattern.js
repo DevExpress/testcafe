@@ -7,7 +7,6 @@ const DATE_FORMAT = 'YYYY-MM-DD';
 const TIME_FORMAT = 'HH-mm-ss';
 
 const ERRORS_FOLDER             = 'errors';
-const PATH_BEFORE_ERRORS_FOLDER = /(.*?)*(\/|\\)/gm;
 
 const PROBLEMATIC_PLACEHOLDER_VALUE = '';
 
@@ -84,13 +83,6 @@ export default class PathPattern extends EventEmitter {
         };
     }
 
-    _addErrorsPath (resultFilePath) {
-        if (~resultFilePath.search(PATH_BEFORE_ERRORS_FOLDER))
-            return resultFilePath.replace(PATH_BEFORE_ERRORS_FOLDER, match => `${match}${ERRORS_FOLDER}\\`);
-
-        return `${ERRORS_FOLDER}\\${resultFilePath}`;
-    }
-
     _buildPath (pattern, placeholderToDataMap, forError) {
         let resultFilePath            = pattern;
         const problematicPlaceholders = [];
@@ -127,7 +119,6 @@ export default class PathPattern extends EventEmitter {
             });
         }
 
-
         if (problematicPlaceholders.length)
             this.emit('problematic-placeholders-found', { placeholders: problematicPlaceholders });
 
@@ -136,8 +127,7 @@ export default class PathPattern extends EventEmitter {
 
     getPath (forError) {
         const pattern = this.patternOnFails && forError ? this.patternOnFails : this.pattern;
-
-        const path = this._buildPath(pattern, this.placeholderToDataMap, forError);
+        const path    = this._buildPath(pattern, this.placeholderToDataMap, forError);
 
         return correctFilePath(path, this.fileExtension);
     }

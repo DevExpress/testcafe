@@ -388,7 +388,7 @@ export default class Runner extends EventEmitter {
         }
 
         if (pathPatternOnFails) {
-            this._validateScreenshotPath(pathPatternOnFails, 'screenshots path pattern');
+            this._validateScreenshotPath(pathPatternOnFails, 'screenshots path pattern on fails');
 
             this.configuration.mergeOptions({ [OPTION_NAMES.screenshots]: { pathPatternOnFails } });
         }
@@ -749,7 +749,8 @@ export default class Runner extends EventEmitter {
     screenshots (...options) {
         let fullPage;
         let thumbnails;
-        let [path, takeOnFails, pathPattern, pathPatternOnFails] = options;
+        let pathPatternOnFails;
+        let [path, takeOnFails, pathPattern] = options;
 
         if (options.length === 1 && options[0] && typeof options[0] === 'object')
             ({ path, takeOnFails, pathPattern, pathPatternOnFails, fullPage, thumbnails } = options[0]);
