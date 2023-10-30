@@ -452,12 +452,8 @@ describe('Compiler', function () {
             const ts            = require('typescript');
             const createProgram = sinon.stub().callsFake(ts.createProgram);
 
-            const TSCompilerBase = proxyquire('../../lib/compiler/test-file/formats/typescript/compiler', {
+            const TSCompiler = proxyquire('../../lib/compiler/test-file/formats/typescript/compiler', {
                 'typescript': { createProgram },
-            });
-
-            const TSCompiler = proxyquire('../../lib/compiler/test-file/formats/typescript/test-file-compiler', {
-                './compiler': TSCompilerBase,
             });
 
             const testData   = [{ filename: 'test/server/data/test-suites/typescript-basic/testfile1.ts', code: 'console.log(42)' }];
@@ -1015,7 +1011,7 @@ describe('Compiler', function () {
         });
 
         it('Should raise an error if test file has a TypeScript error', function () {
-            const testfile = posixResolve('test/server/data/test-suites/typescript-compile-errors/testfile.ts');
+            const testfile = posixResolve('test/server/data/test-suites/typescript-compile-errors/testfile.ts').toLowerCase();
 
             return compile(testfile)
                 .then(function () {

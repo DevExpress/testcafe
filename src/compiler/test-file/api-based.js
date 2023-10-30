@@ -199,13 +199,6 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         return this._execAsModule(compiledCode, filename);
     }
 
-    precompile (testFilesInfo) {
-        return this._compileCodeForTestFiles(testFilesInfo);
-    }
-
-    execute (compiledCode, filename) {
-        return this._runCompiledTestCode(compiledCode, filename);
-    }
 
     async _runCompiledTestCode (compiledCode, filename) {
         const testFile = new TestFile(filename);
@@ -231,15 +224,22 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         }
         finally {
             this._removeRequireHook();
+            stackCleaningHook.enabled = false;
+
+            if (!this.esm)
+                this._removeGlobalAPI();
         }
 
-        stackCleaningHook.enabled = false;
-
-        if (!this.esm)
-            this._removeGlobalAPI();
-
-
         return testFile.getTests();
+    }
+
+
+    precompile (testFilesInfo) {
+        return this._compileCodeForTestFiles(testFilesInfo);
+    }
+
+    execute (compiledCode, filename) {
+        return this._runCompiledTestCode(compiledCode, filename);
     }
 
     async compile (code, filename) {

@@ -1,4 +1,3 @@
-/* eslint-disable no-debugger */
 import chalk from 'chalk';
 import { GeneralError, APIError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
@@ -88,10 +87,6 @@ async function runTests (argParser) {
         esm,
         compilerOptions,
     } = opts;
-
-    console.log('Before create');
-    console.log(opts);
-    debugger;
 
     const testCafe = await createTestCafe({
         developmentMode: dev,
@@ -185,9 +180,6 @@ async function listBrowsers (providerName) {
         await argParser.parse(process.argv);
 
         logEntry(LOGGER, argParser.opts);
-        console.log('In CLI');
-        console.log(argParser);
-        debugger;
 
         if (argParser.opts.listBrowsers)
             await listBrowsers(argParser.opts.providerName);
@@ -199,4 +191,3 @@ async function listBrowsers (providerName) {
         error(err);
     }
 })();
-

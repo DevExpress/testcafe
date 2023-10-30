@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-/* eslint-disable no-debugger */
 import embeddingUtils from './embedding-utils';
 import exportableLib from './api/exportable-lib';
 import TestCafeConfiguration from './configuration/testcafe-configuration';
@@ -17,9 +15,6 @@ const setupExitHook = lazyRequire('async-exit-hook');
 async function getConfiguration (args) {
     let configuration;
 
-    console.log('In get configuration');
-    console.log(args);
-    debugger;
     if (args.length === 1 && typeof args[0] === 'object') {
         configuration = new TestCafeConfiguration(args[0]?.configFile);
 

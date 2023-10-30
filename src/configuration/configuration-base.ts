@@ -1,8 +1,4 @@
-/* eslint-disable no-console */
-/* eslint-disable no-debugger */
-import {
-    extname, isAbsolute,
-} from 'path';
+import { extname, isAbsolute } from 'path';
 import debug from 'debug';
 import JSON5 from 'json5';
 
@@ -24,7 +20,6 @@ import { Dictionary } from './interfaces';
 import Extensions from './formats';
 import { ReadConfigFileError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
-import TypeScriptConfigurationCompiler from '../compiler/test-file/formats/typescript/config-compiler';
 
 const DEBUG_LOGGER = debug('testcafe:configuration');
 
@@ -159,7 +154,7 @@ export default class Configuration {
         return this._defaultPaths;
     }
 
-    public async _load (loadInfo: any): Promise<null | object> {
+    public async _load (customCompilerOptions?: object): Promise<null | object> {
         if (!this.defaultPaths?.length)
             return null;
 
@@ -167,18 +162,7 @@ export default class Configuration {
             if (!await this._isConfigurationFileExists(filePath))
                 return { filePath, options: null };
 
-            let options = null as object | null;
-
-            if (this._isJSConfiguration(filePath))
-                options = this._readJsConfigurationFileContent(filePath);
-            else if (this._isTSConfiguration(filePath))
-                options = await this._readTsConfigurationFileContent(filePath, loadInfo?.compilerOptions);
-            else {
-                const configurationFileContent = await this._readConfigurationFileContent(filePath);
-
-                if (configurationFileContent)
-                    options = this._parseConfigurationFileContent(configurationFileContent, filePath);
-            }
+            const options = await this._readConfigurationOptions(filePath, customCompilerOptions);
 
             return { filePath, options };
         }));
@@ -196,6 +180,19 @@ export default class Configuration {
         return existedConfigs[0].options;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    protected async _readConfigurationOptions (filePath: string, customCompilerOptions?: object): Promise<object | null> {
+        if (this._isJSConfiguration(filePath))
+            return this._readJsConfigurationFileContent(filePath);
+
+        const configurationFileContent = await this._readConfigurationFileContent(filePath);
+
+        if (configurationFileContent)
+            return this._parseConfigurationFileContent(configurationFileContent, filePath);
+
+        return null;
+    }
+
     protected async _isConfigurationFileExists (filePath = this.filePath): Promise<boolean> {
         try {
             await stat(filePath);
@@ -209,16 +206,12 @@ export default class Configuration {
         }
     }
 
-    private static _hasExtension (filePath: string | undefined, extention: string): boolean {
+    protected static _hasExtension (filePath: string | undefined, extention: string): boolean {
         return !!filePath && extname(filePath) === extention;
     }
 
     protected _isJSConfiguration (filePath = this.filePath): boolean {
         return Configuration._hasExtension(filePath, Extensions.js) || Configuration._hasExtension(filePath, Extensions.cjs);
-    }
-
-    protected _isTSConfiguration (filePath = this.filePath): boolean {
-        return Configuration._hasExtension(filePath, Extensions.ts) || Configuration._hasExtension(filePath, Extensions.cjs);
     }
 
     protected _isJSONConfiguration (filePath = this.filePath): boolean {
@@ -235,20 +228,6 @@ export default class Configuration {
             catch (error: any) {
                 Configuration._throwReadConfigError(RUNTIME_ERRORS.cannotReadConfigFile, error, filePath, true);
             }
-        }
-
-        return null;
-    }
-
-    public async _readTsConfigurationFileContent (filePath = this.filePath, loadOptions: any): Promise<object | null> {
-        if (filePath) {
-            delete require.cache[filePath];
-            debugger;
-            const compiler = new TypeScriptConfigurationCompiler(loadOptions?.typescript);
-            const options = await compiler.compileConfiguration(filePath);
-
-            debugger;
-            return options;
         }
 
         return null;

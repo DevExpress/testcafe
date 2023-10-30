@@ -1,12 +1,9 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable no-console */
-/* eslint-disable no-debugger */
 import path from 'path';
 import { zipObject } from 'lodash';
 import OS from 'os-family';
 import APIBasedTestFileCompilerBase from '../../api-based';
 import ESNextTestFileCompiler from '../es-next/compiler';
-import { TypescriptConfigurationBase } from '../../../../configuration/typescript-configuration';
+import TypescriptConfiguration from '../../../../configuration/typescript-configuration';
 import { GeneralError } from '../../../../errors/runtime';
 import { RUNTIME_ERRORS } from '../../../../errors/types';
 import debug from 'debug';
@@ -91,12 +88,12 @@ const RENAMED_DEPENDENCIES_MAP = new Map([['testcafe', getExportableLibPath()]])
 
 const DEFAULT_TYPESCRIPT_COMPILER_PATH = 'typescript';
 
-export default abstract class TypeScriptTestFileCompilerBase extends APIBasedTestFileCompilerBase {
-    private static tsDefsPath = TypeScriptTestFileCompilerBase._getTSDefsPath();
+export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompilerBase {
+    private static tsDefsPath = TypeScriptTestFileCompiler._getTSDefsPath();
 
-    private readonly _tsConfig: TypescriptConfigurationBase;
+    private readonly _tsConfig: TypescriptConfiguration;
     private readonly _compilerPath: string;
-    private _customCompilerOptions?: Dictionary<boolean | number>;;
+    private readonly _customCompilerOptions?: object;
 
     public constructor (compilerOptions?: TypeScriptCompilerOptions, { baseUrl, esm }: OptionalCompilerArguments = {}) {
         super({ baseUrl, esm });
@@ -109,8 +106,6 @@ export default abstract class TypeScriptTestFileCompilerBase extends APIBasedTes
 
         const configPath = compilerOptions && compilerOptions.configPath || null;
 
-        console.log('Configuration compiler options:');
-        debugger;
         this._customCompilerOptions = compilerOptions && compilerOptions.options;
         this._tsConfig              = new TypescriptConfiguration(configPath, esm);
         this._compilerPath          = TypeScriptTestFileCompiler._getCompilerPath(compilerOptions);
@@ -177,7 +172,6 @@ export default abstract class TypeScriptTestFileCompilerBase extends APIBasedTes
     }
 
     public _compileCodeForTestFiles (testFilesInfo: TestFileInfo[]): Promise<string[]> {
-        debugger;
         return this._tsConfig.init(this._customCompilerOptions)
             .then(() => {
                 return super._compileCodeForTestFiles(testFilesInfo);
@@ -191,7 +185,6 @@ export default abstract class TypeScriptTestFileCompilerBase extends APIBasedTes
 
         const program = ts.createProgram([TypeScriptTestFileCompiler.tsDefsPath, ...filenames], opts);
 
-        debugger;
         DEBUG_LOGGER('version: %s', ts.version);
         DEBUG_LOGGER('options: %O', opts);
 
@@ -284,6 +277,7 @@ export default abstract class TypeScriptTestFileCompilerBase extends APIBasedTes
             this._setupRequireHook({ });
 
             compiledConfigurationModule = await this._runCompiledCode({}, compiledCode, filename);
+
             this._removeRequireHook();
 
             return compiledConfigurationModule.exports;

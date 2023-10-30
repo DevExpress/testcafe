@@ -1,4 +1,3 @@
-/* eslint-disable no-debugger */
 import Configuration from './configuration-base';
 import {
     DEFAULT_TYPESCRIPT_COMPILER_OPTIONS,
@@ -48,10 +47,8 @@ export default class TypescriptConfiguration extends Configuration implements Ty
     }
 
     public async init (customCompilerOptions?: object): Promise<void> {
-        debugger;
         const opts = await this._load(customCompilerOptions) as TypescriptConfigurationOptions;
 
-        debugger;
         if (opts && opts.compilerOptions) {
             const parsedOpts = this._parseOptions(opts);
 
