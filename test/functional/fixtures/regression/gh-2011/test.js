@@ -33,4 +33,8 @@ describe('[Regression](GH-2011)', function () {
     it('Should execute all fixture\'s in different browser', function () {
         return run('./testcafe-fixtures/concurrency-mode-with-disable-concurrency-fixture-all-test.js', 3);
     });
+
+    it('Should execute all fixture\'s test in one browser', function () {
+        return run('./testcafe-fixtures/concurrency-mode-with-disable-concurrency-and-one-fixture-test.js', 3);
+    });
 });

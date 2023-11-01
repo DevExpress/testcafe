@@ -218,7 +218,10 @@ export default class BrowserJob extends AsyncEventEmitter {
         if (!test.disableConcurrency || this._disableConcurrencyQueue[connectionId]?.length)
             return;
 
-        const lastIndexFixture = this._testRunControllerQueue.findIndex(el => el.test.fixture?.id !== test.fixture?.id);
+        let lastIndexFixture = this._testRunControllerQueue.findIndex(el => el.test.fixture?.id !== test.fixture?.id);
+
+        if (!~lastIndexFixture)
+            lastIndexFixture = this._testRunControllerQueue.length;
 
         this._disableConcurrencyQueue[connectionId] = this._testRunControllerQueue.splice(0, lastIndexFixture);
     }
