@@ -175,6 +175,24 @@ export class ClickCommand extends ActionCommandBase {
     }
 }
 
+export class DebugCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.debug);
+
+    constructor (obj, testRun,) {
+        super(obj, testRun, TYPE.debug);
+    }
+
+    getAssignableProperties () {
+        return [
+            { name: 'selector', init: (name, val, options) => {
+                return initSelector(name, val, Object.assign({}, options,
+                    { skipVisibilityCheck: true, collectionMode: true }
+                ));
+            }, required: false },
+        ];
+    }
+}
+
 export class RightClickCommand extends ActionCommandBase {
     static methodName = camelCase(TYPE.rightClick);
 

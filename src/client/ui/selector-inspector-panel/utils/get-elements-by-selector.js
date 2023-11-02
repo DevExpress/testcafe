@@ -20,7 +20,7 @@ async function parseSelector (selector) {
     return browser.parseSelector(communicationUrls.parseSelector, createNativeXHR, selector);
 }
 
-async function executeSelector (parsedSelector) {
+export async function executeSelector (parsedSelector) {
     const startTime        = nativeMethods.date();
     const selectorExecutor = new SelectorExecutor(parsedSelector, GLOBAL_TIMEOUT, startTime, createNotFoundError, createIsInvisibleError);
     const elements         = await selectorExecutor.getResult();

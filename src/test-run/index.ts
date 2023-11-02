@@ -698,7 +698,7 @@ export default class TestRun extends AsyncEventEmitter {
         if (this.errs.length && this.debugOnFail) {
             const errStr = this.debugReporterPluginHost.formatError(this.errs[0]);
 
-            await this._enqueueSetBreakpointCommand(void 0, errStr);
+            await this._enqueueSetBreakpointCommand(void 0, null, errStr);
         }
 
         await this.emit('before-done');
@@ -821,11 +821,11 @@ export default class TestRun extends AsyncEventEmitter {
         return this.cookieProvider.deleteCookies(cookies, urls);
     }
 
-    private async _enqueueSetBreakpointCommand (callsite: CallsiteRecord | undefined, error?: string): Promise<void> {
+    private async _enqueueSetBreakpointCommand (callsite: CallsiteRecord | undefined, selector?: object | null, error?: string): Promise<void> {
         if (this.debugLogger)
             this.debugLogger.showBreakpoint(this.session.id, this.browserConnection.userAgent, callsite, error);
 
-        this.debugging = await this._internalExecuteCommand(new serviceCommands.SetBreakpointCommand(!!error), callsite) as boolean;
+        this.debugging = await this._internalExecuteCommand(new serviceCommands.SetBreakpointCommand(!!error, selector), callsite) as boolean;
     }
 
     private _removeAllNonServiceTasks (): void {
@@ -1154,7 +1154,7 @@ export default class TestRun extends AsyncEventEmitter {
             const canDebug = !this.browserConnection.isHeadlessBrowser();
 
             if (canDebug)
-                return await this._enqueueSetBreakpointCommand(callsite as CallsiteRecord, void 0);
+                return await this._enqueueSetBreakpointCommand(callsite as CallsiteRecord, command?.selector, void 0);
 
             this.debugging = false;
 

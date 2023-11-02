@@ -57,6 +57,7 @@ import {
     AddRequestHooksCommand,
     RemoveRequestHooksCommand,
     ReportCommand,
+    DebugCommand,
 } from '../../test-run/commands/actions';
 
 import {
@@ -67,7 +68,7 @@ import {
     MaximizeWindowCommand,
 } from '../../test-run/commands/browser-manipulation';
 
-import { WaitCommand, DebugCommand } from '../../test-run/commands/observation';
+import { WaitCommand } from '../../test-run/commands/observation';
 import { createExecutionContext as createContext } from './execution-context';
 import { isSelector } from '../../client-functions/types';
 
@@ -602,8 +603,8 @@ export default class TestController {
         return new Assertion(actual, this, callsite);
     }
 
-    [delegatedAPI(DebugCommand.methodName)] () {
-        return this.enqueueCommand(DebugCommand);
+    [delegatedAPI(DebugCommand.methodName)] (selector) {
+        return this.enqueueCommand(DebugCommand, { selector });
     }
 
     [delegatedAPI(SetTestSpeedCommand.methodName)] (speed) {
