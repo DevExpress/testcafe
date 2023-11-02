@@ -214,20 +214,17 @@ export default class BrowserJob extends AsyncEventEmitter {
         return this._testRunControllerQueue;
     }
 
-    private _getlastIndexFixture ( fixtureId: string ): number {
-        const lastIndexFixture = this._testRunControllerQueue.findIndex(el => el.test.fixture?.id !== fixtureId);
+    private _getNextFixtureFirstTestIndex ( fixtureId: string ): number {
+        const nextFixtureFirstTestIndex = this._testRunControllerQueue.findIndex(testRun => testRun.test.fixture?.id !== fixtureId);
 
-        if (!~lastIndexFixture)
-            return this._testRunControllerQueue.length;
-
-        return lastIndexFixture;
+        return nextFixtureFirstTestIndex === -1 ? this._testRunControllerQueue.length : nextFixtureFirstTestIndex;
     }
 
     private _updateTestControllerQueues ({ test }: TestRunController, connectionId: string): void {
         if (!test.disableConcurrency || this._disableConcurrencyQueue[connectionId]?.length)
             return;
 
-        this._disableConcurrencyQueue[connectionId] = this._testRunControllerQueue.splice(0, this._getlastIndexFixture(test.fixture?.id as string));
+        this._disableConcurrencyQueue[connectionId] = this._testRunControllerQueue.splice(0, this._getNextFixtureFirstTestIndex(test.fixture?.id as string));
     }
 
     // API
