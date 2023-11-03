@@ -113,7 +113,7 @@ interface FixtureFn {
     /**
      * Disables global concurrency setting for this fixture.
      */
-    disableConcurrency(): void;
+    disableConcurrency: this;
     /**
      * Specifies the additional information for all tests in the fixture. This information can be used in reports.
      *
