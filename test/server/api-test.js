@@ -1870,13 +1870,18 @@ describe('API', function () {
             const FUNCTIONS_API_METHODS = ['page', 'skipJsErrors', 'httpAuth', 'meta', 'before', 'after', 'beforeEach', 'afterEach', 'requestHooks', 'clientScripts'];
 
             for (const apiMethod of Fixture.API_LIST) {
-                if (!GETTER_API_METHODS.includes(apiMethod.apiProp) && !FUNCTIONS_API_METHODS.includes(apiMethod.apiProp))
-                    throw new Error(`Please, check the method "${apiMethod.srcProp}"\nif the method doesn't need arguments to work. Make sure that the method is getter and add its apiProp to GETTER_API_METHODS\nelse add apiProp to FUNCTIONS_API_METHODS`);
+                if (!GETTER_API_METHODS.includes(apiMethod.apiProp) && !FUNCTIONS_API_METHODS.includes(apiMethod.apiProp)) {
+                    throw new Error(`Please, check the "${apiMethod.srcProp}" method.
+                    If the method doesn't accept any arguments, ensure that the method is implemented as a 'getter' and add the method name to GETTER_API_METHODS.
+                    If the method accepts arguments, ensure that the method is implemented as a 'function' and add the method name to FUNCTIONS_API_METHODS.
+                    `);
+                }
+
                 if (GETTER_API_METHODS.includes(apiMethod.apiProp) && apiMethod.accessor !== 'getter')
-                    throw new Error(`Make sure that the method "${apiMethod.srcProp}" is getter`);
+                    throw new Error(`Make sure that the method "${apiMethod.srcProp}" is implemented as a "getter"`);
 
                 if (FUNCTIONS_API_METHODS.includes(apiMethod.apiProp) && apiMethod.accessor)
-                    throw new Error(`Make sure that the method "${apiMethod.srcProp}" is function`);
+                    throw new Error(`Make sure that the method "${apiMethod.srcProp}" is implemented as a "function"`);
             }
         });
     });
