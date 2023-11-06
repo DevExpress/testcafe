@@ -747,6 +747,7 @@ module.exports = {
             name:      'debug',
             command:   {
                 type:     'debug',
+                selector: undefined,
                 actionId: 'DebugCommand',
             },
             test:      {
