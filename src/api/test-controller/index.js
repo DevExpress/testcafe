@@ -57,7 +57,6 @@ import {
     AddRequestHooksCommand,
     RemoveRequestHooksCommand,
     ReportCommand,
-    DebugCommand,
 } from '../../test-run/commands/actions';
 
 import {
@@ -68,7 +67,7 @@ import {
     MaximizeWindowCommand,
 } from '../../test-run/commands/browser-manipulation';
 
-import { WaitCommand } from '../../test-run/commands/observation';
+import { WaitCommand, DebugCommand } from '../../test-run/commands/observation';
 import { createExecutionContext as createContext } from './execution-context';
 import { isSelector } from '../../client-functions/types';
 

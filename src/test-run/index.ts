@@ -107,7 +107,7 @@ import TestRunPhase from './phase';
 import {
     ExecuteClientFunctionCommand,
     ExecuteSelectorCommand,
-} from './commands/observation';
+} from './commands/execute-client-function';
 
 import addRenderedWarning from '../notifications/add-rendered-warning';
 import getBrowser from '../utils/get-browser';
@@ -142,7 +142,7 @@ const TestRunBookmark             = lazyRequire('./bookmark');
 const actionCommands              = lazyRequire('./commands/actions');
 const browserManipulationCommands = lazyRequire('./commands/browser-manipulation');
 const serviceCommands             = lazyRequire('./commands/service');
-const observationCommands         = lazyRequire('./commands/observation');
+const executeClientFunctionCommands         = lazyRequire('./commands/execute-client-function');
 
 const { executeJsExpression, executeAsyncJsExpression } = lazyRequire('./execute-js-expression');
 
@@ -880,7 +880,7 @@ export default class TestRun extends AsyncEventEmitter {
     private _shouldResolveCurrentDriverTask (driverStatus: DriverStatus): boolean {
         const currentCommand = this.currentDriverTask.command;
 
-        const isExecutingObservationCommand = currentCommand instanceof observationCommands.ExecuteSelectorCommand ||
+        const isExecutingObservationCommand = currentCommand instanceof executeClientFunctionCommands.ExecuteSelectorCommand ||
             currentCommand instanceof ExecuteClientFunctionCommand;
 
         const isDebugActive = currentCommand instanceof serviceCommands.SetBreakpointCommand;

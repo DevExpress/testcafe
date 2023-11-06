@@ -1,5 +1,5 @@
 import { ActionCommandBase, CommandBase } from './base';
-import { ExecuteClientFunctionCommand, ExecuteSelectorCommand } from './observation';
+import { ExecuteClientFunctionCommand, ExecuteSelectorCommand } from './execute-client-function';
 
 import {
     ActionOptions,

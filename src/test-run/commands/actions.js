@@ -48,7 +48,7 @@ import {
 } from './validations/argument';
 
 import { SetNativeDialogHandlerCodeWrongTypeError } from '../../errors/test-run';
-import { ExecuteClientFunctionCommand } from './observation';
+import { ExecuteClientFunctionCommand } from './execute-client-function';
 import { camelCase } from 'lodash';
 import {
     prepareSkipJsErrorsOptions,
@@ -171,24 +171,6 @@ export class ClickCommand extends ActionCommandBase {
         return [
             { name: 'selector', init: initSelector, required: true },
             { name: 'options', type: actionOptions, init: initClickOptions, required: true },
-        ];
-    }
-}
-
-export class DebugCommand extends ActionCommandBase {
-    static methodName = camelCase(TYPE.debug);
-
-    constructor (obj, testRun,) {
-        super(obj, testRun, TYPE.debug);
-    }
-
-    getAssignableProperties () {
-        return [
-            { name: 'selector', init: (name, val, options) => {
-                return initSelector(name, val, Object.assign({}, options,
-                    { skipVisibilityCheck: true, collectionMode: true }
-                ));
-            }, required: false },
         ];
     }
 }
