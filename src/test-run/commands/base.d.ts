@@ -4,7 +4,6 @@ export class CommandBase {
     public constructor(obj?: object, testRun?: TestRun, type?: string, validateProperties?: boolean);
     public actionId: string;
     public type: string;
-    public selector: object;
     [key: string]: unknown;
     public getAssignableProperties(): { name: string }[];
     public getAllAssignableProperties(): { name: string }[];

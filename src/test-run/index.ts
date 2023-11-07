@@ -75,6 +75,7 @@ import {
     RemoveRequestHooksCommand,
     RunCustomActionCommand,
 } from './commands/actions';
+import { DebugCommand } from './commands/observation';
 
 import { RUNTIME_ERRORS, TEST_RUN_ERRORS } from '../errors/types';
 import processTestFnError from '../errors/process-test-fn-error';
@@ -1154,7 +1155,7 @@ export default class TestRun extends AsyncEventEmitter {
             const canDebug = !this.browserConnection.isHeadlessBrowser();
 
             if (canDebug)
-                return await this._enqueueSetBreakpointCommand(callsite as CallsiteRecord, command?.selector, void 0);
+                return await this._enqueueSetBreakpointCommand(callsite as CallsiteRecord, (command as DebugCommand)?.selector, void 0);
 
             this.debugging = false;
 
