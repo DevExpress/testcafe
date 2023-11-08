@@ -11,7 +11,8 @@ export class HideButton {
     constructor (selectorInspectorPanel) {
 
         const hideButton = createElementFromDescriptor(descriptors.hideButton);
-        this.element     = createElementFromDescriptor(descriptors.hideButtonContainer);
+
+        this.element = createElementFromDescriptor(descriptors.hideButtonContainer);
 
         this.element.appendChild(hideButton);
         this.element.appendChild(createElementFromDescriptor(descriptors.span));
