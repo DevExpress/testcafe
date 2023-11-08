@@ -111,7 +111,7 @@ interface FixtureFn {
      */
     disablePageReloads: this;
     /**
-     * Disables global concurrency setting for this fixture.
+     * Disables the global concurrency setting for this fixture.
      */
     disableConcurrency: this;
     /**
