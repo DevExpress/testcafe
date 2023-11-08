@@ -9,8 +9,11 @@ const SELECTOR_INSPECTOR_PANEL_HIDDEN_CLASSNAME = 'selector-inspector-panel--hid
 
 export class HideButton {
     constructor (selectorInspectorPanel) {
-        this.element = createElementFromDescriptor(descriptors.hideButton);
 
+        const hideButton = createElementFromDescriptor(descriptors.hideButton);
+        this.element     = createElementFromDescriptor(descriptors.hideButtonContainer);
+
+        this.element.appendChild(hideButton);
         this.element.appendChild(createElementFromDescriptor(descriptors.span));
 
         eventUtils.bind(this.element, 'click', () => this._showAndHide(selectorInspectorPanel));
