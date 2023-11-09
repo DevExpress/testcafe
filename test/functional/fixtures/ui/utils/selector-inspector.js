@@ -218,7 +218,7 @@ Object.assign(window, {
 
     async getHideButtonElements () {
         const hideButton = await this.getElement('.selector-panel-toggle-button-hammerhead-shadow-ui');
-        const hideButtonSpan = await this.getElement('.selector-panel-toggle-button-hammerhead-shadow-ui span');
+        const hideButtonSpan = await this.getElement('.selector-panel-toggle-button-container-hammerhead-shadow-ui span');
 
         return {
             hideButton,
