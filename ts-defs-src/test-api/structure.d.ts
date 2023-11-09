@@ -111,6 +111,10 @@ interface FixtureFn {
      */
     disablePageReloads: this;
     /**
+     * Disables the global concurrency setting for this fixture.
+     */
+    disableConcurrency: this;
+    /**
      * Specifies the additional information for all tests in the fixture. This information can be used in reports.
      *
      * @param key - The name of the metadata entry
