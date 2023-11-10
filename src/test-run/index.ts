@@ -1236,7 +1236,7 @@ export default class TestRun extends AsyncEventEmitter {
         const { screenshots } = this.opts;
 
         if (!this.errScreenshotPath && (screenshots as ScreenshotOptionValue)?.takeOnFails)
-            this.errScreenshotPath = await this._internalExecuteCommand(new browserManipulationCommands.TakeScreenshotOnFailCommand({ failedActionId })) as string;
+            this.errScreenshotPath = await this._internalExecuteCommand(new browserManipulationCommands.TakeScreenshotOnFailCommand({ failedActionId, fullPage: (screenshots as ScreenshotOptionValue)?.fullPage })) as string;
     }
 
     private _decorateWithFlag (fn: Function, flagName: string, value: boolean): () => Promise<void> {
