@@ -285,7 +285,6 @@ test('should hide panel', async t => {
 });
 
 test('should indicate the correct number of elements matching the TestCafe selector passed in debug', async t => {
-
     await ClientFunction(() => {
         const { getMatchIndicatorInnerText, resumeTest } = window;
 
@@ -300,7 +299,6 @@ test('should indicate the correct number of elements matching the TestCafe selec
 });
 
 test('should indicate single element matching the TestCafe selector passed in debug', async t => {
-
     await ClientFunction(() => {
         const { getMatchIndicatorInnerText, resumeTest } = window;
 

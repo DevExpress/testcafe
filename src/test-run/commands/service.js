@@ -19,7 +19,7 @@ export class SetBreakpointCommand {
     constructor (isTestError, selector) {
         this.type        = TYPE.setBreakpoint;
         this.isTestError = isTestError;
-        this.selector = selector;
+        this.selector    = selector;
     }
 }
 

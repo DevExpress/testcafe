@@ -137,13 +137,13 @@ import NativeAutomationRequestPipeline from '../native-automation/request-pipeli
 import NativeAutomation from '../native-automation';
 import ReportDataLog from '../reporter/report-data-log';
 
-const lazyRequire                 = require('import-lazy')(require);
-const ClientFunctionBuilder       = lazyRequire('../client-functions/client-function-builder');
-const TestRunBookmark             = lazyRequire('./bookmark');
-const actionCommands              = lazyRequire('./commands/actions');
-const browserManipulationCommands = lazyRequire('./commands/browser-manipulation');
-const serviceCommands             = lazyRequire('./commands/service');
-const executeClientFunctionCommands         = lazyRequire('./commands/execute-client-function');
+const lazyRequire                   = require('import-lazy')(require);
+const ClientFunctionBuilder         = lazyRequire('../client-functions/client-function-builder');
+const TestRunBookmark               = lazyRequire('./bookmark');
+const actionCommands                = lazyRequire('./commands/actions');
+const browserManipulationCommands   = lazyRequire('./commands/browser-manipulation');
+const serviceCommands               = lazyRequire('./commands/service');
+const executeClientFunctionCommands = lazyRequire('./commands/execute-client-function');
 
 const { executeJsExpression, executeAsyncJsExpression } = lazyRequire('./execute-js-expression');
 

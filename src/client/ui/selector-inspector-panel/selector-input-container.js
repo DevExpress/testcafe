@@ -4,6 +4,7 @@ import testCafeCore from './../deps/testcafe-core';
 
 import { createElementFromDescriptor } from './utils/create-element-from-descriptor';
 import { getElementsBySelector, executeSelector } from './utils/get-elements-by-selector';
+import { castArray } from './utils/cast-array';
 
 import * as descriptors from './descriptors';
 import { elementPicker, ELEMENT_PICKED } from './element-picker';
@@ -160,14 +161,12 @@ export class SelectorInputContainer {
         this._highlightElements(elements);
     }
 
-    async _debugSelector (selector) {
+    async debugSelector (selector) {
         highlighter.stopHighlighting();
-        const selectorValue = selector.apiFnChain.join('');
 
-        this.value = selectorValue;
-        let elements = await executeSelector(selector).catch(() => null);
+        this.value = selector.apiFnChain.join('');
+        const elements = castArray(await executeSelector(selector));
 
-        elements = nativeMethods.isArray(elements) ? elements : [elements];
         this._indicateMatches(elements);
         this._highlightElements(elements);
     }

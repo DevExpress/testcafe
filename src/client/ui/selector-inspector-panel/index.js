@@ -15,7 +15,6 @@ export default class SelectorInspectorPanel {
 
     constructor () {
         this.element = createElementFromDescriptor(panel);
-
         const pickButton             = new PickButton();
 
         this.selectorInputContainer = new SelectorInputContainer();
@@ -28,7 +27,8 @@ export default class SelectorInspectorPanel {
     }
 
     show (selector) {
-        this.selectorInputContainer._debugSelector(selector);
+        this.selectorInputContainer.debugSelector(selector);
+
         if (!this.element.parentElement)
             uiRoot.insertFirstChildToPanelsContainer(this.element);
 
