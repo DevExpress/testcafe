@@ -164,7 +164,7 @@ export class SelectorInputContainer {
     async debugSelector (selector) {
         highlighter.stopHighlighting();
 
-        this.value = selector.apiFnChain.join('');
+        this.value     = selector.apiFnChain.join('');
         const elements = castArray(await executeSelector(selector));
 
         this._indicateMatches(elements);
