@@ -14,10 +14,9 @@ export default class SelectorInspectorPanel {
     elementPicker = elementPicker;
 
     constructor () {
-        this.element = createElementFromDescriptor(panel);
+        this.element                 = createElementFromDescriptor(panel);
+        this.selectorInputContainer  = new SelectorInputContainer();
         const pickButton             = new PickButton();
-
-        this.selectorInputContainer = new SelectorInputContainer();
         const copyButton             = new CopyButton(this.selectorInputContainer);
         const container              = new MainContainer(pickButton.element, this.selectorInputContainer.element, copyButton.element);
         const hideButton             = new HideButton(this.element);
