@@ -877,6 +877,25 @@ describe('Test run commands', () => {
             });
         });
 
+        it('Should create TakeScreenshotOnFailCommand from object', function () {
+            const commandObj = {
+                type:           TYPE.takeScreenshotOnFail,
+                fullPage:       true,
+                failedActionId: 'custom',
+            };
+
+            const command = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type:           TYPE.takeScreenshotOnFail,
+                actionId:       TYPE.takeScreenshotOnFail,
+                markData:       '',
+                markSeed:       null,
+                failedActionId: 'custom',
+                fullPage:       true,
+            });
+        });
+
         it('Should create TakeElementScreenshotCommand from object', function () {
             const commandObj = {
                 type:     TYPE.takeElementScreenshot,

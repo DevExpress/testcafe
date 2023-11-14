@@ -36,6 +36,7 @@ import { AssertionCommand } from './assertion';
 import {
     TakeScreenshotCommand,
     TakeElementScreenshotCommand,
+    TakeScreenshotOnFailCommand,
     ResizeWindowCommand,
     ResizeWindowToFitDeviceCommand,
     MaximizeWindowCommand,
@@ -93,6 +94,9 @@ function getCmdCtor (type) {
 
         case TYPE.takeScreenshot:
             return TakeScreenshotCommand;
+
+        case TYPE.takeScreenshotOnFail:
+            return TakeScreenshotOnFailCommand;
 
         case TYPE.takeElementScreenshot:
             return TakeElementScreenshotCommand;
