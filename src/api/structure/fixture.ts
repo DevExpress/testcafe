@@ -62,7 +62,7 @@ export default class Fixture extends TestingUnit {
         return this.apiOrigin;
     }
 
-    private _disableConcurrency$ (): Function {
+    private _disableConcurrency$getter (): Function {
         this.disableConcurrency = true;
 
         return this.apiOrigin;

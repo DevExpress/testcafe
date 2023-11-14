@@ -12,7 +12,7 @@ fixture `no concurrent fixture`
         await t.expect(Object.keys(connectionsFixture).length).eql(1);
     })
     .page `http://localhost:3000/fixtures/regression/gh-2011/pages/index.html`
-    .disableConcurrency();
+    .disableConcurrency;
 
 test('long concurrent test 1', async t => {
     await t.wait(5000);

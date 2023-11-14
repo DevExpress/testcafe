@@ -7,6 +7,7 @@ const compile             = require('./helpers/compile');
 const OPTION_NAMES        = require('../../lib/configuration/option-names');
 const Compiler            = require('../../lib/compiler');
 const { RUNTIME_ERRORS }  = require('../../lib/errors/types');
+const Fixture             = require('../../lib/api/structure/fixture');
 
 
 describe('API', function () {
@@ -1860,6 +1861,28 @@ describe('API', function () {
             expect(configuration.getOption(OPTION_NAMES.developmentMode)).be.true;
             expect(configuration.getOption(OPTION_NAMES.retryTestPages)).be.true;
             expect(configuration.getOption(OPTION_NAMES.disableHttp2)).be.true;
+        });
+    });
+
+    describe('API Methods Validation', () => {
+        it('Should checks all methods', async () => {
+            const GETTER_API_METHODS    = ['only', 'skip', 'disablePageReloads', 'enablePageReloads', 'disablePageCaching', 'disableConcurrency'];
+            const FUNCTIONS_API_METHODS = ['page', 'skipJsErrors', 'httpAuth', 'meta', 'before', 'after', 'beforeEach', 'afterEach', 'requestHooks', 'clientScripts'];
+
+            for (const apiMethod of Fixture.API_LIST) {
+                if (!GETTER_API_METHODS.includes(apiMethod.apiProp) && !FUNCTIONS_API_METHODS.includes(apiMethod.apiProp)) {
+                    throw new Error(`Please, check the "${apiMethod.srcProp}" method.
+                    If the method doesn't accept any arguments, ensure that the method is implemented as a 'getter' and add the method name to GETTER_API_METHODS.
+                    If the method accepts arguments, ensure that the method is implemented as a 'function' and add the method name to FUNCTIONS_API_METHODS.
+                    `);
+                }
+
+                if (GETTER_API_METHODS.includes(apiMethod.apiProp) && apiMethod.accessor !== 'getter')
+                    throw new Error(`Make sure that the method "${apiMethod.srcProp}" is implemented as a "getter"`);
+
+                if (FUNCTIONS_API_METHODS.includes(apiMethod.apiProp) && apiMethod.accessor)
+                    throw new Error(`Make sure that the method "${apiMethod.srcProp}" is implemented as a "function"`);
+            }
         });
     });
 });
