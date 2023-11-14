@@ -7,7 +7,7 @@ fixture `GH-7097 - Should fail fetch on non exist path with disableNativeAutomat
 test(`fail fetch on non exist path with disableNativeAutomation`, async t => {
     await t.navigateTo('http://localhost:3000/fixtures/regression/gh-7097/pages/index.html');
 
-    await t.wait(1000); // We wait when fench failed on client
+    await t.wait(100); // We wait when fench failed on client
 
     await t.expect(await getFailedFetchWindow()).eql(true);
 });
