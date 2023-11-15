@@ -6,6 +6,24 @@ const assertThrow             = require('./helpers/assert-runtime-error').assert
 const TestController          = require('../../lib/api/test-controller');
 const path                    = require('path');
 const semver                  = require('semver');
+const BaseTestRunMock         = require('./helpers/base-test-run-mock');
+const sinon                   = require('sinon');
+const delay                   = require('../../lib/utils/delay');
+
+
+class TestRunMock extends BaseTestRunMock {
+    constructor (messageBus) {
+        super({
+            messageBus,
+        });
+
+        this.opts = { screenshots: { takeOnFails: true, fullPage: true } };
+    }
+
+    _internalExecuteCommand () {
+        return delay(10);
+    }
+}
 
 const testRunMock = {
     test: {
@@ -3702,5 +3720,20 @@ describe('Test run commands', () => {
                 },
             );
         });
+    });
+});
+
+describe('Test run screenshot', () => {
+    it('should pass fullPage to _internalExecuteCommand if takeOnFails is true', async () => {
+        const testRun        = new TestRunMock();
+        const failedActionId = 'some-action-id';
+        const spy            = sinon.spy(testRun, '_internalExecuteCommand');
+
+        await testRun._makeScreenshotOnFail(failedActionId);
+
+        const args = spy.args[0];
+
+        expect(spy.called).to.be.true;
+        expect(args[0].fullPage).to.be.true;
     });
 });
