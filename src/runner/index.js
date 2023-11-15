@@ -738,8 +738,9 @@ export default class Runner extends EventEmitter {
     }
 
     screenshots (...options) {
+        let fullPage;
         let thumbnails;
-        let [path, takeOnFails, pathPattern, fullPage] = options;
+        let [path, takeOnFails, pathPattern] = options;
 
         if (options.length === 1 && options[0] && typeof options[0] === 'object')
             ({ path, takeOnFails, pathPattern, fullPage, thumbnails } = options[0]);
