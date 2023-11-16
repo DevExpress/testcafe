@@ -195,11 +195,6 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         return global.fixture && global.test;
     }
 
-    _runCompiledCode (testFile, compiledCode, filename) {
-        return this._execAsModule(compiledCode, filename);
-    }
-
-
     async _runCompiledTestCode (compiledCode, filename) {
         const testFile = new TestFile(filename);
 
@@ -211,7 +206,7 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         this._setupRequireHook(testFile);
 
         try {
-            await this._runCompiledCode(testFile, compiledCode, filename);
+            await this._execAsModule(compiledCode, filename);
         }
         catch (err) {
             if (err.code === errRequireEsmErrorCode)
