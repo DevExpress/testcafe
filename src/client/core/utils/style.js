@@ -79,3 +79,7 @@ export function hasDimensions (el) {
 export function isFixedElement (node) {
     return domUtils.isElementNode(node) && styleUtils.get(node, 'position') === 'fixed';
 }
+
+export function isStickyElement (node) {
+    return domUtils.isElementNode(node) && styleUtils.get(node, 'position') === 'sticky';
+}
