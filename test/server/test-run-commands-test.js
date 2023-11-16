@@ -7,7 +7,6 @@ const TestController          = require('../../lib/api/test-controller');
 const path                    = require('path');
 const semver                  = require('semver');
 
-
 const testRunMock = {
     test: {
         testFile: {
