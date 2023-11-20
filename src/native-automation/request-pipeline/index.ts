@@ -402,8 +402,8 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
         // to intercept some requests. We need to use the `sessionId` option
         // in continueRequest/continueResponse/fulfillRequest methods
         await this._client.Target.on('attachedToTarget', async event => {
-            const isIFrame = event.targetInfo.type === TARGET_INFO_TYPE.iframe;
-            const isWorker = event.targetInfo.type === TARGET_INFO_TYPE.worker;
+            const isIFrame        = event.targetInfo.type === TARGET_INFO_TYPE.iframe;
+            const isWorker        = event.targetInfo.type === TARGET_INFO_TYPE.worker;
             const isServiceWorker = event.targetInfo.type === TARGET_INFO_TYPE.serviceWorker;
 
             if (!isIFrame && !isWorker && !isServiceWorker)
