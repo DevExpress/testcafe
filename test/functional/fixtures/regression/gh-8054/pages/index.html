@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>gh-8054</title>
+</head>
+<body>
+<h1>Service worker</h1>
+<button>click me</button>
+<script>
+    const registerServiceWorker = async () => {
+        if ("serviceWorker" in navigator) {
+            try {
+                const serviceWorkerUrl = '/fixtures/regression/gh-8054/pages/sw.js';
+
+                await navigator.serviceWorker.register(serviceWorkerUrl, {
+                    scope: "/fixtures/regression/gh-8054/pages/",
+                });
+            } catch (err) {
+            }
+
+            navigator.serviceWorker.addEventListener('message',
+                (event) => {
+                    if (event.data && event.data.result === 'success') {
+                        document.querySelector('h1').innerHTML = 'Success';
+                    }
+                });
+        }
+    };
+
+    registerServiceWorker();
+
+    document.querySelector('button').addEventListener('click', () => {
+        fetch('/?test' + Date.now());
+    });
+</script>
+</body>
+</html>

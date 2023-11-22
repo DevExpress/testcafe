@@ -342,7 +342,12 @@ before(function () {
                         return testName ? test === testName : true;
                     })
                     .src(fixturePath)
-                    .screenshots(screenshotPath, screenshotsOnFails, screenshotPathPattern, screenshotsFullPage)
+                    .screenshots({
+                        path:        screenshotPath,
+                        takeOnFails: screenshotsOnFails,
+                        pathPattern: screenshotPathPattern,
+                        fullPage:    screenshotsFullPage,
+                    })
                     .video(videoPath, videoOptions, videoEncodingOptions)
                     .startApp(appCommand, appInitDelay)
                     .clientScripts(clientScripts)
