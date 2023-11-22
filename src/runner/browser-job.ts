@@ -138,8 +138,10 @@ export default class BrowserJob extends AsyncEventEmitter {
     }
 
     private async _onTestRunRestart (testRunController: TestRunController): Promise<void> {
+        const conectionId = testRunController.testRun.browserConnection.id;
+
         this._removeFromCompletionQueue(testRunController);
-        this._testRunControllerQueue.unshift(testRunController);
+        this._getTestControllerQueue(conectionId).unshift(testRunController);
 
         await this.emit('test-run-restart', testRunController);
     }
