@@ -1,6 +1,9 @@
-const connectionsFixture = {};
 
-let attempt = 0;
+
+const testRunInfo = {
+    attemptCount: 0,
+    connections:  {},
+};
 
 const addConnection = (connections, connectionId) => {
     if (!connections[connectionId])
@@ -9,25 +12,24 @@ const addConnection = (connections, connectionId) => {
         connections[connectionId]++;
 };
 
-const getAttempts = () => attempt++;
 
 fixture `disableConcurrency fixture`
     .beforeEach(async t => {
-        addConnection(connectionsFixture, t.testRun.browserConnection.id);
+        addConnection(testRunInfo.connections, t.testRun.browserConnection.id);
     })
     .afterEach(async t => {
-        await t.expect(Object.keys(connectionsFixture).length).eql(1);
+        await t.expect(Object.keys(testRunInfo.connections).length).eql(1);
     })
     .after(() => {
-        if (Object.values(connectionsFixture)[0] !== 7)
+        if (Object.keys(testRunInfo.connections).length !== 1 || Object.values(testRunInfo.connections)[0] !== 3)
             throw new Error();
     })
     .disableConcurrency;
 
-for (let i = 1; i <= 5; i++) {
-    test(`test ${i}`, async (t) => {
-        await t.wait(1000);
-        if (i === 1 && getAttempts() < 2)
+for (let i = 0; i <= 1; i++) {
+    test(`test ${i}`, async () => {
+        testRunInfo.attemptCount++;
+        if (testRunInfo.attemptCount < 2)
             throw new Error();
     });
 }

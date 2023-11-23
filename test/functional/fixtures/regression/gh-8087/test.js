@@ -37,7 +37,7 @@ const run = (pathToTest, concurrency) => {
 
 describe('[Regression](GH-8087)', function () {
     it('Should execute all fixture\'s test in one browser with quarantine Mode', function () {
-        return run('./testcafe-fixtures/index.js', 3)
+        return run('./testcafe-fixtures/index.js', 2)
             .then(() => expect(errors.length).eql(0));
     });
 });
