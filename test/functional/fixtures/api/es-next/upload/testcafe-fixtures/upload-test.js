@@ -15,6 +15,14 @@ test('Upload the file', async t => {
     expect(await getUploadedText()).equals('File 1 is uploaded!');
 });
 
+test('Upload the file with required input', async t => {
+    await t
+        .setFilesToUpload('#fileTwo', '../test-data/file1.txt')
+        .click('#submitTwo');
+
+    expect(await getUploadedText()).equals('File 1 is uploaded!');
+});
+
 test('Clear the upload', async t => {
     await t
         .setFilesToUpload('#file', '../test-data/file1.txt')
