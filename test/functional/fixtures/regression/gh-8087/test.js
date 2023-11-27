@@ -28,27 +28,16 @@ const run = (pathToTest, concurrency) => {
                 .browsers(`chrome:headless`)
                 .reporter(reporter)
                 .concurrency(concurrency)
-                .run();
+                .run({ quarantineMode: { successThreshold: 1, attemptLimit: 3 } });
         })
         .then(() => {
             testCafe.close();
         });
 };
 
-describe('[Regression](GH-2011)', function () {
-
-    it('Should execute all fixture\'s test with disableConcurrency in one browser', function () {
-        return run('./testcafe-fixtures/concurrency-mode-with-disable-concurrency-fixture-test.js', 3)
-            .then(() => expect(errors.length).eql(0));
-    });
-
-    it('Should execute all fixture\'s in different browser', function () {
-        return run('./testcafe-fixtures/concurrency-mode-with-disable-concurrency-fixture-all-test.js', 3)
-            .then(() => expect(errors.length).eql(0));
-    });
-
-    it('Should execute all fixture\'s test in one browser', function () {
-        return run('./testcafe-fixtures/concurrency-mode-with-disable-concurrency-and-one-fixture-test.js', 3)
+describe('[Regression](GH-8087)', function () {
+    it('Should execute all fixture\'s test in one browser with quarantine Mode', function () {
+        return run('./testcafe-fixtures/index.js', 2)
             .then(() => expect(errors.length).eql(0));
     });
 });

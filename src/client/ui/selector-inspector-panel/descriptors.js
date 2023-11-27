@@ -30,8 +30,12 @@ export const copyButton = {
     value: 'Copy',
 };
 
+export const hideButtonContainer = {
+    class: 'selector-panel-toggle-button-container',
+};
+
 export const hideButton = {
-    tag:   'button',
+    tag:   'input',
     type:  'button',
     class: 'selector-panel-toggle-button',
 };

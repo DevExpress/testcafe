@@ -66,8 +66,9 @@ const ALL_REQUEST_REQUESTS  = { requestStage: 'Response' } as RequestPattern;
 const ALL_REQUESTS_DATA = [ALL_REQUEST_REQUESTS, ALL_REQUEST_RESPONSES];
 
 const TARGET_INFO_TYPE = {
-    iframe: 'iframe',
-    worker: 'worker',
+    iframe:        'iframe',
+    worker:        'worker',
+    serviceWorker: 'service_worker',
 };
 
 export default class NativeAutomationRequestPipeline extends NativeAutomationApiBase {
@@ -401,10 +402,11 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
         // to intercept some requests. We need to use the `sessionId` option
         // in continueRequest/continueResponse/fulfillRequest methods
         await this._client.Target.on('attachedToTarget', async event => {
-            const isIFrame = event.targetInfo.type === TARGET_INFO_TYPE.iframe;
-            const isWorker = event.targetInfo.type === TARGET_INFO_TYPE.worker;
+            const isIFrame        = event.targetInfo.type === TARGET_INFO_TYPE.iframe;
+            const isWorker        = event.targetInfo.type === TARGET_INFO_TYPE.worker;
+            const isServiceWorker = event.targetInfo.type === TARGET_INFO_TYPE.serviceWorker;
 
-            if (!isIFrame && !isWorker)
+            if (!isIFrame && !isWorker && !isServiceWorker)
                 return;
 
             await connectionResetGuard(async () => {

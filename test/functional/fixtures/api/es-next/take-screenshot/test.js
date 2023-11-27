@@ -687,7 +687,10 @@ describe('[API] Take full page screenshots', function () {
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('screenshot on fail');
 
-                    return assertionHelper.checkScreenshotFileFullPage(true);
+                    return assertionHelper.checkScreenshotFileFullPage(true, 'error');
+                })
+                .then(function (result) {
+                    expect(result).eql(true);
                 });
         });
     }
