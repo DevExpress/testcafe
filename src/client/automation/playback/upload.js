@@ -4,6 +4,9 @@ import {
 import { arrayUtils } from '../deps/testcafe-core';
 
 
+const REQUIRED_ATTR_NAME     = 'required';
+const FORM_SUBMIT_EVENT_NAME = 'submit';
+
 export default class UploadAutomation {
     constructor (element, paths, createError, isNativeAutomation) {
         this.element     = element;
@@ -15,19 +18,19 @@ export default class UploadAutomation {
     }
 
     _handleRequiredInput () {
-        const isRequired = nativeMethods.hasAttribute.call(this.element, 'required');
+        const isRequired = nativeMethods.hasAttribute.call(this.element, REQUIRED_ATTR_NAME);
 
         if (isRequired)
-            nativeMethods.removeAttribute.call(this.element, 'required');
+            nativeMethods.removeAttribute.call(this.element, REQUIRED_ATTR_NAME);
 
         const ensureUploadInputHasRequiredAttribute = () => {
             if (isRequired)
-                nativeMethods.setAttribute.call(this.element, 'required', 'true');
+                nativeMethods.setAttribute.call(this.element, REQUIRED_ATTR_NAME, 'true');
         };
 
         if (this.element.form) {
-            eventSandbox.listeners.initElementListening(this.element.form, ['submit']);
-            eventSandbox.listeners.addInternalEventAfterListener(this.element.form, ['submit'], ensureUploadInputHasRequiredAttribute);
+            eventSandbox.listeners.initElementListening(this.element.form, [FORM_SUBMIT_EVENT_NAME]);
+            eventSandbox.listeners.addInternalEventAfterListener(this.element.form, [FORM_SUBMIT_EVENT_NAME], ensureUploadInputHasRequiredAttribute);
         }
     }
 

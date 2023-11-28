@@ -42,8 +42,8 @@ test('Error on upload non-existing file', async t => {
 
 test('Upload the file with required input', async t => {
     await t
-        .setFilesToUpload('#fileTwo', '../test-data/file1.txt')
-        .click('#submitTwo');
+        .setFilesToUpload('#fileRequired', '../test-data/file1.txt')
+        .click('#submitRequired');
 
     expect(await getUploadedText()).equals('File 1 is uploaded!');
 });
