@@ -72,22 +72,25 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
             // eslint-disable-next-line no-eval
             await eval(`import('${fileUrl}?${PREVENT_MODULE_CACHING_SUFFIX}=${Date.now()}')`);
         }
-        else {
-            const mod = new Module(filename, module.parent);
-
-            mod.filename = filename;
-            mod.paths    = APIBasedTestFileCompilerBase._getNodeModulesLookupPath(filename);
-
-            cacheProxy.startExternalCaching(this.cachePrefix);
-
-            mod._compile(code, filename);
-
-            cacheProxy.stopExternalCaching();
-
-            return mod;
-        }
+        else
+            this._createModuleAndCompile(code, filename);
 
         return Promise.resolve();
+    }
+
+    _createModuleAndCompile (code, filename) {
+        const mod = new Module(filename, module.parent);
+
+        mod.filename = filename;
+        mod.paths    = APIBasedTestFileCompilerBase._getNodeModulesLookupPath(filename);
+
+        cacheProxy.startExternalCaching(this.cachePrefix);
+
+        mod._compile(code, filename);
+
+        cacheProxy.stopExternalCaching();
+
+        return mod;
     }
 
     _compileCode (code, filename) {

@@ -276,7 +276,7 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
         if (compiledCode) {
             this._setupRequireHook({ });
 
-            compiledConfigurationModule = await this._execAsModule(compiledCode, filename);
+            compiledConfigurationModule = await this._createModuleAndCompile(compiledCode, filename);
 
             this._removeRequireHook();
 
