@@ -114,6 +114,32 @@ describe('[API] t.takeScreenshot()', function () {
                 });
         });
 
+        it('Should take a screenshot with a custom pathPattern', function () {
+            return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot with a pathPattern')
+                .then(function () {
+                    const screenshotPath = path.join('screenshots', 'Take a screenshot with a pathPattern');
+                    const screenshotsCheckingOptions = { baseDir: 'screenshots', forError: false, screenshotsCount: 2, customPath: screenshotPath };
+
+                    expect(assertionHelper.checkScreenshotsCreated(screenshotsCheckingOptions)).eql(true);
+                    return assertionHelper.removeScreenshotDir('screenshots');
+                });
+        });
+
+        it('Should create a warning if pathPattern is used with path parameter', function () {
+            const { reporter, assertReporterWarnings, warningResult } = createWarningReporter();
+
+            return runTests('./testcafe-fixtures/take-screenshot.js', 'Should create a warning and use path parameter', { reporter })
+                .then(function () {
+                    const screenshotPath             = path.join('screenshots', 'screenshot-path');
+                    const screenshotsCheckingOptions = { baseDir: 'screenshots', forError: false, screenshotsCount: 2, customPath: screenshotPath };
+
+                    expect(assertionHelper.checkScreenshotsCreated(screenshotsCheckingOptions)).eql(true);
+                    expect(warningResult.warnings[0].message).eql('The screenshot path "screenshot-path/custom" overrides the "${TEST}/custom" pathPattern parameter. Choose only one of the parameters to specify the screenshot path.');
+                    assertReporterWarnings('takeScreenshot');
+                    return assertionHelper.removeScreenshotDir('screenshots');
+                });
+        });
+
         it('Should save screenshots to default dir if screenshotPath is not specified', function () {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot')
                 .then(function () {

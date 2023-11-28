@@ -50,6 +50,10 @@ export default class PathPattern extends EventEmitter {
         return DEFAULT_PATH_PATTERN_FOR_REPORT;
     }
 
+    setPattern (newPattern) {
+        this.pattern = newPattern;
+    }
+
     _addDefaultFields (data) {
         const defaultFields = {
             testId:         TEST_ID_TEMPLATE(data),

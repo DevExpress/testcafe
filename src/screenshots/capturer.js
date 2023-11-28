@@ -103,7 +103,9 @@ export default class Capturer {
         return this._joinWithBaseScreenshotPath(correctedCustomPath);
     }
 
-    _getScreenshotPath (forError) {
+    _getScreenshotPath (forError, customPathPattern) {
+        if (customPathPattern)
+            this.pathPattern.setPattern(customPathPattern);
         const path = this.pathPattern.getPath(forError);
 
         this._incrementFileIndexes(forError);
@@ -122,14 +124,18 @@ export default class Capturer {
         await this.provider.takeScreenshot(this.browserId, filePath, pageWidth, pageHeight, fullPage);
     }
 
-    async _capture (forError, { actionId, failedActionId, pageDimensions, cropDimensions, markSeed, customPath, fullPage, thumbnails } = {}) {
+    async _capture (forError, { actionId, failedActionId, pageDimensions, cropDimensions, markSeed, customPath, customPathPattern, fullPage, thumbnails } = {}) {
         if (!this.enabled)
             return null;
 
         thumbnails = thumbnails === void 0 ? this.thumbnails : thumbnails;
 
-        const screenshotPath = customPath ? this._getCustomScreenshotPath(customPath) : this._getScreenshotPath(forError);
+        const screenshotPath = customPath ? this._getCustomScreenshotPath(customPath) : this._getScreenshotPath(forError, customPathPattern);
+
         const thumbnailPath  = this._getThumbnailPath(screenshotPath);
+
+        if (customPath && customPathPattern)
+            this.warningLog.addWarning(WARNING_MESSAGE.screenshotPathOverridesPathPattern, customPath, customPathPattern);
 
         if (isInQueue(screenshotPath))
             this.warningLog.addWarning(WARNING_MESSAGE.screenshotRewritingError, screenshotPath);

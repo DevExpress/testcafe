@@ -137,3 +137,11 @@ test('Rewrite a screenshot with warning', async t => {
     await t.takeScreenshot('custom/duplicate.png');
     await t.takeScreenshot('custom/duplicate.png');
 });
+
+test('Take a screenshot with a pathPattern', async t => {
+    await t.takeScreenshot({ pathPattern: '${TEST}/custom' });
+});
+
+test('Should create a warning and use path parameter', async t => {
+    await t.takeScreenshot({ path: 'screenshot-path/custom', pathPattern: '${TEST}/custom' });
+});
