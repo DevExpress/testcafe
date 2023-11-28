@@ -50,6 +50,10 @@ export default class PathPattern extends EventEmitter {
         return DEFAULT_PATH_PATTERN_FOR_REPORT;
     }
 
+    getPattern () {
+        return this.pattern;
+    }
+
     setPattern (newPattern) {
         this.pattern = newPattern;
     }

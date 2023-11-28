@@ -104,10 +104,13 @@ export default class Capturer {
     }
 
     _getScreenshotPath (forError, customPathPattern) {
-        if (customPathPattern)
-            this.pathPattern.setPattern(customPathPattern);
+        const oldPattern = this.pathPattern.getPattern();
+        const newPattern = customPathPattern || oldPattern;
+
+        this.pathPattern.setPattern(newPattern);
         const path = this.pathPattern.getPath(forError);
 
+        this.pathPattern.setPattern(oldPattern);
         this._incrementFileIndexes(forError);
 
         return this._joinWithBaseScreenshotPath(path);
