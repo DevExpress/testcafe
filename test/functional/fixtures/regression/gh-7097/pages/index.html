@@ -1,0 +1,8 @@
+<html>
+    <body>
+        <script>
+            fetch('http://non-exist-path.comi/api:404')
+                .catch(() => window.failedFetch = true);
+        </script>
+    </body>
+</html>

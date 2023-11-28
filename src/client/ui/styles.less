@@ -578,24 +578,38 @@
             flex-direction: row;
             position: relative;
 
-            .selector-panel-toggle-button {
-                cursor: pointer;
-                background: white;
-                padding: 1px 8px 3px 8px;
-                top: 2px;
-                border-radius: 4px;
-                overflow: hidden;
+            .selector-panel-toggle-button-container {
+                position: relative;
 
-                &:hover {
-                    background-color: #cfcfcf;
+                .selector-panel-toggle-button {
+                    cursor: pointer;
+                    background: white;
+                    padding: 1px 8px 3px 8px;
+                    top: 0;
+                    border-radius: 4px;
+                    overflow: hidden;
+                    position: absolute;
+                    width: 100%;
+                    box-sizing: border-box;
+
+                    &:hover {
+                        background-color: #cfcfcf;
+                    }
+                }
+
+                span {
+                    cursor: pointer;
+                    padding: 1px 8px 3px 8px;
+                    pointer-events: none;
+                    z-index: 1;
+                    color:rgb(0, 0, 0);
+                    line-height: 16px;
                 }
 
                 span::after {
                     content: "Hide Picker";
-                    width: 100%;
-                    height: 100%;
 
-                    @media(max-width: 470px) {
+                    @media screen and (max-width: 500px) {
                         content: "Hide";
                     }
                 }
@@ -704,17 +718,22 @@
             &--hidden {
                 padding: 0;
 
-                .selector-panel-toggle-button {
-                    background-color: #283545;
-                    color: white;
-                    font-weight: bold;
+                .selector-panel-toggle-button-container {
                     position: absolute;
                     top: -26px;
-                    right: 3px;
+                    right: 2px;
                     z-index: @rootZIndex - 2;
 
-                    &:hover {
-                        background-color: #36B6E5;
+                    .selector-panel-toggle-button {
+                        background-color: #283545;
+
+                        &:hover {
+                            background-color: #36B6E5!important;
+                        }
+                    }
+
+                    span {
+                        color: white;
                     }
 
                     span::after {
@@ -740,6 +759,7 @@
         flex-direction: column;
         background-color: white;
         box-shadow: 0px 0px 2px #8d8d8d;
+        color: black;
 
         .selector-value {
             height: 18px;
