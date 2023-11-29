@@ -47,6 +47,10 @@ interface TakeScreenshotOptions {
      * Specifies that TestCafe should take full-page screenshots.
      */
     fullPage?: boolean;
+    /**
+     * Specifies the pathPattern where the screenshots are saved.
+     */
+    pathPattern?: string;
 }
 
 interface TakeElementScreenshotOptions extends ActionOptions {
