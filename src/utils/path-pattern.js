@@ -50,14 +50,6 @@ export default class PathPattern extends EventEmitter {
         return DEFAULT_PATH_PATTERN_FOR_REPORT;
     }
 
-    getPattern () {
-        return this.pattern;
-    }
-
-    setPattern (newPattern) {
-        this.pattern = newPattern;
-    }
-
     _addDefaultFields (data) {
         const defaultFields = {
             testId:         TEST_ID_TEMPLATE(data),
@@ -132,8 +124,9 @@ export default class PathPattern extends EventEmitter {
         return resultFilePath;
     }
 
-    getPath (forError) {
-        const path = this._buildPath(this.pattern, this.placeholderToDataMap, forError);
+    getPath (forError, customPathPattern) {
+        const pathPattern = customPathPattern || this.pattern;
+        const path = this._buildPath(pathPattern, this.placeholderToDataMap, forError);
 
         return correctFilePath(path, this.fileExtension);
     }
