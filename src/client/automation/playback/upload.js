@@ -1,5 +1,7 @@
 import {
-    doUpload, eventSandbox, nativeMethods,
+    doUpload,
+    eventSandbox,
+    nativeMethods,
 } from '../deps/hammerhead';
 import { arrayUtils } from '../deps/testcafe-core';
 
@@ -13,7 +15,7 @@ export default class UploadAutomation {
         this.paths       = paths;
         this.createError = createError;
 
-        if (isNativeAutomation)
+        if (isNativeAutomation && this.element.form)
             this._handleRequiredInput();
     }
 
@@ -28,10 +30,8 @@ export default class UploadAutomation {
                 nativeMethods.setAttribute.call(this.element, REQUIRED_ATTR_NAME, 'true');
         };
 
-        if (this.element.form) {
-            eventSandbox.listeners.initElementListening(this.element.form, [FORM_SUBMIT_EVENT_NAME]);
-            eventSandbox.listeners.addInternalEventAfterListener(this.element.form, [FORM_SUBMIT_EVENT_NAME], ensureUploadInputHasRequiredAttribute);
-        }
+        eventSandbox.listeners.initElementListening(this.element.form, [FORM_SUBMIT_EVENT_NAME]);
+        eventSandbox.listeners.addInternalEventAfterListener(this.element.form, [FORM_SUBMIT_EVENT_NAME], ensureUploadInputHasRequiredAttribute);
     }
 
     run () {
