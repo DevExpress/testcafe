@@ -177,9 +177,10 @@ function ensureFileInput (element: Node[]): never | void {
 }
 
 ActionExecutor.ACTIONS_HANDLERS[COMMAND_TYPE.setFilesToUpload] = {
-    create: (command, elements) => {
+    create: (command, elements, dispatchNativeAutomationEventFn) => {
         return new UploadAutomation(elements[0], command.filePath,
             (filePaths: string[], scannedFilePaths: string[]) => new ActionCannotFindFileToUploadError(filePaths, scannedFilePaths),
+            dispatchNativeAutomationEventFn
         );
     },
 
