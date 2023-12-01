@@ -112,6 +112,13 @@ if (config.useLocalBrowsers) {
                 });
         });
 
+        it('Should run tests concurrently after fixture before hook', function () {
+            return run('chrome:headless --no-sandbox', 3, './testcafe-fixtures/concurrent-fixture-before-test.js')
+                .then(() => {
+                    expect(testInfo.getData()).eql(['fixture before hook started', 'fixture before hook finished', 'test finished', 'test finished', 'test finished']);
+                });
+        });
+
         it('Report TaskStart event handler should contain links to all opened browsers', async () => {
             const concurrency = 2;
             const scope       = {};

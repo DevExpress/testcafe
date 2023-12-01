@@ -12,6 +12,8 @@ interface FixtureState {
     fixtureBeforeHookErr: null | Error;
     pendingTestRunCount: number;
     fixtureCtx: object;
+    fixtureGlobalBeforeHookPromise: Promise<boolean>;
+    fixtureBeforeHookPromise: Promise<boolean>;
 }
 
 export default class FixtureHookController {
@@ -24,11 +26,13 @@ export default class FixtureHookController {
     private static _ensureFixtureMapItem (fixtureMap: Map<Fixture, FixtureState>, fixture: Fixture): void {
         if (!fixtureMap.has(fixture)) {
             const item = {
-                started:                  false,
-                runningFixtureBeforeHook: false,
-                fixtureBeforeHookErr:     null,
-                pendingTestRunCount:      0,
-                fixtureCtx:               Object.create(null),
+                started:                        false,
+                runningFixtureBeforeHook:       false,
+                fixtureBeforeHookErr:           null,
+                pendingTestRunCount:            0,
+                fixtureCtx:                     Object.create(null),
+                fixtureGlobalBeforeHookPromise: Promise.resolve(true),
+                fixtureBeforeHookPromise:       Promise.resolve(true),
             };
 
             fixtureMap.set(fixture, item);
@@ -99,12 +103,20 @@ export default class FixtureHookController {
 
         if (item) {
             const shouldRunBeforeHook = !item.started;
+            let success = false;
 
             item.started = true;
 
-            const success = shouldRunBeforeHook
-                            && await this._runFixtureBeforeHook(item, fixture.globalBeforeFn as Function, testRun)
-                            && await this._runFixtureBeforeHook(item, fixture.beforeFn as Function, testRun);
+            if (shouldRunBeforeHook) {
+                item.fixtureGlobalBeforeHookPromise = this._runFixtureBeforeHook(item, fixture.globalBeforeFn as Function, testRun);
+                success                             = await item.fixtureGlobalBeforeHookPromise;
+                item.fixtureBeforeHookPromise       = this._runFixtureBeforeHook(item, fixture.beforeFn as Function, testRun);
+                success                             = await item.fixtureBeforeHookPromise;
+            }
+            else {
+                success = await item.fixtureGlobalBeforeHookPromise &&
+                          await item.fixtureBeforeHookPromise;
+            }
 
             // NOTE: fail all tests in fixture if fixture.before hook has error
             if (!success && item.fixtureBeforeHookErr) {
