@@ -8,7 +8,7 @@ const { skipInNativeAutomation } = require('../../utils/skip-in');
 
 
 if (config.useLocalBrowsers) {
-    describe.only('Concurrency', function () {
+    describe('Concurrency', function () {
         let data = '';
 
         function resolvePath (file) {
