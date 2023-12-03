@@ -1,31 +1,24 @@
-import testInfo from '../test-info.js';
+import { expect } from 'chai';
 
-let value = 0;
+let beforeHookCallNumber = 0;
 
 fixture('Concurrent fixture before hook')
     .before(async () => {
-        testInfo.add('fixture before hook started');
         await new Promise(r => setTimeout(r, 10000));
-        // Value should be set before any test starts
-        value = 10;
-        testInfo.add('fixture before hook finished');
+        beforeHookCallNumber += 1;
     })
     .after(() => {
-        testInfo.save();
-        testInfo.clear();
+        expect(beforeHookCallNumber).eql(1);
     });
 
 test('test1', async t => {
-    await t.expect(value).eql(10);
-    testInfo.add('test finished');
+    await t.expect(beforeHookCallNumber).eql(1);
 });
 
 test('test2', async t => {
-    await t.expect(value).eql(10);
-    testInfo.add('test finished');
+    await t.expect(beforeHookCallNumber).eql(1);
 });
 
 test('test3', async t => {
-    await t.expect(value).eql(10);
-    testInfo.add('test finished');
+    await t.expect(beforeHookCallNumber).eql(1);
 });

@@ -25,14 +25,16 @@ export default class FixtureHookController {
 
     private static _ensureFixtureMapItem (fixtureMap: Map<Fixture, FixtureState>, fixture: Fixture): void {
         if (!fixtureMap.has(fixture)) {
+            const beforeHookPromise = Promise.resolve(true);
+
             const item = {
                 started:                        false,
                 runningFixtureBeforeHook:       false,
                 fixtureBeforeHookErr:           null,
                 pendingTestRunCount:            0,
                 fixtureCtx:                     Object.create(null),
-                fixtureGlobalBeforeHookPromise: Promise.resolve(true),
-                fixtureBeforeHookPromise:       Promise.resolve(true),
+                fixtureGlobalBeforeHookPromise: beforeHookPromise,
+                fixtureBeforeHookPromise:       beforeHookPromise,
             };
 
             fixtureMap.set(fixture, item);
@@ -110,8 +112,10 @@ export default class FixtureHookController {
             if (shouldRunBeforeHook) {
                 item.fixtureGlobalBeforeHookPromise = this._runFixtureBeforeHook(item, fixture.globalBeforeFn as Function, testRun);
                 success                             = await item.fixtureGlobalBeforeHookPromise;
-                item.fixtureBeforeHookPromise       = this._runFixtureBeforeHook(item, fixture.beforeFn as Function, testRun);
-                success                             = await item.fixtureBeforeHookPromise;
+                if (success) {
+                    item.fixtureBeforeHookPromise = this._runFixtureBeforeHook(item, fixture.beforeFn as Function, testRun);
+                    success                       = await item.fixtureBeforeHookPromise;
+                }
             }
             else {
                 success = await item.fixtureGlobalBeforeHookPromise &&
