@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 
+
 let beforeHookCallNumber = 0;
 
 fixture('Concurrent fixture before hook')
@@ -20,5 +21,13 @@ test('test2', async t => {
 });
 
 test('test3', async t => {
+    await t.expect(beforeHookCallNumber).eql(1);
+});
+
+test('test4', async t => {
+    await t.expect(beforeHookCallNumber).eql(1);
+});
+
+test('test5', async t => {
     await t.expect(beforeHookCallNumber).eql(1);
 });

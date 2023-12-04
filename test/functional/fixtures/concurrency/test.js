@@ -5,6 +5,7 @@ const config                     = require('../../config');
 const { createReporter }         = require('../../utils/reporter');
 const testInfo                   = require('./test-info');
 const { skipInNativeAutomation } = require('../../utils/skip-in');
+const assertionHelper            = require('../../assertion-helper');
 
 
 if (config.useLocalBrowsers) {
@@ -28,21 +29,24 @@ if (config.useLocalBrowsers) {
                 });
             }
 
-            return testCafe
+            const runner = testCafe
                 .createRunner()
                 .src(src)
                 .reporter(reporter, {
                     write: function (newData) {
                         data += newData;
                     },
-
                     end: function (newData) {
                         data += newData;
                     },
                 })
                 .browsers(browsers)
-                .concurrency(concurrency)
-                .run({ disableNativeAutomation: !config.nativeAutomation });
+                .concurrency(concurrency);
+
+            if (config.nativeAutomation)
+                return runner.run({ disableNativeAutomation: false });
+
+            return runner.video(config.testVideosDir).run({ disableNativeAutomation: true });
         }
 
         function createConnections (count) {
@@ -96,6 +100,7 @@ if (config.useLocalBrowsers) {
 
         afterEach(() => {
             testInfo.delete();
+            assertionHelper.removeVideosDir();
         });
 
         it('Should run tests sequentially if concurrency = 1', function () {
@@ -113,7 +118,7 @@ if (config.useLocalBrowsers) {
         });
 
         it('Should run tests concurrently after fixture before hook', function () {
-            return run('chrome:headless --no-sandbox', 3, './testcafe-fixtures/concurrent-fixture-before-test.js')
+            return run('chrome:headless --no-sandbox', 5, './testcafe-fixtures/concurrent-fixture-before-test.js')
                 .then(failedCount => {
                     expect(failedCount).eql(0);
                 });
