@@ -101,22 +101,26 @@ export default class FixtureHookController {
 
         if (item) {
             const shouldRunBeforeHook = !item.started;
-            let success = false;
+            // let success = false;
 
             item.started = true;
 
-            if (shouldRunBeforeHook) {
-                item.fixtureBeforeHookPromise = this._runFixtureBeforeHook(item, fixture.globalBeforeFn as Function, testRun)
-                    .then(isGlobalBeforeHookSuccess => {
-                        if (isGlobalBeforeHookSuccess)
-                            return this._runFixtureBeforeHook(item, fixture.beforeFn as Function, testRun);
+            // if (shouldRunBeforeHook) {
+            //     item.fixtureBeforeHookPromise = this._runFixtureBeforeHook(item, fixture.globalBeforeFn as Function, testRun)
+            //         .then(isGlobalBeforeHookSuccess => {
+            //             if (isGlobalBeforeHookSuccess)
+            //                 return this._runFixtureBeforeHook(item, fixture.beforeFn as Function, testRun);
 
-                        return isGlobalBeforeHookSuccess;
-                    });
-                success = await item.fixtureBeforeHookPromise;
-            }
-            else
-                success = await item.fixtureBeforeHookPromise;
+            //             return isGlobalBeforeHookSuccess;
+            //         });
+            //     success = await item.fixtureBeforeHookPromise;
+            // }
+            // else
+            //     success = await item.fixtureBeforeHookPromise;
+
+            const success = shouldRunBeforeHook
+            && await this._runFixtureBeforeHook(item, fixture.globalBeforeFn as Function, testRun)
+            && await this._runFixtureBeforeHook(item, fixture.beforeFn as Function, testRun);
 
             // NOTE: fail all tests in fixture if fixture.before hook has error
             if (!success && item.fixtureBeforeHookErr) {

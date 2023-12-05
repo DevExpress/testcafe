@@ -102,10 +102,7 @@ export default class TestRunController extends AsyncEventEmitter {
             folderName:       this.testRun.id,
         });
 
-        await this.testRun.initialize();
-
         this._screenshots.addTestRun(this.test, this.testRun);
-
         if (this.testRun.addQuarantineInfo)
             this.testRun.addQuarantineInfo(this._quarantine);
 
@@ -285,6 +282,7 @@ export default class TestRunController extends AsyncEventEmitter {
 
         this._assignTestRunEvents(testRun, connection);
 
+        await testRun.initialize();
         testRun.start();
 
         return SessionController.getSessionUrl(testRun, this._proxy);
