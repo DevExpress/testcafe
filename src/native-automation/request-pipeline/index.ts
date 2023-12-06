@@ -12,7 +12,7 @@ import CertificateErrorEvent = Protocol.Security.CertificateErrorEvent;
 import HeaderEntry = Protocol.Fetch.HeaderEntry;
 import NativeAutomationRequestHookEventProvider from '../request-hooks/event-provider';
 import ResourceInjector, { ResourceInjectorOptions } from '../resource-injector';
-import { convertToHeaderEntries, getHeader } from '../utils/headers';
+import { convertToHeaderEntries, getHeaderValue } from '../utils/headers';
 
 import {
     createRequestPausedEventForResponse,
@@ -154,7 +154,7 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
             await this._resourceInjector.processNonProxiedContent(fulfillInfo, this._client, sessionId);
         else {
             const userScripts = await this._getUserScripts(event);
-            const contentType = getHeader(event.responseHeaders, 'content-type');
+            const contentType = getHeaderValue(event.responseHeaders, 'content-type');
 
             await this._resourceInjector.processHTMLPageContent(fulfillInfo, {
                 isIframe:       false,
@@ -199,7 +199,7 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
             return;
         }
 
-        const contentType = getHeader(event.responseHeaders, 'content-type');
+        const contentType = getHeaderValue(event.responseHeaders, 'content-type');
         const resourceInfo = await this._resourceInjector.getDocumentResourceInfo(event, this._client, contentType as string);
 
         if (resourceInfo.error) {

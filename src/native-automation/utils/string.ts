@@ -3,7 +3,7 @@ import GetResponseBodyResponse = Protocol.Network.GetResponseBodyResponse;
 import HeaderEntry = Protocol.Fetch.HeaderEntry;
 import { decodeBufferToString, encodeStringToBuffer } from 'testcafe-hammerhead';
 
-export function getResponseAsString (response: GetResponseBodyResponse, contentType = ''): string {
+export function getResponseAsString (response: GetResponseBodyResponse, contentType = 'charset=utf-8'): string {
     const bufferBody = getResponseAsBuffer(response);
 
     return decodeBufferToString(bufferBody, contentType);
@@ -15,7 +15,7 @@ export function getResponseAsBuffer (response: GetResponseBodyResponse): Buffer 
         : Buffer.from(response.body);
 }
 
-export function toBase64String (str: string, contentType = ''): string {
+export function toBase64String (str: string, contentType = 'charset=utf-8'): string {
     const bufferBody = encodeStringToBuffer(str, contentType);
 
     return bufferBody.toString('base64');

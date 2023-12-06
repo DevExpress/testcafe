@@ -25,7 +25,7 @@ export function convertToOutgoingHttpHeaders (headers: HeaderEntry[] | undefined
     }, {});
 }
 
-export function getHeader (headers: HeaderEntry[] | undefined, headerName: string): string {
-    return headers?.find(header => header.name === headerName)?.value || '';
+export function getHeaderValue (headers: HeaderEntry[] | undefined, headerName: string): string | null {
+    return headers?.find(header => header.name.toLowerCase() === headerName)?.value || null;
 }
 
