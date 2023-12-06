@@ -78,7 +78,7 @@ const defaultFaviconRequest = {
                     requestId:       event.requestId,
                     responseCode:    StatusCodes.OK,
                     responseHeaders: [ FAVICON_CONTENT_TYPE_HEADER ],
-                    body:            toBase64String(favIcon),
+                    body:            toBase64String(favIcon, ''),
                 }, sessionId);
             }
             else
