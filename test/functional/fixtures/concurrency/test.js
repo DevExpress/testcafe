@@ -5,11 +5,11 @@ const config                     = require('../../config');
 const { createReporter }         = require('../../utils/reporter');
 const testInfo                   = require('./test-info');
 const { skipInNativeAutomation } = require('../../utils/skip-in');
-const assertionHelper            = require('../../assertion-helper');
 
 
 if (config.useLocalBrowsers) {
     describe('Concurrency', function () {
+        const concurrencyWithBeforeHook = 5;
         let data = '';
 
         function resolvePath (file) {
@@ -29,7 +29,7 @@ if (config.useLocalBrowsers) {
                 });
             }
 
-            const runner = testCafe
+            return testCafe
                 .createRunner()
                 .src(src)
                 .reporter(reporter, {
@@ -41,12 +41,17 @@ if (config.useLocalBrowsers) {
                     },
                 })
                 .browsers(browsers)
-                .concurrency(concurrency);
-
-            if (config.nativeAutomation)
-                return runner.run({ disableNativeAutomation: false });
-
-            return runner.video(config.testVideosDir).run({ disableNativeAutomation: true });
+                .concurrency(concurrency)
+                .run({
+                    disableNativeAutomation: !config.nativeAutomation,
+                    hooks:                   concurrency === concurrencyWithBeforeHook ? {
+                        testRun: {
+                            before: async () => {
+                                await new Promise(r => setTimeout(r, 3000));
+                            },
+                        },
+                    } : null,
+                });
         }
 
         function createConnections (count) {
@@ -100,7 +105,6 @@ if (config.useLocalBrowsers) {
 
         afterEach(() => {
             testInfo.delete();
-            assertionHelper.removeVideosDir();
         });
 
         it('Should run tests sequentially if concurrency = 1', function () {
@@ -118,7 +122,7 @@ if (config.useLocalBrowsers) {
         });
 
         it('Should run tests concurrently after fixture before hook', function () {
-            return run('chrome:headless --no-sandbox', 5, './testcafe-fixtures/concurrent-fixture-before-test.js')
+            return run('chrome:headless --no-sandbox', concurrencyWithBeforeHook, './testcafe-fixtures/concurrent-fixture-before-test.js')
                 .then(failedCount => {
                     expect(failedCount).eql(0);
                 });

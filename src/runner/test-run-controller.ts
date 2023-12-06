@@ -6,7 +6,6 @@ import SessionController from '../test-run/session-controller';
 import BrowserConnection from '../browser/connection';
 import { Proxy, generateUniqueId } from 'testcafe-hammerhead';
 import Test from '../api/structure/test';
-import Fixture from '../api/structure/fixture';
 import Screenshots from '../screenshots';
 import WarningLog from '../notifications/warning-log';
 import FixtureHookController from './fixture-hook-controller';
@@ -96,10 +95,7 @@ export default class TestRunController extends AsyncEventEmitter {
             startRunExecutionTime,
         });
 
-        const fixture = this.testRun.test.fixture as Fixture;
-
-        if (fixture.globalBeforeFn || fixture.beforeFn)
-            this._fixtureHookController.blockTest(this.testRun);
+        this._fixtureHookController.blockIfBeforeHooksExist(this.testRun.test);
 
         this.clientScriptRoutes = clientScriptsRouting.register({
             proxy:            this._proxy,
@@ -108,7 +104,10 @@ export default class TestRunController extends AsyncEventEmitter {
             folderName:       this.testRun.id,
         });
 
+        await this.testRun.initialize();
+
         this._screenshots.addTestRun(this.test, this.testRun);
+
         if (this.testRun.addQuarantineInfo)
             this.testRun.addQuarantineInfo(this._quarantine);
 
@@ -288,7 +287,6 @@ export default class TestRunController extends AsyncEventEmitter {
 
         this._assignTestRunEvents(testRun, connection);
 
-        await testRun.initialize();
         testRun.start();
 
         return SessionController.getSessionUrl(testRun, this._proxy);

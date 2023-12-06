@@ -2,19 +2,16 @@ import TEST_RUN_PHASE from '../test-run/phase';
 import processTestFnError from '../errors/process-test-fn-error';
 import Test from '../api/structure/test';
 import Fixture from '../api/structure/fixture';
-//@ts-ignore
-import { TestRun as LegacyTestRun } from 'testcafe-legacy-api';
 import TestRun from '../test-run';
 import executeFnWithTimeout from '../utils/execute-fn-with-timeout';
 import { getFixtureInfo } from '../utils/get-test-and-fixture-info';
 
 interface FixtureState {
     started: boolean;
-    runningFixtureBeforeHook: boolean;
+    blockedUntilFixtureBeforeHookIsExecuted: boolean;
     fixtureBeforeHookErr: null | Error;
     pendingTestRunCount: number;
     fixtureCtx: object;
-    fixtureBeforeHookPromise: Promise<boolean>;
 }
 
 export default class FixtureHookController {
@@ -27,12 +24,11 @@ export default class FixtureHookController {
     private static _ensureFixtureMapItem (fixtureMap: Map<Fixture, FixtureState>, fixture: Fixture): void {
         if (!fixtureMap.has(fixture)) {
             const item = {
-                started:                  false,
-                runningFixtureBeforeHook: false,
-                fixtureBeforeHookErr:     null,
-                pendingTestRunCount:      0,
-                fixtureCtx:               Object.create(null),
-                fixtureBeforeHookPromise: Promise.resolve(true),
+                started:                                 false,
+                blockedUntilFixtureBeforeHookIsExecuted: false,
+                fixtureBeforeHookErr:                    null,
+                pendingTestRunCount:                     0,
+                fixtureCtx:                              Object.create(null),
             };
 
             fixtureMap.set(fixture, item);
@@ -62,18 +58,23 @@ export default class FixtureHookController {
     public isTestBlocked (test: Test): boolean {
         const item = this._getFixtureMapItem(test);
 
-        return !!item && item.runningFixtureBeforeHook;
+        return !!item && item.blockedUntilFixtureBeforeHookIsExecuted;
     }
 
-    public blockTest (testRun: LegacyTestRun | TestRun): void {
-        const item = this._getFixtureMapItem(testRun.test);
-
-        if (item)
-            item.runningFixtureBeforeHook = true;
+    private _blockTest (item: FixtureState): void {
+        item.blockedUntilFixtureBeforeHookIsExecuted = true;
     }
 
-    public unblockTest (item: FixtureState): void {
-        item.runningFixtureBeforeHook = false;
+    private _unblockTest (item: FixtureState): void {
+        item.blockedUntilFixtureBeforeHookIsExecuted = false;
+    }
+
+    public blockIfBeforeHooksExist (test: Test): void {
+        const fixture = test.fixture as Fixture;
+        const item = this._getFixtureMapItem(test);
+
+        if (item && (fixture.globalBeforeFn || fixture.beforeFn))
+            this._blockTest(item);
     }
 
     private async _runFixtureBeforeHook (item: FixtureState, fn: Function, testRun: TestRun): Promise<boolean> {
@@ -114,10 +115,10 @@ export default class FixtureHookController {
             item.started = true;
 
             const success = shouldRunBeforeHook
-            && await this._runFixtureBeforeHook(item, fixture.globalBeforeFn as Function, testRun)
-            && await this._runFixtureBeforeHook(item, fixture.beforeFn as Function, testRun);
+                            && await this._runFixtureBeforeHook(item, fixture.globalBeforeFn as Function, testRun)
+                            && await this._runFixtureBeforeHook(item, fixture.beforeFn as Function, testRun);
 
-            this.unblockTest(item);
+            this._unblockTest(item);
 
             // NOTE: fail all tests in fixture if fixture.before hook has error
             if (!success && item.fixtureBeforeHookErr) {
