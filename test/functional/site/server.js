@@ -162,11 +162,12 @@ Server.prototype._setupRoutes = function (apiRouter) {
             </body>
             </html>
         `;
-        
-        const content = Buffer.from(html, 'latin1')
-        res.setHeader('content-type', 'text/html; charset=iso-8859-15')
+
+        const content = Buffer.from(html, 'latin1');
+
+        res.setHeader('content-type', 'text/html; charset=iso-8859-15');
         res.send(content);
-    })
+    });
 
     this.app.get('*', function (req, res) {
         const reqPath      = req.params[0] || '';

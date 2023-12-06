@@ -58,8 +58,6 @@ import { resendAuthRequest } from './resendAuthRequest';
 import TestRunBridge from './test-run-bridge';
 import NativeAutomationRequestContextInfo from './context-info';
 import { failedToFindDNSError, sslCertificateError } from '../errors';
-import { getResponseAsString } from '../utils/string';
-// import { getResponseAsString } from '../utils/string';
 
 
 const ALL_REQUEST_RESPONSES = { requestStage: 'Request' } as RequestPattern;
@@ -201,7 +199,6 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
             return;
         }
 
-        
         const contentType = event.responseHeaders?.find( header => header.name === 'content-type')?.value;
         const resourceInfo = await this._resourceInjector.getDocumentResourceInfo(event, this._client, contentType as string);
 
@@ -234,7 +231,6 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
                 await this._tryAuthorizeWithHttpBasicAuthCredentials(event, fulfillInfo);
 
             const userScripts = await this._getUserScripts(event);
-            const contentType = event.responseHeaders?.find( header => header.name === 'content-type')?.value;
 
             await this._resourceInjector.processHTMLPageContent(
                 fulfillInfo,
@@ -245,7 +241,7 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
                     contextStorage:    this.contextStorage,
                     userScripts,
                 },
-                this._client, sessionId, contentType);
+                this._client, sessionId, contentType as string);
 
             this._contextInfo.dispose(getRequestId(event));
 

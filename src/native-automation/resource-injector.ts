@@ -137,8 +137,8 @@ export default class ResourceInjector {
         return stringifyHeaderValues(headers);
     }
 
-    private async _fulfillRequest (client: ProtocolApi, fulfillRequestInfo: FulfillRequestRequest, body: string, sessionId: SessionId, contentType: string = ''): Promise<void> {
-        body = await toBase64String(body,contentType);
+    private async _fulfillRequest (client: ProtocolApi, fulfillRequestInfo: FulfillRequestRequest, body: string, sessionId: SessionId, contentType: string): Promise<void> {
+        body = await toBase64String(body, contentType);
         await safeFulfillRequest(client, {
             requestId:       fulfillRequestInfo.requestId,
             responseCode:    fulfillRequestInfo.responseCode || StatusCodes.OK,
@@ -184,8 +184,6 @@ export default class ResourceInjector {
                 };
             }
 
-            debugger
-
             const responseObj = await client.Fetch.getResponseBody({ requestId });
             const responseStr = getResponseAsString(responseObj, contentType);
 
@@ -216,7 +214,7 @@ export default class ResourceInjector {
         });
     }
 
-    public async processHTMLPageContent (fulfillRequestInfo: FulfillRequestRequest, injectableResourcesOptions: InjectableResourcesOptions, client: ProtocolApi, sessionId: SessionId, contentType: string = ''): Promise<void> {
+    public async processHTMLPageContent (fulfillRequestInfo: FulfillRequestRequest, injectableResourcesOptions: InjectableResourcesOptions, client: ProtocolApi, sessionId: SessionId, contentType: string): Promise<void> {
         const injectableResources = await this._prepareInjectableResources(injectableResourcesOptions);
 
         // NOTE: an unhandled exception interrupts the test execution,
@@ -235,7 +233,7 @@ export default class ResourceInjector {
     }
 
     public async processNonProxiedContent (fulfillRequestInfo: FulfillRequestRequest, client: ProtocolApi, sessionId: SessionId): Promise<void> {
-        await this._fulfillRequest(client, fulfillRequestInfo, fulfillRequestInfo.body as string, sessionId);
+        await this._fulfillRequest(client, fulfillRequestInfo, fulfillRequestInfo.body as string, sessionId, '');
     }
 
     private _getPageInjectableResourcesOptions (injectableResourcesOptions: InjectableResourcesOptions): PageRestoreStoragesOptions | undefined {
