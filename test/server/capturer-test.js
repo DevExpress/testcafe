@@ -84,6 +84,9 @@ function createTestRunControllerMock (screenshots, warningLog) {
         _opts: {
             nativeAutomation: false,
         },
+        _fixtureHookController: {
+            blockIfBeforeHooksExist: noop,
+        },
     };
 }
 
