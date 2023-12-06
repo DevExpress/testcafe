@@ -117,12 +117,12 @@ if (config.useLocalBrowsers) {
                 });
         });
 
-        // it.only('Should run tests concurrently after fixture before hook', function () {
-        //     return run('chrome:headless --no-sandbox', 5, './testcafe-fixtures/concurrent-fixture-before-test.js')
-        //         .then(failedCount => {
-        //             expect(failedCount).eql(0);
-        //         });
-        // });
+        it('Should run tests concurrently after fixture before hook', function () {
+            return run('chrome:headless --no-sandbox', 5, './testcafe-fixtures/concurrent-fixture-before-test.js')
+                .then(failedCount => {
+                    expect(failedCount).eql(0);
+                });
+        });
 
         it('Report TaskStart event handler should contain links to all opened browsers', async () => {
             const concurrency = 2;

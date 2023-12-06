@@ -2,6 +2,8 @@ import TEST_RUN_PHASE from '../test-run/phase';
 import processTestFnError from '../errors/process-test-fn-error';
 import Test from '../api/structure/test';
 import Fixture from '../api/structure/fixture';
+//@ts-ignore
+import { TestRun as LegacyTestRun } from 'testcafe-legacy-api';
 import TestRun from '../test-run';
 import executeFnWithTimeout from '../utils/execute-fn-with-timeout';
 import { getFixtureInfo } from '../utils/get-test-and-fixture-info';
@@ -63,11 +65,20 @@ export default class FixtureHookController {
         return !!item && item.runningFixtureBeforeHook;
     }
 
+    public blockTest (testRun: LegacyTestRun | TestRun): void {
+        const item = this._getFixtureMapItem(testRun.test);
+
+        if (item)
+            item.runningFixtureBeforeHook = true;
+    }
+
+    public unblockTest (item: FixtureState): void {
+        item.runningFixtureBeforeHook = false;
+    }
+
     private async _runFixtureBeforeHook (item: FixtureState, fn: Function, testRun: TestRun): Promise<boolean> {
         if (!fn)
             return true;
-
-        item.runningFixtureBeforeHook = true;
 
         try {
             await executeFnWithTimeout(fn, testRun.executionTimeout, item.fixtureCtx, getFixtureInfo(testRun));
@@ -75,8 +86,6 @@ export default class FixtureHookController {
         catch (err) {
             item.fixtureBeforeHookErr = processTestFnError(err);
         }
-
-        item.runningFixtureBeforeHook = false;
 
         return !item.fixtureBeforeHookErr;
     }
@@ -101,26 +110,14 @@ export default class FixtureHookController {
 
         if (item) {
             const shouldRunBeforeHook = !item.started;
-            // let success = false;
 
             item.started = true;
-
-            // if (shouldRunBeforeHook) {
-            //     item.fixtureBeforeHookPromise = this._runFixtureBeforeHook(item, fixture.globalBeforeFn as Function, testRun)
-            //         .then(isGlobalBeforeHookSuccess => {
-            //             if (isGlobalBeforeHookSuccess)
-            //                 return this._runFixtureBeforeHook(item, fixture.beforeFn as Function, testRun);
-
-            //             return isGlobalBeforeHookSuccess;
-            //         });
-            //     success = await item.fixtureBeforeHookPromise;
-            // }
-            // else
-            //     success = await item.fixtureBeforeHookPromise;
 
             const success = shouldRunBeforeHook
             && await this._runFixtureBeforeHook(item, fixture.globalBeforeFn as Function, testRun)
             && await this._runFixtureBeforeHook(item, fixture.beforeFn as Function, testRun);
+
+            this.unblockTest(item);
 
             // NOTE: fail all tests in fixture if fixture.before hook has error
             if (!success && item.fixtureBeforeHookErr) {
