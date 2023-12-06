@@ -137,7 +137,7 @@ export default class ResourceInjector {
         return stringifyHeaderValues(headers);
     }
 
-    private async _fulfillRequest (client: ProtocolApi, fulfillRequestInfo: FulfillRequestRequest, body: string, sessionId: SessionId, contentType: string): Promise<void> {
+    private async _fulfillRequest (client: ProtocolApi, fulfillRequestInfo: FulfillRequestRequest, body: string, sessionId: SessionId, contentType = ''): Promise<void> {
         await safeFulfillRequest(client, {
             requestId:       fulfillRequestInfo.requestId,
             responseCode:    fulfillRequestInfo.responseCode || StatusCodes.OK,
@@ -232,7 +232,7 @@ export default class ResourceInjector {
     }
 
     public async processNonProxiedContent (fulfillRequestInfo: FulfillRequestRequest, client: ProtocolApi, sessionId: SessionId): Promise<void> {
-        await this._fulfillRequest(client, fulfillRequestInfo, fulfillRequestInfo.body as string, sessionId, '');
+        await this._fulfillRequest(client, fulfillRequestInfo, fulfillRequestInfo.body as string, sessionId);
     }
 
     private _getPageInjectableResourcesOptions (injectableResourcesOptions: InjectableResourcesOptions): PageRestoreStoragesOptions | undefined {
