@@ -138,13 +138,12 @@ export default class ResourceInjector {
     }
 
     private async _fulfillRequest (client: ProtocolApi, fulfillRequestInfo: FulfillRequestRequest, body: string, sessionId: SessionId, contentType: string): Promise<void> {
-        body = await toBase64String(body, contentType);
         await safeFulfillRequest(client, {
             requestId:       fulfillRequestInfo.requestId,
             responseCode:    fulfillRequestInfo.responseCode || StatusCodes.OK,
             responsePhrase:  fulfillRequestInfo.responsePhrase,
             responseHeaders: this._processResponseHeaders(fulfillRequestInfo.responseHeaders),
-            body,
+            body:            toBase64String(body, contentType),
         }, sessionId);
     }
 
