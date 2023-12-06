@@ -1,11 +1,12 @@
 import Protocol from 'devtools-protocol';
 import GetResponseBodyResponse = Protocol.Network.GetResponseBodyResponse;
 import HeaderEntry = Protocol.Fetch.HeaderEntry;
+import { decodeBufferToString, encodeStringToBuffer } from 'testcafe-hammerhead';
 
-export function getResponseAsString (response: GetResponseBodyResponse): string {
-    return response.base64Encoded
-        ? Buffer.from(response.body, 'base64').toString()
-        : response.body;
+export function getResponseAsString (response: GetResponseBodyResponse, contentType: string): string {
+    const bufferBody = getResponseAsBuffer(response);
+
+    return decodeBufferToString(bufferBody, contentType)
 }
 
 export function getResponseAsBuffer (response: GetResponseBodyResponse): Buffer {
@@ -14,8 +15,10 @@ export function getResponseAsBuffer (response: GetResponseBodyResponse): Buffer 
         : Buffer.from(response.body);
 }
 
-export function toBase64String (str: string): string {
-    return Buffer.from(str).toString('base64');
+export function toBase64String (str: string, contentType: string = ''): string {
+    const bufferBody = encodeStringToBuffer(str, contentType);
+
+    return bufferBody.toString('base64')
 }
 
 export function fromBase64String (str: string): Buffer {

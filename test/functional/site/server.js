@@ -149,6 +149,25 @@ Server.prototype._setupRoutes = function (apiRouter) {
         `);
     });
 
+    this.app.get('/fixtures/regression/gh-7529/', function (req, res) {
+        const html = `
+            <!DOCTYPE html>
+            <html lang="fr">
+            <head>
+                <meta charset="ISO-8859-15">
+                <title>GH-7529</title>
+            </head>
+            <body>
+            <h1>codage réussi</h1>
+            </body>
+            </html>
+        `;
+        
+        const content = Buffer.from(html, 'latin1')
+        res.setHeader('content-type', 'text/html; charset=iso-8859-15')
+        res.send(content);
+    })
+
     this.app.get('*', function (req, res) {
         const reqPath      = req.params[0] || '';
         const resourcePath = path.join(server.basePath, reqPath);

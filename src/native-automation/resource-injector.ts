@@ -137,13 +137,14 @@ export default class ResourceInjector {
         return stringifyHeaderValues(headers);
     }
 
-    private async _fulfillRequest (client: ProtocolApi, fulfillRequestInfo: FulfillRequestRequest, body: string, sessionId: SessionId): Promise<void> {
+    private async _fulfillRequest (client: ProtocolApi, fulfillRequestInfo: FulfillRequestRequest, body: string, sessionId: SessionId, contentType: string = ''): Promise<void> {
+        body = await toBase64String(body,contentType);
         await safeFulfillRequest(client, {
             requestId:       fulfillRequestInfo.requestId,
             responseCode:    fulfillRequestInfo.responseCode || StatusCodes.OK,
             responsePhrase:  fulfillRequestInfo.responsePhrase,
             responseHeaders: this._processResponseHeaders(fulfillRequestInfo.responseHeaders),
-            body:            toBase64String(body),
+            body,
         }, sessionId);
     }
 
@@ -158,7 +159,7 @@ export default class ResourceInjector {
         await navigateTo(client, this._options.specialServiceRoutes.errorPage1);
     }
 
-    public async getDocumentResourceInfo (event: RequestPausedEvent, client: ProtocolApi): Promise<DocumentResourceInfo> {
+    public async getDocumentResourceInfo (event: RequestPausedEvent, client: ProtocolApi, contentType: string): Promise<DocumentResourceInfo> {
         const {
             requestId,
             request,
@@ -183,8 +184,10 @@ export default class ResourceInjector {
                 };
             }
 
+            debugger
+
             const responseObj = await client.Fetch.getResponseBody({ requestId });
-            const responseStr = getResponseAsString(responseObj);
+            const responseStr = getResponseAsString(responseObj, contentType);
 
             return {
                 error: null,
@@ -213,7 +216,7 @@ export default class ResourceInjector {
         });
     }
 
-    public async processHTMLPageContent (fulfillRequestInfo: FulfillRequestRequest, injectableResourcesOptions: InjectableResourcesOptions, client: ProtocolApi, sessionId: SessionId): Promise<void> {
+    public async processHTMLPageContent (fulfillRequestInfo: FulfillRequestRequest, injectableResourcesOptions: InjectableResourcesOptions, client: ProtocolApi, sessionId: SessionId, contentType: string = ''): Promise<void> {
         const injectableResources = await this._prepareInjectableResources(injectableResourcesOptions);
 
         // NOTE: an unhandled exception interrupts the test execution,
@@ -227,7 +230,7 @@ export default class ResourceInjector {
                 this._getPageInjectableResourcesOptions(injectableResourcesOptions),
             );
 
-            await this._fulfillRequest(client, fulfillRequestInfo, updatedResponseStr, sessionId);
+            await this._fulfillRequest(client, fulfillRequestInfo, updatedResponseStr, sessionId, contentType);
         }
     }
 
