@@ -61,7 +61,7 @@ export default class FixtureHookController {
         return !!item && item.blockedUntilFixtureBeforeHookIsExecuted;
     }
 
-    public unblockTest (test: Test): void {
+    public unblockWhenBeforeHooksComplete (test: Test): void {
         const item = this._getFixtureMapItem(test);
 
         if (item)
