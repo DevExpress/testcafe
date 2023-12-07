@@ -154,7 +154,7 @@ class SecurityChecker {
   }
 
   needCreateIssue (alert) {
-      return !this.alertDictionary[alert.html_url];
+      return !this.alertDictionary[alert.html_url] && Date.now() - new Date(alert.created_at) <= 1000 * 60 * 60 * 24;;
   }
 
   async createIssue ({ labels, originRepo, summary, description, link, issuePackage = '' }) {
