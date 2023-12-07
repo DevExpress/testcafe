@@ -15,7 +15,7 @@ if (config.useLocalBrowsers) {
             return path.join(__dirname, file);
         }
 
-        function run (browsers, concurrency, files, reporter, isBeforeHookUsed) {
+        function run (browsers, concurrency, files, reporter, hooks) {
             let src = null;
 
             reporter = reporter || 'json';
@@ -43,13 +43,7 @@ if (config.useLocalBrowsers) {
                 .concurrency(concurrency)
                 .run({
                     disableNativeAutomation: !config.nativeAutomation,
-                    hooks:                   isBeforeHookUsed ? {
-                        testRun: {
-                            before: async () => {
-                                await new Promise(r => setTimeout(r, 3000));
-                            },
-                        },
-                    } : null,
+                    hooks,
                 });
         }
 
@@ -121,7 +115,13 @@ if (config.useLocalBrowsers) {
         });
 
         it('Should run tests concurrently after fixture before hook', function () {
-            return run('chrome:headless --no-sandbox', 5, './testcafe-fixtures/concurrent-fixture-before-test.js', 'json', true)
+            return run('chrome:headless --no-sandbox', 5, './testcafe-fixtures/concurrent-fixture-before-test.js', 'json', {
+                testRun: {
+                    before: async () => {
+                        await new Promise(r => setTimeout(r, 3000));
+                    },
+                },
+            })
                 .then(failedCount => {
                     expect(failedCount).eql(0);
                 });

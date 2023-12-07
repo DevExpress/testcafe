@@ -61,12 +61,11 @@ export default class FixtureHookController {
         return !!item && item.blockedUntilFixtureBeforeHookIsExecuted;
     }
 
-    private _blockTest (item: FixtureState): void {
-        item.blockedUntilFixtureBeforeHookIsExecuted = true;
-    }
+    public unblockTest (test: Test): void {
+        const item = this._getFixtureMapItem(test);
 
-    private _unblockTest (item: FixtureState): void {
-        item.blockedUntilFixtureBeforeHookIsExecuted = false;
+        if (item)
+            item.blockedUntilFixtureBeforeHookIsExecuted = false;
     }
 
     public blockIfBeforeHooksExist (test: Test): void {
@@ -74,7 +73,7 @@ export default class FixtureHookController {
         const item = this._getFixtureMapItem(test);
 
         if (item && (fixture.globalBeforeFn || fixture.beforeFn))
-            this._blockTest(item);
+            item.blockedUntilFixtureBeforeHookIsExecuted = true;
     }
 
     private async _runFixtureBeforeHook (item: FixtureState, fn: Function, testRun: TestRun): Promise<boolean> {
@@ -117,8 +116,6 @@ export default class FixtureHookController {
             const success = shouldRunBeforeHook
                             && await this._runFixtureBeforeHook(item, fixture.globalBeforeFn as Function, testRun)
                             && await this._runFixtureBeforeHook(item, fixture.beforeFn as Function, testRun);
-
-            this._unblockTest(item);
 
             // NOTE: fail all tests in fixture if fixture.before hook has error
             if (!success && item.fixtureBeforeHookErr) {
