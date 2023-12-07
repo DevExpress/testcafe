@@ -8,7 +8,7 @@ import { getFixtureInfo } from '../utils/get-test-and-fixture-info';
 
 interface FixtureState {
     started: boolean;
-    blockedUntilFixtureBeforeHookIsExecuted: boolean;
+    testIsBlocked: boolean;
     fixtureBeforeHookErr: null | Error;
     pendingTestRunCount: number;
     fixtureCtx: object;
@@ -24,11 +24,11 @@ export default class FixtureHookController {
     private static _ensureFixtureMapItem (fixtureMap: Map<Fixture, FixtureState>, fixture: Fixture): void {
         if (!fixtureMap.has(fixture)) {
             const item = {
-                started:                                 false,
-                blockedUntilFixtureBeforeHookIsExecuted: false,
-                fixtureBeforeHookErr:                    null,
-                pendingTestRunCount:                     0,
-                fixtureCtx:                              Object.create(null),
+                started:              false,
+                testIsBlocked:        false,
+                fixtureBeforeHookErr: null,
+                pendingTestRunCount:  0,
+                fixtureCtx:           Object.create(null),
             };
 
             fixtureMap.set(fixture, item);
@@ -58,22 +58,22 @@ export default class FixtureHookController {
     public isTestBlocked (test: Test): boolean {
         const item = this._getFixtureMapItem(test);
 
-        return !!item && item.blockedUntilFixtureBeforeHookIsExecuted;
+        return !!item && item.testIsBlocked;
     }
 
-    public unblockWhenBeforeHooksComplete (test: Test): void {
+    public unblockTest (test: Test): void {
         const item = this._getFixtureMapItem(test);
 
         if (item)
-            item.blockedUntilFixtureBeforeHookIsExecuted = false;
+            item.testIsBlocked = false;
     }
 
-    public blockIfBeforeHooksExist (test: Test): void {
+    public blockTestIfNecessary (test: Test): void {
         const fixture = test.fixture as Fixture;
-        const item = this._getFixtureMapItem(test);
+        const item    = this._getFixtureMapItem(test);
 
         if (item && (fixture.globalBeforeFn || fixture.beforeFn))
-            item.blockedUntilFixtureBeforeHookIsExecuted = true;
+            item.testIsBlocked = true;
     }
 
     private async _runFixtureBeforeHook (item: FixtureState, fn: Function, testRun: TestRun): Promise<boolean> {
