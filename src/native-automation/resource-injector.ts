@@ -137,7 +137,7 @@ export default class ResourceInjector {
         return stringifyHeaderValues(headers);
     }
 
-    private async _fulfillRequest (client: ProtocolApi, fulfillRequestInfo: FulfillRequestRequest, body: string, sessionId: SessionId, contentType = ''): Promise<void> {
+    private async _fulfillRequest (client: ProtocolApi, fulfillRequestInfo: FulfillRequestRequest, body: string, sessionId: SessionId, contentType?: string): Promise<void> {
         await safeFulfillRequest(client, {
             requestId:       fulfillRequestInfo.requestId,
             responseCode:    fulfillRequestInfo.responseCode || StatusCodes.OK,
@@ -158,7 +158,7 @@ export default class ResourceInjector {
         await navigateTo(client, this._options.specialServiceRoutes.errorPage1);
     }
 
-    public async getDocumentResourceInfo (event: RequestPausedEvent, client: ProtocolApi, contentType: string): Promise<DocumentResourceInfo> {
+    public async getDocumentResourceInfo (event: RequestPausedEvent, client: ProtocolApi, contentType?: string): Promise<DocumentResourceInfo> {
         const {
             requestId,
             request,
@@ -213,7 +213,7 @@ export default class ResourceInjector {
         });
     }
 
-    public async processHTMLPageContent (fulfillRequestInfo: FulfillRequestRequest, injectableResourcesOptions: InjectableResourcesOptions, client: ProtocolApi, sessionId: SessionId, contentType: string): Promise<void> {
+    public async processHTMLPageContent (fulfillRequestInfo: FulfillRequestRequest, injectableResourcesOptions: InjectableResourcesOptions, client: ProtocolApi, sessionId: SessionId, contentType?: string): Promise<void> {
         const injectableResources = await this._prepareInjectableResources(injectableResourcesOptions);
 
         // NOTE: an unhandled exception interrupts the test execution,

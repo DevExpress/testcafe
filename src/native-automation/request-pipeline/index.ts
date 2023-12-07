@@ -12,7 +12,8 @@ import CertificateErrorEvent = Protocol.Security.CertificateErrorEvent;
 import HeaderEntry = Protocol.Fetch.HeaderEntry;
 import NativeAutomationRequestHookEventProvider from '../request-hooks/event-provider';
 import ResourceInjector, { ResourceInjectorOptions } from '../resource-injector';
-import { convertToHeaderEntries, getHeaderValue } from '../utils/headers';
+import { convertToHeaderEntries, getHeaderEntry } from '../utils/headers';
+import httpHeaders from '../../utils/http-headers';
 
 import {
     createRequestPausedEventForResponse,
@@ -154,13 +155,13 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
             await this._resourceInjector.processNonProxiedContent(fulfillInfo, this._client, sessionId);
         else {
             const userScripts = await this._getUserScripts(event);
-            const contentType = getHeaderValue(event.responseHeaders, 'content-type');
+            const contentType = getHeaderEntry(event.responseHeaders, httpHeaders.contentType)?.value;
 
             await this._resourceInjector.processHTMLPageContent(fulfillInfo, {
                 isIframe:       false,
                 contextStorage: this.contextStorage,
                 userScripts,
-            }, this._client, sessionId, contentType as string);
+            }, this._client, sessionId, contentType);
         }
 
         requestPipelineMockLogger(`sent mocked response for the ${event.requestId}`);
@@ -199,8 +200,8 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
             return;
         }
 
-        const contentType = getHeaderValue(event.responseHeaders, 'content-type');
-        const resourceInfo = await this._resourceInjector.getDocumentResourceInfo(event, this._client, contentType as string);
+        const contentType = getHeaderEntry(event.responseHeaders, httpHeaders.contentType)?.value;
+        const resourceInfo = await this._resourceInjector.getDocumentResourceInfo(event, this._client, contentType);
 
         if (resourceInfo.error) {
             if (this._shouldRedirectToErrorPage(event)) {
@@ -241,7 +242,7 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
                     contextStorage:    this.contextStorage,
                     userScripts,
                 },
-                this._client, sessionId, contentType as string);
+                this._client, sessionId, contentType);
 
             this._contextInfo.dispose(getRequestId(event));
 
@@ -257,9 +258,7 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
     }
 
     private static _isPage (responseHeaders: HeaderEntry[] | undefined): boolean {
-        const contentType = responseHeaders
-            ?.find(header => header.name.toLowerCase() === 'content-type')
-            ?.value;
+        const contentType = getHeaderEntry(responseHeaders, httpHeaders.contentType)?.value;
 
         if (contentType)
             return contentTypeUtils.isPage(contentType);
@@ -501,7 +500,7 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
         const headers = this._formatHeadersForContinueResponse(event.request.headers);
 
         for (const changedHeader of reqOpts._changedHeaders) {
-            const targetHeader = headers.find(header => header.name.toLowerCase() === changedHeader.name) as HeaderEntry;
+            const targetHeader = getHeaderEntry(headers, changedHeader.name);
 
             if (targetHeader)
                 targetHeader.value = changedHeader.value;
