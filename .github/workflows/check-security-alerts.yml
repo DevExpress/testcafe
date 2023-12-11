@@ -9,101 +9,16 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/github-script@v6
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with: 
+          node-version: latest
+      - uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.ACTIVE_TOKEN }}
           script: |
-            if (!'${{secrets.SECURITY_ISSUE_REPO}}')
-               return;
+            const {default: SecurityChecker} = await import('${{ github.workspace }}/.github/scripts/security-checker.mjs')
 
-            const { owner, repo } = context.repo;
-            const state           = 'open';
-            const dependabotLabel = 'dependabot';
-            const codeqlLabel     = 'codeql';
-            const securityLabel   = 'security notification';
+            const securityChecker = new SecurityChecker(github, context, '${{secrets.SECURITY_ISSUE_REPO}}');
 
-            async function getDependabotAlerts () {
-              const dependabotListAlertsUrl  = `https://api.github.com/repos/${ owner }/${ repo }/dependabot/alerts?state=${ state }`;
-              const dependabotRequestOptions = {
-                headers: { 'Authorization': 'Bearer ${{ secrets.ACTIVE_TOKEN }}' }
-              }
-
-              const response = await fetch(dependabotListAlertsUrl, dependabotRequestOptions);
-              const data     = await response.json();
-
-              // If data isn't arry somethig goes wrong
-              if (Array.isArray(data))
-                return data;
-
-              return [];
-            }
-
-            async function getCodeqlAlerts () {
-              // When CodeQL is turned of it throws error
-              try {
-                const { data }  = await github.rest.codeScanning.listAlertsForRepo({ owner, repo, state });
-
-                return data;
-              } catch (_) {
-                return [];
-              }
-            }
-
-            async function createIssue ({owner, repo, labels, originRepo, summary, description, link, package = ''}) {
-              const title = `[${originRepo}] ${summary}`;
-              const body  = ''
-                + `#### Repository: \`${ originRepo }\`\n`
-                + (!!package ? `#### Package: \`${ package }\`\n` : '')
-                + `#### Description:\n`
-                + `${ description }\n`
-                + `#### Link: ${ link }`
-
-              return github.rest.issues.create({ owner, repo, title, body, labels });
-            }
-
-            function needCreateIssue (alert) {
-              return !issueDictionary[alert.html_url]
-                    && Date.now() - new Date(alert.created_at) <= 1000 * 60 * 60 * 24;
-            }
-            
-            const dependabotAlerts      = await getDependabotAlerts();
-            const codeqlAlerts          = await getCodeqlAlerts();
-            const {data: existedIssues} = await github.rest.issues.listForRepo({ owner, repo, labels: [securityLabel], state });
-
-            const issueDictionary = existedIssues.reduce((res, issue) => {
-              const alertUrl = issue.body.match(/Link:\s*(https.*\d*)/)?.[1];
-
-              if (alertUrl)
-                res[alertUrl] = issue;
-
-              return res;
-            }, {})
-
-            dependabotAlerts.forEach(alert => {
-              if (!needCreateIssue(alert))
-                return;
-
-              createIssue({ owner, 
-                repo:        '${{ secrets.SECURITY_ISSUE_REPO }}', 
-                labels:      [dependabotLabel, securityLabel], 
-                originRepo:  repo,
-                summary:     alert.security_advisory.summary, 
-                description: alert.security_advisory.description, 
-                link:        alert.html_url, 
-                package:     alert.dependency.package.name
-              })
-            });
-
-            codeqlAlerts.forEach(alert => {
-              if (!needCreateIssue(alert))
-                return;
-
-              createIssue({ owner, 
-                repo:        '${{ secrets.SECURITY_ISSUE_REPO }}', 
-                labels:      [codeqlLabel, securityLabel], 
-                originRepo:  repo,
-                summary:     alert.rule.description, 
-                description: alert.most_recent_instance.message.text, 
-                link:        alert.html_url, 
-              })
-            });
+            await securityChecker.check();

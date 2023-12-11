@@ -43,6 +43,7 @@ const CLIENT_TESTS_DESKTOP_BROWSERS = [
     {
         platform:    'macOS 13',
         browserName: 'safari',
+        version:     '16',
     },
 ];
 
