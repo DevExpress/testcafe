@@ -270,10 +270,14 @@ export default class TestRunController extends AsyncEventEmitter {
 
         await this._handleNativeAutomationMode(connection);
 
+        this._fixtureHookController.blockTestIfNecessary(this.test);
+
         const testRun = await this._createTestRun(connection, startRunExecutionTime);
 
         const hookOk = await this._testRunHook.runTestRunBeforeHookIfNecessary(testRun)
                        && await this._fixtureHookController.runFixtureBeforeHookIfNecessary(testRun);
+
+        this._fixtureHookController.unblockTest(this.test);
 
         if (this.test.skip || !hookOk) {
             await this._emitTestRunStart();
