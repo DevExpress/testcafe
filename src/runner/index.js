@@ -351,7 +351,7 @@ export default class Runner extends EventEmitter {
     }
 
     _getScreenshotOptions () {
-        let { path, pathPattern } = this.configuration.getOption(OPTION_NAMES.screenshots) || {};
+        let { path, pathPattern, pathPatternOnFails } = this.configuration.getOption(OPTION_NAMES.screenshots) || {};
 
         if (!path)
             path = this.configuration.getOption(OPTION_NAMES.screenshotPath);
@@ -359,11 +359,14 @@ export default class Runner extends EventEmitter {
         if (!pathPattern)
             pathPattern = this.configuration.getOption(OPTION_NAMES.screenshotPathPattern);
 
-        return { path, pathPattern };
+        if (!pathPatternOnFails)
+            pathPatternOnFails = this.configuration.getOption(OPTION_NAMES.screenshotPathPatternOnFails);
+
+        return { path, pathPattern, pathPatternOnFails };
     }
 
     _validateScreenshotOptions () {
-        const { path, pathPattern } = this._getScreenshotOptions();
+        const { path, pathPattern, pathPatternOnFails } = this._getScreenshotOptions();
 
         const disableScreenshots = this.configuration.getOption(OPTION_NAMES.disableScreenshots) || !path;
 
@@ -382,6 +385,12 @@ export default class Runner extends EventEmitter {
             this._validateScreenshotPath(pathPattern, 'screenshots path pattern');
 
             this.configuration.mergeOptions({ [OPTION_NAMES.screenshots]: { pathPattern } });
+        }
+
+        if (pathPatternOnFails) {
+            this._validateScreenshotPath(pathPatternOnFails, 'screenshots path pattern');
+
+            this.configuration.mergeOptions({ [OPTION_NAMES.screenshots]: { pathPatternOnFails } });
         }
     }
 
@@ -740,12 +749,12 @@ export default class Runner extends EventEmitter {
     screenshots (...options) {
         let fullPage;
         let thumbnails;
-        let [path, takeOnFails, pathPattern] = options;
+        let [path, takeOnFails, pathPattern, pathPatternOnFails] = options;
 
         if (options.length === 1 && options[0] && typeof options[0] === 'object')
-            ({ path, takeOnFails, pathPattern, fullPage, thumbnails } = options[0]);
+            ({ path, takeOnFails, pathPattern, pathPatternOnFails, fullPage, thumbnails } = options[0]);
 
-        this._options.screenshots = { path, takeOnFails, pathPattern, fullPage, thumbnails };
+        this._options.screenshots = { path, takeOnFails, pathPattern, pathPatternOnFails, fullPage, thumbnails };
 
         return this;
     }

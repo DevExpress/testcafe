@@ -148,13 +148,14 @@ describe('Screenshots on fails', function () {
         it('Should have file name respect the mask inside error folder', function () {
             return runTests('./testcafe-fixtures/screenshots-on-fails.js', 'Screenshot on the assertion fail',
                 {
-                    shouldFail:            true,
-                    screenshotsOnFails:    true,
-                    setScreenshotPath:     true,
-                    screenshotPathPattern: '${TEST}/test-${FILE_INDEX}',
+                    shouldFail:                   true,
+                    screenshotsOnFails:           true,
+                    setScreenshotPath:            true,
+                    screenshotPathPattern:        '${TEST}/test-${FILE_INDEX}',
+                    screenshotPathPatternOnFails: '${TEST}/errors/test-${FILE_INDEX}',
                 })
                 .catch(() => {
-                    const PATH_SCREENSHOOT_ERROR = path.join(SCREENSHOTS_PATH, `Screenshot on the assertion fail/errors/test-1.png`);
+                    const PATH_SCREENSHOOT_ERROR = path.join(SCREENSHOTS_PATH, `Screenshot on the assertion fail/test-errors/1.png`);
 
                     expect(fs.existsSync(PATH_SCREENSHOOT_ERROR)).eql(true);
                 });
