@@ -6,7 +6,7 @@ import EventEmitter from 'events';
 const DATE_FORMAT = 'YYYY-MM-DD';
 const TIME_FORMAT = 'HH-mm-ss';
 
-const ERRORS_FOLDER             = 'errors';
+const ERRORS_FOLDER = 'errors';
 
 const PROBLEMATIC_PLACEHOLDER_VALUE = '';
 
