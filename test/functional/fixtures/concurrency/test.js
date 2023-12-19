@@ -15,7 +15,7 @@ if (config.useLocalBrowsers) {
             return path.join(__dirname, file);
         }
 
-        function run (browsers, concurrency, files, reporter) {
+        function run (browsers, concurrency, files, reporter, hooks) {
             let src = null;
 
             reporter = reporter || 'json';
@@ -35,14 +35,16 @@ if (config.useLocalBrowsers) {
                     write: function (newData) {
                         data += newData;
                     },
-
                     end: function (newData) {
                         data += newData;
                     },
                 })
                 .browsers(browsers)
                 .concurrency(concurrency)
-                .run({ disableNativeAutomation: !config.nativeAutomation });
+                .run({
+                    disableNativeAutomation: !config.nativeAutomation,
+                    hooks,
+                });
         }
 
         function createConnections (count) {
@@ -109,6 +111,19 @@ if (config.useLocalBrowsers) {
             return run('chrome:headless --no-sandbox', 2, './testcafe-fixtures/concurrent-test.js')
                 .then(() => {
                     expect(testInfo.getData()).eql(['test started', 'test started', 'short finished', 'long finished']);
+                });
+        });
+
+        it('Should run tests concurrently after fixture before hook', function () {
+            return run('chrome:headless --no-sandbox', 5, './testcafe-fixtures/concurrent-fixture-before-test.js', 'json', {
+                testRun: {
+                    before: async () => {
+                        await new Promise(r => setTimeout(r, 3000));
+                    },
+                },
+            })
+                .then(failedCount => {
+                    expect(failedCount).eql(0);
                 });
         });
 

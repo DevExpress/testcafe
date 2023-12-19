@@ -39,3 +39,11 @@ test('Invalid selector argument (clearUpload)', async t => {
 test('Error on upload non-existing file', async t => {
     await t.setFilesToUpload('#file', ['../dummy-file-1.txt', '../dummy-file-2.txt']);
 });
+
+test('Upload the file with required input', async t => {
+    await t
+        .setFilesToUpload('#fileRequired', '../test-data/file1.txt')
+        .click('#submitRequired');
+
+    expect(await getUploadedText()).equals('File 1 is uploaded!');
+});
