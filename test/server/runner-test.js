@@ -372,17 +372,20 @@ describe('Runner', () => {
         it('Validate screenshot options. The `screenshots` option has priority', () => {
             runner.configuration.mergeOptions({
                 'screenshots': {
-                    'path':        'path1',
-                    'pathPattern': 'pattern1',
-                    'fullPage':    true,
+                    'path':               'path1',
+                    'pathPattern':        'pattern1',
+                    'pathPatternOnFails': 'patternOnFails1',
+                    'fullPage':           true,
                 },
-                'screenshotPath':        'path2',
-                'screenshotPathPattern': 'pattern2',
+                'screenshotPath':               'path2',
+                'screenshotPathPattern':        'pattern2',
+                'screenshotPathPatternOnFails': 'patternOnFails2',
             });
 
             expect(runner._getScreenshotOptions()).eql({
-                path:        'path1',
-                pathPattern: 'pattern1',
+                path:               'path1',
+                pathPattern:        'pattern1',
+                pathPatternOnFails: 'patternOnFails1',
             });
         });
 
@@ -391,13 +394,15 @@ describe('Runner', () => {
                 'screenshots': {
                     'fullPage': true,
                 },
-                'screenshotPath':        'path2',
-                'screenshotPathPattern': 'pattern2',
+                'screenshotPath':               'path2',
+                'screenshotPathPattern':        'pattern2',
+                'screenshotPathPatternOnFails': 'patternOnFails2',
             });
 
             expect(runner._getScreenshotOptions()).eql({
-                path:        'path2',
-                pathPattern: 'pattern2',
+                path:               'path2',
+                pathPattern:        'pattern2',
+                pathPatternOnFails: 'patternOnFails2',
             });
         });
 

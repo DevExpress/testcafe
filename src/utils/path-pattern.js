@@ -34,10 +34,11 @@ const TEST_ID_TEMPLATE = data => data.testIndex ? `test-${data.testIndex}` : '';
 const RUN_ID_TEMPLATE  = data => data.quarantineAttempt ? `run-${data.quarantineAttempt}` : '';
 
 export default class PathPattern extends EventEmitter {
-    constructor (pattern, fileExtension, data) {
+    constructor (pattern, fileExtension, data, patternOnFails) {
         super();
 
         this.pattern              = this._ensurePattern(pattern);
+        this.patternOnFails       = patternOnFails;
         this.data                 = this._addDefaultFields(data);
         this.placeholderToDataMap = this._createPlaceholderToDataMap();
         this.fileExtension        = fileExtension;
@@ -94,7 +95,7 @@ export default class PathPattern extends EventEmitter {
                     const getFileIndexFn = placeholderToDataMap[placeholder];
                     let result           = getFileIndexFn(forError);
 
-                    if (forError)
+                    if (!this.patternOnFails && forError)
                         result = `${ERRORS_FOLDER}\\${result}`;
 
                     return result;
@@ -125,7 +126,8 @@ export default class PathPattern extends EventEmitter {
     }
 
     getPath (forError) {
-        const path = this._buildPath(this.pattern, this.placeholderToDataMap, forError);
+        const pattern = this.patternOnFails && forError ? this.patternOnFails : this.pattern;
+        const path    = this._buildPath(pattern, this.placeholderToDataMap, forError);
 
         return correctFilePath(path, this.fileExtension);
     }

@@ -268,6 +268,7 @@ before(function () {
                     skipJsErrors,
                     quarantineMode,
                     screenshotPathPattern,
+                    screenshotPathPatternOnFails,
                     screenshotsOnFails,
                     screenshotsFullPage,
                     videoOptions,
@@ -344,10 +345,11 @@ before(function () {
                     })
                     .src(fixturePath)
                     .screenshots({
-                        path:        screenshotPath,
-                        takeOnFails: screenshotsOnFails,
-                        pathPattern: screenshotPathPattern,
-                        fullPage:    screenshotsFullPage,
+                        path:               screenshotPath,
+                        takeOnFails:        screenshotsOnFails,
+                        pathPattern:        screenshotPathPattern,
+                        pathPatternOnFails: screenshotPathPatternOnFails,
+                        fullPage:           screenshotsFullPage,
                     })
                     .video(videoPath, videoOptions, videoEncodingOptions)
                     .startApp(appCommand, appInitDelay)

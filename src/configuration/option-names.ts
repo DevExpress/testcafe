@@ -11,6 +11,7 @@ enum OptionNames {
     screenshots = 'screenshots',
     screenshotPath = 'screenshotPath',
     screenshotPathPattern = 'screenshotPathPattern',
+    screenshotPathPatternOnFails = 'screenshotPathPatternOnFails',
     takeScreenshotsOnFails = 'takeScreenshotsOnFails',
     proxyBypass = 'proxyBypass',
     appCommand = 'appCommand',

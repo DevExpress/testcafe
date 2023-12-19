@@ -80,6 +80,7 @@ interface CommandLineOptions {
     reporter?: string | ReporterOption[];
     screenshots?: Dictionary<string | number | boolean> | string;
     screenshotPathPattern?: string;
+    screenshotPathPatternOnFails?: string;
     screenshotsOnFails?: boolean;
     videoOptions?: string | Dictionary<number | string | boolean>;
     videoEncodingOptions?: string | Dictionary<number | string | boolean>;
@@ -401,6 +402,9 @@ export default class CLIArgumentParser {
 
         if (!has(this.opts.screenshots, SCREENSHOT_OPTION_NAMES.pathPattern) && this.opts.screenshotPathPattern)
             this.opts.screenshots[SCREENSHOT_OPTION_NAMES.pathPattern] = this.opts.screenshotPathPattern;
+
+        if (!has(this.opts.screenshots, SCREENSHOT_OPTION_NAMES.pathPatternOnFails) && this.opts.screenshotPathPatternOnFails)
+            this.opts.screenshots[SCREENSHOT_OPTION_NAMES.pathPatternOnFails] = this.opts.screenshotPathPatternOnFails;
 
         if (!has(this.opts.screenshots, SCREENSHOT_OPTION_NAMES.takeOnFails) && this.opts.screenshotsOnFails)
             this.opts.screenshots[SCREENSHOT_OPTION_NAMES.takeOnFails] = this.opts.screenshotsOnFails;
