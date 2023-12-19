@@ -14,6 +14,10 @@ export default {
         return this.openedBrowsers[browserId].activeWindowId;
     },
 
+    resetActiveWindowId (browserId) {
+        this.openedBrowsers[browserId].activeWindowId = this.openedBrowsers[browserId].nativeAutomation?.windowId;
+    },
+
     setActiveWindowId (browserId, val) {
         this.openedBrowsers[browserId].activeWindowId = val;
     },
@@ -101,10 +105,10 @@ export default {
         await this.resizeWindow(browserId, maximumSize.width, maximumSize.height, maximumSize.width, maximumSize.height);
     },
 
-    async closeBrowserChildWindow (browserId) {
+    async closeBrowserChildWindow (browserId, windowId) {
         const runtimeInfo   = this.openedBrowsers[browserId];
         const browserClient = this._getBrowserProtocolClient(runtimeInfo);
 
-        return browserClient.closeBrowserChildWindow();
+        return browserClient.closeBrowserChildWindow(windowId);
     },
 };

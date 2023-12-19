@@ -84,6 +84,7 @@ export default class BrowserConnectionGateway extends EventEmitter {
         this._dispatch(`${SERVICE_ROUTES.initScript}/{id}`, proxy, BrowserConnectionGateway._onInitScriptResponse, 'POST');
         this._dispatch(`${SERVICE_ROUTES.activeWindowId}/{id}`, proxy, BrowserConnectionGateway._onGetActiveWindowIdRequest, 'GET');
         this._dispatch(`${SERVICE_ROUTES.activeWindowId}/{id}`, proxy, BrowserConnectionGateway._onSetActiveWindowIdRequest, 'POST');
+        this._dispatch(`${SERVICE_ROUTES.ensureWindowInNativeAutomation}/{id}`, proxy, BrowserConnectionGateway._ensureWindowInNativeAutomation, 'POST');
         this._dispatch(`${SERVICE_ROUTES.closeWindow}/{id}`, proxy, BrowserConnectionGateway._onCloseWindowRequest, 'POST');
         this._dispatch(`${SERVICE_ROUTES.openFileProtocol}/{id}`, proxy, BrowserConnectionGateway._onOpenFileProtocolRequest, 'POST');
         this._dispatch(`${SERVICE_ROUTES.dispatchNativeAutomationEvent}/{id}`, proxy, BrowserConnectionGateway._onDispatchNativeAutomationEvent, 'POST');
@@ -198,6 +199,16 @@ export default class BrowserConnectionGateway extends EventEmitter {
         if (BrowserConnectionGateway._ensureConnectionReady(res, connection)) {
             respondWithJSON(res, {
                 activeWindowId: connection.activeWindowId,
+            });
+        }
+    }
+
+    private static async _ensureWindowInNativeAutomation (req: IncomingMessage, res: ServerResponse, connection: BrowserConnection): Promise<void> {
+        if (BrowserConnectionGateway._ensureConnectionReady(res, connection)) {
+            BrowserConnectionGateway._fetchRequestData(req, async data => {
+                const windowId = await connection.getNewWindowIdInNativeAutomation(JSON.parse(data).windowId);
+
+                respondWithJSON(res, { windowId });
             });
         }
     }

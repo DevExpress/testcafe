@@ -11,11 +11,11 @@ const browserStarter = new BrowserStarter();
 const LIST_TABS_TIMEOUT = 10000;
 const LIST_TABS_DELAY   = 500;
 
-export async function start (pageUrl, { browserName, config, cdpPort, tempProfileDir, isContainerized }) {
+export async function start (pageUrl, { browserName, config, cdpPort, tempProfileDir, isContainerized, isNativeAutomation }) {
     const chromeInfo           = await browserTools.getBrowserInfo(config.path || browserName);
     const chromeOpenParameters = Object.assign({}, chromeInfo);
 
-    chromeOpenParameters.cmd = buildChromeArgs({ config, cdpPort, platformArgs: chromeOpenParameters.cmd, tempProfileDir, isContainerized });
+    chromeOpenParameters.cmd = buildChromeArgs({ config, cdpPort, platformArgs: chromeOpenParameters.cmd, tempProfileDir, isContainerized, isNativeAutomation });
 
     await browserStarter.startBrowser(chromeOpenParameters, pageUrl);
 }

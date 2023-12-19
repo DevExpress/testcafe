@@ -6,7 +6,7 @@ const { find }                    = require('lodash');
 const CliArgumentParser           = require('../../lib/cli/argument-parser');
 const { nanoid }                  = require('nanoid');
 const runOptionNames              = require('../../lib/configuration/run-option-names');
-const shouldMoveOptionToEnd       =  require('../../lib/cli/utils/should-move-option-to-end');
+const shouldMoveOptionToEnd       = require('../../lib/cli/utils/should-move-option-to-end');
 const QUARANTINE_OPTION_NAMES     = require('../../lib/configuration/quarantine-option-names');
 const { SKIP_JS_ERRORS_OPTIONS_OBJECT_OPTION_NAMES } = require('../../lib/configuration/skip-js-errors-option-names');
 
@@ -889,6 +889,7 @@ describe('CLI argument parser', function () {
             { long: '--base-url' },
             { long: '--disable-cross-domain' },
             { long: '--esm' },
+            { long: '--experimental-multiple-windows' },
         ];
 
         const parser  = new CliArgumentParser('');
@@ -904,7 +905,7 @@ describe('CLI argument parser', function () {
             expect(option.short).eql(EXPECTED_OPTIONS[i].short, CHANGE_CLI_WARNING);
         }
 
-        const expectedRunOptionsCount   = 22;
+        const expectedRunOptionsCount   = 23;
         const expectedOtherOptionsCount = 37;
         const otherOptionsCount         = options.length - expectedRunOptionsCount;
 

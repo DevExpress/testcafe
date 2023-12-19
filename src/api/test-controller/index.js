@@ -185,7 +185,7 @@ export default class TestController {
     _validateMultipleWindowCommand (apiMethodName) {
         const { disableMultipleWindows, activeWindowId } = this.testRun;
 
-        if (this.testRun.isNativeAutomation)
+        if (this.testRun.isNativeAutomation && !this.testRun.isExperimentalMultipleWindows)
             throw new MultipleWindowsModeIsNotSupportedInNativeAutomationModeError(apiMethodName);
 
         if (disableMultipleWindows)

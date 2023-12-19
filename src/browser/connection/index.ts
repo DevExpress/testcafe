@@ -35,7 +35,7 @@ import { TestRun as LegacyTestRun } from 'testcafe-legacy-api';
 import { Proxy } from 'testcafe-hammerhead';
 import { NextTestRunInfo, OpenBrowserAdditionalOptions } from '../../shared/types';
 import { EventType } from '../../native-automation/types';
-import NativeAutomation from '../../native-automation';
+import { NativeAutomationBase } from '../../native-automation';
 
 const getBrowserConnectionDebugScope = (id: string): string => `testcafe:browser:connection:${id}`;
 
@@ -119,6 +119,7 @@ export default class BrowserConnection extends EventEmitter {
     public heartbeatUrl = '';
     public statusUrl = '';
     public activeWindowIdUrl = '';
+    public ensureWindowInNativeAutomationUrl = '';
     public closeWindowUrl = '';
     public statusDoneUrl = '';
     public heartbeatRelativeUrl = '';
@@ -202,6 +203,7 @@ export default class BrowserConnection extends EventEmitter {
         this.statusDoneRelativeUrl                     = `${SERVICE_ROUTES.statusDone}/${this.id}`;
         this.idleRelativeUrl                           = `${SERVICE_ROUTES.idle}/${this.id}`;
         this.activeWindowIdUrl                         = `${SERVICE_ROUTES.activeWindowId}/${this.id}`;
+        this.ensureWindowInNativeAutomationUrl         = `${SERVICE_ROUTES.ensureWindowInNativeAutomation}/${this.id}`;
         this.closeWindowUrl                            = `${SERVICE_ROUTES.closeWindow}/${this.id}`;
         this.openFileProtocolRelativeUrl               = `${SERVICE_ROUTES.openFileProtocol}/${this.id}`;
         this.dispatchNativeAutomationEventRelativeUrl         = `${SERVICE_ROUTES.dispatchNativeAutomationEvent}/${this.id}`;
@@ -646,11 +648,19 @@ export default class BrowserConnection extends EventEmitter {
         return this.provider.supportNativeAutomation();
     }
 
-    public getNativeAutomation (): NativeAutomation {
+    public getNativeAutomation (): NativeAutomationBase {
         return this.provider.getNativeAutomation(this.id);
     }
 
     public isNativeAutomationEnabled (): boolean {
         return this._options.nativeAutomation;
+    }
+
+    async getNewWindowIdInNativeAutomation (windowId: string): Promise<void> {
+        return this.provider.getNewWindowIdInNativeAutomation(this.id, windowId);
+    }
+
+    public resetActiveWindowId (): void {
+        this.provider.resetActiveWindowId(this.id);
     }
 }

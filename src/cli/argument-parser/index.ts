@@ -194,6 +194,7 @@ export default class CLIArgumentParser {
             .option('--screenshots-full-page', 'enable full-page screenshots')
             .option('--compiler-options <option=value[,...]>', 'specify test compilation settings')
             .option('--disable-multiple-windows', 'disable the multi-window mode')
+            .option('--experimental-multiple-windows', 'Enable experimental support for multiple windows in Native Automation mode')
             .option('--disable-http2', 'force the proxy to issue HTTP/1.1 requests')
             .option('--cache', 'cache web assets between test runs')
             .option('--base-url <url>', 'set the base url for the test run')
