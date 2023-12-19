@@ -283,3 +283,31 @@ test('should hide panel', async t => {
 
     await t.debug();
 });
+
+test('should indicate the correct number of elements matching the TestCafe selector passed in debug', async t => {
+    await ClientFunction(() => {
+        const { getMatchIndicatorInnerText, resumeTest } = window;
+
+        getMatchIndicatorInnerText()
+            .then(text => {
+                if (text === 'Found: 5')
+                    resumeTest();
+            });
+    })();
+
+    await t.debug('p');
+});
+
+test('should indicate single element matching the TestCafe selector passed in debug', async t => {
+    await ClientFunction(() => {
+        const { getMatchIndicatorInnerText, resumeTest } = window;
+
+        getMatchIndicatorInnerText()
+            .then(text => {
+                if (text === 'Found: 1')
+                    resumeTest();
+            });
+    })();
+
+    await t.debug('#container');
+});

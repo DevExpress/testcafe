@@ -43,5 +43,9 @@ describe('TestCafe UI', () => {
         runTestCafeTest('should copy selector');
 
         runTestCafeTest('should hide panel');
+
+        runTestCafeTest('should indicate the correct number of elements matching the TestCafe selector passed in debug');
+
+        runTestCafeTest('should indicate single element matching the TestCafe selector passed in debug');
     });
 });

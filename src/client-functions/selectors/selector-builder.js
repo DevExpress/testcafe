@@ -6,7 +6,7 @@ import { ClientFunctionAPIError } from '../../errors/runtime';
 import functionBuilderSymbol from '../builder-symbol';
 import { RUNTIME_ERRORS } from '../../errors/types';
 import { assertType, is } from '../../errors/runtime/type-assertions';
-import { ExecuteSelectorCommand } from '../../test-run/commands/observation';
+import { ExecuteSelectorCommand } from '../../test-run/commands/execute-client-function';
 import defineLazyProperty from '../../utils/define-lazy-property';
 import { addAPI, addCustomMethods } from './add-api';
 import createSnapshotMethods from './create-snapshot-methods';

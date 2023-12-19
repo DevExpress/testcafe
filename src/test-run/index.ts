@@ -75,6 +75,7 @@ import {
     RemoveRequestHooksCommand,
     RunCustomActionCommand,
 } from './commands/actions';
+import { DebugCommand } from './commands/observation';
 
 import { RUNTIME_ERRORS, TEST_RUN_ERRORS } from '../errors/types';
 import processTestFnError from '../errors/process-test-fn-error';
@@ -107,7 +108,7 @@ import TestRunPhase from './phase';
 import {
     ExecuteClientFunctionCommand,
     ExecuteSelectorCommand,
-} from './commands/observation';
+} from './commands/execute-client-function';
 
 import addRenderedWarning from '../notifications/add-rendered-warning';
 import getBrowser from '../utils/get-browser';
@@ -136,13 +137,13 @@ import NativeAutomationRequestPipeline from '../native-automation/request-pipeli
 import { NativeAutomationBase } from '../native-automation';
 import ReportDataLog from '../reporter/report-data-log';
 
-const lazyRequire                 = require('import-lazy')(require);
-const ClientFunctionBuilder       = lazyRequire('../client-functions/client-function-builder');
-const TestRunBookmark             = lazyRequire('./bookmark');
-const actionCommands              = lazyRequire('./commands/actions');
-const browserManipulationCommands = lazyRequire('./commands/browser-manipulation');
-const serviceCommands             = lazyRequire('./commands/service');
-const observationCommands         = lazyRequire('./commands/observation');
+const lazyRequire                   = require('import-lazy')(require);
+const ClientFunctionBuilder         = lazyRequire('../client-functions/client-function-builder');
+const TestRunBookmark               = lazyRequire('./bookmark');
+const actionCommands                = lazyRequire('./commands/actions');
+const browserManipulationCommands   = lazyRequire('./commands/browser-manipulation');
+const serviceCommands               = lazyRequire('./commands/service');
+const executeClientFunctionCommands = lazyRequire('./commands/execute-client-function');
 
 const { executeJsExpression, executeAsyncJsExpression } = lazyRequire('./execute-js-expression');
 
@@ -709,7 +710,7 @@ export default class TestRun extends AsyncEventEmitter {
         if (this.errs.length && this.debugOnFail) {
             const errStr = this.debugReporterPluginHost.formatError(this.errs[0]);
 
-            await this._enqueueSetBreakpointCommand(void 0, errStr);
+            await this._enqueueSetBreakpointCommand(void 0, null, errStr);
         }
 
         await this.emit('before-done');
@@ -832,11 +833,11 @@ export default class TestRun extends AsyncEventEmitter {
         return this.cookieProvider.deleteCookies(cookies, urls);
     }
 
-    private async _enqueueSetBreakpointCommand (callsite: CallsiteRecord | undefined, error?: string): Promise<void> {
+    private async _enqueueSetBreakpointCommand (callsite: CallsiteRecord | undefined, selector?: object | null, error?: string): Promise<void> {
         if (this.debugLogger)
             this.debugLogger.showBreakpoint(this.session.id, this.browserConnection.userAgent, callsite, error);
 
-        this.debugging = await this._internalExecuteCommand(new serviceCommands.SetBreakpointCommand(!!error), callsite) as boolean;
+        this.debugging = await this._internalExecuteCommand(new serviceCommands.SetBreakpointCommand(!!error, selector), callsite) as boolean;
     }
 
     private _removeAllNonServiceTasks (): void {
@@ -891,7 +892,7 @@ export default class TestRun extends AsyncEventEmitter {
     private _shouldResolveCurrentDriverTask (driverStatus: DriverStatus): boolean {
         const currentCommand = this.currentDriverTask.command;
 
-        const isExecutingObservationCommand = currentCommand instanceof observationCommands.ExecuteSelectorCommand ||
+        const isExecutingObservationCommand = currentCommand instanceof executeClientFunctionCommands.ExecuteSelectorCommand ||
             currentCommand instanceof ExecuteClientFunctionCommand;
 
         const isDebugActive = currentCommand instanceof serviceCommands.SetBreakpointCommand;
@@ -1165,7 +1166,7 @@ export default class TestRun extends AsyncEventEmitter {
             const canDebug = !this.browserConnection.isHeadlessBrowser();
 
             if (canDebug)
-                return await this._enqueueSetBreakpointCommand(callsite as CallsiteRecord, void 0);
+                return await this._enqueueSetBreakpointCommand(callsite as CallsiteRecord, (command as DebugCommand)?.selector, void 0);
 
             this.debugging = false;
 

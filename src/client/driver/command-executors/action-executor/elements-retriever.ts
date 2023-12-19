@@ -1,4 +1,4 @@
-import { ExecuteSelectorCommand } from '../../../../test-run/commands/observation';
+import { ExecuteSelectorCommand } from '../../../../test-run/commands/execute-client-function';
 import { ExecuteSelectorFn } from '../../../../shared/types';
 import NODE_TYPE_DESCRIPTIONS from '../../node-type-descriptions';
 import {

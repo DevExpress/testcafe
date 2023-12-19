@@ -1527,10 +1527,10 @@ export default class Driver extends serviceUtils.EventEmitter {
             });
     }
 
-    _onSetBreakpointCommand ({ isTestError }) {
+    _onSetBreakpointCommand ({ isTestError, selector }) {
         const showDebuggingStatusPromise = this.statusBar.showDebuggingStatus(isTestError);
 
-        this.selectorInspectorPanel.show();
+        this.selectorInspectorPanel.show(selector);
 
         showDebuggingStatusPromise.then(debug => {
             const stopAfterNextAction = debug === STATUS_BAR_DEBUG_ACTION.step;

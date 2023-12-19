@@ -602,8 +602,8 @@ export default class TestController {
         return new Assertion(actual, this, callsite);
     }
 
-    [delegatedAPI(DebugCommand.methodName)] () {
-        return this.enqueueCommand(DebugCommand);
+    [delegatedAPI(DebugCommand.methodName)] (selector) {
+        return this.enqueueCommand(DebugCommand, { selector });
     }
 
     [delegatedAPI(SetTestSpeedCommand.methodName)] (speed) {
