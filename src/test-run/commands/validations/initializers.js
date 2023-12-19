@@ -1,7 +1,7 @@
 import SelectorBuilder from '../../../client-functions/selectors/selector-builder';
 import { ActionSelectorError } from '../../../errors/test-run';
 import { APIError } from '../../../errors/runtime';
-import { ExecuteSelectorCommand } from '../observation';
+import { ExecuteSelectorCommand } from '../execute-client-function';
 import { executeJsExpression } from '../../execute-js-expression';
 import { isJSExpression } from '../utils';
 

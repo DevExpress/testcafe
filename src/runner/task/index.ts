@@ -59,12 +59,13 @@ export default class Task extends AsyncEventEmitter {
 
         this.warningLog.copyFrom(runnerWarningLog);
 
-        const { path, pathPattern, fullPage, thumbnails } = this.opts.screenshots as ScreenshotOptionValue;
+        const { path, pathPattern, pathPatternOnFails, fullPage, thumbnails } = this.opts.screenshots as ScreenshotOptionValue;
 
         this.screenshots = new Screenshots({
             enabled: !this.opts.disableScreenshots,
             path,
             pathPattern,
+            pathPatternOnFails,
             fullPage,
             thumbnails,
         });

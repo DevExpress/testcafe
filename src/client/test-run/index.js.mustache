@@ -11,6 +11,8 @@
     var testRunId                                       = {{{testRunId}}};
     var browserId                                       = {{{browserId}}};
     var activeWindowId                                  = {{{activeWindowId}}};
+    var windowId                                        = {{{windowId}}};
+    var experimentalMultipleWindows                     = {{{experimentalMultipleWindows}}};
     var selectorTimeout                                 = {{{selectorTimeout}}};
     var pageLoadTimeout                                 = {{{pageLoadTimeout}}};
     var childWindowReadyTimeout                         = {{{childWindowReadyTimeout}}};
@@ -22,6 +24,8 @@
     var browserIdleUrl                                  = origin + {{{browserIdleRelativeUrl}}};
     var browserOpenFileProtocolUrl                      = origin + {{{browserOpenFileProtocolRelativeUrl}}};
     var browserActiveWindowIdUrl                        = origin + {{{browserActiveWindowIdUrl}}};
+    var browserActiveWindowIdUrl                        = origin + {{{browserActiveWindowIdUrl}}};
+    var browserEnsureWindowInNativeAutomationUrl        = origin + {{{browserEnsureWindowInNativeAutomationUrl}}};
     var browserCloseWindowUrl                           = origin + {{{browserCloseWindowUrl}}};
     var browserDispatchNativeAutomationEventUrl         = origin + {{{browserDispatchNativeAutomationEventRelativeUrl}}};
     var browserDispatchNativeAutomationEventSequenceUrl = origin + {{{browserDispatchNativeAutomationEventSequenceRelativeUrl}}};
@@ -36,33 +40,36 @@
     var ClientDriver = window['%testCafeDriver%'];
     var driver       = new ClientDriver(testRunId,
         {
-            heartbeat:                      browserHeartbeatUrl,
-            status:                         browserStatusUrl,
-            statusDone:                     browserStatusDoneUrl,
-            idle:                           browserIdleUrl,
-            activeWindowId:                 browserActiveWindowIdUrl,
-            closeWindow:                    browserCloseWindowUrl,
-            openFileProtocolUrl:            browserOpenFileProtocolUrl,
-            dispatchNativeAutomationEvent:  browserDispatchNativeAutomationEventUrl,
+            heartbeat:                             browserHeartbeatUrl,
+            status:                                browserStatusUrl,
+            statusDone:                            browserStatusDoneUrl,
+            idle:                                  browserIdleUrl,
+            activeWindowId:                        browserActiveWindowIdUrl,
+            ensureWindowInNativeAutomationUrl:     browserEnsureWindowInNativeAutomationUrl,
+            closeWindow:                           browserCloseWindowUrl,
+            openFileProtocolUrl:                   browserOpenFileProtocolUrl,
+            dispatchNativeAutomationEvent:         browserDispatchNativeAutomationEventUrl,
             dispatchNativeAutomationEventSequence: browserDispatchNativeAutomationEventSequenceUrl,
-            parseSelector:                  browserParseSelectorUrl,
+            parseSelector:                         browserParseSelectorUrl,
         },
         {
             userAgent:      userAgent,
             fixtureName:    fixtureName,
             testName:       testName,
             activeWindowId: activeWindowId,
+            windowId:       windowId,
         },
         {
-            selectorTimeout:            selectorTimeout,
-            pageLoadTimeout:            pageLoadTimeout,
-            childWindowReadyTimeout:    childWindowReadyTimeout,
-            skipJsErrors:               skipJsErrors,
-            dialogHandler:              dialogHandler,
-            retryTestPages:             retryTestPages,
-            speed:                      speed,
-            canUseDefaultWindowActions: canUseDefaultWindowActions,
-            nativeAutomation:                  nativeAutomation,
+            selectorTimeout:             selectorTimeout,
+            pageLoadTimeout:             pageLoadTimeout,
+            childWindowReadyTimeout:     childWindowReadyTimeout,
+            skipJsErrors:                skipJsErrors,
+            dialogHandler:               dialogHandler,
+            retryTestPages:              retryTestPages,
+            speed:                       speed,
+            canUseDefaultWindowActions:  canUseDefaultWindowActions,
+            nativeAutomation:            nativeAutomation,
+            experimentalMultipleWindows: experimentalMultipleWindows,
         }
     );
 

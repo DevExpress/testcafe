@@ -21,8 +21,8 @@ import {
 const messageSandbox = eventSandbox.message;
 
 export default class IframeDriver extends Driver {
-    constructor (testRunId, options) {
-        super(testRunId, {}, {}, options);
+    constructor (testRunId, communicationsUrls, options) {
+        super(testRunId, communicationsUrls, {}, options);
 
         this.lastParentDriverMessageId = null;
         this.parentDriverLink          = new ParentIframeDriverLink(window.parent);
@@ -39,9 +39,16 @@ export default class IframeDriver extends Driver {
         // NOTE: do nothing because hammerhead sends console messages to the top window directly
     }
 
-    // NOTE: when the new page is opened in the iframe we send a message to the top window
-    // to start waiting for the new page is loaded
-    _onChildWindowOpened () {
+    async _onChildWindowOpened (e) {
+        if (this.options.nativeAutomation) {
+            const windowId = await this._ensureNewWindowOpenedInNativeAutomation(e);
+
+            if (!windowId)
+                return;
+        }
+
+        // NOTE: when the new page is opened in the iframe we send a message to the top window
+        // to start waiting for the new page is loaded
         messageSandbox.sendServiceMsg(new ChildWindowIsOpenedInFrameMessage(), window.top);
     }
 

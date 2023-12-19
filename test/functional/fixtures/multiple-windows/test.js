@@ -6,6 +6,7 @@ const { GREEN_PIXEL, RED_PIXEL } = require('../../assertion-helper');
 const { readPngFile }            = require('../../../../lib/utils/promisified-functions');
 const config                     = require('../../config');
 const { createWarningReporter }  = require('../../utils/warning-reporter');
+const { skipInNativeAutomation } = require('../../utils/skip-in');
 
 const SCREENSHOTS_PATH = config.testScreenshotsDir;
 
@@ -21,6 +22,22 @@ async function assertScreenshotColor (fileName, pixel) {
 }
 
 describe('Multiple windows', () => {
+    let origRunTests = null;
+
+    before(() => {
+        origRunTests = global.runTests;
+
+        global.runTests = (fixture, testName, opts = {}) => {
+            opts.experimentalMultipleWindows = true;
+
+            return origRunTests.call(this, fixture, testName, opts);
+        };
+    });
+
+    after(() => {
+        global.runTests = origRunTests;
+    });
+
     describe('Switch to the child window', () => {
         it('Click on link', () => {
             return runTests('testcafe-fixtures/switching-to-child/click-on-link.js', null, { only: 'chrome' });
@@ -81,7 +98,7 @@ describe('Multiple windows', () => {
                 return testCafeInstance.createRunner()
                     .browsers(`chrome:headless`)
                     .src(fullTestPath)
-                    .run({ disableNativeAutomation: true });
+                    .run({ disableNativeAutomation: !config.nativeAutomation, experimentalMultipleWindows: true });
             })
             .then(() => {
                 return testCafeInstance.close();
@@ -110,7 +127,7 @@ describe('Multiple windows', () => {
         return runTests('testcafe-fixtures/debug-synchronization.js', null, { only: 'chrome' });
     });
 
-    it('Should make screenshots of different windows', () => {
+    skipInNativeAutomation('Should make screenshots of different windows', () => {
         return runTests('testcafe-fixtures/features/screenshots.js', null, { setScreenshotPath: true })
             .then(() => {
                 return assertScreenshotColor('0.png', RED_PIXEL);
@@ -140,7 +157,7 @@ describe('Multiple windows', () => {
             });
     });
 
-    it('Should switch to parent and close window if the file was downloaded in separate window', () => {
+    skipInNativeAutomation('Should switch to parent and close window if the file was downloaded in separate window', () => {
         return runTests('testcafe-fixtures/i6242.js', null, { only: 'chrome' });
     });
 
@@ -152,7 +169,7 @@ describe('Multiple windows', () => {
         return runTests('testcafe-fixtures/i6085.js');
     });
 
-    it('Should not hang on close window whide video is recording', () => {
+    skipInNativeAutomation('Should not hang on close window while video is recording', () => {
         return runTests('testcafe-fixtures/i6037.js', '', {
             setVideoPath: true,
         });
@@ -341,7 +358,7 @@ describe('Multiple windows', () => {
     });
 
     describe('Emulation', () => {
-        it('Should resize window when emulating device', async () => {
+        skipInNativeAutomation('Should resize window when emulating device', async () => {
             return createTestCafe('127.0.0.1', 1335, 1336)
                 .then(tc => {
                     testCafeInstance = tc;
@@ -382,15 +399,15 @@ describe('Multiple windows', () => {
                 });
         }
 
-        it('Resize multiple windows', () => {
+        skipInNativeAutomation('Resize multiple windows', () => {
             return runTests('testcafe-fixtures/api/api-test.js', 'Resize multiple windows');
         });
 
-        it('Maximize multiple windows', () => {
+        skipInNativeAutomation('Maximize multiple windows', () => {
             return runTests('testcafe-fixtures/api/api-test.js', 'Maximize multiple windows');
         });
 
-        it('Resize headless', () => {
+        skipInNativeAutomation('Resize headless', () => {
             return runTestsResize('firefox:headless').then(() => {
                 return runTestsResize('chrome:headless');
             });

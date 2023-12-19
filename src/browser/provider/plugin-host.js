@@ -159,7 +159,7 @@ export default class BrowserProviderPluginHost {
         return value;
     }
 
-    async closeBrowserChildWindow (/*browserId*/) {
+    async closeBrowserChildWindow (/*browserId, windowId*/) {
         return Promise.resolve();
     }
 
@@ -173,5 +173,9 @@ export default class BrowserProviderPluginHost {
 
     getNativeAutomation (/*browserId*/) {
         return null;
+    }
+
+    getNewWindowIdInNativeAutomation (/*browserId, windowId*/) {
+        return Promise.resolve();
     }
 }

@@ -14,19 +14,20 @@ export default class SelectorInspectorPanel {
     elementPicker = elementPicker;
 
     constructor () {
-        this.element = createElementFromDescriptor(panel);
-
+        this.element                 = createElementFromDescriptor(panel);
+        this.selectorInputContainer  = new SelectorInputContainer();
         const pickButton             = new PickButton();
-        const selectorInputContainer = new SelectorInputContainer();
-        const copyButton             = new CopyButton(selectorInputContainer);
-        const container              = new MainContainer(pickButton.element, selectorInputContainer.element, copyButton.element);
+        const copyButton             = new CopyButton(this.selectorInputContainer);
+        const container              = new MainContainer(pickButton.element, this.selectorInputContainer.element, copyButton.element);
         const hideButton             = new HideButton(this.element);
 
         this.element.appendChild(container.element);
         this.element.appendChild(hideButton.element);
     }
 
-    show () {
+    show (selector) {
+        this.selectorInputContainer.debugSelector(selector);
+
         if (!this.element.parentElement)
             uiRoot.insertFirstChildToPanelsContainer(this.element);
 

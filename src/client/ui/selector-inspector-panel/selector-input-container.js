@@ -3,7 +3,8 @@ import hammerhead from './../deps/hammerhead';
 import testCafeCore from './../deps/testcafe-core';
 
 import { createElementFromDescriptor } from './utils/create-element-from-descriptor';
-import { getElementsBySelector } from './utils/get-elements-by-selector';
+import { getElementsBySelector, executeSelector } from './utils/get-elements-by-selector';
+import { castArray } from './utils/cast-array';
 
 import * as descriptors from './descriptors';
 import { elementPicker, ELEMENT_PICKED } from './element-picker';
@@ -155,6 +156,16 @@ export class SelectorInputContainer {
         }
 
         const elements = await getElementsBySelector(this.value);
+
+        this._indicateMatches(elements);
+        this._highlightElements(elements);
+    }
+
+    async debugSelector (selector) {
+        highlighter.stopHighlighting();
+
+        this.value     = selector.apiFnChain.join('');
+        const elements = castArray(await executeSelector(selector));
 
         this._indicateMatches(elements);
         this._highlightElements(elements);
