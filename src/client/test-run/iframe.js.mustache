@@ -1,12 +1,22 @@
 (function () {
+    var origin                      = location.origin;
+    var experimentalMultipleWindows = {{{experimentalMultipleWindows}}}
+    var nativeAutomation            = {{{nativeAutomation}}};
+
+    if (nativeAutomation)
+        origin = {{{domain}}};
+
     var IframeDriver = window['%testCafeIframeDriver%'];
     var driver       = new IframeDriver({{{testRunId}}}, {
+        ensureWindowInNativeAutomationUrl: origin + {{{browserEnsureWindowInNativeAutomationUrl}}},
+    }, {
         selectorTimeout:  {{{selectorTimeout}}},
         pageLoadTimeout:  {{{pageLoadTimeout}}},
         dialogHandler:    {{{dialogHandler}}},
         retryTestPages:   {{{retryTestPages}}},
         speed:            {{{speed}}},
-        nativeAutomation: {{{nativeAutomation}}},
+        nativeAutomation,
+        experimentalMultipleWindows,
     });
 
     driver.start();

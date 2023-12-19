@@ -22,5 +22,6 @@ export default [
     OPTION_NAMES.ajaxRequestTimeout,
     OPTION_NAMES.retryTestPages,
     OPTION_NAMES.disableNativeAutomation,
+    OPTION_NAMES.experimentalMultipleWindows,
     OPTION_NAMES.baseUrl,
 ];

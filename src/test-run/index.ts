@@ -133,7 +133,7 @@ import {
 } from './role-provider';
 
 import NativeAutomationRequestPipeline from '../native-automation/request-pipeline';
-import NativeAutomation from '../native-automation';
+import { NativeAutomationBase } from '../native-automation';
 import ReportDataLog from '../reporter/report-data-log';
 
 const lazyRequire                 = require('import-lazy')(require);
@@ -269,6 +269,7 @@ export default class TestRun extends AsyncEventEmitter {
     private readonly _requestHookEventProvider: RequestHookEventProvider;
     private readonly _roleProvider: RoleProvider;
     public readonly isNativeAutomation: boolean;
+    public readonly isExperimentalMultipleWindows: boolean;
 
     public constructor ({ test, browserConnection, screenshotCapturer, globalWarningLog, opts, messageBus, startRunExecutionTime, nativeAutomation }: TestRunInit) {
         super();
@@ -298,7 +299,8 @@ export default class TestRun extends AsyncEventEmitter {
         this.disablePageCaching = test.disablePageCaching || opts.disablePageCaching as boolean;
         this.isNativeAutomation = nativeAutomation;
 
-        this.disableMultipleWindows = opts.disableMultipleWindows as boolean;
+        this.disableMultipleWindows        = opts.disableMultipleWindows as boolean;
+        this.isExperimentalMultipleWindows = opts.experimentalMultipleWindows as boolean;
 
         this.requestTimeout = this._getRequestTimeout(test, opts);
 
@@ -377,7 +379,7 @@ export default class TestRun extends AsyncEventEmitter {
         return this._nativeAutomation.requestPipeline;
     }
 
-    private get _nativeAutomation (): NativeAutomation {
+    private get _nativeAutomation (): NativeAutomationBase {
         return this.browserConnection.getNativeAutomation();
     }
 
@@ -549,7 +551,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     // Hammerhead payload
-    public async getPayloadScript (): Promise<string> {
+    public async getPayloadScript (windowId?: string): Promise<string> {
         this.fileDownloadingHandled               = false;
         this.resolveWaitForFileDownloadingPromise = null;
 
@@ -559,11 +561,13 @@ export default class TestRun extends AsyncEventEmitter {
             testRunId:                                               JSON.stringify(this.session.id),
             browserId:                                               JSON.stringify(this.browserConnection.id),
             activeWindowId:                                          JSON.stringify(this.activeWindowId),
+            windowId:                                                JSON.stringify(windowId || ''),
             browserHeartbeatRelativeUrl:                             JSON.stringify(this.browserConnection.heartbeatRelativeUrl),
             browserStatusRelativeUrl:                                JSON.stringify(this.browserConnection.statusRelativeUrl),
             browserStatusDoneRelativeUrl:                            JSON.stringify(this.browserConnection.statusDoneRelativeUrl),
             browserIdleRelativeUrl:                                  JSON.stringify(this.browserConnection.idleRelativeUrl),
             browserActiveWindowIdUrl:                                JSON.stringify(this.browserConnection.activeWindowIdUrl),
+            browserEnsureWindowInNativeAutomationUrl:                JSON.stringify(this.browserConnection.ensureWindowInNativeAutomationUrl),
             browserCloseWindowUrl:                                   JSON.stringify(this.browserConnection.closeWindowUrl),
             browserOpenFileProtocolRelativeUrl:                      JSON.stringify(this.browserConnection.openFileProtocolRelativeUrl),
             browserDispatchNativeAutomationEventRelativeUrl:         JSON.stringify(this.browserConnection.dispatchNativeAutomationEventRelativeUrl),
@@ -581,11 +585,15 @@ export default class TestRun extends AsyncEventEmitter {
             dialogHandler:                                           JSON.stringify(this.activeDialogHandler),
             canUseDefaultWindowActions:                              JSON.stringify(await this.browserConnection.canUseDefaultWindowActions()),
             nativeAutomation:                                        this.isNativeAutomation,
+            experimentalMultipleWindows:                             this.isExperimentalMultipleWindows,
             domain:                                                  JSON.stringify(this.browserConnection.browserConnectionGateway.proxy.server1Info.domain),
         });
     }
 
     public async getIframePayloadScript (): Promise<string> {
+        const browserEnsureWindowInNativeAutomationUrl = JSON.stringify(this.browserConnection.ensureWindowInNativeAutomationUrl);
+        const experimentalMultipleWindows = this.isExperimentalMultipleWindows;
+
         return Mustache.render(IFRAME_TEST_RUN_TEMPLATE, {
             testRunId:        JSON.stringify(this.session.id),
             selectorTimeout:  this.opts.selectorTimeout,
@@ -594,6 +602,9 @@ export default class TestRun extends AsyncEventEmitter {
             speed:            this.speed,
             dialogHandler:    JSON.stringify(this.activeDialogHandler),
             nativeAutomation: JSON.stringify(this.isNativeAutomation),
+            domain:           JSON.stringify(this.browserConnection.browserConnectionGateway.proxy.server1Info.domain),
+            browserEnsureWindowInNativeAutomationUrl,
+            experimentalMultipleWindows,
         });
     }
 

@@ -102,6 +102,9 @@ export default class TestRunController extends AsyncEventEmitter {
             folderName:       this.testRun.id,
         });
 
+        if (this.isNativeAutomation)
+            connection.resetActiveWindowId();
+
         await this.testRun.initialize();
 
         this._screenshots.addTestRun(this.test, this.testRun);

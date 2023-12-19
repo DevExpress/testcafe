@@ -8,6 +8,7 @@ export default {
     idle:                                  '/browser/idle',
     idleForced:                            '/browser/idle-forced',
     activeWindowId:                        '/browser/active-window-id',
+    ensureWindowInNativeAutomation:        '/browser/ensure-window-in-native-automation',
     closeWindow:                           '/browser/close-window',
     serviceWorker:                         '/service-worker.js',
     openFileProtocol:                      '/browser/open-file-protocol',

@@ -204,6 +204,13 @@ export function setActiveWindowId (activeWindowIdUrl, createXHR, windowId) {
     });
 }
 
+export function ensureWindowInNativeAutomation (ensureWindowInNativeAutomationUrl, createXHR, windowId) {
+    return sendXHR(ensureWindowInNativeAutomationUrl, createXHR, {
+        method: 'POST',
+        data:   JSON.stringify({ windowId }), //eslint-disable-line no-restricted-globals
+    });
+}
+
 export function closeWindow (closeWindowUrl, createXHR, windowId) {
     return sendXHR(closeWindowUrl, createXHR, {
         method: 'POST',
