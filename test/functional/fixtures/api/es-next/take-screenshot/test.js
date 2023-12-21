@@ -134,7 +134,7 @@ describe('[API] t.takeScreenshot()', function () {
                     const screenshotsCheckingOptions = { baseDir: 'screenshots', forError: false, screenshotsCount: 2, customPath: screenshotPath };
 
                     expect(assertionHelper.checkScreenshotsCreated(screenshotsCheckingOptions)).eql(true);
-                    expect(warningResult.warnings[0].message).eql('The screenshot path "screenshot-path/custom" overrides the "${TEST}/custom" pathPattern parameter. Choose only one of the parameters to specify the screenshot path.');
+                    expect(warningResult.warnings[0].message).eql('The t.takeScreenshot method includes two conflicting parameters: "path" (screenshot-path/custom)  and "pathPattern" (${TEST}/custom). TestCafe applied the "path" parameter, and ignored the "pathPattern" parameter. Remove one of the parameters to dismiss this warning.');
                     assertReporterWarnings('takeScreenshot');
                     return assertionHelper.removeScreenshotDir('screenshots');
                 });
