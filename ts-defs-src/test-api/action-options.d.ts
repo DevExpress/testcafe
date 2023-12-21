@@ -48,7 +48,7 @@ interface TakeScreenshotOptions {
      */
     fullPage?: boolean;
     /**
-     * Specifies the pathPattern where the screenshots are saved.
+     * Specifies the custom naming pattern for the screenshot.
      */
     pathPattern?: string;
 }
