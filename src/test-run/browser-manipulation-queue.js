@@ -59,13 +59,14 @@ export default class BrowserManipulationQueue {
             case COMMAND_TYPE.takeElementScreenshot:
             case COMMAND_TYPE.takeScreenshot:
                 return await this._takeScreenshot(() => this.screenshotCapturer.captureAction({
-                    actionId:       command.actionId,
-                    customPath:     command.path,
-                    pageDimensions: driverMsg.pageDimensions,
-                    cropDimensions: driverMsg.cropDimensions,
-                    markSeed:       command.markSeed,
-                    fullPage:       command.fullPage,
-                    thumbnails:     command.thumbnails,
+                    actionId:          command.actionId,
+                    customPath:        command.path,
+                    customPathPattern: command.pathPattern,
+                    pageDimensions:    driverMsg.pageDimensions,
+                    cropDimensions:    driverMsg.cropDimensions,
+                    markSeed:          command.markSeed,
+                    fullPage:          command.fullPage,
+                    thumbnails:        command.thumbnails,
                 }));
 
             case COMMAND_TYPE.takeScreenshotOnFail:

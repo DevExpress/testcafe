@@ -125,9 +125,10 @@ export default class PathPattern extends EventEmitter {
         return resultFilePath;
     }
 
-    getPath (forError) {
-        const pattern = this.patternOnFails && forError ? this.patternOnFails : this.pattern;
-        const path    = this._buildPath(pattern, this.placeholderToDataMap, forError);
+    getPath (forError, customPathPattern) {
+        const pathPattern = customPathPattern || this.pattern;
+        const pattern     = this.patternOnFails && forError ? this.patternOnFails : pathPattern;
+        const path        = this._buildPath(pattern, this.placeholderToDataMap, forError);
 
         return correctFilePath(path, this.fileExtension);
     }
