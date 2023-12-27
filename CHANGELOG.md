@@ -1,5 +1,122 @@
 # Changelog
 
+## v3.5.0 (2023-12-26)
+
+TestCafe v3.5.0 includes multiple enhancements and bug fixes. Pass Selector queries to the Visual Selector Debugger, explore new ways to specify screenshot path patterns, and use a new *experimental* flag to run multi-window tests with native automation!
+
+meta-readmore
+
+### Pass Selector queries to the Visual Selector Debugger
+
+When you pass a Selector query to the [t.debug()](xref:402707) method, TestCafe uses the query to populate the input field of the Visual Selector Debugger. The debugger highlights page elements that match the query.
+
+```js
+t.debug(Selector('#header'));
+```
+
+>[!Video https://www.screencast.com/users/testcafe/folders/Default/media/4274d757-f7a4-4982-add4-43bb0ba35cff/embed]
+
+### Use a custom path pattern for screenshots of failed tests
+
+The `pathPatternOnFails` [screenshot option](xref:402639#-s---screenshots-optionvalueoption2value2) allows TestCafe users to define a separate set of naming rules for screenshots taken on test failure. You can store these screenshots in a different folder, or add a common, recognizable element to their filenames. You can use this option on its own, or in conjunction with the `pathPattern` property.
+
+```json
+{
+    "screenshots": {
+        "pathPatternOnFails": "${DATE}_${TIME}/failedTests/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png"
+    }
+}
+```
+
+### Specify a path pattern for individual screenshots
+
+Use the `pathPattern` option of the [t.takeScreenshot](xref:402675) action to specify a custom naming pattern for an individual screenshot:
+
+```js
+t.takeScreenshot({
+    pathPattern: "${DATE}_${TIME}/checkout-screenshot.png",
+    fullPage: true
+})
+```
+
+### (Experimental) Run multi-window tests with native automation
+
+TestCafe v2.5.0 was the first version of TestCafe to include [native automation](xref:404237) --- the capability to automate Chromium-based browsers with the native Chrome Debugging Protocol. This approach offers greater test stability and speed, but has a fair share of limitations. One of them is its incompatibility with multi-window tests.
+
+TestCafe v3.5.0 offers an experimental solution for this issue --- the [--experimental-multiple-windows](xref:402639#--experimental-multiple-windows) CLI flag. If you enable this flag, you can run multi-window tests with the native automation engine.
+
+The `--experimental-multiple-windows` mode does not support tests that include the following:
+
+* Pop-up windows that launch file downloads.
+* Browser window resizing.
+* Screenshots.
+* Video recording.
+
+Please do not use the `--experimental-multiple-windows` flag in production or for business-critical tasks.
+
+### Bug Fixes
+
+* TypeScript compilation fails if project dependencies include '&#64;babel/plugin-transorm-runtime' v7.23.3 or greater ([#8091](https://github.com/DevExpress/testcafe/issues/8091)).
+* If you enable concurrent test execution, TestCafe launches tests before the conclusion of the `fixture.before` hook ([#6999](https://github.com/DevExpress/testcafe/issues/6999)).
+* The `Fixture.disableConcurrency` method does not disable concurrent test execution ([8087](https://github.com/DevExpress/testcafe/issues/8087)).
+* TestCafe ignores the fullPage option when it takes screenshots on test failure ([#7761](https://github.com/DevExpress/testcafe/issues/7761)).
+* [Native Automation] TestCafe cannot populate file input fields with the `required` attribute ([#8079](https://github.com/DevExpress/testcafe/issues/8079)).
+* [Native Automation] TestCafe fails to execute tests that use service workers ([#8005](https://github.com/DevExpress/testcafe/issues/8005), [#8054](https://github.com/DevExpress/testcafe/issues/8054)).
+* When an action target is obscured by a sticky element, TestCafe incorrectly calculates the scroll distance necessary to interact with the target. ([#7377](https://github.com/DevExpress/testcafe/issues/7377)).
+* Incorrect processing of front-end scripts causes automation errors ([#7713](https://github.com/DevExpress/testcafe/issues/7713), [#8067](https://github.com/DevExpress/testcafe/issues/8067), [testcafe-hammerhead#2969](https://github.com/DevExpress/testcafe-hammerhead/issues/2969)).
+* TestCafe incorrectly processes failing network requests when it runs on Node.js v16 and greater ([#7097](https://github.com/DevExpress/testcafe/issues/7097)).
+* TestCafe incorrectly handles native dialogs in Mozilla Firefox ([#6815](https://github.com/DevExpress/testcafe/issues/6815)).
+
+## v3.4.0 (2023-11-09)
+
+TestCafe v3.4.0 introduces relative Role URLs, the ability to disable concurrency on a per-fixture basis, as well as other improvements and bug fixes.
+
+meta-readmore
+
+### Enhancements
+
+### Relative Role URLs
+
+Earlier versions of TestCafe did not support relative URLs for [Role log-in pages](xref:402845). In TestCafe v3.4.0 and higher, if you set the [baseUrl](xref:402638#base-url) configuration file parameter or the [--base-url](xref:402639#--base-url) CLI option, you can set a relative URL for a Role log-in page:
+
+```js
+import { Role } from 'testcafe';
+
+const userOne = Role('./login', async t => {
+    /* log-in actions go here */
+});
+```
+
+### Disable concurrency on a per-fixture basis
+
+[Concurrent test execution](xref:403626) is not suitable for tests that can only run in a certain order. To ignore the global concurrency setting for a particular fixture, use the [disableConcurrency](xref:404618) fixture method.
+
+```js
+fixture`Fixture.disableConcurrency`
+    .page`https://devexpress.github.io/testcafe/example/`
+    .disableConcurrency;
+```
+
+### Development Mode Enhancements
+
+When you debug code inside a browser, the browser can appear unresponsive. Earlier versions of TestCafe automatically relaunched unresponsive browsers, including browsers that were used for debugging.
+
+TestCafe v3.4.0 *does not* relaunch unresponsive browsers if you enter [development mode](xref:402638#developmentmode).
+
+### Debug Panel Enhancements
+
+The [debug panel](xref:404288) includes a new "Hide Picker" button. Click this button to disable the Selector Debugger and hide the Selector input field.
+
+![Hide the Selector input field](https://testcafe.io/images/inspector/hide-selector-picker.gif)
+
+### Bug Fixes
+
+* TestCafe incorrectly logs requests during concurrent test execution ([#7977](https://github.com/DevExpress/testcafe/issues/7977)).
+* TestCafe does not load images with non-lowercase `srcset` attribute declarations ([testcafe-hammerhead#2958](https://github.com/DevExpress/testcafe-hammerhead/issues/2958)).
+* TestCafe raises an unexpected client-side error when the application opens an `ngx-formly` form ([#7758](https://github.com/DevExpress/testcafe/issues/7758)).
+* TestCafe cannot interact with page items at the edge of the viewport when the browser emulates a mobile device ([#8057](https://github.com/DevExpress/testcafe/issues/8057)).
+
+
 ## v3.3.0 (2023-08-29)
 
 TestCafe v3.3.0 includes important bug fixes and quality of life improvements.
