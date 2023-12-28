@@ -2,7 +2,7 @@ import ClientFunctionExecutor from '../client-function-executor';
 import createReplicator from '../replicator/index';
 import FunctionTransform from '../replicator/transforms/function-transform';
 import SelectorNodeTransform from '../replicator/transforms/selector-node-transform';
-import { ExecuteSelectorCommand } from '../../../../../test-run/commands/observation';
+import { ExecuteSelectorCommand } from '../../../../../test-run/commands/execute-client-function';
 import {
     SelectorErrorParams,
     SelectorDependencies,

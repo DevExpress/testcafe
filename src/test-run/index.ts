@@ -75,6 +75,7 @@ import {
     RemoveRequestHooksCommand,
     RunCustomActionCommand,
 } from './commands/actions';
+import { DebugCommand } from './commands/observation';
 
 import { RUNTIME_ERRORS, TEST_RUN_ERRORS } from '../errors/types';
 import processTestFnError from '../errors/process-test-fn-error';
@@ -107,7 +108,7 @@ import TestRunPhase from './phase';
 import {
     ExecuteClientFunctionCommand,
     ExecuteSelectorCommand,
-} from './commands/observation';
+} from './commands/execute-client-function';
 
 import addRenderedWarning from '../notifications/add-rendered-warning';
 import getBrowser from '../utils/get-browser';
@@ -133,16 +134,16 @@ import {
 } from './role-provider';
 
 import NativeAutomationRequestPipeline from '../native-automation/request-pipeline';
-import NativeAutomation from '../native-automation';
+import { NativeAutomationBase } from '../native-automation';
 import ReportDataLog from '../reporter/report-data-log';
 
-const lazyRequire                 = require('import-lazy')(require);
-const ClientFunctionBuilder       = lazyRequire('../client-functions/client-function-builder');
-const TestRunBookmark             = lazyRequire('./bookmark');
-const actionCommands              = lazyRequire('./commands/actions');
-const browserManipulationCommands = lazyRequire('./commands/browser-manipulation');
-const serviceCommands             = lazyRequire('./commands/service');
-const observationCommands         = lazyRequire('./commands/observation');
+const lazyRequire                   = require('import-lazy')(require);
+const ClientFunctionBuilder         = lazyRequire('../client-functions/client-function-builder');
+const TestRunBookmark               = lazyRequire('./bookmark');
+const actionCommands                = lazyRequire('./commands/actions');
+const browserManipulationCommands   = lazyRequire('./commands/browser-manipulation');
+const serviceCommands               = lazyRequire('./commands/service');
+const executeClientFunctionCommands = lazyRequire('./commands/execute-client-function');
 
 const { executeJsExpression, executeAsyncJsExpression } = lazyRequire('./execute-js-expression');
 
@@ -269,6 +270,7 @@ export default class TestRun extends AsyncEventEmitter {
     private readonly _requestHookEventProvider: RequestHookEventProvider;
     private readonly _roleProvider: RoleProvider;
     public readonly isNativeAutomation: boolean;
+    public readonly isExperimentalMultipleWindows: boolean;
 
     public constructor ({ test, browserConnection, screenshotCapturer, globalWarningLog, opts, messageBus, startRunExecutionTime, nativeAutomation }: TestRunInit) {
         super();
@@ -298,7 +300,8 @@ export default class TestRun extends AsyncEventEmitter {
         this.disablePageCaching = test.disablePageCaching || opts.disablePageCaching as boolean;
         this.isNativeAutomation = nativeAutomation;
 
-        this.disableMultipleWindows = opts.disableMultipleWindows as boolean;
+        this.disableMultipleWindows        = opts.disableMultipleWindows as boolean;
+        this.isExperimentalMultipleWindows = opts.experimentalMultipleWindows as boolean;
 
         this.requestTimeout = this._getRequestTimeout(test, opts);
 
@@ -377,7 +380,7 @@ export default class TestRun extends AsyncEventEmitter {
         return this._nativeAutomation.requestPipeline;
     }
 
-    private get _nativeAutomation (): NativeAutomation {
+    private get _nativeAutomation (): NativeAutomationBase {
         return this.browserConnection.getNativeAutomation();
     }
 
@@ -549,7 +552,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     // Hammerhead payload
-    public async getPayloadScript (): Promise<string> {
+    public async getPayloadScript (windowId?: string): Promise<string> {
         this.fileDownloadingHandled               = false;
         this.resolveWaitForFileDownloadingPromise = null;
 
@@ -559,11 +562,13 @@ export default class TestRun extends AsyncEventEmitter {
             testRunId:                                               JSON.stringify(this.session.id),
             browserId:                                               JSON.stringify(this.browserConnection.id),
             activeWindowId:                                          JSON.stringify(this.activeWindowId),
+            windowId:                                                JSON.stringify(windowId || ''),
             browserHeartbeatRelativeUrl:                             JSON.stringify(this.browserConnection.heartbeatRelativeUrl),
             browserStatusRelativeUrl:                                JSON.stringify(this.browserConnection.statusRelativeUrl),
             browserStatusDoneRelativeUrl:                            JSON.stringify(this.browserConnection.statusDoneRelativeUrl),
             browserIdleRelativeUrl:                                  JSON.stringify(this.browserConnection.idleRelativeUrl),
             browserActiveWindowIdUrl:                                JSON.stringify(this.browserConnection.activeWindowIdUrl),
+            browserEnsureWindowInNativeAutomationUrl:                JSON.stringify(this.browserConnection.ensureWindowInNativeAutomationUrl),
             browserCloseWindowUrl:                                   JSON.stringify(this.browserConnection.closeWindowUrl),
             browserOpenFileProtocolRelativeUrl:                      JSON.stringify(this.browserConnection.openFileProtocolRelativeUrl),
             browserDispatchNativeAutomationEventRelativeUrl:         JSON.stringify(this.browserConnection.dispatchNativeAutomationEventRelativeUrl),
@@ -581,11 +586,15 @@ export default class TestRun extends AsyncEventEmitter {
             dialogHandler:                                           JSON.stringify(this.activeDialogHandler),
             canUseDefaultWindowActions:                              JSON.stringify(await this.browserConnection.canUseDefaultWindowActions()),
             nativeAutomation:                                        this.isNativeAutomation,
+            experimentalMultipleWindows:                             this.isExperimentalMultipleWindows,
             domain:                                                  JSON.stringify(this.browserConnection.browserConnectionGateway.proxy.server1Info.domain),
         });
     }
 
     public async getIframePayloadScript (): Promise<string> {
+        const browserEnsureWindowInNativeAutomationUrl = JSON.stringify(this.browserConnection.ensureWindowInNativeAutomationUrl);
+        const experimentalMultipleWindows = this.isExperimentalMultipleWindows;
+
         return Mustache.render(IFRAME_TEST_RUN_TEMPLATE, {
             testRunId:        JSON.stringify(this.session.id),
             selectorTimeout:  this.opts.selectorTimeout,
@@ -594,6 +603,9 @@ export default class TestRun extends AsyncEventEmitter {
             speed:            this.speed,
             dialogHandler:    JSON.stringify(this.activeDialogHandler),
             nativeAutomation: JSON.stringify(this.isNativeAutomation),
+            domain:           JSON.stringify(this.browserConnection.browserConnectionGateway.proxy.server1Info.domain),
+            browserEnsureWindowInNativeAutomationUrl,
+            experimentalMultipleWindows,
         });
     }
 
@@ -698,7 +710,7 @@ export default class TestRun extends AsyncEventEmitter {
         if (this.errs.length && this.debugOnFail) {
             const errStr = this.debugReporterPluginHost.formatError(this.errs[0]);
 
-            await this._enqueueSetBreakpointCommand(void 0, errStr);
+            await this._enqueueSetBreakpointCommand(void 0, null, errStr);
         }
 
         await this.emit('before-done');
@@ -821,11 +833,11 @@ export default class TestRun extends AsyncEventEmitter {
         return this.cookieProvider.deleteCookies(cookies, urls);
     }
 
-    private async _enqueueSetBreakpointCommand (callsite: CallsiteRecord | undefined, error?: string): Promise<void> {
+    private async _enqueueSetBreakpointCommand (callsite: CallsiteRecord | undefined, selector?: object | null, error?: string): Promise<void> {
         if (this.debugLogger)
             this.debugLogger.showBreakpoint(this.session.id, this.browserConnection.userAgent, callsite, error);
 
-        this.debugging = await this._internalExecuteCommand(new serviceCommands.SetBreakpointCommand(!!error), callsite) as boolean;
+        this.debugging = await this._internalExecuteCommand(new serviceCommands.SetBreakpointCommand(!!error, selector), callsite) as boolean;
     }
 
     private _removeAllNonServiceTasks (): void {
@@ -880,7 +892,7 @@ export default class TestRun extends AsyncEventEmitter {
     private _shouldResolveCurrentDriverTask (driverStatus: DriverStatus): boolean {
         const currentCommand = this.currentDriverTask.command;
 
-        const isExecutingObservationCommand = currentCommand instanceof observationCommands.ExecuteSelectorCommand ||
+        const isExecutingObservationCommand = currentCommand instanceof executeClientFunctionCommands.ExecuteSelectorCommand ||
             currentCommand instanceof ExecuteClientFunctionCommand;
 
         const isDebugActive = currentCommand instanceof serviceCommands.SetBreakpointCommand;
@@ -1154,7 +1166,7 @@ export default class TestRun extends AsyncEventEmitter {
             const canDebug = !this.browserConnection.isHeadlessBrowser();
 
             if (canDebug)
-                return await this._enqueueSetBreakpointCommand(callsite as CallsiteRecord, void 0);
+                return await this._enqueueSetBreakpointCommand(callsite as CallsiteRecord, (command as DebugCommand)?.selector, void 0);
 
             this.debugging = false;
 

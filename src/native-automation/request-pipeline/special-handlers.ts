@@ -34,7 +34,7 @@ async function handleRequestPauseEvent (event: RequestPausedEvent, client: Proto
 
 const internalRequest = {
     condition: (event: RequestPausedEvent): boolean => !event.networkId && event.resourceType !== 'Document' && !event.request.url,
-    handler:   async (event: RequestPausedEvent, client: ProtocolApi, options: NativeAutomationInitOptions, sessionId: SessionId): Promise<void> => {
+    handler:   async (event: RequestPausedEvent, client: ProtocolApi, isMainWindow: boolean, options: NativeAutomationInitOptions, sessionId: SessionId): Promise<void> => {
         requestPipelineInternalRequestLogger('%r', event);
 
         await handleRequestPauseEvent(event, client, sessionId);
@@ -52,10 +52,25 @@ const serviceRequest = {
 
         return options.serviceDomains.some(domain => url.startsWith(domain));
     },
-    handler: async (event: RequestPausedEvent, client: ProtocolApi, options: NativeAutomationInitOptions, sessionId: SessionId): Promise<void> => {
+    handler: async (event: RequestPausedEvent, client: ProtocolApi, isMainWindow: boolean, options: NativeAutomationInitOptions, sessionId: SessionId): Promise<void> => {
         requestPipelineServiceRequestLogger('%r', event);
 
-        await handleRequestPauseEvent(event, client, sessionId);
+        try {
+            await handleRequestPauseEvent(event, client, sessionId);
+        }
+        catch (err) {
+            if (isMainWindow) {
+                requestPipelineServiceRequestLogger('Failed to process request in main window: %s', event.request.url);
+
+                throw err;
+            }
+            else {
+                // NOTE: Sometimes, a child window sends a heartbeat request and then immediately closes.
+                // In these situations, we need to catch errors because we can't handle this request correctly
+                // when the cdpClient has already closed.
+                requestPipelineServiceRequestLogger('Failed to process request in child window: %s', event.request.url);
+            }
+        }
     },
 } as RequestHandler;
 
@@ -65,7 +80,7 @@ const defaultFaviconRequest = {
 
         return parsedUrl.pathname === DEFAULT_FAVICON_PATH;
     },
-    handler: async (event: RequestPausedEvent, client: ProtocolApi, options: NativeAutomationInitOptions, sessionId: SessionId): Promise<void> => {
+    handler: async (event: RequestPausedEvent, client: ProtocolApi, isMainWindow: boolean, options: NativeAutomationInitOptions, sessionId: SessionId): Promise<void> => {
         requestPipelineLogger('%r', event);
 
         if (isRequest(event))
@@ -93,7 +108,7 @@ const SPECIAL_REQUEST_HANDLERS = [
     defaultFaviconRequest,
 ];
 
-export default function getSpecialRequestHandler (event: RequestPausedEvent, options?: NativeAutomationInitOptions, serviceRoutes?: SpecialServiceRoutes): any {
+export default function getSpecialRequestHandler (event: RequestPausedEvent, options?: NativeAutomationInitOptions, serviceRoutes?: SpecialServiceRoutes): RequestHandler['handler'] | null {
     const specialRequestHandler = SPECIAL_REQUEST_HANDLERS.find(h => h.condition(event, options, serviceRoutes));
 
     return specialRequestHandler ? specialRequestHandler.handler : null;

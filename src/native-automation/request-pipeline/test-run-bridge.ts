@@ -5,8 +5,10 @@ import { InjectableResourcesOptions } from '../types';
 
 export default class TestRunBridge {
     private readonly _browserId: string;
-    public constructor (browserId: string) {
+    private readonly _windowId: string;
+    public constructor (browserId: string, windowId: string) {
         this._browserId = browserId;
+        this._windowId = windowId;
     }
 
     public getBrowserConnection (): BrowserConnection {
@@ -53,7 +55,7 @@ export default class TestRunBridge {
     public async getTaskScript ({ isIframe }: InjectableResourcesOptions): Promise<string> {
         const browserConnection = this.getBrowserConnection();
         const proxy             = browserConnection.browserConnectionGateway.proxy;
-        const windowId          = browserConnection.activeWindowId;
+        const windowId          = this._windowId;
 
         // @ts-ignore
         return await this.getCurrentTestRun().session.getTaskScript({

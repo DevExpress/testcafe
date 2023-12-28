@@ -138,6 +138,7 @@ jobs:
             tasks.push('test-functional-local-edge.yml');
             tasks.push('test-functional-local-firefox.yml');
             tasks.push('test-functional-local-multiple-windows.yml');
+            tasks.push('test-functional-local-multiple-windows-na.yml');
             tasks.push('test-functional-local-native-automation.yml');
             tasks.push('test-functional-local-headed-browsers.yml');
             tasks.push('test-functional-local-legacy.yml');

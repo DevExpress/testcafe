@@ -48,7 +48,7 @@ import {
 } from './validations/argument';
 
 import { SetNativeDialogHandlerCodeWrongTypeError } from '../../errors/test-run';
-import { ExecuteClientFunctionCommand } from './observation';
+import { ExecuteClientFunctionCommand } from './execute-client-function';
 import { camelCase } from 'lodash';
 import {
     prepareSkipJsErrorsOptions,

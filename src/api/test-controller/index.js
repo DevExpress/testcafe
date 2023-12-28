@@ -185,7 +185,7 @@ export default class TestController {
     _validateMultipleWindowCommand (apiMethodName) {
         const { disableMultipleWindows, activeWindowId } = this.testRun;
 
-        if (this.testRun.isNativeAutomation)
+        if (this.testRun.isNativeAutomation && !this.testRun.isExperimentalMultipleWindows)
             throw new MultipleWindowsModeIsNotSupportedInNativeAutomationModeError(apiMethodName);
 
         if (disableMultipleWindows)
@@ -602,8 +602,8 @@ export default class TestController {
         return new Assertion(actual, this, callsite);
     }
 
-    [delegatedAPI(DebugCommand.methodName)] () {
-        return this.enqueueCommand(DebugCommand);
+    [delegatedAPI(DebugCommand.methodName)] (selector) {
+        return this.enqueueCommand(DebugCommand, { selector });
     }
 
     [delegatedAPI(SetTestSpeedCommand.methodName)] (speed) {

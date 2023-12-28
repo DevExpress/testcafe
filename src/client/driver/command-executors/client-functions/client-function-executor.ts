@@ -4,7 +4,7 @@ import ClientFunctionNodeTransform from './replicator/transforms/client-function
 import evalFunction from './eval-function';
 import { UncaughtErrorInClientFunctionCode } from '../../../../shared/errors/index';
 import Replicator from 'replicator';
-import { ExecuteClientFunctionCommand, ExecuteClientFunctionCommandBase } from '../../../../test-run/commands/observation';
+import { ExecuteClientFunctionCommand, ExecuteClientFunctionCommandBase } from '../../../../test-run/commands/execute-client-function';
 import { Dictionary } from '../../../../configuration/interfaces';
 // @ts-ignore
 import { Promise } from '../../deps/hammerhead';

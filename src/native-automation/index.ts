@@ -5,17 +5,23 @@ import { NativeAutomationInitOptions } from '../shared/types';
 import { nativeAutomationLogger } from '../utils/debug-loggers';
 import SessionStorage from './session-storage';
 import NativeAutomationApiBase from './api-base';
+import AsyncEventEmitter from '../utils/async-event-emitter';
+import { NEW_WINDOW_OPENED_IN_NATIVE_AUTOMATION } from '../browser/provider/built-in/dedicated/chrome/cdp-client';
 
-export default class NativeAutomation {
-    private readonly _client: ProtocolApi;
+export class NativeAutomationBase extends AsyncEventEmitter {
+    protected readonly _client: ProtocolApi;
     public readonly requestPipeline;
     public readonly sessionStorage: SessionStorage;
     private readonly options: NativeAutomationInitOptions;
+    protected readonly windowId: string;
 
-    public constructor (browserId: string, client: ProtocolApi, options: NativeAutomationInitOptions) {
+    public constructor (browserId: string, windowId: string, client: ProtocolApi, options: NativeAutomationInitOptions, isMainWindow: boolean) {
+        super();
+
+        this.windowId        = windowId;
         this._client         = client;
         this.options         = options;
-        this.requestPipeline = new NativeAutomationRequestPipeline(browserId, client, options);
+        this.requestPipeline = new NativeAutomationRequestPipeline(browserId, windowId, client, isMainWindow, options);
         this.sessionStorage  = new SessionStorage(browserId, client, options);
 
         addCustomDebugFormatters();
@@ -65,3 +71,43 @@ export default class NativeAutomation {
         ];
     }
 }
+
+export class NativeAutomationMainWindow extends NativeAutomationBase {
+    private _resolveNewWindowOpeningPromise: Promise<any> | undefined;
+
+    public constructor (browserId: string, windowId: string, client: ProtocolApi, options: NativeAutomationInitOptions) {
+        super(browserId, windowId, client, options, true);
+    }
+
+    async start (): Promise<void> {
+        await super.start();
+
+        await this._client.Target.setDiscoverTargets({ discover: true });
+
+        this._client.Target.on('targetCreated', async ({ targetInfo }) => {
+            if (targetInfo.type !== 'page' || targetInfo.targetId === this.windowId)
+                return;
+
+            this._resolveNewWindowOpeningPromise = this.emit(NEW_WINDOW_OPENED_IN_NATIVE_AUTOMATION, targetInfo);
+        });
+    }
+
+    public async getNewWindowIdInNativeAutomation (): Promise<string> {
+        if (!this._resolveNewWindowOpeningPromise)
+            throw new Error('Cannot get new window id');
+
+        return this._resolveNewWindowOpeningPromise
+            .then(res => {
+                const windowId = res[0];
+
+                return windowId;
+            });
+    }
+}
+
+export class NativeAutomationChildWindow extends NativeAutomationBase {
+    public constructor (browserId: string, windowId: string, client: ProtocolApi, options: NativeAutomationInitOptions) {
+        super(browserId, windowId, client, options, false);
+    }
+}
+

@@ -12,7 +12,7 @@ import {
 
 import { CurrentIframeNotFoundError, CurrentIframeIsNotLoadedError } from '../errors/test-run';
 import TestRun from './index';
-import { ExecuteClientFunctionCommand, ExecuteSelectorCommand } from './commands/observation';
+import { ExecuteClientFunctionCommand, ExecuteSelectorCommand } from './commands/execute-client-function';
 import Role, { RedirectUrl } from '../role/role';
 import { DEFAULT_SPEED_VALUE } from '../configuration/default-values';
 import BrowserConsoleMessages from './browser-console-messages';

@@ -1,6 +1,6 @@
 /* global globalThis */
 
-import { ExecuteSelectorCommand } from '../test-run/commands/observation';
+import { ExecuteSelectorCommand } from '../test-run/commands/execute-client-function';
 
 export interface NativeMethods {
     setTimeout: typeof globalThis.setTimeout;

@@ -1,5 +1,5 @@
 import { isEmpty } from 'lodash';
-import { ExecuteSelectorCommand, ExecuteClientFunctionCommand } from '../../test-run/commands/observation';
+import { ExecuteSelectorCommand, ExecuteClientFunctionCommand } from '../../test-run/commands/execute-client-function';
 import {
     NavigateToCommand,
     PressKeyCommand,

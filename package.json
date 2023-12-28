@@ -2,7 +2,7 @@
   "name": "testcafe",
   "description": "Automated browser testing for the modern web development stack.",
   "license": "MIT",
-  "version": "3.4.0",
+  "version": "3.5.0",
   "author": {
     "name": "Developer Express Inc.",
     "url": "https://www.devexpress.com/"
@@ -72,7 +72,7 @@
     "@babel/plugin-transform-async-to-generator": "^7.22.5",
     "@babel/plugin-transform-exponentiation-operator": "^7.22.5",
     "@babel/plugin-transform-for-of": "^7.22.15",
-    "@babel/plugin-transform-runtime": "^7.23.2",
+    "@babel/plugin-transform-runtime": "7.23.3",
     "@babel/preset-env": "^7.23.2",
     "@babel/preset-flow": "^7.22.15",
     "@babel/preset-react": "^7.22.15",

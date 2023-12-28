@@ -266,7 +266,7 @@ export default class Driver extends serviceUtils.EventEmitter {
 
     _getCurrentWindowId () {
         if (this.options.nativeAutomation)
-            return this.runInfo.activeWindowId;
+            return this.runInfo.windowId;
 
         const currentUrl     = window.location.toString();
         const parsedProxyUrl = hammerhead.utils.url.parseProxyUrl(currentUrl);
@@ -349,8 +349,8 @@ export default class Driver extends serviceUtils.EventEmitter {
             this.contextStorage.setItem(PENDING_PAGE_ERROR, error);
     }
 
-    _addChildWindowDriverLink (e) {
-        const childWindowDriverLink = new ChildWindowDriverLink(e.window, e.windowId);
+    _addChildWindowDriverLink (wnd, windowId) {
+        const childWindowDriverLink = new ChildWindowDriverLink(wnd, windowId);
 
         this.childWindowDriverLinks.push(childWindowDriverLink);
         this._ensureClosedChildWindowWatcher();
@@ -417,6 +417,9 @@ export default class Driver extends serviceUtils.EventEmitter {
         if (!this.options.nativeAutomation)
             return;
 
+        if (this.options.experimentalMultipleWindows)
+            return;
+
         this._onReady(new DriverStatus({
             isCommandResult: true,
             executionError:  new MultipleWindowsModeIsNotSupportedInNativeAutomationModeError(),
@@ -425,9 +428,37 @@ export default class Driver extends serviceUtils.EventEmitter {
         e.isPrevented = true;
     }
 
-    _onChildWindowOpened (e) {
-        this._addChildWindowDriverLink(e);
-        this._switchToChildWindow(e.windowId);
+    async _ensureNewWindowOpenedInNativeAutomation (e) {
+        const result = await browser.ensureWindowInNativeAutomation(
+            this.communicationUrls.ensureWindowInNativeAutomationUrl,
+            hammerhead.createNativeXHR,
+        );
+
+        if (!result.windowId)
+            return null;
+
+        if (e.form)
+            nativeMethods.formSubmit.apply(e.form);
+        else
+            nativeMethods.windowOpen.call(window, e.pageUrl, e.windowName);
+
+        return result.windowId;
+    }
+
+    async _onChildWindowOpened (e, isOpeningInIframe) {
+        let windowId = e.windowId;
+
+        if (this.options.nativeAutomation && !isOpeningInIframe) {
+            this._waitChildWindowOpenedInNativeAutomation = this._ensureNewWindowOpenedInNativeAutomation(e);
+
+            windowId = await this._waitChildWindowOpenedInNativeAutomation;
+
+            if (!windowId)
+                return;
+        }
+
+        this._addChildWindowDriverLink(e.window, windowId);
+        this._switchToChildWindow(windowId);
     }
 
     _sendStartToRestoreCommand () {
@@ -594,12 +625,18 @@ export default class Driver extends serviceUtils.EventEmitter {
     }
 
     _getWindowInfo () {
-        const parsedUrl = hammerhead.utils.url.parseProxyUrl(window.location.toString());
+        let url = window.location.toString();
+
+        if (!this.options.nativeAutomation) {
+            const { destUrl } = hammerhead.utils.url.parseProxyUrl(url);
+
+            url = destUrl;
+        }
 
         return {
             id:    this.windowId,
             title: document.title,
-            url:   parsedUrl.destUrl,
+            url,
         };
     }
 
@@ -833,7 +870,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         if (this._stopRespondToChildren)
             return;
 
-        this._addChildWindowDriverLink({ window: wnd, windowId: msg.windowId });
+        this._addChildWindowDriverLink(wnd, msg.windowId);
 
         const allChildWindowLinksRestored = this.childWindowDriverLinks.length === this.contextStorage.getItem(PENDING_CHILD_WINDOW_COUNT);
 
@@ -870,7 +907,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         const childWindowDriverLinkExists = !!this.childWindowDriverLinks.find(link => link.windowId === msg.windowId);
 
         if (!childWindowDriverLinkExists)
-            this._onChildWindowOpened({ window: wnd, windowId: msg.windowId });
+            this._onChildWindowOpened({ window: wnd, windowId: msg.windowId }, true);
     }
 
     _handleStopInternalFromFrame (msg, wnd) {
@@ -1242,6 +1279,13 @@ export default class Driver extends serviceUtils.EventEmitter {
             .then(driverStatus => {
                 this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, false);
                 this.contextStorage.setItem(EXECUTING_SKIP_JS_ERRORS_FUNCTION_FLAG, false);
+
+                if (this._waitChildWindowOpenedInNativeAutomation)
+                    return this._waitChildWindowOpenedInNativeAutomation.then(() => driverStatus);
+
+                return driverStatus;
+            })
+            .then(driverStatus => {
                 this._onReady(driverStatus);
             });
     }
@@ -1438,7 +1482,9 @@ export default class Driver extends serviceUtils.EventEmitter {
     }
 
     async _restoreChildWindowLinks () {
-        if (!this.contextStorage.getItem(PENDING_CHILD_WINDOW_COUNT))
+        const pendingChildWindowCount = this.contextStorage.getItem(PENDING_CHILD_WINDOW_COUNT);
+
+        if (!pendingChildWindowCount || pendingChildWindowCount === this.childWindowDriverLinks.length)
             return;
 
         const restoreChildWindowsPromise = new Promise(resolve => {
@@ -1481,10 +1527,10 @@ export default class Driver extends serviceUtils.EventEmitter {
             });
     }
 
-    _onSetBreakpointCommand ({ isTestError }) {
+    _onSetBreakpointCommand ({ isTestError, selector }) {
         const showDebuggingStatusPromise = this.statusBar.showDebuggingStatus(isTestError);
 
-        this.selectorInspectorPanel.show();
+        this.selectorInspectorPanel.show(selector);
 
         showDebuggingStatusPromise.then(debug => {
             const stopAfterNextAction = debug === STATUS_BAR_DEBUG_ACTION.step;
@@ -1563,6 +1609,8 @@ export default class Driver extends serviceUtils.EventEmitter {
             return Promise.resolve();
 
         return Promise.all(this.childWindowDriverLinks.map(childWindowDriverLink => {
+            childWindowDriverLink.ignoreMasterSwitching = true;
+
             return childWindowDriverLink.closeAllChildWindows();
         }))
             .then(() => {
@@ -1876,7 +1924,7 @@ export default class Driver extends serviceUtils.EventEmitter {
     }
 
     async _getDriverRole () {
-        if (!this.windowId)
+        if (!this.windowId && !this.options.nativeAutomation)
             return DriverRole.master;
 
         const { activeWindowId } = await browser.getActiveWindowId(this.communicationUrls.activeWindowId, hammerhead.createNativeXHR);
