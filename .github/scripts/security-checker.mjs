@@ -49,7 +49,7 @@ class SecurityChecker {
           return data;
       }
       catch (e) {
-          if (e.message.includes('no analysis found'))
+          if (e.message.includes('no analysis found') || e.message.includes('Advanced Security must be enabled for this repository to use code scanning'))
               return [];
 
           throw e;
