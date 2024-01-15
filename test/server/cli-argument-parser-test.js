@@ -609,12 +609,13 @@ describe('CLI argument parser', function () {
 
     describe('Screenshot options', () => {
         it('Should parse screenshot options', async () => {
-            const parser = await parse('--screenshots path=/a/b/c,fullPage=true,takeOnFails=true,pathPattern=${TEST}.png');
+            const parser = await parse('--screenshots path=/a/b/c,fullPage=true,takeOnFails=true,fullPageOnFails=true,pathPattern=${TEST}.png');
 
             expect(parser.opts.screenshots.takeOnFails).to.be.ok;
             expect(parser.opts.screenshots.path).equal('/a/b/c');
             expect(parser.opts.screenshots.fullPage).to.be.ok;
             expect(parser.opts.screenshots.pathPattern).equal('${TEST}.png');
+            expect(parser.opts.screenshots.fullPageOnFails).to.be.ok;
         });
 
         it('Should understand legacy keys', async () => {

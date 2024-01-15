@@ -355,10 +355,11 @@ describe('Runner', () => {
         it('should allow to set object as a `screenshots` method parameter', async () => {
             await runner
                 .screenshots({
-                    path:        'path',
-                    takeOnFails: true,
-                    pathPattern: 'pathPattern',
-                    fullPage:    true,
+                    path:            'path',
+                    takeOnFails:     true,
+                    pathPattern:     'pathPattern',
+                    fullPage:        true,
+                    fullPageOnFails: true,
                 });
             await runner._setConfigurationOptions();
             await runner._setBootstrapperOptions();
@@ -367,6 +368,7 @@ describe('Runner', () => {
             expect(runner.configuration.getOption('screenshots').takeOnFails).eql(true);
             expect(runner.configuration.getOption('screenshots').pathPattern).eql('pathPattern');
             expect(runner.configuration.getOption('screenshots').fullPage).eql(true);
+            expect(runner.configuration.getOption('screenshots').fullPageOnFails).eql(true);
         });
 
         it('Validate screenshot options. The `screenshots` option has priority', () => {

@@ -4,7 +4,8 @@ enum SCREENSHOT_OPTION_NAMES {
     pathPattern = 'pathPattern',
     fullPage = 'fullPage',
     thumbnails = 'thumbnails',
-    pathPatternOnFails = 'pathPatternOnFails'
+    pathPatternOnFails = 'pathPatternOnFails',
+    fullPageOnFails = 'fullPageOnFails',
 }
 
 export default SCREENSHOT_OPTION_NAMES;

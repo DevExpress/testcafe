@@ -750,12 +750,13 @@ export default class Runner extends EventEmitter {
         let fullPage;
         let thumbnails;
         let pathPatternOnFails;
+        let fullPageOnFails;
         let [path, takeOnFails, pathPattern] = options;
 
         if (options.length === 1 && options[0] && typeof options[0] === 'object')
-            ({ path, takeOnFails, pathPattern, pathPatternOnFails, fullPage, thumbnails } = options[0]);
+            ({ path, takeOnFails, pathPattern, pathPatternOnFails, fullPage, thumbnails, fullPageOnFails } = options[0]);
 
-        this._options.screenshots = { path, takeOnFails, pathPattern, pathPatternOnFails, fullPage, thumbnails };
+        this._options.screenshots = { path, takeOnFails, pathPattern, pathPatternOnFails, fullPage, thumbnails, fullPageOnFails };
 
         return this;
     }

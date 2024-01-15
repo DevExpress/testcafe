@@ -9,6 +9,7 @@ interface ScreenshotOptionValue {
     pathPattern?: string;
     pathPatternOnFails?: string;
     fullPage?: boolean;
+    fullPageOnFails?: boolean;
     thumbnails?: boolean;
 }
 
