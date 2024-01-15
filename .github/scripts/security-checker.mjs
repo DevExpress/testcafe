@@ -14,11 +14,6 @@ const ALERT_TYPES = {
     codeq:      'codeql',
 }
 
-const UPDATE_TYPE = {
-    addAlertToIssue: 'addAlertToIssue',
-    closeTask:       'closeTask'
-}
-
 class SecurityChecker {
     constructor(github, context, issueRepo) {
         this.github    = github;
@@ -29,7 +24,7 @@ class SecurityChecker {
         };
     }
 
-    async check() {
+    async check () {
         const dependabotAlerts = await this.getDependabotAlerts();
         const codeqlAlerts     = await this.getCodeqlAlerts();
         const existedIssues    = await this.getExistedIssues();
@@ -41,13 +36,13 @@ class SecurityChecker {
         await this.createCodeqlIssues(codeqlAlerts);
     }
 
-    async getDependabotAlerts() {
+    async getDependabotAlerts () {
         const { data } = await this.github.rest.dependabot.listAlertsForRepo({ state: STATES.open, ...this.context });
 
         return data;
     }
 
-    async getCodeqlAlerts() {
+    async getCodeqlAlerts () {
         try {
             const { data } = await this.github.rest.codeScanning.listAlertsForRepo({ state: STATES.open, ...this.context });
 
@@ -61,7 +56,7 @@ class SecurityChecker {
         }
     }
 
-    async getExistedIssues() {
+    async getExistedIssues () {
         const { data: existedIssues } = await this.github.rest.issues.listForRepo({
             owner:  this.context.owner,
             repo:   this.issueRepo,
@@ -72,7 +67,7 @@ class SecurityChecker {
         return existedIssues;
     }
 
-    createAlertDictionary(existedIssues) {
+    createAlertDictionary (existedIssues) {
         return existedIssues.reduce((res, issue) => {
             const [, url, type] = issue.body.match(/(https:.*\/(dependabot|code-scanning)\/(\d+))/);
 
@@ -86,40 +81,51 @@ class SecurityChecker {
                 res.set(issue.title, { issue, type, cveId, ghsaId });
             }
             else
-                res.set(issue.title, { issue, type })
-
+                res.set(issue.title, { issue, type });
 
             return res;
         }, new Map());
     }
 
-    async closeSpoiledIssues() {
-        const regExpAlertNumber = new RegExp(`(?<=\`${this.context.repo}\` - https:.*/dependabot/)\\d+`);
+    async closeSpoiledIssues () {
+        const regExpAlertNumbers = new RegExp(`(?<=\`${this.context.repo}\` - https:.*/dependabot/)\\d+`,'g');
+
         for (const alert of this.alertDictionary.values()) {
 
             if (alert.type === ALERT_TYPES.dependabot) {
-                const alertNumber  = alert.issue.body.match(regExpAlertNumber);
+                const alertNumbers  = alert.issue.body.match(regExpAlertNumbers);
 
-                if (!alertNumber)
+                if (!alertNumbers)
                     continue;
 
-                const isAlertOpened = await this.isDependabotAlertOpened(alertNumber);
+                const updates   = {};
+                let changedBody = alert.issue.body;
 
-                if (isAlertOpened)
-                    continue;
+                for (let alertNumber of alertNumbers) {
+                    const isAlertOpened = await this.isDependabotAlertOpened(alertNumber);
 
-                await this.updateIssue(alert, UPDATE_TYPE.closeTask);
+                    if (isAlertOpened)
+                        continue;
+
+                    changedBody = changedBody.replace(new RegExp(`\\[ \\](?= \`${this.context.repo}\` - https:.*/dependabot/${alertNumber})`), '[x]');
+                }
+
+                updates.body         = changedBody;
+                updates.state        = !changedBody.match(/\[ \]/) ? STATES.closed : STATES.open;
+                updates.issue_number = alert.issue.number;
+
+                await this.updateIssue(updates);
             }
         }
     }
 
-    async isDependabotAlertOpened(alertNumber) {
+    async isDependabotAlertOpened (alertNumber) {
         const alert = await this.getDependabotAlertInfo(alertNumber);
 
         return alert.state === STATES.open;
     }
 
-    async getDependabotAlertInfo(alertNumber) {
+    async getDependabotAlertInfo (alertNumber) {
         try {
             const { data } = await this.github.rest.dependabot.getAlert({ alert_number: alertNumber, ...this.context });
 
@@ -133,24 +139,7 @@ class SecurityChecker {
         }
     }
 
-    async updateIssue(alert, type) {
-        const updates = {};
-
-        if (type === UPDATE_TYPE.addAlertToIssue) {
-            const { issue } = this.alertDictionary.get(alert.security_advisory.summary);
-
-            updates.issue_number = issue.number;
-            updates.body         = issue.body.replace(/(?<=Repositories:)[\s\S]*?(?=####|$)/g, (match) => {
-                return match + `- [ ] \`${this.context.repo}\` - ${alert.html_url}\n`;
-            });
-        }
-
-        if (type === UPDATE_TYPE.closeTask) {
-            updates.body         = alert.issue.body.replace(new RegExp(`\\[ \\](?= \`${this.context.repo}\`)`), '[x]');
-            updates.state        = !updates.body.match(/\[ \]/) ? STATES.closed : STATES.open;
-            updates.issue_number = alert.issue.number;
-        }
-
+    async updateIssue (updates) {
         return this.github.rest.issues.update({
             owner: this.context.owner,
             repo:  this.issueRepo,
@@ -159,10 +148,10 @@ class SecurityChecker {
     }
 
 
-    async createDependabotlIssues(dependabotAlerts) {
+    async createDependabotlIssues (dependabotAlerts) {
         for (const alert of dependabotAlerts) {
             if (this.needAddAlertToIssue(alert)) {
-                await this.updateIssue(alert, UPDATE_TYPE.addAlertToIssue);
+                await this.addAlertToIssue(alert);
             }
             else if (this.needCreateIssue(alert)) {
                 await this.createIssue({
@@ -179,16 +168,31 @@ class SecurityChecker {
         }
     }
 
-    needAddAlertToIssue(alert) {
-        const existedIssue = this.alertDictionary.get(alert.security_advisory.summary);
+    needAddAlertToIssue (alert) {
+        const regExpAlertNumber = new RegExp(`(?<=\`${this.context.repo}\` - https:.*/dependabot/)${alert.html_url.match(/(?<=https:.*\/)\d+/)}`);
+        const existedIssue      = this.alertDictionary.get(alert.security_advisory.summary);
+        const alertNumber       = existedIssue?.issue.body.match(regExpAlertNumber);
+        const isAlertExisted    = existedIssue?.issue.body.includes(`\`${this.context.repo}\``);
 
         return existedIssue
             && existedIssue.cveId === alert.security_advisory.cve_id
             && existedIssue.ghsaId === alert.security_advisory.ghsa_id
-            && !existedIssue.issue.body.includes(`\`${this.context.repo}\``);
+            && (!isAlertExisted || (isAlertExisted && !alertNumber));
     }
 
-    async createCodeqlIssues(codeqlAlerts) {
+    async addAlertToIssue (alert) {
+        const updates   =  {};
+        const { issue } = this.alertDictionary.get(alert.security_advisory.summary);
+
+        updates.issue_number = issue.number;
+        updates.body         = issue.body.replace(/(?<=Repositories:)[\s\S]*?(?=####|$)/g, (match) => {
+            return match + `- [ ] \`${this.context.repo}\` - ${alert.html_url}\n`;
+        });
+
+        await this.updateIssue(updates);
+    }
+
+    async createCodeqlIssues (codeqlAlerts) {
         for (const alert of codeqlAlerts) {
             if (!this.needCreateIssue(alert, false))
                 continue;
@@ -203,13 +207,13 @@ class SecurityChecker {
         }
     }
 
-    needCreateIssue(alert, isDependabotAlert = true) {
+    needCreateIssue (alert, isDependabotAlert = true) {
         const dictionaryKey = isDependabotAlert ? alert.security_advisory.summary : `[${this.context.repo}] ${alert.rule.description}`;
 
         return !this.alertDictionary.get(dictionaryKey) && Date.now() - new Date(alert.created_at) <= 1000 * 60 * 60 * 24;
     }
 
-    async createIssue({ labels, originRepo, summary, description, link, issuePackage = '', cveId, ghsaId }, isDependabotAlert = true) {
+    async createIssue ({ labels, originRepo, summary, description, link, issuePackage = '', cveId, ghsaId }, isDependabotAlert = true) {
         const title = isDependabotAlert ? `${summary}` : `[${originRepo}] ${summary}`;
         let body = ''
             + `#### Repositories:\n`
