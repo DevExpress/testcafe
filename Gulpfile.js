@@ -327,7 +327,7 @@ gulp.step('test-client-travis-run', () => {
         CLIENT_TESTS_DESKTOP_BROWSERS,
     } = require('./gulp/constants/client-test-settings');
 
-
+    process.env.TRAVIS = true;
     const saucelabsSettings = CLIENT_TESTS_SAUCELABS_SETTINGS;
 
     saucelabsSettings.browsers = CLIENT_TESTS_DESKTOP_BROWSERS.filter(browserInfo => {
