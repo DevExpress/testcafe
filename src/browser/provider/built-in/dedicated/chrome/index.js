@@ -97,7 +97,7 @@ export default {
         if (additionalOptions.nativeAutomation)
             await this._setupNativeAutomation({ browserId, browserClient, runtimeInfo, nativeAutomationOptions: toNativeAutomationSetupOptions(additionalOptions, config.headless) });
 
-        if (!additionalOptions.disableMultipleWindows)
+        if (additionalOptions.nativeAutomation || !additionalOptions.disableMultipleWindows)
             runtimeInfo.activeWindowId = runtimeInfo?.nativeAutomation?.windowId || this.calculateWindowId();
 
         await browserClient.initMainWindowCdpClient();
