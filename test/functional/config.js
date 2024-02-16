@@ -31,11 +31,11 @@ testingEnvironments[testingEnvironmentNames.mobileBrowsers] = {
 
     browsers: [
         {
-            browserName: 'browserstack:iPad 9th@15',
+            browserName: 'browserstack:ipad:ios 15',
             alias:       'ipad',
         },
         {
-            browserName: 'browserstack:iPhone 13 Pro@15',
+            browserName: 'browserstack:iphone:ios 15',
             alias:       'iphone',
         },
     ],
