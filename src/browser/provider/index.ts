@@ -16,7 +16,7 @@ import { WindowDimentionsInfo } from '../interfaces';
 import getLocalOSInfo, { OSInfo } from 'get-os-info';
 import { OpenBrowserAdditionalOptions } from '../../shared/types';
 import { EventType } from '../../native-automation/types';
-import NativeAutomation from '../../native-automation';
+import { NativeAutomationBase } from '../../native-automation';
 
 
 const DEBUG_LOGGER = debug('testcafe:browser:provider');
@@ -440,6 +440,17 @@ export default class BrowserProvider {
         return this.plugin.getActiveWindowId(browserId);
     }
 
+    public resetActiveWindowId (browserId: string): string | null {
+        if (!this.plugin.supportMultipleWindows)
+            return null;
+
+        return this.plugin.resetActiveWindowId(browserId);
+    }
+
+    public getNewActiveWindowId (browserId: string): string | null {
+        return this.plugin.getNewActiveWindowId(browserId);
+    }
+
     public setActiveWindowId (browserId: string, val: string): void {
         this.plugin.setActiveWindowId(browserId, val);
     }
@@ -448,8 +459,8 @@ export default class BrowserProvider {
         await this.plugin.openFileProtocol(browserId, url);
     }
 
-    public async closeBrowserChildWindow (browserId: string): Promise<void> {
-        await this.plugin.closeBrowserChildWindow(browserId);
+    public async closeBrowserChildWindow (browserId: string, windowId: string): Promise<void> {
+        await this.plugin.closeBrowserChildWindow(browserId, windowId);
     }
 
     public async dispatchNativeAutomationEvent (browserId: string, type: EventType, options: any): Promise<void> {
@@ -464,7 +475,11 @@ export default class BrowserProvider {
         return this.plugin.supportNativeAutomation();
     }
 
-    public getNativeAutomation (browserId: string): NativeAutomation {
+    public getNativeAutomation (browserId: string): NativeAutomationBase {
         return this.plugin.getNativeAutomation(browserId);
+    }
+
+    public getNewWindowIdInNativeAutomation (browserId: string, windowId: string): Promise<void> {
+        return this.plugin.getNewWindowIdInNativeAutomation(browserId, windowId);
     }
 }

@@ -26,8 +26,8 @@ export default class SessionController extends Session {
     }
 
     // Hammerhead payload
-    async getPayloadScript () {
-        return this.currentTestRun.getPayloadScript();
+    async getPayloadScript (windowId) {
+        return this.currentTestRun.getPayloadScript(windowId);
     }
 
     async getIframePayloadScript () {

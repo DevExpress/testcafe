@@ -433,11 +433,12 @@ module.exports = {
             testRunId: 'test-run-id',
             name:      'takeScreenshot',
             command:   {
-                path:       'screenshotPath',
-                fullPage:   true,
-                thumbnails: undefined,
-                type:       'take-screenshot',
-                actionId:   'TakeScreenshotCommand',
+                path:        'screenshotPath',
+                pathPattern: '',
+                fullPage:    true,
+                thumbnails:  undefined,
+                type:        'take-screenshot',
+                actionId:    'TakeScreenshotCommand',
             },
             test:      {
                 id:    'test-id',
@@ -747,6 +748,7 @@ module.exports = {
             name:      'debug',
             command:   {
                 type:     'debug',
+                selector: undefined,
                 actionId: 'DebugCommand',
             },
             test:      {

@@ -19,7 +19,7 @@ export interface DocumentResourceInfo {
 
 export interface RequestHandler {
     condition: (event: RequestPausedEvent, options?: NativeAutomationInitOptions, serviceRoutes?: SpecialServiceRoutes) => boolean;
-    handler: (event: RequestPausedEvent, client: ProtocolApi, options?: NativeAutomationInitOptions) => Promise<void>;
+    handler: (event: RequestPausedEvent, client: ProtocolApi, isMainWindow: boolean, options?: NativeAutomationInitOptions, sessionId?: SessionId) => Promise<void>;
 }
 
 export interface InjectableResourcesOptions {

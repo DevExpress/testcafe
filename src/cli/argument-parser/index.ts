@@ -80,6 +80,7 @@ interface CommandLineOptions {
     reporter?: string | ReporterOption[];
     screenshots?: Dictionary<string | number | boolean> | string;
     screenshotPathPattern?: string;
+    screenshotPathPatternOnFails?: string;
     screenshotsOnFails?: boolean;
     videoOptions?: string | Dictionary<number | string | boolean>;
     videoEncodingOptions?: string | Dictionary<number | string | boolean>;
@@ -194,6 +195,7 @@ export default class CLIArgumentParser {
             .option('--screenshots-full-page', 'enable full-page screenshots')
             .option('--compiler-options <option=value[,...]>', 'specify test compilation settings')
             .option('--disable-multiple-windows', 'disable the multi-window mode')
+            .option('--experimental-multiple-windows', 'Enable experimental support for multiple windows in Native Automation mode')
             .option('--disable-http2', 'force the proxy to issue HTTP/1.1 requests')
             .option('--cache', 'cache web assets between test runs')
             .option('--base-url <url>', 'set the base url for the test run')
@@ -400,6 +402,9 @@ export default class CLIArgumentParser {
 
         if (!has(this.opts.screenshots, SCREENSHOT_OPTION_NAMES.pathPattern) && this.opts.screenshotPathPattern)
             this.opts.screenshots[SCREENSHOT_OPTION_NAMES.pathPattern] = this.opts.screenshotPathPattern;
+
+        if (!has(this.opts.screenshots, SCREENSHOT_OPTION_NAMES.pathPatternOnFails) && this.opts.screenshotPathPatternOnFails)
+            this.opts.screenshots[SCREENSHOT_OPTION_NAMES.pathPatternOnFails] = this.opts.screenshotPathPatternOnFails;
 
         if (!has(this.opts.screenshots, SCREENSHOT_OPTION_NAMES.takeOnFails) && this.opts.screenshotsOnFails)
             this.opts.screenshots[SCREENSHOT_OPTION_NAMES.takeOnFails] = this.opts.screenshotsOnFails;

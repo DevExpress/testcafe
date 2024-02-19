@@ -853,12 +853,13 @@ describe('Test run commands', () => {
             let command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
-                type:     TYPE.takeScreenshot,
-                actionId: TYPE.takeScreenshot,
-                markData: '',
-                markSeed: null,
-                path:     'custom',
-                fullPage: true,
+                type:        TYPE.takeScreenshot,
+                actionId:    TYPE.takeScreenshot,
+                markData:    '',
+                markSeed:    null,
+                path:        'custom',
+                fullPage:    true,
+                pathPattern: '',
             });
 
             commandObj = {
@@ -869,11 +870,30 @@ describe('Test run commands', () => {
             command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
-                type:     TYPE.takeScreenshot,
-                actionId: TYPE.takeScreenshot,
-                markData: '',
-                markSeed: null,
-                path:     '',
+                type:        TYPE.takeScreenshot,
+                actionId:    TYPE.takeScreenshot,
+                markData:    '',
+                markSeed:    null,
+                path:        '',
+                pathPattern: '',
+            });
+
+            commandObj = {
+                type:        TYPE.takeScreenshot,
+                fullPage:    true,
+                pathPattern: 'custom',
+            };
+
+            command = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type:        TYPE.takeScreenshot,
+                actionId:    TYPE.takeScreenshot,
+                fullPage:    true,
+                markData:    '',
+                markSeed:    null,
+                path:        '',
+                pathPattern: 'custom',
             });
         });
 

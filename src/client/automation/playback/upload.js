@@ -1,12 +1,37 @@
-import { doUpload } from '../deps/hammerhead';
+import {
+    doUpload,
+    eventSandbox,
+    nativeMethods,
+} from '../deps/hammerhead';
 import { arrayUtils } from '../deps/testcafe-core';
 
 
+const REQUIRED_ATTR_NAME     = 'required';
+const FORM_SUBMIT_EVENT_NAME = 'submit';
+
 export default class UploadAutomation {
-    constructor (element, paths, createError) {
+    constructor (element, paths, createError, isNativeAutomation) {
         this.element     = element;
         this.paths       = paths;
         this.createError = createError;
+
+        if (isNativeAutomation && this.element.form)
+            this._handleRequiredInput();
+    }
+
+    _handleRequiredInput () {
+        const isRequired = nativeMethods.hasAttribute.call(this.element, REQUIRED_ATTR_NAME);
+
+        if (isRequired)
+            nativeMethods.removeAttribute.call(this.element, REQUIRED_ATTR_NAME);
+
+        const ensureUploadInputHasRequiredAttribute = () => {
+            if (isRequired)
+                nativeMethods.setAttribute.call(this.element, REQUIRED_ATTR_NAME, 'true');
+        };
+
+        eventSandbox.listeners.initElementListening(this.element.form, [FORM_SUBMIT_EVENT_NAME]);
+        eventSandbox.listeners.addInternalEventAfterListener(this.element.form, [FORM_SUBMIT_EVENT_NAME], ensureUploadInputHasRequiredAttribute);
     }
 
     run () {

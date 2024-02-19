@@ -12,7 +12,8 @@ import CertificateErrorEvent = Protocol.Security.CertificateErrorEvent;
 import HeaderEntry = Protocol.Fetch.HeaderEntry;
 import NativeAutomationRequestHookEventProvider from '../request-hooks/event-provider';
 import ResourceInjector, { ResourceInjectorOptions } from '../resource-injector';
-import { convertToHeaderEntries } from '../utils/headers';
+import { convertToHeaderEntries, getHeaderEntry } from '../utils/headers';
+import httpHeaders from '../../utils/http-headers';
 
 import {
     createRequestPausedEventForResponse,
@@ -59,7 +60,6 @@ import TestRunBridge from './test-run-bridge';
 import NativeAutomationRequestContextInfo from './context-info';
 import { failedToFindDNSError, sslCertificateError } from '../errors';
 
-
 const ALL_REQUEST_RESPONSES = { requestStage: 'Request' } as RequestPattern;
 const ALL_REQUEST_REQUESTS  = { requestStage: 'Response' } as RequestPattern;
 
@@ -72,6 +72,8 @@ const TARGET_INFO_TYPE = {
 };
 
 export default class NativeAutomationRequestPipeline extends NativeAutomationApiBase {
+    private readonly _windowId: string;
+    private readonly _isMainWindow: boolean;
     private readonly _testRunBridge: TestRunBridge;
     private readonly _contextInfo: NativeAutomationRequestContextInfo;
     public readonly requestHookEventProvider: NativeAutomationRequestHookEventProvider;
@@ -84,10 +86,12 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
     private readonly _failedRequestIds: string[];
     private _pendingCertificateError: CertificateErrorEvent | null;
 
-    public constructor (browserId: string, client: ProtocolApi, options: NativeAutomationInitOptions) {
+    public constructor (browserId: string, windowId: string, client: ProtocolApi, isMainWindow: boolean, options: NativeAutomationInitOptions) {
         super(browserId, client, options);
 
-        this._testRunBridge           = new TestRunBridge(browserId);
+        this._testRunBridge           = new TestRunBridge(browserId, windowId);
+        this._windowId                = windowId;
+        this._isMainWindow            = isMainWindow;
         this._contextInfo             = new NativeAutomationRequestContextInfo(this._testRunBridge);
         this._specialServiceRoutes    = this._getSpecialServiceRoutes();
         this.requestHookEventProvider = new NativeAutomationRequestHookEventProvider();
@@ -154,12 +158,13 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
             await this._resourceInjector.processNonProxiedContent(fulfillInfo, this._client, sessionId);
         else {
             const userScripts = await this._getUserScripts(event);
+            const contentType = getHeaderEntry(event.responseHeaders, httpHeaders.contentType)?.value;
 
             await this._resourceInjector.processHTMLPageContent(fulfillInfo, {
                 isIframe:       false,
                 contextStorage: this.contextStorage,
                 userScripts,
-            }, this._client, sessionId);
+            }, this._client, sessionId, contentType);
         }
 
         requestPipelineMockLogger(`sent mocked response for the ${event.requestId}`);
@@ -198,7 +203,8 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
             return;
         }
 
-        const resourceInfo = await this._resourceInjector.getDocumentResourceInfo(event, this._client);
+        const contentType = getHeaderEntry(event.responseHeaders, httpHeaders.contentType)?.value;
+        const resourceInfo = await this._resourceInjector.getDocumentResourceInfo(event, this._client, contentType);
 
         if (resourceInfo.error) {
             if (this._shouldRedirectToErrorPage(event)) {
@@ -239,7 +245,7 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
                     contextStorage:    this.contextStorage,
                     userScripts,
                 },
-                this._client, sessionId);
+                this._client, sessionId, contentType);
 
             this._contextInfo.dispose(getRequestId(event));
 
@@ -255,9 +261,7 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
     }
 
     private static _isPage (responseHeaders: HeaderEntry[] | undefined): boolean {
-        const contentType = responseHeaders
-            ?.find(header => header.name.toLowerCase() === 'content-type')
-            ?.value;
+        const contentType = getHeaderEntry(responseHeaders, httpHeaders.contentType)?.value;
 
         if (contentType)
             return contentTypeUtils.isPage(contentType);
@@ -430,7 +434,7 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
             const specialRequestHandler = getSpecialRequestHandler(event, this.options, this._specialServiceRoutes);
 
             if (specialRequestHandler)
-                await specialRequestHandler(event, this._client, this.options, sessionId);
+                await specialRequestHandler(event, this._client, this._isMainWindow, this.options, sessionId);
             else
                 await this._handleOtherRequests(event, sessionId);
         });
@@ -499,7 +503,7 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
         const headers = this._formatHeadersForContinueResponse(event.request.headers);
 
         for (const changedHeader of reqOpts._changedHeaders) {
-            const targetHeader = headers.find(header => header.name.toLowerCase() === changedHeader.name) as HeaderEntry;
+            const targetHeader = getHeaderEntry(headers, changedHeader.name);
 
             if (targetHeader)
                 targetHeader.value = changedHeader.value;

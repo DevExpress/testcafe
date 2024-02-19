@@ -22,6 +22,7 @@ import {
     DEFAULT_SOURCE_DIRECTORIES,
     DEFAULT_SPEED_VALUE,
     DEFAULT_TIMEOUT,
+    DEFAULT_EXPERIMENTAL_MULTIPLE_WINDOWS,
     getDefaultCompilerOptions,
 } from './default-values';
 
@@ -70,6 +71,7 @@ const OPTION_INIT_FLAG_NAMES = [
     OPTION_NAMES.disableHttp2,
     OPTION_NAMES.disableNativeAutomation,
     OPTION_NAMES.disableCrossDomain,
+    OPTION_NAMES.experimentalMultipleWindows,
 ];
 
 export interface TestCafeStartOptions {
@@ -271,6 +273,7 @@ export default class TestCafeConfiguration extends Configuration {
         this._ensureOptionWithValue(OPTION_NAMES.retryTestPages, DEFAULT_RETRY_TEST_PAGES, OptionSource.Configuration);
         this._ensureOptionWithValue(OPTION_NAMES.disableHttp2, DEFAULT_DISABLE_HTTP2, OptionSource.Configuration);
         this._ensureOptionWithValue(OPTION_NAMES.disableNativeAutomation, DEFAULT_DISABLE_NATIVE_AUTOMATION, OptionSource.Configuration);
+        this._ensureOptionWithValue(OPTION_NAMES.experimentalMultipleWindows, DEFAULT_EXPERIMENTAL_MULTIPLE_WINDOWS, OptionSource.Configuration);
         this._ensureOptionWithValue(OPTION_NAMES.disableCrossDomain, DEFAULT_DISABLE_CROSS_DOMAIN, OptionSource.Configuration);
 
         this._ensureScreenshotOptions();

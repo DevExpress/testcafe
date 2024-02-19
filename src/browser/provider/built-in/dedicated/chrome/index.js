@@ -11,7 +11,6 @@ import {
 import { GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from '../../../utils/client-functions';
 import { BrowserClient } from './cdp-client';
 import { dispatchEvent as dispatchNativeAutomationEvent, navigateTo } from '../../../../../native-automation/utils/cdp';
-import NativeAutomation from '../../../../../native-automation';
 import { chromeBrowserProviderLogger } from '../../../../../utils/debug-loggers';
 import { EventType } from '../../../../../native-automation/types';
 import delay from '../../../../../utils/delay';
@@ -56,20 +55,19 @@ export default {
         this.setUserAgentMetaInfo(browserId, metaInfo, options);
     },
 
-    async _setupNativeAutomation ({ browserId, browserClient, runtimeInfo, nativeAutomationOptions }) {
-        const cdpClient = await browserClient.getActiveClient();
-        const nativeAutomation = new NativeAutomation(browserId, cdpClient, nativeAutomationOptions);
+    async _setupNativeAutomation ({ browserClient, runtimeInfo, nativeAutomationOptions }) {
+        const nativeAutomation = await browserClient.createMainWindowNativeAutomation(nativeAutomationOptions);
 
         await nativeAutomation.start();
 
         runtimeInfo.nativeAutomation = nativeAutomation;
     },
 
-    async _startChrome (runtimeInfo, pageUrl) {
-        if (runtimeInfo.isContainerized)
-            await startLocalChromeOnDocker(pageUrl, runtimeInfo);
+    async _startChrome (startOptions, pageUrl) {
+        if (startOptions.isContainerized)
+            await startLocalChromeOnDocker(pageUrl, startOptions);
         else
-            await startLocalChrome(pageUrl, runtimeInfo);
+            await startLocalChrome(pageUrl, startOptions);
     },
 
     async openBrowser (browserId, pageUrl, config, additionalOptions) {
@@ -85,28 +83,28 @@ export default {
         };
 
         //NOTE: A not-working tab is opened when the browser start in the docker so we should create a new tab.
-        await this._startChrome(runtimeInfo, pageUrl);
+        await this._startChrome(Object.assign({ isNativeAutomation: additionalOptions.nativeAutomation }, runtimeInfo), pageUrl);
         await this.waitForConnectionReady(browserId);
 
         runtimeInfo.viewportSize      = await this.runInitScript(browserId, GET_WINDOW_DIMENSIONS_INFO_SCRIPT);
         runtimeInfo.activeWindowId    = null;
         runtimeInfo.windowDescriptors = {};
 
-        if (!additionalOptions.disableMultipleWindows)
-            runtimeInfo.activeWindowId = this.calculateWindowId();
-
         const browserClient = new BrowserClient(runtimeInfo);
 
         this.openedBrowsers[browserId] = runtimeInfo;
 
-        await browserClient.init();
+        if (additionalOptions.nativeAutomation)
+            await this._setupNativeAutomation({ browserId, browserClient, runtimeInfo, nativeAutomationOptions: toNativeAutomationSetupOptions(additionalOptions, config.headless) });
+
+        if (additionalOptions.nativeAutomation || !additionalOptions.disableMultipleWindows)
+            runtimeInfo.activeWindowId = runtimeInfo?.nativeAutomation?.windowId || this.calculateWindowId();
+
+        await browserClient.initMainWindowCdpClient();
 
         await this._ensureWindowIsExpanded(browserId, runtimeInfo.viewportSize);
 
         this._setUserAgentMetaInfoForEmulatingDevice(browserId, runtimeInfo.config);
-
-        if (additionalOptions.nativeAutomation)
-            await this._setupNativeAutomation({ browserId, browserClient, runtimeInfo, nativeAutomationOptions: toNativeAutomationSetupOptions(additionalOptions, config.headless) });
 
         chromeBrowserProviderLogger('browser opened %s', browserId);
     },
@@ -219,5 +217,11 @@ export default {
         const runtimeInfo = this.openedBrowsers[browserId];
 
         return runtimeInfo.nativeAutomation;
+    },
+
+    async getNewWindowIdInNativeAutomation (browserId) {
+        const runtimeInfo = this.openedBrowsers[browserId];
+
+        return runtimeInfo.nativeAutomation.getNewWindowIdInNativeAutomation();
     },
 };

@@ -2,7 +2,7 @@ import {
     Dictionary, SkipJsErrorsCallback, SkipJsErrorsCallbackWithOptionsObject, SkipJsErrorsOptionsObject,
 } from '../../configuration/interfaces';
 import { parseRegExpString } from '../../utils/make-reg-exp';
-import { ExecuteClientFunctionCommand } from '../../test-run/commands/observation';
+import { ExecuteClientFunctionCommand } from '../../test-run/commands/execute-client-function';
 import ClientFunctionBuilder from '../../client-functions/client-function-builder';
 
 const SKIP_JS_ERRORS_OBJECT_FUNCTION = `

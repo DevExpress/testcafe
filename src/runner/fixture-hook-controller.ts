@@ -8,7 +8,7 @@ import { getFixtureInfo } from '../utils/get-test-and-fixture-info';
 
 interface FixtureState {
     started: boolean;
-    runningFixtureBeforeHook: boolean;
+    testIsBlocked: boolean;
     fixtureBeforeHookErr: null | Error;
     pendingTestRunCount: number;
     fixtureCtx: object;
@@ -24,11 +24,11 @@ export default class FixtureHookController {
     private static _ensureFixtureMapItem (fixtureMap: Map<Fixture, FixtureState>, fixture: Fixture): void {
         if (!fixtureMap.has(fixture)) {
             const item = {
-                started:                  false,
-                runningFixtureBeforeHook: false,
-                fixtureBeforeHookErr:     null,
-                pendingTestRunCount:      0,
-                fixtureCtx:               Object.create(null),
+                started:              false,
+                testIsBlocked:        false,
+                fixtureBeforeHookErr: null,
+                pendingTestRunCount:  0,
+                fixtureCtx:           Object.create(null),
             };
 
             fixtureMap.set(fixture, item);
@@ -58,14 +58,27 @@ export default class FixtureHookController {
     public isTestBlocked (test: Test): boolean {
         const item = this._getFixtureMapItem(test);
 
-        return !!item && item.runningFixtureBeforeHook;
+        return !!item && item.testIsBlocked;
+    }
+
+    public unblockTest (test: Test): void {
+        const item = this._getFixtureMapItem(test);
+
+        if (item)
+            item.testIsBlocked = false;
+    }
+
+    public blockTestIfNecessary (test: Test): void {
+        const fixture = test.fixture as Fixture;
+        const item    = this._getFixtureMapItem(test);
+
+        if (item && (fixture.globalBeforeFn || fixture.beforeFn))
+            item.testIsBlocked = true;
     }
 
     private async _runFixtureBeforeHook (item: FixtureState, fn: Function, testRun: TestRun): Promise<boolean> {
         if (!fn)
             return true;
-
-        item.runningFixtureBeforeHook = true;
 
         try {
             await executeFnWithTimeout(fn, testRun.executionTimeout, item.fixtureCtx, getFixtureInfo(testRun));
@@ -73,8 +86,6 @@ export default class FixtureHookController {
         catch (err) {
             item.fixtureBeforeHookErr = processTestFnError(err);
         }
-
-        item.runningFixtureBeforeHook = false;
 
         return !item.fixtureBeforeHookErr;
     }

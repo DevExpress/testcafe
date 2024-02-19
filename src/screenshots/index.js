@@ -7,14 +7,15 @@ import DEFAULT_SCREENSHOT_EXTENSION from './default-extension';
 
 
 export default class Screenshots {
-    constructor ({ enabled, path, pathPattern, fullPage, thumbnails }) {
-        this.enabled            = enabled;
-        this.screenshotsPath    = path;
-        this.screenshotsPattern = pathPattern;
-        this.fullPage           = fullPage;
-        this.thumbnails         = thumbnails;
-        this.testEntries        = [];
-        this.now                = moment();
+    constructor ({ enabled, path, pathPattern, pathPatternOnFails, fullPage, thumbnails }) {
+        this.enabled                   = enabled;
+        this.screenshotsPath           = path;
+        this.screenshotsPattern        = pathPattern;
+        this.screenshotsPatternOnFails = pathPatternOnFails;
+        this.fullPage                  = fullPage;
+        this.thumbnails                = thumbnails;
+        this.testEntries               = [];
+        this.now                       = moment();
     }
 
     _addTestEntry (test) {
@@ -66,7 +67,7 @@ export default class Screenshots {
             fixture:           test.fixture.name,
             test:              test.name,
             parsedUserAgent:   connection.browserInfo.parsedUserAgent,
-        });
+        }, this.screenshotsPatternOnFails);
 
         return new Capturer(this.screenshotsPath, testEntry, connection, pathPattern, this.fullPage, this.thumbnails, warningLog);
     }

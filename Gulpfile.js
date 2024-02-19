@@ -472,6 +472,12 @@ gulp.step('test-functional-local-multiple-windows-run', () => {
 
 gulp.task('test-functional-local-multiple-windows', gulp.series('prepare-tests', 'test-functional-local-multiple-windows-run'));
 
+gulp.step('test-functional-local-multiple-windows-na-run', () => {
+    return testFunctional(MULTIPLE_WINDOWS_TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localChrome, { nativeAutomation: true });
+});
+
+gulp.task('test-functional-local-multiple-windows-na', gulp.series('prepare-tests', 'test-functional-local-multiple-windows-na-run'));
+
 gulp.step('test-functional-local-chrome-firefox-headed-run', () => {
     return testFunctional(HEADED_CHROME_FIREFOX_TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localBrowsersChromeFirefox);
 });
