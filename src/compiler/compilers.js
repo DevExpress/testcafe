@@ -20,9 +20,9 @@ function createTestFileCompilers (compilerOptions = {}, { baseUrl, esm } = {}) {
 
 let testFileCompilers = [];
 
-export function getTestFileCompilers () {
+export function getTestFileCompilers (esm) {
     if (!testFileCompilers.length)
-        initTestFileCompilers();
+        initTestFileCompilers({}, { baseUrl: '', esm });
 
     return testFileCompilers;
 }
