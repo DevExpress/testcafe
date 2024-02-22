@@ -223,7 +223,6 @@
     "minimist": "^1.2.0",
     "mocha-reporter-spec-with-retries": "1.0.0",
     "multer": "^1.1.0",
-    "npm-auditor": "^1.1.1",
     "open": "^6.4.0",
     "openssl-self-signed-certificate": "^1.1.6",
     "proxyquire": "^2.1.0",

@@ -17,7 +17,6 @@ const globby                        = require('globby');
 const minimist                      = require('minimist');
 const functionalTestConfig          = require('./test/functional/config');
 const childProcess                  = require('child_process');
-const npmAuditor                    = require('npm-auditor');
 const checkLicenses                 = require('./test/dependency-licenses-checker');
 const packageInfo                   = require('./package');
 const ensureDockerEnvironment       = require('./gulp/docker/ensure-docker-environment');
@@ -65,17 +64,6 @@ const NODE_MODULE_BINS = path.join(__dirname, 'node_modules/.bin');
 process.env.PATH = NODE_MODULE_BINS + path.delimiter + process.env.PATH + path.delimiter + NODE_MODULE_BINS;
 
 process.env.DEV_MODE = ('dev' in ARGS).toString();
-
-gulp.task('audit', () => {
-    return npmAuditor()
-        .then(result => {
-            process.stdout.write(result.report);
-            process.stdout.write('\n');
-
-            if (result.exitCode !== 0)
-                throw new Error('Security audit failed');
-        });
-});
 
 gulp.task('clean', () => {
     return del('lib');
