@@ -506,7 +506,6 @@ gulp.step('docker-server-test-run', done => {
 gulp.step('docker-functional-test-run', () => {
     ensureDockerEnvironment();
 
-
     return runFunctionalTestInDocker(PUBLISH_REPO, packageInfo);
 });
 
