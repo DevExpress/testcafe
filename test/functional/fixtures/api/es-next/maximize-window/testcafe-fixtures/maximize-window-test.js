@@ -14,6 +14,10 @@ const getWindowDimensionsInfo = ClientFunction(() => {
     };
 });
 
+const isHeadlessChrome = ClientFunction(() => {
+    return /HeadlessChrome/.test(window.navigator.userAgent);
+});
+
 const INITIAL_SIZE = 500;
 
 fixture `Maximize Window`
@@ -29,9 +33,16 @@ fixture `Maximize Window`
 
 test('Maximize window', async t => {
     await t.maximizeWindow();
+    const isHeadless = await isHeadlessChrome();
 
     const dimensions = await getWindowDimensionsInfo();
 
-    expect(dimensions.outerWidth).to.be.at.least(dimensions.availableWidth);
-    expect(dimensions.outerHeight).to.be.at.least(dimensions.availableHeight);
+    if (isHeadless) {
+        expect(dimensions.innerWidth).to.be.at.least(dimensions.availableWidth);
+        expect(dimensions.innerHeight).to.be.at.least(dimensions.availableHeight);
+    }
+    else {
+        expect(dimensions.outerWidth).to.be.at.least(dimensions.availableWidth);
+        expect(dimensions.outerHeight).to.be.at.least(dimensions.availableHeight);
+    }
 });
