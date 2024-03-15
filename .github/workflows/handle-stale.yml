@@ -15,7 +15,7 @@ jobs:
         close-pr-message: "We're closing this pull request after a prolonged period of inactivity. If it is still relevant, please ask for this pull request to be reopened. Thank you."
         stale-issue-label: "STATE: Stale"
         stale-pr-label: "STATE: Stale"
-        days-before-stale: 365
+        days-before-stale: 180
         days-before-close: 10
         exempt-issue-labels: "AREA: docs,FREQUENCY: critical,FREQUENCY: level 2,HELP WANTED,!IMPORTANT!,STATE: Need clarification,STATE: Need response,STATE: won't fix,support center"
         exempt-pr-labels: "AREA: docs,FREQUENCY: critical,FREQUENCY: level 2,HELP WANTED,!IMPORTANT!,STATE: Need clarification,STATE: Need response,STATE: won't fix,support center"
