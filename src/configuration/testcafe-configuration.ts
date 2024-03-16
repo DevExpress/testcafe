@@ -46,6 +46,7 @@ import { RUNTIME_ERRORS } from '../errors/types';
 import { LOCALHOST_NAMES } from '../utils/localhost-names';
 import { BrowserConnectionGatewayOptions } from '../browser/connection/gateway';
 import { getValidHostname } from './utils';
+import TypeScriptTestFileCompiler from '../compiler/test-file/formats/typescript/compiler';
 
 const BASE_CONFIGURATION_FILENAME = '.testcaferc';
 const CONFIGURATION_FILENAMES     = (Object.keys(Extensions) as Array<keyof typeof Extensions>).map(ext => `${BASE_CONFIGURATION_FILENAME}${Extensions[ext]}`);
@@ -102,7 +103,7 @@ export default class TestCafeConfiguration extends Configuration {
     public async init (options?: Dictionary<object>): Promise<void> {
         await super.init();
 
-        const opts = await this._load();
+        const opts = await this._load(options);
 
         if (opts) {
             this._options = Configuration._fromObj(opts);
@@ -339,5 +340,30 @@ export default class TestCafeConfiguration extends Configuration {
 
             return hostname;
         });
+    }
+
+    protected async _readConfigurationOptions (filePath: string, customCompilerOptions?: object): Promise<object | null> {
+        if (this._isTSConfiguration(filePath)) {
+            const compilerOptions = (customCompilerOptions as Dictionary<object>)?.compilerOptions;
+
+            return this._readTsConfigurationFileContent(filePath, compilerOptions);
+        }
+
+        return super._readConfigurationOptions(filePath);
+    }
+
+    protected _isTSConfiguration (filePath = this.filePath): boolean {
+        return Configuration._hasExtension(filePath, Extensions.ts);
+    }
+
+    public async _readTsConfigurationFileContent (filePath = this.filePath, compilerOptions?: TypeScriptCompilerOptions): Promise<object | null> {
+        if (!filePath)
+            return null;
+
+        delete require.cache[filePath];
+
+        const compiler = new TypeScriptTestFileCompiler(compilerOptions, {});
+
+        return compiler.compileConfiguration(filePath);
     }
 }

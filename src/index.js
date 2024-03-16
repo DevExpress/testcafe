@@ -25,7 +25,7 @@ async function getConfiguration (args) {
         // It should be removed in future TestCafe versions.
         // All new APIs should be enabled through the configuration object in the upper clause.
         // Please do not add new APIs here.
-        const [hostname, port1, port2, ssl, developmentMode, retryTestPages, cache, configFile] = args;
+        const [hostname, port1, port2, ssl, developmentMode, retryTestPages, cache, configFile, compilerOptions] = args;
 
         configuration = new TestCafeConfiguration(configFile);
 
@@ -37,6 +37,7 @@ async function getConfiguration (args) {
             developmentMode,
             retryTestPages,
             cache,
+            compilerOptions,
         });
     }
 

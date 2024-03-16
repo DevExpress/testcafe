@@ -925,6 +925,168 @@ describe('TypeScriptConfiguration', function () {
             await del(configuration.defaultPaths);
         });
 
+        describe('Custom typescript config file', function () {
+            const CUSTOM_TESTCAFE_CONFIG_FILE_PATH = 'custom11.testcaferc.ts';
+            const CUSTOM_TS_CONFIG_FILE_PATH       = 'custom11.tsconfig.json';
+
+            const OPTIONS = {
+                'hostname': '123.456.789',
+                'port1':    1234,
+                'port2':    5678,
+                'src':      'path1/folder',
+                'browser':  'edge',
+            };
+
+            function createTestCafeTypescriptConfigurationFile (filePath) {
+                fs.writeFileSync(filePath, `
+    const fs         = require('fs');
+    const path       = require('path');
+    const { nanoid } = require('nanoid');
+    const jsCustomModule = require('./test/server/data/configuration/module/module.js');
+    const tsCustomModule = require('./test/server/data/configuration/typescript-module/module.ts');
+    \n
+    const foo = (p) => {};
+    
+    \n
+    module.exports = ${JSON.stringify(OPTIONS)}`);
+            }
+
+            beforeEach(() => {
+                createTestCafeTypescriptConfigurationFile(CUSTOM_TESTCAFE_CONFIG_FILE_PATH);
+            });
+
+            it('Custom ts config path is used', async () => {
+                configuration = new TestCafeConfiguration(CUSTOM_TESTCAFE_CONFIG_FILE_PATH);
+
+                await configuration.init();
+
+                expect(pathUtil.basename(configuration.filePath)).eql(CUSTOM_TESTCAFE_CONFIG_FILE_PATH);
+                expect(configuration.getOption('hostname')).eql(OPTIONS.hostname);
+                expect(configuration.getOption('port1')).eql(OPTIONS.port1);
+                expect(configuration.getOption('port2')).eql(OPTIONS.port2);
+                expect(configuration.getOption('src')).eql([OPTIONS.src]);
+                expect(configuration.getOption('browser')).eql(OPTIONS.browser);
+            });
+
+            it('Custom ts config is not well-formed', async () => {
+                let message = '';
+
+                fs.writeFileSync(CUSTOM_TESTCAFE_CONFIG_FILE_PATH, 'const a: string = 1;');
+
+                configuration = new TestCafeConfiguration(CUSTOM_TESTCAFE_CONFIG_FILE_PATH);
+
+                try {
+                    await configuration.init();
+                }
+                catch (err) {
+                    message = err.message;
+                }
+
+                expect(message).contains('custom11.testcaferc.ts (1, 7): ' +
+                                         'Type \'number\' is not assignable to type \'string\'.\n',
+                );
+            });
+
+            it('Custom ts config path is used and compiler options defined in tsconfig.json', async () => {
+                const tsOptions = JSON.stringify({
+                    compilerOptions: {
+                        noImplicitAny: true,
+                    },
+                });
+
+                fs.writeFileSync(CUSTOM_TS_CONFIG_FILE_PATH, tsOptions);
+
+                configuration = new TestCafeConfiguration(CUSTOM_TESTCAFE_CONFIG_FILE_PATH);
+
+                let err;
+
+                try {
+                    await configuration.init({
+                        compilerOptions: {
+                            configPath: CUSTOM_TS_CONFIG_FILE_PATH,
+                        },
+                    });
+                }
+                catch (e) {
+                    err = e;
+                }
+
+                expect(err.message).contains('custom11.testcaferc.ts (9, 18): Parameter \'p\' implicitly has an \'any\' type.');
+            });
+
+            it('Custom ts config path is used and compiler options passed as argument', async () => {
+                configuration = new TestCafeConfiguration(CUSTOM_TESTCAFE_CONFIG_FILE_PATH);
+
+                let err;
+
+                try {
+                    await configuration.init({
+                        compilerOptions: {
+                            options: {
+                                noImplicitAny: true,
+                            },
+                        },
+                    });
+                }
+                catch (e) {
+                    err = e;
+                }
+
+                expect(err.message).contains('custom11.testcaferc.ts (9, 18): Parameter \'p\' implicitly has an \'any\' type.');
+            });
+
+            it('Custom ts config path is used and custom compiler path passed as argument', async () => {
+                configuration = new TestCafeConfiguration(CUSTOM_TESTCAFE_CONFIG_FILE_PATH);
+
+                let err;
+
+                try {
+                    await configuration.init({
+                        compilerOptions: {
+                            customCompilerModulePath: 'non-existing-ts-compiler',
+                        },
+                    });
+                }
+                catch (e) {
+                    err = e;
+                }
+
+                expect(err.message).contains('Cannot load the TypeScript compiler.\n' +
+                                             'Cannot find module \'non-existing-ts-compiler\'',
+                );
+            });
+
+            it('Custom ts config is used with compiler options passed as arguments and tsconfig.json', async () => {
+                const tsOptions = JSON.stringify({
+                    compilerOptions: {
+                        noImplicitAny: false,
+                    },
+                });
+
+                fs.writeFileSync(CUSTOM_TS_CONFIG_FILE_PATH, tsOptions);
+
+                configuration = new TestCafeConfiguration(CUSTOM_TESTCAFE_CONFIG_FILE_PATH);
+
+                let err;
+
+                try {
+                    await configuration.init({
+                        compilerOptions: {
+                            configPath: CUSTOM_TS_CONFIG_FILE_PATH,
+                            options:    {
+                                noImplicitAny: true,
+                            },
+                        },
+                    });
+                }
+                catch (e) {
+                    err = e;
+                }
+
+                expect(err.message).contains('custom11.testcaferc.ts (9, 18): Parameter \'p\' implicitly has an \'any\' type.');
+            });
+        });
+
         it('Custom config path is used', () => {
             const customConfigFile = 'custom11.testcaferc.json';
 
