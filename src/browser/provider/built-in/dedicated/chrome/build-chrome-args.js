@@ -5,7 +5,7 @@ export function buildChromeArgs ({ config, cdpPort, platformArgs, tempProfileDir
         .concat(
             cdpPort ? [`--remote-debugging-port=${cdpPort}`] : [],
             !config.userProfile ? [`--user-data-dir=${tempProfileDir.path}`] : [],
-            config.headless ? ['--headless'] : [],
+            config.headless ? ['--headless=new'] : [],
             config.userArgs ? [config.userArgs] : [],
             // NOTE: we need to prevent new window blocking for multiple windows in Native Automation
             isNativeAutomation ? ['--disable-popup-blocking'] : [],
