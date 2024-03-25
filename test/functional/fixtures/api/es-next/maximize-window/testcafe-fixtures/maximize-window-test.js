@@ -37,6 +37,8 @@ test('Maximize window', async t => {
 
     const dimensions = await getWindowDimensionsInfo();
 
+    // HACK: headless outerWidth/Height and availHeight/Width are random and different
+    // that is why we check with innerWidth/Height
     if (isHeadless) {
         expect(dimensions.innerWidth).to.be.at.least(dimensions.availableWidth);
         expect(dimensions.innerHeight).to.be.at.least(dimensions.availableHeight);
