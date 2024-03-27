@@ -19,3 +19,15 @@ jobs:
         days-before-close: 10
         exempt-issue-labels: "AREA: docs,FREQUENCY: critical,FREQUENCY: level 2,HELP WANTED,!IMPORTANT!,STATE: Need clarification,STATE: Need response,STATE: won't fix,support center"
         exempt-pr-labels: "AREA: docs,FREQUENCY: critical,FREQUENCY: level 2,HELP WANTED,!IMPORTANT!,STATE: Need clarification,STATE: Need response,STATE: won't fix,support center"
+  
+  keepalive-job:
+    name: Keepalive Workflow
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: gautamkrishnar/keepalive-workflow@v2
+        with:
+          gh_token: ${{ secrets.ACTIVE_TOKEN }}
