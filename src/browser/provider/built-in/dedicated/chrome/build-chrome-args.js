@@ -1,7 +1,7 @@
 export const CONTAINERIZED_CHROME_FLAGS = ['--no-sandbox', '--disable-dev-shm-usage'];
 
 export function buildChromeArgs ({ config, cdpPort, platformArgs, tempProfileDir, isContainerized, isNativeAutomation, browserName }) {
-    const headlessMode = browserName === 'chrome' ? '--headless=new' : '--headless';
+    const headlessMode = ['chrome', 'chromium'].includes(browserName) ? '--headless=new' : '--headless';
 
     let chromeArgs = []
         .concat(
