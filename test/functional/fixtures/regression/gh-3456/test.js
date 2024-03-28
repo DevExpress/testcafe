@@ -7,7 +7,6 @@ const assertionHelper = require('../../../assertion-helper.js');
 const SCREENSHOTS_PATH = path.resolve(assertionHelper.SCREENSHOTS_PATH);
 
 if (config.useLocalBrowsers) {
-    // See chromium issue with --window-size flag in headless  https://issues.chromium.org/issues/40256833
     describe.skip('[Regression](GH-3456) Should process --window-size arg in Headless mode ', function () {
         it(':headless', () => {
             const browsers = [
