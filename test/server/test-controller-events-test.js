@@ -128,6 +128,7 @@ const actions = {
     switchToWindow:            [{ id: 'window-id' }],
     closeWindow:               [{ id: 'window-id' }],
     getCurrentWindow:          [],
+    getCurrentCDPSession:      [],
     switchToParentWindow:      [],
     switchToPreviousWindow:    [],
     setNativeDialogHandler:    [() => true],

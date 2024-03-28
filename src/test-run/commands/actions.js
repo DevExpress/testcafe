@@ -524,6 +524,14 @@ export class GetCurrentWindowsCommand extends ActionCommandBase {
     }
 }
 
+export class GetCurrentCDPSessionCommand extends ActionCommandBase {
+    static methodName = camelCase(TYPE.getCurrentCDPSession);
+
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.getCurrentCDPSession, validateProperties);
+    }
+}
+
 export class SwitchToWindowCommand extends ActionCommandBase {
     static methodName = camelCase(TYPE.switchToWindow);
 

@@ -17,6 +17,7 @@ import getLocalOSInfo, { OSInfo } from 'get-os-info';
 import { OpenBrowserAdditionalOptions } from '../../shared/types';
 import { EventType } from '../../native-automation/types';
 import { NativeAutomationBase } from '../../native-automation';
+import remoteChrome from 'chrome-remote-interface';
 
 
 const DEBUG_LOGGER = debug('testcafe:browser:provider');
@@ -477,6 +478,10 @@ export default class BrowserProvider {
 
     public getNativeAutomation (browserId: string): NativeAutomationBase {
         return this.plugin.getNativeAutomation(browserId);
+    }
+
+    public async getCurrentCDPSession (browserId: string): Promise<remoteChrome.ProtocolApi | null> {
+        return this.plugin.getCurrentCDPSession(browserId);
     }
 
     public getNewWindowIdInNativeAutomation (browserId: string, windowId: string): Promise<void> {

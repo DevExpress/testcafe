@@ -651,6 +651,24 @@ module.exports = {
         },
         {
             testRunId: 'test-run-id',
+            name:      'getCurrentCDPSession',
+            command:   {
+                type:     'get-current-c-d-p-session',
+                actionId: 'GetCurrentCDPSessionCommand',
+            },
+            test:      {
+                id:    'test-id',
+                name:  'test-name',
+                phase: 'initial',
+            },
+            fixture:   {
+                id:   'fixture-id',
+                name: 'fixture-name',
+            },
+            browser:   { alias: 'test-browser', headless: false },
+        },
+        {
+            testRunId: 'test-run-id',
             name:      'switchToParentWindow',
             command:   {
                 type:     'switch-to-parent-window',

@@ -36,6 +36,7 @@ import { Proxy } from 'testcafe-hammerhead';
 import { NextTestRunInfo, OpenBrowserAdditionalOptions } from '../../shared/types';
 import { EventType } from '../../native-automation/types';
 import { NativeAutomationBase } from '../../native-automation';
+import remoteChrome from 'chrome-remote-interface';
 
 const getBrowserConnectionDebugScope = (id: string): string => `testcafe:browser:connection:${id}`;
 
@@ -658,6 +659,10 @@ export default class BrowserConnection extends EventEmitter {
 
     async getNewWindowIdInNativeAutomation (windowId: string): Promise<void> {
         return this.provider.getNewWindowIdInNativeAutomation(this.id, windowId);
+    }
+
+    public async getCurrentCDPSession (): Promise<remoteChrome.ProtocolApi | null> {
+        return this.provider.getCurrentCDPSession(this.id);
     }
 
     public resetActiveWindowId (): void {
