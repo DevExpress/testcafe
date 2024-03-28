@@ -15,7 +15,7 @@ export async function start (pageUrl, { browserName, config, cdpPort, tempProfil
     const chromeInfo           = await browserTools.getBrowserInfo(config.path || browserName);
     const chromeOpenParameters = Object.assign({}, chromeInfo);
 
-    chromeOpenParameters.cmd = buildChromeArgs({ config, cdpPort, platformArgs: chromeOpenParameters.cmd, tempProfileDir, isContainerized, isNativeAutomation });
+    chromeOpenParameters.cmd = buildChromeArgs({ config, cdpPort, platformArgs: chromeOpenParameters.cmd, tempProfileDir, isContainerized, isNativeAutomation, browserName });
 
     await browserStarter.startBrowser(chromeOpenParameters, pageUrl);
 }
