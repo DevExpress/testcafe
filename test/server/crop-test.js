@@ -1,4 +1,10 @@
-const expect      = require('chai').expect;
+const expect = require('chai').expect;
+
+const {
+    MARK_LENGTH,
+    MARK_BYTES_PER_PIXEL,
+    MARK_RIGHT_MARGIN,
+} = require('../../lib/screenshots/constants');
 
 const {
     getClipInfoByCropDimensions,
@@ -7,23 +13,20 @@ const {
     calculateClipInfo,
 } = require('../../lib/screenshots/crop');
 
-const markSeed = [
-    0, 0, 0, 255,
-    255, 255, 255, 255,
-    0, 0, 0, 255,
-    255, 255, 255, 255,
-    0, 0, 0, 255,
-    255, 255, 255, 255,
-];
+const markSeed = Array(MARK_LENGTH).fill().flatMap((_, i) => i % 2 ? [255, 255, 255, 255] : [0, 0, 0, 255]);
 
 function getPngMock (mark = markSeed) {
-    const markSeedIndex = 6944952;
-    const width         = 1820;
-    const height        = 954;
+    const width          = 1820;
+    const height         = 954;
+    const length         = width * height * MARK_BYTES_PER_PIXEL;
+    const markSeedOffset = (MARK_LENGTH + MARK_RIGHT_MARGIN) * MARK_BYTES_PER_PIXEL;
+    const markSeedIndex  = length - markSeedOffset;
 
-    let data = '-'.repeat(markSeedIndex);
+    const dataHeader  = Buffer.from('-'.repeat(markSeedIndex));
+    const dataMark    = Buffer.from(mark);
+    const dataTrailer = Buffer.from('-'.repeat(MARK_RIGHT_MARGIN * MARK_BYTES_PER_PIXEL));
 
-    data = Buffer.concat([Buffer.from(data), Buffer.from(mark), Buffer.from(data)]);
+    const data = Buffer.concat([dataHeader, dataMark, dataTrailer]);
 
     return { width, height, data };
 }

@@ -1,12 +1,13 @@
-const expect          = require('chai').expect;
-const globby          = require('globby');
-const path            = require('path');
-const fs              = require('fs');
-const { isFunction }  = require('lodash');
-const del             = require('del');
-const config          = require('./config.js');
-const { readPngFile } = require('../../lib/utils/promisified-functions');
-const { parseUserAgent }  = require('../../lib/utils/parse-user-agent');
+const expect                = require('chai').expect;
+const globby                = require('globby');
+const path                  = require('path');
+const fs                    = require('fs');
+const { isFunction }        = require('lodash');
+const del                   = require('del');
+const config                = require('./config.js');
+const { readPngFile }       = require('../../lib/utils/promisified-functions');
+const { parseUserAgent }    = require('../../lib/utils/parse-user-agent');
+const { MARK_RIGHT_MARGIN } = require('../../lib/screenshots/constants.js');
 
 
 const SCREENSHOTS_PATH               = config.testScreenshotsDir;
@@ -59,10 +60,18 @@ function checkScreenshotFileCropped (filePath) {
             const height = png.height;
 
             // NOTE: sometimes an appearing dialog can cover an edge of the browser. Try to check all edges
-            return hasPixel(png, RED_PIXEL, 0, 0) && hasPixel(png, RED_PIXEL, 49, 49) && hasPixel(png, GREEN_PIXEL, 50, 50) ||
-                   hasPixel(png, RED_PIXEL, width - 1, height - 1) && hasPixel(png, RED_PIXEL, width - 50, height - 50) && hasPixel(png, GREEN_PIXEL, width - 51, height - 51) ||
-                   hasPixel(png, RED_PIXEL, width - 1, 0) && hasPixel(png, RED_PIXEL, width - 50, 49) && hasPixel(png, GREEN_PIXEL, width - 51, 50) ||
-                   hasPixel(png, RED_PIXEL, 0, height - 1) && hasPixel(png, RED_PIXEL, 49, height - 50) && hasPixel(png, GREEN_PIXEL, 50, height - 51);
+            // NOTE: tests do not work on retina displays since test code is not aware of this
+            // NOTE: tests check for absolute rgb values therefore the display needs to be set to an sRGB color profile (macOS)
+            return (
+                // topLeft
+                hasPixel(png, RED_PIXEL, 0, 0) && hasPixel(png, RED_PIXEL, 49, 49) && hasPixel(png, GREEN_PIXEL, 50, 50) ||
+                // topRight
+                hasPixel(png, RED_PIXEL, width - 1, 0) && hasPixel(png, RED_PIXEL, width - 50, 49) && hasPixel(png, GREEN_PIXEL, width - 51, 50) ||
+                // bottomRightRounded
+                hasPixel(png, RED_PIXEL, width - 1 - MARK_RIGHT_MARGIN, height - 1) && hasPixel(png, RED_PIXEL, width - 1, height - 1 - MARK_RIGHT_MARGIN) && hasPixel(png, RED_PIXEL, width - 50, height - 50) && hasPixel(png, GREEN_PIXEL, width - 51, height - 51) ||
+                // bottomLeftRounded
+                hasPixel(png, RED_PIXEL, MARK_RIGHT_MARGIN, height - 1) && hasPixel(png, RED_PIXEL, 0, height - 1 - MARK_RIGHT_MARGIN) && hasPixel(png, RED_PIXEL, 49, height - 50) && hasPixel(png, GREEN_PIXEL, 50, height - 51)
+            );
         });
 }
 

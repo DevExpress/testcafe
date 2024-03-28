@@ -245,7 +245,7 @@ describe('[API] t.takeScreenshot()', function () {
 
         it('Should crop screenshots to a page viewport area', function () {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Should crop screenshots',
-                { setScreenshotPath: true, skip: 'safari' })
+                { setScreenshotPath: true })
                 .then(function () {
                     return assertionHelper.checkScreenshotsCropped(false, 'custom');
                 })
@@ -256,7 +256,7 @@ describe('[API] t.takeScreenshot()', function () {
 
         it('Should crop scrollbars', function () {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Should crop scrollbar',
-                { setScreenshotPath: true, skip: 'safari' });
+                { setScreenshotPath: true });
         });
 
         it('Should provide screenshot log to a reporter', function () {
@@ -360,7 +360,7 @@ describe('[API] t.takeElementScreenshot()', function () {
         // NOTE: is the problem not in taking screenshot but in overrided scroll automation?
         skipInNativeAutomation('Should take screenshot of an element', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Element',
-                { setScreenshotPath: true, skip: 'safari' })
+                { setScreenshotPath: true })
                 .then(function () {
                     return assertionHelper.isScreenshotsEqual('custom', path.join(__dirname, './data/element.png'));
                 })
@@ -442,7 +442,7 @@ describe('[API] t.takeElementScreenshot()', function () {
 
         it('Should take screenshot of an element with margins', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Element with margins',
-                { setScreenshotPath: true, skip: 'safari' })
+                { setScreenshotPath: true })
                 .then(function () {
                     return assertionHelper.isScreenshotsEqual('custom', path.join(__dirname, './data/element-with-margins.png'));
                 })
@@ -453,7 +453,7 @@ describe('[API] t.takeElementScreenshot()', function () {
 
         it('Should perform top-left crop', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Top-left',
-                { setScreenshotPath: true, skip: 'safari' })
+                { setScreenshotPath: true })
                 .then(function () {
                     return assertionHelper.isScreenshotsEqual('custom', path.join(__dirname, './data/top-left.png'));
                 })
@@ -464,7 +464,7 @@ describe('[API] t.takeElementScreenshot()', function () {
 
         it('Should perform top-left crop by default', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Default crop',
-                { setScreenshotPath: true, skip: 'safari' })
+                { setScreenshotPath: true })
                 .then(function () {
                     return assertionHelper.isScreenshotsEqual('custom', path.join(__dirname, './data/top-left.png'));
                 })
@@ -475,7 +475,7 @@ describe('[API] t.takeElementScreenshot()', function () {
 
         it('Should perform top-right crop', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Top-right',
-                { setScreenshotPath: true, skip: 'safari' })
+                { setScreenshotPath: true })
                 .then(function () {
                     return assertionHelper.isScreenshotsEqual('custom', path.join(__dirname, './data/top-right.png'));
                 })
@@ -486,7 +486,7 @@ describe('[API] t.takeElementScreenshot()', function () {
 
         it('Should perform bottom-left crop', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Bottom-left',
-                { setScreenshotPath: true, skip: 'safari' })
+                { setScreenshotPath: true })
                 .then(function () {
                     return assertionHelper.isScreenshotsEqual('custom', path.join(__dirname, './data/bottom-left.png'));
                 })
@@ -580,7 +580,7 @@ describe('[API] t.takeElementScreenshot()', function () {
 
         it('Should capture screenshot of the element inside a same-domain iframe', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Same-domain iframe',
-                { setScreenshotPath: true, skip: 'safari' })
+                { setScreenshotPath: true })
                 .then(function () {
                     return assertionHelper.isScreenshotsEqual('custom', path.join(__dirname, './data/element.png'));
                 })
@@ -591,7 +591,7 @@ describe('[API] t.takeElementScreenshot()', function () {
 
         it('Should capture screenshot of the element inside a nested iframe', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Nested iframes',
-                { setScreenshotPath: true, skip: 'safari' })
+                { setScreenshotPath: true })
                 .then(function () {
                     return assertionHelper.isScreenshotsEqual('custom', path.join(__dirname, './data/element.png'));
                 })
@@ -602,7 +602,7 @@ describe('[API] t.takeElementScreenshot()', function () {
 
         it('Should capture screenshot of the element inside a cross-domain iframe', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Cross-domain iframe',
-                { setScreenshotPath: true, skip: 'safari' })
+                { setScreenshotPath: true })
                 .then(function () {
                     return assertionHelper.isScreenshotsEqual('custom', path.join(__dirname, './data/element.png'));
                 })
@@ -611,9 +611,9 @@ describe('[API] t.takeElementScreenshot()', function () {
                 });
         });
 
-        it("Shouldn't scroll parent frames multiple times", function () {
+        it("XXX Shouldn't scroll parent frames multiple times", function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Rescroll parents',
-                { setScreenshotPath: true, skip: 'safari' })
+                { setScreenshotPath: true })
                 .then(function () {
                     return assertionHelper.isScreenshotsEqual('custom', path.join(__dirname, './data/element.png'));
                 })
@@ -624,7 +624,7 @@ describe('[API] t.takeElementScreenshot()', function () {
 
         it('Should scroll to the scroll target when positive scrollTargetX/Y are specified', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Scroll target',
-                { setScreenshotPath: true, skip: 'safari' })
+                { setScreenshotPath: true })
                 .then(function () {
                     return assertionHelper.checkScreenshotIsNotWhite(false, 'custom');
                 })
@@ -635,7 +635,7 @@ describe('[API] t.takeElementScreenshot()', function () {
 
         it('Should scroll to the scroll target when negative scrollTargetX/Y are specified', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Negative scroll target',
-                { setScreenshotPath: true, skip: 'safari' })
+                { setScreenshotPath: true })
                 .then(function () {
                     return assertionHelper.checkScreenshotIsNotWhite(false, 'custom');
                 })
@@ -646,7 +646,7 @@ describe('[API] t.takeElementScreenshot()', function () {
 
         it('Should remove screenshot mark from an element screenshot when the element is in bottom right corner', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Bottom-right element',
-                { setScreenshotPath: true, skip: 'safari' })
+                { setScreenshotPath: true })
                 .then(function () {
                     function referenceImagePathGetter (screenshotPath) {
                         const referenceImageName = screenshotPath.match(/chrome|firefox|edge/i) ? 'element' : 'element-bottom-right';

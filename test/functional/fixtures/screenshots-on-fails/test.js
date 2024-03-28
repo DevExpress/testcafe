@@ -135,7 +135,7 @@ describe('Screenshots on fails', function () {
 
         it('Should crop screenshots to a page viewport area', function () {
             return runTests('./testcafe-fixtures/screenshots-on-fails.js', 'Crop screenshots',
-                { shouldFail: true, screenshotsOnFails: true, setScreenshotPath: true, skip: 'safari' })
+                { shouldFail: true, screenshotsOnFails: true, setScreenshotPath: true })
                 .catch(function (errs) {
                     assertionHelper.errorInEachBrowserContainsRegExp(errs, ERROR_SCREENSHOT_PATH_RE, 0);
                     return assertionHelper.checkScreenshotsCropped(true);
