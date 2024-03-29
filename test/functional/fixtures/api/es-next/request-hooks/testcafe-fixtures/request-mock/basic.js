@@ -9,7 +9,7 @@ const testPageMarkup = `
             <button onclick="sendRequest()">Send request</button>
             <script>
                 function sendRequest() {
-                    fetch('${DUMMY_URLS.get}')
+                    fetch('${DUMMY_URLS.secureGet}')
                         .then(res => {
                             return res.text();
                         })
@@ -23,9 +23,9 @@ const testPageMarkup = `
 `;
 
 const requestMock = RequestMock()
-    .onRequestTo(DUMMY_URLS.main)
+    .onRequestTo(DUMMY_URLS.secureMain)
     .respond(testPageMarkup)
-    .onRequestTo(DUMMY_URLS.get)
+    .onRequestTo(DUMMY_URLS.secureGet)
     .respond('Data from mocked fetch request')
     .onRequestTo(DUMMY_URLS.another)
     .respond();
@@ -36,7 +36,7 @@ test
     .requestHooks(requestMock)
     ('Basic', async t => {
         await t
-            .navigateTo(DUMMY_URLS.main)
+            .navigateTo(DUMMY_URLS.secureMain)
             .expect(Selector('h1').textContent).eql('Mocked page')
             .click('button')
             .expect(Selector('h2').textContent).eql('Data from mocked fetch request')
