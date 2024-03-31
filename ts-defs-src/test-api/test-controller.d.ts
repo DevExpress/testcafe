@@ -417,7 +417,7 @@ interface TestController {
     getCurrentWindow(): WindowDescriptorPromise;
     
     /**
-     * Retrieves a `Chrome DevTools Protocol` object that corresponds to the currently open window in native automation.
+     * Retrieves a `Chrome DevTools Protocol` object that corresponds to the currently open window (native automation only).
      */
     getCurrentCDPSession(): CDPSessionPromise;
 
