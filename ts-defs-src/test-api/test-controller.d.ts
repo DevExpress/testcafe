@@ -90,6 +90,8 @@ interface Browser {
 
 type WindowDescriptor = unknown;
 
+type CDPSession = unknown;
+
 interface WindowFilterData {
     /**
      * The window title.
@@ -413,6 +415,11 @@ interface TestController {
      * Retrieves a `window` object that corresponds to the currently open window.
      */
     getCurrentWindow(): WindowDescriptorPromise;
+    
+    /**
+     * Retrieves a `Chrome DevTools Protocol` object that corresponds to the currently open window (native automation only).
+     */
+    getCurrentCDPSession(): CDPSessionPromise;
 
     /**
      * Activates the window that corresponds to the `window` object.
@@ -574,5 +581,8 @@ interface TestControllerPromise<T=any> extends TestController, Promise<T> {
 }
 
 interface WindowDescriptorPromise extends TestControllerPromise<WindowDescriptor> {
+}
+
+interface CDPSessionPromise extends TestControllerPromise<CDPSession> {
 }
 
