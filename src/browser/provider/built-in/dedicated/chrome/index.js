@@ -144,6 +144,18 @@ export default {
         await runtimeInfo.browserClient.resizeWindow({ width, height });
     },
 
+    async maximizeWindow (browserId) {
+        const { browserClient } = this.openedBrowsers[browserId];
+
+        await browserClient.maximizeWindow();
+    },
+
+    async resizeBounds (browserId, width, height, currentWidth, currentHeight) {
+        const { browserClient } = this.openedBrowsers[browserId];
+
+        await browserClient.resizeBounds({ width, height, currentWidth, currentHeight });
+    },
+
     async startCapturingVideo (browserId) {
         const { browserClient } = this.openedBrowsers[browserId];
 

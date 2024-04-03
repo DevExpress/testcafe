@@ -178,8 +178,10 @@ export class BrowserClient {
         await this._setTouchEmulation(client);
 
         await this.resizeWindow({
-            width:  this._config.width,
-            height: this._config.height,
+            width:       this._config.width,
+            height:      this._config.height,
+            outerHeight: 0,
+            outerWidth:  0,
         });
     }
 
@@ -229,6 +231,49 @@ export class BrowserClient {
                 },
                 elapsedTime => this._checkDropOfPerformance(CheckedCDPMethod.SetVisibleSize, elapsedTime)
             );
+        }
+    }
+
+    public async maximizeWindow (): Promise<void> {
+        const target = await getFirstTab(this._port);
+        const client = await this.getActiveClient();
+
+
+        if (client) {
+            const windowParams = await client.Browser.getWindowForTarget({ targetId: target.id });
+
+            await client.Browser.setWindowBounds({ windowId: windowParams.windowId, bounds: { windowState: 'maximized' } });
+        }
+    }
+
+    public async resizeBounds (newDimensions: Size): Promise<void> {
+        const { viewportSize } = this._runtimeInfo;
+
+        const horizontal  = viewportSize.outerWidth - viewportSize.width;
+        const vertical = viewportSize.outerHeight - viewportSize.height;
+
+        const target = await getFirstTab(this._port);
+        const client = await this.getActiveClient();
+
+        if (client) {
+            const windowParams = await client.Browser.getWindowForTarget({ targetId: target.id });
+
+            if (windowParams.bounds.windowState !== 'normal') {
+                await client.Browser.setWindowBounds({
+                    windowId: windowParams.windowId,
+                    bounds:   {
+                        windowState: 'normal',
+                    },
+                });
+            }
+
+            await client.Browser.setWindowBounds({
+                windowId: windowParams.windowId,
+                bounds:   {
+                    width:  newDimensions.width + horizontal,
+                    height: newDimensions.height + vertical - 1,
+                },
+            });
         }
     }
 

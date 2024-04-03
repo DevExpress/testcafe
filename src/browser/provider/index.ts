@@ -354,11 +354,15 @@ export default class BrowserProvider {
         return await this.plugin.isValidBrowserName(browserName);
     }
 
-    public async resizeWindow (browserId: string, width: number, height: number, currentWidth: number, currentHeight: number): Promise<void> {
+    public async resizeWindow (browserId: string, width: number, height: number, currentWidth: number, currentHeight: number, isNativeAutomation: boolean): Promise<void> {
         const canUseDefaultWindowActions = await this.canUseDefaultWindowActions(browserId);
         const customActionsInfo          = await this.hasCustomActionForBrowser(browserId);
         const hasCustomResizeWindow      = customActionsInfo.hasResizeWindow;
 
+        if (isNativeAutomation && !hasCustomResizeWindow && width >= 500) {
+            await this.plugin.resizeWindowNativeAutomation(browserId, width, height, currentWidth, currentHeight);
+            return;
+        }
 
         if (canUseDefaultWindowActions && !hasCustomResizeWindow) {
             await this._resizeLocalBrowserWindow(browserId, width, height, currentWidth, currentHeight);
@@ -380,10 +384,13 @@ export default class BrowserProvider {
         return await this.plugin.canResizeWindowToDimensions(browserId, width, height);
     }
 
-    public async maximizeWindow (browserId: string): Promise<void> {
+    public async maximizeWindow (browserId: string, isNativeAutomation: boolean): Promise<void> {
         const canUseDefaultWindowActions = await this.canUseDefaultWindowActions(browserId);
         const customActionsInfo          = await this.hasCustomActionForBrowser(browserId);
         const hasCustomMaximizeWindow    = customActionsInfo.hasMaximizeWindow;
+
+        if (isNativeAutomation && !hasCustomMaximizeWindow)
+            return await this.plugin.maximizeWindowNativeAutomation(browserId);
 
         if (canUseDefaultWindowActions && !hasCustomMaximizeWindow)
             return await this._maximizeLocalBrowserWindow(browserId);
