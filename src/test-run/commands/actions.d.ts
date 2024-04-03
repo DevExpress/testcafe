@@ -67,6 +67,10 @@ export class GetCurrentWindowsCommand extends ActionCommandBase {
     public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
 }
 
+export class GetCurrentCDPSessionCommand extends ActionCommandBase {
+    public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
+}
+
 export class SwitchToWindowCommand extends ActionCommandBase {
     public constructor(obj: object, testRun: TestRun, validateProperties?: boolean);
     public windowId: string;

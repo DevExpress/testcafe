@@ -35,6 +35,7 @@ import {
     OpenWindowCommand,
     CloseWindowCommand,
     GetCurrentWindowCommand,
+    GetCurrentCDPSessionCommand,
     SwitchToWindowCommand,
     SwitchToWindowByPredicateCommand,
     SwitchToParentWindowCommand,
@@ -516,6 +517,13 @@ export default class TestController {
         this._validateMultipleWindowCommand(GetCurrentWindowCommand.methodName);
 
         return this.enqueueCommand(GetCurrentWindowCommand);
+    }
+
+    [delegatedAPI(GetCurrentCDPSessionCommand.methodName)] () {
+        const callsite = getCallsiteForMethod(GetCurrentCDPSessionCommand.methodName);
+        const command  = this._createCommand(GetCurrentCDPSessionCommand, {}, callsite);
+
+        return this.testRun.executeCommand(command, callsite);
     }
 
     [delegatedAPI(SwitchToWindowCommand.methodName)] (windowSelector) {
