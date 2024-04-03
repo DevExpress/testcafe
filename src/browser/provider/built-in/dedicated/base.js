@@ -99,7 +99,7 @@ export default {
         await writePng(path, pngImage);
     },
 
-    async maximizeWindow (browserId) {
+    async maximizeWindowHeadless (browserId) {
         const maximumSize = getMaximizedHeadlessWindowSize();
 
         await this.resizeWindow(browserId, maximumSize.width, maximumSize.height, maximumSize.width, maximumSize.height);
