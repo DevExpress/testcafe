@@ -25,7 +25,7 @@ export default {
         return getConfig(name);
     },
 
-    async _getActiveCDPClient (browserId) {
+    async getCurrentCDPSession (browserId) {
         const { browserClient } = this.openedBrowsers[browserId];
         const cdpClient         = await browserClient.getActiveClient();
 
@@ -187,19 +187,19 @@ export default {
     },
 
     async openFileProtocol (browserId, url) {
-        const cdpClient = await this._getActiveCDPClient(browserId);
+        const cdpClient = await this.getCurrentCDPSession(browserId);
 
         await navigateTo(cdpClient, url);
     },
 
     async dispatchNativeAutomationEvent (browserId, type, options) {
-        const cdpClient = await this._getActiveCDPClient(browserId);
+        const cdpClient = await this.getCurrentCDPSession(browserId);
 
         await dispatchNativeAutomationEvent(cdpClient, type, options);
     },
 
     async dispatchNativeAutomationEventSequence (browserId, eventSequence) {
-        const cdpClient = await this._getActiveCDPClient(browserId);
+        const cdpClient = await this.getCurrentCDPSession(browserId);
 
         for (const event of eventSequence) {
             if (event.type === EventType.Delay)

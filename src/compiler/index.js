@@ -26,7 +26,7 @@ export default class Compiler {
         return uniq(flattenDeep(getTestFileCompilers().map(compiler => compiler.getSupportedExtension())));
     }
 
-    static async createTestFileInfo (filename) {
+    static async createTestFileInfo (filename, esm = false) {
         let code = null;
 
         try {
@@ -38,7 +38,7 @@ export default class Compiler {
 
         code = stripBom(code).toString();
 
-        const compiler = find(getTestFileCompilers(), someCompiler => someCompiler.canCompile(code, filename));
+        const compiler = find(getTestFileCompilers(esm), someCompiler => someCompiler.canCompile(code, filename));
 
         if (!compiler)
             return null;

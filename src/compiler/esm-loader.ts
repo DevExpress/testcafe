@@ -32,7 +32,7 @@ export async function load (url: string, context: Context, defaultLoad: Function
     if (isNodeModulesDep || isTestcafeLibDep || !filename)
         return defaultLoad(url, context, defaultLoad);
 
-    const testFilesInfo = await Compiler.createTestFileInfo(filename);
+    const testFilesInfo = await Compiler.createTestFileInfo(filename, true);
 
     if (testFilesInfo?.compiler) {
         const [compiledCode] = await testFilesInfo.compiler.precompile([testFilesInfo]);
