@@ -88,3 +88,12 @@ test('Too big size', async t => {
 
     await t.resizeWindow(hugeWidth, hugeHeight);
 });
+
+test('Resize the window after maximizeWindow', async t => {
+    await t.maximizeWindow();
+
+    await t.resizeWindow(640, 480);
+
+    expect(await getWindowWidth()).equals(640);
+    expect(await getWindowHeight()).equals(480);
+});

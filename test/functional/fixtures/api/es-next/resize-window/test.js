@@ -30,6 +30,10 @@ describe('[API] Resize window actions', function () {
                         errorInEachBrowserContains(errs, '> 76 |    await t.resizeWindow(500, 500);', 0);
                     });
             });
+
+            it('Should resize the window after maximizeWindow', function () {
+                return runTests('./testcafe-fixtures/resize-window-test.js', 'Resize the window after maximizeWindow', { only: 'chrome' });
+            });
         });
 
         describe('t.resizeWindowToFitDevice', function () {
