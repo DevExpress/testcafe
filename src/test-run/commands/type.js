@@ -41,6 +41,7 @@ export default {
     closeWindow:                         'close-window',
     getCurrentWindow:                    'get-current-window',
     getCurrentWindows:                   'get-current-windows',
+    getCurrentCDPSession:                'get-current-c-d-p-session',
     switchToWindow:                      'switch-to-window',
     switchToWindowByPredicate:           'switch-to-window-by-predicate',
     switchToParentWindow:                'switch-to-parent-window',

@@ -136,6 +136,7 @@ import {
 import NativeAutomationRequestPipeline from '../native-automation/request-pipeline';
 import { NativeAutomationBase } from '../native-automation';
 import ReportDataLog from '../reporter/report-data-log';
+import remoteChrome from 'chrome-remote-interface';
 
 const lazyRequire                   = require('import-lazy')(require);
 const ClientFunctionBuilder         = lazyRequire('../client-functions/client-function-builder');
@@ -443,6 +444,10 @@ export default class TestRun extends AsyncEventEmitter {
         return this.restRunExecutionTimeout && (!this.testExecutionTimeout || this.restRunExecutionTimeout.timeout < this.testExecutionTimeout.timeout)
             ? this.restRunExecutionTimeout
             : this.testExecutionTimeout || null;
+    }
+
+    public async getCurrentCDPSession (): Promise<remoteChrome.ProtocolApi | null> {
+        return this.browserConnection.getCurrentCDPSession();
     }
 
     private _addClientScriptContentWarningsIfNecessary (): void {
@@ -1226,6 +1231,9 @@ export default class TestRun extends AsyncEventEmitter {
 
         if (command.type === COMMAND_TYPE.removeRequestHooks)
             return Promise.all((command as RemoveRequestHooksCommand).hooks.map(hook => this._removeRequestHook(hook)));
+
+        if (command.type === COMMAND_TYPE.getCurrentCDPSession)
+            return this.getCurrentCDPSession();
 
         return this._enqueueCommand(command, callsite as CallsiteRecord);
     }

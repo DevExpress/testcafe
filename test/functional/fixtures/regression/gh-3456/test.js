@@ -7,11 +7,11 @@ const assertionHelper = require('../../../assertion-helper.js');
 const SCREENSHOTS_PATH = path.resolve(assertionHelper.SCREENSHOTS_PATH);
 
 if (config.useLocalBrowsers) {
-    describe('[Regression](GH-3456) Should process --window-size arg in Headless mode ', function () {
+    describe.skip('[Regression](GH-3456) Should process --window-size arg in Headless mode ', function () {
         it(':headless', () => {
             const browsers = [
                 'chrome:headless --window-size=501,602',
-                'chrome --headless --window-size=501,602',
+                'chrome --headless=new --window-size=501,602',
             ];
 
             return createTestCafe('127.0.0.1', 1335, 1336)

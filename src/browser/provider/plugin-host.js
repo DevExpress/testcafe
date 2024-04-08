@@ -178,4 +178,8 @@ export default class BrowserProviderPluginHost {
     getNewWindowIdInNativeAutomation (/*browserId, windowId*/) {
         return Promise.resolve();
     }
+
+    async getCurrentCDPSession (/*browserId*/) {
+        return Promise.resolve();
+    }
 }
