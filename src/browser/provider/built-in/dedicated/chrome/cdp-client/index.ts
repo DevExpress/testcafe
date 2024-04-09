@@ -178,10 +178,8 @@ export class BrowserClient {
         await this._setTouchEmulation(client);
 
         await this.resizeWindow({
-            width:       this._config.width,
-            height:      this._config.height,
-            outerHeight: 0,
-            outerWidth:  0,
+            width:  this._config.width,
+            height: this._config.height,
         });
     }
 
@@ -206,7 +204,7 @@ export class BrowserClient {
         this._runtimeInfo.emulatedDevicePixelRatio = this._config.scaleFactor || this._runtimeInfo.originalDevicePixelRatio;
     }
 
-    public async resizeWindow (newDimensions: Size): Promise<void> {
+    public async resizeWindow (newDimensions: { width: number, height: number}): Promise<void> {
         const { browserId, config, viewportSize, providerMethods, emulatedDevicePixelRatio } = this._runtimeInfo;
 
         const currentWidth  = viewportSize.width;
@@ -238,7 +236,6 @@ export class BrowserClient {
         const target = await getFirstTab(this._port);
         const client = await this.getActiveClient();
 
-
         if (client) {
             const windowParams = await client.Browser.getWindowForTarget({ targetId: target.id });
 
@@ -249,7 +246,7 @@ export class BrowserClient {
     public async resizeBounds (newDimensions: Size): Promise<void> {
         const { viewportSize, config } = this._runtimeInfo;
 
-        const horizontal  = viewportSize.outerWidth - viewportSize.width;
+        const horizontal = viewportSize.outerWidth - viewportSize.width;
         const vertical = viewportSize.outerHeight - viewportSize.height;
 
         const target = await getFirstTab(this._port);

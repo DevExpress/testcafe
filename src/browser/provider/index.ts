@@ -24,6 +24,8 @@ const DEBUG_LOGGER = debug('testcafe:browser:provider');
 
 const BROWSER_OPENING_DELAY = 2000;
 
+const BROWSER_MINIMAL_WIDTH = 500;
+
 const RESIZE_DIFF_SIZE = {
     width:  100,
     height: 100,
@@ -360,7 +362,7 @@ export default class BrowserProvider {
         const customActionsInfo          = await this.hasCustomActionForBrowser(browserId);
         const hasCustomResizeWindow      = customActionsInfo.hasResizeWindow;
 
-        if (isNativeAutomation && !hasCustomResizeWindow && width >= 500) {
+        if (canUseDefaultWindowActions && !hasCustomResizeWindow && isNativeAutomation && width >= BROWSER_MINIMAL_WIDTH) {
             await this.plugin.resizeWindowNativeAutomation(browserId, width, height, currentWidth, currentHeight);
             return;
         }
@@ -390,7 +392,7 @@ export default class BrowserProvider {
         const customActionsInfo          = await this.hasCustomActionForBrowser(browserId);
         const hasCustomMaximizeWindow    = customActionsInfo.hasMaximizeWindow;
 
-        if (isNativeAutomation && !hasCustomMaximizeWindow)
+        if (canUseDefaultWindowActions && !hasCustomMaximizeWindow && isNativeAutomation)
             return await this.plugin.maximizeWindowNativeAutomation(browserId);
 
         if (canUseDefaultWindowActions && !hasCustomMaximizeWindow)
