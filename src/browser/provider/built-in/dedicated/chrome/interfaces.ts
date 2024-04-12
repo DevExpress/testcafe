@@ -3,8 +3,8 @@ import { BrowserClient } from './cdp-client';
 export interface Size {
     width: number;
     height: number;
-    outerWidth: number;
-    outerHeight: number;
+    outerWidth?: number;
+    outerHeight?: number;
 }
 
 export interface Config {
