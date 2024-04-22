@@ -240,5 +240,9 @@
     "testcafe-browser-provider-browserstack": "^1.14.1",
     "tslib": "^2.4.0",
     "uglify-js": "~3.10.4"
+  },
+  "overrides": {
+    "minimatch": "5.1.2",
+    "glob": "8.1.0"
   }
 }
