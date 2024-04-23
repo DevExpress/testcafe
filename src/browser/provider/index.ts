@@ -396,7 +396,7 @@ export default class BrowserProvider {
         if (canUseDefaultWindowActions && !hasCustomMaximizeWindow)
             return await this._maximizeLocalBrowserWindow(browserId);
 
-        return await this.plugin.maximizeWindowHeadless(browserId);
+        return await this.plugin.maximizeWindow(browserId);
     }
 
     public async takeScreenshot (browserId: string, screenshotPath: string, pageWidth: number, pageHeight: number, fullPage: boolean): Promise<void> {

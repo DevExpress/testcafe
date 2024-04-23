@@ -232,7 +232,7 @@ export class BrowserClient {
         }
     }
 
-    public async maximizeWindow (): Promise<void> {
+    public async maximizeWindowNativeAutomation (): Promise<void> {
         const target = await getFirstTab(this._port);
         const client = await this.getActiveClient();
 
@@ -246,12 +246,12 @@ export class BrowserClient {
     public async resizeBounds (newDimensions: Size): Promise<void> {
         const { viewportSize, config } = this._runtimeInfo;
 
-        let horizontal = 0;
-        let vertical   = 0;
+        let nonClientWidth  = 0;
+        let nonClientHeight = 0;
 
         if (viewportSize.outerWidth && viewportSize.outerHeight) {
-            horizontal = viewportSize.outerWidth - viewportSize.width;
-            vertical   = viewportSize.outerHeight - viewportSize.height;
+            nonClientWidth  = viewportSize.outerWidth - viewportSize.width;
+            nonClientHeight = viewportSize.outerHeight - viewportSize.height;
         }
 
         const target = await getFirstTab(this._port);
@@ -274,8 +274,8 @@ export class BrowserClient {
             await client.Browser.setWindowBounds({
                 windowId: windowParams.windowId,
                 bounds:   {
-                    width:  newDimensions.width + horizontal,
-                    height: newDimensions.height + vertical,
+                    width:  newDimensions.width + nonClientWidth,
+                    height: newDimensions.height + nonClientHeight,
                 },
             });
         }
