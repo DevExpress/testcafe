@@ -86,15 +86,15 @@ export function hasScroll (el: Element): boolean {
 export function getScrollableParents (element: HTMLElement): HTMLElement[] {
     const parentsArray = domUtils.getParents(element);
 
-    if (domUtils.isElementInIframe(element)) {
-        const iframe = domUtils.getIframeByElement(element);
+    // if (domUtils.isElementInIframe(element)) {
+    //     const iframe = domUtils.getIframeByElement(element);
 
-        if (iframe) {
-            const iFrameParents = domUtils.getParents(iframe);
+    //     if (iframe) {
+    //         const iFrameParents = domUtils.getParents(iframe);
 
-            parentsArray.concat(iFrameParents);
-        }
-    }
+    //         parentsArray.concat(iFrameParents);
+    //     }
+    // }
 
     return nativeMethods.arrayFilter.call(parentsArray, hasScroll);
 }
