@@ -144,10 +144,10 @@ export default {
         await runtimeInfo.browserClient.resizeWindow({ width, height });
     },
 
-    async maximizeWindow (browserId) {
+    async maximizeWindowNativeAutomation (browserId) {
         const { browserClient } = this.openedBrowsers[browserId];
 
-        await browserClient.maximizeWindow();
+        await browserClient.maximizeWindowNativeAutomation();
     },
 
     async resizeBounds (browserId, width, height, currentWidth, currentHeight) {
