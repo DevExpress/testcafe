@@ -1,5 +1,44 @@
 # Changelog
 
+## TestCafe v3.6.0 Released
+
+The TestCafe v3.6.0 update includes two minor changes and a number of bug fixes.
+
+## New method: t.getCurrentCDPSession
+
+The [t.getCurrentCDPSession](xref:404913) method allows native automation users to examine and control the CDP connection between TestCafe and the browser.
+
+Use the method to obtain the Chrome DevTools Protocol object for the current session. The CDP object exposes [properties and methods](https://chromedevtools.github.io/devtools-protocol/) that pertain to the CDP connection between TestCafe and the active browser window.
+
+```js
+fixture `Get current CDP session`
+    .page('https://devexpress.github.io/testcafe/example');
+
+test(`Get current CDP session`, async t => {
+    const mainWindowId = await t.testRun.activeWindowId;
+
+    let clientCDP = await t.getCurrentCDPSession();
+
+    await t.expect(clientCDP.webSocketUrl).contains(mainWindowId);
+}
+```
+
+## Headless browser connection
+
+TestCafe v3.6.0 takes advantage of the recent [Chromium headless mode upgrade](https://developer.chrome.com/docs/chromium/new-headless). The new headless mode offers better reliability and higher emulation accuracy.
+
+The headless mode upgrade may cause unexpected changes to your tests' behavior. Take note of the following changes:
+
+* Headless Chromium now automatically upgrades insecure HTTP requests to HTTPS.
+* Headless Chromium does not always honor the `--window-size` flag. This behavior is a [known Chromium bug](https://issues.chromium.org/issues/40256833).
+
+## Bug Fixes
+
+1. [Native automation] TestCafe does not execute the `maximizeWindow()` method in beforeEach hooks ([#8117](https://github.com/DevExpress/testcafe/issues/8117))
+2. If TestCafe launch options include `--esm`, the framework crashes on launch in environments with Node.JS v20 and up ([#8132](https://github.com/DevExpress/testcafe/issues/8132))
+3. The Linux-based Docker image of TestCafe cannot run tests in headless Chromium ([#8145](https://github.com/DevExpress/testcafe/issues/8145))
+4. TestCafe incorrectly crops Safari screenshots ([#8154](https://github.com/DevExpress/testcafe/issues/8154))
+
 ## v3.5.0 (2023-12-26)
 
 TestCafe v3.5.0 includes multiple enhancements and bug fixes. Pass Selector queries to the Visual Selector Debugger, explore new ways to specify screenshot path patterns, and use a new *experimental* flag to run multi-window tests with native automation!
