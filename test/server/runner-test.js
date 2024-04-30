@@ -3,7 +3,7 @@ const path                    = require('path');
 const { expect }              = require('chai');
 const fs                      = require('fs');
 const del                     = require('del');
-const request                 = require('request');
+const fetch                   = require('node-fetch');
 const { times, uniqBy }       = require('lodash');
 const stripAnsi               = require('strip-ansi');
 const consoleWrapper          = require('./helpers/console-wrapper');
@@ -807,7 +807,6 @@ describe('Runner', () => {
                     connections[1].HEARTBEAT_TIMEOUT = 200;
 
                     const options = {
-                        url:            connections[0].url,
                         followRedirect: false,
                         headers:        {
                             'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
@@ -815,7 +814,7 @@ describe('Runner', () => {
                         },
                     };
 
-                    request(options);
+                    fetch(connections[0].url, options);
 
                     return run;
                 })
@@ -1381,7 +1380,6 @@ describe('Runner', () => {
         const MockBrowserProvider = {
             openBrowser (browserId, pageUrl) {
                 const options = {
-                    url:            pageUrl,
                     followRedirect: false,
                     headers:        {
                         'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
@@ -1389,7 +1387,7 @@ describe('Runner', () => {
                     },
                 };
 
-                request(options);
+                fetch(pageUrl, options);
 
                 return Promise.resolve();
             },
