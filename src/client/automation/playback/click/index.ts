@@ -58,13 +58,22 @@ export default class ClickAutomation extends VisibleElementAutomation {
         return this
             ._ensureElement(useStrictElementCheck)
             .then(({ element, clientPoint, screenPoint, devicePoint }) => {
+                const boxes = element?.getClientRects();
+                let clientX;
+                let clientY;
+
+                if (boxes) {
+                    clientX = boxes[0].x + boxes[0].width / 2;
+                    clientY = boxes[0].y + boxes[0].height / 2;
+                }
+
                 eventArgs = {
                     point:       clientPoint,
                     screenPoint: screenPoint,
                     element:     element,
                     options:     utils.extend({
-                        clientX: clientPoint?.x,
-                        clientY: clientPoint?.y,
+                        clientX: clientX ?? clientPoint?.x,
+                        clientY: clientY ?? clientPoint?.y,
                         screenX: devicePoint?.x,
                         screenY: devicePoint?.y,
                     }, this.modifiers),
