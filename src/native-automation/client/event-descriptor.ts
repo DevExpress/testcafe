@@ -108,11 +108,20 @@ export default class CDPEventDescriptor {
     }
 
     public static async createMouseEventOptions (type: string, options: any): Promise<any> {
+        const boxes = options.element?.getClientRects();
+        let clientX;
+        let clientY;
+
+        if (boxes) {
+            clientX = boxes[0].x + boxes[0].width / 2;
+            clientY = boxes[0].y + boxes[0].height / 2;
+        }
+
         const { x, y } = await calculateIFrameTopLeftPoint();
 
         return utils.extend({
-            x:         options.options.clientX + x,
-            y:         options.options.clientY + y,
+            x:         (clientX ?? options.options.clientX) + x,
+            y:         (clientY ?? options.options.clientY) + y,
             modifiers: calculateKeyModifiersValue(options.options),
             button:    calculateMouseButtonValue(options.options),
             type,
