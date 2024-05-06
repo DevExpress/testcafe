@@ -107,23 +107,27 @@ export default class CDPEventDescriptor {
         };
     }
 
-    public static async createMouseEventOptions (type: string, options: any): Promise<any> {
-        const boxes = options.element?.getClientRects();
-        let clientX;
-        let clientY;
+    public static async createMouseEventOptions (type: string, eventOptions: any): Promise<any> {
+        const { x, y }             = await calculateIFrameTopLeftPoint();
+        const { element, options } = eventOptions;
+        let multilineClientX;
+        let multilineClientY;
 
-        if (boxes) {
-            clientX = boxes[0].x + boxes[0].width / 2;
-            clientY = boxes[0].y + boxes[0].height / 2;
+        if (element) {
+            const clientRects   = element.getClientRects();
+            const computedStyle = window.getComputedStyle(element);
+
+            if (clientRects && computedStyle.display === 'inline') {
+                multilineClientX = clientRects[0].x + clientRects[0].width / 2;
+                multilineClientY = clientRects[0].y + clientRects[0].height / 2;
+            }
         }
 
-        const { x, y } = await calculateIFrameTopLeftPoint();
-
         return utils.extend({
-            x:         (clientX ?? options.options.clientX) + x,
-            y:         (clientY ?? options.options.clientY) + y,
-            modifiers: calculateKeyModifiersValue(options.options),
-            button:    calculateMouseButtonValue(options.options),
+            x:         (multilineClientX ?? options.clientX) + x,
+            y:         (multilineClientY ?? options.clientY) + y,
+            modifiers: calculateKeyModifiersValue(options),
+            button:    calculateMouseButtonValue(options),
             type,
         }, MOUSE_EVENT_OPTIONS);
     }
