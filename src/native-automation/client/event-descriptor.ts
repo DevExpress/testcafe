@@ -107,27 +107,14 @@ export default class CDPEventDescriptor {
         };
     }
 
-    public static async createMouseEventOptions (type: string, eventOptions: any): Promise<any> {
-        const { x, y }             = await calculateIFrameTopLeftPoint();
-        const { element, options } = eventOptions;
-        let multilineClientX;
-        let multilineClientY;
-
-        if (element) {
-            const clientRects   = element.getClientRects();
-            const computedStyle = window.getComputedStyle(element);
-
-            if (clientRects && computedStyle.display === 'inline') {
-                multilineClientX = clientRects[0].x + clientRects[0].width / 2;
-                multilineClientY = clientRects[0].y + clientRects[0].height / 2;
-            }
-        }
+    public static async createMouseEventOptions (type: string, options: any): Promise<any> {
+        const { x, y } = await calculateIFrameTopLeftPoint();
 
         return utils.extend({
-            x:         (multilineClientX ?? options.clientX) + x,
-            y:         (multilineClientY ?? options.clientY) + y,
-            modifiers: calculateKeyModifiersValue(options),
-            button:    calculateMouseButtonValue(options),
+            x:         options.options.clientX + x,
+            y:         options.options.clientY + y,
+            modifiers: calculateKeyModifiersValue(options.options),
+            button:    calculateMouseButtonValue(options.options),
             type,
         }, MOUSE_EVENT_OPTIONS);
     }
