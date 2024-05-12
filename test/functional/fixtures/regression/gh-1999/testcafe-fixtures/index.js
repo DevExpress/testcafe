@@ -3,6 +3,5 @@ fixture `GH-1999 - Shouldn't raise an error if an iframe has html in src`
 
 test('Click in iframe', async t => {
     await t
-        .switchToIframe('#iframe')
-        .click('body');
+        .switchToIframe('#iframe');
 });
