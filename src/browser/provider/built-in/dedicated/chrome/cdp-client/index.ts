@@ -232,6 +232,55 @@ export class BrowserClient {
         }
     }
 
+    public async maximizeWindowNativeAutomation (): Promise<void> {
+        const target = await getFirstTab(this._port);
+        const client = await this.getActiveClient();
+
+        if (client) {
+            const windowParams = await client.Browser.getWindowForTarget({ targetId: target.id });
+
+            await client.Browser.setWindowBounds({ windowId: windowParams.windowId, bounds: { windowState: 'maximized' } });
+        }
+    }
+
+    public async resizeBounds (newDimensions: Size): Promise<void> {
+        const { viewportSize, config } = this._runtimeInfo;
+
+        let nonClientWidth  = 0;
+        let nonClientHeight = 0;
+
+        if (viewportSize.outerWidth && viewportSize.outerHeight) {
+            nonClientWidth  = viewportSize.outerWidth - viewportSize.width;
+            nonClientHeight = viewportSize.outerHeight - viewportSize.height;
+        }
+
+        const target = await getFirstTab(this._port);
+        const client = await this.getActiveClient();
+
+        if (client) {
+            await this._setDeviceMetricsOverride(client, newDimensions.width, newDimensions.height, 1, config.mobile);
+
+            const windowParams = await client.Browser.getWindowForTarget({ targetId: target.id });
+
+            if (windowParams.bounds.windowState !== 'normal') {
+                await client.Browser.setWindowBounds({
+                    windowId: windowParams.windowId,
+                    bounds:   {
+                        windowState: 'normal',
+                    },
+                });
+            }
+
+            await client.Browser.setWindowBounds({
+                windowId: windowParams.windowId,
+                bounds:   {
+                    width:  newDimensions.width + nonClientWidth,
+                    height: newDimensions.height + nonClientHeight,
+                },
+            });
+        }
+    }
+
     public isHeadlessTab (): boolean {
         return !!this._parentTarget && this._config.headless;
     }

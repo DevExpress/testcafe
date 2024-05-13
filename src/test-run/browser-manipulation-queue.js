@@ -5,12 +5,13 @@ import WARNING_MESSAGE from '../notifications/warning-message';
 import { WindowDimensionsOverflowError } from '../errors/test-run/';
 
 export default class BrowserManipulationQueue {
-    constructor (browserConnection, screenshotCapturer, warningLog) {
+    constructor (browserConnection, screenshotCapturer, warningLog, isNativeAutomation) {
         this.commands           = [];
         this.browserId          = browserConnection.id;
         this.browserProvider    = browserConnection.provider;
         this.screenshotCapturer = screenshotCapturer;
         this.warningLog         = warningLog;
+        this.isNativeAutomation = isNativeAutomation;
     }
 
     async _resizeWindow (width, height, currentWidth, currentHeight) {
@@ -20,7 +21,7 @@ export default class BrowserManipulationQueue {
             throw new WindowDimensionsOverflowError();
 
         try {
-            return await this.browserProvider.resizeWindow(this.browserId, width, height, currentWidth, currentHeight);
+            return await this.browserProvider.resizeWindow(this.browserId, width, height, currentWidth, currentHeight, this.isNativeAutomation);
         }
         catch (err) {
             this.warningLog.addWarning(WARNING_MESSAGE.resizeError, err.message);
@@ -40,7 +41,7 @@ export default class BrowserManipulationQueue {
 
     async _maximizeWindow () {
         try {
-            return await this.browserProvider.maximizeWindow(this.browserId);
+            return await this.browserProvider.maximizeWindow(this.browserId, this.isNativeAutomation);
         }
         catch (err) {
             this.warningLog.addWarning(WARNING_MESSAGE.maximizeError, err.message);
