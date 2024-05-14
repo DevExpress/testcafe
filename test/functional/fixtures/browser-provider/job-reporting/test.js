@@ -10,7 +10,7 @@ const { noop }              = require('lodash');
 // TODO: Refactor tests to avoid shared browsers
 if (config.useLocalBrowsers) {
     // eslint-disable-next-line no-only-tests/no-only-tests
-    describe.only('Browser Provider - Job Results Reporting', function () {
+    describe('Browser Provider - Job Results Reporting', function () {
         const BROWSER_OPENING_DELAY = 4000;
 
         let mockProvider = null;
