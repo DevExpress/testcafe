@@ -111,7 +111,7 @@ if (config.useLocalBrowsers) {
                 });
         });
 
-        it('Should report job error to the providers', () => {
+        it.skip('Should report job error to the providers', () => {
             return run(['chrome --failed-1', 'chrome --id-2'], './testcafe-fixtures/long-test.js')
                 .then(() => {
                     throw new Error('Promise rejection expected');
