@@ -35,7 +35,7 @@ const run = (pathToTest, concurrency) => {
         });
 };
 
-describe.skip('[Regression](GH-2011)', function () {
+describe('[Regression](GH-2011)', function () {
 
     it('Should execute all fixture\'s test with disableConcurrency in one browser', function () {
         return run('./testcafe-fixtures/concurrency-mode-with-disable-concurrency-fixture-test.js', 3)
