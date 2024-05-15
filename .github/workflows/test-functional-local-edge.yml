@@ -17,3 +17,4 @@ jobs:
     with:
       os: 'windows-latest'
       test-script: 'npx gulp test-functional-local-headless-edge-run --steps-as-tasks'
+      timeout: 40
