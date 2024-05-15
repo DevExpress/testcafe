@@ -41,7 +41,7 @@ export default class TypescriptConfiguration extends Configuration {
     }
 
     public async init (customCompilerOptions?: object): Promise<void> {
-        const opts = await this._load() as TypescriptConfigurationOptions;
+        const opts = await this._load(customCompilerOptions) as TypescriptConfigurationOptions;
 
         if (opts && opts.compilerOptions) {
             const parsedOpts = this._parseOptions(opts);

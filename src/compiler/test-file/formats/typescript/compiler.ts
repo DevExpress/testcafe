@@ -267,4 +267,22 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
     public getSupportedExtension (): string[] {
         return [Extensions.ts, Extensions.tsx];
     }
+
+    async compileConfiguration (filename: string) : Promise<object | null> {
+        let compiledConfigurationModule = null;
+
+        const [compiledCode] = await this.precompile([{ code: '', filename }]);
+
+        if (compiledCode) {
+            this._setupRequireHook({ });
+
+            compiledConfigurationModule = await this._createModuleAndCompile(compiledCode, filename);
+
+            this._removeRequireHook();
+
+            return compiledConfigurationModule?.exports;
+        }
+
+        return null;
+    }
 }

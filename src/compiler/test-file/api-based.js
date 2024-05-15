@@ -72,18 +72,25 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
             // eslint-disable-next-line no-eval
             await eval(`import('${fileUrl}?${PREVENT_MODULE_CACHING_SUFFIX}=${Date.now()}')`);
         }
-        else {
-            const mod = new Module(filename, module.parent);
+        else
+            this._createModuleAndCompile(code, filename);
 
-            mod.filename = filename;
-            mod.paths    = APIBasedTestFileCompilerBase._getNodeModulesLookupPath(filename);
+        return Promise.resolve();
+    }
 
-            cacheProxy.startExternalCaching(this.cachePrefix);
+    _createModuleAndCompile (code, filename) {
+        const mod = new Module(filename, module.parent);
 
-            mod._compile(code, filename);
+        mod.filename = filename;
+        mod.paths    = APIBasedTestFileCompilerBase._getNodeModulesLookupPath(filename);
 
-            cacheProxy.stopExternalCaching();
-        }
+        cacheProxy.startExternalCaching(this.cachePrefix);
+
+        mod._compile(code, filename);
+
+        cacheProxy.stopExternalCaching();
+
+        return mod;
     }
 
     _compileCode (code, filename) {
@@ -191,7 +198,7 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         return global.fixture && global.test;
     }
 
-    async _runCompiledCode (compiledCode, filename) {
+    async _runCompiledTestCode (compiledCode, filename) {
         const testFile = new TestFile(filename);
 
         this._addGlobalAPI(testFile);
@@ -230,7 +237,7 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
     }
 
     execute (compiledCode, filename) {
-        return this._runCompiledCode(compiledCode, filename);
+        return this._runCompiledTestCode(compiledCode, filename);
     }
 
     async compile (code, filename) {
