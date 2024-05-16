@@ -129,23 +129,9 @@ jobs:
 
             const tasks = [];
 
-            # tasks.push('test-client-desktop.yml');
-            # tasks.push('test-client-mobile.yml');
-            # tasks.push('test-functional-docker.yml');
-            # tasks.push('test-functional-local-safari.yml');
-            # tasks.push('test-functional-local-esm.yml');
-            # tasks.push('test-functional-local-chrome.yml');
+    
             tasks.push('test-functional-local-edge.yml');
-            # tasks.push('test-functional-local-firefox.yml');
-            # tasks.push('test-functional-local-multiple-windows.yml');
-            # tasks.push('test-functional-local-multiple-windows-na.yml');
-            # tasks.push('test-functional-local-native-automation.yml');
-            # tasks.push('test-functional-local-headed-browsers.yml');
-            # tasks.push('test-functional-local-legacy.yml');
-            # tasks.push('test-functional-remote-mobile.yml');
-            # tasks.push('test-server-docker.yml');
-            # tasks.push('test-server-minimal.yml');
-            # tasks.push('test-server-latest.yml');
+  
 
             await Promise.all(tasks.map(task => dispatchWorkflow(task)));
 
