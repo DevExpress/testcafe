@@ -8,6 +8,7 @@ function assertSelectorCallstack (actual, expected) {
     expect(removeWhitespaces(actual)).contains(removeWhitespaces(expected));
 }
 
+
 describe('[Regression](GH-2568)', function () {
     it('nested selector', function () {
         return runTests('testcafe-fixtures/index.js', 'nested selector', { selectorTimeout: 100, shouldFail: true })
