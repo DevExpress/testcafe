@@ -9,7 +9,7 @@ const { noop }              = require('lodash');
 
 // TODO: Refactor tests to avoid shared browsers
 if (config.useLocalBrowsers) {
-    describe('Browser Provider - Job Results Reporting', function () {
+    describe.only('Browser Provider - Job Results Reporting', function () {
         const BROWSER_OPENING_DELAY = 4000;
 
         let mockProvider = null;
@@ -109,6 +109,7 @@ if (config.useLocalBrowsers) {
                     expect(mockProvider.plugin.state['id-2'].data).eql({ total: 2, passed: 1 });
                 });
         });
+
 
         it('Should report job error to the providers', () => {
             return run(['chrome --failed-1', 'chrome --id-2'], './testcafe-fixtures/long-test.js')
