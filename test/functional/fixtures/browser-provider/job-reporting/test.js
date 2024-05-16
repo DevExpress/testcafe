@@ -9,8 +9,7 @@ const { noop }              = require('lodash');
 
 // TODO: Refactor tests to avoid shared browsers
 if (config.useLocalBrowsers) {
-    // eslint-disable-next-line no-only-tests/no-only-tests
-    describe.only('Browser Provider - Job Results Reporting', function () {
+    describe('Browser Provider - Job Results Reporting', function () {
         const BROWSER_OPENING_DELAY = 4000;
 
         let mockProvider = null;
@@ -111,6 +110,14 @@ if (config.useLocalBrowsers) {
                 });
         });
 
+        it('Should report job cancellation to the providers', function () {
+            return run(['chrome --id-1', 'chrome --id-2'], './testcafe-fixtures/long-test.js')
+                .cancel()
+                .then(function () {
+                    expect(mockProvider.plugin.state['id-1'].result).eql(mockProvider.plugin.JOB_RESULT.aborted);
+                    expect(mockProvider.plugin.state['id-2'].result).eql(mockProvider.plugin.JOB_RESULT.aborted);
+                });
+        });
 
         it('Should report job error to the providers', () => {
             return run(['chrome --failed-1', 'chrome --id-2'], './testcafe-fixtures/long-test.js')
@@ -121,15 +128,6 @@ if (config.useLocalBrowsers) {
                     expect(error.message).eql('Connection error');
                     expect(mockProvider.plugin.state['failed-1'].result).eql(mockProvider.plugin.JOB_RESULT.errored);
                     expect(mockProvider.plugin.state['failed-1'].data.message).eql('Connection error');
-                    expect(mockProvider.plugin.state['id-2'].result).eql(mockProvider.plugin.JOB_RESULT.aborted);
-                });
-        });
-
-        it('Should report job cancellation to the providers', function () {
-            return run(['chrome --id-1', 'chrome --id-2'], './testcafe-fixtures/long-test.js')
-                .cancel()
-                .then(function () {
-                    expect(mockProvider.plugin.state['id-1'].result).eql(mockProvider.plugin.JOB_RESULT.aborted);
                     expect(mockProvider.plugin.state['id-2'].result).eql(mockProvider.plugin.JOB_RESULT.aborted);
                 });
         });
