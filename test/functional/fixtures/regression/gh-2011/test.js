@@ -1,11 +1,13 @@
 const path               = require('path');
 const createTestCafe     = require('../../../../../lib');
+const config             = require('../../../config');
 const { createReporter } = require('../../../utils/reporter');
 const { expect }         = require('chai');
 
-let testCafe = null;
-let runner   = null;
-let errors   = null;
+let testCafe   = null;
+let runner     = null;
+let errors     = null;
+const needSkip = config.hasBrowser('edge');
 
 const reporter = createReporter({
     reportTestDone (_, testRunInfo) {
@@ -35,7 +37,7 @@ const run = (pathToTest, concurrency) => {
         });
 };
 
-describe('[Regression](GH-2011)', function () {
+(needSkip ? describe.skip : describe)('[Regression](GH-2011)', function () {
 
     it('Should execute all fixture\'s test with disableConcurrency in one browser', function () {
         return run('./testcafe-fixtures/concurrency-mode-with-disable-concurrency-fixture-test.js', 3)
