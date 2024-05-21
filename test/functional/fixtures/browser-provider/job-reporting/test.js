@@ -13,7 +13,7 @@ if (config.useLocalBrowsers) {
         const BROWSER_OPENING_DELAY = 4000;
 
         let mockProvider = null;
-        const needSkip = config.hasBrowser('edge');
+        const needSkip   = config.hasBrowser('edge');
 
         const mockProviderPlugin = Object.assign({}, chromeBrowserProvider, {
             state:     {},

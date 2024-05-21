@@ -1,8 +1,7 @@
 const expect = require('chai').expect;
 
 function removeWhitespaces (str) {
-    if (!str) return '';
-    return str.replace(/\s+|\n/g, ' ').trim();
+    return str?.replace(/\s+|\n/g, ' ').trim() ?? '';
 }
 
 function assertSelectorCallstack (actual, expected) {
