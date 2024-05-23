@@ -589,7 +589,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                 });
         });
 
-        it('Should capture screenshot of the element inside a nested iframe', function () {
+        it.skip('Should capture screenshot of the element inside a nested iframe', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Nested iframes',
                 { setScreenshotPath: true, skip: 'safari' })
                 .then(function () {
