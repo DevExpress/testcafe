@@ -255,13 +255,13 @@ export default class ScrollAutomation {
 
         return scrollParentsPromise
             .then(() => {
-                if (this._skipParentFrames || !isIframeWindow(window))
+                if (this._skipParentFrames || !isIframeWindow(window) || this._element.ownerDocument !== window.top?.document)
                     return;
 
                 state.cmd = ScrollAutomation.SCROLL_REQUEST_CMD;
 
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, consistent-return
-                // return sendRequestToFrame!(state, ScrollAutomation.SCROLL_RESPONSE_CMD, window.parent);
+                return sendRequestToFrame!(state, ScrollAutomation.SCROLL_RESPONSE_CMD, window.parent);
             })
             .then(() => this._scrollWasPerformed);
     }
