@@ -261,7 +261,7 @@ export default class ScrollAutomation {
                 state.cmd = ScrollAutomation.SCROLL_REQUEST_CMD;
 
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, consistent-return
-                return sendRequestToFrame!(state, ScrollAutomation.SCROLL_RESPONSE_CMD, window.parent);
+                // return sendRequestToFrame!(state, ScrollAutomation.SCROLL_RESPONSE_CMD, window.parent);
             })
             .then(() => this._scrollWasPerformed);
     }
