@@ -255,7 +255,7 @@ export default class ScrollAutomation {
 
         return scrollParentsPromise
             .then(() => {
-                if (this._skipParentFrames || !isIframeWindow(window) || this._element.ownerDocument !== window.top?.document)
+                if (this._skipParentFrames || !isIframeWindow(window))
                     return;
 
                 state.cmd = ScrollAutomation.SCROLL_REQUEST_CMD;
