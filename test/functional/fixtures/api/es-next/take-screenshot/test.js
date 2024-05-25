@@ -589,7 +589,8 @@ describe('[API] t.takeElementScreenshot()', function () {
                 });
         });
 
-        it.skip('Should capture screenshot of the element inside a nested iframe', function () {
+        // eslint-disable-next-line no-only-tests/no-only-tests
+        it.only('Should capture screenshot of the element inside a nested iframe', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Nested iframes',
                 { setScreenshotPath: true, skip: 'safari' })
                 .then(function () {
@@ -600,7 +601,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                 });
         });
 
-        it.skip('Should capture screenshot of the element inside a cross-domain iframe', function () {
+        it('Should capture screenshot of the element inside a cross-domain iframe', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Cross-domain iframe',
                 { setScreenshotPath: true, skip: 'safari' })
                 .then(function () {
@@ -611,7 +612,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                 });
         });
 
-        it.skip("Shouldn't scroll parent frames multiple times", function () {
+        it("Shouldn't scroll parent frames multiple times", function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Rescroll parents',
                 { setScreenshotPath: true, skip: 'safari' })
                 .then(function () {

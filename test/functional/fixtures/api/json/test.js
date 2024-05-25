@@ -59,7 +59,7 @@ describe('[API] DevTools Compiler', function () {
     });
 
     // NOTE: Flacky, can hang in nativeAutomation mode
-    skipInNativeAutomation('Should switch to iframe', function () {
+    it.skip('Should switch to iframe', function () {
         return runTests('./testcafe-fixtures/iframe-test.json', null, { only: 'chrome' });
     });
 
