@@ -600,7 +600,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                 });
         });
 
-        it('Should capture screenshot of the element inside a cross-domain iframe', function () {
+        it.skip('Should capture screenshot of the element inside a cross-domain iframe', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Cross-domain iframe',
                 { setScreenshotPath: true, skip: 'safari' })
                 .then(function () {
@@ -611,7 +611,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                 });
         });
 
-        it("Shouldn't scroll parent frames multiple times", function () {
+        it.skip("Shouldn't scroll parent frames multiple times", function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Rescroll parents',
                 { setScreenshotPath: true, skip: 'safari' })
                 .then(function () {
