@@ -1,6 +1,5 @@
 const { expect }                 = require('chai');
 const path                       = require('path');
-const { skipInNativeAutomation } = require('../../../utils/skip-in');
 
 describe('[API] DevTools Compiler', function () {
     it('Should make click on a button', function () {
