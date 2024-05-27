@@ -85,8 +85,16 @@ export function hasScroll (el: Element): boolean {
 
 export function getScrollableParents (element: HTMLElement): HTMLElement[] {
     let parentsArray = domUtils.getParents(element);
+    let isElementInIframe;
 
-    if (element.ownerDocument !== window.top?.document) {
+    try {
+        isElementInIframe = element.ownerDocument !== window.top?.document;
+    }
+    catch (e) {
+        isElementInIframe = null;
+    }
+
+    if (isElementInIframe) {
         const iframe = domUtils.getIframeByElement(element);
 
         if (iframe) {
