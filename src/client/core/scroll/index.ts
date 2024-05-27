@@ -250,9 +250,6 @@ export default class ScrollAutomation {
             maxScrollMargin:    this._maxScrollMargin,
         };
 
-        // eslint-disable-next-line no-debugger
-        debugger;
-
         if (!sendRequestToFrame)
             return scrollParentsPromise.then(() => state);
 

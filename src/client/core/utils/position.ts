@@ -19,7 +19,7 @@ export function getClientDimensions (target: HTMLElement): Dimensions {
     const elementRect       = target.getBoundingClientRect();
     const elBorders         = BoundaryValues.create(styleUtils.getBordersWidth(target));
     const elScroll          = styleUtils.getElementScroll(target);
-    // const isElementInIframe = domUtils.isElementInIframe(target);
+    const isElementInIframe = domUtils.isElementInIframe(target);
     const isCompatMode      = target.ownerDocument.compatMode === 'BackCompat';
     const elPosition        = isHtmlElement ? new AxisValues(0, 0) : AxisValues.create(elementRect);
 
@@ -37,7 +37,7 @@ export function getClientDimensions (target: HTMLElement): Dimensions {
         }
     }
 
-    if (target.ownerDocument !== window.top?.document) {
+    if (isElementInIframe) {
         const iframeElement = domUtils.getIframeByElement(target);
 
         if (iframeElement) {

@@ -1,5 +1,6 @@
 const { expect }                 = require('chai');
 const path                       = require('path');
+const { skipInNativeAutomation } = require('../../../utils/skip-in');
 
 describe('[API] DevTools Compiler', function () {
     it('Should make click on a button', function () {
@@ -58,7 +59,7 @@ describe('[API] DevTools Compiler', function () {
     });
 
     // NOTE: Flacky, can hang in nativeAutomation mode
-    it.skip('Should switch to iframe', function () {
+    skipInNativeAutomation('Should switch to iframe', function () {
         return runTests('./testcafe-fixtures/iframe-test.json', null, { only: 'chrome' });
     });
 

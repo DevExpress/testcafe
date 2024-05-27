@@ -589,8 +589,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                 });
         });
 
-        // eslint-disable-next-line no-only-tests/no-only-tests
-        it.only('Should capture screenshot of the element inside a nested iframe', function () {
+        it('Should capture screenshot of the element inside a nested iframe', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Nested iframes',
                 { setScreenshotPath: true, skip: 'safari' })
                 .then(function () {
