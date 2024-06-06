@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const gulp                          = require('gulp');
 const gulpStep                      = require('gulp-step');
 const data                          = require('gulp-data');
@@ -93,6 +94,7 @@ gulp.task('lint', () => {
 
 // License checker
 gulp.task('check-licenses', () => {
+    console.log('HOOOOOOOOOOOOOOOOOOOOOOOO');
     return checkLicenses();
 });
 
