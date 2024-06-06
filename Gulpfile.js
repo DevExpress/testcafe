@@ -257,6 +257,7 @@ gulp.step('clean-functional-tests', async () => {
 gulp.step('prepare-tests', gulp.registry().get(SKIP_BUILD ? 'lint' : 'build'));
 
 gulp.step('test-server-run', () => {
+    console.log('AEEEEEEEEEEEEEE');
     const chai = require('chai');
 
     chai.use(require('chai-string'));
