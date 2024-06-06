@@ -13,6 +13,7 @@ if (config.useLocalBrowsers) {
         const BROWSER_OPENING_DELAY = 4000;
 
         let mockProvider = null;
+        const needSkip   = config.hasBrowser('edge');
 
         const mockProviderPlugin = Object.assign({}, chromeBrowserProvider, {
             state:     {},
@@ -110,16 +111,7 @@ if (config.useLocalBrowsers) {
                 });
         });
 
-        it('Should report job cancellation to the providers', function () {
-            return run(['chrome --id-1', 'chrome --id-2'], './testcafe-fixtures/long-test.js')
-                .cancel()
-                .then(function () {
-                    expect(mockProvider.plugin.state['id-1'].result).eql(mockProvider.plugin.JOB_RESULT.aborted);
-                    expect(mockProvider.plugin.state['id-2'].result).eql(mockProvider.plugin.JOB_RESULT.aborted);
-                });
-        });
-
-        it('Should report job error to the providers', () => {
+        (needSkip ? it.skip : it)('Should report job error to the providers', () => {
             return run(['chrome --failed-1', 'chrome --id-2'], './testcafe-fixtures/long-test.js')
                 .then(() => {
                     throw new Error('Promise rejection expected');

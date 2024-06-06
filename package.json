@@ -2,7 +2,7 @@
   "name": "testcafe",
   "description": "Automated browser testing for the modern web development stack.",
   "license": "MIT",
-  "version": "3.6.0",
+  "version": "3.6.1-rc.1",
   "author": {
     "name": "Developer Express Inc.",
     "url": "https://www.devexpress.com/"
@@ -81,7 +81,7 @@
     "@devexpress/callsite-record": "^4.1.6",
     "@types/node": "^12.20.10",
     "async-exit-hook": "^1.1.2",
-    "babel-plugin-module-resolver": "^5.0.0",
+    "babel-plugin-module-resolver": "5.0.0",
     "babel-plugin-syntax-trailing-function-commas": "^6.22.0",
     "bowser": "^2.8.1",
     "callsite": "^1.0.0",
@@ -142,7 +142,7 @@
     "source-map-support": "^0.5.16",
     "strip-bom": "^2.0.0",
     "testcafe-browser-tools": "2.0.26",
-    "testcafe-hammerhead": "31.7.1",
+    "testcafe-hammerhead": "31.7.2",
     "testcafe-legacy-api": "5.1.8",
     "testcafe-reporter-json": "^2.1.0",
     "testcafe-reporter-list": "^2.2.0",

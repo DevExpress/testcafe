@@ -45,8 +45,8 @@ function checkLicense (license, module) {
 module.exports = function () {
     return new Promise((resolve, reject) => {
         licenseChecker({ start: modulePath, production: true }, (err, modules) => {
-            if (!err) {
-                reject('error check');
+            if (err) {
+                reject(err);
 
                 return;
             }
