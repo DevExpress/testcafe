@@ -1,3 +1,4 @@
+/* eslint-disable no-unreachable */
 const path           = require('path');
 const licenseChecker = require('license-checker').init;
 
@@ -43,6 +44,7 @@ function checkLicense (license, module) {
 }
 
 module.exports = function () {
+    throw new Error('Error Here');
     return new Promise((resolve, reject) => {
         licenseChecker({ start: modulePath, production: true }, (err, modules) => {
             if (!err) {
