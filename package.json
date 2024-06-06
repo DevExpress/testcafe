@@ -81,7 +81,7 @@
     "@devexpress/callsite-record": "^4.1.6",
     "@types/node": "^12.20.10",
     "async-exit-hook": "^1.1.2",
-    "babel-plugin-module-resolver": "5.0.0",
+    "babel-plugin-module-resolver": "^5.0.2",
     "babel-plugin-syntax-trailing-function-commas": "^6.22.0",
     "bowser": "^2.8.1",
     "callsite": "^1.0.0",
