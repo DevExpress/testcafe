@@ -1,0 +1,50 @@
+name: Check Licenses
+
+on:
+    workflow_dispatch:
+        inputs:
+            sha:
+                description: "The test commit SHA or ref"
+                required: true
+                default: "master"
+            merged_sha:
+                description: "The merge commit SHA"
+            deploy_run_id:
+                description: "The ID of a deployment workspace run with artifacts"
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v3
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: latest
+
+            - name: Install dependencies
+              run: npm install
+
+            - name: Run Gulp build
+              run: npx gulp build
+
+            - name: Pack the application
+              run: npm pack
+
+            - name: Remove package info
+              run: |
+                  rm -f package.json
+                  rm -f package-lock.json
+                  rm -rf node_modules
+
+            - name: Initialize new package.json
+              run: npm init -y
+
+            - name: Install created package and license checker
+              run: npm install ./$(ls *.tgz | tail -n 1) && npm install license-checker@^20.0.0 --save-dev
+
+            - name: Check licenses
+              run: node -e "require('./test/dependency-licenses-checker')()"
