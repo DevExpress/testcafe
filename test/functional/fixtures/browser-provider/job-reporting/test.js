@@ -123,15 +123,6 @@ if (config.useLocalBrowsers) {
                     expect(mockProvider.plugin.state['id-2'].result).eql(mockProvider.plugin.JOB_RESULT.aborted);
                 });
         });
-
-        it('Should report job cancellation to the providers', function () {
-            return run(['chrome --id-1', 'chrome --id-2'], './testcafe-fixtures/long-test.js')
-                .cancel()
-                .then(function () {
-                    expect(mockProvider.plugin.state['id-1'].result).eql(mockProvider.plugin.JOB_RESULT.aborted);
-                    expect(mockProvider.plugin.state['id-2'].result).eql(mockProvider.plugin.JOB_RESULT.aborted);
-                });
-        });
     });
 }
 

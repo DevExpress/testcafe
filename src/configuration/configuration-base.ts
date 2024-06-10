@@ -154,7 +154,7 @@ export default class Configuration {
         return this._defaultPaths;
     }
 
-    public async _load (): Promise<null | object> {
+    public async _load (customCompilerOptions?: object): Promise<null | object> {
         if (!this.defaultPaths?.length)
             return null;
 
@@ -162,16 +162,7 @@ export default class Configuration {
             if (!await this._isConfigurationFileExists(filePath))
                 return { filePath, options: null };
 
-            let options = null as object | null;
-
-            if (this._isJSConfiguration(filePath))
-                options = this._readJsConfigurationFileContent(filePath);
-            else {
-                const configurationFileContent = await this._readConfigurationFileContent(filePath);
-
-                if (configurationFileContent)
-                    options = this._parseConfigurationFileContent(configurationFileContent, filePath);
-            }
+            const options = await this._readConfigurationOptions(filePath, customCompilerOptions);
 
             return { filePath, options };
         }));
@@ -189,6 +180,19 @@ export default class Configuration {
         return existedConfigs[0].options;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    protected async _readConfigurationOptions (filePath: string, customCompilerOptions?: object): Promise<object | null> {
+        if (this._isJSConfiguration(filePath))
+            return this._readJsConfigurationFileContent(filePath);
+
+        const configurationFileContent = await this._readConfigurationFileContent(filePath);
+
+        if (configurationFileContent)
+            return this._parseConfigurationFileContent(configurationFileContent, filePath);
+
+        return null;
+    }
+
     protected async _isConfigurationFileExists (filePath = this.filePath): Promise<boolean> {
         try {
             await stat(filePath);
@@ -202,7 +206,7 @@ export default class Configuration {
         }
     }
 
-    private static _hasExtension (filePath: string | undefined, extention: string): boolean {
+    protected static _hasExtension (filePath: string | undefined, extention: string): boolean {
         return !!filePath && extname(filePath) === extention;
     }
 
