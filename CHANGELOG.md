@@ -1,5 +1,12 @@
 # Changelog
 
+## v3.6.1 (2024-06-10)
+
+### Bug Fixes
+
+* TestCafe incorrectly calculates the dimensions of multi-line elements. ([#8179](https://github.com/DevExpress/testcafe/issues/8179))
+* TestCafe incorrectly executes the `resizeWindow` method if you maximize the target window first. ([#8157](https://github.com/DevExpress/testcafe/issues/8157))
+
 ## TestCafe v3.6.0 Released
 
 The TestCafe v3.6.0 update includes two minor changes and a number of bug fixes.
