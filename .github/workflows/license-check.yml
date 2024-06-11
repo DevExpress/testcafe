@@ -1,0 +1,38 @@
+name: Check Licenses
+
+on:
+    workflow_dispatch:
+        inputs:
+            sha:
+                description: "The test commit SHA or ref"
+                required: true
+                default: "master"
+            merged_sha:
+                description: "The merge commit SHA"
+            deploy_run_id:
+                description: "The ID of a deployment workspace run with artifacts"
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: latest
+
+            - name: Install dependencies
+              run: npm install
+
+            - name: Run Gulp build
+              run: npx gulp build
+
+            - name: Pack the application
+              run: npm pack
+
+            - name: Install the application and check licenses
+              run: mkdir temp && cd temp && npm init -y && npm install ../*.tgz && npx gulp check-licenses

@@ -146,6 +146,7 @@ jobs:
             tasks.push('test-server-docker.yml');
             tasks.push('test-server-minimal.yml');
             tasks.push('test-server-latest.yml');
+            tasks.push('license-check.yml');
 
             await Promise.all(tasks.map(task => dispatchWorkflow(task)));
 
