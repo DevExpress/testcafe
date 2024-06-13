@@ -523,7 +523,7 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
 
     private _createContinueEventArgs (event: Protocol.Fetch.RequestPausedEvent, reqOpts: any): ContinueRequestArgs {
         const continueEventArgs = {
-            postData: this._getUploadPostData(event),
+            postData: void 0,
         };
 
         if (reqOpts)
