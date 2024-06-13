@@ -358,7 +358,9 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
     }
 
     private _getUploadPostData (event: Protocol.Fetch.RequestPausedEvent): string | undefined {
-        if (!event.request.postData)
+        const excelFilePattern = /filename="[^"]*\.(xls|xlsx)"/i;
+
+        if (!event.request.postData || excelFilePattern.test(event.request.postData))
             return void 0;
 
         const contentTypeHeader = event.request.headers['Content-Type'] as string;
@@ -523,7 +525,7 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
 
     private _createContinueEventArgs (event: Protocol.Fetch.RequestPausedEvent, reqOpts: any): ContinueRequestArgs {
         const continueEventArgs = {
-            postData: void 0,
+            postData: this._getUploadPostData(event),
         };
 
         if (reqOpts)
