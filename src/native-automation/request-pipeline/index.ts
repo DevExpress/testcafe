@@ -358,13 +358,17 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
     }
 
     private _getUploadPostData (event: Protocol.Fetch.RequestPausedEvent): string | undefined {
-        const excelFilePattern = /filename="[^"]*\.(xls|xlsx)"/i;
-
-        if (!event.request.postData || excelFilePattern.test(event.request.postData))
+        if (!event.request.postData || !event.request.postDataEntries)
             return void 0;
 
-        const contentTypeHeader = event.request.headers['Content-Type'] as string;
-        const postData          = Buffer.from(event.request.postData, 'utf-8');
+        const contentTypeHeader = event.request.headers['Content-Type'];
+        const dataBuffers       = [];
+
+        for (const dataEntry of event.request.postDataEntries)
+            dataBuffers.push(Buffer.from(dataEntry.bytes || '', 'base64'));
+
+
+        const postData          = Buffer.concat(dataBuffers);
         const bodyWithUploads   = injectUpload(contentTypeHeader, postData);
 
         return bodyWithUploads ? bodyWithUploads.toString('base64') : void 0;
