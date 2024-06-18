@@ -2,7 +2,7 @@ import { GeneralError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
 import endpointUtils from '../utils/endpoint-utils';
 
-export async function getValidHostname (hostname: string ): Promise<string> {
+export async function getValidHostname (hostname: string): Promise<string> {
     if (hostname) {
         const valid = await endpointUtils.isMyHostname(hostname);
 
