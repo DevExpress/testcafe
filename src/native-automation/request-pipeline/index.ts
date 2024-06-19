@@ -358,10 +358,11 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
     }
 
     private _getUploadPostData (event: Protocol.Fetch.RequestPausedEvent): string | undefined {
+        //NOTE: https://github.com/DevExpress/testcafe/issues/8198
         if (!event.request.postDataEntries || !event.request.postDataEntries.length)
             return void 0;
 
-        const contentTypeHeader = event.request.headers['Content-Type'];
+        const contentTypeHeader = event.request.headers['Content-Type'] as string;
         const dataBuffers       = [];
 
         for (const dataEntry of event.request.postDataEntries)
