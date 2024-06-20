@@ -1,7 +1,10 @@
 import { GeneralError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
 import {
-    isMyHostname, getIPAddress, isFreePort, getFreePort,
+    isMyHostname, 
+    getIPAddress, 
+    isFreePort, 
+    getFreePort,
 } from '../utils/endpoint-utils';
 
 export async function getValidHostname (hostname: string): Promise<string> {
