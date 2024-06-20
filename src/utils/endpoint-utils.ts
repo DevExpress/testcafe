@@ -1,6 +1,6 @@
 import {
-    AddressInfo, 
-    createServer, 
+    AddressInfo,
+    createServer,
     Server,
 } from 'net';
 import { ip, ipv6 } from 'address';

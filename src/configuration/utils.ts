@@ -1,9 +1,9 @@
 import { GeneralError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
 import {
-    isMyHostname, 
-    getIPAddress, 
-    isFreePort, 
+    isMyHostname,
+    getIPAddress,
+    isFreePort,
     getFreePort,
 } from '../utils/endpoint-utils';
 
@@ -15,7 +15,7 @@ export async function getValidHostname (hostname: string): Promise<string> {
             throw new GeneralError(RUNTIME_ERRORS.invalidHostname, hostname);
     }
     else {
-        hostname = getIPAddress();
+        hostname = getIPAddress() as string;
 
         if (!hostname)
             throw new GeneralError(RUNTIME_ERRORS.invalidHostname, hostname);
