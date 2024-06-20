@@ -15,11 +15,9 @@ export async function getValidHostname (hostname: string): Promise<string> {
             throw new GeneralError(RUNTIME_ERRORS.invalidHostname, hostname);
     }
     else {
-        const ip = getIPAddress();
+        hostname = getIPAddress();
 
-        if (ip)
-            hostname = ip;
-        else
+        if (!hostname)
             throw new GeneralError(RUNTIME_ERRORS.invalidHostname, hostname);
     }
 
