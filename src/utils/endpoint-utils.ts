@@ -1,8 +1,9 @@
-const Promise      = require('pinkie-promise');
-const createServer = require('net').createServer;
-const { ip, ipv6 } = require('address');
+import {
+    AddressInfo, createServer, Server,
+} from 'net';
+import { ip, ipv6 } from 'address';
 
-function createServerOnFreePort () {
+function createServerOnFreePort (): Promise<Server> {
     return new Promise(resolve => {
         const server = createServer();
 
@@ -14,8 +15,8 @@ function createServerOnFreePort () {
     });
 }
 
-function closeServers (servers) {
-    return Promise.all(servers.map(server => {
+function closeServers (servers: Server[]): Promise<unknown[]> {
+    return Promise.all(servers.map((server: Server) => {
         return new Promise(resolve => {
             server.once('close', resolve);
             server.close();
@@ -23,7 +24,7 @@ function closeServers (servers) {
     }));
 }
 
-function checkAvailability (port, hostname) {
+function checkAvailability (port: number, hostname?: string): Promise<boolean> {
     return new Promise(resolve => {
         const server = createServer();
 
@@ -43,19 +44,19 @@ function checkAvailability (port, hostname) {
     });
 }
 
-function isFreePort (port) {
+export function isFreePort (port: number): Promise<boolean> {
     return checkAvailability(port);
 }
 
-function getFreePort () {
+export function getFreePort (): Promise<number> {
     return getFreePorts(1).then(ports => {
         return ports[0];
     });
 }
 
-function getFreePorts (count) {
+function getFreePorts (count: number): Promise<number[]> {
     const serverPromises = [];
-    let ports          = null;
+    let ports: number[]  = [];
 
     // NOTE: Sequentially collect listening
     // servers to avoid interference.
@@ -64,8 +65,8 @@ function getFreePorts (count) {
 
     return Promise.all(serverPromises)
         .then(servers => {
-            ports = servers.map(server => {
-                return server.address().port;
+            ports = servers.map((server: Server) => {
+                return (server.address() as AddressInfo).port;
             });
 
             return servers;
@@ -76,20 +77,13 @@ function getFreePorts (count) {
         });
 }
 
-function isMyHostname (hostname) {
+export function isMyHostname (hostname: string): Promise<boolean> {
     return getFreePort()
         .then(port => {
             return checkAvailability(port, hostname);
         });
 }
 
-function getIPAddress () {
+export function getIPAddress (): string | undefined {
     return ip() || ipv6();
 }
-
-module.exports = {
-    isFreePort:   isFreePort,
-    getFreePort:  getFreePort,
-    isMyHostname: isMyHostname,
-    getIPAddress: getIPAddress,
-};
