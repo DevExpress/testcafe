@@ -90,7 +90,7 @@ export default class TestedApp {
     public async kill (): Promise<void> {
         this._killed = true;
 
-        const killPromise = new Promise(resolve => kill((this._process as ChildProcess).pid, 'SIGTERM', resolve));
+        const killPromise = new Promise(resolve => kill((this._process as ChildProcess).pid ?? 0, 'SIGTERM', resolve));
 
         await killPromise;
     }

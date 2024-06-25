@@ -1,5 +1,5 @@
 const { expect }     = require('chai');
-const { isFreePort } = require('endpoint-utils');
+const { isFreePort } = require('../../../../lib/utils/endpoint-utils');
 const delay          = require('../../../../lib/utils/delay');
 
 describe('App command', function () {

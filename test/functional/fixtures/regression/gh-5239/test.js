@@ -2,7 +2,7 @@ const http                       = require('http');
 const path                       = require('path');
 const config                     = require('../../../config');
 const createTestCafe             = require('../../../../../lib');
-const { getFreePort }            = require('endpoint-utils');
+const { getFreePort }            = require('../../../../../lib/utils/endpoint-utils');
 const { skipInNativeAutomation } = require('../../../utils/skip-in');
 
 const ERROR_RESPONSE_COUNT        = 8;
