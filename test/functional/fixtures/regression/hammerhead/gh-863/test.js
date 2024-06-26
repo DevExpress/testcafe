@@ -4,7 +4,7 @@ const fs              = require('fs');
 const createTestCafe  = require('../../../../../../lib');
 const config          = require('../../../../config');
 const { expect }      = require('chai');
-const { getFreePort } = require('endpoint-utils');
+const { getFreePort } = require('../../../../../../lib/utils/endpoint-utils');
 
 const resourceRequestCounter = {
     script1: 0,

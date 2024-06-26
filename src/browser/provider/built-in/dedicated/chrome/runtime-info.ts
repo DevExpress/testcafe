@@ -1,4 +1,4 @@
-import { getFreePort } from 'endpoint-utils';
+import { getFreePort } from '../../../../../utils/endpoint-utils';
 import createTempProfile from './create-temp-profile';
 import isDocker from 'is-docker';
 import isPodman from 'is-podman';
