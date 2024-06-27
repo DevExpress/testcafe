@@ -358,12 +358,17 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
     }
 
     private _getUploadPostData (event: Protocol.Fetch.RequestPausedEvent): string | undefined {
-        if (!event.request.postData)
+        if (!event.request.postDataEntries || !event.request.postDataEntries.length)
             return void 0;
 
         const contentTypeHeader = event.request.headers['Content-Type'] as string;
-        const postData          = Buffer.from(event.request.postData, 'utf-8');
-        const bodyWithUploads   = injectUpload(contentTypeHeader, postData);
+        const dataBuffers       = [];
+
+        for (const dataEntry of event.request.postDataEntries)
+            dataBuffers.push(Buffer.from(dataEntry.bytes ?? '', 'base64'));
+
+        const postData        = Buffer.concat(dataBuffers);
+        const bodyWithUploads = injectUpload(contentTypeHeader, postData);
 
         return bodyWithUploads ? bodyWithUploads.toString('base64') : void 0;
     }

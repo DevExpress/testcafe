@@ -7,6 +7,10 @@ describe('[API] Upload', function () {
             return runTests('./testcafe-fixtures/upload-test.js', 'Upload the file', { only: 'chrome' });
         });
 
+        it('Should upload the specified xls file', function () {
+            return runTests('./testcafe-fixtures/upload-test.js', 'Upload the xls file', { only: 'chrome' });
+        });
+
         it('Should upload the specified file with required input', function () {
             return runTests('./testcafe-fixtures/upload-test.js', 'Upload the file with required input', { only: 'chrome' });
         });

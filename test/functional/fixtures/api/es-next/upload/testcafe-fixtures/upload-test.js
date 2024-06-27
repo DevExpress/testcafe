@@ -47,3 +47,12 @@ test('Upload the file with required input', async t => {
 
     expect(await getUploadedText()).equals('File 1 is uploaded!');
 });
+
+test('Upload the xls file', async t => {
+    const file1SizeBytes = 6971392;
+
+    await t
+        .setFilesToUpload('#fileAlternative', '../test-data/file1.xls');
+
+    expect(Number(await getUploadedText())).to.be.at.least(file1SizeBytes);
+});

@@ -230,6 +230,14 @@ Server.prototype._setupRoutes = function (apiRouter) {
         res.end(Mustache.render(UPLOAD_SUCCESS_PAGE_TEMPLATE, { uploadedDataArray: filesData }));
     });
 
+    this.app.post('/file-upload-size', upload.any(), function (req, res) {
+        const filesData = req.files.map(function (file) {
+            return file.size;
+        });
+
+        res.end(`${filesData[0]}`);
+    });
+
     this.app.post('/xhr/test-header', function (req, res) {
         res.send(req.headers.test);
     });

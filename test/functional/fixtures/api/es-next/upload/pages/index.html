@@ -13,5 +13,32 @@
             <input type="file" id="fileRequired" name="fileRequired" required />
             <input type="submit" id="submitRequired" />
         </form>
+        <form>
+            <input type="file" id="fileAlternative" />
+        </form>
+        <div id="uploadedContent"></div>
+        <script>
+            const fileInput       = document.querySelector("#fileAlternative");
+            const form            = document.querySelector("form");
+            const resultContainer = document.querySelector("#uploadedContent");
+
+            fileInput.addEventListener("change", async (e) => {
+                const file     = e.target.files[0];
+                const formData = new FormData();
+                formData.append("files", file);
+
+                try {
+                    const res = await fetch("/file-upload-size", {
+                        method: "post",
+                        body: formData,
+                    });
+                    const text = await res.text();
+                    resultContainer.textContent = text;
+                    form.reset();
+                } catch (error) {
+                    console.error(error);
+                }
+            });
+        </script>
     </body>
 </html>
