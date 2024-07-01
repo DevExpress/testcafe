@@ -1,4 +1,5 @@
 const path           = require('path');
+const fs             = require('fs');
 const licenseChecker = require('license-checker').init;
 
 const PERMISSIVE_LICENSES = [
@@ -32,7 +33,7 @@ const INCOMPATIBLE_LICENSES_RE = /GPL/i;
 const hasIncompatibleLicenses = license => INCOMPATIBLE_LICENSES_RE.test(license);
 const hasUnknownLicenses      = license => PERMISSIVE_LICENSES.indexOf(license) === -1;
 
-const modulePath = path.join(__dirname, '../temp');
+const modulePath = fs.existsSync(path.join(__dirname, '../temp')) || path.join(__dirname, '../');
 
 function checkLicense (license, module) {
     const unknownModuleAssertionMsg       = `The module '${module}' contains an unknown license '${license}'. You can add this license to the list of known permissive licenses. But be cautious and do this only if you are sure that this license is compatible with TestCafe`;
