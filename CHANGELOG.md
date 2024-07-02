@@ -1,5 +1,12 @@
 # Changelog
 
+## v3.6.2 (2024-07-02)
+
+### Bug Fixes
+
+* [Native Automation] TestCafe incorrectly uploads files in Chrome v125 and up. ([#8198](https://github.com/DevExpress/testcafe/issues/8198))
+* TestCafe dependencies include the vulnerable endpoint-utils package ([#8207](https://github.com/DevExpress/testcafe/issues/8207)). The updated version includes the address package instead.
+
 ## v3.6.1 (2024-06-10)
 
 ### Bug Fixes
