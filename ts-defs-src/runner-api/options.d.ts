@@ -270,6 +270,10 @@ interface RunOptions {
      * Disables native automation of Chromium-based browsers. Use this option to speed up browser automation and increase test stability.
      */
     disableNativeAutomation: boolean;
+     /**
+     * Ask tech writer for definition. (Allows to import modules that do not support CommonJS).
+     */
+    esm: boolean;
 }
 
 interface StartOptions {
