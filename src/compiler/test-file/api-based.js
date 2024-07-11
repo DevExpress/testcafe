@@ -70,7 +70,7 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
 
     async _execAsModule (code, filename) {
         if (this.esm) {
-            if (semver.gte(process.version, '20.0.0'))
+            if (semver.satisfies(process.version, '18.19.0 - 18.x || >=20.9.0'))
                 register('../esm-loader.js', pathToFileURL(__filename));
 
             const fileUrl = url.pathToFileURL(filename);
