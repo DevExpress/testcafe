@@ -271,7 +271,7 @@ interface RunOptions {
      */
     disableNativeAutomation: boolean;
      /**
-     * Ask tech writer for definition. (Allows to import modules that do not support CommonJS).
+     * Allows you to import modules that do not support CommonJS.
      */
     esm: boolean;
 }
