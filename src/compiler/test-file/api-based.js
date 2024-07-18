@@ -24,6 +24,10 @@ import addExportAPI from './add-export-api';
 import url from 'url';
 import PREVENT_MODULE_CACHING_SUFFIX from '../prevent-module-caching-suffix';
 
+const { register }      = require('node:module');
+const { pathToFileURL } = require('node:url');
+const semver            = require('semver');
+
 
 const CWD = process.cwd();
 
@@ -66,6 +70,9 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
 
     async _execAsModule (code, filename) {
         if (this.esm) {
+            if (semver.satisfies(process.version, '18.19.0 - 18.x || >=20.8.0'))
+                register('../esm-loader.js', pathToFileURL(__filename));
+
             const fileUrl = url.pathToFileURL(filename);
 
             //NOTE: It is necessary to prevent module caching during live mode.
