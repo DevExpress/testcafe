@@ -1,7 +1,9 @@
 // Test Info
 //----------------------------------------------------------------------------------------------------------------------
 
-type Metadata = Record<string, unknown>;
+interface Metadata {
+    [key: string]: unknown;
+}
 
 interface TestInfo {
     name: string;
