@@ -545,7 +545,8 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     private async _initRequestHooks (): Promise<void> {
-        await Promise.all(this.test.requestHooks.map(hook => this._initRequestHook(hook)));
+        if (!this.test.skip)
+            await Promise.all(this.test.requestHooks.map(hook => this._initRequestHook(hook)));
     }
 
     private _prepareSkipJsErrorsOption (): boolean | ExecuteClientFunctionCommand {
