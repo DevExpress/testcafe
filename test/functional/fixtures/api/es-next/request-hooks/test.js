@@ -127,5 +127,9 @@ describe('Request Hooks', () => {
         it('Set custom header on "onRequest" method (GH-7846)', () => {
             return runTests('./testcafe-fixtures/api/7846.js', null, { only: 'chrome' });
         });
+
+        it('Request hook on skipped test should not affect next test (GH-8229)', () => {
+            return runTests('./testcafe-fixtures/api/8229.js', null, { only: 'chrome' });
+        });
     });
 });
