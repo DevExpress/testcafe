@@ -221,7 +221,7 @@
     "multer": "1.4.4-lts.1",
     "openssl-self-signed-certificate": "^1.1.6",
     "proxyquire": "^2.1.0",
-    "publish-please": "^5.5.2",
+    "@testcafe/publish-please": "^5.6.0",
     "react": "^16.13.1",
     "recursive-copy": "^2.0.5",
     "rollup": "2.16.1",
