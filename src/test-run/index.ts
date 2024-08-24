@@ -545,8 +545,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     private async _initRequestHooks (): Promise<void> {
-        if (!this.test.skip)
-            await Promise.all(this.test.requestHooks.map(hook => this._initRequestHook(hook)));
+        await Promise.all(this.test.requestHooks.map(hook => this._initRequestHook(hook)));
     }
 
     private _prepareSkipJsErrorsOption (): boolean | ExecuteClientFunctionCommand {
@@ -1444,8 +1443,10 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     public async initialize (): Promise<void> {
-        await this._clearCookiesAndStorages();
-        await this._initRequestHooks();
+        if (!this.test.skip) {
+            await this._clearCookiesAndStorages();
+            await this._initRequestHooks();
+        }
     }
 
     private async _clearCookiesAndStorages (): Promise<void> {
