@@ -90,7 +90,7 @@ interface Browser {
 
 type WindowDescriptor = unknown;
 
-type CDPSession = unknown;
+type CDPSession = import('devtools-protocol/types/protocol-proxy-api').ProtocolProxyApi.ProtocolApi;
 
 interface WindowFilterData {
     /**
