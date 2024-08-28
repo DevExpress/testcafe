@@ -1,3 +1,5 @@
-export class ClassThatUsesStatic {
+class ClassThatUsesStatic {
     static { this.foo = true; }
 }
+
+export default ClassThatUsesStatic;

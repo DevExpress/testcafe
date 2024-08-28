@@ -1,4 +1,4 @@
-import { ClassThatUsesStatic } from './lib';
+import ClassThatUsesStatic from './lib.js';
 
 fixture('GH-8245 - Should run test with static class blocks');
 
