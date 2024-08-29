@@ -1443,8 +1443,10 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     public async initialize (): Promise<void> {
-        await this._clearCookiesAndStorages();
-        await this._initRequestHooks();
+        if (!this.test.skip) {
+            await this._clearCookiesAndStorages();
+            await this._initRequestHooks();
+        }
     }
 
     private async _clearCookiesAndStorages (): Promise<void> {
