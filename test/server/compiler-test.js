@@ -236,6 +236,24 @@ describe('Compiler', function () {
                     expect(results.inventory).to.equal('42 yoyo');
                 });
         });
+
+        it('Should compile test with static class blocks', function () {
+            const sources = [
+                'test/server/data/test-suites/basic/testfile5.js',
+            ];
+
+            return compile(sources)
+                .then(function (compiled) {
+                    const tests    = compiled.tests;
+                    const fixtures = compiled.fixtures;
+
+                    expect(tests.length).eql(1);
+                    expect(fixtures.length).eql(1);
+
+                    expect(tests[0].name).eql('Fixture6Test1');
+                    expect(fixtures[0].name).eql('Fixture6');
+                });
+        });
     });
 
     describe('TypeScript', function () {
