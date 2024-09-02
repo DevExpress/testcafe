@@ -239,7 +239,7 @@ describe('Compiler', function () {
 
         it('Should compile test with static class blocks', function () {
             const sources = [
-                'test/server/data/test-suites/basic/testfile5.js',
+                'test/server/data/test-suites/class-with-static/testfile.js',
             ];
 
             return compile(sources)
@@ -250,8 +250,8 @@ describe('Compiler', function () {
                     expect(tests.length).eql(1);
                     expect(fixtures.length).eql(1);
 
-                    expect(tests[0].name).eql('Fixture6Test1');
-                    expect(fixtures[0].name).eql('Fixture6');
+                    expect(tests[0].name).eql('Test');
+                    expect(fixtures[0].name).eql('Fixture');
                 });
         });
     });
