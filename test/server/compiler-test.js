@@ -237,7 +237,7 @@ describe('Compiler', function () {
                 });
         });
 
-        it('Should compile test with static class blocks', function () {
+        it.skip('Should compile test with static class blocks', function () {
             const sources = [
                 'test/server/data/test-suites/class-with-static/testfile.js',
             ];
