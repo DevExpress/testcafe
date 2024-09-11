@@ -1,0 +1,26 @@
+{
+  "name": "running-tests-using-bitbucket-pipelines",
+  "version": "1.0.0",
+  "description": "An example of how to run TestCafe tests in the cloud using Chrome with Bitbucket Pipelines CI.",
+  "main": "server.js",
+  "scripts": {
+    "test": "testcafe 'chromium:headless --disable-setuid-sandbox --window-size=1920x1080' tests/index-test.js --app \"node server.js\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DevExpress/testcafe.git"
+  },
+  "author": "Developer Express Inc. (https://devexpress.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DevExpress/testcafe/issues"
+  },
+  "homepage": "https://github.com/DevExpress/testcafe#readme",
+  "dependencies": {
+    "connect": "^3.4.1",
+    "serve-static": "^1.11.1"
+  },
+  "devDependencies": {
+    "testcafe": "*"
+  }
+}
