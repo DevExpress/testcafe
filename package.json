@@ -199,7 +199,7 @@
     "eslint-plugin-no-only-tests": "^2.0.1",
     "express": "^4.13.3",
     "express-ntlm": "2.4.0",
-    "gulp": "^4.0.2",
+    "gulp": "^5.0.0",
     "gulp-babel": "^8.0.0",
     "gulp-clone": "^2.0.1",
     "gulp-data": "^1.3.1",
