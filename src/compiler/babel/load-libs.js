@@ -69,5 +69,6 @@ export default function loadLibs ({ esm } = {}) {
         presetReact:                getPresetReact(),
         proposalPrivateMethods:     [require('@babel/plugin-proposal-private-methods'), { loose: true }],
         proposalClassProperties:    [require('@babel/plugin-proposal-class-properties'), { loose: true }],
+        transformClassStaticBlock:  require('@babel/plugin-transform-class-static-block'),
     };
 }
