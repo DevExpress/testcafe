@@ -27,7 +27,7 @@ export async function connectionResetGuard (handleRequestFn: () => Promise<void>
 
         handleErrorFn(err);
 
-        throw err;
+        // throw err;
     }
 }
 
