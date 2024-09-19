@@ -17,14 +17,14 @@ const IGNORED_ERROR_CODES = {
     SESSION_WITH_GIVEN_ID_NOT_FOUND: -32001,
 };
 //The "WebSocket connection closed" error occurs on closeWindow in multiple windows mode
-const WEBSOCKET_CLOSED_RESPONSE_ERROR_MSG  = 'WebSocket connection closed';
+const IGNORED_ERROR_MESSAGES = ['WebSocket connection closed'];
 
 export async function connectionResetGuard (handleRequestFn: () => Promise<void>, handleErrorFn: (err: any) => void): Promise<void> {
     try {
         await handleRequestFn();
     }
     catch (err: any) {
-        if (Object.values(IGNORED_ERROR_CODES).includes(err?.response?.code) || err.message === WEBSOCKET_CLOSED_RESPONSE_ERROR_MSG)
+        if (Object.values(IGNORED_ERROR_CODES).includes(err?.response?.code) || IGNORED_ERROR_MESSAGES.includes(err.message))
             return;
 
         handleErrorFn(err);
