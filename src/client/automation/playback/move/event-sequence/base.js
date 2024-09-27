@@ -29,6 +29,15 @@ export default class MoveEventSequenceBase {
     }
 
     run (currentElement, prevElement, options, dragElement, dragDataStore) {
+
+        const prevElementInDocument = prevElement && domUtils.isElementInDocument(prevElement);
+
+        const prevElementInRemovedIframe = prevElement && domUtils.isElementInIframe(prevElement) &&
+                                         !domUtils.getIframeByElement(prevElement);
+
+        if (!prevElementInDocument || prevElementInRemovedIframe)
+            prevElement = null;
+
         const elementChanged = currentElement !== prevElement;
         const commonAncestor = elementChanged ? domUtils.getCommonAncestor(currentElement, prevElement) : null;
 
