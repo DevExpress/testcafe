@@ -16,13 +16,15 @@ const IGNORED_ERROR_CODES = {
     // The "Session not found" error can occur in iframes for unclear reasons.
     SESSION_WITH_GIVEN_ID_NOT_FOUND: -32001,
 };
+//The "WebSocket connection closed" error occurs on closeWindow in multiple windows mode
+const IGNORED_ERROR_MESSAGES = ['WebSocket connection closed'];
 
 export async function connectionResetGuard (handleRequestFn: () => Promise<void>, handleErrorFn: (err: any) => void): Promise<void> {
     try {
         await handleRequestFn();
     }
     catch (err: any) {
-        if (Object.values(IGNORED_ERROR_CODES).includes(err?.response?.code))
+        if (Object.values(IGNORED_ERROR_CODES).includes(err?.response?.code) || IGNORED_ERROR_MESSAGES.includes(err.message))
             return;
 
         handleErrorFn(err);
