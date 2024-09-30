@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <a href="#" id="link">Click me to remove</a>
+    <button id="btn">Button</button>
+
+    <script>
+        document.getElementById('link').addEventListener('click', function(event) {
+            event.preventDefault();
+            this.remove();
+        });
+    </script>
+</body>
+</html>
