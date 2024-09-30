@@ -225,7 +225,7 @@
     "proxyquire": "^2.1.0",
     "react": "^16.13.1",
     "recursive-copy": "^2.0.5",
-    "rollup": "2.16.1",
+    "rollup": "2.79.2",
     "rollup-plugin-typescript2": "^0.32.1",
     "serve-static": "^1.10.0",
     "sinon": "^7.3.0",
