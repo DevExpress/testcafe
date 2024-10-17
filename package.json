@@ -2,7 +2,7 @@
   "name": "testcafe",
   "description": "Automated browser testing for the modern web development stack.",
   "license": "MIT",
-  "version": "3.6.2",
+  "version": "3.7.0-rc.1",
   "author": {
     "name": "Developer Express Inc.",
     "url": "https://www.devexpress.com/"
@@ -235,8 +235,6 @@
     "uglify-js": "~3.10.4"
   },
   "overrides": {
-    "minimatch": "5.1.2",
-    "glob": "8.1.0",
-    "lodash": "^4.17.21"
+    "glob": "8.1.0"
   }
 }
