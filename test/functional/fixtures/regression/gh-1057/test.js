@@ -1,4 +1,4 @@
-describe('[Regression](GH-1057) - hidden by fixed parent', function () {
+describe('[Regression](GH-1057 ) - hidden by fixed parent', function () {
     it('The target element should not be under the element with position:fixed after scroll', function () {
         return runTests('testcafe-fixtures/hiddenByFixedParent.js', 'gh-1057', {
             // NOTE: https://github.com/DevExpress/testcafe/issues/1237
