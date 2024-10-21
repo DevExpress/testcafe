@@ -67,8 +67,8 @@ export default function loadLibs ({ esm } = {}) {
         presetEnvForTestCode:       [require('@babel/preset-env'), getPresetEnvForTestCodeOpts(esm)],
         moduleResolver:             [require('babel-plugin-module-resolver'), getModuleResolverOpts(esm)],
         presetReact:                getPresetReact(),
-        proposalPrivateMethods:     [require('@babel/plugin-proposal-private-methods'), { loose: true }],
-        proposalClassProperties:    [require('@babel/plugin-proposal-class-properties'), { loose: true }],
+        transformPrivateMethods:    [require('@babel/plugin-transform-private-methods'), { loose: true }],
+        transformClassProperties:   [require('@babel/plugin-transform-class-properties'), { loose: true }],
         transformClassStaticBlock:  require('@babel/plugin-transform-class-static-block'),
     };
 }

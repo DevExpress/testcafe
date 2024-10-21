@@ -21,14 +21,14 @@ export default class ESNextTestFileCompiler extends APIBasedTestFileCompilerBase
             presetEnvForTestCode,
             presetReact,
             moduleResolver,
-            proposalPrivateMethods,
-            proposalClassProperties,
+            transformPrivateMethods,
+            transformClassProperties,
             transformClassStaticBlock,
         } = loadBabelLibs({ esm });
 
         const opts = Object.assign({}, BASE_BABEL_OPTIONS, {
             presets:    [presetStage2, presetEnvForTestCode, presetReact],
-            plugins:    [transformRuntime, moduleResolver, proposalPrivateMethods, proposalClassProperties, transformClassStaticBlock],
+            plugins:    [transformRuntime, moduleResolver, transformPrivateMethods, transformClassProperties, transformClassStaticBlock],
             sourceMaps: 'inline',
             filename,
         });
