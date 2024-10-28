@@ -5,8 +5,25 @@ on:
     types: [published]
 
 jobs:
-  publish:
+  npm-publish:
     if: ${{ !github.event.release.draft }}
+    runs-on: ubuntu-latest
+    environment: release
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.release.target_commitish }}
+      - run: git fetch --force --tags
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          registry-url: 'https://registry.npmjs.org'
+      - run: npm install
+      - run: npm run publish-please-only
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+  docker-publish:
+    needs: npm-publish
     runs-on: ubuntu-latest
     environment: release
     steps:
@@ -23,6 +40,6 @@ jobs:
             username: ${{ secrets.DOCKERHUB_USERNAME }}
             password: ${{ secrets.DOCKERHUB_TOKEN }}
       - run: npm install
-      - run: npm run publish-please-only
+      - run: gulp docker-publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
