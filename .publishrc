@@ -10,5 +10,5 @@
   "confirm": false,
   "publishTag": "rc",
   "prePublishScript": "gulp test-server",
-  "postPublishScript": "gulp docker-publish"
+  "postPublishScript": ""
 }
