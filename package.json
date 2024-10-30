@@ -2,7 +2,7 @@
   "name": "testcafe",
   "description": "Automated browser testing for the modern web development stack.",
   "license": "MIT",
-  "version": "3.7.0-rc.2",
+  "version": "3.7.0-rc.3",
   "author": {
     "name": "Developer Express Inc.",
     "url": "https://www.devexpress.com/"
@@ -96,6 +96,7 @@
     "dedent": "^0.4.0",
     "del": "^3.0.0",
     "device-specs": "^1.0.0",
+    "devtools-protocol": "0.0.1109433",
     "diff": "^4.0.2",
     "elegant-spinner": "^1.0.1",
     "email-validator": "^2.0.4",
@@ -192,7 +193,6 @@
     "connect": "^3.4.0",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
-    "devtools-protocol": "0.0.1109433",
     "dom-walk": "^0.1.1",
     "escape-string-regexp": "^4.0.0",
     "eslint": "^7.13.0",
