@@ -40,6 +40,7 @@ jobs:
             username: ${{ secrets.DOCKERHUB_USERNAME }}
             password: ${{ secrets.DOCKERHUB_TOKEN }}
       - run: npm install
+      - run: npx gulp build
       - run: gulp docker-publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
