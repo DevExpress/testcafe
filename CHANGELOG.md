@@ -35,7 +35,6 @@ Earlier versions of TestCafe supported the [ESM Module](https://testcafe.io/docu
 * A `WebSocket connection closed` error occurs while running TestCafe in Chrome v127. The updated version includes the `--disable-search-engine-choice-screen` flag ([#8240](https://github.com/DevExpress/testcafe/issues/8240)).
 * A `leaveElement` method call causes an error when the `prevElement` object is removed from the DOM ([#8264](https://github.com/DevExpress/testcafe/issues/8264)).
 
-
 ## v3.6.2 (2024-07-02)
 
 ### Bug Fixes
