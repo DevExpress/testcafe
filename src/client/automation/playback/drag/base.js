@@ -35,7 +35,8 @@ export default class DragAutomationBase extends VisibleElementAutomation {
         this.downEvent = featureDetection.isTouchDevice ? 'touchstart' : 'mousedown';
         this.upEvent   = featureDetection.isTouchDevice ? 'touchend' : 'mouseup';
 
-        this.dragAndDropState = null;
+        this.dragAndDropState     = null;
+        this.shouldClickOnMouseUp = true;
     }
 
     _getEndPoint () {
@@ -126,7 +127,7 @@ export default class DragAutomationBase extends VisibleElementAutomation {
                     })
                     .then(element => {
                         //B231323
-                        if (topElement && element === topElement && !this.dragAndDropState.enabled)
+                        if (this.shouldClickOnMouseUp && topElement && element === topElement && !this.dragAndDropState.enabled)
                             eventSimulator.click(topElement, options);
                     });
             });
