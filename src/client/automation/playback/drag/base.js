@@ -126,7 +126,7 @@ export default class DragAutomationBase extends VisibleElementAutomation {
                     })
                     .then(element => {
                         //B231323
-                        if (topElement && element === topElement && !this.dragAndDropState.enabled && this.dragAndDropState.element)
+                        if (topElement && element === topElement && !this.dragAndDropState.enabled && this.dragAndDropState.dropAllowed)
                             eventSimulator.click(topElement, options);
                     });
             });
