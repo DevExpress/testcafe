@@ -1,5 +1,40 @@
 # Changelog
 
+## TestCafe v3.7.0 Released
+
+The TestCafe v3.7.0 update includes the capability to use `Metadata` as an interface, `esm` configuration file option, and a number of bug fixes.
+
+meta-readmore
+
+### Declare Metadata Interface
+
+Earlier versions of TestCafe supported `Metadata` as a type. In TestCafe v3.7.0 and higher, you should declare `Metadata` as an interface.
+
+```js
+// testcafe.global.d.ts
+declare module "testcafe" {
+	global {
+		interface Metadata {
+			manual?: boolean,
+		}
+	}
+}
+```
+
+### New Configuration File Option: esm
+
+Earlier versions of TestCafe supported the [ESM Module](https://testcafe.io/documentation/404258/guides/advanced-guides/esm-module-support) from the CLI only. In TestCafe v3.7.0 and higher, you can use the [esm](https://testcafe.io/documentation/402638/reference/configuration-file#esm) configuration file option. Note that this option **only works** with Node.js 18.19-18.xx, and 20.8.0 and up.
+
+### Bug Fixes
+
+* CDP client tab creation causes a `WebSocket connection closed` error in Chrome v130 ([#8286](https://github.com/DevExpress/testcafe/issues/8286)).
+* An unhandled promise rejection occurs while launching sub-windows ([#8258](https://github.com/DevExpress/testcafe/issues/8258)).
+* Assertions that perform visibility checks fail despite elements being visible on the page ([#8237](https://github.com/DevExpress/testcafe/issues/8237)).
+* The [t.getCurrentCDPSession](https://testcafe.io/documentation/404913/reference/test-api/testcontroller/getcurrentcdpsession) method returns `unknown` ([#8228](https://github.com/DevExpress/testcafe/issues/8228)).
+* [Native Automation] Request hooks are applied to skipped tests ([#8229](https://github.com/DevExpress/testcafe/issues/8229)).
+* A `WebSocket connection closed` error occurs while running TestCafe in Chrome v127. The updated version includes the `--disable-search-engine-choice-screen` flag ([#8240](https://github.com/DevExpress/testcafe/issues/8240)).
+* A `leaveElement` method call causes an error when the `prevElement` object is removed from the DOM ([#8264](https://github.com/DevExpress/testcafe/issues/8264)).
+
 ## v3.6.2 (2024-07-02)
 
 ### Bug Fixes
