@@ -14,6 +14,7 @@
 <a href="https://github.com/DevExpress/testcafe/commits/master"><img alt="Tests" src="https://img.shields.io/github/checks-status/DevExpress/testcafe/master?label=Tests"></a>
 <a href="https://github.com/DevExpress/testcafe/actions/workflows/test-dependencies.yml"><img alt="Test Dependencies" src="https://github.com/DevExpress/testcafe/actions/workflows/test-dependencies.yml/badge.svg" /></a>
 <a href="https://www.npmjs.com/package/testcafe"><img alt="NPM Version" src="https://img.shields.io/npm/v/testcafe.svg" data-canonical-src="https://img.shields.io/npm/v/testcafe.svg" style="max-width:100%;"></a>
+<a href="https://gurubase.io/g/testcafe"><img alt="Gurubase" src="https://img.shields.io/badge/Gurubase-Ask%20TestCafe%20Guru-006BFF"></a>
 </p>
 
 <p align="center">
