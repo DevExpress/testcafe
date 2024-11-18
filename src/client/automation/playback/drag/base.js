@@ -35,8 +35,7 @@ export default class DragAutomationBase extends VisibleElementAutomation {
         this.downEvent = featureDetection.isTouchDevice ? 'touchstart' : 'mousedown';
         this.upEvent   = featureDetection.isTouchDevice ? 'touchend' : 'mouseup';
 
-        this.dragAndDropState     = null;
-        this.shouldClickOnMouseUp = true;
+        this.dragAndDropState = null;
     }
 
     _getEndPoint () {
@@ -93,7 +92,7 @@ export default class DragAutomationBase extends VisibleElementAutomation {
             });
     }
 
-    _mouseup () {
+    _mouseup (eventArgs) {
         return cursor
             .buttonUp()
             .then(() => {
@@ -127,7 +126,7 @@ export default class DragAutomationBase extends VisibleElementAutomation {
                     })
                     .then(element => {
                         //B231323
-                        if (this.shouldClickOnMouseUp && topElement && element === topElement && !this.dragAndDropState.enabled)
+                        if (topElement && element === topElement && !this.dragAndDropState.enabled && element === eventArgs.element)
                             eventSimulator.click(topElement, options);
                     });
             });
@@ -153,6 +152,6 @@ export default class DragAutomationBase extends VisibleElementAutomation {
                 return Promise.all([delay(this.automationSettings.mouseActionStepDelay), this._mousedown(eventArgs)]);
             })
             .then(() => this._drag())
-            .then(() => this._mouseup());
+            .then(() => this._mouseup(eventArgs));
     }
 }

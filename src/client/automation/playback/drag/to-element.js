@@ -12,8 +12,6 @@ export default class DragToElementAutomation extends DragAutomationBase {
         this.destinationElement = destinationElement;
         this.destinationOffsetX = dragToElementOptions.destinationOffsetX;
         this.destinationOffsetY = dragToElementOptions.destinationOffsetY;
-
-        this.shouldClickOnMouseUp = false;
     }
 
     async _getDestination () {
