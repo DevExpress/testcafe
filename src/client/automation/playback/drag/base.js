@@ -92,7 +92,7 @@ export default class DragAutomationBase extends VisibleElementAutomation {
             });
     }
 
-    _mouseup () {
+    _mouseup (draggedElement) {
         return cursor
             .buttonUp()
             .then(() => {
@@ -126,7 +126,7 @@ export default class DragAutomationBase extends VisibleElementAutomation {
                     })
                     .then(element => {
                         //B231323
-                        if (topElement && element === topElement && !this.dragAndDropState.enabled)
+                        if (topElement && element === topElement && !this.dragAndDropState.enabled && element === draggedElement)
                             eventSimulator.click(topElement, options);
                     });
             });
@@ -152,6 +152,6 @@ export default class DragAutomationBase extends VisibleElementAutomation {
                 return Promise.all([delay(this.automationSettings.mouseActionStepDelay), this._mousedown(eventArgs)]);
             })
             .then(() => this._drag())
-            .then(() => this._mouseup());
+            .then(() => this._mouseup(eventArgs.element));
     }
 }
