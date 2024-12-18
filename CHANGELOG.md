@@ -1,5 +1,13 @@
 # Changelog
 
+## v3.7.1 (2024-12-18)
+
+### Bug Fixes
+
+* The 'click' event is raised when a draggable element was dropped. ([8250](https://github.com/DevExpress/testcafe/issues/8250))
+* Unable to type text in the CodeMirror editor after it was clicked. ([8321](https://github.com/DevExpress/testcafe/issues/8321))
+* Angular functions can work incorrectly in proxy mode. ([8221](https://github.com/DevExpress/testcafe/issues/8221))
+
 ## TestCafe v3.7.0 Released
 
 The TestCafe v3.7.0 update includes the capability to use `Metadata` as an interface, `esm` configuration file option, and a number of bug fixes.
