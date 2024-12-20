@@ -285,15 +285,15 @@ export function getNearestCommonAncestor (node1, node2) {
 
 //selection utils
 function getSelectedPositionInParentByOffset (node, offset) {
-    // NOTE: we get a child element by its offset index in the parent
-    if (domUtils.isShadowUIElement(node))
-        return { node, offset };
-
     const childNodes         = nativeMethods.nodeChildNodesGetter.call(node);
     const childCount         = domUtils.getChildNodesLength(childNodes);
     let isSearchForLastChild = offset >= childCount;
     let currentNode          = childNodes[offset];
     let currentOffset        = 0;
+
+    // NOTE: we get a child element by its offset index in the parent
+    if (domUtils.isShadowUIElement(node) || !currentNode)
+        return { node, offset };
 
     // NOTE: skip shadowUI elements
     if (domUtils.isShadowUIElement(currentNode)) {

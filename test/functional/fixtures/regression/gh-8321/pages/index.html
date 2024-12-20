@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+    </head>
+    <body>
+        <div contenteditable="true">
+            <div id="myText">example</div>
+        </div>
+    </body>
+    <script>
+        const element = document.getElementById("myText");
+        element.addEventListener("click", () => {
+            const selection = document.getSelection();
+            const range     = document.createRange();
+
+            range.selectNodeContents(element);
+            range.collapse(false);
+            selection.removeAllRanges();
+            selection.addRange(range);
+        });
+    </script>
+</html>
