@@ -38,7 +38,7 @@ module.exports = function runFunctionalTestViaCommandLine (publishRepository, pa
             if (osFamily.linux)
                 setAccessPrivileges(resultTmpDirPath);
 
-            const cmd = `docker run -i -v ${resultTmpDirPath}:/tests -w /tests ${publishRepository}:${packageInfo.version} chromium:headless basic-test.js --browser-init-timeout 900000`;
+            const cmd = `docker run -i -v ${resultTmpDirPath}:/tests -w /tests ${publishRepository}:${packageInfo.version} chromium:headless basic-test.js`;
 
             childProcess.execSync(cmd, { stdio: 'inherit', env: process.env });
         });
