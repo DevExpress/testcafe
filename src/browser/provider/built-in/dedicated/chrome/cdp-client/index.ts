@@ -258,8 +258,6 @@ export class BrowserClient {
         const client = await this.getActiveClient();
 
         if (client) {
-            //await this._setDeviceMetricsOverride(client, newDimensions.width, newDimensions.height, 1, config.mobile);
-
             const windowParams = await client.Browser.getWindowForTarget({ targetId: target.id });
 
             if (windowParams.bounds.windowState !== 'normal') {
