@@ -13,7 +13,11 @@ on:
       is-docker:
         required: false
         type: boolean
-        default: false    
+        default: false
+      node-options:
+        required: false
+        type: string
+        default: '' 
 env:
   NO_CACHE: ${{ secrets.NO_CACHE }}
 jobs:  
@@ -57,6 +61,8 @@ jobs:
         
       - run: ${{ inputs.test-script }}
         timeout-minutes: 60
+        env:
+          NODE_OPTIONS: ${{ inputs.node-options }}
 
       - uses: DevExpress/testcafe-build-system/actions/set-status@main
         if: always()
