@@ -34,6 +34,10 @@ describe('[API] Resize window actions', function () {
             it('Should resize the window after maximizeWindow', function () {
                 return runTests('./testcafe-fixtures/resize-window-test.js', 'Resize the window after maximizeWindow', { only: 'chrome' });
             });
+
+            it('Should maximizeWindow after resize', function () {
+                return runTests('./testcafe-fixtures/resize-window-test.js', 'Correctly maximizeWindow after resize', { only: 'chrome' });
+            });
         });
 
         describe('t.resizeWindowToFitDevice', function () {

@@ -244,7 +244,7 @@ export class BrowserClient {
     }
 
     public async resizeBounds (newDimensions: Size): Promise<void> {
-        const { viewportSize, config } = this._runtimeInfo;
+        const { viewportSize } = this._runtimeInfo;
 
         let nonClientWidth  = 0;
         let nonClientHeight = 0;
@@ -258,8 +258,6 @@ export class BrowserClient {
         const client = await this.getActiveClient();
 
         if (client) {
-            await this._setDeviceMetricsOverride(client, newDimensions.width, newDimensions.height, 1, config.mobile);
-
             const windowParams = await client.Browser.getWindowForTarget({ targetId: target.id });
 
             if (windowParams.bounds.windowState !== 'normal') {
