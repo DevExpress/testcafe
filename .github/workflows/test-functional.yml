@@ -161,7 +161,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-            name: testcafe-debug-log
+            name: testcafe-debug-log-${{ matrix.test-group }}
             path: testcafe-debug-log-${{ matrix.test-group }}.log
 
       - uses: DevExpress/testcafe-build-system/actions/save-matrix-status@main
