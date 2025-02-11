@@ -145,7 +145,7 @@ jobs:
         uses: 'browserstack/github-actions/setup-local@master'
         with:
           local-testing: start
-          local-logging-level: all-logs
+          local-logging-level: false
           local-identifier: random
 
       - run: ${{ inputs.test-script }} 2> testcafe-debug-log-${{ matrix.test-group }}.log
