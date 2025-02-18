@@ -1,5 +1,15 @@
 # Changelog
 
+## v3.7.2 (2025-02-18)
+
+### Bug Fixes
+
+* TestCafe incorrectly processes angular functions in proxy mode. ([3035](https://github.com/DevExpress/testcafe-hammerhead/issues/3035))
+* A browser throws a SyntaxError in proxy mode. ([8368](https://github.com/DevExpress/testcafe/issues/8368))
+* Docker Image cannot run test for pages in foreign languages. ([8362](https://github.com/DevExpress/testcafe/issues/8362))
+* [Native Automation] TestCafe does not maximize the window after a resizeMethod call. ([8360](https://github.com/DevExpress/testcafe/issues/8360))
+* lru-cache conflicts with TypeScript's latest types. ([3036](https://github.com/DevExpress/testcafe-hammerhead/issues/3036))
+
 ## v3.7.1 (2024-12-18)
 
 ### Bug Fixes
