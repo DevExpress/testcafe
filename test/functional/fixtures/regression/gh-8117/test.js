@@ -36,7 +36,7 @@ const run = (pathToTest, concurrency) => {
 };
 
 describe('[Regression](GH-8117)', function () {
-    onlyInNativeAutomation('Should resize and maximize window in native automation mode with disableMultipleWindows option', function () {
+    onlyInNativeAutomation('Should resizeddd and maximize window in native automation mode with disableMultipleWindows option', function () {
         return run('testcafe-fixtures/maximize.js')
             .then(() => expect(errors.length).eql(0));
     });
