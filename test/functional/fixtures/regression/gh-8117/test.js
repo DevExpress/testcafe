@@ -34,7 +34,8 @@ const run = (pathToTest) => {
         });
 };
 
-describe('[Regression](GH-8117)', function () {
+// eslint-disable-next-line no-only-tests/no-only-tests
+describe.only('[Regression](GH-8117)', function () {
     onlyInNativeAutomation('Should resize window in native automation mode with disableMultipleWindows option', function () {
         return run('testcafe-fixtures/resize.js')
             .then(() => expect(errors.length).eql(0));
