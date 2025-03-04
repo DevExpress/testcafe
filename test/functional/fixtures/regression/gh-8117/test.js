@@ -14,7 +14,7 @@ const reporter = createReporter({
     },
 });
 
-const run = (pathToTest, concurrency) => {
+const run = (pathToTest) => {
     const src = path.join(__dirname, pathToTest);
 
     return createTestCafe('127.0.0.1', 1335, 1336)
@@ -27,15 +27,15 @@ const run = (pathToTest, concurrency) => {
                 .src(src)
                 .browsers(`chrome`)
                 .reporter(reporter)
-                .concurrency(concurrency)
                 .run({ disableMultipleWindows: true });
         })
         .then(() => {
-            testCafe.close();
+            return testCafe.close();
         });
 };
 
-describe('[Regression](GH-8117)', function () {
+// eslint-disable-next-line no-only-tests/no-only-tests
+describe.only('[Regression](GH-8117)', function () {
     onlyInNativeAutomation('Should resize and maximize window in native automation mode with disableMultipleWindows option', function () {
         return run('testcafe-fixtures/maximize.js')
             .then(() => expect(errors.length).eql(0));
