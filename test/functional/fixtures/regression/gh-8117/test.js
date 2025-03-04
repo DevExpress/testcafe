@@ -25,7 +25,7 @@ const run = (pathToTest) => {
             runner = testCafe.createRunner();
             return runner
                 .src(src)
-                .browsers(`chrome:headless`)
+                .browsers(`chrome`)
                 .reporter(reporter)
                 .run({ disableMultipleWindows: true });
         })
