@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { expect } from 'chai';
 import { getWindowHeight, getWindowWidth } from '../../../../esm-utils/window-helpers.js';
 
@@ -9,6 +10,9 @@ test('Resize window', async t => {
     const newHeight = 500;
 
     await t.resizeWindow(newWidth, newHeight);
+
+    console.log(await getWindowWidth());
+    console.log(await getWindowHeight());
 
     expect(await getWindowWidth()).equals(newWidth);
     expect(await getWindowHeight()).equals(newHeight);
