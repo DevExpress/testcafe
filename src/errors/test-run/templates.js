@@ -13,7 +13,7 @@ import { getConcatenatedValuesString } from '../../utils/string';
 
 const EXTERNAL_LINKS = {
     createNewIssue:      'https://github.com/DevExpress/testcafe/issues/new?template=bug-report.md',
-    troubleshootNetwork: 'https://go.devexpress.com/TestCafe_FAQ_ARequestHasFailed.aspx',
+    troubleshootNetwork: 'https://testcafe.io/documentation/403937/faq/working-with-testcafe#my-tests-fail-because-testcafe-cannot-resolve-a-network-request-what-are-the-possible-reasons',
     viewportSizes:       'https://github.com/DevExpress/device-specs/blob/master/viewport-sizes.json',
     skipJsErrorsRecipes: 'https://testcafe.io/documentation/404038/recipes/debugging/skip-javascript-errors',
 };
