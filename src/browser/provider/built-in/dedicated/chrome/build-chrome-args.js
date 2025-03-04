@@ -20,7 +20,7 @@ export function buildChromeArgs ({ config, cdpPort, platformArgs, tempProfileDir
         '--disable-prompt-on-repost',
         '--disable-renderer-backgrounding',
         '--disable-sync',
-        '--enable-automation',
+        //'--enable-automation',
         '--export-tagged-pdf',
         '--generate-pdf-document-outline',
         '--force-color-profile=srgb',
