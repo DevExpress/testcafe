@@ -14,7 +14,7 @@ const reporter = createReporter({
     },
 });
 
-const run = (pathToTest, concurrency) => {
+const run = (pathToTest) => {
     const src = path.join(__dirname, pathToTest);
 
     return createTestCafe('127.0.0.1', 1335, 1336)
@@ -27,11 +27,10 @@ const run = (pathToTest, concurrency) => {
                 .src(src)
                 .browsers(`chrome`)
                 .reporter(reporter)
-                .concurrency(concurrency)
                 .run({ disableMultipleWindows: true });
         })
         .then(() => {
-            testCafe.close();
+            return testCafe.close();
         });
 };
 
