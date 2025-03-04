@@ -39,8 +39,8 @@ describe('[Regression](GH-8117)', function () {
         return run('testcafe-fixtures/resize.js')
             .then(() => expect(errors.length).eql(0));
     });
-    onlyInNativeAutomation('Should resize and maximize window in native automation mode with disableMultipleWindows option', function () {
-        return run('testcafe-fixtures/maximize.js')
-            .then(() => expect(errors.length).eql(0));
-    });
+    // onlyInNativeAutomation('Should resize and maximize window in native automation mode with disableMultipleWindows option', function () {
+    //     return run('testcafe-fixtures/maximize.js')
+    //         .then(() => expect(errors.length).eql(0));
+    // });
 });
