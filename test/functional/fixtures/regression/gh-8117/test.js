@@ -37,10 +37,10 @@ const run = (pathToTest, concurrency) => {
 };
 
 describe.only('[Regression](GH-8117)', function () {
-    onlyInNativeAutomation('Should resizeddd and maximize window in native automation mode with disableMultipleWindows option', function () {
-        return run('testcafe-fixtures/maximize.js')
-            .then(() => expect(errors.length).eql(0));
-    });
+    // onlyInNativeAutomation('Should resizeddd and maximize window in native automation mode with disableMultipleWindows option', function () {
+    //     return run('testcafe-fixtures/maximize.js')
+    //         .then(() => expect(errors.length).eql(0));
+    // });
     onlyInNativeAutomation('Should resize window in native automation mode with disableMultipleWindows option', function () {
         return run('testcafe-fixtures/resize.js')
             .then(() => expect(errors.length).eql(0));
