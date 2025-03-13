@@ -10,13 +10,10 @@ export function buildChromeArgs ({ config, cdpPort, platformArgs, tempProfileDir
         '--disable-background-timer-throttling',
         '--disable-backgrounding-occluded-windows',
         '--disable-breakpad',
-        '--disable-client-side-phishing-detection',
         '--disable-default-apps',
         '--disable-extensions',
         '--disable-hang-monitor',
-        '--disable-infobars',
         '--disable-ipc-flooding-protection',
-        '--disable-popup-blocking',
         '--disable-prompt-on-repost',
         '--disable-renderer-backgrounding',
         '--disable-sync',
@@ -26,8 +23,6 @@ export function buildChromeArgs ({ config, cdpPort, platformArgs, tempProfileDir
         '--force-color-profile=srgb',
         '--metrics-recording-only',
         '--no-first-run',
-        '--password-store=basic',
-        '--use-mock-keychain',
     ];
 
     let chromeArgs = []
