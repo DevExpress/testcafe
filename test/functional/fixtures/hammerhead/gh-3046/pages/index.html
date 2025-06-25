@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Worker</title>
+    </head>
+    <body>
+        <h1>Worker With Modules</h1>
+        <button id="btn">get the answer!</button>
+        <output id="out"></output>
+    </body>
+    <script>
+        const btn = document.getElementById("btn");
+        const out = document.getElementById("out");
+
+        const worker = new Worker("./worker.js", { type: "module" });
+        btn.onclick = () => worker.postMessage("");
+        worker.onmessage = (ev) => (out.textContent = ev.data);
+    </script>
+</html>
