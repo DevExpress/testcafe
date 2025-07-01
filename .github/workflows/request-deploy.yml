@@ -35,7 +35,7 @@ jobs:
       - name: Request Deployment
         uses: actions/github-script@v6
         with:
-          github-token: ${{secrets.ACTIVE_TOKEN}}
+          github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
             
