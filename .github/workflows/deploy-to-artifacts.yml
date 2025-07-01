@@ -30,7 +30,7 @@ jobs:
       - id: prep
         uses: actions/github-script@v6
         with:
-          github-token: ${{ secrets.ACTIVE_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             core.setOutput('sha', context.payload.inputs.merged_sha || context.payload.inputs.sha);
       - uses: actions/checkout@v3
@@ -102,7 +102,7 @@ jobs:
           name: changes
       - uses: actions/github-script@v6
         with:
-          github-token: ${{secrets.ACTIVE_TOKEN}}
+          github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             function getInputs () {
               const { sha, merged_sha } = context.payload.inputs;
