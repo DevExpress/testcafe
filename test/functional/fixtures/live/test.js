@@ -95,7 +95,7 @@ if (config.useLocalBrowsers && !config.hasBrowser('safari')) {
                         }, 1000);
                     });
 
-                    return runner.run({ disableNativeAutomation: !config.nativeAutomation });
+                    return runner.run({ disableNativeAutomation: !config.nativeAutomation, browserInitTimeout: 240000 });
                 })
                 .then(() => {
                     expect(helper.counter).eql(config.browsers.length * helper.testCount * runCount);
