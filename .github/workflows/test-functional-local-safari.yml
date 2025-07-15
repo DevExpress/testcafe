@@ -17,4 +17,6 @@ jobs:
     with:	
       test-script: 'npx gulp test-functional-local-safari-run --steps-as-tasks'	
       os: 'macos-13'
-      timeout: 40
+      timeout: 60
+      matrix-jobs-count: 1
+      node-version: 20
