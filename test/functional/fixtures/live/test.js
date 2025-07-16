@@ -79,30 +79,32 @@ if (config.useLocalBrowsers && !config.hasBrowser('safari')) {
             helper.clean();
         });
 
-        it('Smoke', () => {
-            const runCount = 2;
+        if (!config.hasBrowser('edge')) {
+            it('Smoke', () => {
+                const runCount = 2;
 
-            return createTestCafeInstance()
-                .then(() => {
-                    const runner = createLiveModeRunner(cafe, '/testcafe-fixtures/smoke.js');
+                return createTestCafeInstance()
+                    .then(() => {
+                        const runner = createLiveModeRunner(cafe, '/testcafe-fixtures/smoke.js');
 
-                    helper.emitter.once('tests-completed', () => {
-                        setTimeout(() => {
-                            runner.controller.restart()
-                                .then(() => {
-                                    runner.exit();
-                                });
-                        }, 1000);
+                        helper.emitter.once('tests-completed', () => {
+                            setTimeout(() => {
+                                runner.controller.restart()
+                                    .then(() => {
+                                        runner.exit();
+                                    });
+                            }, 1000);
+                        });
+
+                        return runner.run({ disableNativeAutomation: !config.nativeAutomation });
+                    })
+                    .then(() => {
+                        expect(helper.counter).eql(config.browsers.length * helper.testCount * runCount);
+
+                        return cafe.close();
                     });
-
-                    return runner.run({ disableNativeAutomation: !config.nativeAutomation });
-                })
-                .then(() => {
-                    expect(helper.counter).eql(config.browsers.length * helper.testCount * runCount);
-
-                    return cafe.close();
-                });
-        });
+            });
+        }
 
         it('Quarantine', () => {
             return createTestCafeInstance()

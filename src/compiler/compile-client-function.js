@@ -11,7 +11,7 @@ const ANONYMOUS_FN_RE                = /^function\s*\*?\s*\(/;
 const ES6_OBJ_METHOD_NAME_RE         = /^(\S+?)\s*\(/;
 const USE_STRICT_RE                  = /^('|")use strict('|");?/;
 const TRAILING_SEMICOLON_RE          = /;\s*$/;
-const REGENERATOR_FOOTPRINTS_RE      = /(_index\d+\.default|_regenerator\d+\.default|regeneratorRuntime)(\(\))?\.wrap\(function func\$\(_context\)/;
+const REGENERATOR_FOOTPRINTS_RE      = /(_index\d+\.default|_regenerator\d+\.default|regeneratorRuntime|regenerator)(\(\))?\.(wrap|w)\(function (func\$|)\(_context\)/;
 const ASYNC_TO_GENERATOR_OUTPUT_CODE = formatBabelProducedCode(asyncToGenerator(noop).toString());
 
 const CLIENT_FUNCTION_BODY_WRAPPER = code => `const func = (${code});`;
