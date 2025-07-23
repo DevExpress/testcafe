@@ -235,6 +235,9 @@
     "uglify-js": "~3.10.4"
   },
   "overrides": {
-    "glob": "8.1.0"
+    "glob": "8.1.0",
+    "testcafe-browser-tools": {
+      "del": "^6.1.1"
+    }
   }
 }
