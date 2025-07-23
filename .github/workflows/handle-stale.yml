@@ -30,4 +30,4 @@ jobs:
       - uses: actions/checkout@v4
       - uses: gautamkrishnar/keepalive-workflow@v2
         with:
-          gh_token: ${{ secrets.ACTIVE_TOKEN }}
+          gh_token: ${{ secrets.GITHUB_TOKEN }}
