@@ -1,0 +1,1 @@
+onmessage = () => postMessage(100);
