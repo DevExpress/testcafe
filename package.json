@@ -219,7 +219,7 @@
     "merge-stream": "^1.0.1",
     "minimist": "^1.2.0",
     "mocha-reporter-spec-with-retries": "1.0.0",
-    "multer": "1.4.4-lts.1",
+    "multer": "2.0.2",
     "openssl-self-signed-certificate": "^1.1.6",
     "proxyquire": "^2.1.0",
     "react": "^16.13.1",
