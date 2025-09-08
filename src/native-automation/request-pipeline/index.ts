@@ -519,10 +519,17 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
         for (const removedHeader of reqOpts._removedHeaders)
             remove(headers, header => header.name.toLowerCase() === removedHeader.name);
 
+        const newPostData = reqOpts.body as Buffer | undefined;
+        const shouldOverrideBody = newPostData?.length && newPostData.toString() !== event.request.postData;
+
         return {
             url:    modifierUrl,
             method: reqOpts.method,
             headers,
+            // NOTE: event.request.postData is already encoded but to override it we need to encode it as base64
+            ...shouldOverrideBody && {
+                postData: newPostData.toString('base64'),
+            },
         };
     }
 
