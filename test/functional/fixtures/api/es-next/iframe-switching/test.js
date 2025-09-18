@@ -76,7 +76,8 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
     });
 
     it('Correct execution order of "message" events in cross-domain iframe', function () {
-        return runTests('./testcafe-fixtures/message-event.js', null, { skip: ['iphone', 'ipad'], ...DEFAULT_RUN_OPTIONS });
+        // TODO: skipped in Safari due to https://github.com/DevExpress/testcafe-private/issues/556
+        return runTests('./testcafe-fixtures/message-event.js', null, { skip: ['iphone', 'ipad', 'safari'], ...DEFAULT_RUN_OPTIONS });
     });
 
     describe('Unavailable iframe errors', function () {
