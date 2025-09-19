@@ -239,12 +239,13 @@ export class BrowserClient {
         if (client) {
             const windowParams = await client.Browser.getWindowForTarget({ targetId: target.id });
 
+            await client.Emulation.clearDeviceMetricsOverride();
             await client.Browser.setWindowBounds({ windowId: windowParams.windowId, bounds: { windowState: 'maximized' } });
         }
     }
 
     public async resizeBounds (newDimensions: Size): Promise<void> {
-        const { viewportSize } = this._runtimeInfo;
+        const { viewportSize, config } = this._runtimeInfo;
 
         let nonClientWidth  = 0;
         let nonClientHeight = 0;
@@ -258,6 +259,7 @@ export class BrowserClient {
         const client = await this.getActiveClient();
 
         if (client) {
+            await this._setDeviceMetricsOverride(client, newDimensions.width, newDimensions.height, 1, config.mobile);
             const windowParams = await client.Browser.getWindowForTarget({ targetId: target.id });
 
             if (windowParams.bounds.windowState !== 'normal') {
