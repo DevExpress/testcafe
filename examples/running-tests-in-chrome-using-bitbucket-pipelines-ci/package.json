@@ -4,7 +4,7 @@
   "description": "An example of how to run TestCafe tests in the cloud using Chrome with Bitbucket Pipelines CI.",
   "main": "server.js",
   "scripts": {
-    "test": "testcafe 'chromium:headless --disable-setuid-sandbox --window-size=1920x1080' tests/index-test.js --app \"node server.js\""
+    "test": "testcafe 'chromium:headless --disable-gpu --disable-setuid-sandbox --window-size=1920x1080' tests/index-test.js --app \"node server.js\""
   },
   "repository": {
     "type": "git",
