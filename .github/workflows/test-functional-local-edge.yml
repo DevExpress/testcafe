@@ -17,4 +17,5 @@ jobs:
     with:
       os: 'windows-latest'
       matrix-jobs-count: 5
+      timeout: 45
       test-script: 'npx gulp test-functional-local-headless-edge-run --steps-as-tasks'
