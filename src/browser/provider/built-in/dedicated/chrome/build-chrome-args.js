@@ -23,6 +23,7 @@ export function buildChromeArgs ({ config, cdpPort, platformArgs, tempProfileDir
         '--force-color-profile=srgb',
         '--metrics-recording-only',
         '--no-first-run',
+        '--unsafely-disable-devtools-self-xss-warnings'
     ];
 
     let chromeArgs = []
