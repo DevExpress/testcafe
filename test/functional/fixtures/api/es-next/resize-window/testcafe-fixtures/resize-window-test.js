@@ -21,7 +21,7 @@ const resetWindowOnresizeHandler = ClientFunction(() => {
     };
 });
 
-const iPhoneSize = { width: 480, height: 320 };
+const iPadSize = { width: 1024, height: 768 };
 
 fixture `Resize the window`
     .page `http://localhost:3000/fixtures/api/es-next/resize-window/pages/index.html`
@@ -49,16 +49,15 @@ test('Incorrect action height argument', async t => {
 });
 
 test('Resize the window to fit a device', async t => {
-    await t.resizeWindowToFitDevice('iPhone');
+    // NOTE: Firefox 144 cannot set its width less than ~500px in both the headless and non-headless modes.
+    await t.resizeWindowToFitDevice('iPad');
 
-    expect(await getWindowWidth()).equals(iPhoneSize.width);
-    expect(await getWindowHeight()).equals(iPhoneSize.height);
+    expect(await getWindowWidth()).equals(iPadSize.width);
+    expect(await getWindowHeight()).equals(iPadSize.height);
 });
 
 test('Resize the window to fit a device with portrait orientation', async t => {
     // NOTE: Firefox 74 cannot set its width less than ~450px in both the headless and non-headless modes.
-    const iPadSize = { width: 1024, height: 768 };
-
     await t.resizeWindowToFitDevice('iPad', { portraitOrientation: true });
 
     expect(await getWindowWidth()).equals(iPadSize.height);
