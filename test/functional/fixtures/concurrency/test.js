@@ -1,3 +1,4 @@
+/* eslint-disable no-only-tests/no-only-tests */
 const path                       = require('path');
 const { expect }                 = require('chai');
 const isCI                       = require('is-ci');
@@ -8,7 +9,7 @@ const { skipInNativeAutomation } = require('../../utils/skip-in');
 
 
 if (config.useLocalBrowsers) {
-    describe('Concurrency', function () {
+    describe.only('Concurrency', function () {
         let data = '';
 
         function resolvePath (file) {
@@ -101,14 +102,14 @@ if (config.useLocalBrowsers) {
         });
 
         it('Should run tests sequentially if concurrency = 1', function () {
-            return run('chrome:headless --no-sandbox', 1, './testcafe-fixtures/sequential-test.js')
+            return run('edge:headless --no-sandbox', 1, './testcafe-fixtures/sequential-test.js')
                 .then(() => {
                     expect(testInfo.getData()).eql(['long started', 'long finished', 'short started', 'short finished']);
                 });
         });
 
         it('Should run tests concurrently if concurrency > 1', function () {
-            return run('chrome:headless --no-sandbox --disable-gpu --disable-dev-shm-usage', 2, './testcafe-fixtures/concurrent-test.js')
+            return run('edge:headless --no-sandbox --disable-gpu --disable-dev-shm-usage', 2, './testcafe-fixtures/concurrent-test.js')
                 .then(() => {
                     expect(testInfo.getData()).eql(['test started', 'test started', 'short finished', 'long finished']);
                 });
