@@ -109,14 +109,36 @@ if (config.useLocalBrowsers) {
         });
 
         it('Should run tests concurrently if concurrency > 1', function () {
-            return run('chrome:headless --no-sandbox --disable-gpu --disable-dev-shm-usage', 2, './testcafe-fixtures/concurrent-test.js')
+            const EDGE_FLAGS = [
+                '--no-sandbox',
+                '--disable-gpu',
+                '--disable-dev-shm-usage',
+                '--disable-background-timer-throttling',
+                '--disable-backgrounding-occluded-windows',
+                '--disable-renderer-backgrounding',
+                '--disable-features=CalculateNativeWinOcclusion',
+            ].join(' ');
+            const browser = isCI ? `edge:headless ${EDGE_FLAGS}` : 'edge:headless --no-sandbox';
+
+            return run(browser, 2, './testcafe-fixtures/concurrent-test.js')
                 .then(() => {
                     expect(testInfo.getData()).eql(['test started', 'test started', 'short finished', 'long finished']);
                 });
         });
 
         it('Should run tests concurrently after fixture before hook', function () {
-            return run('chrome:headless --no-sandbox --disable-gpu --disable-dev-shm-usage', 5, './testcafe-fixtures/concurrent-fixture-before-test.js', 'json', {
+            const EDGE_FLAGS = [
+                '--no-sandbox',
+                '--disable-gpu',
+                '--disable-dev-shm-usage',
+                '--disable-background-timer-throttling',
+                '--disable-backgrounding-occluded-windows',
+                '--disable-renderer-backgrounding',
+                '--disable-features=CalculateNativeWinOcclusion',
+            ].join(' ');
+            const browser = isCI ? `edge:headless ${EDGE_FLAGS}` : 'edge:headless --no-sandbox';
+
+            return run(browser, 5, './testcafe-fixtures/concurrent-fixture-before-test.js', 'json', {
                 testRun: {
                     before: async () => {
                         await new Promise(r => setTimeout(r, 3000));
