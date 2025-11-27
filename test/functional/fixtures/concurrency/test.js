@@ -1,4 +1,3 @@
-/* eslint-disable no-only-tests/no-only-tests */
 const path                       = require('path');
 const { expect }                 = require('chai');
 const isCI                       = require('is-ci');
@@ -9,7 +8,7 @@ const { skipInNativeAutomation } = require('../../utils/skip-in');
 
 
 if (config.useLocalBrowsers) {
-    describe.only('Concurrency', function () {
+    describe('Concurrency', function () {
         let data = '';
 
         function resolvePath (file) {
@@ -109,36 +108,14 @@ if (config.useLocalBrowsers) {
         });
 
         it('Should run tests concurrently if concurrency > 1', function () {
-            const EDGE_FLAGS = [
-                '--no-sandbox',
-                '--disable-gpu',
-                '--disable-dev-shm-usage',
-                '--disable-background-timer-throttling',
-                '--disable-backgrounding-occluded-windows',
-                '--disable-renderer-backgrounding',
-                '--disable-features=CalculateNativeWinOcclusion',
-            ].join(' ');
-            const browser = isCI ? `edge:headless ${EDGE_FLAGS}` : 'edge:headless --no-sandbox';
-
-            return run(browser, 2, './testcafe-fixtures/concurrent-test.js')
+            return run('chrome:headless --no-sandbox', 2, './testcafe-fixtures/concurrent-test.js')
                 .then(() => {
                     expect(testInfo.getData()).eql(['test started', 'test started', 'short finished', 'long finished']);
                 });
         });
 
         it('Should run tests concurrently after fixture before hook', function () {
-            const EDGE_FLAGS = [
-                '--no-sandbox',
-                '--disable-gpu',
-                '--disable-dev-shm-usage',
-                '--disable-background-timer-throttling',
-                '--disable-backgrounding-occluded-windows',
-                '--disable-renderer-backgrounding',
-                '--disable-features=CalculateNativeWinOcclusion',
-            ].join(' ');
-            const browser = isCI ? `edge:headless ${EDGE_FLAGS}` : 'edge:headless --no-sandbox';
-
-            return run(browser, 5, './testcafe-fixtures/concurrent-fixture-before-test.js', 'json', {
+            return run('chrome:headless --no-sandbox', 5, './testcafe-fixtures/concurrent-fixture-before-test.js', 'json', {
                 testRun: {
                     before: async () => {
                         await new Promise(r => setTimeout(r, 3000));
@@ -159,7 +136,7 @@ if (config.useLocalBrowsers) {
                 },
             });
 
-            return run('chrome:headless --disable-gpu --disable-dev-shm-usage', concurrency, './testcafe-fixtures/concurrent-test.js', reporter)
+            return run('chrome:headless', concurrency, './testcafe-fixtures/concurrent-test.js', reporter)
                 .then(() => {
                     expect(scope.userAgents.length).eql(concurrency);
                 });
@@ -182,17 +159,17 @@ if (config.useLocalBrowsers) {
 
         // TODO: stabilize test on Firefox
         // NOTE: Skip the test for nativeAutomation mode
-        const needSkip = config.hasBrowser('firefox') || config.nativeAutomation || config.hasBrowser('edge');
+        const needSkip = config.hasBrowser('firefox') || config.nativeAutomation;
 
         (needSkip ? it.skip : it)('Should run tests concurrently with Role', function () {
-            return run('chrome:headless --no-sandbox --disable-gpu --disable-dev-shm-usage', 2, './testcafe-fixtures/role-test.js')
+            return run('chrome:headless --no-sandbox', 2, './testcafe-fixtures/role-test.js')
                 .then(() => {
                     expect(testInfo.getData()).eql(['/fixtures/concurrency/pages/first-page.html', '/fixtures/concurrency/pages/second-page.html']);
                 });
         });
 
         it('Should report fixture start correctly if second fixture finishes before first', function () {
-            return run('chrome:headless --no-sandbox --disable-gpu --disable-dev-shm-usage', 2, ['./testcafe-fixtures/multifixture-test-a.js', './testcafe-fixtures/multifixture-test-b.js'], customReporter)
+            return run('chrome:headless --no-sandbox', 2, ['./testcafe-fixtures/multifixture-test-a.js', './testcafe-fixtures/multifixture-test-b.js'], customReporter)
                 .then(failedCount => {
                     expect(failedCount).eql(0);
                     expect(data.split('\n')).eql([
@@ -206,7 +183,7 @@ if (config.useLocalBrowsers) {
         });
 
         it('Should not start any test before report task start finishes', function () {
-            return run('chrome:headless --no-sandbox --disable-gpu --disable-dev-shm-usage', 2, './testcafe-fixtures/concurrent-test.js', slowReporter)
+            return run('chrome:headless --no-sandbox', 2, './testcafe-fixtures/concurrent-test.js', slowReporter)
                 .then(failedCount => {
                     expect(failedCount).eql(0);
                     expect(data.split('\n')).eql([
