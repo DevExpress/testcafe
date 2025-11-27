@@ -10,7 +10,7 @@ fixture `Concurrent`
 test('Long test', async t => {
     testInfo.add('test started');
 
-    await t.wait(10000);
+    await t.wait(2000);
 
     testInfo.add('long finished');
 });
@@ -18,7 +18,7 @@ test('Long test', async t => {
 test('Short test', async t => {
     testInfo.add('test started');
 
-    await t.wait(1000);
+    await t.wait(200);
 
     testInfo.add('short finished');
 });

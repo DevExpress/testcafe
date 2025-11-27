@@ -102,14 +102,14 @@ if (config.useLocalBrowsers) {
         });
 
         it('Should run tests sequentially if concurrency = 1', function () {
-            return run('edge:headless --no-sandbox', 1, './testcafe-fixtures/sequential-test.js')
+            return run('chrome:headless --no-sandbox', 1, './testcafe-fixtures/sequential-test.js')
                 .then(() => {
                     expect(testInfo.getData()).eql(['long started', 'long finished', 'short started', 'short finished']);
                 });
         });
 
         it('Should run tests concurrently if concurrency > 1', function () {
-            return run('edge:headless --no-sandbox --disable-gpu --disable-dev-shm-usage', 2, './testcafe-fixtures/concurrent-test.js')
+            return run('chrome:headless --no-sandbox --disable-gpu --disable-dev-shm-usage', 2, './testcafe-fixtures/concurrent-test.js')
                 .then(() => {
                     expect(testInfo.getData()).eql(['test started', 'test started', 'short finished', 'long finished']);
                 });
