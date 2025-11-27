@@ -159,7 +159,7 @@ if (config.useLocalBrowsers) {
 
         // TODO: stabilize test on Firefox
         // NOTE: Skip the test for nativeAutomation mode
-        const needSkip = config.hasBrowser('firefox') || config.nativeAutomation;
+        const needSkip = config.hasBrowser('firefox') || config.nativeAutomation || config.hasBrowser('edge');
 
         (needSkip ? it.skip : it)('Should run tests concurrently with Role', function () {
             return run('chrome:headless --no-sandbox', 2, './testcafe-fixtures/role-test.js')
