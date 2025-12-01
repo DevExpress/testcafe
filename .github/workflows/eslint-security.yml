@@ -1,0 +1,83 @@
+name: ESLint Security Scan
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - '.github/eslint/**'      
+      - '**/*.ts'
+      - '**/*.js'
+
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  lint:
+    env:
+      SECURITY_LINT: "1"
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install security lint dependencies
+        working-directory: .github/eslint
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npm ci
+
+      - name: Run ESLint (do not fail job on errors)
+        id: eslint
+        shell: bash
+        run: |          
+          if [ ! -f .github/eslint/targets.txt ]; then
+            echo "::warning::.github/eslint/targets.txt not found, skipping ESLint."
+            exit 0
+          fi
+          
+          mapfile -t TARGETS < <(
+            sed 's/^[[:space:]]*//;s/[[:space:]]*$//' .github/eslint/targets.txt \
+            | grep -vE '^\s*#' \
+            | sed '/^\s*$/d'
+          )
+
+          if [ "${#TARGETS[@]}" -eq 0 ]; then
+            echo "::warning::No targets in .github/eslint/targets.txt, skipping ESLint."
+            exit 0
+          fi
+          
+          echo "ESLint targets:"
+          printf '  %s\n' "${TARGETS[@]}"
+
+          set +e
+          npx --prefix .github/eslint eslint "${TARGETS[@]}" \
+            --ext .js,.ts \
+            --config .github/eslint/security.config.mjs \
+            --quiet \
+            -f .github/eslint/only-problems-html.mjs \
+            -o eslint-report.html
+          code=$?
+          set -e
+
+          code=$?
+          if [ "$code" -ne 0 ]; then
+            echo "::warning::ESLint exited with code $code (issues found). The job will continue."
+            exit 0
+          fi
+
+      - name: Upload ESLint HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eslint-security-report
+          path: eslint-report.html
+          retention-days: 7
