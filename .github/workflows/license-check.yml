@@ -26,7 +26,7 @@ jobs:
                   node-version: latest
 
             - name: Install dependencies
-              run: npm install
+              run: npm ci
 
             - name: Run Gulp build
               run: npx gulp build
@@ -35,4 +35,4 @@ jobs:
               run: npm pack
 
             - name: Install the application and check licenses
-              run: mkdir temp && cd temp && npm init -y && npm install ../*.tgz && npx gulp check-licenses
+              run: mkdir temp && cd temp && npm init -y && npm ci ../*.tgz && npx gulp check-licenses
