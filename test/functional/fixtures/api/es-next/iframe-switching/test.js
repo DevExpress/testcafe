@@ -133,9 +133,9 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
 
         it('Should raise an error when trying to execute an action in an invisible iframe', function () {
             return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click in an invisible iframe', {
-            skip: 'firefox-osx',
-            ...DEFAULT_FAILED_RUN_OPTIONS,
-        })
+                skip: 'firefox-osx',
+                ...DEFAULT_FAILED_RUN_OPTIONS,
+            })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('The iframe in which the test is currently operating is not visible anymore.');
                     expect(/> *\d* *\| *\.click\('#btn'\);/.test(errs[0])).ok;
