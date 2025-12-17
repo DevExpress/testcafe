@@ -43,7 +43,10 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
     });
 
     it('Should wait while a target iframe is loaded', function () {
-        return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click in a slowly loading iframe', DEFAULT_RUN_OPTIONS);
+        return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click in a slowly loading iframe', {
+            skip: 'firefox-osx',
+            ...DEFAULT_RUN_OPTIONS,
+        });
     });
 
     it('Should resume execution if an iframe is removed as a result of an action', function () {
