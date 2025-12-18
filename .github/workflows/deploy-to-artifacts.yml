@@ -37,7 +37,7 @@ jobs:
         with:
           ref: ${{steps.prep.outputs.sha}}
       - run: |
-          npm i
+          npm ci
           npx gulp build
           npm pack
       - id: package-name

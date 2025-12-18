@@ -26,7 +26,7 @@ jobs:
                   node-version: latest
 
             - name: Install dependencies
-              run: npm install
+              run: npm ci
 
             - name: Run Gulp build
               run: npx gulp build
