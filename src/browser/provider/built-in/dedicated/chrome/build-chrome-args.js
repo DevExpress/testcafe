@@ -3,6 +3,7 @@ export const CONTAINERIZED_CHROME_FLAGS = ['--no-sandbox', '--disable-dev-shm-us
 export function buildChromeArgs ({ config, cdpPort, platformArgs, tempProfileDir, isContainerized, isNativeAutomation, browserName }) {
     const headlessMode = ['chrome', 'chromium'].includes(browserName) ? '--headless=new' : '--headless';
     const defaultArgs  = [
+        '--disable-features=LocalNetworkAccessChecks',
         '--disable-search-engine-choice-screen',
         '--disable-component-extensions-with-background-pages',
         '--allow-pre-commit-input',
