@@ -3,7 +3,6 @@ import OS from 'os-family';
 import { APIError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
 import { SPECIAL_BLANK_PAGE } from 'testcafe-hammerhead';
-import { join } from 'path';
 
 const PROTOCOL_RE           = /^([\w-]+?)(?=:\/\/)/;
 const SUPPORTED_PROTOCOL_RE = /^(https?|file):/;
@@ -51,16 +50,10 @@ export function getUrl (url: string, base?: URL): string {
 }
 
 export function prepareBaseUrl (url: string): URL {
-    // If it's a web URL (http/https), use it directly
-    if (/^https?:\/\//i.test(url))
-        return new URL(url.endsWith('/') ? url : url + '/');
+    if (!url.endsWith('/'))
+        url += '/';
 
-    // Handle file URLs explicitly
-    if (/^file:\/\//i.test(url))
-        return new URL(url);
-
-    // Otherwise, treat it as filesystem path
-    return pathToFileURL(isAbsolute(url) ? url : join(process.cwd(), url));
+    return isAbsolute(url) ? pathToFileURL(url) : new URL(url);
 }
 
 export function assertPageUrl (url: string, callsiteName: string): void {
