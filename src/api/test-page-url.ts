@@ -50,7 +50,8 @@ export function getUrl (url: string, base?: URL): string {
 }
 
 export function prepareBaseUrl (url: string): URL {
-    url += '/';
+    if (!url.endsWith('/'))
+        url += '/';
 
     return isAbsolute(url) ? pathToFileURL(url) : new URL(url);
 }
