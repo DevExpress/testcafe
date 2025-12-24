@@ -27,7 +27,7 @@ describe('[API] Resize window actions', function () {
                     .catch(function (errs) {
                         errorInEachBrowserContains(errs, 'A JavaScript error occurred on "http://localhost:3000/fixtures/api/es-next/resize-window/pages/index.html"', 0);
                         errorInEachBrowserContains(errs, 'Resize error', 0);
-                        errorInEachBrowserContains(errs, '> 76 |    await t.resizeWindow(500, 500);', 0);
+                        errorInEachBrowserContains(errs, '> 75 |    await t.resizeWindow(500, 500);', 0);
                     });
             });
 
@@ -56,7 +56,7 @@ describe('[API] Resize window actions', function () {
                 })
                     .catch(function (errs) {
                         expect(errs[0]).to.contains('The "device" argument specifies an unsupported "iPhone555" device. For a list of supported devices, refer to "https://github.com/DevExpress/device-specs/blob/master/viewport-sizes.json"');
-                        expect(errs[0]).to.contains(' > 70 |    await t.resizeWindowToFitDevice(\'iPhone555\');');
+                        expect(errs[0]).to.contains(' > 69 |    await t.resizeWindowToFitDevice(\'iPhone555\');');
                     });
             });
 
@@ -65,7 +65,7 @@ describe('[API] Resize window actions', function () {
                     .catch(function (errs) {
                         errorInEachBrowserContains(errs, 'A JavaScript error occurred on "http://localhost:3000/fixtures/api/es-next/resize-window/pages/index.html"', 0);
                         errorInEachBrowserContains(errs, 'Resize error', 0);
-                        errorInEachBrowserContains(errs, '> 82 |    await t.resizeWindowToFitDevice(\'iPhone\');', 0);
+                        errorInEachBrowserContains(errs, '> 81 |    await t.resizeWindowToFitDevice(\'iPhone\');', 0);
                     });
             });
         });
