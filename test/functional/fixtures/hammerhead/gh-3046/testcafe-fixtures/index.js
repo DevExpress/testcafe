@@ -5,8 +5,6 @@ fixture `Worker`
 
 test('Should not break due to importScripts with module workers', async t => {
     await t.expect(Selector('#out').textContent).eql('');
-    await t.debug();
     await t.click(Selector('#btn'));
-    await t.debug();
     await t.expect(Selector('#out').textContent).eql('100');
 });
