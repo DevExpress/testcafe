@@ -97,7 +97,7 @@
     "del": "^3.0.0",
     "device-specs": "^1.0.0",
     "devtools-protocol": "0.0.1109433",
-    "diff": "^4.0.2",
+    "diff": "^8.0.3",
     "elegant-spinner": "^1.0.1",
     "email-validator": "^2.0.4",
     "emittery": "^0.4.1",
