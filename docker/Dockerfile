@@ -1,4 +1,4 @@
-FROM alpine:edge
+FROM alpine:3.23
 ARG packageId
 
 COPY ${packageId} /opt/testcafe/${packageId}
