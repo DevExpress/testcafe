@@ -1,0 +1,12 @@
+{
+  "name": "eslint-security-runner",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+	"@devexpress/eslint-security-config": "^0.1.0",
+    "eslint": "^9.39.0",
+    "@eslint/js": "^9.0.0",
+    "typescript": "^5.0.0",
+    "typescript-eslint": "^8.0.0"
+  }
+}
