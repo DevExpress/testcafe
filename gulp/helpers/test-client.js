@@ -1,5 +1,5 @@
 const gulp                                   = require('gulp');
-const qunitHarness                           = require('gulp-qunit-harness');
+const qunitHarness                           = require('@devexpress/gulp-qunit-harness');
 const { getInstallations: listBrowsers }     = require('testcafe-browser-tools');
 const { CLIENT_TEST_LOCAL_BROWSERS_ALIASES } = require('../constants/client-test-settings');
 

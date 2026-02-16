@@ -17,12 +17,12 @@
     </div>
     <div id="replaceInputDiv" class="column">
         <button id="replaceInputBtn" type="button" onclick=moveInputElement();>Replace input element</button>
-        <input id="input1" type="file" multiple>
-        <input id="input2" type="file" multiple>
+        <input id="input1" type="file" multiple name="file">
+        <input id="input2" type="file" multiple name="file">
     </div>
     <div id="delInputDiv" class="column">
         <button id="delInputBtn" type="button" onclick=deleteInputElement();>Delete input element</button>
-        <input id="delInput" type="file" multiple>
+        <input id="delInput" type="file" multiple name="file">
     </div>
     <div id="submitDiv">
         <button id="submitBtn" type="submit">Send files</button>
@@ -37,6 +37,7 @@
         input.id       = 'addedInput';
         input.multiple = true;
         input.type     = 'file';
+        input.name     = 'file';
 
         parent.appendChild(input);
     }

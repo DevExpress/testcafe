@@ -49,7 +49,7 @@ export default class TempDirectory {
     }
 
     async _createNewTmpDir () {
-        this.path = tmp.tmpNameSync({ dir: TempDirectory.TEMP_DIRECTORIES_ROOT, prefix: this.namePrefix + '-' });
+        this.path = tmp.tmpNameSync({ tmpdir: TempDirectory.TEMP_DIRECTORIES_ROOT, prefix: this.namePrefix + '-' });
 
         await makeDir(this.path);
 

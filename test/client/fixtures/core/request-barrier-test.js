@@ -337,6 +337,10 @@ $(document).ready(function () {
                         if (text.indexOf('Zero Sized Reply') !== -1)
                             throw new Error();
 
+                        // Sauce Connect 5 on SauceLab throws the following
+                        if (text.includes('sauce_connect encountered an unexpected error'))
+                            throw new Error();
+
                         ok(false, text);
                     })
                     .catch(function () {

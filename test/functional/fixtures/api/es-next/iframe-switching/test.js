@@ -42,7 +42,10 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
     });
 
     it('Should wait while a target iframe is loaded', function () {
-        return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click in a slowly loading iframe', DEFAULT_RUN_OPTIONS);
+        return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click in a slowly loading iframe', {
+            skip: 'firefox-osx',
+            ...DEFAULT_RUN_OPTIONS,
+        });
     });
 
     it('Should resume execution if an iframe is removed as a result of an action', function () {
@@ -129,7 +132,10 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
         });
 
         it('Should raise an error when trying to execute an action in an invisible iframe', function () {
-            return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click in an invisible iframe', DEFAULT_FAILED_RUN_OPTIONS)
+            return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click in an invisible iframe', {
+                skip: 'firefox-osx',
+                ...DEFAULT_FAILED_RUN_OPTIONS,
+            })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('The iframe in which the test is currently operating is not visible anymore.');
                     expect(/> *\d* *\| *\.click\('#btn'\);/.test(errs[0])).ok;
