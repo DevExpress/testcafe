@@ -1,4 +1,5 @@
-/node_modules
+**/node_modules/*
+!**/node_modules/test-module/
 /ts-defs
 .idea
 .vscode
@@ -12,5 +13,5 @@ ___test-videos___
 Gemfile.lock
 .npmrc
 .DS_Store
-!gulp
+!/gulp
 /test/functional/fixtures/**/package.json
