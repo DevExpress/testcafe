@@ -25,7 +25,7 @@ export async function getValidHostname (hostname: string): Promise<string> {
 }
 
 export async function getValidPort (port: number): Promise<number> {
-    if (port) {
+    if (port >= 0) {
         const isFree = await isFreePort(port);
 
         if (!isFree)
