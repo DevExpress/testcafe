@@ -140,7 +140,7 @@ describe('Runner', () => {
                 throw new Error('Should raise an appropriate error.');
             }
             catch (err) {
-                expect(err.message).startsWith('You cannot call the "browsers" method more than once. Specify an array of parameters instead');
+                expect(err.message.startsWith('You cannot call the "browsers" method more than once. Specify an array of parameters instead')).to.be.true;
             }
         });
     });
@@ -254,7 +254,7 @@ describe('Runner', () => {
                 throw new Error('Should raise an appropriate error.');
             }
             catch (err) {
-                expect(err.message).startsWith('You cannot call the "reporter" method more than once. Specify an array of parameters instead');
+                expect(err.message.startsWith('You cannot call the "reporter" method more than once. Specify an array of parameters instead')).to.be.true;
             }
         });
 
@@ -584,7 +584,7 @@ describe('Runner', () => {
                 throw new Error('Should raise an appropriate error.');
             }
             catch (err) {
-                expect(err.message).startsWith('You cannot call the "src" method more than once. Specify an array of parameters instead');
+                expect(err.message.startsWith('You cannot call the "src" method more than once. Specify an array of parameters instead')).to.be.true;
             }
         });
     });
@@ -1287,7 +1287,7 @@ describe('Runner', () => {
                 throw new Error('Should raise an appropriate error.');
             }
             catch (err) {
-                expect(err.message).startsWith('You cannot call the "clientScripts" method more than once. Specify an array of parameters instead.');
+                expect(err.message.startsWith('You cannot call the "clientScripts" method more than once. Specify an array of parameters instead.')).to.be.true;
             }
         });
     });
