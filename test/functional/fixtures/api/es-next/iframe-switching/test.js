@@ -1,5 +1,5 @@
 const { expect }                         = require('chai');
-const { errorInEachBrowserContains }     = require('../../../../assertion-helper.js');
+const { errorInEachBrowserContains, errorInEachBrowserContainsRegExp } = require('../../../../assertion-helper.js');
 const { skipDescribeInNativeAutomation } = require('../../../../utils/skip-in');
 
 // NOTE: we set selectorTimeout to a large value in some tests to wait for
@@ -126,8 +126,8 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
         it('Should raise an error when trying to execute an action in an unavailable iframe', function () {
             return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click in a removed iframe', DEFAULT_FAILED_RUN_OPTIONS)
                 .catch(function (errs) {
-                    expect(errs[0]).to.contains('The iframe in which the test is currently operating does not exist anymore.');
-                    expect(/> *\d* *\| *\.click\('#btn'\);/.test(errs[0])).ok;
+                    errorInEachBrowserContains(errs, 'The iframe in which the test is currently operating does not exist anymore.', 0);
+                    errorInEachBrowserContainsRegExp(errs, /> *\d* *\| *\.click\('#btn'\);/, 0);
                 });
         });
 
