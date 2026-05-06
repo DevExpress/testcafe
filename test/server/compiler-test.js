@@ -1069,7 +1069,6 @@ describe('Compiler', function () {
                     const stackTraceLimit = 200;
                     const err             = errList.items[0];
                     const stack           = err.callsite.stackFrames.filter(createStackFilter(stackTraceLimit));
-                    console.log(stack);
 
                     // Frame count depends on: Node.js version, Mocha version, Babel/TypeScript transpilation,
                     // source-map-support, testcafe-hammerhead presence, and is-internal-stack-frame heuristics.
