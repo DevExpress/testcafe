@@ -4,7 +4,7 @@
 
 const assert      = require('assert');
 const Replicator  = require('../../lib/utils/replicator');
-const helpersGH16 = require('./helpers/gh-16');
+const helpersGH16 = require('./helpers/replicator-tests-helper');
 
 describe('Replicator', function () {
     it('Should add and remove transforms', function () {
@@ -430,7 +430,8 @@ describe('Replicator', function () {
             return helpersGH16.checkIfBroken()
                 .then(function (result) {
                     assert.strictEqual(result, false);
-                });
+                })
+                .then(helpersGH16.resetEvilFlag);
         });
     });
 });

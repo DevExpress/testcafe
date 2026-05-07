@@ -1,6 +1,6 @@
 'use strict';
 
-// Regression test helper for GH-16 (RCE via TypedArray deserialization)
+// Replicator regression test helper for RCE via TypedArray deserialization (GH-16 in replicator repo).
 
 const TICK_COUNT = 3;
 
@@ -47,4 +47,8 @@ module.exports.checkIfBroken = function () {
         .then(function () {
             return !!global.evilFlag;
         });
+};
+
+module.exports.resetEvilFlag = function () {
+    global.evilFlag = false;
 };
