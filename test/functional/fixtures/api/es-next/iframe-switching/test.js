@@ -74,7 +74,7 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
         return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click in a cross-domain iframe with redirect', { skip: ['safari', 'firefox-osx'], ...DEFAULT_RUN_OPTIONS });
     });
 
-    it('Should work in an iframe with the srcdoc attribute', function () {
+    it('Should work in an iframe with the srcdoc attribute_test', function () {
         return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click in an iframe with the srcdoc attribute', { ...DEFAULT_RUN_OPTIONS });
     });
 
