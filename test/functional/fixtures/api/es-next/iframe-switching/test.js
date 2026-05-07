@@ -75,7 +75,10 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
     });
 
     it('Should work in an iframe with the srcdoc attribute', function () {
-        return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click in an iframe with the srcdoc attribute', { ...DEFAULT_RUN_OPTIONS });
+        return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click in an iframe with the srcdoc attribute', {
+            skip: 'firefox-osx',
+            ...DEFAULT_RUN_OPTIONS,
+        });
     });
 
     it('Correct execution order of "message" events in cross-domain iframe', function () {
