@@ -7,6 +7,7 @@ const fetch                   = require('node-fetch');
 const { times, uniqBy }       = require('lodash');
 const stripAnsi               = require('strip-ansi');
 const consoleWrapper          = require('./helpers/console-wrapper');
+const expectStartsWith        = require('./helpers/expect-starts-with');
 const isAlpine                = require('./helpers/is-alpine');
 const createTestCafe          = require('../../lib/');
 const COMMAND                 = require('../../lib/browser/connection/command');
@@ -140,7 +141,7 @@ describe('Runner', () => {
                 throw new Error('Should raise an appropriate error.');
             }
             catch (err) {
-                expect(err.message.startsWith('You cannot call the "browsers" method more than once. Specify an array of parameters instead')).to.be.true;
+                expectStartsWith(err.message, 'You cannot call the "browsers" method more than once. Specify an array of parameters instead');
             }
         });
     });
@@ -254,7 +255,7 @@ describe('Runner', () => {
                 throw new Error('Should raise an appropriate error.');
             }
             catch (err) {
-                expect(err.message.startsWith('You cannot call the "reporter" method more than once. Specify an array of parameters instead')).to.be.true;
+                expectStartsWith(err.message, 'You cannot call the "reporter" method more than once. Specify an array of parameters instead');
             }
         });
 
@@ -584,7 +585,7 @@ describe('Runner', () => {
                 throw new Error('Should raise an appropriate error.');
             }
             catch (err) {
-                expect(err.message.startsWith('You cannot call the "src" method more than once. Specify an array of parameters instead')).to.be.true;
+                expectStartsWith(err.message, 'You cannot call the "src" method more than once. Specify an array of parameters instead');
             }
         });
     });
@@ -1287,7 +1288,7 @@ describe('Runner', () => {
                 throw new Error('Should raise an appropriate error.');
             }
             catch (err) {
-                expect(err.message.startsWith('You cannot call the "clientScripts" method more than once. Specify an array of parameters instead.')).to.be.true;
+                expectStartsWith(err.message, 'You cannot call the "clientScripts" method more than once. Specify an array of parameters instead.');
             }
         });
     });
