@@ -14,16 +14,16 @@ jobs:
     runs-on: ubuntu-latest
     environment: npmjs
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ github.event.release.target_commitish }}
-      - run: git fetch --force --tags
-      - uses: actions/setup-node@v4
+      - uses: DevExpress/testcafe-build-system/actions/publish@main
         with:
-          node-version: 24
-          registry-url: 'https://registry.npmjs.org'
-      - run: npm ci
-      - run: npm run publish-please-only
+          pre-publish-script: gulp test-server
+          audit-level: critical
+          omit-dev-dependencies: true
+          branch: ${{ github.event.release.target_commitish }}
+          version: ${{ github.event.release.tag_name }}
   docker-publish:
     needs: npm-publish
     runs-on: ubuntu-latest

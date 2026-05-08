@@ -1,4 +1,4 @@
-import { Transform } from 'replicator';
+import { Transform } from '../../../../../../utils/replicator';
 import { DomNodeClientFunctionResultError } from '../../../../../../shared/errors/index';
 // @ts-ignore
 import { nativeMethods } from '../../../../deps/hammerhead';

@@ -9,7 +9,7 @@ import {
     SelectorErrorCb,
 } from '../types';
 import selectorFilter from './filter';
-import Replicator from 'replicator';
+import Replicator from '../../../../../utils/replicator';
 import CHECK_ELEMENT_DELAY from './check-element-delay';
 import {
     // @ts-ignore

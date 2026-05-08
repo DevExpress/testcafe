@@ -3,6 +3,7 @@ const stripAnsi     = require('strip-ansi');
 const { expect }    = require('chai');
 const stackParser   = require('error-stack-parser');
 const { castArray } = require('lodash');
+const expectStartsWith = require('./expect-starts-with');
 
 
 function assertStack (err, expected) {
@@ -41,11 +42,11 @@ function assertStack (err, expected) {
 function assertRuntimeError (err, expected, messageContainsStack) {
     // NOTE: https://github.com/nodejs/node/issues/27388
     if (messageContainsStack)
-        expect(err.message.startsWith(expected.message)).to.be.true;
+        expectStartsWith(err.message, expected.message);
     else
         expect(err.message).eql(expected.message);
 
-    expect(err.stack.startsWith(expected.message)).to.be.true;
+    expectStartsWith(err.stack, expected.message);
 
     assertStack(err, expected);
 }
@@ -54,7 +55,7 @@ function assertAPIError (err, expected) {
     assertRuntimeError(err, expected);
 
     expect(expected.callsite).to.not.empty;
-    expect(err.stack.startsWith(expected.message + '\n\n' + expected.callsite)).to.be.true;
+    expectStartsWith(err.stack, expected.message + '\n\n' + expected.callsite);
     expect(stripAnsi(err.coloredStack)).eql(err.stack);
 }
 

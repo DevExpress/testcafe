@@ -1,4 +1,4 @@
-import { Transform } from 'replicator';
+import { Transform } from '../../../../../../utils/replicator';
 import { ElementActionSnapshot } from '../../selector-executor/node-snapshots';
 // @ts-ignore
 import { nativeMethods } from '../../../../deps/hammerhead';

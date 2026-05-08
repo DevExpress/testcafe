@@ -555,7 +555,7 @@ describe('CLI argument parser', function () {
             });
 
             it('Should interpret a long path as a certificate content', () => {
-                const keyFileContent = nanoid(5000);
+                const keyFileContent = 'x'.repeat(5000);
 
                 return parse(`--ssl key=${keyFileContent}`)
                     .then(parser => {

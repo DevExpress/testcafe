@@ -2,7 +2,6 @@ const gulp                          = require('gulp');
 const gulpStep                      = require('gulp-step');
 const data                          = require('gulp-data');
 const less                          = require('gulp-less');
-const mocha                         = require('gulp-mocha-simple');
 const mustache                      = require('gulp-mustache');
 const rename                        = require('gulp-rename');
 const uglify                        = require('gulp-uglify');
@@ -28,6 +27,7 @@ const promisifyStream               = require('./gulp/helpers/promisify-stream')
 const testFunctional                = require('./gulp/helpers/test-functional');
 const moduleExportsTransform        = require('./gulp/helpers/module-exports-transform');
 const createPackageFilesForTests    = require('./gulp/helpers/create-package-files-for-tests');
+const { runCommands }               = require('./gulp/helpers/run-shell-commands');
 
 const {
     TESTS_GLOB,
@@ -84,7 +84,7 @@ gulp.task('lint', () => {
             'gulp/**/*.js',
             '!test/client/vendor/**/*.*',
             '!test/functional/fixtures/api/es-next/custom-client-scripts/data/*.js',
-            'Gulpfile.js',
+            '[Gg]ulpfile.js',
         ])
         .pipe(eslint())
         .pipe(eslint.format(process.env.ESLINT_FORMATTER))
@@ -254,7 +254,7 @@ gulp.step('clean-functional-tests', async () => {
 
 gulp.step('prepare-tests', gulp.registry().get(SKIP_BUILD ? 'lint' : 'build'));
 
-gulp.step('test-server-run', () => {
+gulp.step('test-server-run', async () => {
     const chai = require('chai');
 
     chai.use(require('chai-string'));
@@ -264,11 +264,11 @@ gulp.step('test-server-run', () => {
     const domains = exitDomains();
 
     try {
-        return gulp
-            .src('test/server/*-test.js', { read: false })
-            .pipe(mocha({
-                timeout: getTimeout(4_000),
-            }));
+        const timeout = getTimeout(4_000) === Infinity ? 0 : getTimeout(4_000);
+
+        await runCommands([
+            `npx --no-install mocha --full-trace --timeout ${timeout} "test/server/*-test.js"`,
+        ]);
     }
     finally {
         enterDomains(domains);
