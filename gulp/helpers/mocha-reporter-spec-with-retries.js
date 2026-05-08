@@ -1,5 +1,11 @@
-const Mocha        = require('mocha');
-const milliseconds = require('ms');
+const Mocha = require('mocha');
+
+function formatMilliseconds (duration) {
+    if (duration < 1000)
+        return `${duration}ms`;
+
+    return `${(duration / 1000).toFixed(2).replace(/\.?0+$/, '')}s`;
+}
 
 const {
     EVENT_RUN_BEGIN,
@@ -48,7 +54,7 @@ function SpecWithRetries (runner, options) {
             color('green', ' %d passing') +
             color('light', ' (%s)');
 
-        Base.consoleLog(fmt, stats.passes || 0, milliseconds(stats.duration));
+        Base.consoleLog(fmt, stats.passes || 0, formatMilliseconds(stats.duration));
 
         // pending
         if (stats.pending) {
@@ -144,15 +150,15 @@ function SpecWithRetries (runner, options) {
     runner.on(EVENT_TEST_FAIL, function (test) {
         Base.consoleLog(indent() + color('fail', '  %d) %s'), ++n, test.title);
 
-        const index = findTestIndex(this.stats.unstables, test);
+        const index = findTestIndex(self.stats.unstables, test);
 
         if (index > -1)
-            this.stats.unstables.splice(index, 1);
+            self.stats.unstables.splice(index, 1);
     });
 
     runner.on(EVENT_TEST_RETRY, test => {
         if (!isInUnstables.call(self, test))
-            this.stats.unstables.push(test);
+            self.stats.unstables.push(test);
     });
 
     runner.once(EVENT_RUN_END, () => {
@@ -162,4 +168,4 @@ function SpecWithRetries (runner, options) {
 
 inherits(SpecWithRetries, Base);
 
-SpecWithRetries.description = 'hierarchical & verbose & display retried tests';
+SpecWithRetries.description = 'hierarchical & verbose & displays retried tests';
