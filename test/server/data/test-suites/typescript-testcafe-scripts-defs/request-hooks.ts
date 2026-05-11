@@ -1,5 +1,5 @@
 class CustomRequestHook extends RequestHook {
-    constructor() {
+    constructor () {
         super();
     }
 
@@ -13,7 +13,7 @@ class CustomRequestHook extends RequestHook {
 }
 
 const customHook = new CustomRequestHook();
-const logger1    = RequestLogger('example.com', {logRequestBody: true});
+const logger1    = RequestLogger('example.com', { logRequestBody: true });
 
 const logger2 = RequestLogger(req => {
     return req.url === 'example.com';
@@ -22,10 +22,10 @@ const logger2 = RequestLogger(req => {
 const mock = RequestMock()
     .onRequestTo(/example.com/)
     .respond()
-    .onRequestTo({url: 'https://example.com'})
+    .onRequestTo({ url: 'https://example.com' })
     .respond(null, 204)
     .onRequestTo('https://example.com')
-    .respond(null, 200, {'x-frame-options': 'deny'})
+    .respond(null, 200, { 'x-frame-options': 'deny' })
     .onRequestTo(req => {
         return req.url === 'https://example.com';
     }).respond((req, res) => {

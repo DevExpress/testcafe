@@ -8,6 +8,6 @@ interface Test {
 
 <Fixture>fixture('fixture 1').page('https://page');
 
-<Test>test.before(async(t: TestController) => {
+<Test>test.before(async (t: TestController) => {
     await t.wait(1);
 })('test 1');

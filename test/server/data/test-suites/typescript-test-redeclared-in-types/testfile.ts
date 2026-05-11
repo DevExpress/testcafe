@@ -3,6 +3,6 @@ fixture(`TestController`)
 
 test('.eql() assertion', async t => {
     await t
-        .expect({a: 2}).eql({a: 2})
+        .expect({ a: 2 }).eql({ a: 2 })
         .expect('hey').eql('yo', 'testMessage');
 });

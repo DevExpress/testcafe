@@ -161,7 +161,9 @@ export function setCookiesArgument (name, val) {
 
 function isValidUrl (url) {
     try {
-        return new URL(url) && true;
+        const parsedUrl = new URL(url);
+
+        return !!parsedUrl;
     }
     catch {
         return false;

@@ -1,4 +1,4 @@
-const RequestHook = require('../api/request-hooks/hook');
+type RequestHookConstructor = typeof import('../api/request-hooks/hook').default;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 type TemplateArguments = any[];
@@ -32,7 +32,7 @@ interface GlobalHooks {
     testRun?: TestingEntryHooks;
     fixture?: TestingEntryHooks;
     test?: TestingEntryHooks;
-    request?: typeof RequestHook[] | typeof RequestHook;
+    request?: RequestHookConstructor[] | RequestHookConstructor;
     reporter?: ReporterHooks
 }
 

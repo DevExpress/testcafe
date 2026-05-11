@@ -12,10 +12,10 @@ const LABELS = {
 const ALERT_TYPES = {
     dependabot: 'dependabot',
     codeq:      'codeql',
-}
+};
 
 class SecurityChecker {
-    constructor(github, context, issueRepo) {
+    constructor (github, context, issueRepo) {
         this.github    = github;
         this.issueRepo = issueRepo;
         this.context   = {
@@ -88,7 +88,7 @@ class SecurityChecker {
     }
 
     async closeSpoiledIssues () {
-        const regExpAlertNumbers = new RegExp(`(?<=\`${this.context.repo}\` - https:.*/dependabot/)\\d+`,'g');
+        const regExpAlertNumbers = new RegExp(`(?<=\`${this.context.repo}\` - https:.*/dependabot/)\\d+`, 'g');
 
         for (const alert of this.alertDictionary.values()) {
 
@@ -101,7 +101,7 @@ class SecurityChecker {
                 const updates   = {};
                 let changedBody = alert.issue.body;
 
-                for (let alertNumber of alertNumbers) {
+                for (const alertNumber of alertNumbers) {
                     const isAlertOpened = await this.isDependabotAlertOpened(alertNumber);
 
                     if (isAlertOpened)
@@ -150,9 +150,9 @@ class SecurityChecker {
 
     async createDependabotlIssues (dependabotAlerts) {
         for (const alert of dependabotAlerts) {
-            if (this.needAddAlertToIssue(alert)) {
+            if (this.needAddAlertToIssue(alert))
                 await this.addAlertToIssue(alert);
-            }
+
             else if (this.needCreateIssue(alert)) {
                 await this.createIssue({
                     labels:       [LABELS.dependabot, LABELS.security, alert.dependency.scope],
@@ -177,7 +177,7 @@ class SecurityChecker {
         return existedIssue
             && existedIssue.cveId === alert.security_advisory.cve_id
             && existedIssue.ghsaId === alert.security_advisory.ghsa_id
-            && (!isAlertExisted || (isAlertExisted && !alertNumber));
+            && (!isAlertExisted || isAlertExisted && !alertNumber);
     }
 
     async addAlertToIssue (alert) {

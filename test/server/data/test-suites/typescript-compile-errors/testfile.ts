@@ -6,23 +6,23 @@ test('Yo', async t => {
     await t.doSmthg();
 });
 
-test(123, async() => {
+test(123, async () => {
 });
 
-function sealed(constructor: Function) {
+function sealed (constructor: Function) {
     Object.seal(constructor);
     Object.seal(constructor.prototype);
 }
 
 class Greeter {
     @sealed
-    greeting: string;
+        greeting: string;
 
-    constructor(message: string) {
+    constructor (message: string) {
         this.greeting = message;
     }
 
-    greet() {
-        return "Hello, " + this.greeting;
+    greet () {
+        return 'Hello, ' + this.greeting;
     }
 }

@@ -3,15 +3,15 @@ import dep1Fn from './dep1';
 
 fixture `Fixture1`;
 
-test('Fixture1Test1', async() => {
-    var res = await dep1Fn();
+test('Fixture1Test1', async () => {
+    const res = await dep1Fn();
 
     return `F1T1: ${res}`;
 });
 
 const test2Name = 'Fixture1Test2';
 
-test(test2Name, async() => {
+test(test2Name, async () => {
     return 'F1T2';
 });
 
@@ -20,7 +20,7 @@ fixture`Fixture${1 + 1}`
     .beforeEach(async () => 'yo')
     .afterEach(async () => 'yo');
 
-test('Fixture2Test1', async() => {
+test('Fixture2Test1', async () => {
     return 'F2T1';
 });
 
@@ -31,7 +31,7 @@ function foo () {
     };
 }
 
-function sealed(constructor: Function) {
+function sealed (constructor: Function) {
     Object.seal(constructor);
     Object.seal(constructor.prototype);
 }
@@ -40,12 +40,12 @@ function sealed(constructor: Function) {
 class Greeter {
     greeting: string;
 
-    constructor(message: string) {
+    constructor (message: string) {
         this.greeting = message;
     }
 
     @foo()
-    greet() {
-        return "Hello, " + this.greeting;
+    greet () {
+        return 'Hello, ' + this.greeting;
     }
 }

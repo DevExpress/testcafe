@@ -4,13 +4,13 @@ fixture `Runner`;
 
 test('Starts and terminates runner', async () => {
     const t = await createTestCafe({
-        appCommand: 'test',
+        appCommand:   'test',
         appInitDelay: 500,
 
         browsers: ['chrome'],
 
         reporter: {
-            name: 'spec',
+            name:   'spec',
             output: 'test.txt',
         },
 
@@ -28,10 +28,10 @@ test('Starts and terminates runner', async () => {
         src: 'test.js',
 
         screenshots: {
-            path: 'screenshots/',
+            path:        'screenshots/',
             pathPattern: 'scr.png',
             takeOnFails: true,
-            fullPage: true,
+            fullPage:    true,
         },
 
         clientScripts: [
@@ -47,7 +47,7 @@ test('Starts and terminates runner', async () => {
 
         videoPath: 'artifacts/videos',
 
-        videoOptions:  {
+        videoOptions: {
             singleFile:  true,
             failedOnly:  false,
             ffmpegPath:  '/usr/bin/ffmpeg',

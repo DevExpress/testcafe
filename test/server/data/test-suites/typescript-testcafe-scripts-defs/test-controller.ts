@@ -2,13 +2,13 @@ import { expect } from 'chai';
 
 (async () => {
     await t
-        .expect({a: 2}).eql({a: 2})
+        .expect({ a: 2 }).eql({ a: 2 })
         .expect('hey').eql('yo', 'testMessage');
 })();
 
 (async () => {
     await t
-        .expect({b: 3}).notEql({b: 4})
+        .expect({ b: 3 }).notEql({ b: 4 })
         .expect(2).notEql(2);
 })();
 
@@ -132,9 +132,9 @@ import { expect } from 'chai';
 
     await t
         .click('#makeFloat')
-        .expect(el.getStyleProperty('float')).eql('left', {timeout: 500})
+        .expect(el.getStyleProperty('float')).eql('left', { timeout: 500 })
         .click('#setClass')
-        .expect(el.hasClass('hey')).ok('message', {timeout: 500});
+        .expect(el.hasClass('hey')).ok('message', { timeout: 500 });
 })();
 
 (async () => {
@@ -157,7 +157,7 @@ import { expect } from 'chai';
 
 
 (async () => {
-    await t.click('#btn', {offsetX: -3.5});
+    await t.click('#btn', { offsetX: -3.5 });
 })();
 
 (async () => {
@@ -210,7 +210,7 @@ import { expect } from 'chai';
 })();
 
 (async () => {
-    await t.dragToElement('#draggable-div-2', '#destination-div', {destinationOffsetX: 0, destinationOffsetY: 0})
+    await t.dragToElement('#draggable-div-2', '#destination-div', { destinationOffsetX: 0, destinationOffsetY: 0 });
 })();
 
 (async () => {
@@ -227,7 +227,7 @@ const getById = ClientFunction((id: string) => document.getElementById(id));
 
 
 (async () => {
-    const answer = await t.eval(() => getById('answer'), {dependencies: {getById}});
+    const answer = await t.eval(() => getById('answer'), { dependencies: { getById } });
 
     expect(answer).eql('42');
 })();
@@ -271,7 +271,7 @@ const getNestedIframeBtnClickCount = ClientFunction(() => window);
         .switchToMainWindow()
         .click('#btn');
 
-    var btnClickCount = await getBtnClickCount();
+    let btnClickCount = await getBtnClickCount();
     const nestedIframeBtnClickCount = await getNestedIframeBtnClickCount();
 
     expect(btnClickCount).eql(1);
@@ -449,7 +449,7 @@ const promptPageUrl = 'http://localhost:3000/fixtures/api/es-next/native-dialogs
 
 
 (async () => {
-    var info = await t.getNativeDialogHistory();
+    const info = await t.getNativeDialogHistory();
 
     expect(info.length).equals(0);
 
@@ -470,7 +470,7 @@ const promptPageUrl = 'http://localhost:3000/fixtures/api/es-next/native-dialogs
 })();
 
 (async () => {
-    var dialogHandler = ClientFunction((type: string, text: string) => {
+    const dialogHandler = ClientFunction((type: string, text: string) => {
         if (type === 'confirm' && text === 'Confirm?')
             return true;
 
@@ -478,14 +478,14 @@ const promptPageUrl = 'http://localhost:3000/fixtures/api/es-next/native-dialogs
     });
 
     await t
-        .setNativeDialogHandler((type, text) => dialogHandler(type, text), {dependencies: {dialogHandler}})
+        .setNativeDialogHandler((type, text) => dialogHandler(type, text), { dependencies: { dialogHandler } })
         .click('#buttonConfirm');
 
     expect(await getResult()).equals('true');
 })();
 
 (async () => {
-    var dialogHandler = ClientFunction((type: string, text: string) => {
+    const dialogHandler = ClientFunction((type: string, text: string) => {
         if (type === 'confirm' && text === 'Confirm?')
             return true;
 
@@ -528,7 +528,7 @@ const promptPageUrl = 'http://localhost:3000/fixtures/api/es-next/native-dialogs
         .click('#withoutDialog')
         .setNativeDialogHandler(() => true);
 
-    var info = await t.getNativeDialogHistory();
+    const info = await t.getNativeDialogHistory();
 
     expect(info.length).equals(1);
 })();
@@ -540,9 +540,9 @@ const promptPageUrl = 'http://localhost:3000/fixtures/api/es-next/native-dialogs
         .click('#enableBeforeUnload')
         .click('#linkToThisPage');
 
-    var info = await t.getNativeDialogHistory();
+    const info = await t.getNativeDialogHistory();
 
-    expect(info).to.deep.equal([{type: 'beforeunload', text: 'Before unload', url: pageUrl}]);
+    expect(info).to.deep.equal([{ type: 'beforeunload', text: 'Before unload', url: pageUrl }]);
 })();
 
 (async () => {
@@ -558,18 +558,18 @@ const promptPageUrl = 'http://localhost:3000/fixtures/api/es-next/native-dialogs
 
     expect(await getResult()).equals('prompt result');
 
-    var info = await t.getNativeDialogHistory();
+    const info = await t.getNativeDialogHistory();
 
     expect(info).to.deep.equal([
         {
             type: 'prompt',
             text: 'Prompt:',
-            url: promptPageUrl,
+            url:  promptPageUrl,
         },
         {
             type: 'alert',
             text: 'Alert!',
-            url: pageUrl,
+            url:  pageUrl,
         },
     ]);
 })();
@@ -585,9 +585,9 @@ const promptPageUrl = 'http://localhost:3000/fixtures/api/es-next/native-dialogs
         .click('#buttonDialogAfterTimeout')
         .wait(2000);
 
-    var info = await t.getNativeDialogHistory();
+    const info = await t.getNativeDialogHistory();
 
-    expect(info).to.deep.equal([{type: 'alert', text: 'Alert!', url: pageUrl}]);
+    expect(info).to.deep.equal([{ type: 'alert', text: 'Alert!', url: pageUrl }]);
 })();
 
 (async () => {
@@ -596,7 +596,7 @@ const promptPageUrl = 'http://localhost:3000/fixtures/api/es-next/native-dialogs
         .click('#buttonDialogAfterTimeout')
         .wait(10);
 
-    var info = await t.getNativeDialogHistory();
+    const info = await t.getNativeDialogHistory();
 
     expect(info.length).equals(1);
 })();
@@ -608,7 +608,7 @@ const promptPageUrl = 'http://localhost:3000/fixtures/api/es-next/native-dialogs
 })();
 
 (async () => {
-    var dialogHandler = Selector(() => document.body);
+    const dialogHandler = Selector(() => document.body);
 
     await t.setNativeDialogHandler(dialogHandler);
 })();
@@ -668,7 +668,7 @@ const getInputValue = ClientFunction(() => (<HTMLInputElement>document.getElemen
 })();
 
 (async () => {
-    await t.resizeWindowToFitDevice('iPhone', {portraitOrientation: true});
+    await t.resizeWindowToFitDevice('iPhone', { portraitOrientation: true });
 })();
 
 (async () => {
@@ -711,7 +711,7 @@ const getInputValue = ClientFunction(() => (<HTMLInputElement>document.getElemen
 
 
 (async () => {
-    await t.typeText('#input', 'a', {replace: true});
+    await t.typeText('#input', 'a', { replace: true });
 })();
 
 
@@ -779,7 +779,7 @@ const getInputValue = ClientFunction(() => (<HTMLInputElement>document.getElemen
 
 (async () => {
     // Several arguments
-    await t.eval(() => console.log('a', 1, null, void 0, ['b', 2], {c: 3}));
+    await t.eval(() => console.log('a', 1, null, void 0, ['b', 2], { c: 3 }));
 
     const messages = await t.getBrowserConsoleMessages();
 

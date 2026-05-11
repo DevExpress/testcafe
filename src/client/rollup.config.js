@@ -1,4 +1,3 @@
-/* eslint-env node */
 /* eslint-disable no-restricted-globals */
 
 import path from 'path';

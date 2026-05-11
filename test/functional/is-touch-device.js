@@ -14,4 +14,4 @@ function isTouchDevice () {
 
     return isDevice && hasTouchEvents;
 }
-/*eslint-disable @typescript-eslint/no-unused-vars*/
+

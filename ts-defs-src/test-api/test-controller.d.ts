@@ -415,7 +415,7 @@ interface TestController {
      * Retrieves a `window` object that corresponds to the currently open window.
      */
     getCurrentWindow(): WindowDescriptorPromise;
-    
+
     /**
      * Retrieves a `Chrome DevTools Protocol` object that corresponds to the currently open window (native automation only).
      */

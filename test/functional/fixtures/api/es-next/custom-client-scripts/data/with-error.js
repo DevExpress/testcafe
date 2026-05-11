@@ -1,3 +1,3 @@
-var t123456;
+let t123456;
 
 t123456['some-property'];

@@ -75,7 +75,7 @@ export default class ScriptExecutionBarrier<S> {
 
         this._scripts.clear();
         this._offListening();
-        this._waitResolve!(); // eslint-disable-line @typescript-eslint/no-non-null-assertion
+        this._waitResolve!();
 
         this._waitResolve = null;
     }

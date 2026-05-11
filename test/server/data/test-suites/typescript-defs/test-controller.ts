@@ -7,13 +7,13 @@ fixture(`TestController`)
 
 test('.eql() assertion', async t => {
     await t
-        .expect({a: 2}).eql({a: 2})
+        .expect({ a: 2 }).eql({ a: 2 })
         .expect('hey').eql('yo', 'testMessage');
 });
 
 test('.notEql() assertion', async t => {
     await t
-        .expect({b: 3}).notEql({b: 4})
+        .expect({ b: 3 }).notEql({ b: 4 })
         .expect(2).notEql(2);
 });
 
@@ -137,9 +137,9 @@ test('"timeout" option', async t => {
 
     await t
         .click('#makeFloat')
-        .expect(el.getStyleProperty('float')).eql('left', {timeout: 500})
+        .expect(el.getStyleProperty('float')).eql('left', { timeout: 500 })
         .click('#setClass')
-        .expect(el.hasClass('hey')).ok('message', {timeout: 500});
+        .expect(el.hasClass('hey')).ok('message', { timeout: 500 });
 });
 
 test('.match() assertion', async t => {
@@ -162,7 +162,7 @@ test('ClientFunction result assertion', async t => {
 
 
 test('Incorrect action option', async t => {
-    await t.click('#btn', {offsetX: -3.5});
+    await t.click('#btn', { offsetX: -3.5 });
 });
 
 test('Click button', async t => {
@@ -215,7 +215,7 @@ test('Drag to element with incorrect destinationSelector', async t => {
 });
 
 test('Drag to element with destination offsets', async t => {
-    await t.dragToElement('#draggable-div-2', '#destination-div', {destinationOffsetX: 0, destinationOffsetY: 0})
+    await t.dragToElement('#draggable-div-2', '#destination-div', { destinationOffsetX: 0, destinationOffsetY: 0 });
 });
 
 test('Destination element selector returns text node', async t => {
@@ -232,7 +232,7 @@ const getById = ClientFunction((id: string) => document.getElementById(id));
 
 
 test('Eval with dependencies', async t => {
-    const answer = await t.eval(() => getById('answer'), {dependencies: {getById}});
+    const answer = await t.eval(() => getById('answer'), { dependencies: { getById } });
 
     expect(answer).eql('42');
 });
@@ -276,7 +276,7 @@ test('Click on element in a nested iframe', async t => {
         .switchToMainWindow()
         .click('#btn');
 
-    var btnClickCount = await getBtnClickCount();
+    let btnClickCount = await getBtnClickCount();
     const nestedIframeBtnClickCount = await getNestedIframeBtnClickCount();
 
     expect(btnClickCount).eql(1);
@@ -454,7 +454,7 @@ const promptPageUrl = 'http://localhost:3000/fixtures/api/es-next/native-dialogs
 
 
 test('Without handler', async t => {
-    var info = await t.getNativeDialogHistory();
+    const info = await t.getNativeDialogHistory();
 
     expect(info.length).equals(0);
 
@@ -475,7 +475,7 @@ test('Expected confirm after an action', async t => {
 });
 
 test('Expected confirm after an action (with dependencies)', async t => {
-    var dialogHandler = ClientFunction((type: string, text: string) => {
+    const dialogHandler = ClientFunction((type: string, text: string) => {
         if (type === 'confirm' && text === 'Confirm?')
             return true;
 
@@ -483,14 +483,14 @@ test('Expected confirm after an action (with dependencies)', async t => {
     });
 
     await t
-        .setNativeDialogHandler((type, text) => dialogHandler(type, text), {dependencies: {dialogHandler}})
+        .setNativeDialogHandler((type, text) => dialogHandler(type, text), { dependencies: { dialogHandler } })
         .click('#buttonConfirm');
 
     expect(await getResult()).equals('true');
 });
 
 test('Expected confirm after an action (client function)', async t => {
-    var dialogHandler = ClientFunction((type: string, text: string) => {
+    const dialogHandler = ClientFunction((type: string, text: string) => {
         if (type === 'confirm' && text === 'Confirm?')
             return true;
 
@@ -533,7 +533,7 @@ test('No expected confirm after an action', async t => {
         .click('#withoutDialog')
         .setNativeDialogHandler(() => true);
 
-    var info = await t.getNativeDialogHistory();
+    const info = await t.getNativeDialogHistory();
 
     expect(info.length).equals(1);
 });
@@ -545,9 +545,9 @@ test('Expected beforeUnload after an action', async t => {
         .click('#enableBeforeUnload')
         .click('#linkToThisPage');
 
-    var info = await t.getNativeDialogHistory();
+    const info = await t.getNativeDialogHistory();
 
-    expect(info).to.deep.equal([{type: 'beforeunload', text: 'Before unload', url: pageUrl}]);
+    expect(info).to.deep.equal([{ type: 'beforeunload', text: 'Before unload', url: pageUrl }]);
 });
 
 test('Expected alert and prompt after redirect', async t => {
@@ -563,18 +563,18 @@ test('Expected alert and prompt after redirect', async t => {
 
     expect(await getResult()).equals('prompt result');
 
-    var info = await t.getNativeDialogHistory();
+    const info = await t.getNativeDialogHistory();
 
     expect(info).to.deep.equal([
         {
             type: 'prompt',
             text: 'Prompt:',
-            url: promptPageUrl,
+            url:  promptPageUrl,
         },
         {
             type: 'alert',
             text: 'Alert!',
-            url: pageUrl,
+            url:  pageUrl,
         },
     ]);
 });
@@ -590,9 +590,9 @@ test('Expected alert during a wait action', async t => {
         .click('#buttonDialogAfterTimeout')
         .wait(2000);
 
-    var info = await t.getNativeDialogHistory();
+    const info = await t.getNativeDialogHistory();
 
-    expect(info).to.deep.equal([{type: 'alert', text: 'Alert!', url: pageUrl}]);
+    expect(info).to.deep.equal([{ type: 'alert', text: 'Alert!', url: pageUrl }]);
 });
 
 test('No expected alert during a wait action', async t => {
@@ -601,7 +601,7 @@ test('No expected alert during a wait action', async t => {
         .click('#buttonDialogAfterTimeout')
         .wait(10);
 
-    var info = await t.getNativeDialogHistory();
+    const info = await t.getNativeDialogHistory();
 
     expect(info.length).equals(1);
 });
@@ -613,7 +613,7 @@ test('Unexpected alert during a wait action', async t => {
 });
 
 test('Selector as dialogHandler', async t => {
-    var dialogHandler = Selector(() => document.body);
+    const dialogHandler = Selector(() => document.body);
 
     await t.setNativeDialogHandler(dialogHandler);
 });
@@ -673,7 +673,7 @@ test('Resize the window to fit a device', async t => {
 });
 
 test('Resize the window to fit a device with portrait orientation', async t => {
-    await t.resizeWindowToFitDevice('iPhone', {portraitOrientation: true});
+    await t.resizeWindowToFitDevice('iPhone', { portraitOrientation: true });
 });
 
 test('Right click button', async t => {
@@ -716,7 +716,7 @@ test('Take a screenshot in quarantine mode', async t => {
 
 
 test('Type text in input', async t => {
-    await t.typeText('#input', 'a', {replace: true});
+    await t.typeText('#input', 'a', { replace: true });
 });
 
 
@@ -784,7 +784,7 @@ test('t.getBrowserConsoleMessages', async t => {
 
 test('messages formatting', async t => {
     // Several arguments
-    await t.eval(() => console.log('a', 1, null, void 0, ['b', 2], {c: 3}));
+    await t.eval(() => console.log('a', 1, null, void 0, ['b', 2], { c: 3 }));
 
     const messages = await t.getBrowserConsoleMessages();
 
