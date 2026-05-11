@@ -1,5 +1,3 @@
-type RequestHookConstructor = typeof import('../api/request-hooks/hook').default;
-
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 type TemplateArguments = any[];
 
@@ -32,7 +30,7 @@ interface GlobalHooks {
     testRun?: TestingEntryHooks;
     fixture?: TestingEntryHooks;
     test?: TestingEntryHooks;
-    request?: RequestHookConstructor[] | RequestHookConstructor;
+    request?: import('../api/request-hooks/hook').default[] | import('../api/request-hooks/hook').default;
     reporter?: ReporterHooks
 }
 
