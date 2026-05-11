@@ -330,9 +330,11 @@ export default class TestCafeConfiguration extends Configuration {
         this.mergeOptions({ hostname });
     }
 
-    public async calculateHostname ({ nativeAutomation } = { nativeAutomation: false }): Promise<void> {
+    public async calculateHostname ({ nativeAutomation, allBrowsersLocal } = { nativeAutomation: false, allBrowsersLocal: false }): Promise<void> {
         await this.ensureHostname(async hostname => {
             if (nativeAutomation)
+                hostname = LOCALHOST_NAMES.LOCALHOST;
+            else if (!hostname && allBrowsersLocal)
                 hostname = LOCALHOST_NAMES.LOCALHOST;
             else
                 hostname = await getValidHostname(hostname);

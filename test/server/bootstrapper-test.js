@@ -189,5 +189,39 @@ describe('Bootstrapper', () => {
                                         'the "userProfile" suffix from the following browser aliases: "chrome, edge".');
             }
         });
+
+        it('Should use localhost hostname strategy for local browsers in proxy mode', async () => {
+            let calculateHostnameOptions = null;
+
+            const originalGetOption         = bootstrapper.configuration.getOption;
+            const originalCalculateHostname = bootstrapper.configuration.calculateHostname;
+
+            try {
+                bootstrapper.configuration.getOption = optionName => {
+                    if (optionName === 'disableNativeAutomation')
+                        return true;
+
+                    return originalGetOption(optionName);
+                };
+
+                bootstrapper.configuration.calculateHostname = options => {
+                    calculateHostnameOptions = options;
+                };
+
+                await bootstrapper._setupProxy([{
+                    browserName: 'firefox',
+                    provider:    createBrowserProviderMock({ local: true }),
+                }]);
+
+                expect(calculateHostnameOptions).eql({
+                    nativeAutomation: false,
+                    allBrowsersLocal: true,
+                });
+            }
+            finally {
+                bootstrapper.configuration.getOption         = originalGetOption;
+                bootstrapper.configuration.calculateHostname = originalCalculateHostname;
+            }
+        });
     });
 });

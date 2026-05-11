@@ -171,11 +171,16 @@ export default class Bootstrapper {
         };
     }
 
-    private async _setupProxy (): Promise<void> {
+    private async _setupProxy (browserInfo: BrowserInfoSource[]): Promise<void> {
         if (this.browserConnectionGateway.status === BrowserConnectionGatewayStatus.initialized)
             return;
 
-        await this.configuration.calculateHostname({ nativeAutomation: !this.configuration.getOption(OPTION_NAMES.disableNativeAutomation) });
+        const allBrowsersLocal = await this._isAllBrowsersLocal(browserInfo);
+
+        await this.configuration.calculateHostname({
+            nativeAutomation: !this.configuration.getOption(OPTION_NAMES.disableNativeAutomation),
+            allBrowsersLocal,
+        });
 
         this.browserConnectionGateway.initialize(this.configuration.startOptions);
     }
@@ -209,7 +214,7 @@ export default class Bootstrapper {
 
         this._validateUserProfileOptionInNativeAutomation(automated);
 
-        await this._setupProxy();
+        await this._setupProxy(browserInfo);
 
         let browserConnections = this._createAutomatedConnections(automated);
 
@@ -349,11 +354,15 @@ export default class Bootstrapper {
         return testedApp;
     }
 
-    private async _canUseParallelBootstrapping (browserInfo: BrowserInfoSource[]): Promise<boolean> {
+    private async _isAllBrowsersLocal (browserInfo: BrowserInfoSource[]): Promise<boolean> {
         const isLocalPromises = browserInfo.map(browser => browser.provider.isLocalBrowser(void 0, Bootstrapper._getBrowserName(browser)));
         const isLocalBrowsers = await Promise.all(isLocalPromises);
 
         return isLocalBrowsers.every(result => result);
+    }
+
+    private async _canUseParallelBootstrapping (browserInfo: BrowserInfoSource[]): Promise<boolean> {
+        return this._isAllBrowsersLocal(browserInfo);
     }
 
     private async _bootstrapSequence (browserInfo: BrowserInfoSource[], id: string): Promise<BasicRuntimeResources> {

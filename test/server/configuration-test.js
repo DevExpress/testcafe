@@ -31,6 +31,15 @@ const createJSONConfig = (filePath, options) => {
     fs.writeFileSync(filePath, JSON.stringify(options));
 };
 
+const normalizePathForDel = filePath => filePath.replace(/\\/g, '/');
+
+const removeDefaultConfigFiles = async configuration => {
+    if (!configuration)
+        return;
+
+    await del(configuration.defaultPaths.map(normalizePathForDel), { force: true });
+};
+
 const createJsConfig = (filePath, options) => {
     options = options || {};
     fs.writeFileSync(filePath, `module.exports = ${JSON.stringify(options)}`);
@@ -63,7 +72,7 @@ describe('TestCafeConfiguration', function () {
     });
 
     afterEach(async () => {
-        await del(testCafeConfiguration.defaultPaths);
+        await removeDefaultConfigFiles(testCafeConfiguration);
 
         consoleWrapper.unwrap();
         consoleWrapper.messages.clear();
@@ -475,7 +484,7 @@ describe('TestCafeConfiguration', function () {
                 beforeEach(async () => {
                     configuration = new TestCafeConfiguration();
 
-                    await del(configuration.defaultPaths);
+                    await removeDefaultConfigFiles(configuration);
                 });
 
                 it('Native automation is enabled/hostname is unset', async () => {
@@ -502,6 +511,20 @@ describe('TestCafeConfiguration', function () {
                 it('Native automation is disabled/hostname is set', async () => {
                     await configuration.init({ hostname: '123.456.789' });
                     await configuration.calculateHostname({ nativeAutomation: false });
+
+                    expect(configuration.getOption('hostname')).eql('123.456.789');
+                });
+
+                it('Native automation is disabled/all browsers are local/hostname is unset', async () => {
+                    await configuration.init();
+                    await configuration.calculateHostname({ nativeAutomation: false, allBrowsersLocal: true });
+
+                    expect(configuration.getOption('hostname')).eql('localhost');
+                });
+
+                it('Native automation is disabled/all browsers are local/hostname is set', async () => {
+                    await configuration.init({ hostname: '123.456.789' });
+                    await configuration.calculateHostname({ nativeAutomation: false, allBrowsersLocal: true });
 
                     expect(configuration.getOption('hostname')).eql('123.456.789');
                 });
@@ -654,7 +677,7 @@ describe('TestCafeConfiguration', function () {
         });
 
         after(async () => {
-            await del(configuration.defaultPaths);
+            await removeDefaultConfigFiles(configuration);
         });
 
         it('Should success create configuration with incorrect browser value', () => {
@@ -922,7 +945,7 @@ describe('TypeScriptConfiguration', function () {
         let configuration;
 
         afterEach(async () => {
-            await del(configuration.defaultPaths);
+            await removeDefaultConfigFiles(configuration);
         });
 
         it('Custom config path is used', () => {
