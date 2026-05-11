@@ -21,7 +21,7 @@ describe('[Regression](GH-965)', function () {
             })
                 .catch(function (err) {
                     expect(err.message).contains('Invalid test page URL: "httpss://example.com". TestCafe cannot execute the test because the test page URL includes the httpss protocol. TestCafe supports the following protocols: http://, https:// and file://.');
-                    expect(err.stack).contains('> 4 |    .page `httpss://example.com`');
+                    expect(err.stack).contains('> 3 |test.page `httpss://example.com`');
                 });
         });
     });
