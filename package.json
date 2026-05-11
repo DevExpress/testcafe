@@ -71,7 +71,7 @@
     "@babel/plugin-transform-object-rest-spread": "^7.24.7",
     "@babel/plugin-transform-private-methods": "^7.25.4",
     "@babel/plugin-transform-runtime": "7.23.3",
-    "@babel/preset-env": "^7.23.2",
+    "@babel/preset-env": "^7.29.5",
     "@babel/preset-flow": "^7.22.15",
     "@babel/preset-react": "^7.22.15",
     "@babel/runtime": "^7.23.2",
