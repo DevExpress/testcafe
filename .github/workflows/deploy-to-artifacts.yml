@@ -37,8 +37,8 @@ jobs:
         with:
           ref: ${{steps.prep.outputs.sha}}
       - run: |
-          npm i
-          npx gulp build
+          npm ci
+          npx --no-install gulp build
           npm pack
       - id: package-name
         uses: actions/github-script@v6
@@ -55,7 +55,7 @@ jobs:
           path: |
             ${{steps.package-name.outputs.packageName}}.tgz
       - run: |
-          npx gulp docker-build
+          npx --no-install gulp docker-build
           docker save -o ${{steps.package-name.outputs.packageName}}.tar ${{steps.package-name.outputs.imageName}}
       - uses: actions/upload-artifact@v4
         with:
