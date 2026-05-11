@@ -133,6 +133,8 @@ test('Click in a removed iframe', async t => {
     await t
         .switchToIframe('#iframe')
         .click('#remove-from-parent-btn')
+        // NOTE: allow the setTimeout(0) removal handler to run before the next action
+        .wait(500)
         .click('#btn');
 });
 
@@ -213,9 +215,11 @@ test('Click in a cross-domain iframe with redirect', async t => {
     await t
         .switchToIframe('#cross-domain-iframe')
         .click('#link')
+        // NOTE: this ensures the redirected page script initialized before we click
+        .expect(getSecondPageBtnClickCount()).eql(0)
         .click('#second-page-btn');
 
-    const secondPageBtnClickCount = await getSecondPageBtnClickCount();
+    await t.expect(getSecondPageBtnClickCount()).eql(1);
 
     await t
         .switchToMainWindow()
@@ -224,7 +228,6 @@ test('Click in a cross-domain iframe with redirect', async t => {
     const btnClickCount = await getBtnClickCount();
 
     expect(btnClickCount).eql(1);
-    expect(secondPageBtnClickCount).eql(1);
 });
 
 test("Click in a iframe that's loading too slowly", async t => {

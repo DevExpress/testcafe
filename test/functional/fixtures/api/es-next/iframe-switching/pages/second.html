@@ -7,6 +7,8 @@
 <button id="second-page-btn">button</button>
 
 <script>
+    window.secondPageBtnClickCount = 0;
+
     document.getElementById('second-page-btn').addEventListener('click', function () {
         window.secondPageBtnClickCount = (window.secondPageBtnClickCount || 0) + 1;
     });
