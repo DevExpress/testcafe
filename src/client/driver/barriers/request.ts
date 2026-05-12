@@ -85,7 +85,7 @@ export default class RequestBarrier<R> {
 
         this._requests.clear();
         this._offListening();
-        this._waitResolve!(); // eslint-disable-line @typescript-eslint/no-non-null-assertion
+        this._waitResolve!();
     }
 
     public wait (isPageLoad?: boolean): Promise<void> {

@@ -8,14 +8,14 @@ fixture
     ('Fixture1')
     .page('http://example.com')
     .httpAuth({
-        username: 'user',
-        password: 'pass',
-        domain: 'domain',
+        username:    'user',
+        password:    'pass',
+        domain:      'domain',
         workstation: 'workstation',
     })
-    .before(async() => {
+    .before(async () => {
     })
-    .after(async() => {
+    .after(async () => {
     })
     .beforeEach(async t => {
         t.ctx['1'] = 2;
@@ -51,9 +51,9 @@ test
     .disablePageCaching
     .page('http://example.com')
     .httpAuth({
-        username: 'user',
-        password: 'pass',
-        domain: 'domain',
+        username:    'user',
+        password:    'pass',
+        domain:      'domain',
         workstation: 'workstation',
     })
     .clientScripts([

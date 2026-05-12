@@ -28,13 +28,13 @@ import { expect } from 'chai';
     expect(location1).eql('http://localhost:3000/fixtures/api/es-next/client-function/pages/index.html');
 
 
-    ClientFunction(async() => Promise.resolve());
+    ClientFunction(async () => Promise.resolve());
 
     ClientFunction(function*() {
         yield 1;
     });
 
-    const boundGetLocation = getLocation.with({boundTestRun: t});
+    const boundGetLocation = getLocation.with({ boundTestRun: t });
 
     await boundGetLocation();
 
@@ -51,7 +51,7 @@ import { expect } from 'chai';
     expect(res1).eql(42);
 
     const res2 = await ClientFunction(() => {
-        const obj = {1: '1', '2': 2};
+        const obj = { 1: '1', '2': 2 };
 
         return typeof obj === 'object' ? JSON.stringify(Object.keys(obj)) : null;
     })();
@@ -76,7 +76,7 @@ import { expect } from 'chai';
     await fn2();
 
     const selectByClassName: any = ClientFunction((className: string) => document.querySelectorAll('.' + className));
-    const nthByClass = ClientFunction((className: string, n: number) => selectByClassName(className)[n], {dependencies: {selectByClassName}});
+    const nthByClass = ClientFunction((className: string, n: number) => selectByClassName(className)[n], { dependencies: { selectByClassName } });
 
     nthByClass('foo', 42);
 
@@ -106,7 +106,7 @@ import { expect } from 'chai';
     expect(res4[2]).to.be.undefined;
     expect(res4[3]).to.be.NaN;
 
-    function getAnswer() {
+    function getAnswer () {
         return new Promise(resolve => {
             setTimeout(() => resolve(42), 30);
         });
@@ -119,7 +119,7 @@ import { expect } from 'chai';
 
     const hfn2 = ClientFunction((fn: Function) => fn());
 
-    await hfn2(async() => Promise.resolve());
+    await hfn2(async () => Promise.resolve());
 
     const hfn3 = ClientFunction((fn: Function) => fn());
     const location2 = await hfn3(getLocation);

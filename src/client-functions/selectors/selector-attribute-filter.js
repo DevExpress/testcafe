@@ -3,7 +3,6 @@
 // Do not use any browser or node-specific API!
 // -------------------------------------------------------------
 
-/* eslint-disable no-undef */
 export default function selectorAttributeFilter (node, index, originNode, attrName, attrValue) {
     if (node.nodeType !== 1)
         return false;
@@ -22,4 +21,3 @@ export default function selectorAttributeFilter (node, index, originNode, attrNa
 
     return false;
 }
-/* eslint-enable no-undef */

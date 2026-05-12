@@ -1,4 +1,4 @@
-/* eslint-disable no-restricted-properties */
+
 import uiRoot from '../../ui-root';
 
 export function addToUiRoot (element) {

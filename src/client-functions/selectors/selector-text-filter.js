@@ -3,7 +3,6 @@
 // Do not use any browser or node-specific API!
 // -------------------------------------------------------------
 
-/* eslint-disable no-undef */
 export default function selectorTextFilter (node, index, originNode, textFilter) {
 
     function hasChildrenWithText (parentNode) {
@@ -45,4 +44,3 @@ export default function selectorTextFilter (node, index, originNode, textFilter)
 
     return checkNodeText(node.textContent);
 }
-/* eslint-enable no-undef */

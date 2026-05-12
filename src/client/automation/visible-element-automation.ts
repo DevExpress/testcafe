@@ -121,7 +121,7 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
     }
 
     private _ensureWindowAndCursorForLegacyTests (automation: VisibleElementAutomation): void {
-        automation.window = automation.window || window; // eslint-disable-line no-undef
+        automation.window = automation.window || window;
         automation.cursor = cursorInstance;
     }
 
@@ -141,7 +141,7 @@ export default class VisibleElementAutomation extends SharedEventEmitter {
         const moveOptions    = new MoveOptions(utils.extend({ skipScrolling: true }, this.options), false);
         const moveAutomation = await MoveAutomation.create(this.element, moveOptions, this.window, this.cursor, this.nativeAutomationInput);
 
-        return moveAutomation // eslint-disable-line consistent-return
+        return moveAutomation
             .run()
             .then(() => delay(this.automationSettings.mouseActionStepDelay));
     }

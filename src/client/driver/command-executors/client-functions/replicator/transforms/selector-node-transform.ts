@@ -40,6 +40,7 @@ export default class SelectorNodeTransform implements Transform {
         return snapshot;
     }
 
-    public fromSerializable (): void { // eslint-disable-line no-empty-function
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    public fromSerializable (): void {
     }
 }

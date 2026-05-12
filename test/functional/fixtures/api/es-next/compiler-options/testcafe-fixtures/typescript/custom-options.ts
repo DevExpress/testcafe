@@ -1,4 +1,4 @@
-fixture ('Fixture');
+fixture('Fixture');
 
 function fn (arg) {
     return arg;

@@ -12,11 +12,11 @@ const someFunc = ClientFunction(() => dep, { dependencies: { dep } });
 const getLocation = ClientFunction(() => document.location.toString());
 const getUserAgent = ClientFunction(() => navigator.userAgent);
 
-test('Dispatch', async() => {
+test('Dispatch', async () => {
     throw await getUserAgent();
 });
 
-test('Call with arguments', async() => {
+test('Call with arguments', async () => {
     const getElementText = ClientFunction((className: string, idx: number) => {
         return document.querySelectorAll('.' + className)[idx].textContent;
     });
@@ -26,31 +26,31 @@ test('Call with arguments', async() => {
     expect(answer.trim()).eql('42');
 });
 
-test('Hammerhead code instrumentation', async() => {
+test('Hammerhead code instrumentation', async () => {
     const location = await getLocation();
 
     expect(location).eql('http://localhost:3000/fixtures/api/es-next/client-function/pages/index.html');
 });
 
 
-test('Async syntax in ClientFunction', async() => {
-    ClientFunction(async() => Promise.resolve());
+test('Async syntax in ClientFunction', async () => {
+    ClientFunction(async () => Promise.resolve());
 });
 
-test('Generator in ClientFunction', async() => {
+test('Generator in ClientFunction', async () => {
     ClientFunction(function*() {
         yield 1;
     });
 });
 
 test('Bind ClientFunction', async t => {
-    const boundGetLocation = getLocation.with({boundTestRun: t});
+    const boundGetLocation = getLocation.with({ boundTestRun: t });
 
     await boundGetLocation();
 });
 
-test('Promises support', async() => {
-    var res = await ClientFunction(() => {
+test('Promises support', async () => {
+    const res = await ClientFunction(() => {
         return Promise
             .resolve()
             .then(()=> {
@@ -63,9 +63,9 @@ test('Promises support', async() => {
     expect(res).eql(42);
 });
 
-test('Babel artifacts polyfills', async() => {
-    var res = await ClientFunction(() => {
-        var obj = {1: '1', '2': 2};
+test('Babel artifacts polyfills', async () => {
+    const res = await ClientFunction(() => {
+        const obj = { 1: '1', '2': 2 };
 
         return typeof obj === 'object' ? JSON.stringify(Object.keys(obj)) : null;
     })();
@@ -73,16 +73,16 @@ test('Babel artifacts polyfills', async() => {
     expect(JSON.parse(res)).eql(['1', '2']);
 });
 
-test('Error in code', async() => {
-    var fn = ClientFunction(() => {
+test('Error in code', async () => {
+    const fn = ClientFunction(() => {
         throw new Error('Hey ya!');
     });
 
     await fn();
 });
 
-test('Error in Promise', async() => {
-    var fn = ClientFunction(() => {
+test('Error in Promise', async () => {
+    const fn = ClientFunction(() => {
         return Promise.resolve().then(()=> {
             throw new Error('42');
         });
@@ -92,9 +92,9 @@ test('Error in Promise', async() => {
 });
 
 const selectByClassName: any = ClientFunction((className: string) => document.querySelectorAll('.' + className));
-const nthByClass = ClientFunction((className: string, n: number) => selectByClassName(className)[n], {dependencies: {selectByClassName}});
+const nthByClass = ClientFunction((className: string, n: number) => selectByClassName(className)[n], { dependencies: { selectByClassName } });
 
-test('ClientFunction call with complex argument types', async() => {
+test('ClientFunction call with complex argument types', async () => {
     const fn = ClientFunction((re: any, err: any, undef: any, nan: any) => {
         return re instanceof RegExp &&
             re.source === '\\S+' &&
@@ -109,7 +109,7 @@ test('ClientFunction call with complex argument types', async() => {
     expect(res).to.be.true;
 });
 
-test('ClientFunction call with complex return types', async() => {
+test('ClientFunction call with complex return types', async () => {
     const fn = ClientFunction((): [RegExp, Error, any, number] => {
         return [/\S+/ig, new Error('Hey!'), void 0, NaN];
     });
@@ -124,8 +124,8 @@ test('ClientFunction call with complex return types', async() => {
     expect(res[3]).to.be.NaN;
 });
 
-test('ClientFunction with function argument', async() => {
-    function getAnswer() {
+test('ClientFunction with function argument', async () => {
+    function getAnswer () {
         return new Promise(resolve => {
             setTimeout(() => resolve(42), 30);
         });
@@ -137,24 +137,24 @@ test('ClientFunction with function argument', async() => {
     expect(answer).eql(42);
 });
 
-test('Async/await in function argument of ClientFunction', async() => {
+test('Async/await in function argument of ClientFunction', async () => {
     const hfn = ClientFunction((fn: Function) => fn());
 
-    await hfn(async() => Promise.resolve());
+    await hfn(async () => Promise.resolve());
 });
 
-test('ClientFunction with ClientFunction argument', async() => {
+test('ClientFunction with ClientFunction argument', async () => {
     const hfn = ClientFunction((fn: Function) => fn());
     const location = await hfn(getLocation);
 
     expect(location).eql('http://localhost:3000/fixtures/api/es-next/client-function/pages/index.html');
 });
 
-test('ClientFunction without `await`', async() => {
+test('ClientFunction without `await`', async () => {
     getLocation();
 });
 
-test('DOM node return value', async() => {
+test('DOM node return value', async () => {
     const getSomeNodes = ClientFunction(() => {
         const answer = document.querySelector('.answer');
 

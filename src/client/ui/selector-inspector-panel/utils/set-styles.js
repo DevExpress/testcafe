@@ -1,4 +1,4 @@
-/* eslint-disable no-restricted-properties */
+
 import testCafeCore from '../../deps/testcafe-core';
 
 const styleUtils = testCafeCore.styleUtils;

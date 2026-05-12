@@ -1,4 +1,4 @@
-/* eslint-disable no-restricted-properties */
+
 import hammerhead from './../deps/hammerhead';
 
 import { createElementFromDescriptor } from './utils/create-element-from-descriptor';

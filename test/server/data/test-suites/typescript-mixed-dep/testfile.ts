@@ -4,6 +4,6 @@ import dep2 from './dep2';
 
 fixture `Some fixture`;
 
-test('Test deps', async() => {
+test('Test deps', async () => {
     return [await dep1(2), await dep2(2)];
 });

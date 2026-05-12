@@ -72,7 +72,7 @@ gulp.task('clean', () => {
 
 // Lint
 gulp.task('lint', () => {
-    const eslint = require('gulp-eslint');
+    const eslint = require('gulp-eslint-new');
 
     return gulp
         .src([

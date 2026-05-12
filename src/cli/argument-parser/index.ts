@@ -351,7 +351,7 @@ export default class CLIArgumentParser {
 
     private _parsePorts (): void {
         if (this.opts.ports) {
-            const parsedPorts = (this.opts.ports as string) /* eslint-disable-line no-extra-parens */
+            const parsedPorts = (this.opts.ports as string)
                 .split(',')
                 .map(parsePortNumber);
 
@@ -375,7 +375,7 @@ export default class CLIArgumentParser {
     }
 
     private async _parseReporters (): Promise<void> {
-        const reporters = this.opts.reporter ? (this.opts.reporter as string).split(',') : []; /* eslint-disable-line no-extra-parens*/
+        const reporters = this.opts.reporter ? (this.opts.reporter as string).split(',') : [];
 
         this.opts.reporter = reporters.map((reporter: string) => {
             const separatorIndex = reporter.indexOf(':');

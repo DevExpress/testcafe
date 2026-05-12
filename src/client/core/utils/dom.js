@@ -315,7 +315,7 @@ export function getElementDescription (el) {
     res.push(getTagName(el));
 
     for (const attr in attributes) {
-        if (attributes.hasOwnProperty(attr)) { //eslint-disable-line no-prototype-builtins
+        if (attributes.hasOwnProperty(attr)) {
             const val = el[attributes[attr]];
 
             if (val)
