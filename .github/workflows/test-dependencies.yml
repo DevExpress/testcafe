@@ -15,4 +15,4 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - uses: actions/setup-node@v3
-    - run: npm audit --package-lock-only --production
+    - run: npm audit --omit=dev

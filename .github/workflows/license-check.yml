@@ -35,4 +35,4 @@ jobs:
               run: npm pack
 
             - name: Install the application and check licenses
-              run: mkdir temp && cd temp && npm init -y && npm install --package-lock-only ../*.tgz && npm ci && npx --no-install gulp check-licenses
+              run: mkdir temp && cd temp && npm init -y && npm install ../*.tgz && npx --no-install gulp check-licenses
