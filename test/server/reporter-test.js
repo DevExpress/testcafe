@@ -10,6 +10,7 @@ const delay                           = require('../../lib/utils/delay');
 const { ReporterPluginError }         = require('../../lib/errors/runtime');
 const WarningLog                      = require('../../lib/notifications/warning-log');
 const util                            = require('util');
+const expectStartsWith                = require('./helpers/expect-starts-with');
 
 
 describe('Reporter', () => {
@@ -1451,7 +1452,7 @@ describe('Reporter', () => {
             const lastErr = log.pop();
 
             expect(lastErr).instanceOf(ReporterPluginError);
-            expect(lastErr.message).startsWith(`The "${method}" method of the "customReporter" reporter produced an uncaught error. Error details:\nError: oops`);
+            expectStartsWith(lastErr.message, `The "${method}" method of the "customReporter" reporter produced an uncaught error. Error details:\nError: oops`);
         }
     });
 

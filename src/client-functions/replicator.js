@@ -1,5 +1,5 @@
 import { identity } from 'lodash';
-import Replicator from 'replicator';
+import Replicator from '../utils/replicator';
 import functionBuilderSymbol from './builder-symbol';
 import compileClientFunction from '../compiler/compile-client-function';
 

@@ -57,7 +57,7 @@ const getElementById = Selector(id => document.getElementById(id));
     expect(el.classNames).eql(['yo', 'hey', 'cool']);
 })();
 
-(async() => {
+(async () => {
     const el = await getElementById('svgElement');
 
     expect(el.nodeType).eql(1);
@@ -140,7 +140,7 @@ const getElementById = Selector(id => document.getElementById(id));
     expect(el.selected).to.be.true;
 })();
 
-(async() => {
+(async () => {
     const el = await getElementById('htmlElementWithInnerText');
 
     expect(/^Hey\nyo test {1,2}test( \u0000)?/.test(el.innerText.trim())).to.be.true;
@@ -192,7 +192,7 @@ const getElementById = Selector(id => document.getElementById(id));
     expect(fragment.textContent).eql('42');
 })();
 
-(async() => {
+(async () => {
     const el1 = await Selector('#htmlElement')();
     const el2 = await Selector('.svg1')();
 
@@ -206,13 +206,13 @@ const getElementById = Selector(id => document.getElementById(id));
     expect(el.tagName).eql('div');
 })();
 
-(async() => {
+(async () => {
     const el = await Selector('#someElement')();
 
     expect(el).eql(null);
 })();
 
-(async() => {
+(async () => {
     const selector = Selector(() => {
         throw new Error('Hey ya!');
     });
@@ -227,21 +227,21 @@ const getElementById = Selector(id => document.getElementById(id));
 
     expect(el.tagName).eql('div');
 
-    el = await getInvisibleEl.with({visibilityCheck: true})();
+    el = await getInvisibleEl.with({ visibilityCheck: true })();
 
-    el = await getInvisibleEl.with({visibilityCheck: true})();
+    el = await getInvisibleEl.with({ visibilityCheck: true })();
 
     expect(el.tagName).eql('div');
 })();
 
-(async() => {
-    const getSlowEl = Selector('#slowElement').with({visibilityCheck: true, timeout: 300});
+(async () => {
+    const getSlowEl = Selector('#slowElement').with({ visibilityCheck: true, timeout: 300 });
     const el = await getSlowEl();
 
     expect(el).to.be.a('null');
 })();
 
-(async() => {
+(async () => {
     let el = await getElementById('htmlElement');
 
     expect(el.hasClass('yo')).to.be.true;
@@ -256,27 +256,27 @@ const getElementById = Selector(id => document.getElementById(id));
 })();
 
 (async () => {
-    const getNewElement = Selector('#newPageElement').with({timeout: 5000});
+    const getNewElement = Selector('#newPageElement').with({ timeout: 5000 });
 
     const el = await getNewElement();
 
     expect(el.tagName).eql('div');
 })();
 
-(async() => {
-    var derivative = Selector(getElementById('textInput'));
+(async () => {
+    const derivative = Selector(getElementById('textInput'));
 
     await derivative();
 })();
 
-(async() => {
+(async () => {
     const selector = Selector('#selectInput > option').withText('O2');
     const el = await selector();
 
     expect(el.id).eql('option2');
 })();
 
-(async() => {
+(async () => {
     let el = Selector('#htmlElement');
 
     expect(await el.id).eql('htmlElement');
@@ -323,15 +323,15 @@ const getElementById = Selector(id => document.getElementById(id));
     expect(await selector('checkInput').value).eql('on');
 })();
 
-(async() => {
+(async () => {
     await Selector('#someUnknownElement').tagName;
 })();
 
-(async() => {
+(async () => {
     await Selector('#someUnknownElement').getStyleProperty('width');
 })();
 
-(async() => {
+(async () => {
     // String selector
     const getSecondEl = Selector('.idxEl').nth(-3);
 
@@ -364,7 +364,7 @@ const getElementById = Selector(id => document.getElementById(id));
     expect(await getSecondEl.nth(2).id).eql('el3');
 })();
 
-(async() => {
+(async () => {
     // String selector and string filter
     let selector = Selector('div').withText('element 4.');
 
@@ -433,7 +433,7 @@ const getElementById = Selector(id => document.getElementById(id));
     expect(await elWithClass('idxEl').withText('element 1.').id).eql('el1');
 })();
 
-(async() => {
+(async () => {
     let selector  = Selector('#el5 div');
 
     expect(await selector.withText('Element with text').count).eql(6);
@@ -446,7 +446,7 @@ const getElementById = Selector(id => document.getElementById(id));
     expect(await selector.nth(2).id).eql('passed-2');
 })();
 
-(async() => {
+(async () => {
     // String filter
     expect(await Selector('body div').filter('#htmlElementWithInnerText').id).eql('htmlElementWithInnerText');
 
@@ -480,7 +480,7 @@ const getElementById = Selector(id => document.getElementById(id));
     // Should allow non-functions as a dependency
     const dep = true;
 
-    Selector('#list *').filter(() => dep, { dependencies: { dep } })
+    Selector('#list *').filter(() => dep, { dependencies: { dep } });
 })();
 
 (async () => {
@@ -497,14 +497,14 @@ const getElementById = Selector(id => document.getElementById(id));
     // Selector should maintain filter when used as parameter
     const getId = ClientFunction((getEl: Function) => getEl().id);
 
-    let id = await getId(selector);
+    const id = await getId(selector);
 
     expect(id).eql('el3');
 
     expect(id).eql('el2');
 })();
 
-(async() => {
+(async () => {
     let elements = Selector('#filterVisibleHierarchical > div');
 
     expect(await elements.child('p').count).eql(11);
@@ -522,7 +522,7 @@ const getElementById = Selector(id => document.getElementById(id));
     expect(await elements.filterHidden().count).eql(5);
 })();
 
-(async() => {
+(async () => {
     // String filter
     expect(await Selector('#htmlElement').find('span').id).eql('someSpan');
 
@@ -561,10 +561,10 @@ const getElementById = Selector(id => document.getElementById(id));
     // Should allow non-functions as a dependency
     const dep = true;
 
-    Selector('#list *').find(() => dep, { dependencies: { dep } })
+    Selector('#list *').find(() => dep, { dependencies: { dep } });
 })();
 
-(async() => {
+(async () => {
     // Index filter
     expect((await Selector('g').parent(1).tagName).toLowerCase()).eql('a');
     expect((await Selector('g').parent().parent().tagName).toLowerCase()).eql('a');
@@ -603,10 +603,10 @@ const getElementById = Selector(id => document.getElementById(id));
     // Should allow non-functions as a dependency
     const dep = true;
 
-    Selector('#list *').parent(() => dep, { dependencies: { dep } })
+    Selector('#list *').parent(() => dep, { dependencies: { dep } });
 })();
 
-(async() => {
+(async () => {
     // Index filter
     expect(await Selector('#container').child(1).id).eql('el2');
     expect(await Selector('#p2').child().child().id).eql('p0');
@@ -646,10 +646,10 @@ const getElementById = Selector(id => document.getElementById(id));
     // Should allow non-functions as a dependency
     const dep = true;
 
-    Selector('#list *').child(() => dep, { dependencies: { dep } })
+    Selector('#list *').child(() => dep, { dependencies: { dep } });
 })();
 
-(async() => {
+(async () => {
     // Index filter
     expect(await Selector('#el2').sibling(1).id).eql('el3');
     expect(await Selector('#el2').sibling().sibling().id).eql('el2');
@@ -674,10 +674,10 @@ const getElementById = Selector(id => document.getElementById(id));
     // Should allow non-functions as a dependency
     const dep = true;
 
-    Selector('#list *').sibling(() => dep, { dependencies: { dep } })
+    Selector('#list *').sibling(() => dep, { dependencies: { dep } });
 })();
 
-(async() => {
+(async () => {
     expect(await Selector('.idxEl').count).eql(4);
     expect(await Selector('.idxEl').nth(2).count).eql(1);
     expect(await Selector('form').find('input').count).eql(2);
@@ -702,10 +702,10 @@ const getElementById = Selector(id => document.getElementById(id));
     const isTwo = ClientFunction((i: number) => i === 2);
     const firstNode = ClientFunction((node: Node, i: number) => isOne(i));
 
-    expect(Selector('.idxEl').filter((node: Node, i: number) => !!isTwo(i), {isTwo}).id).eql('el3');
-    expect(Selector('.find-parent').find((node: Node, i: number) => !!isOne(i), {isOne}).id).eql('find-child2');
-    expect(Selector('#childDiv').parent((node: Node, i: number) => !!isTwo(i), {isTwo}).id).eql('p2');
-    expect(Selector('.find-parent').child((node: Node, i: number) => !!isOne(i), {isOne}).id).eql('find-child3');
+    expect(Selector('.idxEl').filter((node: Node, i: number) => !!isTwo(i), { isTwo }).id).eql('el3');
+    expect(Selector('.find-parent').find((node: Node, i: number) => !!isOne(i), { isOne }).id).eql('find-child2');
+    expect(Selector('#childDiv').parent((node: Node, i: number) => !!isTwo(i), { isTwo }).id).eql('p2');
+    expect(Selector('.find-parent').child((node: Node, i: number) => !!isOne(i), { isOne }).id).eql('find-child3');
 })();
 
 (async () => {
@@ -727,7 +727,7 @@ const getElementById = Selector(id => document.getElementById(id));
 })();
 
 
-(async() => {
+(async () => {
     const el = Selector('rect').addCustomDOMProperties({
         prop: () => {
             throw new Error('test');
@@ -762,7 +762,7 @@ const getElementById = Selector(id => document.getElementById(id));
     // Should allow non-functions as a dependency
     const dep = true;
 
-    Selector('#list *').nextSibling(() => dep, { dependencies: { dep } })
+    Selector('#list *').nextSibling(() => dep, { dependencies: { dep } });
 })();
 
 (async () => {
@@ -800,7 +800,7 @@ const getElementById = Selector(id => document.getElementById(id));
     }
 
 
-    let el = <CustomSelector1>Selector('rect').addCustomMethods({
+    const el = <CustomSelector1>Selector('rect').addCustomMethods({
         prop1: (node, str) => str + '42',
         prop2: (node, str, separator) => [str, (<Element>node).tagName].join(separator),
     });
@@ -813,7 +813,7 @@ const getElementById = Selector(id => document.getElementById(id));
     expect(await el.exists).ok;
     expect(await el.count).eql(1);
 
-    const snapshot = <CustomSnapshot1>await el();
+    const snapshot = <CustomSnapshot1> await el();
 
     expect(snapshot.prop1('value: ')).eql('value: 42');
     expect(await snapshot.prop1('value: ')).eql('value: 42');
@@ -830,10 +830,10 @@ const getElementById = Selector(id => document.getElementById(id));
     // Should allow non-functions as a dependency
     const dep = true;
 
-    Selector('#list *').prevSibling(() => dep, { dependencies: { dep } })
+    Selector('#list *').prevSibling(() => dep, { dependencies: { dep } });
 })();
 
-(async() => {
+(async () => {
     interface CustomSelector extends Selector {
         customMethod(): Promise<any>;
     }

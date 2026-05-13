@@ -41,7 +41,7 @@
     "no-shadow": 0,
     "@typescript-eslint/no-shadow": 2,
     "no-shadow-restricted-names": 2,
-    "no-spaced-func": 2,
+    "func-call-spacing": [2, "never"],
     "no-trailing-spaces": 2,
     "no-undef-init": 2,
     "no-unused-expressions": 2,
@@ -62,7 +62,11 @@
     "key-spacing": [2, { "align": "value" }],
     "max-nested-callbacks": [2, 3],
     "new-parens": 2,
-    "newline-after-var": [2, "always"],
+    "padding-line-between-statements": [
+      2,
+      { "blankLine": "always", "prev": ["const", "let", "var"], "next": "*" },
+      { "blankLine": "any", "prev": ["const", "let", "var"], "next": ["const", "let", "var"] }
+    ],
     "no-lonely-if": 2,
     "no-multiple-empty-lines":  [2, { "max": 2 }],
     "no-nested-ternary": 2,
@@ -98,24 +102,25 @@
     "prefer-rest-params": 0,
     "prefer-spread": 0,
     "@typescript-eslint/no-explicit-any": 0,
-    "@typescript-eslint/no-extra-parens": 2,
+    "no-extra-parens": 2,
+    "@typescript-eslint/no-require-imports": 0,
     "@typescript-eslint/no-use-before-define": [2, "nofunc"],
     "@typescript-eslint/no-var-requires": [0],
     "@typescript-eslint/explicit-function-return-type": "off",
     "no-unused-vars": 0,
-    "@typescript-eslint/no-unused-vars": 2,
+    "@typescript-eslint/no-unused-expressions": 0,
+    "@typescript-eslint/no-unused-vars": [2, {
+      "caughtErrors": "none",
+      "argsIgnorePattern": "^_",
+      "varsIgnorePattern": "^_$"
+    }],
     "@typescript-eslint/no-empty-function": 0,
     "@typescript-eslint/no-this-alias": 0,
     "@typescript-eslint/ban-ts-comment": 0,
+    "@typescript-eslint/no-unsafe-function-type": 0,
+    "@typescript-eslint/no-wrapper-object-types": 0,
     "no-prototype-builtins": 0,
-    "@typescript-eslint/ban-types": [
-      "error",
-      {
-        "types": {
-          "Function": false
-        }
-      }
-      ]
+    "no-constant-binary-expression": 0
   },
   "overrides": [
     {
@@ -123,8 +128,7 @@
       "rules": {
         "@typescript-eslint/explicit-function-return-type": [2, { "allowExpressions": true }],
         "@typescript-eslint/no-empty-function": 2,
-        "prefer-spread": 2,
-        "@typescript-eslint/ban-ts-ignore": 0
+        "prefer-spread": 2
       }
     }
   ]

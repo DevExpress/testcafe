@@ -13,7 +13,8 @@ describe('[TypeScript] Smoke tests', function () {
                     'The specified selector does not match any element in the DOM tree.' +
                     '  > | Selector(\'#heyheyhey\')'
                 );
-                expect(errs[0]).contains('>  5 |async function doSmthg(selector: string, t: any): Promise<any> { await (<TestController>t).click(selector); }');
+                expect(errs[0]).contains('5 |async function doSmthg (selector: string, t: any): Promise<any> {');
+                expect(errs[0]).contains('>  6 |    await (<TestController>t).click(selector);');
             });
     });
 });

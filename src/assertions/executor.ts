@@ -45,7 +45,7 @@ export default class AssertionExecutor extends EventEmitter {
     }
 
     private _getTimeLeft (): number {
-        const executionTime = new Date().getTime() - (this.startTime as number); // eslint-disable-line @typescript-eslint/no-extra-parens
+        const executionTime = new Date().getTime() - (this.startTime as number);
 
         return this.timeout - executionTime;
     }

@@ -484,7 +484,7 @@ describe('Utils', () => {
                 configurable: true,
 
                 get: () => Object.create(null),
-                set: v => v,
+                set: () => {},
             });
 
             const moment = require('../../lib/utils/moment-loader');

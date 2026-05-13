@@ -1,4 +1,4 @@
-import { Transform } from 'replicator';
+import { Transform } from '../../../../../../utils/replicator';
 import { DomNodeClientFunctionResultError } from '../../../../../../shared/errors/index';
 // @ts-ignore
 import { nativeMethods } from '../../../../deps/hammerhead';
@@ -18,9 +18,11 @@ export default class ClientFunctionNodeTransform implements Transform {
         return false;
     }
 
-    public toSerializable (): void { // eslint-disable-line @typescript-eslint/no-empty-function
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    public toSerializable (): void {
     }
 
-    public fromSerializable (): void { // eslint-disable-line @typescript-eslint/no-empty-function
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    public fromSerializable (): void {
     }
 }

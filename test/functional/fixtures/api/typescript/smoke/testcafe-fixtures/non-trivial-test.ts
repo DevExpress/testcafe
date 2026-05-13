@@ -1,10 +1,12 @@
-import { Selector, Role, t } from 'testcafe';
+import {
+    Selector, Role, t,
+} from 'testcafe';
 
 const iframeElement = Selector('#element-in-iframe');
 const pageElement = Selector('#element-on-page');
 const showAlertBtn = Selector('#show-alert');
 
-async function initConfiguration() {
+async function initConfiguration () {
     await t
         .setNativeDialogHandler(() => true)
         .click(showAlertBtn);
@@ -22,7 +24,7 @@ async function initConfiguration() {
     t.fixtureCtx['someVal'] = 'fixtureCtxVal';
 }
 
-const role1 = Role('http://localhost:3000/fixtures/api/es-next/roles/pages/index.html', async() => {
+const role1 = Role('http://localhost:3000/fixtures/api/es-next/roles/pages/index.html', async () => {
     await t
         .setNativeDialogHandler(() => true);
 
@@ -41,12 +43,12 @@ fixture(`TypeScript smoke tests`)
     .page(`http://localhost:3000/fixtures/api/es-next/roles/pages/index.html`);
 
 
-test('Clear configuration', async() => {
+test('Clear configuration', async () => {
     await initConfiguration();
     await t.useRole(role1);
 });
 
-test('Restore configuration', async() => {
+test('Restore configuration', async () => {
     await initConfiguration();
 
     await t

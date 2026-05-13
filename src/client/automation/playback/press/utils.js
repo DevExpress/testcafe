@@ -77,7 +77,8 @@ export function getDeepActiveElement (currentDocument) {
         try {
             activeElementInIframe = getDeepActiveElement(nativeMethods.contentDocumentGetter.call(activeElement));
         }
-        catch (e) { // eslint-disable-line no-empty
+        catch (e) {
+            // This catch block intentionally does nothing
         }
     }
 

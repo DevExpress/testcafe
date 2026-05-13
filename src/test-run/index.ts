@@ -1375,7 +1375,7 @@ export default class TestRun extends AsyncEventEmitter {
 
     public async getCurrentUrl (): Promise<string> {
         const builder = new ClientFunctionBuilder(() => {
-            return window.location.href; // eslint-disable-line no-undef
+            return window.location.href;
         }, { boundTestRun: this });
 
         const getLocation = builder.getFunction();

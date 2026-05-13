@@ -1,4 +1,4 @@
-import { Transform } from 'replicator';
+import { Transform } from '../../../../../../utils/replicator';
 import { CustomDOMProperties } from '../../types';
 import { ElementSnapshot, NodeSnapshot } from '../../selector-executor/node-snapshots';
 import { UncaughtErrorInCustomDOMPropertyCode } from '../../../../../../shared/errors/index';
@@ -40,6 +40,7 @@ export default class SelectorNodeTransform implements Transform {
         return snapshot;
     }
 
-    public fromSerializable (): void { // eslint-disable-line no-empty-function
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    public fromSerializable (): void {
     }
 }

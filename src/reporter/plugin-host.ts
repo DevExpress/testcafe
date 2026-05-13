@@ -222,15 +222,17 @@ export default class ReporterPluginHost {
     }
 
     // NOTE: It's an optional method
-    public async init (/* testcafeVersion */): Promise<void> { // eslint-disable-line @typescript-eslint/no-empty-function
+    public async init (/* testcafeVersion */): Promise<void> {
         // Optional
     }
 
     // NOTE: It's an optional method
-    public async reportWarnings (/* warnings */): Promise<void> { // eslint-disable-line @typescript-eslint/no-empty-function
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    public async reportWarnings (/* warnings */): Promise<void> {
     }
 
     // NOTE: It's an optional method
-    public async reportData (/* testRun, ...data */): Promise<void> { // eslint-disable-line @typescript-eslint/no-empty-function
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    public async reportData (/* testRun, ...data */): Promise<void> {
     }
 }

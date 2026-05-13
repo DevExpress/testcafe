@@ -61,7 +61,7 @@ test('HTMLElement snapshot basic properties', async t => {
     expect(el.classNames).eql(['yo', 'hey', 'cool']);
 });
 
-test('SVGElement snapshot basic properties', async() => {
+test('SVGElement snapshot basic properties', async () => {
     const el = await getElementById('svgElement');
 
     expect(el.nodeType).eql(1);
@@ -152,7 +152,7 @@ test('Input-specific element snapshot properties', async t => {
     expect(el.selected).to.be.true;
 });
 
-test('`innerText` element snapshot property', async() => {
+test('`innerText` element snapshot property', async () => {
     const el = await getElementById('htmlElementWithInnerText');
 
     expect(/^Hey\nyo test {1,2}test( \u0000)?/.test(el.innerText.trim())).to.be.true;
@@ -206,7 +206,7 @@ test('Non-element node snapshots', async t => {
     expect(fragment.textContent).eql('42');
 });
 
-test('String ctor argument', async() => {
+test('String ctor argument', async () => {
     const el1 = await Selector('#htmlElement')();
     const el2 = await Selector('.svg1')();
 
@@ -222,13 +222,13 @@ test('Wait for element in DOM', async t => {
     expect(el.tagName).eql('div');
 });
 
-test('Element does not appear', async() => {
+test('Element does not appear', async () => {
     const el = await Selector('#someElement')();
 
     expect(el).eql(null);
 });
 
-test('Error in code', async() => {
+test('Error in code', async () => {
     const selector = Selector(() => {
         throw new Error('Hey ya!');
     });
@@ -243,23 +243,23 @@ test('Visibility check', async t => {
 
     expect(el.tagName).eql('div');
 
-    el = await getInvisibleEl.with({visibilityCheck: true})();
+    el = await getInvisibleEl.with({ visibilityCheck: true })();
 
     await t.click('#makeVisible');
 
-    el = await getInvisibleEl.with({visibilityCheck: true})();
+    el = await getInvisibleEl.with({ visibilityCheck: true })();
 
     expect(el.tagName).eql('div');
 });
 
-test('Timeout', async() => {
-    const getSlowEl = Selector('#slowElement').with({visibilityCheck: true, timeout: 300});
+test('Timeout', async () => {
+    const getSlowEl = Selector('#slowElement').with({ visibilityCheck: true, timeout: 300 });
     const el = await getSlowEl();
 
     expect(el).to.be.a('null');
 });
 
-test('Snapshot `hasClass` method', async() => {
+test('Snapshot `hasClass` method', async () => {
     let el = await getElementById('htmlElement');
 
     expect(el.hasClass('yo')).to.be.true;
@@ -274,7 +274,7 @@ test('Snapshot `hasClass` method', async() => {
 });
 
 test('Element on new page', async t => {
-    const getNewElement = Selector('#newPageElement').with({timeout: 5000});
+    const getNewElement = Selector('#newPageElement').with({ timeout: 5000 });
 
     await t.click('#newPage');
 
@@ -283,20 +283,20 @@ test('Element on new page', async t => {
     expect(el.tagName).eql('div');
 });
 
-test('Derivative selector without options', async() => {
-    var derivative = Selector(getElementById('textInput'));
+test('Derivative selector without options', async () => {
+    const derivative = Selector(getElementById('textInput'));
 
     await derivative();
 });
 
-test('<option> text selector', async() => {
+test('<option> text selector', async () => {
     const selector = Selector('#selectInput > option').withText('O2');
     const el = await selector();
 
     expect(el.id).eql('option2');
 });
 
-test('Snapshot properties shorthands on selector', async() => {
+test('Snapshot properties shorthands on selector', async () => {
     let el = Selector('#htmlElement');
 
     expect(await el.id).eql('htmlElement');
@@ -343,15 +343,15 @@ test('Snapshot properties shorthands on selector', async() => {
     expect(await selector('checkInput').value).eql('on');
 });
 
-test("Snapshot property shorthand - selector doesn't match any element", async() => {
+test("Snapshot property shorthand - selector doesn't match any element", async () => {
     await Selector('#someUnknownElement').tagName;
 });
 
-test("Snapshot shorthand method - selector doesn't match any element", async() => {
+test("Snapshot shorthand method - selector doesn't match any element", async () => {
     await Selector('#someUnknownElement').getStyleProperty('width');
 });
 
-test('Selector "nth()" method', async() => {
+test('Selector "nth()" method', async () => {
     // String selector
     const getSecondEl = Selector('.idxEl').nth(-3);
 
@@ -384,7 +384,7 @@ test('Selector "nth()" method', async() => {
     expect(await getSecondEl.nth(2).id).eql('el3');
 });
 
-test('Selector "withText" method', async() => {
+test('Selector "withText" method', async () => {
     // String selector and string filter
     let selector = Selector('div').withText('element 4.');
 
@@ -453,7 +453,7 @@ test('Selector "withText" method', async() => {
     expect(await elWithClass('idxEl').withText('element 1.').id).eql('el1');
 });
 
-test('Selector "withExactText" method', async() => {
+test('Selector "withExactText" method', async () => {
     let selector  = Selector('#el5 div');
 
     expect(await selector.withText('Element with text').count).eql(6);
@@ -466,7 +466,7 @@ test('Selector "withExactText" method', async() => {
     expect(await selector.nth(2).id).eql('passed-2');
 });
 
-test('Selector "filter" method', async() => {
+test('Selector "filter" method', async () => {
     // String filter
     expect(await Selector('body div').filter('#htmlElementWithInnerText').id).eql('htmlElementWithInnerText');
 
@@ -500,7 +500,7 @@ test('Selector "filter" method', async() => {
     // Should allow non-functions as a dependency
     const dep = true;
 
-    Selector('#list *').filter(() => dep, { dependencies: { dep } })
+    Selector('#list *').filter(() => dep, { dependencies: { dep } });
 });
 
 test('Combination of filter methods', async t => {
@@ -522,12 +522,12 @@ test('Combination of filter methods', async t => {
     expect(id).eql('el3');
 
     // Selector should maintain filter when used as dependency
-    id = await t.eval(() => selector().id, {dependencies: {selector: selector.nth(0)}});
+    id = await t.eval(() => selector().id, { dependencies: { selector: selector.nth(0) } });
 
     expect(id).eql('el2');
 });
 
-test('Selector `filterVisible/filterHidden` methods with hierarchical structure', async() => {
+test('Selector `filterVisible/filterHidden` methods with hierarchical structure', async () => {
     let elements = Selector('#filterVisibleHierarchical > div');
 
     expect(await elements.child('p').count).eql(11);
@@ -545,7 +545,7 @@ test('Selector `filterVisible/filterHidden` methods with hierarchical structure'
     expect(await elements.filterHidden().count).eql(5);
 });
 
-test('Selector "find" method', async() => {
+test('Selector "find" method', async () => {
     // String filter
     expect(await Selector('#htmlElement').find('span').id).eql('someSpan');
 
@@ -584,10 +584,10 @@ test('Selector "find" method', async() => {
     // Should allow non-functions as a dependency
     const dep = true;
 
-    Selector('#list *').find(() => dep, { dependencies: { dep } })
+    Selector('#list *').find(() => dep, { dependencies: { dep } });
 });
 
-test('Selector "parent" method', async() => {
+test('Selector "parent" method', async () => {
     // Index filter
     expect((await Selector('g').parent(1).tagName).toLowerCase()).eql('a');
     expect((await Selector('g').parent().parent().tagName).toLowerCase()).eql('a');
@@ -626,10 +626,10 @@ test('Selector "parent" method', async() => {
     // Should allow non-functions as a dependency
     const dep = true;
 
-    Selector('#list *').parent(() => dep, { dependencies: { dep } })
+    Selector('#list *').parent(() => dep, { dependencies: { dep } });
 });
 
-test('Selector "child" method', async() => {
+test('Selector "child" method', async () => {
     // Index filter
     expect(await Selector('#container').child(1).id).eql('el2');
     expect(await Selector('#p2').child().child().id).eql('p0');
@@ -669,10 +669,10 @@ test('Selector "child" method', async() => {
     // Should allow non-functions as a dependency
     const dep = true;
 
-    Selector('#list *').child(() => dep, { dependencies: { dep } })
+    Selector('#list *').child(() => dep, { dependencies: { dep } });
 });
 
-test('Selector "sibling" method', async() => {
+test('Selector "sibling" method', async () => {
     // Index filter
     expect(await Selector('#el2').sibling(1).id).eql('el3');
     expect(await Selector('#el2').sibling().sibling().id).eql('el2');
@@ -697,10 +697,10 @@ test('Selector "sibling" method', async() => {
     // Should allow non-functions as a dependency
     const dep = true;
 
-    Selector('#list *').sibling(() => dep, { dependencies: { dep } })
+    Selector('#list *').sibling(() => dep, { dependencies: { dep } });
 });
 
-test('Selector "count" and "exists" properties', async() => {
+test('Selector "count" and "exists" properties', async () => {
     expect(await Selector('.idxEl').count).eql(4);
     expect(await Selector('.idxEl').nth(2).count).eql(1);
     expect(await Selector('form').find('input').count).eql(2);
@@ -726,10 +726,10 @@ test('Selector filter dependencies and index argument', async t => {
     const firstNode = ClientFunction((node: Node, i: number) => isOne(i));
 
     await t
-        .expect(Selector('.idxEl').filter((node: Node, i: number) => !!isTwo(i), {isTwo}).id).eql('el3')
-        .expect(Selector('.find-parent').find((node: Node, i: number) => !!isOne(i), {isOne}).id).eql('find-child2')
-        .expect(Selector('#childDiv').parent((node: Node, i: number) => !!isTwo(i), {isTwo}).id).eql('p2')
-        .expect(Selector('.find-parent').child((node: Node, i: number) => !!isOne(i), {isOne}).id).eql('find-child3');
+        .expect(Selector('.idxEl').filter((node: Node, i: number) => !!isTwo(i), { isTwo }).id).eql('el3')
+        .expect(Selector('.find-parent').find((node: Node, i: number) => !!isOne(i), { isOne }).id).eql('find-child2')
+        .expect(Selector('#childDiv').parent((node: Node, i: number) => !!isTwo(i), { isTwo }).id).eql('p2')
+        .expect(Selector('.find-parent').child((node: Node, i: number) => !!isOne(i), { isOne }).id).eql('find-child3');
 });
 
 test('Selector filter origin node argument', async t => {
@@ -752,7 +752,7 @@ test('Selector filter origin node argument', async t => {
 });
 
 
-test('Add custom DOM properties method - property throws an error', async() => {
+test('Add custom DOM properties method - property throws an error', async () => {
     const el = Selector('rect').addCustomDOMProperties({
         prop: () => {
             throw new Error('test');
@@ -788,7 +788,7 @@ test('Selector "nextSibling" method', async t => {
     // Should allow non-functions as a dependency
     const dep = true;
 
-    Selector('#list *').nextSibling(() => dep, { dependencies: { dep } })
+    Selector('#list *').nextSibling(() => dep, { dependencies: { dep } });
 });
 
 test('Selector "prevSibling" method', async t => {
@@ -827,7 +827,7 @@ test('Selector `addCustomMethods` method', async t => {
     }
 
 
-    let el = <CustomSelector1>Selector('rect').addCustomMethods({
+    const el = <CustomSelector1>Selector('rect').addCustomMethods({
         prop1: (node, str) => str + '42',
         prop2: (node, str, separator) => [str, (<Element>node).tagName].join(separator),
     });
@@ -841,7 +841,7 @@ test('Selector `addCustomMethods` method', async t => {
         .expect(await el.exists).ok()
         .expect(await el.count).eql(1);
 
-    const snapshot = <CustomSnapshot1>await el();
+    const snapshot = <CustomSnapshot1> await el();
 
     await t
         .expect(snapshot.prop1('value: ')).eql('value: 42')
@@ -860,10 +860,10 @@ test('Selector `addCustomMethods` method', async t => {
     // Should allow non-functions as a dependency
     const dep = true;
 
-    Selector('#list *').prevSibling(() => dep, { dependencies: { dep } })
+    Selector('#list *').prevSibling(() => dep, { dependencies: { dep } });
 });
 
-test('Add custom method - method throws an error', async() => {
+test('Add custom method - method throws an error', async () => {
     interface CustomSelector extends Selector {
         customMethod(): Promise<any>;
     }

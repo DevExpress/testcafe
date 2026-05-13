@@ -3,7 +3,7 @@ import FunctionTransform from './replicator/transforms/function-transform';
 import ClientFunctionNodeTransform from './replicator/transforms/client-function-node-transform';
 import evalFunction from './eval-function';
 import { UncaughtErrorInClientFunctionCode } from '../../../../shared/errors/index';
-import Replicator from 'replicator';
+import Replicator from '../../../../utils/replicator';
 import { ExecuteClientFunctionCommand, ExecuteClientFunctionCommandBase } from '../../../../test-run/commands/execute-client-function';
 import { Dictionary } from '../../../../configuration/interfaces';
 // @ts-ignore

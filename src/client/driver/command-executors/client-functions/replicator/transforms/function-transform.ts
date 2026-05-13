@@ -1,4 +1,4 @@
-import { Transform } from 'replicator';
+import { Transform } from '../../../../../../utils/replicator';
 import { Dictionary } from '../../../../../../configuration/interfaces';
 import { SelectorDependencies } from '../../types';
 import selectorFilter from '../../selector-executor/filter';

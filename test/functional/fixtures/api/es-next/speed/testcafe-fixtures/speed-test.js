@@ -40,15 +40,11 @@ async function runSpeedTest (t) {
         .expect(actionSlowEditingTime / testFastSpeedSecondEditingTime).gte(2);
 }
 
-test
-    .page `http://localhost:3000/fixtures/api/es-next/speed/pages/index.html`
-('Speed', async t => {
+test.page `http://localhost:3000/fixtures/api/es-next/speed/pages/index.html` ('Speed', async t => {
     await runSpeedTest(t);
 });
 
-test
-    .page `http://localhost:3000/fixtures/api/es-next/speed/pages/iframe.html`
-('Speed in iframe', async t => {
+test.page `http://localhost:3000/fixtures/api/es-next/speed/pages/iframe.html` ('Speed in iframe', async t => {
     await t.switchToIframe('iframe');
     await runSpeedTest(t);
 });

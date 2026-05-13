@@ -345,15 +345,15 @@ describe('Should get structure of TypeScript files', function () {
     it('Smoke test', () => {
         const expectedStructure = [
             [
-                new Fixture('fixture 1', 72, 132, new Loc(5, 0, 5, 60), {},
+                new Fixture('fixture 1', 76, 136, new Loc(5, 0, 5, 60), {},
                     [
-                        new Test('test 1', 246, 325, new Loc(9, 0, 11, 2), {}),
+                        new Test('test 1', 255, 335, new Loc(11, 0, 13, 2), {}),
                     ]
                 ),
 
-                new Fixture('<computed name>(line: 14)', 380, 422, new Loc(14, 1, 14, 43), {},
+                new Fixture('<computed name>(line: 16)', 394, 436, new Loc(16, 4, 16, 46), {},
                     [
-                        new Test('<computed name>(line: 15)', 425, 456, new Loc(15, 1, 16, 3), {}),
+                        new Test('<computed name>(line: 17)', 442, 476, new Loc(17, 4, 18, 6), {}),
                     ]
                 ),
             ],
@@ -361,7 +361,7 @@ describe('Should get structure of TypeScript files', function () {
             [
                 new Fixture('fixture 1', 97, 138, new Loc(9, 9, 9, 50), {},
                     [
-                        new Test('test 1', 147, 222, new Loc(11, 6, 13, 12), {}),
+                        new Test('test 1', 147, 223, new Loc(11, 6, 13, 12), {}),
                     ]
                 ),
             ],

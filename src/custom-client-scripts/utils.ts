@@ -18,17 +18,17 @@ function getDuplicatedScripts (collection: ClientScript[]): ClientScript[] {
     contentGroups.forEach(contentGroup => {
         const pageGroups = getScriptGroupValues(contentGroup as ClientScript[], (s: ClientScript) => s.page.toString());
 
-        if (pageGroups.length === 1 && RequestFilterRule.isANY((pageGroups[0][0] as ClientScript).page)) { /*eslint-disable-line no-extra-parens*/
+        if (pageGroups.length === 1 && RequestFilterRule.isANY((pageGroups[0][0] as ClientScript).page)) {
             duplicatedScripts.push(pageGroups[0][0] as ClientScript);
 
             return;
         }
 
-        const forAllPagesGroup = pageGroups.find(pg => RequestFilterRule.isANY((pg[0] as ClientScript).page)); /*eslint-disable-line no-extra-parens*/
+        const forAllPagesGroup = pageGroups.find(pg => RequestFilterRule.isANY((pg[0] as ClientScript).page));
 
         if (forAllPagesGroup) {
             pageGroups
-                .filter(pg => !RequestFilterRule.isANY((pg[0] as ClientScript).page)) /*eslint-disable-line no-extra-parens*/
+                .filter(pg => !RequestFilterRule.isANY((pg[0] as ClientScript).page))
                 .forEach(pg => {
                     duplicatedScripts.push(pg[0] as ClientScript);
                 });

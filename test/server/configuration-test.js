@@ -1,4 +1,4 @@
-/*eslint-disable no-console */
+
 const { cloneDeep, noop } = require('lodash');
 
 const { expect } = require('chai');

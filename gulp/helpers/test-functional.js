@@ -1,8 +1,9 @@
-const { castArray }  = require('lodash');
-const getTimeout     = require('./get-timeout');
-const chai           = require('chai');
-const globby         = require('globby');
-const Mocha          = require('mocha');
+const { castArray }   = require('lodash');
+const getTimeout      = require('./get-timeout');
+const chai            = require('chai');
+const globby          = require('globby');
+const Mocha           = require('mocha');
+const SpecWithRetries = require('./mocha-reporter-spec-with-retries');
 
 const {
     TESTS_GLOB,
@@ -51,7 +52,7 @@ module.exports = async function testFunctional (src, testingEnvironmentName, { n
     tests.unshift(SETUP_TESTS_GLOB);
 
     const opts = {
-        reporter: 'mocha-reporter-spec-with-retries',
+        reporter: SpecWithRetries,
         timeout:  getTimeout(3 * 60 * 1000),
     };
 

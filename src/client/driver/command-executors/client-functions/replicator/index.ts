@@ -1,4 +1,4 @@
-import Replicator, { Transform } from 'replicator';
+import Replicator, { Transform } from '../../../../../utils/replicator';
 
 
 const identity = (val: unknown): unknown => val;
