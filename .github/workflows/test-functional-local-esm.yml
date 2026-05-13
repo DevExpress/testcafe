@@ -15,4 +15,4 @@ jobs:
   test:
     uses: ./.github/workflows/test-functional.yml
     with:
-      test-script: 'npx gulp prepare-functional-tests --steps-as-tasks && npm run test-functional-local-headless-chrome-run-esm'
+      test-script: 'npx --no-install gulp prepare-functional-tests --steps-as-tasks && npm run test-functional-local-headless-chrome-run-esm'

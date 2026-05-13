@@ -15,5 +15,5 @@ jobs:
   test:
     uses: ./.github/workflows/test-functional.yml
     with:
-      test-script: 'npx gulp test-functional-local-multiple-windows-na-run --steps-as-tasks'
+      test-script: 'npx --no-install gulp test-functional-local-multiple-windows-na-run --steps-as-tasks'
       display: ':99.0'

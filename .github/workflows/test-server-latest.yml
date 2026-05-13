@@ -15,7 +15,7 @@ jobs:
   test:
     uses: ./.github/workflows/test-server.yml
     with:
-      test-script: 'npx gulp test-server-run --steps-as-tasks'
+      test-script: 'npx --no-install gulp test-server-run --steps-as-tasks'
       node-version: 'latest'
       node-options: '--no-experimental-strip-types'
     secrets: inherit

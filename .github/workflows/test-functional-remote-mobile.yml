@@ -15,7 +15,7 @@ jobs:
   test:
     uses: ./.github/workflows/test-functional.yml
     with:
-      test-script: 'npx gulp test-functional-travis-mobile-run --steps-as-tasks'
+      test-script: 'npx --no-install gulp test-functional-travis-mobile-run --steps-as-tasks'
       os: 'ubuntu-latest'
       use-public-hostname: true
       timeout: 35
