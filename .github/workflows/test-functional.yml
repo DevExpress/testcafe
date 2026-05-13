@@ -131,7 +131,7 @@ jobs:
             ${{ runner.os }}-node-
       - run: npm ci
         if: ${{ !inputs.is-docker }}
-      - run: npm install
+      - run: npm ci
         if: ${{ inputs.is-docker }}
 
       - name: Add permissions on MacOS
