@@ -96,7 +96,7 @@ describe('[API] Generic errors', function () {
                 { shouldFail: true, only: 'chrome' })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('>  8 |    assert(false);');
-                    expect(errs[0]).to.match(/AssertionError( \[ERR_ASSERTION])?: false == true/);
+                    expect(errs[0]).to.match(/AssertionError( \[ERR_ASSERTION])?: (false == true|The expression evaluated to a falsy value)/);
                 });
         });
     });
