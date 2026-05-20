@@ -5,7 +5,7 @@ import TypescriptConfiguration from '../../../../configuration/typescript-config
 
 function replaceComments (code) {
     return code.replace(/\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm, match => {
-        const lastSymbol = match.indexOf('\n') > -1 ? '\n' : ' ';
+        const lastSymbol = match.includes('\n') ? '\n' : ' ';
 
         return repeat(' ', match.length + lastSymbol);
     });
@@ -85,7 +85,7 @@ class TypeScriptTestFileParser extends TestFileParserBase {
     getStringValue (token) {
         const stringTypes = [this.tokenType.StringLiteral, this.tokenType.TemplateExpression];
 
-        if (stringTypes.indexOf(token.kind) > -1 || token.text && token.kind !== this.tokenType.NumericLiteral)
+        if (stringTypes.includes(token.kind) || token.text && token.kind !== this.tokenType.NumericLiteral)
             return this.formatFnArg(token);
 
         return null;
