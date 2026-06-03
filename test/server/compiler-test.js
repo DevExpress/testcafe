@@ -372,7 +372,7 @@ describe('Compiler', function () {
             const tscPath  = path.resolve('node_modules/.bin/tsc');
             const defsPath = path.resolve('ts-defs/index.d.ts');
             const args     = '--strict';
-            const command  = `${tscPath} ${defsPath} ${args} --target ES6 --noEmit --moduleResolution node`;
+            const command  = `${tscPath} ${defsPath} ${args} --target ES6 --noEmit --moduleResolution node --types node`;
 
             return new Promise(resolve => {
                 exec(command, (error, stdout) => {
@@ -489,7 +489,7 @@ describe('Compiler', function () {
             const tscPath     = path.resolve('node_modules/.bin/tsc');
             const defsPath    = path.resolve('ts-defs/testcafe-scripts.d.ts');
             const scriptPaths = await globby('test/server/data/test-suites/typescript-testcafe-scripts-defs/*.ts');
-            const command     = `${tscPath} ${defsPath} ${scriptPaths.join(' ')} --target ES6 --noEmit --moduleResolution node`;
+            const command     = `${tscPath} ${defsPath} ${scriptPaths.join(' ')} --target ES6 --noEmit --moduleResolution node --types node`;
 
             return new Promise(resolve => {
                 exec(command, (error, stdout) => {
@@ -507,7 +507,7 @@ describe('Compiler', function () {
             const tscPath     = path.resolve('node_modules/.bin/tsc');
             const defsPath    = path.resolve('ts-defs/selectors.d.ts');
             const scriptPaths = await globby('test/server/data/test-suites/typescript-selectors-defs/*.ts');
-            const command     = `${tscPath} ${defsPath} ${scriptPaths.join(' ')} --target ES6 --noEmit --moduleResolution node`;
+            const command     = `${tscPath} ${defsPath} ${scriptPaths.join(' ')} --target ES6 --noEmit --moduleResolution node --types node`;
 
             return new Promise(resolve => {
                 exec(command, (error, stdout) => {
