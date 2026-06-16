@@ -3,6 +3,7 @@ const fs             = require('fs');
 const licenseChecker = require('license-checker').init;
 
 const PERMISSIVE_LICENSES = [
+    '0BSD',
     'MIT',
     'BSD-3-Clause OR MIT',
     'BSD-3-Clause AND MIT',
