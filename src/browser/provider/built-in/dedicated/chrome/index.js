@@ -10,6 +10,7 @@ import {
 } from './local-chrome';
 import { GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from '../../../utils/client-functions';
 import { BrowserClient } from './cdp-client';
+import { NativeAutomationIsolatedWindow } from '../../../../../native-automation/isolated-window';
 import { dispatchEvent as dispatchNativeAutomationEvent, navigateTo } from '../../../../../native-automation/utils/cdp';
 import { chromeBrowserProviderLogger } from '../../../../../utils/debug-loggers';
 import { EventType } from '../../../../../native-automation/types';
@@ -60,7 +61,8 @@ export default {
 
         await nativeAutomation.start();
 
-        runtimeInfo.nativeAutomation = nativeAutomation;
+        runtimeInfo.nativeAutomation        = nativeAutomation;
+        runtimeInfo.nativeAutomationOptions = nativeAutomationOptions;
     },
 
     async _startChrome (startOptions, pageUrl) {
@@ -219,6 +221,38 @@ export default {
             else
                 await dispatchNativeAutomationEvent(cdpClient, event.type, event.options);
         }
+    },
+
+
+    async createIsolatedSession (browserId) {
+        const runtimeInfo   = this.openedBrowsers[browserId];
+        const browserClient = runtimeInfo.browserClient;
+
+        const { contextId, targetId, client } = await browserClient.createIsolatedContext();
+
+        const options = runtimeInfo.nativeAutomationOptions || toNativeAutomationSetupOptions(
+            { nativeAutomation: true, serviceDomains: [], developmentMode: false, disableMultipleWindows: false },
+            runtimeInfo.config.headless
+        );
+
+        const nativeAutomation = new NativeAutomationIsolatedWindow(
+            browserId,
+            targetId,
+            client,
+            options,
+            contextId
+        );
+
+        await nativeAutomation.start();
+
+        return { nativeAutomation, contextId, targetId };
+    },
+
+    async disposeIsolatedSession (browserId, contextId) {
+        const runtimeInfo   = this.openedBrowsers[browserId];
+        const browserClient = runtimeInfo.browserClient;
+
+        await browserClient.disposeIsolatedContext(contextId);
     },
 
     supportNativeAutomation () {
