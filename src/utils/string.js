@@ -61,7 +61,7 @@ export function splitQuotedText (str, splitChar, quotes = '"\'') {
                 currentPart = '';
             }
         }
-        else if (quotes.indexOf(currentChar) > -1) {
+        else if (quotes.includes(currentChar)) {
             if (quoteChar === currentChar)
                 quoteChar = null;
             else if (!quoteChar)
@@ -90,7 +90,7 @@ function getDisplayedItemText (item, quote) {
 export function getConcatenatedValuesString (array, separator = DEFAULT_CONCATENATED_VALUES.SEPARATOR, quoteChar = DEFAULT_CONCATENATED_VALUES.QUOTE_CHAR) {
     const clonedArray = [...array];
 
-    if (separator.indexOf('\n') > -1)
+    if (separator.includes('\n'))
         return clonedArray.map(item => getDisplayedItemText(item, quoteChar)).join(separator);
 
     else if (clonedArray.length === 1)

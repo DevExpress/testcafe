@@ -189,7 +189,7 @@ export class TestFileParserBase {
 
         //NOTE: fixture.skip('fixtureName'), test.only('testName') etc.
         const isMemberCall = type === this.tokenType.PropertyAccessExpression &&
-                             METHODS_SPECIFYING_NAME.indexOf(apiFn) > -1;
+                             METHODS_SPECIFYING_NAME.includes(apiFn);
 
         //NOTE: fixture.before().after()('fixtureName'), test.before()`testName`.after() etc.
         const isTailCall = type === this.tokenType.CallExpression;
