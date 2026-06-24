@@ -2,7 +2,7 @@
   "name": "testcafe",
   "description": "Automated browser testing for the modern web development stack.",
   "license": "MIT",
-  "version": "3.7.4",
+  "version": "3.7.5",
   "author": {
     "name": "Developer Express Inc.",
     "url": "https://www.devexpress.com/"
@@ -149,7 +149,7 @@
     "testcafe-reporter-xunit": "^2.2.1",
     "testcafe-selector-generator": "^0.1.0",
     "time-limit-promise": "^1.0.2",
-    "tmp": "0.2.6",
+    "tmp": "0.2.7",
     "tree-kill": "^1.2.2",
     "typescript": "4.9.5",
     "unquote": "^1.1.1",
