@@ -286,6 +286,65 @@ describe('Browser provider', function () {
         });
     });
 
+    describe('Closing a restarting Chrome', function () {
+        function createChromeProvider (stop) {
+            const provider = proxyquire('../../lib/browser/provider/built-in/dedicated/chrome', {
+                './local-chrome': { stop },
+            });
+
+            return Object.assign(Object.create(provider), { openedBrowsers: {} });
+        }
+
+        function createRuntimeInfo () {
+            return {
+                config:        { headless: false },
+                browserClient: { isHeadlessTab: () => false },
+            };
+        }
+
+        it('Should kill the browser process instead of waiting for its window', async function () {
+            const stopped  = [];
+            const provider = createChromeProvider(async runtimeInfo => stopped.push(runtimeInfo));
+            const info     = createRuntimeInfo();
+
+            provider.openedBrowsers.id = info;
+            provider.closeLocalBrowser = () => new Promise(noop);
+
+            await provider.closeBrowser('id', { isRestarting: true });
+
+            expect(stopped).eql([info]);
+            expect(provider.openedBrowsers.id).to.be.undefined;
+        });
+
+        it('Should leave the relaunched browser registered when the close finishes late', async function () {
+            const stopped   = [];
+            const provider  = createChromeProvider(async runtimeInfo => stopped.push(runtimeInfo));
+            const staleInfo = createRuntimeInfo();
+            const freshInfo = createRuntimeInfo();
+
+            let finishDispose = null;
+
+            staleInfo.nativeAutomation = {
+                dispose: () => new Promise(resolve => {
+                    finishDispose = resolve;
+                }),
+            };
+
+            provider.openedBrowsers.id = staleInfo;
+
+            const closing = provider.closeBrowser('id', { isRestarting: true });
+
+            provider.openedBrowsers.id = freshInfo;
+
+            finishDispose();
+
+            await closing;
+
+            expect(stopped).eql([staleInfo]);
+            expect(provider.openedBrowsers.id).equal(freshInfo);
+        });
+    });
+
     describe('Module loading', function () {
         const dummyProvider = {
             init: function () {
