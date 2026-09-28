@@ -125,8 +125,9 @@ const FRAME_CONTENT_ORIGIN_FN = `function () {
     return { x: rect.left + this.clientLeft + parseFloat(s.paddingLeft), y: rect.top + this.clientTop + parseFloat(s.paddingTop) };
 }`;
 
-const DISPATCH_EVENT_FN = `function (eventName, options) {
+const DISPATCH_EVENT_FN = `function (eventName, options, relatedTarget) {
     const opts = Object.assign({}, options, {
+        relatedTarget: relatedTarget || null,
         bubbles:    options.bubbles !== false,
         cancelable: options.cancelable !== false,
         detail:     options.detail || { click: 1, dblclick: 2, mousedown: 1, mouseup: 1 }[eventName],
@@ -784,7 +785,7 @@ export class IsolatedSession extends AsyncEventEmitter {
     private async _setCaret (selector: any, caretPos: number | null): Promise<void> {
         const element = await this.resolveElement(selector, RESOLVE_NOW);
 
-        await this.callOnElement(element, `function (caretPos) {
+        const inContentEditable = await this.callOnElement(element, `function (caretPos) {
             if (typeof this.setSelectionRange === 'function' && typeof this.value === 'string') {
                 const pos = caretPos === null ? this.value.length : caretPos;
                 try {
@@ -797,7 +798,13 @@ export class IsolatedSession extends AsyncEventEmitter {
                 selection.selectAllChildren(this);
                 selection.collapseToEnd();
             }
+            else if (this.isContentEditable)
+                return true;
+            return false;
         }`, [caretPos]);
+
+        if (inContentEditable)
+            await this._cdpSelectText({ selector, startPos: caretPos, endPos: caretPos });
     }
 
     // Click an element via CDP input dispatch
@@ -1219,11 +1226,18 @@ export class IsolatedSession extends AsyncEventEmitter {
     // =====================================================================
 
     private async _cdpDispatchEvent (command: any): Promise<void> {
-        const element      = await this.resolveElement(command.selector);
-        const eventName    = (command as any).eventName;
-        const eventOptions = (command as any).options || {};
+        const element                          = await this.resolveElement(command.selector);
+        const relatedTarget                    = command.relatedTarget ? await this.resolveElement(command.relatedTarget) : null;
+        const { relatedTarget: _, ...options } = command.options || {};
 
-        await this.callOnElement(element, DISPATCH_EVENT_FN, [eventName, eventOptions]);
+        const result = await this._cdpClient.Runtime.callFunctionOn({
+            objectId:            element.objectId,
+            functionDeclaration: DISPATCH_EVENT_FN,
+            arguments:           [{ value: command.eventName }, { value: options }, relatedTarget ? { objectId: relatedTarget.objectId } : { value: null }],
+            awaitPromise:        true,
+        });
+
+        this._throwOnException(result.exceptionDetails);
     }
 
     // =====================================================================

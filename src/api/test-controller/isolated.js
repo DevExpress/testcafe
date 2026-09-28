@@ -250,7 +250,7 @@ export class IsolatedTestController {
     // =====================================================================
 
     [delegatedAPI(DispatchEventCommand.methodName)] (selector, eventName, options) {
-        return this.enqueueCommand(DispatchEventCommand, { selector, eventName, options });
+        return this.enqueueCommand(DispatchEventCommand, { selector, eventName, options, relatedTarget: options?.relatedTarget });
     }
 
     // =====================================================================

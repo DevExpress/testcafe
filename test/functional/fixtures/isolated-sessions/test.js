@@ -253,6 +253,14 @@ describe('Isolated Sessions', () => {
             return runTests('testcafe-fixtures/actions-test.js', 'typeText types at the end of the existing value', { only: 'chrome' });
         });
 
+        it('dispatchEvent passes relatedTarget as an element', () => {
+            return runTests('testcafe-fixtures/actions-test.js', 'dispatchEvent passes relatedTarget as an element', { only: 'chrome' });
+        });
+
+        it('typeText with caretPos in a contenteditable', () => {
+            return runTests('testcafe-fixtures/actions-test.js', 'typeText with caretPos in a contenteditable', { only: 'chrome' });
+        });
+
         it('dispatchEvent builds the matching event type', () => {
             return runTests('testcafe-fixtures/actions-test.js', 'dispatchEvent builds the matching event type', { only: 'chrome' });
         });

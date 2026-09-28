@@ -210,6 +210,28 @@ test('dispatchEvent builds the matching event type', async t => {
     ]);
 });
 
+test('dispatchEvent passes relatedTarget as an element', async t => {
+    const t2 = await openActionsPage(t);
+
+    await t2.eval(() => {
+        document.querySelector('#target').addEventListener('mouseover', e => {
+            window.__related = e.relatedTarget && e.relatedTarget.id;
+        });
+    });
+
+    await t2.dispatchEvent('#target', 'mouseover', { relatedTarget: '#editable' });
+
+    await t.expect(await t2.eval(() => window.__related)).eql('editable');
+});
+
+test('typeText with caretPos in a contenteditable', async t => {
+    const t2 = await openActionsPage(t);
+
+    await t2.typeText('#editable', 'X', { caretPos: 6 });
+
+    await t.expect(await t2.eval(() => document.querySelector('#editable').textContent)).eql('Hello Xbig World');
+});
+
 test('takeScreenshot with fullPage captures the whole page', async t => {
     const t2 = await openActionsPage(t);
 
