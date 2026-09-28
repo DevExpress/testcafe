@@ -5,6 +5,7 @@ const createTestCafe          = require('../../lib/');
 const COMMAND                 = require('../../lib/browser/connection/command');
 const browserProviderPool     = require('../../lib/browser/provider/pool');
 const BrowserConnectionStatus = require('../../lib/browser/connection/status');
+const { RUNTIME_ERRORS }      = require('../../lib/errors/types');
 
 const { createBrowserProviderMock } = require('./helpers/mocks');
 
@@ -246,6 +247,78 @@ describe('Browser connection', function () {
                 expect(connection.browserInfo.parsedUserAgent.prettyUserAgent).eql(prettyUserAgentWithMetaInfo);
                 expect(connection.userAgent).eql(prettyUserAgentWithMetaInfo + ' (another meta-info)');
             });
+    });
+
+    describe('Browser restart', function () {
+        const options = {
+            redirect: 'manual',
+            headers:  {
+                'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
+                              '(KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36',
+            },
+        };
+
+        function stubProvider (openBrowserResults) {
+            const calls    = [];
+            const provider = Object.create(connection.provider);
+
+            provider.openBrowser = async () => {
+                calls.push('open');
+
+                const result = openBrowserResults.shift();
+
+                if (result.connect)
+                    await fetch(connection.url, options);
+
+                if (result.error)
+                    throw new Error(result.error);
+            };
+
+            provider.closeBrowser = async (browserId, closingInfo) => {
+                calls.push(closingInfo.isRestarting ? 'close:restarting' : 'close');
+            };
+
+            connection.provider = provider;
+
+            return calls;
+        }
+
+        function collectErrors () {
+            const errors = [];
+
+            connection.on('error', err => errors.push(err));
+
+            return errors;
+        }
+
+        it('Should close the failed attempt and retry once if the browser fails to relaunch', async function () {
+            const errors = collectErrors();
+            const calls  = stubProvider([
+                { connect: true, error: 'CDP connection refused' },
+                { connect: true },
+            ]);
+
+            await connection._restartBrowser();
+
+            expect(calls).eql(['close:restarting', 'open', 'close:restarting', 'open']);
+            expect(errors).eql([]);
+            expect(connection.status).eql(BrowserConnectionStatus.opened);
+        });
+
+        it('Should fire "error" event if the browser fails to relaunch twice', async function () {
+            const errors = collectErrors();
+            const calls  = stubProvider([
+                { error: 'spawn ENOMEM' },
+                { error: 'spawn ENOMEM' },
+            ]);
+
+            await connection._restartBrowser();
+
+            expect(calls).eql(['close:restarting', 'open', 'close:restarting', 'open', 'close']);
+            expect(errors.length).eql(1);
+            expect(errors[0].code).eql(RUNTIME_ERRORS.unableToOpenBrowser);
+            expect(errors[0].message).contains('spawn ENOMEM');
+        });
     });
 });
 

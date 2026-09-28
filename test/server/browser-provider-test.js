@@ -516,5 +516,14 @@ describe('Browser provider', function () {
         });
     });
 
+    describe('Closing a browser that never registered', function () {
+        ['chrome', 'firefox'].forEach(providerName => {
+            it(`Should resolve without throwing for the "${providerName}" provider`, async function () {
+                const provider = BUILTIN_PROVIDERS[providerName];
+
+                await provider.closeBrowser('unknown-browser-id', { isRestarting: true });
+            });
+        });
+    });
 });
 
