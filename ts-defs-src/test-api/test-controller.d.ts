@@ -575,6 +575,8 @@ interface TestController {
      * @param args - The data you want to report.
      */
     report (...args: any[]): TestControllerPromise;
+
+    openIsolatedSession (): Promise<IsolatedTestController>;
 }
 
 interface TestControllerPromise<T=any> extends TestController, Promise<T> {
@@ -584,5 +586,49 @@ interface WindowDescriptorPromise extends TestControllerPromise<WindowDescriptor
 }
 
 interface CDPSessionPromise extends TestControllerPromise<CDPSession> {
+}
+
+interface IsolatedTestController {
+    click(selector: string | Selector, options?: ClickActionOptions): IsolatedTestControllerPromise;
+    rightClick(selector: string | Selector, options?: ClickActionOptions): IsolatedTestControllerPromise;
+    doubleClick(selector: string | Selector, options?: ClickActionOptions): IsolatedTestControllerPromise;
+    hover(selector: string | Selector, options?: MouseActionOptions): IsolatedTestControllerPromise;
+    drag(selector: string | Selector, dragOffsetX: number, dragOffsetY: number, options?: MouseActionOptions): IsolatedTestControllerPromise;
+    dragToElement(selector: string | Selector, destinationSelector: string | Selector, options?: DragToElementOptions): IsolatedTestControllerPromise;
+    typeText(selector: string | Selector, text: string, options?: TypeActionOptions): IsolatedTestControllerPromise;
+    pressKey(keys: string, options?: PressActionOptions): IsolatedTestControllerPromise;
+    selectText(selector: string | Selector, startPos?: number, endPos?: number, options?: ActionOptions): IsolatedTestControllerPromise;
+    scroll(posX: number, posY: number, options?: OffsetOptions): IsolatedTestControllerPromise;
+    scroll(selector: string | Selector, position?: ScrollLogicalPosition, options?: OffsetOptions): IsolatedTestControllerPromise;
+    scrollBy(x: number, y: number, options?: OffsetOptions): IsolatedTestControllerPromise;
+    scrollBy(selector: string | Selector, x: number, y: number, options?: OffsetOptions): IsolatedTestControllerPromise;
+    scrollIntoView(selector: string | Selector, options?: OffsetOptions): IsolatedTestControllerPromise;
+    dispatchEvent(selector: string | Selector, eventName: string, options?: object): IsolatedTestControllerPromise;
+    wait(timeout: number): IsolatedTestControllerPromise;
+    navigateTo(url: string): IsolatedTestControllerPromise;
+    expect<A>(actual: A | Promise<A>): Assertion<A>;
+    useRole(role: Role): IsolatedTestControllerPromise;
+    getCookies(cookies?: CookieOptions | CookieOptions[]): Promise<CookieOptions[]>;
+    getCookies(names: string | string[], urls?: string | string[]): Promise<CookieOptions[]>;
+    setCookies(cookies?: CookieOptions | CookieOptions[]): IsolatedTestControllerPromise;
+    setCookies(nameValueObjects: Record<string, string> | Record<string, string>[], url?: string): IsolatedTestControllerPromise;
+    deleteCookies(cookies?: CookieOptions | CookieOptions[]): IsolatedTestControllerPromise;
+    deleteCookies(names: string | string[], urls?: string | string[]): IsolatedTestControllerPromise;
+    eval(fn: Function): Promise<any>;
+    takeScreenshot(path?: string): IsolatedTestControllerPromise<string>;
+    takeElementScreenshot(selector: string | Selector, path?: string): IsolatedTestControllerPromise<string>;
+    setFilesToUpload(selector: string | Selector, filePath: string | string[]): IsolatedTestControllerPromise;
+    clearUpload(selector: string | Selector): IsolatedTestControllerPromise;
+    switchToIframe(selector: string | Selector): IsolatedTestControllerPromise;
+    switchToMainWindow(): IsolatedTestControllerPromise;
+    maximizeWindow(): IsolatedTestControllerPromise;
+    resizeWindow(width: number, height: number): IsolatedTestControllerPromise;
+    setWindowBounds(bounds: { left?: number; top?: number; width?: number; height?: number }): IsolatedTestControllerPromise;
+    setHttpAuth(username: string, password: string): IsolatedTestControllerPromise;
+    setPageLoadTimeout(duration: number): IsolatedTestControllerPromise;
+    run(fn: () => any): IsolatedTestControllerPromise<void>;
+}
+
+interface IsolatedTestControllerPromise<T=any> extends IsolatedTestController, Promise<T> {
 }
 
