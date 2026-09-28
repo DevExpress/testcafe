@@ -43,6 +43,9 @@ const DRAG_STEP_DELAY = 16;
 
 const SCROLL_POSITIONS = ['topLeft', 'top', 'topRight', 'left', 'center', 'right', 'bottomLeft', 'bottom', 'bottomRight'];
 
+const COMMAND_OBJECT_GROUP = 'isolated-command';
+const FRAME_OBJECT_GROUP   = 'isolated-frames';
+
 // Resolve options for callers that act on the element as it is right now
 const RESOLVE_NOW = { timeout: 0, visibilityCheck: false };
 
@@ -237,6 +240,8 @@ export class IsolatedSession extends AsyncEventEmitter {
 
     private _frameElements: ResolvedElement[];
 
+    private _commandsInFlight: number;
+
     private _unexpectedDialog: { type: string; message: string; url: string } | null;
 
     // Configurable page load timeout (default: PAGE_LOAD_TIMEOUT constant)
@@ -271,6 +276,7 @@ export class IsolatedSession extends AsyncEventEmitter {
 
         this._frameContexts     = new Map();
         this._frameElements     = [];
+        this._commandsInFlight  = 0;
         this._unexpectedDialog  = null;
 
         // Lets ClientFunction / Selector .with({ boundTestRun: t2 }) accept the isolated session
@@ -296,6 +302,23 @@ export class IsolatedSession extends AsyncEventEmitter {
         if (this._disposed)
             throw new Error('Isolated session has been disposed');
 
+        return this.withCommandObjectGroup(() => this._dispatchCommand(command, callsite));
+    }
+
+    // Commands can overlap (bound selectors, t2.run callbacks): release only when none is in flight
+    public async withCommandObjectGroup<T> (fn: () => Promise<T>): Promise<T> {
+        this._commandsInFlight++;
+
+        try {
+            return await fn();
+        }
+        finally {
+            if (--this._commandsInFlight === 0)
+                await this._cdpClient.Runtime.releaseObjectGroup({ objectGroup: COMMAND_OBJECT_GROUP }).catch(noop);
+        }
+    }
+
+    private async _dispatchCommand (command: CommandBase | ActionCommandBase, callsite?: CallsiteRecord | string): Promise<unknown> {
         if (command.type === COMMAND_TYPE.wait)
             return delay((command as any).timeout);
 
@@ -415,11 +438,8 @@ export class IsolatedSession extends AsyncEventEmitter {
             const sessions = testRun._isolatedSelectorTargets;
             const active   = sessions.length ? sessions[sessions.length - 1] : null;
 
-            if (active && cmd.type === COMMAND_TYPE.executeSelector)
-                return active._executeSelectorViaCDP(cmd);
-
-            if (active && cmd.type === COMMAND_TYPE.executeClientFunction)
-                return active._executeClientFunctionViaCDP(cmd);
+            if (active && (cmd.type === COMMAND_TYPE.executeSelector || cmd.type === COMMAND_TYPE.executeClientFunction))
+                return active.executeCommand(cmd);
 
             return originalExecuteCommand(cmd, cmdCallsite);
         };
@@ -564,7 +584,7 @@ export class IsolatedSession extends AsyncEventEmitter {
 
         while (true) {
             const contextId = this._currentContextId;
-            const result    = await this._cdpClient.Runtime.evaluate({ expression, ...this._contextIdParam() });
+            const result    = await this._cdpClient.Runtime.evaluate({ expression, objectGroup: COMMAND_OBJECT_GROUP, ...this._contextIdParam() });
 
             this._throwOnException(result.exceptionDetails);
 
@@ -658,6 +678,8 @@ export class IsolatedSession extends AsyncEventEmitter {
         this._currentContextId = void 0;
         this._frameElements    = [];
 
+        await this._cdpClient.Runtime.releaseObjectGroup({ objectGroup: FRAME_OBJECT_GROUP }).catch(noop);
+
         const { errorText } = await this._cdpClient.Page.navigate({ url });
 
         if (errorText)
@@ -702,6 +724,7 @@ export class IsolatedSession extends AsyncEventEmitter {
             expression,
             returnByValue: true,
             awaitPromise:  true,
+            objectGroup:   COMMAND_OBJECT_GROUP,
             ...this._contextIdParam(),
         });
 
@@ -1204,7 +1227,8 @@ export class IsolatedSession extends AsyncEventEmitter {
     private async _resolveScrollingElement (): Promise<ResolvedElement> {
         const contextId = this._currentContextId;
         const result    = await this._cdpClient.Runtime.evaluate({
-            expression: 'document.scrollingElement || document.documentElement',
+            expression:  'document.scrollingElement || document.documentElement',
+            objectGroup: COMMAND_OBJECT_GROUP,
             ...this._contextIdParam(),
         });
 
@@ -1435,14 +1459,22 @@ export class IsolatedSession extends AsyncEventEmitter {
                 await delay(50);
         }
 
+        const frame = await this._cdpClient.Runtime.callFunctionOn({
+            objectId:            element.objectId,
+            functionDeclaration: 'function () { return this; }',
+            objectGroup:         FRAME_OBJECT_GROUP,
+        });
+
         this._currentContextId = contextId;
-        this._frameElements.push(element);
+        this._frameElements.push({ ...element, objectId: frame.result.objectId as string });
     }
 
     // Switch back to the main frame's evaluation context
     public async switchToMainWindow (): Promise<void> {
         this._currentContextId = void 0;
         this._frameElements    = [];
+
+        await this._cdpClient.Runtime.releaseObjectGroup({ objectGroup: FRAME_OBJECT_GROUP }).catch(noop);
     }
 
     private _trackFrameContexts (): void {

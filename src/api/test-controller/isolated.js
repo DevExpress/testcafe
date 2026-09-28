@@ -315,7 +315,7 @@ export class IsolatedTestController {
         const callsite = getCallsiteForMethod('eval');
 
         return this._enqueueTask('eval', () => {
-            return async () => {
+            return () => session.withCommandObjectGroup(async () => {
                 if (options?.dependencies) {
                     const command = new ClientFunctionBuilder(fn, options, { instantiation: 'eval', execution: 'eval' }).getCommand([]);
                     const [value] = await session._executeClientFunctionViaCDP(command);
@@ -326,7 +326,7 @@ export class IsolatedTestController {
                 const expression = `(${fn.toString()})()`;
 
                 return session.evaluateExpression(expression);
-            };
+            });
         }, callsite);
     }
 
@@ -369,7 +369,7 @@ export class IsolatedTestController {
 
         return this._enqueueTask('switchToIframe', () => {
             return async () => {
-                await session.switchToIframe(selector);
+                await session.withCommandObjectGroup(() => session.switchToIframe(selector));
             };
         }, callsite);
     }
@@ -391,7 +391,7 @@ export class IsolatedTestController {
 
         return this._enqueueTask('takeElementScreenshot', () => {
             return async () => {
-                return session.takeElementScreenshot(selector, filePath);
+                return session.withCommandObjectGroup(() => session.takeElementScreenshot(selector, filePath));
             };
         }, callsite);
     }
@@ -402,7 +402,7 @@ export class IsolatedTestController {
 
         return this._enqueueTask('setFilesToUpload', () => {
             return async () => {
-                await session.setFilesToUpload(selector, filePaths);
+                await session.withCommandObjectGroup(() => session.setFilesToUpload(selector, filePaths));
             };
         }, callsite);
     }
@@ -413,7 +413,7 @@ export class IsolatedTestController {
 
         return this._enqueueTask('clearUpload', () => {
             return async () => {
-                await session.clearUpload(selector);
+                await session.withCommandObjectGroup(() => session.clearUpload(selector));
             };
         }, callsite);
     }
