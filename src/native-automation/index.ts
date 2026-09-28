@@ -82,10 +82,15 @@ export class NativeAutomationMainWindow extends NativeAutomationBase {
     async start (): Promise<void> {
         await super.start();
 
+        const { targetInfo: ownTargetInfo } = await this._client.Target.getTargetInfo({ targetId: this.windowId });
+
         await this._client.Target.setDiscoverTargets({ discover: true });
 
         this._client.Target.on('targetCreated', async ({ targetInfo }) => {
             if (targetInfo.type !== 'page' || targetInfo.targetId === this.windowId)
+                return;
+
+            if (targetInfo.browserContextId !== ownTargetInfo.browserContextId)
                 return;
 
             this._resolveNewWindowOpeningPromise = this.emit(NEW_WINDOW_OPENED_IN_NATIVE_AUTOMATION, targetInfo);
