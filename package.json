@@ -228,6 +228,7 @@
   },
   "overrides": {
     "glob": "8.1.0",
+    "tmp": "$tmp",
     "mocha": {
       "serialize-javascript": "^7.0.5",
       "diff": "^8.0.0"

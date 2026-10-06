@@ -23,5 +23,8 @@
   "devDependencies": {
     "testcafe": "latest",
     "testcafe-browser-provider-saucelabs": "^3.0.0"
+  },
+  "overrides": {
+    "adm-zip": "^0.6.1"
   }
 }
