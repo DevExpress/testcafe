@@ -103,6 +103,7 @@ export const TEST_RUN_ERRORS = {
     actionInvalidObjectPropertyError:                         'E100',
     actionElementIsNotTargetError:                            'E101',
     multipleWindowsModeIsNotSupportedInNativeAutomationError: 'E102',
+    isolatedSessionRequiresNativeAutomationError:             'E103',
 };
 
 export const RUNTIME_ERRORS = {
