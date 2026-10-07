@@ -117,16 +117,18 @@ export default {
 
         if (runtimeInfo.browserClient.isHeadlessTab())
             await runtimeInfo.browserClient.closeTab();
-        else
+        // NOTE: closing the window waits for the connection to become ready, which a restarting connection only does after this close
+        else if (!closingInfo.isRestarting)
             await this.closeLocalBrowser(browserId);
 
-        if (OS.mac || runtimeInfo.config.headless)
+        if (OS.mac || runtimeInfo.config.headless || closingInfo.isRestarting)
             await stopLocalChrome(runtimeInfo);
 
         if (runtimeInfo.tempProfileDir && !closingInfo.isRestarting)
             await runtimeInfo.tempProfileDir.dispose();
 
-        delete this.openedBrowsers[browserId];
+        if (this.openedBrowsers[browserId] === runtimeInfo)
+            delete this.openedBrowsers[browserId];
 
         chromeBrowserProviderLogger('browser closed %s', browserId);
     },
