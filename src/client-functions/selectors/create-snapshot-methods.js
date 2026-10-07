@@ -2,7 +2,7 @@ export default function createSnapshotMethods (snapshot) {
     const isElementSnapshot = !!snapshot.tagName;
 
     if (isElementSnapshot) {
-        snapshot.hasClass                      = name => snapshot.classNames.indexOf(name) > -1;
+        snapshot.hasClass                      = name => snapshot.classNames.includes(name);
         snapshot.getStyleProperty              = prop => snapshot.style[prop];
         snapshot.getAttribute                  = attrName => snapshot.attributes[attrName];
         snapshot.hasAttribute                  = attrName => snapshot.attributes.hasOwnProperty(attrName);
