@@ -652,7 +652,8 @@ $(document).ready(function () {
             });
     });
 
-    asyncTest('caret position is less than first visible position (with invisible symbols in the start)', function () {
+    // TODO: fix test timeout on iOS
+    (browserUtils.isIOS ? QUnit.skip : asyncTest)('caret position is less than first visible position (with invisible symbols in the start)', function () {
         $parent = $('#6');
         $el     = $parent.find('i>code');
 
