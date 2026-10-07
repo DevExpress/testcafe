@@ -51,7 +51,11 @@ export default {
     },
 
     async closeBrowser (browserId) {
-        const runtimeInfo                  = this.openedBrowsers[browserId];
+        const runtimeInfo = this.openedBrowsers[browserId];
+
+        if (!runtimeInfo)
+            return;
+
         const { config, marionetteClient } = runtimeInfo;
 
         if (config.headless)

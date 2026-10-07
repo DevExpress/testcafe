@@ -275,7 +275,7 @@ export default class BrowserConnection extends EventEmitter {
         };
     }
 
-    private async _runBrowser (): Promise<void> {
+    private async _runBrowser (rethrowOnFailure = false): Promise<void> {
         try {
             const additionalOptions = this._getAdditionalBrowserOptions();
 
@@ -288,6 +288,9 @@ export default class BrowserConnection extends EventEmitter {
             this.emit('opened');
         }
         catch (err: any) {
+            if (rethrowOnFailure)
+                throw err;
+
             this.emit('error', new GeneralError(
                 RUNTIME_ERRORS.unableToOpenBrowser,
                 this.browserInfo.providerName + ':' + this.browserInfo.browserName,
@@ -359,18 +362,30 @@ export default class BrowserConnection extends EventEmitter {
         return BrowserConnectionTracker.activeBrowserConnections[id] || null;
     }
 
-    private async _restartBrowser (): Promise<void> {
+    private _closeAndOpenBrowser (rethrowOnFailure = false): Promise<void> {
         this.status = BrowserConnectionStatus.uninitialized;
 
+        if (this.heartbeatTimeout)
+            clearTimeout(this.heartbeatTimeout);
+
+        return timeLimit(this._closeBrowser({ isRestarting: true }), this.BROWSER_CLOSE_TIMEOUT, { rejectWith: new TimeoutError() })
+            .catch(err => this.debugLogger(err))
+            .then(() => this._runBrowser(rethrowOnFailure));
+    }
+
+    private async _restartBrowser (): Promise<void> {
         this._forceIdle();
 
         let resolveTimeout: Function | null = null;
         let isTimeoutExpired                = false;
         let timeout: NodeJS.Timeout | null  = null;
 
-        const restartPromise = timeLimit(this._closeBrowser({ isRestarting: true }), this.BROWSER_CLOSE_TIMEOUT, { rejectWith: new TimeoutError() })
-            .catch(err => this.debugLogger(err))
-            .then(() => this._runBrowser());
+        const restartPromise = this._closeAndOpenBrowser(true)
+            .catch(err => {
+                this.debugLogger(err);
+
+                return this._closeAndOpenBrowser();
+            });
 
         const timeoutPromise = new Promise<void>(resolve => {
             resolveTimeout = resolve;

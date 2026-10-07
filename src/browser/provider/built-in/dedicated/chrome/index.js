@@ -112,6 +112,9 @@ export default {
     async closeBrowser (browserId, closingInfo = {}) {
         const runtimeInfo = this.openedBrowsers[browserId];
 
+        if (!runtimeInfo)
+            return;
+
         if (runtimeInfo.nativeAutomation)
             await runtimeInfo.nativeAutomation.dispose();
 
