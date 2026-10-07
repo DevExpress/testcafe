@@ -16,3 +16,4 @@ jobs:
     uses: ./.github/workflows/test-functional.yml
     with:
       test-script: 'npx --no-install gulp test-functional-local-headless-chrome-run --steps-as-tasks'
+      node-version: 16
