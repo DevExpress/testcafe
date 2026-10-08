@@ -304,6 +304,22 @@ describe('TestController action events', () => {
         expect(log).eql(actionsKeys);
     });
 
+    it('Should report setNativeDialogHandler(null)', async () => {
+        let reportedCommand = null;
+
+        initializeReporter({
+            async reportTestActionDone (name, { command }) {
+                reportedCommand = command;
+            },
+        });
+
+        await messageBus.emit('start', task);
+
+        await testController.setNativeDialogHandler(null);
+
+        expect(reportedCommand).eql({ type: 'set-native-dialog-handler', dialogHandler: null, actionId: 'SetNativeDialogHandlerCommand' });
+    });
+
     it('Show only modified action options', async () => {
         const doneLog  = [];
 
