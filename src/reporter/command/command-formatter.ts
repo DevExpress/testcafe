@@ -115,7 +115,10 @@ export class CommandFormatter {
         };
     }
 
-    private _prepareDialogHandler (command: SetNativeDialogHandlerCommand): object {
+    private _prepareDialogHandler (command: SetNativeDialogHandlerCommand): object | null {
+        if (!command.dialogHandler)
+            return null;
+
         return this._prepareClientFunction(command.dialogHandler);
     }
 
