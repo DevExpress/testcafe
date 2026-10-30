@@ -88,7 +88,7 @@ export default {
             hasTakeScreenshot:              !!marionetteClient,
             hasChromelessScreenshots:       !!marionetteClient,
             hasGetVideoFrameData:           !!marionetteClient,
-            hasResizeWindow:                !!marionetteClient && config.headless,
+            hasResizeWindow:                !!marionetteClient,
             hasMaximizeWindow:              !!marionetteClient && config.headless,
             hasCanResizeWindowToDimensions: false,
         };
