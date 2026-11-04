@@ -16,8 +16,12 @@ export async function getTabs (port: number): Promise<TargetInfo[]> {
 
 export async function getTabById (port: number, id: string): Promise<TargetInfo> {
     const tabs = await getTabs(port);
+    const tab = tabs.find(tab => tab.id === id);
 
-    return tabs.find(tab => tab.id === id) as TargetInfo;
+    if (!tab)
+        throw new Error(`Tab with id "${id}" not found`);
+
+    return tab;
 }
 
 export async function getFirstTab (port: number): Promise<TargetInfo> {
