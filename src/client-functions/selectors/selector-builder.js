@@ -157,6 +157,8 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
             visibilityCheck:           !!this.options.visibilityCheck,
             timeout:                   this.options.timeout,
             strictError:               this.options.strictError,
+            counterMode:               !!this.options.counterMode,
+            getVisibleValueMode:       !!this.options.getVisibleValueMode,
         });
     }
 

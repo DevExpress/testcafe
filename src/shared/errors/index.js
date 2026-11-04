@@ -475,3 +475,9 @@ export class MultipleWindowsModeIsNotSupportedInNativeAutomationModeError extend
         super(TEST_RUN_ERRORS.multipleWindowsModeIsNotSupportedInNativeAutomationError);
     }
 }
+
+export class IsolatedSessionRequiresNativeAutomationError extends TestRunErrorBase {
+    constructor () {
+        super(TEST_RUN_ERRORS.isolatedSessionRequiresNativeAutomationError);
+    }
+}

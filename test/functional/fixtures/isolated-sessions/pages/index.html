@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Isolated Sessions Test Page</title>
+</head>
+<body>
+    <h1 id="title">Main Page</h1>
+    <button id="btn" onclick="document.getElementById('result').textContent = 'clicked'">Click Me</button>
+    <div id="result"></div>
+    <input id="text-input" type="text">
+    <input id="file-input" type="file">
+    <div id="counter">0</div>
+    <button id="increment" onclick="document.getElementById('counter').textContent = parseInt(document.getElementById('counter').textContent) + 1">Increment</button>
+    <div id="draggable" draggable="true" style="width:50px;height:50px;background:red;position:absolute;left:0;top:200px"></div>
+    <div id="drop-target" style="width:100px;height:100px;background:blue;position:absolute;left:200px;top:200px"></div>
+    <select id="select-input">
+        <option value="a">Option A</option>
+        <option value="b">Option B</option>
+    </select>
+    <div id="hover-target" onmouseenter="this.textContent = 'hovered'" onmouseleave="this.textContent = 'not hovered'">not hovered</div>
+    <div class="item visible" style="display:block">Visible Item 1</div>
+    <div class="item visible" style="display:block">Visible Item 2</div>
+    <div class="item hidden" style="display:none">Hidden Item</div>
+    <div class="item visible" style="display:block">Visible Item 3</div>
+    <a id="scroll-anchor" style="display:block;margin-top:2000px">Bottom</a>
+</body>
+</html>

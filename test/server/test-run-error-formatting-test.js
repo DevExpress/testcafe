@@ -89,6 +89,7 @@ const {
     CannotCloseWindowWithoutParentError,
     MultipleWindowsModeIsNotAvailableInRemoteBrowserError,
     MultipleWindowsModeIsNotSupportedInNativeAutomationModeError,
+    IsolatedSessionRequiresNativeAutomationError,
     CannotRestoreChildWindowError,
     TimeoutError,
     ActionCookieArgumentError,
@@ -773,6 +774,10 @@ describe('Error formatting', () => {
 
         it('Should format "multipleWindowsModeIsNotSupportedInNativeAutomationError"', () => {
             assertErrorMessage('multiple-windows-mode-is-not-supported-in-native-automation-error', new MultipleWindowsModeIsNotSupportedInNativeAutomationModeError('openWindow'));
+        });
+
+        it('Should format "isolatedSessionRequiresNativeAutomationError"', () => {
+            assertErrorMessage('isolated-session-requires-native-automation-error', new IsolatedSessionRequiresNativeAutomationError());
         });
 
         it('Should format "cannotRestoreChildWindowError"', () => {
