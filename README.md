@@ -294,6 +294,7 @@ TestCafe developers and community members made these plugins:
   * [NUnit](https://github.com/AndreyBelym/testcafe-reporter-nunit) (by [@AndreyBelym](https://github.com/AndreyBelym))
   * [TimeCafe](https://github.com/jimthedev/timecafe) (by [@jimthedev](https://github.com/jimthedev))
   * [Tesults](https://github.com/tesults/testcafe-reporter-tesults) (by [@Tesults](https://github.com/tesults))
+  * [Qase](https://github.com/qase-tms/qase-javascript/tree/main/qase-testcafe) (by [@qase-tms](https://github.com/qase-tms))
 
 * **GitHub Action**<br/>
   Run TestCafe tests in GitHub Actions workflows.
