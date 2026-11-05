@@ -213,8 +213,9 @@ gulp.step('templates', () => {
     return gulp
         .src([
             'src/**/*.mustache',
+            'src/utils/callsite-record/LICENSE',
             '!src/**/*.js.wrapper.mustache',
-        ])
+        ], { base: 'src' })
         .pipe(gulp.dest('lib'));
 });
 
