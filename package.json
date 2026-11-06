@@ -229,11 +229,15 @@
     "uglify-js": "~3.10.4"
   },
   "overrides": {
+    "@typescript-eslint/typescript-estree": {
+      "minimatch": "11.0.1"
+    },
     "glob": "8.1.0",
     "tmp": "$tmp",
     "mocha": {
       "serialize-javascript": "^7.0.5",
-      "diff": "^8.0.0"
+      "diff": "^8.0.0",
+      "minimatch": "11.0.1"
     }
   }
 }
