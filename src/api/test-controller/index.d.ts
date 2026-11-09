@@ -1,7 +1,7 @@
 import TestRun from '../../test-run';
 import WarningLog from '../../notifications/warning-log';
 import { CommandBase } from '../../test-run/commands/base';
-import { CallsiteRecord } from '@devexpress/callsite-record';
+import { CallsiteRecord } from '../../utils/callsite-record';
 
 export default class TestController {
     public browser: string;

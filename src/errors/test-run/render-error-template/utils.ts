@@ -1,4 +1,4 @@
-import { renderers } from '@devexpress/callsite-record';
+import { renderers } from '../../../utils/callsite-record';
 import { UncaughtTestCafeErrorInCustomScript } from '../../test-run';
 import { shouldSkipCallsite } from '../utils';
 import TEMPLATES from '../templates';
