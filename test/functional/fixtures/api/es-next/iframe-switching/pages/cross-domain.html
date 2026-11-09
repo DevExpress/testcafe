@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cross-domain iframe switching</title>
+</head>
+<body>
+<button id="btn">button</button>
+
+<script>
+    window.btnClickCount = 0;
+
+    document.getElementById('btn').addEventListener('click', function () {
+        window.btnClickCount++;
+    });
+</script>
+
+<iframe id="cross-domain-iframe" height="200"
+        src="http://localhost:3001/fixtures/api/es-next/iframe-switching/pages/iframe.html"></iframe>
+</body>
+</html>

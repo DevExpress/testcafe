@@ -209,11 +209,12 @@ test('Click in an iframe without src', async t => {
     expect(iframeWithoutSrcBtnClickCount).eql(1);
 });
 
-test('Click in a cross-domain iframe with redirect', async t => {
+test.page`http://localhost:3000/fixtures/api/es-next/iframe-switching/pages/cross-domain.html`
+('Click in a cross-domain iframe with redirect', async t => {
     const getSecondPageBtnClickCount = ClientFunction(() => window.secondPageBtnClickCount);
 
     await t
-        .switchToIframe('#cross-domain-iframe')
+        .switchToIframe(Selector('#cross-domain-iframe', { timeout: 15000 }))
         .click('#link')
         // NOTE: this ensures the redirected page script initialized before we click
         .expect(getSecondPageBtnClickCount()).eql(0)
