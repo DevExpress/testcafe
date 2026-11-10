@@ -4,7 +4,7 @@
 
 const path          = require('path');
 const url           = require('url');
-const v8FlagsFilter = require('@devexpress/bin-v8-flags-filter');
+const v8FlagsFilter = require('./v8-flags-filter');
 const semver        = require('semver');
 
 const ESM_OPTION = '--esm';
