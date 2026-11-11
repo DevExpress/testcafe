@@ -5,7 +5,6 @@ const less                          = require('gulp-less');
 const mustache                      = require('gulp-mustache');
 const rename                        = require('gulp-rename');
 const uglify                        = require('gulp-uglify');
-const ll                            = require('gulp-ll-next');
 const clone                         = require('gulp-clone');
 const mergeStreams                  = require('merge-stream');
 const del                           = require('del');
@@ -39,18 +38,6 @@ const {
 const readFile = promisify(fs.readFile);
 
 gulpStep.install();
-
-ll
-    .install()
-    .tasks([
-        'lint',
-        'check-licenses',
-    ])
-    .onlyInDebug([
-        'styles',
-        'client-scripts',
-        'client-scripts-bundle',
-    ]);
 
 const ARGS          = minimist(process.argv.slice(2));
 const QR_CODE       = 'qr-code' in ARGS;
