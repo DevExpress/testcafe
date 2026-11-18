@@ -71,6 +71,8 @@ export class BrowserClient {
     private _videoFramesBuffer: VideoFrameData[];
     private _lastFrame: VideoFrameData | null;
     private _screencastFrameListenerAttached = false;
+    private _browserLevelClient: Promise<remoteChrome.ProtocolApi> | null = null;
+    private _closed = false;
 
     public constructor (runtimeInfo: RuntimeInfo) {
         this._runtimeInfo = runtimeInfo;
@@ -361,6 +363,24 @@ export class BrowserClient {
     }
 
     public async closeTab (): Promise<void> {
+        this._closed = true;
+
+        if (this._browserLevelClient) {
+            const browserLevelClientPromise = this._browserLevelClient;
+
+            this._browserLevelClient = null;
+
+            try {
+                // chrome-remote-interface types omit close()
+                const browserLevelClient: any = await browserLevelClientPromise;
+
+                await browserLevelClient.close();
+            }
+            catch (err) {
+                debugLog(err);
+            }
+        }
+
         if (this._parentTarget)
             await remoteChrome.Close({ id: this._parentTarget.id, port: this._port });
     }
@@ -458,6 +478,99 @@ export class BrowserClient {
 
             return null;
         }
+    }
+
+    private _getBrowserLevelClient (): Promise<remoteChrome.ProtocolApi> {
+        if (this._closed)
+            return Promise.reject(new Error('The browser connection is closed'));
+
+        if (this._browserLevelClient)
+            return this._browserLevelClient;
+
+        const clientPromise = this._connectBrowserLevelClient();
+        const forget        = (): void => {
+            if (this._browserLevelClient === clientPromise)
+                this._browserLevelClient = null;
+        };
+
+        this._browserLevelClient = clientPromise;
+
+        clientPromise.then(client => (client as any).on('disconnect', forget), forget);
+
+        return clientPromise;
+    }
+
+    private async _connectBrowserLevelClient (): Promise<remoteChrome.ProtocolApi> {
+        // Connect to the browser-level CDP endpoint (not a specific tab)
+        // This is needed for Target domain commands like createBrowserContext
+        // @ts-ignore — chrome-remote-interface supports Version but types are incomplete
+        const version = await remoteChrome.Version({ port: this._port });
+
+        // @ts-ignore — target can be a websocket URL string
+        return remoteChrome({ target: version.webSocketDebuggerUrl });
+    }
+
+    // Public accessor for isolated-session window management (Browser.setWindowBounds etc.)
+    public async getBrowserLevelClient (): Promise<remoteChrome.ProtocolApi> {
+        return this._getBrowserLevelClient();
+    }
+
+    public async createIsolatedContext (): Promise<{ contextId: string, targetId: string, client: remoteChrome.ProtocolApi }> {
+        const browserClient = await this._getBrowserLevelClient();
+
+        const { browserContextId } = await browserClient.Target.createBrowserContext({});
+
+        try {
+            const { targetId } = await browserClient.Target.createTarget({
+                url:              'about:blank',
+                browserContextId: browserContextId,
+                newWindow:        true,
+            });
+
+            const target = await getTabById(this._port, targetId);
+
+            if (!target)
+                throw new Error(`Failed to find newly created isolated target ${targetId}`);
+
+            const client = await this._createClient(target, `isolated-${browserContextId}`);
+
+            return { contextId: browserContextId, targetId, client };
+        }
+        catch (err) {
+            await this.disposeIsolatedContext(browserContextId);
+
+            throw err;
+        }
+    }
+
+    public async disposeIsolatedContext (contextId: string): Promise<void> {
+        const cacheKey = `isolated-${contextId}`;
+
+        // Close the CDP WebSocket connection for the isolated target
+        const clientInfo = this._clients[cacheKey];
+
+        if (clientInfo) {
+            // chrome-remote-interface types omit close()
+            const isolatedClient: any = clientInfo.client;
+
+            try {
+                await isolatedClient.close();
+            }
+            catch (err) {
+                debugLog(err);
+            }
+        }
+
+        try {
+            const browserClient = await this._getBrowserLevelClient();
+
+            await browserClient.Target.disposeBrowserContext({ browserContextId: contextId });
+        }
+        catch (err) {
+            debugLog(err);
+        }
+
+        delete this._clients[cacheKey];
     }
 
     public async createMainWindowNativeAutomation (options: NativeAutomationInitOptions): Promise<NativeAutomationBase | null> {

@@ -76,6 +76,7 @@ import {
     MultipleWindowsModeIsDisabledError,
     MultipleWindowsModeIsNotAvailableInRemoteBrowserError,
     MultipleWindowsModeIsNotSupportedInNativeAutomationModeError,
+    IsolatedSessionRequiresNativeAutomationError,
 } from '../../errors/test-run';
 
 import { AssertionCommand } from '../../test-run/commands/assertion';
@@ -647,6 +648,22 @@ export default class TestController {
     [delegatedAPI(ReportCommand.methodName)] (...args) {
         return this.enqueueCommand(ReportCommand, { args });
     }
+
+    _openIsolatedSession$ () {
+        const callsite = getCallsiteForMethod('openIsolatedSession');
+
+        return this._enqueueTask('openIsolatedSession', () => {
+            return async () => {
+                if (!this.testRun.isNativeAutomation)
+                    throw new IsolatedSessionRequiresNativeAutomationError();
+
+                const isolatedSession = await this.testRun.createIsolatedSession();
+
+                return isolatedSession.controller;
+            };
+        }, callsite);
+    }
+
     shouldStop (command) {
         // NOTE: should always stop on Debug command
         return command === 'debug';

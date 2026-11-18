@@ -410,6 +410,10 @@ export default {
         The Native Automation mode does not support the use of multiple browser windows. Use the "disable native automation" option to continue.
     `,
 
+    [TEST_RUN_ERRORS.isolatedSessionRequiresNativeAutomationError]: () => `
+        The "openIsolatedSession" method is available only in the Native Automation mode. Enable native automation to continue.
+    `,
+
     [TEST_RUN_ERRORS.cannotCloseWindowWithoutParent]: () => `
         Cannot close the window because it does not have a parent. The parent window was closed or you are attempting to close the root browser window where tests were launched.
     `,

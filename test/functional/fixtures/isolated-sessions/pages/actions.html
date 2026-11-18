@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Isolated Sessions Actions Page</title>
+</head>
+<body style="margin:0">
+    <div id="result"></div>
+    <div id="target" style="width:100px;height:40px;background:#ccc">Target</div>
+    <input id="long-input" type="text" style="width:100px" value="abcdefghijklmnopqrstuvwxyz0123456789">
+    <div id="editable" contenteditable="true">Hello <b>big</b> World</div>
+    <div id="drag-source" style="position:absolute;left:20px;top:200px;width:40px;height:40px;background:red"></div>
+    <div id="drop-target" style="position:absolute;left:300px;top:200px;width:80px;height:80px;background:blue"></div>
+    <div id="scroller" style="position:absolute;left:20px;top:320px;width:200px;height:100px;overflow:auto">
+        <div style="width:1000px;height:1000px"></div>
+    </div>
+    <button id="alert-btn" style="position:absolute;left:20px;top:440px" onclick="alert('hello'); document.getElementById('result').textContent = 'after-alert'">Alert</button>
+    <button id="confirm-btn" style="position:absolute;left:120px;top:440px" onclick="document.getElementById('result').textContent = confirm('sure?') ? 'confirmed' : 'dismissed'">Confirm</button>
+    <div id="tall" style="position:absolute;left:0;top:500px;width:50px;height:3000px;background:rgb(0,128,0)"></div>
+    <script>
+        document.addEventListener('mousedown', function (e) {
+            window.__down = { x: e.clientX, y: e.clientY };
+        });
+        document.addEventListener('mouseup', function (e) {
+            if (e.button !== 0)
+                return;
+
+            var down = window.__down || { x: 0, y: 0 };
+
+            document.getElementById('result').textContent = 'moved:' + (e.clientX - down.x) + ',' + (e.clientY - down.y) + ' target:' + e.target.id;
+        });
+        document.getElementById('target').addEventListener('contextmenu', function (e) {
+            e.preventDefault();
+            document.getElementById('result').textContent = 'contextmenu button:' + e.button + ' shift:' + e.shiftKey;
+        });
+    </script>
+</body>
+</html>
