@@ -48,6 +48,10 @@ describe('TestRun - Driver protocol', function () {
             return runTests('./testcafe-fixtures/clear-and-lock-storages-native-automation-part-2.js');
         });
 
+        onlyInNativeAutomation('Should clear out the localStorage of a cross-site iframe (native automation)', function () {
+            return runTests('./testcafe-fixtures/clear-and-lock-storages-native-automation-part-3.js');
+        });
+
         it('Should force page reload if url has # in Native Automation', function () {
             return runTests('./testcafe-fixtures/page-url-with-hash.js');
         });

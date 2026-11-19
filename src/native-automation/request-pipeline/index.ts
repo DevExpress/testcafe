@@ -59,6 +59,7 @@ import { resendAuthRequest } from './resendAuthRequest';
 import TestRunBridge from './test-run-bridge';
 import NativeAutomationRequestContextInfo from './context-info';
 import { failedToFindDNSError, sslCertificateError } from '../errors';
+import { addVisitedOrigin, addVisitedStorageKey } from '../visited-storages';
 
 const ALL_REQUEST_RESPONSES = { requestStage: 'Request' } as RequestPattern;
 const ALL_REQUEST_REQUESTS  = { requestStage: 'Response' } as RequestPattern;
@@ -394,6 +395,20 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
         return this._currentFrameTree.frame.id !== frameId;
     }
 
+    // NOTE: Chrome partitions the storage of a cross-site iframe by the top-level site,
+    // so clearing the iframe's origin does not reach it (GH-8573).
+    private async _trackIframeStorageKey (frameId: string): Promise<void> {
+        try {
+            // @ts-ignore
+            const { storageKey } = await this._client.send('Storage.getStorageKey', { frameId });
+
+            addVisitedStorageKey(this._browserConnection, storageKey);
+        }
+        catch (err) {
+            requestPipelineLogger(`Failed to get the storage key of the %s frame: %s`, frameId, err);
+        }
+    }
+
     public async start (): Promise<void> {
         // NOTE: We are forced to handle all requests and responses at once
         // because CDP API does not allow specifying request filtering behavior for different handlers.
@@ -418,6 +433,9 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
             if (!isIFrame && !isWorker && !isServiceWorker)
                 return;
 
+            if (isIFrame)
+                this._trackIframeStorageKey(event.targetInfo.targetId);
+
             await connectionResetGuard(async () => {
                 // @ts-ignore
                 await this._client.Runtime.runIfWaitingForDebugger(event.sessionId);
@@ -431,10 +449,18 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
             });
         });
 
+        this._client.Target.on('targetInfoChanged', event => {
+            if (event.targetInfo.type === TARGET_INFO_TYPE.iframe)
+                this._trackIframeStorageKey(event.targetInfo.targetId);
+        });
+
         // @ts-ignore
         this._client.Fetch.on('requestPaused', async (event: RequestPausedEvent, sessionId: SessionId) => {
             if (this._stopped)
                 return;
+
+            if (isRequest(event))
+                addVisitedOrigin(this._browserConnection, event.request.url);
 
             const specialRequestHandler = getSpecialRequestHandler(event, this.options, this._specialServiceRoutes);
 
