@@ -45,7 +45,7 @@ export class EsNextTestFileParser extends TestFileParserBase {
     getStringValue (token) {
         const stringTypes = [this.tokenType.StringLiteral, this.tokenType.TemplateLiteral, this.tokenType.Identifier];
 
-        if (stringTypes.indexOf(token.type) > -1)
+        if (stringTypes.includes(token.type))
             return this.formatFnArg(token);
 
         return null;

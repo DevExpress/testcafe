@@ -35,7 +35,7 @@ const filterNodes = new ClientFunctionBuilder((nodes, filter, querySelectorRoot,
         for (let i = 0; i < matching.length; i++)
             matchingArr.push(matching[i]);
 
-        filter = node => matchingArr.indexOf(node) > -1;
+        filter = node => matchingArr.includes(node);
     }
 
     if (typeof filter === 'function') {
@@ -61,7 +61,7 @@ const expandSelectorResults = new ClientFunctionBuilder((selector, populateDeriv
 
         if (derivativeNodes) {
             for (let j = 0; j < derivativeNodes.length; j++) {
-                if (result.indexOf(derivativeNodes[j]) < 0)
+                if (!result.includes(derivativeNodes[j]))
                     result.push(derivativeNodes[j]);
             }
         }

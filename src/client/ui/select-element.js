@@ -43,7 +43,7 @@ function onWindowClick (e, dispatched, preventDefault) {
 
     preventDefault();
 
-    const isDisabled = target.className.indexOf(DISABLED_CLASS) > -1;
+    const isDisabled = target.className.includes(DISABLED_CLASS);
 
     if (isDisabled && browserUtils.isWebKit)
         return;
