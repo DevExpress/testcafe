@@ -378,6 +378,13 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
             && !event.frame.parentId;
     }
 
+    private _trackVisitedOrigin (url: string): void {
+        const isServiceUrl = this.options.serviceDomains.some(domain => url.startsWith(domain));
+
+        if (!isServiceUrl)
+            this._browserConnection?.visitedOrigins.track(url);
+    }
+
     private async _updateCurrentFrameTree (): Promise<void> {
         // NOTE: Due to CDP restrictions (it hangs), we can't get the frame tree
         // right before injecting service scripts.
@@ -440,12 +447,18 @@ export default class NativeAutomationRequestPipeline extends NativeAutomationApi
 
             if (specialRequestHandler)
                 await specialRequestHandler(event, this._client, this._isMainWindow, this.options, sessionId);
-            else
+            else {
+                if (isRequest(event) && event.resourceType === 'Document')
+                    this._trackVisitedOrigin(event.request.url);
+
                 await this._handleOtherRequests(event, sessionId);
+            }
         });
 
         this._client.Page.on('frameNavigated', async (event: FrameNavigatedEvent) => {
             requestPipelineLogger('%f', event);
+
+            this._trackVisitedOrigin(event.frame.url);
 
             if (!this._topFrameNavigation(event)
                 || event.frame.url !== SPECIAL_BLANK_PAGE)
