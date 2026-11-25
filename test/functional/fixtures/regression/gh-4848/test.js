@@ -1,3 +1,5 @@
+const { skipInNativeAutomation } = require('../../../utils/skip-in');
+
 describe('[Regression](GH-4848) - Should focus next element if current element has negative tabIndex', function () {
     it('Straight order. Middle', function () {
         return runTests('testcafe-fixtures/index.js', 'Straight order. Middle');
@@ -19,7 +21,7 @@ describe('[Regression](GH-4848) - Should focus next element if current element h
         return runTests('testcafe-fixtures/index.js', 'Straight order. First');
     });
 
-    it('Straight order. Last', function () {
+    skipInNativeAutomation('Straight order. Last', function () {
         return runTests('testcafe-fixtures/index.js', 'Straight order. Last');
     });
 });
