@@ -12,6 +12,7 @@ const requestPipelineOtherRequestLogger    = requestPipelineLogger.extend('other
 const resourceInjectorLogger               = nativeAutomationLogger.extend('resource-injector');
 const requestHooksLogger                   = nativeAutomationLogger.extend('request-hooks');
 const requestHooksEventProviderLogger      = requestHooksLogger.extend('event-provider');
+const storagesProviderLogger               = nativeAutomationLogger.extend('storages-provider');
 
 const browserLogger               = testcafeLogger.extend('browser');
 const browserProviderLogger       = browserLogger.extend('provider');
@@ -36,6 +37,7 @@ export {
     requestPipelineServiceRequestLogger,
     requestPipelineOtherRequestLogger,
     requestPipelineContextLogger,
+    storagesProviderLogger,
     testRunControllerLogger,
     reporterLogger,
     versionLogger,

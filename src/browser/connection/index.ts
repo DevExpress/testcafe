@@ -36,6 +36,7 @@ import { Proxy } from 'testcafe-hammerhead';
 import { NextTestRunInfo, OpenBrowserAdditionalOptions } from '../../shared/types';
 import { EventType } from '../../native-automation/types';
 import { NativeAutomationBase } from '../../native-automation';
+import { VisitedOrigins } from '../../native-automation/visited-origins';
 import remoteChrome from 'chrome-remote-interface';
 
 const getBrowserConnectionDebugScope = (id: string): string => `testcafe:browser:connection:${id}`;
@@ -105,6 +106,7 @@ export default class BrowserConnection extends EventEmitter {
     private readonly BROWSER_RESTART_TIMEOUT: number;
     public readonly id: string;
     private _currentTestRun: TestRun | null = null;
+    private _visitedOrigins: VisitedOrigins | null = null;
     private readonly jobQueue: BrowserJob[];
     private readonly initScriptsQueue: InitScriptTask[];
     public browserConnectionGateway: BrowserConnectionGateway;
@@ -241,6 +243,15 @@ export default class BrowserConnection extends EventEmitter {
 
     public get messageBus (): MessageBus | undefined {
         return this._messageBus;
+    }
+
+    // NOTE: Browser storage is shared by all windows and survives browser restarts (the profile is reused),
+    // so visited origins are tracked for the whole connection lifetime.
+    public get visitedOrigins (): VisitedOrigins {
+        if (!this._visitedOrigins)
+            this._visitedOrigins = new VisitedOrigins();
+
+        return this._visitedOrigins;
     }
 
     private _setEventHandlers (): void {
@@ -518,6 +529,9 @@ export default class BrowserConnection extends EventEmitter {
             clearTimeout(this.heartbeatTimeout);
 
         BrowserConnectionTracker.remove(this);
+
+        this._visitedOrigins?.clear();
+        this._visitedOrigins = null;
 
         this.status = BrowserConnectionStatus.closed;
         this.emit(BrowserConnectionStatus.closed);
