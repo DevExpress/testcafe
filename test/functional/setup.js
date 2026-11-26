@@ -16,6 +16,8 @@ const { findWindow, errors }     = require('testcafe-browser-tools');
 const authenticationHelper       = require('../../lib/cli/authentication-helper');
 const isCI                       = require('is-ci');
 
+const { LOCAL_BROWSER_INIT_TIMEOUT } = require('../../lib/utils/browser-connection-timeouts');
+
 const setNativeAutomationForRemoteConnection = require('./utils/set-native-automation-for-remote-connection');
 
 let testCafe     = null;
@@ -229,8 +231,12 @@ before(function () {
             // NOTE: we need to disable this particular timeout for preventing mocha timeout
             // error while establishing connection to Sauce Labs. If connection wouldn't be
             // established after a specified number of attempts, an error will be thrown.
+            // A cold start of a local browser (e.g. Edge on CI runners) can take longer than 60s,
+            // so for local browsers we allow the same time as TestCafe uses to initialize them.
             if (isBrowserStack || !USE_PROVIDER_POOL)
                 mocha.timeout(0);
+            else
+                mocha.timeout(LOCAL_BROWSER_INIT_TIMEOUT);
 
             if (USE_PROVIDER_POOL) {
                 testCafe.configuration.mergeOptions({
